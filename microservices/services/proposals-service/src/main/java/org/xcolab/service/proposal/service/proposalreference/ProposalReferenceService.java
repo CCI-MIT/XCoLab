@@ -4,20 +4,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.model.tables.pojos.Proposal;
-
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.model.tables.pojos.ProposalReference;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
 import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao;
-import org.xcolab.service.proposal.enums.PlanSectionTypeKeys;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 import org.xcolab.service.proposal.helper.ProposalAttributeHelper;
 import org.xcolab.service.proposal.service.proposalattribute.ProposalAttributeKeys;
+import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 
 import java.util.ArrayList;
 import java.util.HashSet;

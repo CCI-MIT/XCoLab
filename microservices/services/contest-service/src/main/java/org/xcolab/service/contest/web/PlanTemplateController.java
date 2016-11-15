@@ -34,6 +34,7 @@ public class PlanTemplateController {
 
     @RequestMapping(value = "/planTemplates", method = RequestMethod.POST)
     public PlanTemplate createPlanTemplate(@RequestBody PlanTemplate planTemplate) {
+
         return this.planTemplateDao.create(planTemplate);
     }
 
@@ -63,6 +64,27 @@ public class PlanTemplateController {
         return planTemplateDao.findByGiven();
     }
 
+    @RequestMapping(value = "/planTemplates/{id_}", method = RequestMethod.DELETE)
+    public String deletePlanTemplate(@PathVariable("id_") Long id_)
+            throws NotFoundException {
+
+        if (id_ == null || id_ == 0) {
+            throw new NotFoundException("No PlanTemplate with id given");
+        } else {
+            PlanTemplate planTemplate = this.planTemplateDao.get(id_);
+            if (planTemplate != null) {
+                this.planTemplateDao.delete(planTemplate.getId_());
+                return "PlanTemplate deleted successfully";
+            } else {
+                throw new NotFoundException("No PlanTemplate with id given");
+            }
+        }
+    }
+
+    @RequestMapping(value = "/planTemplateSections", method = RequestMethod.POST)
+    public PlanTemplateSection createPlanTemplateSection(@RequestBody PlanTemplateSection planTemplateSection) {
+        return this.planTemplateSectionDao.create(planTemplateSection);
+    }
 
 
 
@@ -104,6 +126,9 @@ public class PlanTemplateController {
     }
     @RequestMapping(value = "/planSectionDefinitions", method = RequestMethod.POST)
     public PlanSectionDefinition createPlanSectionDefinition(@RequestBody PlanSectionDefinition planSectionDefinition) {
+        if(planSectionDefinition.getLocked() == null){
+            planSectionDefinition.setLocked(false);
+        }
         return this.planSectionDefinitionDao.create(planSectionDefinition);
     }
 
@@ -125,7 +150,7 @@ public class PlanTemplateController {
     ) {
         return planTemplateSectionDao.findByGiven(planTemplateId,planSectionId);
     }
-    @RequestMapping(value = "/planTemplateSections/updateTemplateSection", method = RequestMethod.PUT)
+    @RequestMapping(value = "/planTemplateSections/updateTemplateSection", method = RequestMethod.POST)
     public boolean updatePlanTemplateSection(@RequestBody PlanTemplateSection planTemplateSection) throws NotFoundException {
             return planTemplateSectionDao.update(planTemplateSection);
     }

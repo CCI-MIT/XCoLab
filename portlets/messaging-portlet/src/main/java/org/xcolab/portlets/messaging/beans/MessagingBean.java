@@ -25,6 +25,8 @@ public class MessagingBean implements Serializable {
 
     private int pageNumber = 1;
 
+    private int numberOfMessagesLeft = Integer.MAX_VALUE;
+
     @SuppressWarnings("unused")
     public MessagingBean() { }
 
@@ -36,6 +38,8 @@ public class MessagingBean implements Serializable {
         dataPage = new MessageDataPage(user, messageType, PAGE_SIZE, pageNumber);
 
         messagesCount = MessagingClient.countMessages(user.getUserId(), messageType);
+
+        numberOfMessagesLeft = MessagingClient.getNumberOfMessagesLeft(user.getUserId());
     }
 
     public MessageType getType() {
@@ -97,5 +101,9 @@ public class MessagingBean implements Serializable {
             numPages++;
         }
         return numPages;
+    }
+
+    public int getNumberOfMessagesLeft() {
+        return numberOfMessagesLeft;
     }
 }

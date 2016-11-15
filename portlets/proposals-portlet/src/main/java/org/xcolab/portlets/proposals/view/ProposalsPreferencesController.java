@@ -26,7 +26,6 @@ import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.mail.ContestPhasePromotionEmail;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.utils.IdListUtil;
@@ -85,7 +84,7 @@ public class ProposalsPreferencesController {
         Map<Long, ContestPhaseType> contestPhaseTypeMap = new HashMap<>();
         Map<Long, List<ContestPhase>> contestPhasesMap = new HashMap<>();
         //contestphaseId to proposal
-        Map<Long, List<ProposalWrapper>> proposalsMap = new HashMap<>();
+        Map<Long, List<Proposal>> proposalsMap = new HashMap<>();
         for (Contest c : contests) {
             List<ContestPhase> contestPhases = getPhasesByContest(c, 1);
 
@@ -96,9 +95,9 @@ public class ProposalsPreferencesController {
                     contestPhaseTypeMap.put(cp.getContestPhaseType(), ContestClientUtil.getContestPhaseType(cp.getContestPhaseType()));
                 }
                 List<Proposal> proposals = ProposalsContextUtil.getClients(request).getProposalClient().getProposalsInContestPhase(cp.getContestPhasePK());
-                List<ProposalWrapper> wrappers = new ArrayList<>();
+                List<Proposal> wrappers = new ArrayList<>();
                 for (Proposal p : proposals) {
-                    wrappers.add(new ProposalWrapper(p));
+                    wrappers.add((p));
                 }
                 proposalsMap.put(cp.getContestPhasePK(), wrappers);
             }

@@ -1,10 +1,10 @@
 package org.xcolab.portlets.proposals.requests;
 
-import com.ext.portlet.model.ProposalRatingType;
 
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.portlets.proposals.wrappers.ProposalRatingTypeWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,18 +21,18 @@ public class RatingBean {
 
     private Long screeningUserId;
 
-    public RatingBean(ProposalWrapper wrapper, List<ProposalRatingType> presetRatingTypes) {
+    public RatingBean(Proposal wrapper, List<ProposalRatingType> presetRatingTypes) {
         this.ratingValues = new HashMap<>();
         this.ratingTypes = new ArrayList<>();
 
         //initialize ratingValues and types
         for (ProposalRatingType type : presetRatingTypes) {
-            ratingValues.put(type.getId(), "");
+            ratingValues.put(type.getId_(), "");
             ratingTypes.add(new ProposalRatingTypeWrapper(type));
         }
 
         //get the existing ratings from the wrapper
-        for (ProposalRatingWrapper ratingWrapper : wrapper.getRatings()) {
+        for (ProposalRating ratingWrapper : wrapper.getRatings()) {
             ratingValues.put(ratingWrapper.getRatingTypeId(), String.valueOf(ratingWrapper.unwrap().getRatingValueId()));
         }
         comment = wrapper.getRatingComment();

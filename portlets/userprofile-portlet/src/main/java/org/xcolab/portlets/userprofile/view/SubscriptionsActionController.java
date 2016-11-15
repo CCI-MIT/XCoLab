@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.portlets.userprofile.wrappers.ActivitySubscriptionWrapper;
 import org.xcolab.portlets.userprofile.wrappers.UserSubscriptionsWrapper;
 
@@ -28,7 +29,7 @@ public class SubscriptionsActionController {
 
         for (ActivitySubscriptionWrapper subscription : userSubscriptions.getSubscriptions()) {
             if (subscription.getSelected()) {
-                ActivitiesClient.deleteSubscription(subscription.getSubscriptionPk());
+                ActivitiesClientUtil.deleteSubscription(subscription.getSubscriptionPk());
             }
         }
         response.sendRedirect("/web/guest/member/-/member/userId/" + userId.toString() + "/page/subscriptionsManage");

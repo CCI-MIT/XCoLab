@@ -6,7 +6,6 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.util.GroupingUtil;
 import org.xcolab.util.GroupingUtil.DuplicateElementException;
 import org.xcolab.util.functions.Function;
-import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.util.Iterator;
 import java.util.List;
@@ -29,7 +28,7 @@ public final class ContestScheduleUtil {
     }
 
     public static boolean isBlankContest(Contest contest) {
-        final BaseContestWrapper contestWrapper = new BaseContestWrapper(contest);
+        final Contest contestWrapper = (contest);
         final boolean contestHasProposals = contestWrapper.getTotalProposalsCount() > 0;
         return !contestHasProposals;
     }

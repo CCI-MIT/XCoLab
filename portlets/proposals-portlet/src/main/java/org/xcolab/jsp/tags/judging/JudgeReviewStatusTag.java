@@ -10,7 +10,6 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.jsp.JspException;
@@ -56,7 +55,7 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
             //TODO: judging will only work in host colab for shared contests!
             Proposal proposal = ProposalClientUtil.getProposal(proposalId);
             ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
-            ProposalJudgeWrapper judgeWrapper = new ProposalJudgeWrapper(new ProposalWrapper(proposal, contestPhase), judge);
+            ProposalJudgeWrapper judgeWrapper = new ProposalJudgeWrapper(new Proposal(proposal, contestPhase), judge);
 
             PortletRequest portletRequest = (PortletRequest) pageContext.getAttribute("javax.portlet.request", PageContext.REQUEST_SCOPE);
             if (portletRequest == null) {

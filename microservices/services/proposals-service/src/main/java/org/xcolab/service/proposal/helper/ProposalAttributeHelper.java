@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
+import org.xcolab.util.EntityGroupingUtil;
 
 import java.util.Collection;
 import java.util.Collections;

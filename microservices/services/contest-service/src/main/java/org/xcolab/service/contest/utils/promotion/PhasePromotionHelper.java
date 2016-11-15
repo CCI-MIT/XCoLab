@@ -11,8 +11,8 @@ import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
-import org.xcolab.service.contest.utils.promotion.enums.JudgingSystemActions;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.promotion.JudgingSystemActions;
 
 /**
  * Created by johannes on 9/8/15.

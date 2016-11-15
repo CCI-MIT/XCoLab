@@ -12,7 +12,6 @@ import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.UserLocalServiceUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -20,8 +19,8 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -32,7 +31,6 @@ import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidExce
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsSortFilterBean;
 
 import java.io.IOException;
@@ -64,19 +62,19 @@ public class ContestProposalsController extends BaseProposalsController {
         }
 
         Member u = request.getRemoteUser() != null ? MembersClient.getMemberUnchecked(Long.parseLong(request.getRemoteUser())) : null;
-        List<ProposalWrapper> proposals = new ArrayList<>();
+        List<Proposal> proposals = new ArrayList<>();
 
         for (Proposal proposal : ProposalsContextUtil.getClients(request).getProposalClient().getActiveProposalsInContestPhase(contestPhase.getContestPhasePK())) {
 
             try {
                 Proposal2Phase p2p = proposalsContext.getClients(request).getProposalPhaseClient().getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
-                ProposalWrapper proposalWrapper;
+                Proposal proposalWrapper;
 
-                if (u != null && UserLocalServiceUtil.hasRoleUser(MemberRole.JUDGE.getRoleId(), u.getUserId())) {
+                if (u != null && PermissionsClient.hasRoleGroup(u.getUserId(), MemberRole.JUDGE.getRoleId())) {
                     proposalWrapper = new ProposalJudgeWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p, u);
 
                 } else {
-                    proposalWrapper = new ProposalWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
+                    proposalWrapper = new Proposal(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p);
                 }
 
                 proposals.add(proposalWrapper);

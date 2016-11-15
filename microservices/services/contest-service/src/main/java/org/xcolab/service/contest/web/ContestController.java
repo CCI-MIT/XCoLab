@@ -18,6 +18,7 @@ import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.model.tables.pojos.ContestType;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestcollectioncard.ContestCollectionCardDao;
+
 import org.xcolab.service.contest.domain.contesttype.ContestTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.collectioncard.CollectionCardService;
@@ -166,4 +167,13 @@ public class ContestController {
     }
 
 
+
+    @RequestMapping(value = "contests/findContestsByName", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<Contest> findContestsByName(
+            @RequestParam("contestName") String contestName,
+            @RequestParam("ontologyTermIds") List<Long> ontologyTermIds,
+            @RequestParam("contestTypeIds") List<Long> contestTypeIds){
+
+        return contestService.findContestsByName(contestName, ontologyTermIds, contestTypeIds);
+    }
 }

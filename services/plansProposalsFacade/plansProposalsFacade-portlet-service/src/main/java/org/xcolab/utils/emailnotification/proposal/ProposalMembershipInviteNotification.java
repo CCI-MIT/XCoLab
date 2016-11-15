@@ -1,5 +1,6 @@
 package org.xcolab.utils.emailnotification.proposal;
 
+import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 
 
@@ -46,7 +47,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
                 .getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
         final ContestEmailTemplate emailTemplate =
-                EmailTemplateClient.getContestEmailTemplateByType(DEFAULT_TEMPLATE_NAME);
+                EmailTemplateClientUtil.getContestEmailTemplateByType(DEFAULT_TEMPLATE_NAME);
 
         templateWrapper = new ProposalMembershipRequestTemplate(emailTemplate,
                 proposalName, contest.getContestShortName());

@@ -106,7 +106,16 @@ public class SectionDefinitionWrapper implements Serializable {
                 PointsClientUtil.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
         this.pointPercentage = Double.toString(pdc.getPercentage());
         this.pointType = pdc.getPointTypeId();
-
+        /*
+                PointsDistributionConfigurationClient.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
+        if (pdc != null) {
+            this.pointPercentage = Double.toString(pdc.getPercentage());
+            this.pointType = pdc.getPointTypeId();
+        } else {
+            this.pointPercentage = "0";
+            this.pointType = 0L;
+        }
+        */
 
         initOntologyTermIdsWithFocusAreaId();
     }
@@ -450,13 +459,34 @@ public class SectionDefinitionWrapper implements Serializable {
             psd.setAllowedContestTypeIds(
                     IdListUtil.getStringFromIds(this.getAllowedContestTypeIds()));
             psd.setContestIntegrationRelevance(this.isContestIntegrationRelevance());
+            psd.setLocked(false);
 
             psd = PlanTemplateClientUtil.createPlanSectionDefinition(psd);
             id = psd.getId_();
         } else {
+
             psd = PlanTemplateClientUtil.getPlanSectionDefinition(id);
             pdc = PointsClientUtil
+            /*
+            psd = PlanTemplateClient.getPlanSectionDefinition(id);
+            psd.setType_(this.getType());
+            psd.setTitle(this.getTitle());
+            psd.setDefaultText(this.getDefaultText());
+            psd.setCharacterLimit(this.getCharacterLimit());
+            psd.setHelpText(this.getHelpText());
+            psd.setTier(this.getLevel());
+            psd.setFocusAreaId(this.getFocusAreaId());
+            psd.setAdditionalIds(this.getAdditionalIds());
+            psd.setAllowedValues(this.getAllowedValues());
+            psd.setAllowedContestTypeIds(
+                    IdListUtil.getStringFromIds(this.getAllowedContestTypeIds()));
+            psd.setContestIntegrationRelevance(this.isContestIntegrationRelevance());
+            psd.setLocked(false);
+
+            pdc = PointsDistributionConfigurationClient
+            */
                     .getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
+
             if (pointType == 0L) {
                 PointsClientUtil
                         .deletePointsDistributionConfiguration(pdc.getId_());
@@ -465,6 +495,20 @@ public class SectionDefinitionWrapper implements Serializable {
                 pdc.setPointTypeId(pointType);
                 pdc.setTargetPlanSectionDefinitionId(id);
                 PointsClientUtil.updatePointsDistributionConfiguration(pdc);
+            /*
+                if (pdc != null) {
+                    PointsDistributionConfigurationClient
+                            .deletePointsDistributionConfiguration(pdc.getId_());
+                }
+            } else {
+                if (pdc != null) {
+                    pdc.setPercentage(Double.valueOf(pointPercentage));
+                    pdc.setPointTypeId(pointType);
+                    pdc.setTargetPlanSectionDefinitionId(id);
+
+                    PointsDistributionConfigurationClient.updatePointsDistributionConfiguration(pdc);
+                }
+            */
             }
 
 

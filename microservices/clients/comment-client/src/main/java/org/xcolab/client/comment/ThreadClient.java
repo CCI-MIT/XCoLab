@@ -8,12 +8,16 @@ import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ThreadClient {
 
     private final CommentServiceWrapper commentServiceWrapper;
     private final RestService commentService;
+
+    private static final Map<RestService, ThreadClient> instances = new HashMap<>();
 
     public ThreadClient(RestService commentService) {
         commentServiceWrapper = CommentServiceWrapper.fromService(commentService);
@@ -50,5 +54,14 @@ public class ThreadClient {
 
     public long getLastActivityAuthorId(long threadId) {
         return commentServiceWrapper.getLastActivityAuthorId(threadId, CacheRetention.REQUEST);
+    }
+
+    public static ThreadClient fromService(RestService contestService) {
+        ThreadClient client = instances.get(contestService);
+        if (client == null) {
+            client = new ThreadClient(contestService);
+            instances.put(contestService, client);
+        }
+        return client;
     }
 }

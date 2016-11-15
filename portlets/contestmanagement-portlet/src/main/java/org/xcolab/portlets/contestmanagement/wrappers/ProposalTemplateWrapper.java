@@ -1,7 +1,6 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 
-import com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -16,7 +15,6 @@ import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.ProposalTemplateLifecycleUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -235,7 +233,6 @@ public class ProposalTemplateWrapper {
 
     private void createOrUpdateIfExistsPlanTemplateSection(
             SectionDefinitionWrapper sectionDefinitionWrapper) {
-        try {
             boolean wasUpdated = false;
             Long planTemplateId = planTemplate.getId_();
             Long sectionDefinitionId = sectionDefinitionWrapper.getId();
@@ -246,7 +243,7 @@ public class ProposalTemplateWrapper {
                             .getPlanTemplateSectionByPlanSectionDefinitionId(sectionDefinitionWrapper.getId());
 
             for (PlanTemplateSection planTemplateSection : planTemplateSectionsWithSectionDefinition) {
-                if (planTemplateSection.getPlanTemplateId() == planTemplateId) {
+                if (planTemplateSection.getPlanTemplateId().longValue() == planTemplateId) {
                     planTemplateSection.setWeight(weight);
                     PlanTemplateClientUtil
                             .updatePlanTemplateSection(planTemplateSection);
@@ -257,12 +254,14 @@ public class ProposalTemplateWrapper {
             }
 
             if (!wasUpdated) {
-                PlanTemplateSectionLocalServiceUtil
-                        .addPlanTemplateSection(planTemplateId, sectionDefinitionId, weight);
+                PlanTemplateSection pts = new PlanTemplateSection();
+                pts.setPlanSectionId(sectionDefinitionId);
+                pts.setPlanTemplateId(planTemplateId);
+                pts.setWeight(weight);
+
+                PlanTemplateClientUtil.createPlanTemplateSection(pts);
             }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 
     public static List<LabelValue> getAllPlanTemplateSelectionItems() {
@@ -275,16 +274,16 @@ public class ProposalTemplateWrapper {
         return selectItems;
     }
 
-    public List<BaseContestWrapper> getContestsUsingTemplate() {
-        List<BaseContestWrapper> contestsUsingSelectedTemplate = new ArrayList<>();
-        List<Contest> contestsUsingSelectedTemplateList = new ArrayList<>();
+    public List<Contest> getContestsUsingTemplate() {
+        List<Contest> contestsUsingSelectedTemplate = new ArrayList<>();
+        List<Contest> contestsUsingSelectedTemplateList;
 
         Long planTemplateId = planTemplate.getId_();
         contestsUsingSelectedTemplateList = ContestClientUtil.getContestsByPlanTemplateId(planTemplateId);
 
 
         for (Contest contest : contestsUsingSelectedTemplateList) {
-            contestsUsingSelectedTemplate.add(new BaseContestWrapper(contest));
+            contestsUsingSelectedTemplate.add((contest));
         }
 
         return contestsUsingSelectedTemplate;

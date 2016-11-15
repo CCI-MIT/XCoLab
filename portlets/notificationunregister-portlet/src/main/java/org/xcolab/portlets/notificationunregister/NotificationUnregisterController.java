@@ -11,6 +11,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -55,7 +56,7 @@ public class NotificationUnregisterController {
         ActivitySubscription subscription = null;
         if (subscriptionId > 0) {
 	        try {
-	            subscription = ActivitiesClient.getActivitySubscription(subscriptionId);
+	            subscription = ActivitiesClientUtil.getActivitySubscription(subscriptionId);
                 //ActivitySubscriptionLocalServiceUtil.getActivitySubscription(subscriptionId);
                 error = ! NotificationUnregisterUtils.isTokenValid(token, subscription);
             }
@@ -73,7 +74,7 @@ public class NotificationUnregisterController {
         String responseText = null;
 	    // unregister user
 	    if (subscription != null) {
-            ActivitiesClient.deleteSubscriptionById(subscription.getPk());
+            ActivitiesClientUtil.deleteSubscriptionById(subscription.getPk());
             responseText = UNSUBSCRIBE_INDIVIDUAL_SUBSCRIPTION_RESPONSE_TEXT;
 	    }
 

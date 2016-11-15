@@ -1,7 +1,6 @@
 package org.xcolab.service.proposal.web;
 
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,11 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import org.xcolab.model.tables.pojos.PointType;
-import org.xcolab.service.proposal.domain.pointsdistributionconfiguration.PointsDistributionConfigurationDao;
 import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
+import org.xcolab.service.proposal.domain.pointsdistributionconfiguration
+        .PointsDistributionConfigurationDao;
 import org.xcolab.service.proposal.domain.pointtype.PointTypeDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
+import org.xcolab.service.proposal.service.pointsdistributionconfiguration
+        .PointsDistributionConfigurationService;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -28,6 +31,9 @@ public class PointsController {
     @Autowired
     private PointTypeDao pointTypeDao;
 
+    @Autowired
+    private PointsDistributionConfigurationService pointsDistributionConfigurationService;
+
     @RequestMapping(value = "/pointsDistributionConfigurations", method = RequestMethod.POST)
     public PointsDistributionConfiguration createPointsDistributionConfiguration(@RequestBody PointsDistributionConfiguration pointsDistributionConfiguration) {
         pointsDistributionConfiguration.setCreateDate(new Timestamp(new Date().getTime()));
@@ -41,16 +47,26 @@ public class PointsController {
     ) {
         return pointsDistributionConfigurationDao.findByGiven(proposalId, pointTypeId);
     }
-
     @RequestMapping(value = "/pointsDistributionConfigurations/removeByProposalId", method = RequestMethod.DELETE)
     public String deletePointsDistributionConfigurationByProposalId(@RequestParam("proposalId") Long proposalId)
             throws NotFoundException {
-
         if (proposalId == null || proposalId == 0) {
             throw new NotFoundException("No PointsDistributionConfiguration with id given");
         } else {
             this.pointsDistributionConfigurationDao.deleteByProposalId(proposalId);
             return "PointsDistributionConfiguration deleted successfully";
+
+        }
+    }
+    @RequestMapping(value = "/pointsDistributionConfigurations/verifyDistributionConfigurationsForProposalId", method = RequestMethod.GET)
+    public String verifyDistributionConfigurationsForProposalId(@RequestParam("proposalId") Long proposalId)
+            throws NotFoundException {
+
+        if (proposalId == null || proposalId == 0) {
+            throw new NotFoundException("No PointsDistributionConfiguration with id given");
+        } else {
+            this.pointsDistributionConfigurationService.verifyDistributionConfigurationsForProposalId(proposalId);
+            return "PointsDistributionConfiguration checked successfully";
 
         }
     }
@@ -69,7 +85,7 @@ public class PointsController {
         if (targetPlanSectionDefinitionId == null || targetPlanSectionDefinitionId == 0) {
             throw new NotFoundException("No PointsDistributionConfiguration with the id given");
         } else {
-            return pointsDistributionConfigurationDao.get(targetPlanSectionDefinitionId);
+            return pointsDistributionConfigurationDao.getByPlanSectionDefinitionId(targetPlanSectionDefinitionId);
         }
     }
     @RequestMapping(value = "/pointsDistributionConfigurations/{id_}", method = RequestMethod.DELETE)

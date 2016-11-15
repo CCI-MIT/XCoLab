@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.model.tables.pojos.LoginLog;
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Role_;
 import org.xcolab.model.tables.pojos.UserGroupRole;
+import org.xcolab.service.members.domain.loginlog.LoginLogDao;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.domain.usergrouprole.UserGroupRoleDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
@@ -40,6 +42,7 @@ public class MembersController {
 
     private final UserGroupRoleDao userGroupRoleDao;
 
+
     @Autowired
     public MembersController(MemberDao memberDao, RoleService roleService,
             MemberService memberService, UserGroupRoleDao userGroupRoleDao) {
@@ -47,6 +50,7 @@ public class MembersController {
         this.roleService = roleService;
         this.memberService = memberService;
         this.userGroupRoleDao = userGroupRoleDao;
+
     }
 
     @GetMapping
@@ -67,6 +71,11 @@ public class MembersController {
 
         return memberDao.findByGiven(paginationHelper, partialName, roleName,
                 email, screenName, facebookId, openId);
+}
+
+    @GetMapping("findByIp")
+    public List<Member> getMemberByIp(@RequestParam String ip){
+        return memberDao.findByIp(ip);
     }
 
     @GetMapping("findByScreenName")

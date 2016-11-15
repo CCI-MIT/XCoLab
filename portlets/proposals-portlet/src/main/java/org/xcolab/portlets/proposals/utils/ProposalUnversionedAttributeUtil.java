@@ -1,14 +1,17 @@
 package org.xcolab.portlets.proposals.utils;
 
-import com.ext.portlet.model.ProposalUnversionedAttribute;
-import com.ext.portlet.service.ProposalUnversionedAttributeLocalServiceUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
+import org.xcolab.client.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
+
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+
 
 /**
  * Created by carlosbpf on 2/16/16.
@@ -18,25 +21,25 @@ public class ProposalUnversionedAttributeUtil {
     public static void createOrUpdateProposalUnversionedAttribute(long authorId,
                                                                    String attributeValue,
                                                                    String attributeName,
-                                                                   ProposalWrapper proposal,
+                                                                   Proposal proposal,
                                                                    List<ProposalUnversionedAttribute> unversionedAttributes)
             throws PortalException, SystemException {
         ProposalUnversionedAttribute pua = null;
         pua = getCurrentProposalUnversionedAttribute(attributeName.toString(),unversionedAttributes);
         if (pua == null) {
-            pua = ProposalUnversionedAttributeLocalServiceUtil.createProposalUnversionedAttribute(CounterLocalServiceUtil.increment(ProposalUnversionedAttribute.class.getName()));
+            pua = new ProposalUnversionedAttribute();
             pua.setCreateAuthorId(authorId);
-            pua.setCreateDate(new Date());
-            pua.setLastUpdateDate(new Date());
+            pua.setCreateDate(new Timestamp(new Date().getTime()));
+            pua.setLastUpdateDate(new Timestamp(new Date().getTime()));
             pua.setName(attributeName);
             pua.setStringValue(attributeValue);
             pua.setProposalId(proposal.getProposalId());
-            ProposalUnversionedAttributeLocalServiceUtil.addProposalUnversionedAttribute(pua);
+            ProposalAttributeClientUtil.createProposalUnversionedAttribute(pua);
         } else {
             pua.setCreateAuthorId(authorId);
-            pua.setLastUpdateDate(new Date());
+            pua.setLastUpdateDate(new Timestamp(new Date().getTime()));
             pua.setStringValue(attributeValue);
-            ProposalUnversionedAttributeLocalServiceUtil.updateProposalUnversionedAttribute(pua);
+            ProposalAttributeClientUtil.updateProposalUnversionedAttribute(pua);
         }
     }
 

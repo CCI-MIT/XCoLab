@@ -7,6 +7,8 @@ import com.ext.portlet.NoSuchProposalAttributeException;
 import com.ext.portlet.NoSuchProposalException;
 import com.ext.portlet.NoSuchProposalSupporterException;
 import com.ext.portlet.NoSuchProposalVoteException;
+
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.model.ContestPhase;
@@ -987,7 +989,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     @Override
     public boolean isSubscribed(long proposalId, long userId) {
-        return ActivitiesClient.isSubscribedToActivity(userId,
+        return ActivitiesClientUtil.isSubscribedToActivity(userId,
                 ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "");
     }
 
@@ -1013,7 +1015,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     @Override
     public void subscribe(long proposalId, long userId, boolean automatic) {
-        ActivitiesClient.addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+        ActivitiesClientUtil.addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
     }
 
     /**
@@ -1039,7 +1041,7 @@ public class ProposalLocalServiceImpl extends ProposalLocalServiceBaseImpl {
      */
     @Override
     public void unsubscribe(long proposalId, long userId, boolean automatic) {
-        ActivitiesClient.deleteSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+        ActivitiesClientUtil.deleteSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
     }
 
     /**

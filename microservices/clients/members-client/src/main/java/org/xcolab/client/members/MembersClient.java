@@ -197,6 +197,12 @@ public final class MembersClient {
         return member;
     }
 
+    public static List<Member> findMembersByIp(String ip) {
+            return memberResource.service("findByIp",
+                    Member.TYPES.getTypeReference())
+                    .queryParam("ip", ip).getList();
+    }
+
     public static Member findMemberByScreenNameNoRole(String screenName) throws MemberNotFoundException {
         try {
             return memberResource.service("findByScreenName", Member.class)

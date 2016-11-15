@@ -20,6 +20,7 @@ import java.util.Optional;
 
 import static org.jooq.impl.DSL.countDistinct;
 import static org.jooq.impl.DSL.sum;
+import static org.xcolab.model.Tables.LOGIN_LOG;
 import static org.xcolab.model.Tables.MEMBER;
 import static org.xcolab.model.Tables.POINTS;
 import static org.xcolab.model.Tables.ROLES_CATEGORY;
@@ -112,6 +113,14 @@ public class MemberDaoImpl implements MemberDao {
             }
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
+        return query.fetchInto(Member.class);
+    }
+
+    public List<Member> findByIp(String ip) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(MEMBER)
+                .join(LOGIN_LOG).on(LOGIN_LOG.USER_ID.equal(MEMBER.ID_))
+                .where(LOGIN_LOG.IP_ADDRESS.eq(ip)).getQuery();
         return query.fetchInto(Member.class);
     }
 

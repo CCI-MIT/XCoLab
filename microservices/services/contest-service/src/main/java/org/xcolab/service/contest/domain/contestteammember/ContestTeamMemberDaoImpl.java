@@ -63,6 +63,20 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
                 .from(CONTEST_TEAM_MEMBER)
                 .where(CONTEST_TEAM_MEMBER.ID_.eq(id_))
                 .fetchOne().into(Integer.class) > 0;
+
+    }
+    public ContestTeamMember findOneBy(Long memberId, Long contestId, Long roleId) {
+
+        final Record record =  this.dslContext.selectFrom(CONTEST_TEAM_MEMBER)
+                .where(CONTEST_TEAM_MEMBER.USER_ID.eq(memberId))
+                .and(CONTEST_TEAM_MEMBER.CONTEST_ID.eq(contestId))
+                .and(CONTEST_TEAM_MEMBER.ROLE_ID.eq(roleId))
+                .fetchOne();
+
+        if (record == null) {
+            return null;
+        }
+        return record.into(ContestTeamMember.class);
     }
 
     @Override

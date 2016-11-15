@@ -27,7 +27,7 @@ public class MessagingPermissions {
     }
 
     public boolean getCanSendMessage() {
-        return MessagingClient.canMemberSendMessage(memberId) || getCanAdminAll();
+        return MessagingClient.canMemberSendMessage(memberId, 1) || getCanAdminAll();
     }
 
     public boolean getCanViewMessage() {

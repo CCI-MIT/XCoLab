@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -35,7 +34,6 @@ import org.xcolab.portlets.proposals.impact.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.html.HtmlUtil;
 
 import java.io.IOException;
@@ -78,7 +76,7 @@ public class ProposalImpactJSONController {
 
         Map<OntologyTerm, List<OntologyTerm>> ontologyMap = getOntologyMap(request);
 
-        List<OntologyTerm> sectorTerms = ontologyMap.get(OntologyTermLocalServiceUtil.getOntologyTerm(regionTermId));
+        List<OntologyTerm> sectorTerms = ontologyMap.get(OntologyClientUtil.getOntologyTerm(regionTermId));
         response.getPortletOutputStream().write(ontologyTermListToJSONArray(sectorTerms).toString().getBytes());
     }
 
@@ -222,7 +220,7 @@ public class ProposalImpactJSONController {
             response.getPortletOutputStream().write(responseJSON.toString().getBytes());
             return;
         }
-        ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
+        Proposal proposal = proposalsContext.getProposalWrapped(request);
 
         List<ProposalUnversionedAttribute> unversionedAttributes = ProposalAttributeClientUtil
                 .getProposalUnversionedAttributesByProposalId(proposal.getProposalId());
@@ -287,7 +285,7 @@ public class ProposalImpactJSONController {
 
     private ProposalImpactSeriesList getProposalImpactSeriesList(ResourceRequest request) throws SystemException, PortalException {
         Contest contest = proposalsContext.getContest(request);
-        ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
+        Proposal proposal = proposalsContext.getProposalWrapped(request);
 
         return new ProposalImpactSeriesList(contest, proposal.getWrapped());
     }

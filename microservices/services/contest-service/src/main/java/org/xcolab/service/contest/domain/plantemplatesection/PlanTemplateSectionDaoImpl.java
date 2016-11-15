@@ -27,12 +27,24 @@ public class PlanTemplateSectionDaoImpl implements PlanTemplateSectionDao {
             query.addConditions(PLAN_TEMPLATE_SECTION.PLAN_TEMPLATE_ID.eq(planTemplateId));
         }
 
-        if (planTemplateId != null) {
+        if (planSectionId != null) {
             query.addConditions(PLAN_TEMPLATE_SECTION.PLAN_SECTION_ID.eq(planSectionId));
         }
 
         return query.fetchInto(PlanTemplateSection.class);
     }
+
+    public PlanTemplateSection create(PlanTemplateSection planTemplateSection) {
+
+        this.dslContext.insertInto(PLAN_TEMPLATE_SECTION)
+                .set(PLAN_TEMPLATE_SECTION.PLAN_TEMPLATE_ID, planTemplateSection.getPlanTemplateId())
+                .set(PLAN_TEMPLATE_SECTION.PLAN_SECTION_ID, planTemplateSection.getPlanSectionId())
+                .set(PLAN_TEMPLATE_SECTION.WEIGHT, planTemplateSection.getWeight())
+                .execute();
+        return planTemplateSection;
+
+    }
+
 
     @Override
     public int delete(Long planTemplateId, Long planSectionDefinitionId) {
@@ -44,10 +56,9 @@ public class PlanTemplateSectionDaoImpl implements PlanTemplateSectionDao {
 
     public boolean update(PlanTemplateSection planTemplateSection) {
         return dslContext.update(PLAN_TEMPLATE_SECTION)
-                .set(PLAN_TEMPLATE_SECTION.PLAN_TEMPLATE_ID, planTemplateSection.getPlanTemplateId())
-                .set(PLAN_TEMPLATE_SECTION.PLAN_SECTION_ID, planTemplateSection.getPlanSectionId())
                 .set(PLAN_TEMPLATE_SECTION.WEIGHT, planTemplateSection.getWeight())
                 .where(PLAN_TEMPLATE_SECTION.PLAN_TEMPLATE_ID.eq(planTemplateSection.getPlanTemplateId()))
+                .and(PLAN_TEMPLATE_SECTION.PLAN_SECTION_ID.eq(planTemplateSection.getPlanSectionId()))
                 .execute() > 0;
     }
 

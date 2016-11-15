@@ -6,14 +6,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ext.portlet.PlanSectionTypeKeys;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -22,8 +22,7 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
+import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 
 import java.io.IOException;
 
@@ -54,7 +53,7 @@ public class ProposalRevertActionController {
         long userId = themeDisplay.getUserId();
 
         if (proposalsContext.getProposal(request) != null) {
-            ProposalWrapper oldProposalVersionToBeBecomeCurrent = proposalsContext.getProposalWrapped(request);
+            Proposal oldProposalVersionToBeBecomeCurrent = proposalsContext.getProposalWrapped(request);
             updateProposalSpecialAttributes(userId, oldProposalVersionToBeBecomeCurrent);
 
             updateProposalAttributes(request, userId, oldProposalVersionToBeBecomeCurrent);
@@ -62,19 +61,19 @@ public class ProposalRevertActionController {
             proposalsContext.invalidateContext(request);
 
             request.setAttribute("ACTION_REDIRECTING", true);
-            response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(oldProposalVersionToBeBecomeCurrent.getProposalId()));
+            response.sendRedirect((oldProposalVersionToBeBecomeCurrent).getBaseProposal().getProposalUrl());
         }
     }
 
-    private void updateProposalAttributes(ActionRequest request, long userId, ProposalWrapper oldProposalVersionToBeBecomeCurrent) throws PortalException, SystemException {
+    private void updateProposalAttributes(ActionRequest request, long userId, Proposal oldProposalVersionToBeBecomeCurrent) throws PortalException, SystemException {
         boolean updateProposalReferences = false;
-        for (ProposalSectionWrapper section: oldProposalVersionToBeBecomeCurrent.getSections()) {
+        for (PlanSectionDefinition section: oldProposalVersionToBeBecomeCurrent.getSections()) {
             String newSectionValue = section.getStringValue();
             if (section.getType() == PlanSectionTypeKeys.TEXT
                     || section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE
                     || section.getType() == PlanSectionTypeKeys.DROPDOWN_MENU) {
 
-                ProposalAttributeLocalServiceUtil.setAttribute(userId,
+                ProposalAttributeClientUtil.setProposalAttribute(userId,
                         oldProposalVersionToBeBecomeCurrent.getProposalId(),
                         ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newSectionValue);
 
@@ -86,7 +85,7 @@ public class ProposalRevertActionController {
                 if (StringUtils.isNumeric(newSectionValue)) {
                     long newNumericVal = Long.parseLong(newSectionValue);
                     if (newNumericVal != section.getNumericValue()) {
-                        ProposalAttributeLocalServiceUtil.setAttribute(userId,
+                        ProposalAttributeClientUtil.setProposalAttribute(userId,
                                 oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newNumericVal);
                     }
                 }
@@ -95,11 +94,11 @@ public class ProposalRevertActionController {
                 if (StringUtils.isNumeric(newSectionValue) && StringUtils.isNotBlank(newSectionValue)) {
                     final long newNumericValue = Long.parseLong(newSectionValue);
                     if (section.getNumericValue() != newNumericValue) {
-                        ProposalAttributeLocalServiceUtil.setAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newNumericValue);
+                        ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), newNumericValue);
                         updateProposalReferences = true;
                     }
                 } else if (StringUtils.isBlank(newSectionValue)) {
-                    ProposalAttributeLocalServiceUtil.setAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), 0L);
+                    ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), 0L);
                 }
             }
             if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_REFERENCE) {
@@ -113,7 +112,7 @@ public class ProposalRevertActionController {
                     }
                 }
                 if (!section.getStringValue().equals(cleanedReferences.toString())) {
-                    ProposalAttributeLocalServiceUtil.setAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), cleanedReferences.toString());
+                    ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(), cleanedReferences.toString());
                     updateProposalReferences = true;
                 }
             }
@@ -139,11 +138,11 @@ public class ProposalRevertActionController {
         }
     }
 
-    private void updateProposalSpecialAttributes(long userId, ProposalWrapper oldProposalVersionToBeBecomeCurrent) throws PortalException, SystemException {
-        ProposalAttributeLocalServiceUtil.setAttribute(userId,  oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.NAME, oldProposalVersionToBeBecomeCurrent.getName());
-        ProposalAttributeLocalServiceUtil.setAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.PITCH, oldProposalVersionToBeBecomeCurrent.getPitch());
-        ProposalAttributeLocalServiceUtil.setAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.DESCRIPTION, oldProposalVersionToBeBecomeCurrent.getDescription());
-        ProposalAttributeLocalServiceUtil.setAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.TEAM, oldProposalVersionToBeBecomeCurrent.getTeam());
-        ProposalAttributeLocalServiceUtil.setAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.IMAGE_ID, oldProposalVersionToBeBecomeCurrent.getImageId());
+    private void updateProposalSpecialAttributes(long userId, Proposal oldProposalVersionToBeBecomeCurrent) throws PortalException, SystemException {
+        ProposalAttributeClientUtil.setProposalAttribute(userId,  oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.NAME,0l, oldProposalVersionToBeBecomeCurrent.getName());
+        ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.PITCH,0l, oldProposalVersionToBeBecomeCurrent.getPitch());
+        ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.DESCRIPTION,0l, oldProposalVersionToBeBecomeCurrent.getDescription());
+        ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.TEAM,0l, oldProposalVersionToBeBecomeCurrent.getTeam());
+        ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.IMAGE_ID,0l, oldProposalVersionToBeBecomeCurrent.getImageId());
     }
 }

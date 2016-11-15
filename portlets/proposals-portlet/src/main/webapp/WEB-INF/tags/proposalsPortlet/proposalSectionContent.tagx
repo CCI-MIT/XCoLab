@@ -3,7 +3,7 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	version="2.0">
-	<jsp:directive.attribute name="section" type="org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper" 
+	<jsp:directive.attribute name="section" type="org.xcolab.client.contest.pojo.templates.PlanSectionDefinition"
 		required="true" rtexprvalue="true" description="Section which content should be displayed" />
 	
 	<c:choose>

@@ -57,6 +57,13 @@ public class ProposalRatingController {
         }
     }
 
+    @RequestMapping(value = "/proposalRatingValues", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<ProposalRatingValue> getProposalRatingValues(
+            @RequestParam(required = false) Long ratingTypeId
+    ) {
+        return proposalRatingValueDao.findByGiven(ratingTypeId);
+    }
+
     @RequestMapping(value = "/proposalRatingTypes/{proposalRatingTypeId}", method = RequestMethod.GET)
     public ProposalRatingType getProposalRatingType(@PathVariable("proposalRatingTypeId") Long proposalRatingTypeId) throws NotFoundException {
         if (proposalRatingTypeId == null || proposalRatingTypeId == 0) {
@@ -65,6 +72,12 @@ public class ProposalRatingController {
             return proposalRatingTypeDao.get(proposalRatingTypeId);
         }
     }
+
+    @RequestMapping(value = "/proposalRatingTypes")
+    public List<ProposalRatingType> getProposalRatingTypes(@RequestParam("judgeType") Integer judgeType) throws NotFoundException {
+        return proposalRatingTypeDao.findByGiven(judgeType);
+    }
+
 
     @RequestMapping(value = "/proposalRatings", method = RequestMethod.POST)
     public ProposalRating createProposalRating(@RequestBody ProposalRating proposalRating) {

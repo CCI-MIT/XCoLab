@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ModelRunnerServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -52,7 +51,7 @@ public class ContestModelController extends BaseProposalsController {
 			modelId = contest.getDefaultModelId();
 			Map<Long, String> modelIdsWithNames;
 			if (modelId != null) {
-				modelIdsWithNames = ContestLocalServiceUtil.getModelIdsAndNames(proposalsContext.getContest(request).getContestPK());
+				modelIdsWithNames = ContestClientUtil.getModelIdsAndNames(proposalsContext.getContest(request).getContestPK());
 				model.addAttribute("availableModels", modelIdsWithNames);
 			}
 			else {

@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.wrappers;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.proposals.utils.ContestsColumn;
 
@@ -11,24 +12,26 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ContestsSortFilterBean {
-    private final List<ContestWrapper> contests;
+    private final List<Contest> contests;
     private ContestsColumn sortColumn;
-    private List<ContestWrapper> contestsFeatured = new ArrayList<ContestWrapper>();
-    private List<ContestWrapper> contestsNormal = new ArrayList<ContestWrapper>();
+    private List<Contest> contestsFeatured = new ArrayList<Contest>();
+    private List<Contest> contestsNormal = new ArrayList<Contest>();
 
-    public ContestsSortFilterBean(List<ContestWrapper> contests, final SortFilterPage sortFilterPage) {
+    public ContestsSortFilterBean(List<Contest> contests, final SortFilterPage sortFilterPage) {
         this(contests, sortFilterPage, null);
     }
 
-    public ContestsSortFilterBean( List<ContestWrapper> contests, final SortFilterPage sortFilterPage, ContestsColumn sortColumnConstruct) {
+    public ContestsSortFilterBean(List<Contest> contests, final SortFilterPage sortFilterPage, ContestsColumn sortColumnConstruct) {
         super();
-        List<ContestWrapper> filteredContests = contests;
+        List<Contest> filteredContests = contests;
 
         // filter contests
         if (StringUtils.isNotBlank(sortFilterPage.getFilter())) {
+
             String filterString = sortFilterPage.getFilter().toLowerCase();
             filteredContests = new ArrayList<>();
-            for (ContestWrapper contest: contests) {
+            for (Contest contest: contests) {
+
                 if (contest.getContestName().toLowerCase().contains(filterString) ||
                         contest.getContestShortName().toLowerCase().contains(filterString)) {
                     filteredContests.add(contest);
@@ -46,10 +49,10 @@ public class ContestsSortFilterBean {
         else {
             sortColumn = sortColumnConstruct == null ? ContestsColumn.DEFAULT : sortColumnConstruct;
         }
-        Collections.sort(this.contests, new Comparator<ContestWrapper>() {
+        Collections.sort(this.contests, new Comparator<Contest>() {
             final
             @Override
-            public int compare(ContestWrapper o1, ContestWrapper o2) {
+            public int compare(Contest o1, Contest o2) {
                 if (o1.isFeatured() && !o2.isFeatured()) {
                     return -1;
                 }
@@ -62,7 +65,7 @@ public class ContestsSortFilterBean {
                 return sortColumn.getColumnComparator().compare(o2, o1);
             }
         });
-        for (ContestWrapper contest: this.contests) {
+        for (Contest contest: this.contests) {
             if (contest.isFeatured()) {
                 contestsFeatured.add(contest);
             } else {
@@ -71,23 +74,23 @@ public class ContestsSortFilterBean {
         }
     }
 
-    public List<ContestWrapper> getContestsFeatured() {
+    public List<Contest> getContestsFeatured() {
         return contestsFeatured;
     }
 
-    public void setContestsFeatured(List<ContestWrapper> contestsFeatured) {
+    public void setContestsFeatured(List<Contest> contestsFeatured) {
         this.contestsFeatured = contestsFeatured;
     }
 
-    public List<ContestWrapper> getContestsNormal() {
+    public List<Contest> getContestsNormal() {
         return contestsNormal;
     }
 
-    public void setContestsNormal(List<ContestWrapper> contestsNormal) {
+    public void setContestsNormal(List<Contest> contestsNormal) {
         this.contestsNormal = contestsNormal;
     }
 
-    public List<ContestWrapper> getContests() {
+    public List<Contest> getContests() {
         return contests;
     }
 

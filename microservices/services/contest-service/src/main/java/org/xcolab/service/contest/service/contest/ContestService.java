@@ -14,17 +14,14 @@ import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
 import org.xcolab.service.contest.domain.ontologyterm.OntologyTermDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
-import org.xcolab.service.contest.service.contestphase.ContestPhaseService;
 import org.xcolab.service.contest.service.ontology.OntologyService;
 import org.xcolab.service.contest.utils.promotion.enums.ContestPhaseTypeValue;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.TimeZone;
@@ -70,6 +67,18 @@ public class ContestService {
             }
         }
         return lastPhase;
+    }
+
+    public List<Contest> findContestsByName(String contestName, List<Long> ontologyTermIds, List<Long> contestTypeIds) {
+        List<Long> focusAreaOntologyTermsIds = new ArrayList<>();
+        if(ontologyTermIds != null && !ontologyTermIds.isEmpty()) {
+            List<Long> allChildTerms = new ArrayList<>();
+            for (Long otId : ontologyTermIds) {
+                allChildTerms.addAll(ontologyService.getAllOntologyTermDescendantTermsIds(otId));
+            }
+            focusAreaOntologyTermsIds = ontologyService.getFocusAreasIdForOntologyTermIds(allChildTerms);
+        }
+        return contestDao.findByGiven(contestName, focusAreaOntologyTermsIds, contestTypeIds);
     }
 
     public List<ContestPhase> getVisiblePhases(Long contestId) {

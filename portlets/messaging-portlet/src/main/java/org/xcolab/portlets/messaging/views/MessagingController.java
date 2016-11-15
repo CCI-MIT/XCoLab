@@ -1,11 +1,5 @@
 package org.xcolab.portlets.messaging.views;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.util.mail.MailEngineException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +7,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.model.User;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.util.mail.MailEngineException;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
@@ -60,7 +61,11 @@ public class MessagingController {
     @RenderMapping(params = {"page=composeMessage"})
     public String composeMessage(RenderRequest request, RenderResponse response, Model model,
             @RequestParam(required = false) Integer messageId) {
-        model.addAttribute("sendMessageBean", new SendMessageBean());
+
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
+        User user = themeDisplay.getUser();
+        model.addAttribute("sendMessageBean", new SendMessageBean(user));
         return "composeMessage";
     }
 

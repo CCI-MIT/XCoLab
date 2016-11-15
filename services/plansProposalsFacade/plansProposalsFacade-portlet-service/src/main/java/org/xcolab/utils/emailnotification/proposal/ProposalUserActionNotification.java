@@ -1,5 +1,6 @@
 package org.xcolab.utils.emailnotification.proposal;
 
+import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 
 
@@ -39,7 +40,7 @@ public class ProposalUserActionNotification extends ProposalNotification {
                 getProposalAttributeHelper().getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
         final ContestEmailTemplate emailTemplate =
-                EmailTemplateClient.getContestEmailTemplateByType(templateName);
+                EmailTemplateClientUtil.getContestEmailTemplateByType(templateName);
         templateWrapper = new ProposalUserActionNotificationTemplate(emailTemplate,
                 proposalName, contest.getContestShortName());
 

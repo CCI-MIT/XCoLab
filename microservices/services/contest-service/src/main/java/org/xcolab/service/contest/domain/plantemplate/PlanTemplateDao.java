@@ -12,4 +12,5 @@ public interface PlanTemplateDao {
     boolean update(PlanTemplate planTemplate);
     PlanTemplate create(PlanTemplate planTemplate);
     List<PlanTemplate> findByGiven();
+    int delete(Long id_);
 }

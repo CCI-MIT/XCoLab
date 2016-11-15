@@ -4,6 +4,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 
 import java.util.List;
@@ -25,10 +26,10 @@ public class EmailTemplateWrapper {
 
     private void initEmailTemplate(String templateType) {
         if (templateType != null) {
-            emailTemplate = EmailTemplateClient.getContestEmailTemplateByType(templateType);
+            emailTemplate = EmailTemplateClientUtil.getContestEmailTemplateByType(templateType);
         } else {
             List<ContestEmailTemplate> contestScheduleList =
-                    EmailTemplateClient.listAllContestEmailTemplates();
+                    EmailTemplateClientUtil.listAllContestEmailTemplates();
             emailTemplate = contestScheduleList.get(0);
         }
     }
@@ -50,11 +51,11 @@ public class EmailTemplateWrapper {
     }
 
     private void createTemplateFromExisting() {
-        emailTemplate = EmailTemplateClient.createEmailTemplate(emailTemplate);
+        emailTemplate = EmailTemplateClientUtil.createEmailTemplate(emailTemplate);
     }
 
     private void persistUpdatedSchedule() {
-        EmailTemplateClient.updateContestEmailTemplate(emailTemplate);
+        EmailTemplateClientUtil.updateContestEmailTemplate(emailTemplate);
     }
 
     public String getType() {

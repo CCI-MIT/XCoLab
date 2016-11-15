@@ -4,7 +4,7 @@
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
           xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
 
-    <!--@elvariable id="contestWrapper" type="org.xcolab.wrappers.BaseContestWrapper"-->
+    <!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.Contest"-->
     <!--@elvariable id="scheduleTemplateSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
     <!--@elvariable id="proposalTemplateSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
 
@@ -59,6 +59,15 @@
                                            id="shouldUpdateContestUrlName">
                             </form:checkbox>
                             update contest URLs (<strong>Warning:</strong> Contest URL will change if checked)<br/>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${not contestWrapper.contestActive}">
+                        <div>
+                            <form:checkbox path="isSharedContest"
+                                           id="isSharedContest">
+                            </form:checkbox>
+                            shared contest(<strong>Warning:</strong> This will create a SHARED Contest between partner colabs)<br/>
                         </div>
                     </c:if>
                 </div>

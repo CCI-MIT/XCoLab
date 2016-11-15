@@ -11,7 +11,17 @@
 
 
 	<div id="content">
-		<discussionsTagFiles:evaluationComments threadId="${discussionId }" />
+
+
+		<c:choose>
+			<c:when test="${contest.isSharedContestInForeignColab}">
+				<discussionsTagFiles:evaluationComments threadId="${discussionId }" sharedColabId="${contest.contestPK}" />
+			</c:when>
+			<c:otherwise>
+				<discussionsTagFiles:evaluationComments threadId="${discussionId }"  />
+			</c:otherwise>
+		</c:choose>
+
 	</div>
 
 	<c:if test="${contest.isSharedContest}">

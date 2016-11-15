@@ -74,7 +74,8 @@ public class ProposalRatingDaoImpl implements ProposalRatingDao {
     }
     public List<ProposalRating> findByProposalIdJudgeTypeJudgeIdContestPhaseId(Long proposalId, Integer judgeType, Long contestPhaseId, Long userId) {
 
-        final SelectQuery<Record> query = dslContext.select()
+
+        final SelectQuery<Record> query = dslContext.select(PROPOSAL_RATING.fields())
                 .from(PROPOSAL_RATING).getQuery();
         query.addJoin(PROPOSAL_RATING_VALUE);
         query.addJoin(PROPOSAL_RATING_TYPE);

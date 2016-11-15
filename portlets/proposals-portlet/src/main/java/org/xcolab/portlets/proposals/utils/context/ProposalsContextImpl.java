@@ -18,11 +18,8 @@ import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidExce
 import org.xcolab.portlets.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalContextHelper.InvalidAccessException;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.wrappers.BaseContestPhaseWrapper;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -57,6 +54,7 @@ public class ProposalsContextImpl implements ProposalsContext {
             PROPOSALS_ATTRIBUTE_PREFIX + "proposalWrapped";
     private static final String CLIENTS_ATTRIBUTE =
             PROPOSALS_ATTRIBUTE_PREFIX + "clients";
+    public static final String PROPOSAL_CONTEST_HELPER = "ProposalContextHelper";
 
     public ProposalsContextImpl() {
     }
@@ -118,17 +116,17 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
 
     @Override
-    public ProposalWrapper getProposalWrapped(PortletRequest request) {
+    public Proposal getProposalWrapped(PortletRequest request) {
         return getAttribute(request, PROPOSAL_WRAPPED_ATTRIBUTE);
     }
 
     @Override
-    public ContestWrapper getContestWrapped(PortletRequest request) {
+    public Contest getContestWrapped(PortletRequest request) {
         return getAttribute(request, CONTEST_WRAPPED_ATTRIBUTE);
     }
 
     @Override
-    public BaseContestPhaseWrapper getContestPhaseWrapped(PortletRequest request) {
+    public ContestPhase getContestPhaseWrapped(PortletRequest request) {
         return getAttribute(request, CONTEST_PHASE_WRAPPED_ATTRIBUTE);
     }
 
@@ -218,13 +216,13 @@ public class ProposalsContextImpl implements ProposalsContext {
                     proposal = contextHelper.getProposal();
                 }
 
-                request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, new ContestWrapper(contest));
-                request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE,
-                        new BaseContestPhaseWrapper(contestPhase));
+                request.setAttribute(PROPOSAL_CONTEST_HELPER,contextHelper);
+                request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE,contest);
+                request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE,contestPhase);
 
-                contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
+                contestType = contextHelper.getClientHelper().getContestClient().getContestType(contest.getContestTypeId());
                 if (proposal != null) {
-                    ProposalWrapper proposalWrapper = contextHelper.getProposalWrapper(
+                    Proposal proposalWrapper = contextHelper.getProposalWrapper(
                             proposal, proposal2Phase, contestPhase, contest, member);
                     request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);
                 }

@@ -3,6 +3,7 @@ package org.xcolab.portlets.proposals.requests;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.portlets.proposals.wrappers.ContestEmailTemplateWrapper;
 
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public class ContestEmailTemplateBean {
         this.emailTemplates = new HashMap<>();
         for (String templateToLoad : templateNames) {
             emailTemplates.put(templateToLoad, new ContestEmailTemplateWrapper(
-                            EmailTemplateClient.getContestEmailTemplateByType(templateToLoad),
+                            EmailTemplateClientUtil.getContestEmailTemplateByType(templateToLoad),
                     proposalName, contestName
             ));
         }

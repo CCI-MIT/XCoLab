@@ -7,18 +7,19 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
-import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
+import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import java.util.List;
 
-public class ProposalJudgeWrapper extends ProposalWrapper {
+public class ProposalJudgeWrapper extends Proposal {
     private final Member currentMember;
 
-    public ProposalJudgeWrapper(ProposalWrapper proposal, Member currentMember) {
-        super(proposal);
+    public ProposalJudgeWrapper(Proposal proposal, Member currentMember) {
+        super(proposal, proposal.getContestPhase());
         this.currentMember = currentMember;
         setProposalRatings(proposal.getProposalId(), contestPhase);
     }
@@ -32,12 +33,14 @@ public class ProposalJudgeWrapper extends ProposalWrapper {
 
     private void setProposalRatings(long proposalId, ContestPhase contestPhase) {
 
+        if(contestPhase!=null) {
             List<ProposalRating> list = ProposalJudgeRatingClientUtil
                     .getJudgeRatingsForProposalAndUser(
                             currentMember.getUserId(),
                             proposalId,
                             contestPhase.getContestPhasePK());
-            this.proposalRatings = new ProposalRatingsWrapper(currentMember, list);
+            this.proposalRatings = new ProposalRatings(currentMember, list);
+        }
 
     }
 

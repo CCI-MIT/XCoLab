@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -16,6 +17,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.UsersGroupsClient;
+import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.UsersGroups;
@@ -32,11 +34,13 @@ import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
 import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
+import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -116,7 +120,7 @@ public class ProposalService {
 
             proposalDao.update(proposal);
 
-            UsersGroupsClient.createUsersGroups(authorId, proposal.getGroupId());
+            UsersGroupsClientUtil.createUsersGroups(authorId, proposal.getGroupId());
             MembersClient.createUserGroupRole(authorId,proposal.getGroupId());
 
             if (contestPhaseId > 0) {
@@ -143,7 +147,7 @@ public class ProposalService {
     }
 
     public void subscribeMemberToProposal(long proposalId, long userId, boolean automatic) {
-        ActivitiesClient.addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+        ActivitiesClientUtil.addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
     }
 
     private Group_ createGroupAndSetUpPermissions(long authorId, long proposalId, Contest contest) {
@@ -294,7 +298,7 @@ public class ProposalService {
         try {
             Proposal proposal = proposalDao.get(proposalId);
             ArrayList<Member> members = new ArrayList<>();
-            for (UsersGroups user : UsersGroupsClient.getUserGroupsByUserIdGroupId(null, proposal.getGroupId())) {
+            for (UsersGroups user : UsersGroupsClientUtil.getUserGroupsByUserIdGroupId(null, proposal.getGroupId())) {
                 try {
                     members.add(MembersClient.getMember(user.getUserId()));
                 } catch (MemberNotFoundException ignored) {
@@ -310,14 +314,14 @@ public class ProposalService {
     public void removeProposalTeamMember(Long proposalId, Long userId) throws ProposalNotFoundException {
         try {
             Proposal proposal = proposalDao.get(proposalId);
-            UsersGroupsClient.deleteUsersGroups(userId, proposal.getGroupId());
+            UsersGroupsClientUtil.deleteUsersGroups(userId, proposal.getGroupId());
         } catch (NotFoundException ignored) {
             throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found.");
         }
     }
 
     public List<Proposal> getMemberProposals(Long userId) {
-        List<UsersGroups> ug = UsersGroupsClient.getUserGroupsByUserIdGroupId(userId, null);
+        List<UsersGroups> ug = UsersGroupsClientUtil.getUserGroupsByUserIdGroupId(userId, null);
         List<Proposal> proposals = new ArrayList<>();
         for (UsersGroups ugroup : ug) {
             try {
@@ -333,9 +337,37 @@ public class ProposalService {
 
         try {
             Proposal proposal = proposalDao.get(proposalId);
-            return UsersGroupsClient.isUserInGroups(userId, proposal.getGroupId());
+            return UsersGroupsClientUtil.isUserInGroups(userId, proposal.getGroupId());
         } catch (NotFoundException ignored) {
             return false;
         }
+    }
+
+    public List<Proposal> getProposalsByCurrentContests(List<Long> contestTierIds, List<Long> contestTypeIds, String filterText) {
+        HashSet<Proposal> proposals = new HashSet<>();
+        PaginationHelper paginationHelper = new PaginationHelper(null, null, null);
+        if(contestTypeIds != null && !contestTypeIds.isEmpty() && contestTierIds != null && !contestTierIds.isEmpty()) {
+            for (Long contestTierId : contestTierIds) {
+                List<Contest> contests = ContestClientUtil.getContestsMatchingTier(contestTierId);
+                int count = 0;
+                int countProposalsInContest = 0;
+                for (Contest contest : contests) {
+                    System.out.println("Search Proposals in Contest No. " + count + " with name: " + contest.getContestShortName());
+                    count++;
+                    countProposalsInContest = proposals.size();
+                    if (contestTypeIds.contains(contest.getContestTypeId())) {
+
+                        ContestPhase contestPhase =
+                                ContestClientUtil.getActivePhase(contest.getContestPK());
+                        System.out.println("Active Phase: " +contestPhase.getContestStatusStr());
+                        proposals.addAll(proposalDao
+                                .findByGiven(paginationHelper, filterText, null, null,
+                                        contestPhase.getContestPhasePK(), null));
+                        System.out.println("Added " + (proposals.size() - countProposalsInContest) + " Proposals");
+                    }
+                }
+            }
+        }
+        return new ArrayList<>(proposals);
     }
 }

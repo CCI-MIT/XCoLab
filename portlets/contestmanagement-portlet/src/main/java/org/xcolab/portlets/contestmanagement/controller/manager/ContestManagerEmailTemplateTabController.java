@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
@@ -60,7 +61,7 @@ public class ContestManagerEmailTemplateTabController extends ContestManagerBase
             model.addAttribute("emailTemplateWrapper",
                     new EmailTemplateWrapper(templateType));
         }
-        final List<ContestEmailTemplate> emailTemplates = EmailTemplateClient
+        final List<ContestEmailTemplate> emailTemplates = EmailTemplateClientUtil
                 .listAllContestEmailTemplates();
         List <LabelStringValue> templateSelectionItems = new ArrayList<>();
         for (ContestEmailTemplate emailTemplate : emailTemplates) {
@@ -141,7 +142,7 @@ public class ContestManagerEmailTemplateTabController extends ContestManagerBase
 
     private String getFirstTemplateName() {
         final List<ContestEmailTemplate> emailTemplates =
-                EmailTemplateClient.listAllContestEmailTemplates();
+                EmailTemplateClientUtil.listAllContestEmailTemplates();
         if (!emailTemplates.isEmpty()) {
             return emailTemplates.get(0).getType_();
         }

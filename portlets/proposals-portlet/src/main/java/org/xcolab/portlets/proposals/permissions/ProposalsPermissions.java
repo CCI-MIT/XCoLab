@@ -1,10 +1,8 @@
 package org.xcolab.portlets.proposals.permissions;
 
 import com.ext.portlet.contests.ContestStatus;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
@@ -20,8 +18,9 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.util.MemberRoleChoiceAlgorithm;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.portlets.proposals.utils.context.ProposalContextHelper;
+import org.xcolab.portlets.proposals.utils.context.ProposalsContextImpl;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.util.Date;
 
@@ -41,14 +40,18 @@ public class ProposalsPermissions {
     private final ContestStatus contestStatus;
     private final PortletRequest request;
 
+    private final ProposalContextHelper proposalContextHelper;
+
+
     public ProposalsPermissions(PortletRequest request, Proposal proposal, ContestPhase contestPhase) {
         this.request = request;
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        this.proposalContextHelper = (ProposalContextHelper) request.getAttribute(ProposalsContextImpl.PROPOSAL_CONTEST_HELPER);
 
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         if (contestPhase != null) {
             final long contestPhaseTypeId = contestPhase.getContestPhaseType();
 
-                final ContestPhaseType contestPhaseType = ContestClientUtil
+                final ContestPhaseType contestPhaseType = proposalContextHelper.getClientHelper().getContestClient()
                         .getContestPhaseType(contestPhaseTypeId);
                 String statusStr = contestPhaseType.getStatus();
                 contestStatus = ContestStatus.valueOf(statusStr);
@@ -173,11 +176,7 @@ public class ProposalsPermissions {
     }
 
     private boolean isProposalMember() {
-        try {
-            return GroupLocalServiceUtil.hasUserGroup(user.getUserId(), groupId);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+            return MembersClient.isUserInGroup(user.getUserId(), groupId);
     }
 
     public boolean getCanFellowActions() {
@@ -230,8 +229,8 @@ public class ProposalsPermissions {
         }
 
         try {
-            Contest latestProposalContest = ProposalsContextUtil.getClients(request).getProposalClient().getCurrentContestForProposal(proposal.getProposalId());
-            ContestPhase activePhaseForContest = ContestClientUtil.getActivePhase(latestProposalContest.getContestPK());
+            Contest latestProposalContest = proposalContextHelper.getClientHelper().getProposalClient().getCurrentContestForProposal(proposal.getProposalId());
+            ContestPhase activePhaseForContest = proposalContextHelper.getClientHelper().getContestClient().getActivePhase(latestProposalContest.getContestPK());
             boolean onlyPromoteIfThisIsNotTheLatestContestPhaseInContest = contestPhase.equals(activePhaseForContest);
             return !onlyPromoteIfThisIsNotTheLatestContestPhaseInContest && getCanAdminAll();
         }catch (ContestNotFoundException ignored){
@@ -265,7 +264,7 @@ public class ProposalsPermissions {
     private boolean wasProposalMovedElsewhere() {
 
         try {
-            final long currentContestId = ProposalClientUtil
+            final long currentContestId = proposalContextHelper.getClientHelper().getProposalClient()
                     .getCurrentContestForProposal(proposal.getProposalId()).getContestPK();
             return currentContestId != contestPhase.getContestPK();
         }catch(ContestNotFoundException ignored){

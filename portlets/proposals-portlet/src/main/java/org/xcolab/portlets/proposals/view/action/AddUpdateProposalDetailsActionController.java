@@ -30,7 +30,6 @@ import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalCreationUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalMoveUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalUpdateHelper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.io.IOException;
 
@@ -73,7 +72,7 @@ public class AddUpdateProposalDetailsActionController {
             request.setAttribute("ACTION_ERROR", true);
             return;
         }
-        ProposalWrapper proposalWrapper;
+        Proposal proposalWrapper;
         boolean createNew = false;
         final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         if (proposal != null) {
@@ -97,11 +96,11 @@ public class AddUpdateProposalDetailsActionController {
             ProposalCreationUtil.sendAuthorNotification(themeDisplay, proposalWrapper, contestPhase,
                     request);
 
-            ActivityEntryHelper.createActivityEntry(userId,proposalWrapper.getProposalId(),null,
+            ActivityEntryHelper.createActivityEntry(proposalsContext.getClients(request).getActivitiesClient(),userId,proposalWrapper.getProposalId(),null,
                     ActivityProvidersType.ProposalCreatedActivityEntry.getType());
 
         }else{
-            ActivityEntryHelper.createActivityEntry(userId,proposalWrapper.getProposalId(),null,
+            ActivityEntryHelper.createActivityEntry(proposalsContext.getClients(request).getActivitiesClient(),userId,proposalWrapper.getProposalId(),null,
                     ActivityProvidersType.ProposalAttributeUpdateActivityEntry.getType());
         }
         SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), userId);
@@ -126,14 +125,14 @@ public class AddUpdateProposalDetailsActionController {
     public String reportError(PortletRequest request, Model model,
             @ModelAttribute("updateProposalSectionsBean") @Valid UpdateProposalDetailsBean updateProposalSectionsBean,
             BindingResult result) throws PortalException, SystemException {
-        ProposalWrapper proposalWrapped = proposalsContext.getProposalWrapped(request);
+        Proposal proposalWrapped = proposalsContext.getProposalWrapped(request);
 
         Proposal proposal = new Proposal();
         proposal.setAuthorId(proposalsContext.getMember(request).getUserId());
         proposal = ProposalsContextUtil.getClients(request).getProposalClient().createProposal(proposal);
 
         if (proposalWrapped == null) {
-            proposalWrapped = new ProposalWrapper(proposal, 0, proposalsContext.getContest(request),
+            proposalWrapped = new Proposal(proposal, 0, proposalsContext.getContest(request),
                     proposalsContext.getContestPhase(request), null);
             model.addAttribute("proposal", proposalWrapped);
         }
