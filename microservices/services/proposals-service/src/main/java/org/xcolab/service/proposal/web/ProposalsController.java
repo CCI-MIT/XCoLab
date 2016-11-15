@@ -266,7 +266,7 @@ public class ProposalsController {
             @RequestParam(required = false) Long userId
     ) throws NotFoundException {
         List<ProposalVote> votesForUser = proposalVoteDao.findByGiven(proposalId, null, userId);
-        if (votesForUser != null && votesForUser.size() > 0) {
+        if (votesForUser != null && !votesForUser.isEmpty()) {
             return votesForUser.get(0);
         } else {
             throw new NotFoundException("Proposal vote not found");
