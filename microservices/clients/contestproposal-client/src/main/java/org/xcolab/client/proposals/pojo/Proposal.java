@@ -390,7 +390,7 @@ public class Proposal extends AbstractProposal {
     }
 
     public Long getFellowDiscussionId() {
-        long fellowDiscussionId = this.getFellowDiscussionId();
+        long fellowDiscussionId = super.getFellowDiscussionId();
         if (fellowDiscussionId == 0) {
             CommentThread commentThread = new CommentThread();
             commentThread.setAuthorId(this.getAuthorId());
