@@ -1,6 +1,7 @@
 package org.xcolab.utils.emailnotification.proposal;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 
 
@@ -13,6 +14,8 @@ import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.util.http.client.RefreshingRestService;
+import org.xcolab.util.http.client.RestService;
 import org.xcolab.utils.emailnotification.basic.ProposalNotification;
 
 public class ProposalVoteValidityConfirmation extends ProposalNotification {
@@ -46,8 +49,18 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
         if (proposalVoteConfirmationTemplateString.isEmpty()) {
             proposalVoteConfirmationTemplateString = DEFAULT_TEMPLATE_STRING;
         }
+        final EmailTemplateClient emailTemplateClient;
+        if(contest.getIsSharedContestInForeignColab()){
+            RestService adminService = new RefreshingRestService("admin-service",
+                    ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                    ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+
+            emailTemplateClient = EmailTemplateClient.fromService(adminService);
+        }else{
+            emailTemplateClient = EmailTemplateClientUtil.getClient();
+        }
         final ContestEmailTemplate emailTemplate =
-                EmailTemplateClientUtil.getContestEmailTemplateByType(proposalVoteConfirmationTemplateString);
+                emailTemplateClient.getContestEmailTemplateByType(proposalVoteConfirmationTemplateString);
         templateWrapper =
                 new ProposalVoteConfirmationTemplate(emailTemplate, proposalName, contest.getContestShortName());
 

@@ -14,3 +14,6 @@ CHANGE COLUMN `ContestPK` `ContestPK` BIGINT(20) NOT NULL;
 -- adding shared origin column
 ALTER TABLE `xcolab_Contest`
 ADD COLUMN `sharedOrigin` VARCHAR(45) NULL AFTER `isSharedContest`;
+
+-- updating all contests to current colab of origin
+update xcolab_Contest set sharedOrigin = (select stringValue from xcolab_ConfigurationAttribute where name = "COLAB_NAME");

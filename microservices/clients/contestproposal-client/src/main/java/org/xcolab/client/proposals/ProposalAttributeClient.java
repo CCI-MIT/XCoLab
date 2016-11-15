@@ -123,7 +123,7 @@ public final class ProposalAttributeClient {
                 .withCache(CacheKeys.withClass(ProposalAttributeDto.class)
                                 .withParameter("proposalId", proposalId)
                                 .withParameter("version", version).asList(),
-                        CacheRetention.MEDIUM)
+                        CacheRetention.REQUEST)
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("version", version)
                 .execute(), proposalService);

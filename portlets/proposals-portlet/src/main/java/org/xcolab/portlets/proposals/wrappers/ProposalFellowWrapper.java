@@ -19,7 +19,7 @@ import javax.portlet.PortletRequest;
 public class ProposalFellowWrapper extends Proposal {
 
     public ProposalFellowWrapper(Proposal proposal, Member currentMember, PortletRequest request) {
-        super(proposal);
+        super(proposal,proposal.getContestPhase());
         try {
             //find out contestPhase
             Contest baseContest = ProposalsContextUtil.getClients(request).getProposalClient().getCurrentContestForProposal(proposal.getProposalId());

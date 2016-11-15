@@ -651,6 +651,7 @@ public class Proposal extends AbstractProposal {
     public List<Long> getSelectedJudges() {
         List<Long> selectedJudges = new ArrayList<>();
 
+
         // All judges are selected when screening is disabled
         if (!contestPhase.getFellowScreeningActive()) {
             for (Long judge : contestTeamMemberClient.getJudgesForContest(contest.getContestPK())) {

@@ -172,7 +172,7 @@ public class ContestDescriptionBean implements Serializable {
         return isSharedContest;
     }
 
-    public void setSharedContest(boolean sharedContest) {
+    public void setIsSharedContest(boolean sharedContest) {
         isSharedContest = sharedContest;
     }
 
