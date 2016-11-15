@@ -9,7 +9,7 @@
     <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
     <!--@elvariable id="showContestManagementLink" type="java.lang.Boolean"-->
     <!--@elvariable id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage"-->
-    <!--@elvariable id="contest" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper"-->
+    <!--@elvariable id="contest" type="org.xcolab.client.contest.pojo.Contest"-->
     <!--@elvariable id="collectionCard" type="org.xcolab.portlets.proposals.wrappers.CollectionCardWrapper"-->
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
     <!--@elvariable id="contestsSorted" type="org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean"-->

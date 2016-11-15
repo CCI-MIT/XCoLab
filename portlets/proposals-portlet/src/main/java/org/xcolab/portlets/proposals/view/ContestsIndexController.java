@@ -6,11 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -30,13 +25,10 @@ import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.proposals.utils.ContestsColumn;
+import org.xcolab.portlets.proposals.utils.context.ClientHelper;
 import org.xcolab.portlets.proposals.wrappers.CollectionCardFilterBean;
 import org.xcolab.portlets.proposals.wrappers.CollectionCardWrapper;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean;
-import org.xcolab.portlets.proposals.wrappers.FocusAreaWrapper;
-import org.xcolab.portlets.proposals.wrappers.OntologySpaceWrapper;
-import org.xcolab.portlets.proposals.wrappers.OntologyTermWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 
 import java.util.ArrayList;
@@ -119,7 +111,7 @@ public class ContestsIndexController extends BaseProposalsController {
         }
 
         boolean showOnlyFeatured = false;
-        List<ContestWrapper> contests = new ArrayList<>();
+        List<Contest> contests = new ArrayList<>();
         if (!viewType.equals(VIEW_TYPE_OUTLINE)) {
 
 
@@ -158,9 +150,23 @@ public class ContestsIndexController extends BaseProposalsController {
                         .getOntology_term_to_load();
             }
 
-            for (Contest contest : ContestClientUtil
-                    .getContestByOntologyTerm(ontologyTermToLoad, getOnlyActive)) {
-                contests.add(new ContestWrapper(contest));
+            for (Contest contest : ContestClientUtil.getContestByOntologyTerm(ontologyTermToLoad, getOnlyActive)) {
+                if (! contest.getContestPrivate()) {
+                    if(contest.getIsSharedContestInForeignColab()){
+                        ClientHelper ch = new ClientHelper(contest);
+                        try {
+                            Contest foreignContest =
+                                    ch.getContestClient().getContest(contest.getContestPK());
+                            contests.add(foreignContest);
+
+                        }catch (ContestNotFoundException notFound){
+
+                        }
+                    }else {
+                        contests.add((contest));
+                    }
+
+                }
             }
             model.addAttribute("showOnlyFeatured", showOnlyFeatured);
         }
@@ -193,11 +199,20 @@ public class ContestsIndexController extends BaseProposalsController {
 
             for (Contest contest: contestsToWrap) {
                 if (! contest.getContestPrivate()) {
-                    try {
-                        org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
-                        contests.add(new ContestWrapper(contestMicro));//contest
-                    }catch (ContestNotFoundException ignored){
+                    if (! contest.getContestPrivate()) {
+                        if(contest.getIsSharedContestInForeignColab()){
+                            ClientHelper ch = new ClientHelper(contest);
+                            try {
+                                Contest foreignContest =
+                                        ch.getContestClient().getContest(contest.getContestPK());
+                                contests.add(foreignContest);
 
+                            }catch (ContestNotFoundException notFound){
+
+                            }
+                        }else {
+                            contests.add((contest));
+                        }
                     }
                 }
             }
@@ -205,20 +220,20 @@ public class ContestsIndexController extends BaseProposalsController {
         	List<OntologyTerm> ontologyTermsRaw = OntologyClientUtil.getAllOntologyTerms();
         	List<FocusArea> focusAreasRaw = OntologyClientUtil.getAllFocusAreas();
         	List<FocusAreaOntologyTerm> focusAreasOntologyTermsRaw = OntologyClientUtil.getAllFocusAreaOntologyTerms();
-        	Map<Long, FocusAreaWrapper> focusAreas = new TreeMap<>();
-        	Map<Long, OntologySpaceWrapper> ontologySpaces = new HashMap<>();
-        	Map<Long, OntologyTermWrapper> ontologyTerms = new TreeMap<>();
+        	Map<Long, FocusArea> focusAreas = new TreeMap<>();
+        	Map<Long, OntologySpace> ontologySpaces = new HashMap<>();
+        	Map<Long, OntologyTerm> ontologyTerms = new TreeMap<>();
         	
         	for (FocusArea area: focusAreasRaw) {
-        		focusAreas.put(area.getId_(), new FocusAreaWrapper(area));
+        		focusAreas.put(area.getId_(), new FocusArea(area));
         	}
         	
         	for (OntologySpace space: ontologySpacesRaw) {
-        		ontologySpaces.put(space.getId_(), new OntologySpaceWrapper(space));
+        		ontologySpaces.put(space.getId_(), new OntologySpace(space));
         	}
         	
         	for (OntologyTerm term: ontologyTermsRaw) {
-        		OntologyTermWrapper termWrapped = new OntologyTermWrapper(term);
+        		OntologyTerm termWrapped = new OntologyTerm(term);
         		ontologySpaces.get(term.getOntologySpaceId()).addTerm(termWrapped);
         		ontologyTerms.put(term.getId_(), termWrapped);
         	}
@@ -233,22 +248,33 @@ public class ContestsIndexController extends BaseProposalsController {
         		focusAreas.get(faTerm.getFocusAreaId()).addOntologyTerm(ontologyTerms.get(faTerm.getOntologyTermId()));
         	}
 
-            List<ContestWrapper> otherContests = new ArrayList<>();
+            List<Contest> otherContests = new ArrayList<>();
             for (Contest contest: ContestClientUtil
                     .getContestsByActivePrivate(!showActiveContests, false)) {
-                try {
-                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
-                    otherContests.add(new ContestWrapper(contestMicro));//contest
-                }catch (ContestNotFoundException ignored){
+                if (! contest.getContestPrivate()) {
+                    if (! contest.getContestPrivate()) {
+                        if(contest.getIsSharedContestInForeignColab()){
+                            ClientHelper ch = new ClientHelper(contest);
+                            try {
+                                Contest foreignContest =
+                                        ch.getContestClient().getContest(contest.getContestPK());
+                                otherContests.add(foreignContest);
 
+                            }catch (ContestNotFoundException notFound){
+
+                            }
+                        }else {
+                            otherContests.add(contest);
+                        }
+                    }
                 }
             }
-        	List<OntologySpaceWrapper> sortedSpaces = new ArrayList<>(ontologySpaces.values());
-        	Collections.sort(sortedSpaces, new Comparator<OntologySpaceWrapper>() {
+        	List<OntologySpace> sortedSpaces = new ArrayList<>(ontologySpaces.values());
+        	Collections.sort(sortedSpaces, new Comparator<OntologySpace>() {
 
 				@Override
-				public int compare(OntologySpaceWrapper o1,
-						OntologySpaceWrapper o2) {
+				public int compare(OntologySpace o1,
+						OntologySpace o2) {
 					return o1.getOrder() - o2.getOrder();
 				}
         		
