@@ -1,10 +1,6 @@
 package org.xcolab.portlets.contestmanagement.controller.batch;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.model.PlanTemplate;
+
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
@@ -33,14 +29,29 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.PlanTemplateClient;
+import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.enums.ContestTier;
 import org.xcolab.portlets.contestmanagement.beans.ContestBatchBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestCSVBean;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
+import org.xcolab.portlets.contestmanagement.utils.ContestCreatorUtil;
+import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
+import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
 import org.xcolab.utils.IdListUtil;
 
 import java.io.IOException;
+import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -108,7 +119,7 @@ public class ContestBatchCreationController {
 
         // should check for valid data from CVS even after the fact.
         List<ContestCSVBean> contestsToBeCreated = contestBatchBean.getContestCSVs();
-        if (contestsToBeCreated != null && contestsToBeCreated.size() > 0) {
+        if (contestsToBeCreated != null && !contestsToBeCreated.isEmpty()) {
             for (ContestCSVBean contestCSVBean : contestsToBeCreated) {
 
                 Contest contest = createContest(contestCSVBean.getContestShortName(),
@@ -141,7 +152,7 @@ public class ContestBatchCreationController {
             inputedOntologyTerms = IdListUtil.getIdsFromString(contestCSVBean.getOntologyTerms());
             try {
                 for (Long termId : inputedOntologyTerms) {
-                    OntologyTerm ontologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(termId);
+                    OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(termId);
                     if (ontologyTerm != null) {
                         uniqueSelectedOntologyTerms.put(ontologyTerm.getId(), 1);
                     }
@@ -149,11 +160,9 @@ public class ContestBatchCreationController {
 
                 Long focusAreaId = checkForExistingFocusArea(uniqueSelectedOntologyTerms);
                 if (focusAreaId == 0l) {
-                    FocusArea focusArea = FocusAreaLocalServiceUtil
-                            .createFocusArea(CounterLocalServiceUtil.increment(FocusArea.class.getName()));
-                    focusArea.persist();
-                    FocusAreaLocalServiceUtil.updateFocusArea(focusArea);
-                    focusAreaId = focusArea.getId();
+                    FocusArea focusArea = new FocusArea();
+                    focusArea = OntologyClientUtil.createFocusArea(focusArea);
+                    focusAreaId = focusArea.getId_();
 
                     for (Map.Entry<Long, Integer> ontologyTerm : uniqueSelectedOntologyTerms.entrySet()) {
                         FocusAreaOntologyTermLocalServiceUtil.addAreaTerm(focusAreaId, ontologyTerm.getKey());
@@ -209,14 +218,14 @@ public class ContestBatchCreationController {
                                   Long contestScheduleId,
                                   Long contestTierId,
                                   Long contestTypeId) {
-        try {
 
-            Contest contest = ContestLocalServiceUtil.createNewContest(10144L, contestShortName);
+
+            Contest contest = ContestCreatorUtil.createNewContest(contestShortName);
             contest.setContestDescription(contestDescription);
             contest.setContestName(contestQuestion);
             contest.setContestLogoId(contestLogoId);
             contest.setSponsorLogoId(sponsorLogoId);
-            contest.setContestYear(DateTime.now().getYear());
+            contest.setContestYear(new Long(DateTime.now().getYear()));
             contest.setContestPrivate(true);
             contest.setShow_in_tile_view(true);
             contest.setShow_in_list_view(true);
@@ -225,17 +234,11 @@ public class ContestBatchCreationController {
             contest.setContestScheduleId(contestScheduleId);
             contest.setContestTier(contestTierId);
             contest.setContestTypeId(contestTypeId);
-            contest.persist();
-            ContestScheduleWrapper.createContestPhasesAccordingToContestScheduleAndRemoveExistingPhases(contest,
-                    contestScheduleId);
+            ContestClientUtil.updateContest(contest);
+
+            ContestScheduleUtil.changeScheduleForContest(contest, contestScheduleId);
             return contest;
 
-        } catch (SystemException e) {
-            _log.warn("Could not create contest contest from CSV import: " + e);
-        } catch (PortalException e) {
-            _log.warn("Could not create contest contest from CSV import: " + e);
-        }
-        return null;
     }
 
     private List<LabelValue> getProposalTemplateSelectionItems() {
@@ -243,22 +246,17 @@ public class ContestBatchCreationController {
         List<Long> excludedList =
                 Arrays.asList(1L, 2L, 106L, 201L, 202L, 301L, 401L, 1000401L, 1000501L, 1300104L, 1300201L, 1300302L,
                         1300401L, 1300601L, 1300602L);
-        try {
-            for (PlanTemplate proposalTemplate : PlanTemplateLocalServiceUtil.getPlanTemplates(0, Integer.MAX_VALUE)) {
-                if (!excludedList.contains(proposalTemplate.getId())) {
-                    selectItems.add(new LabelValue(proposalTemplate.getId(), proposalTemplate.getName()));
+            for (PlanTemplate proposalTemplate : PlanTemplateClientUtil.getPlanTemplates()) {
+                if (!excludedList.contains(proposalTemplate.getId_())) {
+                    selectItems.add(new LabelValue(proposalTemplate.getId_(), proposalTemplate.getName()));
                 }
             }
-        } catch (SystemException e) {
-            _log.warn("Could not get contest proposal template selection items: " + e);
-        }
+
         return selectItems;
     }
 
     private List<LabelValue> getContestScheduleSelectionItems(PortletRequest request) {
-        List<LabelValue> scheduleTemplateSelectionItems =
-                ContestScheduleWrapper
-                        .getAllScheduleTemplateSelectionItems();
+        List<LabelValue> scheduleTemplateSelectionItems = ContestScheduleLifecycleUtil.getAllScheduleTemplateSelectionItems();
         return scheduleTemplateSelectionItems;
     }
 
@@ -272,16 +270,13 @@ public class ContestBatchCreationController {
 
     private List<LabelValue> getContestTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
-        try {
-            for (ContestType contestType : ContestTypeLocalServiceUtil
-                    .getContestTypes(QueryUtil.ALL_POS, QueryUtil.ALL_POS)) {
-                selectItems.add(new LabelValue(contestType.getId(),
-                        String.format("%d - %s with %s", contestType.getId(),
+            for (ContestType contestType : ContestClientUtil
+                    .getAllContestTypes()) {
+                selectItems.add(new LabelValue(contestType.getId_(),
+                        String.format("%d - %s with %s", contestType.getId_(),
                                 contestType.getContestName(), contestType.getProposalNamePlural())));
             }
-        } catch (SystemException e) {
-            _log.warn("Could not get contest type selection items: " + e);
-        }
+
         return selectItems;
     }
 
@@ -294,7 +289,7 @@ public class ContestBatchCreationController {
 
         List<Long> inputedOntologyTerms = IdListUtil.getIdsFromString(ontologyTerms);
         for (Long termId : inputedOntologyTerms) {
-            OntologyTerm ontologyTerm = OntologyTermLocalServiceUtil.getOntologyTerm(termId);
+            OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(termId);
             if (ontologyTerm != null) {
                 JSONObject ontItem = JSONFactoryUtil.createJSONObject();
                 ontItem.put("termId", ontologyTerm.getId());
