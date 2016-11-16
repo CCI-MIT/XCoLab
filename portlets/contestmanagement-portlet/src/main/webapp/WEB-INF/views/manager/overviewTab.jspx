@@ -24,11 +24,18 @@
 	</portlet:resourceURL>
 
 	<div class="cmsDetailsBox">
-		<div style="margin-bottom: 40px;">
+		<div style="margin-bottom: 40px;display:inline">
 			<div class="floatRight outerVerticalCenter">
 				<a class="c-Button__primary innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/createContest" target="_blank">Create new Contest</a>
 			</div>
 		</div>
+
+		<div style="margin-bottom: 40px;">
+			<div class="floatRight outerVerticalCenter">
+				<a class="primary-button innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/batchCreateContest" >Batch Contest creation</a>
+			</div>
+		</div>
+
 	</div>
 	
 	<div class="cmsDetailsBox">
