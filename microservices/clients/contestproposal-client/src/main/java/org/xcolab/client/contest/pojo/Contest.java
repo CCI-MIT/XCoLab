@@ -476,6 +476,15 @@ public class Contest extends AbstractContest {
         return ProposalMemberRatingClient.fromService(proposalMemberRatingService).countProposalVotesInContestPhase(phase.getContestPhasePK());
     }
 
+    public long getCreatedTime(){
+        if (this.getCreated() != null) {
+            return this.getCreated().getTime();
+        }
+        else if (this.getUpdated() != null) {
+            return this.getUpdated().getTime();
+        }
+        return 0;
+    }
 
     public ContestPhase getLastPhase() {
         ContestPhase last = null;

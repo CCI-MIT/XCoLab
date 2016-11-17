@@ -24,6 +24,7 @@ public class FocusArea extends AbstractFocusArea {
         super(abstractFocusArea);
     }
 
+
     public FocusArea getWrapped() {
         return this;
     }
@@ -42,4 +43,7 @@ public class FocusArea extends AbstractFocusArea {
         return ontologyTermsIds.toString();
     }
 
+    public Long getId(){
+        return this.getId_();
+    }
 }
