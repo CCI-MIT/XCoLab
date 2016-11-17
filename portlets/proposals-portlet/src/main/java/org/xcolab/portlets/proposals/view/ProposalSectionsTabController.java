@@ -194,9 +194,11 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             contestTypeProposalWrappersByContestTypeId.put(contestType.getId_(),
                     new ContestTypeProposal(contestType));
             final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
-            for (Proposal p : proposalsInContestType) {
-                contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
-                        .getProposals().add((p));
+            if(proposalsInContestType!=null){
+                for (Proposal p : proposalsInContestType) {
+                    contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
+                            .getProposals().add((p));
+                }
             }
         }
         model.addAttribute("linkedProposalContestTypeProposalWrappersByContestTypeId",
