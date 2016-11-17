@@ -12,6 +12,7 @@ import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
 
@@ -43,7 +44,7 @@ public class ProposalNotification extends ContestNotification {
 
         final EmailTemplateClient emailTemplateClient;
         if(contest.getIsSharedContestInForeignColab()){
-            RestService adminService = new RefreshingRestService("admin-service",
+            RestService adminService = new RefreshingRestService(CoLabService.ADMIN,
                     ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                     ConfigurationAttributeKey.PARTNER_COLAB_PORT);
 

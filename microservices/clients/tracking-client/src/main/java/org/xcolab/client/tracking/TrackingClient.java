@@ -3,6 +3,7 @@ package org.xcolab.client.tracking;
 import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.client.tracking.pojo.TrackedVisit;
 import org.xcolab.client.tracking.pojo.TrackedVisitor;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
@@ -11,7 +12,7 @@ import org.xcolab.util.http.client.RestService;
 
 public final class TrackingClient {
 
-    private static final RestService trackingService = new RestService("tracking-service");
+    private static final RestService trackingService = new RestService(CoLabService.TRACK);
 
     private static final RestResource<TrackedVisit, Long> trackedVisitResource = new RestResource1<>(
             trackingService, "trackedVisits", TrackedVisit.TYPES);

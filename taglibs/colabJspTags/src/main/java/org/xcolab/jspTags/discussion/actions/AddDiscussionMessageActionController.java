@@ -39,6 +39,7 @@ import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 import org.xcolab.liferay.SharedColabUtil;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
 
@@ -82,18 +83,18 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
                 Contest contest = ContestClientUtil.getContest(contestIdLong);
                 if (contest.getIsSharedContestInForeignColab()) {
-                    RestService activitiesService = new RefreshingRestService("activities-service",
+                    RestService activitiesService = new RefreshingRestService(CoLabService.ACTIVITY,
                             ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                             ConfigurationAttributeKey.PARTNER_COLAB_PORT);
 
                     activityClient = ActivitiesClient.fromService(activitiesService);
-                    RestService commentsService = new RefreshingRestService("comment-service",
+                    RestService commentsService = new RefreshingRestService(CoLabService.COMMENT,
                             ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                             ConfigurationAttributeKey.PARTNER_COLAB_PORT);
 
                     commentClient = CommentClient.fromService(commentsService);
                     threadClient = ThreadClient.fromService(commentsService);
-                    RestService proposalsService = new RefreshingRestService("proposals-service",
+                    RestService proposalsService = new RefreshingRestService(CoLabService.PROPOSAL,
                             ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                             ConfigurationAttributeKey.PARTNER_COLAB_PORT);
 

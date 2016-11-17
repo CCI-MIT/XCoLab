@@ -7,6 +7,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.util.IdListUtil;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
 
@@ -100,7 +101,7 @@ public class ContestPreferences {
                 ContestPhase activeOrLastPhase = null;
 
                 if(c.getIsSharedContestInForeignColab()) {
-                    RestService contestService = new RefreshingRestService("contest-service",
+                    RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
                             ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                             ConfigurationAttributeKey.PARTNER_COLAB_PORT);
                     cc = ContestClient.fromService(contestService);

@@ -38,7 +38,6 @@ public class PlanTemplateDaoImpl implements PlanTemplateDao {
     public PlanTemplate create(PlanTemplate planTemplate) {
 
         PlanTemplateRecord ret = this.dslContext.insertInto(PLAN_TEMPLATE)
-                .set(PLAN_TEMPLATE.ID_, planTemplate.getId_())
                 .set(PLAN_TEMPLATE.NAME, planTemplate.getName())
                 .set(PLAN_TEMPLATE.BASE_TEMPLATE_ID, planTemplate.getBaseTemplateId())
                 .set(PLAN_TEMPLATE.IMPACT_SERIES_TEMPLATE_ID, planTemplate.getImpactSeriesTemplateId())
@@ -63,7 +62,6 @@ public class PlanTemplateDaoImpl implements PlanTemplateDao {
 
     public boolean update(PlanTemplate planTemplate) {
         return dslContext.update(PLAN_TEMPLATE)
-                .set(PLAN_TEMPLATE.ID_, planTemplate.getId_())
                 .set(PLAN_TEMPLATE.NAME, planTemplate.getName())
                 .set(PLAN_TEMPLATE.BASE_TEMPLATE_ID, planTemplate.getBaseTemplateId())
                 .set(PLAN_TEMPLATE.IMPACT_SERIES_TEMPLATE_ID, planTemplate.getImpactSeriesTemplateId())

@@ -7,6 +7,7 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 public final class ContestClientUtil {
 
-    private static final RestService contestService = new RestService("contest-service");
+    private static final RestService contestService = new RestService(CoLabService.CONTEST);
 
     private static final ContestClient contestClient = ContestClient.fromService(contestService);
 

@@ -25,7 +25,9 @@
         <module>emails-client</module>
         <module>files-client</module>
         <module>filtering-client</module>
+        <module>flagging-client</module>
         <module>members-client</module>
+        <module>modeling-client</module>
         <module>search-client</module>
         <module>sharedcolab-client</module>
         <module>tracking-client</module>

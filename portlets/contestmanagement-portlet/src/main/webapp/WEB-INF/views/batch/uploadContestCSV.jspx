@@ -406,7 +406,7 @@
                     <tbody id="cvsContests" ></tbody>
                 </table>
             </div>
-            <div class="floatRight outerVerticalCenter"><a  class="primary-button innerVerticalCenter" href="#" id="createAllContestsAbove">Create all contests above</a></div>
+            <div class="outerVerticalCenter"><a  class="c-Button__primary  innerVerticalCenter" href="#" id="createAllContestsAbove">Create all contests above</a></div>
         </form:form>
     </div>
 </jsp:root>

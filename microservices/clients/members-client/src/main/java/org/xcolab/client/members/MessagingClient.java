@@ -9,6 +9,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.client.members.pojo.SendMessageBean;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
@@ -22,7 +23,7 @@ import java.util.List;
 
 public final class MessagingClient {
 
-    private static final RestService memberService = new RestService("members-service");
+    private static final RestService memberService = new RestService(CoLabService.MEMBER);
     private static final RestResource1<Member, Long> memberResource = new RestResource1<>(memberService,
             "members", Member.TYPES);
     private static final RestResource1<Message, Long> messageResource = new RestResource1<>(memberService,

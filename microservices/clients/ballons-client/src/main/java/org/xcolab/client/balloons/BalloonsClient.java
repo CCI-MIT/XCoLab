@@ -4,6 +4,7 @@ import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonLink;
 import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public final class BalloonsClient {
 
-    private static final RestService balloonService = new RestService("balloons-service");
+    private static final RestService balloonService = new RestService(CoLabService.BALLOON);
     private static final RestResource<BalloonLink, String> balloonLinkResource = new RestResource1<>(
             balloonService, "balloonLinks", BalloonLink.TYPES);
     private static final RestResource<BalloonUserTracking, String> balloonUserTrackingResource =

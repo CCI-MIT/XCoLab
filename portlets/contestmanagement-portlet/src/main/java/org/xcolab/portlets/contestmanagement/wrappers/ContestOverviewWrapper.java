@@ -14,6 +14,7 @@ import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.MassActionUtil;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
 
@@ -69,7 +70,7 @@ public class ContestOverviewWrapper {
             for (Contest contest : contests) {
                 if(contest.getIsSharedContestInForeignColab()){
                     try {
-                        RestService contestService = new RefreshingRestService("contest-service",
+                        RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
                                 ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                                 ConfigurationAttributeKey.PARTNER_COLAB_PORT);
 

@@ -8,6 +8,7 @@ import org.xcolab.client.members.pojo.LoginLog;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
@@ -21,7 +22,7 @@ import java.util.List;
 
 public final class MembersClient {
 
-    private static final RestService memberService = new RestService("members-service");
+    private static final RestService memberService = new RestService(CoLabService.MEMBER);
 
     private static final RestResource1<Member, Long> memberResource = new RestResource1<>(memberService,
             "members", Member.TYPES);

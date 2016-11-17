@@ -32,7 +32,7 @@
 
 		<div style="margin-bottom: 40px;">
 			<div class="floatRight outerVerticalCenter">
-				<a class="primary-button innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/batchCreateContest" >Batch Contest creation</a>
+				<a class="c-Button__primary innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/batchCreateContest" >Batch Contest creation</a>
 			</div>
 		</div>
 

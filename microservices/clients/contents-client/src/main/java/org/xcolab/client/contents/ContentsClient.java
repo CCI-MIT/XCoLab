@@ -4,6 +4,7 @@ import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public final class ContentsClient {
 
-    private static final RestService contentService = new RestService("contents-service");
+    private static final RestService contentService = new RestService(CoLabService.CONTENT);
 
     private static final RestResource<ContentArticle, Long> contentArticleResource =
             new RestResource1<>(contentService, "contentArticles", ContentArticle.TYPES);

@@ -2,6 +2,7 @@ package org.xcolab.client.contest;
 
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.Map;
 
 public final class ContestTeamMemberClientUtil {
 
-    private static final RestService contestService = new RestService("contest-service");
+    private static final RestService contestService = new RestService(CoLabService.CONTEST);
 
     private static final ContestTeamMemberClient client =
             ContestTeamMemberClient.fromService(contestService);

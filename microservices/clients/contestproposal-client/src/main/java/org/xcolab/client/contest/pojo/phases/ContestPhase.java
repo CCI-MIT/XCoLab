@@ -10,6 +10,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.http.client.RestService;
 
@@ -200,7 +201,7 @@ public class ContestPhase extends AbstractContestPhase {
     public Boolean getProposalVisibility(long proposalId) {
         ProposalPhaseClient proposalPhaseClient;
         if(restService!=null) {
-            RestService proposalService = restService.withServiceName("proposals-service");
+            RestService proposalService = restService.withServiceName(CoLabService.PROPOSAL.getServiceName());
             proposalPhaseClient = ProposalPhaseClient.fromService(proposalService);
         }else{
             proposalPhaseClient = ProposalPhaseClientUtil.getClient();
@@ -213,7 +214,7 @@ public class ContestPhase extends AbstractContestPhase {
     }
 
     public boolean setProposalVisibility(long proposalId, boolean visible) {
-        RestService proposalService = restService.withServiceName("proposals-service");
+        RestService proposalService = restService.withServiceName(CoLabService.PROPOSAL.getServiceName());
         ProposalPhaseClient.fromService(proposalService)
                 .setProposalContestPhaseAttribute(proposalId, this.getContestPhasePK(),
                         ProposalContestPhaseAttributeKeys.VISIBLE, 0l, visible ? 1l : 0l, "");

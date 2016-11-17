@@ -14,6 +14,7 @@ import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.ProposalVersionDto;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReference;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReferenceDto;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -54,9 +55,9 @@ public final class ProposalClient {
         proposalReferenceResource = new RestResource1<>(proposalService,
                 "proposalReference", ProposalReferenceDto.TYPES);
 
-        contestClient = ContestClient.fromService(proposalService.withServiceName("contest-service"));
+        contestClient = ContestClient.fromService(proposalService.withServiceName(CoLabService.CONTEST.getServiceName()));
 
-        RestService activitiesService  = proposalService.withServiceName("activities-service");
+        RestService activitiesService  = proposalService.withServiceName(CoLabService.ACTIVITY.getServiceName());
          activitiesClient = ActivitiesClient.fromService(activitiesService);
 
     }

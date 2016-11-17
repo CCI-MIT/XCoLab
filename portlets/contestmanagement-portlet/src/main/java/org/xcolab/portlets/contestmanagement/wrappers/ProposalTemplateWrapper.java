@@ -206,8 +206,10 @@ public class ProposalTemplateWrapper {
 
     private void duplicateExistingPlanTemplate() {
 
+        planTemplate.setId_(null);
         PlanTemplate newPlanTemplate = PlanTemplateClientUtil.createPlanTemplate(planTemplate);
         planTemplateId = newPlanTemplate.getId_();
+        planTemplate = newPlanTemplate;
 
         for (SectionDefinitionWrapper section : sections) {
             section.setId(null);

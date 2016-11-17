@@ -5,7 +5,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CategoryClient;
-import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
@@ -15,12 +14,10 @@ import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
@@ -51,7 +48,7 @@ public class LoadThreadStartTag extends BodyTagSupport {
             ThreadClient threadClient;
             CategoryClient categoryClient;
             if (sharedColabId != null && sharedColabId > 0) {
-                    RestService contestService = new RefreshingRestService("comment-service",
+                    RestService contestService = new RefreshingRestService(CoLabService.COMMENT,
                             ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                             ConfigurationAttributeKey.PARTNER_COLAB_PORT);
 

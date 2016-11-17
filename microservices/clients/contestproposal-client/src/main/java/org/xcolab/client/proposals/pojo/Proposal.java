@@ -51,6 +51,7 @@ import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
 import org.xcolab.util.enums.modeling.ModelRegions;
@@ -144,7 +145,7 @@ public class Proposal extends AbstractProposal {
         super(value);
         if(value.getRestService()!=null){
             this.restService = value.getRestService();
-            RestService contestservice =  restService.withServiceName("contest-service");
+            RestService contestservice =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
             contestClient = ContestClient.fromService(contestservice);
             planTemplateClient = PlanTemplateClient.fromService(contestservice);
             proposalClient = ProposalClient.fromService(restService);;
@@ -153,7 +154,7 @@ public class Proposal extends AbstractProposal {
 
             contestTeamMemberClient =  ContestTeamMemberClient.fromService(contestservice);
 
-            RestService commentService =  restService.withServiceName("comment-service");
+            RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
             commentClient = CommentClient.fromService(commentService);
             proposalMemberRatingClient = ProposalMemberRatingClient.fromService(restService);
             proposalJudgeRatingClient = ProposalJudgeRatingClient.fromService(restService);
@@ -203,7 +204,7 @@ public class Proposal extends AbstractProposal {
             proposalPhaseClient = ProposalPhaseClient.fromService(restService);
             contestTeamMemberClient =  ContestTeamMemberClient.fromService(contestservice);
 
-            RestService commentService =  restService.withServiceName("comment-service");
+            RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
             commentClient = CommentClient.fromService(commentService);
             proposalMemberRatingClient = ProposalMemberRatingClient.fromService(restService);
             membershipClient = MembershipClient.fromService(restService);
@@ -268,16 +269,15 @@ public class Proposal extends AbstractProposal {
         super(abstractProposal);
         this.restService = restService;
 
-        RestService contest =  restService.withServiceName("contest-service");
+        RestService contest =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
         contestClient = ContestClient.fromService(contest);
         planTemplateClient = PlanTemplateClient.fromService(contest);
-        proposalClient = ProposalClient.fromService(restService);;
+        proposalClient = ProposalClient.fromService(restService);
         proposalAttributeClient = ProposalAttributeClient.fromService(restService);
         proposalPhaseClient = ProposalPhaseClient.fromService(restService);
-        RestService contestTeamMember =  restService.withServiceName("contest-service");
-        contestTeamMemberClient =  ContestTeamMemberClient.fromService(contestTeamMember);
+        contestTeamMemberClient =  ContestTeamMemberClient.fromService(contest);
 
-        RestService commentService =  restService.withServiceName("comment-service");
+        RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
         commentClient = CommentClient.fromService(commentService);
 
         proposalMemberRatingClient = ProposalMemberRatingClient.fromService(restService);
@@ -616,7 +616,7 @@ public class Proposal extends AbstractProposal {
         if (members == null) {
             members = new ArrayList<>();
             boolean hasOwner = false;
-            RestService membersService = restService.withServiceName("members-service");
+            RestService membersService = restService.withServiceName(CoLabService.MEMBER.getServiceName());
             for (UsersGroups user : UsersGroupsClient.fromService(membersService).getUserGroupsByUserIdGroupId(null, this.getGroupId())) {
 
                 try {

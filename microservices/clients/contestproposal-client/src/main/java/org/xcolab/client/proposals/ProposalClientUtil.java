@@ -11,6 +11,7 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReference;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.regex.Pattern;
 
 public final class ProposalClientUtil {
 
-    private static final RestService proposalService = new RestService("proposals-service");
+    private static final RestService proposalService = new RestService(CoLabService.PROPOSAL);
     private static final ProposalClient client = ProposalClient.fromService(proposalService);
 
     public static ProposalClient getClient() {

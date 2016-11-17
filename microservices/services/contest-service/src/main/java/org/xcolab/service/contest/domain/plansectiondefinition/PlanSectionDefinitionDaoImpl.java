@@ -55,7 +55,6 @@ public class PlanSectionDefinitionDaoImpl implements PlanSectionDefinitionDao {
     public PlanSectionDefinition create(PlanSectionDefinition planSectionDefinition) {
 
         PlanSectionDefinitionRecord ret = this.dslContext.insertInto(PLAN_SECTION_DEFINITION)
-                .set(PLAN_SECTION_DEFINITION.ID_, planSectionDefinition.getId_())
                 .set(PLAN_SECTION_DEFINITION.TYPE_, planSectionDefinition.getType_())
                 .set(PLAN_SECTION_DEFINITION.ADMIN_TITLE, planSectionDefinition.getAdminTitle())
                 .set(PLAN_SECTION_DEFINITION.TITLE, planSectionDefinition.getTitle())

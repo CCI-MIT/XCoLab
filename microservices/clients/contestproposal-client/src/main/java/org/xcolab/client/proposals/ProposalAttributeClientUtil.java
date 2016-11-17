@@ -5,13 +5,14 @@ import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
 
 public final class ProposalAttributeClientUtil {
 
-    private static final RestService proposalService = new RestService("proposals-service");
+    private static final RestService proposalService = new RestService(CoLabService.PROPOSAL);
 
     private static final ProposalAttributeClient client =
             ProposalAttributeClient.fromService(proposalService);

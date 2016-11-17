@@ -25,6 +25,7 @@ import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalUpdateHelper;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
 
@@ -56,7 +57,7 @@ public class CreateProposalController extends BaseProposalsController {
         Proposal proposal;
 
         if(contest.getIsSharedContestInForeignColab()){
-            RestService proposalService = new RefreshingRestService("proposals-service",
+            RestService proposalService = new RefreshingRestService(CoLabService.PROPOSAL,
                     ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                     ConfigurationAttributeKey.PARTNER_COLAB_PORT);
             proposal = new Proposal(proposalService);
