@@ -104,6 +104,7 @@ public class ContestsIndexController extends BaseProposalsController {
         List<Contest> priorContests = ContestClientUtil.getContestsByActivePrivateType(false, false,
                 contestType.getId_());
 
+        /*
         if (contestsToWrap.size() == 1) {
             final Contest contest = contestsToWrap.get(0);
             final String contestLinkUrl = (contest).getContestLinkUrl();
@@ -114,6 +115,7 @@ public class ContestsIndexController extends BaseProposalsController {
                 _log.error("Failed to redirect to only contest in this contest type", e);
             }
         }
+        */
 
         for (Contest contest: contestsToWrap) {
         	if (! contest.getContestPrivate()) {

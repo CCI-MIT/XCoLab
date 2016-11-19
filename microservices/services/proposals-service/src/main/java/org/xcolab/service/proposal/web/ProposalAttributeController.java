@@ -18,8 +18,8 @@ public class ProposalAttributeController {
     @Autowired
     ProposalAttributeService proposalAttributeService;
 
-
-
+    //TODO: Replaced since post param too long when sending some attributes 11/16
+    /*
     @RequestMapping(value = "/proposalAttributes/setProposalAttribute", method = RequestMethod.POST)
     public ProposalAttribute createProposalAttribute(
         @RequestParam Long proposalId,
@@ -42,6 +42,25 @@ public class ProposalAttributeController {
         proposalAttribute.setVersion(version);
         proposalAttribute.setVersionWhenCreated(versionWhenCreated);
 
+        if(proposalAttribute.getAdditionalId() == null){
+            proposalAttribute.setAdditionalId(0l);
+        }
+        if(proposalAttribute.getStringValue() == null){
+            proposalAttribute.setStringValue("");
+        }
+        if(proposalAttribute.getRealValue() == null){
+            proposalAttribute.setRealValue(0.0);
+        }
+        if(proposalAttribute.getNumericValue() == null){
+            proposalAttribute.setNumericValue(0l);
+        }
+        return this.proposalAttributeService.setAttribute(proposalAttribute, authorId);
+    }
+    */
+
+    @RequestMapping(value = "/proposalAttributes/setProposalAttribute", method = RequestMethod.POST)
+    public ProposalAttribute createProposalAttribute(@RequestBody ProposalAttribute proposalAttribute,
+    @RequestParam Long authorId) {
         if(proposalAttribute.getAdditionalId() == null){
             proposalAttribute.setAdditionalId(0l);
         }
