@@ -78,7 +78,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             final ProposalClient proposalClient;
 
 
-            if (contestId != null && !contestId.equals("")) {
+            if (contestId != null && !contestId.equals("0")) {
                 Long contestIdLong = Long.parseLong(contestId);
 
                 Contest contest = ContestClientUtil.getContest(contestIdLong);

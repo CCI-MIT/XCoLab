@@ -1,6 +1,7 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/evaluations"
+		  xmlns:c="http://java.sun.com/jsp/jstl/core"
 	version="2.0">
 
 	<!--@elvariable id="discussionId" type="java.lang.Long"-->
@@ -22,6 +23,13 @@
 	</div>
 	<!-- /proposal-head -->	
 	<div id="content">
-		<discussionsTagFiles:evaluationComments threadId="${discussionId }" />
+		<c:choose>
+			<c:when test="${contest.isSharedContestInForeignColab}">
+				<discussionsTagFiles:evaluationComments threadId="${discussionId }" sharedColabId="${contest.contestPK}" />
+			</c:when>
+			<c:otherwise>
+				<discussionsTagFiles:evaluationComments threadId="${discussionId }"  />
+			</c:otherwise>
+		</c:choose>
 	</div>
 </jsp:root>
