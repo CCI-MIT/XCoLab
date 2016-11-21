@@ -129,6 +129,10 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
 
   .outline {
     background: url(../images/icon-list_outline-off.png) no-repeat 6px 8px;
+
+    &.selected {
+      background: url(../images/icon-list_card-on.png) no-repeat 6px 9px;
+    }
   }
 }
 

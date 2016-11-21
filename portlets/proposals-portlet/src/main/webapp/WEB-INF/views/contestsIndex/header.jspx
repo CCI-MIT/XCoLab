@@ -29,6 +29,13 @@
 			<portlet:param name="showAllContests" value="${showAllContests }" />
 			<portlet:param name="currentCollectionCardId" value="${currentCollectionCardId}" />
 		</portlet:renderURL>
+		<portlet:renderURL var="changeToGridViewTypeURL">
+			<portlet:param name="viewType" value="GRID" />
+			<portlet:param name="filter" value="${sortFilterPage.filter }" />
+			<portlet:param name="showActiveContests" value="${showActiveContests }" />
+			<portlet:param name="showAllContests" value="${showAllContests }" />
+			<portlet:param name="currentCollectionCardId" value="${currentCollectionCardId}" />
+		</portlet:renderURL>
 		<c:if test="${showContestDisplayOptions}">
 			<div class="view">
 				<!-- To switch the button over to list view just change "gridview" to "listview" -->
@@ -37,7 +44,7 @@
 					<div>
 						<c:choose>
 							<c:when test="${viewType == 'OUTLINE' }">
-								Advanced view
+								<a href="${changeToGridViewTypeURL}">Card view</a>
 							</c:when>
 							<c:otherwise>
 								<a href="${changeToOutlineViewTypeURL }">Advanced view</a>
