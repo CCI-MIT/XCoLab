@@ -161,10 +161,10 @@
 					<div>
 						<c:choose>
 							<c:when test="${viewType == 'GRID' }">
-								Grid view
+								Grid
 							</c:when>
 							<c:otherwise>
-								<a href="${changeToGridViewTypeURL }">Grid view</a>
+								<a href="${changeToGridViewTypeURL }">Grid </a>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -173,10 +173,10 @@
 					<div>
 						<c:choose>
 							<c:when test="${viewType == 'LIST' }">
-								List view
+								List
 							</c:when>
 							<c:otherwise>
-								<a href="${changeToListViewTypeURL }">List view</a>
+								<a href="${changeToListViewTypeURL }">List </a>
 							</c:otherwise>
 						</c:choose>
 					</div>
