@@ -65,9 +65,13 @@
                     <strong class="inputTitleLeft">Visible</strong>
                     <form:checkbox path="visible" id="visible" cssClass="wideLargeInput"/>
                 </div>
-
             </div>
         </form:form>
+        <div>
+            <div class="floatRight outerVerticalCenter">
+                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="alert('JIPPIE');">SAVE</a>
+            </div>
+        </div>
     </div>
 
 
