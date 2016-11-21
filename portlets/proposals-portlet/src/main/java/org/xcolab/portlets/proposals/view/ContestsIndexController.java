@@ -65,7 +65,7 @@ public class ContestsIndexController extends BaseProposalsController {
             @RequestParam(required = false) String viewType,
             @RequestParam(required = false, defaultValue="false") boolean showActiveContests,
             @RequestParam(required = false, defaultValue="true") boolean showAllContests,
-            @RequestParam(required = false, defaultValue = "" + BY_TOPIC_COLLECTION_CARD_ID) long currentCollectionCardId,
+            @RequestParam(required = false, defaultValue = "" + FEATURED_COLLECTION_CARD_ID) long currentCollectionCardId,
             SortFilterPage sortFilterPage) 
                     throws PortalException, SystemException {
 
