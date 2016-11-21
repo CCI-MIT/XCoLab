@@ -156,7 +156,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			}
 		}
 		<c:forEach var="focusArea" items="${focusAreas}">
-			focusAreas[${focusArea.id}] = {id: ${focusArea.id}, terms: ${focusArea.termsIdsStr}};
+			focusAreas[${focusArea.id_}] = {id: ${focusArea.id_}, terms: ${focusArea.termsIdsStr}};
 		</c:forEach>
 		var focusArea = null;
 		var contest = null;
