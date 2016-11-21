@@ -10,7 +10,7 @@
     <!--@elvariable id="voted" type="java.lang.Boolean"-->
     <!--@elvariable id="votingDeadline" type="java.lang.String"-->
     <!--@elvariable id="targetMoveHistory" type="org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory"-->
-    <!--@elvariable id="sourceMoveHistories" type="java.util.List<org.xcolab.portlets.proposals.wrappers.MoveHistoryWrapper>"-->
+    <!--@elvariable id="sourceMoveHistories" type="java.util.List<org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory>"-->
 
     <jsp:directive.include file="./init_proposal_tab.jspx" />
     <jsp:directive.include file="./proposalDetails/header.jspx"/>
@@ -73,7 +73,7 @@
 
                         <c:forEach var="sourceMoveHistory" items="${sourceMoveHistories}">
                             <c:choose>
-                                <c:when test="${sourceMoveHistory.moveType.name() == 'COPY'
+                                <c:when test="${sourceMoveHistory.moveTypez.name() == 'COPY'
                                             and (sourceMoveHistory.sourceContestPhaseId == 0
                                                     or sourceMoveHistory.sourceContestPhaseId == contestPhase.contestPhasePK)}">
                                     <div>

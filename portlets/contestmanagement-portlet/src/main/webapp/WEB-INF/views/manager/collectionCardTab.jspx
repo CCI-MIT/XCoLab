@@ -14,10 +14,6 @@
 
 
     <div class="collectionCard-outline-left">
-        <div class="expand">
-            <a href="#" class="showall" style="display: inline;">Expand All</a>
-            <a href="#" class="hideall" style="display: none;">Collapse All</a>
-        </div>
         <br/>
         <h2 class="collectionCard-category">
             Any action:
@@ -95,9 +91,6 @@
             event.preventDefault();
             var that = this;
             var self = jQuery(this);
-            if (self.hasClass('showall') || self.hasClass('hideall')) {
-                return;
-            }
             var container = self.parent();
             container.addClass('currentlyClicked');
             jQuery('.collectionCard-outline-left li.active').not('.currentlyClicked').removeClass(
@@ -129,26 +122,10 @@
             }
         });
 
-        jQuery(".expand a").click(function() {
-            var that = this;
-            var self = jQuery(this);
-            jQuery(".expand a").toggle();
-            if (jQuery(this).hasClass('showall')) {
-                jQuery(".collectionCard-outline-left a").addClass('open');
-                jQuery(".collectionCard-outline-left .level0 ul").slideDown();
-            }
-            else {
-                jQuery(".collectionCard-outline-left a").removeClass('open');
-                jQuery(".collectionCard-outline-left .level0 ul").slideUp();
-            }
-        });
 
         jQuery(".collectionCard-outline-left").on('click', 'a', function(event) {
             event.preventDefault();
             var self = jQuery(this);
-            if (self.hasClass('showall') || self.hasClass('hideall')) {
-                return;
-            }
             loadCollectionCardForm(self.attr('data-card-id'));
         });
 
