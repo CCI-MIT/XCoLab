@@ -3,13 +3,12 @@ package org.xcolab.client.proposals.pojo.proposals;
 
 
 import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
 import org.xcolab.client.proposals.ProposalPhaseClient;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.http.client.RestService;
 
@@ -39,7 +38,7 @@ public class ProposalRibbon {
             ContestPhase contestPhase = null;
 
 
-            RestService contestService =  proposalRestService.withServiceName("contest-service");
+            RestService contestService =  proposalRestService.withServiceName(CoLabService.CONTEST.getServiceName());
             contestPhase = ContestClient.fromService(contestService).getContestPhase(proposalWrapper.getContestPhase().getContestPhasePK());
 
             if (contestPhase == null) {

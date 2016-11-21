@@ -36,6 +36,7 @@ import org.xcolab.client.proposals.ProposalMoveClient;
 import org.xcolab.client.proposals.ProposalMoveClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
 
@@ -71,7 +72,7 @@ public class ClientHelper {
 
     public ClientHelper(Contest contest) {
         if (contest != null && contest.getIsSharedContest() && !contest.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME.get())) {
-            RestService proposalService = new RefreshingRestService("proposals-service",
+            RestService proposalService = new RefreshingRestService(CoLabService.PROPOSAL,
                     ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                     ConfigurationAttributeKey.PARTNER_COLAB_PORT);
             proposalClient = ProposalClient.fromService(proposalService);
@@ -83,7 +84,7 @@ public class ClientHelper {
             proposalJudgeRatingClient = ProposalJudgeRatingClient.fromService(proposalService);
             proposalMemberRatingClient = ProposalMemberRatingClient.fromService(proposalService);
 
-            RestService contestService = new RefreshingRestService("contest-service",
+            RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
                     ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                     ConfigurationAttributeKey.PARTNER_COLAB_PORT);
             contestClient = ContestClient.fromService(contestService);
@@ -92,13 +93,13 @@ public class ClientHelper {
             ontologyClient = OntologyClient.fromService(contestService);
             planTemplateClient = PlanTemplateClient.fromService(contestService);
 
-            RestService commentService = new RefreshingRestService("comment-service",
+            RestService commentService = new RefreshingRestService(CoLabService.COMMENT,
                     ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                     ConfigurationAttributeKey.PARTNER_COLAB_PORT);
             commentClient = new CommentClient(commentService);
             threadClient = new ThreadClient(commentService);
             categoryClient = new CategoryClient(commentService);
-            RestService activitiesService  = proposalService.withServiceName("activities-service");
+            RestService activitiesService  = proposalService.withServiceName(CoLabService.ACTIVITY.getServiceName());
             activitiesClient = ActivitiesClient.fromService(activitiesService);
         } else {
             proposalClient = ProposalClientUtil.getClient();

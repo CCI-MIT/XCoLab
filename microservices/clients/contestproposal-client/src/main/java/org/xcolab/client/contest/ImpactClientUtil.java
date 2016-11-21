@@ -5,13 +5,14 @@ import org.xcolab.client.contest.pojo.impact.ImpactIteration;
 import org.xcolab.client.contest.pojo.impact.ImpactTemplateFocusAreaList;
 import org.xcolab.client.contest.pojo.impact.ImpactTemplateMaxFocusArea;
 import org.xcolab.client.contest.pojo.impact.ImpactTemplateSeries;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
 
 public final class ImpactClientUtil {
 
-    private static final RestService contestService = new RestService("contest-service");
+    private static final RestService contestService = new RestService(CoLabService.CONTEST);
 
     private static final ImpactClient client = ImpactClient.fromService(contestService);
 

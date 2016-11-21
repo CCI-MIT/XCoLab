@@ -8,6 +8,7 @@ import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporterDto;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVoteDto;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
@@ -89,7 +90,7 @@ public final class ProposalMemberRatingClient {
         supporter.setCreateDate(new Timestamp(new Date().getTime()));
         createProposalSupporter(supporter);
 
-        RestService activitiesService  = proposalService.withServiceName("activities-service");
+        RestService activitiesService  = proposalService.withServiceName(CoLabService.ACTIVITY.getServiceName());
         ActivitiesClient activityClient = ActivitiesClient.fromService(activitiesService);
 
         if (publishActivity) {
@@ -106,7 +107,7 @@ public final class ProposalMemberRatingClient {
 
     public void removeProposalSupporter(long proposalId, long userId) {
         deleteProposalSupporter(proposalId, userId);
-        RestService activitiesService  = proposalService.withServiceName("activities-service");
+        RestService activitiesService  = proposalService.withServiceName(CoLabService.ACTIVITY.getServiceName());
         ActivitiesClient activityClient = ActivitiesClient.fromService(activitiesService);
 
         ActivityEntryHelper.createActivityEntry(activityClient, userId, proposalId, null,

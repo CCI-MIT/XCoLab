@@ -10,6 +10,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.enums.MemberRole;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
@@ -64,7 +65,7 @@ public class GetRoleNameStartTag extends BodyTagSupport {
                 try{
                     Contest c = ContestClientUtil.getContest(contestId);
                     if(c.getIsSharedContestInForeignColab()){
-                        RestService proposalsService = new RefreshingRestService("proposals-service",
+                        RestService proposalsService = new RefreshingRestService(CoLabService.PROPOSAL,
                                 ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                                 ConfigurationAttributeKey.PARTNER_COLAB_PORT);
                         proposalClient = ProposalClient.fromService(proposalsService);

@@ -20,12 +20,11 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.proposals.ProposalPhaseClient;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
@@ -224,7 +223,7 @@ public class Contest extends AbstractContest {
             ContestPhase cp = contestClient.getActivePhase(this.getContestPK());
             if (cp != null) {
                 //TODO:REPLACE THIS CALL FOR SYNCD CONTEST REFERENCE
-                RestService proposalService =  restService.withServiceName("proposals-service");
+                RestService proposalService =  restService.withServiceName(CoLabService.PROPOSAL.getServiceName());
 
                 return ProposalPhaseClient.fromService(proposalService)
                         .getProposalCountForActiveContestPhase(cp.getContestPhasePK());
@@ -257,7 +256,7 @@ public class Contest extends AbstractContest {
         }*/
 
     public long getCommentsCount() {
-        RestService commentService =  restService.withServiceName("comment-service");
+        RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
         Integer contestComments = CommentClient.fromService(commentService).countComments(this.getDiscussionGroupId());
         //TODO: get each proposal comment count.
         return contestComments;
@@ -417,7 +416,7 @@ public class Contest extends AbstractContest {
         Set<Proposal> proposalList = new HashSet<>();
 
         List<ContestPhase> contestPhases = contestClient.getAllContestPhases(this.getContestPK());
-        RestService proposalService =  restService.withServiceName("proposals-service");
+        RestService proposalService =  restService.withServiceName(CoLabService.PROPOSAL.getServiceName());
         for (ContestPhase contestPhase : contestPhases) {
             List<Proposal> proposals = ProposalClient.fromService(proposalService)
                     .getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
@@ -459,7 +458,7 @@ public class Contest extends AbstractContest {
     }
     public long getTotalCommentsCount() {
 
-        RestService commentService =  restService.withServiceName("comment-service");
+        RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
 
 
         Integer contestComments = CommentClient.fromService(commentService).countComments(this.getDiscussionGroupId());
@@ -472,11 +471,20 @@ public class Contest extends AbstractContest {
 
     public long getVotesCount() {
         ContestPhase phase = contestClient.getActivePhase(this.getContestPK());
-        RestService proposalMemberRatingService =  restService.withServiceName("proposals-service");
+        RestService proposalMemberRatingService =  restService.withServiceName(CoLabService.PROPOSAL.getServiceName());
 
         return ProposalMemberRatingClient.fromService(proposalMemberRatingService).countProposalVotesInContestPhase(phase.getContestPhasePK());
     }
 
+    public long getCreatedTime(){
+        if (this.getCreated() != null) {
+            return this.getCreated().getTime();
+        }
+        else if (this.getUpdated() != null) {
+            return this.getUpdated().getTime();
+        }
+        return 0;
+    }
 
     public ContestPhase getLastPhase() {
         ContestPhase last = null;
@@ -621,7 +629,7 @@ public class Contest extends AbstractContest {
     public boolean getJudgeStatus() {
         try {
 
-            RestService proposalsService =  restService.withServiceName("proposals-service");
+            RestService proposalsService =  restService.withServiceName(CoLabService.PROPOSAL.getServiceName());
 
 
 
@@ -650,7 +658,7 @@ public class Contest extends AbstractContest {
      */
     public boolean getScreeningStatus() {
         try {
-            RestService proposalsService =  restService.withServiceName("proposals-service");
+            RestService proposalsService =  restService.withServiceName(CoLabService.PROPOSAL.getServiceName());
 
 
             ContestPhase contestPhase = contestClient.getActivePhase(this.getContestPK());

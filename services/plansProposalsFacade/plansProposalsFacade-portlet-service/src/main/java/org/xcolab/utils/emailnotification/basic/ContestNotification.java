@@ -15,9 +15,11 @@ import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
 
@@ -65,7 +67,7 @@ public class ContestNotification extends EmailNotification {
 
         final EmailTemplateClient emailTemplateClient;
         if(contest.getIsSharedContestInForeignColab()){
-            RestService adminService = new RefreshingRestService("admin-service",
+            RestService adminService = new RefreshingRestService(CoLabService.ADMIN,
                     ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                     ConfigurationAttributeKey.PARTNER_COLAB_PORT);
 
@@ -83,8 +85,17 @@ public class ContestNotification extends EmailNotification {
     }
 
     private Date getActivePhaseDeadline() {
+        ContestClient contestClient;
+        if(contest.getIsSharedContestInForeignColab()) {
+            RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
+                    ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                    ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+            contestClient = ContestClient.fromService(contestService);
+        }else{
+            contestClient = ContestClientUtil.getClient();
+        }
+            return contestClient.getActivePhase(contest.getContestPK()).getPhaseEndDate();
 
-            return ContestClientUtil.getActivePhase(contest.getContestPK()).getPhaseEndDate();
 
     }
 

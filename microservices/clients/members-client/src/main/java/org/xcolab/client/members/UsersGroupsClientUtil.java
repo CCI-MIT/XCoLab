@@ -1,13 +1,14 @@
 package org.xcolab.client.members;
 
 import org.xcolab.client.members.pojo.UsersGroups;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
 
 public class UsersGroupsClientUtil {
 
-    private static final RestService membersService = new RestService("members-service");
+    private static final RestService membersService = new RestService(CoLabService.MEMBER);
 
     private static final UsersGroupsClient usersGroupsClient = UsersGroupsClient.fromService(membersService);
 

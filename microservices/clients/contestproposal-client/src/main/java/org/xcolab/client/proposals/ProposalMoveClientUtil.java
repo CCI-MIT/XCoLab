@@ -1,13 +1,14 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
 
 public final class ProposalMoveClientUtil {
 
-    private static final RestService proposalService = new RestService("proposals-service");
+    private static final RestService proposalService = new RestService(CoLabService.PROPOSAL);
     private static final ProposalMoveClient client
             = ProposalMoveClient.fromService(proposalService);
 

@@ -315,3 +315,15 @@ span.ontology-term-label {
   content: '*';
   color: #30a3fb;
 }
+#cvsContests input {
+  width:210px;
+}
+#cvsContests span.token {
+  font-size: 11px;
+  border-width: 1px;
+  border-color: gray;
+  border-style: solid;
+  margin-left: 5px;
+  padding: 2px;
+  line-height: 26px;
+}

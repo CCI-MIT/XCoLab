@@ -3,13 +3,13 @@ package org.xcolab.client.proposals;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
-import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.client.proposals.pojo.team.MembershipRequestDto;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -120,7 +120,7 @@ public class MembershipClient {
 
             }
 
-            RestService activitiesService  = proposalService.withServiceName("activities-service");
+            RestService activitiesService  = proposalService.withServiceName(CoLabService.ACTIVITY.getServiceName());
             ActivitiesClient activityClient = ActivitiesClient.fromService(activitiesService);
 
             ActivityEntryHelper.createActivityEntry(activityClient,userId, proposalId, null,

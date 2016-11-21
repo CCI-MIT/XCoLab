@@ -2,6 +2,7 @@ package org.xcolab.util.http.client;
 
 import org.springframework.util.Assert;
 
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.http.UriProvider;
 import org.xcolab.util.http.client.interfaces.HttpEndpoint;
@@ -14,7 +15,9 @@ public class RestService implements HttpEndpoint {
 
     private final String serviceName;
     private final UriProvider uriProvider;
-
+    public RestService(CoLabService serviceName) {
+        this(serviceName.getServiceName());
+    }
     public RestService(String serviceName) {
         Assert.notNull(serviceName, "Service name is required");
         this.serviceName = serviceName;

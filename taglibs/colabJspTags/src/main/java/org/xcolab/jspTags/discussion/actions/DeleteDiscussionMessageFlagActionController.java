@@ -12,6 +12,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
 
@@ -44,7 +45,7 @@ public class DeleteDiscussionMessageFlagActionController extends BaseDiscussions
 
             }
             if (contest != null && contest.getIsSharedContestInForeignColab()) {
-                RestService commentsService = new RefreshingRestService("comment-service",
+                RestService commentsService = new RefreshingRestService(CoLabService.COMMENT,
                         ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                         ConfigurationAttributeKey.PARTNER_COLAB_PORT);
 

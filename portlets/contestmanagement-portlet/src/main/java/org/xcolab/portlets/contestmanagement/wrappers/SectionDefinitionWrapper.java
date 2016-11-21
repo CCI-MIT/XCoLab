@@ -104,8 +104,13 @@ public class SectionDefinitionWrapper implements Serializable {
 
         PointsDistributionConfiguration pdc =
                 PointsClientUtil.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
-        this.pointPercentage = Double.toString(pdc.getPercentage());
-        this.pointType = pdc.getPointTypeId();
+        if( pdc != null ) {
+            this.pointPercentage = Double.toString(pdc.getPercentage());
+            this.pointType = pdc.getPointTypeId();
+        }else{
+            this.pointPercentage = "0";
+            this.pointType = 0L;
+        }
         /*
                 PointsDistributionConfigurationClient.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
         if (pdc != null) {

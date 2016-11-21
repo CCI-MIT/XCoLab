@@ -4,19 +4,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
@@ -51,7 +49,7 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
 
             }
             if (contest != null && contest.getIsSharedContestInForeignColab()) {
-                RestService commentsService = new RefreshingRestService("comment-service",
+                RestService commentsService = new RefreshingRestService(CoLabService.COMMENT,
                         ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                         ConfigurationAttributeKey.PARTNER_COLAB_PORT);
 
