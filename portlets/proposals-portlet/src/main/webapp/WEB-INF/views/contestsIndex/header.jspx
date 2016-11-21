@@ -137,7 +137,6 @@
 			</div>
 		</c:if>
 	</c:if>
-
 	<div class="c-display-selector">
 		<portlet:renderURL var="changeToListViewTypeURL">
 			<portlet:param name="viewType" value="LIST" />
@@ -154,34 +153,36 @@
 			<portlet:param name="currentCollectionCardId" value="${currentCollectionCardId}" />
 		</portlet:renderURL>
 		<c:if test="${showContestDisplayOptions}">
-			<div class="view">
-				<!-- To switch the button over to list view just change "gridview" to "listview" -->
-				<!--@elvariable id="viewType" type="java.lang.String"-->
-				<div class="grid ${viewType == 'GRID' ? 'selected' : ''}" style="margin-left: 400px;">
-					<div>
-						<c:choose>
-							<c:when test="${viewType == 'GRID' }">
-								Grid
-							</c:when>
-							<c:otherwise>
-								<a href="${changeToGridViewTypeURL }">Grid </a>
-							</c:otherwise>
-						</c:choose>
+			<c:if test="${viewType != 'OUTLINE'}" >
+				<div class="view">
+					<!-- To switch the button over to list view just change "gridview" to "listview" -->
+					<!--@elvariable id="viewType" type="java.lang.String"-->
+					<div class="grid ${viewType == 'GRID' ? 'selected' : ''}" style="margin-left: 400px;">
+						<div>
+							<c:choose>
+								<c:when test="${viewType == 'GRID' }">
+									Grid
+								</c:when>
+								<c:otherwise>
+									<a href="${changeToGridViewTypeURL }">Grid </a>
+								</c:otherwise>
+							</c:choose>
+						</div>
+					</div>
+					<div class="list ${viewType == 'LIST' ? 'selected' : ''}">
+						<div>
+							<c:choose>
+								<c:when test="${viewType == 'LIST' }">
+									List
+								</c:when>
+								<c:otherwise>
+									<a href="${changeToListViewTypeURL }">List </a>
+								</c:otherwise>
+							</c:choose>
+						</div>
 					</div>
 				</div>
-				<div class="list ${viewType == 'LIST' ? 'selected' : ''}">
-					<div>
-						<c:choose>
-							<c:when test="${viewType == 'LIST' }">
-								List
-							</c:when>
-							<c:otherwise>
-								<a href="${changeToListViewTypeURL }">List </a>
-							</c:otherwise>
-						</c:choose>
-					</div>
-				</div>
-			</div>
+			</c:if>
 		</c:if>
 		<c:if test="${priorContestsExist}">
 			<div class="show">
