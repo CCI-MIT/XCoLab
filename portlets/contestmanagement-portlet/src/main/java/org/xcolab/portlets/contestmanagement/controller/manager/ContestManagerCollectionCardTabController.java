@@ -2,6 +2,7 @@ package org.xcolab.portlets.contestmanagement.controller.manager;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,9 +14,12 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
+import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
@@ -46,6 +50,21 @@ public class ContestManagerCollectionCardTabController extends ContestManagerBas
         model.addAttribute("collectionCardWrapperWhere", new CollectionCardWrapper(3));
         setPageAttributes(request, model, tab);
         return TAB_VIEW;
+    }
+
+    @RequestMapping(params = "action=updateContestCollectionCard")
+    public void updateScheduleTabController(ActionRequest request, Model model,
+            @ModelAttribute CollectionCardWrapper collectionCardWrapper,
+            BindingResult result, ActionResponse response) {
+        if (!tabWrapper.getCanEdit()) {
+            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
+            return;
+        }
+
+        if (result.hasErrors()) {
+            return;
+        }
+        collectionCardWrapper.persist();
     }
 
 }

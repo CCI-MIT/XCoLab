@@ -31,6 +31,10 @@ public class CollectionCardWrapper {
         return cardList;
     }
 
+    public void persist() {
+        ContestClientUtil.updateContestCollectionCard(this.contestCollectionCard);
+    }
+
     public Map<Long , String > getOntologyTerms() {
         Map<Long, String> ontologyTerms = new HashMap<>();
         ontologyTerms.put((long) (-1), "null");

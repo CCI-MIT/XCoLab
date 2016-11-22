@@ -97,6 +97,14 @@ public final class ContestClientUtil {
         return contestClient.getNumberOfContestsInCollectionCard(collectionCardId, countOnlyActive);
     }
 
+    public static boolean updateContestCollectionCard(ContestCollectionCard contestCollectionCard) {
+        return contestClient.updateContestCollectionCard(contestCollectionCard);
+    }
+
+    public static ContestCollectionCard createContestCollectionCard(ContestCollectionCard contestCollectionCard) {
+        return contestClient.createContestCollectionCard(contestCollectionCard);
+    }
+
     public static List<Contest> getSubContestsByOntologySpaceId(
             Long contestId, Long ontologySpaceId) {
         return contestClient.getSubContestsByOntologySpaceId(contestId, ontologySpaceId);

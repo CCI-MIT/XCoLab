@@ -51,6 +51,22 @@ public class ContestController {
         return contestCollectionCardDao.get(contestCollectionCardId);
     }
 
+    @PostMapping(value = "/contestCollectionCards")
+    public ContestCollectionCard createContestCollectionCard(@RequestBody ContestCollectionCard contestCollectionCard) {
+        return this.contestCollectionCardDao.create(contestCollectionCard);
+    }
+
+    @PutMapping(value = "/contestCollectionCards/{contestCollectionCardId}")
+    public boolean updateContestCollectionCard(@RequestBody ContestCollectionCard contestCollectionCard,
+            @PathVariable long contestCollectionCardId) throws NotFoundException {
+
+        if (contestCollectionCardDao.get(contestCollectionCardId) == null) {
+            throw new NotFoundException("No ContestCollectionCard with id " + contestCollectionCardId);
+        } else {
+            return contestCollectionCardDao.update(contestCollectionCard);
+        }
+    }
+
     @GetMapping(value = "/contestCollectionCards")
     public List<ContestCollectionCard> getContestCollectionCards(@RequestParam(required=false) Long parentCollectionCardId) throws NotFoundException{
         return contestCollectionCardDao.findByGiven(parentCollectionCardId);

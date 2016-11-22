@@ -240,6 +240,16 @@ public class ContestClient {
                 .execute();
     }
 
+    public boolean updateContestCollectionCard(ContestCollectionCard contestCollectionCard) {
+        return contestCollectionCardRestResource.update(new ContestCollectionCardDto(contestCollectionCard),contestCollectionCard.getId_())
+                .execute();
+    }
+
+    public ContestCollectionCard createContestCollectionCard(ContestCollectionCard contestCollectionCard) {
+        return contestCollectionCardRestResource.create(new ContestCollectionCardDto(contestCollectionCard)).execute().toPojo(contestService);
+
+    }
+
     public List<Contest> getContestByOntologyTerm(Long ontologyTermId, Boolean getOnlyActive) {
         return DtoUtil.toPojos(contestResource
                 .service("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
