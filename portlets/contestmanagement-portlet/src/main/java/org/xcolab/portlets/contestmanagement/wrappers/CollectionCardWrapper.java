@@ -13,7 +13,23 @@ import java.util.Map;
 
 public class CollectionCardWrapper {
 
-    private final ContestCollectionCard contestCollectionCard;
+    private ContestCollectionCard contestCollectionCard;
+    private Boolean createNew = false;
+
+    public CollectionCardWrapper(long collectionCardId, long bigOntologyTerm, long ontologyTermToLoad, long smallOntologyTerm, boolean onlyFeatured, boolean visible, long parentId) {
+        contestCollectionCard = new ContestCollectionCard();
+        contestCollectionCard.setOntology_term_to_load(ontologyTermToLoad);
+        contestCollectionCard.setId_(collectionCardId);
+        contestCollectionCard.setBig_ontology_term(bigOntologyTerm);
+        contestCollectionCard.setSmall_ontology_term(smallOntologyTerm);
+        contestCollectionCard.setParent(parentId);
+        contestCollectionCard.setOnly_featured(onlyFeatured);
+        contestCollectionCard.setVisible(visible);
+    }
+
+    public CollectionCardWrapper() {
+        contestCollectionCard = new ContestCollectionCard();
+    }
 
     public CollectionCardWrapper(long collectionCardId) {
         this.contestCollectionCard = ContestClientUtil.getContestCollectionCard(collectionCardId);
@@ -21,6 +37,16 @@ public class CollectionCardWrapper {
 
     public long getId() {
         return contestCollectionCard.getId_();
+    }
+
+    public void setId(long id) { contestCollectionCard.setId_(id);}
+
+    public Boolean getCreateNew() {
+        return createNew;
+    }
+
+    public void setCreateNew(Boolean createNew) {
+        this.createNew = createNew;
     }
 
     public List<CollectionCardWrapper> getAllCollectionCards() {
@@ -32,7 +58,11 @@ public class CollectionCardWrapper {
     }
 
     public void persist() {
-        ContestClientUtil.updateContestCollectionCard(this.contestCollectionCard);
+        if(createNew){
+            contestCollectionCard = ContestClientUtil.createContestCollectionCard(contestCollectionCard);
+        } else {
+            ContestClientUtil.updateContestCollectionCard(this.contestCollectionCard);
+        }
     }
 
     public Map<Long , String > getOntologyTerms() {

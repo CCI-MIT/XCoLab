@@ -31,6 +31,7 @@ public class ContestManagerCollectionCardTabController extends ContestManagerBas
     static final private TabEnum tab = ContestManagerTabs.COLLECTION_CARDS;
     static final private String TAB_VIEW = "manager/collectionCardTab";
 
+
     @ModelAttribute("currentTabWrapped")
     @Override
     public TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException {

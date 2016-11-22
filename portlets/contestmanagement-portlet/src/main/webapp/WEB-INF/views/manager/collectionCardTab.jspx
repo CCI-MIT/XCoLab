@@ -26,17 +26,20 @@
     </div>
 
     <div class="collectionCard-outline-right">
-        <portlet:actionURL var="changeElementURL">
-            <portlet:param name="tab" value="${param.tab}" />
-            <portlet:param name="elementId" value="${planTemplateId}" />
+        <portlet:actionURL var="updateContestCollectionCardURL">
+            <portlet:param name="tab" value="COLLECTION_CARDS" />
+            <portlet:param name="manager" value="true"/>
+            <portlet:param name="action" value="updateContestCollectionCard" />
         </portlet:actionURL>
 
-        <form:form action="${changeElementURL }" commandName="collectionCardWrapperWhat" id="selectForm" method="post">
+        <form:form action="${updateContestCollectionCardURL }" commandName="collectionCardWrapperWhat" id="selectForm" method="post">
             <div class="collectionCard-edit-form">
                 <h1 id="title">
                     <!-- -->
                 </h1>
                 <br/>
+                <form:hidden path="createNew" id="createNewFlag"/>
+                <input id="id" name="id"  type="hidden" value=""/>
                 <div class="addpropbox">
                     <strong class="inputTitleLeft">Description:</strong>
                     <input id="description" name="Description" class="wideLargeInput" type="text" value="" validatelength="false"/>
@@ -69,7 +72,7 @@
         </form:form>
         <div>
             <div class="floatRight outerVerticalCenter">
-                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="alert('JIPPIE');">SAVE</a>
+                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitUpdateCollectionCard();">SAVE</a>
             </div>
         </div>
     </div>
@@ -138,6 +141,7 @@
             var collectionCard = collectionCards[collectionCardId];
 
             jQuery(".collectionCard-edit-form #title").html(collectionCard.description)
+            jQuery(".collectionCard-edit-form #id").val(collectionCardId);
             jQuery(".collectionCard-edit-form #description").val(collectionCard.description);
             jQuery(".collectionCard-edit-form #parentId").val(collectionCard.parentId);
             jQuery(".collectionCard-edit-form #ontologyTermToLoad").val(collectionCard.ontologyTermToLoadId);
@@ -145,6 +149,11 @@
             jQuery(".collectionCard-edit-form #smallOntologyTerm").val(collectionCard.smallOntologyTermId);
             jQuery(".collectionCard-edit-form #onlyFeatured").val(collectionCard.onlyFeatured);
             jQuery(".collectionCard-edit-form #visible").val(collectionCard.visible);
+
+        }
+
+        function submitUpdateCollectionCard() {
+            document.getElementById('selectForm').submit();
 
         }
 
