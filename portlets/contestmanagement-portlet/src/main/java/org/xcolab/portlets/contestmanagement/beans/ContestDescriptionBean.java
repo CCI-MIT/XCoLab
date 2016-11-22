@@ -185,7 +185,10 @@ public class ContestDescriptionBean implements Serializable {
         contest.setSponsorLogoId(sponsorLogoId);
         contest.setIsSharedContest(isSharedContest);
         ContestClientUtil.updateContest(contest);
-        SharedColabClient.updateSharedContestName(contest.getContestPK(),contest.getContestName());
+        if(contest.getIsSharedContest()) {
+            SharedColabClient
+                    .updateSharedContestName(contest.getContestPK(), contest.getContestName());
+        }
 
     }
 

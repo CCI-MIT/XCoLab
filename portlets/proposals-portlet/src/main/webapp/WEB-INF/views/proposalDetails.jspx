@@ -73,7 +73,7 @@
 
                         <c:forEach var="sourceMoveHistory" items="${sourceMoveHistories}">
                             <c:choose>
-                                <c:when test="${sourceMoveHistory.moveType.name() == 'COPY'
+                                <c:when test="${sourceMoveHistory.moveTypez.name() == 'COPY'
                                             and (sourceMoveHistory.sourceContestPhaseId == 0
                                                     or sourceMoveHistory.sourceContestPhaseId == contestPhase.contestPhasePK)}">
                                     <div>
