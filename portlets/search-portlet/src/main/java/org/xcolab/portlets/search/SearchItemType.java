@@ -21,14 +21,14 @@ public enum SearchItemType {
 
     USER(10038l,new String[]{"entryClassName", "com.liferay.portal.model.User"},
             new String[]{"screenName", "firstName", "lastName"}, UserSearchItem.class),
-
+/*
     CONTENT(1l,new String[]{"entryClassName",
             "com.liferay.portlet.wiki.model.* OR com.liferay.portlet.journal.model.JournalArticle"},
             new String[]{"title"}, ContentSearchItem.class),
 
     BLOG(2l,new String[]{"entryClassName", "com.liferay.portlet.blogs.model.*"},
             new String[]{"title", "content"}, BlogSearchItem.class),
-
+*/
     DISCUSSION(39202l,new String[]{"entryClassName", "com.ext.portlet.model.DiscussionMessage"},
             new String[]{"title", "content"}, DiscussionSearchItem.class);
 
