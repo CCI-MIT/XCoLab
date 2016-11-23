@@ -202,22 +202,32 @@
             if(!jQuery(".collectionCard-edit-form #description").val().length > 0) {
                 jQuery(".collectionCard-edit-form #description").css("background-color", "lightcoral");
                 inputError = true;
+            } else {
+                jQuery(".collectionCard-edit-form #description").css("background-color", "white");
             }
             if(jQuery(".collectionCard-edit-form #parentId").val() == -1) {
                 jQuery(".collectionCard-edit-form #parentId").css("background-color", "lightcoral");
                 inputError = true;
+            } else {
+                jQuery(".collectionCard-edit-form #parentId").css("background-color", "white");
             }
             if(jQuery(".collectionCard-edit-form #ontologyTermToLoad").val() == -1) {
                 jQuery(".collectionCard-edit-form #ontologyTermToLoad").css("background-color", "lightcoral");
                 inputError = true;
+            } else {
+                jQuery(".collectionCard-edit-form #ontologyTermToLoad").css("background-color", "white");
             }
             if(jQuery(".collectionCard-edit-form #bigOntologyTerm").val() == -1) {
                 jQuery(".collectionCard-edit-form #bigOntologyTerm").css("background-color", "lightcoral");
                 inputError = true;
+            } else {
+                jQuery(".collectionCard-edit-form #bigOntologyTerm").css("background-color", "white");
             }
             if(jQuery(".collectionCard-edit-form #smallOntologyTerm").val() == -1) {
                 jQuery(".collectionCard-edit-form #smallOntologyTerm").css("background-color", "lightcoral");
                 inputError = true;
+            } else {
+                jQuery(".collectionCard-edit-form #smallOntologyTerm").css("background-color", "white");
             }
 
             if(inputError) {
@@ -271,8 +281,14 @@
             jQuery("#cancelButton").hide();
             jQuery("#deleteButton").show();
             jQuery(".collectionCard-outline-left").show();
-            jQuery(".collectionCard-outline-right").css("width","40%");
+            jQuery(".collectionCard-outline-right").css("width", "40%");
             jQuery(".collectionCard-outline-right").hide();
+
+            jQuery(".collectionCard-edit-form #description").css("background-color", "white");
+            jQuery(".collectionCard-edit-form #parentId").css("background-color", "white");
+            jQuery(".collectionCard-edit-form #ontologyTermToLoad").css("background-color", "white");
+            jQuery(".collectionCard-edit-form #bigOntologyTerm").css("background-color", "white");
+            jQuery(".collectionCard-edit-form #smallOntologyTerm").css("background-color", "white");
         }
 
         ]]>
