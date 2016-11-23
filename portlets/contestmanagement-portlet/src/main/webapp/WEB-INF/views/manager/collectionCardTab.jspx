@@ -25,7 +25,19 @@
             <contestmanagementPortlet:collectionCardWithChildren collectionCard="${collectionCardWrapperWhere}" section="${section + 1 }" level="${level + 1 }" />
     </div>
 
-    <div class="collectionCard-outline-right">
+    <div class="collectionCard-outline-right" style="display:none;">
+        <div class="buttonContainer">
+            <div>
+                <div class="floatRight outerVerticalCenter">
+                    <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitUpdateCollectionCard();">SAVE</a>
+                </div>
+            </div>
+            <div>
+                <div class="floatRight outerVerticalCenter">
+                    <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitUpdateCollectionCard();">DELETE</a>
+                </div>
+            </div>
+        </div>
         <portlet:actionURL var="updateContestCollectionCardURL">
             <portlet:param name="tab" value="COLLECTION_CARDS" />
             <portlet:param name="manager" value="true"/>
@@ -61,6 +73,10 @@
                     <form:select path="smallOntologyTerm" id="smallOntologyTerm" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
                 </div>
                 <div class="addpropbox">
+                    <strong class="inputTitleLeft">Order</strong>
+                    <input path="order" id="order" class="wideLargeInput" type="number" value="0" />
+                </div>
+                <div class="addpropbox">
                     <strong class="inputTitleLeft">Only Featured</strong>
                     <form:checkbox path="onlyFeatured" id="onlyFeatured" cssClass="wideLargeInput"/>
                 </div>
@@ -70,11 +86,6 @@
                 </div>
             </div>
         </form:form>
-        <div>
-            <div class="floatRight outerVerticalCenter">
-                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitUpdateCollectionCard();">SAVE</a>
-            </div>
-        </div>
     </div>
 
 
@@ -84,10 +95,10 @@
         <c:forEach var="collectionCard" items="${collectionCardWrapperWhat.allCollectionCards}">
                 <c:choose>
                     <c:when test="${not empty collectionCard.parentId}">
-                        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, parentId: ${collectionCard.parentId}, bigOntologyTermId: '${collectionCard.bigOntologyTermId}', smallOntologyTermId: '${collectionCard.smallOntologyTermId}',  ontologyTermToLoadId: '${collectionCard.ontologyTermToLoadId}',bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}'};
+                        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, parentId: ${collectionCard.parentId}, bigOntologyTermId: '${collectionCard.bigOntologyTermId}', smallOntologyTermId: '${collectionCard.smallOntologyTermId}',  ontologyTermToLoadId: '${collectionCard.ontologyTermToLoadId}',bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}', order: '${collectionCard.order}'};
                     </c:when>
                     <c:otherwise>
-                        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, bigOntologyTermId: '${collectionCard.bigOntologyTermId}', smallOntologyTermId: '${collectionCard.smallOntologyTermId}',  ontologyTermToLoadId: '${collectionCard.ontologyTermToLoadId}',bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}'};
+                        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, bigOntologyTermId: '${collectionCard.bigOntologyTermId}', smallOntologyTermId: '${collectionCard.smallOntologyTermId}',  ontologyTermToLoadId: '${collectionCard.ontologyTermToLoadId}',bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}', order: '${collectionCard.order}'};
                     </c:otherwise>
                 </c:choose>
         </c:forEach>
@@ -134,6 +145,7 @@
             event.preventDefault();
             var self = jQuery(this);
             loadCollectionCardForm(self.attr('data-card-id'));
+            jQuery(".collectionCard-outline-right").show();
         });
 
 
@@ -147,14 +159,40 @@
             jQuery(".collectionCard-edit-form #ontologyTermToLoad").val(collectionCard.ontologyTermToLoadId);
             jQuery(".collectionCard-edit-form #bigOntologyTerm").val(collectionCard.bigOntologyTermId);
             jQuery(".collectionCard-edit-form #smallOntologyTerm").val(collectionCard.smallOntologyTermId);
+            jQuery(".collectionCard-edit-form #order").val(collectionCard.order);
             jQuery(".collectionCard-edit-form #onlyFeatured").val(collectionCard.onlyFeatured);
             jQuery(".collectionCard-edit-form #visible").val(collectionCard.visible);
 
         }
 
         function submitUpdateCollectionCard() {
-            document.getElementById('selectForm').submit();
+            var inputError = false;
+            if(!jQuery(".collectionCard-edit-form #description").val().length > 0) {
+                jQuery(".collectionCard-edit-form #description").css("background-color", "lightcoral");
+                inputError = true;
+            }
+            if(jQuery(".collectionCard-edit-form #parentId").val() == -1) {
+                jQuery(".collectionCard-edit-form #parentId").css("background-color", "lightcoral");
+                inputError = true;
+            }
+            if(jQuery(".collectionCard-edit-form #ontologyTermToLoad").val() == -1) {
+                jQuery(".collectionCard-edit-form #ontologyTermToLoad").css("background-color", "lightcoral");
+                inputError = true;
+            }
+            if(jQuery(".collectionCard-edit-form #bigOntologyTerm").val() == -1) {
+                jQuery(".collectionCard-edit-form #bigOntologyTerm").css("background-color", "lightcoral");
+                inputError = true;
+            }
+            if(jQuery(".collectionCard-edit-form #smallOntologyTerm").val() == -1) {
+                jQuery(".collectionCard-edit-form #smallOntologyTerm").css("background-color", "lightcoral");
+                inputError = true;
+            }
 
+            if(inputError) {
+                alert("Please check your inputs")
+            } else {
+                document.getElementById('selectForm').submit();
+            }
         }
 
         ]]>

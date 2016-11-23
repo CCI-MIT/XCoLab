@@ -152,7 +152,7 @@ public class CollectionCardWrapper {
         return this.contestCollectionCard.getParent() != null ?  this.contestCollectionCard.getParent() : -1;
     }
 
-    public void setParent(Long parentId) {
+    public void setParentId(Long parentId) {
         contestCollectionCard.setParent(parentId);
     }
 
@@ -173,7 +173,7 @@ public class CollectionCardWrapper {
     }
 
     public int getOrder() {
-        return contestCollectionCard.getOrder();
+        return contestCollectionCard.getOrder() != null ? contestCollectionCard.getOrder() : 0;
     }
 
     public void setOrder( int order) {

@@ -18,6 +18,8 @@ import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
+import java.io.IOException;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
@@ -66,6 +68,13 @@ public class ContestManagerCollectionCardTabController extends ContestManagerBas
             return;
         }
         collectionCardWrapper.persist();
+        SetRenderParameterUtil.addActionSuccessMessageToSession(request);
+        try {
+            response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tab.getName());
+        } catch (IOException e) {
+            _log.warn("Update CollectionCard failed with: ", e);
+            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
+        }
     }
 
 }
