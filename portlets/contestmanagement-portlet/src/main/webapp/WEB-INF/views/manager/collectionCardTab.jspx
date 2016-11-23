@@ -26,23 +26,22 @@
     </div>
 
     <div class="collectionCard-outline-right" style="display:none;">
-        <div class="buttonContainer">
-            <div>
-                <div class="floatRight outerVerticalCenter">
-                    <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitUpdateCollectionCard();">SAVE</a>
-                </div>
-            </div>
-            <div>
-                <div class="floatRight outerVerticalCenter">
-                    <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitUpdateCollectionCard();">DELETE</a>
-                </div>
-            </div>
-        </div>
+
         <portlet:actionURL var="updateContestCollectionCardURL">
             <portlet:param name="tab" value="COLLECTION_CARDS" />
             <portlet:param name="manager" value="true"/>
             <portlet:param name="action" value="updateContestCollectionCard" />
         </portlet:actionURL>
+
+        <portlet:actionURL var="deleteContestCollectionCardURL">
+            <portlet:param name="tab" value="COLLECTION_CARDS" />
+            <portlet:param name="manager" value="true"/>
+            <portlet:param name="action" value="deleteContestCollectionCard" />
+        </portlet:actionURL>
+
+        <form action="${deleteContestCollectionCardURL }" id="deleteCollectionCardForm" method="post" style="visibility: hidden;">
+            <input id="id" name="id"  type="hidden" value=""/>
+        </form>
 
         <form:form action="${updateContestCollectionCardURL }" commandName="collectionCardWrapperWhat" id="selectForm" method="post">
             <div class="collectionCard-edit-form">
@@ -50,6 +49,18 @@
                     <!-- -->
                 </h1>
                 <br/>
+                <div class="buttonContainer">
+                    <div>
+                        <div class="floatRight outerVerticalCenter">
+                            <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitUpdateCollectionCard();">SAVE</a>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="floatRight outerVerticalCenter">
+                            <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitUpdateCollectionCard();">DELETE</a>
+                        </div>
+                    </div>
+                </div>
                 <form:hidden path="createNew" id="createNewFlag"/>
                 <input id="id" name="id"  type="hidden" value=""/>
                 <div class="addpropbox">
@@ -153,6 +164,7 @@
             var collectionCard = collectionCards[collectionCardId];
 
             jQuery(".collectionCard-edit-form #title").html(collectionCard.description)
+            jQuery("#deleteCollectionCardForm #id").val(collectionCardId);
             jQuery(".collectionCard-edit-form #id").val(collectionCardId);
             jQuery(".collectionCard-edit-form #description").val(collectionCard.description);
             jQuery(".collectionCard-edit-form #parentId").val(collectionCard.parentId);

@@ -56,7 +56,7 @@ public class ContestManagerCollectionCardTabController extends ContestManagerBas
     }
 
     @RequestMapping(params = "action=updateContestCollectionCard")
-    public void updateScheduleTabController(ActionRequest request, Model model,
+    public void updateCollectionCardController(ActionRequest request, Model model,
             @ModelAttribute CollectionCardWrapper collectionCardWrapper,
             BindingResult result, ActionResponse response) {
         if (!tabWrapper.getCanEdit()) {
@@ -68,6 +68,27 @@ public class ContestManagerCollectionCardTabController extends ContestManagerBas
             return;
         }
         collectionCardWrapper.persist();
+        SetRenderParameterUtil.addActionSuccessMessageToSession(request);
+        try {
+            response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tab.getName());
+        } catch (IOException e) {
+            _log.warn("Update CollectionCard failed with: ", e);
+            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
+        }
+    }
+
+    @RequestMapping(params = "action=deleteContestCollectionCard")
+    public void deleteCollectionCardController(ActionRequest request, Model model,
+            @RequestParam(required = false) String  collectionCardId,
+            BindingResult result, ActionResponse response) {
+        if (!tabWrapper.getCanEdit()) {
+            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
+            return;
+        }
+        if (result.hasErrors()) {
+            return;
+        }
+        //ContestClientUtil.deleteContestCollectionCard(collectionCardId);
         SetRenderParameterUtil.addActionSuccessMessageToSession(request);
         try {
             response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tab.getName());
