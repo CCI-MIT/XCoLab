@@ -18,8 +18,8 @@
             Collection Card Editor
         </h1>
         <br/>
-        <div class="addpropbox" style="height:38px;">
-             <b>UPDATE</b> an existing Collection Card: Select the specific item in the hierarchy below!
+        <div class="addpropbox">
+             <b>Update</b> an existing Collection Card: Select the specific item in the hierarchy below!
         </div>
         <div class="addpropbox">
             <b>Create </b> a new Collection Card:
@@ -32,13 +32,13 @@
 
     <div class="collectionCard-outline-left">
         <br/>
-        <h2 class="collectionCard-category">
-            Any action:
-        </h2>
+        <h3 class="collectionCard-category">
+            ANY ACTION:
+        </h3>
             <contestmanagementPortlet:collectionCardWithChildren collectionCard="${collectionCardWrapperWhat}" section="${section + 1 }" level="${level + 1 }" />
-        <h2 class="collectionCard-category">
-            Anywhere:
-        </h2>
+        <h3 class="collectionCard-category">
+            ANYWHERE:
+        </h3>
             <contestmanagementPortlet:collectionCardWithChildren collectionCard="${collectionCardWrapperWhere}" section="${section + 1 }" level="${level + 1 }" />
     </div>
 
@@ -62,9 +62,9 @@
 
         <form:form action="${updateContestCollectionCardURL }" commandName="collectionCardWrapperWhat" id="editForm" method="post">
             <div class="collectionCard-edit-form">
-                <h1 id="title">
+                <h2 id="title">
                     <!-- -->
-                </h1>
+                </h2>
                 <br/>
                 <div class="buttonContainer">
                     <div>
