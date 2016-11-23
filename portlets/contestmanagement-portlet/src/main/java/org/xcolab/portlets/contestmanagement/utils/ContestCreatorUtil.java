@@ -21,6 +21,8 @@ import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleChang
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Random;
 
 public final class ContestCreatorUtil {

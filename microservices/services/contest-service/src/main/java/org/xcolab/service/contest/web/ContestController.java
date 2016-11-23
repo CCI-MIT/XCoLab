@@ -21,6 +21,8 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.utils.PaginationHelper;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -76,6 +78,8 @@ public class ContestController {
 
     @PostMapping(value = "/contests")
     public Contest createContest(@RequestBody Contest contest) {
+        contest.setCreated(new Timestamp(new Date().getTime()));
+        contest.setUpdated(new Timestamp(new Date().getTime()));
         return this.contestDao.create(contest);
     }
 
@@ -86,6 +90,7 @@ public class ContestController {
         if (contestDao.get(contestPK) == null) {
             throw new NotFoundException("No Contest with id " + contestPK);
         } else {
+            contest.setUpdated(new Timestamp(new Date().getTime()));
             return contestDao.update(contest);
         }
     }
