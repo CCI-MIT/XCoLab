@@ -12,6 +12,23 @@
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
 
+    <div class="explanation">
+        <br/>
+        <h1>
+            Collection Card Editor
+        </h1>
+        <br/>
+        <div class="addpropbox" style="height:38px;">
+             <b>UPDATE</b> an existing Collection Card: Select the specific item in the hierarchy below!
+        </div>
+        <div class="addpropbox">
+            <b>Create </b> a new Collection Card:
+            <div style="display:inline-block" >
+                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="createNewCollectionCard();">CREATE NEW</a>
+            </div>
+        </div>
+    </div>
+
 
     <div class="collectionCard-outline-left">
         <br/>
@@ -43,7 +60,7 @@
             <input id="collectionCardId" name="collectionCardId"  type="hidden" value=""/>
         </form>
 
-        <form:form action="${updateContestCollectionCardURL }" commandName="collectionCardWrapperWhat" id="selectForm" method="post">
+        <form:form action="${updateContestCollectionCardURL }" commandName="collectionCardWrapperWhat" id="editForm" method="post">
             <div class="collectionCard-edit-form">
                 <h1 id="title">
                     <!-- -->
@@ -57,7 +74,12 @@
                     </div>
                     <div>
                         <div class="floatRight outerVerticalCenter">
-                            <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitDeleteCollectionCard();">DELETE</a>
+                            <a class="c-Button__primary innerVerticalCenter" id="deleteButton" href="#" onclick="submitDeleteCollectionCard();">DELETE</a>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="floatRight outerVerticalCenter">
+                            <a class="c-Button__primary innerVerticalCenter" style="display: none" id="cancelButton" href="#" onclick="cancelCollectionCardCreation();">CANCEL</a>
                         </div>
                     </div>
                 </div>
@@ -66,32 +88,25 @@
                 <div class="addpropbox">
                     <strong class="inputTitleLeft">Description:</strong>
                     <input id="description" name="Description" class="wideLargeInput" type="text" value="" validatelength="false"/>
-                </div>
-                <div class="addpropbox">
+                    <br/>
                     <strong class="inputTitleLeft">Parent CollectionCard</strong>
                     <form:select path="parentId" id="parentId" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.collectionCards}" />
-                </div>
-                <div class="addpropbox">
+                    <br/>
                     <strong class="inputTitleLeft">Ontologyterm to load</strong>
                     <form:select path="ontologyTermToLoad" id="ontologyTermToLoad" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
-                </div>
-                <div class="addpropbox">
+                    <br/>
                     <strong class="inputTitleLeft">Big Ontologyterm</strong>
                     <form:select path="bigOntologyTerm" id="bigOntologyTerm" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
-                </div>
-                <div class="addpropbox">
+                    <br/>
                     <strong class="inputTitleLeft">Small Ontologyterm</strong>
                     <form:select path="smallOntologyTerm" id="smallOntologyTerm" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
-                </div>
-                <div class="addpropbox">
+                    <br/>
                     <strong class="inputTitleLeft">Order</strong>
-                    <input path="order" id="order" class="wideLargeInput" type="number" value="0" />
-                </div>
-                <div class="addpropbox">
+                    <input name="order" id="order" class="wideLargeInput" type="number" value="0" />
+                    <br/>
                     <strong class="inputTitleLeft">Only Featured</strong>
                     <form:checkbox path="onlyFeatured" id="onlyFeatured" cssClass="wideLargeInput"/>
-                </div>
-                <div class="addpropbox">
+                    <br/>
                     <strong class="inputTitleLeft">Visible</strong>
                     <form:checkbox path="visible" id="visible" cssClass="wideLargeInput"/>
                 </div>
@@ -161,6 +176,9 @@
 
 
         function loadCollectionCardForm(collectionCardId) {
+
+            jQuery("#createNewFlag").val(false);
+
             var collectionCard = collectionCards[collectionCardId];
 
             jQuery(".collectionCard-edit-form #title").html(collectionCard.description)
@@ -178,6 +196,7 @@
         }
 
         function submitUpdateCollectionCard() {
+
             var inputError = false;
             if(!jQuery(".collectionCard-edit-form #description").val().length > 0) {
                 jQuery(".collectionCard-edit-form #description").css("background-color", "lightcoral");
@@ -203,18 +222,56 @@
             if(inputError) {
                 alert("Please check your inputs")
             } else {
-                document.getElementById('selectForm').submit();
+                document.getElementById('editForm').submit();
             }
         }
 
         function submitDeleteCollectionCard() {
-            var r = confirm("Please confirm the deletion of CollectionCard: '" + jQuery(".collectionCard-edit-form #title").html() + "' \n Children will be moved to its parent!");
-            if (r == true) {
-                document.getElementById('deleteCollectionCardForm').submit();
+            if(jQuery("#deleteCollectionCardForm #collectionCardId").val() > 0) {
+                var r = confirm("Please confirm the deletion of CollectionCard: '" + jQuery(".collectionCard-edit-form #title").html() + "' \n Children will be moved to its parent!");
+                if (r == true) {
+                    document.getElementById('deleteCollectionCardForm').submit();
+                } else {
+                    alert("You canceled the deletion!");
+                }
             } else {
-                alert("You canceled the deletion!");
+                alert("Please select an existing CollectionCard to delete!");
             }
 
+
+        }
+
+        function createNewCollectionCard() {
+
+            jQuery("#createNewFlag").val(true);
+
+            jQuery(".collectionCard-edit-form #title").html("New CollectionCard");
+            jQuery("#deleteCollectionCardForm #collectionCardId").val(-1);
+            jQuery(".collectionCard-edit-form #id").val(-1); //just for validation
+            jQuery(".collectionCard-edit-form #description").val("");
+            jQuery(".collectionCard-edit-form #parentId").val(-1);
+            jQuery(".collectionCard-edit-form #ontologyTermToLoad").val(-1);
+            jQuery(".collectionCard-edit-form #bigOntologyTerm").val(-1);
+            jQuery(".collectionCard-edit-form #smallOntologyTerm").val(-1);
+            jQuery(".collectionCard-edit-form #order").val(0);
+            jQuery(".collectionCard-edit-form #onlyFeatured").val(false);
+            jQuery(".collectionCard-edit-form #visible").val(true);
+
+            jQuery("#deleteButton").hide();
+            jQuery(".collectionCard-outline-left").hide();
+            jQuery(".collectionCard-outline-right").css("width","100%");
+            jQuery(".collectionCard-outline-right").show();
+            jQuery("#cancelButton").show();
+        }
+
+        function cancelCollectionCardCreation() {
+            jQuery("#createNewFlag").val(false);
+
+            jQuery("#cancelButton").hide();
+            jQuery("#deleteButton").show();
+            jQuery(".collectionCard-outline-left").show();
+            jQuery(".collectionCard-outline-right").css("width","40%");
+            jQuery(".collectionCard-outline-right").hide();
         }
 
         ]]>

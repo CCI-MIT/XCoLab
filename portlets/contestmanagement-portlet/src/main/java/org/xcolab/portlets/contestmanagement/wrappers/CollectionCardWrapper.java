@@ -145,7 +145,7 @@ public class CollectionCardWrapper {
     }
 
     public void setSmallOntologyTerm(long smallOntologyTermId) {
-        contestCollectionCard.setBig_ontology_term(smallOntologyTermId);
+        contestCollectionCard.setSmall_ontology_term(smallOntologyTermId);
     }
 
     public long getParentId() {
@@ -176,7 +176,7 @@ public class CollectionCardWrapper {
         return contestCollectionCard.getOrder() != null ? contestCollectionCard.getOrder() : 0;
     }
 
-    public void setOrder( int order) {
+    public void setOrder(int order) {
         contestCollectionCard.setOrder(order);
     }
 
