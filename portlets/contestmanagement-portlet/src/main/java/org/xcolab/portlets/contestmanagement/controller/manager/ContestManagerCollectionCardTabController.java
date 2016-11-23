@@ -88,7 +88,7 @@ public class ContestManagerCollectionCardTabController extends ContestManagerBas
         if (result.hasErrors()) {
             return;
         }
-        //ContestClientUtil.deleteContestCollectionCard(collectionCardId);
+        ContestClientUtil.deleteContestCollectionCard(collectionCardId);
         SetRenderParameterUtil.addActionSuccessMessageToSession(request);
         try {
             response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tab.getName());
