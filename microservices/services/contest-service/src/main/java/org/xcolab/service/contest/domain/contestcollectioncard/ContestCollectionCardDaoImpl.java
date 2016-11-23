@@ -60,6 +60,13 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
                 .execute() > 0;
     }
 
+    @Override
+    public boolean delete(Long contestCollectionCardId) throws NotFoundException {
+        return dslContext.deleteFrom(CONTEST_COLLECTION_CARD)
+                .where(CONTEST_COLLECTION_CARD.ID_.eq(contestCollectionCardId))
+                .execute() > 0;
+    }
+
 
     @Override
     public ContestCollectionCard get(Long contestCollectionCardId) throws NotFoundException {

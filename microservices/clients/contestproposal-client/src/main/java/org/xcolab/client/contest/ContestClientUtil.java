@@ -298,6 +298,10 @@ public final class ContestClientUtil {
         return contestClient.getContestCollectionCard(id);
     }
 
+    public static boolean deleteContestCollectionCard(long id) {
+        return contestClient.deleteContestCollectionCard(id);
+    }
+
     public static void autoPromoteProposals() {
         contestClient.autoPromoteProposals();
     }

@@ -40,7 +40,7 @@
         </portlet:actionURL>
 
         <form action="${deleteContestCollectionCardURL }" id="deleteCollectionCardForm" method="post" style="visibility: hidden;">
-            <input id="id" name="id"  type="hidden" value=""/>
+            <input id="collectionCardId" name="collectionCardId"  type="hidden" value=""/>
         </form>
 
         <form:form action="${updateContestCollectionCardURL }" commandName="collectionCardWrapperWhat" id="selectForm" method="post">
@@ -57,7 +57,7 @@
                     </div>
                     <div>
                         <div class="floatRight outerVerticalCenter">
-                            <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitUpdateCollectionCard();">DELETE</a>
+                            <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitDeleteCollectionCard();">DELETE</a>
                         </div>
                     </div>
                 </div>
@@ -164,7 +164,7 @@
             var collectionCard = collectionCards[collectionCardId];
 
             jQuery(".collectionCard-edit-form #title").html(collectionCard.description)
-            jQuery("#deleteCollectionCardForm #id").val(collectionCardId);
+            jQuery("#deleteCollectionCardForm #collectionCardId").val(collectionCardId);
             jQuery(".collectionCard-edit-form #id").val(collectionCardId);
             jQuery(".collectionCard-edit-form #description").val(collectionCard.description);
             jQuery(".collectionCard-edit-form #parentId").val(collectionCard.parentId);
@@ -205,6 +205,16 @@
             } else {
                 document.getElementById('selectForm').submit();
             }
+        }
+
+        function submitDeleteCollectionCard() {
+            var r = confirm("Please confirm the deletion of CollectionCard: '" + jQuery(".collectionCard-edit-form #title").html() + "' \n Children will be moved to its parent!");
+            if (r == true) {
+                document.getElementById('deleteCollectionCardForm').submit();
+            } else {
+                alert("You canceled the deletion!");
+            }
+
         }
 
         ]]>

@@ -12,6 +12,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
@@ -78,17 +79,13 @@ public class ContestManagerCollectionCardTabController extends ContestManagerBas
     }
 
     @RequestMapping(params = "action=deleteContestCollectionCard")
-    public void deleteCollectionCardController(ActionRequest request, Model model,
-            @RequestParam(required = false) String  collectionCardId,
-            BindingResult result, ActionResponse response) {
+    public void deleteCollectionCardController(ActionRequest request,
+            @RequestParam(required = true) String  collectionCardId, ActionResponse response) {
         if (!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;
         }
-        if (result.hasErrors()) {
-            return;
-        }
-        ContestClientUtil.deleteContestCollectionCard(collectionCardId);
+        ContestClientUtil.deleteContestCollectionCard(new Long(collectionCardId));
         SetRenderParameterUtil.addActionSuccessMessageToSession(request);
         try {
             response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tab.getName());

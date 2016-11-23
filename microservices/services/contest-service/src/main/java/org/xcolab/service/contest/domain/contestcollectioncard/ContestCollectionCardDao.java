@@ -13,6 +13,8 @@ public interface ContestCollectionCardDao {
 
     boolean update(ContestCollectionCard contestCollectionCard);
 
+    boolean delete(Long contestCollectionCardId) throws NotFoundException;
+
     List<ContestCollectionCard>  findByGiven(Long parentCollectionCardId) throws NotFoundException;
 
 }

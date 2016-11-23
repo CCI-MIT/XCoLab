@@ -54,4 +54,20 @@ public class CollectionCardService {
         return count;
     }
 
+    public boolean deleteContestCollectionCardAndMoveChildren(long collectionCardId) {
+        try {
+            if(contestCollectionCardDao.get(collectionCardId).getParent() == null){
+                return false;
+            }
+            long parentId = contestCollectionCardDao.get(collectionCardId).getParent();
+            for(ContestCollectionCard card : contestCollectionCardDao.findByGiven(collectionCardId)) {
+                card.setParent(parentId);
+                contestCollectionCardDao.update(card);
+            }
+            return contestCollectionCardDao.delete(collectionCardId);
+        } catch (NotFoundException e) {
+            return false;
+        }
+    }
+
 }

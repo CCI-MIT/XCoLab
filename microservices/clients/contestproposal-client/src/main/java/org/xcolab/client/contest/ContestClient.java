@@ -245,6 +245,10 @@ public class ContestClient {
                 .execute();
     }
 
+    public boolean deleteContestCollectionCard(long id) {
+        return contestCollectionCardRestResource.delete(id).execute();
+    }
+
     public ContestCollectionCard createContestCollectionCard(ContestCollectionCard contestCollectionCard) {
         return contestCollectionCardRestResource.create(new ContestCollectionCardDto(contestCollectionCard)).execute().toPojo(contestService);
 

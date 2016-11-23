@@ -2,6 +2,7 @@ package org.xcolab.service.contest.web;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -70,6 +71,11 @@ public class ContestController {
     @GetMapping(value = "/contestCollectionCards")
     public List<ContestCollectionCard> getContestCollectionCards(@RequestParam(required=false) Long parentCollectionCardId) throws NotFoundException{
         return contestCollectionCardDao.findByGiven(parentCollectionCardId);
+    }
+
+    @DeleteMapping(value = "/contestCollectionCards/{contestCollectionCardId}")
+    public boolean deleteContestCollectionCard(@PathVariable long contestCollectionCardId) {
+        return collectionCardService.deleteContestCollectionCardAndMoveChildren(contestCollectionCardId);
     }
 
     @RequestMapping(value = "/contests", method = {RequestMethod.GET, RequestMethod.HEAD})
