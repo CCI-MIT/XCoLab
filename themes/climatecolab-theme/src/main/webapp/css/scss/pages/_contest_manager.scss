@@ -124,6 +124,9 @@ $p-cms__uploadWidget__fontWeight: $b-Typography__fontWeight--bold !default;
   .addpropbox{
     padding: 4px 15px 4px 12px;
     height: 38px;
+    width: 600px;
+    display: table-cell;
+    vertical-align: middle;
   }
 }
 
