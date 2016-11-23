@@ -28,6 +28,8 @@
                 <a class="c-Button__primary innerVerticalCenter" href="#" onclick="createNewCollectionCard();">CREATE NEW</a>
             </div>
         </div>
+        <br/>
+        <br/>
     </div>
 
 
@@ -66,24 +68,6 @@
                 <h2 id="title">
                     <!-- -->
                 </h2>
-                <br/>
-                <div class="buttonContainer">
-                    <div>
-                        <div class="floatRight outerVerticalCenter">
-                            <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitUpdateCollectionCard();">SAVE</a>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="floatRight outerVerticalCenter">
-                            <a class="c-Button__primary innerVerticalCenter" id="deleteButton" href="#" onclick="submitDeleteCollectionCard();">DELETE</a>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="floatRight outerVerticalCenter">
-                            <a class="c-Button__primary innerVerticalCenter" style="display: none" id="cancelButton" href="#" onclick="cancelCollectionCardCreation();">CANCEL</a>
-                        </div>
-                    </div>
-                </div>
                 <form:hidden path="createNew" id="createNewFlag"/>
                 <input id="id" name="id"  type="hidden" value=""/>
                 <div class="addpropbox">
@@ -113,6 +97,24 @@
                 </div>
             </div>
         </form:form>
+        <br/>
+        <div class="buttonContainer">
+            <div>
+                <div class="floatRight outerVerticalCenter">
+                    <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitUpdateCollectionCard();">SAVE</a>
+                </div>
+            </div>
+            <div>
+                <div class="floatRight outerVerticalCenter">
+                    <a class="c-Button__primary innerVerticalCenter" id="deleteButton" href="#" onclick="submitDeleteCollectionCard();">DELETE</a>
+                </div>
+            </div>
+            <div>
+                <div class="floatRight outerVerticalCenter">
+                    <a class="c-Button__primary innerVerticalCenter" style="display: none" id="cancelButton" href="#" onclick="cancelCollectionCardCreation();">CANCEL</a>
+                </div>
+            </div>
+        </div>
     </div>
 
 
