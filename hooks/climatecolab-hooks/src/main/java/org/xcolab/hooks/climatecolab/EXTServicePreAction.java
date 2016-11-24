@@ -86,7 +86,8 @@ public class EXTServicePreAction extends Action {
         vmVariables.put("adminEmail", ConfigurationAttributeKey.ADMIN_EMAIL.get());
         List<ContestType> contestTypes = ContestClientUtil.getAllContestTypes();
         if(!contestTypes.isEmpty()) {
-            vmVariables.put("defaultContestType",contestTypes.get(contestTypes.size()-1) );
+            vmVariables.put("contestNameLowerCase",contestTypes.get(contestTypes.size()-1).getContestName().toLowerCase() );
+            vmVariables.put("proposalNameLowerCase",contestTypes.get(contestTypes.size()-1).getProposalName().toLowerCase() );
         }
 
         final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.get();

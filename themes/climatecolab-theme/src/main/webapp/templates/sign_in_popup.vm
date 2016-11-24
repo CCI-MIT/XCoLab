@@ -104,8 +104,8 @@
         <div class="c-Popup">
             <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_SSO_autoreg').hide()"><img src="$images_folder/help_close.png" width="20" height="20" alt="X" /></a></div>
             <div><img style="max-height:55px;margin-right: 10px;" src="$images_folder/logo-climate-colab.png"/> <img style="max-height:55px" src="$images_folder/$partnerColabLogo"/> </div>
-            <div style="margin-top: 15px;margin-bottom: 15px;">$_colab_name has teamed up with $partnerColabName to run this $defaultContestType.contestName . To participate, click "OK" below. When you save your $defaultContestType.proposalName?
-                , you'll be able to see and make changes to it on either site – all edits and comments will be synced between the two platforms.
+            <div style="margin-top: 15px;margin-bottom: 15px;">$_colab_name has teamed up with $partnerColabName to run this $contestNameLowerCase. To participate, click "OK" below.
+                When you save your $proposalNameLowerCase, you'll be able to see and make changes to it on either site – all edits and comments will be synced between the two platforms.
                 We'll even create a linked account so you can log into $partnerColabName  with your $_colab_name username and password.  It's easy!</div>
             <div style="font-size: small;">$partnerColabName will receive your $_colab_name public profile and email address. Questions? Contact $adminEmail.</div>
             <div class="clearfix"></div>

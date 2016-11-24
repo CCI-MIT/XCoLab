@@ -112,7 +112,7 @@ public class Contest extends AbstractContest {
 
         String link = "/";
 
-        if(this.getIsSharedContest() && ! this.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME)){
+        if(this.getIsSharedContestInForeignColab()){
             link += ContestClientUtil.getClient().getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get())
                     .getFriendlyUrlStringContests();
         }else{
@@ -123,9 +123,15 @@ public class Contest extends AbstractContest {
         link += "/%d/%s";
         return String.format(link, this.getContestYear(), this.getContestUrlName());
     }
-
+    public String getProposalLogoPath() {
+        if(this.getIsSharedContestInForeignColab()) {
+            return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_LOCATION+"/";
+        }else{
+            return "/";
+        }
+    }
     public String getLogoPath() {
-        if(this.getIsSharedContest() && ! this.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME.get())) {
+        if(this.getIsSharedContestInForeignColab()) {
 
             Long i = this.getContestLogoId();
             if (i != null) {
@@ -446,8 +452,13 @@ public class Contest extends AbstractContest {
 
 
     public String getResourceArticleUrl() {
-        return "/web/guest/wiki/-/wiki/resources/" + this.getContestYear()
-                + "/" + this.getContestUrlName();
+        if(this.getIsSharedContestInForeignColab()) {
+            return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_LOCATION+"/web/guest/wiki/-/wiki/resources/" + this.getContestYear()
+                    + "/" + this.getContestUrlName();
+        } else{
+            return "/web/guest/wiki/-/wiki/resources/" + this.getContestYear()
+                    + "/" + this.getContestUrlName();
+        }
     }
 
     @Override
