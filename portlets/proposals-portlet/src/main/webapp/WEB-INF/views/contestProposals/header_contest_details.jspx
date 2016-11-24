@@ -15,13 +15,13 @@
                             <c:choose>
                                 <c:when test="${contest.sponsorLinkAvailable}">
                                     <a href="//${contest.sponsorLink}">
-                                        <img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}"
+                                        <img src="${contest.logoPath}"
                                                 alt="Sponsor Logo"
                                                 class="p-ContestProposals__header__sponsorLogo"/>
                                     </a>
                                 </c:when>
                                 <c:otherwise>
-                                    <img src="/image/contest_sponsor?img_id=${contest.sponsorLogoId}"
+                                    <img src="${contest.logoPath}"
                                          alt="Sponsor Logo"
                                          class="p-ContestProposals__header__sponsorLogo"/>
                                 </c:otherwise>

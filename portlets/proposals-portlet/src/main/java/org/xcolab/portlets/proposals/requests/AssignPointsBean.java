@@ -67,8 +67,11 @@ public class AssignPointsBean {
             }
         }
         //follow down the pointType tree
-        for (PointType p: pointType.getChildren()) {
-            addAllAssignments(p, members);
+        List<PointType> list = pointType.getChildren();
+        if(list!=null) {
+            for (PointType p : list) {
+                addAllAssignments(p, members);
+            }
         }
         initializeUsers(members);
     }

@@ -21,6 +21,8 @@ import com.liferay.portal.service.ThemeLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -81,7 +83,12 @@ public class EXTServicePreAction extends Action {
         vmVariables.put("partnerColabName",partnerColabName);
         vmVariables.put("partnerColabClassName",partnerColabImgsAndClasses+ "-sketchy");
         vmVariables.put("partnerColabLogo",partnerColabImgsAndClasses+ "PartnerLogo.png");
-        
+        vmVariables.put("adminEmail", ConfigurationAttributeKey.ADMIN_EMAIL.get());
+        List<ContestType> contestTypes = ContestClientUtil.getAllContestTypes();
+        if(!contestTypes.isEmpty()) {
+            vmVariables.put("defaultContestType",contestTypes.get(contestTypes.size()-1) );
+        }
+
         final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.get();
         vmVariables.put("mitHeaderBarShow", mitHeaderBarShow);
         if (mitHeaderBarShow) {

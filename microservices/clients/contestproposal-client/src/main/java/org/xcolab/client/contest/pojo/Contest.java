@@ -365,6 +365,8 @@ public class Contest extends AbstractContest {
         return false;
     }
 
+
+
     public ContestPhase getActivePhase() {
         if (activePhase == null) {
             ContestPhase phase = contestClient.getActivePhase(this.getContestPK());
