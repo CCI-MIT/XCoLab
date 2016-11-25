@@ -43,7 +43,6 @@ public class EXTServicePreAction extends Action {
     @Override
     public void run(HttpServletRequest req, HttpServletResponse res) throws ActionException {
 
-
         ThemeDisplay themeDisplay = (ThemeDisplay) req.getAttribute(WebKeys.THEME_DISPLAY);
         Map<String, Object> vmVariables = (Map) req.getAttribute(WebKeys.VM_VARIABLES);
         if (vmVariables == null) {
