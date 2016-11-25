@@ -19,6 +19,7 @@ public class PointType extends AbstractPointType {
 
     public PointType(PointType value) {
         super(value);
+        initChildren();
     }
 
     public PointType(
@@ -32,20 +33,28 @@ public class PointType extends AbstractPointType {
     ) {
         super(id_, parentpointtypeid, percentageofparent, distributionstrategy,
                 receiverlimitationstrategy, name, sort);
+        initChildren();
     }
 
     public PointType(AbstractPointType abstractPointType, RestService restService) {
         super(abstractPointType);
+        initChildren();
     }
 
     public PointType(PointType pointType, double parentPercentageOfTotal) {
         this(pointType);
         this.percentageOfTotal = parentPercentageOfTotal * pointType.getPercentageOfParent();
-        final PointsClient pointsClient = PointsClientUtil.getClient();
-        List<PointType> unwrappedChildren = pointsClient.getChildrenOfPointType(pointType.getId_());
-        this.children = new ArrayList<>();
-        for (PointType child: unwrappedChildren) {
-            this.children.add(new PointType(child, this.percentageOfTotal));
+        initChildren();
+
+    }
+    private void initChildren(){
+        if(this.getId_()!= null) {
+            List<PointType> unwrappedChildren =
+                    PointsClientUtil.getClient().getChildrenOfPointType(this.getId_());
+            this.children = new ArrayList<>();
+            for (PointType child : unwrappedChildren) {
+                this.children.add(new PointType(child, this.percentageOfTotal));
+            }
         }
     }
 

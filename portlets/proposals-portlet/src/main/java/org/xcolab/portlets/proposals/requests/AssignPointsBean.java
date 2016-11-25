@@ -43,7 +43,7 @@ public class AssignPointsBean {
     }
 
     public void addAllAssignments(PointType pointType, List<Member> members) throws SystemException, PortalException {
-        if (pointType.getDistributionStrategy().equals(DistributionStrategy.USER_DEFINED)) {
+        if (pointType.getDistributionStrategyz().name().equals(DistributionStrategy.USER_DEFINED.name())) {
 
             PointsClientUtil.verifyDistributionConfigurationsForProposalId(proposalId);
 
@@ -54,7 +54,7 @@ public class AssignPointsBean {
             switch(pointType.getReceiverLimitationStrategyz().getType()) {
                 case USER:
                     List<Member> presetUsers = null;
-                    if (pointType.getReceiverLimitationStrategy().equals(ReceiverLimitationStrategy.ANY_TEAM_MEMBER)) {
+                    if (pointType.getReceiverLimitationStrategyz().name().equals(ReceiverLimitationStrategy.ANY_TEAM_MEMBER.name())) {
                         presetUsers = members;
                     }
 

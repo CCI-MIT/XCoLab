@@ -54,7 +54,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             return "";
         }
 
-        PointType parentPointType = new PointType(contestParentPointType);
+        PointType parentPointType = (contestParentPointType);
 
         List<Proposal> subProposals = ProposalClientUtil
                 .getSubproposals(proposal.getProposalId(), false);
