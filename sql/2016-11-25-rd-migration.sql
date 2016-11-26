@@ -22,7 +22,7 @@ CREATE TABLE `members_Member` (
   `status` int(11) DEFAULT '0',
   `forgotPasswordToken` varchar(255) DEFAULT NULL,
   `forgotPasswordTokenExpireTime` datetime DEFAULT NULL,
-  `portraitFileEntryId` bigint(20) DEFAULT NULL,
+  `portraitFileEntryId` bigint(20) DEFAULT 0,
   `reportKarma` int(11) DEFAULT '100',
   `autoRegisteredMemberStatus` int(4) DEFAULT '0',
   PRIMARY KEY (`id_`),
@@ -69,6 +69,63 @@ ALTER TABLE `xcolab_Contest` ADD COLUMN `ContestUrlName` varchar(75) DEFAULT NUL
 ALTER TABLE `xcolab_Contest` ADD COLUMN `ContestYear` bigint(20) DEFAULT NULL AFTER `ContestUrlName`;
 
 ALTER TABLE `xcolab_MessagingUserPreferences` ADD COLUMN `dailyMessageLimit` int(11) DEFAULT NULL;
+
+DROP TABLE IF EXISTS `xcolab_ContestType`;
+CREATE TABLE `xcolab_ContestType` (
+  `id_` bigint(20) NOT NULL,
+  `contestName` varchar(75) DEFAULT NULL,
+  `contestNamePlural` varchar(75) DEFAULT NULL,
+  `proposalName` varchar(75) DEFAULT NULL,
+  `proposalNamePlural` varchar(75) DEFAULT NULL,
+  `portletName` varchar(75) DEFAULT NULL,
+  `portletUrl` varchar(75) DEFAULT NULL,
+  `friendlyUrlStringContests` varchar(75) DEFAULT NULL,
+  `friendlyUrlStringProposal` varchar(75) DEFAULT NULL,
+  `menuItemName` varchar(75) DEFAULT NULL,
+  `hasDiscussion` tinyint(4) DEFAULT NULL,
+  `suggestionContestId` bigint(20) DEFAULT NULL,
+  `rulesPageName` varchar(75) DEFAULT NULL,
+  `rulesPageUrl` varchar(75) DEFAULT NULL,
+  PRIMARY KEY (`id_`)
+);
+
+INSERT INTO xcolab_ContestType (id_, contestName, contestNamePlural, proposalName, proposalNamePlural, portletName, portletUrl, friendlyUrlStringContests, friendlyUrlStringProposal, menuItemName, hasDiscussion, suggestionContestId, rulesPageName, rulesPageUrl) VALUES (0, 'Dialogue', 'Dialogues', 'Contribution', 'Contributions', 'dialogue', '/web/guest/dialogues', 'dialogues', 'contribution', 'Dialogues', 1, 0, 'Dialogue Rules', '/web/guest/resources/-/wiki/Main/Contest+Rules');
+UPDATE xcolab_Contest SET ContestUrlName = 'coral-gables-key-questions', ContestYear = 2016 WHERE ContestPK = 1303602;
+UPDATE xcolab_Contest SET ContestUrlName = 'coral-gables-trends-and-scenarios', ContestYear = 2016 WHERE ContestPK = 1303603;
+UPDATE xcolab_Contest SET ContestUrlName = 'coral-gables-resources-and-strategies', ContestYear = 2016 WHERE ContestPK = 1303701;
+UPDATE xcolab_Contest SET ContestUrlName = 'dubuque-key-questions', ContestYear = 2016 WHERE ContestPK = 1303801;
+UPDATE xcolab_Contest SET ContestUrlName = 'dubuque-trends-and-scenarios', ContestYear = 2016 WHERE ContestPK = 1303802;
+UPDATE xcolab_Contest SET ContestUrlName = 'dubuque-resources-and-strategies', ContestYear = 2016 WHERE ContestPK = 1303803;
+UPDATE xcolab_Contest SET ContestUrlName = 'knoxville-key-questions', ContestYear = 2016 WHERE ContestPK = 1303804;
+UPDATE xcolab_Contest SET ContestUrlName = 'knoxville-trends-and-scenarios', ContestYear = 2016 WHERE ContestPK = 1303805;
+UPDATE xcolab_Contest SET ContestUrlName = 'knoxville-resources-and-strategies', ContestYear = 2016 WHERE ContestPK = 1303806;
+UPDATE xcolab_Contest SET ContestUrlName = 'marc-key-questions', ContestYear = 2016 WHERE ContestPK = 1303901;
+UPDATE xcolab_Contest SET ContestUrlName = 'marc-trends-and-scenarios', ContestYear = 2016 WHERE ContestPK = 1303902;
+UPDATE xcolab_Contest SET ContestUrlName = 'marc-resources-and-strategies', ContestYear = 2016 WHERE ContestPK = 1303903;
+UPDATE xcolab_Contest SET ContestUrlName = 'minneapolis-key-questions', ContestYear = 2016 WHERE ContestPK = 1303904;
+UPDATE xcolab_Contest SET ContestUrlName = 'minneapolis-trends-and-scenarios', ContestYear = 2016 WHERE ContestPK = 1303905;
+UPDATE xcolab_Contest SET ContestUrlName = 'minneapolis-resources-and-strategies', ContestYear = 2016 WHERE ContestPK = 1303906;
+UPDATE xcolab_Contest SET ContestUrlName = 'practice-facilitators', ContestYear = 2016 WHERE ContestPK = 1303907;
+UPDATE xcolab_Contest SET ContestUrlName = 'practice-experts-coral-gables', ContestYear = 2016 WHERE ContestPK = 1304001;
+UPDATE xcolab_Contest SET ContestUrlName = 'practice-experts-dubuque', ContestYear = 2016 WHERE ContestPK = 1304002;
+UPDATE xcolab_Contest SET ContestUrlName = 'practice-experts-knoxville', ContestYear = 2016 WHERE ContestPK = 1304003;
+UPDATE xcolab_Contest SET ContestUrlName = 'practice-experts-marc', ContestYear = 2016 WHERE ContestPK = 1304004;
+UPDATE xcolab_Contest SET ContestUrlName = 'practice-experts-minneapolis', ContestYear = 2016 WHERE ContestPK = 1304005;
+UPDATE xcolab_Contest SET ContestUrlName = 'practice-experts', ContestYear = 2016 WHERE ContestPK = 1304006;
+UPDATE xcolab_Contest SET ContestUrlName = 'created-contest', ContestYear = 2016 WHERE ContestPK = 1304007;
+UPDATE xcolab_Contest SET ContestUrlName = 'test-contest', ContestYear = 2016 WHERE ContestPK = 1304008;
+
+ALTER TABLE `xcolab_Proposal` MODIFY COLUMN `discussionId` bigint(20) DEFAULT NULL;
+ALTER TABLE `xcolab_Proposal` MODIFY COLUMN `resultsDiscussionId` bigint(20) DEFAULT 0;
+ALTER TABLE `xcolab_Proposal` MODIFY COLUMN `judgeDiscussionId` bigint(20) DEFAULT 0;
+ALTER TABLE `xcolab_Proposal` MODIFY COLUMN `fellowDiscussionId` bigint(20) DEFAULT 0;
+ALTER TABLE `xcolab_Proposal` MODIFY COLUMN `advisorDiscussionId` bigint(20) DEFAULT 0;
+
+update `xcolab_Proposal` set discussionId = 0 where discussionId is null;
+update `xcolab_Proposal` set resultsDiscussionId = 0 where resultsDiscussionId is null;
+update `xcolab_Proposal` set judgeDiscussionId = 0 where judgeDiscussionId is null;
+update `xcolab_Proposal` set fellowDiscussionId = 0 where fellowDiscussionId is null;
+update `xcolab_Proposal` set advisorDiscussionId = 0 where advisorDiscussionId is null;
 
 -- =======================================
 -- new and changed tables (from Singapore migration)
@@ -377,7 +434,7 @@ CREATE TABLE `xcolab_ConfigurationAttribute` (
 # TODO: what's the admin email?
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('ADMIN_EMAIL', 0, 0, 'admin@resiliencedialogues.org', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('ADMIN_FROM_EMAIL', 0, 0, 'no-reply@resiliencedialogues.org', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('BETA_RIBBON_SHOW', 0, 0, '', 0);
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('BETA_RIBBON_SHOW', 0, 1, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('COLAB_NAME', 0, 0, 'Resilience Dialogues', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('COLAB_SHORT_NAME', 0, 0, 'Resilience Dialogues', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('COLAB_URL', 0, 0, 'http://resiliencedialogues.org', 0);
@@ -395,8 +452,8 @@ INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, str
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('GOOGLE_AUTH_CLIENT_ID', 0, 0, '668105823094-kts12sd1rkb899tkb1qvf204qt9a9051.apps.googleusercontent.com', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('GOOGLE_AUTH_CLIENT_SECRET', 0, 0, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('IS_MY_EMMA_ACTIVE', 0, 0, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('IS_POINTS_ACTIVE', 0, 1, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PUBLISH_JUDGING_RESULTS', 0, 1, '', 0);
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('IS_POINTS_ACTIVE', 0, 0, '', 0);
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PUBLISH_JUDGING_RESULTS', 0, 0, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('SHARED_COLAB_PORT', 0, 0, '8080', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('SHOW_CONTEST_COUNTDOWN', 0, 1, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('SHARED_COLAB_LOCATION', 0, 0, 'localhost', 0);
@@ -406,11 +463,14 @@ INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, str
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PARTNER_COLAB_NAME', 0, 0, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PARTNER_COLAB_PORT', 0, 0, '8080', 0);
 
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('SHOW_CONTESTS_DISPLAY_OPTIONS', 0, 0, '', 0);
+
 -- =======================================
 -- Member email templates
 -- =======================================
 
- INTO xcolab_ContestEmailTemplate (subject, header, footer, type_) VALUES ('<system-link/>: Reset Your Password', 'Dear <sender-name/> <sender-lastname/>,<br /> <br /> You can reset your password for resiliencedialogues.mit.edu at <password-reset-link/> <br /> <br /> The request for a new password was made from <sender-ip/><br /> <br /> Sincerely,<br /> The Resilience Dialogues Team<br /> admin@resiliencedialogues.org/<br /> http://resiliencedialogues.org/', '', 'MEMBER_RESET_PASSWORD_DEFAULT');
+INSERT INTO xcolab_ContestEmailTemplate (subject, header, footer, type_) VALUES ('Welcome to the Resilience Dialogues!', '<p>Dear <sender-name/> <sender-lastname/>,</p>  <p>Welcome! You recently created an account with us under the username <span style="font-size:14px;"><strong><sender-screenname/></strong></span>.</p> Sincerely, <br />The Resilience Dialogues Team<br />admin@resiliencedialogues.org<br/>http://resoliencedialogues.mit.edu', '', 'MEMBER_REGISTERED_DEFAULT');
+INSERT INTO xcolab_ContestEmailTemplate (subject, header, footer, type_) VALUES ('<system-link/>: Reset Your Password', 'Dear <sender-name/> <sender-lastname/>,<br /> <br /> You can reset your password for resiliencedialogues.mit.edu at <password-reset-link/> <br /> <br /> The request for a new password was made from <sender-ip/><br /> <br /> Sincerely,<br /> The Resilience Dialogues Team<br /> admin@resiliencedialogues.org/<br /> http://resiliencedialogues.mit.edu/', '', 'MEMBER_RESET_PASSWORD_DEFAULT');
 
 -- =======================================
 -- deployment migrations (since Singapore migration)

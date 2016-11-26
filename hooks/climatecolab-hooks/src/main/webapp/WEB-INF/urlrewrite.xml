@@ -52,6 +52,11 @@
     </rule>
 
     <rule>
+        <from>^/dialogues(.*)$</from>
+        <to>/web/guest/dialogues/-/plans/contests$1</to>
+    </rule>
+
+    <rule>
         <from>^(.*)plans/contestId/1302903/phaseId/1313504(.*)$</from>
         <to>$1plans/contestId/1302903$2</to>
     </rule>

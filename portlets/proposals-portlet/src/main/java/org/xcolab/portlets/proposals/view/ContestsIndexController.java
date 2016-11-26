@@ -1,16 +1,9 @@
 package org.xcolab.portlets.proposals.view;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.util.PortalUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -29,7 +22,6 @@ import org.xcolab.portlets.proposals.utils.context.ClientHelper;
 import org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -46,8 +38,6 @@ import javax.servlet.http.Cookie;
 @RequestMapping("view")
 public class ContestsIndexController extends BaseProposalsController {
 
-    private static final Log _log = LogFactoryUtil.getLog(ContestsIndexController.class);
-
     private final static String COOKIE_VIEW_TYPE = "cc_contests_viewType";
     private final static String VIEW_TYPE_GRID = "GRID";
     private final static String VIEW_TYPE_LIST = "LIST";
@@ -60,8 +50,7 @@ public class ContestsIndexController extends BaseProposalsController {
             @RequestParam(required = false) String viewType, 
             @RequestParam(required = false, defaultValue="true") boolean showActiveContests,
             @RequestParam(required = false, defaultValue="false") boolean showAllContests,
-            SortFilterPage sortFilterPage) 
-                    throws PortalException, SystemException {
+            SortFilterPage sortFilterPage) {
 
         ProposalsPreferencesWrapper preferences = new ProposalsPreferencesWrapper(request);
         ContestType contestType = preferences.getContestType();
