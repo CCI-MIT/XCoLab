@@ -20,8 +20,8 @@
     <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
 
     <!-- Includes for profanity filter-->
-    <script src="/climatecolab-hook/js/jquery.modal.min.js" type="text/javascript" charset="utf-8"><!-- --></script>
-    <link href="/climatecolab-hook/css/jquery.modal.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.7.0/jquery.modal.min.js" type="text/javascript" charset="utf-8"><!-- --></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.7.0/jquery.modal.min.css" rel="stylesheet" type="text/css" />
 
     <jsp:directive.include file="./proposalDetails/header.jspx" />
 
