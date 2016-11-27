@@ -75,14 +75,17 @@
                         <img src="${themeDisplay.pathThemeImages}/icon-add-comment.png" id="addcomment_button1" width="24" height="22" alt="add a comment" /> Jump to comment form
                     </a>
 				</c:if>
-				<div class="c-Comment__share">
-					<a href="https://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact discussion_share"
-					   addthis:title="${shareTitle}"
-					   addthis:description="${shareTitle}">
-						<img src="${themeDisplay.pathThemeImages}/share.png" width="24" height="24" alt="Share" class="c-Comment__share" />
-						Share conversation
-					</a>
-				</div>
+				<c:if test="${discussionPermissions.canSeeShareButtons}">
+					<div class="c-Comment__share">
+						<a href="https://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact discussion_share"
+						   addthis:title="${shareTitle}"
+						   addthis:description="${shareTitle}">
+							<img src="${themeDisplay.pathThemeImages}/share.png" width="24" height="24" alt="Share" class="c-Comment__share" />
+							Share conversation
+						</a>
+					</div>
+				</c:if>
+
 			</div>
 		</div>
 		<div class="clearfix"><!--  --></div>

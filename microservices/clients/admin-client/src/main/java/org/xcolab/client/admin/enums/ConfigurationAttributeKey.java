@@ -130,6 +130,14 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<Boolean> BETA_RIBBON_SHOW =
             ConfigurationAttributes.newBooleanAttribute("BETA_RIBBON_SHOW")
                     .build();
+    public static final AttributeGetter<Boolean> SHOW_SEARCH_MENU_ITEM =
+            ConfigurationAttributes.newBooleanAttribute("SHOW_SEARCH_MENU_ITEM")
+                    .defaultValue(true)
+                    .build();
+    public static final AttributeGetter<Boolean> SHOW_SHARE_BUTTONS =
+            ConfigurationAttributes.newBooleanAttribute("SHOW_SHARE_BUTTONS")
+                    .defaultValue(true)
+                    .build();
     public static final AttributeGetter<Boolean> PUBLISH_JUDGING_RESULTS =
             ConfigurationAttributes.newBooleanAttribute("PUBLISH_JUDGING_RESULTS")
                     .build();

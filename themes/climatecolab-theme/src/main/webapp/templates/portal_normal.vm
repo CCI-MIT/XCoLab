@@ -151,10 +151,14 @@
   <ul id="c-Header__menu">
    <li class="#if ($pageName== 'about' || $parentPageName == 'about') isCurrent #end"><a href="/web/guest/about">About</a></li>
    #foreach( $contest_page in $_contest_pages)
-       <li class="#if ($pageName == $contest_page.portletName) isCurrent #end"><a href="$contest_page.portletUrl">$contest_page.menuItemName</a></li>
+       #if ($contest_page.menuItemName != '')
+           <li class="#if ($pageName == $contest_page.portletName) isCurrent #end"><a href="$contest_page.portletUrl">$contest_page.menuItemName</a></li>
+       #end
    #end
    <li class="#if ($pageName== 'community' || $parentPageName == 'community')) isCurrent #end" ><a href="/web/guest/members">Community</a></li>
-   <li class="#if ($pageName == 'search') isCurrent #end"><a href="javascript:;" class="search" id="searchPopupTrigger" >Search</a></li>
+   #if ($_showSearchMenuItem)
+      <li class="#if ($pageName == 'search') isCurrent #end"><a href="javascript:;" class="search" id="searchPopupTrigger" >Search</a></li>
+   #end
   </ul>
 
 #if ($themeDisplay.signedIn)

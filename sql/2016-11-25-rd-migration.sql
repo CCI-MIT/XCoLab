@@ -89,7 +89,7 @@ CREATE TABLE `xcolab_ContestType` (
   PRIMARY KEY (`id_`)
 );
 
-INSERT INTO xcolab_ContestType (id_, contestName, contestNamePlural, proposalName, proposalNamePlural, portletName, portletUrl, friendlyUrlStringContests, friendlyUrlStringProposal, menuItemName, hasDiscussion, suggestionContestId, rulesPageName, rulesPageUrl) VALUES (0, 'Dialogue', 'Dialogues', 'Contribution', 'Contributions', 'dialogue', '/web/guest/dialogues', 'dialogues', 'contribution', 'Dialogues', 1, 0, 'Dialogue Rules', '/web/guest/resources/-/wiki/Main/Contest+Rules');
+INSERT INTO xcolab_ContestType (id_, contestName, contestNamePlural, proposalName, proposalNamePlural, portletName, portletUrl, friendlyUrlStringContests, friendlyUrlStringProposal, menuItemName, hasDiscussion, suggestionContestId, rulesPageName, rulesPageUrl) VALUES (0, 'Dialogue', 'Dialogues', 'Contribution', 'Contributions', 'dialogue', '/web/guest/dialogues', 'dialogues', 'contribution', '', 1, 0, 'Dialogue Rules', '/web/guest/resources/-/wiki/Main/Contest+Rules');
 UPDATE xcolab_Contest SET ContestUrlName = 'coral-gables-key-questions', ContestYear = 2016 WHERE ContestPK = 1303602;
 UPDATE xcolab_Contest SET ContestUrlName = 'coral-gables-trends-and-scenarios', ContestYear = 2016 WHERE ContestPK = 1303603;
 UPDATE xcolab_Contest SET ContestUrlName = 'coral-gables-resources-and-strategies', ContestYear = 2016 WHERE ContestPK = 1303701;
@@ -584,3 +584,13 @@ ALTER TABLE `xcolab_Contest`
 
 -- updating all contests to current colab of origin
 update xcolab_Contest set sharedOrigin = (select stringValue from xcolab_ConfigurationAttribute where name = "COLAB_NAME");
+
+-- =======================================
+-- RD-specific changes
+-- =======================================
+
+ALTER TABLE xcolab_ContestType ADD COLUMN showProposalSummary TINYINT(4) DEFAULT 1;
+UPDATE xcolab_ContestType set showProposalSummary = 0;
+
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('SHOW_SEARCH_MENU_ITEM', 0, 0, '', 0);
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('SHOW_SHARE_BUTTONS', 0, 0, '', 0);

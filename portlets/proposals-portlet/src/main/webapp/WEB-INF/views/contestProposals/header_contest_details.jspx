@@ -7,172 +7,172 @@
           version="2.0">
 
     <div class="p-ContestProposals__header">
-        <div class="fixed-position-container">
-            <div class="fixed-position-inner-relative">
-                <div class="p-ContestProposals__header__mainSection">
-                    <div class="p-ContestProposals__header__title clearfix">
-                        <c:if test="${contest.sponsorLogoId > 0}">
-                            <c:choose>
-                                <c:when test="${contest.sponsorLinkAvailable}">
-                                    <a href="//${contest.sponsorLink}">
-                                        <img src="${contest.logoPath}"
-                                                alt="Sponsor Logo"
-                                                class="p-ContestProposals__header__sponsorLogo"/>
-                                    </a>
-                                </c:when>
-                                <c:otherwise>
+        <div class="p-ContestProposals__header__content">
+            <div class="p-ContestProposals__header__mainSection">
+                <div class="p-ContestProposals__header__title clearfix">
+                    <c:if test="${contest.sponsorLogoId > 0}">
+                        <c:choose>
+                            <c:when test="${contest.sponsorLinkAvailable}">
+                                <a href="//${contest.sponsorLink}">
                                     <img src="${contest.logoPath}"
-                                         alt="Sponsor Logo"
-                                         class="p-ContestProposals__header__sponsorLogo"/>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:if>
-                        ${contest.contestName}
-                    </div>
-                    <div class="p-ContestProposals__header__description">
-                        <p>
-                            ${contest.contestDescription}
-                            <c:if test="${contest.resourceArticleId > 0}">
-                                <a href="${contest.resourceArticleUrl}" id="readMoreLink" style="display: none"> Read more ...</a>
-                            </c:if>
-                        </p>
-                        <c:if test="${contest.showSubContests}">
-                            <table>
-                                <tr>
-                                    <td align="right" nowrap="nowrap" style="vertical-align: bottom;">
-                                        <div class="subcontests">
-                                            <span class="title">To create your plan, combine ${contestType.proposalNamePlural} from these sector workspaces:</span>
-                                            <ul>
-                                                <c:forEach items="${contest.subContests}" var="subContest">
-                                                    <li>
-                                                    <span>
-                                                        <collab:contestLink contest="${subContest}" />
-                                                    </span>
-                                                    </li>
-                                                </c:forEach>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </c:if>
-
-                        <c:if test="${contest.showParentContest}">
-                            <table>
-                                <tr>
-                                    <td align="right" nowrap="nowrap" style="vertical-align: bottom;">
-                                        <div class="subcontests">
-                                            <span class="title">Parent contest: </span>
-                                            <collab:contestLink contest="${contest.parentContest}" />
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                        </c:if>
-                    </div>
+                                            alt="Sponsor Logo"
+                                            class="p-ContestProposals__header__sponsorLogo"/>
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <img src="${contest.logoPath}"
+                                     alt="Sponsor Logo"
+                                     class="p-ContestProposals__header__sponsorLogo"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
+                    ${contest.contestName}
                 </div>
-                <div class="p-ContestProposals__header__metaSection">
-                    <c:if test="${contest.hasFocusArea }">
-                        <div class="p-ContestProposals__header__ontology">
-                            <c:if test="${not empty contest.what}">
-                                <div class="p-ContestProposals__header__ontology__term">
-                                    <div class="p-ContestProposals__header__ontology__term__title--what">
-                                        What:
+                <div class="p-ContestProposals__header__description">
+                    <p>
+                        ${contest.contestDescription}
+                        <c:if test="${contest.resourceArticleId > 0}">
+                            <a href="${contest.resourceArticleUrl}" id="readMoreLink" style="display: none"> Read more ...</a>
+                        </c:if>
+                    </p>
+                    <c:if test="${contest.showSubContests}">
+                        <table>
+                            <tr>
+                                <td align="right" nowrap="nowrap" style="vertical-align: bottom;">
+                                    <div class="subcontests">
+                                        <span class="title">To create your plan, combine ${contestType.proposalNamePlural} from these sector workspaces:</span>
+                                        <ul>
+                                            <c:forEach items="${contest.subContests}" var="subContest">
+                                                <li>
+                                                <span>
+                                                    <collab:contestLink contest="${subContest}" />
+                                                </span>
+                                                </li>
+                                            </c:forEach>
+                                        </ul>
                                     </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </c:if>
 
-                                    <div class="p-ContestProposals__header__ontology__term__link">
-                                        <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.what}"/>
+                    <c:if test="${contest.showParentContest}">
+                        <table>
+                            <tr>
+                                <td align="right" nowrap="nowrap" style="vertical-align: bottom;">
+                                    <div class="subcontests">
+                                        <span class="title">Parent contest: </span>
+                                        <collab:contestLink contest="${contest.parentContest}" />
                                     </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </c:if>
+                </div>
+            </div>
+            <div class="p-ContestProposals__header__metaSection">
+                <c:if test="${contest.hasFocusArea }">
+                    <div class="p-ContestProposals__header__ontology">
+                        <c:if test="${not empty contest.what}">
+                            <div class="p-ContestProposals__header__ontology__term">
+                                <div class="p-ContestProposals__header__ontology__term__title--what">
+                                    What:
                                 </div>
-                            </c:if>
-                            <c:if test="${not empty contest.where}">
-                                <div class="p-ContestProposals__header__ontology__term">
-                                    <div class="p-ContestProposals__header__ontology__term__title--where">
-                                        Where:
-                                    </div>
 
-                                    <div class="p-ContestProposals__header__ontology__term__link">
-                                        <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.where}"/>
-                                    </div>
+                                <div class="p-ContestProposals__header__ontology__term__link">
+                                    <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.what}"/>
                                 </div>
-                            </c:if>
-                            <c:if test="${not empty contest.who}">
-                                <div class="p-ContestProposals__header__ontology__term">
-                                    <div class="p-ContestProposals__header__ontology__term__title--who">
-                                        Who:
-                                    </div>
-
-                                    <div class="p-ContestProposals__header__ontology__term__link">
-                                        <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who}"/>
-                                    </div>
+                            </div>
+                        </c:if>
+                        <c:if test="${not empty contest.where}">
+                            <div class="p-ContestProposals__header__ontology__term">
+                                <div class="p-ContestProposals__header__ontology__term__title--where">
+                                    Where:
                                 </div>
-                            </c:if>
-                            <c:if test="${not empty contest.how}">
-                                <div class="p-ContestProposals__header__ontology__term">
-                                    <div class="p-ContestProposals__header__ontology__term__title--how">
-                                        How:
-                                    </div>
 
-                                    <div class="p-ContestProposals__header__ontology__term__link">
-                                        <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.how}"/>
+                                <div class="p-ContestProposals__header__ontology__term__link">
+                                    <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.where}"/>
+                                </div>
+                            </div>
+                        </c:if>
+                        <c:if test="${not empty contest.who}">
+                            <div class="p-ContestProposals__header__ontology__term">
+                                <div class="p-ContestProposals__header__ontology__term__title--who">
+                                    Who:
+                                </div>
+
+                                <div class="p-ContestProposals__header__ontology__term__link">
+                                    <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.who}"/>
+                                </div>
+                            </div>
+                        </c:if>
+                        <c:if test="${not empty contest.how}">
+                            <div class="p-ContestProposals__header__ontology__term">
+                                <div class="p-ContestProposals__header__ontology__term__title--how">
+                                    How:
+                                </div>
+
+                                <div class="p-ContestProposals__header__ontology__term__link">
+                                    <proposalsPortlet:ontologyTermLink ontologyTerms="${contest.how}"/>
+                                </div>
+                            </div>
+                        </c:if>
+                    </div>
+                </c:if>
+
+                <div class="p-ContestProposals__header__team">
+                    <c:if test="${not empty contest.contestTeamMembersByRole }">
+                        <c:forEach var="teamRole" items="${contest.contestTeamMembersByRole }">
+                            <div class="b-Spacing">
+                                <c:choose>
+                                    <c:when test="${fn:length(teamRole.users) eq 1}">
+                                        <div class="p-ContestProposals__header__team__roleName">
+                                            ${teamRole.roleName}
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="p-ContestProposals__header__team__roleName">
+                                            ${teamRole.roleName}s
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                                <c:forEach var="teamRoleUser" items="${teamRole.users }" varStatus="status">
+                                    <div class="p-ContestProposals__header__team__member">
+                                        <proposalsPortlet:userPortrait
+                                                screenName="${teamRoleUser.screenName }"
+                                                portraitId="${teamRoleUser.portraitId}" width="30"
+                                                userId="${teamRoleUser.userId}"
+                                                height="30"/>
+                                        <proposalsPortlet:userLinkSimple userId="${teamRoleUser.userId}"
+                                                                         text="${teamRoleUser.fullName}"/>
                                     </div>
+                                </c:forEach>
+                            </div>
+                        </c:forEach>
+                    </c:if>
+                </div>
+                <div class="p-ContestProposals__header__buttons">
+                    <c:if test="${contest.resourceArticleId > 0}">
+                        <div class="p-ContestProposals__header__detailButton">
+                            <a href="${contest.resourceArticleUrl}">Resources</a>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${contestType.hasDiscussion}">
+                        <div class="p-ContestProposals__header__detailButton">
+                            <a href="${contest.contestUrl}/discussion">Discussion</a>
+                            <c:if test="${contest.commentsCount > 0}">
+                                <div class="p-ContestProposals__header__detailButton__count">
+                                    ${contest.commentsCount}
                                 </div>
                             </c:if>
                         </div>
                     </c:if>
-
-                    <div class="p-ContestProposals__header__team">
-                        <c:if test="${not empty contest.contestTeamMembersByRole }">
-                            <c:forEach var="teamRole" items="${contest.contestTeamMembersByRole }">
-                                <div class="b-Spacing">
-                                    <c:choose>
-                                        <c:when test="${fn:length(teamRole.users) eq 1}">
-                                            <div class="p-ContestProposals__header__team__roleName">
-                                                ${teamRole.roleName}
-                                            </div>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <div class="p-ContestProposals__header__team__roleName">
-                                                ${teamRole.roleName}s
-                                            </div>
-                                        </c:otherwise>
-                                    </c:choose>
-                                    <c:forEach var="teamRoleUser" items="${teamRole.users }" varStatus="status">
-                                        <div class="p-ContestProposals__header__team__member">
-                                            <proposalsPortlet:userPortrait
-                                                    screenName="${teamRoleUser.screenName }"
-                                                    portraitId="${teamRoleUser.portraitId}" width="30"
-                                                    userId="${teamRoleUser.userId}"
-                                                    height="30"/>
-                                            <proposalsPortlet:userLinkSimple userId="${teamRoleUser.userId}"
-                                                                             text="${teamRoleUser.fullName}"/>
-                                        </div>
-                                    </c:forEach>
-                                </div>
-                            </c:forEach>
-                        </c:if>
-                    </div>
-                    <div class="p-ContestProposals__header__buttons">
-                        <c:if test="${contest.resourceArticleId > 0}">
-                            <div class="p-ContestProposals__header__detailButton">
-                                <a href="${contest.resourceArticleUrl}">Resources</a>
-                            </div>
-                        </c:if>
-
-                        <c:if test="${contestType.hasDiscussion}">
-                            <div class="p-ContestProposals__header__detailButton">
-                                <a href="${contest.contestUrl}/discussion">Discussion</a>
-                                <c:if test="${contest.commentsCount > 0}">
-                                    <div class="p-ContestProposals__header__detailButton__count">
-                                        ${contest.commentsCount}
-                                    </div>
-                                </c:if>
-                            </div>
-                        </c:if>
-                    </div>
                 </div>
+            </div>
 
-                <div class="fixed-position-inner-fixed" style="right: -32px; top: 20px;">
+            <c:if test="${showShareButtons}">
+                <div class="p-ContestProposals__header__shareButtons">
                     <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox"
                          style="float: left;">
                         <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${contest.contestShortName}"
@@ -189,7 +189,8 @@
                         <span class="clearfix"><!-- --></span>
                     </div>
                 </div>
-            </div>
+            </c:if>
+
         </div>
     </div>
     <script type="text/javascript">

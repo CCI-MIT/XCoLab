@@ -46,7 +46,10 @@
     float: right;
     font-size: 16px;
     width: 490px;
-    /*padding: 5px;*/
+
+  &.full-width {
+    width: 830px;
+  }
     position: relative;
 }
 
@@ -173,13 +176,6 @@
     text-align: center;
     margin-left: 12px;
 }
-
-/*
-#copyProposalPopupContent {
-	overflow-y: scroll;
-	overflow-x: hidden;
-
-}*/
 
 #copyProposalPopupContent tr:nth-child(even) {
     background-color: #f3f8fa;
@@ -339,12 +335,6 @@ table.judgingForm {
     padding-left: 0;
     background: none;
 }
-
-/*
-#proposalPicker_proposalsContainer .propbox .row1 {
-	overflow: hidden;
-}
-*/
 
 #proposalPicker_proposalsContainer .propbox .row2 {
     width: 650px;

@@ -10,7 +10,7 @@ public abstract class AbstractContestType {
     private String proposalName;
     private String proposalNamePlural;
     private String portletName;
-    private String portleturl;
+    private String portletUrl;
     private String friendlyUrlStringContests;
     private String friendlyUrlStringProposal;
     private String menuItemName;
@@ -18,6 +18,7 @@ public abstract class AbstractContestType {
     private Long suggestionContestId;
     private String rulesPageName;
     private String rulesPageUrl;
+    private boolean showProposalSummary;
 
     public AbstractContestType() {
     }
@@ -29,7 +30,7 @@ public abstract class AbstractContestType {
         this.proposalName = value.proposalName;
         this.proposalNamePlural = value.proposalNamePlural;
         this.portletName = value.portletName;
-        this.portleturl = value.portleturl;
+        this.portletUrl = value.portletUrl;
         this.friendlyUrlStringContests = value.friendlyUrlStringContests;
         this.friendlyUrlStringProposal = value.friendlyUrlStringProposal;
         this.menuItemName = value.menuItemName;
@@ -40,7 +41,7 @@ public abstract class AbstractContestType {
     }
 
     public AbstractContestType(Long id_, String contestName, String contestNamePlural, String proposalName,
-            String proposalNamePlural, String portletName, String portleturl,
+            String proposalNamePlural, String portletName, String portletUrl,
             String friendlyUrlStringContests, String friendlyUrlStringProposal,
             String menuItemName, Boolean hasDiscussion, Long suggestionContestId,
             String rulesPageName, String rulesPageUrl) {
@@ -50,7 +51,7 @@ public abstract class AbstractContestType {
         this.proposalName = proposalName;
         this.proposalNamePlural = proposalNamePlural;
         this.portletName = portletName;
-        this.portleturl = portleturl;
+        this.portletUrl = portletUrl;
         this.friendlyUrlStringContests = friendlyUrlStringContests;
         this.friendlyUrlStringProposal = friendlyUrlStringProposal;
         this.menuItemName = menuItemName;
@@ -129,11 +130,11 @@ public abstract class AbstractContestType {
     }
 
     public String getPortletUrl() {
-        return this.portleturl;
+        return this.portletUrl;
     }
 
-    public void setPortletUrl(String portleturl) {
-        this.portleturl = portleturl;
+    public void setPortletUrl(String portletUrl) {
+        this.portletUrl = portletUrl;
     }
 
     public String getFriendlyUrlStringContests() {
@@ -192,161 +193,125 @@ public abstract class AbstractContestType {
         this.rulesPageUrl = rulesPageUrl;
     }
 
+    public boolean isShowProposalSummary() {
+        return showProposalSummary;
+    }
+
+    public void setShowProposalSummary(boolean showProposalSummary) {
+        this.showProposalSummary = showProposalSummary;
+    }
+
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (obj == null) {
+        if (!(o instanceof AbstractContestType)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+
+        AbstractContestType that = (AbstractContestType) o;
+
+        if (showProposalSummary != that.showProposalSummary) {
             return false;
         }
-        final AbstractContestType other = (AbstractContestType) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
-                return false;
-            }
-        } else if (!id_.equals(other.id_)) {
+        if (id_ != null ? !id_.equals(that.id_) : that.id_ != null) {
             return false;
         }
-        if (contestName == null) {
-            if (other.contestName != null) {
-                return false;
-            }
-        } else if (!contestName.equals(other.contestName)) {
+        if (contestName != null ? !contestName.equals(that.contestName)
+                : that.contestName != null) {
             return false;
         }
-        if (contestNamePlural == null) {
-            if (other.contestNamePlural != null) {
-                return false;
-            }
-        } else if (!contestNamePlural.equals(other.contestNamePlural)) {
+        if (contestNamePlural != null ? !contestNamePlural.equals(that.contestNamePlural)
+                : that.contestNamePlural != null) {
             return false;
         }
-        if (proposalName == null) {
-            if (other.proposalName != null) {
-                return false;
-            }
-        } else if (!proposalName.equals(other.proposalName)) {
+        if (proposalName != null ? !proposalName.equals(that.proposalName)
+                : that.proposalName != null) {
             return false;
         }
-        if (proposalNamePlural == null) {
-            if (other.proposalNamePlural != null) {
-                return false;
-            }
-        } else if (!proposalNamePlural.equals(other.proposalNamePlural)) {
+        if (proposalNamePlural != null ? !proposalNamePlural.equals(that.proposalNamePlural)
+                : that.proposalNamePlural != null) {
             return false;
         }
-        if (portletName == null) {
-            if (other.portletName != null) {
-                return false;
-            }
-        } else if (!portletName.equals(other.portletName)) {
+        if (portletName != null ? !portletName.equals(that.portletName)
+                : that.portletName != null) {
             return false;
         }
-        if (portleturl == null) {
-            if (other.portleturl != null) {
-                return false;
-            }
-        } else if (!portleturl.equals(other.portleturl)) {
+        if (portletUrl != null ? !portletUrl.equals(that.portletUrl) : that.portletUrl != null) {
             return false;
         }
-        if (friendlyUrlStringContests == null) {
-            if (other.friendlyUrlStringContests != null) {
-                return false;
-            }
-        } else if (!friendlyUrlStringContests.equals(other.friendlyUrlStringContests)) {
+        if (friendlyUrlStringContests != null ? !friendlyUrlStringContests
+                .equals(that.friendlyUrlStringContests) : that.friendlyUrlStringContests != null) {
             return false;
         }
-        if (friendlyUrlStringProposal == null) {
-            if (other.friendlyUrlStringProposal != null) {
-                return false;
-            }
-        } else if (!friendlyUrlStringProposal.equals(other.friendlyUrlStringProposal)) {
+        if (friendlyUrlStringProposal != null ? !friendlyUrlStringProposal
+                .equals(that.friendlyUrlStringProposal) : that.friendlyUrlStringProposal != null) {
             return false;
         }
-        if (menuItemName == null) {
-            if (other.menuItemName != null) {
-                return false;
-            }
-        } else if (!menuItemName.equals(other.menuItemName)) {
+        if (menuItemName != null ? !menuItemName.equals(that.menuItemName)
+                : that.menuItemName != null) {
             return false;
         }
-        if (hasDiscussion == null) {
-            if (other.hasDiscussion != null) {
-                return false;
-            }
-        } else if (!hasDiscussion.equals(other.hasDiscussion)) {
+        if (hasDiscussion != null ? !hasDiscussion.equals(that.hasDiscussion)
+                : that.hasDiscussion != null) {
             return false;
         }
-        if (suggestionContestId == null) {
-            if (other.suggestionContestId != null) {
-                return false;
-            }
-        } else if (!suggestionContestId.equals(other.suggestionContestId)) {
+        if (suggestionContestId != null ? !suggestionContestId.equals(that.suggestionContestId)
+                : that.suggestionContestId != null) {
             return false;
         }
-        if (rulesPageName == null) {
-            if (other.rulesPageName != null) {
-                return false;
-            }
-        } else if (!rulesPageName.equals(other.rulesPageName)) {
+        if (rulesPageName != null ? !rulesPageName.equals(that.rulesPageName)
+                : that.rulesPageName != null) {
             return false;
         }
-        if (rulesPageUrl == null) {
-            if (other.rulesPageUrl != null) {
-                return false;
-            }
-        } else if (!rulesPageUrl.equals(other.rulesPageUrl)) {
-            return false;
-        }
-        return true;
+        return rulesPageUrl != null ? rulesPageUrl.equals(that.rulesPageUrl)
+                : that.rulesPageUrl == null;
+
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
-        result = prime * result + ((contestName == null) ? 0 : contestName.hashCode());
-        result = prime * result + ((contestNamePlural == null) ? 0 : contestNamePlural.hashCode());
-        result = prime * result + ((proposalName == null) ? 0 : proposalName.hashCode());
-        result =
-                prime * result + ((proposalNamePlural == null) ? 0 : proposalNamePlural.hashCode());
-        result = prime * result + ((portletName == null) ? 0 : portletName.hashCode());
-        result = prime * result + ((portleturl == null) ? 0 : portleturl.hashCode());
-        result = prime * result + ((friendlyUrlStringContests == null) ? 0
-                : friendlyUrlStringContests.hashCode());
-        result = prime * result + ((friendlyUrlStringProposal == null) ? 0
-                : friendlyUrlStringProposal.hashCode());
-        result = prime * result + ((menuItemName == null) ? 0 : menuItemName.hashCode());
-        result = prime * result + ((hasDiscussion == null) ? 0 : hasDiscussion.hashCode());
-        result = prime * result + ((suggestionContestId == null) ? 0
-                : suggestionContestId.hashCode());
-        result = prime * result + ((rulesPageName == null) ? 0 : rulesPageName.hashCode());
-        result = prime * result + ((rulesPageUrl == null) ? 0 : rulesPageUrl.hashCode());
+        int result = id_ != null ? id_.hashCode() : 0;
+        result = prime * result + (contestName != null ? contestName.hashCode() : 0);
+        result = prime * result + (contestNamePlural != null ? contestNamePlural.hashCode() : 0);
+        result = prime * result + (proposalName != null ? proposalName.hashCode() : 0);
+        result = prime * result + (proposalNamePlural != null ? proposalNamePlural.hashCode() : 0);
+        result = prime * result + (portletName != null ? portletName.hashCode() : 0);
+        result = prime * result + (portletUrl != null ? portletUrl.hashCode() : 0);
+        result = prime * result + (friendlyUrlStringContests != null ? friendlyUrlStringContests
+                .hashCode()
+                : 0);
+        result = prime * result + (friendlyUrlStringProposal != null ? friendlyUrlStringProposal
+                .hashCode()
+                : 0);
+        result = prime * result + (menuItemName != null ? menuItemName.hashCode() : 0);
+        result = prime * result + (hasDiscussion != null ? hasDiscussion.hashCode() : 0);
+        result = prime * result + (suggestionContestId != null ? suggestionContestId.hashCode() : 0);
+        result = prime * result + (rulesPageName != null ? rulesPageName.hashCode() : 0);
+        result = prime * result + (rulesPageUrl != null ? rulesPageUrl.hashCode() : 0);
+        result = prime * result + (showProposalSummary ? 1 : 0);
         return result;
     }
 
     @Override
     public String toString() {
-
-        return "ContestType (" + id_ +
-                ", " + contestName +
-                ", " + contestNamePlural +
-                ", " + proposalName +
-                ", " + proposalNamePlural +
-                ", " + portletName +
-                ", " + portleturl +
-                ", " + friendlyUrlStringContests +
-                ", " + friendlyUrlStringProposal +
-                ", " + menuItemName +
-                ", " + hasDiscussion +
-                ", " + suggestionContestId +
-                ", " + rulesPageName +
-                ", " + rulesPageUrl +
-                ")";
+        return "AbstractContestType{" +
+                "id_=" + id_ +
+                ", contestName='" + contestName + '\'' +
+                ", contestNamePlural='" + contestNamePlural + '\'' +
+                ", proposalName='" + proposalName + '\'' +
+                ", proposalNamePlural='" + proposalNamePlural + '\'' +
+                ", portletName='" + portletName + '\'' +
+                ", portletUrl='" + portletUrl + '\'' +
+                ", friendlyUrlStringContests='" + friendlyUrlStringContests + '\'' +
+                ", friendlyUrlStringProposal='" + friendlyUrlStringProposal + '\'' +
+                ", menuItemName='" + menuItemName + '\'' +
+                ", hasDiscussion=" + hasDiscussion + ", suggestionContestId=" + suggestionContestId +
+                ", rulesPageName='" + rulesPageName + '\'' +
+                ", rulesPageUrl='" + rulesPageUrl + '\'' +
+                ", showProposalSummary=" + showProposalSummary +
+                '}';
     }
 }
