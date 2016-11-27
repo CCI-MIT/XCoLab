@@ -35,6 +35,86 @@ CREATE TABLE `members_Member` (
   FULLTEXT KEY `members_Member_names_bio` (`firstName`,`lastName`,`shortBio`,`screenName`)
 );
 
+DROP TABLE IF EXISTS `xcolab_ProposalMoveHistory`;
+CREATE TABLE `xcolab_ProposalMoveHistory` (
+  `id_` bigint(20) NOT NULL AUTO_INCREMENT,
+  `sourceProposalId` bigint(20) DEFAULT NULL,
+  `sourceContestId` bigint(20) DEFAULT NULL,
+  `sourcePhaseId` bigint(20) DEFAULT NULL,
+  `targetProposalId` bigint(20) DEFAULT NULL,
+  `targetContestId` bigint(20) DEFAULT NULL,
+  `targetPhaseId` bigint(20) DEFAULT NULL,
+  `movingUserId` bigint(20) DEFAULT NULL,
+  `moveDate` datetime DEFAULT NULL,
+  `moveType` varchar(75) DEFAULT NULL,
+  PRIMARY KEY (`id_`),
+  KEY `IX_101B90C3` (`sourceContestId`),
+  KEY `IX_A0D3722A` (`sourcePhaseId`),
+  KEY `IX_A98333DD` (`sourceProposalId`),
+  KEY `IX_E78B9567` (`sourceProposalId`,`sourceContestId`),
+  KEY `IX_9920218D` (`targetContestId`),
+  KEY `IX_FA79AD74` (`targetPhaseId`),
+  KEY `IX_4110BC53` (`targetProposalId`),
+  KEY `IX_6001D87B` (`targetProposalId`,`targetContestId`)
+);
+
+DROP TABLE IF EXISTS `xcolab_ProposalUnversionedAttribute`;
+CREATE TABLE `xcolab_ProposalUnversionedAttribute` (
+  `id_` bigint(20) NOT NULL AUTO_INCREMENT,
+  `proposalId` bigint(20) DEFAULT NULL,
+  `createAuthorId` bigint(20) DEFAULT NULL,
+  `lastAuthorId` bigint(20) DEFAULT NULL,
+  `createDate` datetime DEFAULT NULL,
+  `lastUpdateDate` datetime DEFAULT NULL,
+  `name` varchar(75) DEFAULT NULL,
+  `addtionalId` int(11) DEFAULT NULL,
+  `numericValue` bigint(20) DEFAULT NULL,
+  `stringValue` varchar(75) DEFAULT NULL,
+  `realValue` double DEFAULT NULL,
+  PRIMARY KEY (`id_`),
+  KEY `IX_2FC1B0ED` (`proposalId`),
+  KEY `IX_417CDAEC` (`proposalId`,`name`)
+);
+
+DROP TABLE IF EXISTS `xcolab_ContentArticle`;
+CREATE TABLE `xcolab_ContentArticle` (
+  `contentArticleId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `authorId` bigint(20) DEFAULT NULL,
+  `createDate` datetime DEFAULT NULL,
+  `maxVersionId` bigint(20) DEFAULT NULL,
+  `folderId` bigint(20) DEFAULT NULL,
+  `editRoleGroupId` bigint(20) DEFAULT NULL,
+  `viewRoleGroupId` bigint(20) DEFAULT NULL,
+  `visible` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`contentArticleId`)
+);
+
+DROP TABLE IF EXISTS `xcolab_ContentArticleVersion`;
+CREATE TABLE `xcolab_ContentArticleVersion` (
+  `contentArticleVersionId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `contentArticleId` bigint(20) DEFAULT NULL,
+  `folderId` bigint(20) DEFAULT NULL,
+  `authorId` bigint(20) DEFAULT NULL,
+  `createDate` datetime DEFAULT NULL,
+  `title` varchar(555) DEFAULT NULL,
+  `content` longtext,
+  PRIMARY KEY (`contentArticleVersionId`)
+);
+
+DROP TABLE IF EXISTS `xcolab_ContentFolder`;
+CREATE TABLE `xcolab_ContentFolder` (
+  `contentFolderId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `contentFolderName` varchar(255) DEFAULT NULL,
+  `contentFolderDescription` text,
+  `parentFolderId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`contentFolderId`)
+);
+
+INSERT INTO xcolab_ContentFolder (contentFolderName, contentFolderDescription, parentFolderId) VALUES ('Root', 'Content root', null);
+INSERT INTO xcolab_ContentFolder (contentFolderName, contentFolderDescription, parentFolderId) VALUES ('Static Content', 'Displays static content that should be editable on the site', 1);
+INSERT INTO xcolab_ContentFolder (contentFolderName, contentFolderDescription, parentFolderId) VALUES ('Wiki', 'Contains content for the wiki pages', 1);
+INSERT INTO xcolab_ContentFolder (contentFolderName, contentFolderDescription, parentFolderId) VALUES ('Resource Pages', 'Stores the resource pages for contests', 1);
+
 INSERT INTO `members_Member` (id_, screenName, emailAddress, firstName, lastName, hashedPassword, createDate, modifiedDate,
   passwordModifiedDate, facebookId, openId, loginIP, loginDate, status)
     SELECT userId, screenName, emailAddress, firstName, lastName, password_, createDate, modifiedDate,
@@ -42,7 +122,7 @@ INSERT INTO `members_Member` (id_, screenName, emailAddress, firstName, lastName
 
 ALTER TABLE `xcolab_Contest` ADD COLUMN `resourceArticleId` bigint(20) DEFAULT NULL;
 
-DROP TABLE IF EXISTS `members_Member`;
+DROP TABLE IF EXISTS `xcolab_ContestTeamMemberRole`;
 CREATE TABLE `xcolab_ContestTeamMemberRole` (
   `id_` bigint(20) NOT NULL,
   `role` varchar(75) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -531,13 +611,7 @@ DELETE FROM `xcolab_ProposalContestPhaseAttribute` WHERE `id_`='0';
 ALTER TABLE `xcolab_ProposalContestPhaseAttribute`
   CHANGE COLUMN `id_` `id_` BIGINT(20) NOT NULL AUTO_INCREMENT ;
 
-ALTER TABLE `xcolab_ProposalMoveHistory`
-  CHANGE COLUMN `id_` `id_` BIGINT(20) NOT NULL AUTO_INCREMENT ;
-
 ALTER TABLE `xcolab_ProposalRating`
-  CHANGE COLUMN `id_` `id_` BIGINT(20) NOT NULL AUTO_INCREMENT ;
-
-ALTER TABLE `xcolab_ProposalUnversionedAttribute`
   CHANGE COLUMN `id_` `id_` BIGINT(20) NOT NULL AUTO_INCREMENT ;
 
 ALTER TABLE `xcolab_ContestPhaseType`
