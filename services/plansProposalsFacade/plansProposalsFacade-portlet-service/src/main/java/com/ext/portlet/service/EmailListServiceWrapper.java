@@ -44,12 +44,6 @@ public class EmailListServiceWrapper implements EmailListService,
         return _emailListService.invokeMethod(name, parameterTypes, arguments);
     }
 
-    @Override
-    public java.lang.String helloWorld(java.lang.String listName,
-        java.lang.String email) {
-        return _emailListService.helloWorld(listName, email);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

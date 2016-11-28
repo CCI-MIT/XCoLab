@@ -238,32 +238,4 @@ public interface ContestTeamMemberLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    public com.ext.portlet.model.ContestTeamMember addContestTeamMember(
-        java.lang.Long userId, java.lang.Long contestPk,
-        org.xcolab.enums.MemberRole memberRole)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public java.util.List<com.ext.portlet.model.ContestTeamMember> findForContest(
-        java.lang.Long contestPk)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public void store(com.ext.portlet.model.ContestTeamMember contestTeamMember)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public void delete(
-        com.ext.portlet.model.ContestTeamMember contestTeamMember)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.liferay.portal.model.User getUser(
-        com.ext.portlet.model.ContestTeamMember contestTeamMember)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.Contest getContest(
-        com.ext.portlet.model.ContestTeamMember contestTeamMember)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
 }

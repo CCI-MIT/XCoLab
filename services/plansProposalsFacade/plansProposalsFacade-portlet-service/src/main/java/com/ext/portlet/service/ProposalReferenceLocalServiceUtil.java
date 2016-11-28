@@ -263,39 +263,6 @@ public class ProposalReferenceLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static java.util.List<com.ext.portlet.model.ProposalReference> getByProposalId(
-        long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getByProposalId(proposalId);
-    }
-
-    public static java.util.List<com.ext.portlet.model.ProposalReference> getBySubProposalId(
-        long subProposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getBySubProposalId(subProposalId);
-    }
-
-    public static com.ext.portlet.model.ProposalReference getByProposalIdSubProposalId(
-        long proposalId, long subProposalId)
-        throws com.ext.portlet.NoSuchProposalReferenceException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService()
-                   .getByProposalIdSubProposalId(proposalId, subProposalId);
-    }
-
-    public static void populateTable()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getService().populateTable();
-    }
-
-    public static void populateTableWithProposal(
-        com.ext.portlet.model.Proposal proposal)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getService().populateTableWithProposal(proposal);
-    }
-
     public static void clearService() {
         _service = null;
     }

@@ -44,10 +44,6 @@ public class LandingPageLocalServiceClp implements LandingPageLocalService {
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
-    private String _methodName19;
-    private String[] _methodParameterTypes19;
-    private String _methodName20;
-    private String[] _methodParameterTypes20;
 
     public LandingPageLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -142,18 +138,6 @@ public class LandingPageLocalServiceClp implements LandingPageLocalService {
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
-
-        _methodName19 = "createNewLandingPage";
-
-        _methodParameterTypes19 = new String[] {
-                "java.lang.String", "java.lang.String"
-            };
-
-        _methodName20 = "store";
-
-        _methodParameterTypes20 = new String[] {
-                "com.ext.portlet.model.LandingPage"
-            };
     }
 
     @Override
@@ -664,60 +648,5 @@ public class LandingPageLocalServiceClp implements LandingPageLocalService {
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public com.ext.portlet.model.LandingPage createNewLandingPage(
-        java.lang.String baseUrl, java.lang.String targetUrl)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19,
-                    new Object[] {
-                        ClpSerializer.translateInput(baseUrl),
-                        
-                    ClpSerializer.translateInput(targetUrl)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.LandingPage) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public void store(com.ext.portlet.model.LandingPage landingPage)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        try {
-            _invokableLocalService.invokeMethod(_methodName20,
-                _methodParameterTypes20,
-                new Object[] { ClpSerializer.translateInput(landingPage) });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
     }
 }

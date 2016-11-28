@@ -271,62 +271,6 @@ public class ContestTypeLocalServiceWrapper implements ContestTypeLocalService,
             arguments);
     }
 
-    @Override
-    public com.ext.portlet.model.ContestType getContestTypeFromProposalId(
-        long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestTypeLocalService.getContestTypeFromProposalId(proposalId);
-    }
-
-    @Override
-    public com.ext.portlet.model.ContestType getContestTypeFromContestId(
-        long contestId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestTypeLocalService.getContestTypeFromContestId(contestId);
-    }
-
-    @Override
-    public com.ext.portlet.model.ContestType getContestType(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestTypeLocalService.getContestType(contest);
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.ContestType> getAllContestTypes()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestTypeLocalService.getAllContestTypes();
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.ContestType> getActiveContestTypes()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestTypeLocalService.getActiveContestTypes();
-    }
-
-    @Override
-    public java.lang.String getLabelName(
-        com.ext.portlet.model.ContestType contestType) {
-        return _contestTypeLocalService.getLabelName(contestType);
-    }
-
-    @Override
-    public java.lang.String getProposalNames(
-        java.util.List<java.lang.Long> contestTypeIds,
-        java.lang.String plurality, java.lang.String conjunction) {
-        return _contestTypeLocalService.getProposalNames(contestTypeIds,
-            plurality, conjunction);
-    }
-
-    @Override
-    public java.lang.String getContestNames(
-        java.util.List<java.lang.Long> contestTypeIds,
-        java.lang.String plurality, java.lang.String conjunction) {
-        return _contestTypeLocalService.getContestNames(contestTypeIds,
-            plurality, conjunction);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

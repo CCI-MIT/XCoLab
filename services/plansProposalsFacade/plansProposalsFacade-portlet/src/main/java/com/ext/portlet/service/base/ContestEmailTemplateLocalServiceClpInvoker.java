@@ -45,8 +45,6 @@ public class ContestEmailTemplateLocalServiceClpInvoker {
     private String[] _methodParameterTypes398;
     private String _methodName399;
     private String[] _methodParameterTypes399;
-    private String _methodName404;
-    private String[] _methodParameterTypes404;
 
     public ContestEmailTemplateLocalServiceClpInvoker() {
         _methodName0 = "addContestEmailTemplate";
@@ -138,10 +136,6 @@ public class ContestEmailTemplateLocalServiceClpInvoker {
         _methodName399 = "setBeanIdentifier";
 
         _methodParameterTypes399 = new String[] { "java.lang.String" };
-
-        _methodName404 = "getEmailTemplateByType";
-
-        _methodParameterTypes404 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -243,11 +237,6 @@ public class ContestEmailTemplateLocalServiceClpInvoker {
             ContestEmailTemplateLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
-        }
-
-        if (_methodName404.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes404, parameterTypes)) {
-            return ContestEmailTemplateLocalServiceUtil.getEmailTemplateByType((java.lang.String) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

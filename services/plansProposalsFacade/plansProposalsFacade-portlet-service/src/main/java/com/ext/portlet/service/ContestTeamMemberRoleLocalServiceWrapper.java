@@ -277,14 +277,6 @@ public class ContestTeamMemberRoleLocalServiceWrapper
             parameterTypes, arguments);
     }
 
-    @Override
-    public com.ext.portlet.model.ContestTeamMemberRole findForContestTeamMember(
-        java.lang.Long roleId)
-        throws com.liferay.portal.NoSuchModelException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestTeamMemberRoleLocalService.findForContestTeamMember(roleId);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

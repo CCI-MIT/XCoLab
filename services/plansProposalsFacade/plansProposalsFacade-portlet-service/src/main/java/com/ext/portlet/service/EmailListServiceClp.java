@@ -12,8 +12,6 @@ public class EmailListServiceClp implements EmailListService {
     private String[] _methodParameterTypes0;
     private String _methodName1;
     private String[] _methodParameterTypes1;
-    private String _methodName3;
-    private String[] _methodParameterTypes3;
 
     public EmailListServiceClp(InvokableService invokableService) {
         _invokableService = invokableService;
@@ -25,12 +23,6 @@ public class EmailListServiceClp implements EmailListService {
         _methodName1 = "setBeanIdentifier";
 
         _methodParameterTypes1 = new String[] { "java.lang.String" };
-
-        _methodName3 = "helloWorld";
-
-        _methodParameterTypes3 = new String[] {
-                "java.lang.String", "java.lang.String"
-            };
     }
 
     @Override
@@ -77,32 +69,5 @@ public class EmailListServiceClp implements EmailListService {
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public java.lang.String helloWorld(java.lang.String listName,
-        java.lang.String email) {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableService.invokeMethod(_methodName3,
-                    _methodParameterTypes3,
-                    new Object[] {
-                        ClpSerializer.translateInput(listName),
-                        
-                    ClpSerializer.translateInput(email)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.lang.String) ClpSerializer.translateOutput(returnObj);
     }
 }

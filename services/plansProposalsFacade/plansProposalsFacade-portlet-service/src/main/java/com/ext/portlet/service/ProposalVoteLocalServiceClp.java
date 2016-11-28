@@ -44,14 +44,6 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
-    private String _methodName19;
-    private String[] _methodParameterTypes19;
-    private String _methodName20;
-    private String[] _methodParameterTypes20;
-    private String _methodName21;
-    private String[] _methodParameterTypes21;
-    private String _methodName22;
-    private String[] _methodParameterTypes22;
 
     public ProposalVoteLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -154,22 +146,6 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
-
-        _methodName19 = "create";
-
-        _methodParameterTypes19 = new String[] { "long", "long" };
-
-        _methodName20 = "findByProposalIdContestPhaseIdUserId";
-
-        _methodParameterTypes20 = new String[] { "long", "long" };
-
-        _methodName21 = "hasUserVoted";
-
-        _methodParameterTypes21 = new String[] { "long", "long" };
-
-        _methodName22 = "findByProposalIdUserId";
-
-        _methodParameterTypes22 = new String[] { "long", "long" };
     }
 
     @Override
@@ -688,120 +664,5 @@ public class ProposalVoteLocalServiceClp implements ProposalVoteLocalService {
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public com.ext.portlet.model.ProposalVote create(long contestPhaseId,
-        long userID) {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19,
-                    new Object[] { contestPhaseId, userID });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.ProposalVote) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public com.ext.portlet.model.ProposalVote findByProposalIdContestPhaseIdUserId(
-        long contestPhaseId, long userId)
-        throws com.ext.portlet.NoSuchProposalVoteException,
-            com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName20,
-                    _methodParameterTypes20,
-                    new Object[] { contestPhaseId, userId });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.ext.portlet.NoSuchProposalVoteException) {
-                throw (com.ext.portlet.NoSuchProposalVoteException) t;
-            }
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.ProposalVote) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public boolean hasUserVoted(long contestPhaseId, long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName21,
-                    _methodParameterTypes21,
-                    new Object[] { contestPhaseId, userId });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return ((Boolean) returnObj).booleanValue();
-    }
-
-    @Override
-    public com.ext.portlet.model.ProposalVote findByProposalIdUserId(
-        long proposalId, long userId)
-        throws com.ext.portlet.NoSuchProposalVoteException,
-            com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName22,
-                    _methodParameterTypes22, new Object[] { proposalId, userId });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.ext.portlet.NoSuchProposalVoteException) {
-                throw (com.ext.portlet.NoSuchProposalVoteException) t;
-            }
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.ProposalVote) ClpSerializer.translateOutput(returnObj);
     }
 }

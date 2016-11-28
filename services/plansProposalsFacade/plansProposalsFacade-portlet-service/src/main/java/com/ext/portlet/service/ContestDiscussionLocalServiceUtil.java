@@ -263,14 +263,6 @@ public class ContestDiscussionLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static java.lang.Long getDiscussionIdByContestIdAndTabName(
-        java.lang.Long contestId, java.lang.String tabName)
-        throws com.ext.portlet.NoSuchContestDiscussionException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService()
-                   .getDiscussionIdByContestIdAndTabName(contestId, tabName);
-    }
-
     public static void clearService() {
         _service = null;
     }

@@ -259,20 +259,6 @@ public class EmailListLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static com.ext.portlet.model.EmailList findByListNameEmailAddress(
-        java.lang.String listName, java.lang.String emailAddress)
-        throws com.ext.portlet.NoSuchEmailListException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().findByListNameEmailAddress(listName, emailAddress);
-    }
-
-    public static java.util.List<com.ext.portlet.model.EmailList> findByListName(
-        java.lang.String listName)
-        throws com.ext.portlet.NoSuchEmailListException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().findByListName(listName);
-    }
-
     public static void clearService() {
         _service = null;
     }

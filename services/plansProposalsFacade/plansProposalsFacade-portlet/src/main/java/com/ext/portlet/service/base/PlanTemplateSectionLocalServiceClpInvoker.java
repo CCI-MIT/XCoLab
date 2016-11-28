@@ -45,18 +45,6 @@ public class PlanTemplateSectionLocalServiceClpInvoker {
     private String[] _methodParameterTypes398;
     private String _methodName399;
     private String[] _methodParameterTypes399;
-    private String _methodName404;
-    private String[] _methodParameterTypes404;
-    private String _methodName405;
-    private String[] _methodParameterTypes405;
-    private String _methodName406;
-    private String[] _methodParameterTypes406;
-    private String _methodName407;
-    private String[] _methodParameterTypes407;
-    private String _methodName408;
-    private String[] _methodParameterTypes408;
-    private String _methodName409;
-    private String[] _methodParameterTypes409;
 
     public PlanTemplateSectionLocalServiceClpInvoker() {
         _methodName0 = "addPlanTemplateSection";
@@ -156,38 +144,6 @@ public class PlanTemplateSectionLocalServiceClpInvoker {
         _methodName399 = "setBeanIdentifier";
 
         _methodParameterTypes399 = new String[] { "java.lang.String" };
-
-        _methodName404 = "findByPlanTemplateId";
-
-        _methodParameterTypes404 = new String[] { "java.lang.Long" };
-
-        _methodName405 = "findByPlanSectionDefinitionId";
-
-        _methodParameterTypes405 = new String[] { "java.lang.Long" };
-
-        _methodName406 = "addPlanTemplateSection";
-
-        _methodParameterTypes406 = new String[] {
-                "java.lang.Long", "java.lang.Long", "int"
-            };
-
-        _methodName407 = "removePlanTemplateSection";
-
-        _methodParameterTypes407 = new String[] {
-                "java.lang.Long", "java.lang.Long"
-            };
-
-        _methodName408 = "store";
-
-        _methodParameterTypes408 = new String[] {
-                "com.ext.portlet.model.PlanTemplateSection"
-            };
-
-        _methodName409 = "remove";
-
-        _methodParameterTypes409 = new String[] {
-                "com.ext.portlet.model.PlanTemplateSection"
-            };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -287,45 +243,6 @@ public class PlanTemplateSectionLocalServiceClpInvoker {
         if (_methodName399.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes399, parameterTypes)) {
             PlanTemplateSectionLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
-
-            return null;
-        }
-
-        if (_methodName404.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes404, parameterTypes)) {
-            return PlanTemplateSectionLocalServiceUtil.findByPlanTemplateId((java.lang.Long) arguments[0]);
-        }
-
-        if (_methodName405.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes405, parameterTypes)) {
-            return PlanTemplateSectionLocalServiceUtil.findByPlanSectionDefinitionId((java.lang.Long) arguments[0]);
-        }
-
-        if (_methodName406.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes406, parameterTypes)) {
-            return PlanTemplateSectionLocalServiceUtil.addPlanTemplateSection((java.lang.Long) arguments[0],
-                (java.lang.Long) arguments[1],
-                ((Integer) arguments[2]).intValue());
-        }
-
-        if (_methodName407.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes407, parameterTypes)) {
-            PlanTemplateSectionLocalServiceUtil.removePlanTemplateSection((java.lang.Long) arguments[0],
-                (java.lang.Long) arguments[1]);
-
-            return null;
-        }
-
-        if (_methodName408.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes408, parameterTypes)) {
-            PlanTemplateSectionLocalServiceUtil.store((com.ext.portlet.model.PlanTemplateSection) arguments[0]);
-
-            return null;
-        }
-
-        if (_methodName409.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes409, parameterTypes)) {
-            PlanTemplateSectionLocalServiceUtil.remove((com.ext.portlet.model.PlanTemplateSection) arguments[0]);
 
             return null;
         }

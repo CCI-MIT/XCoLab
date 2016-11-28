@@ -263,12 +263,6 @@ public class ContestEmailTemplateLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static com.ext.portlet.model.ContestEmailTemplate getEmailTemplateByType(
-        java.lang.String type)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getEmailTemplateByType(type);
-    }
-
     public static void clearService() {
         _service = null;
     }

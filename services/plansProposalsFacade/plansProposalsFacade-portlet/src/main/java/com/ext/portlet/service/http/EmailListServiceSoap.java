@@ -1,12 +1,5 @@
 package com.ext.portlet.service.http;
 
-import com.ext.portlet.service.EmailListServiceUtil;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import java.rmi.RemoteException;
-
 /**
  * Provides the SOAP utility for the
  * {@link com.ext.portlet.service.EmailListServiceUtil} service utility. The
@@ -48,19 +41,4 @@ import java.rmi.RemoteException;
  * @generated
  */
 public class EmailListServiceSoap {
-    private static Log _log = LogFactoryUtil.getLog(EmailListServiceSoap.class);
-
-    public static java.lang.String helloWorld(java.lang.String listName,
-        java.lang.String email) throws RemoteException {
-        try {
-            java.lang.String returnValue = EmailListServiceUtil.helloWorld(listName,
-                    email);
-
-            return returnValue;
-        } catch (Exception e) {
-            _log.error(e, e);
-
-            throw new RemoteException(e.getMessage());
-        }
-    }
 }

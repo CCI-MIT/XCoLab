@@ -236,14 +236,4 @@ public interface EmailListLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    public com.ext.portlet.model.EmailList findByListNameEmailAddress(
-        java.lang.String listName, java.lang.String emailAddress)
-        throws com.ext.portlet.NoSuchEmailListException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    public java.util.List<com.ext.portlet.model.EmailList> findByListName(
-        java.lang.String listName)
-        throws com.ext.portlet.NoSuchEmailListException,
-            com.liferay.portal.kernel.exception.SystemException;
 }

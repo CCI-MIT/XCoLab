@@ -45,10 +45,6 @@ public class LandingPageLocalServiceClpInvoker {
     private String[] _methodParameterTypes398;
     private String _methodName399;
     private String[] _methodParameterTypes399;
-    private String _methodName404;
-    private String[] _methodParameterTypes404;
-    private String _methodName405;
-    private String[] _methodParameterTypes405;
 
     public LandingPageLocalServiceClpInvoker() {
         _methodName0 = "addLandingPage";
@@ -140,18 +136,6 @@ public class LandingPageLocalServiceClpInvoker {
         _methodName399 = "setBeanIdentifier";
 
         _methodParameterTypes399 = new String[] { "java.lang.String" };
-
-        _methodName404 = "createNewLandingPage";
-
-        _methodParameterTypes404 = new String[] {
-                "java.lang.String", "java.lang.String"
-            };
-
-        _methodName405 = "store";
-
-        _methodParameterTypes405 = new String[] {
-                "com.ext.portlet.model.LandingPage"
-            };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -251,19 +235,6 @@ public class LandingPageLocalServiceClpInvoker {
         if (_methodName399.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes399, parameterTypes)) {
             LandingPageLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
-
-            return null;
-        }
-
-        if (_methodName404.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes404, parameterTypes)) {
-            return LandingPageLocalServiceUtil.createNewLandingPage((java.lang.String) arguments[0],
-                (java.lang.String) arguments[1]);
-        }
-
-        if (_methodName405.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes405, parameterTypes)) {
-            LandingPageLocalServiceUtil.store((com.ext.portlet.model.LandingPage) arguments[0]);
 
             return null;
         }

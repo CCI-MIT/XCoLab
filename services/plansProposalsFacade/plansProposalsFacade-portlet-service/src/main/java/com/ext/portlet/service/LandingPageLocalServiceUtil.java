@@ -259,17 +259,6 @@ public class LandingPageLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static com.ext.portlet.model.LandingPage createNewLandingPage(
-        java.lang.String baseUrl, java.lang.String targetUrl)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().createNewLandingPage(baseUrl, targetUrl);
-    }
-
-    public static void store(com.ext.portlet.model.LandingPage landingPage)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getService().store(landingPage);
-    }
-
     public static void clearService() {
         _service = null;
     }

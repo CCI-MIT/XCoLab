@@ -263,39 +263,6 @@ public class ProposalVoteLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static com.ext.portlet.model.ProposalVote create(
-        long contestPhaseId, long userID) {
-        return getService().create(contestPhaseId, userID);
-    }
-
-    public static com.ext.portlet.model.ProposalVote findByProposalIdContestPhaseIdUserId(
-        long contestPhaseId, long userId)
-        throws com.ext.portlet.NoSuchProposalVoteException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService()
-                   .findByProposalIdContestPhaseIdUserId(contestPhaseId, userId);
-    }
-
-    /**
-    * <p>Returns true if user has voted for a proposal in context of a contest phase</p>
-    *
-    * @param contestPhaseId contest phase id
-    * @param userId         user id
-    * @return true if user has voted for proposal in context of a contest phase
-    * @throws SystemException
-    */
-    public static boolean hasUserVoted(long contestPhaseId, long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().hasUserVoted(contestPhaseId, userId);
-    }
-
-    public static com.ext.portlet.model.ProposalVote findByProposalIdUserId(
-        long proposalId, long userId)
-        throws com.ext.portlet.NoSuchProposalVoteException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().findByProposalIdUserId(proposalId, userId);
-    }
-
     public static void clearService() {
         _service = null;
     }

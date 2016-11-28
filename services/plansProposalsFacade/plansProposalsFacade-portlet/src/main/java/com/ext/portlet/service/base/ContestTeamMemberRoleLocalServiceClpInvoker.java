@@ -45,8 +45,6 @@ public class ContestTeamMemberRoleLocalServiceClpInvoker {
     private String[] _methodParameterTypes398;
     private String _methodName399;
     private String[] _methodParameterTypes399;
-    private String _methodName404;
-    private String[] _methodParameterTypes404;
 
     public ContestTeamMemberRoleLocalServiceClpInvoker() {
         _methodName0 = "addContestTeamMemberRole";
@@ -138,10 +136,6 @@ public class ContestTeamMemberRoleLocalServiceClpInvoker {
         _methodName399 = "setBeanIdentifier";
 
         _methodParameterTypes399 = new String[] { "java.lang.String" };
-
-        _methodName404 = "findForContestTeamMember";
-
-        _methodParameterTypes404 = new String[] { "java.lang.Long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -243,11 +237,6 @@ public class ContestTeamMemberRoleLocalServiceClpInvoker {
             ContestTeamMemberRoleLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
-        }
-
-        if (_methodName404.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes404, parameterTypes)) {
-            return ContestTeamMemberRoleLocalServiceUtil.findForContestTeamMember((java.lang.Long) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

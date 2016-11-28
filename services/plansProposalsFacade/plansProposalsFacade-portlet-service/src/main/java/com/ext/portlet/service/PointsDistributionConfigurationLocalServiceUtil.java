@@ -265,40 +265,6 @@ public class PointsDistributionConfigurationLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static java.util.List<com.ext.portlet.model.PointsDistributionConfiguration> findByProposalIdPointTypeId(
-        long proposalId, long pointTypeId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().findByProposalIdPointTypeId(proposalId, pointTypeId);
-    }
-
-    public static void removeByProposalId(long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getService().removeByProposalId(proposalId);
-    }
-
-    public static com.ext.portlet.model.PointsDistributionConfiguration getByPlanSectionDefinitionId(
-        long planSectionDefinitionId)
-        throws com.ext.portlet.NoSuchPointsDistributionConfigurationException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().getByPlanSectionDefinitionId(planSectionDefinitionId);
-    }
-
-    public static com.ext.portlet.model.PointsDistributionConfiguration addDistributionConfiguration(
-        long proposalId, long pointTypeId, java.lang.Long targetUserId,
-        java.lang.Long targetSubProposalId, double percentage, long creator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService()
-                   .addDistributionConfiguration(proposalId, pointTypeId,
-            targetUserId, targetSubProposalId, percentage, creator);
-    }
-
-    public static void verifyDistributionConfigurationsForProposalId(
-        long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getService().verifyDistributionConfigurationsForProposalId(proposalId);
-    }
-
     public static void clearService() {
         _service = null;
     }

@@ -272,33 +272,6 @@ public class ContestDebateLocalServiceWrapper
             arguments);
     }
 
-    @Override
-    public com.ext.portlet.model.ContestDebate createContestDebate(
-        java.lang.Long debateId, java.lang.Long contestId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestDebateLocalService.createContestDebate(debateId,
-            contestId);
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.ContestDebate> getContestDebates(
-        java.lang.Long contestId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestDebateLocalService.getContestDebates(contestId);
-    }
-
-    @Override
-    public void store(com.ext.portlet.model.ContestDebate contestDebate)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _contestDebateLocalService.store(contestDebate);
-    }
-
-    @Override
-    public void delete(com.ext.portlet.model.ContestDebate contestDebate)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _contestDebateLocalService.delete(contestDebate);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

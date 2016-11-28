@@ -1,12 +1,5 @@
 package com.ext.portlet.service.http;
 
-import com.ext.portlet.service.ProposalUnversionedAttributeServiceUtil;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import java.rmi.RemoteException;
-
 /**
  * Provides the SOAP utility for the
  * {@link com.ext.portlet.service.ProposalUnversionedAttributeServiceUtil} service utility. The
@@ -48,19 +41,4 @@ import java.rmi.RemoteException;
  * @generated
  */
 public class ProposalUnversionedAttributeServiceSoap {
-    private static Log _log = LogFactoryUtil.getLog(ProposalUnversionedAttributeServiceSoap.class);
-
-    public static com.ext.portlet.model.ProposalUnversionedAttributeSoap[] getAttributes(
-        long proposalId) throws RemoteException {
-        try {
-            java.util.List<com.ext.portlet.model.ProposalUnversionedAttribute> returnValue =
-                ProposalUnversionedAttributeServiceUtil.getAttributes(proposalId);
-
-            return com.ext.portlet.model.ProposalUnversionedAttributeSoap.toSoapModels(returnValue);
-        } catch (Exception e) {
-            _log.error(e, e);
-
-            throw new RemoteException(e.getMessage());
-        }
-    }
 }

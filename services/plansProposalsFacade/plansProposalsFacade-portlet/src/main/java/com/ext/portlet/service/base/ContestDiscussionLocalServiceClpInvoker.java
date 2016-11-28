@@ -45,8 +45,6 @@ public class ContestDiscussionLocalServiceClpInvoker {
     private String[] _methodParameterTypes398;
     private String _methodName399;
     private String[] _methodParameterTypes399;
-    private String _methodName404;
-    private String[] _methodParameterTypes404;
 
     public ContestDiscussionLocalServiceClpInvoker() {
         _methodName0 = "addContestDiscussion";
@@ -138,12 +136,6 @@ public class ContestDiscussionLocalServiceClpInvoker {
         _methodName399 = "setBeanIdentifier";
 
         _methodParameterTypes399 = new String[] { "java.lang.String" };
-
-        _methodName404 = "getDiscussionIdByContestIdAndTabName";
-
-        _methodParameterTypes404 = new String[] {
-                "java.lang.Long", "java.lang.String"
-            };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -245,12 +237,6 @@ public class ContestDiscussionLocalServiceClpInvoker {
             ContestDiscussionLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
-        }
-
-        if (_methodName404.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes404, parameterTypes)) {
-            return ContestDiscussionLocalServiceUtil.getDiscussionIdByContestIdAndTabName((java.lang.Long) arguments[0],
-                (java.lang.String) arguments[1]);
         }
 
         throw new UnsupportedOperationException();

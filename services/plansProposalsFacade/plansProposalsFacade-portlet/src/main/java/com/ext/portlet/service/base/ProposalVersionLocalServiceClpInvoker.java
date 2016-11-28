@@ -45,12 +45,6 @@ public class ProposalVersionLocalServiceClpInvoker {
     private String[] _methodParameterTypes398;
     private String _methodName399;
     private String[] _methodParameterTypes399;
-    private String _methodName404;
-    private String[] _methodParameterTypes404;
-    private String _methodName405;
-    private String[] _methodParameterTypes405;
-    private String _methodName406;
-    private String[] _methodParameterTypes406;
 
     public ProposalVersionLocalServiceClpInvoker() {
         _methodName0 = "addProposalVersion";
@@ -150,18 +144,6 @@ public class ProposalVersionLocalServiceClpInvoker {
         _methodName399 = "setBeanIdentifier";
 
         _methodParameterTypes399 = new String[] { "java.lang.String" };
-
-        _methodName404 = "countByProposalId";
-
-        _methodParameterTypes404 = new String[] { "long" };
-
-        _methodName405 = "getByProposalId";
-
-        _methodParameterTypes405 = new String[] { "long", "int", "int" };
-
-        _methodName406 = "getByProposalIdVersion";
-
-        _methodParameterTypes406 = new String[] { "long", "int" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -263,24 +245,6 @@ public class ProposalVersionLocalServiceClpInvoker {
             ProposalVersionLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
-        }
-
-        if (_methodName404.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes404, parameterTypes)) {
-            return ProposalVersionLocalServiceUtil.countByProposalId(((Long) arguments[0]).longValue());
-        }
-
-        if (_methodName405.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes405, parameterTypes)) {
-            return ProposalVersionLocalServiceUtil.getByProposalId(((Long) arguments[0]).longValue(),
-                ((Integer) arguments[1]).intValue(),
-                ((Integer) arguments[2]).intValue());
-        }
-
-        if (_methodName406.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes406, parameterTypes)) {
-            return ProposalVersionLocalServiceUtil.getByProposalIdVersion(((Long) arguments[0]).longValue(),
-                ((Integer) arguments[1]).intValue());
         }
 
         throw new UnsupportedOperationException();

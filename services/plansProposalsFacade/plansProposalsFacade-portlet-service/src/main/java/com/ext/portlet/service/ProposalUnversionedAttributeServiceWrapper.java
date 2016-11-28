@@ -47,13 +47,6 @@ public class ProposalUnversionedAttributeServiceWrapper
             parameterTypes, arguments);
     }
 
-    @Override
-    public java.util.List<com.ext.portlet.model.ProposalUnversionedAttribute> getAttributes(
-        long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _proposalUnversionedAttributeService.getAttributes(proposalId);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

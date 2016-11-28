@@ -261,28 +261,6 @@ public class ContestDebateLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static com.ext.portlet.model.ContestDebate createContestDebate(
-        java.lang.Long debateId, java.lang.Long contestId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().createContestDebate(debateId, contestId);
-    }
-
-    public static java.util.List<com.ext.portlet.model.ContestDebate> getContestDebates(
-        java.lang.Long contestId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getContestDebates(contestId);
-    }
-
-    public static void store(com.ext.portlet.model.ContestDebate contestDebate)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getService().store(contestDebate);
-    }
-
-    public static void delete(com.ext.portlet.model.ContestDebate contestDebate)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getService().delete(contestDebate);
-    }
-
     public static void clearService() {
         _service = null;
     }
