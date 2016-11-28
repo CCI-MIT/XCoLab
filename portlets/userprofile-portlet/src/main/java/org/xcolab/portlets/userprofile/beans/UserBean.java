@@ -8,7 +8,6 @@ import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.portlets.userprofile.validators.UniqueEmail;
-import org.xcolab.utils.CountryUtil;
 import org.xcolab.utils.validation.CompareStrings;
 import org.xcolab.utils.validation.ValidBioLength;
 

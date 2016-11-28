@@ -45,7 +45,6 @@ public class Contest extends AbstractContest {
 
     private final OntologyClient ontologyClient;
 
-    //private final static Log _log = LogFactoryUtil.getLog(Contest.class);
     private final static Map<Long, FocusArea> faCache = new HashMap<>();
     private final Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<>();
 
@@ -70,9 +69,6 @@ public class Contest extends AbstractContest {
 
     protected ContestPhase activePhase;
 
-
-
-
     private RestService restService;
 
     public Contest(Long contestId) {
@@ -89,23 +85,23 @@ public class Contest extends AbstractContest {
 
     public Contest(Contest value) {
         super(value);
-        if(value.getRestService()!=null){
+        if (value.getRestService() != null) {
             contestClient = ContestClient.fromService(restService);
             contestTeamMemberClient = ContestTeamMemberClient.fromService(restService);
             ontologyClient = OntologyClient.fromService(restService);
-        }else {
+        } else {
             contestClient = ContestClientUtil.getClient();
             contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
             ontologyClient = OntologyClientUtil.getClient();
         }
     }
 
-    public Contest(AbstractContest abstractContest, RestService restServicez) {
+    public Contest(AbstractContest abstractContest, RestService restService) {
         super(abstractContest);
-        this.restService = restServicez;
-        contestClient = ContestClient.fromService(restService);
-        contestTeamMemberClient = ContestTeamMemberClient.fromService(restService);
-        ontologyClient = OntologyClient.fromService(restService);
+        this.restService = restService;
+        contestClient = ContestClient.fromService(this.restService);
+        contestTeamMemberClient = ContestTeamMemberClient.fromService(this.restService);
+        ontologyClient = OntologyClient.fromService(this.restService);
     }
 
     public String getContestLinkUrl() {

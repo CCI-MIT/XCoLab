@@ -1,4 +1,5 @@
 function proposalCopy_loadContests(moveType) {
+	//TODO: move to new endpoint
     jQuery.getJSON('/api/jsonws/plansProposalsFacade-portlet.contest/get-contests-open-for-proposals', function(data) {
     	var html = ["<table>"];
     	jQuery(data).each(function(idx, obj) {

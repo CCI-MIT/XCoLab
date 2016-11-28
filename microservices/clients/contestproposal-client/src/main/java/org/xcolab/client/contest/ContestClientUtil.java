@@ -2,6 +2,7 @@ package org.xcolab.client.contest;
 
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestDiscussion;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -60,6 +61,16 @@ public final class ContestClientUtil {
     public static Contest getContest(String contestUrlName, long contestYear)
             throws ContestNotFoundException {
         return contestClient.getContest(contestUrlName, contestYear);
+    }
+
+    public static ContestDiscussion createContestDiscussion(long threadId, long contestId,
+            String tab) {
+        return contestClient.createContestDiscussion(threadId, contestId, tab);
+    }
+
+    public static ContestDiscussion getContestDiscussion(long contestId,
+            String tab) {
+        return contestClient.getContestDiscussion(contestId, tab);
     }
 
     public static boolean isContestShared(long contestId) {

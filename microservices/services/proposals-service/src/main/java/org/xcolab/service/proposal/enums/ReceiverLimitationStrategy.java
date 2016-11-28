@@ -6,8 +6,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.model.tables.pojos.PointType;
 import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
 import org.xcolab.model.tables.pojos.Proposal;
-import org.xcolab.service.proposal.service.pointsdistributionconfiguration
-		.PointsDistributionConfigurationService;
+import org.xcolab.service.proposal.service.pointsdistributionconfiguration.PointsDistributionConfigurationService;
 import org.xcolab.service.proposal.service.proposal.ProposalService;
 import org.xcolab.util.enums.contest.ContestTier;
 
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 
 public enum ReceiverLimitationStrategy {
 

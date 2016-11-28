@@ -5,17 +5,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.enums.points.DistributionStrategy;
+import org.xcolab.client.proposals.enums.points.PointsTarget;
+import org.xcolab.client.proposals.enums.points.ReceiverLimitationStrategy;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.points.PointType;
-import org.xcolab.points.DistributionStrategy;
-import org.xcolab.points.PointsTarget;
-import org.xcolab.points.ReceiverLimitationStrategy;
 import org.xcolab.portlets.proposals.requests.AssignPointsBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
@@ -52,8 +49,6 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             //there is no point scheme set for this contest, forward to description tab
             return "";
         }
-
-        PointType parentPointType = (contestParentPointType);
 
         List<Proposal> subProposals = ProposalClientUtil
                 .getSubproposals(proposal.getProposalId(), false);
@@ -92,13 +87,13 @@ public class ProposalPointsTabController extends BaseProposalTabController {
 
         //this bean will be filled with the user input
         AssignPointsBean assignPointsBean = new AssignPointsBean(proposal.getProposalId());
-        assignPointsBean.addAllAssignments(parentPointType, members);
+        assignPointsBean.addAllAssignments((contestParentPointType), members);
 
         model.addAttribute("assignPointsBean", assignPointsBean);
         model.addAttribute("pointsToDistribute", contest.getPoints());
-        model.addAttribute("pointType", parentPointType);
+        model.addAttribute("pointType", (contestParentPointType));
         model.addAttribute("recursionLevel", 0);
-        model.addAttribute("percentageOfTotalPoints", parentPointType.getPercentageOfParent());
+        model.addAttribute("percentageOfTotalPoints", (contestParentPointType).getPercentageOfParent());
         model.addAttribute("subProposals", subProposalsWrapped);
         model.addAttribute("regionalPercentages", regionalPercentages);
         model.addAttribute("basicPercentages", basicPercentages);

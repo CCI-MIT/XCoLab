@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestDiscussion;
+import org.xcolab.client.contest.pojo.ContestDiscussionDto;
 import org.xcolab.client.contest.pojo.ContestDto;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.ContestScheduleDto;
@@ -47,6 +49,7 @@ public class ContestClient {
 
     private final RestResource1<ContestDto, Long> contestResource;
     private final RestResource<ContestTypeDto, Long> contestTypeResource;
+    private final RestResource<ContestDiscussionDto, Long> contestDiscussionResource;
 
     private final RestResource2L<ContestDto, ContestPhaseDto> visiblePhasesResource;
     private final RestResource<ContestPhaseDto, Long> contestPhasesResource;
@@ -71,6 +74,7 @@ public class ContestClient {
                 "contests", ContestDto.TYPES);
         visiblePhasesResource = new RestResource2L<>(
                 contestResource, "visiblePhases", ContestPhaseDto.TYPES);
+        contestDiscussionResource = new RestResource1<>(this.contestService, "contestDiscussions", ContestDiscussionDto.TYPES);
     }
 
     public static ContestClient fromService(RestService contestService) {
@@ -163,6 +167,20 @@ public class ContestClient {
     public boolean updateContest(Contest contest) {
         return contestResource.update(new ContestDto(contest), contest.getContestPK())
                 .execute();
+    }
+
+    public ContestDiscussion createContestDiscussion(long threadId, long contestId, String tab) {
+        ContestDiscussion contestDiscussion = new ContestDiscussion(threadId, contestId, tab);
+        return contestDiscussionResource.create(new ContestDiscussionDto(contestDiscussion)).execute()
+                .toPojo(contestService);
+    }
+
+    public ContestDiscussion getContestDiscussion(long contestId, String tab) {
+        return contestDiscussionResource.list()
+                .queryParam("contestId", contestId)
+                .queryParam("tab", tab)
+                .executeWithResult()
+                .getFirst().toPojo(contestService);
     }
 
     public Integer getProposalCount(Long contestId) {
