@@ -3,7 +3,6 @@ package org.xcolab.client.contest;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -83,7 +82,7 @@ public class ContestClient {
         return client;
     }
 
-    public Contest getContest(long contestId) throws ContestNotFoundException {
+    public Contest getContest(long contestId) {
         try {
             return contestResource.get(contestId)
                     //.withCache(CacheKeys.of(ContestDto.class, contestId), CacheRetention.)
@@ -148,6 +147,11 @@ public class ContestClient {
 
     public Contest createContest(Contest contest) {
         return contestResource.create(new ContestDto(contest)).execute().toPojo(contestService);
+    }
+
+    public boolean deleteContest(long contestId) {
+        return contestResource.delete(contestId)
+                .execute();
     }
 
     public List<Contest> getContestsMatchingTier(Long contestTier) {
@@ -355,6 +359,10 @@ public class ContestClient {
         return DtoUtil.toPojos(contestScheduleResource.list().execute(), contestService);
     }
 
+    public boolean deleteContestSchedule(long contestScheduleId) {
+        return contestScheduleResource.delete(contestScheduleId)
+                .execute();
+    }
 
     public List<ContestPhase> getVisibleContestPhases(Long contestId) {
         return DtoUtil.toPojos(visiblePhasesResource.resolveParent(contestResource.id(contestId))
@@ -513,15 +521,9 @@ public class ContestClient {
         return getJoinedNameString(contestTypeIds, true, plurality, conjunction);
     }
 
-
     public String getContestNames(List<Long> contestTypeIds, String plurality, String conjunction) {
         return getJoinedNameString(contestTypeIds, false, plurality, conjunction);
     }
-
-
-
-
-
 
     private String getJoinedNameString(List<Long> contestTypeIds, boolean isProposal,
             String plurality, String conjuction) {
@@ -571,5 +573,4 @@ public class ContestClient {
         parameterList += list.get(list.size()-1);
         return parameterList;
     }
-
 }

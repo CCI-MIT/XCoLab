@@ -272,8 +272,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
     }
 
     @Override
-    public void setPageAttributes(PortletRequest request, Model model, TabEnum tab)
-            throws PortalException, SystemException {
+    public void setPageAttributes(PortletRequest request, Model model, TabEnum tab) {
     }
 
 }

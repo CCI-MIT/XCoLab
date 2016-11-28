@@ -26,7 +26,7 @@ public final class ContestClientUtil {
         return contestClient;
     }
 
-    public static Contest getContest(long contestId) throws ContestNotFoundException {
+    public static Contest getContest(long contestId) {
         return contestClient.getContest(contestId);
     }
 
@@ -140,6 +140,14 @@ public final class ContestClientUtil {
 
     public static List<ContestSchedule> getAllContestSchedules() {
         return contestClient.getAllContestSchedules();
+    }
+
+    public static boolean deleteContestSchedule(long contestScheduleId) {
+        return contestClient.deleteContestSchedule(contestScheduleId);
+    }
+
+    public static List<Long> getModelIds(long contestPK) throws ContestNotFoundException {
+        return contestClient.getModelIds(contestPK);
     }
 
     public static List<ContestPhase> getVisibleContestPhases(
@@ -263,5 +271,9 @@ public final class ContestClientUtil {
 
     public static List<Contest> findContestsByName(String contestName, List<Long> ontologyTermIds, List<Long> contestTypeIds){
         return contestClient.findContestsByName(contestName,ontologyTermIds, contestTypeIds);
+    }
+
+    public static boolean deleteContest(long contestId) {
+        return contestClient.deleteContest(contestId);
     }
 }

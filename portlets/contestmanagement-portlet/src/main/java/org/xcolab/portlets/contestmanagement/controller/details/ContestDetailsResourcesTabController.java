@@ -1,9 +1,5 @@
 package org.xcolab.portlets.contestmanagement.controller.details;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +9,11 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
@@ -48,7 +49,7 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
 
     @ModelAttribute("currentTabWrapped")
     @Override
-    public TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException {
+    public TabWrapper populateCurrentTabWrapped(PortletRequest request) {
         tabWrapper = new TabWrapper(tab, request, tabContext);
         request.getPortletSession().setAttribute("tabWrapper", tabWrapper);
         return tabWrapper;
@@ -62,17 +63,11 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
             return NO_PERMISSION_TAB_VIEW;
         }
 
-        try {
-            Long userLoggedInId = Long.parseLong(request.getRemoteUser());
-            wikiPageWrapper = new WikiPageWrapper(getContest(), userLoggedInId);
-            setPageAttributes(request, model, tab);
-            model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
-            return TAB_VIEW;
-        } catch (PortalException | SystemException e) {
-            _log.warn("Could not show resources tab:", e);
-            SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
-        }
-        return NOT_FOUND_TAB_VIEW;
+        Long userLoggedInId = Long.parseLong(request.getRemoteUser());
+        wikiPageWrapper = new WikiPageWrapper(getContest(), userLoggedInId);
+        setPageAttributes(request, model, tab);
+        model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
+        return TAB_VIEW;
     }
 
     @RequestMapping(params = "action=updateContestResources")

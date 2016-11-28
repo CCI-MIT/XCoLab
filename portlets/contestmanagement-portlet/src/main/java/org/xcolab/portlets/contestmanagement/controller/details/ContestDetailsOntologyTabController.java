@@ -1,5 +1,11 @@
 package org.xcolab.portlets.contestmanagement.controller.details;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.FocusAreaOntologyTerm;
@@ -8,12 +14,7 @@ import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.enums.OntologySpaceEnum;
@@ -24,29 +25,26 @@ import org.xcolab.portlets.contestmanagement.wrappers.OntologyWrapper;
 import org.xcolab.utils.IdListUtil;
 import org.xcolab.wrapper.TabWrapper;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Thomas on 2/13/2015.
- */
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 @Controller
 @RequestMapping("view")
 public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestDetailsOntologyTabController.class);
+    private final static Logger _log = LoggerFactory.getLogger(ContestDetailsOntologyTabController.class);
     static final private TabEnum tab = ContestDetailsTabs.ONTOLOGY;
     static final private String TAB_VIEW = "details/ontologyTab";
 
     @ModelAttribute("currentTabWrapped")
     @Override
-    public TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException {
+    public TabWrapper populateCurrentTabWrapped(PortletRequest request) {
         tabWrapper = new TabWrapper(tab, request, tabContext);
         request.getPortletSession().setAttribute("tabWrapper", tabWrapper);
         return tabWrapper;
@@ -69,19 +67,13 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
             return NO_PERMISSION_TAB_VIEW;
         }
 
-        try {
-            OntologyWrapper ontologyWrapper = new OntologyWrapper();
-            model.addAttribute("ontologyTerms", ontologyWrapper.getOntologyTerms());
-            model.addAttribute("ontologySpaces", ontologyWrapper.getSortedOntologySpaces());
-            model.addAttribute("contestOntologyTerms",
-                    ontologyWrapper.getOntologyTermIdsForFocusAreaOfContest(getContest()));
-            setPageAttributes(request, model, tab);
-            return TAB_VIEW;
-        } catch (SystemException | PortalException e) {
-            _log.warn("Could not show ontology tab: ", e);
-            SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
-        }
-        return NOT_FOUND_TAB_VIEW;
+        OntologyWrapper ontologyWrapper = new OntologyWrapper();
+        model.addAttribute("ontologyTerms", ontologyWrapper.getOntologyTerms());
+        model.addAttribute("ontologySpaces", ontologyWrapper.getSortedOntologySpaces());
+        model.addAttribute("contestOntologyTerms",
+                ontologyWrapper.getOntologyTermIdsForFocusAreaOfContest(getContest()));
+        setPageAttributes(request, model, tab);
+        return TAB_VIEW;
     }
 
     @RequestMapping(params = "action=updateContestOntology")
@@ -125,7 +117,7 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
     }
 
     @RequestMapping(params = {"action=updateContestOntology", "error=true"})
-    public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {
+    public String reportError(PortletRequest request, Model model) {
         return TAB_VIEW;
     }
 

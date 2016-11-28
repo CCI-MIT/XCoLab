@@ -2,13 +2,7 @@ package org.xcolab.client.contest.pojo.phases;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-
 import java.sql.Timestamp;
-import java.util.Date;
 
 abstract class AbstractContestPhase {
 
@@ -385,44 +379,4 @@ abstract class AbstractContestPhase {
                 ", " + authorid +
                 ")";
     }
-
-    @JsonIgnore
-    public boolean getPhaseActive() {
-        if (this.getPhaseActiveOverride() != null && this.getPhaseActiveOverride()) {
-            return this.getPhaseActiveOverride();
-        }
-        if (this.getPhaseInactiveOverride() != null && this.getPhaseInactiveOverride()) {
-            return this.getPhaseInactiveOverride();
-        }
-        if (this.getPhaseStartDate() != null) {
-            Date now = new Date();
-            if (now.after(this.getPhaseStartDate())) {
-                return this.getPhaseEndDate() == null
-                        || now.before(this.getPhaseEndDate());
-            }
-        }
-        return false;
-    }
-
-    @JsonIgnore
-    public String getContestPhaseLinkUrl() {
-        try {
-            String link = "/";
-            Contest contest = ContestClientUtil.getContest(this.getContestPK());
-            link += ContestClientUtil.getContestType(contest.getContestTypeId())
-                    .getFriendlyUrlStringContests();
-            link += "/%d/%s/phase/%d";
-            return String.format(link, contest.getContestYear(), contest.getContestUrlName(),
-                    this.getContestPhasePK());
-        } catch (ContestNotFoundException ignored) {
-            return "/contests/";
-        }
-
-    }
-
-    @JsonIgnore
-    public String getContestStatusStr() {
-        return ContestClientUtil.getContestPhaseType(getContestPhaseType()).getStatus();
-    }
-
 }

@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -23,6 +21,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil;
 import org.xcolab.portlets.proposals.utils.ProposalPickerSortingUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.util.exceptions.InternalException;
 
 import java.io.IOException;
 import java.util.Date;
@@ -80,7 +79,7 @@ public class ProposalPickerJSONController {
 				break;
 			default:
 				_log.error("Proposal picker was loaded with unknown requestType " + requestType);
-				throw new PortalException("Unknown requestType " + requestType);
+				throw new InternalException("Unknown requestType " + requestType);
 		}
 
 		int totalCount;

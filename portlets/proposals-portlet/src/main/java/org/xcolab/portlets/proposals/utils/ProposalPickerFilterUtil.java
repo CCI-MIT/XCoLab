@@ -200,8 +200,7 @@ public class ProposalPickerFilterUtil {
     }
 
     public static List<Pair<Proposal, Date>> getFilteredAllProposals(String filterText,
-            String filterKey, long sectionId, Long contestPK, PortletRequest request, ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
+            String filterKey, long sectionId, Long contestPK, PortletRequest request, ProposalsContext proposalsContext) {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
         List<Proposal> proposalsRaw;
 
