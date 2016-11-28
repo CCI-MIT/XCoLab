@@ -31,6 +31,9 @@ public final class OntologyClientUtil {
     public static List<OntologyTerm> getAllOntologyTerms() {
         return client.getAllOntologyTerms();
     }
+    public static List<OntologyTerm> getOntologyTerms(Long parentId, Long ontologySpaceId){
+        return client.getOntologyTerms(parentId,ontologySpaceId);
+    }
 
     public static List<FocusArea> getAllFocusAreas() {
         return client.getAllFocusAreas();

@@ -75,6 +75,12 @@ public class OntologyClient {
         return DtoUtil.toPojos(ontologyTermResource.list()
                 .execute(), contestService);
     }
+    public List<OntologyTerm> getOntologyTerms(Long parentId, Long ontologySpaceId) {
+        return DtoUtil.toPojos(ontologyTermResource.list()
+                .queryParam("parentId", parentId)
+                .queryParam("ontologySpaceId",ontologySpaceId)
+                .execute(), contestService);
+    }
 
     public List<FocusArea> getAllFocusAreas() {
         return DtoUtil.toPojos(focusAreaResource.list()

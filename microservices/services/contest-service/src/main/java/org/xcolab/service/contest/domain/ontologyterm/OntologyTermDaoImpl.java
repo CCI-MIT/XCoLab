@@ -32,7 +32,7 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
     }
 
     @Override
-    public List<OntologyTerm> findByGiven(String name, Long parentId) {
+    public List<OntologyTerm> findByGiven(String name, Long parentId, Long ontologySpaceId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(ONTOLOGY_TERM).getQuery();
 
@@ -42,8 +42,12 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
         if(parentId != null){
             query.addConditions(ONTOLOGY_TERM.PARENT_ID.eq(parentId));
         }
+        if(ontologySpaceId != null){
+            query.addConditions(ONTOLOGY_TERM.ONTOLOGY_SPACE_ID.eq(ontologySpaceId));
+        }
         return query.fetchInto(OntologyTerm.class);
     }
+
 
 
 }
