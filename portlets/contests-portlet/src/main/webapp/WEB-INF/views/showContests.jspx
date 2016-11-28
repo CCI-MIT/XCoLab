@@ -14,7 +14,7 @@
                     <a href="${contest.contestUrl}">
                         <c:choose>
                             <c:when test="${contest.contestLogoId > 0}">
-                                <img src="/image/contest?img_id=${contest.contestLogoId}" width="151" height="151" alt="${contest.contestShortName}" />
+                                <img src="${contest.logoPath}" width="151" height="151" alt="${contest.contestShortName}" />
                             </c:when>
                             <c:otherwise>
                                 <img src="${themeDisplay.pathThemeImages}/blank.gif" width="151" height="151" alt="${contest.contestShortName}" style="border: 1px solid #bbb;"/>

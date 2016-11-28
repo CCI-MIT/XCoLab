@@ -130,6 +130,23 @@ public class Contest extends AbstractContest {
             return "/";
         }
     }
+    public String getSponsorLogoPath() {
+        if(this.getIsSharedContestInForeignColab()) {
+
+            Long i = this.getSponsorLogoId();
+            if (i != null) {
+                return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_LOCATION.get()+"/image/contest?img_id=" + i;
+            }
+            return "";
+        }else{
+            Long i = this.getSponsorLogoId();
+            if (i != null) {
+                return "/image/contest?img_id=" + i;
+            }
+            return "";
+        }
+    }
+
     public String getLogoPath() {
         if(this.getIsSharedContestInForeignColab()) {
 

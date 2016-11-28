@@ -426,6 +426,7 @@ public abstract class AbstractContest {
         return this.sponsorlogoid;
     }
 
+
     public void setSponsorLogoId(Long sponsorlogoid) {
         this.sponsorlogoid = sponsorlogoid;
     }
