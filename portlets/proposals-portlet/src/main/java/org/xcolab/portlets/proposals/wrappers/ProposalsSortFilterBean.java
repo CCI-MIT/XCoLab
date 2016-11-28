@@ -1,7 +1,5 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -22,12 +20,12 @@ public class ProposalsSortFilterBean {
     private List<Proposal> proposalsWithRibbons = new ArrayList<>();
     private List<Proposal> proposalsNormal = new ArrayList<>();
 
-    public ProposalsSortFilterBean(List<Proposal> proposals, final SortFilterPage sortFilterPage) throws PortalException, SystemException {
+    public ProposalsSortFilterBean(List<Proposal> proposals, final SortFilterPage sortFilterPage) {
         super();
         this.proposals = proposals;
 
         if (sortFilterPage == null) {
-            throw new PortalException("sortFilterPage was null");
+            throw new IllegalArgumentException("sortFilterPage was null");
         }
         
         // sort proposals
@@ -54,7 +52,7 @@ public class ProposalsSortFilterBean {
                 case "OVERALLSTATUS":
                     proposalComparator = ProposalsColumn.OVERALLSTATUS.getComparator(); break;
                 default:
-                    throw new PortalException("Unknown sort column");
+                    throw new IllegalArgumentException("Unknown sort column");
             }
         }
         
@@ -66,7 +64,7 @@ public class ProposalsSortFilterBean {
             sortFilterPage.setSortAscending(!sortFilterPage.isSortAscending()); // default sort is date DESC
         }
 
-        if(this.proposals!=null&&this.proposals.size() >0 ) {
+        if(this.proposals!=null&& !this.proposals.isEmpty()) {
 
             Collections.sort(this.proposals, new Comparator<Proposal>() {
                 @Override

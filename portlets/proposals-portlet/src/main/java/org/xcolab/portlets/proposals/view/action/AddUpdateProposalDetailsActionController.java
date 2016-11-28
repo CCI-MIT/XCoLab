@@ -7,8 +7,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 
@@ -48,7 +46,7 @@ public class AddUpdateProposalDetailsActionController {
     @RequestMapping(params = {"action=updateProposalDetails"})
     public void show(ActionRequest request, Model model,
             ActionResponse response, @Valid UpdateProposalDetailsBean updateProposalSectionsBean, BindingResult result)
-            throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
+            throws ProposalsAuthorizationException, IOException {
 
         final Proposal proposal = proposalsContext.getProposal(request);
         if (proposal != null && !proposalsContext.getPermissions(request).getCanEdit()) {
@@ -124,7 +122,7 @@ public class AddUpdateProposalDetailsActionController {
     @RequestMapping(params = {"action=updateProposalDetails", "error=true"})
     public String reportError(PortletRequest request, Model model,
             @ModelAttribute("updateProposalSectionsBean") @Valid UpdateProposalDetailsBean updateProposalSectionsBean,
-            BindingResult result) throws PortalException, SystemException {
+            BindingResult result) {
         Proposal proposalWrapped = proposalsContext.getProposalWrapped(request);
 
         Proposal proposal = new Proposal();

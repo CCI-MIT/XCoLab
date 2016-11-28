@@ -55,8 +55,7 @@ public class ProposalPickerJSONController {
 			@RequestParam(required = false) String sortOrder,
 			@RequestParam(required = false) String sortColumn,
 			@RequestParam(required = false) Long sectionId,
-			@RequestParam(required = false) long contestPK) throws IOException,
-			SystemException, PortalException {
+			@RequestParam(required = false) long contestPK) throws IOException {
 
 		List<Pair<Proposal, Date>> proposals;
 		final long userId = Long.parseLong(request.getRemoteUser());
@@ -120,8 +119,7 @@ public class ProposalPickerJSONController {
 			@RequestParam(required = false) int end,
 			@RequestParam(required = false) String sortOrder,
 			@RequestParam(required = false, value = "contestSortColumn") String sortColumn,
-			@RequestParam(required = false) Long sectionId) throws IOException,
-			SystemException, PortalException {
+			@RequestParam(required = false) Long sectionId) throws IOException {
 
 		List<Pair<Contest, Date>> contests = ProposalPickerFilterUtil.getTextFilteredContests(sectionId, filterText);
 		//List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getAllContests();
@@ -156,8 +154,7 @@ public class ProposalPickerJSONController {
 	 */
 	@ResourceMapping("proposalPickerCounter")
 	public void proposalPickerCounter(ResourceRequest request,
-									  ResourceResponse response) throws IOException, SystemException,
-			PortalException {
+									  ResourceResponse response) throws IOException {
 				/*
 		TODO: Removed to increase performance
 		String filterType = request.getParameter("filterKey");
@@ -186,7 +183,7 @@ public class ProposalPickerJSONController {
 	}
 
 	private String getJSONObjectMapping(List<Pair<Proposal, Date>> proposals,
-										int totalNumberOfProposals) throws SystemException, PortalException {
+										int totalNumberOfProposals) {
 		JSONObject wrapper = JSONFactoryUtil.createJSONObject();
 		JSONArray proposalsJSON = JSONFactoryUtil.createJSONArray();
 
@@ -233,8 +230,7 @@ public class ProposalPickerJSONController {
 	}
 
 	private String getJSONObjectMappingContests(
-			List<Pair<Contest, Date>> contests, int totalNumberOfContests, Map<Long, String> removedContests)
-			throws SystemException, PortalException {
+			List<Pair<Contest, Date>> contests, int totalNumberOfContests, Map<Long, String> removedContests) {
 		JSONObject wrapper = JSONFactoryUtil.createJSONObject();
 		JSONArray proposalsJSON = JSONFactoryUtil.createJSONArray();
 

@@ -1,19 +1,20 @@
 package org.xcolab.portlets.proposals.view.action;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.User;
-import com.liferay.portal.util.PortalUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.model.User;
+import com.liferay.portal.util.PortalUtil;
+
 import org.xcolab.mail.EmailToAdminDispatcher;
 import org.xcolab.wrapper.SimpleExceptionErrorReportWrapper;
 
+import java.io.IOException;
+
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import java.io.IOException;
 
 /**
  * Created by Klemens Mang on 29/07/15.
@@ -37,7 +38,7 @@ public class ReportInvalidUrlErrorActionController {
 
     @RequestMapping(params = {"error=invalidUrl", "pageToDisplay=contestProposals"})
     public void show(ActionRequest request, Model model,
-                     ActionResponse response) throws IOException, SystemException, PortalException {
+                     ActionResponse response) throws IOException {
 
         String stepsToReproduce = request.getParameter("stepsToReproduce");
         String userEmailAddress = request.getParameter("userEmailAddress");

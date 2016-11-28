@@ -5,9 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.discussion.ProposalDiscussionPermissions;
@@ -25,8 +22,7 @@ public class ProposalFellowReviewTabController extends BaseProposalTabController
     private ProposalsContext proposalsContext;
     
     @RequestMapping(params = {"pageToDisplay=proposalDetails_FELLOW_REVIEW"})
-    public String showFellowReview(PortletRequest request, Model model)
-            throws PortalException, SystemException {
+    public String showFellowReview(PortletRequest request, Model model) {
 
         final Proposal proposal = proposalsContext.getProposalWrapped(request);
 
@@ -46,8 +42,7 @@ public class ProposalFellowReviewTabController extends BaseProposalTabController
         return "proposalComments";
     }
 
-    private long createFellowThread(PortletRequest request)
-            throws SystemException, PortalException {
+    private long createFellowThread(PortletRequest request) {
         Proposal proposal = proposalsContext.getProposal(request);
         final long discussionThreadId = createDiscussionThread(request, " fellow review", true);
         proposal.setFellowDiscussionId(discussionThreadId);

@@ -39,8 +39,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
     }
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_POINTS"})
-    public String showProposalDetails(Model model, PortletRequest request) 
-            throws PortalException, SystemException {
+    public String showProposalDetails(Model model, PortletRequest request) {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.POINTS);
         Proposal proposal = proposalsContext.getProposal(request);

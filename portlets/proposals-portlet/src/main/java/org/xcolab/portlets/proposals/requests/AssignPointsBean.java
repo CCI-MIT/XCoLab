@@ -2,7 +2,6 @@ package org.xcolab.portlets.proposals.requests;
 
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -42,7 +41,7 @@ public class AssignPointsBean {
         assignmentsByUserIdByPointTypeId = new HashMap<>();
     }
 
-    public void addAllAssignments(PointType pointType, List<Member> members) throws SystemException, PortalException {
+    public void addAllAssignments(PointType pointType, List<Member> members) {
         if (pointType.getDistributionStrategyz().name().equals(DistributionStrategy.USER_DEFINED.name())) {
 
             PointsClientUtil.verifyDistributionConfigurationsForProposalId(proposalId);
@@ -76,7 +75,7 @@ public class AssignPointsBean {
         initializeUsers(members);
     }
 
-    public void initializeUsers(List<Member> teamMembers) throws SystemException {
+    public void initializeUsers(List<Member> teamMembers) {
         usersNotInTeam = new ArrayList<>(MembersClient.listAllMembers());
         usersNotInTeam.removeAll(teamMembers);
     }

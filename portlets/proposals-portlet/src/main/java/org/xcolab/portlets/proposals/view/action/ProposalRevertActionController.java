@@ -6,9 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 
@@ -41,7 +38,7 @@ public class ProposalRevertActionController {
     public void showProposalRevert(ActionRequest request, Model model,
                                     ActionResponse response)
 
-    throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
+    throws ProposalsAuthorizationException, IOException {
 
         if (proposalsContext.getProposal(request) != null && !proposalsContext.getPermissions(request).getCanEdit()) {
             throw new ProposalsAuthorizationException("User is not allowed to edit proposal, user: "
@@ -65,7 +62,7 @@ public class ProposalRevertActionController {
         }
     }
 
-    private void updateProposalAttributes(ActionRequest request, long userId, Proposal oldProposalVersionToBeBecomeCurrent) throws PortalException, SystemException {
+    private void updateProposalAttributes(ActionRequest request, long userId, Proposal oldProposalVersionToBeBecomeCurrent) {
         boolean updateProposalReferences = false;
         for (PlanSectionDefinition section: oldProposalVersionToBeBecomeCurrent.getSections()) {
             String newSectionValue = section.getStringValue();
@@ -138,7 +135,7 @@ public class ProposalRevertActionController {
         }
     }
 
-    private void updateProposalSpecialAttributes(long userId, Proposal oldProposalVersionToBeBecomeCurrent) throws PortalException, SystemException {
+    private void updateProposalSpecialAttributes(long userId, Proposal oldProposalVersionToBeBecomeCurrent) {
         ProposalAttributeClientUtil.setProposalAttribute(userId,  oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.NAME,0l, oldProposalVersionToBeBecomeCurrent.getName());
         ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.PITCH,0l, oldProposalVersionToBeBecomeCurrent.getPitch());
         ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.DESCRIPTION,0l, oldProposalVersionToBeBecomeCurrent.getDescription());

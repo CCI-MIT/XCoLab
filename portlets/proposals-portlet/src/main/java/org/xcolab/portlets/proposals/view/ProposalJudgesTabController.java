@@ -40,7 +40,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
     
     @RequestMapping(params = {"pageToDisplay=proposalDetails_ADVANCING"})
     public String showJudgesPanel(PortletRequest request, Model model)
-            throws PortalException, SystemException, ProposalsAuthorizationException {
+            throws ProposalsAuthorizationException {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.ADVANCING);
 
@@ -80,8 +80,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         return "proposalAdvancing";
     }
 
-    private void setCommonAdvancingAttributes(PortletRequest request, ProposalAdvancingBean bean, Model model)
-            throws SystemException, PortalException {
+    private void setCommonAdvancingAttributes(PortletRequest request, ProposalAdvancingBean bean, Model model) {
         Proposal proposal = proposalsContext.getProposal(request);
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
 
@@ -124,8 +123,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
     }
 
 
-    private static List<ProposalRatings> wrapProposalRatings(List<ProposalRating> ratings)
-            throws SystemException, PortalException {
+    private static List<ProposalRatings> wrapProposalRatings(List<ProposalRating> ratings) {
         List<ProposalRatings> wrappers = new ArrayList<>();
         Map<Long, List<ProposalRating>> ratingsByUserId = new HashMap<>();
 
@@ -145,8 +143,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
     }
     
     @RequestMapping(params = {"pageToDisplay=proposalDetails_SCREENING"})
-    public String showFellowsPanel(PortletRequest request, Model model)
-            throws PortalException, SystemException {
+    public String showFellowsPanel(PortletRequest request, Model model) {
         setCommonModelAndPageAttributes(request, model, ProposalTab.SCREENING);
 
         Proposal proposal = proposalsContext.getProposal(request);

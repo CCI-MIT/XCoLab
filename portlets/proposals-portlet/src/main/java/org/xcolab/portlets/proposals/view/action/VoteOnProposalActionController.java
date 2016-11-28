@@ -9,8 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.SecureRandomUtil;
@@ -65,7 +63,7 @@ public class VoteOnProposalActionController {
 
     @RequestMapping(params = {"action=voteOnProposalAction"})
     public void handleAction(ActionRequest request, Model model, ActionResponse response)
-            throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
+            throws ProposalsAuthorizationException, IOException {
         boolean hasVoted = false;
         final Proposal proposal = proposalsContext.getProposal(request);
         final Contest contest = proposalsContext.getContest(request);
@@ -122,7 +120,8 @@ public class VoteOnProposalActionController {
         response.sendRedirect(proposal.getProposalLinkUrl(contest) + arguments);
     }
 
-    private boolean validateVote(User user, Member member, Proposal proposal, Contest contest, ServiceContext serviceContext) throws SystemException, PortalException {
+    private boolean validateVote(User user, Member member, Proposal proposal, Contest contest,
+            ServiceContext serviceContext) {
 
         List<Member> usersWithSharedIP = MembersClient.findMembersByIp(user.getLastLoginIP());
         usersWithSharedIP.remove(user);
@@ -156,7 +155,7 @@ public class VoteOnProposalActionController {
         return true;
     }
 
-    private void sendConfirmationMail(ProposalVote vote, Proposal proposal, Contest contest, Member member, ServiceContext serviceContext) throws PortalException, SystemException {
+    private void sendConfirmationMail(ProposalVote vote, Proposal proposal, Contest contest, Member member, ServiceContext serviceContext) {
         String confirmationToken = Long.toHexString(SecureRandomUtil.nextLong());
         vote.setConfirmationToken(confirmationToken);
         vote.setConfirmationEmailSendDate(new Timestamp(new Date().getTime()));

@@ -77,7 +77,7 @@ public class ProposalPickerFilterUtil {
 
 
 
-    public static List<Pair<Contest, Date>> getTextFilteredContests( long sectionId, String contestName) throws SystemException, PortalException {
+    public static List<Pair<Contest, Date>> getTextFilteredContests( long sectionId, String contestName) {
         List<Pair<Contest, Date>> contests = new ArrayList<>();
         PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
 
@@ -140,8 +140,7 @@ public class ProposalPickerFilterUtil {
     }
 
     public static List<Pair<Proposal, Date>> getFilteredSubscribedSupportingProposalsForUser(
-            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
+            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext) {
         List<Pair<Proposal, Date>> proposals = getFilteredSubscribedProposalsForUser(
                 userId, filterKey, sectionId, request, proposalsContext);
 
@@ -161,8 +160,7 @@ public class ProposalPickerFilterUtil {
     }
 
     public static List<Pair<Proposal, Date>> getFilteredSubscribedProposalsForUser(
-            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
+            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext) {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
         List<ActivitySubscription> activitySubscriptions = ActivitiesClientUtil.getActivitySubscriptions(null, null, userId);
 
@@ -186,8 +184,7 @@ public class ProposalPickerFilterUtil {
     }
 
     public static List<Pair<Proposal, Date>> getFilteredSupportingProposalsForUser(
-            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
+            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext) {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
         for (ProposalSupporter ps : ProposalMemberRatingClientUtil.getProposalSupportersByUserId(userId)) {
             try{
@@ -253,8 +250,7 @@ public class ProposalPickerFilterUtil {
 
     private static void filterProposals(List<Pair<Proposal, Date>> proposals,
             String filterKey, long sectionId, PortletRequest request,
-            ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
+            ProposalsContext proposalsContext) {
         filterByParameter(filterKey, proposals);
 
         filterByVisibility(proposals);
@@ -281,7 +277,7 @@ public class ProposalPickerFilterUtil {
     }
 
 
-    private static void filterByVisibility(List<Pair<Proposal, Date>> proposals) throws SystemException, PortalException {
+    private static void filterByVisibility(List<Pair<Proposal, Date>> proposals) {
         for (Iterator<Pair<Proposal, Date>> iterator = proposals.iterator(); iterator.hasNext(); ) {
 
             Proposal proposal = iterator.next().getLeft();
