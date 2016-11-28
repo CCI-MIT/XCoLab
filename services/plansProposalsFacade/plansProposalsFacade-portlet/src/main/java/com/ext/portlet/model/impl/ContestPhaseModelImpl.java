@@ -68,7 +68,7 @@ public class ContestPhaseModelImpl extends BaseModelImpl<ContestPhase>
             { "updated", Types.TIMESTAMP },
             { "authorId", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhase (ContestPhasePK LONG not null primary key,ContestPK LONG,ContestPhaseType LONG,contestScheduleId LONG,fellowScreeningActive BOOLEAN,contestPhaseAutopromote VARCHAR(75) null,ContestPhaseDescriptionOverride TEXT null,phaseActiveOverride BOOLEAN,phaseInactiveOverride BOOLEAN,PhaseStartDate DATE null,PhaseEndDate DATE null,PhaseBufferEndDated DATE null,nextStatus VARCHAR(75) null,created DATE null,updated DATE null,authorId LONG)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhase (ContestPhasePK LONG not null primary key,ContestPK LONG,ContestPhaseType LONG,contestScheduleId LONG,fellowScreeningActive BOOLEAN,contestPhaseAutopromote VARCHAR(75) null,ContestPhaseDescriptionOverride VARCHAR(75) null,phaseActiveOverride BOOLEAN,phaseInactiveOverride BOOLEAN,PhaseStartDate DATE null,PhaseEndDate DATE null,PhaseBufferEndDated DATE null,nextStatus VARCHAR(75) null,created DATE null,updated DATE null,authorId LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestPhase";
     public static final String ORDER_BY_JPQL = " ORDER BY contestPhase.PhaseStartDate ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestPhase.PhaseStartDate ASC";

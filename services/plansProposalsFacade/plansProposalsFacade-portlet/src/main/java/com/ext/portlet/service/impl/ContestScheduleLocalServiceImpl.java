@@ -24,11 +24,4 @@ public class ContestScheduleLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ContestScheduleLocalServiceUtil} to access the contest schedule local service.
      */
-
-    @Override
-    public Boolean isContestScheduleUsed(long contestScheduleId) throws SystemException {
-        //TODO: delete, this is unused
-        return true;
-    }
-
 }

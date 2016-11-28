@@ -55,7 +55,7 @@ public class LandingPageModelImpl extends BaseModelImpl<LandingPage>
             { "targetUrl", Types.VARCHAR },
             { "updated", Types.TIMESTAMP }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_LandingPage (id_ LONG not null primary key,baseUrl VARCHAR(1024) null,targetUrl VARCHAR(1024) null,updated DATE null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_LandingPage (id_ LONG not null primary key,baseUrl VARCHAR(75) null,targetUrl VARCHAR(75) null,updated DATE null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_LandingPage";
     public static final String ORDER_BY_JPQL = " ORDER BY landingPage.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_LandingPage.id_ ASC";

@@ -59,7 +59,7 @@ public class ContestPhaseTypeModelImpl extends BaseModelImpl<ContestPhaseType>
             { "pointsAccessible", Types.INTEGER },
             { "defaultPromotionType", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhaseType (id_ LONG not null primary key,name VARCHAR(1024) null,description TEXT null,status VARCHAR(75) null,fellowScreeningActiveDefault BOOLEAN,contestPhaseAutopromoteDefault VARCHAR(75) null,invisible BOOLEAN,pointsAccessible INTEGER,defaultPromotionType VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ContestPhaseType (id_ LONG not null primary key,name VARCHAR(75) null,description VARCHAR(75) null,status VARCHAR(75) null,fellowScreeningActiveDefault BOOLEAN,contestPhaseAutopromoteDefault VARCHAR(75) null,invisible BOOLEAN,pointsAccessible INTEGER,defaultPromotionType VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ContestPhaseType";
     public static final String ORDER_BY_JPQL = " ORDER BY contestPhaseType.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ContestPhaseType.id_ ASC";

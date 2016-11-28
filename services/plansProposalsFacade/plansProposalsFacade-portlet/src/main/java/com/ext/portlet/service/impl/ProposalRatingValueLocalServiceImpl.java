@@ -32,11 +32,4 @@ public class ProposalRatingValueLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalRatingValueLocalServiceUtil} to access the proposal rating value local service.
      */
 
-    @Override
-    public List<ProposalRatingValue> getRatingValuesForRatingTypeId(long proposalRatingTypeId) throws SystemException {
-        DynamicQuery query = DynamicQueryFactoryUtil.forClass(ProposalRatingValue.class)
-                .add(PropertyFactoryUtil.forName("ratingTypeId").eq(proposalRatingTypeId));
-        query.addOrder(OrderFactoryUtil.asc("value"));
-        return dynamicQuery(query);
-    }
 }

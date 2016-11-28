@@ -55,7 +55,7 @@ public class MessagingMessageModelImpl extends BaseModelImpl<MessagingMessage>
             { "name", Types.VARCHAR },
             { "description", Types.VARCHAR },
             { "subject", Types.VARCHAR },
-            { "body", Types.CLOB },
+            { "body", Types.VARCHAR },
             { "replyTo", Types.VARCHAR },
             { "sendToAll", Types.BOOLEAN },
             { "conversionCount", Types.BIGINT },
@@ -64,7 +64,7 @@ public class MessagingMessageModelImpl extends BaseModelImpl<MessagingMessage>
             { "createDate", Types.TIMESTAMP },
             { "modifiedDate", Types.TIMESTAMP }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingMessage (messageId LONG not null primary key,name VARCHAR(1024) null,description TEXT null,subject VARCHAR(2048) null,body TEXT null,replyTo VARCHAR(1024) null,sendToAll BOOLEAN,conversionCount LONG,redirectURL VARCHAR(1024) null,creatorId LONG,createDate DATE null,modifiedDate DATE null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingMessage (messageId LONG not null primary key,name VARCHAR(75) null,description VARCHAR(75) null,subject VARCHAR(75) null,body VARCHAR(75) null,replyTo VARCHAR(75) null,sendToAll BOOLEAN,conversionCount LONG,redirectURL VARCHAR(75) null,creatorId LONG,createDate DATE null,modifiedDate DATE null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_MessagingMessage";
     public static final String ORDER_BY_JPQL = " ORDER BY messagingMessage.createDate DESC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_MessagingMessage.createDate DESC";

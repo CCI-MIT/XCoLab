@@ -27,14 +27,5 @@ public class EmailListLocalServiceImpl extends EmailListLocalServiceBaseImpl {
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.EmailListLocalServiceUtil} to access the email list local service.
      */
-    
-    @Override
-    public EmailList findByListNameEmailAddress(String listName, String emailAddress) throws NoSuchEmailListException, SystemException {
-        return emailListPersistence.findByfindByNameEmail(listName, emailAddress);
-    }
-    
-    @Override
-    public List<EmailList> findByListName(String listName) throws NoSuchEmailListException, SystemException {
-        return emailListPersistence.findByfindByName(listName);
-    }
+
 }

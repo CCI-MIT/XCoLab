@@ -1,18 +1,15 @@
 package org.xcolab.wrapper;
 
-import com.ext.portlet.NoSuchContestDiscussionException;
-import com.ext.portlet.model.ContestDiscussion;
-import com.ext.portlet.service.ContestDiscussionLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.util.PortalUtil;
 
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadClientUtil;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestDiscussion;
 import org.xcolab.interfaces.TabContext;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.interfaces.TabPermissions;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.io.Serializable;
 
@@ -78,40 +75,23 @@ public class TabWrapper implements Serializable {
     }
 
     public long getDiscussionId() {
-        Long discussionId;
         Contest contest = context.getContest(request);
-        try {
-            discussionId = ContestDiscussionLocalServiceUtil.
-                    getDiscussionIdByContestIdAndTabName(contest.getContestPK(), getName());
-        } catch (NoSuchContestDiscussionException e) {
-            discussionId = createNewDiscussionIdByContestIdAndTabName(contest, getName());
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
-        return discussionId;
+        return ContestClientUtil.getContestDiscussion(contest.getContestPK(), getName())
+                        .getDiscussionId();
     }
 
     private Long createNewDiscussionIdByContestIdAndTabName(Contest contest, String tabName) {
-        try {
-            long contestId = contest.getContestPK();
+        long contestId = contest.getContestPK();
 
-            CommentThread thread = new CommentThread();
-            thread.setAuthorId(contest.getAuthorId());
-            thread.setTitle(contest.getContestType().getContestName()
-                            + " " + contestId + " " + tabName + " discussion");
-            long discussionId = ThreadClientUtil.createThread(thread).getThreadId();
+        CommentThread thread = new CommentThread();
+        thread.setAuthorId(contest.getAuthorId());
+        thread.setTitle(contest.getContestType().getContestName()
+                        + " " + contestId + " " + tabName + " discussion");
+        long discussionId = ThreadClientUtil.createThread(thread).getThreadId();
 
-            ContestDiscussion newContestDiscussion = ContestDiscussionLocalServiceUtil.
-                    createContestDiscussion(discussionId);
+        ContestDiscussion newContestDiscussion = ContestClientUtil.createContestDiscussion(discussionId, contestId, tabName);
 
-            newContestDiscussion.setContestId(contestId);
-            newContestDiscussion.setTab(tabName);
-            newContestDiscussion.persist();
-
-            return newContestDiscussion.getDiscussionId();
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+        return newContestDiscussion.getDiscussionId();
     }
 
 }

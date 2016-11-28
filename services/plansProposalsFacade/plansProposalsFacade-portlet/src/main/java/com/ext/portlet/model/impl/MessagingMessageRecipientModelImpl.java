@@ -56,7 +56,7 @@ public class MessagingMessageRecipientModelImpl extends BaseModelImpl<MessagingM
             { "userId", Types.BIGINT },
             { "emailAddress", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingMessageRecipient (recipientId LONG not null primary key,messageId LONG,userId LONG,emailAddress VARCHAR(512) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingMessageRecipient (recipientId LONG not null primary key,messageId LONG,userId LONG,emailAddress VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_MessagingMessageRecipient";
     public static final String ORDER_BY_JPQL = " ORDER BY messagingMessageRecipient.recipientId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_MessagingMessageRecipient.recipientId ASC";

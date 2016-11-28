@@ -58,7 +58,7 @@ public class MessagingIgnoredRecipientsModelImpl extends BaseModelImpl<Messaging
             { "userId", Types.BIGINT },
             { "createDate", Types.TIMESTAMP }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingIgnoredRecipients (ignoredRecipientId LONG not null primary key,email VARCHAR(512) null,name VARCHAR(512) null,userId LONG,createDate DATE null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingIgnoredRecipients (ignoredRecipientId LONG not null primary key,email VARCHAR(75) null,name VARCHAR(75) null,userId LONG,createDate DATE null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_MessagingIgnoredRecipients";
     public static final String ORDER_BY_JPQL = " ORDER BY messagingIgnoredRecipients.email ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_MessagingIgnoredRecipients.email ASC";

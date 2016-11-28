@@ -53,7 +53,7 @@ public class EmailListModelImpl extends BaseModelImpl<EmailList>
             { "name", Types.VARCHAR },
             { "email", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_EmailList (id_ LONG not null primary key,name VARCHAR(256) null,email VARCHAR(256) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_EmailList (id_ LONG not null primary key,name VARCHAR(75) null,email VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_EmailList";
     public static final String ORDER_BY_JPQL = " ORDER BY emailList.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_EmailList.id_ ASC";

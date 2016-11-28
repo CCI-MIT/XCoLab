@@ -1,22 +1,6 @@
 package com.ext.portlet.service.impl;
 
-import com.ext.portlet.NoSuchProposalAttributeException;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.ContestPhaseType;
-import com.ext.portlet.model.PlanSectionDefinition;
-import com.ext.portlet.model.PlanTemplate;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.model.ProposalAttribute;
 import com.ext.portlet.model.ProposalVersion;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalVersionLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -30,8 +14,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.ac.AccessControlled;
 import com.liferay.portal.service.UserLocalServiceUtil;
-
-import java.util.Date;
 
 /**
  * The implementation of the proposal remote service.
@@ -71,29 +53,30 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
     @JSONWebService
     @AccessControlled(guestAccessEnabled=true)
     public JSONObject getProposalVersionFirstIndex(long contestPhaseId, long proposalId) throws PortalException, SystemException {
-        Proposal2Phase p2p = null;
-        if (contestPhaseId > 0) {
-            p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, contestPhaseId);
-        }
-
-        int index = 0;
-        Date oldDate = new Date();
-        for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, 0, 10000)) {
-            if (p2p == null || p2p.getVersionTo() == -1
-                    || (proposalVersion.getVersion() >= p2p.getVersionFrom() && (proposalVersion.getVersion() < p2p.getVersionTo() ))
-                    ) {
-                break;
-            }
-
-            if (Math.abs(oldDate.getTime() - proposalVersion.getCreateDate().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
-                index++;
-                oldDate = proposalVersion.getCreateDate();
-            }
-        }
-
-        JSONObject result = JSONFactoryUtil.createJSONObject();
-        result.put("index", index);
-        return result;
+//        Proposal2Phase p2p = null;
+//        if (contestPhaseId > 0) {
+//            p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId, contestPhaseId);
+//        }
+//
+//        int index = 0;
+//        Date oldDate = new Date();
+//        for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, 0, 10000)) {
+//            if (p2p == null || p2p.getVersionTo() == -1
+//                    || (proposalVersion.getVersion() >= p2p.getVersionFrom() && (proposalVersion.getVersion() < p2p.getVersionTo() ))
+//                    ) {
+//                break;
+//            }
+//
+//            if (Math.abs(oldDate.getTime() - proposalVersion.getCreateDate().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
+//                index++;
+//                oldDate = proposalVersion.getCreateDate();
+//            }
+//        }
+//
+//        JSONObject result = JSONFactoryUtil.createJSONObject();
+//        result.put("index", index);
+//        return result;
+        return null;
     }
 
     /**
@@ -108,22 +91,23 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
     @JSONWebService
     @AccessControlled(guestAccessEnabled=true)
     public JSONObject getProposalVersionIndex(long version, long proposalId) throws PortalException, SystemException {
-        int index = 0;
-        Date oldDate = new Date();
-        for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, 0, 10000)) {
-            if (proposalVersion.getVersion() == version) {
-                break;
-            }
-
-            if (Math.abs(oldDate.getTime() - proposalVersion.getCreateDate().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
-                index++;
-                oldDate = proposalVersion.getCreateDate();
-            }
-        }
-
-        JSONObject result = JSONFactoryUtil.createJSONObject();
-        result.put("index", index);
-        return result;
+//        int index = 0;
+//        Date oldDate = new Date();
+//        for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, 0, 10000)) {
+//            if (proposalVersion.getVersion() == version) {
+//                break;
+//            }
+//
+//            if (Math.abs(oldDate.getTime() - proposalVersion.getCreateDate().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
+//                index++;
+//                oldDate = proposalVersion.getCreateDate();
+//            }
+//        }
+//
+//        JSONObject result = JSONFactoryUtil.createJSONObject();
+//        result.put("index", index);
+//        return result;
+        return null;
     }
 
     /**
@@ -136,77 +120,78 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
     @JSONWebService
     @AccessControlled(guestAccessEnabled=true)
     public JSONObject getProposalVersions(long contestId, long contestPhaseId, long proposalId, int start, int end) throws PortalException, SystemException {
-        Date oldDate = new Date();
-
-        Proposal2Phase p2p = null;
-        Contest c = ContestLocalServiceUtil.getContest(contestId);
-        if (contestPhaseId > 0) {
-            p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId,contestPhaseId);
-
-        }
-
-        JSONObject result = JSONFactoryUtil.createJSONObject();
-        result.put("proposalId", proposalId);
-        result.put("start", start);
-        result.put("end", end);
-
-
-        JSONArray proposalVersionsArray = JSONFactoryUtil.createJSONArray();
-
-        // COUNT VERSIONS
-        int offset = 0;
-        int counter = 0;
-        int numberOfVersions = 0;
-        for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, 0, 10000)) {
-            if (c != null){
-                try{
-                    // Skip versions that do not belong to this contest
-                    long cphId = Proposal2PhaseLocalServiceUtil.getForVersion(proposalVersion).getContestPhaseId();
-                    Contest c2 = ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(cphId));
-                    if (c2.getContestPK() != c.getContestPK()) {
-                        continue;
-                    }
-                } catch (SystemException e){
-                    _log.error("Could not get p2p", e);
-                }
-            }
-
-            if (p2p != null
-                    && (proposalVersion.getVersion() <= p2p.getVersionFrom() || (proposalVersion.getVersion() > p2p.getVersionTo() && p2p.getVersionTo() != -1))
-                    ) {
-                continue;
-            }
-
-            if (Math.abs(oldDate.getTime() - proposalVersion.getCreateDate().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
-                numberOfVersions++;
-                if (counter > (end-start)) {
-                    oldDate = proposalVersion.getCreateDate();
-                    continue;
-                }
-                if (offset < start){
-                    offset++;
-                    oldDate = proposalVersion.getCreateDate();
-                    continue;
-                }
-                JSONObject proposalVersionJsonObj = JSONFactoryUtil.createJSONObject();
-                proposalVersionsArray.put(proposalVersionJsonObj);
-
-                proposalVersionJsonObj.put("version", proposalVersion.getVersion());
-                proposalVersionJsonObj.put("date", proposalVersion.getCreateDate().getTime());
-                proposalVersionJsonObj.put("author", convertUserToJson(proposalVersion.getAuthorId()));
-                proposalVersionJsonObj.put("updateType", proposalVersion.getUpdateType());
-                try{
-                    proposalVersionJsonObj.put("contestPhase", getContestPhaseName(proposalVersion));
-                } catch(SystemException se) { proposalVersionJsonObj.put("contestPhase", "null");}
-
-                oldDate = proposalVersion.getCreateDate();
-                counter++;
-            }
-        }
-        result.put("totalCount", numberOfVersions);
-        result.put("versions", proposalVersionsArray);
-
-        return result;
+//        Date oldDate = new Date();
+//
+//        Proposal2Phase p2p = null;
+//        Contest c = ContestLocalServiceUtil.getContest(contestId);
+//        if (contestPhaseId > 0) {
+//            p2p = Proposal2PhaseLocalServiceUtil.getByProposalIdContestPhaseId(proposalId,contestPhaseId);
+//
+//        }
+//
+//        JSONObject result = JSONFactoryUtil.createJSONObject();
+//        result.put("proposalId", proposalId);
+//        result.put("start", start);
+//        result.put("end", end);
+//
+//
+//        JSONArray proposalVersionsArray = JSONFactoryUtil.createJSONArray();
+//
+//        // COUNT VERSIONS
+//        int offset = 0;
+//        int counter = 0;
+//        int numberOfVersions = 0;
+//        for (ProposalVersion proposalVersion: ProposalVersionLocalServiceUtil.getByProposalId(proposalId, 0, 10000)) {
+//            if (c != null){
+//                try{
+//                    // Skip versions that do not belong to this contest
+//                    long cphId = Proposal2PhaseLocalServiceUtil.getForVersion(proposalVersion).getContestPhaseId();
+//                    Contest c2 = ContestPhaseLocalServiceUtil.getContest(ContestPhaseLocalServiceUtil.getContestPhase(cphId));
+//                    if (c2.getContestPK() != c.getContestPK()) {
+//                        continue;
+//                    }
+//                } catch (SystemException e){
+//                    _log.error("Could not get p2p", e);
+//                }
+//            }
+//
+//            if (p2p != null
+//                    && (proposalVersion.getVersion() <= p2p.getVersionFrom() || (proposalVersion.getVersion() > p2p.getVersionTo() && p2p.getVersionTo() != -1))
+//                    ) {
+//                continue;
+//            }
+//
+//            if (Math.abs(oldDate.getTime() - proposalVersion.getCreateDate().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
+//                numberOfVersions++;
+//                if (counter > (end-start)) {
+//                    oldDate = proposalVersion.getCreateDate();
+//                    continue;
+//                }
+//                if (offset < start){
+//                    offset++;
+//                    oldDate = proposalVersion.getCreateDate();
+//                    continue;
+//                }
+//                JSONObject proposalVersionJsonObj = JSONFactoryUtil.createJSONObject();
+//                proposalVersionsArray.put(proposalVersionJsonObj);
+//
+//                proposalVersionJsonObj.put("version", proposalVersion.getVersion());
+//                proposalVersionJsonObj.put("date", proposalVersion.getCreateDate().getTime());
+//                proposalVersionJsonObj.put("author", convertUserToJson(proposalVersion.getAuthorId()));
+//                proposalVersionJsonObj.put("updateType", proposalVersion.getUpdateType());
+//                try{
+//                    proposalVersionJsonObj.put("contestPhase", getContestPhaseName(proposalVersion));
+//                } catch(SystemException se) { proposalVersionJsonObj.put("contestPhase", "null");}
+//
+//                oldDate = proposalVersion.getCreateDate();
+//                counter++;
+//            }
+//        }
+//        result.put("totalCount", numberOfVersions);
+//        result.put("versions", proposalVersionsArray);
+//
+//        return result;
+        return null;
     }
 
     @Override
@@ -221,31 +206,32 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
     @AccessControlled(guestAccessEnabled=true)
     public JSONArray getProposalContestSections(long proposalId, int version, long contestId) throws PortalException, SystemException {
     	JSONArray ret = JSONFactoryUtil.createJSONArray();
-    	
-    	Proposal proposal = proposalLocalService.getProposal(proposalId);
-    	Contest contest = contestLocalService.getContest(contestId);
-    	
-        PlanTemplate planTemplate = ContestLocalServiceUtil.getPlanTemplate(contest);
-
-        if (planTemplate != null) {
-            for (PlanSectionDefinition psd : PlanTemplateLocalServiceUtil.getSections(planTemplate)) {
-            	try {
-            		ProposalAttribute attribute = proposalAttributeLocalService.getAttribute(proposalId, version, ProposalAttributeKeys.SECTION, psd.getId());
-            		if (attribute != null && !attribute.getStringValue().trim().isEmpty()) {
-            			JSONObject obj = JSONFactoryUtil.createJSONObject();
-            			obj.put("title", psd.getTitle());
-            			obj.put("sectionId", psd.getId());
-            			obj.put("content", attribute.getStringValue());
-            		
-            			ret.put(obj);
-            		}
-            	}
-            	catch (NoSuchProposalAttributeException e) {
-            		// ignore
-            	}
-            }
-        }
-    	return ret;
+//
+//    	Proposal proposal = proposalLocalService.getProposal(proposalId);
+//    	Contest contest = contestLocalService.getContest(contestId);
+//
+//        PlanTemplate planTemplate = ContestLocalServiceUtil.getPlanTemplate(contest);
+//
+//        if (planTemplate != null) {
+//            for (PlanSectionDefinition psd : PlanTemplateLocalServiceUtil.getSections(planTemplate)) {
+//            	try {
+//            		ProposalAttribute attribute = proposalAttributeLocalService.getAttribute(proposalId, version, ProposalAttributeKeys.SECTION, psd.getId());
+//            		if (attribute != null && !attribute.getStringValue().trim().isEmpty()) {
+//            			JSONObject obj = JSONFactoryUtil.createJSONObject();
+//            			obj.put("title", psd.getTitle());
+//            			obj.put("sectionId", psd.getId());
+//            			obj.put("content", attribute.getStringValue());
+//
+//            			ret.put(obj);
+//            		}
+//            	}
+//            	catch (NoSuchProposalAttributeException e) {
+//            		// ignore
+//            	}
+//            }
+//        }
+//    	return ret;
+        return null;
     }
     
     private JSONObject convertUserToJson(long userId) throws PortalException, SystemException {
@@ -260,14 +246,15 @@ public class ProposalServiceImpl extends ProposalServiceBaseImpl {
     }
 
     private JSONObject getContestPhaseName(ProposalVersion proposalVersion) throws PortalException, SystemException{
-        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(
-                Proposal2PhaseLocalServiceUtil.getForVersion(proposalVersion).getContestPhaseId());
-        ContestPhaseType contestPhaseType = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType());
-
-        JSONObject contestPhaseJsonObj = JSONFactoryUtil.createJSONObject();
-        contestPhaseJsonObj.put("id", contestPhase.getPrimaryKey());
-        contestPhaseJsonObj.put("name", contestPhaseType.getName());
-
-        return contestPhaseJsonObj;
+//        ContestPhase contestPhase = ContestPhaseLocalServiceUtil.getContestPhase(
+//                Proposal2PhaseLocalServiceUtil.getForVersion(proposalVersion).getContestPhaseId());
+//        ContestPhaseType contestPhaseType = ContestPhaseTypeLocalServiceUtil.getContestPhaseType(contestPhase.getContestPhaseType());
+//
+//        JSONObject contestPhaseJsonObj = JSONFactoryUtil.createJSONObject();
+//        contestPhaseJsonObj.put("id", contestPhase.getPrimaryKey());
+//        contestPhaseJsonObj.put("name", contestPhaseType.getName());
+//
+//        return contestPhaseJsonObj;
+        return null;
     }
 }

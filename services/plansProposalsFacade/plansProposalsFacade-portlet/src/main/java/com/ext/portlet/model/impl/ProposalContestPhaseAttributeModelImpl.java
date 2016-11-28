@@ -58,7 +58,7 @@ public class ProposalContestPhaseAttributeModelImpl extends BaseModelImpl<Propos
             { "stringValue", Types.VARCHAR },
             { "realValue", Types.DOUBLE }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalContestPhaseAttribute (id_ LONG not null primary key,proposalId LONG,contestPhaseId LONG,name VARCHAR(75) null,additionalId LONG,numericValue LONG,stringValue TEXT null,realValue DOUBLE)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalContestPhaseAttribute (id_ LONG not null primary key,proposalId LONG,contestPhaseId LONG,name VARCHAR(75) null,additionalId LONG,numericValue LONG,stringValue VARCHAR(75) null,realValue DOUBLE)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ProposalContestPhaseAttribute";
     public static final String ORDER_BY_JPQL = " ORDER BY proposalContestPhaseAttribute.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ProposalContestPhaseAttribute.id_ ASC";

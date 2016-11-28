@@ -1,11 +1,5 @@
 package org.xcolab.services.tasks;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.PointsLocalService;
-import com.ext.portlet.service.PointsLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Message;
@@ -34,17 +28,18 @@ public class ProposalPointsDistributionTask implements MessageListener {
             }
             isExecuting = true;
         }
-        try {
-            for (Contest pointsContest : ContestLocalServiceUtil.getPointsEnabledContests(true)) {
-                try {
-                    PointsLocalServiceUtil.distributePoints(pointsContest.getContestPK());
-                } catch (Throwable e) {
-                    _log.error("Error while distributing points for contest with ID " + pointsContest.getContestPK(), e);
-                }
-            }
-        } catch (SystemException e) {
-            _log.error("Could not get points enabled contests.", e);
-        }
+//        TODO: are we still using this mechanism?
+//        try {
+//            for (Contest pointsContest : ContestLocalServiceUtil.getPointsEnabledContests(true)) {
+//                try {
+//                    PointsLocalServiceUtil.distributePoints(pointsContest.getContestPK());
+//                } catch (Throwable e) {
+//                    _log.error("Error while distributing points for contest with ID " + pointsContest.getContestPK(), e);
+//                }
+//            }
+//        } catch (SystemException e) {
+//            _log.error("Could not get points enabled contests.", e);
+//        }
 
         synchronized (mutex) {
             isExecuting = false;
