@@ -169,7 +169,7 @@ CREATE TABLE `xcolab_ContestType` (
   PRIMARY KEY (`id_`)
 );
 
-INSERT INTO xcolab_ContestType (id_, contestName, contestNamePlural, proposalName, proposalNamePlural, portletName, portletUrl, friendlyUrlStringContests, friendlyUrlStringProposal, menuItemName, hasDiscussion, suggestionContestId, rulesPageName, rulesPageUrl) VALUES (0, 'Dialogue', 'Dialogues', 'Contribution', 'Contributions', 'dialogue', '/web/guest/dialogues', 'dialogues', 'contribution', '', 1, 0, 'Dialogue Rules', '/web/guest/resources/-/wiki/Main/Contest+Rules');
+INSERT INTO xcolab_ContestType (id_, contestName, contestNamePlural, proposalName, proposalNamePlural, portletName, portletUrl, friendlyUrlStringContests, friendlyUrlStringProposal, menuItemName, hasDiscussion, suggestionContestId, rulesPageName, rulesPageUrl) VALUES (0, 'Dialogue', 'Dialogues', 'Contribution', 'Contributions', 'dialogue', '/dialogues', 'dialogues', 'contribution', '', 1, 0, 'Dialogue Rules', '/web/guest/resources/-/wiki/Main/Contest+Rules');
 UPDATE xcolab_Contest SET ContestUrlName = 'coral-gables-key-questions', ContestYear = 2016 WHERE ContestPK = 1303602;
 UPDATE xcolab_Contest SET ContestUrlName = 'coral-gables-trends-and-scenarios', ContestYear = 2016 WHERE ContestPK = 1303603;
 UPDATE xcolab_Contest SET ContestUrlName = 'coral-gables-resources-and-strategies', ContestYear = 2016 WHERE ContestPK = 1303701;
@@ -418,7 +418,7 @@ CREATE TABLE `xcolab_ActivitySubscription` (
   KEY `IX_C2ED8710` (`classNameId`,`classPK`,`type_`,`extraData`(50),`receiverId`),
   KEY `IX_1413A2B6` (`classNameId`,`classPK`,`type_`,`receiverId`),
   KEY `IX_33049EE6` (`receiverId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+);
 
 ALTER TABLE `xcolab_Contest` ADD FULLTEXT KEY `ContestDescription_xcolab_Contest` (`ContestDescription`);
 ALTER TABLE `xcolab_ProposalAttribute` ADD FULLTEXT INDEX `stringValue_ProposalAtribute` (`stringValue`);
@@ -544,7 +544,9 @@ INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, str
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PARTNER_COLAB_PORT', 0, 0, '8080', 0);
 
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('SHOW_CONTESTS_DISPLAY_OPTIONS', 0, 0, '', 0);
-
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('MIT_HEADER_BAR_SHOW', 0, 0, '', 0);
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('IMAGE_UPLOAD_EXTERNAL_SERVICE_URL', 0, 0, 'http://imgur.com/MRfmcOs', 0);
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('IMAGE_UPLOAD_HELP_TEXT', 0, 0, '<h4>Image upload in IMGUR:</h4><p><a href="http://climatecolab.org/" target="_blank" style="color: blue; text-decoration: underline;">Screencast</a></p><br /><ol><li>Click on Upload</li><li>Select your picture</li><li>Upload the picture to IMGUR</li><li>Copy the URL of the IMGUR page</li><li>Paste it into the URL field</li><li>Verify the image in the preview</li><li>Click OK to insert the image</li></ol>', 0);
 -- =======================================
 -- Member email templates
 -- =======================================
@@ -646,18 +648,18 @@ CREATE TABLE IF NOT EXISTS `sharedcolab_SharedContest` (
   `contestName` VARCHAR(255) NULL,
   `createDate` DATETIME NULL,
   `colabOrigin` VARCHAR(45) NULL,
-  PRIMARY KEY (`sharedContestId`));
+  PRIMARY KEY (`sharedContestId`)
+);
 
 -- taking auto increment from table
 ALTER TABLE `xcolab_Contest`
   CHANGE COLUMN `ContestPK` `ContestPK` BIGINT(20) NOT NULL;
 
 -- adding shared origin column
-ALTER TABLE `xcolab_Contest`
-  ADD COLUMN `sharedOrigin` VARCHAR(45) NULL AFTER `isSharedContest`;
+ALTER TABLE `xcolab_Contest` ADD COLUMN `sharedOrigin` VARCHAR(45) NULL AFTER `isSharedContest`;
 
 -- updating all contests to current colab of origin
-update xcolab_Contest set sharedOrigin = (select stringValue from xcolab_ConfigurationAttribute where name = "COLAB_NAME");
+update xcolab_Contest set sharedOrigin = (select stringValue from xcolab_ConfigurationAttribute where name = 'COLAB_NAME');
 
 -- =======================================
 -- RD-specific changes
