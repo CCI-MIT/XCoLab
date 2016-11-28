@@ -3,7 +3,6 @@ package org.xcolab.wrapper;
 import com.ext.portlet.NoSuchContestDiscussionException;
 import com.ext.portlet.model.ContestDiscussion;
 import com.ext.portlet.service.ContestDiscussionLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.util.PortalUtil;
 
@@ -98,9 +97,7 @@ public class TabWrapper implements Serializable {
 
             CommentThread thread = new CommentThread();
             thread.setAuthorId(contest.getAuthorId());
-            thread.setTitle(
-                    ContestTypeLocalServiceUtil.getContestTypeFromContestId(contestId)
-                            .getContestName()
+            thread.setTitle(contest.getContestType().getContestName()
                             + " " + contestId + " " + tabName + " discussion");
             long discussionId = ThreadClientUtil.createThread(thread).getThreadId();
 

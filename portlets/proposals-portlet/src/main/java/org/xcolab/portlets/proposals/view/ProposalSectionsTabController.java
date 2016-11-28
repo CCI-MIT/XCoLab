@@ -3,11 +3,9 @@ package org.xcolab.portlets.proposals.view;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -30,8 +28,7 @@ import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.enums.proposal.MoveType;
-import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.utils.EntityGroupingUtil;
+import org.xcolab.entity.utils.EntityGroupingUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -50,9 +47,13 @@ import javax.portlet.PortletRequest;
 @RequestMapping("view")
 public class ProposalSectionsTabController extends BaseProposalTabController {
 
-    @Autowired
-    private ProposalsContext proposalsContext;
+    private final ProposalsContext proposalsContext;
 
+    @Autowired
+    public ProposalSectionsTabController(ProposalsContext proposalsContext) {
+        Assert.notNull(proposalsContext, "ProposalsContext bean is required");
+        this.proposalsContext = proposalsContext;
+    }
 
     @RequestMapping(params = "pageToDisplay=proposalDetails")
     public String showProposalDetails(
@@ -64,7 +65,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             @RequestParam(defaultValue = "false") String moveType,
             @RequestParam(required = false) Long moveFromContestPhaseId,
             @RequestParam(defaultValue = "false") boolean voted,
-            Model model, PortletRequest request) throws PortalException {
+            Model model, PortletRequest request) {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.DESCRIPTION);
 
@@ -151,8 +152,6 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             populateMoveHistory(model, proposal, contest, request);
         } catch (ContestNotFoundException ignored) {
 
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
         }
 
         return "proposalDetails";
@@ -170,17 +169,15 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         model.addAttribute("sourceMoveHistories", sourceMoveHistories);
 
 
-        ProposalMoveHistory targetMoveHistoryRaw = ProposalsContextUtil.getClients(request).getProposalMoveClient()
+        ProposalMoveHistory targetMoveHistory = ProposalsContextUtil.getClients(request).getProposalMoveClient()
                 .getByTargetProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
-        if (targetMoveHistoryRaw != null) {
-            ProposalMoveHistory targetMoveHistory = (targetMoveHistoryRaw);
+        if (targetMoveHistory != null) {
             model.addAttribute("targetMoveHistory", targetMoveHistory);
         }
 
     }
 
-    private void setLinkedProposals(Model model, Proposal proposal, PortletRequest request)
-            throws PortalException, SystemException {
+    private void setLinkedProposals(Model model, Proposal proposal, PortletRequest request) {
         List<Proposal> linkedProposals = ProposalsContextUtil.getClients(request).getProposalClient()
                 .getSubproposals(proposal.getProposalId(), true);
         Map<ContestType, List<Proposal>> proposalsByContestType =

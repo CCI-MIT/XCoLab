@@ -87,15 +87,7 @@ cd microservices/util/xcolab-utils
 mvn clean compile package install clean
 cd ../../..
 
-cd microservices/util/service-utils
-mvn clean compile package install clean
-cd ../../..
-
 cd microservices/clients
-mvn install -N
-cd ../..
-
-cd microservices/services
 mvn install -N
 cd ../..
 
@@ -118,6 +110,10 @@ for D in *; do
     fi
 done
 cd ../..
+
+cd microservices/util/entity-utils
+mvn clean compile package install clean
+cd ../../..
 
 cd services/plansProposalsFacade/plansProposalsFacade-portlet-service
 mvn clean compile package install clean
@@ -156,3 +152,22 @@ for D in *; do
 		cd ..
     fi
 done
+
+cd microservices/util/service-utils
+mvn clean compile package install clean
+cd ../../..
+
+cd microservices/services
+mvn install -N
+cd ../..
+
+cd microservices/services
+for D in *; do
+    if [ -d "${D}" ]; then
+        cd $D
+		pwd
+		mvn clean compile package install clean
+		cd ..
+    fi
+done
+cd ../..

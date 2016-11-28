@@ -1,11 +1,8 @@
 package org.xcolab.portlets.proposals.utils;
 
 import org.apache.commons.lang3.tuple.Pair;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
@@ -41,7 +38,7 @@ public class ProposalPickerFilterUtil {
     public static final String CONTEST_FILTER_REASON_FOCUS_AREA = "FOCUS_AREA";
     public static final String CONTEST_FILTER_REASON_TIER = "TIER";
 
-    private static final Log _log = LogFactoryUtil.getLog(ProposalPickerFilterUtil.class);
+    private static final Logger _log = LoggerFactory.getLogger(ProposalPickerFilterUtil.class);
 
     /**
      * Parse filter from frontend parameter and filter the contents of the proposals parameter
@@ -57,14 +54,13 @@ public class ProposalPickerFilterUtil {
     }
 
     public static List<Pair<Contest, Date>> getFilteredContests(
-            long sectionId, ResourceRequest request, ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
+            long sectionId, ResourceRequest request, ProposalsContext proposalsContext) {
         List<Pair<Contest, Date>> contests = ProposalPickerFilterUtil.getAllContests();
         ProposalPickerFilterUtil.filterContests(contests, sectionId, request, proposalsContext, false);
         return contests;
     }
 
-    public static List<Pair<Contest, Date>> getAllContests() throws SystemException, PortalException {
+    public static List<Pair<Contest, Date>> getAllContests() {
         List<Pair<Contest, Date>> contests = new ArrayList<>();
 
         for (Contest c: ContestClientUtil.getAllContests()) {
@@ -97,8 +93,7 @@ public class ProposalPickerFilterUtil {
 
 
     public static Map<Long, String> filterContests(List<Pair<Contest, Date>> contests,
-            long sectionId, ResourceRequest request, ProposalsContext proposalsContext, boolean trackRemovedContests)
-            throws SystemException, PortalException {
+            long sectionId, ResourceRequest request, ProposalsContext proposalsContext, boolean trackRemovedContests) {
         PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
         ProposalPickerFilter.CONTEST_TYPE_FILTER.filterContests(contests, planSectionDefinition.getAllowedContestTypeIds());
 
