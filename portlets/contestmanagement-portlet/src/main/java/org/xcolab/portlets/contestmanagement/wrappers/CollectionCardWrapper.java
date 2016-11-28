@@ -7,9 +7,14 @@ import org.xcolab.client.contest.pojo.ContestCollectionCard;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class CollectionCardWrapper {
 
@@ -67,16 +72,33 @@ public class CollectionCardWrapper {
 
     public Map<Long , String > getOntologyTerms() {
         Map<Long, String> ontologyTerms = new HashMap<>();
-        ontologyTerms.put((long) (-1), "null");
+
+        ontologyTerms.put((long) (-1), "none");
         for(OntologyTerm term: OntologyClientUtil.getAllOntologyTerms()) {
             ontologyTerms.put(term.getId(), term.getName());
         }
-        return ontologyTerms;
+
+        List<Map.Entry<Long, String>> list =
+                new LinkedList<>( ontologyTerms.entrySet() );
+        Collections.sort(list, new Comparator<Entry<Long, String>>() {
+            public int compare(Map.Entry<Long, String> o1,
+                    Map.Entry<Long, String> o2) {
+                return (o1.getValue()).compareTo(o2.getValue());
+            }
+        });
+
+        Map<Long, String> sortedOntologyTerms = new LinkedHashMap<>();
+        for (Map.Entry<Long, String> entry : list)
+        {
+            sortedOntologyTerms.put( entry.getKey(), entry.getValue() );
+        }
+
+        return sortedOntologyTerms;
     }
 
     public Map<Long , String > getCollectionCards() {
         Map<Long, String> cards = new HashMap<>();
-        cards.put((long) (-1), "null");
+        cards.put((long) (-1), "none");
         for(ContestCollectionCard card: ContestClientUtil.getAllContestCollectionCards()) {
             cards.put(card.getId_(), card.getDescription());
         }

@@ -86,7 +86,7 @@
                     <strong class="inputTitleLeft">Small Ontologyterm</strong>
                     <form:select path="smallOntologyTerm" id="smallOntologyTerm" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
                     <br/>
-                    <strong class="inputTitleLeft">Order</strong>
+                    <strong class="inputTitleLeft">Weigth</strong>
                     <input name="order" id="order" class="wideLargeInput" type="number" value="0" />
                     <br/>
                     <strong class="inputTitleLeft">Only Featured</strong>
