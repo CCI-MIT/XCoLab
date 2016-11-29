@@ -28,11 +28,14 @@ import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.legacy.utils.SendMessagePermissionChecker;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
+import org.xcolab.client.proposals.MembershipClientUtil;
+import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
+import org.xcolab.entity.utils.EntityGroupingUtil;
 import org.xcolab.enums.Plurality;
 import org.xcolab.portlets.userprofile.beans.BadgeBean;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
@@ -40,7 +43,6 @@ import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.entity.Badge;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.utils.EntityGroupingUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -360,11 +362,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public long getActualPoints() {
-        try {
-            return PointsLocalServiceUtil.getUserMaterializedPoints(getUserId());
-        } catch (SystemException e) {
-            return 0;
-        }
+        return MembersClient.getMemberMaterializedPoints(getUserId());
     }
 
     public String getPotentialPointsFormatted() {
@@ -372,11 +370,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public long getPotentialPoints() {
-        try {
-            return PointsLocalServiceUtil.getUserHypotheticalPoints(getUserId());
-        } catch (SystemException e) {
-            return 0;
-        }
+        return MembersClient.getMemberHypotheticalPoints(getUserId());
     }
 
     public List<Proposal> getLinkingProposals() {

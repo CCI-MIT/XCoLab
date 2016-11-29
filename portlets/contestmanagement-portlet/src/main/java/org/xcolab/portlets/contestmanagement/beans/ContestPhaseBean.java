@@ -2,14 +2,12 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.enums.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseTypeValue;
 
@@ -88,27 +86,24 @@ public class ContestPhaseBean implements Serializable {
             this.contestPhaseTypeObj = ContestClientUtil.getContestPhaseType(contestPhaseType);
         }
 
-        try {
-            this.contestPhaseHasProposalAssociations = false;
-            List<Contest> contestsUsingThisContestPhase = ContestClientUtil
-                    .getContestsByContestScheduleId(this.contestScheduleId);
-            for (Contest contest : contestsUsingThisContestPhase) {
-                List<ContestPhase> contestPhases = ContestClientUtil
-                        .getPhasesForContestScheduleIdAndContest(this.contestScheduleId,
-                                contest.getContestPK());
-                for (ContestPhase contestPhase1 : contestPhases) {
-                    if (Objects
-                            .equals(contestPhase1.getContestPhaseType(), this.contestPhaseType)) {
-                        List<Proposal2Phase> proposal2PhaseList = Proposal2PhaseLocalServiceUtil
-                                .getByContestPhaseId(contestPhase1.getContestPhasePK());
-                        if (!proposal2PhaseList.isEmpty()) {
-                            this.contestPhaseHasProposalAssociations = true;
-                            break;
-                        }
+        this.contestPhaseHasProposalAssociations = false;
+        List<Contest> contestsUsingThisContestPhase = ContestClientUtil
+                .getContestsByContestScheduleId(this.contestScheduleId);
+        for (Contest contest : contestsUsingThisContestPhase) {
+            List<ContestPhase> contestPhases = ContestClientUtil
+                    .getPhasesForContestScheduleIdAndContest(this.contestScheduleId,
+                            contest.getContestPK());
+            for (ContestPhase contestPhase1 : contestPhases) {
+                if (Objects
+                        .equals(contestPhase1.getContestPhaseType(), this.contestPhaseType)) {
+                    List<Proposal2Phase> proposal2PhaseList = ProposalPhaseClientUtil.
+                            getProposal2PhaseByContestPhaseId(contestPhase1.getContestPhasePK());
+                    if (!proposal2PhaseList.isEmpty()) {
+                        this.contestPhaseHasProposalAssociations = true;
+                        break;
                     }
                 }
             }
-        } catch (SystemException ignored) {
         }
     }
 

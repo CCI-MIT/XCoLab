@@ -103,7 +103,17 @@ public final class MembersClient {
 
     public static Integer getMemberMaterializedPoints(long memberId) {
         try {
-            return memberResource.service(memberId, "materializedPoints", Integer.class).getChecked();
+            return memberResource.service(memberId, "points", Integer.class).getChecked();
+        } catch (EntityNotFoundException e) {
+            return 0;
+        }
+    }
+
+    public static Integer getMemberHypotheticalPoints(long memberId) {
+        try {
+            return memberResource.service(memberId, "points", Integer.class)
+                    .queryParam("hypothetical", true)
+                    .getChecked();
         } catch (EntityNotFoundException e) {
             return 0;
         }
