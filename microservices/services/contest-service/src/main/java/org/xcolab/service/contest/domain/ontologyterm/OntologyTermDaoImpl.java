@@ -48,6 +48,18 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
         return query.fetchInto(OntologyTerm.class);
     }
 
+    public boolean update(OntologyTerm ontologyTerm) {
+        return dslContext.update(ONTOLOGY_TERM)
+                .set(ONTOLOGY_TERM.PARENT_ID, ontologyTerm.getParentId())
+                .set(ONTOLOGY_TERM.ONTOLOGY_SPACE_ID, ontologyTerm.getOntologySpaceId())
+                .set(ONTOLOGY_TERM.NAME, ontologyTerm.getName())
+                .set(ONTOLOGY_TERM.DESCRIPTION_URL, ontologyTerm.getDescriptionUrl())
+                .set(ONTOLOGY_TERM.ORDER_, ontologyTerm.getOrder_())
+                .where(ONTOLOGY_TERM.ID_.eq(ontologyTerm.getId_()))
+                .execute() > 0;
+    }
+
+
 
 
 }

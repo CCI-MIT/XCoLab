@@ -1,4 +1,4 @@
-package org.xcolab.portlets.ontologyportlet.views;
+package org.xcolab.portlets.contenteditor.views;
 
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;

@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface OntologyTermDao {
     OntologyTerm get(Long id_) throws NotFoundException;
-    public List<OntologyTerm> findByGiven(String name, Long parentId, Long ontologySpaceId);
+    List<OntologyTerm> findByGiven(String name, Long parentId, Long ontologySpaceId);
+    boolean update(OntologyTerm ontologyTerm);
 }

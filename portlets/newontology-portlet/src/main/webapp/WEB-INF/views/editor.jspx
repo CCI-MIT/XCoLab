@@ -6,7 +6,6 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"><!-- --></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/js.cookie.js"><!-- --></script>
     <script src="${pageContext.request.contextPath}/js/tree.jquery.js"><!-- --></script>
-    <script src="${pageContext.request.contextPath}/js/ckeditor/ckeditor.js"><!-- --></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"><!-- --></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/spin.min.js"><!-- --></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.loadmask.spin.js"><!-- --></script>
@@ -17,18 +16,17 @@
 
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"><!-- --></link>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jqtree.css"><!-- --></link>
-    <!-- link rel="stylesheet" href="${pageContext.request.contextPath}/js/ckeditor/contents.css"></link -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css"><!-- --></link>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery.loadmask.spin.css"><!-- --></link>
 
-    <portlet:resourceURL var="contentEditorListFolderURL" id="contentEditorListFolder">
+    <portlet:resourceURL var="ontologyListFolderURL" id="ontologyEditorList">
     </portlet:resourceURL>
 
 
-    <portlet:resourceURL var="getArticleVersionURL" id="contentEditorGetLatestArticleVersion">
+    <portlet:resourceURL var="getOntologyTermURL" id="ontologyEditorGetOntologyTerm">
     </portlet:resourceURL>
 
-    <portlet:resourceURL var="saveArticleVersionURL" id="saveContentArticleVersion">
+    <portlet:resourceURL var="saveOntologyTermURL" id="saveOntologyTerm">
     </portlet:resourceURL>
 
 
@@ -40,15 +38,15 @@
 
     <script>
         <![CDATA[
-        var getArticleVersionURL = '${getArticleVersionURL}';
-        var saveArticleVersionURL = '${saveArticleVersionURL}';
+        var getOntologyTermURL = '${getOntologyTermURL}';
+        var saveOntologyTermURL = '${ssaveOntologyTermURL}';
         var moveArticleVersionURL = '${moveArticleVersionURL}';
         var createArticleFolderURL = '${createArticleFolderURL}';
         var ckEditor = null;
         var THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
         jQuery(document).ready(function () {
 
-            $("#article-view").mask({'label':"Please click on an Article or create a new one clicking in the folder`s + article link!", spinner:false});
+            $("#article-view").mask({'label':"Please click on an Ontology term or create a new one clicking on the add new term link!", spinner:false});
 
             var styles = $('link');
             for(var i=0 ; i <styles.length ; i++){
@@ -71,13 +69,13 @@
                                      onCreateLi: function(node, $li) {
                                          // Append a link to the jqtree-element div.
                                          // The link has an url '#node-[id]' and a data property 'node-id'.
-                                         if(node.kind == "folder")
-                                         $li.find('.jqtree-element').append(
-                                                 '&nbsp;&nbsp;<a href="#node-'+ node.id +'" class="addArticle" data-node-id="'+
-                                                 node.id +'">+ article</a>'+
-                                                 '&nbsp;&nbsp;<a href="#node-'+ node.id +'" class="addFolder" data-node-id="'+
-                                                 node.id +'">+ folder</a>'
-                                         );//<small>
+                                         if(node.kind == "folder") {
+                                             $li.find('.jqtree-element').append(
+                                                     '&nbsp;&nbsp;<a href="#node-' + node.id
+                                                     + '" class="addArticle" data-node-id="' +
+                                                     node.id + '">+ article</a>'
+                                             );//<small>
+                                         }
                                      },
                                      onCanMoveTo: function(moved_node, target_node, position) {
                                          console.log("target_node "+ target_node.id +" - "+target_node.kind)
@@ -119,24 +117,6 @@
                     }
             );
 
-            $('#tree-view').on(
-                    'click', '.addFolder',
-                    function(e) {
-                        // Get the id from the 'node-id' data property
-                        var node_id = $(e.target).data('node-id');
-
-                        // Get the node from the tree
-                        var node = $('#tree-view').tree('getNodeById', node_id);
-
-                        if (node) {
-                            $('#tree-view').tree('selectNode', node);
-                            var folderName = prompt("Create new folder under "+node.name+"\nPlease enter the new folder`s name: ", "");
-                            if(folderName != null)
-                                createFolder(node.id,folderName )
-
-                        }
-                    }
-            );
             $('#tree-view').bind(
                     'tree.click',
                     function(event) {
@@ -152,24 +132,16 @@
                         }
                     }
             );
-            $('#tree-view').bind(
-                    'tree.move',
-                    function(event) {
-                        event.preventDefault();
-                        if (confirm('Would you like to move the article to folder: '+event.move_info.target_node.name+'?')) {
-                            event.move_info.do_move();
-                            moveArticle(event.move_info.moved_node.id, event.move_info.target_node.id,event.move_info.target_node.name);
-                        }
-                    });
 
-            ckEditor = CKEDITOR.replace('articleVersionContent');
-            //CKEDITOR.instances['articleVersionContent'].setReadOnly(true);
+
+
+
 
             $("#infoBox").hide();
 
-            $("#saveArticle").click(function(){
+            $("#saveOntologyTerm").click(function(){
 
-                    saveArticle();
+                    saveOntologyTerm();
             });
             $('#contentArticleTitle').bind('input', function() {
                 if ($("#folderName").html().indexOf("Wiki") !== -1) {
@@ -193,7 +165,7 @@
             $("#folderName").html("Parent folder: " +folderName);
             $('#contentArticleFolderId').attr("value",folderId);
             $('#contentArticleTitle').attr("value","");
-            CKEDITOR.instances['articleVersionContent'].setData("");
+
             $('#contentArticleFolderId').focus();
         }
         function updateArticleURL(folderName, articleTitle) {
@@ -207,9 +179,9 @@
         function loadArticleVersionContent(id, folderName){
             id = id - THRESHOLD_TO_AVOID_NODE_COLISION;
 
-            var url = getArticleVersionURL;
+            var url = getOntologyTermURL;
 
-            var parameters={articleId : id};
+            var parameters={ontologyTermId : id};
 
             $.post(url ,parameters , function (response) {
                 var responseData = JSON.parse(response);
@@ -229,33 +201,37 @@
 
                 updateArticleURL(folderName, data.title.replace(/ /g,"+"));
 
-                ckEditor.setReadOnly(false);
                 $("#article-view").unmask()
 
             });
 
         }
-        function saveArticle(){
+        function saveOntologyTerm(){
 
-            if($('#contentArticleTitle').val() == ""){
-                alert("Title field is mandatory!");
-                return false;
-            }
             $("#article-view").mask()
-            var url = saveArticleVersionURL;
+            var url = saveOntologyTermURL;
 
 
-            var articleId = $('#contentArticleId').val();
-            var title = $('#contentArticleTitle').val();
-            var folderId =$('#contentArticleFolderId').val();
-            var content = ckEditor.getData();
-            var parameters={articleId : articleId, title: title, folderId: folderId
-            ,content: content};
+
+
+            var id = $('#ontologyTermId').val();
+            var descriptionUrl= $('#contentArticleId').val();
+            var order= $('#contentArticleId').val();
+            var name= $('#contentArticleId').val();
+            var ontologySpaceId= $('#contentArticleId').val();
+
+
+            var parameters={id : id,
+                descriptionUrl: descriptionUrl,
+                order: order,
+                name: name,
+                ontologySpaceId: ontologySpaceId
+            };
 
             $.post(url ,parameters , function (response) {
                 var responseData = JSON.parse(response);
                 var data = responseData;
-                $("#infoBox").html("Article updated successfully!");
+                $("#infoBox").html("Ontology term updated successfully!");
                 $("#infoBox").show();
                 $("#infoBox").delay(5000).fadeOut('slow');
                 $("#article-view").unmask()
@@ -307,21 +283,21 @@
     </script>
     <div class="contentEditor">
         <div class="contentBody">
-            <h2>Content Editor</h2>
+            <h2>Ontology Editor</h2>
             <div id="infoBox"><!-- --></div>
             <div  id="innerContent" class="addpropbox">
                 <div class="colFloatLef">
-                    <h3>Content Folders</h3>
+                    <h3>Ontology areas and terms</h3>
                     <div class="treeContainer">
-                        <div id="tree-view" data-url="${contentEditorListFolderURL}" ><!-- --></div>
+                        <div id="tree-view" data-url="${ontologyListFolderURL}" ><!-- --></div>
                     </div>
                 </div>
                 <div class="colFloatLef" >
                     <div id="article-view">
-                        <h3>Content article</h3>
+                        <h3>Ontology term</h3>
                         <div>
-                            <input type="hidden" id="contentArticleId"/>
-                            <input type="hidden" id="contentArticleFolderId"/>
+                            <input type="hidden" id="ontologyTermId"/>
+                            <input type="hidden" id="parentTermId"/>
                             Article title: <input type="text" id="contentArticleTitle"  maxcharacters="300"  />
                         </div>
                         <div id="folderName">Parent folder: <!-- --></div>
@@ -333,7 +309,7 @@
                     </div>
                 </div>
             </div>
-            <div> <div class="floatRight outerVerticalCenter" id="saveArticle" ><a  class="c-Button__primary" href="#">Save</a></div></div>
+            <div> <div class="floatRight outerVerticalCenter" id="saveOntologyTerm" ><a  class="c-Button__primary" href="#">Save</a></div></div>
         </div>
     </div>
 </jsp:root>

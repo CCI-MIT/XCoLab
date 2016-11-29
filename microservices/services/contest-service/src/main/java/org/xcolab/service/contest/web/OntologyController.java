@@ -70,6 +70,9 @@ public class OntologyController {
     public List<OntologyTerm> getOntologyTerms(@RequestParam(required = false) String name,
             @RequestParam(required = false) Long parentId,
             @RequestParam(required = false) Long ontologySpaceId) {
+        if(parentId == null){
+            parentId = 0l;
+        }
         return ontologyTermDao.findByGiven(name,parentId, ontologySpaceId);
     }
 
@@ -82,6 +85,19 @@ public class OntologyController {
             return ontologyTermDao.get(ontologyTermId);
         }
     }
+
+    @RequestMapping(value = "/ontologyTerms/{id_}", method = RequestMethod.PUT)
+    public boolean updateOntologyTerm(@RequestBody OntologyTerm ontologyTerm,
+            @PathVariable("id_") Long id_) throws NotFoundException {
+
+        if (id_ == null || id_ == 0 || ontologyTermDao.get(id_) == null) {
+            throw new NotFoundException("No OntologyTerm with id " + id_);
+        } else {
+            return ontologyTermDao.update(ontologyTerm);
+        }
+    }
+
+
 
     @RequestMapping(value = "/focusAreas/{focusAreaId}", method = RequestMethod.GET)
     public FocusArea getFocusArea(@PathVariable("focusAreaId") Long focusAreaId) throws NotFoundException {

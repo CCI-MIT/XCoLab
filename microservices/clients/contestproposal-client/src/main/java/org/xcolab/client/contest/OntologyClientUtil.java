@@ -61,6 +61,9 @@ public final class OntologyClientUtil {
     public static OntologyTerm getOntologyTerm(long Id_) {
         return client.getOntologyTerm(Id_);
     }
+    public static boolean updateOntologyTerm(OntologyTerm ontologyTerm) {
+        return client.updateOntologyTerm(ontologyTerm);
+    }
 
     public static Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
             Long focusAreaId,
