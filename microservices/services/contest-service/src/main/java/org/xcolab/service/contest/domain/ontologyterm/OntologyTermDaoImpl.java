@@ -6,6 +6,7 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.OntologyTerm;
+import org.xcolab.model.tables.records.OntologyTermRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
@@ -58,6 +59,26 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
                 .where(ONTOLOGY_TERM.ID_.eq(ontologyTerm.getId_()))
                 .execute() > 0;
     }
+
+    public OntologyTerm create(OntologyTerm ontologyTerm) {
+
+        OntologyTermRecord ret = this.dslContext.insertInto(ONTOLOGY_TERM)
+                .set(ONTOLOGY_TERM.PARENT_ID, ontologyTerm.getParentId())
+                .set(ONTOLOGY_TERM.ONTOLOGY_SPACE_ID, ontologyTerm.getOntologySpaceId())
+                .set(ONTOLOGY_TERM.NAME, ontologyTerm.getName())
+                .set(ONTOLOGY_TERM.DESCRIPTION_URL, ontologyTerm.getDescriptionUrl())
+                .set(ONTOLOGY_TERM.ORDER_, ontologyTerm.getOrder_())
+                .returning(ONTOLOGY_TERM.ID_)
+                .fetchOne();
+        if (ret != null) {
+            ontologyTerm.setId_(ret.getValue(ONTOLOGY_TERM.ID_));
+            return ontologyTerm;
+        } else {
+            return null;
+        }
+
+    }
+
 
 
 

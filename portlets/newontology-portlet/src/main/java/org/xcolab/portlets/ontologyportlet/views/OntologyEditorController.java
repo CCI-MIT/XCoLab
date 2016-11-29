@@ -98,27 +98,14 @@ public class OntologyEditorController {
             articleVersion.put("descriptionUrl", ontologyTerm.getDescriptionUrl());
             articleVersion.put("name", ontologyTerm.getName());
             articleVersion.put("ontologySpaceId", ontologyTerm.getOntologySpaceId());
+            articleVersion.put("parentId", ontologyTerm.getParentId());
 
         }
 
         response.getPortletOutputStream().write(articleVersion.toString().getBytes());
     }
 
-    @ResourceMapping("createArticleFolder")
-    public void createArticleFolder(ResourceRequest request, ResourceResponse response,
-            @RequestParam(required = false) String folderName,
-            @RequestParam(required = false) Long parentFolderId) throws IOException {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        Long userId = themeDisplay.getUser().getUserId();
 
-        //        ContentFolder contentFolder = new ContentFolder();
-        //        contentFolder.setContentFolderName(folderName);
-        //        contentFolder.setParentFolderId(parentFolderId);
-        //
-        //        ContentsClient.createContentFolder(contentFolder);
-
-        defaultOperationReturnMessage(true, "Folder created successfully", response);
-    }
 
     @ResourceMapping("moveArticleVersion")
     public void moveArticleVersion(ResourceRequest request, ResourceResponse response,
@@ -150,22 +137,30 @@ public class OntologyEditorController {
             @RequestParam(required = false) String descriptionUrl,
             @RequestParam(required = false) Integer order,
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) Long ontologySpaceId
+            @RequestParam(required = false) Long ontologySpaceId,
+            @RequestParam(required = false) Long parentId
 
 
     ) throws IOException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        Long userId = themeDisplay.getUser().getUserId();
 
-        OntologyTerm ontologyTerm = new OntologyTerm();
-        ontologyTerm.setId_(id);
-        ontologyTerm.setDescriptionUrl(descriptionUrl);
-        ontologyTerm.setOrder_(order);
-        ontologyTerm.setName(name);
-        ontologyTerm.setOntologySpaceId(ontologySpaceId);
+        if(id !=null ) {
+            OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(id);
+            ontologyTerm.setDescriptionUrl(descriptionUrl);
+            ontologyTerm.setOrder_(order);
+            ontologyTerm.setName(name);
 
-        OntologyClientUtil.updateOntologyTerm(ontologyTerm);
+            OntologyClientUtil.updateOntologyTerm(ontologyTerm);
+        }else{
+            OntologyTerm ontologyTerm = new OntologyTerm();
+            ontologyTerm.setOntologySpaceId(ontologySpaceId);
+            ontologyTerm.setParentId(parentId);
+            ontologyTerm.setDescriptionUrl(descriptionUrl);
+            ontologyTerm.setOrder_(order);
+            ontologyTerm.setName(name);
+            OntologyClientUtil.createOntologyTerm(ontologyTerm);
+        }
 
         defaultOperationReturnMessage(true, "Ontology term updated successfully", response);
     }

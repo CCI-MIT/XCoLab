@@ -9,4 +9,5 @@ public interface OntologyTermDao {
     OntologyTerm get(Long id_) throws NotFoundException;
     List<OntologyTerm> findByGiven(String name, Long parentId, Long ontologySpaceId);
     boolean update(OntologyTerm ontologyTerm);
+    OntologyTerm create(OntologyTerm ontologyTerm);
 }

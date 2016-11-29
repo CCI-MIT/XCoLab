@@ -1,4 +1,4 @@
-//TODO: these are probably duplicates
+
 .floatLeft {
       float: left;
   }
@@ -17,7 +17,6 @@
     padding-right: 10px;
 }
 
-//TODO: this also exists in the theme
   .cmsDetailsBox {
       border: 1px solid #30a3fb;
       padding: 15px;

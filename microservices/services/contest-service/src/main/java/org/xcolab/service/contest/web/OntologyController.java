@@ -68,11 +68,8 @@ public class OntologyController {
 
     @RequestMapping(value = "/ontologyTerms", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<OntologyTerm> getOntologyTerms(@RequestParam(required = false) String name,
-            @RequestParam(required = false) Long parentId,
+            @RequestParam(required = false, defaultValue = "0") Long parentId,
             @RequestParam(required = false) Long ontologySpaceId) {
-        if(parentId == null){
-            parentId = 0l;
-        }
         return ontologyTermDao.findByGiven(name,parentId, ontologySpaceId);
     }
 
@@ -97,7 +94,10 @@ public class OntologyController {
         }
     }
 
-
+    @RequestMapping(value = "/ontologyTerms", method = RequestMethod.POST)
+    public OntologyTerm createOntologyTerm(@RequestBody OntologyTerm ontologyTerm) {
+        return this.ontologyTermDao.create(ontologyTerm);
+    }
 
     @RequestMapping(value = "/focusAreas/{focusAreaId}", method = RequestMethod.GET)
     public FocusArea getFocusArea(@PathVariable("focusAreaId") Long focusAreaId) throws NotFoundException {

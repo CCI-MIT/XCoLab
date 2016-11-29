@@ -39,24 +39,18 @@
     <script>
         <![CDATA[
         var getOntologyTermURL = '${getOntologyTermURL}';
-        var saveOntologyTermURL = '${ssaveOntologyTermURL}';
+        var saveOntologyTermURL = '${saveOntologyTermURL}';
         var moveArticleVersionURL = '${moveArticleVersionURL}';
         var createArticleFolderURL = '${createArticleFolderURL}';
         var ckEditor = null;
         var THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
         jQuery(document).ready(function () {
 
-            $("#article-view").mask({'label':"Please click on an Ontology term or create a new one clicking on the add new term link!", spinner:false});
+            $("#article-view").mask({'label':"Please click on an Ontology term or <br/>create a new one clicking on the add new term link!", spinner:false});
 
-            var styles = $('link');
-            for(var i=0 ; i <styles.length ; i++){
-                if($(styles[i]).attr("href").indexOf("style.css")!= -1){
-                    CKEDITOR.config.contentsCss = $(styles[i]).attr("href");
-                    break;
-                }
-            }
 
-            CKEDITOR.config.allowedContent = true;
+
+
 
             $('#tree-view').tree({
                                      //data:data,
@@ -73,7 +67,7 @@
                                              $li.find('.jqtree-element').append(
                                                      '&nbsp;&nbsp;<a href="#node-' + node.id
                                                      + '" class="addArticle" data-node-id="' +
-                                                     node.id + '">+ article</a>'
+                                                     node.id + '">+ term</a>'
                                              );//<small>
                                          }
                                      },
@@ -110,7 +104,6 @@
                         var node = $('#tree-view').tree('getNodeById', node_id);
 
                         if (node) {
-                            updateArticleURL(node.name, "");
                             //$('#tree-view').tree('selectNode', node);
                             newArticleAtFolderId(node.id, node.name);
                         }
@@ -121,7 +114,7 @@
                     'tree.click',
                     function(event) {
                         var node = event.node;
-                        if(node.kind == "article"){
+                        if(node.kind == "folder"){
                             $("#article-view").unmask();
                             $("#article-view").mask();
                             loadArticleVersionContent(node.id, node.parent.name);
@@ -160,46 +153,40 @@
             return cell;
         }
         function newArticleAtFolderId(folderId, folderName){
+            var idz = folderId.split("_");
             $("#article-view").unmask()
-            $('#contentArticleId').attr("value", "");
-            $("#folderName").html("Parent folder: " +folderName);
-            $('#contentArticleFolderId').attr("value",folderId);
-            $('#contentArticleTitle').attr("value","");
 
-            $('#contentArticleFolderId').focus();
+
+            $('#ontologyTermId').val("0");
+            $('#ontologyTermDescriptionUrl').val("");
+            $('#ontologyTermOrder').val(0);
+            $('#ontologyTermName').val("");
+            $('#ontologySpaceId').val(idz[0]);
+            $('#ontologyTermParentId').val(idz[1]);
+
+            $('#ontologyTermId').focus();
         }
-        function updateArticleURL(folderName, articleTitle) {
-            if(folderName == "Wiki") {
-                $("#articleURL").html("Article URL: <a id='anchorArticleURL' href='/web/guest/wiki/-/wiki/page/" + articleTitle +
-                        "'>~/web/guest/wiki/-/wiki/page/" + articleTitle + "</a>");
-            } else {
-                $("#articleURL").html("");
-            }
-        }
+
         function loadArticleVersionContent(id, folderName){
-            id = id - THRESHOLD_TO_AVOID_NODE_COLISION;
 
             var url = getOntologyTermURL;
-
-            var parameters={ontologyTermId : id};
+            var ontId = id.split("_");
+            var parameters={ontologyTermId : ontId[1]};
 
             $.post(url ,parameters , function (response) {
                 var responseData = JSON.parse(response);
                 var data = responseData;
-                var textarea = $('#articleVersionContent');
-                $("#folderName").html("Parent folder: " +folderName);
-                //textarea.html(data.content);
-                CKEDITOR.instances['articleVersionContent'].setData(data.content);
 
-                var input = $('#contentArticleId');
-                input.attr("value",id);
+                $("#folderName").html("Parent term: " +folderName);
 
-                $('#contentArticleFolderId').attr("value",data.folderId);
 
-                var input1 = $('#contentArticleTitle');
-                input1.attr("value",data.title);
+                $('#ontologyTermId').val(data.id);
+                $('#ontologyTermDescriptionUrl').val(data.descriptionUrl);
+                $('#ontologyTermOrder').val(data.order);
+                $('#ontologyTermName').val(data.name);
+                $('#ontologySpaceId').val(data.ontologySpaceId);
+                $('#ontologyTermParentId').val(data.parentId);
 
-                updateArticleURL(folderName, data.title.replace(/ /g,"+"));
 
                 $("#article-view").unmask()
 
@@ -211,21 +198,18 @@
             $("#article-view").mask()
             var url = saveOntologyTermURL;
 
-
-
-
             var id = $('#ontologyTermId').val();
-            var descriptionUrl= $('#contentArticleId').val();
-            var order= $('#contentArticleId').val();
-            var name= $('#contentArticleId').val();
-            var ontologySpaceId= $('#contentArticleId').val();
-
-
+            var descriptionUrl= $('#ontologyTermDescriptionUrl').val();
+            var order= $('#ontologyTermOrder').val();
+            var name= $('#ontologyTermName').val();
+            var parentId = $('#ontologyTermParentId').val();
+            var ontologySpaceId = $('#ontologySpaceId').val();
             var parameters={id : id,
                 descriptionUrl: descriptionUrl,
                 order: order,
                 name: name,
-                ontologySpaceId: ontologySpaceId
+                parentId:parentId,
+                ontologySpaceId:ontologySpaceId
             };
 
             $.post(url ,parameters , function (response) {
@@ -292,24 +276,27 @@
                         <div id="tree-view" data-url="${ontologyListFolderURL}" ><!-- --></div>
                     </div>
                 </div>
-                <div class="colFloatLef" >
+                <div class="colFloatLef" style="width: 500px;margin-left: 15px;">
                     <div id="article-view">
                         <h3>Ontology term</h3>
+
                         <div>
                             <input type="hidden" id="ontologyTermId"/>
-                            <input type="hidden" id="parentTermId"/>
-                            Article title: <input type="text" id="contentArticleTitle"  maxcharacters="300"  />
+                            <input type="hidden" id="ontologyTermParentId"/>
+                            <input type="hidden" id="ontologySpaceId"/>
+                            Name: <input type="text" id="ontologyTermName"  maxcharacters="100"  /><br/>
+                            Order: <input type="text" id="ontologyTermOrder"  maxcharacters="100"  /><br/>
+                            Description URL: <br/>
+                            <input type="text" id="ontologyTermDescriptionUrl"  maxcharacters="100"  />
+
                         </div>
-                        <div id="folderName">Parent folder: <!-- --></div>
+                        <div id="folderName">Parent term: <!-- --></div>
                         <br/>
-                        <div id="articleURL"><!-- Article URL:  --></div>
-                        <div>
-                            <textarea id="articleVersionContent" name="articleVersionContent" rows = "10" cols="80"><!-- --></textarea>
-                        </div>
+                        <div class="floatRight outerVerticalCenter" id="saveOntologyTerm" ><a  class="c-Button__primary" href="#">Save</a></div>
                     </div>
                 </div>
             </div>
-            <div> <div class="floatRight outerVerticalCenter" id="saveOntologyTerm" ><a  class="c-Button__primary" href="#">Save</a></div></div>
+
         </div>
     </div>
 </jsp:root>

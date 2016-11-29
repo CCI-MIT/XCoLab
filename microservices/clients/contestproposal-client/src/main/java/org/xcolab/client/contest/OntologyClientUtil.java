@@ -61,6 +61,11 @@ public final class OntologyClientUtil {
     public static OntologyTerm getOntologyTerm(long Id_) {
         return client.getOntologyTerm(Id_);
     }
+
+    public static  OntologyTerm createOntologyTerm(OntologyTerm ontologyTerm) {
+        return client.createOntologyTerm(ontologyTerm);
+    }
+
     public static boolean updateOntologyTerm(OntologyTerm ontologyTerm) {
         return client.updateOntologyTerm(ontologyTerm);
     }

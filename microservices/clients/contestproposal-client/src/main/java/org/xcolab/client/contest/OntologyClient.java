@@ -118,6 +118,13 @@ public class OntologyClient {
                 .execute().toPojo(contestService);
     }
 
+    public OntologyTerm createOntologyTerm(OntologyTerm ontologyTerm) {
+        return ontologyTermResource.create(new OntologyTermDto(ontologyTerm)).execute().toPojo(contestService);
+    }
+
+
+
+
     public boolean updateOntologyTerm(OntologyTerm ontologyTerm) {
         return ontologyTermResource.update(new OntologyTermDto(ontologyTerm), ontologyTerm.getId_())
                 .execute();
