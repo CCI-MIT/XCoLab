@@ -195,7 +195,7 @@ UPDATE xcolab_Contest SET ContestUrlName = 'practice-experts', ContestYear = 201
 UPDATE xcolab_Contest SET ContestUrlName = 'created-contest', ContestYear = 2016 WHERE ContestPK = 1304007;
 UPDATE xcolab_Contest SET ContestUrlName = 'test-contest', ContestYear = 2016 WHERE ContestPK = 1304008;
 
-ALTER TABLE `xcolab_Proposal` MODIFY COLUMN `discussionId` bigint(20) DEFAULT NULL;
+ALTER TABLE `xcolab_Proposal` MODIFY COLUMN `discussionId` bigint(20) DEFAULT 0;
 ALTER TABLE `xcolab_Proposal` MODIFY COLUMN `resultsDiscussionId` bigint(20) DEFAULT 0;
 ALTER TABLE `xcolab_Proposal` MODIFY COLUMN `judgeDiscussionId` bigint(20) DEFAULT 0;
 ALTER TABLE `xcolab_Proposal` MODIFY COLUMN `fellowDiscussionId` bigint(20) DEFAULT 0;
@@ -547,12 +547,14 @@ INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, str
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('MIT_HEADER_BAR_SHOW', 0, 0, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('IMAGE_UPLOAD_EXTERNAL_SERVICE_URL', 0, 0, 'http://imgur.com/MRfmcOs', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('IMAGE_UPLOAD_HELP_TEXT', 0, 0, '<h4>Image upload in IMGUR:</h4><p><a href="http://climatecolab.org/" target="_blank" style="color: blue; text-decoration: underline;">Screencast</a></p><br /><ol><li>Click on Upload</li><li>Select your picture</li><li>Upload the picture to IMGUR</li><li>Copy the URL of the IMGUR page</li><li>Paste it into the URL field</li><li>Verify the image in the preview</li><li>Click OK to insert the image</li></ol>', 0);
+
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('GENERATE_SCREEN_NAME', 0, 0, '', 0);
 -- =======================================
 -- Member email templates
 -- =======================================
 
-INSERT INTO xcolab_ContestEmailTemplate (subject, header, footer, type_) VALUES ('Welcome to the Resilience Dialogues!', '<p>Dear <sender-name/> <sender-lastname/>,</p>  <p>Welcome! You recently created an account with us under the username <span style="font-size:14px;"><strong><sender-screenname/></strong></span>.</p> Sincerely, <br />The Resilience Dialogues Team<br />admin@resiliencedialogues.org<br/>http://resoliencedialogues.mit.edu', '', 'MEMBER_REGISTERED_DEFAULT');
-INSERT INTO xcolab_ContestEmailTemplate (subject, header, footer, type_) VALUES ('<system-link/>: Reset Your Password', 'Dear <sender-name/> <sender-lastname/>,<br /> <br /> You can reset your password for resiliencedialogues.mit.edu at <password-reset-link/> <br /> <br /> The request for a new password was made from <sender-ip/><br /> <br /> Sincerely,<br /> The Resilience Dialogues Team<br /> admin@resiliencedialogues.org/<br /> http://resiliencedialogues.mit.edu/', '', 'MEMBER_RESET_PASSWORD_DEFAULT');
+INSERT INTO xcolab_ContestEmailTemplate (subject, header, footer, type_) VALUES ('Welcome to the Resilience Dialogues!', '<p>Dear <sender-name/> <sender-lastname/>,</p>  <p>Welcome! You recently created an account with us under the username <span style="font-size:14px;"><strong><sender-screenname/></strong></span>.</p> Sincerely, <br />The Resilience Dialogues Team<br />admin@resiliencedialogues.org<br/>http://resiliencedialogues.mit.edu', '', 'MEMBER_REGISTERED_DEFAULT');
+INSERT INTO xcolab_ContestEmailTemplate (subject, header, footer, type_) VALUES ('<system-link/>: Reset Your Password', 'Dear <sender-name/> <sender-lastname/>,<br /> <br /> You can reset your password for the Resilience Dialogues <password-reset-link/> .<br /> <br /> The request for a new password was made from <sender-ip/><br /> <br /> Sincerely,<br /> The Resilience Dialogues Team<br /> admin@resiliencedialogues.org/<br /> http://resiliencedialogues.mit.edu/', '', 'MEMBER_RESET_PASSWORD_DEFAULT');
 
 -- =======================================
 -- deployment migrations (since Singapore migration)
@@ -670,3 +672,6 @@ UPDATE xcolab_ContestType set showProposalSummary = 0;
 
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('SHOW_SEARCH_MENU_ITEM', 0, 0, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('SHOW_SHARE_BUTTONS', 0, 0, '', 0);
+
+-- taken from COLAB-512: fixes registration problem for previously registered screen names
+update Group_ set friendlyURL = concat(substring(friendlyURL, 1, 30), md5(groupId)) where classNameId = 10038;

@@ -8,20 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 
-import com.liferay.portal.CookieNotSupportedException;
-import com.liferay.portal.NoSuchUserException;
-import com.liferay.portal.PasswordExpiredException;
-import com.liferay.portal.UserEmailAddressException;
-import com.liferay.portal.UserIdException;
-import com.liferay.portal.UserLockoutException;
-import com.liferay.portal.UserPasswordException;
-import com.liferay.portal.UserScreenNameException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.security.auth.AuthException;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
@@ -41,7 +32,6 @@ import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
-import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -73,8 +63,6 @@ public class ForgotPasswordController {
         redirect = Helper.removeParamFromRequestStr(redirect, "isRegistering");
 
         try {
-
-            PortletPreferences preferences = request.getPreferences();
             String userNameEmail = request.getParameter("screenName");
 
             Member member;
@@ -91,47 +79,16 @@ public class ForgotPasswordController {
             sendEmailNotificationToForPasswordReset(
                     PortalUtil.getHttpServletRequest(request).getRemoteAddr(),
                     passwordLink, themeDisplay, member);
-
-            //TODO: exception handling
-        } catch (Exception e) {
-            if (e instanceof AuthException) {
-                Throwable cause = e.getCause();
-
-                if (cause instanceof PasswordExpiredException ||
-                        cause instanceof UserLockoutException) {
-
-                    SessionErrors.add(
-                            request, cause.getClass().getName());
-                } else {
-                    SessionErrors.add(request, e.getClass().getName());
-                }
-            } else if (e instanceof CookieNotSupportedException ||
-                    e instanceof NoSuchUserException ||
-                    e instanceof PasswordExpiredException ||
-                    e instanceof UserEmailAddressException ||
-                    e instanceof UserIdException ||
-                    e instanceof UserLockoutException ||
-                    e instanceof UserPasswordException ||
-                    e instanceof UserScreenNameException) {
-
-                SessionErrors.add(request, e.getClass().getName());
-            } else {
-                PortalUtil.sendError(e, request, response);
-            }
-        }
-
-        if (!SessionErrors.isEmpty(request)) {
-            // url parameters
+            GlobalMessagesUtil.addMessage(
+                    "A password retrieval message has been sent, please check your email", request);
+        } catch (MemberNotFoundException e) {
             Map<String, String> parameters = new HashMap<>();
-            //boolean isSigningInPopup = ParamUtil.getBoolean(actionRequest, "isSigningInPopup");
-
             parameters.put("isPasswordReminder", "true");
 
             redirect = Helper.modifyRedirectUrl(redirect, request, parameters);
 
-        } else {
-            GlobalMessagesUtil
-                    .addMessage("A password retrieval message has been sent, please check your email", request);
+            GlobalMessagesUtil.addMessage(
+                    "Could not send password retrieval message, please check your screen name or email", request);
         }
 
         SessionErrors.clear(request);
