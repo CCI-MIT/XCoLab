@@ -483,7 +483,7 @@ public class Contest extends AbstractContest {
         if (super.getEmailTemplateUrl().isEmpty()) {
             return EMAIL_TEMPLATE_URL;
         } else {
-            return this.getEmailTemplateUrl();
+            return super.getEmailTemplateUrl();
         }
     }
     public long getTotalCommentsCount() {
