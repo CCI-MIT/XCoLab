@@ -107,6 +107,8 @@
                             //$('#tree-view').tree('selectNode', node);
                             newArticleAtFolderId(node.id, node.name);
                         }
+                        event.preventDefault();
+                        return false;
                     }
             );
 
