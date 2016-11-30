@@ -78,7 +78,7 @@
                     <form:select path="bigOntologyTerm" id="bigOntologyTerm" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
                     <br/>
                     <strong class="inputTitleLeft">Short Name</strong>
-                    <form:select path="shortName" id="shortName" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.shortName}" />
+                    <input id="shortName" name="shortName" class="wideLargeInput" type="text" value="" validatelength="false"/>
                     <br/>
                     <strong class="inputTitleLeft">Description:</strong>
                     <input id="description" name="Description" class="wideLargeInput" type="text" value="" validatelength="false"/>
@@ -125,14 +125,9 @@
 
         var collectionCards = {};
         <c:forEach var="collectionCard" items="${collectionCardWrapperWhat.allCollectionCards}">
-                <c:choose>
-                    <c:when test="${not empty collectionCard.parentId}">
+                <c:if test="${not empty collectionCard.parentId}">
                         collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, parentId: ${collectionCard.parentId}, shortName: '${collectionCard.shortName}', bigOntologyTermId: '${collectionCard.bigOntologyTermId}', smallOntologyTermId: '${collectionCard.smallOntologyTermId}',  ontologyTermToLoadId: '${collectionCard.ontologyTermToLoadId}',bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}', order: '${collectionCard.order}'};
-                    </c:when>
-                    <c:otherwise>
-                        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, shortName: '${collectionCard.shortName}', bigOntologyTermId: '${collectionCard.bigOntologyTermId}', smallOntologyTermId: '${collectionCard.smallOntologyTermId}',  ontologyTermToLoadId: '${collectionCard.ontologyTermToLoadId}',bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}', order: '${collectionCard.order}'};
-                    </c:otherwise>
-                </c:choose>
+                </c:if>
         </c:forEach>
 
 

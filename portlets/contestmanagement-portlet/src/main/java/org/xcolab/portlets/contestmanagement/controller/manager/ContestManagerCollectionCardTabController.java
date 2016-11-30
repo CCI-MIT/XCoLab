@@ -33,6 +33,8 @@ public class ContestManagerCollectionCardTabController extends ContestManagerBas
     private final static Log _log = LogFactoryUtil.getLog(ContestManagerCollectionCardTabController.class);
     static final private TabEnum tab = ContestManagerTabs.COLLECTION_CARDS;
     static final private String TAB_VIEW = "manager/collectionCardTab";
+    private static final int BY_TOPIC_COLLECTION_CARD_ID = 2;
+    private static final int BY_LOCATION_COLLECTION_CARD_ID = 3;
 
 
     @ModelAttribute("currentTabWrapped")
@@ -50,8 +52,8 @@ public class ContestManagerCollectionCardTabController extends ContestManagerBas
             return NO_PERMISSION_TAB_VIEW;
         }
 
-        model.addAttribute("collectionCardWrapperWhat", new CollectionCardWrapper(2));
-        model.addAttribute("collectionCardWrapperWhere", new CollectionCardWrapper(3));
+        model.addAttribute("collectionCardWrapperWhat", new CollectionCardWrapper(BY_TOPIC_COLLECTION_CARD_ID));
+        model.addAttribute("collectionCardWrapperWhere", new CollectionCardWrapper(BY_LOCATION_COLLECTION_CARD_ID));
         setPageAttributes(request, model, tab);
         return TAB_VIEW;
     }
