@@ -56,7 +56,7 @@ public enum ContestMassActions {
     private void setMethodFromClassName(String methodName, Class className) {
         try {
             if (className == Contest.class) {
-                this.method = Contest.class.getMethod(methodName, boolean.class);
+                this.method = Contest.class.getMethod(methodName, Boolean.class);
             } else if (className == ContestMassActionMethods.class) {
                 this.method = ContestMassActionMethods.class
                         .getMethod(methodName, List.class, Object.class, PortletRequest.class);
