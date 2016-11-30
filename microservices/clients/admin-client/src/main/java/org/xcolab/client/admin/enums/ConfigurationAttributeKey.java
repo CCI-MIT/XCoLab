@@ -95,6 +95,9 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> PARTNER_COLAB_LOCATION =
             ConfigurationAttributes.newStringAttribute("PARTNER_COLAB_LOCATION")
                     .build();
+    public static final AttributeGetter<String> PARTNER_COLAB_ADDRESS =
+            ConfigurationAttributes.newStringAttribute("PARTNER_COLAB_ADDRESS")
+                    .build();
     public static final AttributeGetter<String> PARTNER_COLAB_PORT =
             ConfigurationAttributes.newStringAttribute("PARTNER_COLAB_PORT")
                     .build();
