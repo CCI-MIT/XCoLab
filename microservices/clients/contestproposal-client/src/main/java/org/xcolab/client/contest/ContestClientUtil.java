@@ -93,8 +93,8 @@ public final class ContestClientUtil {
         return contestClient.getNumberOfContestsByOntologyTerm(ontologyTermId);
     }
 
-    public static int getNumberOfContestsInCollectionCard(Long collectionCardId, Boolean countOnlyActive) {
-        return contestClient.getNumberOfContestsInCollectionCard(collectionCardId, countOnlyActive);
+    public static int getNumberOfContestsInCollectionCard(Long collectionCardId, Boolean countOnlyActive, String viewType, boolean onlyFeatured) {
+        return contestClient.getNumberOfContestsInCollectionCard(collectionCardId, countOnlyActive, viewType, onlyFeatured);
     }
 
     public static boolean updateContestCollectionCard(ContestCollectionCard contestCollectionCard) {

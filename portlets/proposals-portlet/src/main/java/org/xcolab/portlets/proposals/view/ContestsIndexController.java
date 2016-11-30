@@ -107,7 +107,7 @@ public class ContestsIndexController extends BaseProposalsController {
 
         List<CollectionCardWrapper> collectionCards = new ArrayList<>();
         for (ContestCollectionCard card: ContestClientUtil.getSubContestCollectionCards(currentCollectionCardId)) {
-            collectionCards.add(new CollectionCardWrapper(card));
+            collectionCards.add(new CollectionCardWrapper(card, viewType));
         }
         Collections.sort(collectionCards, new Comparator<CollectionCardWrapper>() {
             @Override
@@ -126,10 +126,10 @@ public class ContestsIndexController extends BaseProposalsController {
             LinkedList<CollectionCardWrapper> collectionHierarchy = new LinkedList<>();
             long tempId = currentCollectionCardId;
             while(ContestClientUtil.getContestCollectionCard(tempId).getParent() != null) {
-                collectionHierarchy.addFirst(new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(tempId)));
+                collectionHierarchy.addFirst(new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(tempId), viewType));
                 tempId = ContestClientUtil.getContestCollectionCard(tempId).getParent();
             }
-            collectionHierarchy.addFirst(new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(tempId)));
+            collectionHierarchy.addFirst(new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(tempId), viewType));
 
             //Queue for breadcrumb
             model.addAttribute("collectionHierarchy", collectionHierarchy);

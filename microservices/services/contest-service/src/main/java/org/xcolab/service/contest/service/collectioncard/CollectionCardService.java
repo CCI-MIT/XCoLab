@@ -19,6 +19,10 @@ public class CollectionCardService {
 
     private final ContestCollectionCardDao contestCollectionCardDao;
 
+    private final static String VIEW_TYPE_GRID = "GRID";
+    private final static String VIEW_TYPE_LIST = "LIST";
+    private final static String VIEW_TYPE_OUTLINE = "OUTLINE";
+
     @Autowired
     public CollectionCardService(ContestService contestService, ContestCollectionCardDao contestCollectionCardDao) {
 
@@ -27,7 +31,8 @@ public class CollectionCardService {
         this.contestCollectionCardDao=contestCollectionCardDao;
     }
 
-    public int getNumberOfContestsInCollectionCard(Long collectionCardId, Boolean countOnlyActive) {
+    public int getNumberOfContestsInCollectionCard(Long collectionCardId, Boolean countOnlyActive, String viewType, boolean onlyFeatured) {
+
         if(countOnlyActive == null) {
             countOnlyActive = false;
         }
@@ -39,7 +44,12 @@ public class CollectionCardService {
             while(!collectionCards.isEmpty()) {
                 for(Contest contest: contestService.getContestsByOntologyTerm(contestCollectionCardDao.get(collectionCards.get(0)).getOntology_term_to_load(), countOnlyActive)) {
                     if(!contestList.contains(contest.getContestPK())) {
-                        contestList.add(contest.getContestPK());
+                        if(     (!onlyFeatured || contest.getFeatured_()) &&
+                                (viewType.equals(VIEW_TYPE_GRID) && contest.getShow_in_tile_view()) ||
+                                (viewType.equals(VIEW_TYPE_LIST) && contest.getShow_in_list_view()) ||
+                                (viewType.equals(VIEW_TYPE_OUTLINE) && contest.getShow_in_outline_view())) {
+                            contestList.add(contest.getContestPK());
+                        }
                     }
                 }
                 for(ContestCollectionCard childCollectionCards : contestCollectionCardDao.findByGiven(collectionCards.get(0))) {

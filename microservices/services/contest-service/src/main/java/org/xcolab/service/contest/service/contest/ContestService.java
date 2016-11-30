@@ -158,7 +158,7 @@ public class ContestService {
                             Arrays.asList(ontologyTerm));
             for (Long areaId : focusAreaOntologyTermsIds) {
                 count += contestDao
-                        .countByGiven(null, null, null, null, null, null, areaId, null, null, null);
+                        .countByGiven(null, null, null, null, null, Arrays.asList(areaId), null, null, null, null);
             }
         } else {
             count += contestDao

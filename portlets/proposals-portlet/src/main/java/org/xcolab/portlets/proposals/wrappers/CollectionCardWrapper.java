@@ -10,18 +10,21 @@ public class CollectionCardWrapper{
 //TODO: NotFoundexception
 
     protected final ContestCollectionCard contestCollectionCard;
+    protected String viewType;
 
-    public CollectionCardWrapper(long contestCollectionCardId) {
-        this(ContestClientUtil.getContestCollectionCard(contestCollectionCardId));
+    public CollectionCardWrapper(long contestCollectionCardId, String viewType) {
+        this(ContestClientUtil.getContestCollectionCard(contestCollectionCardId), viewType);
+        this.viewType=viewType;
     }
 
-    public CollectionCardWrapper(ContestCollectionCard contestCollectionCard) {
+    public CollectionCardWrapper(ContestCollectionCard contestCollectionCard, String viewType) {
        this.contestCollectionCard = contestCollectionCard;
+        this.viewType=viewType;
     }
 
     public CollectionCardWrapper getParent() {
         if(hasParent()){
-            return new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(this.contestCollectionCard.getParent()));
+            return new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(this.contestCollectionCard.getParent()), this.viewType);
         } else {
             return null;
         }
@@ -37,15 +40,16 @@ public class CollectionCardWrapper{
     }
 
     public int getNumberOfActiveContests() {
-        return ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), true);
+        return ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), true, viewType, this.getOnlyFeatured());
     }
 
     public int getNumberOfAllContests() {
-        return ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), false);
+        return ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), false, viewType, this.getOnlyFeatured());
     }
 
     public int getNumberOfPriorContests() {
-        return ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), false) - ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), true);
+        return ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), false, viewType, this.getOnlyFeatured())
+                - ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), true, viewType, this.getOnlyFeatured());
     }
 
     public long getId() {
@@ -78,6 +82,10 @@ public class CollectionCardWrapper{
 
     public String getDescription() {
         return this.contestCollectionCard.getDescription();
+    }
+
+    public String getShortName() {
+        return this.contestCollectionCard.getShort_name();
     }
 
 }

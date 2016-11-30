@@ -17,9 +17,9 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
   		<div>
 			<c:forEach var="contest" items="${contestsSorted.contestsFeatured }" varStatus="status">
 
-				<!--<c:if test="${contest.showInTileView}">-->
+				<c:if test="${contest.showInTileView}">
 				    <proposalsPortlet:contestCard contest="${contest }" index="${status.index}" />
-               <!-- </c:if>-->
+               	</c:if>
 			</c:forEach>
 		</div>
 		<c:if test="${not showOnlyFeatured}">
@@ -28,9 +28,9 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 			</c:if>
 			<div>
 				<c:forEach var="contest" items="${contestsSorted.contestsNormal }" varStatus="status">
-					<!--<c:if test="${contest.showInTileView}">-->
+					<c:if test="${contest.showInTileView}">
 						<proposalsPortlet:contestCard contest="${contest }" index="${status.index}" />
-					<!--</c:if>-->
+					</c:if>
 				</c:forEach>
 			</div>
 		</c:if>

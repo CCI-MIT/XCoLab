@@ -233,10 +233,12 @@ public class ContestClient {
                 .getList(), contestService);
     }
 
-    public int getNumberOfContestsInCollectionCard(Long collectionCardId, Boolean countOnlyActive) {
+    public int getNumberOfContestsInCollectionCard(Long collectionCardId, Boolean countOnlyActive, String viewType, boolean onlyFeatured) {
         return contestResource.service("getNumberOfContestsInCollectionCard", Integer.class)
                 .queryParam("collectionCardId", collectionCardId)
                 .queryParam("countOnlyActive", countOnlyActive)
+                .queryParam("viewType", viewType)
+                .queryParam("onlyFeatured", onlyFeatured)
                 .execute();
     }
 
