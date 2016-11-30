@@ -226,6 +226,12 @@ public class ContestClient {
                 .execute(), contestService);
     }
 
+    public List<Contest> findContestsByActive(boolean active) {
+        return DtoUtil.toPojos(contestResource.list()
+                .optionalQueryParam("active", active)
+                .execute(), contestService);
+    }
+
     public List<Contest> findContestsByName(String contestName, List<Long> ontologyTermIds, List<Long> contestTypeIds) {
         return DtoUtil.toPojos(contestResource
                 .service("findContestsByName", ContestDto.TYPES.getTypeReference())

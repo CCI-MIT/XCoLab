@@ -1,7 +1,13 @@
 package org.xcolab.service.proposal.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
@@ -12,11 +18,16 @@ import java.util.List;
 @RestController
 public class ProposalAttributeController {
 
-    @Autowired
-    ProposalAttributeDao proposalAttributeDao;
+    private final ProposalAttributeDao proposalAttributeDao;
+
+    private final ProposalAttributeService proposalAttributeService;
 
     @Autowired
-    ProposalAttributeService proposalAttributeService;
+    public ProposalAttributeController(ProposalAttributeDao proposalAttributeDao,
+            ProposalAttributeService proposalAttributeService) {
+        this.proposalAttributeDao = proposalAttributeDao;
+        this.proposalAttributeService = proposalAttributeService;
+    }
 
     //TODO: Replaced since post param too long when sending some attributes 11/16
     /*
@@ -62,7 +73,7 @@ public class ProposalAttributeController {
     public ProposalAttribute createProposalAttribute(@RequestBody ProposalAttribute proposalAttribute,
     @RequestParam Long authorId) {
         if(proposalAttribute.getAdditionalId() == null){
-            proposalAttribute.setAdditionalId(0l);
+            proposalAttribute.setAdditionalId(0L);
         }
         if(proposalAttribute.getStringValue() == null){
             proposalAttribute.setStringValue("");
@@ -71,7 +82,7 @@ public class ProposalAttributeController {
             proposalAttribute.setRealValue(0.0);
         }
         if(proposalAttribute.getNumericValue() == null){
-            proposalAttribute.setNumericValue(0l);
+            proposalAttribute.setNumericValue(0L);
         }
         return this.proposalAttributeService.setAttribute(proposalAttribute, authorId);
     }

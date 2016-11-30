@@ -33,6 +33,10 @@ public final class ProposalPhaseClientUtil {
         return client.getProposal2PhaseByContestPhaseId(contestPhaseId);
     }
 
+    public static Proposal2Phase getProposal2PhaseByProposalIdVersion(long proposalId, int version) {
+        return client.getProposal2PhaseByProposalIdVersion(proposalId, version);
+    }
+
     public static void createProposal2Phase(Proposal2Phase proposal2Phase) {
         client.createProposal2Phase(proposal2Phase);
     }

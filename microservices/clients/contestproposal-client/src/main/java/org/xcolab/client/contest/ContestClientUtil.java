@@ -82,6 +82,10 @@ public final class ContestClientUtil {
         return contestClient.findContestsByActiveFeatured(active, featured);
     }
 
+    public static List<Contest> findContestsByActive(boolean active) {
+        return contestClient.findContestsByActive(active);
+    }
+
     public static List<Contest> findContestsTierLevelAndOntologyTermIds(
             Long contestTier, List<Long> focusAreaOntologyTerms) {
         return contestClient

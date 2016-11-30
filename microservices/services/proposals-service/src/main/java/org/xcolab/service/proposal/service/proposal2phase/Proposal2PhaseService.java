@@ -106,7 +106,7 @@ public class Proposal2PhaseService {
     }
 
     public List<Long> getContestPhasesForProposal(long proposalId) {
-        List<Proposal2Phase> proposal2Phases = proposal2PhaseDao.findByGiven(proposalId, null);
+        List<Proposal2Phase> proposal2Phases = proposal2PhaseDao.findByGiven(proposalId, null, null);
 
         return proposal2Phases.stream()
                 .filter(p2p -> ContestClientUtil.getContestPhase(p2p.getContestPhaseId()) != null)

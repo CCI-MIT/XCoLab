@@ -64,13 +64,19 @@ public final class ProposalAttributeClient {
         if (additionalId != null && additionalId != 0) {
             listQ = listQ.queryParam("additionalId", additionalId);
         }
-        List<ProposalAttribute> list = DtoUtil.toPojos(listQ.execute(), proposalService);
-        if (list != null && !list.isEmpty()) {
-            return list.get(0);
-        } else {
-            return null;
-        }
+        return listQ.executeWithResult().getFirstIfExists().toPojo(proposalService);
+    }
 
+    public ProposalAttribute getProposalAttribute(long proposalId, long version, String name, Long additionalId) {
+        ListQuery<ProposalAttributeDto> listQ =
+                proposalAttributeResource.list()
+                        .queryParam("proposalId", proposalId)
+                        .queryParam("name", name)
+                        .queryParam("version", version);
+        if (additionalId != null && additionalId != 0) {
+            listQ = listQ.queryParam("additionalId", additionalId);
+        }
+        return listQ.executeWithResult().getFirstIfExists().toPojo(proposalService);
     }
 
     public ProposalAttribute getProposalAttribute(long id_)

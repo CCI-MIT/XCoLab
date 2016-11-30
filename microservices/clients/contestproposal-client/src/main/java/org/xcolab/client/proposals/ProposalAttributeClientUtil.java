@@ -36,6 +36,11 @@ public final class ProposalAttributeClientUtil {
         return client.getProposalAttribute(proposalId, name, additionalId);
     }
 
+    public static ProposalAttribute getProposalAttribute(
+            long proposalId, long version, String name, Long additionalId) {
+        return client.getProposalAttribute(proposalId, version, name, additionalId);
+    }
+
     public static ProposalAttribute getProposalAttribute(long id_)
             throws ProposalAttributeNotFoundException {
         return client.getProposalAttribute(id_);

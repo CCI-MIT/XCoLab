@@ -55,22 +55,29 @@ public final class ProposalPhaseClient {
 
     public Proposal2Phase getProposal2PhaseByProposalIdContestPhaseId(Long proposalId,
             Long contestPhaseId) throws Proposal2PhaseNotFoundException {
-        try {
-            return proposal2PhaseResource
-                    .service("getByContestPhaseIdProposalId", Proposal2PhaseDto.class)
-                    .queryParam("proposalId", proposalId)
-                    .queryParam("contestPhaseId", contestPhaseId)
-
-                    .getChecked().toPojo(proposalService);
-        } catch (EntityNotFoundException ignored) {
+        final Proposal2PhaseDto dto = proposal2PhaseResource.list()
+                .queryParam("proposalId", proposalId)
+                .queryParam("contestPhaseId", contestPhaseId)
+                .executeWithResult()
+                .getOneIfExists();
+        if (dto == null) {
             throw new Proposal2PhaseNotFoundException(proposalId);
         }
+        return dto.toPojo(proposalService);
     }
 
     public List<Proposal2Phase> getProposal2PhaseByProposalId(Long proposalId) {
         return DtoUtil.toPojos(proposal2PhaseResource.list()
                 .optionalQueryParam("proposalId", proposalId)
                 .execute(), proposalService);
+    }
+
+    public Proposal2Phase getProposal2PhaseByProposalIdVersion(long proposalId, int version) {
+        return proposal2PhaseResource.list()
+                .queryParam("proposalId", proposalId)
+                .queryParam("version", version)
+                .executeWithResult()
+                .getOne().toPojo(proposalService);
     }
 
     public List<Proposal2Phase> getProposal2PhaseByContestPhaseId(Long contestPhaseId) {
