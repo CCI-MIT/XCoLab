@@ -109,6 +109,12 @@ public class ContestsIndexController extends BaseProposalsController {
         for (ContestCollectionCard card: ContestClientUtil.getSubContestCollectionCards(currentCollectionCardId)) {
             collectionCards.add(new CollectionCardWrapper(card));
         }
+        Collections.sort(collectionCards, new Comparator<CollectionCardWrapper>() {
+            @Override
+            public int compare(CollectionCardWrapper o1, CollectionCardWrapper o2) {
+                return o1.getOrder()< o2.getOrder() ? -1 : o1.getOrder() == o2.getOrder() ? 0 : 1;
+            }
+        });
 
         boolean showOnlyFeatured = false;
         List<Contest> contests = new ArrayList<>();

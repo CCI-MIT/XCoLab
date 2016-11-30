@@ -138,7 +138,7 @@
 						<portlet:param name="showAllContests" value="${showAllContests }" />
 					</portlet:renderURL>
 					<a href="${changeToCollectionCardURL}">
-						${collectionCard.description}
+						${collectionCard.shortName}
 					</a>
 				</c:forEach>
 			</div>
