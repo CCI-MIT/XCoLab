@@ -125,7 +125,7 @@ public class Contest extends AbstractContest {
     }
     public String getProposalLogoPath() {
         if(this.getIsSharedContestInForeignColab()) {
-            return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_LOCATION.get()+"/";
+            return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()+"/";
         }else{
             return "/";
         }
@@ -135,7 +135,7 @@ public class Contest extends AbstractContest {
 
             Long i = this.getSponsorLogoId();
             if (i != null) {
-                return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_LOCATION.get()+"/image/contest?img_id=" + i;
+                return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()+"/image/contest?img_id=" + i;
             }
             return "";
         }else{
@@ -152,7 +152,7 @@ public class Contest extends AbstractContest {
 
             Long i = this.getContestLogoId();
             if (i != null) {
-                return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_LOCATION.get()+"/image/contest?img_id=" + i;
+                return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()+"/image/contest?img_id=" + i;
             }
             return "";
         }else{
@@ -470,7 +470,7 @@ public class Contest extends AbstractContest {
 
     public String getResourceArticleUrl() {
         if(this.getIsSharedContestInForeignColab()) {
-            return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_LOCATION.get()+"/web/guest/wiki/-/wiki/resources/" + this.getContestYear()
+            return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()+"/web/guest/wiki/-/wiki/resources/" + this.getContestYear()
                     + "/" + this.getContestUrlName();
         } else{
             return "/web/guest/wiki/-/wiki/resources/" + this.getContestYear()
