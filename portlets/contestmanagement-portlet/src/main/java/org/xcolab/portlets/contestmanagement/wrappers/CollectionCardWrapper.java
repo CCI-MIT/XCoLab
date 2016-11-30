@@ -125,6 +125,14 @@ public class CollectionCardWrapper {
         contestCollectionCard.setDescription(description);
     }
 
+    public String getShortName() {
+        return contestCollectionCard.getShort_name();
+    }
+
+    public void setShortName(String shortName) {
+        contestCollectionCard.setShort_name(shortName);
+    }
+
     public String getOntologyTermToLoad() {
         if(contestCollectionCard.getOntology_term_to_load() != null) {
             return OntologyClientUtil.getOntologyTerm(contestCollectionCard.getOntology_term_to_load()).getName();

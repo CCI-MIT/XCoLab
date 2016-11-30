@@ -11,6 +11,7 @@ public abstract class AbstractContestCollectionCard {
     private Long    bigOntologyTerm;
     private Long    smallOntologyTerm;
     private String  description;
+    private String  shortName;
     private Boolean visible;
     private Integer order;
     private Long    ontologyTermToLoad;
@@ -24,6 +25,7 @@ public abstract class AbstractContestCollectionCard {
         this.bigOntologyTerm = value.bigOntologyTerm;
         this.smallOntologyTerm = value.smallOntologyTerm;
         this.description = value.description;
+        this.shortName = value.shortName;
         this.visible = value.visible;
         this.order = value.order;
         this.ontologyTermToLoad = value.ontologyTermToLoad;
@@ -31,21 +33,23 @@ public abstract class AbstractContestCollectionCard {
     }
 
     public AbstractContestCollectionCard(
-        Long    id_,
-        Long    parent,
-        Long    bigOntologyTerm,
-        Long    smallOntologyTerm,
-        String  description,
-        Boolean visible,
-        Integer order,
-        Long    ontologyTermToLoad,
-        Boolean onlyFeatured
+            Long    id_,
+            Long    parent,
+            Long    bigOntologyTerm,
+            Long    smallOntologyTerm,
+            String  description,
+            String  shortName,
+            Boolean visible,
+            Integer order,
+            Long    ontologyTermToLoad,
+            Boolean onlyFeatured
     ) {
         this.id_ = id_;
         this.parent = parent;
         this.bigOntologyTerm = bigOntologyTerm;
         this.smallOntologyTerm = smallOntologyTerm;
         this.description = description;
+        this.shortName = shortName;
         this.visible = visible;
         this.order = order;
         this.ontologyTermToLoad = ontologyTermToLoad;
@@ -90,6 +94,14 @@ public abstract class AbstractContestCollectionCard {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getShort_name() {
+        return this.shortName;
+    }
+
+    public void setShort_name(String shortName) {
+        this.shortName = shortName;
     }
 
     public Boolean getVisible() {
@@ -163,6 +175,12 @@ public abstract class AbstractContestCollectionCard {
         }
         else if (!description.equals(other.description))
             return false;
+        if (shortName == null) {
+            if (other.shortName != null)
+                return false;
+        }
+        else if (!shortName.equals(other.shortName))
+            return false;
         if (visible == null) {
             if (other.visible != null)
                 return false;
@@ -199,6 +217,7 @@ public abstract class AbstractContestCollectionCard {
         result = prime * result + ((bigOntologyTerm == null) ? 0 : bigOntologyTerm.hashCode());
         result = prime * result + ((smallOntologyTerm == null) ? 0 : smallOntologyTerm.hashCode());
         result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + ((shortName == null) ? 0 : shortName.hashCode());
         result = prime * result + ((visible == null) ? 0 : visible.hashCode());
         result = prime * result + ((order == null) ? 0 : order.hashCode());
         result = prime * result + ((ontologyTermToLoad == null) ? 0 : ontologyTermToLoad.hashCode());
@@ -215,6 +234,7 @@ public abstract class AbstractContestCollectionCard {
         sb.append(", ").append(bigOntologyTerm);
         sb.append(", ").append(smallOntologyTerm);
         sb.append(", ").append(description);
+        sb.append(", ").append(shortName);
         sb.append(", ").append(visible);
         sb.append(", ").append(order);
         sb.append(", ").append(ontologyTermToLoad);

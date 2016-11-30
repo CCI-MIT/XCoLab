@@ -71,17 +71,20 @@
                 <form:hidden path="createNew" id="createNewFlag"/>
                 <input id="id" name="id"  type="hidden" value=""/>
                 <div class="addpropbox">
+                    <strong class="inputTitleLeft">Ontologyterm to load</strong>
+                    <form:select path="ontologyTermToLoad" id="ontologyTermToLoad" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
+                    <br/>
+                    <strong class="inputTitleLeft">Display Title [no functionaity]</strong>
+                    <form:select path="bigOntologyTerm" id="bigOntologyTerm" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
+                    <br/>
+                    <strong class="inputTitleLeft">Short Name</strong>
+                    <form:select path="shortName" id="shortName" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.shortName}" />
+                    <br/>
                     <strong class="inputTitleLeft">Description:</strong>
                     <input id="description" name="Description" class="wideLargeInput" type="text" value="" validatelength="false"/>
                     <br/>
                     <strong class="inputTitleLeft">Parent CollectionCard</strong>
                     <form:select path="parentId" id="parentId" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.collectionCards}" />
-                    <br/>
-                    <strong class="inputTitleLeft">Ontologyterm to load</strong>
-                    <form:select path="ontologyTermToLoad" id="ontologyTermToLoad" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
-                    <br/>
-                    <strong class="inputTitleLeft">Big Ontologyterm</strong>
-                    <form:select path="bigOntologyTerm" id="bigOntologyTerm" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
                     <br/>
                     <strong class="inputTitleLeft">Small Ontologyterm</strong>
                     <form:select path="smallOntologyTerm" id="smallOntologyTerm" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
@@ -124,10 +127,10 @@
         <c:forEach var="collectionCard" items="${collectionCardWrapperWhat.allCollectionCards}">
                 <c:choose>
                     <c:when test="${not empty collectionCard.parentId}">
-                        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, parentId: ${collectionCard.parentId}, bigOntologyTermId: '${collectionCard.bigOntologyTermId}', smallOntologyTermId: '${collectionCard.smallOntologyTermId}',  ontologyTermToLoadId: '${collectionCard.ontologyTermToLoadId}',bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}', order: '${collectionCard.order}'};
+                        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, parentId: ${collectionCard.parentId}, shortName: '${collectionCard.shortName}', bigOntologyTermId: '${collectionCard.bigOntologyTermId}', smallOntologyTermId: '${collectionCard.smallOntologyTermId}',  ontologyTermToLoadId: '${collectionCard.ontologyTermToLoadId}',bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}', order: '${collectionCard.order}'};
                     </c:when>
                     <c:otherwise>
-                        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, bigOntologyTermId: '${collectionCard.bigOntologyTermId}', smallOntologyTermId: '${collectionCard.smallOntologyTermId}',  ontologyTermToLoadId: '${collectionCard.ontologyTermToLoadId}',bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}', order: '${collectionCard.order}'};
+                        collectionCards[${collectionCard.id}] = {id: ${collectionCard.id}, shortName: '${collectionCard.shortName}', bigOntologyTermId: '${collectionCard.bigOntologyTermId}', smallOntologyTermId: '${collectionCard.smallOntologyTermId}',  ontologyTermToLoadId: '${collectionCard.ontologyTermToLoadId}',bigOntologyTerm: '${collectionCard.bigOntologyTerm}', smallOntologyTerm: '${collectionCard.smallOntologyTerm}',  ontologyTermToLoad: '${collectionCard.ontologyTermToLoad}', visible: ${collectionCard.visible}, onlyFeatured: ${collectionCard.onlyFeatured}, description: '${collectionCard.description}', order: '${collectionCard.order}'};
                     </c:otherwise>
                 </c:choose>
         </c:forEach>
@@ -188,6 +191,7 @@
             jQuery("#deleteCollectionCardForm #collectionCardId").val(collectionCardId);
             jQuery(".collectionCard-edit-form #id").val(collectionCardId);
             jQuery(".collectionCard-edit-form #description").val(collectionCard.description);
+            jQuery(".collectionCard-edit-form #shortName").val(collectionCard.shortName);
             jQuery(".collectionCard-edit-form #parentId").val(collectionCard.parentId);
             jQuery(".collectionCard-edit-form #ontologyTermToLoad").val(collectionCard.ontologyTermToLoadId);
             jQuery(".collectionCard-edit-form #bigOntologyTerm").val(collectionCard.bigOntologyTermId);
@@ -206,6 +210,12 @@
                 inputError = true;
             } else {
                 jQuery(".collectionCard-edit-form #description").css("background-color", "white");
+            }
+            if(!jQuery(".collectionCard-edit-form #shortName").val().length > 0) {
+                jQuery(".collectionCard-edit-form #shortName").css("background-color", "lightcoral");
+                inputError = true;
+            } else {
+                jQuery(".collectionCard-edit-form #shortName").css("background-color", "white");
             }
             if(jQuery(".collectionCard-edit-form #parentId").val() == -1) {
                 jQuery(".collectionCard-edit-form #parentId").css("background-color", "lightcoral");
@@ -262,6 +272,7 @@
             jQuery("#deleteCollectionCardForm #collectionCardId").val(-1);
             jQuery(".collectionCard-edit-form #id").val(-1); //just for validation
             jQuery(".collectionCard-edit-form #description").val("");
+            jQuery(".collectionCard-edit-form #shortName").val("");
             jQuery(".collectionCard-edit-form #parentId").val(-1);
             jQuery(".collectionCard-edit-form #ontologyTermToLoad").val(-1);
             jQuery(".collectionCard-edit-form #bigOntologyTerm").val(-1);
@@ -287,6 +298,7 @@
             jQuery(".collectionCard-outline-right").hide();
 
             jQuery(".collectionCard-edit-form #description").css("background-color", "white");
+            jQuery(".collectionCard-edit-form #shortName").css("background-color", "white");
             jQuery(".collectionCard-edit-form #parentId").css("background-color", "white");
             jQuery(".collectionCard-edit-form #ontologyTermToLoad").css("background-color", "white");
             jQuery(".collectionCard-edit-form #bigOntologyTerm").css("background-color", "white");

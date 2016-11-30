@@ -10,7 +10,7 @@
 			<c:forEach var="collectionCard" items="${collectionCard.children }">
 				<li class="collectionCardListItem" >
 					<a href="#"  data-card-id="${collectionCard.id}">
-						<span>${collectionCard.description}</span>
+						<span>${collectionCard.bigOntologyTerm}</span>
 					</a>
 					<c:if test="${not empty collectionCard.children }">
 						<contestmanagementPortlet:collectionCardWithChildren collectionCard="${collectionCard}" section="${section + 1 }" level="${level + 1 }" />
