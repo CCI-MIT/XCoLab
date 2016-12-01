@@ -51,68 +51,6 @@ public class ProposalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    /**
-    * This method returns the index of the latest version of a proposal within a given contestPhaseId
-    *
-    * @param contestPhaseId    The ID of the contest phase
-    * @param proposalId        The ID of the proposal
-    * @return The index of the latest version in a list of all versions of the proposal
-    * @throws PortalException
-    * @throws SystemException
-    */
-    public static com.liferay.portal.kernel.json.JSONObject getProposalVersionFirstIndex(
-        long contestPhaseId, long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService()
-                   .getProposalVersionFirstIndex(contestPhaseId, proposalId);
-    }
-
-    /**
-    * This method returns the index of the passed version of a proposal
-    *
-    * @param version           The proposal version
-    * @param proposalId        The ID of the proposal
-    * @return The index of the latest version in a list of all versions of the proposal
-    * @throws PortalException
-    * @throws SystemException
-    */
-    public static com.liferay.portal.kernel.json.JSONObject getProposalVersionIndex(
-        long version, long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().getProposalVersionIndex(version, proposalId);
-    }
-
-    /**
-    * @param contestPhaseId ID of contest phase or -1 for general query
-    * @throws PortalException
-    * @throws SystemException
-    */
-    public static com.liferay.portal.kernel.json.JSONObject getProposalVersions(
-        long contestId, long contestPhaseId, long proposalId, int start, int end)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService()
-                   .getProposalVersions(contestId, contestPhaseId, proposalId,
-            start, end);
-    }
-
-    public static com.liferay.portal.kernel.json.JSONObject getProposalVersions(
-        long proposalId, int start, int end)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().getProposalVersions(proposalId, start, end);
-    }
-
-    public static com.liferay.portal.kernel.json.JSONArray getProposalContestSections(
-        long proposalId, int version, long contestId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService()
-                   .getProposalContestSections(proposalId, version, contestId);
-    }
-
     public static void clearService() {
         _service = null;
     }
