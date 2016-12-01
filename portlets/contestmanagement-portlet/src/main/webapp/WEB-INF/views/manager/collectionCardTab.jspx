@@ -247,7 +247,7 @@
         function submitDeleteCollectionCard() {
             if(jQuery("#deleteCollectionCardForm #collectionCardId").val() > 0) {
                 var r = confirm("Please confirm the deletion of CollectionCard: '" + jQuery(".collectionCard-edit-form #title").html() + "' \n Children will be moved to its parent!");
-                if (r == true) {
+                if (r) {
                     document.getElementById('deleteCollectionCardForm').submit();
                 } else {
                     alert("You canceled the deletion!");
@@ -255,8 +255,6 @@
             } else {
                 alert("Please select an existing CollectionCard to delete!");
             }
-
-
         }
 
         function createNewCollectionCard() {
