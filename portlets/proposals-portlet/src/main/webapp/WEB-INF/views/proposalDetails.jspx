@@ -54,13 +54,13 @@
                         <c:if test="${not empty targetMoveHistory}">
                             <div>
                                 <c:choose>
-                                    <c:when test="${targetMoveHistory.moveTypez.name() == 'MOVE_PERMANENTLY'}">
+                                    <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'MOVE_PERMANENTLY'}">
                                         This ${contestType.proposalName} was moved here from <collab:contestLink contest="${targetMoveHistory.sourceContest}"/>
                                     </c:when>
-                                    <c:when test="${targetMoveHistory.moveTypez.name() == 'COPY'}">
+                                    <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'COPY'}">
                                         This ${contestType.proposalName} was reopen here from <collab:contestLink contest="${targetMoveHistory.sourceContest}"/>
                                     </c:when>
-                                    <c:when test="${targetMoveHistory.moveTypez.name() == 'FORK'}">
+                                    <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'FORK'}">
                                         This ${contestType.proposalName} was forked from <collab:proposalLink proposal="${targetMoveHistory.sourceProposal}"/>
                                         in the ${contestType.contestName} <collab:contestLink contest="${targetMoveHistory.sourceContest}"/>
                                     </c:when>
@@ -73,7 +73,7 @@
 
                         <c:forEach var="sourceMoveHistory" items="${sourceMoveHistories}">
                             <c:choose>
-                                <c:when test="${sourceMoveHistory.moveTypez.name() == 'COPY'
+                                <c:when test="${sourceMoveHistory.moveTypeEnum.name() == 'COPY'
                                             and (sourceMoveHistory.sourceContestPhaseId == 0
                                                     or sourceMoveHistory.sourceContestPhaseId == contestPhase.contestPhasePK)}">
                                     <div>
