@@ -68,6 +68,7 @@ public class ContestManagerCollectionCardTabController extends ContestManagerBas
         }
 
         if (result.hasErrors()) {
+            SetRenderParameterUtil.setErrorRenderParameter(response, "updateContestCollectionCard");
             return;
         }
         collectionCardWrapper.persist();
