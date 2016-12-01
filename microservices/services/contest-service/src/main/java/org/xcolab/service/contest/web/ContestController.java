@@ -54,7 +54,7 @@ public class ContestController {
 
     @PostMapping(value = "/contestCollectionCards")
     public ContestCollectionCard createContestCollectionCard(@RequestBody ContestCollectionCard contestCollectionCard) {
-        return this.contestCollectionCardDao.create(contestCollectionCard);
+        return contestCollectionCardDao.create(contestCollectionCard);
     }
 
     @PutMapping(value = "/contestCollectionCards/{contestCollectionCardId}")
@@ -132,7 +132,7 @@ public class ContestController {
 
     @PostMapping(value = "/contests")
     public Contest createContest(@RequestBody Contest contest) {
-        return this.contestDao.create(contest);
+        return contestDao.create(contest);
     }
 
     @PutMapping(value = "/contests/{contestPK}")
