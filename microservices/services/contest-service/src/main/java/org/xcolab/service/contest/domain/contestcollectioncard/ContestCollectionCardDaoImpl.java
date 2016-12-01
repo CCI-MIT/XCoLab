@@ -49,7 +49,7 @@ public class ContestCollectionCardDaoImpl implements ContestCollectionCardDao {
     public boolean update(ContestCollectionCard contestCollectionCard) {
 
         return dslContext.update(CONTEST_COLLECTION_CARD)
-                .set(CONTEST_COLLECTION_CARD.PARENT, contestCollectionCard.getParent() != null ? contestCollectionCard.getParent() : null)
+                .set(CONTEST_COLLECTION_CARD.PARENT, contestCollectionCard.getParent())
                 .set(CONTEST_COLLECTION_CARD.BIG_ONTOLOGY_TERM, contestCollectionCard.getBig_ontology_term())
                 .set(CONTEST_COLLECTION_CARD.SMALL_ONTOLOGY_TERM, contestCollectionCard.getSmall_ontology_term())
                 .set(CONTEST_COLLECTION_CARD.DESCRIPTION, contestCollectionCard.getDescription())
