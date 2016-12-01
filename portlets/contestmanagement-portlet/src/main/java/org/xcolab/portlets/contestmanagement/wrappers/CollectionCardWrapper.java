@@ -142,7 +142,8 @@ public class CollectionCardWrapper {
     }
 
     public long getOntologyTermToLoadId() {
-        return contestCollectionCard.getOntology_term_to_load() != null ? contestCollectionCard.getOntology_term_to_load() : -1;
+        Long term = contestCollectionCard.getOntology_term_to_load();
+        return term != null ? term : -1;
     }
 
     public void setOntologyTermToLoad(long ontologyTermToLoadId) {
@@ -157,7 +158,8 @@ public class CollectionCardWrapper {
     }
 
     public long getBigOntologyTermId() {
-        return contestCollectionCard.getBig_ontology_term() != null ? contestCollectionCard.getBig_ontology_term() : -1;
+        Long term = contestCollectionCard.getBig_ontology_term();
+        return term != null ? term : -1;
     }
 
     public void setBigOntologyTerm(long bigOntologyTermId) {
@@ -172,7 +174,8 @@ public class CollectionCardWrapper {
     }
 
     public long getSmallOntologyTermId() {
-        return contestCollectionCard.getSmall_ontology_term() != null ? contestCollectionCard.getSmall_ontology_term() : -1;
+        Long term = contestCollectionCard.getSmall_ontology_term();
+        return term != null ? term : -1;
     }
 
     public void setSmallOntologyTerm(long smallOntologyTermId) {
@@ -180,7 +183,8 @@ public class CollectionCardWrapper {
     }
 
     public long getParentId() {
-        return this.contestCollectionCard.getParent() != null ?  this.contestCollectionCard.getParent() : -1;
+        Long parent = this.contestCollectionCard.getParent();
+        return  parent != null ?  parent : -1;
     }
 
     public void setParentId(Long parentId) {
@@ -204,7 +208,8 @@ public class CollectionCardWrapper {
     }
 
     public int getOrder() {
-        return contestCollectionCard.getOrder() != null ? contestCollectionCard.getOrder() : 0;
+        Integer order = contestCollectionCard.getOrder();
+        return  order != null ? order : 0;
     }
 
     public void setOrder(int order) {
