@@ -233,10 +233,10 @@ public class ContestClient {
                 .getList(), contestService);
     }
 
-    public int getNumberOfContestsInCollectionCard(Long collectionCardId, Boolean countOnlyActive, String viewType, boolean onlyFeatured) {
+    public int getNumberOfContestsInCollectionCard(Long collectionCardId, Boolean countActive, String viewType, boolean onlyFeatured) {
         return contestResource.service("getNumberOfContestsInCollectionCard", Integer.class)
                 .queryParam("collectionCardId", collectionCardId)
-                .queryParam("countOnlyActive", countOnlyActive)
+                .queryParam("countActive", countActive)
                 .queryParam("viewType", viewType)
                 .queryParam("onlyFeatured", onlyFeatured)
                 .execute();
@@ -256,11 +256,11 @@ public class ContestClient {
 
     }
 
-    public List<Contest> getContestByOntologyTerm(Long ontologyTermId, Boolean getOnlyActive) {
+    public List<Contest> getContestByOntologyTerm(Long ontologyTermId, Boolean getActive) {
         return DtoUtil.toPojos(contestResource
                 .service("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
                 .queryParam("focusAreaOntologyTerm", ontologyTermId)
-                .queryParam("getOnlyActive", getOnlyActive)
+                .queryParam("getActive", getActive)
                 .getList(), contestService);
     }
 

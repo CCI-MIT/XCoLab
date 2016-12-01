@@ -120,9 +120,6 @@ public class ContestsIndexController extends BaseProposalsController {
         List<Contest> contests = new ArrayList<>();
         if (!viewType.equals(VIEW_TYPE_OUTLINE)) {
 
-
-
-
             LinkedList<CollectionCardWrapper> collectionHierarchy = new LinkedList<>();
             long tempId = currentCollectionCardId;
             while(ContestClientUtil.getContestCollectionCard(tempId).getParent() != null) {
@@ -134,13 +131,13 @@ public class ContestsIndexController extends BaseProposalsController {
             //Queue for breadcrumb
             model.addAttribute("collectionHierarchy", collectionHierarchy);
 
-            Boolean getOnlyActive;
+            Boolean getActive;
             if(showActiveContests) {
-                getOnlyActive = true; //active
+                getActive = true; //active
             } else if(!showAllContests && !showActiveContests){
-                getOnlyActive= false; //prior
+                getActive= false; //prior
             } else {
-                getOnlyActive=null; //all
+                getActive=null; //all
             }
 
             Long ontologyTermToLoad;
@@ -156,7 +153,7 @@ public class ContestsIndexController extends BaseProposalsController {
                         .getOntology_term_to_load();
             }
 
-            for (Contest contest : ContestClientUtil.getContestByOntologyTerm(ontologyTermToLoad, getOnlyActive)) {
+            for (Contest contest : ContestClientUtil.getContestByOntologyTerm(ontologyTermToLoad, getActive)) {
                 if (! contest.getContestPrivate()) {
                     if(contest.getIsSharedContestInForeignColab()){
                         ClientHelper ch = new ClientHelper(contest);
@@ -187,20 +184,9 @@ public class ContestsIndexController extends BaseProposalsController {
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
             List<Contest> contestsToWrap = showAllContests ? ContestClientUtil.getContestsByContestTypeId(contestType.getId_()) :
                     ContestClientUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId_());
-            List<Contest> priorContests = ContestClientUtil.getContestsByActivePrivateType(false, false,
-                    contestType.getId_());
 
             if (contestsToWrap.size() == 1) {
                 final Contest contest = contestsToWrap.get(0);
-                final String contestLinkUrl = (contest).getContestLinkUrl();
-                /*
-                try {
-                    PortalUtil.getHttpServletResponse(response).sendRedirect(contestLinkUrl);
-                    return "contestsIndex"; //won't be shown, but avoid null pointer exception during redirection
-                } catch (IOException e) {
-                    _log.error("Failed to redirect to only contest in this contest type", e);
-                }
-                */
             }
 
             for (Contest contest: contestsToWrap) {
@@ -292,10 +278,7 @@ public class ContestsIndexController extends BaseProposalsController {
         	model.addAttribute("contestType", contestType);
         }
 
-
         //Adding attributes to model
-
-
         model.addAttribute("collectionCards", new CollectionCardFilterBean(collectionCards));
         model.addAttribute("currentCollectionCardId", currentCollectionCardId);
 
@@ -308,28 +291,16 @@ public class ContestsIndexController extends BaseProposalsController {
 
         model.addAttribute("contests", contests);
         model.addAttribute("showFilter", contests.size() >= MIN_SIZE_CONTEST_FILTER);
-        //model.addAttribute("priorContestsExist", !priorContests.isEmpty());
-        model.addAttribute("priorContestsExist", true);
-        //hacked
         model.addAttribute("contestsSorted", new ContestsSortFilterBean(contests, sortFilterPage,
                 showActiveContests ? null : ContestsColumn.REFERENCE_DATE));
         model.addAttribute("viewType", viewType);
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("showActiveContests", showActiveContests);
         model.addAttribute("showAllContests", showAllContests);
-
-        //PermissionChecker permissionChecker = PermissionThreadLocal.getPermissionChecker();
-
-        //boolean showContestManagementLink = PermissionsClient
-          //      .canAdminAll(proposalsContext.getUser(request).getUserId()) ; //permissionChecker.isOmniadmin();
-        //model.addAttribute("showContestManagementLink", showContestManagementLink);
-
         model.addAttribute("showContestDisplayOptions",
                 ConfigurationAttributeKey.SHOW_CONTESTS_DISPLAY_OPTIONS.get());
-
         setSeoTexts(request, showAllContests ? "All contests" : showActiveContests ? "Active contests" : "Prior contests", null, null);
 
-        
         return "contestsIndex";
     }
 

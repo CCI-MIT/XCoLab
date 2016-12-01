@@ -31,18 +31,16 @@ public class CollectionCardService {
         this.contestCollectionCardDao=contestCollectionCardDao;
     }
 
-    public int getNumberOfContestsInCollectionCard(Long collectionCardId, Boolean countOnlyActive, String viewType, boolean onlyFeatured) {
+    public int getNumberOfContestsInCollectionCard(Long collectionCardId, Boolean getActive, String viewType, boolean onlyFeatured) {
 
-        if(countOnlyActive == null) {
-            countOnlyActive = false;
-        }
+
         int count = 0;
         List<Long> contestList = new ArrayList<>();
         List<Long> collectionCards = new ArrayList<>();
         try {
             collectionCards.add(contestCollectionCardDao.get(collectionCardId).getId_());
             while(!collectionCards.isEmpty()) {
-                for(Contest contest: contestService.getContestsByOntologyTerm(contestCollectionCardDao.get(collectionCards.get(0)).getOntology_term_to_load(), countOnlyActive)) {
+                for(Contest contest: contestService.getContestsByOntologyTerm(contestCollectionCardDao.get(collectionCards.get(0)).getOntology_term_to_load(), getActive)) {
                     if(!contestList.contains(contest.getContestPK())) {
                         if(     (!onlyFeatured || contest.getFeatured_()) &&
                                 (viewType.equals(VIEW_TYPE_GRID) && contest.getShow_in_tile_view()) ||

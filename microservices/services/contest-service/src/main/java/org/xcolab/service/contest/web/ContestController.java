@@ -107,8 +107,8 @@ public class ContestController {
 
     @RequestMapping(value = "/contests/getContestsByOntologyTerm", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Contest> getContestsByOntologyTerm(
-            @RequestParam(required = false) Long focusAreaOntologyTerm, @RequestParam(required = false) Boolean getOnlyActive){
-        return contestService.getContestsByOntologyTerm(focusAreaOntologyTerm, getOnlyActive);
+            @RequestParam(required = false) Long focusAreaOntologyTerm, @RequestParam(required = false) Boolean getActive){
+        return contestService.getContestsByOntologyTerm(focusAreaOntologyTerm, getActive);
     }
 
     @RequestMapping(value = "/contests/getNumberOfContestsByOntologyTerm", method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -118,8 +118,8 @@ public class ContestController {
     }
 
     @RequestMapping(value = "contests/getNumberOfContestsInCollectionCard", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public int getNumberOfContestsInCollectionCard(@RequestParam(required = true) long collectionCardId, @RequestParam(required = false) boolean countOnlyActive, @RequestParam(required = true) boolean onlyFeatured,  @RequestParam(required = true) String viewType) {
-        return collectionCardService.getNumberOfContestsInCollectionCard(collectionCardId, countOnlyActive, viewType, onlyFeatured);
+    public int getNumberOfContestsInCollectionCard(@RequestParam(required = true) long collectionCardId, @RequestParam(required = false) boolean countActive, @RequestParam(required = true) boolean onlyFeatured,  @RequestParam(required = true) String viewType) {
+        return collectionCardService.getNumberOfContestsInCollectionCard(collectionCardId, countActive, viewType, onlyFeatured);
     }
 
     @RequestMapping(value = "/contests/{contestId}/subContestsByOntologySpaceId", method = {RequestMethod.GET, RequestMethod.HEAD})

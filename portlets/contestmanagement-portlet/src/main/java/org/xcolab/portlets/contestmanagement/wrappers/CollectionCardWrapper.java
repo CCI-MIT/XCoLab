@@ -20,6 +20,7 @@ public class CollectionCardWrapper {
 
     private ContestCollectionCard contestCollectionCard;
     private Boolean createNew = false;
+    private static final String REFERENCE_NULL_IDENTIFIER = "none";
 
     public CollectionCardWrapper(long collectionCardId, long bigOntologyTerm, long ontologyTermToLoad, long smallOntologyTerm, boolean onlyFeatured, boolean visible, long parentId) {
         contestCollectionCard = new ContestCollectionCard();
@@ -73,7 +74,7 @@ public class CollectionCardWrapper {
     public Map<Long , String > getOntologyTerms() {
         Map<Long, String> ontologyTerms = new HashMap<>();
 
-        ontologyTerms.put((long) (-1), "none");
+        ontologyTerms.put(1L -1, REFERENCE_NULL_IDENTIFIER);
         for(OntologyTerm term: OntologyClientUtil.getAllOntologyTerms()) {
             ontologyTerms.put(term.getId(), term.getName());
         }
@@ -98,7 +99,7 @@ public class CollectionCardWrapper {
 
     public Map<Long , String > getCollectionCards() {
         Map<Long, String> cards = new HashMap<>();
-        cards.put((long) (-1), "none");
+        cards.put(1L -1, REFERENCE_NULL_IDENTIFIER);
         for(ContestCollectionCard card: ContestClientUtil.getAllContestCollectionCards()) {
             cards.put(card.getId_(), card.getDescription());
         }

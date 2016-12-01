@@ -44,12 +44,11 @@ public class CollectionCardWrapper{
     }
 
     public int getNumberOfAllContests() {
-        return ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), false, viewType, this.getOnlyFeatured());
+        return ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), null, viewType, this.getOnlyFeatured());
     }
 
     public int getNumberOfPriorContests() {
-        return ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), false, viewType, this.getOnlyFeatured())
-                - ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), true, viewType, this.getOnlyFeatured());
+        return ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), false, viewType, this.getOnlyFeatured());
     }
 
     public long getId() {
