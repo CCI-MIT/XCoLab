@@ -663,6 +663,13 @@ ALTER TABLE `xcolab_Contest` ADD COLUMN `sharedOrigin` VARCHAR(45) NULL AFTER `i
 -- updating all contests to current colab of origin
 update xcolab_Contest set sharedOrigin = (select stringValue from xcolab_ConfigurationAttribute where name = 'COLAB_NAME');
 
+
+-- --------------------------------
+-- other migrations
+-- --------------------------------
+INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('PARTNER_COLAB_ADDRESS', '0', '0', '', '0');
+
+
 -- =======================================
 -- RD-specific changes
 -- =======================================
@@ -675,3 +682,8 @@ INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, str
 
 -- taken from COLAB-512: fixes registration problem for previously registered screen names
 update Group_ set friendlyURL = concat(substring(friendlyURL, 1, 30), md5(groupId)) where classNameId = 10038;
+
+
+delete from xcolab_Contest where ContestPK = 1304007;
+UPDATE xcolab_Contest SET discussionGroupId = null WHERE ContestPK = 1303602;
+alter table `xcolab_ContestTeamMember` modify column `id_` bigint(20) NOT NULL AUTO_INCREMENT;

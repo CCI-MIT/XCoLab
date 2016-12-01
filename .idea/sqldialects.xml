@@ -10,5 +10,6 @@
     <file url="file://$PROJECT_DIR$/sql/deployments/deployment-2016-10-30_2.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/deployments/deployment-2016-11-08.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/deployments/deployment-2016-12-04.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/deployments/deployment-2016-12-06.sql" dialect="MySQL" />
   </component>
 </project>
