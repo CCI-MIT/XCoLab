@@ -112,19 +112,12 @@ public class ContestService {
     }
 
 
-    public List<Contest> getContestsByOntologyTerm(Long ontologyTerm, Boolean getActive) {
+    public List<Contest> getContestsByOntologyTerm(Long ontologyTerm, Boolean getActive, Boolean onlyPrivate) {
+
 
         if (ontologyTerm == null) {
             PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
-            if(getActive != null) {
-                return contestDao
-                        .findByGiven(ph, null, null, getActive, null, null, null, null, null, null,
-                                null);
-            } else {
-                return contestDao
-                        .findByGiven(ph, null, null, null, null, null, null, null, null, null,
-                                null);
-            }
+                return contestDao.findByGiven(ph, null, null, getActive, null, null, null, null, null, null, onlyPrivate);
 
         }
 
@@ -134,15 +127,8 @@ public class ContestService {
 
         if(!focusAreaOntologyTermsIds.isEmpty()) {
             PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
-            if(getActive != null) {
-                contests = contestDao
-                        .findByGiven(ph, null, null, getActive, null, null, focusAreaOntologyTermsIds,
-                                null, null, null, null);
-            } else {
-                contests = contestDao
-                        .findByGiven(ph, null, null, null, null, null, focusAreaOntologyTermsIds,
-                                null, null, null, null);
-            }
+            contests = contestDao.findByGiven(ph, null, null, getActive, null, null, focusAreaOntologyTermsIds,
+                                null, null, null, onlyPrivate);
         }
 
         return contests;
@@ -175,11 +161,11 @@ public class ContestService {
                             Arrays.asList(ontologyTerm));
             for (Long areaId : focusAreaOntologyTermsIds) {
                 count += contestDao
-                        .countByGiven(null, null, null, null, null, Arrays.asList(areaId), null, null, null, null);
+                        .countByGiven(null, null, null, null, null, Arrays.asList(areaId), null, null, null, false);
             }
         } else {
             count += contestDao
-                    .countByGiven(null, null, null, null, null, null, null, null, null, null);
+                    .countByGiven(null, null, null, null, null, null, null, null, null, false);
         }
         return count;
     }
