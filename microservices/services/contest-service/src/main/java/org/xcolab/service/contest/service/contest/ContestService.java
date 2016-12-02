@@ -127,8 +127,8 @@ public class ContestService {
 
         if(!focusAreaOntologyTermsIds.isEmpty()) {
             PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
-            contests = contestDao.findByGiven(ph, null, null, getActive, null, null, focusAreaOntologyTermsIds,
-                                null, null, null, onlyPrivate);
+            contests.addAll(contestDao.findByGiven(ph, null, null, getActive, null, null, focusAreaOntologyTermsIds, null, null, null, onlyPrivate));
+
         }
 
         return contests;
@@ -156,16 +156,10 @@ public class ContestService {
     public int getNumberOfContestsByOntologyTerm(Long ontologyTerm) {
         int count = 0;
         if (ontologyTerm != null) {
-            List<Long> focusAreaOntologyTermsIds =
-                    ontologyService.getFocusAreasIdForOntologyTermIds(
-                            Arrays.asList(ontologyTerm));
-            for (Long areaId : focusAreaOntologyTermsIds) {
-                count += contestDao
-                        .countByGiven(null, null, null, null, null, Arrays.asList(areaId), null, null, null, false);
-            }
+            List<Long> focusAreaOntologyTermsIds = ontologyService.getFocusAreasIdForOntologyTermIds(Arrays.asList(ontologyTerm));
+            count += contestDao.countByGiven(null, null, null, null, null, focusAreaOntologyTermsIds, null, null, null, false);
         } else {
-            count += contestDao
-                    .countByGiven(null, null, null, null, null, null, null, null, null, false);
+            count += contestDao.countByGiven(null, null, null, null, null, null, null, null, null, false);
         }
         return count;
     }

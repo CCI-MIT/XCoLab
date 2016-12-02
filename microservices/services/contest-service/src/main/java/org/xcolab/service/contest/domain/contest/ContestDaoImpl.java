@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import org.xcolab.model.tables.pojos.Contest;
-import org.xcolab.model.tables.records.ContestRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.service.utils.PaginationHelper.SortColumn;
@@ -270,7 +269,7 @@ public class ContestDaoImpl implements ContestDao {
             query.addConditions(CONTEST.PLAN_TEMPLATE_ID.eq(planTemplateId));
         }
 
-        if (focusAreaOntologyTerms != null && focusAreaOntologyTerms.size() > 0) {
+        if (focusAreaOntologyTerms != null && !focusAreaOntologyTerms.isEmpty()) {
             query.addConditions(CONTEST.FOCUS_AREA_ID.in(focusAreaOntologyTerms));
         }
 
