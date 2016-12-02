@@ -233,17 +233,7 @@ public class ContestClient {
                 .getList(), contestService);
     }
 
-    public int getNumberOfContestsInCollectionCard(Long collectionCardId, Boolean countActive, String viewType, boolean onlyFeatured) {
-        if(countActive==null) {
-            return getNumberOfAllContestsInCollectionCard(collectionCardId, viewType, onlyFeatured);
-        } else if(countActive){
-             return getNumberOfActiveContestsInCollectionCard(collectionCardId, viewType, onlyFeatured);
-        } else {
-            return getNumberOfPriorContestsInCollectionCard(collectionCardId, viewType, onlyFeatured);
-        }
-    }
-
-    private int getNumberOfAllContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
+    public int getNumberOfAllContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
         return contestResource.service("getNumberOfActiveContestsInCollectionCard", Integer.class)
                 .queryParam("collectionCardId", collectionCardId)
                 .queryParam("viewType", viewType)
@@ -251,7 +241,7 @@ public class ContestClient {
                 .execute();
     }
 
-    private int getNumberOfActiveContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
+    public int getNumberOfActiveContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
         return contestResource.service("getNumberOfActiveContestsInCollectionCard", Integer.class)
                 .queryParam("collectionCardId", collectionCardId)
                 .queryParam("viewType", viewType)
@@ -259,7 +249,7 @@ public class ContestClient {
                 .execute();
     }
 
-    private int getNumberOfPriorContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
+    public int getNumberOfPriorContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
         return contestResource.service("getNumberOfActiveContestsInCollectionCard", Integer.class)
                 .queryParam("collectionCardId", collectionCardId)
                 .queryParam("viewType", viewType)

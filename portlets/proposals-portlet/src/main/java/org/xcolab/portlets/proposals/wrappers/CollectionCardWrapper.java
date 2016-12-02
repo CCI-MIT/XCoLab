@@ -40,15 +40,15 @@ public class CollectionCardWrapper{
     }
 
     public int getNumberOfActiveContests() {
-        return ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), true, viewType, this.getOnlyFeatured());
+        return ContestClientUtil.getNumberOfActiveContestsInCollectionCard(this.getId(), viewType, this.getOnlyFeatured());
     }
 
     public int getNumberOfAllContests() {
-        return ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), null, viewType, this.getOnlyFeatured());
+        return ContestClientUtil.getNumberOfAllContestsInCollectionCard(this.getId(), viewType, this.getOnlyFeatured());
     }
 
     public int getNumberOfPriorContests() {
-        return ContestClientUtil.getNumberOfContestsInCollectionCard(this.getId(), false, viewType, this.getOnlyFeatured());
+        return ContestClientUtil.getNumberOfPriorContestsInCollectionCard(this.getId(), viewType, this.getOnlyFeatured());
     }
 
     public long getId() {
