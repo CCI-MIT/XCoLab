@@ -118,7 +118,10 @@ public class ContestController {
     }
 
     @RequestMapping(value = "contests/getNumberOfContestsInCollectionCard", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public int getNumberOfContestsInCollectionCard(@RequestParam(required = true) long collectionCardId, @RequestParam(required = false) boolean countActive, @RequestParam(required = true) boolean onlyFeatured,  @RequestParam(required = true) String viewType) {
+    public int getNumberOfContestsInCollectionCard(@RequestParam(required = true) long collectionCardId,
+            @RequestParam(required = false) boolean countActive,
+            @RequestParam(required = true) boolean onlyFeatured,
+            @RequestParam(required = true) String viewType) {
         return collectionCardService.getNumberOfContestsInCollectionCard(collectionCardId, countActive, viewType, onlyFeatured);
     }
 

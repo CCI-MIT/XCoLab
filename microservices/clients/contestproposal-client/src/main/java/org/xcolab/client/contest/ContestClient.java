@@ -234,9 +234,21 @@ public class ContestClient {
     }
 
     public int getNumberOfContestsInCollectionCard(Long collectionCardId, Boolean countActive, String viewType, boolean onlyFeatured) {
+        if(countActive==null) {
+            return getNumberOfContestsInCollectionCardIgnoreActive(collectionCardId, viewType, onlyFeatured);
+        } else {
+            return contestResource.service("getNumberOfContestsInCollectionCard", Integer.class)
+                    .queryParam("collectionCardId", collectionCardId)
+                    .queryParam("countActive", countActive)
+                    .queryParam("viewType", viewType)
+                    .queryParam("onlyFeatured", onlyFeatured)
+                    .execute();
+        }
+    }
+
+    public int getNumberOfContestsInCollectionCardIgnoreActive(Long collectionCardId, String viewType, boolean onlyFeatured) {
         return contestResource.service("getNumberOfContestsInCollectionCard", Integer.class)
                 .queryParam("collectionCardId", collectionCardId)
-                .queryParam("countActive", countActive)
                 .queryParam("viewType", viewType)
                 .queryParam("onlyFeatured", onlyFeatured)
                 .execute();

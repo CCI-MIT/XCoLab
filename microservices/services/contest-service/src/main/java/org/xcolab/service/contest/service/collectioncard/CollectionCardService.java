@@ -50,8 +50,10 @@ public class CollectionCardService {
                         }
                     }
                 }
-                for(ContestCollectionCard childCollectionCards : contestCollectionCardDao.findByGiven(collectionCards.get(0))) {
-                    collectionCards.add(childCollectionCards.getId_());
+                for(ContestCollectionCard childCollectionCard : contestCollectionCardDao.findByGiven(collectionCards.get(0))) {
+                    if(childCollectionCard.getVisible()) {
+                        collectionCards.add(childCollectionCard.getId_());
+                    }
                 }
                 collectionCards.remove(0);
             }

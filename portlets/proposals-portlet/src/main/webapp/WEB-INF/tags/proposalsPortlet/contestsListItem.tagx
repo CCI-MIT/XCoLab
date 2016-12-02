@@ -20,7 +20,9 @@
 						<h3>
 							${contest.contestShortName}
 						</h3>
-						${contest.contestName}
+						<div>
+							${contest.contestName}
+						</div>
 					</div>
 					<div class="c-ListItem__meta">
 						<div class="c-ListItem__meta__flag">

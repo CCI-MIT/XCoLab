@@ -105,31 +105,10 @@ public class ContestsIndexController extends BaseProposalsController {
             viewType = VIEW_TYPE_DEFAULT;
         }
 
-        List<CollectionCardWrapper> collectionCards = new ArrayList<>();
-        for (ContestCollectionCard card: ContestClientUtil.getSubContestCollectionCards(currentCollectionCardId)) {
-            collectionCards.add(new CollectionCardWrapper(card, viewType));
-        }
-        Collections.sort(collectionCards, new Comparator<CollectionCardWrapper>() {
-            @Override
-            public int compare(CollectionCardWrapper o1, CollectionCardWrapper o2) {
-                return o1.getOrder()< o2.getOrder() ? -1 : o1.getOrder() == o2.getOrder() ? 0 : 1;
-            }
-        });
 
         boolean showOnlyFeatured = false;
         List<Contest> contests = new ArrayList<>();
         if (!viewType.equals(VIEW_TYPE_OUTLINE)) {
-
-            LinkedList<CollectionCardWrapper> collectionHierarchy = new LinkedList<>();
-            long tempId = currentCollectionCardId;
-            while(ContestClientUtil.getContestCollectionCard(tempId).getParent() != null) {
-                collectionHierarchy.addFirst(new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(tempId), viewType));
-                tempId = ContestClientUtil.getContestCollectionCard(tempId).getParent();
-            }
-            collectionHierarchy.addFirst(new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(tempId), viewType));
-
-            //Queue for breadcrumb
-            model.addAttribute("collectionHierarchy", collectionHierarchy);
 
             Boolean getActive;
             if(showActiveContests) {
@@ -141,17 +120,42 @@ public class ContestsIndexController extends BaseProposalsController {
             }
 
             Long ontologyTermToLoad;
-            if(currentCollectionCardId == FEATURED_COLLECTION_CARD_ID) {
+            boolean showCollectionCards=true;
+            if(sortFilterPage != null && sortFilterPage.getFilter() != null && !sortFilterPage.getFilter().isEmpty()) { //if search function was used
+                ontologyTermToLoad = null;
+                currentCollectionCardId = BY_TOPIC_COLLECTION_CARD_ID;
+                showCollectionCards=false;
+            } else if(currentCollectionCardId == FEATURED_COLLECTION_CARD_ID) {
                 showOnlyFeatured = true;  // filter with JSP  -> TODO: increase performance
                 ontologyTermToLoad = null; //get all
-            } else if(sortFilterPage != null && sortFilterPage.getFilter() != null && !sortFilterPage.getFilter().isEmpty()) { //if search function was used
-                ontologyTermToLoad = null;
-                collectionCards.clear();
-                currentCollectionCardId = BY_TOPIC_COLLECTION_CARD_ID;
             } else {
                 ontologyTermToLoad = ContestClientUtil.getContestCollectionCard(currentCollectionCardId)
                         .getOntology_term_to_load();
             }
+
+            List<CollectionCardWrapper> collectionCards = new ArrayList<>();
+            LinkedList<CollectionCardWrapper> collectionHierarchy = new LinkedList<>();
+            if(showCollectionCards) { //don't display collectioncards if search results shown
+                for (ContestCollectionCard card: ContestClientUtil.getSubContestCollectionCards(currentCollectionCardId)) {
+                    collectionCards.add(new CollectionCardWrapper(card, viewType));
+                }
+                Collections.sort(collectionCards, new Comparator<CollectionCardWrapper>() {
+                    @Override
+                    public int compare(CollectionCardWrapper o1, CollectionCardWrapper o2) {
+                        return o1.getOrder()< o2.getOrder() ? -1 : o1.getOrder() == o2.getOrder() ? 0 : 1;
+                    }
+                });
+                long tempId = currentCollectionCardId;
+                while(ContestClientUtil.getContestCollectionCard(tempId).getParent() != null) {
+                    collectionHierarchy.addFirst(new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(tempId), viewType));
+                    tempId = ContestClientUtil.getContestCollectionCard(tempId).getParent();
+                }
+                collectionHierarchy.addFirst(new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(tempId), viewType));
+            }
+
+            model.addAttribute("collectionCards", new CollectionCardFilterBean(collectionCards));
+            model.addAttribute("currentCollectionCardId", currentCollectionCardId);
+            model.addAttribute("collectionHierarchy", collectionHierarchy);
 
             for (Contest contest : ContestClientUtil.getContestByOntologyTerm(ontologyTermToLoad, getActive)) {
                 if (! contest.getContestPrivate()) {
@@ -173,14 +177,8 @@ public class ContestsIndexController extends BaseProposalsController {
             }
             model.addAttribute("showOnlyFeatured", showOnlyFeatured);
         }
-        boolean showContestManagementLink = PermissionsClient
-                .canAdminAll(proposalsContext.getMemberId(request)) ;
-        model.addAttribute("showContestManagementLink", showContestManagementLink);
-
-
 
         //ONLY OUTLINE VIEW
-
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
             List<Contest> contestsToWrap = showAllContests ? ContestClientUtil.getContestsByContestTypeId(contestType.getId_()) :
                     ContestClientUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId_());
@@ -278,10 +276,6 @@ public class ContestsIndexController extends BaseProposalsController {
         	model.addAttribute("contestType", contestType);
         }
 
-        //Adding attributes to model
-        model.addAttribute("collectionCards", new CollectionCardFilterBean(collectionCards));
-        model.addAttribute("currentCollectionCardId", currentCollectionCardId);
-
         //if only featured
         if(ContestClientUtil.getContestCollectionCard(currentCollectionCardId).getOntology_term_to_load() != null) {
             model.addAttribute("ontologySpaceId", OntologyClientUtil.getOntologyTerm(ContestClientUtil.getContestCollectionCard(currentCollectionCardId).getOntology_term_to_load()).getOntologySpaceId());
@@ -289,6 +283,9 @@ public class ContestsIndexController extends BaseProposalsController {
             model.addAttribute("ontologySpaceId", 0);
         }
 
+        boolean showContestManagementLink = PermissionsClient
+                .canAdminAll(proposalsContext.getMemberId(request)) ;
+        model.addAttribute("showContestManagementLink", showContestManagementLink);
         model.addAttribute("contests", contests);
         model.addAttribute("showFilter", contests.size() >= MIN_SIZE_CONTEST_FILTER);
         model.addAttribute("contestsSorted", new ContestsSortFilterBean(contests, sortFilterPage,
