@@ -31,7 +31,10 @@ public class CommentClient {
                 commentService);
     }
 
-    public int countComments(long threadId) {
+    public int countComments(Long threadId) {
+        if (threadId == null) {
+            return 0;
+        }
         return commentServiceWrapper.countComments(null, threadId, null);
     }
 

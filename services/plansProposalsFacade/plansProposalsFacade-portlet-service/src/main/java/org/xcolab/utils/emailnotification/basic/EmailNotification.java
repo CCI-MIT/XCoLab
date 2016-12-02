@@ -5,8 +5,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.service.ServiceContext;
@@ -18,6 +16,7 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.helpers.ProposalAttributeHelper;
 import org.xcolab.util.exceptions.InternalException;
@@ -214,8 +213,8 @@ public abstract class EmailNotification {
             InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
 
             EmailClient.sendEmail(fromEmail.getAddress(), toEmail.getAddress(), subject,body, true, fromEmail.getAddress());
-        } catch (  UnsupportedEncodingException e) {
-            _log.error("Could not send vote message", e);
+        } catch (UnsupportedEncodingException e) {
+            _log.error("Could not send message", e);
         }
     }
 

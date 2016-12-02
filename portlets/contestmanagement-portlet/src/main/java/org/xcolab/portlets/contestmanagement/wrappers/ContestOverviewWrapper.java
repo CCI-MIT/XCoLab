@@ -6,6 +6,7 @@ import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.AbstractContest;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
@@ -181,7 +182,7 @@ public class ContestOverviewWrapper {
         Boolean isSetModelSettingsAction =
                 (selectedMassAction == ContestMassActions.MODEL_SETTINGS.ordinal());
         Boolean isMethodFromContestWrapper =
-                (massActionClass == Contest.class);
+                (massActionClass == AbstractContest.class);
 
         if (isResponseObjectRequiredForMassAction) {
             invokeMassActionReportMethod(massActionMethod, request, response);

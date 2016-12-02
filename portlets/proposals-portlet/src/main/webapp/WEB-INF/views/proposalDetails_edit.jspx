@@ -105,7 +105,7 @@
     </form>
 
 
-    <form:form action="${updateProposalSectionsURL }" commandName="updateProposalSectionsBean" modelAttribute="updateProposalSectionsBean"  cssClass="addpropform" id="editForm">
+    <form:form action="${updateProposalSectionsURL }" commandName="updateProposalSectionsBean" modelAttribute="updateProposalSectionsBean"  cssClass="addpropform ${contestType.showProposalSummary ? '' : 'full-wdith'}" id="editForm">
         <form:hidden path="baseProposalId" />
         <form:hidden path="baseProposalContestId" />
         <form:hidden path="isMove" />
@@ -121,7 +121,7 @@
                 80 characters
             </label>
             <div class="addprophelp">Give your ${fn:toLowerCase(contestType.proposalName)} a title. It's the first thing most people will see, so you'll want to make it descriptive and engaging.</div>
-            <div class="addpropInputContainer">
+            <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
                 <form:input path="name" id="proposalName" />
                 <form:errors path="name" cssClass="c-Alert c-Alert__error" />
                 <div class="clearfix"><!--  --></div>
@@ -139,7 +139,7 @@
                 20 characters
             </label>
             <div class="addprophelp">If you'd like to have your ${fn:toLowerCase(contestType.proposalName)} appear under a team name, insert it here. Otherwise, the ${fn:toLowerCase(contestType.proposalName)} will appear under the user name of its owner.</div>
-            <div class="addpropInputContainer">
+            <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
                 <form:input path="team" id="proposalTeam" />
                 <form:errors path="team" />
 
@@ -181,7 +181,7 @@
                 140 characters
             </label>
             <div class="addprophelp">Insert a tweet-length (140 character) message that conveys the key idea behind your ${fn:toLowerCase(contestType.proposalName)}.</div>
-            <div class="addpropInputContainer">
+            <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
                 <form:textarea path="pitch" id="proposalPitchInput" htmlEscape="false" cssClass="proposalPitchInput" />
                 <form:errors path="pitch" />
                 <div class="clearfix"><!-- --></div>
@@ -212,7 +212,7 @@
                     <a href="javascript:;" class="helpTrigger"><img src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15" height="15" /></a><br />
                 </label>
 
-                <div class="addpropInputContainer">
+                <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
                     <form:textarea cssClass="rte"  cols="54" rows="7" path="description" />
                 </div>
             </div>

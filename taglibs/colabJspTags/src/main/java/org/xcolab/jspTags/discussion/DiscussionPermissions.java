@@ -70,4 +70,8 @@ public class DiscussionPermissions {
     public boolean getMustFilterContent() {
         return ConfigurationAttributeKey.FILTER_PROFANITY.get();
     }
+
+    public boolean getCanSeeShareButtons() {
+        return ConfigurationAttributeKey.SHOW_SHARE_BUTTONS.get();
+    }
 }

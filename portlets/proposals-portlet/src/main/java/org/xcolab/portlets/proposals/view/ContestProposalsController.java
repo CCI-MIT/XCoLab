@@ -85,6 +85,7 @@ public class ContestProposalsController extends BaseProposalsController {
         model.addAttribute("proposals", new ProposalsSortFilterBean(proposals, sortFilterPage));
         model.addAttribute("defaultTimeZoneId", ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.get());
         model.addAttribute("contestCompleted", proposalsContext.getContestWrapped(request).isContestCompleted(proposalsContext.getContestPhaseWrapped(request)));
+        model.addAttribute("showShareButtons", ConfigurationAttributeKey.SHOW_SHARE_BUTTONS.get());
 
         setSeoTexts(request, contest.getContestShortName(), null, contest.getContestDescription());
 
