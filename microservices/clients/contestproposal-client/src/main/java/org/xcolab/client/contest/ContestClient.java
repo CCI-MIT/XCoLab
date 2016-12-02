@@ -234,7 +234,7 @@ public class ContestClient {
     }
 
     public int getNumberOfAllContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
-        return contestResource.service("getNumberOfActiveContestsInCollectionCard", Integer.class)
+        return contestResource.service("getNumberOfAllContestsInCollectionCard", Integer.class)
                 .queryParam("collectionCardId", collectionCardId)
                 .queryParam("viewType", viewType)
                 .queryParam("onlyFeatured", onlyFeatured)
@@ -250,7 +250,7 @@ public class ContestClient {
     }
 
     public int getNumberOfPriorContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
-        return contestResource.service("getNumberOfActiveContestsInCollectionCard", Integer.class)
+        return contestResource.service("getNumberOfPriorContestsInCollectionCard", Integer.class)
                 .queryParam("collectionCardId", collectionCardId)
                 .queryParam("viewType", viewType)
                 .queryParam("onlyFeatured", onlyFeatured)
