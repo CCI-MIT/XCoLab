@@ -155,6 +155,11 @@ public class OntologyClient {
                 .execute(), contestService);
     }
 
+    public List<OntologyTerm> getChildOntologyTerms(Long ontologyTermId) {
+        return DtoUtil.toPojos(ontologyTermResource.list()
+                .optionalQueryParam("parentId", ontologyTermId)
+                .execute(), contestService);
+    }
 
     public FocusArea getFocusArea(long Id_) {
         return focusAreaResource.get(Id_)

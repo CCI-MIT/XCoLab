@@ -164,11 +164,125 @@ $p-cms__uploadWidget__fontWeight: $b-Typography__fontWeight--bold !default;
 
       .wideLargeInput {
         height: 30px;
-        width: 300px;
+        width: 250px;
         font-size: 16px;
         padding-left: 5px;
         text-align: left;
       }
+
+      button {
+        margin-left: 5px;
+        height: 30px;
+      }
     }
   }
+}
+
+.ontologyPicker{
+
+  margin:50px;
+  padding: 100px;
+  display: block;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 85%;
+  height: 100%;
+  z-index: 100;
+  background-color: $t-Color__grey--lightest;
+  border-radius: 50px;
+  box-shadow: 0 1px 40px $t-Color__grey--lightest;
+
+  .ontologyTermListItem {
+    list-style: none;
+  }
+
+  .level-1 {
+    ul {
+      display: none;
+    }
+  }
+
+  .level-1 li.anything a.open {
+    background-color: $t-Color__primary--darkest;
+  }
+
+  .level-1 li a {
+    background: url(../images/contest-icon-plus.png) no-repeat 18px center;
+  }
+
+  .level-1 li.active > a {
+    color: white;
+    background-color: $t-Color__primary--darkest
+  }
+
+  .level-1 li a.open {
+    background-image: url(../images/contest-icon-minus-orange.png);
+  }
+
+  .level-1 li.active a.open {
+    background-image: url(../images/contest-icon-minus.png);
+  }
+
+  .level-1 li.active a.open.active .count {
+    color: white;
+  }
+
+  .level-1 li.no-child a, .level1 li.no-child a.open {
+    background-image: none;
+  }
+
+  .level-1 li.anything a {
+    background: white url(../images/pattern-6x6-lite.png) repeat top left;
+  }
+
+
+  ul {
+    margin-bottom: 0;
+  }
+
+  ul li {
+    background: none;
+    padding: 0;
+    font-size: 12px;
+  }
+
+  ul.level-1 li {
+    padding-left: 0;
+  }
+
+  ul.level-2 li {
+    padding-left: 32px;
+    font-size: 12px;
+  }
+
+  ul.level-3 li {
+    padding-left: 32px;
+  }
+
+  ul.level-4 li {
+    padding-left: 32px;
+  }
+
+  ul.level-1 li a {
+    padding: 10px 20px 10px 46px;
+    font-size: 14px;
+  }
+
+  ul.level-2 li a {
+    padding: 10px 20px 10px 40px;
+    font-size: 12px;
+  }
+
+  ul.level-3 li a {
+    padding: 10px 20px 10px 35px;
+  }
+
+  li a {
+    border-bottom: 1px solid #ccc;
+    display: inline-block;
+    width: 100%;
+    color: black;
+  }
+
 }

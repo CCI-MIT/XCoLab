@@ -6,6 +6,8 @@
 
     <!--@elvariable id="collectionCardWrapperWhat" type="org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper"-->
     <!--@elvariable id="collectionCardWrapperWhere" type="org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper"-->
+    <!--@elvariable id="ontologyTermsWhat" type="java.util.List<org.xcolab.portlets.contestmanagement.wrappers.OntologyTermWrapper>"-->
+    <!--@elvariable id="ontologyTermsWhere" type="java.util.List<org.xcolab.portlets.contestmanagement.wrappers.OntologyTermWrapper>"-->
     <!--@elvariable id="section" type="java.lang.Integer"-->
     <!--@elvariable id="level" type="java.lang.Integer"-->
 
@@ -73,9 +75,11 @@
                 <div class="addpropbox">
                     <strong class="inputTitleLeft">Ontologyterm to load</strong>
                     <form:select path="ontologyTermToLoad" id="ontologyTermToLoad" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
+                    <button onclick="openOntologyPicker('ontologyTermToLoad');" type="button"> Change</button>
                     <br/>
                     <strong class="inputTitleLeft">Display Title [no functionaity]</strong>
-                    <form:select path="bigOntologyTerm" id="bigOntologyTerm" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
+                    <form:select path="bigOntologyTerm" id="bigOntologyTerm" cssClass="wideLargeInput"  items="${collectionCardWrapperWhat.ontologyTerms}" />
+                    <button onclick="openOntologyPicker('bigOntologyTerm');" type="button">Change</button>
                     <br/>
                     <strong class="inputTitleLeft">Short Name</strong>
                     <input id="shortName" name="shortName" class="wideLargeInput" type="text" value="" validatelength="false"/>
@@ -87,7 +91,8 @@
                     <form:select path="parentId" id="parentId" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.collectionCards}" />
                     <br/>
                     <strong class="inputTitleLeft">Small Ontologyterm</strong>
-                    <form:select path="smallOntologyTerm" id="smallOntologyTerm" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
+                    <form:select path="smallOntologyTerm" id="smallOntologyTerm" cssClass="wideLargeInput"  items="${collectionCardWrapperWhat.ontologyTerms}" />
+                    <button onclick="openOntologyPicker('smallOntologyTerm');" type="button">Change</button>
                     <br/>
                     <strong class="inputTitleLeft">Weigth</strong>
                     <input name="order" id="order" class="wideLargeInput" type="number" value="0" />
@@ -120,6 +125,46 @@
         </div>
     </div>
 
+    <div class="ontologyPicker" style="display:none;">
+        <h2> Pick the OntolgoyTerm</h2>
+        <br/>
+        <div>
+            <a class="c-Button__primary innerVerticalCenter" href="#" onclick="setOntologyTerm();">SELECT</a>
+        </div>
+        <br/>
+        <h3> WHERE </h3>
+        <div class="whereArea">
+            <ul class="level-1">
+                <c:forEach var="ontologyTerm" items="${ontologyTermsWhere }">
+                    <li class="ontologyTermListItem" >
+                        <a href="#"  ontology-id="${ontologyTerm.id}">
+                            <span>${ontologyTerm.name}</span>
+                        </a>
+                        <c:if test="${not empty ontologyTerm.children }">
+                            <contestmanagementPortlet:ontologyTermWithChildren ontologyTerm="${ontologyTerm}" section="${section + 1 }" level="1" />
+                        </c:if>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
+        <br/>
+        <h3> WHAT </h3>
+        <div class="whatArea">
+            <ul class="level-1">
+                <c:forEach var="ontologyTerm" items="${ontologyTermsWhat }">
+                    <li class="ontologyTermListItem" >
+                        <a href="#"  ontology-id="${ontologyTerm.id}">
+                            <span>${ontologyTerm.name}</span>
+                        </a>
+                        <c:if test="${not empty ontologyTerm.children }">
+                            <contestmanagementPortlet:ontologyTermWithChildren ontologyTerm="${ontologyTerm}" section="${section + 1 }" level="1" />
+                        </c:if>
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
+    </div>
+
 
     <script type="text/javascript">
 
@@ -131,7 +176,14 @@
         </c:forEach>
 
 
+
         <![CDATA[
+                $( document ).ready(function() {
+                    document.getElementById("ontologyTermToLoad").disabled=true;
+                    document.getElementById("smallOntologyTerm").disabled=true;
+                    document.getElementById("bigOntologyTerm").disabled=true;
+                });
+
         jQuery(".collectionCard-outline-left").on('click', 'a', function(event) {
             event.preventDefault();
             var that = this;
@@ -141,6 +193,41 @@
             jQuery('.collectionCard-outline-left li.active').not('.currentlyClicked').removeClass(
                     'active');
             jQuery('.collectionCard-outline-left a.open').each(function () {
+                if (that == this) return;
+
+                var parent = jQuery(this).parent();
+                if (!parent.hasClass('currentlyClicked') && parent.find(".currentlyClicked").length
+                        == 0) {
+                    // this is different branch than the one currently clicked, close it
+                    parent.find(".open").removeClass("open");
+                    parent.find("> ul").slideUp();
+                }
+            });
+            container.removeClass('currentlyClicked').toggleClass('active');
+            if (!container.hasClass('active')) {
+                container.find("> ul").slideUp();
+                self.removeClass('open');
+            }
+            else {
+                self.addClass('open');
+                container.find("> ul").slideDown();
+
+                if (container.find("> ul > li").length == 1) {
+                    container.find("> ul > li > a").not(".open").addClass('open');
+                    container.find("> ul > li > ul").slideDown();
+                }
+            }
+        });
+
+        jQuery(".ontologyPicker").on('click', 'a', function(event) {
+            event.preventDefault();
+            var that = this;
+            var self = jQuery(this);
+            var container = self.parent();
+            container.addClass('currentlyClicked');
+            jQuery('.ontologyPicker li.active').not('.currentlyClicked').removeClass(
+                    'active');
+            jQuery('.ontologyPicker a.open').each(function () {
                 if (that == this) return;
 
                 var parent = jQuery(this).parent();
@@ -240,6 +327,9 @@
             if(inputError) {
                 alert("Please check your inputs")
             } else {
+                document.getElementById("ontologyTermToLoad").disabled=false;
+                document.getElementById("smallOntologyTerm").disabled=false;
+                document.getElementById("bigOntologyTerm").disabled=false;
                 document.getElementById('editForm').submit();
             }
         }
@@ -247,7 +337,7 @@
         function submitDeleteCollectionCard() {
             if(jQuery("#deleteCollectionCardForm #collectionCardId").val() > 0) {
                 var r = confirm("Please confirm the deletion of CollectionCard: '" + jQuery(".collectionCard-edit-form #title").html() + "' \n Children will be moved to its parent!");
-                if (r) {
+                if(r) {
                     document.getElementById('deleteCollectionCardForm').submit();
                 } else {
                     alert("You canceled the deletion!");
@@ -297,6 +387,29 @@
             jQuery(".collectionCard-edit-form #bigOntologyTerm").css("background-color", "white");
             jQuery(".collectionCard-edit-form #smallOntologyTerm").css("background-color", "white");
         }
+
+        var currentTermType;
+        var currentOntologyId;
+
+        function openOntologyPicker(termType) {
+            currentTermType = termType;
+            jQuery(".ontologyPicker").show();
+        }
+
+        function setOntologyTerm() {
+            if(1 > $('.ontologyPicker .active .open').length) {
+                alert("Please select a new Ontology Term!")
+            } else {
+                jQuery(".ontologyPicker").hide();
+                jQuery(".collectionCard-edit-form #" + currentTermType).val(currentOntologyId);
+            }
+        }
+
+        jQuery(".ontologyPicker").on('click', 'a', function(event) {
+            event.preventDefault();
+            var self = jQuery(this);
+            currentOntologyId = self.attr('ontology-id');
+        });
 
         ]]>
     </script>
