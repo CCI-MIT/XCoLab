@@ -20,9 +20,7 @@
 
 		<instanceable>false</instanceable>
         <private-session-attributes>false</private-session-attributes>
-        <requires-namespaced-parameters>false</requires-namespaced-parameters> 
-		<header-portlet-css>/css/proposals.css</header-portlet-css>
-		<header-portlet-css>/css/points.css</header-portlet-css>
+        <requires-namespaced-parameters>false</requires-namespaced-parameters>
 		<header-portlet-javascript>/js/proposals.js</header-portlet-javascript>
         <header-portlet-javascript>/js/historyWidget.js</header-portlet-javascript>
         <header-portlet-javascript>/js/copyProposalWidget.js</header-portlet-javascript>

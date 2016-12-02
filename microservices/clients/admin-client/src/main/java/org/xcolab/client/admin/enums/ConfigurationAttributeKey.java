@@ -27,6 +27,10 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<Long> DEFAULT_CONTEST_TYPE_ID =
             ConfigurationAttributes.newLongAttribute("DEFAULT_CONTEST_TYPE_ID")
                     .withCache().build();
+    public static final AttributeGetter<Long> DEFAULT_CONTEST_SCHEDULE_ID =
+            ConfigurationAttributes.newLongAttribute("DEFAULT_CONTEST_SCHEDULE_ID")
+                    .defaultValue(0L)
+                    .build();
     public static final AttributeGetter<String> DEFAULT_TIME_ZONE_ID =
             ConfigurationAttributes.newStringAttribute("DEFAULT_TIME_ZONE_ID")
                     .withCache().build();
@@ -132,6 +136,14 @@ public final class ConfigurationAttributeKey {
     //Misc feature flags
     public static final AttributeGetter<Boolean> BETA_RIBBON_SHOW =
             ConfigurationAttributes.newBooleanAttribute("BETA_RIBBON_SHOW")
+                    .build();
+    public static final AttributeGetter<Boolean> SHOW_SEARCH_MENU_ITEM =
+            ConfigurationAttributes.newBooleanAttribute("SHOW_SEARCH_MENU_ITEM")
+                    .defaultValue(true)
+                    .build();
+    public static final AttributeGetter<Boolean> SHOW_SHARE_BUTTONS =
+            ConfigurationAttributes.newBooleanAttribute("SHOW_SHARE_BUTTONS")
+                    .defaultValue(true)
                     .build();
     public static final AttributeGetter<Boolean> PUBLISH_JUDGING_RESULTS =
             ConfigurationAttributes.newBooleanAttribute("PUBLISH_JUDGING_RESULTS")

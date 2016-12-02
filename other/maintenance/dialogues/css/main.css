@@ -1,0 +1,62 @@
+body {
+  background: url(img/bg-noise.jpg) #ecece5;
+}
+
+.contestbox {
+  width: 452px;
+  border: 4px solid #e8e7dc;
+  background: #fff;
+  margin: 0 auto;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  position: relative;
+  font-family: "proxima-nova", "proxima-nova-1", Arial, Helvetica, sans-serif;
+  font-size: 19px;
+  line-height: 27px;
+  padding: 20px;
+  color: #545454;
+}
+
+input {
+
+  border: 1px solid #DDD;
+  color: #8d8d8d;
+  font-weight: 200;
+  box-shadow: none;
+  background: url(../img/input.gif) no-repeat;
+  width: 330px;
+  height: 28px;
+  padding: 2px 0 0 8px;
+  font-size: 15px;
+  margin: 5px 0 10px 0;
+
+}
+
+.c-Button__primary:hover a, .c-Button__primary a:hover {
+  background: url(../img/button-blue-right-hover.png) no-repeat right top;
+}
+
+.c-Button__primary:hover a, .c-Button__primary a:hover {
+  background: url(../img/button-blue-right-hover.png) no-repeat right top;
+}
+
+.c-Button__primary a {
+  background: url(../img/button-blue-right.png) no-repeat right top;
+  padding: 10px 21px 0 8px;
+  height: 31px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 1px 1px 0 #114c65;
+  display: inline-block;
+}
+
+.c-Button__primary {
+  background: url(../img/button-blue-left.png) no-repeat left top;
+  padding-left: 11px;
+  height: 41px;
+  width: auto;
+  display: inline-block;
+  line-height: normal;
+}

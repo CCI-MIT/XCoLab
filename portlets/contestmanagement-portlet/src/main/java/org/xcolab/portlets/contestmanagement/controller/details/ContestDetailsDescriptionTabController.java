@@ -147,6 +147,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
 
     private List<LabelValue> getProposalTemplateSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
+        //TODO: why do we need this? and why is hard coded?
         List<Long> excludedList =
                 Arrays.asList(1L, 2L, 106L, 201L, 202L, 301L, 401L, 1000401L, 1000501L, 1300104L, 1300201L, 1300302L,
                         1300401L, 1300601L, 1300602L);

@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestDto;
 import org.xcolab.client.contest.pojo.ContestSchedule;
@@ -30,6 +31,7 @@ import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -345,9 +347,13 @@ public class ContestClient {
     }
 
     public ContestSchedule getContestSchedule(long id) {
-        return contestScheduleResource.get(id)
-                .withCache(CacheKeys.of(ContestScheduleDto.class, id), CacheRetention.REQUEST)
-                .execute().toPojo(contestService);
+        try {
+            return contestScheduleResource.get(id)
+                    .withCache(CacheKeys.of(ContestScheduleDto.class, id), CacheRetention.REQUEST)
+                    .execute().toPojo(contestService);
+        } catch (UncheckedEntityNotFoundException e) {
+            throw new ContestScheduleNotFoundException(id);
+        }
     }
 
     public boolean isContestScheduleUsed(long contestScheduleId) {
@@ -387,7 +393,8 @@ public class ContestClient {
     }
 
     public ContestPhase getActivePhase(Long contestId) {
-        return contestResource.service(contestId, "activePhase", ContestPhaseDto.class).get().toPojo(contestService);
+        return contestResource.service(contestId, "activePhase", ContestPhaseDto.class)
+                .get().toPojo(contestService);
     }
 
     public ContestPhaseType getContestPhaseType(Long contestPhaseTypeId) {

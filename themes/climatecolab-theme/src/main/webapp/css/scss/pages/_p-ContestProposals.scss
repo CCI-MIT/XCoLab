@@ -37,6 +37,11 @@ $p-Contests__contestDetail__heading__background: url(../images/pattern-6x6-lite.
   border-bottom: 1px solid $t-Color__grey--light;
   margin-top: -4px;
   color: $t-Color__grey--darkest;
+  position: relative;
+}
+
+.p-ContestProposals__header__content {
+  overflow: auto;
 }
 
 @if $p-ContestProposals__header__isTwoColumns {
@@ -225,6 +230,12 @@ $p-Contests__contestDetail__heading__background: url(../images/pattern-6x6-lite.
   display: $p-ContestProposals__header__ontology__link__display;
 }
 
+.p-ContestProposals__header__shareButtons {
+  position: absolute;
+  right: -32px;
+  top: 20px;
+}
+
 %p-ContestProposals__list__element {
   float: left;
   height: 37px;
@@ -312,18 +323,4 @@ $p-Contests__contestDetail__heading__background: url(../images/pattern-6x6-lite.
   a {
     font-size: 0.9em
   }
-}
-
-
-//TODO: used for addthis
-.fixed-position-container {
-  position: relative;
-}
-
-.fixed-position-inner-relative {
-  overflow: auto;
-}
-
-.fixed-position-inner-fixed {
-  position: absolute;
 }

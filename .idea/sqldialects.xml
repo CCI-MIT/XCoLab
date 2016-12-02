@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/sql/2016-08-08-singapore-migration.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/2016-11-25-rd-migration.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/deployments/deployment-2016-09-04.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/deployments/deployment-2016-09-11.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/deployments/deployment-2016-09-18.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/deployments/deployment-2016-10-09.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/deployments/deployment-2016-10-30_2.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/deployments/deployment-2016-11-08.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/deployments/deployment-2016-12-04.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/deployments/deployment-2016-12-06.sql" dialect="MySQL" />
   </component>
 </project>

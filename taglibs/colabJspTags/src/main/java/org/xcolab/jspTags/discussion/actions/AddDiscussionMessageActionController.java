@@ -70,8 +70,6 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
         try {
-
-
             final CommentClient commentClient;
             final ThreadClient threadClient;
             final ActivitiesClient activityClient;

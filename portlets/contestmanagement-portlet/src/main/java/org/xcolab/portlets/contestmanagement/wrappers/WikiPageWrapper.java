@@ -62,7 +62,7 @@ public class WikiPageWrapper {
 
     private void initWikiPage() {
 
-        if (contest.getResourceArticleId() > 0) {
+        if (contest.getResourceArticleId() != null && contest.getResourceArticleId() > 0) {
             try {
                 contentArticle = ContentsClient
                         .getContentArticle(contest.getResourceArticleId());

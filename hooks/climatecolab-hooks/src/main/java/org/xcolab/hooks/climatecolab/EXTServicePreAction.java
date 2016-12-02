@@ -66,6 +66,7 @@ public class EXTServicePreAction extends Action {
         vmVariables.put("_googleAnalyticsKey", ConfigurationAttributeKey.GOOGLE_ANALYTICS_KEY.get());
 
         vmVariables.put("betaRibbonShow", ConfigurationAttributeKey.BETA_RIBBON_SHOW.get());
+        vmVariables.put("_showSearchMenuItem", ConfigurationAttributeKey.SHOW_SEARCH_MENU_ITEM.get());
         vmVariables.put("_openGraphShareTitle", ConfigurationAttributeKey.OPEN_GRAPH_SHARE_TITLE.get());
         vmVariables.put("_openGraphShareDescription", ConfigurationAttributeKey.OPEN_GRAPH_SHARE_DESCRIPTION.get());
 
