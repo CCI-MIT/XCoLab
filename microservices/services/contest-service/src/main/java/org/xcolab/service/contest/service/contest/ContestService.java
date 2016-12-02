@@ -117,8 +117,11 @@ public class ContestService {
 
         if (ontologyTerm == null) {
             PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
+            if(getActive!=null) {
                 return contestDao.findByGiven(ph, null, null, getActive, null, null, null, null, null, null, onlyPrivate);
-
+            } else {
+                return contestDao.findByGiven(ph, null, null, null, null, null, null, null, null, null, onlyPrivate);
+            }
         }
 
         List<Long> focusAreaOntologyTermsIds = ontologyService.getFocusAreasIdForOntologyTermIds(
@@ -126,9 +129,14 @@ public class ContestService {
         List<Contest> contests = new ArrayList<>();
 
         if(!focusAreaOntologyTermsIds.isEmpty()) {
-            PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
-            contests.addAll(contestDao.findByGiven(ph, null, null, getActive, null, null, focusAreaOntologyTermsIds, null, null, null, onlyPrivate));
-
+            PaginationHelper ph = new PaginationHelper(0, Integer.MAX_VALUE, null);
+            if(getActive!=null) {
+                contests.addAll(contestDao.findByGiven(ph, null, null, getActive, null, null,
+                        focusAreaOntologyTermsIds, null, null, null, onlyPrivate));
+            } else {
+                contests.addAll(contestDao.findByGiven(ph, null, null, getActive, null, null,
+                        focusAreaOntologyTermsIds, null, null, null, onlyPrivate));
+            }
         }
 
         return contests;

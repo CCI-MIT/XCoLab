@@ -117,12 +117,25 @@ public class ContestController {
         return contestService.getNumberOfContestsByOntologyTerm(focusAreaOntologyTerm);
     }
 
-    @RequestMapping(value = "contests/getNumberOfContestsInCollectionCard", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public int getNumberOfContestsInCollectionCard(@RequestParam(required = true) long collectionCardId,
-            @RequestParam(required = false) boolean countActive,
+    @RequestMapping(value = "contests/getNumberOfActiveContestsInCollectionCard", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public int getNumberOfActiveContestsInCollectionCard(@RequestParam(required = true) long collectionCardId,
             @RequestParam(required = true) boolean onlyFeatured,
             @RequestParam(required = true) String viewType) {
-        return collectionCardService.getNumberOfContestsInCollectionCard(collectionCardId, countActive, viewType, onlyFeatured);
+        return collectionCardService.getNumberOfContestsInCollectionCard(collectionCardId, true, viewType, onlyFeatured);
+    }
+
+    @RequestMapping(value = "contests/getNumberOfPriorContestsInCollectionCard", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public int getNumberOfPriorContestsInCollectionCard(@RequestParam(required = true) long collectionCardId,
+            @RequestParam(required = true) boolean onlyFeatured,
+            @RequestParam(required = true) String viewType) {
+        return collectionCardService.getNumberOfContestsInCollectionCard(collectionCardId, false, viewType, onlyFeatured);
+    }
+
+    @RequestMapping(value = "contests/getNumberOfAllContestsInCollectionCard", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public int getNumberOfAllContestsInCollectionCard(@RequestParam(required = true) long collectionCardId,
+            @RequestParam(required = true) boolean onlyFeatured,
+            @RequestParam(required = true) String viewType) {
+        return collectionCardService.getNumberOfContestsInCollectionCard(collectionCardId, null, viewType, onlyFeatured);
     }
 
     @RequestMapping(value = "/contests/{contestId}/subContestsByOntologySpaceId", method = {RequestMethod.GET, RequestMethod.HEAD})

@@ -235,19 +235,32 @@ public class ContestClient {
 
     public int getNumberOfContestsInCollectionCard(Long collectionCardId, Boolean countActive, String viewType, boolean onlyFeatured) {
         if(countActive==null) {
-            return getNumberOfContestsInCollectionCardIgnoreActive(collectionCardId, viewType, onlyFeatured);
+            return getNumberOfAllContestsInCollectionCard(collectionCardId, viewType, onlyFeatured);
+        } else if(countActive){
+             return getNumberOfActiveContestsInCollectionCard(collectionCardId, viewType, onlyFeatured);
         } else {
-            return contestResource.service("getNumberOfContestsInCollectionCard", Integer.class)
-                    .queryParam("collectionCardId", collectionCardId)
-                    .queryParam("countActive", countActive)
-                    .queryParam("viewType", viewType)
-                    .queryParam("onlyFeatured", onlyFeatured)
-                    .execute();
+            return getNumberOfPriorContestsInCollectionCard(collectionCardId, viewType, onlyFeatured);
         }
     }
 
-    public int getNumberOfContestsInCollectionCardIgnoreActive(Long collectionCardId, String viewType, boolean onlyFeatured) {
-        return contestResource.service("getNumberOfContestsInCollectionCard", Integer.class)
+    private int getNumberOfAllContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
+        return contestResource.service("getNumberOfActiveContestsInCollectionCard", Integer.class)
+                .queryParam("collectionCardId", collectionCardId)
+                .queryParam("viewType", viewType)
+                .queryParam("onlyFeatured", onlyFeatured)
+                .execute();
+    }
+
+    private int getNumberOfActiveContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
+        return contestResource.service("getNumberOfActiveContestsInCollectionCard", Integer.class)
+                .queryParam("collectionCardId", collectionCardId)
+                .queryParam("viewType", viewType)
+                .queryParam("onlyFeatured", onlyFeatured)
+                .execute();
+    }
+
+    private int getNumberOfPriorContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
+        return contestResource.service("getNumberOfActiveContestsInCollectionCard", Integer.class)
                 .queryParam("collectionCardId", collectionCardId)
                 .queryParam("viewType", viewType)
                 .queryParam("onlyFeatured", onlyFeatured)
