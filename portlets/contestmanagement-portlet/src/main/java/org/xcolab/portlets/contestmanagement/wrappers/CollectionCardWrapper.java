@@ -1,20 +1,17 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ContestCollectionCard;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 public class CollectionCardWrapper {
 
@@ -76,32 +73,16 @@ public class CollectionCardWrapper {
 
         ontologyTerms.put(1L -1, REFERENCE_NULL_IDENTIFIER);
         for(OntologyTerm term: OntologyClientUtil.getAllOntologyTerms()) {
-            ontologyTerms.put(term.getId(), term.getName());
+            ontologyTerms.put(term.getId(), StringEscapeUtils.escapeJavaScript(term.getName()));
         }
-
-        List<Map.Entry<Long, String>> list =
-                new LinkedList<>( ontologyTerms.entrySet() );
-        Collections.sort(list, new Comparator<Entry<Long, String>>() {
-            public int compare(Map.Entry<Long, String> o1,
-                    Map.Entry<Long, String> o2) {
-                return (o1.getValue()).compareTo(o2.getValue());
-            }
-        });
-
-        Map<Long, String> sortedOntologyTerms = new LinkedHashMap<>();
-        for (Map.Entry<Long, String> entry : list)
-        {
-            sortedOntologyTerms.put( entry.getKey(), entry.getValue() );
-        }
-
-        return sortedOntologyTerms;
+        return ontologyTerms;
     }
 
     public Map<Long , String > getCollectionCards() {
         Map<Long, String> cards = new HashMap<>();
         cards.put(1L -1, REFERENCE_NULL_IDENTIFIER);
         for(ContestCollectionCard card: ContestClientUtil.getAllContestCollectionCards()) {
-            cards.put(card.getId_(), card.getDescription());
+            cards.put(card.getId_(), StringEscapeUtils.escapeJavaScript(card.getShort_name()));
         }
         return cards;
     }
@@ -119,7 +100,7 @@ public class CollectionCardWrapper {
     }
 
     public String getDescription() {
-        return contestCollectionCard.getDescription();
+        return StringEscapeUtils.escapeJavaScript(contestCollectionCard.getDescription());
     }
 
     public void setDescription(String description) {
@@ -127,7 +108,7 @@ public class CollectionCardWrapper {
     }
 
     public String getShortName() {
-        return contestCollectionCard.getShort_name();
+        return StringEscapeUtils.escapeJavaScript(contestCollectionCard.getShort_name());
     }
 
     public void setShortName(String shortName) {
@@ -136,7 +117,7 @@ public class CollectionCardWrapper {
 
     public String getOntologyTermToLoad() {
         if(contestCollectionCard.getOntology_term_to_load() != null) {
-            return OntologyClientUtil.getOntologyTerm(contestCollectionCard.getOntology_term_to_load()).getName();
+            return StringEscapeUtils.escapeJavaScript(OntologyClientUtil.getOntologyTerm(contestCollectionCard.getOntology_term_to_load()).getName());
         }
         return "";
     }
@@ -152,7 +133,7 @@ public class CollectionCardWrapper {
 
     public String getBigOntologyTerm() {
         if(contestCollectionCard.getBig_ontology_term() != null) {
-            return OntologyClientUtil.getOntologyTerm(contestCollectionCard.getBig_ontology_term()).getName();
+            return StringEscapeUtils.escapeJavaScript(OntologyClientUtil.getOntologyTerm(contestCollectionCard.getBig_ontology_term()).getName());
         }
         return "";
     }
@@ -168,7 +149,7 @@ public class CollectionCardWrapper {
 
     public String getSmallOntologyTerm() {
         if(contestCollectionCard.getSmall_ontology_term() != null) {
-            return OntologyClientUtil.getOntologyTerm(contestCollectionCard.getSmall_ontology_term()).getName();
+            return StringEscapeUtils.escapeJavaScript(OntologyClientUtil.getOntologyTerm(contestCollectionCard.getSmall_ontology_term()).getName());
         }
         return "";
     }
