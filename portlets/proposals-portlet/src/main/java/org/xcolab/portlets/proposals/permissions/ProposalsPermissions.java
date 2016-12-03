@@ -7,6 +7,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -17,6 +18,7 @@ import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.util.MemberRoleChoiceAlgorithm;
 import org.xcolab.client.proposals.ProposalClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.utils.context.ClientHelper;
 import org.xcolab.portlets.proposals.utils.context.ProposalContextHelper;
@@ -45,15 +47,20 @@ public class ProposalsPermissions {
         ProposalContextHelper proposalContextHelper = (ProposalContextHelper) request
                 .getAttribute(ProposalsContextImpl.PROPOSAL_CONTEXT_HELPER);
 
-        ClientHelper clientHelper = proposalContextHelper.getClientHelper();
-        proposalClient = clientHelper.getProposalClient();
-        contestClient = clientHelper.getContestClient();
+        if (proposalContextHelper != null) {
+            ClientHelper clientHelper = proposalContextHelper.getClientHelper();
+            proposalClient = clientHelper.getProposalClient();
+            contestClient = clientHelper.getContestClient();
+        } else {
+            proposalClient = ProposalClientUtil.getClient();
+            contestClient = ContestClientUtil.getClient();
+        }
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         if (contestPhase != null) {
             final long contestPhaseTypeId = contestPhase.getContestPhaseType();
 
-            final ContestPhaseType contestPhaseType = clientHelper.getContestClient()
+            final ContestPhaseType contestPhaseType = contestClient
                     .getContestPhaseType(contestPhaseTypeId);
             String statusStr = contestPhaseType.getStatus();
             contestStatus = ContestStatus.valueOf(statusStr);
