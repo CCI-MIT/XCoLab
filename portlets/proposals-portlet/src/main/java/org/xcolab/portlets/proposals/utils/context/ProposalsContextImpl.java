@@ -7,7 +7,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -54,7 +53,7 @@ public class ProposalsContextImpl implements ProposalsContext {
             PROPOSALS_ATTRIBUTE_PREFIX + "proposalWrapped";
     private static final String CLIENTS_ATTRIBUTE =
             PROPOSALS_ATTRIBUTE_PREFIX + "clients";
-    public static final String PROPOSAL_CONTEST_HELPER = "ProposalContextHelper";
+    public static final String PROPOSAL_CONTEXT_HELPER = "ProposalContextHelper";
 
     public ProposalsContextImpl() {
     }
@@ -216,9 +215,9 @@ public class ProposalsContextImpl implements ProposalsContext {
                     proposal = contextHelper.getProposal();
                 }
 
-                request.setAttribute(PROPOSAL_CONTEST_HELPER,contextHelper);
-                request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE,contest);
-                request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE,contestPhase);
+                request.setAttribute(PROPOSAL_CONTEXT_HELPER, contextHelper);
+                request.setAttribute(CONTEST_WRAPPED_ATTRIBUTE, contest);
+                request.setAttribute(CONTEST_PHASE_WRAPPED_ATTRIBUTE, contestPhase);
 
                 contestType = contextHelper.getClientHelper().getContestClient().getContestType(contest.getContestTypeId());
                 if (proposal != null) {

@@ -6,7 +6,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -16,19 +16,17 @@ import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.util.MemberRoleChoiceAlgorithm;
-import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.portlets.proposals.utils.context.ClientHelper;
 import org.xcolab.portlets.proposals.utils.context.ProposalContextHelper;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextImpl;
-import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 
 import java.util.Date;
 
 import javax.portlet.PortletRequest;
 
 public class ProposalsPermissions {
-
-    private final long groupId;
 
     private final boolean planIsEditable;
 
@@ -38,38 +36,34 @@ public class ProposalsPermissions {
     private final Proposal proposal;
     private final ContestPhase contestPhase;
     private final ContestStatus contestStatus;
-    private final PortletRequest request;
 
-    private final ProposalContextHelper proposalContextHelper;
-
+    private final ProposalClient proposalClient;
+    private final ContestClient contestClient;
 
     public ProposalsPermissions(PortletRequest request, Proposal proposal, ContestPhase contestPhase) {
-        this.request = request;
-        this.proposalContextHelper = (ProposalContextHelper) request.getAttribute(ProposalsContextImpl.PROPOSAL_CONTEST_HELPER);
+
+        ProposalContextHelper proposalContextHelper = (ProposalContextHelper) request
+                .getAttribute(ProposalsContextImpl.PROPOSAL_CONTEXT_HELPER);
+
+        ClientHelper clientHelper = proposalContextHelper.getClientHelper();
+        proposalClient = clientHelper.getProposalClient();
+        contestClient = clientHelper.getContestClient();
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         if (contestPhase != null) {
             final long contestPhaseTypeId = contestPhase.getContestPhaseType();
 
-                final ContestPhaseType contestPhaseType = proposalContextHelper.getClientHelper().getContestClient()
-                        .getContestPhaseType(contestPhaseTypeId);
-                String statusStr = contestPhaseType.getStatus();
-                contestStatus = ContestStatus.valueOf(statusStr);
+            final ContestPhaseType contestPhaseType = clientHelper.getContestClient()
+                    .getContestPhaseType(contestPhaseTypeId);
+            String statusStr = contestPhaseType.getStatus();
+            contestStatus = ContestStatus.valueOf(statusStr);
 
         } else {
             contestStatus = null;
         }
 
-        // set proper context group id
-        if (proposal == null) {
-            groupId = themeDisplay.getScopeGroupId();
-            planIsEditable = false;
-        } else {
-            groupId = proposal.getGroupId();
-            planIsEditable = contestStatus != null && contestStatus.isCanEdit()
-                    && contestPhase.getPhaseActive();
-
-        }
+        planIsEditable = proposal != null && contestStatus != null && contestStatus.isCanEdit()
+                && contestPhase.getPhaseActive();
         user = themeDisplay.getUser();
         member = MembersClient.getMemberUnchecked(user.getUserId());
         this.contestPhase = contestPhase;
@@ -82,7 +76,7 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanReportProposal() {
-        return getCanReport() && !isProposalMember();
+        return getCanReport() && !getIsTeamMember();
     }
 
     /**
@@ -93,13 +87,13 @@ public class ProposalsPermissions {
     public boolean getCanEdit() {
         return !user.isDefaultUser()
                 && (getCanAdminAll() || planIsEditable
-                && (isProposalOpen() || isProposalMember())
+                && (isProposalOpen() || getIsTeamMember())
         );
     }
 
     public boolean getCanDelete() {
         return !user.isDefaultUser()
-                && (getCanAdminAll() || planIsEditable && isProposalMember());
+                && (getCanAdminAll() || planIsEditable && getIsTeamMember());
     }
 
     public boolean getCanCreate() {
@@ -155,7 +149,7 @@ public class ProposalsPermissions {
 
     public boolean getIsTeamMember() {
         return proposal != null && proposal.getProposalId() > 0
-                && ProposalsContextUtil.getClients(request).getProposalClient().isUserInProposalTeam(proposal.getProposalId(),user.getUserId())
+                && proposalClient.isUserInProposalTeam(proposal.getProposalId(),user.getUserId())
                 && !user.isDefaultUser();
     }
 
@@ -175,15 +169,10 @@ public class ProposalsPermissions {
         return PermissionsClient.canAdminAll(user.getUserId());
     }
 
-    private boolean isProposalMember() {
-            return MembersClient.isUserInGroup(user.getUserId(), groupId);
-    }
-
     public boolean getCanFellowActions() {
         if (contestPhase == null) {
             return getCanAdminAll();
         }
-
         return PermissionsClient.canFellow(user.getUserId(), contestPhase.getContestPK()) || getCanAdminAll();
     }
 
@@ -229,8 +218,8 @@ public class ProposalsPermissions {
         }
 
         try {
-            Contest latestProposalContest = proposalContextHelper.getClientHelper().getProposalClient().getCurrentContestForProposal(proposal.getProposalId());
-            ContestPhase activePhaseForContest = proposalContextHelper.getClientHelper().getContestClient().getActivePhase(latestProposalContest.getContestPK());
+            Contest latestProposalContest = proposalClient.getCurrentContestForProposal(proposal.getProposalId());
+            ContestPhase activePhaseForContest = contestClient.getActivePhase(latestProposalContest.getContestPK());
             boolean onlyPromoteIfThisIsNotTheLatestContestPhaseInContest = contestPhase.equals(activePhaseForContest);
             return !onlyPromoteIfThisIsNotTheLatestContestPhaseInContest && getCanAdminAll();
         }catch (ContestNotFoundException ignored){
@@ -264,10 +253,10 @@ public class ProposalsPermissions {
     private boolean wasProposalMovedElsewhere() {
 
         try {
-            final long currentContestId = proposalContextHelper.getClientHelper().getProposalClient()
+            final long currentContestId = proposalClient
                     .getCurrentContestForProposal(proposal.getProposalId()).getContestPK();
             return currentContestId != contestPhase.getContestPK();
-        }catch(ContestNotFoundException ignored){
+        } catch(ContestNotFoundException ignored) {
             return false;
         }
 
