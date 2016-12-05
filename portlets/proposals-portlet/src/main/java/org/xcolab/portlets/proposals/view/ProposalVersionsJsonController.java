@@ -25,7 +25,6 @@ import java.util.Objects;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
@@ -36,7 +35,7 @@ public class ProposalVersionsJsonController {
     private final static long MILLISECONDS_TO_GROUP_VERSIONS = 1000 * 60;
 
     //TODO: get contest for sharing?
-    // @ResourceMapping("getProposalVersionFirstIndex")
+    @ResourceMapping("getProposalVersionFirstIndex")
     public void getProposalVersionFirstIndex(ResourceRequest request, ResourceResponse response,
             @RequestParam long contestPhaseId, @RequestParam long proposalId)
             throws IOException {
@@ -113,10 +112,7 @@ public class ProposalVersionsJsonController {
         int numberOfVersions = 0;
         Date oldDate = new Date();
         for (ProposalVersion proposalVersion: proposalClient.getAllProposalVersions(proposalId)) {
-            final Proposal2Phase localP2p = proposalPhaseClient
-                    .getProposal2PhaseByProposalIdVersion(proposalId,
-                            proposalVersion.getVersion());
-            long cphId = localP2p.getContestPhaseId();
+            long cphId = proposalVersion.getContestPhaseId();
 
             final ContestPhase contestPhase = contestClient.getContestPhase(cphId);
             if (contest != null){
@@ -163,12 +159,13 @@ public class ProposalVersionsJsonController {
             }
         }
 
-        final JsonObjectBuilder json = Json.createObjectBuilder()
+        final JsonObject json = Json.createObjectBuilder()
                 .add("proposalId", proposalId)
                 .add("start", start)
                 .add("end", end)
                 .add("totalCount", numberOfVersions)
-                .add("versions", proposalVersionsArray);
+                .add("versions", proposalVersionsArray)
+                .build();
 
         response.getPortletOutputStream().write(json.toString().getBytes());
     }

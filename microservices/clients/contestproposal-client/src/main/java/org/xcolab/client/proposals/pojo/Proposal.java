@@ -496,11 +496,11 @@ public class Proposal extends AbstractProposal {
 
 
     public boolean isOpen() {
-        if( this.getProposalId() > 0 ) {
+        if (this.getProposalId() > 0) {
             ProposalAttribute attribute = proposalAttributeClient
                     .getProposalAttribute(this.getProposalId(), ProposalAttributeKeys.OPEN, 0L);
             return attribute != null && attribute.getNumericValue() > 0;
-        }else{
+        } else {
             return false;
         }
     }

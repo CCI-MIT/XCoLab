@@ -1,6 +1,7 @@
 package org.xcolab.util.http.client.queries;
 
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.util.CollectionUtils;
 
 import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.http.UriBuilder;
@@ -66,6 +67,16 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return "ListQuery{" +
+                "uriBuilder=" + uriBuilder.buildString() +
+                ", typeReference=" + typeReference.toString() +
+                ", cacheKey=" + cacheKey +
+                ", cacheRetention=" + cacheRetention +
+                '}';
+    }
+
     public static class ListResult<T> {
         private final ListQuery<T> query;
 
@@ -79,7 +90,7 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
 
         public T getOne() {
             //fetch two elements so we can check if the result is unique
-            List<T> result = query.addRange(0, 2).execute();
+            List<T> result = checkNonNull(query.addRange(0, 2).execute());
             if (result.size() == 1) {
                 return result.get(0);
             }
@@ -89,17 +100,17 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
         public T getOneIfExists() {
             //fetch two elements so we can check if the result is unique
             List<T> result = query.addRange(0, 2).execute();
+            if (CollectionUtils.isEmpty(result)) {
+                return null;
+            }
             if (result.size() == 1) {
                 return result.get(0);
-            }
-            if (result.isEmpty()) {
-                return null;
             }
             throw new IndexOutOfBoundsException("Expected at most one element, found 2 or more");
         }
 
         public T getFirst() {
-            List<T> result = query.addRange(0, 1).execute();
+            List<T> result = checkNonNull(query.addRange(0, 1).execute());
             if (!result.isEmpty()) {
                 return result.get(0);
             }
@@ -108,10 +119,23 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
 
         public T getFirstIfExists() {
             List<T> result = query.addRange(0, 1).execute();
-            if (!result.isEmpty()) {
-                return result.get(0);
+            if (CollectionUtils.isEmpty(result)) {
+                return null;
             }
-            return null;
+            return result.get(0);
+        }
+
+        private List<T> checkNonNull(List<T> result) {
+            if (result == null) {
+                throw new EmptyQueryResultException(query);
+            }
+            return result;
+        }
+
+        private static class EmptyQueryResultException extends IllegalStateException {
+            EmptyQueryResultException(ListQuery<?> query) {
+                super("Got empty result for " + query);
+            }
         }
     }
 }

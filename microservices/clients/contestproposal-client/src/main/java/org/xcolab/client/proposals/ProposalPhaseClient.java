@@ -185,11 +185,8 @@ public final class ProposalPhaseClient {
 
     public  Boolean hasProposalContestPhaseAttribute(Long proposalId, long contestPhaseId, String name) {
         ProposalContestPhaseAttribute proposalContestPhaseAttribute = getProposalContestPhaseAttribute(proposalId, contestPhaseId, name);
-        if (proposalContestPhaseAttribute != null) {
-            return true;
-        } else {
-            return false;
-        }
+
+        return proposalContestPhaseAttribute != null;
 
     }
     public  ProposalContestPhaseAttribute getOrCreateProposalContestPhaseAttribute(Long proposalId, Long contestPhaseId, String name, Long aditionalId, Long numericValue, String stringValue) {

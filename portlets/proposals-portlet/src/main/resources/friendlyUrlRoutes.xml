@@ -343,10 +343,10 @@
     </route>
 
     <route>
-        <pattern>/api/contests/{contestId}/proposals/{proposalId}/versions/{versionId}/sections</pattern>
+        <pattern>/api/contests/{contestId}/proposals/{proposalId}/versions/{version}/sections</pattern>
         <generated-parameter name="contestId">{contestId}</generated-parameter>
         <generated-parameter name="proposalId">{proposalId}</generated-parameter>
-        <generated-parameter name="versionId">{versionId}</generated-parameter>
+        <generated-parameter name="version">{version}</generated-parameter>
         <implicit-parameter name="p_p_id">proposalsportlet_WAR_proposalsportlet</implicit-parameter>
         <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
         <implicit-parameter name="p_p_resource_id">getProposalContestSections</implicit-parameter>
@@ -371,7 +371,7 @@
     </route>
 
     <route>
-        <pattern>/api/contests/{contestId}/phases/{phaseId}/proposals/{proposalId}}/versions</pattern>
+        <pattern>/api/contests/{contestId}/phases/{phaseId}/proposals/{proposalId}/versions</pattern>
         <generated-parameter name="contestId">{contestId}</generated-parameter>
         <generated-parameter name="contestPhaseId">{phaseId}</generated-parameter>
         <generated-parameter name="proposalId">{proposalId}</generated-parameter>

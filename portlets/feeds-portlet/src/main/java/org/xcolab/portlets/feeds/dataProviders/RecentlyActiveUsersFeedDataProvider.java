@@ -1,10 +1,10 @@
 package org.xcolab.portlets.feeds.dataProviders;
 
+import org.springframework.ui.Model;
+
 import com.ext.portlet.Activity.ActivityUtil;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.service.RoleLocalServiceUtil;
-import org.springframework.ui.Model;
 
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.members.PermissionsClient;
@@ -15,7 +15,6 @@ import org.xcolab.portlets.feeds.FeedsPreferences;
 import org.xcolab.portlets.feeds.wrappers.MemberWrapper;
 import org.xcolab.portlets.feeds.wrappers.SocialActivityWrapper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.InternalException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -70,8 +69,6 @@ public class RecentlyActiveUsersFeedDataProvider implements
 			return "recentlyActiveUsers";
 		} catch (SystemException e) {
 			throw new DatabaseAccessException(e);
-		} catch (SearchException e) {
-			throw new InternalException(e);
 		}
 	}
 }

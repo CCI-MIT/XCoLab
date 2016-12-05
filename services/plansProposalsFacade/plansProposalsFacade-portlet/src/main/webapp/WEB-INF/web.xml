@@ -34,10 +34,6 @@
         <servlet-name>PortletServlet</servlet-name>
         <servlet-class>com.liferay.portal.kernel.servlet.PortletServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>Email List Servlet</servlet-name>
-        <url-pattern>/api/addEmailToList</url-pattern>
-    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>JSON Web Service Servlet</servlet-name>

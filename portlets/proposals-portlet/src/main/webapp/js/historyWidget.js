@@ -101,7 +101,7 @@ function getVersion(){
 }
 
 function loadHistoryForVersion(version) {
-    $.getJSON('/web/guest/plans/-/plans/api/proposals/' + proposalId + '/versions/' + version + '/index', { get_param: 'value' }, function(data) {
+    $.getJSON('/web/guest/plans/-/plans/api/proposals/' + proposalId + '/versions/' + version + '/index', {}, function(data) {
         var page = 0;
         page = Math.floor(data.index / itemsPerPage);
         load(page, defaultPhaseId);

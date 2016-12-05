@@ -84,14 +84,14 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
             query.addConditions(PROPOSAL_2_PHASE.CONTEST_PHASE_ID.eq(contestPhaseId));
         }
         if (version != null) {
-            query.addConditions(PROPOSAL_2_PHASE.VERSION_FROM.ge(version).and(
-                    PROPOSAL_2_PHASE.VERSION_TO.le(version).or(PROPOSAL_2_PHASE.VERSION_TO.eq(-1))));
+            query.addConditions(PROPOSAL_2_PHASE.VERSION_FROM.le(version).and(
+                    PROPOSAL_2_PHASE.VERSION_TO.ge(version).or(PROPOSAL_2_PHASE.VERSION_TO.eq(-1))));
         }
 
         Result<Record> records = query.fetch();
         if (records != null && !records.isEmpty()) {
             return records.into(Proposal2Phase.class);
-        } else{
+        } else {
             return null;
         }
     }
