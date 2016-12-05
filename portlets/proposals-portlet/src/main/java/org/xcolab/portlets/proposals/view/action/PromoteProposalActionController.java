@@ -7,14 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
@@ -35,7 +31,7 @@ public class PromoteProposalActionController {
     public void handleAction(ActionRequest request, Model model, ActionResponse response,
                              @RequestParam Long contestId,
                              @RequestParam Long contestPhaseId,
-                             @RequestParam Long proposalId ) throws PortalException, SystemException, IOException {
+                             @RequestParam Long proposalId ) throws IOException {
 
         ProposalsPermissions proposalsPermissions = proposalsContext.getPermissions(request);
         ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);

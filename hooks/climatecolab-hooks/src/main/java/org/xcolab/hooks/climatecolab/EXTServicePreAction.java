@@ -8,7 +8,6 @@ package org.xcolab.hooks.climatecolab;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -21,6 +20,8 @@ import com.liferay.portal.service.ThemeLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -41,7 +42,6 @@ public class EXTServicePreAction extends Action {
     @Override
     public void run(HttpServletRequest req, HttpServletResponse res) throws ActionException {
 
-
         ThemeDisplay themeDisplay = (ThemeDisplay) req.getAttribute(WebKeys.THEME_DISPLAY);
         Map<String, Object> vmVariables = (Map) req.getAttribute(WebKeys.VM_VARIABLES);
         if (vmVariables == null) {
@@ -60,28 +60,29 @@ public class EXTServicePreAction extends Action {
 
         vmVariables.put("unreadMessages", MessagingClient.countUnreadMessagesForUser(themeDisplay.getUserId()));
 
-        //Decide whether to show contest menu items
-        try {
-            vmVariables.put("_contest_pages", ContestTypeLocalServiceUtil.getActiveContestTypes());
-        } catch (SystemException e) {
-            _log.error("Could not retrieve contest types to populate menu items", e);
-        }
+        vmVariables.put("_contest_pages", ContestClientUtil.getActiveContestTypes());
         vmVariables.put("_colab_name", ConfigurationAttributeKey.COLAB_NAME.get());
         vmVariables.put("_colab_short_name", ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
         vmVariables.put("_googleAnalyticsKey", ConfigurationAttributeKey.GOOGLE_ANALYTICS_KEY.get());
 
         vmVariables.put("betaRibbonShow", ConfigurationAttributeKey.BETA_RIBBON_SHOW.get());
+        vmVariables.put("_showSearchMenuItem", ConfigurationAttributeKey.SHOW_SEARCH_MENU_ITEM.get());
         vmVariables.put("_openGraphShareTitle", ConfigurationAttributeKey.OPEN_GRAPH_SHARE_TITLE.get());
         vmVariables.put("_openGraphShareDescription", ConfigurationAttributeKey.OPEN_GRAPH_SHARE_DESCRIPTION.get());
 
-        vmVariables.put("isSharedColab",
-                ConfigurationAttributeKey.IS_SHARED_COLAB.get());
+        vmVariables.put("isSharedColab", ConfigurationAttributeKey.IS_SHARED_COLAB.get());
         final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.get();
         final String partnerColabImgsAndClasses = partnerColabName.replace(" ","");
         vmVariables.put("partnerColabName",partnerColabName);
         vmVariables.put("partnerColabClassName",partnerColabImgsAndClasses+ "-sketchy");
         vmVariables.put("partnerColabLogo",partnerColabImgsAndClasses+ "PartnerLogo.png");
-        
+        vmVariables.put("adminEmail", ConfigurationAttributeKey.ADMIN_EMAIL.get());
+        List<ContestType> contestTypes = ContestClientUtil.getAllContestTypes();
+        if(!contestTypes.isEmpty()) {
+            vmVariables.put("contestNameLowerCase",contestTypes.get(contestTypes.size()-1).getContestName().toLowerCase() );
+            vmVariables.put("proposalNameLowerCase",contestTypes.get(contestTypes.size()-1).getProposalName().toLowerCase() );
+        }
+
         final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.get();
         vmVariables.put("mitHeaderBarShow", mitHeaderBarShow);
         if (mitHeaderBarShow) {

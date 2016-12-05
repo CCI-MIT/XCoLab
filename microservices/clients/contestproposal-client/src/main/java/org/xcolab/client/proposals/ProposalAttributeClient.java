@@ -150,16 +150,16 @@ public final class ProposalAttributeClient {
     public ProposalAttribute setProposalAttribute(ProposalAttribute proposalAttribute,
             Long authorId) {
         return proposalAttributeResource.service("setProposalAttribute", ProposalAttributeDto.class)
-                .queryParam("proposalId", proposalAttribute.getProposalId())
-                .queryParam("name", proposalAttribute.getName())
-                .queryParam("stringValue", proposalAttribute.getStringValue())
-                .queryParam("numericValue", proposalAttribute.getNumericValue())
-                .queryParam("realValue", proposalAttribute.getRealValue())
-                .queryParam("additionalId", proposalAttribute.getAdditionalId())
-                .queryParam("version", proposalAttribute.getVersion())
-                .queryParam("versionWhenCreated", proposalAttribute.getVersionWhenCreated())
+//                .queryParam("proposalId", proposalAttribute.getProposalId())
+//                .queryParam("name", proposalAttribute.getName())
+//                .queryParam("stringValue", proposalAttribute.getStringValue())
+//                .queryParam("numericValue", proposalAttribute.getNumericValue())
+//                .queryParam("realValue", proposalAttribute.getRealValue())
+//                .queryParam("additionalId", proposalAttribute.getAdditionalId())
+//                .queryParam("version", proposalAttribute.getVersion())
+//                .queryParam("versionWhenCreated", proposalAttribute.getVersionWhenCreated())
                 .queryParam("authorId", authorId)
-                .post()
+                .post(proposalAttribute)
                 .toPojo(proposalService);
     }
 

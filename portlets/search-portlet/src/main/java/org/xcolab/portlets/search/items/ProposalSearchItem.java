@@ -67,11 +67,12 @@ public class ProposalSearchItem extends AbstractSearchItem {
 
     @Override
     public String getLinkUrl() {
-        try {
-            return ProposalLocalServiceUtil.getProposalLinkUrl(proposal.getProposalId());
-        } catch (PortalException | SystemException e) {
-            return "/contests";
+        if(proposal!=null) {
+            return proposal.getProposalUrl();
+        }else {
+            return "";
         }
+
     }
 
     @Override

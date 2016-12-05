@@ -1,6 +1,5 @@
 package org.xcolab.portlets.proposals.view;
 
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
@@ -51,8 +48,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @RequestMapping(params = "pageToDisplay=contestProposals")
     public String showContestProposals(RenderRequest request, RenderResponse response,
-                                       final SortFilterPage sortFilterPage, Model model)
-            throws PortalException, SystemException {
+                                       final SortFilterPage sortFilterPage, Model model) {
 
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         Contest contest = proposalsContext.getContest(request);
@@ -89,6 +85,7 @@ public class ContestProposalsController extends BaseProposalsController {
         model.addAttribute("proposals", new ProposalsSortFilterBean(proposals, sortFilterPage));
         model.addAttribute("defaultTimeZoneId", ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.get());
         model.addAttribute("contestCompleted", proposalsContext.getContestWrapped(request).isContestCompleted(proposalsContext.getContestPhaseWrapped(request)));
+        model.addAttribute("showShareButtons", ConfigurationAttributeKey.SHOW_SHARE_BUTTONS.get());
 
         setSeoTexts(request, contest.getContestShortName(), null, contest.getContestDescription());
 
@@ -97,7 +94,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @ActionMapping(params = "action=redirectOldContestDiscussionUrl")
     public void redirectOldContestDiscussionUrl(ActionRequest request, ActionResponse response, Model model,
-            @RequestParam Long contestId) throws SystemException, PortalException, IOException {
+            @RequestParam Long contestId) throws IOException {
 
         String contestUrl = (proposalsContext.getContest(request)).getContestLinkUrl();
         response.sendRedirect(contestUrl + "/discussion");
@@ -105,7 +102,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @ActionMapping(params = "action=redirectOldContestProposalsUrl")
     public void redirectOldContestProposalsUrl(ActionRequest request, ActionResponse response, Model model,
-                                       @RequestParam Long contestId, @RequestParam(required = false) Long phaseId) throws SystemException, PortalException, IOException {
+                                       @RequestParam Long contestId, @RequestParam(required = false) Long phaseId) throws IOException {
 
         String redirectUrl;
         if (phaseId != null && phaseId > 0) {
@@ -124,7 +121,7 @@ public class ContestProposalsController extends BaseProposalsController {
             @RequestParam(required = false) Long version,
             @RequestParam(required = false) String tab,
             Model model, ActionRequest request, ActionResponse response)
-            throws PortalException, SystemException, IOException {
+            throws IOException {
 
         try {
             Proposal proposal = ProposalsContextUtil.getClients(request).getProposalClient().getProposal(proposalId);

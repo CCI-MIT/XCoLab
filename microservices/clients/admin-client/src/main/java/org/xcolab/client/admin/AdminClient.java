@@ -27,4 +27,9 @@ public class AdminClient {
             throw new ConfigurationAttributeNotFoundException(name);
         }
     }
+
+    public static ConfigurationAttribute createConfigurationAttribute(
+            ConfigurationAttribute configurationAttribute) {
+        return configurationAttributeResource.create(configurationAttribute).execute();
+    }
 }

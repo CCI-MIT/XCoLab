@@ -6,8 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 
@@ -44,7 +42,7 @@ public class CreateProposalController extends BaseProposalsController {
             @RequestParam String contestUrlName, @RequestParam(required = false) Long baseProposalId,
             @RequestParam(required = false, defaultValue = "-1") int baseProposalVersion,
             @RequestParam(required = false) Long baseContestId, Model model)
-            throws PortalException, SystemException, ProposalsAuthorizationException {
+            throws ProposalsAuthorizationException {
 
         if (!proposalsContext.getPermissions(request).getCanCreate()) {
             throw new ProposalsAuthorizationException("creation not allowed");

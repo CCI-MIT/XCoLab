@@ -82,6 +82,7 @@ public class ProposalMoveHistory extends AbstractProposalMoveHistory {
         }
     }
 
+
     public ContestPhase getTargetContestPhase() {
         return (ContestClientUtil.getContestPhase(this.getTargetPhaseId()));
     }

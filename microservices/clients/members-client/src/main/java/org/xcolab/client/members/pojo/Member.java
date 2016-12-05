@@ -72,6 +72,14 @@ public class Member implements Serializable {
         this.autoregisteredmemberstatus = value.autoregisteredmemberstatus;
     }
 
+    public static Member fromId(String memberIdString) {
+        return fromId(Long.parseLong(memberIdString));
+    }
+
+    public static Member fromId(long memberId) {
+        return MembersClient.getMemberUnchecked(memberId);
+    }
+
     public long getId_() {
         return this.id_;
     }

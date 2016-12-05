@@ -1,15 +1,9 @@
 package org.xcolab.portlets.proposals.view;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -48,8 +42,6 @@ import javax.servlet.http.Cookie;
 @RequestMapping("view")
 public class ContestsIndexController extends BaseProposalsController {
 
-    private static final Log _log = LogFactoryUtil.getLog(ContestsIndexController.class);
-
     private final static String COOKIE_VIEW_TYPE = "cc_contests_viewType";
     private final static String VIEW_TYPE_GRID = "GRID";
     private final static String VIEW_TYPE_LIST = "LIST";
@@ -66,8 +58,7 @@ public class ContestsIndexController extends BaseProposalsController {
             @RequestParam(required = false, defaultValue="false") boolean showActiveContests,
             @RequestParam(required = false, defaultValue="true") boolean showAllContests,
             @RequestParam(required = false, defaultValue = "" + FEATURED_COLLECTION_CARD_ID) long currentCollectionCardId,
-            SortFilterPage sortFilterPage) 
-                    throws PortalException, SystemException {
+            SortFilterPage sortFilterPage) {
 
         ProposalsPreferencesWrapper preferences = new ProposalsPreferencesWrapper(request);
         ContestType contestType = preferences.getContestType();
@@ -105,6 +96,8 @@ public class ContestsIndexController extends BaseProposalsController {
             viewType = VIEW_TYPE_DEFAULT;
         }
 
+        List<Contest> priorContests = ContestClientUtil.getContestsByActivePrivateType(false, false,
+                contestType.getId_());
 
         boolean showOnlyFeatured = false;
         List<Contest> contests = new ArrayList<>();
@@ -286,6 +279,7 @@ public class ContestsIndexController extends BaseProposalsController {
         boolean showContestManagementLink = PermissionsClient
                 .canAdminAll(proposalsContext.getMemberId(request)) ;
         model.addAttribute("showContestManagementLink", showContestManagementLink);
+        model.addAttribute("priorContestsExist", !priorContests.isEmpty());
         model.addAttribute("contests", contests);
         model.addAttribute("showFilter", contests.size() >= MIN_SIZE_CONTEST_FILTER);
         model.addAttribute("contestsSorted", new ContestsSortFilterBean(contests, sortFilterPage,

@@ -969,6 +969,8 @@ public class Proposal extends AbstractProposal {
 
     }
 
+
+
     public boolean getJudgeReviewFinishedStatusUserId(long userId) {
 
         List<ProposalRating> proposalRatings = ProposalJudgeRatingClientUtil

@@ -17,9 +17,6 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.flagging.FlaggingClient;
-import org.xcolab.client.proposals.ProposalClient;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.ProposalMoveClientUtil;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
@@ -194,9 +191,11 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             contestTypeProposalWrappersByContestTypeId.put(contestType.getId_(),
                     new ContestTypeProposal(contestType));
             final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
-            for (Proposal p : proposalsInContestType) {
-                contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
-                        .getProposals().add((p));
+            if(proposalsInContestType!=null){
+                for (Proposal p : proposalsInContestType) {
+                    contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
+                            .getProposals().add((p));
+                }
             }
         }
         model.addAttribute("linkedProposalContestTypeProposalWrappersByContestTypeId",

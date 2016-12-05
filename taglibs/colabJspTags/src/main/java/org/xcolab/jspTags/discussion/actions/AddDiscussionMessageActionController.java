@@ -70,15 +70,13 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
         try {
-
-
             final CommentClient commentClient;
             final ThreadClient threadClient;
             final ActivitiesClient activityClient;
             final ProposalClient proposalClient;
 
 
-            if (contestId != null && !contestId.equals("")) {
+            if (contestId != null && !contestId.equals("0")) {
                 Long contestIdLong = Long.parseLong(contestId);
 
                 Contest contest = ContestClientUtil.getContest(contestIdLong);

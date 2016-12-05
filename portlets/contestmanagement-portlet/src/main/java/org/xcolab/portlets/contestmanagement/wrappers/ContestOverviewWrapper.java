@@ -1,12 +1,12 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.AbstractContest;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
@@ -56,11 +56,10 @@ public class ContestOverviewWrapper {
         massMessageBean = new MassMessageBean();
     }
 
-    private void populateSubscribedToContestList(Long userId) {
-
+    private void populateSubscribedToContestList(long memberId) {
         for (Contest contestWrapper : contestWrappers) {
-            Boolean isUserSubscribedToContest =
-                    ContestLocalServiceUtil.isSubscribed(contestWrapper.getContestPK(), userId);
+            Boolean isUserSubscribedToContest = ContestClientUtil
+                    .isMemberSubscribedToContest(contestWrapper.getContestPK(), memberId);
             subscribedToContest.add(isUserSubscribedToContest);
         }
     }
@@ -68,7 +67,7 @@ public class ContestOverviewWrapper {
     private void populateContestWrappersAndSelectedContestList() {
             List<Contest> contests = ContestClientUtil.getAllContests();
             for (Contest contest : contests) {
-                if(contest.getIsSharedContestInForeignColab()){
+                if (contest.getIsSharedContestInForeignColab()) {
                     try {
                         RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
                                 ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
@@ -77,9 +76,9 @@ public class ContestOverviewWrapper {
                         Contest foreignContest = ContestClient.fromService(contestService).getContest(contest.getContestPK());
                         contestWrappers.add(foreignContest);
 
-                    }catch (ContestNotFoundException notFound){
+                    } catch (ContestNotFoundException notFound){
                     }
-                }else {
+                } else {
                     contestWrappers.add((contest));
                 }
                 selectedContest.add(false);
@@ -183,7 +182,7 @@ public class ContestOverviewWrapper {
         Boolean isSetModelSettingsAction =
                 (selectedMassAction == ContestMassActions.MODEL_SETTINGS.ordinal());
         Boolean isMethodFromContestWrapper =
-                (massActionClass == Contest.class);
+                (massActionClass == AbstractContest.class);
 
         if (isResponseObjectRequiredForMassAction) {
             invokeMassActionReportMethod(massActionMethod, request, response);

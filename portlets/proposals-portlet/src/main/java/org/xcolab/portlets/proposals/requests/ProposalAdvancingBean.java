@@ -2,10 +2,6 @@ package org.xcolab.portlets.proposals.requests;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
@@ -26,13 +22,14 @@ public class ProposalAdvancingBean extends RatingBean {
     public ProposalAdvancingBean() {
     }
 
-    public ProposalAdvancingBean(Proposal wrapper) throws PortalException, SystemException {
+    public ProposalAdvancingBean(Proposal wrapper) {
         super(wrapper, ProposalJudgeRatingClientUtil.getRatingTypesForJudges());
 
         advanceDecision = wrapper.getJudgeDecision();
         advanceComment = wrapper.getProposalReview();
 
-        this.emailTemplateBean = new ContestEmailTemplateBean(EMAIL_TEMPLATES_TO_LOAD, wrapper.getName(), wrapper.getContest().getContestShortName());
+        this.emailTemplateBean = new ContestEmailTemplateBean(EMAIL_TEMPLATES_TO_LOAD,
+                wrapper.getName(), wrapper.getContest().getContestShortName());
     }
 
     public ContestEmailTemplateBean getEmailTemplateBean() {

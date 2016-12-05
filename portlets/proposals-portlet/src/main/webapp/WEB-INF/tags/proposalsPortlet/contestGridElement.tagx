@@ -9,7 +9,7 @@
 	<div class="c-ContestBox" style="${ (index % 2 == 0) ? 'margin-right: 25px;' : ''}">
 		<div class="c-ContestBox__image">
         	<a href="${contest.contestUrl}">
-            	<img src="/image/contest?img_id=${contest.contestLogoId}" width="151" height="151" alt="${contest.contestShortName }" />
+            	<img src="${contest.logoPath}" width="151" height="151" alt="${contest.contestShortName }" />
             </a>
         </div>
         <div class="c-ContestBox__text">

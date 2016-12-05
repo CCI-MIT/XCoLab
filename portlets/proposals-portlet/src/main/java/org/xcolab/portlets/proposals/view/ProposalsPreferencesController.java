@@ -7,9 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -74,7 +71,7 @@ public class ProposalsPreferencesController {
     }
 
     @RequestMapping
-    public String showPreferences(RenderRequest request, RenderResponse response, Model model) throws SystemException, PortalException {
+    public String showPreferences(RenderRequest request, RenderResponse response, Model model) {
         model.addAttribute("prefs", new ProposalsPreferencesWrapper(request));
 
         //get all contests
@@ -292,7 +289,7 @@ public class ProposalsPreferencesController {
                         }
                     }
                     if (lastPhaseContainingProposal == null) {
-                        throw new SystemException("Proposal is not contained in any phases");
+                        throw new IllegalStateException("Proposal is not contained in any phases");
                     }
 
                     //let's make sure that the last phase is before the phase which we move the proposal to!
@@ -307,7 +304,7 @@ public class ProposalsPreferencesController {
                         //update the last phase association - set the end version to the current version minus one
                         Integer currentProposalVersion = ProposalsContextUtil.getClients(request).getProposalClient().countProposalVersions(proposal.getProposalId());
                         if (currentProposalVersion < 0) {
-                            throw new SystemException("Proposal not found");
+                            throw new IllegalStateException("Proposal not found");
                         }
                         try {
                             Proposal2Phase oldP2p = proposalsContext.getClients(request).getProposalPhaseClient().getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), lastPhaseContainingProposal.getContestPhasePK());
@@ -361,7 +358,7 @@ public class ProposalsPreferencesController {
                 }
 
                 message.append("The operation completed successfully!<br/>\n");
-            } catch (SystemException|ContestNotFoundException e) {
+            } catch (ContestNotFoundException e) {
                 _log.warn("Exception thrown while moving proposals", e);
                 message.append("There was a problem moving the proposals.<br/>\n");
             }

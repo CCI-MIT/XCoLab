@@ -2,26 +2,19 @@ package org.xcolab.utils.judging;
 
 import com.ext.portlet.JudgingSystemActions;
 import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringPool;
 
-import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.proposals.ProposalAttributeClient;
-
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
-
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
@@ -59,7 +52,7 @@ public class ProposalJudgingCommentHelper {
         return null;
     }
 
-    public void setScreeningComment(String comment) throws NoSuchProposalContestPhaseAttributeException, SystemException {
+    public void setScreeningComment(String comment) {
         ProposalContestPhaseAttribute fellowActionAttribute = ProposalPhaseClientUtil.
                 getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
         JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue().intValue());
@@ -71,19 +64,20 @@ public class ProposalJudgingCommentHelper {
         }
     }
 
-    public String getAdvancingComment() throws SystemException {
+    public String getAdvancingComment() {
             ProposalContestPhaseAttribute advanceDecisionAttribute = ProposalPhaseClientUtil.
-                    getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION );
-            JudgingSystemActions.AdvanceDecision advanceDecision = JudgingSystemActions.AdvanceDecision.fromInt((int) advanceDecisionAttribute.getNumericValue().intValue());
+                    getProposalContestPhaseAttribute(proposal.getProposalId(),
+                            contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION );
+            JudgingSystemActions.AdvanceDecision advanceDecision =
+                    JudgingSystemActions.AdvanceDecision.fromInt(
+                            advanceDecisionAttribute.getNumericValue().intValue());
 
             if (advanceDecision != JudgingSystemActions.AdvanceDecision.NO_DECISION) {
-                String advanceDecisionText = ProposalPhaseClientUtil.
-                        getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW).getStringValue();
 
-                return advanceDecisionText;
+                return ProposalPhaseClientUtil.
+                        getProposalContestPhaseAttribute(proposal.getProposalId(),
+                                contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW).getStringValue();
             }
-
-
 
         return null;
     }

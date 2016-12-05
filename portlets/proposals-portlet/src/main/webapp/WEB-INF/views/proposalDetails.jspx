@@ -16,9 +16,8 @@
     <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
     <div id="content">
-        <div class="prop-left">
-
-            <div class="edit-prop-wrap" style="width:616px; padding-top: 0">
+        <div class="prop-left ${contestType.showProposalSummary ? '' : 'full-width'}">
+            <div class="edit-prop-wrap" style="padding-top: 0">
                 <div class="inner">
                     <div style="display:inline-block; width: 616px;">
                         <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">

@@ -3,9 +3,6 @@ package org.xcolab.portlets.contestmanagement.controller.manager;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.controller.BaseTabController;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
@@ -25,14 +22,14 @@ public abstract class ContestManagerBaseTabController extends BaseTabController 
 
     @ModelAttribute("tabs")
     @Override
-    public List<TabWrapper> populateTabs(Model model, PortletRequest request) throws PortalException, SystemException {
+    public List<TabWrapper> populateTabs(Model model, PortletRequest request) {
         return getAllVisibleTabsWrapped(request, ContestManagerTabs.values());
     }
 
     @ModelAttribute("currentTabWrapped")
     @Override
     public abstract TabWrapper populateCurrentTabWrapped(PortletRequest request)
-            throws PortalException, SystemException;
+            ;
 
     @Override
     public void setPageAttributes(PortletRequest request, Model model, TabEnum tab) {

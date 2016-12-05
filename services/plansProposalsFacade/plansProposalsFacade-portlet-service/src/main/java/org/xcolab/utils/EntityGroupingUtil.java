@@ -1,7 +1,5 @@
 package org.xcolab.utils;
 
-
-
 import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;

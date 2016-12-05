@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestCollectionCard;
 import org.xcolab.client.contest.pojo.ContestCollectionCardDto;
@@ -32,6 +33,7 @@ import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -87,7 +89,7 @@ public class ContestClient {
         return client;
     }
 
-    public Contest getContest(long contestId) throws ContestNotFoundException {
+    public Contest getContest(long contestId) {
         try {
             return contestResource.get(contestId)
                     //.withCache(CacheKeys.of(ContestDto.class, contestId), CacheRetention.)
@@ -152,6 +154,11 @@ public class ContestClient {
 
     public Contest createContest(Contest contest) {
         return contestResource.create(new ContestDto(contest)).execute().toPojo(contestService);
+    }
+
+    public boolean deleteContest(long contestId) {
+        return contestResource.delete(contestId)
+                .execute();
     }
 
     public List<Contest> getContestsMatchingTier(Long contestTier) {
@@ -398,9 +405,13 @@ public class ContestClient {
     }
 
     public ContestSchedule getContestSchedule(long id) {
-        return contestScheduleResource.get(id)
-                .withCache(CacheKeys.of(ContestScheduleDto.class, id), CacheRetention.REQUEST)
-                .execute().toPojo(contestService);
+        try {
+            return contestScheduleResource.get(id)
+                    .withCache(CacheKeys.of(ContestScheduleDto.class, id), CacheRetention.REQUEST)
+                    .execute().toPojo(contestService);
+        } catch (UncheckedEntityNotFoundException e) {
+            throw new ContestScheduleNotFoundException(id);
+        }
     }
 
     public boolean isContestScheduleUsed(long contestScheduleId) {
@@ -412,6 +423,10 @@ public class ContestClient {
         return DtoUtil.toPojos(contestScheduleResource.list().execute(), contestService);
     }
 
+    public boolean deleteContestSchedule(long contestScheduleId) {
+        return contestScheduleResource.delete(contestScheduleId)
+                .execute();
+    }
 
     public List<ContestPhase> getVisibleContestPhases(Long contestId) {
         return DtoUtil.toPojos(visiblePhasesResource.resolveParent(contestResource.id(contestId))
@@ -436,7 +451,8 @@ public class ContestClient {
     }
 
     public ContestPhase getActivePhase(Long contestId) {
-        return contestResource.service(contestId, "activePhase", ContestPhaseDto.class).get().toPojo(contestService);
+        return contestResource.service(contestId, "activePhase", ContestPhaseDto.class)
+                .get().toPojo(contestService);
     }
 
     public ContestPhaseType getContestPhaseType(Long contestPhaseTypeId) {
@@ -570,15 +586,9 @@ public class ContestClient {
         return getJoinedNameString(contestTypeIds, true, plurality, conjunction);
     }
 
-
     public String getContestNames(List<Long> contestTypeIds, String plurality, String conjunction) {
         return getJoinedNameString(contestTypeIds, false, plurality, conjunction);
     }
-
-
-
-
-
 
     private String getJoinedNameString(List<Long> contestTypeIds, boolean isProposal,
             String plurality, String conjuction) {

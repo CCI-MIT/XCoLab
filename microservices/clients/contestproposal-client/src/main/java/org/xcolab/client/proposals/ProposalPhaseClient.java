@@ -73,6 +73,12 @@ public final class ProposalPhaseClient {
                 .execute(), proposalService);
     }
 
+    public List<Proposal2Phase> getProposal2PhaseByContestPhaseId(Long contestPhaseId) {
+        return DtoUtil.toPojos(proposal2PhaseResource.list()
+                .optionalQueryParam("contestPhaseId", contestPhaseId)
+                .execute(), proposalService);
+    }
+
     public void createProposal2Phase(Proposal2Phase proposal2Phase) {
         proposal2PhaseResource.create(new Proposal2PhaseDto(proposal2Phase))
                 .execute();

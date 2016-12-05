@@ -209,7 +209,11 @@ public class ContestPhase extends AbstractContestPhase {
         ProposalContestPhaseAttribute attr =  proposalPhaseClient
                 .getProposalContestPhaseAttribute(proposalId, this.getContestPhasePK(),
                         ProposalContestPhaseAttributeKeys.VISIBLE);
-        return attr.getNumericValue() == 1;
+        if(attr!= null) {
+            return attr.getNumericValue() == 1;
+        }else{
+            return true;
+        }
 
     }
 

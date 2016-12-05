@@ -100,18 +100,20 @@
     </div>
     </div>
 
-    <div id="popup_SSO_autoreg" class="c-Popup__wrapper small" style="display: none;">
+    <div id="popup_SSO_autoreg" class="c-Popup__wrapper small" style="display: none;width: 473px;">
         <div class="c-Popup">
             <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_SSO_autoreg').hide()"><img src="$images_folder/help_close.png" width="20" height="20" alt="X" /></a></div>
-            <div><img style="max-height:55px" src="$images_folder/$partnerColabLogo"/> </div>
-            <div style="margin-top: 15px;margin-bottom: 15px;">This is a shared contest, this action can automatically register you at  $partnerColabName , would you like to be registered at $partnerColabName?</div>
-            <div style="font-size: small;">$partnerColabName will receive your $_colab_name public profile and email address.</div>
+            <div><img style="max-height:55px;margin-right: 10px;" src="$images_folder/logo-climate-colab.png"/> <img style="max-height:55px" src="$images_folder/$partnerColabLogo"/> </div>
+            <div style="margin-top: 15px;margin-bottom: 15px;">$_colab_name has teamed up with $partnerColabName to run this $contestNameLowerCase. To participate, click "OK" below.
+                When you save your $proposalNameLowerCase, you'll be able to see and make changes to it on either site – all edits and comments will be synced between the two platforms.
+                We'll even create a linked account so you can log into $partnerColabName  with your $_colab_name username and password.  It's easy!</div>
+            <div style="font-size: small;">$partnerColabName will receive your $_colab_name public profile and email address. Questions? Contact $adminEmail.</div>
             <div class="clearfix"></div>
             <div class="login_popup_box">
                 <div class="btns" style="margin-top: 26px;text-align: right;">
 
-                    <a class="c-Button__primary" href="javascript:handleOkForSharedColabAutoReg();" class="c-Header__login__submit"  id="yes_auto_reg" style="margin-right: 30px">Yes</a>
-                    <a class="c-Button__primary" href="javascript:handleNoForSharedColabAutoReg();" class="c-Header__login__submit"  id="no_auto_reg" >NO</a>
+                    <a class="c-Button__primary" href="javascript:handleOkForSharedColabAutoReg();" class="c-Header__login__submit"  id="yes_auto_reg" style="">OK</a>
+                    <a class="c-Button__primary" href="javascript:handleNoForSharedColabAutoReg();" class="c-Header__login__submit"  id="no_auto_reg" >CANCEL</a>
 
                 </div>
             </div>

@@ -1,13 +1,13 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ext.portlet.Activity.ActivityUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.PointsLocalServiceUtil;
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.User;
@@ -16,7 +16,6 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.util.Encryptor;
 import com.liferay.util.EncryptorException;
 
-import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -55,7 +54,7 @@ import javax.portlet.PortletRequest;
 
 public class UserProfileWrapper implements Serializable {
 
-    private static final Log _log = LogFactoryUtil.getLog(UserProfileWrapper.class);
+    private static final Logger _log = LoggerFactory.getLogger(UserProfileWrapper.class);
 
     private static final long serialVersionUID = 1L;
     private static final long DEFAULT_COMPANY_ID = 10112L;
@@ -158,17 +157,9 @@ public class UserProfileWrapper implements Serializable {
                 final List<Proposal> proposalsInContestType = proposalsByContestType
                         .get(contestType);
                 for (Proposal p : proposalsInContestType) {
-                    try {
-                        final Proposal proposalWrapper = (p);
-                        contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
-                                .getProposals()
-                                .add(p);
-                    } catch (DatabaseAccessException e) {
-                        //TODO: change exception type
-                        // DatabaseAccessException shouldn't be caught,
-                        // but the liferay service is throwing a SystemException when it shouldn't
-                        _log.error("Proposal " + p.getProposalId() + " doesn't have a phase associated with it");
-                    }
+                    contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
+                            .getProposals()
+                            .add(p);
                 }
             }
         } catch (SystemException e) {
@@ -402,7 +393,8 @@ public class UserProfileWrapper implements Serializable {
 
     public String getProposalsString() {
         if (proposalsString == null) {
-            proposalsString = ContestTypeLocalServiceUtil.getProposalNames(
+            proposalsString =
+                    ContestClientUtil.getProposalNames(
                     new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.PLURAL.name(),
                     "or");
         }
@@ -411,7 +403,7 @@ public class UserProfileWrapper implements Serializable {
 
     public String getProposalString() {
         if (proposalString == null) {
-            proposalString = ContestTypeLocalServiceUtil.getProposalNames(
+            proposalString = ContestClientUtil.getProposalNames(
                     new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.SINGULAR.name(),
                     "or");
         }

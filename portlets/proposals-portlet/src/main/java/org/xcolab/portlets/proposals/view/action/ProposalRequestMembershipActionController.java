@@ -31,7 +31,6 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.MembershipClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
@@ -109,7 +108,7 @@ public class ProposalRequestMembershipActionController {
     @RequestMapping(params = {"action=inviteMember"})
     public void invite(ActionRequest request, Model model,
                        ActionResponse response, @Valid RequestMembershipInviteBean requestMembershipInviteBean, BindingResult result)
-            throws PortalException, SystemException, IOException {
+            throws IOException {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(
                 WebKeys.THEME_DISPLAY);
 
@@ -166,7 +165,7 @@ public class ProposalRequestMembershipActionController {
 
     @ResourceMapping("inviteMembers-validateRecipient")
     public void validateRecipient(ResourceRequest request, ResourceResponse response)
-            throws PortalException, SystemException {
+            throws SystemException, PortalException {
         String input = request.getParameter("term");
 
         List<User> recipients = getRecipientSuggestions(input, proposalsContext.getProposal(request).getProposalId(),
