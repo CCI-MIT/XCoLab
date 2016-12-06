@@ -41,26 +41,26 @@ public class ModelInputItemLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName398;
-    private String[] _methodParameterTypes398;
-    private String _methodName399;
-    private String[] _methodParameterTypes399;
-    private String _methodName404;
-    private String[] _methodParameterTypes404;
-    private String _methodName405;
-    private String[] _methodParameterTypes405;
-    private String _methodName406;
-    private String[] _methodParameterTypes406;
-    private String _methodName407;
-    private String[] _methodParameterTypes407;
-    private String _methodName408;
-    private String[] _methodParameterTypes408;
-    private String _methodName409;
-    private String[] _methodParameterTypes409;
-    private String _methodName411;
-    private String[] _methodParameterTypes411;
-    private String _methodName412;
-    private String[] _methodParameterTypes412;
+    private String _methodName350;
+    private String[] _methodParameterTypes350;
+    private String _methodName351;
+    private String[] _methodParameterTypes351;
+    private String _methodName356;
+    private String[] _methodParameterTypes356;
+    private String _methodName357;
+    private String[] _methodParameterTypes357;
+    private String _methodName358;
+    private String[] _methodParameterTypes358;
+    private String _methodName359;
+    private String[] _methodParameterTypes359;
+    private String _methodName360;
+    private String[] _methodParameterTypes360;
+    private String _methodName361;
+    private String[] _methodParameterTypes361;
+    private String _methodName363;
+    private String[] _methodParameterTypes363;
+    private String _methodName364;
+    private String[] _methodParameterTypes364;
 
     public ModelInputItemLocalServiceClpInvoker() {
         _methodName0 = "addModelInputItem";
@@ -145,57 +145,57 @@ public class ModelInputItemLocalServiceClpInvoker {
                 "com.ext.portlet.model.ModelInputItem"
             };
 
-        _methodName398 = "getBeanIdentifier";
+        _methodName350 = "getBeanIdentifier";
 
-        _methodParameterTypes398 = new String[] {  };
+        _methodParameterTypes350 = new String[] {  };
 
-        _methodName399 = "setBeanIdentifier";
+        _methodName351 = "setBeanIdentifier";
 
-        _methodParameterTypes399 = new String[] { "java.lang.String" };
+        _methodParameterTypes351 = new String[] { "java.lang.String" };
 
-        _methodName404 = "getItemsForModel";
+        _methodName356 = "getItemsForModel";
 
-        _methodParameterTypes404 = new String[] {
+        _methodParameterTypes356 = new String[] {
                 "edu.mit.cci.roma.client.Simulation"
             };
 
-        _methodName405 = "getItemForMetaData";
+        _methodName357 = "getItemForMetaData";
 
-        _methodParameterTypes405 = new String[] {
+        _methodParameterTypes357 = new String[] {
                 "java.lang.Long", "edu.mit.cci.roma.client.MetaData"
             };
 
-        _methodName406 = "getItemForGroupId";
+        _methodName358 = "getItemForGroupId";
 
-        _methodParameterTypes406 = new String[] { "java.lang.Long" };
+        _methodParameterTypes358 = new String[] { "java.lang.Long" };
 
-        _methodName407 = "getMetaData";
+        _methodName359 = "getMetaData";
 
-        _methodParameterTypes407 = new String[] {
+        _methodParameterTypes359 = new String[] {
                 "com.ext.portlet.model.ModelInputItem"
             };
 
-        _methodName408 = "getModel";
+        _methodName360 = "getModel";
 
-        _methodParameterTypes408 = new String[] {
+        _methodParameterTypes360 = new String[] {
                 "com.ext.portlet.model.ModelInputItem"
             };
 
-        _methodName409 = "getPropertyMap";
+        _methodName361 = "getPropertyMap";
 
-        _methodParameterTypes409 = new String[] {
+        _methodParameterTypes361 = new String[] {
                 "com.ext.portlet.model.ModelInputItem"
             };
 
-        _methodName411 = "saveProperties";
+        _methodName363 = "saveProperties";
 
-        _methodParameterTypes411 = new String[] {
+        _methodParameterTypes363 = new String[] {
                 "com.ext.portlet.model.ModelInputItem", "java.util.Map"
             };
 
-        _methodName412 = "store";
+        _methodName364 = "store";
 
-        _methodParameterTypes412 = new String[] {
+        _methodParameterTypes364 = new String[] {
                 "com.ext.portlet.model.ModelInputItem"
             };
     }
@@ -289,59 +289,59 @@ public class ModelInputItemLocalServiceClpInvoker {
             return ModelInputItemLocalServiceUtil.updateModelInputItem((com.ext.portlet.model.ModelInputItem) arguments[0]);
         }
 
-        if (_methodName398.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes398, parameterTypes)) {
+        if (_methodName350.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes350, parameterTypes)) {
             return ModelInputItemLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName399.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes399, parameterTypes)) {
+        if (_methodName351.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes351, parameterTypes)) {
             ModelInputItemLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName404.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes404, parameterTypes)) {
+        if (_methodName356.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes356, parameterTypes)) {
             return ModelInputItemLocalServiceUtil.getItemsForModel((edu.mit.cci.roma.client.Simulation) arguments[0]);
         }
 
-        if (_methodName405.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes405, parameterTypes)) {
+        if (_methodName357.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes357, parameterTypes)) {
             return ModelInputItemLocalServiceUtil.getItemForMetaData((java.lang.Long) arguments[0],
                 (edu.mit.cci.roma.client.MetaData) arguments[1]);
         }
 
-        if (_methodName406.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes406, parameterTypes)) {
+        if (_methodName358.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes358, parameterTypes)) {
             return ModelInputItemLocalServiceUtil.getItemForGroupId((java.lang.Long) arguments[0]);
         }
 
-        if (_methodName407.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes407, parameterTypes)) {
+        if (_methodName359.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes359, parameterTypes)) {
             return ModelInputItemLocalServiceUtil.getMetaData((com.ext.portlet.model.ModelInputItem) arguments[0]);
         }
 
-        if (_methodName408.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes408, parameterTypes)) {
+        if (_methodName360.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes360, parameterTypes)) {
             return ModelInputItemLocalServiceUtil.getModel((com.ext.portlet.model.ModelInputItem) arguments[0]);
         }
 
-        if (_methodName409.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes409, parameterTypes)) {
+        if (_methodName361.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes361, parameterTypes)) {
             return ModelInputItemLocalServiceUtil.getPropertyMap((com.ext.portlet.model.ModelInputItem) arguments[0]);
         }
 
-        if (_methodName411.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes411, parameterTypes)) {
+        if (_methodName363.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes363, parameterTypes)) {
             ModelInputItemLocalServiceUtil.saveProperties((com.ext.portlet.model.ModelInputItem) arguments[0],
                 (java.util.Map<java.lang.String, java.lang.String>) arguments[1]);
 
             return null;
         }
 
-        if (_methodName412.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes412, parameterTypes)) {
+        if (_methodName364.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes364, parameterTypes)) {
             ModelInputItemLocalServiceUtil.store((com.ext.portlet.model.ModelInputItem) arguments[0]);
 
             return null;
