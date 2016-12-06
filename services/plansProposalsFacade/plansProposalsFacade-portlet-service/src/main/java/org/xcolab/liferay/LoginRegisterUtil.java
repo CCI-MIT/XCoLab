@@ -19,7 +19,6 @@ import com.liferay.portal.service.ContactLocalServiceUtil;
 import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
-import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserGroupRoleLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
@@ -246,7 +245,7 @@ public final class LoginRegisterUtil {
 
     public static Member register(String screenName, String password, String email, String firstName, String lastName,
                                   String shortBio, String country, String fbIdString, String openId, String imageId,
-                                  ServiceContext liferayServiceContext)
+                                  String baseUrl)
             throws Exception {
 
         Long memberId = SharedColabClient.retrieveSharedId(email, screenName, ConfigurationAttributeKey.COLAB_NAME.get());
@@ -278,14 +277,14 @@ public final class LoginRegisterUtil {
             member.setPortraitFileEntryId(0L);
             MembersClient.updateMember(member);
         }
-        sendEmailNotificationToRegisteredUser(liferayServiceContext, member);
+        sendEmailNotificationToRegisteredUser(baseUrl, member);
 
         return MembersClient.getMemberUnchecked(liferayUser.getUserId());
     }
 
-    private static void sendEmailNotificationToRegisteredUser(ServiceContext serviceContext,
+    private static void sendEmailNotificationToRegisteredUser(String baseUrl,
                                                               Member recipient) {
-        new MemberRegistrationNotification(recipient, serviceContext).sendEmailNotification();
+        new MemberRegistrationNotification(recipient, baseUrl).sendEmailNotification();
     }
 
     public static User login(PortletRequest request, PortletResponse response,

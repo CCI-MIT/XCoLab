@@ -23,7 +23,7 @@ public class ContestPhasePromotionEmail {
     public static void contestPhasePromotionEmailNotifyProposalContributors(Proposal proposal, ContestPhase contestPhase, PortletRequest request) {
 
         String subject = "Judging Results on your Proposal " + ProposalAttributeClientUtil
-                .getProposalAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0l).getStringValue();
+                .getProposalAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0L).getStringValue();
 
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
         String messageBody = reviewContentHelper.getPromotionComment(true);

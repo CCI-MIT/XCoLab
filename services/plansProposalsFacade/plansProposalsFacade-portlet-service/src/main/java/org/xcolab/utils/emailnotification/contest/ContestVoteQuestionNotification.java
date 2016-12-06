@@ -1,12 +1,8 @@
 package org.xcolab.utils.emailnotification.contest;
 
-
-
-import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
-import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
@@ -27,9 +23,9 @@ public class ContestVoteQuestionNotification extends ContestNotification {
     private final List<Proposal> supportedProposals;
     private ContestVoteQuestionTemplate templateWrapper;
 
-    public ContestVoteQuestionNotification(Member recipient, Contest contest, List<Proposal> supportedProposals,
-                                           ServiceContext serviceContext) {
-        super(contest, recipient, null, serviceContext);
+    public ContestVoteQuestionNotification(Member recipient, Contest contest,
+            List<Proposal> supportedProposals, String baseUrl) {
+        super(contest, recipient, null, baseUrl);
         this.supportedProposals = supportedProposals;
     }
 
@@ -72,8 +68,8 @@ public class ContestVoteQuestionNotification extends ContestNotification {
                         try {
                             member = MembersClient.getMember(proposal.getAuthorId());
                         } catch (MemberNotFoundException e) {
-                            _log.error("Author " + proposal.getAuthorId() + " of proposal "
-                                    + proposal.getProposalId() + " does not exist");
+                            _log.error("Author {} of proposal {} does not exist",
+                                    proposal.getAuthorId(), proposal.getProposalId());
                             member = null;
                         }
                         supportedProposalsLinks.append(getProposalLinkForDirectVoting(contest, proposal)).append(" by ").append(

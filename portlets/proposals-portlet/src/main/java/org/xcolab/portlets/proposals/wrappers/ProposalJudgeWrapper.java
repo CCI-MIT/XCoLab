@@ -1,6 +1,6 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.ext.portlet.JudgingSystemActions;
+import org.xcolab.util.enums.promotion.JudgingSystemActions;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;

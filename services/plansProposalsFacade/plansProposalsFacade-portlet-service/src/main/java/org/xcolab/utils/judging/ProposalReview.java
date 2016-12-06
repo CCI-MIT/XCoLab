@@ -1,16 +1,15 @@
 package org.xcolab.utils.judging;
 
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-
+import org.apache.commons.lang.StringUtils;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-
 import com.liferay.portal.service.UserLocalServiceUtil;
-import org.apache.commons.lang.StringUtils;
+
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
@@ -20,13 +19,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-
-/**
- * Created by kmang on 25/05/14.
- */
 public class ProposalReview {
     private Proposal proposal;
-    ContestPhase contestPhase;
+    private ContestPhase contestPhase;
     private String proposalUrl;
 
     private Map<ProposalRatingType, Double> ratingAverages;
@@ -85,7 +80,7 @@ public class ProposalReview {
 
     public void addUserRating(Member user, final ProposalRatingType ratingType, final double rating) {
         Map<ProposalRatingType, Double> ratings;
-        if(this.userRatings.get(user) == null){
+        if (this.userRatings.get(user) == null) {
             ratings = new HashMap<>();
             this.userRatings.put(user, ratings);
         } else {

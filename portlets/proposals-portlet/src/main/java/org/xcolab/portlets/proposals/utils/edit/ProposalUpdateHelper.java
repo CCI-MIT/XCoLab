@@ -7,8 +7,6 @@ import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
-import org.xcolab.client.proposals.ProposalAttributeClient;
-import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -20,8 +18,7 @@ import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.util.http.client.RestService;
-import org.xcolab.utils.LinkUtils;
+import org.xcolab.entity.utils.LinkUtils;
 
 import javax.portlet.ActionRequest;
 import javax.validation.Valid;

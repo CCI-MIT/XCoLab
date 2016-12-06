@@ -1,21 +1,18 @@
 package org.xcolab.utils.emailnotification.proposal;
 
-import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-
-
-import com.liferay.portal.kernel.util.HttpUtil;;
-import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
-import org.xcolab.client.admin.EmailTemplateClient;
+import com.liferay.portal.kernel.util.HttpUtil;
+
+import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.pojo.team.MembershipRequest;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 
 public class ProposalMembershipInviteNotification extends ProposalUserActionNotification {
 
@@ -30,9 +27,9 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
     private final String message;
     private ProposalMembershipRequestTemplate templateWrapper;
 
-    public ProposalMembershipInviteNotification(Proposal proposal, Contest contest, Member sender, Member invitee,
-                                                MembershipRequest membershipRequest, String message, ServiceContext serviceContext) {
-        super(proposal, contest, sender, invitee, null, serviceContext);
+    public ProposalMembershipInviteNotification(Proposal proposal, Contest contest, Member sender,
+            Member invitee, MembershipRequest membershipRequest, String message, String baseUrl) {
+        super(proposal, contest, sender, invitee, null, baseUrl);
         this.membershipRequest = membershipRequest;
         this.message = message;
     }
@@ -61,7 +58,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
     }
 
     private String getMembershipResponseUrl() {
-        String baseUrl = serviceContext.getPortalURL() + MEMBERSHIP_INVITE_STRUTS_ACTION_URL;
+        String baseUrl = this.baseUrl + MEMBERSHIP_INVITE_STRUTS_ACTION_URL;
         baseUrl = HttpUtil.addParameter(baseUrl, "contestId", contest.getContestPK());
         baseUrl = HttpUtil.addParameter(baseUrl, "requestId", membershipRequest.getMembershipRequestId());
         baseUrl = HttpUtil.addParameter(baseUrl, "proposalId", proposal.getProposalId());

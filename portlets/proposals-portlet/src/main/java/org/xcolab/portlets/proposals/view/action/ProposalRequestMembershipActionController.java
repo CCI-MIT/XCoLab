@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
@@ -93,13 +92,8 @@ public class ProposalRequestMembershipActionController {
         proposalsContext.getClients(request).getMembershipClient()
                 .addRequestedMembershipRequest(proposalId, sender.getUserId(), comment);
 
-        ServiceContext serviceContext = new ServiceContext();
-        serviceContext.setPortalURL(themeDisplay.getPortalURL());
-
-
-        new ProposalUserActionNotification(proposal, contest, sender, proposalAuthor, MEMBERSHIP_REQUEST_TEMPLATE,
-                serviceContext).sendMessage();
-
+        new ProposalUserActionNotification(proposal, contest, sender, proposalAuthor,
+                MEMBERSHIP_REQUEST_TEMPLATE, themeDisplay.getPortalURL()).sendMessage();
 
         SessionMessages.add(request, "membershipRequestSent");
         response.sendRedirect(proposal.getProposalLinkUrl(contest) + "/tab/TEAM");
@@ -140,15 +134,11 @@ public class ProposalRequestMembershipActionController {
                             .addInvitedMembershipRequest(proposalId, recipient.getUserId(),
                                     comment);
 
-                    ServiceContext serviceContext = new ServiceContext();
-                    serviceContext.setPortalURL(themeDisplay.getPortalURL());
                     final Member sender = proposalsContext.getMember(request);
-
 
                     new ProposalMembershipInviteNotification(proposal, contest, sender,
                             recipient,
-                            memberRequest, comment, serviceContext).sendMessage();
-
+                            memberRequest, comment, themeDisplay.getPortalURL()).sendMessage();
 
                     SessionMessages.add(request, "memberInviteSent");
                 }

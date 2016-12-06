@@ -1,15 +1,11 @@
 package org.xcolab.utils.judging;
 
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-
-
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
+import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 
@@ -19,9 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-/**
- * Created by kmang on 25/05/14.
- */
 public class ProposalReviewCsvExporter {
     private static final String DEL = ","; // delimiter
     private static final String TQF = ""; // text qualifier
@@ -42,7 +35,7 @@ public class ProposalReviewCsvExporter {
 
     public String getCsvString() {
         if (proposalToProposalReviewsMap.isEmpty()) {
-            return StringPool.BLANK;
+            return "";
         }
 
         StringBuilder tableBody = new StringBuilder();
@@ -50,7 +43,7 @@ public class ProposalReviewCsvExporter {
             final Proposal proposal = entry.getKey();
             final List<ProposalReview> proposalReviews = entry.getValue();
             String proposalName = ProposalAttributeClientUtil.getProposalAttribute(proposal.getProposalId(),
-                    ProposalAttributeKeys.NAME, 0l).getStringValue();
+                    ProposalAttributeKeys.NAME, 0L).getStringValue();
 
             for (ProposalReview proposalReview : proposalReviews) {
                 for (Member reviewer : proposalReview.getReviewers()) {
@@ -62,7 +55,7 @@ public class ProposalReviewCsvExporter {
 
                     Double ratingAverage = proposalReview.getUserRatingAverage(reviewer);
 
-                    if (Validator.isNull(ratingAverage)) {
+                    if (ratingAverage == null) {
                         commentString.append(delimiter + "\"-\"" + TQF);
                     } else {
                         commentString.append(String.format("%s\"%s%s\"", delimiter, df.format(ratingAverage), TQF));
@@ -70,7 +63,7 @@ public class ProposalReviewCsvExporter {
 
                     for (ProposalRatingType ratingType : ratingTypes) {
                         Double rating = proposalReview.getUserRating(reviewer, ratingType);
-                        if (Validator.isNull(rating)) {
+                        if (rating == null) {
                             if (proposalReview.getReviewers().contains(reviewer)) {
                                 commentString.append(delimiter + "\"-\"" + TQF);
                             } else {
@@ -82,7 +75,7 @@ public class ProposalReviewCsvExporter {
                     }
 
                     String review = proposalReview.getReview(reviewer);
-                    if (Validator.isNull(review)) {
+                    if (StringUtils.isEmpty(review)) {
                         commentString.append(delimiter + "\"\"");
                     } else {
                         commentString.append(String.format("%s\"%s%s\"", delimiter, escapeQuote(review), TQF));
@@ -106,7 +99,7 @@ public class ProposalReviewCsvExporter {
 
         for (ProposalRatingType ratingType : ratingTypes) {
             Double average = proposalReview.getRatingAverage(ratingType);
-            if (Validator.isNull(average)) {
+            if (average == null) {
                 averageRating.append(delimiter + "\"\"");
             } else {
                 averageRating.append(String.format("%s\"%s%s\"", delimiter, df.format(average), TQF));
@@ -117,9 +110,9 @@ public class ProposalReviewCsvExporter {
     }
 
     private String getRowHeader(String proposalName, ProposalReview proposalReview) {
-        String contestPhaseName = "";
-
-        contestPhaseName = ContestClientUtil.getContestPhaseType(proposalReview.getContestPhase().getContestPhaseType()).getName();
+        String contestPhaseName = ContestClientUtil
+                .getContestPhaseType(proposalReview.getContestPhase().getContestPhaseType())
+                .getName();
 
         return String.format("%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s", TQF, escapeQuote(proposalName), delimiter, escapeQuote(proposalReview.getProposalTeamAuthor()), delimiter, proposalReview.getProposalUrl(), delimiter, escapeQuote(contestPhaseName), delimiter);
     }
@@ -154,11 +147,11 @@ public class ProposalReviewCsvExporter {
 
     private String escapeQuote(String input) {
         //replace double quotes with single quotes (safer than 3 quotes)
-        input = StringUtil.replace(input, "\"", "'");
+        input = StringUtils.replace(input, "\"", "'");
         //delete new lines
-        input = StringUtil.replace(input, "\r\n", " ");
-        input = StringUtil.replace(input, "\n", " ");
-        input = StringUtil.replace(input, "\r", " ");
+        input = StringUtils.replace(input, "\r\n", " ");
+        input = StringUtils.replace(input, "\n", " ");
+        input = StringUtils.replace(input, "\r", " ");
 
         return input;
     }

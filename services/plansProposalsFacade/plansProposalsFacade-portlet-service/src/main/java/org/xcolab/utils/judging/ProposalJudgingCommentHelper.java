@@ -1,11 +1,6 @@
 package org.xcolab.utils.judging;
 
-import com.ext.portlet.JudgingSystemActions;
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.StringPool;
+import org.xcolab.util.enums.promotion.JudgingSystemActions;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -17,6 +12,7 @@ import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.utils.emailnotification.EmailTemplateWrapper;
 
 /**
  * This is a helper class that interprets the Judging Feedback message made during judging contest
@@ -24,8 +20,6 @@ import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
  * class to get and set Screening and Advance comments
  */
 public class ProposalJudgingCommentHelper {
-
-    private final static Log _log = LogFactoryUtil.getLog(ProposalJudgingCommentHelper.class);
 
     private final Proposal proposal;
     private final ContestPhase contestPhase;
@@ -35,7 +29,7 @@ public class ProposalJudgingCommentHelper {
         this.contestPhase = contestPhase;
     }
 
-    public String getScreeningComment() throws NoSuchProposalContestPhaseAttributeException, SystemException {
+    public String getScreeningComment() {
         //get fellow decision
         ProposalContestPhaseAttribute fellowActionAttribute = ProposalPhaseClientUtil.
                 getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
@@ -176,7 +170,7 @@ public class ProposalJudgingCommentHelper {
                         : fellowReviewText;
             }
 
-            return StringPool.BLANK;
+            return "";
         } catch (ContestNotFoundException e) {
             throw new IllegalStateException("Could not get promotion comment for"
                     + " proposal " + proposal.getProposalId()

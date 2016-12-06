@@ -4,10 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.service.ServiceContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -21,7 +19,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.helpers.ProposalAttributeHelper;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.utils.TemplateReplacementUtil;
-import org.xcolab.utils.judging.EmailTemplateWrapper;
+import org.xcolab.utils.emailnotification.EmailTemplateWrapper;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -62,20 +60,19 @@ public abstract class EmailNotification {
 
     protected static final String LINK_FORMAT_STRING = "<a href='%s' target='_blank'>%s</a>";
 
-    protected ServiceContext serviceContext;
+    protected String baseUrl;
 
-    protected Log _log;
+    protected Logger _log;
 
-    public EmailNotification(ServiceContext serviceContext) {
-        this.serviceContext = serviceContext;
-        _log = LogFactoryUtil.getLog(this.getClass());
+    public EmailNotification(String baseUrl) {
+        this.baseUrl = baseUrl;
+        _log = LoggerFactory.getLogger(this.getClass());
     }
 
     private String getProposalLinkWithLinkText(Contest contest,
                                                Proposal proposal, String linkText, String tab) {
 
-            String proposalLinkUrl = serviceContext.getPortalURL()
-                    + proposal.getProposalLinkUrl((contest));
+            String proposalLinkUrl = baseUrl + proposal.getProposalLinkUrl((contest));
             if (tab != null) {
                 proposalLinkUrl += "/tab/" + tab;
             }
@@ -94,7 +91,7 @@ public abstract class EmailNotification {
         final String proposalName = new ProposalAttributeHelper(proposal)
                 .getAttributeValueString(ProposalAttributeKeys.NAME, "");
 
-            final String proposalLinkUrl = serviceContext.getPortalURL()
+            final String proposalLinkUrl = baseUrl
                     + proposal.getProposalLinkUrl(contest) + "/vote";
             return String.format(LINK_FORMAT_STRING, proposalLinkUrl, proposalName);
 
@@ -108,8 +105,7 @@ public abstract class EmailNotification {
      * @return Contest URL as String
      */
     private String getContestLink(Contest contest) {
-        final String contestLinkUrl =
-                serviceContext.getPortalURL() + contest.getContestLinkUrl();
+        final String contestLinkUrl = baseUrl + contest.getContestLinkUrl();
         return String.format(LINK_FORMAT_STRING, contestLinkUrl, contest.getContestShortName());
     }
 
@@ -135,7 +131,7 @@ public abstract class EmailNotification {
      * @param proposalToShare The Proposal that should be shared
      */
     protected String getProposalLinkUrl(Contest contest, Proposal proposalToShare) {
-        return serviceContext.getPortalURL() + proposalToShare.getProposalLinkUrl(contest);
+        return baseUrl + proposalToShare.getProposalLinkUrl(contest);
     }
 
     /**
@@ -144,7 +140,7 @@ public abstract class EmailNotification {
      * @param contest Contest to be shared
      */
     protected String getContestLinkUrl(Contest contest) {
-        return serviceContext.getPortalURL() + contest.getContestLinkUrl();
+        return baseUrl + contest.getContestLinkUrl();
     }
 
     /**

@@ -1,7 +1,5 @@
 package org.xcolab.utils.judging;
 
-
-
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -10,20 +8,14 @@ import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValue;
 
-/**
- * Created by Manuel Thurner
- */
 public class ProposalRatingWrapper {
     private ProposalRating proposalRating;
-
 
     public ProposalRatingWrapper(ProposalRating proposalRating) {
         this.proposalRating = proposalRating;
     }
 
-
     public ProposalRatingWrapper() {
-
     }
 
     public String getRatingValueName() {
@@ -55,24 +47,19 @@ public class ProposalRatingWrapper {
     public ProposalRatingType getRatingType()  {
         ProposalRatingValue ratingValue = this.getRatingValue();
             if (ratingValue != null) {
-                ProposalRatingType ratingType = ProposalJudgeRatingClientUtil.getProposalRatingType(ratingValue.getRatingTypeId());
-                return ratingType;
+                return ProposalJudgeRatingClientUtil.getProposalRatingType(ratingValue.getRatingTypeId());
             }
 
         return null;
     }
 
     public ProposalRatingValue getRatingValue()  {
-
-            ProposalRatingValue ratingValue = ProposalJudgeRatingClientUtil.getProposalRatingValue(this.proposalRating.getRatingValueId());
-            return ratingValue;
-
+        return ProposalJudgeRatingClientUtil.getProposalRatingValue(this.proposalRating.getRatingValueId());
     }
 
     public Member getUser()  {
         try {
-            Member u = MembersClient.getMember(this.proposalRating.getUserId());
-            return u;
+            return MembersClient.getMember(this.proposalRating.getUserId());
         } catch (MemberNotFoundException e) {
             return null;
         }

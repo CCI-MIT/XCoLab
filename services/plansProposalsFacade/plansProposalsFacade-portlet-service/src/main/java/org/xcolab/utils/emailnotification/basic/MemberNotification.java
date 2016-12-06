@@ -1,11 +1,9 @@
 package org.xcolab.utils.emailnotification.basic;
 
-import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
-import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.members.pojo.Member;
@@ -20,8 +18,8 @@ public class MemberNotification extends EmailNotification {
     private static final String SENDER_LASTNAME_PLACEHOLDER = "sender-lastname";
     private static final String SENDER_SCREENNAME_PLACEHOLDER = "sender-screenname";
 
-    public MemberNotification(Member recipient, String templateName, ServiceContext serviceContext) {
-        super(serviceContext);
+    public MemberNotification(Member recipient, String templateName, String baseUrl) {
+        super(baseUrl);
         this.recipient = recipient;
         this.templateName = templateName;
     }

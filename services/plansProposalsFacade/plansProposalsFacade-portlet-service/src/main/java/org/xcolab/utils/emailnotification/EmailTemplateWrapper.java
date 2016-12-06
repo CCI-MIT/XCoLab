@@ -1,4 +1,4 @@
-package org.xcolab.utils.judging;
+package org.xcolab.utils.emailnotification;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

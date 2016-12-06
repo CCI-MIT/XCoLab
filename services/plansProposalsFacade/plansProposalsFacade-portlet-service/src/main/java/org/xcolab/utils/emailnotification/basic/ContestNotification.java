@@ -1,8 +1,5 @@
 package org.xcolab.utils.emailnotification.basic;
 
-
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.service.ServiceContext;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -42,8 +39,8 @@ public class ContestNotification extends EmailNotification {
     private ContestNotificationTemplate templateWrapper;
 
     public ContestNotification(Contest contest, Member recipient, String templateName,
-            ServiceContext serviceContext) {
-        super(serviceContext);
+            String baseUrl) {
+        super(baseUrl);
         this.contest = contest;
         this.recipient = recipient;
         this.templateName = templateName;
@@ -100,7 +97,6 @@ public class ContestNotification extends EmailNotification {
     }
 
     private String getOtherContestLink(String linkText) {
-        final String baseUrl = serviceContext.getPortalURL();
         return String.format(LINK_FORMAT_STRING, baseUrl + "/web/guest/plans", linkText);
     }
 
@@ -119,15 +115,15 @@ public class ContestNotification extends EmailNotification {
 
             switch (tag.nodeName()) {
                 case YEAR_PLACEHOLDER:
-                    DateFormat yearFormat = new SimpleDateFormat("yyyy");
-                    if (Validator.isNull(contest.getCreated())) {
+                    if (contest.getCreated() == null) {
                         return new TextNode(Long.toString(contest.getContestYear()), "");
                     } else {
+                        DateFormat yearFormat = new SimpleDateFormat("yyyy");
                         return new TextNode(yearFormat.format(contest.getCreated()), "");
                     }
                 case DEADLINE_PLACEHOLDER:
                     final Date phaseDeadline = getActivePhaseDeadline();
-                    if (Validator.isNull(phaseDeadline)) {
+                    if (phaseDeadline == null) {
                         return new TextNode("", "");
                     } else {
                         final DateTimeFormatter dateTimeFormatterWithTimeZone = DATE_TIME_FORMATTER.withZone(
@@ -135,7 +131,7 @@ public class ContestNotification extends EmailNotification {
                         return new TextNode(new DateTime(phaseDeadline).toString(dateTimeFormatterWithTimeZone), "");
                     }
                 case CONTEST_DEADLINE_SECTION_PLACEHOLDER:
-                    if (Validator.isNull(getActivePhaseDeadline())) {
+                    if (getActivePhaseDeadline() == null) {
                         return new TextNode("", "");
                     } else {
                         //need to call another layer of replace variables to replace placeholders inside the tag

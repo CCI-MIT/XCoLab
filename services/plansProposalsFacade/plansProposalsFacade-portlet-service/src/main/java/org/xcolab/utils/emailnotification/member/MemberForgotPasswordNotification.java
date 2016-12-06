@@ -1,11 +1,9 @@
 package org.xcolab.utils.emailnotification.member;
 
-import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
-import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
@@ -27,8 +25,8 @@ public class MemberForgotPasswordNotification extends MemberNotification {
     private final String passwordResetLink;
 
     public MemberForgotPasswordNotification(String memberIp, String passwordResetLink,
-            Member recipient, ServiceContext serviceContext) {
-        super(recipient, TEMPLATE_NAME, serviceContext);
+            Member recipient, String baseUrl) {
+        super(recipient, TEMPLATE_NAME, baseUrl);
         this.memberIp = memberIp;
         this.passwordResetLink = passwordResetLink;
     }

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.contest.ContestClientUtil;
@@ -140,9 +139,7 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
 
     private void sendEmailNotificationToAuthor(ThemeDisplay themeDisplay, Contest contest)
             throws MemberNotFoundException {
-        ServiceContext serviceContext = new ServiceContext();
-        serviceContext.setPortalURL(themeDisplay.getPortalURL());
-        new ContestCreationNotification(contest, serviceContext).sendMessage();
+        new ContestCreationNotification(contest, themeDisplay.getPortalURL()).sendMessage();
     }
 
     private List<LabelValue> getProposalTemplateSelectionItems() {

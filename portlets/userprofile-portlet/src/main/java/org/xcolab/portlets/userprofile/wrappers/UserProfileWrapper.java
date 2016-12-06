@@ -1,10 +1,6 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ext.portlet.Activity.ActivityUtil;
-import com.ext.portlet.service.PointsLocalServiceUtil;
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -28,8 +24,6 @@ import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.legacy.utils.SendMessagePermissionChecker;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.client.proposals.MembershipClientUtil;
-import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
@@ -55,8 +49,6 @@ import java.util.Map;
 import javax.portlet.PortletRequest;
 
 public class UserProfileWrapper implements Serializable {
-
-    private static final Logger _log = LoggerFactory.getLogger(UserProfileWrapper.class);
 
     private static final long serialVersionUID = 1L;
     private static final long DEFAULT_COMPANY_ID = 10112L;

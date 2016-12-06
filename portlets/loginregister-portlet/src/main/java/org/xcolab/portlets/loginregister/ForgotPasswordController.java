@@ -13,7 +13,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 
@@ -99,10 +98,7 @@ public class ForgotPasswordController {
 
     private static void sendEmailNotificationToForPasswordReset(String memberIp, String link,
             ThemeDisplay themeDisplay, Member recipient) {
-        ServiceContext serviceContext = new ServiceContext();
-        serviceContext.setPortalURL(themeDisplay.getPortalURL());
-
-        new MemberForgotPasswordNotification(memberIp, link, recipient, serviceContext)
+        new MemberForgotPasswordNotification(memberIp, link, recipient, themeDisplay.getPortalURL())
                 .sendEmailNotification();
     }
 

@@ -1,16 +1,12 @@
 package org.xcolab.utils.emailnotification.basic;
 
+import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-
-
-import com.liferay.portal.service.ServiceContext;
-
-import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
@@ -22,9 +18,9 @@ public class ProposalNotification extends ContestNotification {
 
     private ProposalNotificationTemplate templateWrapper;
 
-    public ProposalNotification(Proposal proposal, Contest contest, Member recipient, String templateName,
-                                ServiceContext serviceContext) {
-        super(contest, recipient, templateName, serviceContext);
+    public ProposalNotification(Proposal proposal, Contest contest, Member recipient,
+            String templateName, String baseUrl) {
+        super(contest, recipient, templateName, baseUrl);
         this.proposal = proposal;
     }
 

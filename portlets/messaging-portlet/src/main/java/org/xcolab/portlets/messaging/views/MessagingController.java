@@ -27,7 +27,7 @@ import org.xcolab.portlets.messaging.beans.MessageBean;
 import org.xcolab.portlets.messaging.beans.MessagingBean;
 import org.xcolab.portlets.messaging.beans.SendMessageBean;
 import org.xcolab.portlets.messaging.utils.MessagingPermissions;
-import org.xcolab.utils.LinkUtils;
+import org.xcolab.entity.utils.LinkUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;

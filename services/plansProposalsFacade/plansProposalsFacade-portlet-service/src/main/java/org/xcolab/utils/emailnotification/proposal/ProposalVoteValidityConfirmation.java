@@ -1,18 +1,15 @@
 package org.xcolab.utils.emailnotification.proposal;
 
-import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-
-
-import com.liferay.portal.service.ServiceContext;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 
 import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.EmailTemplateClientUtil;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
@@ -30,8 +27,8 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
     private ProposalVoteConfirmationTemplate templateWrapper;
 
     public ProposalVoteValidityConfirmation(Proposal votedProposal, Contest contest, Member recipient,
-                                            ServiceContext serviceContext, String confirmationToken) {
-        super(votedProposal, contest, recipient, null, serviceContext);
+                                            String baseUrl, String confirmationToken) {
+        super(votedProposal, contest, recipient, null, baseUrl);
         this.confirmationToken = confirmationToken;
         this.votedProposal = votedProposal;
         this.recipient = recipient;
@@ -70,7 +67,7 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
 
     private String getConfirmationLink(String linkText) {
         final String confirmationUrl = String.format("%s/web/guest/plans/-/plans/confirmVote/%d/%d/%s",
-                serviceContext.getPortalURL(), votedProposal.getProposalId(), recipient.getUserId(), confirmationToken);
+                baseUrl, votedProposal.getProposalId(), recipient.getUserId(), confirmationToken);
         return String.format(LINK_FORMAT_STRING, confirmationUrl, linkText);
     }
 
