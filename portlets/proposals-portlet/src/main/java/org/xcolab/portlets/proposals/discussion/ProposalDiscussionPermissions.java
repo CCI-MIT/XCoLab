@@ -63,7 +63,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
             if (contestPhaseIdParameter != null) {
                 phaseId = Long.parseLong(contestPhaseIdParameter);
             } else if (proposalId != null && proposalId > 0) {
-                phaseId = ProposalsContextUtil.getClients(request).getProposalClient().getLatestContestPhaseInContest(proposalId).getContestPhasePK();
+                phaseId = ProposalsContextUtil.getClients(request).getProposalClient().getLatestContestPhaseInProposal(proposalId).getContestPhasePK();
             }
         } catch (NumberFormatException  ignored) {
         }
