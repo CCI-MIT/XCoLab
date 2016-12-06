@@ -290,18 +290,6 @@
         function submitUpdateCollectionCard() {
 
             var inputError = false;
-            if(!jQuery(".collectionCard-edit-form #description").val().length > 0) {
-                jQuery(".collectionCard-edit-form #description").css("background-color", "lightcoral");
-                inputError = true;
-            } else {
-                jQuery(".collectionCard-edit-form #description").css("background-color", "white");
-            }
-            if(!jQuery(".collectionCard-edit-form #shortName").val().length > 0) {
-                jQuery(".collectionCard-edit-form #shortName").css("background-color", "lightcoral");
-                inputError = true;
-            } else {
-                jQuery(".collectionCard-edit-form #shortName").css("background-color", "white");
-            }
             if(jQuery(".collectionCard-edit-form #parentId").val() < 1) {
                 jQuery(".collectionCard-edit-form #parentId").css("background-color", "lightcoral");
                 inputError = true;

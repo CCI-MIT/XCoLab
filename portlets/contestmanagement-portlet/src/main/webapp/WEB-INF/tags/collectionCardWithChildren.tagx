@@ -16,7 +16,7 @@
                                     ${ collectionCard.shortName}
                                 </c:when>
                                 <c:otherwise>
-                                    ${collectionCard.ontologyTermToLoad.name}
+                                    ${collectionCard.ontologyTermToLoad}
                                 </c:otherwise>
                             </c:choose>
 						</span>
