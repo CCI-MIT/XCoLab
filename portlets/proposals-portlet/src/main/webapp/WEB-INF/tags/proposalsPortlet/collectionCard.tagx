@@ -56,16 +56,29 @@
                         -->
                         <div class="c-CollectionCard__text__title">
                             <h3>
-                                ${collectionCard.ontologyTermToLoad.name}
+                            <c:choose>
+                                <c:when test="${not empty collectionCard.shortName}">
+                                    ${ collectionCard.shortName}
+                                </c:when>
+                                <c:otherwise>
+                                    ${collectionCard.ontologyTermToLoad.name}
+                                </c:otherwise>
+                            </c:choose>
                             </h3>
                         </div>
                         <div class="c-CollectionCard__separator">
                             <!-- -->
                         </div>
                         <div class="c-CollectionCard__text">
-                            ${collectionCard.description}
+                            <c:choose>
+                                <c:when test="${not empty collectionCard.description}">
+                                    ${collectionCard.description}
+                                </c:when>
+                                <c:otherwise>
+                                    ${collectionCard.smallOntologyTerm.name}
+                                </c:otherwise>
+                            </c:choose>
                         </div>
-
                      </div>
                 </a>
             </div>

@@ -134,7 +134,14 @@
 						<portlet:param name="showAllContests" value="${showAllContests }" />
 					</portlet:renderURL>
 					<a href="${changeToCollectionCardURL}">
-						${collectionCard.shortName}
+						<c:choose>
+							<c:when test="${not empty collectionCard.shortName}">
+								${collectionCard.shortName}
+							</c:when>
+							<c:otherwise>
+								${collectionCard.ontologyTermToLoad.name}
+							</c:otherwise>
+						</c:choose>
 					</a>
 					<c:if test="${!loop.last}">
 						<span> > </span>
