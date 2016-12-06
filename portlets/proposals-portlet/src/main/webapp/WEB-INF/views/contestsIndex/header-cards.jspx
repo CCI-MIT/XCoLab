@@ -54,7 +54,7 @@
 			</div>
 		</c:if>
 		<div class="c-description">
-			Collaborate with people around the world to develop local, national, and global climate actions and plans, and enter contests to win prizes for you work!
+			Collaborate with people around the world to develop local, national, and global climate actions and plans, and enter ${contestType.contestNamePlural} to win prizes for you work!
 		</div>
     </div>
 	<div class="c-Headline">
