@@ -77,24 +77,24 @@
                     <form:select path="ontologyTermToLoad" id="ontologyTermToLoad" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
                     <button onclick="openOntologyPicker('ontologyTermToLoad');" type="button"> Change</button>
                     <br/>
-                    <strong class="inputTitleLeft">Display Title [no functionaity]</strong>
+                    <strong class="inputTitleLeft">Display Ontologyterm</strong>
                     <form:select path="bigOntologyTerm" id="bigOntologyTerm" cssClass="wideLargeInput"  items="${collectionCardWrapperWhat.ontologyTerms}" />
                     <button onclick="openOntologyPicker('bigOntologyTerm');" type="button">Change</button>
                     <br/>
-                    <strong class="inputTitleLeft">Short Name</strong>
+                    <strong class="inputTitleLeft">Display Name</strong>
                     <input id="shortName" name="shortName" class="wideLargeInput" type="text" value="" validatelength="false"/>
                     <br/>
-                    <strong class="inputTitleLeft">Description:</strong>
+                    <strong class="inputTitleLeft">Description Text</strong>
                     <input id="description" name="Description" class="wideLargeInput" type="text" value="" validatelength="false"/>
                     <br/>
-                    <strong class="inputTitleLeft">Parent CollectionCard</strong>
+                    <strong class="inputTitleLeft">Parent Collectioncard</strong>
                     <form:select path="parentId" id="parentId" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.collectionCards}" />
                     <br/>
-                    <strong class="inputTitleLeft">Small Ontologyterm</strong>
+                    <strong class="inputTitleLeft">Description Ontologyterm</strong>
                     <form:select path="smallOntologyTerm" id="smallOntologyTerm" cssClass="wideLargeInput"  items="${collectionCardWrapperWhat.ontologyTerms}" />
                     <button onclick="openOntologyPicker('smallOntologyTerm');" type="button">Change</button>
                     <br/>
-                    <strong class="inputTitleLeft">Weigth</strong>
+                    <strong class="inputTitleLeft">Weight</strong>
                     <input name="order" id="order" class="wideLargeInput" type="number" value="0" />
                     <br/>
                     <strong class="inputTitleLeft">Only Featured</strong>
@@ -129,7 +129,10 @@
         <h2> Pick the OntolgoyTerm</h2>
         <br/>
         <div>
-            <a class="c-Button__primary innerVerticalCenter" href="#" onclick="setOntologyTerm();">SELECT</a>
+            <a class="c-Button__primary innerVerticalCenter" style="display:inline-block" href="#" onclick="setOntologyTerm();">SELECT</a>
+        </div>
+        <div>
+            <a class="c-Button__primary innerVerticalCenter" href="#" onclick="closeOntologyPicker();">CANCEL</a>
         </div>
         <br/>
         <h3> WHERE </h3>
@@ -410,6 +413,12 @@
             var self = jQuery(this);
             currentOntologyId = self.attr('ontology-id');
         });
+
+        function closeOntologyPicker() {
+            currentTermType = "";
+            currentOntologyId = 0;
+            jQuery(".ontologyPicker").hide();
+        }
 
         ]]>
     </script>

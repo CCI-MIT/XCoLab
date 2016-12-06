@@ -55,8 +55,8 @@ public class ContestsIndexController extends BaseProposalsController {
     @RequestMapping
     public String showContestsIndex(PortletRequest request, PortletResponse response, Model model,
             @RequestParam(required = false) String viewType,
-            @RequestParam(required = false, defaultValue="false") boolean showActiveContests,
-            @RequestParam(required = false, defaultValue="true") boolean showAllContests,
+            @RequestParam(required = false, defaultValue="true") boolean showActiveContests,
+            @RequestParam(required = false, defaultValue="false") boolean showAllContests,
             @RequestParam(required = false, defaultValue = "" + FEATURED_COLLECTION_CARD_ID) long currentCollectionCardId,
             SortFilterPage sortFilterPage) {
 
@@ -101,7 +101,12 @@ public class ContestsIndexController extends BaseProposalsController {
 
         boolean showOnlyFeatured = false;
         List<Contest> contests = new ArrayList<>();
-        if (!viewType.equals(VIEW_TYPE_OUTLINE)) {
+
+        /*--------------------------------*/
+        //Only for CollectionCards
+        /*--------------------------------*/
+
+        if (ConfigurationAttributeKey.COLAB_USES_CARDS.get() && !viewType.equals(VIEW_TYPE_OUTLINE)) {
 
             Boolean getActive;
             if(showActiveContests) {
@@ -169,9 +174,46 @@ public class ContestsIndexController extends BaseProposalsController {
                 }
             }
             model.addAttribute("showOnlyFeatured", showOnlyFeatured);
+
+            //if only featured
+            if(ContestClientUtil.getContestCollectionCard(currentCollectionCardId).getOntology_term_to_load() != null) {
+                model.addAttribute("ontologySpaceId", OntologyClientUtil.getOntologyTerm(ContestClientUtil.getContestCollectionCard(currentCollectionCardId).getOntology_term_to_load()).getOntologySpaceId());
+            } else {
+                model.addAttribute("ontologySpaceId", 0);
+            }
         }
 
-        //ONLY OUTLINE VIEW
+        /*--------------------------------*/
+        //For other views
+        /*--------------------------------*/
+
+        if(!ConfigurationAttributeKey.COLAB_USES_CARDS.get()) {
+
+            List<Contest> contestsToWrap = showAllContests
+                    ? ContestClientUtil.getContestsByContestTypeId(contestType.getId_())
+                    : ContestClientUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId_());
+            priorContests = ContestClientUtil.getContestsByActivePrivateType(false, false, contestType.getId_());
+
+            for (Contest contest: contestsToWrap) {
+                if (! contest.getContestPrivate()) {
+                    if(contest.getIsSharedContestInForeignColab()){
+                        ClientHelper ch = new ClientHelper(contest);
+                        try {
+                            Contest foreignContest =
+                                    ch.getContestClient().getContest(contest.getContestPK());
+                            contests.add(foreignContest);
+
+                        }catch (ContestNotFoundException notFound){
+
+                        }
+                    }else {
+                        contests.add((contest));
+                    }
+
+                }
+            }
+        }
+
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
             List<Contest> contestsToWrap = showAllContests ? ContestClientUtil.getContestsByContestTypeId(contestType.getId_()) :
                     ContestClientUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId_());
@@ -269,27 +311,19 @@ public class ContestsIndexController extends BaseProposalsController {
         	model.addAttribute("contestType", contestType);
         }
 
-        //if only featured
-        if(ContestClientUtil.getContestCollectionCard(currentCollectionCardId).getOntology_term_to_load() != null) {
-            model.addAttribute("ontologySpaceId", OntologyClientUtil.getOntologyTerm(ContestClientUtil.getContestCollectionCard(currentCollectionCardId).getOntology_term_to_load()).getOntologySpaceId());
-        } else {
-            model.addAttribute("ontologySpaceId", 0);
-        }
-
-        boolean showContestManagementLink = PermissionsClient
-                .canAdminAll(proposalsContext.getMemberId(request)) ;
+        model.addAttribute("showCollectionCards", ConfigurationAttributeKey.COLAB_USES_CARDS.get());
+        boolean showContestManagementLink = PermissionsClient.canAdminAll(proposalsContext.getMemberId(request)) ;
         model.addAttribute("showContestManagementLink", showContestManagementLink);
         model.addAttribute("priorContestsExist", !priorContests.isEmpty());
         model.addAttribute("contests", contests);
+        //not taken into account if collection cards enabled
         model.addAttribute("showFilter", contests.size() >= MIN_SIZE_CONTEST_FILTER);
-        model.addAttribute("contestsSorted", new ContestsSortFilterBean(contests, sortFilterPage,
-                showActiveContests ? null : ContestsColumn.REFERENCE_DATE));
+        model.addAttribute("contestsSorted", new ContestsSortFilterBean(contests, sortFilterPage, showActiveContests ? null : ContestsColumn.REFERENCE_DATE));
         model.addAttribute("viewType", viewType);
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("showActiveContests", showActiveContests);
         model.addAttribute("showAllContests", showAllContests);
-        model.addAttribute("showContestDisplayOptions",
-                ConfigurationAttributeKey.SHOW_CONTESTS_DISPLAY_OPTIONS.get());
+        model.addAttribute("showContestDisplayOptions", ConfigurationAttributeKey.SHOW_CONTESTS_DISPLAY_OPTIONS.get());
         setSeoTexts(request, showAllContests ? "All contests" : showActiveContests ? "Active contests" : "Prior contests", null, null);
 
         return "contestsIndex";

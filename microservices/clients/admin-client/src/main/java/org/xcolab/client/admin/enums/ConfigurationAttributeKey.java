@@ -178,4 +178,9 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> MIT_HEADER_BAR_LINK_URL =
             ConfigurationAttributes.newStringAttribute("MIT_HEADER_BAR_LINK_URL")
                     .defaultValue("").build();
+
+    //Configuration of Collection Cards
+    public static final AttributeGetter<Boolean> COLAB_USES_CARDS =
+            ConfigurationAttributes.newBooleanAttribute("COLAB_USES_CARDS")
+                    .defaultValue(true).build();
 }
