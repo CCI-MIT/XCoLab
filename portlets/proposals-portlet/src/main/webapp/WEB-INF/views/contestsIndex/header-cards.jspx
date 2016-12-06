@@ -127,7 +127,7 @@
 		</div>
 		<c:if test="${not showOnlyFeatured}">
 			<div class="c-breadcrump">
-				<c:forEach var="collectionCard" items="${collectionHierarchy}" >
+				<c:forEach var="collectionCard" items="${collectionHierarchy}" varStatus="loop">
 					<portlet:renderURL var="changeToCollectionCardURL">
 						<portlet:param name="currentCollectionCardId" value="${collectionCard.id}" />
 						<portlet:param name="showActiveContests" value="${showActiveContests }" />
@@ -136,7 +136,9 @@
 					<a href="${changeToCollectionCardURL}">
 						${collectionCard.shortName}
 					</a>
-					<span> > </span>
+					<c:if test="${!loop.last}">
+						<span> > </span>
+					</c:if>
 				</c:forEach>
 			</div>
 		</c:if>
