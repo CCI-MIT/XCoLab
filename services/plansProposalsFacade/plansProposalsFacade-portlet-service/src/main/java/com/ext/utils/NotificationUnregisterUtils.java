@@ -1,9 +1,10 @@
 package com.ext.utils;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.ServiceContext;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.members.pojo.Member;
 
@@ -21,17 +22,12 @@ public class NotificationUnregisterUtils {
     private final static String DOMAIN_PLACEHOLDER = "DOMAIN";
 
     public static final int ACTIVITY_TYPE = 0;
-    public static final int MASSMESSAGING_TYPE = 1;
     
     private NotificationUnregisterUtils() {
     }
     
     public static String getUnregisterLink(ActivitySubscription subscription, ServiceContext serviceContext) {
         return getUnregisterLink(subscription, null, ACTIVITY_TYPE, serviceContext);
-    }
-    
-    public static String getMassmessagingUnregisterLink(Member user, ServiceContext serviceContext) {
-        return getUnregisterLink(null, user, MASSMESSAGING_TYPE, serviceContext);
     }
 
     public static String getActivityUnregisterLink(Member user, ServiceContext serviceContext) {
