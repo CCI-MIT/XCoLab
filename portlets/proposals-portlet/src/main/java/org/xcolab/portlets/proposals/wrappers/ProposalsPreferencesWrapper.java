@@ -5,7 +5,7 @@ import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.utils.emailnotification.EmailTemplateWrapper;
+import org.xcolab.entity.utils.email.notifications.EmailTemplateWrapper;
 
 import java.io.IOException;
 

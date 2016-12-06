@@ -49,8 +49,8 @@ import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.util.CountryUtil;
-import org.xcolab.utils.ModelAttributeUtil;
-import org.xcolab.utils.TemplateReplacementUtil;
+import org.xcolab.entity.utils.ModelAttributeUtil;
+import org.xcolab.entity.utils.TemplateReplacementUtil;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

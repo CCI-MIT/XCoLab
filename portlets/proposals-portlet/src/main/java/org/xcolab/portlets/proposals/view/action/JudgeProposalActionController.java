@@ -44,9 +44,9 @@ import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
-import org.xcolab.utils.judging.ProposalReview;
-import org.xcolab.utils.judging.ProposalReviewCsvExporter;
+import org.xcolab.entity.utils.judging.ProposalJudgingCommentHelper;
+import org.xcolab.entity.utils.judging.ProposalReview;
+import org.xcolab.entity.utils.judging.ProposalReviewCsvExporter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -219,7 +219,7 @@ public class JudgeProposalActionController {
                 Map<ProposalRatingType, List<Long>> ratingsPerType = new HashMap<>();
 
                 for (ProposalRating rating: ratings) {
-                    org.xcolab.utils.judging.ProposalRatingWrapper wrapper = new org.xcolab.utils.judging.ProposalRatingWrapper(rating);
+                    org.xcolab.entity.utils.judging.ProposalRatingWrapper wrapper = new org.xcolab.entity.utils.judging.ProposalRatingWrapper(rating);
                     if (ratingsPerType.get(wrapper.getRatingType()) == null) {
                         ratingsPerType.put(wrapper.getRatingType(), new ArrayList<Long>());
                     }

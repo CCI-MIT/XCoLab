@@ -38,8 +38,8 @@ import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.utils.emailnotification.proposal.ProposalMembershipInviteNotification;
-import org.xcolab.utils.emailnotification.proposal.ProposalUserActionNotification;
+import org.xcolab.entity.utils.email.notifications.proposal.ProposalMembershipInviteNotification;
+import org.xcolab.entity.utils.email.notifications.proposal.ProposalUserActionNotification;
 
 import java.io.IOException;
 import java.util.ArrayList;

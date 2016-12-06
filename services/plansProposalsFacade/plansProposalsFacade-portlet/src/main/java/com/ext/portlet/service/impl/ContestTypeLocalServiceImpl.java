@@ -1,17 +1,6 @@
 package com.ext.portlet.service.impl;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.base.ContestTypeLocalServiceBaseImpl;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import org.xcolab.enums.Plurality;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * The implementation of the contest type local service.

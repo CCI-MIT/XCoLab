@@ -1,6 +1,5 @@
 package org.xcolab.service.contest.utils.promotion.enums;
 
-
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 public enum ContestPhaseTypeValue {

@@ -51,7 +51,7 @@ import org.xcolab.liferay.LoginRegisterUtil;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.utils.ModelAttributeUtil;
+import org.xcolab.entity.utils.ModelAttributeUtil;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -80,7 +80,7 @@ public class MainViewController {
     public static final String SSO_TARGET_REGISTRATION = "SSO_TARGET_REGISTRATION";
     public static final String SSO_TARGET_LOGIN = "SSO_TARGET_LOGIN";
     public static final String PRE_LOGIN_REFERRER_KEY = "PRE_LOGIN_REFERRER_KEY";
-    
+
     private static final String USER_NAME_REGEX = "^[a-zA-Z0-9]+$";
 
     @Autowired

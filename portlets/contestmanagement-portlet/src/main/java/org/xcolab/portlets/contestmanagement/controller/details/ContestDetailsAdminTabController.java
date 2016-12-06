@@ -26,7 +26,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.emails.EmailClient;
-import org.xcolab.enums.ContestTier;
+import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestAdminBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
@@ -34,7 +34,7 @@ import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
-import org.xcolab.utils.TemplateReplacementUtil;
+import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.wrapper.TabWrapper;
 
 import java.io.IOException;

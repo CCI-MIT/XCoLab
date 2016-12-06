@@ -28,8 +28,8 @@ import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.utils.emailnotification.proposal.ProposalVoteNotification;
-import org.xcolab.utils.emailnotification.proposal.ProposalVoteValidityConfirmation;
+import org.xcolab.entity.utils.email.notifications.proposal.ProposalVoteNotification;
+import org.xcolab.entity.utils.email.notifications.proposal.ProposalVoteValidityConfirmation;
 
 import java.io.IOException;
 import java.sql.Timestamp;

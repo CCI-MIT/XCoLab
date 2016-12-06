@@ -1,8 +1,7 @@
 package org.xcolab.portlets.userprofile.validators;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.service.UserLocalServiceUtil;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.utils.validation.ConstraintValidatorHelper;
 
 import javax.validation.ConstraintValidatorContext;
@@ -26,10 +25,10 @@ public class UniqueEmailValidator extends CustomValidator<UniqueEmail> {
 
         boolean isValid = true;
         try {
-            UserLocalServiceUtil.getUserByEmailAddress(DEFAULT_COMPANY_ID, email);
+            MembersClient.findMemberByEmailAddress(email);
             isValid = false;
-        } catch (PortalException | SystemException e) {
-            // user not found .. it's ok
+        }  catch (MemberNotFoundException e) {
+            //user doesn't exist - we can proceed
         }
 
         processDefaultErrorMessage("User with given email already exists", isValid, context);

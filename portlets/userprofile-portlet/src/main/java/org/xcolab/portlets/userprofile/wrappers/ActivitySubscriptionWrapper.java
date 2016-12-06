@@ -3,7 +3,7 @@ package org.xcolab.portlets.userprofile.wrappers;
 import com.ext.portlet.Activity.SubscriptionType;
 
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.entity.utils.ActivitySubscriptionNameGenerator;
+import org.xcolab.entity.utils.activity.ActivitySubscriptionNameGenerator;
 
 import java.io.Serializable;
 import java.util.Date;

@@ -30,7 +30,7 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
-import org.xcolab.enums.ContestTier;
+import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.portlets.contestmanagement.beans.ContestBatchBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestCSVBean;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;

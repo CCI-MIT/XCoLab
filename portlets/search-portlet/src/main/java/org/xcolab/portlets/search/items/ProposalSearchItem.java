@@ -1,10 +1,5 @@
 package org.xcolab.portlets.search.items;
 
-
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
@@ -13,10 +8,10 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.search.pojo.SearchPojo;
-import org.xcolab.helpers.ProposalAttributeHelper;
 
 public class ProposalSearchItem extends AbstractSearchItem {
 
@@ -40,7 +35,8 @@ public class ProposalSearchItem extends AbstractSearchItem {
             this.searchQuery = searchQuery;
             proposalAttribute = ProposalAttributeClientUtil.getProposalAttribute(searchPojo.getClassPrimaryKey());
             proposal = ProposalClientUtil.getProposal(proposalAttribute.getProposalId());
-            ProposalAttributeHelper proposalAttributeHelper = new ProposalAttributeHelper(proposal);
+            ProposalAttributeHelper proposalAttributeHelper = new ProposalAttributeHelper(proposal,
+                    ProposalAttributeClientUtil.getClient());
 
             proposalName = proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.NAME, "");
 

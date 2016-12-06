@@ -2,6 +2,8 @@ package org.xcolab.activityEntry;
 
 import com.ext.utils.NotificationUnregisterUtils;
 import com.ext.utils.subscriptions.ActivitySubscriptionConstraint;
+import org.apache.commons.collections.comparators.ComparatorChain;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
@@ -10,15 +12,13 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.service.ServiceContext;
-import org.apache.commons.collections.comparators.ComparatorChain;
 
-import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
+import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
@@ -27,7 +27,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.utils.TemplateReplacementUtil;
+import org.xcolab.entity.utils.TemplateReplacementUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;

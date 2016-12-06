@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.contest.pojo.ContestSchedule;
-import org.xcolab.enums.ContestPhasePromoteType;
+import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;

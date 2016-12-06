@@ -18,7 +18,7 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.context.ClientHelper;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.utils.emailnotification.proposal.ProposalCreationNotification;
+import org.xcolab.entity.utils.email.notifications.proposal.ProposalCreationNotification;
 
 import java.util.HashSet;
 import java.util.Set;

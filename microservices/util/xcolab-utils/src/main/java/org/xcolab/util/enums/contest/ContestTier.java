@@ -1,6 +1,6 @@
 package org.xcolab.util.enums.contest;
 
-
+import org.springframework.util.Assert;
 
 public enum ContestTier {
     NONE(0L, "None"),
@@ -21,17 +21,18 @@ public enum ContestTier {
 
     private final String tierName;
 
-    ContestTier(long tierType, String tierName) {
+    ContestTier (long tierType, String tierName) {
         this.tierType = tierType;
         this.tierName = tierName;
     }
 
-    public static ContestTier getContestTierByTierType(Long tierType) {
+    public static ContestTier getContestTierByTierType(Long tierType)  {
+        Assert.notNull(tierType, "TierType cannot be null");
         for (ContestTier contestTier : ContestTier.values()) {
             if (contestTier.getTierType() == tierType) {
                 return contestTier;
             }
         }
-        return null;
+        throw new IllegalArgumentException("No ContestTierType " + tierType);
     }
 }

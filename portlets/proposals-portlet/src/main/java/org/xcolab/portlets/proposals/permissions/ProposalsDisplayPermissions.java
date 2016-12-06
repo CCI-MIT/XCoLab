@@ -2,16 +2,13 @@ package org.xcolab.portlets.proposals.permissions;
 
 import com.liferay.portal.model.MembershipRequestConstants;
 
-import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
-import org.xcolab.enums.MembershipRequestStatus;
 import org.xcolab.portlets.proposals.utils.context.ClientHelper;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.util.enums.activity.ActivityEntryType;
-import org.xcolab.util.http.client.RestService;
 
 import javax.portlet.PortletRequest;
 

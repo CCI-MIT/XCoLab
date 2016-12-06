@@ -29,7 +29,7 @@ import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.utils.emailnotification.contest.ContestCreationNotification;
+import org.xcolab.entity.utils.email.notifications.contest.ContestCreationNotification;
 import org.xcolab.wrapper.TabWrapper;
 
 import java.io.IOException;

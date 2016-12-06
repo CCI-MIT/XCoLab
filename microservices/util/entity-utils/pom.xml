@@ -42,6 +42,13 @@
         </dependency>
 
         <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
@@ -55,6 +62,11 @@
         <dependency>
             <groupId>org.xcolab.microservices.clients</groupId>
             <artifactId>contestproposal-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xcolab.microservices.clients</groupId>
+            <artifactId>emails-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
