@@ -1,0 +1,2 @@
+ALTER TABLE `xcolab_OntologyTerm`
+CHANGE COLUMN `id_` `id_` BIGINT(20) NOT NULL AUTO_INCREMENT ;

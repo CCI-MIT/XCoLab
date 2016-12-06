@@ -70,6 +70,12 @@ public final class OntologyClientUtil {
         return client.updateOntologyTerm(ontologyTerm);
     }
 
+    public static boolean deleteOntologyTerm(Long id_) {
+        return  client.deleteOntologyTerm(id_);
+    }
+
+
+
     public static Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
             Long focusAreaId,
             Long ontologyTermId) {

@@ -29,28 +29,26 @@
     <portlet:resourceURL var="saveOntologyTermURL" id="saveOntologyTerm">
     </portlet:resourceURL>
 
-
-    <portlet:resourceURL var="moveArticleVersionURL" id="moveArticleVersion">
+    <portlet:resourceURL var="deleteOntologyTermURL" id="deleteOntologyTerm">
     </portlet:resourceURL>
 
-    <portlet:resourceURL var="createArticleFolderURL" id="createArticleFolder">
-    </portlet:resourceURL>
+    <portlet:renderURL var="focusAreaEditorURL">
+        <portlet:param name="focusAreaEditor" value="true" />
+    </portlet:renderURL>
 
     <script>
         <![CDATA[
         var getOntologyTermURL = '${getOntologyTermURL}';
         var saveOntologyTermURL = '${saveOntologyTermURL}';
-        var moveArticleVersionURL = '${moveArticleVersionURL}';
-        var createArticleFolderURL = '${createArticleFolderURL}';
+        var deleteOntologyTermURL = '${deleteOntologyTermURL}';
+
+
+
         var ckEditor = null;
         var THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
         jQuery(document).ready(function () {
-
+            $("#deleteOntologyTerm").hide();
             $("#article-view").mask({'label':"Please click on an Ontology term or <br/>create a new one clicking on the add new term link!", spinner:false});
-
-
-
-
 
             $('#tree-view').tree({
                                      //data:data,
@@ -105,7 +103,7 @@
 
                         if (node) {
                             //$('#tree-view').tree('selectNode', node);
-                            newArticleAtFolderId(node.id, node.name);
+                            newOntologyTermAtOntologyTerm(node.id, node.name);
                         }
                         event.preventDefault();
                         return false;
@@ -119,7 +117,7 @@
                         if(node.kind == "folder"){
                             $("#article-view").unmask();
                             $("#article-view").mask();
-                            loadArticleVersionContent(node.id, node.parent.name);
+                            loadOntologyTerm(node.id, node.parent.name);
                         }else{
                             /*
                             event.preventDefault();
@@ -138,6 +136,13 @@
 
                     saveOntologyTerm();
             });
+            $("#deleteOntologyTerm").click(function(){
+
+                var r = confirm("Are you sure you want to delete this ontology term?!\n All the child terms will also be deleted");
+                if (r == true) {
+                    deleteOntologyTerm();
+                }
+            });
             $('#contentArticleTitle').bind('input', function() {
                 if ($("#folderName").html().indexOf("Wiki") !== -1) {
                     updateArticleURL("Wiki", $('#contentArticleTitle').val().replace(/ /g,"+"));
@@ -147,29 +152,26 @@
                 }
             });
         });
-        function addVersionEntry(dateOfEdit, versionId){
-            var cell = $('<li>');
-            cell.attr("id","articleVersionId_"+versionId);
-            cell.attr("class","articleVersionClass");
-            cell.html(dateOfEdit)
-            return cell;
-        }
-        function newArticleAtFolderId(folderId, folderName){
-            var idz = folderId.split("_");
-            $("#article-view").unmask()
 
-
+        function clearForm(){
             $('#ontologyTermId').val("0");
             $('#ontologyTermDescriptionUrl').val("");
             $('#ontologyTermOrder').val(0);
             $('#ontologyTermName').val("");
+            $('#ontologySpaceId').val("");
+            $('#ontologyTermParentId').val("");
+            $("#deleteOntologyTerm").hide();
+        }
+        function newOntologyTermAtOntologyTerm(folderId, folderName){
+            var idz = folderId.split("_");
+            $("#article-view").unmask()
+            clearForm();
             $('#ontologySpaceId').val(idz[0]);
             $('#ontologyTermParentId').val(idz[1]);
-
             $('#ontologyTermId').focus();
         }
 
-        function loadArticleVersionContent(id, folderName){
+        function loadOntologyTerm(id, folderName){
 
             var url = getOntologyTermURL;
             var ontId = id.split("_");
@@ -189,11 +191,29 @@
                 $('#ontologySpaceId').val(data.ontologySpaceId);
                 $('#ontologyTermParentId').val(data.parentId);
 
-
+                $("#deleteOntologyTerm").show();
                 $("#article-view").unmask()
 
             });
 
+        }
+        function deleteOntologyTerm(){
+            $("#article-view").mask()
+            var url = deleteOntologyTermURL;
+
+            var id = $('#ontologyTermId').val();
+            var parameters={id : id};
+            $.post(url ,parameters , function (response) {
+                var responseData = JSON.parse(response);
+                var data = responseData;
+                $("#infoBox").html("Ontology term deleted successfully!");
+                $("#infoBox").show();
+                $("#infoBox").delay(5000).fadeOut('slow');
+                $("#article-view").unmask()
+                clearForm();
+                $("#article-view").mask({'label':"Please click on an Ontology term or <br/>create a new one clicking on the add new term link!", spinner:false});
+                $('#tree-view').tree('reload');
+            });
         }
         function saveOntologyTerm(){
 
@@ -225,51 +245,18 @@
 
             });
         }
-        function moveArticle(articleId, folderId, folderName){
-                var articleIdNoThreshold = articleId - THRESHOLD_TO_AVOID_NODE_COLISION;
-                $(".treeContainer").mask();
-                var url = moveArticleVersionURL;
 
-                var parameters={articleId : articleIdNoThreshold, folderId: folderId };
 
-                $.post(url ,parameters , function (response) {
-                    var responseData = JSON.parse(response);
-                    var data = responseData;
-                    $("#infoBox").html("Article moved successfully!");
-                    $("#infoBox").show();
-                    $("#infoBox").delay(5000).fadeOut('slow');
-                    $('#tree-view').tree('reload');
-                    $(".treeContainer").unmask()
-                    loadArticleVersionContent(articleId, folderName);
 
-                });
-
-        }
-
-        function createFolder( parentFolderId, folderName){
-
-            $(".treeContainer").mask();
-            var url = createArticleFolderURL;
-
-            var parameters={parentFolderId : parentFolderId, folderName: folderName };
-
-            $.post(url ,parameters , function (response) {
-                var responseData = JSON.parse(response);
-                var data = responseData;
-                $("#infoBox").html("Folder created successfully!");
-                $("#infoBox").show();
-                $("#infoBox").delay(5000).fadeOut('slow');
-                $('#tree-view').tree('reload');
-                $(".treeContainer").unmask()
-
-            });
-
-        }
         ]]>
     </script>
     <div class="contentEditor">
         <div class="contentBody">
-            <h2>Ontology Editor</h2>
+            <ul class="c-TabBar clearfix">
+                <li class="c-TabBar__tab--first active"><a>Ontology Editor</a></li>
+                <li class="c-TabBar__tab "><a href="${focusAreaEditorURL}">Focus area editor</a></li>
+            </ul>
+
             <div id="infoBox"><!-- --></div>
             <div  id="innerContent" class="addpropbox">
                 <div class="colFloatLef">
@@ -294,6 +281,7 @@
                         </div>
                         <div id="folderName">Parent term: <!-- --></div>
                         <br/>
+                        <div class="floatRight outerVerticalCenter" id="deleteOntologyTerm" ><a  class="c-Button__primary" href="#">Delete</a></div>
                         <div class="floatRight outerVerticalCenter" id="saveOntologyTerm" ><a  class="c-Button__primary" href="#">Save</a></div>
                     </div>
                 </div>

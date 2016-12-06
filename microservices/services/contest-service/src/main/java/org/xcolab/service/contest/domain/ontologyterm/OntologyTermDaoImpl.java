@@ -59,6 +59,12 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
                 .where(ONTOLOGY_TERM.ID_.eq(ontologyTerm.getId_()))
                 .execute() > 0;
     }
+    @Override
+    public int delete(Long id_) {
+        return dslContext.deleteFrom(ONTOLOGY_TERM)
+                .where(ONTOLOGY_TERM.ID_.eq(id_))
+                .execute();
+    }
 
     public OntologyTerm create(OntologyTerm ontologyTerm) {
 

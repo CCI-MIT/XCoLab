@@ -10,4 +10,5 @@ public interface OntologyTermDao {
     List<OntologyTerm> findByGiven(String name, Long parentId, Long ontologySpaceId);
     boolean update(OntologyTerm ontologyTerm);
     OntologyTerm create(OntologyTerm ontologyTerm);
+    int delete(Long id_);
 }

@@ -130,6 +130,11 @@ public class OntologyClient {
                 .execute();
     }
 
+    public boolean deleteOntologyTerm(Long id_) {
+        return  ontologyTermResource.delete(id_).execute();
+    }
+
+
 
 
     public Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(

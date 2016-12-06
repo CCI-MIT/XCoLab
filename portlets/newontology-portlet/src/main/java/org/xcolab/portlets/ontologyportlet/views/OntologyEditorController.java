@@ -37,7 +37,7 @@ public class OntologyEditorController {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
         if (PermissionsClient.canAdminAll(themeDisplay.getUserId())) {
-            return "editor";
+            return "ontologyEditor";
         } else {
             return "notAllowed";
         }
@@ -131,6 +131,25 @@ public class OntologyEditorController {
 
     }
 
+    private void deleteOntologyTermAndChildren(Long id){
+        OntologyTerm ot = OntologyClientUtil.getOntologyTerm(id);
+        List<OntologyTerm> children = ot.getChildren();
+        if(children!=null){
+            for(OntologyTerm child : children){
+                deleteOntologyTermAndChildren(child.getId_());
+            }
+        }
+        OntologyClientUtil.deleteOntologyTerm(id);
+    }
+
+    @ResourceMapping("deleteOntologyTerm")
+    public void deleteOntologyTerm(ResourceRequest request, ResourceResponse response,
+            @RequestParam(required = false) Long id) throws IOException {
+        if(id !=null && id != 0l) {
+            deleteOntologyTermAndChildren(id);
+        }
+        defaultOperationReturnMessage(true, "Ontology term deleted successfully", response);
+    }
     @ResourceMapping("saveOntologyTerm")
     public void saveOntologyTerm(ResourceRequest request, ResourceResponse response,
             @RequestParam(required = false) Long id,
@@ -145,7 +164,7 @@ public class OntologyEditorController {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
-        if(id !=null ) {
+        if(id !=null && id != 0l) {
             OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(id);
             ontologyTerm.setDescriptionUrl(descriptionUrl);
             ontologyTerm.setOrder_(order);

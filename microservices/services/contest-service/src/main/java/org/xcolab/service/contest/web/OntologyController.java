@@ -94,6 +94,23 @@ public class OntologyController {
         }
     }
 
+    @RequestMapping(value = "/ontologyTerms/{id_}", method = RequestMethod.DELETE)
+    public String deleteOntologyTerm(@PathVariable("id_") Long id_)
+            throws NotFoundException {
+
+        if (id_ == null || id_ == 0) {
+            throw new NotFoundException("No OntologyTerm with id given");
+        } else {
+            OntologyTerm ontologyTerm = this.ontologyTermDao.get(id_);
+            if (ontologyTerm != null) {
+                this.ontologyTermDao.delete(ontologyTerm.getId_());
+                return "OntologyTerm deleted successfully";
+            } else {
+                throw new NotFoundException("No OntologyTerm with id given");
+            }
+        }
+    }
+
     @RequestMapping(value = "/ontologyTerms", method = RequestMethod.POST)
     public OntologyTerm createOntologyTerm(@RequestBody OntologyTerm ontologyTerm) {
         return this.ontologyTermDao.create(ontologyTerm);
