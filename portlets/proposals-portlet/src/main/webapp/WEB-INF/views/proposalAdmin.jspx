@@ -218,11 +218,6 @@
                         </div>
                     </div>
                 </div>
-                <script>
-            		jQuery(function() {
-            			triggerHistoryVisibility();
-            		});
-            	</script>
             </div>
         </div>
     </div>
@@ -252,7 +247,10 @@
 				version: ${proposal.version},
                 contestPhaseId :  ${proposal.contestPhase.contestPhasePK},
                 contestPK: ${proposal.contestPK}
-		}
+		};
+		jQuery(function() {
+            loadHistoryForVersion(${proposal.version});
+		});
 	</script>
 
 

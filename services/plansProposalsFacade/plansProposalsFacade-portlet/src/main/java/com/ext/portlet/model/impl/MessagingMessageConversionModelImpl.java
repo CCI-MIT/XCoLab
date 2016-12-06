@@ -58,7 +58,7 @@ public class MessagingMessageConversionModelImpl extends BaseModelImpl<Messaging
             { "extraData2", Types.VARCHAR },
             { "createDate", Types.TIMESTAMP }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingMessageConversion (conversionId LONG not null primary key,conversionTypeId LONG,messageId LONG,ipAddress VARCHAR(75) null,extraData VARCHAR(2048) null,extraData2 VARCHAR(2048) null,createDate DATE null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingMessageConversion (conversionId LONG not null primary key,conversionTypeId LONG,messageId LONG,ipAddress VARCHAR(75) null,extraData VARCHAR(75) null,extraData2 VARCHAR(75) null,createDate DATE null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_MessagingMessageConversion";
     public static final String ORDER_BY_JPQL = " ORDER BY messagingMessageConversion.conversionId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_MessagingMessageConversion.conversionId ASC";

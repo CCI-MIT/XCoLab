@@ -270,23 +270,6 @@ public class EmailListLocalServiceWrapper implements EmailListLocalService,
             arguments);
     }
 
-    @Override
-    public com.ext.portlet.model.EmailList findByListNameEmailAddress(
-        java.lang.String listName, java.lang.String emailAddress)
-        throws com.ext.portlet.NoSuchEmailListException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _emailListLocalService.findByListNameEmailAddress(listName,
-            emailAddress);
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.EmailList> findByListName(
-        java.lang.String listName)
-        throws com.ext.portlet.NoSuchEmailListException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _emailListLocalService.findByListName(listName);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

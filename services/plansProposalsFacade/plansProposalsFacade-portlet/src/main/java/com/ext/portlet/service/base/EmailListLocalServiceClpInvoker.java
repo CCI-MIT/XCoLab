@@ -45,10 +45,6 @@ public class EmailListLocalServiceClpInvoker {
     private String[] _methodParameterTypes398;
     private String _methodName399;
     private String[] _methodParameterTypes399;
-    private String _methodName404;
-    private String[] _methodParameterTypes404;
-    private String _methodName405;
-    private String[] _methodParameterTypes405;
 
     public EmailListLocalServiceClpInvoker() {
         _methodName0 = "addEmailList";
@@ -134,16 +130,6 @@ public class EmailListLocalServiceClpInvoker {
         _methodName399 = "setBeanIdentifier";
 
         _methodParameterTypes399 = new String[] { "java.lang.String" };
-
-        _methodName404 = "findByListNameEmailAddress";
-
-        _methodParameterTypes404 = new String[] {
-                "java.lang.String", "java.lang.String"
-            };
-
-        _methodName405 = "findByListName";
-
-        _methodParameterTypes405 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -245,17 +231,6 @@ public class EmailListLocalServiceClpInvoker {
             EmailListLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
-        }
-
-        if (_methodName404.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes404, parameterTypes)) {
-            return EmailListLocalServiceUtil.findByListNameEmailAddress((java.lang.String) arguments[0],
-                (java.lang.String) arguments[1]);
-        }
-
-        if (_methodName405.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes405, parameterTypes)) {
-            return EmailListLocalServiceUtil.findByListName((java.lang.String) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

@@ -27,14 +27,6 @@
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.massmessaging.MassMessagingFilter</servlet-filter-impl>
 	</servlet-filter>
 	<servlet-filter>
-		<servlet-filter-name>Landingpage</servlet-filter-name>
-		<servlet-filter-impl>org.xcolab.hooks.climatecolab.landingpage.LandingpageFilter</servlet-filter-impl>
-	</servlet-filter>
-	<servlet-filter>
-		<servlet-filter-name>Landingpage</servlet-filter-name>
-		<servlet-filter-impl>org.xcolab.hooks.climatecolab.landingpage.LandingpageFilter</servlet-filter-impl>
-	</servlet-filter>
-	<servlet-filter>
 		<servlet-filter-name>SessionPingFilter</servlet-filter-name>
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.sessionping.SessionPingFilter</servlet-filter-impl>
 	</servlet-filter>

@@ -53,7 +53,7 @@ public class ImpactDefaultSeriesModelImpl extends BaseModelImpl<ImpactDefaultSer
             { "visible", Types.BOOLEAN },
             { "editable", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ImpactDefaultSeries (seriesId LONG not null,name VARCHAR(75) not null,description VARCHAR(1000) null,focusAreaId LONG,visible BOOLEAN,editable BOOLEAN,primary key (seriesId, name))";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ImpactDefaultSeries (seriesId LONG not null,name VARCHAR(75) not null,description VARCHAR(75) null,focusAreaId LONG,visible BOOLEAN,editable BOOLEAN,primary key (seriesId, name))";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ImpactDefaultSeries";
     public static final String ORDER_BY_JPQL = " ORDER BY impactDefaultSeries.id.seriesId ASC, impactDefaultSeries.id.name ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ImpactDefaultSeries.seriesId ASC, xcolab_ImpactDefaultSeries.name ASC";

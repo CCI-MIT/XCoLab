@@ -243,4 +243,8 @@ public class ContestPhase extends AbstractContestPhase {
     public String getContestPhaseUrl() {
         return this.getContestPhaseLinkUrl();
     }
+
+    public Contest getContest() {
+        return contestClient.getContest(getContestPK());
+    }
 }

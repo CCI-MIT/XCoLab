@@ -236,11 +236,4 @@ public interface LandingPageLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    public com.ext.portlet.model.LandingPage createNewLandingPage(
-        java.lang.String baseUrl, java.lang.String targetUrl)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public void store(com.ext.portlet.model.LandingPage landingPage)
-        throws com.liferay.portal.kernel.exception.SystemException;
 }

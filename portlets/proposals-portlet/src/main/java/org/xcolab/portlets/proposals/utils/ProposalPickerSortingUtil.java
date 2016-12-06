@@ -250,10 +250,11 @@ public class ProposalPickerSortingUtil {
                         @Override
                         public int compare(Pair<Proposal, Date> o1,
                                 Pair<Proposal, Date> o2) {
-                            return sortOrderModifier * (int) (CommentClientUtil
-                                    .countComments(o1.getLeft().getDiscussionId())
-                                    - CommentClientUtil
-                                    .countComments(o2.getLeft().getDiscussionId()));
+                            return sortOrderModifier *
+                                    (CommentClientUtil
+                                            .countComments(o1.getLeft().getDiscussionId())
+                                            - CommentClientUtil
+                                            .countComments(o2.getLeft().getDiscussionId()));
                         }
                     });
                     break;

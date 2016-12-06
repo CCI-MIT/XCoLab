@@ -13,8 +13,6 @@ public class ProposalUnversionedAttributeServiceClpInvoker {
     private String[] _methodParameterTypes382;
     private String _methodName383;
     private String[] _methodParameterTypes383;
-    private String _methodName388;
-    private String[] _methodParameterTypes388;
 
     public ProposalUnversionedAttributeServiceClpInvoker() {
         _methodName382 = "getBeanIdentifier";
@@ -24,10 +22,6 @@ public class ProposalUnversionedAttributeServiceClpInvoker {
         _methodName383 = "setBeanIdentifier";
 
         _methodParameterTypes383 = new String[] { "java.lang.String" };
-
-        _methodName388 = "getAttributes";
-
-        _methodParameterTypes388 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -42,11 +36,6 @@ public class ProposalUnversionedAttributeServiceClpInvoker {
             ProposalUnversionedAttributeServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
-        }
-
-        if (_methodName388.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes388, parameterTypes)) {
-            return ProposalUnversionedAttributeServiceUtil.getAttributes(((Long) arguments[0]).longValue());
         }
 
         throw new UnsupportedOperationException();

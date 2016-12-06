@@ -334,23 +334,22 @@ public class Proposal extends AbstractProposal {
         return null;
     }
 
-
-
     public String getProposalLinkUrl(Contest contest) {
         return getProposalLinkUrl(contest, 0L);
     }
 
     public String getProposalLinkUrl(Contest contest, long contestPhaseId) {
-        String link = "/";
         Long proposalId = this.getProposalId();
         ContestType contestType;
-        if(contest.getIsSharedContest() && ! contest.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME.get())) {
-            contestType =
-                    ContestClientUtil.getClient().getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
-        }else{
+        if (contest.getIsSharedContest()
+                && !contest.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME.get())) {
+            contestType = ContestClientUtil.getClient()
+                    .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
+        } else {
             contestType =
                     contestClient.getContestType(contest.getContestTypeId());
         }
+        String link = "/";
         link += contestType.getFriendlyUrlStringContests();
 
         String friendlyUrlStringProposal = contestType.getFriendlyUrlStringProposal();
@@ -374,8 +373,6 @@ public class Proposal extends AbstractProposal {
         return String
                 .format(link, contest.getContestYear(), contest.getContestUrlName(), proposalId);
     }
-
-
 
     public boolean isDeleted() {
         if (this.getProposalId() == 0) {
@@ -499,11 +496,11 @@ public class Proposal extends AbstractProposal {
 
 
     public boolean isOpen() {
-        if( this.getProposalId() > 0 ) {
+        if (this.getProposalId() > 0) {
             ProposalAttribute attribute = proposalAttributeClient
                     .getProposalAttribute(this.getProposalId(), ProposalAttributeKeys.OPEN, 0L);
             return attribute != null && attribute.getNumericValue() > 0;
-        }else{
+        } else {
             return false;
         }
     }

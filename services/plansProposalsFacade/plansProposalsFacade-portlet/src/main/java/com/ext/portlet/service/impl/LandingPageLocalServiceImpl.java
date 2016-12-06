@@ -27,26 +27,4 @@ public class LandingPageLocalServiceImpl extends LandingPageLocalServiceBaseImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.LandingPageLocalServiceUtil} to access the landing page local service.
      */
-    @Override
-    public LandingPage createNewLandingPage(String baseUrl, String targetUrl) throws SystemException {
-        Long id = CounterLocalServiceUtil.increment(LandingPage.class.getName());
-        
-        LandingPage lp = createLandingPage(id);
-        lp.setUpdated(new Date());
-        lp.setBaseUrl(baseUrl);
-        lp.setTargetUrl(targetUrl);
-        
-        return lp;
-        
-    }
-    
-    @Override
-    public void store(LandingPage landingPage) throws SystemException {
-        if (landingPage.isNew()) {
-            addLandingPage(landingPage);
-        }
-        else {
-            updateLandingPage(landingPage);
-        }
-    }
 }

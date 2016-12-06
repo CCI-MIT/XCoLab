@@ -57,7 +57,7 @@ public class ModelInputItemModelImpl extends BaseModelImpl<ModelInputItem>
             { "type_", Types.VARCHAR },
             { "properties", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ModelInputItem (modelInputItemPK LONG not null primary key,modelId LONG,modelInputItemID LONG,modelGroupId LONG,displayItemOrder INTEGER,type_ VARCHAR(256) null,properties VARCHAR(2048) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ModelInputItem (modelInputItemPK LONG not null primary key,modelId LONG,modelInputItemID LONG,modelGroupId LONG,displayItemOrder INTEGER,type_ VARCHAR(75) null,properties VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ModelInputItem";
     public static final String ORDER_BY_JPQL = " ORDER BY modelInputItem.modelInputItemPK ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ModelInputItem.modelInputItemPK ASC";

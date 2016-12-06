@@ -59,7 +59,7 @@ public class ModelOutputChartOrderModelImpl extends BaseModelImpl<ModelOutputCha
             { "modelIndexErrorMessage", Types.VARCHAR },
             { "modelChartIsVisible", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ModelOutputChartOrder (modelOutputChartOrderPK LONG not null primary key,modelId LONG,modelOutputLabel VARCHAR(1024) null,modelOutputChartOrder INTEGER,modelIndexRangePolicy VARCHAR(2048) null,modelIndexRangeMessage VARCHAR(2048) null,modelIndexErrorPolicy VARCHAR(2048) null,modelIndexErrorMessage VARCHAR(2048) null,modelChartIsVisible BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ModelOutputChartOrder (modelOutputChartOrderPK LONG not null primary key,modelId LONG,modelOutputLabel VARCHAR(75) null,modelOutputChartOrder INTEGER,modelIndexRangePolicy VARCHAR(75) null,modelIndexRangeMessage VARCHAR(75) null,modelIndexErrorPolicy VARCHAR(75) null,modelIndexErrorMessage VARCHAR(75) null,modelChartIsVisible BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ModelOutputChartOrder";
     public static final String ORDER_BY_JPQL = " ORDER BY modelOutputChartOrder.modelOutputChartOrderPK ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ModelOutputChartOrder.modelOutputChartOrderPK ASC";

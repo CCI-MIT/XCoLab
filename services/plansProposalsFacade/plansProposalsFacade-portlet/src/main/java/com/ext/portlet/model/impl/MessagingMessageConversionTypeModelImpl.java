@@ -53,7 +53,7 @@ public class MessagingMessageConversionTypeModelImpl extends BaseModelImpl<Messa
             { "name", Types.VARCHAR },
             { "description", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingMessageConversionType (typeId LONG not null primary key,name VARCHAR(1024) null,description VARCHAR(2048) null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingMessageConversionType (typeId LONG not null primary key,name VARCHAR(75) null,description VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_MessagingMessageConversionType";
     public static final String ORDER_BY_JPQL = " ORDER BY messagingMessageConversionType.typeId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_MessagingMessageConversionType.typeId ASC";

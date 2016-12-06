@@ -278,13 +278,6 @@ public class ContestEmailTemplateLocalServiceWrapper
             parameterTypes, arguments);
     }
 
-    @Override
-    public com.ext.portlet.model.ContestEmailTemplate getEmailTemplateByType(
-        java.lang.String type)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestEmailTemplateLocalService.getEmailTemplateByType(type);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

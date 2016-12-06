@@ -44,10 +44,6 @@ public class EmailListLocalServiceClp implements EmailListLocalService {
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
-    private String _methodName19;
-    private String[] _methodParameterTypes19;
-    private String _methodName20;
-    private String[] _methodParameterTypes20;
 
     public EmailListLocalServiceClp(InvokableLocalService invokableLocalService) {
         _invokableLocalService = invokableLocalService;
@@ -135,16 +131,6 @@ public class EmailListLocalServiceClp implements EmailListLocalService {
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
-
-        _methodName19 = "findByListNameEmailAddress";
-
-        _methodParameterTypes19 = new String[] {
-                "java.lang.String", "java.lang.String"
-            };
-
-        _methodName20 = "findByListName";
-
-        _methodParameterTypes20 = new String[] { "java.lang.String" };
     }
 
     @Override
@@ -655,75 +641,5 @@ public class EmailListLocalServiceClp implements EmailListLocalService {
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public com.ext.portlet.model.EmailList findByListNameEmailAddress(
-        java.lang.String listName, java.lang.String emailAddress)
-        throws com.ext.portlet.NoSuchEmailListException,
-            com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19,
-                    new Object[] {
-                        ClpSerializer.translateInput(listName),
-                        
-                    ClpSerializer.translateInput(emailAddress)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.ext.portlet.NoSuchEmailListException) {
-                throw (com.ext.portlet.NoSuchEmailListException) t;
-            }
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.EmailList) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.EmailList> findByListName(
-        java.lang.String listName)
-        throws com.ext.portlet.NoSuchEmailListException,
-            com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName20,
-                    _methodParameterTypes20,
-                    new Object[] { ClpSerializer.translateInput(listName) });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.ext.portlet.NoSuchEmailListException) {
-                throw (com.ext.portlet.NoSuchEmailListException) t;
-            }
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.List<com.ext.portlet.model.EmailList>) ClpSerializer.translateOutput(returnObj);
     }
 }

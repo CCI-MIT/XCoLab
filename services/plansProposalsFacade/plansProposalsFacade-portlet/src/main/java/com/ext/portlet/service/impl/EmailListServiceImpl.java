@@ -22,7 +22,4 @@ public class EmailListServiceImpl extends EmailListServiceBaseImpl {
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.EmailListServiceUtil} to access the email list remote service.
      */
-    public String helloWorld(String listName, String email) {
-        return "hello world!";
-    }
 }

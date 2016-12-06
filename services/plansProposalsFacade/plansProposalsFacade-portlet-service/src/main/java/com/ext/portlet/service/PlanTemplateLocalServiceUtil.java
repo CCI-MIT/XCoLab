@@ -259,41 +259,6 @@ public class PlanTemplateLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static void store(com.ext.portlet.model.PlanTemplate template)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getService().store(template);
-    }
-
-    public static java.util.List<com.ext.portlet.model.PlanSectionDefinition> getSections(
-        com.ext.portlet.model.PlanTemplate template)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().getSections(template);
-    }
-
-    public static void addSection(com.ext.portlet.model.PlanTemplate template,
-        com.ext.portlet.model.PlanSectionDefinition section)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getService().addSection(template, section);
-    }
-
-    public static void removeSection(
-        com.ext.portlet.model.PlanTemplate template,
-        com.ext.portlet.model.PlanSectionDefinition section)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getService().removeSection(template, section);
-    }
-
-    public static void updateSectionWeight(
-        com.ext.portlet.model.PlanTemplate template,
-        com.ext.portlet.model.PlanSectionDefinition section, int weight)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getService().updateSectionWeight(template, section, weight);
-    }
-
     public static void clearService() {
         _service = null;
     }

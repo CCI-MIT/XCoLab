@@ -45,8 +45,6 @@ public class ContestPhaseColumnLocalServiceClpInvoker {
     private String[] _methodParameterTypes398;
     private String _methodName399;
     private String[] _methodParameterTypes399;
-    private String _methodName404;
-    private String[] _methodParameterTypes404;
 
     public ContestPhaseColumnLocalServiceClpInvoker() {
         _methodName0 = "addContestPhaseColumn";
@@ -138,10 +136,6 @@ public class ContestPhaseColumnLocalServiceClpInvoker {
         _methodName399 = "setBeanIdentifier";
 
         _methodParameterTypes399 = new String[] { "java.lang.String" };
-
-        _methodName404 = "getPhaseColumns";
-
-        _methodParameterTypes404 = new String[] { "java.lang.Long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -243,11 +237,6 @@ public class ContestPhaseColumnLocalServiceClpInvoker {
             ContestPhaseColumnLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
-        }
-
-        if (_methodName404.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes404, parameterTypes)) {
-            return ContestPhaseColumnLocalServiceUtil.getPhaseColumns((java.lang.Long) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

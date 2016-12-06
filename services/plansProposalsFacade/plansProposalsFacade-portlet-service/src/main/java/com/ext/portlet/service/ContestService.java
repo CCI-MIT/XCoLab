@@ -4,7 +4,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.jsonwebservice.JSONWebService;
 import com.liferay.portal.kernel.transaction.Isolation;
-import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.security.ac.AccessControlled;
 import com.liferay.portal.service.BaseService;
@@ -51,17 +50,4 @@ public interface ContestService extends BaseService, InvokableService {
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    /**
-    * Returns a list of open contest for regular users and returns all contests for staff users
-    *
-    * @throws PortalException
-    * @throws SystemException
-    */
-    @com.liferay.portal.kernel.jsonwebservice.JSONWebService
-    @com.liferay.portal.security.ac.AccessControlled(guestAccessEnabled = true)
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.ext.portlet.model.Contest> getContestsOpenForProposals()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
 }

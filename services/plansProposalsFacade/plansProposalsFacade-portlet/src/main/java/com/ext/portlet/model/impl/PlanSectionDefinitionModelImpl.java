@@ -53,8 +53,8 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
             { "type_", Types.VARCHAR },
             { "adminTitle", Types.VARCHAR },
             { "title", Types.VARCHAR },
-            { "defaultText", Types.CLOB },
-            { "helpText", Types.CLOB },
+            { "defaultText", Types.VARCHAR },
+            { "helpText", Types.VARCHAR },
             { "characterLimit", Types.INTEGER },
             { "focusAreaId", Types.BIGINT },
             { "tier", Types.BIGINT },
@@ -64,7 +64,7 @@ public class PlanSectionDefinitionModelImpl extends BaseModelImpl<PlanSectionDef
             { "locked", Types.BOOLEAN },
             { "contestIntegrationRelevance", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanSectionDefinition (id_ LONG not null primary key,type_ VARCHAR(75) null,adminTitle VARCHAR(1024) null,title VARCHAR(1024) null,defaultText TEXT null,helpText TEXT null,characterLimit INTEGER,focusAreaId LONG,tier LONG,allowedContestTypeIds VARCHAR(75) null,allowedValues VARCHAR(75) null,additionalIds VARCHAR(75) null,locked BOOLEAN,contestIntegrationRelevance BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_PlanSectionDefinition (id_ LONG not null primary key,type_ VARCHAR(75) null,adminTitle VARCHAR(75) null,title VARCHAR(75) null,defaultText VARCHAR(75) null,helpText VARCHAR(75) null,characterLimit INTEGER,focusAreaId LONG,tier LONG,allowedContestTypeIds VARCHAR(75) null,allowedValues VARCHAR(75) null,additionalIds VARCHAR(75) null,locked BOOLEAN,contestIntegrationRelevance BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_PlanSectionDefinition";
     public static final String ORDER_BY_JPQL = " ORDER BY planSectionDefinition.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_PlanSectionDefinition.id_ ASC";

@@ -48,7 +48,7 @@ import org.xcolab.portlets.userprofile.utils.UserProfilePermissions;
 import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.utils.CountryUtil;
+import org.xcolab.util.CountryUtil;
 import org.xcolab.utils.ModelAttributeUtil;
 import org.xcolab.utils.TemplateReplacementUtil;
 

@@ -50,7 +50,6 @@ public class Contest extends AbstractContest {
     private CommentClient commentClient;
     private ThreadClient threadClient;
 
-    //private final static Log _log = LogFactoryUtil.getLog(Contest.class);
     private final static Map<Long, FocusArea> faCache = new HashMap<>();
     private final Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<>();
 
@@ -111,12 +110,12 @@ public class Contest extends AbstractContest {
         }
     }
 
-    public Contest(AbstractContest abstractContest, RestService restServicez) {
+    public Contest(AbstractContest abstractContest, RestService restService) {
         super(abstractContest);
-        this.restService = restServicez;
-        contestClient = ContestClient.fromService(restService);
-        contestTeamMemberClient = ContestTeamMemberClient.fromService(restService);
-        ontologyClient = OntologyClient.fromService(restService);
+        this.restService = restService;
+        contestClient = ContestClient.fromService(this.restService);
+        contestTeamMemberClient = ContestTeamMemberClient.fromService(this.restService);
+        ontologyClient = OntologyClient.fromService(this.restService);
         RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
         commentClient = CommentClient.fromService(commentService);
         threadClient = ThreadClient.fromService(commentService);

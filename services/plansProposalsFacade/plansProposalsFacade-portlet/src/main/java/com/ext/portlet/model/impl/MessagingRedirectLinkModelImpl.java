@@ -55,7 +55,7 @@ public class MessagingRedirectLinkModelImpl extends BaseModelImpl<MessagingRedir
             { "messageId", Types.BIGINT },
             { "createDate", Types.TIMESTAMP }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingRedirectLink (redirectId LONG not null primary key,link VARCHAR(1024) null,messageId LONG,createDate DATE null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_MessagingRedirectLink (redirectId LONG not null primary key,link VARCHAR(75) null,messageId LONG,createDate DATE null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_MessagingRedirectLink";
     public static final String ORDER_BY_JPQL = " ORDER BY messagingRedirectLink.redirectId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_MessagingRedirectLink.redirectId ASC";

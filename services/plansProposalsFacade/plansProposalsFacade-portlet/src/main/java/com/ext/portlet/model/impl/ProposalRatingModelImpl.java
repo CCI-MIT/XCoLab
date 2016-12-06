@@ -56,12 +56,12 @@ public class ProposalRatingModelImpl extends BaseModelImpl<ProposalRating>
             { "contestPhaseId", Types.BIGINT },
             { "userId", Types.BIGINT },
             { "ratingValueId", Types.BIGINT },
-            { "comment_", Types.CLOB },
+            { "comment_", Types.VARCHAR },
             { "commentEnabled", Types.BOOLEAN },
             { "otherDataString", Types.VARCHAR },
             { "onlyForInternalUsage", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalRating (id_ LONG not null primary key,proposalId LONG,contestPhaseId LONG,userId LONG,ratingValueId LONG,comment_ TEXT null,commentEnabled BOOLEAN,otherDataString VARCHAR(75) null,onlyForInternalUsage BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalRating (id_ LONG not null primary key,proposalId LONG,contestPhaseId LONG,userId LONG,ratingValueId LONG,comment_ VARCHAR(75) null,commentEnabled BOOLEAN,otherDataString VARCHAR(75) null,onlyForInternalUsage BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ProposalRating";
     public static final String ORDER_BY_JPQL = " ORDER BY proposalRating.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ProposalRating.id_ ASC";

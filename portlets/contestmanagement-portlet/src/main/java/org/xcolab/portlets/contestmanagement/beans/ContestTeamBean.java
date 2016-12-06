@@ -1,11 +1,8 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
-
-
-
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.utils.IdListUtil;
+import org.xcolab.util.IdListUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;

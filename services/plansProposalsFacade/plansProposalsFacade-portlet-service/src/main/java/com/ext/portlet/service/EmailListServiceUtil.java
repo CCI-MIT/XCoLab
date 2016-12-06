@@ -51,11 +51,6 @@ public class EmailListServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static java.lang.String helloWorld(java.lang.String listName,
-        java.lang.String email) {
-        return getService().helloWorld(listName, email);
-    }
-
     public static void clearService() {
         _service = null;
     }

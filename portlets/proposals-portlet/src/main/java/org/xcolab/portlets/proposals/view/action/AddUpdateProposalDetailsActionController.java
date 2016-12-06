@@ -51,12 +51,12 @@ public class AddUpdateProposalDetailsActionController {
         final Proposal proposal = proposalsContext.getProposal(request);
         if (proposal != null && !proposalsContext.getPermissions(request).getCanEdit()) {
             throw new ProposalsAuthorizationException("User is not allowed to edit proposal, user: " +
-                    proposalsContext.getMember(request).getUserId() + ", proposal: " + proposal.getProposalId());
+                    proposalsContext.getMemberId(request) + ", proposal: " + proposal.getProposalId());
         }
         final Contest contest = proposalsContext.getContest(request);
         if (proposal == null && !proposalsContext.getPermissions(request).getCanCreate()) {
             throw new ProposalsAuthorizationException("User is not allowed to create proposal, user: " +
-                    proposalsContext.getMember(request).getUserId() + ", contest: " + contest
+                    proposalsContext.getMemberId(request) + ", contest: " + contest
                     .getContestPK());
         }
 

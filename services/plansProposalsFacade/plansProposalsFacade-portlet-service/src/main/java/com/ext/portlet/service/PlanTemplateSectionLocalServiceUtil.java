@@ -263,43 +263,6 @@ public class PlanTemplateSectionLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static java.util.List<com.ext.portlet.model.PlanTemplateSection> findByPlanTemplateId(
-        java.lang.Long planTemplateId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().findByPlanTemplateId(planTemplateId);
-    }
-
-    public static java.util.List<com.ext.portlet.model.PlanTemplateSection> findByPlanSectionDefinitionId(
-        java.lang.Long planSectionDefinitionId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService()
-                   .findByPlanSectionDefinitionId(planSectionDefinitionId);
-    }
-
-    public static com.ext.portlet.model.PlanTemplateSection addPlanTemplateSection(
-        java.lang.Long planTemplateId, java.lang.Long sectionId, int weight)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService()
-                   .addPlanTemplateSection(planTemplateId, sectionId, weight);
-    }
-
-    public static void removePlanTemplateSection(
-        java.lang.Long planTemplateId, java.lang.Long sectionId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        getService().removePlanTemplateSection(planTemplateId, sectionId);
-    }
-
-    public static void store(com.ext.portlet.model.PlanTemplateSection section)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getService().store(section);
-    }
-
-    public static void remove(com.ext.portlet.model.PlanTemplateSection section)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getService().remove(section);
-    }
-
     public static void clearService() {
         _service = null;
     }

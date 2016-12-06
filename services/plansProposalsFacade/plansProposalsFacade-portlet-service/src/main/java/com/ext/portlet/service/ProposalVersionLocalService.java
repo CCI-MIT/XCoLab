@@ -240,34 +240,4 @@ public interface ProposalVersionLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    /**
-    * <p>Returns proposal version count for given proposal</p>
-    *
-    * @param proposalId proposal id
-    * @return proposal versions count
-    * @throws SystemException
-    */
-    public long countByProposalId(long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * <p>Returns list of proposal versions for given proposal</p>
-    *
-    * @param proposalId id of a proposal
-    * @param start first entity
-    * @param end last entity
-    * @return list of proposal versions
-    * @throws SystemException
-    */
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.ext.portlet.model.ProposalVersion> getByProposalId(
-        long proposalId, int start, int end)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.ProposalVersion getByProposalIdVersion(
-        long proposalId, int version)
-        throws com.ext.portlet.NoSuchProposalVersionException,
-            com.liferay.portal.kernel.exception.SystemException;
 }

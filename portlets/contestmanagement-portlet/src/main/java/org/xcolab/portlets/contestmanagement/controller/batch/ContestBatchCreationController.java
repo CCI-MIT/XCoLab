@@ -1,14 +1,15 @@
 package org.xcolab.portlets.contestmanagement.controller.batch;
 
+import org.joda.time.DateTime;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
-import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -21,19 +22,8 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.permission.PermissionChecker;
 import com.liferay.portal.theme.ThemeDisplay;
 
-import org.joda.time.DateTime;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-
-import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
-import org.xcolab.client.contest.PlanTemplateClient;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
@@ -47,11 +37,9 @@ import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.ContestCreatorUtil;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleUtil;
-import org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper;
-import org.xcolab.utils.IdListUtil;
+import org.xcolab.util.IdListUtil;
 
 import java.io.IOException;
-import java.security.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;

@@ -236,19 +236,4 @@ public interface ContestDebateLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    public com.ext.portlet.model.ContestDebate createContestDebate(
-        java.lang.Long debateId, java.lang.Long contestId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.ext.portlet.model.ContestDebate> getContestDebates(
-        java.lang.Long contestId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public void store(com.ext.portlet.model.ContestDebate contestDebate)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public void delete(com.ext.portlet.model.ContestDebate contestDebate)
-        throws com.liferay.portal.kernel.exception.SystemException;
 }

@@ -289,7 +289,6 @@ public final class ProposalClient {
     }
 
     public Contest getCurrentContestForProposal(Long proposalId) throws ContestNotFoundException {
-
         Long contestPhaseId = getLatestContestPhaseIdInProposal(proposalId);
         ContestPhase contestPhase = contestClient.getContestPhase(contestPhaseId);
         return contestClient.getContest(contestPhase.getContestPK());

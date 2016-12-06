@@ -45,16 +45,6 @@ public class PointsDistributionConfigurationLocalServiceClpInvoker {
     private String[] _methodParameterTypes398;
     private String _methodName399;
     private String[] _methodParameterTypes399;
-    private String _methodName404;
-    private String[] _methodParameterTypes404;
-    private String _methodName405;
-    private String[] _methodParameterTypes405;
-    private String _methodName406;
-    private String[] _methodParameterTypes406;
-    private String _methodName407;
-    private String[] _methodParameterTypes407;
-    private String _methodName408;
-    private String[] _methodParameterTypes408;
 
     public PointsDistributionConfigurationLocalServiceClpInvoker() {
         _methodName0 = "addPointsDistributionConfiguration";
@@ -146,29 +136,6 @@ public class PointsDistributionConfigurationLocalServiceClpInvoker {
         _methodName399 = "setBeanIdentifier";
 
         _methodParameterTypes399 = new String[] { "java.lang.String" };
-
-        _methodName404 = "findByProposalIdPointTypeId";
-
-        _methodParameterTypes404 = new String[] { "long", "long" };
-
-        _methodName405 = "removeByProposalId";
-
-        _methodParameterTypes405 = new String[] { "long" };
-
-        _methodName406 = "getByPlanSectionDefinitionId";
-
-        _methodParameterTypes406 = new String[] { "long" };
-
-        _methodName407 = "addDistributionConfiguration";
-
-        _methodParameterTypes407 = new String[] {
-                "long", "long", "java.lang.Long", "java.lang.Long", "double",
-                "long"
-            };
-
-        _methodName408 = "verifyDistributionConfigurationsForProposalId";
-
-        _methodParameterTypes408 = new String[] { "long" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -268,40 +235,6 @@ public class PointsDistributionConfigurationLocalServiceClpInvoker {
         if (_methodName399.equals(name) &&
                 Arrays.deepEquals(_methodParameterTypes399, parameterTypes)) {
             PointsDistributionConfigurationLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
-
-            return null;
-        }
-
-        if (_methodName404.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes404, parameterTypes)) {
-            return PointsDistributionConfigurationLocalServiceUtil.findByProposalIdPointTypeId(((Long) arguments[0]).longValue(),
-                ((Long) arguments[1]).longValue());
-        }
-
-        if (_methodName405.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes405, parameterTypes)) {
-            PointsDistributionConfigurationLocalServiceUtil.removeByProposalId(((Long) arguments[0]).longValue());
-
-            return null;
-        }
-
-        if (_methodName406.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes406, parameterTypes)) {
-            return PointsDistributionConfigurationLocalServiceUtil.getByPlanSectionDefinitionId(((Long) arguments[0]).longValue());
-        }
-
-        if (_methodName407.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes407, parameterTypes)) {
-            return PointsDistributionConfigurationLocalServiceUtil.addDistributionConfiguration(((Long) arguments[0]).longValue(),
-                ((Long) arguments[1]).longValue(),
-                (java.lang.Long) arguments[2], (java.lang.Long) arguments[3],
-                ((Double) arguments[4]).doubleValue(),
-                ((Long) arguments[5]).longValue());
-        }
-
-        if (_methodName408.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes408, parameterTypes)) {
-            PointsDistributionConfigurationLocalServiceUtil.verifyDistributionConfigurationsForProposalId(((Long) arguments[0]).longValue());
 
             return null;
         }

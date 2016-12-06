@@ -31,23 +31,26 @@ import java.util.List;
 @RestController
 public class ProposalsController {
 
-    @Autowired
-    private ProposalDao proposalDao;
+    private final ProposalDao proposalDao;
+    private final ProposalService proposalService;
+
+    private final ProposalVoteDao proposalVoteDao;
+    private final Proposal2PhaseService proposal2PhaseService;
+    private final ProposalVersionDao proposalVersionDao;
+    private final ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao;
 
     @Autowired
-    private ProposalVoteDao proposalVoteDao;
-
-    @Autowired
-    private Proposal2PhaseService proposal2PhaseService;
-
-    @Autowired
-    private ProposalVersionDao proposalVersionDao;
-
-    @Autowired
-    private ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao;
-
-    @Autowired
-    private ProposalService proposalService;
+    public ProposalsController(ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao,
+            ProposalVersionDao proposalVersionDao, ProposalDao proposalDao,
+            ProposalVoteDao proposalVoteDao, Proposal2PhaseService proposal2PhaseService,
+            ProposalService proposalService) {
+        this.proposalContestPhaseAttributeDao = proposalContestPhaseAttributeDao;
+        this.proposalVersionDao = proposalVersionDao;
+        this.proposalDao = proposalDao;
+        this.proposalVoteDao = proposalVoteDao;
+        this.proposal2PhaseService = proposal2PhaseService;
+        this.proposalService = proposalService;
+    }
 
     @RequestMapping(value = "/proposals", method = RequestMethod.POST)
     public Proposal createProposal(@RequestBody Proposal proposal) {
@@ -140,7 +143,6 @@ public class ProposalsController {
         List<Proposal> proposals = proposalDao.findByGiven(paginationHelper, null, null, null, contestPhaseId, null);
         int counter = 0;
         for (Proposal p : proposals) {
-            String judges = "";
             ProposalContestPhaseAttribute pcpa = proposalContestPhaseAttributeDao.getByProposalIdContestPhaseIdName(p.getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES);
             if(pcpa == null ){
                 pcpa = new ProposalContestPhaseAttribute();
@@ -148,12 +150,12 @@ public class ProposalsController {
                 pcpa.setContestPhaseId(contestPhaseId);
                 pcpa.setName(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES);
                 pcpa.setStringValue("");
-                pcpa.setNumericValue(0l);
+                pcpa.setNumericValue(0L);
                 pcpa.setRealValue(0.0);
-                pcpa.setAdditionalId(0l);
+                pcpa.setAdditionalId(0L);
                 pcpa = proposalContestPhaseAttributeDao.create(pcpa);
             }
-            judges = pcpa.getStringValue();
+            String judges = pcpa.getStringValue();
             if (StringUtils.containsIgnoreCase(judges, userId + "")) {
                 counter++;
             }

@@ -271,19 +271,6 @@ public class LandingPageLocalServiceWrapper implements LandingPageLocalService,
             arguments);
     }
 
-    @Override
-    public com.ext.portlet.model.LandingPage createNewLandingPage(
-        java.lang.String baseUrl, java.lang.String targetUrl)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _landingPageLocalService.createNewLandingPage(baseUrl, targetUrl);
-    }
-
-    @Override
-    public void store(com.ext.portlet.model.LandingPage landingPage)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _landingPageLocalService.store(landingPage);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

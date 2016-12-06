@@ -56,7 +56,7 @@ public class OntologyTermModelImpl extends BaseModelImpl<OntologyTerm>
             { "descriptionUrl", Types.VARCHAR },
             { "order_", Types.INTEGER }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_OntologyTerm (id_ LONG not null primary key,parentId LONG,ontologySpaceId LONG,name VARCHAR(256) null,descriptionUrl VARCHAR(1024) null,order_ INTEGER)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_OntologyTerm (id_ LONG not null primary key,parentId LONG,ontologySpaceId LONG,name VARCHAR(75) null,descriptionUrl VARCHAR(75) null,order_ INTEGER)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_OntologyTerm";
     public static final String ORDER_BY_JPQL = " ORDER BY ontologyTerm.order_ ASC, ontologyTerm.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_OntologyTerm.order_ ASC, xcolab_OntologyTerm.id_ ASC";

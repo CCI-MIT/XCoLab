@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals.exceptions;
 
-public class MembershipRequestNotFoundException extends Exception {
+public class MembershipRequestNotFoundException extends RuntimeException {
     public MembershipRequestNotFoundException(long proposalAttributeId) {
         this("MembershipRequestNotFoundException with id " + proposalAttributeId + " does not exist");
     }

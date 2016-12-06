@@ -271,45 +271,6 @@ public class PlanTemplateLocalServiceWrapper implements PlanTemplateLocalService
             arguments);
     }
 
-    @Override
-    public void store(com.ext.portlet.model.PlanTemplate template)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planTemplateLocalService.store(template);
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.PlanSectionDefinition> getSections(
-        com.ext.portlet.model.PlanTemplate template)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _planTemplateLocalService.getSections(template);
-    }
-
-    @Override
-    public void addSection(com.ext.portlet.model.PlanTemplate template,
-        com.ext.portlet.model.PlanSectionDefinition section)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _planTemplateLocalService.addSection(template, section);
-    }
-
-    @Override
-    public void removeSection(com.ext.portlet.model.PlanTemplate template,
-        com.ext.portlet.model.PlanSectionDefinition section)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _planTemplateLocalService.removeSection(template, section);
-    }
-
-    @Override
-    public void updateSectionWeight(
-        com.ext.portlet.model.PlanTemplate template,
-        com.ext.portlet.model.PlanSectionDefinition section, int weight)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _planTemplateLocalService.updateSectionWeight(template, section, weight);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

@@ -13,7 +13,7 @@ import org.xcolab.service.proposal.domain.pointtype.PointTypeDao;
 import org.xcolab.service.proposal.enums.ReceiverLimitationStrategy;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 import org.xcolab.service.proposal.service.proposal.ProposalService;
-import org.xcolab.util.EntityGroupingUtil;
+import org.xcolab.util.GroupingUtil;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -54,7 +54,8 @@ public class PointsDistributionConfigurationService {
     public void verifyDistributionConfigurationsForProposalId(long proposalId) {
         Map<Long, List<PointsDistributionConfiguration>> pdcsByPointTypeId = new HashMap<>();
         for (PointsDistributionConfiguration pdc : pointsDistributionConfigurationDao.findByGiven(proposalId, null)) {
-            List<PointsDistributionConfiguration> pdcs = EntityGroupingUtil.getInnerListOrCreate(pdc.getPointTypeId(), pdcsByPointTypeId);
+            List<PointsDistributionConfiguration> pdcs = GroupingUtil
+                    .getInnerListOrCreate(pdc.getPointTypeId(), pdcsByPointTypeId);
             pdcs.add(pdc);
         }
 
