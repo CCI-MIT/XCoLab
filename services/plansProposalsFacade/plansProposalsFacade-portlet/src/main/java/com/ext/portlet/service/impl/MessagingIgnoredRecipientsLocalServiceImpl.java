@@ -26,13 +26,4 @@ public class MessagingIgnoredRecipientsLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil} to access the messaging ignored recipients local service.
      */
-    @Override
-    public MessagingIgnoredRecipients findByUserId(Long userId) throws SystemException, NoSuchMessagingIgnoredRecipientsException {
-        return this.getMessagingIgnoredRecipientsPersistence().findByfindByUserId(userId);
-    }
-    
-    @Override
-    public MessagingIgnoredRecipients findByEmail(String email) throws SystemException, NoSuchMessagingIgnoredRecipientsException {
-        return this.getMessagingIgnoredRecipientsPersistence().findByfindByEmail(email);
-    }
 }

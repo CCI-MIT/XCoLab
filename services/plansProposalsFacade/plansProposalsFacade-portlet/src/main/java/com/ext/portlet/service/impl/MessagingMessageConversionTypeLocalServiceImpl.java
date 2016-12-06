@@ -25,8 +25,4 @@ public class MessagingMessageConversionTypeLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.MessagingMessageConversionTypeLocalServiceUtil} to access the messaging message conversion type local service.
      */
-    @Override
-    public MessagingMessageConversionType getByName(String name) throws SystemException {
-        return this.getMessagingMessageConversionTypePersistence().fetchByfindByName(name);
-    }
 }

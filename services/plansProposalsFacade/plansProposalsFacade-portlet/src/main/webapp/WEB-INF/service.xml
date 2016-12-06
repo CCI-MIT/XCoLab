@@ -12,8 +12,6 @@
     <service-builder-import file="services/service-modeling.xml" />
     <service-builder-import file="services/service-ontology.xml" />
     <service-builder-import file="services/service-plans.xml" />
-    <service-builder-import file="services/service-massmessaging.xml" />
-    <service-builder-import file="services/service-landingpage.xml" />
     <service-builder-import file="services/service-proposals.xml" />
     <service-builder-import file="services/service-points.xml" />
     <service-builder-import file="services/service-users.xml" />
