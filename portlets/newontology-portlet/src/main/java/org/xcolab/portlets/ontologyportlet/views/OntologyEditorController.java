@@ -107,29 +107,6 @@ public class OntologyEditorController {
 
 
 
-    @ResourceMapping("moveArticleVersion")
-    public void moveArticleVersion(ResourceRequest request, ResourceResponse response,
-            @RequestParam(required = false) Long articleId,
-            @RequestParam(required = false) Long folderId)
-            throws IOException {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        Long userId = themeDisplay.getUser().getUserId();
-
-        //        ContentArticleVersion contentArticleVersion =
-        //                ContentsClient.getLatestContentArticleVersion(articleId);
-        //        ContentArticleVersion newContentArticleVersion = new ContentArticleVersion();
-        //        newContentArticleVersion.setTitle(contentArticleVersion.getTitle());
-        //        newContentArticleVersion.setContent(contentArticleVersion.getContent());
-        //        newContentArticleVersion.setContentArticleId(contentArticleVersion
-        // .getContentArticleId());
-        //
-        //        newContentArticleVersion.setAuthorId(userId);
-        //        newContentArticleVersion.setFolderId(folderId);
-        //        ContentsClient.createContentArticleVersion(newContentArticleVersion);
-
-        defaultOperationReturnMessage(true, "Article moved successfully", response);
-
-    }
 
     private void deleteOntologyTermAndChildren(Long id){
         OntologyTerm ot = OntologyClientUtil.getOntologyTerm(id);

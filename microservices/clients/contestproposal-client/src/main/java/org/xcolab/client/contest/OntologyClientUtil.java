@@ -103,6 +103,18 @@ public final class OntologyClientUtil {
         return client.getFocusArea(Id_);
     }
 
+    public static  Boolean deleteFocusArea(Long id_) {
+        return  client.deleteFocusArea(id_);
+    }
+
+    public static  Boolean deleteFocusAreaOntologyTerm(Long focusAreaId, Long ontologyTermId) {
+        return  client.deleteFocusAreaOntologyTerm(focusAreaId, ontologyTermId);
+    }
+    public static boolean updateFocusArea(FocusArea focusArea) {
+        return client.updateFocusArea(focusArea);
+    }
+
+
     public static OntologySpace getOntologySpace(long id_) {
         return client.getOntologySpace(id_);
     }

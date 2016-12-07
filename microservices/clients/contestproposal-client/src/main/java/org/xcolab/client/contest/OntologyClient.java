@@ -97,7 +97,7 @@ public class OntologyClient {
         faot.setFocusAreaId(focusAreaId);
         faot.setOntologyTermId(ontologyTermId);
         faot.setOrder_((int) new Date().getTime());
-        focusAreaOntologyTermResource.create(faot);
+        focusAreaOntologyTermResource.create(faot).execute();
 
     }
 
@@ -179,6 +179,24 @@ public class OntologyClient {
                 .optionalQueryParam("name", name)
                 .execute(), contestService);
     }
+
+    public boolean updateFocusArea(FocusArea focusArea) {
+        return focusAreaResource.update(new FocusAreaDto(focusArea), focusArea.getId_())
+                .execute();
+    }
+
+
+    public boolean deleteFocusArea(Long id_) {
+        return  focusAreaResource.delete(id_).execute();
+    }
+
+    public boolean deleteFocusAreaOntologyTerm(Long focusAreaId,Long ontologyTermId) {
+        return  focusAreaOntologyTermResource.service("deleteFocusAreaOntologyTerm",Boolean.class)
+                .queryParam("focusAreaId",focusAreaId)
+                .queryParam("ontologyTermId", ontologyTermId).delete();
+    }
+
+
 
 
     public FocusArea getFocusArea(long Id_) {

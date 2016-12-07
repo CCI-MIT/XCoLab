@@ -142,6 +142,48 @@ public class OntologyController {
         return this.focusAreaDao.create(focusArea);
     }
 
+    @RequestMapping(value = "/focusAreas/{id_}", method = RequestMethod.PUT)
+    public boolean updateFocusArea(@RequestBody FocusArea focusArea,
+            @PathVariable("id_") Long id_) throws NotFoundException {
+
+        if (id_ == null || id_ == 0 || focusAreaDao.get(id_) == null) {
+            throw new NotFoundException("No FocusArea with id " + id_);
+        } else {
+            return focusAreaDao.update(focusArea);
+        }
+    }
+
+
+    @RequestMapping(value = "/focusAreas/{id_}", method = RequestMethod.DELETE)
+    public String deleteFocusArea(@PathVariable("id_") Long id_)
+            throws NotFoundException {
+
+        if (id_ == null || id_ == 0) {
+            throw new NotFoundException("No FocusArea with id given");
+        } else {
+            FocusArea focusArea = this.focusAreaDao.get(id_);
+            if (focusArea != null) {
+                this.focusAreaDao.delete(focusArea.getId_());
+                return "FocusArea deleted successfully";
+            } else {
+                throw new NotFoundException("No FocusArea with id given");
+            }
+        }
+    }
+
+    @RequestMapping(value = "/focusAreaOntologyTerms/deleteFocusAreaOntologyTerm", method = RequestMethod.DELETE)
+    public String deleteFocusAreaOntologyTerm(@RequestParam("focusAreaId") Long focusAreaId, @RequestParam Long ontologyTermId)
+            throws NotFoundException {
+
+        if (focusAreaId == null || focusAreaId == 0) {
+            throw new NotFoundException("No FocusAreaOntologyTerm with id given");
+        } else {
+            this.focusAreaOntologyTermDao.deleteAllFocusAreasOntologyTerms(focusAreaId,ontologyTermId);
+            return "FocusAreaOntologyTerm deleted successfully";
+        }
+    }
+
+
 
     @RequestMapping(value = "/ontologySpaces", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<OntologySpace> getOntologySpaces(
