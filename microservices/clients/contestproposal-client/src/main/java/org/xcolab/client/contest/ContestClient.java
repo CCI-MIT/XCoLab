@@ -390,6 +390,7 @@ public class ContestClient {
         return DtoUtil.toPojos(contestResource
                 .list()
                 .queryParam("contestTypeId", contestTypeId)
+                .queryParam("limitRecord", Integer.MAX_VALUE)
                 .execute(), contestService);
     }
 
