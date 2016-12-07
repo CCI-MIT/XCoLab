@@ -77,7 +77,7 @@ public class OntologyService {
     public List<OntologyTerm> getAllOntologyTermDescendantTerms(OntologyTerm ontologyTerm) {
         List<OntologyTerm> terms = new ArrayList<>();
         if (ontologyTerm.getId_() != 0) {
-            for (OntologyTerm ot : ontologyTermDao.findByGiven(null, ontologyTerm.getId_())) {
+            for (OntologyTerm ot : ontologyTermDao.findByGiven(null, ontologyTerm.getId_(),null)) {
                 terms.add(ot);
                 terms.addAll(getAllOntologyTermDescendantTerms(ot));
             }

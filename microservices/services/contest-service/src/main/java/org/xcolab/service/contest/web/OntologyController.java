@@ -67,8 +67,10 @@ public class OntologyController {
 
 
     @RequestMapping(value = "/ontologyTerms", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<OntologyTerm> getOntologyTerms(@RequestParam(required = false) String name) {
-        return ontologyTermDao.findByGiven(name,null);
+    public List<OntologyTerm> getOntologyTerms(@RequestParam(required = false) String name,
+            @RequestParam(required = false, defaultValue = "0") Long parentId,
+            @RequestParam(required = false) Long ontologySpaceId) {
+        return ontologyTermDao.findByGiven(name,parentId, ontologySpaceId);
     }
 
 
@@ -79,6 +81,39 @@ public class OntologyController {
         } else {
             return ontologyTermDao.get(ontologyTermId);
         }
+    }
+
+    @RequestMapping(value = "/ontologyTerms/{id_}", method = RequestMethod.PUT)
+    public boolean updateOntologyTerm(@RequestBody OntologyTerm ontologyTerm,
+            @PathVariable("id_") Long id_) throws NotFoundException {
+
+        if (id_ == null || id_ == 0 || ontologyTermDao.get(id_) == null) {
+            throw new NotFoundException("No OntologyTerm with id " + id_);
+        } else {
+            return ontologyTermDao.update(ontologyTerm);
+        }
+    }
+
+    @RequestMapping(value = "/ontologyTerms/{id_}", method = RequestMethod.DELETE)
+    public String deleteOntologyTerm(@PathVariable("id_") Long id_)
+            throws NotFoundException {
+
+        if (id_ == null || id_ == 0) {
+            throw new NotFoundException("No OntologyTerm with id given");
+        } else {
+            OntologyTerm ontologyTerm = this.ontologyTermDao.get(id_);
+            if (ontologyTerm != null) {
+                this.ontologyTermDao.delete(ontologyTerm.getId_());
+                return "OntologyTerm deleted successfully";
+            } else {
+                throw new NotFoundException("No OntologyTerm with id given");
+            }
+        }
+    }
+
+    @RequestMapping(value = "/ontologyTerms", method = RequestMethod.POST)
+    public OntologyTerm createOntologyTerm(@RequestBody OntologyTerm ontologyTerm) {
+        return this.ontologyTermDao.create(ontologyTerm);
     }
 
     @RequestMapping(value = "/focusAreas/{focusAreaId}", method = RequestMethod.GET)
@@ -106,6 +141,48 @@ public class OntologyController {
     public FocusArea createFocusArea(@RequestBody FocusArea focusArea) {
         return this.focusAreaDao.create(focusArea);
     }
+
+    @RequestMapping(value = "/focusAreas/{id_}", method = RequestMethod.PUT)
+    public boolean updateFocusArea(@RequestBody FocusArea focusArea,
+            @PathVariable("id_") Long id_) throws NotFoundException {
+
+        if (id_ == null || id_ == 0 || focusAreaDao.get(id_) == null) {
+            throw new NotFoundException("No FocusArea with id " + id_);
+        } else {
+            return focusAreaDao.update(focusArea);
+        }
+    }
+
+
+    @RequestMapping(value = "/focusAreas/{id_}", method = RequestMethod.DELETE)
+    public String deleteFocusArea(@PathVariable("id_") Long id_)
+            throws NotFoundException {
+
+        if (id_ == null || id_ == 0) {
+            throw new NotFoundException("No FocusArea with id given");
+        } else {
+            FocusArea focusArea = this.focusAreaDao.get(id_);
+            if (focusArea != null) {
+                this.focusAreaDao.delete(focusArea.getId_());
+                return "FocusArea deleted successfully";
+            } else {
+                throw new NotFoundException("No FocusArea with id given");
+            }
+        }
+    }
+
+    @RequestMapping(value = "/focusAreaOntologyTerms/deleteFocusAreaOntologyTerm", method = RequestMethod.DELETE)
+    public String deleteFocusAreaOntologyTerm(@RequestParam("focusAreaId") Long focusAreaId, @RequestParam Long ontologyTermId)
+            throws NotFoundException {
+
+        if (focusAreaId == null || focusAreaId == 0) {
+            throw new NotFoundException("No FocusAreaOntologyTerm with id given");
+        } else {
+            this.focusAreaOntologyTermDao.deleteAllFocusAreasOntologyTerms(focusAreaId,ontologyTermId);
+            return "FocusAreaOntologyTerm deleted successfully";
+        }
+    }
+
 
 
     @RequestMapping(value = "/ontologySpaces", method = {RequestMethod.GET, RequestMethod.HEAD})

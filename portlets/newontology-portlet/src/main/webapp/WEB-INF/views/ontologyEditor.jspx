@@ -1,0 +1,292 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://java.sun.com/portlet_2_0 "
+          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
+          xmlns:liferay-theme="http://liferay.com/tld/theme" >
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"><!-- --></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/js.cookie.js"><!-- --></script>
+    <script src="${pageContext.request.contextPath}/js/tree.jquery.js"><!-- --></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"><!-- --></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/spin.min.js"><!-- --></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.loadmask.spin.js"><!-- --></script>
+    <liferay-theme:defineObjects />
+
+    <portlet:defineObjects />
+
+
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"><!-- --></link>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jqtree.css"><!-- --></link>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css"><!-- --></link>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery.loadmask.spin.css"><!-- --></link>
+
+    <portlet:resourceURL var="ontologyListFolderURL" id="ontologyEditorList">
+    </portlet:resourceURL>
+
+
+    <portlet:resourceURL var="getOntologyTermURL" id="ontologyEditorGetOntologyTerm">
+    </portlet:resourceURL>
+
+    <portlet:resourceURL var="saveOntologyTermURL" id="saveOntologyTerm">
+    </portlet:resourceURL>
+
+    <portlet:resourceURL var="deleteOntologyTermURL" id="deleteOntologyTerm">
+    </portlet:resourceURL>
+
+    <portlet:renderURL var="focusAreaEditorURL">
+        <portlet:param name="focusAreaEditor" value="true" />
+    </portlet:renderURL>
+
+    <script>
+        <![CDATA[
+        var getOntologyTermURL = '${getOntologyTermURL}';
+        var saveOntologyTermURL = '${saveOntologyTermURL}';
+        var deleteOntologyTermURL = '${deleteOntologyTermURL}';
+
+
+
+        var ckEditor = null;
+        var THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
+        jQuery(document).ready(function () {
+            $("#deleteOntologyTerm").hide();
+            $("#article-view").mask({'label':"Please click on an Ontology term or <br/>create a new one clicking on the add new term link!", spinner:false});
+
+            $('#tree-view').tree({
+                                     //data:data,
+                                     saveState: true,
+                                     onCanSelectNode: function(node) {
+                                         //if(node.kind == "folder") return false;
+                                            return true;
+
+                                     },
+                                     onCreateLi: function(node, $li) {
+                                         // Append a link to the jqtree-element div.
+                                         // The link has an url '#node-[id]' and a data property 'node-id'.
+                                         if(node.kind == "folder") {
+                                             $li.find('.jqtree-element').append(
+                                                     '&nbsp;&nbsp;<a href="#node-' + node.id
+                                                     + '" class="addArticle" data-node-id="' +
+                                                     node.id + '">+ term</a>'
+                                             );//<small>
+                                         }
+                                     },
+                                     onCanMoveTo: function(moved_node, target_node, position) {
+                                         console.log("target_node "+ target_node.id +" - "+target_node.kind)
+                                         if (target_node.kind == "folder") {
+                                             return true;
+                                         }
+                                         else {
+                                             return false;
+                                         }
+                                     },
+                                     onCanMove: function(node) {
+                                         if (! node.parent.parent) {
+                                             // Example: Cannot move root node
+
+                                             return false;
+                                         }
+                                         else {
+                                             if(node.kind == "folder") return false;
+                                             else
+                                                 return true;
+                                         }
+                                     },
+                                     dragAndDrop: true});
+
+            $('#tree-view').on(
+                    'click', '.addArticle',
+                    function(e) {
+                        // Get the id from the 'node-id' data property
+                        var node_id = $(e.target).data('node-id');
+
+                        // Get the node from the tree
+                        var node = $('#tree-view').tree('getNodeById', node_id);
+
+                        if (node) {
+                            //$('#tree-view').tree('selectNode', node);
+                            newOntologyTermAtOntologyTerm(node.id, node.name);
+                        }
+                        event.preventDefault();
+                        return false;
+                    }
+            );
+
+            $('#tree-view').bind(
+                    'tree.click',
+                    function(event) {
+                        var node = event.node;
+                        if(node.kind == "folder"){
+                            $("#article-view").unmask();
+                            $("#article-view").mask();
+                            loadOntologyTerm(node.id, node.parent.name);
+                        }else{
+                            /*
+                            event.preventDefault();
+                            return false;*/
+                        }
+                    }
+            );
+
+
+
+
+
+            $("#infoBox").hide();
+
+            $("#saveOntologyTerm").click(function(){
+
+                    saveOntologyTerm();
+            });
+            $("#deleteOntologyTerm").click(function(){
+
+                var r = confirm("Are you sure you want to delete this ontology term?!\n All the child terms will also be deleted");
+                if (r == true) {
+                    deleteOntologyTerm();
+                }
+            });
+            $('#contentArticleTitle').bind('input', function() {
+                if ($("#folderName").html().indexOf("Wiki") !== -1) {
+                    updateArticleURL("Wiki", $('#contentArticleTitle').val().replace(/ /g,"+"));
+                    var input1 = $('#contentArticleTitle');
+                    input1.attr("value",$('#contentArticleTitle').val());
+                    $("#article-view").unmask()
+                }
+            });
+        });
+
+        function clearForm(){
+            $('#ontologyTermId').val("0");
+            $('#ontologyTermDescriptionUrl').val("");
+            $('#ontologyTermOrder').val(0);
+            $('#ontologyTermName').val("");
+            $('#ontologySpaceId').val("");
+            $('#ontologyTermParentId').val("");
+            $("#deleteOntologyTerm").hide();
+        }
+        function newOntologyTermAtOntologyTerm(folderId, folderName){
+            var idz = folderId.split("_");
+            $("#article-view").unmask()
+            clearForm();
+            $('#ontologySpaceId').val(idz[0]);
+            $('#ontologyTermParentId').val(idz[1]);
+            $('#ontologyTermId').focus();
+        }
+
+        function loadOntologyTerm(id, folderName){
+
+            var url = getOntologyTermURL;
+            var ontId = id.split("_");
+            var parameters={ontologyTermId : ontId[1]};
+
+            $.post(url ,parameters , function (response) {
+                var responseData = JSON.parse(response);
+                var data = responseData;
+
+                $("#folderName").html("Parent term: " +folderName);
+
+
+                $('#ontologyTermId').val(data.id);
+                $('#ontologyTermDescriptionUrl').val(data.descriptionUrl);
+                $('#ontologyTermOrder').val(data.order);
+                $('#ontologyTermName').val(data.name);
+                $('#ontologySpaceId').val(data.ontologySpaceId);
+                $('#ontologyTermParentId').val(data.parentId);
+
+                $("#deleteOntologyTerm").show();
+                $("#article-view").unmask()
+
+            });
+
+        }
+        function deleteOntologyTerm(){
+            $("#article-view").mask()
+            var url = deleteOntologyTermURL;
+
+            var id = $('#ontologyTermId').val();
+            var parameters={id : id};
+            $.post(url ,parameters , function (response) {
+                var responseData = JSON.parse(response);
+                var data = responseData;
+                $("#infoBox").html("Ontology term deleted successfully!");
+                $("#infoBox").show();
+                $("#infoBox").delay(5000).fadeOut('slow');
+                $("#article-view").unmask()
+                clearForm();
+                $("#article-view").mask({'label':"Please click on an Ontology term or <br/>create a new one clicking on the add new term link!", spinner:false});
+                $('#tree-view').tree('reload');
+            });
+        }
+        function saveOntologyTerm(){
+
+            $("#article-view").mask()
+            var url = saveOntologyTermURL;
+
+            var id = $('#ontologyTermId').val();
+            var descriptionUrl= $('#ontologyTermDescriptionUrl').val();
+            var order= $('#ontologyTermOrder').val();
+            var name= $('#ontologyTermName').val();
+            var parentId = $('#ontologyTermParentId').val();
+            var ontologySpaceId = $('#ontologySpaceId').val();
+            var parameters={id : id,
+                descriptionUrl: descriptionUrl,
+                order: order,
+                name: name,
+                parentId:parentId,
+                ontologySpaceId:ontologySpaceId
+            };
+
+            $.post(url ,parameters , function (response) {
+                var responseData = JSON.parse(response);
+                var data = responseData;
+                $("#infoBox").html("Ontology term updated successfully!");
+                $("#infoBox").show();
+                $("#infoBox").delay(5000).fadeOut('slow');
+                $("#article-view").unmask()
+                $('#tree-view').tree('reload');
+
+            });
+        }
+
+
+
+        ]]>
+    </script>
+    <div class="contentEditor">
+        <div class="contentBody">
+            <ul class="c-TabBar clearfix">
+                <li class="c-TabBar__tab--first active"><a>Ontology Editor</a></li>
+                <li class="c-TabBar__tab "><a href="${focusAreaEditorURL}">Focus area editor</a></li>
+            </ul>
+
+            <div id="infoBox"><!-- --></div>
+            <div  id="innerContent" class="addpropbox">
+                <div class="colFloatLef">
+                    <h3>Ontology areas and terms</h3>
+                    <div class="treeContainer">
+                        <div id="tree-view" data-url="${ontologyListFolderURL}" ><!-- --></div>
+                    </div>
+                </div>
+                <div class="colFloatLef" style="width: 500px;margin-left: 15px;">
+                    <div id="article-view">
+                        <h3>Ontology term</h3>
+
+                        <div>
+                            <input type="hidden" id="ontologyTermId"/>
+                            <input type="hidden" id="ontologyTermParentId"/>
+                            <input type="hidden" id="ontologySpaceId"/>
+                            Name: <input type="text" id="ontologyTermName"  maxcharacters="100"  /><br/>
+                            Order: <input type="text" id="ontologyTermOrder"  maxcharacters="100"  /><br/>
+                            Description URL: <br/>
+                            <input type="text" id="ontologyTermDescriptionUrl"  maxcharacters="100"  />
+
+                        </div>
+                        <div id="folderName">Parent term: <!-- --></div>
+                        <br/>
+                        <div class="floatRight outerVerticalCenter" id="deleteOntologyTerm" ><a  class="c-Button__primary" href="#">Delete</a></div>
+                        <div class="floatRight outerVerticalCenter" id="saveOntologyTerm" ><a  class="c-Button__primary" href="#">Save</a></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</jsp:root>
