@@ -3,8 +3,7 @@ package org.xcolab.entity.utils.email.notifications.proposal;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
-
-import com.liferay.portal.kernel.util.HttpUtil;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
@@ -53,20 +52,24 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
     }
 
     private String getAcceptLink(String text) {
-        final String acceptUrl = HttpUtil.addParameter(getMembershipResponseUrl(), "do", "accept");
+        final String acceptUrl = UriComponentsBuilder.fromHttpUrl(getMembershipResponseUrl())
+                .queryParam( "do", "accept")
+                .toUriString();
         return String.format(LINK_FORMAT_STRING, acceptUrl, text);
     }
 
     private String getMembershipResponseUrl() {
-        String baseUrl = this.baseUrl + MEMBERSHIP_INVITE_STRUTS_ACTION_URL;
-        baseUrl = HttpUtil.addParameter(baseUrl, "contestId", contest.getContestPK());
-        baseUrl = HttpUtil.addParameter(baseUrl, "requestId", membershipRequest.getMembershipRequestId());
-        baseUrl = HttpUtil.addParameter(baseUrl, "proposalId", proposal.getProposalId());
-        return baseUrl;
+        return UriComponentsBuilder.fromHttpUrl(this.baseUrl + MEMBERSHIP_INVITE_STRUTS_ACTION_URL)
+                .queryParam("contestId", contest.getContestPK())
+                .queryParam("requestId", membershipRequest.getMembershipRequestId())
+                .queryParam("proposalId", proposal.getProposalId())
+                .toUriString();
     }
 
     private String getDeclineLink(String text) {
-        final String declineUrl = HttpUtil.addParameter(getMembershipResponseUrl(), "do", "decline");
+        final String declineUrl = UriComponentsBuilder.fromHttpUrl(getMembershipResponseUrl())
+                .queryParam("do", "decline")
+                .toUriString();
         return String.format(LINK_FORMAT_STRING, declineUrl, text);
     }
 
