@@ -1,7 +1,6 @@
 package org.xcolab.portlets.proposals.view;
 
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +24,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 
 import java.io.IOException;
@@ -131,7 +131,7 @@ public class ProposalShareJSONController {
 		body += String.format("<p><a href='%s'>Link to %s</a></p>", proposalUrl, contestType.getProposalName());
 
 		// Send the message
-        Long userId = themeDisplay.getUserId();
+        long memberId = MemberAuthUtil.getMemberId(request);
         // Validate the screenName input
         List<Long> recipientIds = null;
         try {
@@ -154,7 +154,7 @@ public class ProposalShareJSONController {
         // Send the message
         if (recipientIds != null) {
             try {
-                MessagingClient.checkLimitAndSendMessage(subject, body, userId, recipientIds);
+                MessagingClient.checkLimitAndSendMessage(subject, body, memberId, recipientIds);
                 sendResponseJSON(true, String.format("You successfully shared the %s", contestType.getProposalName()), response);
             } catch (MessageLimitExceededException e) {
                 sendResponseJSON(false, "Messages limit has been exceeded, if you want to send more messages, " +

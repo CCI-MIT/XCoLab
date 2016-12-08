@@ -243,7 +243,6 @@ public class ProposalsContextImpl implements ProposalsContext {
             request.setAttribute(CONTEST_TYPE_ATTRIBUTE,
                     contestType == null ? preferences.getContestType() : contestType);
 
-            request.setAttribute(USER_ATTRIBUTE, themeDisplay.getUser());
             request.setAttribute(MEMBER_ATTRIBUTE, member);
             long phaseId = contextHelper.getGivenPhaseId();
             if (phaseId > 0) {

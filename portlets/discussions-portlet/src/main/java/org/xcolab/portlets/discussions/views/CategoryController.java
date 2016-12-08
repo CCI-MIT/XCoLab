@@ -21,6 +21,7 @@ import org.xcolab.client.comment.util.ThreadSortColumn;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.util.enums.activity.ActivityEntryType;
@@ -49,7 +50,7 @@ public class CategoryController extends BaseDiscussionController {
                                  @RequestParam String sortColumn,
                                  @RequestParam boolean sortAscending) {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        long memberId = MemberAuthUtil.getMemberId(request);
 
         ThreadSortColumn threadSortColumn;
         try {
@@ -68,7 +69,7 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("sortColumn", threadSortColumn);
         model.addAttribute("sortAscending", sortAscending);
 
-        model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(themeDisplay.getUserId(),
+        model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(memberId,
                 ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0, ""));
 
         return "category";
@@ -80,7 +81,7 @@ public class CategoryController extends BaseDiscussionController {
                                @RequestParam(required = false) boolean sortAscending)
             throws DiscussionAuthorizationException, CategoryNotFoundException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        long memberId = MemberAuthUtil.getMemberId(request);
 
         ThreadSortColumn threadSortColumn;
         try {
@@ -100,7 +101,7 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("threads", currentCategory.getThreads(threadSortColumn, sortAscending));
         model.addAttribute("sortColumn", threadSortColumn.name());
         model.addAttribute("sortAscending", sortAscending);
-        model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(themeDisplay.getUserId(),
+        model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(memberId,
                 ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0,Long.toString(categoryId) ));
 
         return "category";
@@ -156,12 +157,11 @@ public class CategoryController extends BaseDiscussionController {
     public void subscribeCategory(ActionRequest request, ActionResponse response, @RequestParam long categoryId)
             throws DiscussionAuthorizationException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        long memberId = MemberAuthUtil.getMemberId(request);
         CategoryGroup categoryGroup = getCategoryGroup(request);
         checkCanView(request, "You do not have permissions to view this category", categoryGroup, 0L);
 
-        if (!themeDisplay.getUser().isDefaultUser()) {
-            final long memberId = themeDisplay.getUserId();
+        if (memberId > 0) {
             if (categoryId > 0) {
                 ActivitiesClientUtil.addSubscription(memberId,
                         ActivityEntryType.DISCUSSION, categoryId, Long.toString(categoryId));
@@ -176,12 +176,11 @@ public class CategoryController extends BaseDiscussionController {
     public void unsubscribeCategory(ActionRequest request, ActionResponse response, @RequestParam long categoryId)
             throws DiscussionAuthorizationException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        long memberId = MemberAuthUtil.getMemberId(request);
         CategoryGroup categoryGroup = getCategoryGroup(request);
         checkCanView(request, "You do not have permissions to view this category", categoryGroup, 0L);
 
-        if (!themeDisplay.getUser().isDefaultUser()) {
-            final long memberId = themeDisplay.getUserId();
+        if (memberId > 0) {
             if (categoryId > 0) {
                 ActivitiesClientUtil.deleteSubscription(memberId,
                         ActivityEntryType.DISCUSSION, categoryGroup.getGroupId(),

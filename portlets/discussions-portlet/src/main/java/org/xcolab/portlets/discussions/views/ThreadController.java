@@ -1,7 +1,5 @@
 package org.xcolab.portlets.discussions.views;
 
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,18 +7,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
 
-import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
-import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.util.html.HtmlUtil;
@@ -85,24 +85,24 @@ public class ThreadController extends BaseDiscussionController {
         checkCanEdit(request, "User does not have the necessary permissions to create a thread ",
                 categoryGroup, 0L);
 
-        final long userId = themeDisplay.getUserId();
+        long memberId = MemberAuthUtil.getMemberId(request);
 
         if (!title.isEmpty() && !body.isEmpty()) {
             CommentThread thread = new CommentThread();
             thread.setCategoryId(categoryId);
             thread.setTitle(HtmlUtil.cleanAll(title));
-            thread.setAuthorId(userId);
+            thread.setAuthorId(memberId);
             thread.setIsQuiet(false);
             thread = ThreadClientUtil.createThread(thread);
 
             Comment comment = new Comment();
             comment.setThreadId(thread.getThreadId());
             comment.setContent(HtmlUtil.cleanSome(body, ""));
-            comment.setAuthorId(userId);
+            comment.setAuthorId(memberId);
             comment = CommentClientUtil.createComment(comment);
 
             if( !thread.getIsQuiet()) {
-                ActivityEntryHelper.createActivityEntry(ActivitiesClientUtil.getClient(),userId, categoryId, (comment.getCommentId()+""),
+                ActivityEntryHelper.createActivityEntry(ActivitiesClientUtil.getClient(),memberId, categoryId, (comment.getCommentId()+""),
                         ActivityProvidersType.DiscussionAddedActivityEntry.getType());
             }
 

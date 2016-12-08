@@ -3,11 +3,8 @@ package org.xcolab.portlets.contestmanagement.utils;
 
 import org.springframework.stereotype.Component;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.contest.ContestClientUtil;
@@ -39,23 +36,8 @@ public class ContestsContextImpl implements TabContext {
     }
 
     @Override
-    public Contest getContestWrapped(PortletRequest request) {
-        return getAttribute(request, CONTEST_WRAPPED_ATTRIBUTE, Contest.class);
-    }
-
-    @Override
     public TabPermissions getPermissions(PortletRequest request) {
         return getAttribute(request, PERMISSIONS_ATTRIBUTE, TabPermissions.class);
-    }
-
-    @Override
-    public User getUser(PortletRequest request) {
-        return getAttribute(request, USER_ATTRIBUTE, User.class);
-    }
-
-    @Override
-    public void invalidateContext(PortletRequest request) {
-        request.removeAttribute(CONTEXT_INITIALIZED_ATTRIBUTE);
     }
 
     private <T> T getAttribute(PortletRequest request, String attributeName, Class<T> clasz) {
@@ -87,9 +69,6 @@ public class ContestsContextImpl implements TabContext {
         }
 
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        request.setAttribute(USER_ATTRIBUTE, themeDisplay.getUser());
         request.setAttribute(CONTEXT_INITIALIZED_ATTRIBUTE, true);
     }
-
-    private final static Log _log = LogFactoryUtil.getLog(ContestsContextImpl.class);
 }

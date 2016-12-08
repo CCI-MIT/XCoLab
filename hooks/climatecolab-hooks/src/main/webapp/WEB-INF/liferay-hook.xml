@@ -30,9 +30,17 @@
 		<servlet-filter-name>FileUploadFilter</servlet-filter-name>
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.utils.FileUploadFilter</servlet-filter-impl>
 	</servlet-filter>
+	<servlet-filter>
+		<servlet-filter-name>FlaggingReportFilter</servlet-filter-name>
+		<servlet-filter-impl>org.xcolab.hooks.climatecolab.flagging.FlaggingReportFilter</servlet-filter-impl>
+	</servlet-filter>
     <servlet-filter>
-        <servlet-filter-name>FlaggingReportFilter</servlet-filter-name>
-        <servlet-filter-impl>org.xcolab.hooks.climatecolab.flagging.FlaggingReportFilter</servlet-filter-impl>
+        <servlet-filter-name>ImpersonationFilter</servlet-filter-name>
+        <servlet-filter-impl>org.xcolab.hooks.climatecolab.impersonation.ImpersonationFilter</servlet-filter-impl>
+    </servlet-filter>
+    <servlet-filter>
+        <servlet-filter-name>ImpersonationLogoutFilter</servlet-filter-name>
+        <servlet-filter-impl>org.xcolab.hooks.climatecolab.impersonation.ImpersonationLogoutFilter</servlet-filter-impl>
     </servlet-filter>
 	<servlet-filter>
 		<servlet-filter-name>ImageDisplayerFilter</servlet-filter-name>
@@ -79,10 +87,6 @@
 		<url-pattern>/*</url-pattern>
 	</servlet-filter-mapping>
 	<servlet-filter-mapping>
-		<servlet-filter-name>Landingpage</servlet-filter-name>
-		<url-pattern>/landingpage/*</url-pattern>
-	</servlet-filter-mapping>
-	<servlet-filter-mapping>
 		<servlet-filter-name>SessionPingFilter</servlet-filter-name>
 		<url-pattern>/sessionping</url-pattern>
 	</servlet-filter-mapping>
@@ -96,10 +100,18 @@
     	<servlet-filter-name>FileUploadFilter</servlet-filter-name>
     	<url-pattern>/fileUpload</url-pattern>
     </servlet-filter-mapping>
-	<servlet-filter-mapping>
-		<servlet-filter-name>FlaggingReportFilter</servlet-filter-name>
-		<url-pattern>/flagging/report</url-pattern>
-	</servlet-filter-mapping>
+    <servlet-filter-mapping>
+        <servlet-filter-name>FlaggingReportFilter</servlet-filter-name>
+        <url-pattern>/flagging/report</url-pattern>
+    </servlet-filter-mapping>
+    <servlet-filter-mapping>
+        <servlet-filter-name>ImpersonationFilter</servlet-filter-name>
+        <url-pattern>/impersonate</url-pattern>
+    </servlet-filter-mapping>
+    <servlet-filter-mapping>
+        <servlet-filter-name>ImpersonationLogoutFilter</servlet-filter-name>
+        <url-pattern>/impersonate/logout</url-pattern>
+    </servlet-filter-mapping>
 	<servlet-filter-mapping>
 		<servlet-filter-name>ImageDisplayerFilter</servlet-filter-name>
 		<url-pattern>/image/*</url-pattern>

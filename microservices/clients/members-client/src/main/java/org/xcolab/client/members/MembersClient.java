@@ -2,6 +2,7 @@ package org.xcolab.client.members;
 
 import org.xcolab.client.members.exceptions.MemberCategoryNotFoundException;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.exceptions.UncheckedMemberNotFoundException;
 import org.xcolab.client.members.pojo.Contact_;
 import org.xcolab.client.members.pojo.LoginBean;
 import org.xcolab.client.members.pojo.LoginLog;
@@ -184,7 +185,7 @@ public final class MembersClient {
                     .withCache(CacheKeys.of(Member.class, memberId),
                     CacheRetention.REQUEST).executeChecked();
         } catch (EntityNotFoundException e) {
-            throw new IllegalStateException("Member not found: " + memberId, e);
+            throw new UncheckedMemberNotFoundException(memberId);
         }
     }
 

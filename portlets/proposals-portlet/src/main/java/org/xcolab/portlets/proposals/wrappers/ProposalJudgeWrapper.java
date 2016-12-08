@@ -50,7 +50,7 @@ public class ProposalJudgeWrapper extends Proposal {
         }
 
         // If the phase does not require initial fellow screening all judges should do the review
-        if (!getFellowScreeningNecessary() && isUserAmongJudges(currentMember)) {
+        if (!getFellowScreeningNecessary() && isUserAmongJudges(currentMember.getUserId())) {
             if (isJudgeFinishedWritingReview()) {
                 return JudgingSystemActions.JudgeReviewStatus.DONE;
             } else {
@@ -77,6 +77,6 @@ public class ProposalJudgeWrapper extends Proposal {
     }
 
     private boolean isJudgeFinishedWritingReview() {
-        return !isUserAmongJudges(currentMember) || proposalRatings.isReviewComplete();
+        return !isUserAmongJudges(currentMember.getUserId()) || proposalRatings.isReviewComplete();
     }
 }
