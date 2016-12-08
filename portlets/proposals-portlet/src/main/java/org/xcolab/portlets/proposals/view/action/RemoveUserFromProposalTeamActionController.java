@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.mail.EmailToAdminDispatcher;
+import org.xcolab.entity.utils.email.EmailToAdminDispatcher;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;

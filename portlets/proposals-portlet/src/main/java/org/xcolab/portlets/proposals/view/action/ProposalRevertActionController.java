@@ -6,9 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
@@ -16,6 +13,7 @@ import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
@@ -46,14 +44,13 @@ public class ProposalRevertActionController {
                     + proposalsContext.getProposal(request).getProposalId());
         }
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        long userId = themeDisplay.getUserId();
+        long memberId = MemberAuthUtil.getMemberId(request);
 
         if (proposalsContext.getProposal(request) != null) {
             Proposal oldProposalVersionToBeBecomeCurrent = proposalsContext.getProposalWrapped(request);
-            updateProposalSpecialAttributes(userId, oldProposalVersionToBeBecomeCurrent);
+            updateProposalSpecialAttributes(memberId, oldProposalVersionToBeBecomeCurrent);
 
-            updateProposalAttributes(request, userId, oldProposalVersionToBeBecomeCurrent);
+            updateProposalAttributes(request, memberId, oldProposalVersionToBeBecomeCurrent);
 
             proposalsContext.invalidateContext(request);
 

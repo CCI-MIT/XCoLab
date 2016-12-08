@@ -18,7 +18,7 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
-import org.xcolab.utils.TemplateReplacementUtil;
+import org.xcolab.entity.utils.TemplateReplacementUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;

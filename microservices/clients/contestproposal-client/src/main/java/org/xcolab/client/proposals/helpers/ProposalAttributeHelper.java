@@ -12,14 +12,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class ProposalAttributeHelper {
     private final Proposal proposal;
     private final int version;
     private Map<String, Map<Long, ProposalAttribute>> attributesByNameAndAdditionalId;
 
-
-    private ProposalAttributeClient proposalAttributeClient;
+    private final ProposalAttributeClient proposalAttributeClient;
 
     public ProposalAttributeHelper(Proposal proposal, int version, ProposalAttributeClient proposalAttributeClient) {
         this.proposal = proposal;

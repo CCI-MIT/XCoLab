@@ -40,6 +40,7 @@ import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.NewsletterBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
@@ -49,8 +50,8 @@ import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.util.CountryUtil;
-import org.xcolab.utils.ModelAttributeUtil;
-import org.xcolab.utils.TemplateReplacementUtil;
+import org.xcolab.entity.utils.ModelAttributeUtil;
+import org.xcolab.entity.utils.TemplateReplacementUtil;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -201,8 +202,9 @@ public class UserProfileController {
             throws IOException, MemberNotFoundException {
 
         Integer paginationPageId = 1;
+        final long memberId = MemberAuthUtil.getMemberId(request);
         UserProfileWrapper currentUserProfile =
-                new UserProfileWrapper(Long.parseLong(request.getRemoteUser()), request);
+                new UserProfileWrapper(memberId, request);
         switch (paginationAction) {
             case "First":
                 paginationPageId = 1;
@@ -279,8 +281,8 @@ public class UserProfileController {
 
         if (!permissions.getCanEditMemberProfile(updatedUserBean.getUserId())) {
             throw new UserProfileAuthorizationException(String.format(
-                    "User %s does not have the permissions to update the profile of user {}",
-                    request.getRemoteUser(), updatedUserBean.getUserId()));
+                    "User %d does not have the permissions to update the profile of user %d",
+                    MemberAuthUtil.getMemberId(request), updatedUserBean.getUserId()));
         }
         UserProfileWrapper currentUserProfile = new UserProfileWrapper(updatedUserBean.getUserId(), request);
         model.addAttribute("currentUserProfile", currentUserProfile);
@@ -521,7 +523,7 @@ public class UserProfileController {
             MembersClient.deleteMember(userId);
         }
 
-        if (userId == permission.getCurrentUser().getUserId()) {
+        if (userId == permission.getCurrentMemberId()) {
             response.sendRedirect("/c/portal/logout");
         } else {
             response.sendRedirect("/web/guest/members");

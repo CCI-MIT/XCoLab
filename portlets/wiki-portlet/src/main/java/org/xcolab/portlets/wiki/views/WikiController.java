@@ -15,6 +15,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.wiki.util.WikiPreferences;
 
 import java.util.List;
@@ -31,8 +32,8 @@ public class WikiController {
         final WikiPreferences preferences = new WikiPreferences(request);
         final long folderId = Long.parseLong(preferences.getWikiFolderId());
         try {
-            if (folderId > 0 && PermissionsClient
-                    .canAdminAll(Long.parseLong(request.getRemoteUser()))) {
+            final long memberId = MemberAuthUtil.getMemberId(request);
+            if (folderId > 0 && PermissionsClient.canAdminAll(memberId)) {
                 final List<ContentArticleVersion> contentArticleVersions = ContentsClient
                         .getContentArticleVersions(0, Integer.MAX_VALUE, folderId, null, null,
                                 null);
@@ -55,19 +56,12 @@ public class WikiController {
                     ContentsClient.getLatestContentArticleVersion(folderId, pageTitle);
             final ContentArticle contentArticle = ContentsClient
                     .getContentArticle(contentArticleVersion.getContentArticleId());
-            if (contentArticle.canView(getMemberId(request))) {
+            final Long memberId = MemberAuthUtil.getMemberId(request);
+            if (contentArticle.canView(memberId)) {
                 model.addAttribute("contentArticleVersion", contentArticleVersion);
             }
         }
         return "wiki";
-    }
-
-    private Long getMemberId(PortletRequest request) {
-        try {
-            return Long.parseLong(request.getRemoteUser());
-        } catch (NumberFormatException e) {
-            return null;
-        }
     }
 
     @RequestMapping(params = "show=resource")

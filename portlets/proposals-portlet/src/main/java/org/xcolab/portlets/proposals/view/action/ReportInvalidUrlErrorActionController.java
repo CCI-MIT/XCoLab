@@ -8,7 +8,7 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 
-import org.xcolab.mail.EmailToAdminDispatcher;
+import org.xcolab.entity.utils.email.EmailToAdminDispatcher;
 import org.xcolab.wrapper.SimpleExceptionErrorReportWrapper;
 
 import java.io.IOException;

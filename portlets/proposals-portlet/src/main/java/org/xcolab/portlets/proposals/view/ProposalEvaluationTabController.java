@@ -29,7 +29,7 @@ import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.client.RestService;
-import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
+import org.xcolab.entity.utils.judging.ProposalJudgingCommentHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;

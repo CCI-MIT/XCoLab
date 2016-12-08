@@ -10,7 +10,7 @@ import com.liferay.portal.util.PortalUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.xcolab.mail.EmailToAdminDispatcher;
+import org.xcolab.entity.utils.email.EmailToAdminDispatcher;
 import org.xcolab.wrapper.SimpleExceptionErrorReportWrapper;
 
 import javax.portlet.ActionRequest;

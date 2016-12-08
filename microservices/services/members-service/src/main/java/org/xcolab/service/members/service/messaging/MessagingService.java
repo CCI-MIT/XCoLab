@@ -12,6 +12,8 @@ import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Message;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.domain.messaging.MessageDao;
+import org.xcolab.service.members.exceptions.MessageLimitExceededException;
+import org.xcolab.util.IdListUtil;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 
@@ -40,7 +42,8 @@ public class MessagingService {
         this.messagingUserPreferencesService = messagingUserPreferencesService;
     }
 
-    public Optional<Message> sendMessage(Message message, Collection<Long> recipientIds, boolean checkLimit) {
+    public Message sendMessage(Message message, Collection<Long> recipientIds, boolean checkLimit)
+            throws MessageLimitExceededException {
         if (checkLimit) {
             Long fromId = message.getFromId();
             synchronized (messageLimitManager.getMutex(fromId)) {
@@ -60,7 +63,7 @@ public class MessagingService {
                         recipientIds.add(1011659L); //patrick
                         sendMessage(validationErrorMessage, recipientIds);
                     }
-                    return Optional.empty();
+                    throw new MessageLimitExceededException(fromId);
                 }
 
                 return sendMessage(message, recipientIds);
@@ -70,7 +73,7 @@ public class MessagingService {
         }
     }
 
-    private Optional<Message> sendMessage(Message message, Collection<Long> recipientIds) {
+    private Message sendMessage(Message message, Collection<Long> recipientIds) {
         message = messageDao.createMessage(message).orElseThrow(
                 () -> new InternalException("Could not retrieve id of created message"));
 
@@ -91,10 +94,12 @@ public class MessagingService {
         }
         if (successfullySentMessages == 0) {
             messageDao.delete(message.getMessageId());
-            return Optional.empty();
+            throw new InternalException(String.format(
+                    "Could not send message %s from %d to members %s", message.getSubject(),
+                    message.getFromId(), IdListUtil.getStringFromIds(recipientIds)));
         }
 
-        return Optional.of(message);
+        return message;
     }
 
     private void copyRecipient(Member recipient, Message m) {
