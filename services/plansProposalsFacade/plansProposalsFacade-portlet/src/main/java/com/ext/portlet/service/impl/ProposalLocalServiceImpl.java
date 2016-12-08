@@ -2,8 +2,6 @@ package com.ext.portlet.service.impl;
 
 import com.ext.portlet.service.base.ProposalLocalServiceBaseImpl;
 
-import org.xcolab.enums.MembershipRequestStatus;
-
 /**
  * The implementation of the proposal local service.
  * <p/>
