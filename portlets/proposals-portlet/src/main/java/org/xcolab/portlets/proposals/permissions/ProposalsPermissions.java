@@ -2,11 +2,9 @@ package org.xcolab.portlets.proposals.permissions;
 
 import com.ext.portlet.contests.ContestStatus;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -14,10 +12,9 @@ import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.legacy.enums.MemberRole;
-import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.util.MemberRoleChoiceAlgorithm;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalContextHelper;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextImpl;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
@@ -32,8 +29,8 @@ public class ProposalsPermissions {
 
     private final boolean planIsEditable;
 
-    private final User user;
-    private final Member member;
+    private final long memberId;
+    private final boolean isLoggedIn;
 
     private final Proposal proposal;
     private final ContestPhase contestPhase;
@@ -70,8 +67,8 @@ public class ProposalsPermissions {
                     && contestPhase.getPhaseActive();
 
         }
-        user = themeDisplay.getUser();
-        member = MembersClient.getMemberUnchecked(user.getUserId());
+        memberId = MemberAuthUtil.getMemberId(request);
+        isLoggedIn = memberId > 0;
         this.contestPhase = contestPhase;
         this.proposal = proposal;
     }
@@ -91,19 +88,19 @@ public class ProposalsPermissions {
      * @return true if user is allowed to edit a proposal, false otherwise
      */
     public boolean getCanEdit() {
-        return !user.isDefaultUser()
+        return isLoggedIn
                 && (getCanAdminAll() || planIsEditable
                 && (isProposalOpen() || isProposalMember())
         );
     }
 
     public boolean getCanDelete() {
-        return !user.isDefaultUser()
+        return isLoggedIn
                 && (getCanAdminAll() || planIsEditable && isProposalMember());
     }
 
     public boolean getCanCreate() {
-        return !user.isDefaultUser() && getIsCreationAllowedByPhase()
+        return isLoggedIn && getIsCreationAllowedByPhase()
                 || getCanAdminAll();
     }
 
@@ -116,11 +113,11 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanAssignRibbon() {
-        return !user.isDefaultUser() && getCanAdminAll();
+        return isLoggedIn && getCanAdminAll();
     }
 
     public boolean getCanPublicRating() {
-        return !user.isDefaultUser(); // && !getCanJudgeActions() && !getIsTeamMember();
+        return isLoggedIn; // && !getCanJudgeActions() && !getIsTeamMember();
     }
 
     public boolean getCanManageUsers() {
@@ -128,15 +125,15 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanSupportProposal() {
-        return !user.isDefaultUser() && !isVotingEnabled();
+        return isLoggedIn && !isVotingEnabled();
     }
 
     public boolean getCanSubscribeContest() {
-        return !user.isDefaultUser();
+        return isLoggedIn;
     }
 
     public boolean getCanSubscribeProposal() {
-        return !user.isDefaultUser();
+        return isLoggedIn;
     }
 
     public boolean isVotingEnabled() {
@@ -145,7 +142,7 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanVote() {
-        return !user.isDefaultUser() && isVotingEnabled()
+        return isLoggedIn && isVotingEnabled()
                 && (proposal != null && proposal.getProposalId() > 0);
     }
 
@@ -155,12 +152,12 @@ public class ProposalsPermissions {
 
     public boolean getIsTeamMember() {
         return proposal != null && proposal.getProposalId() > 0
-                && ProposalsContextUtil.getClients(request).getProposalClient().isUserInProposalTeam(proposal.getProposalId(),user.getUserId())
-                && !user.isDefaultUser();
+                && ProposalsContextUtil.getClients(request).getProposalClient().isUserInProposalTeam(proposal.getProposalId(),memberId)
+                && isLoggedIn;
     }
 
     private boolean isOwner() {
-        return !user.isDefaultUser() && (proposal == null || user.getUserId() == proposal.getAuthorId());
+        return isLoggedIn && (proposal == null || memberId == proposal.getAuthorId());
     }
 
     private boolean isProposalOpen() {
@@ -172,11 +169,11 @@ public class ProposalsPermissions {
      * Returns true if user is admin (not only proposal contributor)
      */
     public boolean getCanAdminAll() {
-        return PermissionsClient.canAdminAll(user.getUserId());
+        return PermissionsClient.canAdminAll(memberId);
     }
 
     private boolean isProposalMember() {
-            return MembersClient.isUserInGroup(user.getUserId(), groupId);
+            return MembersClient.isUserInGroup(memberId, groupId);
     }
 
     public boolean getCanFellowActions() {
@@ -184,28 +181,36 @@ public class ProposalsPermissions {
             return getCanAdminAll();
         }
 
-        return PermissionsClient.canFellow(user.getUserId(), contestPhase.getContestPK()) || getCanAdminAll();
+        return PermissionsClient.canFellow(memberId, contestPhase.getContestPK()) || getCanAdminAll();
     }
 
     public boolean getCanJudgeActions() {
         if (contestPhase == null) {
             return getCanAdminAll();
         }
-        return PermissionsClient.canJudge(user.getUserId(), contestPhase.getContestPK())
+        return PermissionsClient.canJudge(memberId, contestPhase.getContestPK())
                 || getCanAdminAll();
     }
 
     public boolean getCanContestManagerActions() {
+        if (!isLoggedIn) {
+            return false;
+        }
         final MemberRoleChoiceAlgorithm roleChoiceAlgorithm =
                 MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm;
-        MemberRole memberRole = roleChoiceAlgorithm.getHighestMemberRoleForUser(member);
+        MemberRole memberRole = roleChoiceAlgorithm.getHighestMemberRoleForUser(
+                MembersClient.getMemberUnchecked(memberId));
         return memberRole == MemberRole.CONTEST_MANAGER || memberRole == MemberRole.STAFF;
     }
 
     public boolean getCanIAFActions() {
+        if (!isLoggedIn) {
+            return false;
+        }
         final MemberRoleChoiceAlgorithm roleChoiceAlgorithm =
                 MemberRoleChoiceAlgorithm.proposalImpactTabAlgorithm;
-        MemberRole memberRole = roleChoiceAlgorithm.getHighestMemberRoleForUser(member);
+        MemberRole memberRole = roleChoiceAlgorithm.getHighestMemberRoleForUser(
+                MembersClient.getMemberUnchecked(memberId));
         return memberRole == MemberRole.IMPACT_ASSESSMENT_FELLOW;
     }
 
@@ -271,13 +276,5 @@ public class ProposalsPermissions {
             return false;
         }
 
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public Member getMember() {
-        return member;
     }
 }

@@ -10,9 +10,6 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
-import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.util.mail.MailEngineException;
 
 import org.xcolab.client.members.MembersClient;
@@ -22,12 +19,13 @@ import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
+import org.xcolab.entity.utils.LinkUtils;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.portlets.messaging.beans.MessageBean;
 import org.xcolab.portlets.messaging.beans.MessagingBean;
 import org.xcolab.portlets.messaging.beans.SendMessageBean;
 import org.xcolab.portlets.messaging.utils.MessagingPermissions;
-import org.xcolab.entity.utils.LinkUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -47,10 +45,9 @@ public class MessagingController {
             @RequestParam(required = false) String mailboxType,
             @RequestParam(required = false) Integer pageNumber) {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        User user = themeDisplay.getUser();
+        long memberId = MemberAuthUtil.getMemberId(request);
 
-        final MessagingBean messagingBean = new MessagingBean(user,
+        final MessagingBean messagingBean = new MessagingBean(MembersClient.getMemberUnchecked(memberId),
                 pageNumber != null ? pageNumber : 1,
                 StringUtils.isNotBlank(mailboxType) ? MessageType.valueOf(mailboxType) : MessageType.INBOX);
         model.addAttribute("messagingBean", messagingBean);
@@ -62,10 +59,8 @@ public class MessagingController {
     public String composeMessage(RenderRequest request, RenderResponse response, Model model,
             @RequestParam(required = false) Integer messageId) {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-
-        User user = themeDisplay.getUser();
-        model.addAttribute("sendMessageBean", new SendMessageBean(user));
+        long memberId = MemberAuthUtil.getMemberId(request);
+        model.addAttribute("sendMessageBean", new SendMessageBean(memberId));
         return "composeMessage";
     }
 
@@ -73,22 +68,19 @@ public class MessagingController {
     public String showMessage(RenderRequest request, RenderResponse response, Model model,
             @RequestParam(required = false) Integer messageId)
             throws MessageNotFoundException, DiscussionAuthorizationException {
+        long memberId = MemberAuthUtil.getMemberId(request);
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-
-        User user = themeDisplay.getUser();
-
-        model.addAttribute("user", user);
+        model.addAttribute("user", MembersClient.getMemberUnchecked(memberId));
         final MessageBean messageBean = new MessageBean(MessagingClient.getMessage(messageId));
 
         final MessagingPermissions messagingPermissions = new MessagingPermissions(request, messageBean);
         if (!messagingPermissions.getCanViewMessage()) {
-            throw new DiscussionAuthorizationException("User " + user.getUserId()
+            throw new DiscussionAuthorizationException("User " + memberId
                     + " is not authorized to view message " + messageId);
         }
 
         if (messagingPermissions.isRecipient()) {
-            messageBean.markMessageAsOpened(user.getUserId());
+            messageBean.markMessageAsOpened(memberId);
         }
         final SendMessageBean sendMessageBean = new SendMessageBean(messageBean);
         model.addAttribute("sendMessageBean", sendMessageBean);
@@ -101,15 +93,14 @@ public class MessagingController {
     public void archiveMessages(ActionRequest request, ActionResponse response, Model model,
             @ModelAttribute("messagingBean") MessagingBean messagingBean)
             throws PortalException, SystemException, MessageNotFoundException {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        User user = themeDisplay.getUser();
+        long memberId = MemberAuthUtil.getMemberId(request);
 
         if (messagingBean.getDataPage() != null) {
             List<MessageBean> items = messagingBean.getDataPage().getMessages();
             for (MessageBean item : items) {
                 if (item.isSelected()) {
                     Message message = item.getMessage();
-                    MessagingClient.setArchived(message.getMessageId(), user.getUserId(), true);
+                    MessagingClient.setArchived(message.getMessageId(), memberId, true);
                 }
             }
         }
@@ -122,8 +113,8 @@ public class MessagingController {
             //TODO: show better message for validation error
             MessageLimitExceededException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        Member member = MembersClient.getMemberUnchecked(themeDisplay.getUserId());
+        long memberId = MemberAuthUtil.getMemberId(request);
+        Member member = MembersClient.getMemberUnchecked(memberId);
 
         final MessagingPermissions messagingPermissions = new MessagingPermissions(request);
 

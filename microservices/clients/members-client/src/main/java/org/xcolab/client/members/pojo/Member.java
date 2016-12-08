@@ -9,13 +9,12 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.util.http.client.types.TypeProvider;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class Member implements Serializable {
+public class Member {
 
     @JsonIgnore
     public static final String USER_PROFILE_PATH = "/web/guest/member/-/member/userId/";
@@ -24,8 +23,6 @@ public class Member implements Serializable {
             new TypeProvider<>(Member.class,
                     new ParameterizedTypeReference<List<Member>>() {
                     });
-
-    private static final long serialVersionUID = 343994517;
 
     private long id_;
     private String screenName;

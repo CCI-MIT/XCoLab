@@ -15,7 +15,6 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
@@ -23,6 +22,7 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.commons.beans.SortFilterPage;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
@@ -57,7 +57,7 @@ public class ContestProposalsController extends BaseProposalsController {
             throw new ProposalIdOrContestIdInvalidException();
         }
 
-        Member u = request.getRemoteUser() != null ? MembersClient.getMemberUnchecked(Long.parseLong(request.getRemoteUser())) : null;
+        Member u = MemberAuthUtil.getMemberOrNull(request);
         List<Proposal> proposals = new ArrayList<>();
 
         for (Proposal proposal : ProposalsContextUtil.getClients(request).getProposalClient().getActiveProposalsInContestPhase(contestPhase.getContestPhasePK())) {

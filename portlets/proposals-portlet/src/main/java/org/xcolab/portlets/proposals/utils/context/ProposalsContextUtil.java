@@ -1,7 +1,5 @@
 package org.xcolab.portlets.proposals.utils.context;
 
-import com.liferay.portal.model.User;
-
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -71,10 +69,6 @@ public final class ProposalsContextUtil {
     public static ContestType getContestType(
             PortletRequest request) {
         return proposalsContext.getContestType(request);
-    }
-
-    public static User getUser(PortletRequest request) {
-        return proposalsContext.getUser(request);
     }
 
     public static Member getMember(PortletRequest request) {

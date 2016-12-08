@@ -32,6 +32,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
@@ -78,11 +79,11 @@ public class ProposalRequestMembershipActionController {
             return;
         }
 
-        final User liferaySender = proposalsContext.getUser(request);
-        final Member sender = proposalsContext.getMember(request);
-        if (liferaySender.getDefaultUser()) {
+        long memberId = MemberAuthUtil.getMemberId(request);
+        if (memberId == 0) {
             return;
         }
+        final Member sender = MembersClient.getMemberUnchecked(memberId);
 
         final Proposal proposal = proposalsContext.getProposal(request);
         final long proposalId = proposal.getProposalId();

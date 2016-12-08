@@ -1,21 +1,21 @@
 package org.xcolab.portlets.contenteditor.views;
 
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,15 +32,13 @@ public class ContentEditorController {
 
     @RequestMapping
     public String handleRenderRequest(RenderRequest request, RenderResponse response, Model model) {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-
-        if(PermissionsClient.canAdminAll(themeDisplay.getUserId())) {
+        long memberId = MemberAuthUtil.getMemberId(request);
+        if (PermissionsClient.canAdminAll(memberId)) {
             return "editor";
-        }else{
+        } else {
             return "notAllowed";
         }
     }
-
 
     @ResourceMapping("contentEditorListFolder")
     public void contentEditorListFolder(ResourceRequest request, ResourceResponse response,
@@ -91,9 +89,6 @@ public class ContentEditorController {
     public void createArticleFolder(ResourceRequest request, ResourceResponse response,
                                    @RequestParam(required = false) String folderName,
                                    @RequestParam(required = false) Long parentFolderId) throws IOException{
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        Long userId = themeDisplay.getUser().getUserId();
-
         ContentFolder contentFolder = new ContentFolder();
         contentFolder.setContentFolderName(folderName);
         contentFolder.setParentFolderId(parentFolderId);
@@ -107,8 +102,7 @@ public class ContentEditorController {
                                    @RequestParam(required = false) Long articleId,
                                    @RequestParam(required = false) Long folderId)
             throws IOException, ContentNotFoundException {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        Long userId = themeDisplay.getUser().getUserId();
+        long userId = MemberAuthUtil.getMemberId(request);
 
         ContentArticleVersion contentArticleVersion = ContentsClient.getLatestContentArticleVersion(articleId);
         ContentArticleVersion newContentArticleVersion = new ContentArticleVersion();
@@ -121,7 +115,6 @@ public class ContentEditorController {
         ContentsClient.createContentArticleVersion(newContentArticleVersion);
 
         defaultOperationReturnMessage(true, "Article moved successfully", response);
-
     }
 
     @ResourceMapping("saveContentArticleVersion")
@@ -131,9 +124,7 @@ public class ContentEditorController {
                                           @RequestParam(required = false) Long folderId,
                                           @RequestParam(required = false) String content
     ) throws IOException {
-
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        Long userId = themeDisplay.getUser().getUserId();
+        long userId = MemberAuthUtil.getMemberId(request);
 
         ContentArticleVersion contentArticleVersion = new ContentArticleVersion();
 

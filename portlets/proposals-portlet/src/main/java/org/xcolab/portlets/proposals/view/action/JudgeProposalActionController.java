@@ -92,7 +92,7 @@ public class JudgeProposalActionController {
         }
 
         // Security handling
-        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentMember)) &&
+        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentMember.getUserId())) &&
                 !permissions.getCanAdminAll()) {
             response.setRenderParameter("error", "true");
             response.setRenderParameter("pageToDisplay", "proposalDetails_ADVANCING");
@@ -155,7 +155,7 @@ public class JudgeProposalActionController {
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
         Member currentMember = proposalsContext.getMember(request);
         // Security handling
-        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentMember)) &&
+        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentMember.getUserId())) &&
                 !permissions.getCanAdminAll() && !permissions.getCanJudgeActions() && !permissions.getCanContestManagerActions()) {
             return;
         }
@@ -360,7 +360,7 @@ public class JudgeProposalActionController {
 
             // Security handling
             if (!(permissions.getCanFellowActions()
-                    && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentMember))
+                    && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentMember.getUserId()))
                     && !permissions.getCanAdminAll()) {
                 return;
             }

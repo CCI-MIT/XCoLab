@@ -15,17 +15,12 @@ import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
-import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
 import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.portlet.RenderRequest;
@@ -51,7 +46,8 @@ public class FocusAreaEditorController {
     public String handleRenderRequest(RenderRequest request, RenderResponse response, Model model) {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
-        if (PermissionsClient.canAdminAll(themeDisplay.getUserId())) {
+        long memberId = MemberAuthUtil.getMemberId(request);
+        if (PermissionsClient.canAdminAll(memberId)) {
             return "focusAreaEditor";
         } else {
             return "notAllowed";

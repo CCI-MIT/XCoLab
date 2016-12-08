@@ -47,11 +47,11 @@ import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.entity.utils.LinkUtils;
+import org.xcolab.entity.utils.ModelAttributeUtil;
 import org.xcolab.liferay.LoginRegisterUtil;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.entity.utils.ModelAttributeUtil;
 
 import java.io.IOException;
 import java.sql.Timestamp;

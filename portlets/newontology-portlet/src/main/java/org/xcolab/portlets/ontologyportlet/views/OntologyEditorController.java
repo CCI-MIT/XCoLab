@@ -1,22 +1,22 @@
 package org.xcolab.portlets.ontologyportlet.views;
 
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import org.xcolab.client.contest.OntologyClient;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
+
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,9 +34,9 @@ public class OntologyEditorController {
 
     @RequestMapping
     public String handleRenderRequest(RenderRequest request, RenderResponse response, Model model) {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        long memberId = MemberAuthUtil.getMemberId(request);
 
-        if (PermissionsClient.canAdminAll(themeDisplay.getUserId())) {
+        if (PermissionsClient.canAdminAll(memberId)) {
             return "ontologyEditor";
         } else {
             return "notAllowed";
