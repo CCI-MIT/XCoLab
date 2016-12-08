@@ -1,18 +1,16 @@
 package org.xcolab.portlets.ontologyportlet.views;
 
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
 
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import org.xcolab.client.contest.OntologyClient;
+
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
@@ -34,9 +32,9 @@ public class OntologyEditorController {
 
     @RequestMapping
     public String handleRenderRequest(RenderRequest request, RenderResponse response, Model model) {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        Long userId = Long.parseLong(request.getRemoteUser());
 
-        if (PermissionsClient.canAdminAll(themeDisplay.getUserId())) {
+        if (PermissionsClient.canAdminAll(userId)) {
             return "ontologyEditor";
         } else {
             return "notAllowed";
@@ -58,7 +56,7 @@ public class OntologyEditorController {
             ontologyTermParentId = Long.parseLong(ids[1]);
         }
 
-        JSONArray responseArray = JSONFactoryUtil.createJSONArray();
+        JSONArray responseArray = new JSONArray();
         if (ontologySpaceId != null) {
             //
             if (ontologyTermParentId == null) {
@@ -89,7 +87,7 @@ public class OntologyEditorController {
             ResourceResponse response,
             @RequestParam(required = false) Long ontologyTermId)
             throws IOException {
-        JSONObject articleVersion = JSONFactoryUtil.createJSONObject();
+        JSONObject articleVersion = new JSONObject();
 
         OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(ontologyTermId);
         if (ontologyTerm != null) {
@@ -139,7 +137,7 @@ public class OntologyEditorController {
 
     ) throws IOException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
 
         if(id !=null && id != 0l) {
             OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(id);
@@ -163,8 +161,8 @@ public class OntologyEditorController {
 
     private void defaultOperationReturnMessage(boolean success, String message,
             ResourceResponse response) throws IOException {
-        JSONObject articleVersion = JSONFactoryUtil.createJSONObject();
-        JSONObject folderNode = JSONFactoryUtil.createJSONObject();
+        JSONObject articleVersion = new JSONObject();
+        JSONObject folderNode = new JSONObject();
         folderNode.put("success", success);
         folderNode.put("msg", message);
         response.getPortletOutputStream().write(articleVersion.toString().getBytes());
@@ -172,7 +170,7 @@ public class OntologyEditorController {
 
     private JSONObject treeNode(String label, Long ontologyTermParentId, Long ontologySpaceId,
             String kind, boolean loadOnDemand) {
-        JSONObject folderNode = JSONFactoryUtil.createJSONObject();
+        JSONObject folderNode = new JSONObject();
 
         folderNode.put("label", label);
         folderNode.put("kind", kind);

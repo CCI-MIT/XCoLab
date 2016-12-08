@@ -1,5 +1,7 @@
 package org.xcolab.portlets.ontologyportlet.views;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -7,25 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
+
 
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
-import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
 import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.portlet.RenderRequest;
@@ -49,9 +41,11 @@ public class FocusAreaEditorController {
 
     @RequestMapping(params = "focusAreaEditor=true")
     public String handleRenderRequest(RenderRequest request, RenderResponse response, Model model) {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
-        if (PermissionsClient.canAdminAll(themeDisplay.getUserId())) {
+
+        Long userId = Long.parseLong(request.getRemoteUser());
+
+        if (PermissionsClient.canAdminAll(userId)) {
             return "focusAreaEditor";
         } else {
             return "notAllowed";
@@ -60,8 +54,8 @@ public class FocusAreaEditorController {
 
     private void defaultOperationReturnMessage(boolean success, String message,
             ResourceResponse response) throws IOException {
-        JSONObject articleVersion = JSONFactoryUtil.createJSONObject();
-        JSONObject folderNode = JSONFactoryUtil.createJSONObject();
+        JSONObject articleVersion = new JSONObject();
+        JSONObject folderNode = new JSONObject();
         folderNode.put("success", success);
         folderNode.put("msg", message);
         response.getPortletOutputStream().write(articleVersion.toString().getBytes());
@@ -76,7 +70,7 @@ public class FocusAreaEditorController {
             @RequestParam(value = "ontologySpaces[]")String[] ontologySpaces
     ) throws IOException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
         FocusArea focusArea;
         if (id != null && id != 0l) {
             focusArea = OntologyClientUtil.getFocusArea(id);
@@ -122,7 +116,7 @@ public class FocusAreaEditorController {
             ResourceResponse response,
             @RequestParam(required = false) Long focusAreaId)
             throws IOException {
-        JSONObject articleVersion = JSONFactoryUtil.createJSONObject();
+        JSONObject articleVersion = new JSONObject();
 
         FocusArea focusArea = OntologyClientUtil.getFocusArea(focusAreaId);
         if (focusArea != null) {
@@ -131,7 +125,7 @@ public class FocusAreaEditorController {
             articleVersion.put("name", focusArea.getName());
             List<OntologyTerm> allTerms =
                     OntologyClientUtil.getOntologyTermsForFocusArea(focusArea);
-            JSONArray array = JSONFactoryUtil.createJSONArray();
+            JSONArray array = new JSONArray();
             if (allTerms != null) {
                 for (OntologyTerm ot : allTerms) {
                     array.put(ot.getOntologySpaceId() + "_" + ot.getId());
