@@ -194,7 +194,7 @@
 				</table>
 
 				<c:if test="${permissions.canAdmin}">
-					<a href="/?doAsUserId=${currentUserProfile.doAsUserString}">Impersonate ${userBean.firstName}</a>
+					<a href="/impersonate?memberId=${currentUserProfile.userId}">Impersonate ${userBean.firstName}</a>
 				</c:if>
 
 				<div class="profile_about-head">Short bio</div>

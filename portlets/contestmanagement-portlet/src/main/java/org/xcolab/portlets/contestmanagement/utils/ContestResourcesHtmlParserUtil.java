@@ -10,7 +10,7 @@ import org.jsoup.select.Elements;
 
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
-import org.xcolab.utils.TemplateReplacementUtil;
+import org.xcolab.entity.utils.TemplateReplacementUtil;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

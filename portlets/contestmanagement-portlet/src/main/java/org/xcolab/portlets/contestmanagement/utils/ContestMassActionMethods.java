@@ -10,6 +10,7 @@ import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
@@ -90,13 +91,13 @@ public class ContestMassActionMethods {
 
     public static void changeSubscriptionStatus(List<Long> contestList, Object subscriptionStatusObject,
                                                 PortletRequest request) {
-        Member loggedInMember = Member.fromId(request.getRemoteUser());
+        long memberId = MemberAuthUtil.getMemberId(request);
         for (Long contestId : contestList) {
             Boolean subscriptionStatus = (boolean) subscriptionStatusObject;
             if (subscriptionStatus) {
-                ContestClientUtil.subscribeMemberToContest(contestId, loggedInMember.getId_());
+                ContestClientUtil.subscribeMemberToContest(contestId, memberId);
             } else {
-                ContestClientUtil.unsubscribeMemberFromContest(contestId, loggedInMember.getId_());
+                ContestClientUtil.unsubscribeMemberFromContest(contestId, memberId);
             }
         }
     }

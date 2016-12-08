@@ -24,8 +24,8 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +47,8 @@ public class EXTServicePreAction extends Action {
         if (vmVariables == null) {
             vmVariables = new HashMap<>();
         }
+        //Liferay doesn't seem to set this reliably
+        req.setAttribute("javax.servlet.request", req);
 
         List<Theme> themes = ThemeLocalServiceUtil.getThemes(themeDisplay.getCompanyId());
 
@@ -58,7 +60,19 @@ public class EXTServicePreAction extends Action {
             }
         }
 
-        vmVariables.put("unreadMessages", MessagingClient.countUnreadMessagesForUser(themeDisplay.getUserId()));
+        final long memberId = MemberAuthUtil.getMemberId(req);
+        final boolean isImpersonating = MemberAuthUtil.isImpersonating(req);
+        vmVariables.put("_showImpersonationBar", isImpersonating);
+        if (isImpersonating) {
+            final long trueMemberId = MemberAuthUtil.getRealMemberId(req);
+            vmVariables.put("_trueMember", MembersClient.getMemberUnchecked(trueMemberId));
+        }
+        if (memberId != 0L) {
+            Member member = MembersClient.getMemberUnchecked(memberId);
+            vmVariables.put("member", member);
+        }
+
+        vmVariables.put("unreadMessages", MessagingClient.countUnreadMessagesForUser(memberId));
 
         vmVariables.put("_contest_pages", ContestClientUtil.getActiveContestTypes());
         vmVariables.put("_colab_name", ConfigurationAttributeKey.COLAB_NAME.get());
@@ -99,14 +113,6 @@ public class EXTServicePreAction extends Action {
                 _log.error("An exception has been thrown when trying to parse contest id " + contestIdStr);
             } catch (PortalException | SystemException e) {
                 _log.error("An exception has been thrown when loading contest with id " + contestIdStr, e);
-            }
-        }
-        if (themeDisplay.getUserId()!= 0L) {
-            try {
-                Member member = MembersClient.getMember(themeDisplay.getUserId());
-                vmVariables.put("member", member);
-            } catch(MemberNotFoundException ignore) {
-
             }
         }
 

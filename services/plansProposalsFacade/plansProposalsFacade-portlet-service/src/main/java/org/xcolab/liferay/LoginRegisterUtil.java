@@ -31,7 +31,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.utils.emailnotification.member.MemberRegistrationNotification;
+import org.xcolab.entity.utils.email.notifications.member.MemberRegistrationNotification;
 
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;

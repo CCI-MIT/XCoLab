@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.liferay.portal.kernel.security.SecureRandomUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.analytics.AnalyticsUtil;
@@ -24,12 +23,12 @@ import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
+import org.xcolab.entity.utils.email.notifications.proposal.ProposalVoteNotification;
+import org.xcolab.entity.utils.email.notifications.proposal.ProposalVoteValidityConfirmation;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.utils.emailnotification.proposal.ProposalVoteNotification;
-import org.xcolab.utils.emailnotification.proposal.ProposalVoteValidityConfirmation;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -79,8 +78,8 @@ public class VoteOnProposalActionController {
 
                 proposalMemberRatingClient.addProposalVote(proposalId, contestPhaseId, memberId);
 
-                final boolean voteIsValid = validateVote(proposalsContext.getUser(request),
-                        member, proposal, contest, themeDisplay.getPortalURL());
+                final boolean voteIsValid = validateVote(member, proposal, contest,
+                        themeDisplay.getPortalURL());
                 if (voteIsValid) {
                     try {
                         org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
@@ -112,11 +111,11 @@ public class VoteOnProposalActionController {
         response.sendRedirect(proposal.getProposalLinkUrl(contest) + arguments);
     }
 
-    private boolean validateVote(User user, Member member, Proposal proposal, Contest contest,
+    private boolean validateVote(Member member, Proposal proposal, Contest contest,
             String baseUrl) {
 
-        List<Member> usersWithSharedIP = MembersClient.findMembersByIp(user.getLastLoginIP());
-        usersWithSharedIP.remove(user);
+        List<Member> usersWithSharedIP = MembersClient.findMembersByIp(member.getLoginIP());
+        usersWithSharedIP.remove(member);
         if (!usersWithSharedIP.isEmpty()) {
             final ProposalVote vote = proposalMemberRatingClient
                     .getProposalVoteByProposalIdUserId(proposal.getProposalId(), member.getUserId());

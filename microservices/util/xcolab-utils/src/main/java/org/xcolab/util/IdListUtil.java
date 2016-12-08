@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public final class IdListUtil {
     /**
      * Converts a list of ids into a comma separated string
      */
-    public static String getStringFromIds(List<Long> ids) {
+    public static String getStringFromIds(Collection<Long> ids) {
         return StringUtils.join(ids, ',');
     }
 }

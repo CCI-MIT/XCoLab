@@ -6,8 +6,8 @@ import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.enums.ContestPhasePromoteType;
-import org.xcolab.enums.ContestTier;
+import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
+import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 

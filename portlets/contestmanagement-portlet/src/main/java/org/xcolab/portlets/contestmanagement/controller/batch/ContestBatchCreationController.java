@@ -1,6 +1,8 @@
 package org.xcolab.portlets.contestmanagement.controller.batch;
 
 import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,12 +17,6 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
-import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
@@ -30,7 +26,8 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
-import org.xcolab.enums.ContestTier;
+import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.contestmanagement.beans.ContestBatchBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestCSVBean;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
@@ -38,12 +35,12 @@ import org.xcolab.portlets.contestmanagement.utils.ContestCreatorUtil;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleUtil;
 import org.xcolab.util.IdListUtil;
+import org.xcolab.util.enums.contest.ContestTier;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,9 +56,9 @@ import javax.validation.Valid;
 @RequestMapping("view")
 public class ContestBatchCreationController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestBatchCreationController.class);
+    private final static Logger _log = LoggerFactory.getLogger(ContestBatchCreationController.class);
 
-    private Map<Long, Map<Long, Integer>> reusableFocusArea = new HashMap<>();
+    private final Map<Long, Map<Long, Integer>> reusableFocusArea = new HashMap<>();
 
     @ModelAttribute("proposalTemplateSelectionItems")
     public List<LabelValue> populateProposalTemplateSelectionItems() {
@@ -87,11 +84,9 @@ public class ContestBatchCreationController {
     public String batchCreateContestController(PortletRequest request, Model model, PortletResponse response)
             throws PortalException, SystemException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        PermissionChecker portletPermissionChecker = themeDisplay.getPermissionChecker();
-        User currentUser = themeDisplay.getUser();
+        long memberId = MemberAuthUtil.getMemberId(request);
 
-        if (!currentUser.isDefaultUser() && portletPermissionChecker.isOmniadmin()) {
+        if (PermissionsClient.canAdminAll(memberId)) {
             model.addAttribute("contestBatchBean", new ContestBatchBean());
             return "batch/uploadContestCSV";
         }
@@ -114,7 +109,7 @@ public class ContestBatchCreationController {
                         contestBatchBean.getContestDescription(),
                         contestCSVBean.getContestQuestion(),
                         ((contestBatchBean.getContestLogoId() == null) ? (1259173) : (contestBatchBean.getContestLogoId())),
-                        ((contestBatchBean.getSponsorLogoId() == null) ? (0l) : (contestBatchBean.getSponsorLogoId())),
+                        ((contestBatchBean.getSponsorLogoId() == null) ? (0L) : (contestBatchBean.getSponsorLogoId())),
                         contestBatchBean.getPlanTemplateId(),
                         contestBatchBean.getScheduleTemplateId(),
                         contestBatchBean.getContestTier(),
@@ -147,7 +142,7 @@ public class ContestBatchCreationController {
                 }
 
                 Long focusAreaId = checkForExistingFocusArea(uniqueSelectedOntologyTerms);
-                if (focusAreaId == 0l) {
+                if (focusAreaId == 0L) {
                     FocusArea focusArea = new FocusArea();
                     focusArea = OntologyClientUtil.createFocusArea(focusArea);
                     focusAreaId = focusArea.getId_();
@@ -171,16 +166,14 @@ public class ContestBatchCreationController {
 
     private Long checkForExistingFocusArea(Map<Long, Integer> selectedOntologyTerms) {
         if (!reusableFocusArea.isEmpty()) {
-            Iterator<Long> it = reusableFocusArea.keySet().iterator();
-            while (it.hasNext()) {
-                Long focusArea = it.next();
+            for (Long focusArea : reusableFocusArea.keySet()) {
                 Map<Long, Integer> ontTermsInFocusArea = reusableFocusArea.get(focusArea);
                 if (mapHasAllSelectedOntologyTerms(ontTermsInFocusArea, selectedOntologyTerms)) {
                     return focusArea;
                 }
             }
         }
-        return 0l;
+        return 0L;
     }
 
     private boolean mapHasAllSelectedOntologyTerms(Map<Long, Integer> ontTermsInFocusArea,
@@ -213,7 +206,7 @@ public class ContestBatchCreationController {
             contest.setContestName(contestQuestion);
             contest.setContestLogoId(contestLogoId);
             contest.setSponsorLogoId(sponsorLogoId);
-            contest.setContestYear(new Long(DateTime.now().getYear()));
+            contest.setContestYear((long) DateTime.now().getYear());
             contest.setContestPrivate(true);
             contest.setShow_in_tile_view(true);
             contest.setShow_in_list_view(true);
@@ -244,8 +237,7 @@ public class ContestBatchCreationController {
     }
 
     private List<LabelValue> getContestScheduleSelectionItems(PortletRequest request) {
-        List<LabelValue> scheduleTemplateSelectionItems = ContestScheduleLifecycleUtil.getAllScheduleTemplateSelectionItems();
-        return scheduleTemplateSelectionItems;
+        return ContestScheduleLifecycleUtil.getAllScheduleTemplateSelectionItems();
     }
 
     private List<LabelValue> getContestLevelSelectionItems() {

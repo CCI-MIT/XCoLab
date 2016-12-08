@@ -13,6 +13,7 @@ import org.xcolab.model.tables.pojos.Message;
 import org.xcolab.model.tables.pojos.MessagingUserPreferences;
 import org.xcolab.service.members.domain.messaging.MessageDao;
 import org.xcolab.service.members.domain.messaginguserpreferences.MessagingUserPreferencesDao;
+import org.xcolab.service.members.exceptions.MessageLimitExceededException;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.messaging.MessageLimitManager;
 import org.xcolab.service.members.service.messaging.MessagingService;
@@ -88,10 +89,10 @@ public class MessagingController {
 
     @RequestMapping(value = "/messages", method = RequestMethod.POST)
     public Message createMessage(@RequestBody SendMessageBean sendMessageBean,
-            @RequestParam(required = false, defaultValue = "true") boolean checkLimit) {
+            @RequestParam(required = false, defaultValue = "true") boolean checkLimit)
+            throws MessageLimitExceededException {
         return messagingService
-                .sendMessage(sendMessageBean, sendMessageBean.getRecipientIds(), checkLimit)
-                .orElseThrow(() -> new InternalException("Could not send " + sendMessageBean));
+                .sendMessage(sendMessageBean, sendMessageBean.getRecipientIds(), checkLimit);
     }
 
     @RequestMapping(value = "/messages/{messageId}/recipients/{memberId}", method = RequestMethod.PUT)

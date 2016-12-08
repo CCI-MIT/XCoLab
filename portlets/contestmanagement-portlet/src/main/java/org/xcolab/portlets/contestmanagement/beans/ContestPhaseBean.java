@@ -8,7 +8,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.enums.ContestPhasePromoteType;
+import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseTypeValue;
 
 import java.io.Serializable;

@@ -15,6 +15,7 @@ import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,9 +33,9 @@ public class OntologyEditorController {
 
     @RequestMapping
     public String handleRenderRequest(RenderRequest request, RenderResponse response, Model model) {
-        Long userId = Long.parseLong(request.getRemoteUser());
+        long memberId = MemberAuthUtil.getMemberId(request);
 
-        if (PermissionsClient.canAdminAll(userId)) {
+        if (PermissionsClient.canAdminAll(memberId)) {
             return "ontologyEditor";
         } else {
             return "notAllowed";

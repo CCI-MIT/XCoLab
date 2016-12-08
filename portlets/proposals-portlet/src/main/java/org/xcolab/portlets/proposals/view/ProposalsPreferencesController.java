@@ -21,7 +21,7 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.entity.utils.EntityIdListUtil;
 import org.xcolab.enums.ContestPhaseTypeValue;
-import org.xcolab.mail.ContestPhasePromotionEmail;
+import org.xcolab.portlets.proposals.utils.ContestPhasePromotionEmail;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;

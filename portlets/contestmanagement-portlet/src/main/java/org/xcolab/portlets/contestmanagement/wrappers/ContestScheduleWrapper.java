@@ -7,7 +7,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.enums.ContestPhasePromoteType;
+import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.portlets.contestmanagement.beans.ContestPhaseBean;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleChangeHelper
         .IllegalScheduleChangeException;
