@@ -56,7 +56,7 @@ public final class MemberAuthUtil {
     }
 
     public static Member getMemberOrThrow(PortletRequest request)
-            throws UncheckedMemberNotFoundException{
+            throws UncheckedMemberNotFoundException {
         HttpServletRequest servletRequest =
                 (HttpServletRequest) request.getAttribute("javax.servlet.request");
         return getMemberOrThrow(servletRequest);

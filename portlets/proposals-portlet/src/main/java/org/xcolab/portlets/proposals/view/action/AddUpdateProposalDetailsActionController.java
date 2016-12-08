@@ -25,7 +25,6 @@ import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
-import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalCreationUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalMoveUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalUpdateHelper;
@@ -126,21 +125,18 @@ public class AddUpdateProposalDetailsActionController {
 
     @RequestMapping(params = {"action=updateProposalDetails", "error=true"})
     public String reportError(PortletRequest request, Model model,
-            @ModelAttribute("updateProposalSectionsBean") @Valid UpdateProposalDetailsBean updateProposalSectionsBean,
+            @ModelAttribute @Valid UpdateProposalDetailsBean updateProposalSectionsBean,
             BindingResult result) {
-        Proposal proposalWrapped = proposalsContext.getProposalWrapped(request);
 
-        Proposal proposal = new Proposal();
-        proposal.setAuthorId(proposalsContext.getMember(request).getUserId());
-        proposal = ProposalsContextUtil.getClients(request).getProposalClient().createProposal(proposal);
-
-        if (proposalWrapped == null) {
-            proposalWrapped = new Proposal(proposal, 0, proposalsContext.getContest(request),
+        Proposal proposal = proposalsContext.getProposalWrapped(request);
+        if (proposal == null) {
+            proposal = new Proposal(new Proposal(), 0, proposalsContext.getContest(request),
                     proposalsContext.getContestPhase(request), null);
-            model.addAttribute("proposal", proposalWrapped);
+            proposal.setAuthorId(proposalsContext.getMember(request).getUserId());
+            model.addAttribute("proposal", proposal);
         }
         model.addAttribute("mustFilterContent",ConfigurationAttributeKey.FILTER_PROFANITY.get());
-        model.addAttribute("updateProposalSectionsBean",updateProposalSectionsBean);
+        model.addAttribute("updateProposalSectionsBean", updateProposalSectionsBean);
 
         request.setAttribute("imageUploadServiceUrl",
                 ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.get());

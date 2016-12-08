@@ -93,8 +93,9 @@ public class ProposalsController {
         return proposalService.getContestIntegrationRelevantSubproposals(proposalId);
     }
 
-    @RequestMapping(value = "/proposals/{proposalId}/getLatestContestPhaseIdInProposal", method = RequestMethod.GET)
-    public Long getLatestContestPhaseIdInProposal(@PathVariable long proposalId) {
+    @GetMapping("/proposals/{proposalId}/getLatestContestPhaseIdInProposal")
+    public Long getLatestContestPhaseIdInProposal(@PathVariable long proposalId)
+            throws NotFoundException {
         return proposalService.getLatestContestPhaseIdInProposal(proposalId);
     }
 
