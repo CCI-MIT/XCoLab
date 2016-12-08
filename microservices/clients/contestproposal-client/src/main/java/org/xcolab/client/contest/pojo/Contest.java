@@ -645,9 +645,9 @@ public class Contest extends AbstractContest {
         return this.getFocusAreaId() > 0;
     }
 
-    public boolean isUserAmongAdvisors(Member memberInQuestion) {
+    public boolean isUserAmongAdvisors(long memberId) {
         for (Member judge : getContestAdvisors()) {
-            if (judge.getUserId() == memberInQuestion.getUserId()) {
+            if (judge.getUserId() == memberId) {
                 return true;
             }
         }

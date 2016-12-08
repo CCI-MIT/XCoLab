@@ -16,7 +16,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Role_;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
-import org.xcolab.entity.utils.MemberUtil;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.proposals.utils.context.ClientHelper;
 
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class ProposalMoveJsonController {
             throws IOException {
 
         boolean admin = false;
-        Member member = MemberUtil.getMember(request);
+        Member member = MemberAuthUtil.getMemberOrNull(request);
         if (member != null) {
             List<Role_> roles = member.getRoles();
 

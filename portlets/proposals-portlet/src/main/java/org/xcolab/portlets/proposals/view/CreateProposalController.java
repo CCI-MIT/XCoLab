@@ -6,9 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -18,6 +15,7 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
@@ -34,8 +32,12 @@ import javax.portlet.RenderResponse;
 @RequestMapping("view")
 public class CreateProposalController extends BaseProposalsController {
     
+    private final ProposalsContext proposalsContext;
+
     @Autowired
-    private ProposalsContext proposalsContext;
+    public CreateProposalController(ProposalsContext proposalsContext) {
+        this.proposalsContext = proposalsContext;
+    }
 
     @RequestMapping(params = "pageToDisplay=createProposal")
     public String showContestProposals(RenderRequest request, RenderResponse response, 
@@ -48,8 +50,7 @@ public class CreateProposalController extends BaseProposalsController {
             throw new ProposalsAuthorizationException("creation not allowed");
         }
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        long userId = themeDisplay.getUserId();
+        long memberId = MemberAuthUtil.getMemberId(request);
 
         final Contest contest = proposalsContext.getContest(request);
         Proposal proposal;
@@ -67,7 +68,7 @@ public class CreateProposalController extends BaseProposalsController {
         proposal.setProposalId(0L);
         proposal.setCurrentVersion(0);
         proposal.setVisible(true);
-        proposal.setAuthorId(themeDisplay.getUserId());
+        proposal.setAuthorId(memberId);
 
 
         final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
@@ -101,7 +102,7 @@ public class CreateProposalController extends BaseProposalsController {
         final String seoText = "Create " + contestType.getProposalName() + " in " + contest.getContestShortName();
         setSeoTexts(request, seoText, null, null);
 
-        AnalyticsUtil.publishEvent(request, userId, ProposalUpdateHelper.PROPOSAL_ANALYTICS_KEY + 1,
+        AnalyticsUtil.publishEvent(request, memberId, ProposalUpdateHelper.PROPOSAL_ANALYTICS_KEY + 1,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_CATEGORY,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_ACTION ,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_LABEL,

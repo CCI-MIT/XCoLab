@@ -58,7 +58,7 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
             @RequestParam(value = "elementId", required = false) Long elementId)
             throws PortalException, SystemException {
 
-        if (!tabWrapper.getCanView() || request.getRemoteUser() == null) {
+        if (!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
 

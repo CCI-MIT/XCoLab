@@ -5,12 +5,8 @@ import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.Company;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.util.Encryptor;
-import com.liferay.util.EncryptorException;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
@@ -50,7 +46,6 @@ import javax.portlet.PortletRequest;
 public class UserProfileWrapper implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static final long DEFAULT_COMPANY_ID = 10112L;
 
     private static final int MAX_ACTIVITIES_COUNT = 50;
     private static final boolean FIRE_GOOGLE_EVENT = false;
@@ -393,14 +388,5 @@ public class UserProfileWrapper implements Serializable {
                     "or");
         }
         return proposalString;
-    }
-
-    public String getDoAsUserString() {
-        try {
-            final Company company = CompanyLocalServiceUtil.getCompany(DEFAULT_COMPANY_ID);
-            return Encryptor.encrypt(company.getKeyObj(), String.valueOf(getUserId()));
-        } catch (PortalException | SystemException | EncryptorException e) {
-            return "";
-        }
     }
 }

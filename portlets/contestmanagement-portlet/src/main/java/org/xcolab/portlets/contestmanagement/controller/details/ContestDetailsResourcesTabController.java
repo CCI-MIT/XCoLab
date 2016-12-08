@@ -15,6 +15,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestResourcesBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
@@ -56,15 +57,14 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
     }
 
     @RequestMapping(params = "tab=RESOURCES")
-    public String showResourcesTabController(PortletRequest request, PortletResponse response, Model model)
-            throws PortalException, SystemException {
+    public String showResourcesTabController(PortletRequest request, PortletResponse response, Model model) {
 
-        if (!tabWrapper.getCanView() || request.getRemoteUser() == null) {
+        if (!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
 
-        Long userLoggedInId = Long.parseLong(request.getRemoteUser());
-        wikiPageWrapper = new WikiPageWrapper(getContest(), userLoggedInId);
+        long memberId = MemberAuthUtil.getMemberId(request);
+        wikiPageWrapper = new WikiPageWrapper(getContest(), memberId);
         setPageAttributes(request, model, tab);
         model.addAttribute("contestResourcesBean", wikiPageWrapper.getContestResourcesBean());
         return TAB_VIEW;

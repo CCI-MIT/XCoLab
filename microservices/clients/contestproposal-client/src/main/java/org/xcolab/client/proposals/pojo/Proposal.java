@@ -394,6 +394,7 @@ public class Proposal extends AbstractProposal {
 
     }
 
+    @Override
     public Long getFellowDiscussionId() {
         long fellowDiscussionId = super.getFellowDiscussionId();
         if (fellowDiscussionId == 0) {
@@ -423,18 +424,18 @@ public class Proposal extends AbstractProposal {
         return proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.DESCRIPTION, "");
     }
 
-    public boolean isUserAmongFellows(Member memberInQuestion) {
+    public boolean isUserAmongFellows(long memberId) {
         for (Long fellowId : contestTeamMemberClient.getFellowsForContest(contest.getContestPK())) {
-            if (fellowId == memberInQuestion.getUserId()) {
+            if (fellowId == memberId) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean isUserAmongJudges(Member userInQuestion) {
+    public boolean isUserAmongJudges(long memberId) {
         for (Long judge : contestTeamMemberClient.getJudgesForContest(contest.getContestPK())) {
-            if (judge == userInQuestion.getUserId()) {
+            if (judge == memberId) {
                 return true;
             }
         }
@@ -718,7 +719,7 @@ public class Proposal extends AbstractProposal {
 
     public boolean isUserAmongSelectedJudge(Member user) {
         if (!getFellowScreeningNecessary()) {
-            return isUserAmongJudges(user);
+            return isUserAmongJudges(user.getUserId());
         }
 
         for (Long userId : getSelectedJudges()) {

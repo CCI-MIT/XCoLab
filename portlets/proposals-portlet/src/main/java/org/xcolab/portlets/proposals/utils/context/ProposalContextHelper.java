@@ -9,7 +9,6 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
@@ -18,6 +17,7 @@ import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 
@@ -76,12 +76,7 @@ public class ProposalContextHelper {
     }
 
     public Member getMember() {
-        Member member = null;
-        String memberIdString = request.getRemoteUser();
-        if (StringUtils.isNotBlank(memberIdString)) {
-            member = MembersClient.getMemberUnchecked(Long.parseLong(memberIdString));
-        }
-        return member;
+        return MemberAuthUtil.getMemberOrNull(request);
     }
 
     private Contest fetchContest() {
