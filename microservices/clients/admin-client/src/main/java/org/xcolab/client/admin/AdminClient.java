@@ -2,6 +2,7 @@ package org.xcolab.client.admin;
 
 import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
 import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
@@ -11,7 +12,7 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 public class AdminClient {
 
-    private static final RestService adminService = new RestService("admin-service");
+    private static final RestService adminService = new RestService(CoLabService.ADMIN);
     private static final RestResource<ConfigurationAttribute, String> configurationAttributeResource =
             new RestResource1<>(adminService, "attributes", ConfigurationAttribute.TYPES);
 
@@ -25,5 +26,10 @@ public class AdminClient {
         } catch (EntityNotFoundException e) {
             throw new ConfigurationAttributeNotFoundException(name);
         }
+    }
+
+    public static ConfigurationAttribute createConfigurationAttribute(
+            ConfigurationAttribute configurationAttribute) {
+        return configurationAttributeResource.create(configurationAttribute).execute();
     }
 }

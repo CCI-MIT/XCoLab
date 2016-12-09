@@ -10,7 +10,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 
-import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -46,7 +46,7 @@ public class NotificationUnregisterController {
 
                 user = MembersClient.getMember(userId);
 	            error = ! NotificationUnregisterUtils.isTokenValid(token, user) ||
-                        (typeId != NotificationUnregisterUtils.ACTIVITY_TYPE && typeId != NotificationUnregisterUtils.MASSMESSAGING_TYPE);
+                        typeId != NotificationUnregisterUtils.ACTIVITY_TYPE;
 	        }
 	        catch (Exception e) {
 	            _log.error("Error when unsubscribing", e);
@@ -55,7 +55,7 @@ public class NotificationUnregisterController {
         ActivitySubscription subscription = null;
         if (subscriptionId > 0) {
 	        try {
-	            subscription = ActivitiesClient.getActivitySubscription(subscriptionId);
+	            subscription = ActivitiesClientUtil.getActivitySubscription(subscriptionId);
                 //ActivitySubscriptionLocalServiceUtil.getActivitySubscription(subscriptionId);
                 error = ! NotificationUnregisterUtils.isTokenValid(token, subscription);
             }
@@ -73,7 +73,7 @@ public class NotificationUnregisterController {
         String responseText = null;
 	    // unregister user
 	    if (subscription != null) {
-            ActivitiesClient.deleteSubscriptionById(subscription.getPk());
+            ActivitiesClientUtil.deleteSubscriptionById(subscription.getPk());
             responseText = UNSUBSCRIBE_INDIVIDUAL_SUBSCRIPTION_RESPONSE_TEXT;
 	    }
 
@@ -92,8 +92,6 @@ public class NotificationUnregisterController {
     private NotificationUnregisterHandler getUnregisterUserHandler(int type) {
         if (type == NotificationUnregisterUtils.ACTIVITY_TYPE) {
             return new ActivityDailyDigestNotificationUnregisterHandler();
-        } else if (type == NotificationUnregisterUtils.MASSMESSAGING_TYPE) {
-            return new MassmessagingNotificationUnregisterHandler();
         } else {
             return null;
         }

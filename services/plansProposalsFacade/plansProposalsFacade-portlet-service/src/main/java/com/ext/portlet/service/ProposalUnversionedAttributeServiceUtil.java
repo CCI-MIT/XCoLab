@@ -51,12 +51,6 @@ public class ProposalUnversionedAttributeServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static java.util.List<com.ext.portlet.model.ProposalUnversionedAttribute> getAttributes(
-        long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().getAttributes(proposalId);
-    }
-
     public static void clearService() {
         _service = null;
     }

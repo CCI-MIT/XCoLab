@@ -24,11 +24,18 @@
 	</portlet:resourceURL>
 
 	<div class="cmsDetailsBox">
-		<div style="margin-bottom: 40px;">
+		<div style="margin-bottom: 40px;display:inline">
 			<div class="floatRight outerVerticalCenter">
 				<a class="c-Button__primary innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/createContest" target="_blank">Create new Contest</a>
 			</div>
 		</div>
+
+		<div style="margin-bottom: 40px;">
+			<div class="floatRight outerVerticalCenter">
+				<a class="c-Button__primary innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/batchCreateContest" >Batch Contest creation</a>
+			</div>
+		</div>
+
 	</div>
 	
 	<div class="cmsDetailsBox">
@@ -168,7 +175,8 @@
 												 <span>${contestWrapper.weight}</span>
 								</td>
 								<td >
-									<collab:contestLink contest="${contestWrapper}" />
+									<a href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}"> ${contestWrapper.contestShortName}</a>
+									<!--<collab:contestLink contest="${contestWrapper}" />-->
 								</td>
 								<td >${contestWrapper.activePhase.name}</td>
 								<td><form:checkbox path="contestWrappers[${x.index}].contestActive" disabled="true" /></td>
@@ -181,7 +189,8 @@
 								<td>${contestWrapper.proposalsCount} </td>
 								<td>${contestWrapper.commentsCount} </td>
 								<td>
-									<a class="c-Button__primary innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
+									<!--<a class="c-Button__primary innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>-->
+									<a class="c-Button__primary innerVerticalCenter" href="${contestWrapper.contestUrl}" target="_blank">VIEW</a>
 								</td>
 							</tr>
 					</c:forEach>

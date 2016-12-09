@@ -11,11 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.LoginLog;
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Role_;
 import org.xcolab.model.tables.pojos.UserGroupRole;
-import org.xcolab.service.members.domain.loginlog.LoginLogDao;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.domain.usergrouprole.UserGroupRoleDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
@@ -188,12 +186,18 @@ public class MembersController {
         }
     }
 
-    @GetMapping("{memberId}/materializedPoints")
-    public int getMemberMaterializedPoints(@PathVariable Long memberId) {
+    @GetMapping("{memberId}/points")
+    public int getMemberPoints(@PathVariable Long memberId,
+            @RequestParam (required = false, defaultValue = "false") boolean hypothetical) {
         if (memberId == null) {
             return 0;
         } else {
-            Integer ret = memberDao.getMemberMaterializedPoints(memberId);
+            Integer ret;
+            if (hypothetical) {
+                ret = memberDao.getMemberHypotheticalPoints(memberId);
+            } else {
+                ret = memberDao.getMemberMaterializedPoints(memberId);
+            }
             return ((ret == null) ? (0) : (ret));
         }
     }

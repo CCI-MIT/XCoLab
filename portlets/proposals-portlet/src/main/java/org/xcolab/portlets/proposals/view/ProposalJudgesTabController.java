@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ext.portlet.JudgingSystemActions;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -14,16 +13,16 @@ import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
+import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
 import org.xcolab.portlets.proposals.requests.ProposalAdvancingBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalFellowWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalRatingsWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.promotion.JudgingSystemActions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +40,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
     
     @RequestMapping(params = {"pageToDisplay=proposalDetails_ADVANCING"})
     public String showJudgesPanel(PortletRequest request, Model model)
-            throws PortalException, SystemException, ProposalsAuthorizationException {
+            throws ProposalsAuthorizationException {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.ADVANCING);
 
@@ -52,7 +51,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
 
         Proposal proposal = proposalsContext.getProposal(request);
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
-        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
+        Proposal proposalWrapper = new Proposal(proposal, contestPhase);
         ProposalAdvancingBean bean = new ProposalAdvancingBean(proposalWrapper);
         bean.setContestPhaseId(contestPhase.getContestPhasePK());
         model.addAttribute("proposalAdvancingBean", bean);
@@ -73,7 +72,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
 
         Proposal proposal = proposalsContext.getProposal(request);
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
-        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
+        Proposal proposalWrapper = new Proposal(proposal, contestPhase);
         ProposalAdvancingBean bean = new ProposalAdvancingBean(proposalWrapper);
         bean.setContestPhaseId(contestPhase.getContestPhasePK());
 
@@ -81,8 +80,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         return "proposalAdvancing";
     }
 
-    private void setCommonAdvancingAttributes(PortletRequest request, ProposalAdvancingBean bean, Model model)
-            throws SystemException, PortalException {
+    private void setCommonAdvancingAttributes(PortletRequest request, ProposalAdvancingBean bean, Model model) {
         Proposal proposal = proposalsContext.getProposal(request);
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
 
@@ -93,7 +91,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
 
         List<ProposalRating> fellowRatingsUnWrapped = ProposalJudgeRatingClientUtil.getFellowRatingsForProposal(
                 proposal.getProposalId(), contestPhase.getContestPhasePK());
-        List<ProposalRatingsWrapper> fellowRatings = wrapProposalRatings(fellowRatingsUnWrapped);
+        List<ProposalRatings> fellowRatings = wrapProposalRatings(fellowRatingsUnWrapped);
 
         List<ProposalRating> judgesRatingsUnWrapped = ProposalJudgeRatingClientUtil.getJudgeRatingsForProposal(
                 proposal.getProposalId(), contestPhase.getContestPhasePK());
@@ -105,7 +103,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
             }
         }
 
-        List<ProposalRatingsWrapper> judgeRatings = wrapProposalRatings(judgesRatingsUnWrapped);
+        List<ProposalRatings> judgeRatings = wrapProposalRatings(judgesRatingsUnWrapped);
         boolean isFrozen = ProposalPhaseClientUtil.isProposalContestPhaseAttributeSetAndTrue(
                 proposal.getProposalId(),
                 contestPhase.getContestPhasePK(),
@@ -125,9 +123,8 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
     }
 
 
-    private static List<ProposalRatingsWrapper> wrapProposalRatings(List<ProposalRating> ratings)
-            throws SystemException, PortalException {
-        List<ProposalRatingsWrapper> wrappers = new ArrayList<>();
+    private static List<ProposalRatings> wrapProposalRatings(List<ProposalRating> ratings) {
+        List<ProposalRatings> wrappers = new ArrayList<>();
         Map<Long, List<ProposalRating>> ratingsByUserId = new HashMap<>();
 
         for (ProposalRating r : ratings) {
@@ -139,20 +136,19 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
 
             for (Map.Entry<Long, List<ProposalRating>> entry : ratingsByUserId.entrySet()) {
                 List<ProposalRating> userRatings = entry.getValue();
-                ProposalRatingsWrapper wrapper = new ProposalRatingsWrapper(entry.getKey(), userRatings);
+                ProposalRatings wrapper = new ProposalRatings(entry.getKey(), userRatings);
                 wrappers.add(wrapper);
         }
         return wrappers;
     }
     
     @RequestMapping(params = {"pageToDisplay=proposalDetails_SCREENING"})
-    public String showFellowsPanel(PortletRequest request, Model model)
-            throws PortalException, SystemException {
+    public String showFellowsPanel(PortletRequest request, Model model) {
         setCommonModelAndPageAttributes(request, model, ProposalTab.SCREENING);
 
         Proposal proposal = proposalsContext.getProposal(request);
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
-        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
+        Proposal proposalWrapper = new Proposal(proposal, contestPhase);
         ProposalFellowWrapper proposalFellowWrapper = new ProposalFellowWrapper(
                 proposalWrapper, proposalsContext.getMember(request), request);
 

@@ -8,4 +8,5 @@ public interface PlanTemplateSectionDao {
     List<PlanTemplateSection> findByGiven(Long planTemplateId, Long planSectionId);
     int delete(Long planTemplateId, Long planSectionDefinitionId);
     boolean update(PlanTemplateSection planTemplateSection);
+    PlanTemplateSection create(PlanTemplateSection planTemplateSection);
 }

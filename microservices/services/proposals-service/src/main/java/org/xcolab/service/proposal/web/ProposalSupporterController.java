@@ -6,8 +6,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.model.tables.pojos.ProposalSupporter;
 import org.xcolab.service.proposal.domain.proposalsupporter.ProposalSupporterDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
@@ -62,7 +66,7 @@ public class ProposalSupporterController {
     public Boolean deleteProposalSupporter(@RequestParam("proposalId") Long proposalId,
                                            @RequestParam("memberId") Long memberId) {
         this.proposalSupporterDao.delete(proposalId, memberId);
-        ActivityEntryHelper.createActivityEntry(memberId, proposalId, null,
+        ActivityEntryHelper.createActivityEntry(ActivitiesClientUtil.getClient(),memberId, proposalId, null,
                 ActivityProvidersType.ProposalSupporterRemovedActivityEntry.getType());
         return true;
 

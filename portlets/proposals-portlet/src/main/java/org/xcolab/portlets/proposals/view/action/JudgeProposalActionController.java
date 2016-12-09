@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.ext.portlet.JudgingSystemActions;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
@@ -44,13 +41,12 @@ import org.xcolab.portlets.proposals.requests.ProposalAdvancingBean;
 import org.xcolab.portlets.proposals.requests.RatingBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ProposalRatingWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.utils.judging.ProposalJudgingCommentHelper;
-import org.xcolab.utils.judging.ProposalReview;
-import org.xcolab.utils.judging.ProposalReviewCsvExporter;
+import org.xcolab.entity.utils.judging.ProposalJudgingCommentHelper;
+import org.xcolab.entity.utils.judging.ProposalReview;
+import org.xcolab.entity.utils.judging.ProposalReviewCsvExporter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -96,7 +92,7 @@ public class JudgeProposalActionController {
         }
 
         // Security handling
-        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentMember)) &&
+        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentMember.getUserId())) &&
                 !permissions.getCanAdminAll()) {
             response.setRenderParameter("error", "true");
             response.setRenderParameter("pageToDisplay", "proposalDetails_ADVANCING");
@@ -159,7 +155,7 @@ public class JudgeProposalActionController {
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
         Member currentMember = proposalsContext.getMember(request);
         // Security handling
-        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentMember)) &&
+        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentMember.getUserId())) &&
                 !permissions.getCanAdminAll() && !permissions.getCanJudgeActions() && !permissions.getCanContestManagerActions()) {
             return;
         }
@@ -223,7 +219,7 @@ public class JudgeProposalActionController {
                 Map<ProposalRatingType, List<Long>> ratingsPerType = new HashMap<>();
 
                 for (ProposalRating rating: ratings) {
-                    org.xcolab.utils.judging.ProposalRatingWrapper wrapper = new org.xcolab.utils.judging.ProposalRatingWrapper(rating);
+                    org.xcolab.entity.utils.judging.ProposalRatingWrapper wrapper = new org.xcolab.entity.utils.judging.ProposalRatingWrapper(rating);
                     if (ratingsPerType.get(wrapper.getRatingType()) == null) {
                         ratingsPerType.put(wrapper.getRatingType(), new ArrayList<Long>());
                     }
@@ -311,7 +307,7 @@ public class JudgeProposalActionController {
         }
 
         final Contest contest = proposalsContext.getContest(request);
-        ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
+        Proposal proposal = proposalsContext.getProposalWrapped(request);
         ContestPhase contestPhase = ContestClientUtil.getContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
         Member member = proposalsContext.getMember(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
@@ -349,7 +345,7 @@ public class JudgeProposalActionController {
             ActionResponse response,
             @ModelAttribute("fellowProposalScreeningBean") @Valid FellowProposalScreeningBean fellowProposalScreeningBean,
             BindingResult result)
-            throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
+            throws ProposalsAuthorizationException, IOException {
         try {
             if (result.hasErrors()) {
                 SessionErrors.clear(request);
@@ -364,7 +360,7 @@ public class JudgeProposalActionController {
 
             // Security handling
             if (!(permissions.getCanFellowActions()
-                    && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentMember))
+                    && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentMember.getUserId()))
                     && !permissions.getCanAdminAll()) {
                 return;
             }
@@ -441,8 +437,7 @@ public class JudgeProposalActionController {
         //initialize a map of existing ratings
         Map<Long, ProposalRating> typeToRatingMap = new HashMap<>();
         for (ProposalRating r: existingRatings) {
-            ProposalRatingWrapper wrapper = new ProposalRatingWrapper(r);
-            typeToRatingMap.put(wrapper.getRatingTypeId(), r);
+            typeToRatingMap.put(r.getRatingTypeId(), r);
         }
 
         Map<Long, String> ratingsFromForm = ratingBean.getRatingValues();

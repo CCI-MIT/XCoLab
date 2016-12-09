@@ -4,6 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
@@ -12,7 +13,6 @@ import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,7 +26,7 @@ import java.util.Map;
 public class ProposalPickerSortingUtil {
 
     public static void sortContestsList(String sortOrder, String sortColumn,
-                                        List<Pair<ContestWrapper, Date>> contests, final Map<Long, String> removedContests) {
+                                        List<Pair<Contest, Date>> contests, final Map<Long, String> removedContests) {
         if (sortColumn != null) {
 
             boolean descendingSortOrder = (sortOrder != null) && sortOrder.toLowerCase().equals("desc");
@@ -34,10 +34,10 @@ public class ProposalPickerSortingUtil {
 
             switch (sortColumn.toLowerCase()) {
                 case "name":
-                    Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
+                    Collections.sort(contests, new Comparator<Pair<Contest, Date>>() {
                         @Override
-                        public int compare(Pair<ContestWrapper, Date> o1,
-                                           Pair<ContestWrapper, Date> o2) {
+                        public int compare(Pair<Contest, Date> o1,
+                                           Pair<Contest, Date> o2) {
                             final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
                             final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
                             if (contest1wasRemoved != contest2wasRemoved) {
@@ -49,10 +49,10 @@ public class ProposalPickerSortingUtil {
                     });
                     break;
                 case "comments":
-                    Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
+                    Collections.sort(contests, new Comparator<Pair<Contest, Date>>() {
                         @Override
-                        public int compare(Pair<ContestWrapper, Date> o1,
-                                           Pair<ContestWrapper, Date> o2) {
+                        public int compare(Pair<Contest, Date> o1,
+                                           Pair<Contest, Date> o2) {
                             final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
                             final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
                             if (contest1wasRemoved != contest2wasRemoved) {
@@ -64,10 +64,10 @@ public class ProposalPickerSortingUtil {
                     });
                     break;
                 case "what":
-                    Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
+                    Collections.sort(contests, new Comparator<Pair<Contest, Date>>() {
                         @Override
-                        public int compare(Pair<ContestWrapper, Date> o1,
-                                           Pair<ContestWrapper, Date> o2) {
+                        public int compare(Pair<Contest, Date> o1,
+                                           Pair<Contest, Date> o2) {
                             final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
                             final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
                             if (contest1wasRemoved != contest2wasRemoved) {
@@ -79,10 +79,10 @@ public class ProposalPickerSortingUtil {
                     });
                     break;
                 case "where":
-                    Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
+                    Collections.sort(contests, new Comparator<Pair<Contest, Date>>() {
                         @Override
-                        public int compare(Pair<ContestWrapper, Date> o1,
-                                           Pair<ContestWrapper, Date> o2) {
+                        public int compare(Pair<Contest, Date> o1,
+                                           Pair<Contest, Date> o2) {
                             final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
                             final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
                             if (contest1wasRemoved != contest2wasRemoved) {
@@ -94,10 +94,10 @@ public class ProposalPickerSortingUtil {
                     });
                     break;
                 case "who":
-                    Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
+                    Collections.sort(contests, new Comparator<Pair<Contest, Date>>() {
                         @Override
-                        public int compare(Pair<ContestWrapper, Date> o1,
-                                           Pair<ContestWrapper, Date> o2) {
+                        public int compare(Pair<Contest, Date> o1,
+                                           Pair<Contest, Date> o2) {
                             final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
                             final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
                             if (contest1wasRemoved != contest2wasRemoved) {
@@ -109,10 +109,10 @@ public class ProposalPickerSortingUtil {
                     });
                     break;
                 case "how":
-                    Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
+                    Collections.sort(contests, new Comparator<Pair<Contest, Date>>() {
                         @Override
-                        public int compare(Pair<ContestWrapper, Date> o1,
-                                           Pair<ContestWrapper, Date> o2) {
+                        public int compare(Pair<Contest, Date> o1,
+                                           Pair<Contest, Date> o2) {
                             final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
                             final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
                             if (contest1wasRemoved != contest2wasRemoved) {
@@ -124,10 +124,10 @@ public class ProposalPickerSortingUtil {
                     });
                     break;
                 default:
-                    Collections.sort(contests, new Comparator<Pair<ContestWrapper, Date>>() {
+                    Collections.sort(contests, new Comparator<Pair<Contest, Date>>() {
                         @Override
-                        public int compare(Pair<ContestWrapper, Date> o1,
-                                           Pair<ContestWrapper, Date> o2) {
+                        public int compare(Pair<Contest, Date> o1,
+                                           Pair<Contest, Date> o2) {
                             final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
                             final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
                             if (contest1wasRemoved != contest2wasRemoved) {
@@ -178,6 +178,7 @@ public class ProposalPickerSortingUtil {
                         public int compare(Pair<Proposal, Date> o1,
                                 Pair<Proposal, Date> o2) {
                                 return sortOrderModifier * ProposalAttributeClientUtil
+
                                         .getProposalAttribute(o1.getLeft().getProposalId(),
                                                 ProposalAttributeKeys.NAME, 0L)
                                         .getStringValue()
@@ -186,7 +187,6 @@ public class ProposalPickerSortingUtil {
                                                         o2.getLeft().getProposalId(),
                                                         ProposalAttributeKeys.NAME, 0L)
                                                         .getStringValue());
-
                         }
                     });
                     break;
@@ -250,10 +250,11 @@ public class ProposalPickerSortingUtil {
                         @Override
                         public int compare(Pair<Proposal, Date> o1,
                                 Pair<Proposal, Date> o2) {
-                            return sortOrderModifier * (int) (CommentClientUtil
-                                    .countComments(o1.getLeft().getDiscussionId())
-                                    - CommentClientUtil
-                                    .countComments(o2.getLeft().getDiscussionId()));
+                            return sortOrderModifier *
+                                    (CommentClientUtil
+                                            .countComments(o1.getLeft().getDiscussionId())
+                                            - CommentClientUtil
+                                            .countComments(o2.getLeft().getDiscussionId()));
                         }
                     });
                     break;

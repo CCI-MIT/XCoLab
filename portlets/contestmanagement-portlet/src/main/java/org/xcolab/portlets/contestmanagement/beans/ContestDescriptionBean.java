@@ -12,6 +12,7 @@ import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.WikiPageWrapper;
 
@@ -48,6 +49,8 @@ public class ContestDescriptionBean implements Serializable {
 
     private boolean shouldUpdateContestUrlName;
 
+    private boolean isSharedContest;
+
     @SuppressWarnings("unused")
     public ContestDescriptionBean() {
     }
@@ -65,6 +68,7 @@ public class ContestDescriptionBean implements Serializable {
             sponsorLogoId = contest.getSponsorLogoId();
 
             shouldUpdateContestUrlName = !contest.getContestActive();
+            isSharedContest = contest.getIsSharedContest();
         }
     }
 
@@ -86,7 +90,7 @@ public class ContestDescriptionBean implements Serializable {
         }
 
         if (shouldUpdateContestUrlName && !contest.getContestShortName().equals(oldContestName)) {
-            contest.setContestUrlName((contest).getContestUrlName());
+            contest.setContestUrlName((contest).generateContestUrlName());
                 ContestClientUtil.updateContest(contest);
         }
         WikiPageWrapper.updateContestWiki(contest);
@@ -164,6 +168,14 @@ public class ContestDescriptionBean implements Serializable {
         this.shouldUpdateContestUrlName = shouldUpdateContestUrlName;
     }
 
+    public boolean getIsSharedContest() {
+        return isSharedContest;
+    }
+
+    public void setIsSharedContest(boolean sharedContest) {
+        isSharedContest = sharedContest;
+    }
+
     private void updateContestDescription(Contest contest) {
         contest.setContestName(contestName);
         contest.setContestShortName(contestShortName);
@@ -171,7 +183,12 @@ public class ContestDescriptionBean implements Serializable {
         contest.setPlanTemplateId(planTemplateId);
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
+        contest.setIsSharedContest(isSharedContest);
         ContestClientUtil.updateContest(contest);
+        if(contest.getIsSharedContest()) {
+            SharedColabClient
+                    .updateSharedContestName(contest.getContestPK(), contest.getContestName());
+        }
 
     }
 

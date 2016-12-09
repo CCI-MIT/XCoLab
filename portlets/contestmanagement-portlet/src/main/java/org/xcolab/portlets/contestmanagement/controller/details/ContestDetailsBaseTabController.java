@@ -3,11 +3,6 @@ package org.xcolab.portlets.contestmanagement.controller.details;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -16,7 +11,6 @@ import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.wrapper.TabWrapper;
-import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.util.List;
 
@@ -24,10 +18,8 @@ import javax.portlet.PortletRequest;
 
 public abstract class ContestDetailsBaseTabController extends BaseTabController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestDetailsBaseTabController.class);
-
     private Contest contest;
-    private BaseContestWrapper contestWrapper;
+    private Contest contestWrapper;
     protected TabWrapper tabWrapper;
 
     public static final String NO_PERMISSION_TAB_VIEW = "common/noPermissionTab";
@@ -35,17 +27,16 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
 
     @ModelAttribute("tabs")
     @Override
-    public List<TabWrapper> populateTabs(Model model, PortletRequest request) throws PortalException, SystemException {
+    public List<TabWrapper> populateTabs(Model model, PortletRequest request) {
         return getAllVisibleTabsWrapped(request, ContestDetailsTabs.values());
     }
 
     @ModelAttribute("currentTabWrapped")
     @Override
-    public abstract TabWrapper populateCurrentTabWrapped(PortletRequest request)
-            throws PortalException, SystemException;
+    public abstract TabWrapper populateCurrentTabWrapped(PortletRequest request);
 
     @ModelAttribute("contestWrapper")
-    public BaseContestWrapper populateContestWrapper(Model model, PortletRequest request) {
+    public Contest populateContestWrapper(Model model, PortletRequest request) {
         initContest(request);
         return contestWrapper;
     }
@@ -54,15 +45,14 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
         Long contestId = getContestIdFromRequest(request);
         try {
             contest = ContestClientUtil.getContest(contestId);
-            contestWrapper = new BaseContestWrapper(contest);
+            contestWrapper = (contest);
         } catch (ContestNotFoundException e) {
             throw new DatabaseAccessException(e);
         }
     }
 
     @Override
-    public void setPageAttributes(PortletRequest request, Model model, TabEnum tab)
-            throws PortalException, SystemException {
+    public void setPageAttributes(PortletRequest request, Model model, TabEnum tab) {
 
         String pageTitle = contest.getContestShortName();
         String pageSubTitle = tab.getDisplayName() + " - " + pageTitle;
@@ -103,11 +93,11 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
         this.tabWrapper = tabWrapper;
     }
 
-    public BaseContestWrapper getContestWrapper() {
+    public Contest getContestWrapper() {
         return contestWrapper;
     }
 
-    public void setContestWrapper(BaseContestWrapper contestWrapper) {
+    public void setContestWrapper(Contest contestWrapper) {
         this.contestWrapper = contestWrapper;
     }
 

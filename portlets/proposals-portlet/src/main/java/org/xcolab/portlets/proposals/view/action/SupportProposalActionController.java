@@ -8,13 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.proposals.ProposalMemberRatingClient;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
@@ -41,18 +38,18 @@ public class SupportProposalActionController {
     @RequestMapping(params = {"action=supportProposalAction"})
     public synchronized void handleAction(ActionRequest request, Model model, ActionResponse response,
             @RequestParam(required = false) String forwardToTab)
-            throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
+            throws ProposalsAuthorizationException, IOException {
         
         if (proposalsContext.getPermissions(request).getCanSupportProposal()) {
             long memberId = proposalsContext.getMember(request).getUserId();
             long proposalId = proposalsContext.getProposal(request).getProposalId();
-
-            if (ProposalMemberRatingClientUtil.isMemberProposalSupporter(proposalId, memberId)) {
-                ProposalMemberRatingClientUtil.removeProposalSupporter(proposalId, memberId);
+            ProposalMemberRatingClient proposalMemberRatingClient = proposalsContext.getClients(request).getProposalMemberRatingClient();
+            if (proposalMemberRatingClient.isMemberProposalSupporter(proposalId, memberId)) {
+                proposalMemberRatingClient.removeProposalSupporter(proposalId, memberId);
             }
             else {
-                ProposalMemberRatingClientUtil.addProposalSupporter(proposalId, memberId);
-                int supportedCount = ProposalMemberRatingClientUtil.getProposalSupportersCount(memberId);
+                proposalMemberRatingClient.addProposalSupporter(proposalId, memberId);
+                int supportedCount = proposalMemberRatingClient.getProposalSupportersCount(memberId);
                 if (supportedCount > 0) {
                     int analyticsValue = AnalyticsUtil.getAnalyticsValueForCount(supportedCount);
                     AnalyticsUtil.publishEvent(request, memberId, SUPPORT_ANALYTICS_KEY + analyticsValue,

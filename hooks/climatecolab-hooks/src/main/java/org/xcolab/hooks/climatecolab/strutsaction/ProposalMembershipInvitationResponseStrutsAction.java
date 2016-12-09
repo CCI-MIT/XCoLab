@@ -1,23 +1,24 @@
 package org.xcolab.hooks.climatecolab.strutsaction;
 
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.ProposalAttributeLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.struts.BaseStrutsAction;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.model.MembershipRequest;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.MembershipRequestLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MessagingClient;
-import org.xcolab.utils.TemplateReplacementUtil;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.MembershipClientUtil;
+import org.xcolab.client.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.team.MembershipRequest;
+import org.xcolab.entity.utils.TemplateReplacementUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,34 +50,36 @@ public class ProposalMembershipInvitationResponseStrutsAction extends BaseStruts
 		long proposalId = GetterUtil.get(request.getParameter("proposalId"), 0L);
 		String action = request.getParameter("do");
 
-		MembershipRequest membershipRequest = MembershipRequestLocalServiceUtil.getMembershipRequest(membershipId);
+		MembershipRequest membershipRequest = MembershipClientUtil.getMembershipRequest(membershipId);
 
 		List<Long> recipients = new ArrayList<>();
-		List<User> contributors = ProposalLocalServiceUtil.getMembers(proposalId);
+		List<Member> contributors = ProposalClientUtil.getProposalMembers(proposalId);
 
-		for (User user : contributors) {
+		for (Member user : contributors) {
 			recipients.add(user.getUserId());
 		}
 
-		ContestType contestType = ContestTypeLocalServiceUtil.getContestTypeFromProposalId(proposalId);
-		org.xcolab.client.contest.pojo.ContestType contestTypeMicro = ContestClientUtil.getContestType(contestType.getId());
-		String proposalName = ProposalAttributeLocalServiceUtil.getAttribute(proposalId, ProposalAttributeKeys.NAME,0).getStringValue();
-		String proposalLink = String.format("<a href='%s'>%s</a>", ProposalLocalServiceUtil.getProposalLinkUrl(proposalId), proposalName);
+//		TODO: get right client
+		Proposal proposal = ProposalClientUtil.getProposal(proposalId);
+		ContestType contestType = proposal.getContest().getContestType();
+		org.xcolab.client.contest.pojo.ContestType contestTypeMicro = ContestClientUtil.getContestType(contestType.getId_());
+		String proposalName = ProposalAttributeClientUtil.getProposalAttribute(proposalId, ProposalAttributeKeys.NAME, 0L).getStringValue();
+		String proposalLink = String.format("<a href='%s'>%s</a>", proposal.getProposalLinkUrl(proposal.getContest()), proposalName);
 
 		if (membershipRequest != null) {
 			User invitee = UserLocalServiceUtil.getUserById(membershipRequest.getUserId());
 			if (action.equalsIgnoreCase("ACCEPT")) {
-				ProposalLocalServiceUtil.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, "The invitation was accepted.", invitee.getUserId());
+				MembershipClientUtil.approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, "The invitation was accepted.", invitee.getUserId());
                 final String membershipAcceptedMessage = TemplateReplacementUtil.replaceContestTypeStrings(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_ACCEPTED, contestTypeMicro);
                 sendMessage(invitee.getUserId(),recipients,MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,String.format(membershipAcceptedMessage, invitee.getFullName(), proposalLink));
 			} else if (action.equalsIgnoreCase("DECLINE")) {
-				ProposalLocalServiceUtil.dennyMembershipRequest(proposalId, membershipRequest.getUserId(), membershipId, "The invitation was rejected.", invitee.getUserId());
+				MembershipClientUtil.denyMembershipRequest(proposalId, membershipRequest.getUserId(), membershipId, "The invitation was rejected.", invitee.getUserId());
                 final String membershipRejectedMessage = TemplateReplacementUtil.replaceContestTypeStrings(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED, contestTypeMicro);
                 sendMessage(invitee.getUserId(),recipients,MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,String.format(membershipRejectedMessage, invitee.getFullName(), proposalLink));
 			}
 		}
 
-		response.sendRedirect(ProposalLocalServiceUtil.getProposalLinkUrl(proposalId));
+		response.sendRedirect(proposal.getProposalLinkUrl(proposal.getContest()));
 		return StringPool.BLANK;
 	}
 

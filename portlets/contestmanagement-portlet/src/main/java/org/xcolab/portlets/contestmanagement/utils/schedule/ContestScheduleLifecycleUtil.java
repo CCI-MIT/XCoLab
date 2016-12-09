@@ -4,21 +4,16 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ext.portlet.model.Proposal2Phase;
-import com.ext.portlet.service.ContestScheduleLocalServiceUtil;
-import com.ext.portlet.service.Proposal2PhaseLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestSchedule;
-import org.xcolab.enums.ContestPhasePromoteType;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.ContestCreatorUtil;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -41,20 +36,10 @@ public final class ContestScheduleLifecycleUtil {
         if (!isContestScheduleUsed) {
             removeContestSchedulePhases(scheduleId);
             removeContestPhasesOfContestsThatAreUsingSchedule(scheduleId);
-            removeContestSchedule(scheduleId);
+            ContestClientUtil.deleteContestSchedule(scheduleId);
         } else {
             throw new IllegalArgumentException(
                     "Contest schedule used by contests and can not be deleted!");
-        }
-    }
-
-    private static void removeContestSchedule(Long scheduleId) {
-        try {
-            ContestScheduleLocalServiceUtil.deleteContestSchedule(scheduleId);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            _log.debug("Attempt to delete already deleted contest schedule: " + scheduleId);
         }
     }
 
@@ -73,19 +58,15 @@ public final class ContestScheduleLifecycleUtil {
     }
 
     public static void removeContestPhase(ContestPhase contestPhase) {
-        try {
-            Long contestPhaseId = contestPhase.getContestPhasePK();
-            List<Proposal2Phase> proposal2Phases =
-                    Proposal2PhaseLocalServiceUtil.getByContestPhaseId(contestPhaseId);
-            if (!proposal2Phases.isEmpty()) {
-                // TODO how should we treat these remaining entries?
-                _log.warn("There are remaining proposal2phase entries for contestPhaseId:"
-                        + contestPhaseId);
-            }
-            ContestClientUtil.deleteContestPhase(contestPhase.getContestPhasePK());
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
+        Long contestPhaseId = contestPhase.getContestPhasePK();
+        List<Proposal2Phase> proposal2Phases = ProposalPhaseClientUtil
+                .getProposal2PhaseByContestPhaseId(contestPhaseId);
+        if (!proposal2Phases.isEmpty()) {
+            // TODO how should we treat these remaining entries?
+            _log.warn("There are remaining proposal2phase entries for contestPhaseId: {}",
+                    contestPhaseId);
         }
+        ContestClientUtil.deleteContestPhase(contestPhase.getContestPhasePK());
     }
 
     private static void removeContestPhasesOfContestsThatAreUsingSchedule(Long scheduleId) {

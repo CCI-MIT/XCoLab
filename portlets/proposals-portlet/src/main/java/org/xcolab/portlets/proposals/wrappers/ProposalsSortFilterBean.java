@@ -1,8 +1,9 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang3.StringUtils;
+
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.proposals.utils.ProposalsColumn;
 
@@ -13,18 +14,18 @@ import java.util.List;
 
 public class ProposalsSortFilterBean {
 
-    private final List<ProposalWrapper> proposals;
-    private Comparator<ProposalWrapper> proposalComparator;
+    private final List<Proposal> proposals;
+    private Comparator<Proposal> proposalComparator;
     
-    private List<ProposalWrapper> proposalsWithRibbons = new ArrayList<>();
-    private List<ProposalWrapper> proposalsNormal = new ArrayList<>();
+    private List<Proposal> proposalsWithRibbons = new ArrayList<>();
+    private List<Proposal> proposalsNormal = new ArrayList<>();
 
-    public ProposalsSortFilterBean(List<ProposalWrapper> proposals, final SortFilterPage sortFilterPage) throws PortalException, SystemException {
+    public ProposalsSortFilterBean(List<Proposal> proposals, final SortFilterPage sortFilterPage) {
         super();
         this.proposals = proposals;
 
         if (sortFilterPage == null) {
-            throw new PortalException("sortFilterPage was null");
+            throw new IllegalArgumentException("sortFilterPage was null");
         }
         
         // sort proposals
@@ -51,7 +52,7 @@ public class ProposalsSortFilterBean {
                 case "OVERALLSTATUS":
                     proposalComparator = ProposalsColumn.OVERALLSTATUS.getComparator(); break;
                 default:
-                    throw new PortalException("Unknown sort column");
+                    throw new IllegalArgumentException("Unknown sort column");
             }
         }
         
@@ -63,14 +64,14 @@ public class ProposalsSortFilterBean {
             sortFilterPage.setSortAscending(!sortFilterPage.isSortAscending()); // default sort is date DESC
         }
 
-        if(this.proposals!=null&&this.proposals.size() >0 ) {
+        if(this.proposals!=null&& !this.proposals.isEmpty()) {
 
-            Collections.sort(this.proposals, new Comparator<ProposalWrapper>() {
+            Collections.sort(this.proposals, new Comparator<Proposal>() {
                 @Override
-                public int compare(ProposalWrapper o1, ProposalWrapper o2) {
+                public int compare(Proposal o1, Proposal o2) {
                     if (StringUtils.isBlank(sortFilterPage.getSortColumn())) {
-                        final RibbonWrapper ribbon1 = o1.getRibbonWrapper();
-                        final RibbonWrapper ribbon2 = o2.getRibbonWrapper();
+                        final ProposalRibbon ribbon1 = o1.getRibbonWrapper();
+                        final ProposalRibbon ribbon2 = o2.getRibbonWrapper();
 
                         int sortOrderDiff = ribbon1.getSortOrder() - ribbon2.getSortOrder();
                         if (sortOrderDiff != 0) {
@@ -89,7 +90,7 @@ public class ProposalsSortFilterBean {
                 }
             });
 
-            for (ProposalWrapper contest : this.proposals) {
+            for (Proposal contest : this.proposals) {
                 if (contest.getRibbonWrapper().getRibbon() > 0) {
                     proposalsWithRibbons.add(contest);
                 } else {
@@ -99,23 +100,23 @@ public class ProposalsSortFilterBean {
         }
     }
 
-    public List<ProposalWrapper> getProposalsWithRibbons() {
+    public List<Proposal> getProposalsWithRibbons() {
         return proposalsWithRibbons;
     }
 
-    public void setProposalsWithRibbons(List<ProposalWrapper> proposalsWithRibbons) {
+    public void setProposalsWithRibbons(List<Proposal> proposalsWithRibbons) {
         this.proposalsWithRibbons = proposalsWithRibbons;
     }
 
-    public List<ProposalWrapper> getProposalsNormal() {
+    public List<Proposal> getProposalsNormal() {
         return proposalsNormal;
     }
 
-    public void setProposalsNormal(List<ProposalWrapper> proposalsNormal) {
+    public void setProposalsNormal(List<Proposal> proposalsNormal) {
         this.proposalsNormal = proposalsNormal;
     }
 
-    public List<ProposalWrapper> getProposals() {
+    public List<Proposal> getProposals() {
         return proposals;
     }
 }

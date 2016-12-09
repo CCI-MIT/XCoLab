@@ -18,12 +18,12 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.7</java.version>
-        <spring.version>4.3.3.RELEASE</spring.version>
-        <spring-boot.version>1.4.1.RELEASE</spring-boot.version>
-        <spring-cloud.version>1.2.1.RELEASE</spring-cloud.version>
+        <spring.version>4.3.4.RELEASE</spring.version>
+        <spring-boot.version>1.4.2.RELEASE</spring-boot.version>
+        <spring-cloud.version>1.2.3.RELEASE</spring-cloud.version>
 
         <!-- Database -->
-        <jooq.version>3.8.5</jooq.version>
+        <jooq.version>3.8.6</jooq.version>
         <mysql-connector.version>5.1.39</mysql-connector.version>
         <HikariCP.version>2.5.1</HikariCP.version>
         <commons-dbcp2.version>2.1.1</commons-dbcp2.version>
@@ -36,10 +36,10 @@
         <!-- Service communication -->
         <ehcache.version>3.1.3</ehcache.version>
         <httpclient.version>4.5.2</httpclient.version>
-        <jackson-databind.version>2.8.4</jackson-databind.version>
+        <jackson-databind.version>2.8.5</jackson-databind.version>
 
         <!-- Misc -->
-        <jsoup.version>1.9.2</jsoup.version>
+        <jsoup.version>1.10.1</jsoup.version>
         <json.version>20160212</json.version>
         <simple-java-mail.version>3.1.1</simple-java-mail.version>
     </properties>
@@ -59,7 +59,7 @@
             <plugins>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.5.1</version>
+                    <version>3.6.0</version>
                 </plugin>
 
                 <plugin>

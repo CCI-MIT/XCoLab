@@ -1,17 +1,13 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.enums.ContestPhasePromoteType;
-import org.xcolab.enums.ContestTier;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
+import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 
@@ -51,7 +47,7 @@ interface ProposalTabCanAccessAlgorithm {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-			if (!permissions.getCanSeeAdvancingTab()) {
+			if (!permissions.getCanSeeAdvancingTab()|| context.getContest(request).getIsSharedContestInForeignColab()) {
 				return false;
 			}
 
@@ -61,7 +57,7 @@ interface ProposalTabCanAccessAlgorithm {
 				return true;
 			}
 
-			ProposalWrapper proposalWrapper = new ProposalWrapper(context.getProposal(request), context.getContestPhase(request));
+			Proposal proposalWrapper = new Proposal(context.getProposal(request), context.getContestPhase(request));
 			ProposalJudgeWrapper wrapper = new ProposalJudgeWrapper(proposalWrapper, context.getMember(request));
 			return wrapper.shouldShowJudgingTab();
 		}
@@ -71,7 +67,11 @@ interface ProposalTabCanAccessAlgorithm {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-			return ConfigurationAttributeKey.PUBLISH_JUDGING_RESULTS.get();
+			if(context.getContest(request).getIsSharedContestInForeignColab()) {
+				return false;
+			}else{
+				return ConfigurationAttributeKey.PUBLISH_JUDGING_RESULTS.get();
+			}
 		}
 	};
 
@@ -79,7 +79,7 @@ interface ProposalTabCanAccessAlgorithm {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-			ProposalWrapper proposalWrapper = new ProposalWrapper(context.getProposal(request), context.getContestPhase(request));
+			Proposal proposalWrapper = new Proposal(context.getProposal(request), context.getContestPhase(request));
 			if (proposalWrapper.getContest().getContestTier() < 1) {
 				return false;
 			}
@@ -96,7 +96,7 @@ interface ProposalTabCanAccessAlgorithm {
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
 			ContestPhase contestPhase = context.getContestPhase(request);
 			if (!(permissions.getCanFellowActions() || permissions.getCanAdminAll() || permissions.getCanContestManagerActions()) ||
-					!contestPhase.getFellowScreeningActive()) {
+					!contestPhase.getFellowScreeningActive() || context.getContest(request).getIsSharedContestInForeignColab()) {
 				return false;
 			}
 
@@ -153,25 +153,20 @@ interface ProposalTabCanAccessAlgorithm {
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
 			if (ConfigurationAttributeKey.IMPACT_TAB_IS_ACTIVE.get()) {
-                try {
-                    final Contest contest = context.getContest(request);
+				final Contest contest = context.getContest(request);
 
-                    if (contest.getContestTier() != ContestTier.NONE.getTierType()
-                            && contest.getContestTier() != ContestTier.REGION_SECTOR.getTierType()) {
-                        long focusAreaId = contest.getFocusAreaId();
-                        if (!isDescendantOfExcludedOntologyTerm(focusAreaId)) {
-                            return true;
-                        }
-                    }
-                } catch (SystemException | PortalException e) {
-                    _log.error("can't check if user is allowed to view impact tab", e);
-                }
+				if (contest.getContestTier() != ContestTier.NONE.getTierType()
+						&& contest.getContestTier() != ContestTier.REGION_SECTOR.getTierType()) {
+					long focusAreaId = contest.getFocusAreaId();
+					if (!isDescendantOfExcludedOntologyTerm(focusAreaId)) {
+						return true;
+					}
+				}
             }
 			return false;
 		}
 
-		private boolean isDescendantOfExcludedOntologyTerm(long focusAreaId)
-                throws SystemException, PortalException {
+		private boolean isDescendantOfExcludedOntologyTerm(long focusAreaId) {
 
             final List<Long> excludedOntologyTermIds = ConfigurationAttributeKey
 					.IMPACT_TAB_EXCLUDED_ONTOLOGY_TERM_IDS.get();
@@ -184,7 +179,6 @@ interface ProposalTabCanAccessAlgorithm {
             }
             return false;
         }
-		private final Log _log = LogFactoryUtil.getLog(ProposalTabCanAccessAlgorithm.class);
 	};
 
 	ProposalTabCanAccessAlgorithm impactEditAccess = new ProposalTabCanAccessAlgorithm() {

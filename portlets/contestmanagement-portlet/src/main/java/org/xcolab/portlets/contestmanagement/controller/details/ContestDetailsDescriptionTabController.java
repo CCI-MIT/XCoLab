@@ -1,5 +1,7 @@
 package org.xcolab.portlets.contestmanagement.controller.details;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,31 +12,25 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ext.portlet.model.PlanTemplate;
-import com.ext.portlet.service.PlanTemplateLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
-import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
+import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.utils.emailnotification.contest.ContestCreationNotification;
+import org.xcolab.entity.utils.email.notifications.contest.ContestCreationNotification;
 import org.xcolab.wrapper.TabWrapper;
-import org.xcolab.wrappers.BaseContestWrapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,7 +47,7 @@ import javax.validation.Valid;
 @RequestMapping("view")
 public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTabController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestDetailsDescriptionTabController.class);
+    private final static Logger _log = LoggerFactory.getLogger(ContestDetailsDescriptionTabController.class);
     static final private TabEnum tab = ContestDetailsTabs.DESCRIPTION;
     static final private String TAB_VIEW = "details/descriptionTab";
 
@@ -75,15 +71,14 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
 
     @ModelAttribute("currentTabWrapped")
     @Override
-    public TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException {
+    public TabWrapper populateCurrentTabWrapped(PortletRequest request) {
         tabWrapper = new TabWrapper(tab, request, tabContext);
         request.getPortletSession().setAttribute("tabWrapper", tabWrapper);
         return tabWrapper;
     }
 
     @RequestMapping(params = "tab=DESCRIPTION")
-    public String showDescriptionTabController(PortletRequest request, PortletResponse response, Model model)
-            throws PortalException, SystemException {
+    public String showDescriptionTabController(PortletRequest request, PortletResponse response, Model model) {
 
         if (!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
@@ -138,39 +133,33 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     }
 
     @RequestMapping(params = {"action=updateContestDetails", "error=true"})
-    public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {
+    public String reportError(PortletRequest request, Model model) {
         return TAB_VIEW;
     }
 
     private void sendEmailNotificationToAuthor(ThemeDisplay themeDisplay, Contest contest)
             throws MemberNotFoundException {
-        ServiceContext serviceContext = new ServiceContext();
-        serviceContext.setPortalURL(themeDisplay.getPortalURL());
-        new ContestCreationNotification(contest, serviceContext).sendMessage();
+        new ContestCreationNotification(contest, themeDisplay.getPortalURL()).sendMessage();
     }
 
     private List<LabelValue> getProposalTemplateSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
+        //TODO: why do we need this? and why is hard coded?
         List<Long> excludedList =
                 Arrays.asList(1L, 2L, 106L, 201L, 202L, 301L, 401L, 1000401L, 1000501L, 1300104L, 1300201L, 1300302L,
                         1300401L, 1300601L, 1300602L);
-        try {
-            for (PlanTemplate proposalTemplate : PlanTemplateLocalServiceUtil.getPlanTemplates(0, Integer.MAX_VALUE)) {
-                if (!excludedList.contains(proposalTemplate.getId())) {
-                    selectItems.add(new LabelValue(proposalTemplate.getId(), proposalTemplate.getName()));
-                }
+        for (PlanTemplate proposalTemplate : PlanTemplateClientUtil.getPlanTemplates()) {
+            if (!excludedList.contains(proposalTemplate.getId_())) {
+                selectItems.add(new LabelValue(proposalTemplate.getId_(), proposalTemplate.getName()));
             }
-        } catch (SystemException e) {
-            _log.warn("Could not get contest proposal template selection items: " + e);
         }
         return selectItems;
     }
 
     private List<LabelValue> getContestScheduleSelectionItems(PortletRequest request) {
         Contest contest = getContest(request);
-        BaseContestWrapper contestWrapper = new BaseContestWrapper(contest);
         Long existingContestScheduleId = contest.getContestScheduleId();
-        Boolean contestHasProposals = contestWrapper.getProposalsCount() > 0;
+        Boolean contestHasProposals = contest.getProposalsCount() > 0;
         return ContestScheduleLifecycleUtil
                 .getScheduleTemplateSelectionItems(existingContestScheduleId, contestHasProposals);
     }

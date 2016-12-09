@@ -44,14 +44,6 @@ public class ContestDebateLocalServiceClp implements ContestDebateLocalService {
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
-    private String _methodName19;
-    private String[] _methodParameterTypes19;
-    private String _methodName20;
-    private String[] _methodParameterTypes20;
-    private String _methodName21;
-    private String[] _methodParameterTypes21;
-    private String _methodName22;
-    private String[] _methodParameterTypes22;
 
     public ContestDebateLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -146,28 +138,6 @@ public class ContestDebateLocalServiceClp implements ContestDebateLocalService {
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
-
-        _methodName19 = "createContestDebate";
-
-        _methodParameterTypes19 = new String[] {
-                "java.lang.Long", "java.lang.Long"
-            };
-
-        _methodName20 = "getContestDebates";
-
-        _methodParameterTypes20 = new String[] { "java.lang.Long" };
-
-        _methodName21 = "store";
-
-        _methodParameterTypes21 = new String[] {
-                "com.ext.portlet.model.ContestDebate"
-            };
-
-        _methodName22 = "delete";
-
-        _methodParameterTypes22 = new String[] {
-                "com.ext.portlet.model.ContestDebate"
-            };
     }
 
     @Override
@@ -678,111 +648,5 @@ public class ContestDebateLocalServiceClp implements ContestDebateLocalService {
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public com.ext.portlet.model.ContestDebate createContestDebate(
-        java.lang.Long debateId, java.lang.Long contestId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19,
-                    new Object[] {
-                        ClpSerializer.translateInput(debateId),
-                        
-                    ClpSerializer.translateInput(contestId)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.ContestDebate) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.ContestDebate> getContestDebates(
-        java.lang.Long contestId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName20,
-                    _methodParameterTypes20,
-                    new Object[] { ClpSerializer.translateInput(contestId) });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.List<com.ext.portlet.model.ContestDebate>) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public void store(com.ext.portlet.model.ContestDebate contestDebate)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        try {
-            _invokableLocalService.invokeMethod(_methodName21,
-                _methodParameterTypes21,
-                new Object[] { ClpSerializer.translateInput(contestDebate) });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-    }
-
-    @Override
-    public void delete(com.ext.portlet.model.ContestDebate contestDebate)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        try {
-            _invokableLocalService.invokeMethod(_methodName22,
-                _methodParameterTypes22,
-                new Object[] { ClpSerializer.translateInput(contestDebate) });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
     }
 }

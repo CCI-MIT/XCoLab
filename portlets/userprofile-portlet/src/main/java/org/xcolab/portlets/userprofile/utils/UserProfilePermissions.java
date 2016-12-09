@@ -1,32 +1,28 @@
 package org.xcolab.portlets.userprofile.utils;
 
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
-import com.liferay.portal.theme.ThemeDisplay;
-
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 
 import javax.portlet.PortletRequest;
 
 public class UserProfilePermissions {
 
-
-    private final ThemeDisplay themeDisplay;
+    private final long memberId;
 
     public UserProfilePermissions(PortletRequest request) {
-        themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        memberId = MemberAuthUtil.getMemberId(request);
     }
 
-    public boolean getCanAdminProfile(long userId) {
-        return themeDisplay.getUserId() == userId || getCanAdmin();
+    public boolean getCanAdminProfile(long memberId) {
+        return this.memberId == memberId || getCanAdmin();
     }
 
     public boolean getCanAdmin() {
-        return PermissionsClient.canAdminAll(getCurrentUser().getUserId());
+        return PermissionsClient.canAdminAll(memberId);
     }
 
-    public User getCurrentUser() {
-        return themeDisplay.getUser();
+    public long getCurrentMemberId() {
+        return memberId;
     }
 
     public void checkCanAdminSpamReports() throws UserProfileAuthorizationException {
@@ -36,8 +32,7 @@ public class UserProfilePermissions {
     }
 
     public boolean getCanEditMemberProfile(long memberId) {
-        return memberId == themeDisplay.getUserId()
-                || getCanAdmin();
+        return this.memberId == memberId || getCanAdmin();
     }
 
     public boolean getCanAdminSpamReports() {

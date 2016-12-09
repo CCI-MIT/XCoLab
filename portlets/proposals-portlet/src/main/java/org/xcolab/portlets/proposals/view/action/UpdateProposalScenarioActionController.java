@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.proposals.ProposalAttributeClient;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
 import org.xcolab.enums.ProposalUnversionedAttributeName;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.html.HtmlUtil;
 
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class UpdateProposalScenarioActionController {
                     + proposalsContext.getProposal(request).getProposalId());
         }
 
-        ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
+        Proposal proposal = proposalsContext.getProposalWrapped(request);
         Long consolidatedScenario = isConsolidatedScenario != null && isConsolidatedScenario ? 1L : 0L;
         proposal.setScenarioId(scenarioId, consolidatedScenario, proposalsContext.getMember(request).getUserId());
 

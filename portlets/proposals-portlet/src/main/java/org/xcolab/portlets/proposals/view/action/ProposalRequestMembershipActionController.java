@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
@@ -31,17 +30,17 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.proposals.MembershipClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.utils.emailnotification.proposal.ProposalMembershipInviteNotification;
-import org.xcolab.utils.emailnotification.proposal.ProposalUserActionNotification;
+import org.xcolab.entity.utils.email.notifications.proposal.ProposalMembershipInviteNotification;
+import org.xcolab.entity.utils.email.notifications.proposal.ProposalUserActionNotification;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -80,27 +79,22 @@ public class ProposalRequestMembershipActionController {
             return;
         }
 
-        final User liferaySender = proposalsContext.getUser(request);
-        final Member sender = proposalsContext.getMember(request);
-        if (liferaySender.getDefaultUser()) {
+        long memberId = MemberAuthUtil.getMemberId(request);
+        if (memberId == 0) {
             return;
         }
+        final Member sender = MembersClient.getMemberUnchecked(memberId);
 
         final Proposal proposal = proposalsContext.getProposal(request);
         final long proposalId = proposal.getProposalId();
         final Member proposalAuthor = MembersClient.getMemberUnchecked(proposal.getAuthorId());
         final Contest contest = proposalsContext.getContest(request);
 
-        MembershipClientUtil
+        proposalsContext.getClients(request).getMembershipClient()
                 .addRequestedMembershipRequest(proposalId, sender.getUserId(), comment);
 
-        ServiceContext serviceContext = new ServiceContext();
-        serviceContext.setPortalURL(themeDisplay.getPortalURL());
-
-
-        new ProposalUserActionNotification(proposal, contest, sender, proposalAuthor, MEMBERSHIP_REQUEST_TEMPLATE,
-                serviceContext).sendMessage();
-
+        new ProposalUserActionNotification(proposal, contest, sender, proposalAuthor,
+                MEMBERSHIP_REQUEST_TEMPLATE, themeDisplay.getPortalURL()).sendMessage();
 
         SessionMessages.add(request, "membershipRequestSent");
         response.sendRedirect(proposal.getProposalLinkUrl(contest) + "/tab/TEAM");
@@ -109,7 +103,7 @@ public class ProposalRequestMembershipActionController {
     @RequestMapping(params = {"action=inviteMember"})
     public void invite(ActionRequest request, Model model,
                        ActionResponse response, @Valid RequestMembershipInviteBean requestMembershipInviteBean, BindingResult result)
-            throws PortalException, SystemException, IOException {
+            throws IOException {
         ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(
                 WebKeys.THEME_DISPLAY);
 
@@ -137,19 +131,15 @@ public class ProposalRequestMembershipActionController {
                     if (Validator.isNull(comment)) {
                         comment = "No message specified";
                     }
-                    MembershipRequest memberRequest = MembershipClientUtil
+                    MembershipRequest memberRequest = proposalsContext.getClients(request).getMembershipClient()
                             .addInvitedMembershipRequest(proposalId, recipient.getUserId(),
                                     comment);
 
-                    ServiceContext serviceContext = new ServiceContext();
-                    serviceContext.setPortalURL(themeDisplay.getPortalURL());
                     final Member sender = proposalsContext.getMember(request);
-
 
                     new ProposalMembershipInviteNotification(proposal, contest, sender,
                             recipient,
-                            memberRequest, comment, serviceContext).sendMessage();
-
+                            memberRequest, comment, themeDisplay.getPortalURL()).sendMessage();
 
                     SessionMessages.add(request, "memberInviteSent");
                 }
@@ -166,7 +156,7 @@ public class ProposalRequestMembershipActionController {
 
     @ResourceMapping("inviteMembers-validateRecipient")
     public void validateRecipient(ResourceRequest request, ResourceResponse response)
-            throws PortalException, SystemException {
+            throws SystemException, PortalException {
         String input = request.getParameter("term");
 
         List<User> recipients = getRecipientSuggestions(input, proposalsContext.getProposal(request).getProposalId(),
@@ -210,10 +200,10 @@ public class ProposalRequestMembershipActionController {
             comment = "no comments";
         }
         if (approve.equalsIgnoreCase("APPROVE")) {
-            ProposalsContextUtil.getClients(request).getMembershipClient().approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, comment, userId);
+            proposalsContext.getClients(request).getMembershipClient().approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, comment, userId);
             sendMessage(proposalsContext.getMember(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED + comment);
         } else if (approve.equalsIgnoreCase("DENY")) {
-            MembershipClientUtil
+            proposalsContext.getClients(request).getMembershipClient()
                     .denyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId, comment, userId);
             sendMessage(proposalsContext.getMember(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED + comment);
         }
@@ -235,7 +225,7 @@ public class ProposalRequestMembershipActionController {
         }
 
         List<Long> contributorIds = new ArrayList<>();
-        for (Member contributor : ProposalsContextUtil.getClients(request).getProposalClient().getProposalMembers(proposalId)) {
+        for (Member contributor : proposalsContext.getClients(request).getProposalClient().getProposalMembers(proposalId)) {
             contributorIds.add(contributor.getUserId());
         }
 

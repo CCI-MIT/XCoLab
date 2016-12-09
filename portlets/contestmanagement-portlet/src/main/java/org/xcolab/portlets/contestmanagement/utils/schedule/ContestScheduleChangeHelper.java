@@ -5,8 +5,7 @@ import org.springframework.util.Assert;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.enums.ContestPhasePromoteType;
-import org.xcolab.wrappers.BaseContestWrapper;
+import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -154,7 +153,7 @@ public class ContestScheduleChangeHelper {
         public IllegalScheduleChangeException(Contest contest, long scheduleId) {
             super("Can't edit schedule " + scheduleId + " because contest "
                     + contest.getContestPK() + " already has "
-                    + new BaseContestWrapper(contest).getProposalsCount() + " proposals");
+                    + (contest).getProposalsCount() + " proposals");
         }
     }
 }

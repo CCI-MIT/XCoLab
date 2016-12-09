@@ -59,12 +59,14 @@ function loadContests(){
 function updateTabRibbons(){
     var URL = replaceURLPlaceholders(proposalPickerCounterURL);
 
+    /*
     $.getJSON(URL, { get_param: 'value' }, function(data) {
         $('#numberOfProposals').html(data.numberOfProposals);
         $('#numberOfSubscriptions').html(data.numberOfSubscriptions);
         $('#numberOfSupporting').html(data.numberOfSupporting);
         $('#numberOfSubscriptionsSupporting').html(data.numberOfSubscriptionsSupporting);
     });
+    */
 }
 
 /* Replace the URL placeholders with actual values */

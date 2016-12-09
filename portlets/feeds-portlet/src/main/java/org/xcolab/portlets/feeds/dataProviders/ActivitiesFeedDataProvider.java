@@ -9,6 +9,7 @@ import com.liferay.portal.util.PortalUtil;
 import org.springframework.ui.Model;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
@@ -70,11 +71,11 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
             int startRetrievalAt = sortFilterPage.getPage() * pageSize;
             int endRetrievalAt = (sortFilterPage.getPage() + 1) * pageSize;
             if (filterUserId == 0) {
-                windowedActivities = ActivitiesClient
+                windowedActivities = ActivitiesClientUtil
                         .getActivityEntries(startRetrievalAt, endRetrievalAt, null, null);
 
             } else {
-                windowedActivities = ActivitiesClient
+                windowedActivities = ActivitiesClientUtil
                         .getActivityEntries(startRetrievalAt, endRetrievalAt, filterUserId, null);
             }
 

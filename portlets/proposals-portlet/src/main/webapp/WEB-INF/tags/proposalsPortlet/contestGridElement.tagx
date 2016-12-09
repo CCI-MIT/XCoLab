@@ -4,12 +4,12 @@
 
     <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
 
-	<jsp:directive.attribute name="contest" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper" required="true" rtexprvalue="true" description="Contest" />
+	<jsp:directive.attribute name="contest" type="org.xcolab.client.contest.pojo.Contest" required="true" rtexprvalue="true" description="Contest" />
     <jsp:directive.attribute name="index" required="true" rtexprvalue="true" description="loopIndex" />
 	<div class="c-ContestBox" style="${ (index % 2 == 0) ? 'margin-right: 25px;' : ''}">
 		<div class="c-ContestBox__image">
         	<a href="${contest.contestUrl}">
-            	<img src="/image/contest?img_id=${contest.contestLogoId}" width="151" height="151" alt="${contest.contestShortName }" />
+            	<img src="${contest.logoPath}" width="151" height="151" alt="${contest.contestShortName }" />
             </a>
         </div>
         <div class="c-ContestBox__text">

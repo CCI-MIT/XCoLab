@@ -1,14 +1,16 @@
 package org.xcolab.portlets.randomproposals;
 
+import org.xcolab.client.proposals.pojo.Proposal;
+
 import java.util.List;
 
 public class ProposalsModel {
 	private final RandomProposalsPreferences _preferences;
 	private final String _baseImagePath;
 
-	private final List<ProposalWrapper> _proposals;
+	private final List<Proposal> _proposals;
 	
-	public ProposalsModel(List<ProposalWrapper> proposals, RandomProposalsPreferences preferences,
+	public ProposalsModel(List<Proposal> proposals, RandomProposalsPreferences preferences,
 			String baseImagePath){
 		_proposals = proposals;
 		_preferences = preferences;
@@ -23,7 +25,7 @@ public class ProposalsModel {
 		return _baseImagePath;
 	}
 	
-	public List<ProposalWrapper> getProposals(){
+	public List<Proposal> getProposals(){
 		return _proposals;		
 	}
 

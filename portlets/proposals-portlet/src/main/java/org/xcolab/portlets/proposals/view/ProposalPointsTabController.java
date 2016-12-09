@@ -5,24 +5,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.enums.points.DistributionStrategy;
+import org.xcolab.client.proposals.enums.points.PointsTarget;
+import org.xcolab.client.proposals.enums.points.ReceiverLimitationStrategy;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.points.PointType;
-import org.xcolab.points.DistributionStrategy;
-import org.xcolab.points.PointsTarget;
-import org.xcolab.points.ReceiverLimitationStrategy;
 import org.xcolab.portlets.proposals.requests.AssignPointsBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
 import org.xcolab.portlets.proposals.wrappers.PointsTargetProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +36,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
     }
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_POINTS"})
-    public String showProposalDetails(Model model, PortletRequest request) 
-            throws PortalException, SystemException {
+    public String showProposalDetails(Model model, PortletRequest request) {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.POINTS);
         Proposal proposal = proposalsContext.getProposal(request);
@@ -56,13 +50,11 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             return "";
         }
 
-        PointTypeWrapper parentPointType = new PointTypeWrapper(contestParentPointType, request);
-
         List<Proposal> subProposals = ProposalClientUtil
                 .getSubproposals(proposal.getProposalId(), false);
-        List<ProposalWrapper> subProposalsWrapped = new ArrayList<>();
+        List<Proposal> subProposalsWrapped = new ArrayList<>();
         for (Proposal p: subProposals) {
-            subProposalsWrapped.add(new ProposalWrapper(p));
+            subProposalsWrapped.add(new Proposal(p));
         }
         //TODO: make this flexible
         PointType pointType = ProposalsContextUtil.getClients(request).getPointsClient().getPointType(9L);
@@ -85,23 +77,23 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             basicPercentages.add(new PointsTargetProposalWrapper(target, 2));
         }
 
-        List<ProposalWrapper> linkingProposalsWrapped = new ArrayList<>();
+        List<Proposal> linkingProposalsWrapped = new ArrayList<>();
         final List<Proposal> linkingProposals = ProposalsContextUtil.getClients(request).getProposalClient().getLinkingProposals(proposal.getProposalId());
         for (Proposal p : linkingProposals) {
-            linkingProposalsWrapped.add(new ProposalWrapper(p));
+            linkingProposalsWrapped.add(new Proposal(p));
         }
 
         List<Member> members = ProposalsContextUtil.getClients(request).getProposalClient().getProposalMembers(proposal.getProposalId());
 
         //this bean will be filled with the user input
         AssignPointsBean assignPointsBean = new AssignPointsBean(proposal.getProposalId());
-        assignPointsBean.addAllAssignments(parentPointType, members);
+        assignPointsBean.addAllAssignments((contestParentPointType), members);
 
         model.addAttribute("assignPointsBean", assignPointsBean);
         model.addAttribute("pointsToDistribute", contest.getPoints());
-        model.addAttribute("pointType", parentPointType);
+        model.addAttribute("pointType", (contestParentPointType));
         model.addAttribute("recursionLevel", 0);
-        model.addAttribute("percentageOfTotalPoints", parentPointType.getPercentageOfParent());
+        model.addAttribute("percentageOfTotalPoints", (contestParentPointType).getPercentageOfParent());
         model.addAttribute("subProposals", subProposalsWrapped);
         model.addAttribute("regionalPercentages", regionalPercentages);
         model.addAttribute("basicPercentages", basicPercentages);

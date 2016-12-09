@@ -2,12 +2,10 @@ package org.xcolab.portlets.proposals.permissions;
 
 import com.liferay.portal.model.MembershipRequestConstants;
 
-import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
-import org.xcolab.enums.MembershipRequestStatus;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.proposals.utils.context.ClientHelper;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.util.enums.activity.ActivityEntryType;
@@ -23,7 +21,6 @@ public class ProposalsDisplayPermissions {
     private final ClientHelper clientHelper;
     private final Proposal proposal;
     private final ContestPhase contestPhase;
-    private final Member member;
     private final long memberId;
 
     public ProposalsDisplayPermissions(ProposalsPermissions proposalsPermissions,
@@ -31,9 +28,8 @@ public class ProposalsDisplayPermissions {
         this.proposalsPermissions = proposalsPermissions;
         this.proposal = proposal;
         this.contestPhase = contestPhase;
-        this.member = proposalsPermissions.getMember();
+        memberId = MemberAuthUtil.getMemberId(request);
         this.clientHelper = ProposalsContextUtil.getClients(request);
-        this.memberId = member == null ? 0 : member.getId_();
     }
 
     public boolean getCanSeeRequestMembershipButton() {
@@ -79,9 +75,13 @@ public class ProposalsDisplayPermissions {
     }
 
     private boolean isSubscribedToContest() {
+
+
+
+
         return contestPhase != null
                 &&
-                ActivitiesClient.isSubscribedToActivity(memberId,
+                clientHelper.getActivitiesClient().isSubscribedToActivity(memberId,
                         ActivityEntryType.CONTEST.getPrimaryTypeId(), contestPhase.getContestPK(),
                         0, "");
     }

@@ -2,35 +2,40 @@ package org.xcolab.jspTags.discussion.actions;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.IndexerRegistryUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
-import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.analytics.AnalyticsUtil;
+import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.filtering.FilteringClient;
 import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
+import org.xcolab.client.proposals.ProposalClient;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 import org.xcolab.liferay.SharedColabUtil;
+import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.RefreshingRestService;
+import org.xcolab.util.http.client.RestService;
 
 import java.io.IOException;
 
@@ -52,43 +57,95 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
     @RequestMapping(params = "action=addDiscussionMessage")
     public void handleAction(ActionRequest request, ActionResponse response,
+            @RequestParam(value = "contestId", required = false) String contestId,
             NewMessageWrapper newMessage)
-            throws IOException, PortalException, SystemException, DiscussionAuthorizationException {
+            throws IOException, DiscussionAuthorizationException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        long memberId = MemberAuthUtil.getMemberId(request);
 
         try {
+            final CommentClient commentClient;
+            final ThreadClient threadClient;
+            final ActivitiesClient activityClient;
+            final ProposalClient proposalClient;
+
+
+            if (contestId != null && !contestId.equals("0")) {
+                Long contestIdLong = Long.parseLong(contestId);
+
+                Contest contest = ContestClientUtil.getContest(contestIdLong);
+                if (contest.getIsSharedContestInForeignColab()) {
+                    RestService activitiesService = new RefreshingRestService(CoLabService.ACTIVITY,
+                            ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                            ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+
+                    activityClient = ActivitiesClient.fromService(activitiesService);
+                    RestService commentsService = new RefreshingRestService(CoLabService.COMMENT,
+                            ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                            ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+
+                    commentClient = CommentClient.fromService(commentsService);
+                    threadClient = ThreadClient.fromService(commentsService);
+                    RestService proposalsService = new RefreshingRestService(CoLabService.PROPOSAL,
+                            ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                            ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+
+                    proposalClient = ProposalClient.fromService(proposalsService);
+                } else {
+                    threadClient = ThreadClientUtil.getClient();
+                    commentClient = CommentClientUtil.getClient();
+                    activityClient = ActivitiesClientUtil.getClient();
+                    proposalClient = ProposalClientUtil.getClient();
+                }
+            } else {
+                threadClient = ThreadClientUtil.getClient();
+                commentClient = CommentClientUtil.getClient();
+                activityClient = ActivitiesClientUtil.getClient();
+                proposalClient = ProposalClientUtil.getClient();
+            }
+
+
             long threadId = Long.parseLong(newMessage.getThreadId());
 
             checkPermissions(request, "User isn't allowed to add comment", 0L);
-            long userId = themeDisplay.getUser().getUserId();
 
             // Since linebreaks are escaped by HtmlUtil
-             String body = newMessage.getDescription().replaceAll("\\r\\n|\\r|\\n", "</br>");
-            //final String body = HtmlUtil.cleanSome(newMessage.getDescription(), LinkUtils.getBaseUri(request));
+            String body = newMessage.getDescription().replaceAll("\\r\\n|\\r|\\n", "</br>");
+            //final String body = HtmlUtil.cleanSome(newMessage.getDescription(), LinkUtils
+            // .getBaseUri(request));
             Comment comment = new Comment();
             comment.setContent(body);
-            comment.setAuthorId(userId);
+            comment.setAuthorId(memberId);
             comment.setThreadId(threadId);
-            comment = CommentClientUtil.createComment(comment);
-            CommentThread commentThread = ThreadClientUtil.getThread(threadId);
+            comment = commentClient.createComment(comment);
+            CommentThread commentThread = threadClient.getThread(threadId);
 
-            updateAnalyticsAndActivities(commentThread, comment, userId, request);
+            updateAnalyticsAndActivities(commentThread, comment, memberId, request);
 
             if (!commentThread.getIsQuiet()) {
 
                 if (commentThread.getCategory() == null) {
-                    final Long proposalIdForThread = ThreadClientUtil
+                    final Long proposalIdForThread = threadClient
                             .getProposalIdForThread(commentThread.getThreadId());
                     if (proposalIdForThread != null && proposalIdForThread != 0L) {
-                        ActivityEntryHelper.createActivityEntry(userId, commentThread.getThreadId(),
+
+
+                        ActivityEntryHelper.createActivityEntry(activityClient, memberId,
+                                commentThread.getThreadId(),
                                 comment.getCommentId() + "",
-                                ActivityProvidersType.DiscussionAddProposalCommentActivityEntry.getType());
-                        Contest contest = ProposalLocalServiceUtil.getLatestProposalContest(proposalIdForThread);
-                        SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(),userId);
+                                ActivityProvidersType.DiscussionAddProposalCommentActivityEntry
+                                        .getType());
+                        try {
+                            Contest contest = proposalClient
+                                    .getCurrentContestForProposal(proposalIdForThread);
+                            SharedColabUtil.checkTriggerForAutoUserCreationInContest(
+                                    contest.getContestPK(), memberId);
+                        } catch (ContestNotFoundException ignored) {
+
+                        }
                     }
                 } else {
-                    ActivityEntryHelper.createActivityEntry(userId,
+                    ActivityEntryHelper.createActivityEntry(activityClient, memberId,
                             commentThread.getCategory().getCategoryId(),
                             comment.getCommentId() + "",
                             ActivityProvidersType.DiscussionAddCommentActivityEntry.getType());
@@ -99,7 +156,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     FilteredEntry filteredEntry = FilteringClient
                             .getFilteredEntryByUuid(newMessage.getUuid());
                     filteredEntry.setSourceId(comment.getCommentId());
-                    filteredEntry.setAuthorId(userId);
+                    filteredEntry.setAuthorId(memberId);
                     FilteringClient.updateFilteredEntry(filteredEntry);
                 } catch (FilteredEntryNotFoundException ignored) {
                 }
@@ -117,25 +174,20 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     }
                 }
             }
+        } catch (ContestNotFoundException e1) {
+            _log.warn("Could not find contest ");
         } catch (NumberFormatException e) {
             _log.warn(String.format(
                     "Could not convert discussionId %s and threadId %s to longs (userId = %d)",
-                    newMessage.getDiscussionId(), newMessage.getThreadId(),
-                    themeDisplay.getUserId()));
+                    newMessage.getDiscussionId(), newMessage.getThreadId(), memberId));
         } catch (ThreadNotFoundException ignored) {
         }
 
         redirectToReferrer(request, response);
     }
 
-    @SuppressWarnings("OverlyBroadThrowsClause")
     public void updateAnalyticsAndActivities(CommentThread thread, Comment comment, long userId,
-            ActionRequest request)
-            throws SystemException, PortalException {
-        // Update activity counter for user
-        Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(User.class);
-        indexer.reindex(userId);
-
+            ActionRequest request) {
         int commentCount = CommentClientUtil.countCommentsByAuthor(userId);
         if (commentCount > 0) {
             int analyticsValue = AnalyticsUtil.getAnalyticsValueForCount(commentCount);

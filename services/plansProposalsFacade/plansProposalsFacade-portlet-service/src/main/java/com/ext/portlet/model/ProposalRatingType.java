@@ -18,6 +18,4 @@ public interface ProposalRatingType extends ProposalRatingTypeModel,
      *
      * Never modify this interface directly. Add methods to {@link com.ext.portlet.model.impl.ProposalRatingTypeImpl} and rerun ServiceBuilder to automatically copy the method declarations to this interface.
      */
-    public java.util.List<com.ext.portlet.model.ProposalRatingValue> getRatingValues()
-        throws com.liferay.portal.kernel.exception.SystemException;
 }

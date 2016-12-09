@@ -5,16 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.discussion.ProposalDiscussionPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.PortletRequest;
 
@@ -26,10 +22,9 @@ public class ProposalFellowReviewTabController extends BaseProposalTabController
     private ProposalsContext proposalsContext;
     
     @RequestMapping(params = {"pageToDisplay=proposalDetails_FELLOW_REVIEW"})
-    public String showFellowReview(PortletRequest request, Model model)
-            throws PortalException, SystemException {
+    public String showFellowReview(PortletRequest request, Model model) {
 
-        final ProposalWrapper proposal = proposalsContext.getProposalWrapped(request);
+        final Proposal proposal = proposalsContext.getProposalWrapped(request);
 
         long fellowDiscussionId = proposal.getFellowDiscussionId();
         if (fellowDiscussionId == 0) {
@@ -47,8 +42,7 @@ public class ProposalFellowReviewTabController extends BaseProposalTabController
         return "proposalComments";
     }
 
-    private long createFellowThread(PortletRequest request)
-            throws SystemException, PortalException {
+    private long createFellowThread(PortletRequest request) {
         Proposal proposal = proposalsContext.getProposal(request);
         final long discussionThreadId = createDiscussionThread(request, " fellow review", true);
         proposal.setFellowDiscussionId(discussionThreadId);

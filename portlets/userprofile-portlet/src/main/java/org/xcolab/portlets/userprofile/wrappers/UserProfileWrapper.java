@@ -1,22 +1,14 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
 import com.ext.portlet.Activity.ActivityUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.ext.portlet.service.PointsLocalServiceUtil;
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.Company;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.util.Encryptor;
-import com.liferay.util.EncryptorException;
 
-import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
@@ -28,20 +20,18 @@ import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.legacy.utils.SendMessagePermissionChecker;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
-import org.xcolab.enums.Plurality;
+import org.xcolab.entity.utils.EntityGroupingUtil;
 import org.xcolab.portlets.userprofile.beans.BadgeBean;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.entity.Badge;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.utils.EntityGroupingUtil;
-import org.xcolab.wrappers.BaseProposalWrapper;
-import org.xcolab.wrappers.ContestTypeProposalWrapper;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -55,10 +45,7 @@ import javax.portlet.PortletRequest;
 
 public class UserProfileWrapper implements Serializable {
 
-    private static final Log _log = LogFactoryUtil.getLog(UserProfileWrapper.class);
-
     private static final long serialVersionUID = 1L;
-    private static final long DEFAULT_COMPANY_ID = 10112L;
 
     private static final int MAX_ACTIVITIES_COUNT = 50;
     private static final boolean FIRE_GOOGLE_EVENT = false;
@@ -77,8 +64,8 @@ public class UserProfileWrapper implements Serializable {
     private SendMessagePermissionChecker messagePermissionChecker;
     private List<MessageBean> messages;
     private final List<SupportedProposalWrapper> supportedProposals = new ArrayList<>();
-    private final Map<Long, ContestTypeProposalWrapper> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
-    private List<BaseProposalWrapper> linkingProposals;
+    private final Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
+    private List<Proposal> linkingProposals;
     private final ArrayList<UserActivityWrapper> userActivities = new ArrayList<>();
     private List<UserActivityWrapper> subscribedActivities;
     private UserSubscriptionsWrapper userSubscriptions;
@@ -140,7 +127,7 @@ public class UserProfileWrapper implements Serializable {
                 supportedProposals.add(new SupportedProposalWrapper(ps));
             }
 
-            for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClient
+            for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClientUtil
                     .getActivityEntries(0, MAX_ACTIVITIES_COUNT, user.getId_(), null))) {
 
                 UserActivityWrapper a = new UserActivityWrapper(activity, themeDisplay);
@@ -154,21 +141,13 @@ public class UserProfileWrapper implements Serializable {
                     .groupByContestType(proposals);
             for (ContestType contestType : ContestClientUtil.getActiveContestTypes()) {
                 contestTypeProposalWrappersByContestTypeId
-                        .put(contestType.getId_(), new ContestTypeProposalWrapper(contestType));
+                        .put(contestType.getId_(), new ContestTypeProposal(contestType));
                 final List<Proposal> proposalsInContestType = proposalsByContestType
                         .get(contestType);
                 for (Proposal p : proposalsInContestType) {
-                    try {
-                        final BaseProposalWrapper proposalWrapper = new BaseProposalWrapper(p);
-                        contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
-                                .getProposals()
-                                .add(proposalWrapper);
-                    } catch (DatabaseAccessException e) {
-                        //TODO: change exception type
-                        // DatabaseAccessException shouldn't be caught,
-                        // but the liferay service is throwing a SystemException when it shouldn't
-                        _log.error("Proposal " + p.getProposalId() + " doesn't have a phase associated with it");
-                    }
+                    contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
+                            .getProposals()
+                            .add(p);
                 }
             }
         } catch (SystemException e) {
@@ -324,7 +303,7 @@ public class UserProfileWrapper implements Serializable {
         if (subscribedActivities == null) {
             subscribedActivities = new ArrayList<>();
             for (ActivityEntry activity : ActivityUtil.groupActivities(
-                    ActivitiesClient.getActivityEntries(0, 100, this.user.getId_(), null))) {
+                    ActivitiesClientUtil.getActivityEntries(0, 100, this.user.getId_(), null))) {
 
                 subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
             }
@@ -340,7 +319,7 @@ public class UserProfileWrapper implements Serializable {
         return userActivities;
     }
 
-    public Collection<ContestTypeProposalWrapper> getContestTypeProposalWrappersByContestTypeId() {
+    public Collection<ContestTypeProposal> getContestTypeProposalWrappersByContestTypeId() {
         return contestTypeProposalWrappersByContestTypeId.values();
     }
 
@@ -369,11 +348,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public long getActualPoints() {
-        try {
-            return PointsLocalServiceUtil.getUserMaterializedPoints(getUserId());
-        } catch (SystemException e) {
-            return 0;
-        }
+        return MembersClient.getMemberMaterializedPoints(getUserId());
     }
 
     public String getPotentialPointsFormatted() {
@@ -381,19 +356,15 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public long getPotentialPoints() {
-        try {
-            return PointsLocalServiceUtil.getUserHypotheticalPoints(getUserId());
-        } catch (SystemException e) {
-            return 0;
-        }
+        return MembersClient.getMemberHypotheticalPoints(getUserId());
     }
 
-    public List<BaseProposalWrapper> getLinkingProposals() {
+    public List<Proposal> getLinkingProposals() {
         if (linkingProposals == null) {
                 linkingProposals = new ArrayList<>();
                 List<Proposal> proposals = ProposalClientUtil.getLinkingProposalsForUser(getUserId());
                 for (Proposal p : proposals) {
-                    linkingProposals.add(new BaseProposalWrapper(p));
+                    linkingProposals.add((p));
                 }
 
         }
@@ -402,7 +373,8 @@ public class UserProfileWrapper implements Serializable {
 
     public String getProposalsString() {
         if (proposalsString == null) {
-            proposalsString = ContestTypeLocalServiceUtil.getProposalNames(
+            proposalsString =
+                    ContestClientUtil.getProposalNames(
                     new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.PLURAL.name(),
                     "or");
         }
@@ -411,19 +383,10 @@ public class UserProfileWrapper implements Serializable {
 
     public String getProposalString() {
         if (proposalString == null) {
-            proposalString = ContestTypeLocalServiceUtil.getProposalNames(
+            proposalString = ContestClientUtil.getProposalNames(
                     new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.SINGULAR.name(),
                     "or");
         }
         return proposalString;
-    }
-
-    public String getDoAsUserString() {
-        try {
-            final Company company = CompanyLocalServiceUtil.getCompany(DEFAULT_COMPANY_ID);
-            return Encryptor.encrypt(company.getKeyObj(), String.valueOf(getUserId()));
-        } catch (PortalException | SystemException | EncryptorException e) {
-            return "";
-        }
     }
 }

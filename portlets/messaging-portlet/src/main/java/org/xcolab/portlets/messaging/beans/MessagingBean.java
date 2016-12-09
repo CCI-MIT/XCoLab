@@ -1,9 +1,8 @@
 package org.xcolab.portlets.messaging.beans;
 
-import com.liferay.portal.model.User;
-
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.legacy.enums.MessageType;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.messaging.paging.MessageDataPage;
 import org.xcolab.portlets.messaging.paging.PageLinkWrapper;
 
@@ -17,7 +16,7 @@ public class MessagingBean implements Serializable {
     private static final int PAGE_SIZE = 10;
     private final static int PAGER_RANGE = 3;
 
-    private User user;
+    private Member member;
     private MessageType messageType = MessageType.INBOX;
     private int messagesCount;
 
@@ -25,17 +24,21 @@ public class MessagingBean implements Serializable {
 
     private int pageNumber = 1;
 
+    private int numberOfMessagesLeft = Integer.MAX_VALUE;
+
     @SuppressWarnings("unused")
     public MessagingBean() { }
 
-    public MessagingBean(User user, int pageNumber, MessageType messageType) {
-        this.user = user;
+    public MessagingBean(Member member, int pageNumber, MessageType messageType) {
+        this.member = member;
         this.pageNumber = pageNumber;
         this.messageType = messageType;
 
-        dataPage = new MessageDataPage(user, messageType, PAGE_SIZE, pageNumber);
+        dataPage = new MessageDataPage(member, messageType, PAGE_SIZE, pageNumber);
 
-        messagesCount = MessagingClient.countMessages(user.getUserId(), messageType);
+        messagesCount = MessagingClient.countMessages(member.getUserId(), messageType);
+
+        numberOfMessagesLeft = MessagingClient.getNumberOfMessagesLeft(member.getUserId());
     }
 
     public MessageType getType() {
@@ -50,12 +53,12 @@ public class MessagingBean implements Serializable {
         this.messageType = messageType;
     }
 
-    public User getUser() {
-        return user;
+    public Member getUser() {
+        return member;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Member user) {
+        this.member = user;
     }
 
     public int getPageNumber() {
@@ -97,5 +100,9 @@ public class MessagingBean implements Serializable {
             numPages++;
         }
         return numPages;
+    }
+
+    public int getNumberOfMessagesLeft() {
+        return numberOfMessagesLeft;
     }
 }

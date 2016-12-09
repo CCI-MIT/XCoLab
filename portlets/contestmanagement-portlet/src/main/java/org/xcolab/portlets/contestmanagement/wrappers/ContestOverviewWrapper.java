@@ -1,10 +1,12 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.util.PortalUtil;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.AbstractContest;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
@@ -12,8 +14,9 @@ import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.MassActionUtil;
-import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.wrappers.BaseContestWrapper;
+import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.RefreshingRestService;
+import org.xcolab.util.http.client.RestService;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -24,7 +27,7 @@ import javax.portlet.PortletRequest;
 
 public class ContestOverviewWrapper {
 
-    private List<BaseContestWrapper> contestWrappers;
+    private List<Contest> contestWrappers;
     private Long selectedMassAction;
     private List<Boolean> selectedContest;
     private List<Long> selectedContestIds;
@@ -53,11 +56,10 @@ public class ContestOverviewWrapper {
         massMessageBean = new MassMessageBean();
     }
 
-    private void populateSubscribedToContestList(Long userId) {
-
-        for (BaseContestWrapper contestWrapper : contestWrappers) {
-            Boolean isUserSubscribedToContest =
-                    ContestLocalServiceUtil.isSubscribed(contestWrapper.getContestPK(), userId);
+    private void populateSubscribedToContestList(long memberId) {
+        for (Contest contestWrapper : contestWrappers) {
+            Boolean isUserSubscribedToContest = ContestClientUtil
+                    .isMemberSubscribedToContest(contestWrapper.getContestPK(), memberId);
             subscribedToContest.add(isUserSubscribedToContest);
         }
     }
@@ -65,16 +67,29 @@ public class ContestOverviewWrapper {
     private void populateContestWrappersAndSelectedContestList() {
             List<Contest> contests = ContestClientUtil.getAllContests();
             for (Contest contest : contests) {
-                contestWrappers.add(new BaseContestWrapper(contest));
+                if (contest.getIsSharedContestInForeignColab()) {
+                    try {
+                        RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
+                                ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                                ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+
+                        Contest foreignContest = ContestClient.fromService(contestService).getContest(contest.getContestPK());
+                        contestWrappers.add(foreignContest);
+
+                    } catch (ContestNotFoundException notFound){
+                    }
+                } else {
+                    contestWrappers.add((contest));
+                }
                 selectedContest.add(false);
             }
     }
 
-    public List<BaseContestWrapper> getContestWrappers() {
+    public List<Contest> getContestWrappers() {
         return contestWrappers;
     }
 
-    public void setContestWrappers(List<BaseContestWrapper> contestWrappers) {
+    public void setContestWrappers(List<Contest> contestWrappers) {
         this.contestWrappers = contestWrappers;
     }
 
@@ -135,7 +150,7 @@ public class ContestOverviewWrapper {
     }
 
     public void persistOrder() {
-            for (BaseContestWrapper contestWrapper : contestWrappers) {
+            for (Contest contestWrapper : contestWrappers) {
                 Contest contest = contestWrapper.getWrapped();
                 contest.setWeight(contestWrapper.getWeight());
                 ContestClientUtil.updateContest(contest);
@@ -167,7 +182,7 @@ public class ContestOverviewWrapper {
         Boolean isSetModelSettingsAction =
                 (selectedMassAction == ContestMassActions.MODEL_SETTINGS.ordinal());
         Boolean isMethodFromContestWrapper =
-                (massActionClass == BaseContestWrapper.class);
+                (massActionClass == AbstractContest.class);
 
         if (isResponseObjectRequiredForMassAction) {
             invokeMassActionReportMethod(massActionMethod, request, response);
@@ -209,23 +224,21 @@ public class ContestOverviewWrapper {
 
     private void invokeContestWrapperMethod(Method massActionMethod, PortletRequest request)
             throws InvocationTargetException, IllegalAccessException {
-        try {
+
             Boolean executeSetAction = (selectedMassAction > 0);
-            for (BaseContestWrapper contestWrapper : contestWrappers) {
+            for (Contest contestWrapper : contestWrappers) {
                 int index = contestWrappers.indexOf(contestWrapper);
                 if (selectedContest.get(index)) {
                     massActionMethod.invoke(contestWrapper, executeSetAction);
                     contestWrapper.persist();
                 }
             }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 
     public List<Long> getSelectedContestIds() {
         List<Long> contestIds = new ArrayList<>();
-        for (BaseContestWrapper contestWrapper : contestWrappers) {
+        for (Contest contestWrapper : contestWrappers) {
             int index = contestWrappers.indexOf(contestWrapper);
             if (selectedContest.get(index)) {
                 contestIds.add(contestWrapper.getContestPK());

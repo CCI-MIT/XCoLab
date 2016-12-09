@@ -276,16 +276,6 @@ public class ProposalRatingTypeLocalServiceWrapper
             parameterTypes, arguments);
     }
 
-    @Override
-    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForJudges() {
-        return _proposalRatingTypeLocalService.getRatingTypesForJudges();
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForFellows() {
-        return _proposalRatingTypeLocalService.getRatingTypesForFellows();
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

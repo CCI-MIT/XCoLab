@@ -222,24 +222,6 @@ public class ProposalRatingTypeClp extends BaseModelImpl<ProposalRatingType>
         }
     }
 
-    @Override
-    public java.util.List<com.ext.portlet.model.ProposalRatingValue> getRatingValues() {
-        try {
-            String methodName = "getRatingValues";
-
-            Class<?>[] parameterTypes = new Class<?>[] {  };
-
-            Object[] parameterValues = new Object[] {  };
-
-            java.util.List<com.ext.portlet.model.ProposalRatingValue> returnObj = (java.util.List<com.ext.portlet.model.ProposalRatingValue>) invokeOnRemoteModel(methodName,
-                    parameterTypes, parameterValues);
-
-            return returnObj;
-        } catch (Exception e) {
-            throw new UnsupportedOperationException(e);
-        }
-    }
-
     public BaseModel<?> getProposalRatingTypeRemoteModel() {
         return _proposalRatingTypeRemoteModel;
     }

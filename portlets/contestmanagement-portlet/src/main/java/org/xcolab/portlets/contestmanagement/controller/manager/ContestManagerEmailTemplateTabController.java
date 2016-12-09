@@ -8,12 +8,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 
-import org.xcolab.client.admin.EmailTemplateClient;
+import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
@@ -41,7 +39,7 @@ public class ContestManagerEmailTemplateTabController extends ContestManagerBase
 
     @ModelAttribute("currentTabWrapped")
     @Override
-    public TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException {
+    public TabWrapper populateCurrentTabWrapped(PortletRequest request) {
         tabWrapper = new TabWrapper(tab, request, tabContext);
         request.getPortletSession().setAttribute("tabWrapper", tabWrapper);
         return tabWrapper;
@@ -60,7 +58,7 @@ public class ContestManagerEmailTemplateTabController extends ContestManagerBase
             model.addAttribute("emailTemplateWrapper",
                     new EmailTemplateWrapper(templateType));
         }
-        final List<ContestEmailTemplate> emailTemplates = EmailTemplateClient
+        final List<ContestEmailTemplate> emailTemplates = EmailTemplateClientUtil
                 .listAllContestEmailTemplates();
         List <LabelStringValue> templateSelectionItems = new ArrayList<>();
         for (ContestEmailTemplate emailTemplate : emailTemplates) {
@@ -141,7 +139,7 @@ public class ContestManagerEmailTemplateTabController extends ContestManagerBase
 
     private String getFirstTemplateName() {
         final List<ContestEmailTemplate> emailTemplates =
-                EmailTemplateClient.listAllContestEmailTemplates();
+                EmailTemplateClientUtil.listAllContestEmailTemplates();
         if (!emailTemplates.isEmpty()) {
             return emailTemplates.get(0).getType_();
         }

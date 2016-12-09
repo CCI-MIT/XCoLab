@@ -1,27 +1,14 @@
 package org.xcolab.portlets.userprofile.entity;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.model.Proposal;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
-import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.proposals.pojo.Proposal;
 
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created with IntelliJ IDEA.
- * User: patrickhiesel
- * Date: 9/9/13
- * Time: 12:42 PM
- * To change this template use File | Settings | File Templates.
- */
 public class Badge implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -33,7 +20,7 @@ public class Badge implements Serializable {
     private final Proposal proposal;
     private final String planTitle;
     private int year = 2013;
-    private boolean hideRibbon;
+    private final boolean hideRibbon;
 
 
     public Badge(int ribbonType, String ribbonText, Proposal proposal, String planTitle, Contest contest) {
@@ -52,21 +39,15 @@ public class Badge implements Serializable {
         }
 
         // Associate the year and get hideRibbon property from contest
-        try {
-            hideRibbon = contest.getHideRibbons();
+        hideRibbon = contest.getHideRibbons();
 
-            ContestPhase lastPhase = ContestPhaseLocalServiceUtil.getActivePhaseForContest(contest);
-            Date referenceDate =
-                    lastPhase.getPhaseEndDate() == null ? lastPhase.getPhaseStartDate() : lastPhase.getPhaseEndDate();
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(referenceDate);
+        ContestPhase lastPhase = ContestClientUtil.getActivePhase(contest.getContestPK());
+        Date referenceDate =
+                lastPhase.getPhaseEndDate() == null ? lastPhase.getPhaseStartDate() : lastPhase.getPhaseEndDate();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(referenceDate);
 
-            year = cal.get(Calendar.YEAR);
-        } catch (PortalException e) {
-            throw new InternalException(e);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+        year = cal.get(Calendar.YEAR);
     }
 
     public String getBadgeTitle() {
@@ -95,7 +76,7 @@ public class Badge implements Serializable {
     }
 
     public String getProposalLinkUrl() {
-        return ProposalLocalServiceUtil.getProposalLinkUrl(contest, proposal);
+        return proposal.getProposalLinkUrl(contest);
     }
 
     public String getPlanTitle() {

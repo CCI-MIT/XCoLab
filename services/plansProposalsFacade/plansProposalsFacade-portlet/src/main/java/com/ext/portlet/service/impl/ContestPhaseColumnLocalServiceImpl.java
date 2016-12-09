@@ -27,9 +27,5 @@ public class ContestPhaseColumnLocalServiceImpl
      *
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ContestPhaseColumnLocalServiceUtil} to access the contest phase column local service.
      */
-    @Override
-    public List<ContestPhaseColumn> getPhaseColumns(Long contestPhasePK) throws SystemException {
-        return contestPhaseColumnPersistence.findByContestPhasePK(contestPhasePK);
-    }
 
 }

@@ -1,9 +1,9 @@
 package org.xcolab.client.search.pojo;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.core.ParameterizedTypeReference;
+
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;

@@ -21,7 +21,6 @@ import org.xcolab.client.proposals.enums.ProposalImpactAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -52,7 +51,7 @@ public class ProposalImpactSeries {
     private final Map<String, ProposalImpactSeriesValues> seriesTypeToSeriesMap;
     private final Map<String, Boolean> seriesTypeToEditableMap;
     private final ImpactDefaultSeries bauSeries;
-    private ProposalWrapper proposalWrapper;
+    private Proposal proposalWrapper;
     private ProposalVersion lastModifiedVersion;
     //    private ImpactDefaultSeries ddppSeries;
     private ProposalImpactSeriesValues resultValues;
@@ -67,7 +66,7 @@ public class ProposalImpactSeries {
         this.seriesTypeToEditableMap = new HashMap<>();
         this.focusArea = focusArea;
         this.proposal = proposal;
-        this.proposalWrapper = new ProposalWrapper(proposal);
+        this.proposalWrapper = proposal;
         this.whatTerm = ProposalImpactUtil.getWhatTerm(focusArea);
         this.whereTerm = ProposalImpactUtil.getWhereTerm(focusArea);
         this.impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
@@ -340,11 +339,11 @@ public class ProposalImpactSeries {
         return lastModifiedVersion.getCreateDate();
     }
 
-    public ProposalWrapper getProposalWrapper() {
+    public Proposal getProposalWrapper() {
         return proposalWrapper;
     }
 
-    public void setProposalWrapper(ProposalWrapper proposalWrapper) {
+    public void setProposalWrapper(Proposal proposalWrapper) {
         this.proposalWrapper = proposalWrapper;
     }
 

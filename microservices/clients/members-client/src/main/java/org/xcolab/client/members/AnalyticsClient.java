@@ -2,13 +2,14 @@ package org.xcolab.client.members;
 
 import org.xcolab.client.members.pojo.AnalyticsUserEvent;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
 
 public final class AnalyticsClient {
 
-    private static final RestService memberService = new RestService("members-service");
+    private static final RestService memberService = new RestService(CoLabService.MEMBER);
 
     private static final RestResource1<Member, Long> memberResource =
             new RestResource1<>(memberService, "members", Member.TYPES);

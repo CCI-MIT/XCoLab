@@ -142,11 +142,13 @@ public class MemberService {
     }
 
     public boolean validateForgotPasswordToken(String passwordToken) throws NotFoundException {
-        Member member = memberDao.findOneByForgotPasswordHash(passwordToken).orElseThrow(
-                NotFoundException::new);
-
-        return member.getForgotPasswordTokenExpireTime().getTime() >= Timestamp
-                .valueOf(LocalDateTime.now()).getTime();
+        if(memberDao.findOneByForgotPasswordHash(passwordToken).isPresent()) {
+            Member member = memberDao.findOneByForgotPasswordHash(passwordToken).orElseThrow(NotFoundException::new);
+            return member.getForgotPasswordTokenExpireTime().getTime() >= Timestamp
+                    .valueOf(LocalDateTime.now()).getTime();
+        } else {
+            return false;
+        }
     }
 
     public String createNewForgotPasswordToken(Long memberId) {

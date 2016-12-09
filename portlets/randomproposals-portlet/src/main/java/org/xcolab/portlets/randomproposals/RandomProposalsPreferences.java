@@ -1,15 +1,13 @@
 package org.xcolab.portlets.randomproposals;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestPhase;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestPhaseLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.InternalException;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -95,41 +93,35 @@ public class RandomProposalsPreferences {
     
     
     public Map<Long,String> getContestPhases() {
-        try {
-            Map<Long, String> phases = new LinkedHashMap<>();
 
-            List<Contest> contests = ContestLocalServiceUtil.getContests(0, Integer.MAX_VALUE);
+        List<Contest> contests = ContestClientUtil.getAllContests();
 
-            Collections.sort(contests, new Comparator<Contest>() {
-                @Override
-                public int compare(Contest o1, Contest o2) {
-                    return (int) (o1.getContestPK() - o2.getContestPK());
-                }
-            });
-
-            for (Contest c : contests) {
-                for (ContestPhase cp : ContestLocalServiceUtil.getVisiblePhases(c)) {
-                    String prefix = "";
-                    if (ContestPhaseLocalServiceUtil.getPhaseActive(cp)) {
-                        prefix = "* ACTIVE *";
-                    }
-                    phases.put(cp.getContestPhasePK(),
-                            String.format("%d %s %s - %d %s",
-                                    c.getContestPK(),
-                                    prefix,
-                                    c.getContestShortName(),
-                                    cp.getContestPhasePK(),
-                                    ContestPhaseLocalServiceUtil.getContestStatusStr(cp)
-                            ));
-                }
+        Collections.sort(contests, new Comparator<Contest>() {
+            @Override
+            public int compare(Contest o1, Contest o2) {
+                return (int) (o1.getContestPK() - o2.getContestPK());
             }
+        });
 
-            return phases;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
-            throw new InternalException(e);
+        Map<Long, String> phases = new LinkedHashMap<>();
+        for (Contest c : contests) {
+            for (ContestPhase cp : ContestClientUtil.getVisibleContestPhases(c.getContestPK())) {
+                String prefix = "";
+                if (cp.getPhaseActive()) {
+                    prefix = "* ACTIVE *";
+                }
+                phases.put(cp.getContestPhasePK(),
+                        String.format("%d %s %s - %d %s",
+                                c.getContestPK(),
+                                prefix,
+                                c.getContestShortName(),
+                                cp.getContestPhasePK(),
+                                cp.getContestStatusStr()
+                        ));
+            }
         }
+
+        return phases;
     }
     
     public Long[] getSelectedPhases() {

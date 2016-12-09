@@ -362,5 +362,51 @@
         <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
         <implicit-parameter name="p_p_resource_id">refreshModels</implicit-parameter>
     </route>
-    
+
+    <!-- json endpoints for moving -->
+    <route>
+        <pattern>/api/contestsOpenForProposals</pattern>
+        <implicit-parameter name="p_p_id">proposalsportlet_WAR_proposalsportlet</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+        <implicit-parameter name="p_p_resource_id">getContestsOpenForProposals</implicit-parameter>
+    </route>
+
+    <route>
+        <pattern>/api/contests/{contestId}/proposals/{proposalId}/versions/{version}/sections</pattern>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+        <generated-parameter name="version">{version}</generated-parameter>
+        <implicit-parameter name="p_p_id">proposalsportlet_WAR_proposalsportlet</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+        <implicit-parameter name="p_p_resource_id">getProposalContestSections</implicit-parameter>
+    </route>
+
+    <!-- json endpoints for history -->
+    <route>
+        <pattern>/api/phases/{phaseId}/proposals/{proposalId}/versionsFirstIndex</pattern>
+        <generated-parameter name="contestPhaseId">{phaseId}</generated-parameter>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+        <implicit-parameter name="p_p_id">proposalsportlet_WAR_proposalsportlet</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+        <implicit-parameter name="p_p_resource_id">getProposalVersionFirstIndex</implicit-parameter>
+    </route>
+
+    <route>
+        <pattern>/api/proposals/{proposalId}/versions/{version}/index</pattern>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+        <generated-parameter name="version">{version}</generated-parameter>
+        <implicit-parameter name="p_p_id">proposalsportlet_WAR_proposalsportlet</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+        <implicit-parameter name="p_p_resource_id">getProposalVersionIndex</implicit-parameter>
+    </route>
+
+    <route>
+        <pattern>/api/contests/{contestId}/phases/{phaseId}/proposals/{proposalId}/versions</pattern>
+        <generated-parameter name="contestId">{contestId}</generated-parameter>
+        <generated-parameter name="contestPhaseId">{phaseId}</generated-parameter>
+        <generated-parameter name="proposalId">{proposalId}</generated-parameter>
+        <implicit-parameter name="p_p_id">proposalsportlet_WAR_proposalsportlet</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+        <implicit-parameter name="p_p_resource_id">getProposalVersions</implicit-parameter>
+    </route>
 </routes>

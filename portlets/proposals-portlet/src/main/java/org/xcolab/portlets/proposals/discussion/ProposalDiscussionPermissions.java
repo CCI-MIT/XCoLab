@@ -2,15 +2,14 @@ package org.xcolab.portlets.proposals.discussion;
 
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 
 import javax.portlet.PortletRequest;
 
@@ -64,7 +63,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
             if (contestPhaseIdParameter != null) {
                 phaseId = Long.parseLong(contestPhaseIdParameter);
             } else if (proposalId != null && proposalId > 0) {
-                phaseId = ProposalsContextUtil.getClients(request).getProposalClient().getLatestContestPhaseInContest(proposalId).getContestPhasePK();
+                phaseId = ProposalsContextUtil.getClients(request).getProposalClient().getLatestContestPhaseInProposal(proposalId).getContestPhasePK();
             }
         } catch (NumberFormatException  ignored) {
         }
@@ -90,16 +89,16 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     @Override
     public boolean getCanAdminMessage(Comment comment) {
-        if (comment.getAuthorId() == currentUser.getUserId() && proposalId != null) {
+        if (comment.getAuthorId() == memberId && proposalId != null) {
             try {
                 Proposal proposal = ProposalsContextUtil.getClients(request).getProposalClient().getProposal(proposalId);
-                ProposalWrapper proposalWrapper = new ProposalWrapper(proposal);
 
-                return proposalWrapper.isUserAmongFellows(currentMember) || getCanAdminAll();
+
+                return proposal.isUserAmongFellows(memberId) || getCanAdminAll();
             } catch (ProposalNotFoundException ignored) {
             }
         }
-        return comment.getAuthorId() == currentUser.getUserId() || getCanAdminAll();
+        return comment.getAuthorId() == memberId || getCanAdminAll();
     }
 
     private boolean isAllowedToAddCommentsToProposalEvaluationInContestPhase() {
@@ -117,22 +116,22 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     private boolean isUserFellowOrJudgeOrAdvisor(Proposal proposal) {
         ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
-        ProposalWrapper proposalWrapper = new ProposalWrapper(proposal, contestPhase);
+        Proposal proposalWrapper = new Proposal(proposal, contestPhase);
 
 
-        ContestWrapper contestWrapper = new ContestWrapper(proposalWrapper.getContest());
+        Contest contestWrapper =  proposalWrapper.getContest();
 
         boolean isJudge = proposalWrapper.isUserAmongSelectedJudge(
-                MembersClient.getMemberUnchecked(currentMember.getUserId()));
-        boolean isFellow = proposalWrapper.isUserAmongFellows(currentMember);
-        boolean isAdvisor = contestWrapper.isUserAmongAdvisors(currentMember);
+                MembersClient.getMemberUnchecked(memberId));
+        boolean isFellow = proposalWrapper.isUserAmongFellows(memberId);
+        boolean isAdvisor = contestWrapper.isUserAmongAdvisors(memberId);
 
         return isFellow || isJudge || isAdvisor;
     }
 
     private boolean isUserProposalAuthorOrTeamMember(Proposal proposal) {
-        boolean isAuthor = proposal.getAuthorId() == currentMember.getUserId();
-        boolean isMember = MembersClient.isUserInGroup(currentMember.getUserId(), proposal.getProposalId());
+        boolean isAuthor = proposal.getAuthorId() == memberId;
+        boolean isMember = MembersClient.isUserInGroup(memberId, proposal.getProposalId());
 
         return isAuthor || isMember;
     }

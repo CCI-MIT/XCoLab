@@ -262,45 +262,6 @@ public class ContestTeamMemberLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static com.ext.portlet.model.ContestTeamMember addContestTeamMember(
-        java.lang.Long userId, java.lang.Long contestPk,
-        org.xcolab.enums.MemberRole memberRole)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().addContestTeamMember(userId, contestPk, memberRole);
-    }
-
-    public static java.util.List<com.ext.portlet.model.ContestTeamMember> findForContest(
-        java.lang.Long contestPk)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return getService().findForContest(contestPk);
-    }
-
-    public static void store(
-        com.ext.portlet.model.ContestTeamMember contestTeamMember)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getService().store(contestTeamMember);
-    }
-
-    public static void delete(
-        com.ext.portlet.model.ContestTeamMember contestTeamMember)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        getService().delete(contestTeamMember);
-    }
-
-    public static com.liferay.portal.model.User getUser(
-        com.ext.portlet.model.ContestTeamMember contestTeamMember)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().getUser(contestTeamMember);
-    }
-
-    public static com.ext.portlet.model.Contest getContest(
-        com.ext.portlet.model.ContestTeamMember contestTeamMember)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().getContest(contestTeamMember);
-    }
-
     public static void clearService() {
         _service = null;
     }

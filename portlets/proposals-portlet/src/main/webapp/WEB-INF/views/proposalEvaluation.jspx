@@ -9,7 +9,7 @@
     <!--@elvariable id="showEvaluation" type="java.lang.Boolean"-->
     <!--@elvariable id="proposalRevisionPhaseActive" type="java.lang.Boolean"-->
     <!--@elvariable id="evaluationDiscussionId" type="java.lang.Long"-->
-    <!--@elvariable id="averageRatingsPerPhase" type="java.util.List<org.xcolab.portlets.proposals.wrappers.ProposalRatingsWrapper>"-->
+    <!--@elvariable id="averageRatingsPerPhase" type="org.xcolab.client.proposals.pojo.proposals.ProposalRatings>"-->
 
     <jsp:directive.include file="./init_proposal_tab.jspx" />
 

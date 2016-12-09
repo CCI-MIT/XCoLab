@@ -2,7 +2,6 @@ package org.xcolab.service.contest.web;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,49 +12,37 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import org.xcolab.model.tables.pojos.Contest;
+import org.xcolab.model.tables.pojos.ContestDiscussion;
 import org.xcolab.model.tables.pojos.ContestPhase;
-import org.xcolab.model.tables.pojos.ContestPhaseRibbonType;
-import org.xcolab.model.tables.pojos.ContestPhaseType;
-import org.xcolab.model.tables.pojos.ContestSchedule;
-import org.xcolab.model.tables.pojos.ContestTeamMember;
-import org.xcolab.model.tables.pojos.ContestTeamMemberRole;
 import org.xcolab.model.tables.pojos.ContestType;
-import org.xcolab.model.tables.pojos.ImpactTemplateSeries;
-import org.xcolab.model.tables.pojos.ImpactIteration;
-
-
 import org.xcolab.service.contest.domain.contest.ContestDao;
-import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
-import org.xcolab.service.contest.domain.contestphaseribbontype.ContestPhaseRibbonTypeDao;
-import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
-import org.xcolab.service.contest.domain.contestschedule.ContestScheduleDao;
-import org.xcolab.service.contest.domain.contestteammember.ContestTeamMemberDao;
-import org.xcolab.service.contest.domain.contestteammemberrole.ContestTeamMemberRoleDao;
+import org.xcolab.service.contest.domain.contestdiscussion.ContestDiscussionDao;
 import org.xcolab.service.contest.domain.contesttype.ContestTypeDao;
-import org.xcolab.service.contest.domain.impactiteration.ImpactIterationDao;
-import org.xcolab.service.contest.domain.impacttemplateseries.ImpactTemplateSeriesDao;
-
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.utils.PaginationHelper;
 
-
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @RestController
 public class ContestController {
 
-    @Autowired
-    private ContestService contestService;
+    private final ContestService contestService;
+    private final ContestDao contestDao;
+    private final ContestTypeDao contestTypeDao;
+    private final ContestDiscussionDao contestDiscussionDao;
 
     @Autowired
-    private ContestDao contestDao;
-
-    @Autowired
-    private ContestTypeDao contestTypeDao;
-
+    public ContestController(ContestService contestService, ContestDao contestDao,
+            ContestTypeDao contestTypeDao, ContestDiscussionDao contestDiscussionDao) {
+        this.contestService = contestService;
+        this.contestDao = contestDao;
+        this.contestTypeDao = contestTypeDao;
+        this.contestDiscussionDao = contestDiscussionDao;
+    }
 
 
     @RequestMapping(value = "/contests", method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -70,7 +57,7 @@ public class ContestController {
             @RequestParam(required = false) Long contestTier,
             @RequestParam(required = false) Long contestScheduleId,
             @RequestParam(required = false) Long planTemplateId,
-			@RequestParam(required = false) List<Long> focusAreaOntologyTerms,
+            @RequestParam(required = false) List<Long> focusAreaOntologyTerms,
             @RequestParam(required = false) Long contestTypeId,
             @RequestParam(required = false) Boolean contestPrivate){
         final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
@@ -97,6 +84,8 @@ public class ContestController {
 
     @PostMapping(value = "/contests")
     public Contest createContest(@RequestBody Contest contest) {
+        contest.setCreated(new Timestamp(new Date().getTime()));
+        contest.setUpdated(new Timestamp(new Date().getTime()));
         return this.contestDao.create(contest);
     }
 
@@ -107,7 +96,41 @@ public class ContestController {
         if (contestDao.get(contestPK) == null) {
             throw new NotFoundException("No Contest with id " + contestPK);
         } else {
+            contest.setUpdated(new Timestamp(new Date().getTime()));
             return contestDao.update(contest);
+        }
+    }
+
+    @RequestMapping(value = "/contestDiscussions", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<ContestDiscussion> getContestDiscussions(
+            @RequestParam(required = false) Integer startRecord,
+            @RequestParam(required = false) Integer limitRecord,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) Long contestId,
+            @RequestParam(required = false) String tab){
+        final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
+                sort);
+        return contestDiscussionDao.findByGiven(paginationHelper, contestId, tab);
+    }
+
+    @PostMapping(value = "/contestDiscussions")
+    public ContestDiscussion createContestDiscussion(@RequestBody ContestDiscussion contestDiscussion) {
+        return this.contestDiscussionDao.create(contestDiscussion);
+    }
+
+    @GetMapping("/contestDiscussions/{discussionId}")
+    public ContestDiscussion getContestDiscussion(@PathVariable long discussionId) throws NotFoundException {
+        return contestDiscussionDao.get(discussionId).orElseThrow(NotFoundException::new);
+    }
+
+    @PutMapping(value = "/contestDiscussions/{discussionId}")
+    public boolean updateContestDiscussion(@RequestBody ContestDiscussion contestDiscussion,
+            @PathVariable long discussionId) throws NotFoundException {
+
+        if (contestDiscussionDao.get(discussionId) == null) {
+            throw new NotFoundException("No ContestDiscussion with id " + discussionId);
+        } else {
+            return contestDiscussionDao.update(contestDiscussion);
         }
     }
 
@@ -156,4 +179,13 @@ public class ContestController {
     }
 
 
+
+    @RequestMapping(value = "contests/findContestsByName", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<Contest> findContestsByName(
+            @RequestParam("contestName") String contestName,
+            @RequestParam("ontologyTermIds") List<Long> ontologyTermIds,
+            @RequestParam("contestTypeIds") List<Long> contestTypeIds){
+
+        return contestService.findContestsByName(contestName, ontologyTermIds, contestTypeIds);
+    }
 }

@@ -275,44 +275,6 @@ public class ProposalVoteLocalServiceWrapper implements ProposalVoteLocalService
             arguments);
     }
 
-    @Override
-    public com.ext.portlet.model.ProposalVote create(long contestPhaseId,
-        long userID) {
-        return _proposalVoteLocalService.create(contestPhaseId, userID);
-    }
-
-    @Override
-    public com.ext.portlet.model.ProposalVote findByProposalIdContestPhaseIdUserId(
-        long contestPhaseId, long userId)
-        throws com.ext.portlet.NoSuchProposalVoteException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _proposalVoteLocalService.findByProposalIdContestPhaseIdUserId(contestPhaseId,
-            userId);
-    }
-
-    /**
-    * <p>Returns true if user has voted for a proposal in context of a contest phase</p>
-    *
-    * @param contestPhaseId contest phase id
-    * @param userId         user id
-    * @return true if user has voted for proposal in context of a contest phase
-    * @throws SystemException
-    */
-    @Override
-    public boolean hasUserVoted(long contestPhaseId, long userId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _proposalVoteLocalService.hasUserVoted(contestPhaseId, userId);
-    }
-
-    @Override
-    public com.ext.portlet.model.ProposalVote findByProposalIdUserId(
-        long proposalId, long userId)
-        throws com.ext.portlet.NoSuchProposalVoteException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _proposalVoteLocalService.findByProposalIdUserId(proposalId,
-            userId);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

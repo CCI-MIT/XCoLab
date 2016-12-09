@@ -1,17 +1,16 @@
 package org.xcolab.portlets.proposals.utils;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
@@ -20,7 +19,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
+import org.xcolab.util.IdListUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,7 +38,7 @@ public class ProposalPickerFilterUtil {
     public static final String CONTEST_FILTER_REASON_FOCUS_AREA = "FOCUS_AREA";
     public static final String CONTEST_FILTER_REASON_TIER = "TIER";
 
-    private static final Log _log = LogFactoryUtil.getLog(ProposalPickerFilterUtil.class);
+    private static final Logger _log = LoggerFactory.getLogger(ProposalPickerFilterUtil.class);
 
     /**
      * Parse filter from frontend parameter and filter the contents of the proposals parameter
@@ -54,28 +53,47 @@ public class ProposalPickerFilterUtil {
         }
     }
 
-    public static List<Pair<ContestWrapper, Date>> getFilteredContests(
-            long sectionId, ResourceRequest request, ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
-        List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getAllContests();
+    public static List<Pair<Contest, Date>> getFilteredContests(
+            long sectionId, ResourceRequest request, ProposalsContext proposalsContext) {
+        List<Pair<Contest, Date>> contests = ProposalPickerFilterUtil.getAllContests();
         ProposalPickerFilterUtil.filterContests(contests, sectionId, request, proposalsContext, false);
         return contests;
     }
 
-    public static List<Pair<ContestWrapper, Date>> getAllContests() throws SystemException, PortalException {
-        List<Pair<ContestWrapper, Date>> contests = new ArrayList<>();
+    public static List<Pair<Contest, Date>> getAllContests() {
+        List<Pair<Contest, Date>> contests = new ArrayList<>();
 
         for (Contest c: ContestClientUtil.getAllContests()) {
-                contests.add(Pair.of(new ContestWrapper(c),  //c
+                contests.add(Pair.of(c,  //c
                         c.getCreated() == null ? new Date(0) : c.getCreated()));
 
         }
         return contests;
     }
 
-    public static Map<Long, String> filterContests(List<Pair<ContestWrapper, Date>> contests,
-            long sectionId, ResourceRequest request, ProposalsContext proposalsContext, boolean trackRemovedContests)
-            throws SystemException, PortalException {
+
+
+    public static List<Pair<Contest, Date>> getTextFilteredContests( long sectionId, String contestName) {
+        List<Pair<Contest, Date>> contests = new ArrayList<>();
+        PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
+
+        List<OntologyTerm> ontologyTerms = OntologyClientUtil.getOntologyTermsForFocusArea(OntologyClientUtil.getFocusArea(planSectionDefinition.getFocusAreaId()));
+        List<Long> ontologyTermIds = new ArrayList<>();
+        for(OntologyTerm term : ontologyTerms) {
+            ontologyTermIds.add(term.getId_());
+        }
+
+        for (Contest c: ContestClientUtil.findContestsByName(contestName, ontologyTermIds, IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds()))) {
+            contests.add(Pair.of((c),  //c
+                    c.getCreated() == null ? new Date(0) : c.getCreated()));
+
+        }
+        return contests;
+    }
+
+
+    public static Map<Long, String> filterContests(List<Pair<Contest, Date>> contests,
+            long sectionId, ResourceRequest request, ProposalsContext proposalsContext, boolean trackRemovedContests) {
         PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
         ProposalPickerFilter.CONTEST_TYPE_FILTER.filterContests(contests, planSectionDefinition.getAllowedContestTypeIds());
 
@@ -117,8 +135,7 @@ public class ProposalPickerFilterUtil {
     }
 
     public static List<Pair<Proposal, Date>> getFilteredSubscribedSupportingProposalsForUser(
-            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
+            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext) {
         List<Pair<Proposal, Date>> proposals = getFilteredSubscribedProposalsForUser(
                 userId, filterKey, sectionId, request, proposalsContext);
 
@@ -138,10 +155,9 @@ public class ProposalPickerFilterUtil {
     }
 
     public static List<Pair<Proposal, Date>> getFilteredSubscribedProposalsForUser(
-            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
+            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext) {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
-        List<ActivitySubscription> activitySubscriptions = ActivitiesClient.getActivitySubscriptions(null, null, userId);
+        List<ActivitySubscription> activitySubscriptions = ActivitiesClientUtil.getActivitySubscriptions(null, null, userId);
 
         for (ActivitySubscription as : activitySubscriptions) {
 
@@ -163,8 +179,7 @@ public class ProposalPickerFilterUtil {
     }
 
     public static List<Pair<Proposal, Date>> getFilteredSupportingProposalsForUser(
-            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
+            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext) {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
         for (ProposalSupporter ps : ProposalMemberRatingClientUtil.getProposalSupportersByUserId(userId)) {
             try{
@@ -179,34 +194,63 @@ public class ProposalPickerFilterUtil {
         return proposals;
     }
 
-    public static List<Pair<Proposal, Date>> getFilteredAllProposals(
-            String filterKey, long sectionId, Long contestPK, PortletRequest request, ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
+    public static List<Pair<Proposal, Date>> getFilteredAllProposals(String filterText,
+            String filterKey, long sectionId, Long contestPK, PortletRequest request, ProposalsContext proposalsContext) {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
         List<Proposal> proposalsRaw;
+
+        PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
+        List<Long> contestTypes = new ArrayList<>();
+        contestTypes.addAll(IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds()));
+        if(contestTypes.isEmpty()) {
+            long defaultTypeId = 0;
+            contestTypes.add(defaultTypeId);
+        }
         if (contestPK > 0) {
             proposalsRaw = ProposalClientUtil
                     .getProposalsInContest(contestPK);
         } else {
-            proposalsRaw = ProposalsContextUtil.getClients(request).getProposalClient().getAllProposals();
+            //proposalsRaw = ProposalsClient.getAllProposals();
+
+            proposalsRaw = ProposalClientUtil.getProposalsByCurrentContests(contestTypes, getAllowedTiers(planSectionDefinition.getTier()), filterText.isEmpty() ? null : filterText);
         }
         for (Proposal p : proposalsRaw) {
             proposals.add(Pair.of(p, new Date(0)));
         }
 
-        filterProposals(proposals, filterKey, sectionId, request, proposalsContext);
+        // pushed down to Microservices
+        //filterProposals(proposals, filterKey, sectionId, request, proposalsContext);
 
         return proposals;
     }
 
+    //TODO: redundant to ProposalPickerFilter
+    public static List<Long> getAllowedTiers(Long filterTier) {
+
+        // if filterTier < 0:
+        //  allow tier <= (-filterTier)
+        // else if filterTier > 0
+        //  only allow tier == filterTier
+        List<Long> allowedTiers = new ArrayList<>();
+        final long positiveFilterTier = Math.abs(filterTier);
+        allowedTiers.add(positiveFilterTier);
+        if (filterTier < 0) {
+            for (Long currentTier = positiveFilterTier - 1; currentTier >= 0; currentTier--) {
+                allowedTiers.add(currentTier);
+            }
+        }
+        return allowedTiers;
+    }
+
     private static void filterProposals(List<Pair<Proposal, Date>> proposals,
             String filterKey, long sectionId, PortletRequest request,
-            ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
+            ProposalsContext proposalsContext) {
         filterByParameter(filterKey, proposals);
+
         filterByVisibility(proposals);
 
         PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
+
         ProposalPickerFilter.CONTEST_TYPE_FILTER.filter(proposals, planSectionDefinition.getAllowedContestTypeIds());
 
         List<Long> filterExceptionContestIds = planSectionDefinition.getAdditionalIdsAsList();
@@ -219,14 +263,17 @@ public class ProposalPickerFilterUtil {
         } else {
             contestFocusAreaId = 0;
         }
+
         ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals,
                 new SectionDefFocusAreaArgument(sectionFocusAreaId, contestFocusAreaId, filterExceptionContestIds));
 
         ProposalPickerFilter.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());
     }
 
-    private static void filterByVisibility(List<Pair<Proposal, Date>> proposals) throws SystemException, PortalException {
+
+    private static void filterByVisibility(List<Pair<Proposal, Date>> proposals) {
         for (Iterator<Pair<Proposal, Date>> iterator = proposals.iterator(); iterator.hasNext(); ) {
+
             Proposal proposal = iterator.next().getLeft();
             if (proposal.isDeleted()) {
                 iterator.remove();

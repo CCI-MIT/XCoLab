@@ -10,10 +10,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
-import org.xcolab.wrappers.BaseContestPhaseWrapper;
 
 import javax.portlet.PortletRequest;
 
@@ -33,11 +30,11 @@ public interface ProposalsContext {
 
     Long getViewContestPhaseId(PortletRequest request);
 
-    ProposalWrapper getProposalWrapped(PortletRequest request);
+    Proposal getProposalWrapped(PortletRequest request);
 
-    ContestWrapper getContestWrapped(PortletRequest request);
+    Contest getContestWrapped(PortletRequest request);
 
-    BaseContestPhaseWrapper getContestPhaseWrapped(PortletRequest request);
+    ContestPhase getContestPhaseWrapped(PortletRequest request);
 
     ContestType getContestType(PortletRequest request);
 
@@ -52,4 +49,5 @@ public interface ProposalsContext {
     ProposalsPreferencesWrapper getProposalsPreferences(PortletRequest request);
 
     ClientHelper getClients(PortletRequest request);
+
 }

@@ -1,11 +1,10 @@
 package org.xcolab.portlets.proposals.view;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
@@ -21,8 +20,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
     private ProposalsContext proposalsContext;
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_TEAM"})
-    public String show(Model model, PortletRequest request)
-            throws PortalException, SystemException {
+    public String show(Model model, PortletRequest request) {
         
         setCommonModelAndPageAttributes(request, model, ProposalTab.TEAM);
 

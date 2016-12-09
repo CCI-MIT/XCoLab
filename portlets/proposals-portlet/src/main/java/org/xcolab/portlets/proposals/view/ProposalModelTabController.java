@@ -8,16 +8,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-import org.xcolab.utils.IdListUtil;
+import org.xcolab.util.IdListUtil;
+import org.xcolab.util.exceptions.InternalException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,8 +37,7 @@ public class ProposalModelTabController extends BaseProposalTabController {
     }
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_ACTIONSIMPACTS"})
-    public String show(Model model, @RequestParam(required = false) boolean edit, PortletRequest request) 
-            throws PortalException, SystemException {
+    public String show(Model model, @RequestParam(required = false) boolean edit, PortletRequest request) {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.ACTIONSIMPACTS);
         
@@ -55,7 +52,7 @@ public class ProposalModelTabController extends BaseProposalTabController {
         return "proposalModel";
     }
 
-    public Map<Long, String> getModelIdsAndNames(long contestPK) throws SystemException, PortalException {
+    public Map<Long, String> getModelIdsAndNames(long contestPK) {
         List<Long> modelIds = getModelIds(contestPK);
 
         Map<Long, String> ret = new HashMap<>();
@@ -64,14 +61,13 @@ public class ProposalModelTabController extends BaseProposalTabController {
                 Simulation s = RomaClientUtil.repository().getSimulation(modelId);
                 ret.put(s.getId(), s.getName());
 
-            }
-            catch (IOException e) {
-                throw new PortalException(e);
+            } catch (IOException e) {
+                throw new InternalException(e);
             }
         }
         return ret;
     }
-    public List<Long> getModelIds(long contestPK) throws SystemException, PortalException {
+    public List<Long> getModelIds(long contestPK) {
         try {
             Contest contest = ContestClientUtil.getContest(contestPK);
 

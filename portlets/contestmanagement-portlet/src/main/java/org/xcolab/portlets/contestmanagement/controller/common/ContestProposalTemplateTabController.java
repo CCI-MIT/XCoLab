@@ -1,17 +1,12 @@
 package org.xcolab.portlets.contestmanagement.controller.common;
 
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
@@ -19,18 +14,19 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.PointsClientUtil;
+import org.xcolab.client.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.controller.BaseTabController;
-import org.xcolab.enums.ContestTier;
+import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.enums.OntologySpaceEnum;
 import org.xcolab.interfaces.TabEnum;
-import org.xcolab.points.DistributionStrategy;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.entities.SectionTypes;
 import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -41,15 +37,11 @@ import java.util.Stack;
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
 
-/**
- * Created by Thomas on 2/13/2015.
- */
 public abstract class ContestProposalTemplateTabController extends BaseTabController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestProposalTemplateTabController.class);
-    static final public String TAB_VIEW = "manager/proposalTemplateTab";
-    static final public String NO_PERMISSION_TAB_VIEW = "common/noPermissionTab";
-    static final public String NOT_FOUND_TAB_VIEW = "common/notFound";
+    public static final String TAB_VIEW = "manager/proposalTemplateTab";
+    public static final String NO_PERMISSION_TAB_VIEW = "common/noPermissionTab";
+    protected static final String NOT_FOUND_TAB_VIEW = "common/notFound";
 
     protected TabWrapper tabWrapper;
 
@@ -64,40 +56,39 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
     }
 
     @ModelAttribute("contestTypeSelectionItems")
-    public List<LabelValue> populateContestTypeSelectionItems() throws PortalException, SystemException {
+    public List<LabelValue> populateContestTypeSelectionItems() {
         return getContestTypeSelectionItems();
     }
 
     @ModelAttribute("pointTypeSelectionItems")
-    public List<LabelValue> populatePointTypeSelectionItems() throws PortalException, SystemException {
+    public List<LabelValue> populatePointTypeSelectionItems() {
         return getPointTypeSelectionItems();
     }
 
     @ModelAttribute("whatTerms")
-    public List<LabelValue> populateWhatTerms() throws PortalException, SystemException {
+    public List<LabelValue> populateWhatTerms() {
         return getWhatTerms();
     }
 
     @ModelAttribute("whereTerms")
-    public List<LabelValue> populateWhereTerms() throws PortalException, SystemException {
+    public List<LabelValue> populateWhereTerms() {
         return getWhereTerms();
     }
 
     @ModelAttribute("whoTerms")
-    public List<LabelValue> populateWhoTerms() throws PortalException, SystemException {
+    public List<LabelValue> populateWhoTerms() {
         return getWhoTerms();
     }
 
     @ModelAttribute("howTerms")
-    public List<LabelValue> populateHowTerms() throws PortalException, SystemException {
+    public List<LabelValue> populateHowTerms() {
         return getHowTerms();
     }
 
     @ResourceMapping(value = "getSectionDefinition")
-    public
-    @ResponseBody
-    void getSectionDefinition(@RequestParam("sectionDefinitionId") Long sectionDefinitionId, ResourceResponse response)
-            throws PortalException, SystemException, java.io.IOException {
+    public @ResponseBody void getSectionDefinition(
+            @RequestParam("sectionDefinitionId") Long sectionDefinitionId, ResourceResponse response)
+            throws IOException {
 
         PlanSectionDefinition planSectionDefinition =
                 PlanTemplateClientUtil.getPlanSectionDefinition(sectionDefinitionId);
@@ -272,8 +263,7 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
     }
 
     @Override
-    public void setPageAttributes(PortletRequest request, Model model, TabEnum tab)
-            throws PortalException, SystemException {
+    public void setPageAttributes(PortletRequest request, Model model, TabEnum tab) {
     }
 
 }

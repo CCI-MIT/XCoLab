@@ -1,15 +1,13 @@
 package org.xcolab.portlets.proposals.impact;
 
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.enums.ContestTier;
+import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.portlets.proposals.utils.SectorTypes;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,19 +46,13 @@ public class IntegratedProposalImpactSeries {
 
     public IntegratedProposalImpactSeries(Proposal proposal, Contest contest,
             PortletRequest request) {
-        this.request = request;
-        try {
-            org.xcolab.client.contest.pojo.Contest contestMicro =
-                    ContestClientUtil.getContest(contest.getContestPK());
-            ContestWrapper contestWrapper = new ContestWrapper(contestMicro);
-            this.regionOntologyTerm = contestWrapper.getWhere().get(0);
+            this.request = request;
+            this.regionOntologyTerm = contest.getWhere().get(0);
             this.proposal = proposal;
             this.resultSeriesValues = new ProposalImpactSeriesValues();
             boolean global = contest.getContestTier() == ContestTier.GLOBAL.getTierType();
             calculateIntegratedImpactSeries(global);
-        } catch (ContestNotFoundException ignored) {
 
-        }
     }
 
     public static Set<Proposal> getSubProposalsOnContestTier(Proposal proposal, Long contestTierId,

@@ -3,11 +3,9 @@ package org.xcolab.portlets.proposals.view;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -15,29 +13,22 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.flagging.FlaggingClient;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.ProposalMoveClientUtil;
+import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
-import org.xcolab.portlets.proposals.utils.MoveType;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.ContestWrapper;
-import org.xcolab.portlets.proposals.wrappers.MoveHistoryWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
-import org.xcolab.portlets.proposals.wrappers.ProposalSectionWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-import org.xcolab.portlets.proposals.wrappers.ProposalWrapper;
 import org.xcolab.util.enums.flagging.TargetType;
-import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.utils.EntityGroupingUtil;
-import org.xcolab.wrappers.BaseProposalWrapper;
-import org.xcolab.wrappers.ContestTypeProposalWrapper;
+import org.xcolab.util.enums.proposal.MoveType;
+import org.xcolab.entity.utils.EntityGroupingUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -56,8 +47,13 @@ import javax.portlet.PortletRequest;
 @RequestMapping("view")
 public class ProposalSectionsTabController extends BaseProposalTabController {
 
+    private final ProposalsContext proposalsContext;
+
     @Autowired
-    private ProposalsContext proposalsContext;
+    public ProposalSectionsTabController(ProposalsContext proposalsContext) {
+        Assert.notNull(proposalsContext, "ProposalsContext bean is required");
+        this.proposalsContext = proposalsContext;
+    }
 
     @RequestMapping(params = "pageToDisplay=proposalDetails")
     public String showProposalDetails(
@@ -69,7 +65,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             @RequestParam(defaultValue = "false") String moveType,
             @RequestParam(required = false) Long moveFromContestPhaseId,
             @RequestParam(defaultValue = "false") boolean voted,
-            Model model, PortletRequest request) throws PortalException {
+            Model model, PortletRequest request) {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.DESCRIPTION);
 
@@ -83,7 +79,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         model.addAttribute("reportTargets", FlaggingClient.listReportTargets(TargetType.PROPOSAL));
 
         final Proposal proposal = proposalsContext.getProposal(request);
-        final ProposalWrapper proposalWrapped = proposalsContext.getProposalWrapped(request);
+        final Proposal proposalWrapped = proposalsContext.getProposalWrapped(request);
         try {
             final Contest baseContest = ProposalsContextUtil.getClients(request).getProposalClient().getCurrentContestForProposal(proposal.getProposalId());
 
@@ -95,16 +91,14 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
                 // get base proposal from base contest
                 ContestPhase baseContestPhase = ContestClientUtil.getActivePhase(baseContest.getContestPK());
 
-                ProposalWrapper baseProposalWrapped = new ProposalWrapper(proposal, proposal.getCurrentVersion(),
+                Proposal baseProposalWrapped = new Proposal(proposal, proposal.getCurrentVersion(),
                         baseContest, baseContestPhase, null);
                 model.addAttribute("baseProposal", baseProposalWrapped);
 
-                try {
-                    org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(baseContest.getContestPK());
-                    model.addAttribute("baseContest", new ContestWrapper(contestMicro));//baseContest
-                } catch (ContestNotFoundException ignored) {
 
-                }
+
+                model.addAttribute("baseContest", baseContest);//baseContest
+
 
                 model.addAttribute("isMove", true);
 
@@ -115,12 +109,12 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
                 Set<Long> newContestSections = new HashSet<>();
 
-                for (ProposalSectionWrapper section : proposalWrapped.getSections()) {
+                for (PlanSectionDefinition section : proposalWrapped.getSections()) {
                     newContestSections.add(section.getSectionDefinitionId());
                 }
 
                 boolean hasNotMappedSections = false;
-                for (ProposalSectionWrapper section : baseProposalWrapped.getSections()) {
+                for (PlanSectionDefinition section : baseProposalWrapped.getSections()) {
                     if (section.getContent() != null && !section.getContent().trim().isEmpty()) {
                         // we have non empty section in base proposal, check if such
                         // section exists in target contest
@@ -153,53 +147,52 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             if (proposalsPermissions.getCanJudgeActions()) {
                 setJudgeProposalBean(model, request);
             }
-            setLinkedProposals(model, proposal);
+            setLinkedProposals(model, proposal, request);
             final Contest contest = proposalsContext.getContest(request);
-            populateMoveHistory(model, proposal, contest);
+            populateMoveHistory(model, proposal, contest, request);
         } catch (ContestNotFoundException ignored) {
 
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
         }
 
         return "proposalDetails";
     }
 
-    private void populateMoveHistory(Model model, Proposal proposal, Contest contest) {
-        List<ProposalMoveHistory> sourceMoveHistoriesRaw = ProposalMoveClientUtil
+    private void populateMoveHistory(Model model, Proposal proposal, Contest contest, PortletRequest request) {
+
+        List<ProposalMoveHistory> sourceMoveHistoriesRaw = ProposalsContextUtil.getClients(request).getProposalMoveClient()
                 .getBySourceProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
-        List<MoveHistoryWrapper> sourceMoveHistories = new ArrayList<>();
+        List<ProposalMoveHistory> sourceMoveHistories = new ArrayList<>();
 
         for (ProposalMoveHistory sourceMoveHistory : sourceMoveHistoriesRaw) {
-            sourceMoveHistories.add(new MoveHistoryWrapper(sourceMoveHistory));
+            sourceMoveHistories.add((sourceMoveHistory));
         }
         model.addAttribute("sourceMoveHistories", sourceMoveHistories);
 
 
-        ProposalMoveHistory targetMoveHistoryRaw = ProposalMoveClientUtil
+        ProposalMoveHistory targetMoveHistory = ProposalsContextUtil.getClients(request).getProposalMoveClient()
                 .getByTargetProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
-        if (targetMoveHistoryRaw != null) {
-            MoveHistoryWrapper targetMoveHistory = new MoveHistoryWrapper(targetMoveHistoryRaw);
+        if (targetMoveHistory != null) {
             model.addAttribute("targetMoveHistory", targetMoveHistory);
         }
 
     }
 
-    private void setLinkedProposals(Model model, Proposal proposal)
-            throws PortalException, SystemException {
-        List<Proposal> linkedProposals = ProposalClientUtil
+    private void setLinkedProposals(Model model, Proposal proposal, PortletRequest request) {
+        List<Proposal> linkedProposals = ProposalsContextUtil.getClients(request).getProposalClient()
                 .getSubproposals(proposal.getProposalId(), true);
         Map<ContestType, List<Proposal>> proposalsByContestType =
                 EntityGroupingUtil.groupByContestType(linkedProposals);
-        Map<Long, ContestTypeProposalWrapper> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
+        Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
 
-        for (ContestType contestType : ContestClientUtil.getActiveContestTypes()) {
+        for (ContestType contestType : ProposalsContextUtil.getClients(request).getContestClient().getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId.put(contestType.getId_(),
-                    new ContestTypeProposalWrapper(contestType));
+                    new ContestTypeProposal(contestType));
             final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
-            for (Proposal p : proposalsInContestType) {
-                contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
-                        .getProposals().add(new BaseProposalWrapper(p));
+            if(proposalsInContestType!=null){
+                for (Proposal p : proposalsInContestType) {
+                    contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
+                            .getProposals().add((p));
+                }
             }
         }
         model.addAttribute("linkedProposalContestTypeProposalWrappersByContestTypeId",
@@ -207,7 +200,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
     }
 
     private void setJudgeProposalBean(Model model, PortletRequest request) {
-        ProposalWrapper proposalWrapper = proposalsContext.getProposalWrapped(request);
+        Proposal proposalWrapper = proposalsContext.getProposalWrapped(request);
         ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(
                 proposalWrapper, proposalsContext.getMember(request));
         JudgeProposalFeedbackBean judgeProposalBean = new JudgeProposalFeedbackBean(proposalJudgeWrapper);

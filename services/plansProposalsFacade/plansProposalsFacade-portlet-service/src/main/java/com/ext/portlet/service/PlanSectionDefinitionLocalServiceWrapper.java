@@ -277,45 +277,6 @@ public class PlanSectionDefinitionLocalServiceWrapper
             parameterTypes, arguments);
     }
 
-    @Override
-    public void store(com.ext.portlet.model.PlanSectionDefinition psd)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planSectionDefinitionLocalService.store(psd);
-    }
-
-    @Override
-    public com.ext.portlet.model.FocusArea getFocusArea(
-        com.ext.portlet.model.PlanSectionDefinition psd)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _planSectionDefinitionLocalService.getFocusArea(psd);
-    }
-
-    /**
-    * Returns a PlanSectionDefinition objects which match a given FocusArea, PlanSectionDefinition type and ContestTier
-    * If there are multiple matches, returns the first match only.
-    *
-    * @param focusArea         The focusArea which should be matched
-    * @param type              The PlanSectionDefinition type which should be matched
-    * @param contestTierType   The Contest tier type which should be matched
-    * @return The matched PlanSectionDefinition object or null, if it does not exist
-    * @throws SystemException
-    */
-    @Override
-    public com.ext.portlet.model.PlanSectionDefinition getPlanSectionDefinition(
-        com.ext.portlet.model.FocusArea focusArea, java.lang.String type,
-        long contestTierType)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _planSectionDefinitionLocalService.getPlanSectionDefinition(focusArea,
-            type, contestTierType);
-    }
-
-    @Override
-    public java.util.List<java.lang.Long> getAdditionalIds(
-        com.ext.portlet.model.PlanSectionDefinition planSectionDefinition) {
-        return _planSectionDefinitionLocalService.getAdditionalIds(planSectionDefinition);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

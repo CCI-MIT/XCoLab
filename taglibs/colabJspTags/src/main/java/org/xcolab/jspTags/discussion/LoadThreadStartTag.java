@@ -17,6 +17,7 @@ import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
@@ -47,12 +48,12 @@ public class LoadThreadStartTag extends BodyTagSupport {
             ThreadClient threadClient;
             CategoryClient categoryClient;
             if (sharedColabId != null && sharedColabId > 0) {
-                // TODO COLAB-1387: move initialization to shared utility
-                RestService sharedCommentService = new RefreshingRestService("comment-service",
-                        ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
-                        ConfigurationAttributeKey.PARTNER_COLAB_PORT);
-                threadClient = new ThreadClient(sharedCommentService);
-                categoryClient = new CategoryClient(sharedCommentService);
+                    RestService contestService = new RefreshingRestService(CoLabService.COMMENT,
+                            ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                            ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+
+                    threadClient = ThreadClient.fromService(contestService);
+                    categoryClient = CategoryClient.fromService(contestService);
             } else {
                 threadClient = ThreadClientUtil.getClient();
                 categoryClient = CategoryClientUtil.getClient();

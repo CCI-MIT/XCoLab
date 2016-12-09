@@ -3,6 +3,8 @@ package org.xcolab.client.sharedcolab;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.sharedcolab.exceptions.MemberNotFoundException;
 import org.xcolab.client.sharedcolab.pojo.Member;
+import org.xcolab.client.sharedcolab.pojo.SharedContest;
+import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
@@ -10,18 +12,23 @@ import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.ServiceResource;
 import org.xcolab.util.http.client.ServiceResource1;
 
+import java.util.List;
+
 public class SharedColabClient {
 
-    private static final RestService sharedColabService = new RefreshingRestService("sharedcolab-service",
+    private static final RestService sharedColabService = new RefreshingRestService(CoLabService.SHARED,
             ConfigurationAttributeKey.SHARED_COLAB_LOCATION,
             ConfigurationAttributeKey.SHARED_COLAB_PORT);
 
-    private static final RestService partnerMemberService = new RefreshingRestService("members-service",
+    private static final RestService partnerMemberService = new RefreshingRestService(CoLabService.MEMBER,
             ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
             ConfigurationAttributeKey.PARTNER_COLAB_PORT);
 
     private static final RestResource<Member, Long> partnerMemberResource = new RestResource1<>(
             partnerMemberService, "members", Member.TYPES);
+
+    private static final RestResource<SharedContest, Long> sharedContestResource = new RestResource1<>(
+            sharedColabService, "contests", SharedContest.TYPES);
 
     private static final ServiceResource sharedColabResource = new ServiceResource1(
             sharedColabService, "members");
@@ -45,6 +52,29 @@ public class SharedColabClient {
                 .queryParam("colabOrigin", colabName)
                 .post();
     }
+
+
+
+    public static void updateSharedContestName(Long sharedContestId, String sharedContestName) {
+        sharedContestResource.service(sharedContestId,"updateSharedContestName", Boolean.class)
+                .queryParam("sharedContestName", sharedContestName)
+                .put();
+    }
+
+    public static Long retrieveContestSharedId(String sharedContestName, String colabName) {
+        return sharedContestResource.service("retrieveSharedId", Long.class)
+                .queryParam("sharedContestName", sharedContestName)
+                .queryParam("colabOrigin", colabName)
+                .post();
+    }
+
+    public static List<SharedContest> retrieveContestsFromForeignColab(String colabOrigin) {
+        return sharedContestResource.list()
+                .optionalQueryParam("colabOrigin", colabOrigin)
+                .execute();
+    }
+
+
 
     public static Member findMemberByScreenName(String screenName) throws MemberNotFoundException {
         final Member member = partnerMemberResource.list()

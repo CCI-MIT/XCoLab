@@ -4,6 +4,7 @@ import org.xcolab.client.activities.exceptions.ActivityEntryNotFoundException;
 import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundException;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
+
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
@@ -14,18 +15,29 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class ActivitiesClient {
 
-    private static final RestService activitiesService = new RestService("activities-service");
-    private static final RestResource<ActivityEntry, Long> activityEntryResource =
-            new RestResource1<>(activitiesService, "activityEntries", ActivityEntry.TYPES);
-    private static final RestResource<ActivitySubscription, Long> activitySubscriptionResource =
-            new RestResource1<>(activitiesService, "activitySubscriptions",
-                    ActivitySubscription.TYPES);
+    private static final Map<RestService, ActivitiesClient> instances = new HashMap<>();
 
-    public static ActivityEntry createActivityEntry(Long memberId,
+    private final RestService activitiesService;
+
+    private  final RestResource<ActivityEntry, Long> activityEntryResource;
+
+    private  final RestResource<ActivitySubscription, Long> activitySubscriptionResource;
+
+
+    private ActivitiesClient(RestService activityService) {
+        this.activitiesService = activityService;
+        activityEntryResource = new RestResource1<>(activitiesService, "activityEntries", ActivityEntry.TYPES);
+        activitySubscriptionResource =
+                new RestResource1<>(activitiesService, "activitySubscriptions",
+                        ActivitySubscription.TYPES);
+    }
+    public  ActivityEntry createActivityEntry(Long memberId,
                                                     Long classPrimaryKey,
                                                     String extraData,
                                                     Integer providerType) {
@@ -37,7 +49,7 @@ public final class ActivitiesClient {
                 .post();
     }
 
-    public static ActivityEntry getActivityEntry(Long activityEntryId)
+    public  ActivityEntry getActivityEntry(Long activityEntryId)
             throws ActivityEntryNotFoundException {
         try {
             return activityEntryResource.get(activityEntryId)
@@ -50,7 +62,7 @@ public final class ActivitiesClient {
         }
     }
 
-    public static List<ActivityEntry> getActivityEntries(Integer startRecord,
+    public  List<ActivityEntry> getActivityEntries(Integer startRecord,
             Integer limitRecord, Long memberId, List<Long> memberIdsToExclude) {
         return activityEntryResource.list()
                 .optionalQueryParam("startRecord", startRecord)
@@ -60,7 +72,7 @@ public final class ActivitiesClient {
                 .execute();
     }
 
-    public static List<ActivityEntry> getActivityEntriesAfter(Date afterDate) {
+    public  List<ActivityEntry> getActivityEntriesAfter(Date afterDate) {
         if (afterDate == null) {
             return null;
         }
@@ -71,7 +83,7 @@ public final class ActivitiesClient {
                 .execute();
     }
 
-    public static Integer countActivities(Long memberId, List<Long> memberIdsToExclude) {
+    public  Integer countActivities(Long memberId, List<Long> memberIdsToExclude) {
         try {
             return activityEntryResource.<ActivityEntry, Integer>service("count", Integer.class)
                     .optionalQueryParam("memberId", memberId)
@@ -87,7 +99,7 @@ public final class ActivitiesClient {
         }
     }
 
-    public static ActivitySubscription getActivitySubscription(long activitySubscriptionId)
+    public  ActivitySubscription getActivitySubscription(long activitySubscriptionId)
             throws ActivitySubscriptionNotFoundException {
 
         try {
@@ -102,16 +114,16 @@ public final class ActivitiesClient {
         }
     }
 
-    private static ActivitySubscription createActivitySubscription(
+    public  ActivitySubscription createActivitySubscription(
             ActivitySubscription activitySubscription) {
         return activitySubscriptionResource.create(activitySubscription).execute();
     }
 
-    public static boolean deleteSubscription(Long pk) {
+    public  boolean deleteSubscription(Long pk) {
         return activitySubscriptionResource.delete(pk).execute();
     }
 
-    public static ActivitySubscription addSubscription(long memberId,
+    public ActivitySubscription addSubscription(long memberId,
             ActivityEntryType activityEntryType, long classPK, String extraInfo) {
         return activitySubscriptionResource.service("subscribe", ActivitySubscription.class)
                 .queryParam("receiverId", memberId)
@@ -121,7 +133,7 @@ public final class ActivitiesClient {
                 .post();
     }
 
-    public static boolean deleteSubscription(Long receiverId, ActivityEntryType activityEntryType,
+    public boolean deleteSubscription(Long receiverId, ActivityEntryType activityEntryType,
             Long classPK, String extraInfo) {
         return activitySubscriptionResource.service("deleteIfSubscribed", Boolean.class)
                 .queryParam("receiverId", receiverId)
@@ -131,11 +143,11 @@ public final class ActivitiesClient {
                 .delete();
     }
 
-    public static boolean deleteSubscriptionById(Long subscriptionId) {
+    public boolean deleteSubscriptionById(Long subscriptionId) {
         return activitySubscriptionResource.delete(subscriptionId).execute();
     }
 
-    public static boolean isSubscribedToActivity(Long receiverId, Long classNameId, Long classPK,
+    public boolean isSubscribedToActivity(Long receiverId, Long classNameId, Long classPK,
             Integer type, String extraInfo) {
         return activitySubscriptionResource.service("isSubscribed", Boolean.class)
                 .queryParam("receiverId", receiverId)
@@ -146,7 +158,7 @@ public final class ActivitiesClient {
                 .get();
     }
 
-    public static List<ActivitySubscription> getActivitySubscriptions(Long classNameId, Long classPK,
+    public List<ActivitySubscription> getActivitySubscriptions(Long classNameId, Long classPK,
             Long receiverId) {
         return activitySubscriptionResource.list()
                 .optionalQueryParam("classNameId", classNameId)
@@ -155,7 +167,16 @@ public final class ActivitiesClient {
                 .execute();
     }
 
-    public static List<ActivitySubscription> getActivitySubscriptionsForMember(Long memberId) {
+    public List<ActivitySubscription> getActivitySubscriptionsForMember(Long memberId) {
         return getActivitySubscriptions(null, null, memberId);
+    }
+
+    public static ActivitiesClient fromService(RestService activitiesService) {
+        ActivitiesClient client = instances.get(activitiesService);
+        if (client == null) {
+            client = new ActivitiesClient(activitiesService);
+            instances.put(activitiesService, client);
+        }
+        return client;
     }
 }

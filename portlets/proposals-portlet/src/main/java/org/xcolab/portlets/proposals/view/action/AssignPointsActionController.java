@@ -19,7 +19,6 @@ import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.AssignPointsBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.portlets.proposals.wrappers.PointTypeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 
 import java.io.IOException;
@@ -40,9 +39,9 @@ public class AssignPointsActionController {
 
     private final Map<Long, Double> pointTypePercentageModifiers = new HashMap<>();
 
-    private void initializePercentageModifiers(PointTypeWrapper pointType) {
+    private void initializePercentageModifiers(PointType pointType) {
         this.pointTypePercentageModifiers.put(pointType.getId(), pointType.getPercentageOfTotal());
-        for (PointTypeWrapper p: pointType.getChildren()) {
+        for (PointType p: pointType.getChildren()) {
             this.initializePercentageModifiers(p);
         }
     }
@@ -79,7 +78,7 @@ public class AssignPointsActionController {
                     .getPointType(contest.getDefaultParentPointType());
 
             //calculate the percentage multiplicator for each pointtype
-            this.initializePercentageModifiers(new PointTypeWrapper(contestRootPointType, request));
+            this.initializePercentageModifiers(new PointType(contestRootPointType));
 
             //custom user assignments
             for (Long pointTypeId : assignPointsBean.getAssignmentsByUserIdByPointTypeId().keySet()) {

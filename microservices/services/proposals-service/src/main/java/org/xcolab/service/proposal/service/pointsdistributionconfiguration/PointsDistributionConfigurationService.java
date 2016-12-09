@@ -3,18 +3,17 @@ package org.xcolab.service.proposal.service.pointsdistributionconfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
 import org.xcolab.model.tables.pojos.PointType;
-import org.xcolab.service.proposal.domain.pointsdistributionconfiguration.PointsDistributionConfigurationDao;
+import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
+import org.xcolab.service.proposal.domain.pointsdistributionconfiguration
+        .PointsDistributionConfigurationDao;
 import org.xcolab.service.proposal.domain.pointtype.PointTypeDao;
-
+import org.xcolab.service.proposal.enums.ReceiverLimitationStrategy;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 import org.xcolab.service.proposal.service.proposal.ProposalService;
-import org.xcolab.service.proposal.util.EntityGroupingUtil;
-import org.xcolab.service.proposal.enums.ReceiverLimitationStrategy;
+import org.xcolab.util.GroupingUtil;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -55,7 +54,8 @@ public class PointsDistributionConfigurationService {
     public void verifyDistributionConfigurationsForProposalId(long proposalId) {
         Map<Long, List<PointsDistributionConfiguration>> pdcsByPointTypeId = new HashMap<>();
         for (PointsDistributionConfiguration pdc : pointsDistributionConfigurationDao.findByGiven(proposalId, null)) {
-            List<PointsDistributionConfiguration> pdcs = EntityGroupingUtil.getInnerListOrCreate(pdc.getPointTypeId(), pdcsByPointTypeId);
+            List<PointsDistributionConfiguration> pdcs = GroupingUtil
+                    .getInnerListOrCreate(pdc.getPointTypeId(), pdcsByPointTypeId);
             pdcs.add(pdc);
         }
 

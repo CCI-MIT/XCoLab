@@ -34,7 +34,8 @@ public class ProposalAttributeService {
     private final ProposalVersionDao proposalVersionDao;
 
     @Autowired
-    public ProposalAttributeService(ProposalDao proposalDao, ProposalAttributeDao proposalAttributeDao, ProposalVersionDao proposalVersionDao){
+    public ProposalAttributeService(ProposalDao proposalDao,
+            ProposalAttributeDao proposalAttributeDao, ProposalVersionDao proposalVersionDao) {
         this.proposalAttributeDao = proposalAttributeDao;
         this.proposalDao = proposalDao;
         this.proposalVersionDao = proposalVersionDao;
@@ -49,16 +50,21 @@ public class ProposalAttributeService {
             int currentVersion = proposal.getCurrentVersion();
             int newVersion = currentVersion + 1;
 
-            List<ProposalAttribute> currentProposalAttributes = proposalAttributeDao.findByGiven(proposal.getProposalId(),
-                    null,null,currentVersion);
+            List<ProposalAttribute> currentProposalAttributes =
+                    proposalAttributeDao.findByGiven(proposal.getProposalId(),
+                            null, null, currentVersion);
 
             // for each attribute, if it isn't the one that we are changing, simply
             // update it to the most recent version
             // if it is the one that we are changing then leave old one as it is and
             // create new one for new proposal version
             for (ProposalAttribute attribute : currentProposalAttributes) {
-                ProposalAttributeDetectUpdateAlgorithm updateAlgorithm = new ProposalAttributeDetectUpdateAlgorithm(attribute);
-                if (!updateAlgorithm.hasBeenUpdated(proposalAttribute.getName(), zeroIfNull(proposalAttribute.getAdditionalId()), zeroIfNull(proposalAttribute.getNumericValue()), zeroIfNull(proposalAttribute.getRealValue()))) {
+                ProposalAttributeDetectUpdateAlgorithm updateAlgorithm =
+                        new ProposalAttributeDetectUpdateAlgorithm(attribute);
+                if (!updateAlgorithm.hasBeenUpdated(proposalAttribute.getName(),
+                        zeroIfNull(proposalAttribute.getAdditionalId()),
+                        zeroIfNull(proposalAttribute.getNumericValue()),
+                        zeroIfNull(proposalAttribute.getRealValue()))) {
                     // clone the attribute and set its version to the new value
                     attribute.setVersion(newVersion);
                     proposalAttributeDao.update(attribute);
@@ -70,50 +76,68 @@ public class ProposalAttributeService {
             // set new value for provided attribute
             proposalAttribute.setVersionWhenCreated(newVersion);
             proposalAttribute.setVersion(newVersion);
-            ProposalAttribute attribute = proposalAttributeDao.create(proposalAttribute);//setAttributeValue(proposalId, newVersion, attributeName, additionalId, stringValue, numericValue, realValue);
+            ProposalAttribute attribute = proposalAttributeDao
+                    .create(proposalAttribute);//setAttributeValue(proposalId, newVersion,
+            // attributeName, additionalId, stringValue, numericValue, realValue);
 
             proposal.setCurrentVersion(newVersion);
             Timestamp updatedDate = new Timestamp((new Date()).getTime());
             proposal.setUpdatedDate(updatedDate);
 
             // create newly created version descriptor
-            createProposalVersionDescription(authorId, proposalAttribute.getProposalId(), newVersion, proposalAttribute.getName(), proposalAttribute.getAdditionalId(), updatedDate);
+            createProposalVersionDescription(authorId, proposalAttribute.getProposalId(),
+                    newVersion, proposalAttribute.getName(), proposalAttribute.getAdditionalId(),
+                    updatedDate);
             proposalDao.update(proposal);
 
             // Update the proposal name in the discussion category
             if (proposalAttribute.getName().equals(ProposalAttributeKeys.NAME)) {
                 try {
                     CommentThread thread = ThreadClientUtil.getThread(proposal.getDiscussionId());
-                    //TODO: this looks shady, we should not call the proposal client from the proposal service
-                    Contest contest = ProposalClientUtil.getCurrentContestForProposal(proposalAttribute.getProposalId());
-                    ContestType contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
-                    thread.setTitle(String.format("%s %s", contestType.getProposalName(), proposalAttribute.getStringValue()));
+
+                    thread.setTitle(
+                            String.format("%s %s", getProposalNameFromOldTitle(thread.getTitle()),
+                                    proposalAttribute.getStringValue()));
                     ThreadClientUtil.updateThread(thread);
-                } catch (ThreadNotFoundException | ContestNotFoundException ignored) {
+                } catch (ThreadNotFoundException  ignored) {
                 }
             }
 
             return attribute;
-        }catch (NotFoundException ignored){
+        } catch (NotFoundException ignored) {
             return null;
         }
     }
-    private static Double zeroIfNull(Double val){
-        if(val == null){
+
+    private static String getProposalNameFromOldTitle(String oldTitle) {
+        if (oldTitle != null) {
+            String threadTokens[] = oldTitle.split(" ");
+            if (threadTokens != null && threadTokens.length > 1) {
+                return threadTokens[0];
+            }
+        }
+        return " ";
+    }
+
+    private static Double zeroIfNull(Double val) {
+        if (val == null) {
             return 0.0;
-        }else{
+        } else {
             return val;
         }
     }
-    private static Long zeroIfNull(Long val){
-        if(val == null){
+
+    private static Long zeroIfNull(Long val) {
+        if (val == null) {
             return 0l;
-        }else{
+        } else {
             return val;
         }
     }
-    private void createProposalVersionDescription(long authorId, long proposalId, int version, String updateType,
-                                                  long additionalId, Timestamp updatedDate) {
+
+    private void createProposalVersionDescription(long authorId, long proposalId, int version,
+            String updateType,
+            long additionalId, Timestamp updatedDate) {
 
         ProposalVersion proposalVersion = new ProposalVersion();
         proposalVersion.setProposalId(proposalId);
