@@ -727,6 +727,19 @@ public class Contest extends AbstractContest {
         }
         return true;
     }
+    public void setUpForeignContestVisualConfigsFromLocal(Contest c) {
+        this.setFeatured_(c.getFeatured_());
+        this.setContestActive(c.getContestActive());
+        this.setContestPrivate(c.getContestPrivate());
+        this.setFlag(c.getFlag());
+        this.setFlagText(c.getFlagText());
+        this.setFlagTooltip(c.getFlagText());
+        this.setFeatured_(c.getFeatured_());
+        this.setShowInListView(c.getShowInListView());
+        this.setShowInOutlineView(c.getShowInOutlineView());
+        this.setShowInTileView(c.getShowInTileView());
+        this.setWeight(c.getWeight());
+    }
 
     public String getNewProposalLinkUrl() {
         if (getIsSharedContestInForeignColab()) {

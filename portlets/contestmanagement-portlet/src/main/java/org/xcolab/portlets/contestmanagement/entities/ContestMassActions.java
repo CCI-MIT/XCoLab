@@ -20,7 +20,7 @@ public enum ContestMassActions {
     DELETE_WITH_PHASES("Delete contests including phases", ContestMassActionMethods.class, "deleteContestwithPhases"),
     ACTIVE("Active", "Prior", Contest.class, "setContestActive"),
     PRIVATE("Private", "Public", Contest.class, "setContestPrivate"),
-    FEATURED("Feature", "Remove feature", Contest.class, "setFeatured"),
+    FEATURED("Feature", "Remove feature", Contest.class, "setFeatured_"),
     FLAG("Set contest flag", ContestMassActionMethods.class, "setFlag"),
     MODEL_SETTINGS("Set model settings", ContestMassActionMethods.class, "setModelSettings"),
     SUBSCRIBE("Subscribe to activity", "Unsubscribe from activity", ContestMassActionMethods.class,
