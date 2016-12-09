@@ -188,7 +188,15 @@
 								<td>${contestWrapper.proposalsCount} </td>
 								<td>${contestWrapper.commentsCount} </td>
 								<td>
-									<a class="c-Button__primary innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
+									<c:choose>
+										<c:when test="${not contestWrapper.isSharedContestInForeignColab}">
+											<a class="c-Button__primary innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>
+										</c:when>
+
+									</c:choose>
+									<c:if test="not ">
+
+									</c:if>
 								</td>
 							</tr>
 					</c:forEach>
