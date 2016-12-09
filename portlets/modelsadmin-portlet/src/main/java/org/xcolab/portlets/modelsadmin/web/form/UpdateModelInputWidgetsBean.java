@@ -1,8 +1,6 @@
 package org.xcolab.portlets.modelsadmin.web.form;
 
-import com.ext.portlet.service.ModelGlobalPreferenceLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
-
+import org.xcolab.client.modeling.ModelingClientUtil;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelInputIndividualDisplayItem;
@@ -21,14 +19,14 @@ public class UpdateModelInputWidgetsBean {
     public UpdateModelInputWidgetsBean() {
     }
 
-    public UpdateModelInputWidgetsBean(ModelDisplay display, long modelId) throws SystemException {
+    public UpdateModelInputWidgetsBean(ModelDisplay display, long modelId) {
         for (ModelInputDisplayItem item : display.getAllIndividualInputs()) {
             widgets.put(item.getMetaData().getId(), item.getType());
             orders.put(item.getMetaData().getId(), item.getOrder());
             groups.put(item.getMetaData().getId(),
                     ((ModelInputIndividualDisplayItem) item).getGroupId());
         }
-        customInputWidgets = ModelGlobalPreferenceLocalServiceUtil.getByModelId(modelId)
+        customInputWidgets = ModelingClientUtil.getModelPreference(modelId)
                 .getCustomInputsDefinition();
     }
 

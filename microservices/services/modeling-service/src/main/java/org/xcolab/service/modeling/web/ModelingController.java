@@ -70,6 +70,12 @@ public class ModelingController {
                 }));
     }
 
+    //TODO: rethink url, modelPrefId doesn't exist
+    @PutMapping("/models/{modelId}/preferences/{modelPrefId}}")
+    public boolean updatePreferences(@PathVariable long modelId, @RequestBody ModelGlobalPreference pojo) {
+        return modelGlobalPreferenceDao.update(pojo);
+    }
+
 //    modelCategoryResource = new RestResource1<>(modelingService, "modelCategories", ModelCategoryDto.TYPES);
 //    modelDiscussionResource = new RestResource1<>(modelingService, "modelDiscussions", ModelDiscussionDto.TYPES);
 //    modelInputGroupResource = new RestResource1<>(modelingService, "modelInputGroups", ModelInputGroupDto.TYPES);

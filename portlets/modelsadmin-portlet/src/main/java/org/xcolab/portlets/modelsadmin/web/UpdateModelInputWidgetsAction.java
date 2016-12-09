@@ -5,16 +5,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ext.portlet.model.ModelGlobalPreference;
-import com.ext.portlet.service.ModelGlobalPreferenceLocalServiceUtil;
-import com.liferay.portal.kernel.exception.SystemException;
-
+import org.xcolab.client.modeling.ModelingClientUtil;
 import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelInputIndividualDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelUIFactory;
+import org.xcolab.client.modeling.pojo.ModelGlobalPreference;
 import org.xcolab.portlets.modelsadmin.web.form.UpdateModelInputWidgetsBean;
 
 import java.io.IOException;
@@ -30,14 +28,13 @@ public class UpdateModelInputWidgetsAction {
     public void update(ActionRequest request, ActionResponse response,
             UpdateModelInputWidgetsBean updateModelWidgetsBean,
             @RequestParam Long modelId)
-            throws SystemException, IllegalUIConfigurationException, IOException {
+            throws IllegalUIConfigurationException, IOException {
 
-        ModelGlobalPreference modelPreferences =
-                ModelGlobalPreferenceLocalServiceUtil.getByModelId(modelId);
+        ModelGlobalPreference modelPreferences = ModelingClientUtil.getModelPreference(modelId);
         if (modelPreferences.getUsesCustomInputs()) {
             modelPreferences
                     .setCustomInputsDefinition(updateModelWidgetsBean.getCustomInputWidgets());
-            ModelGlobalPreferenceLocalServiceUtil.updateModelGlobalPreference(modelPreferences);
+            ModelingClientUtil.updateModelPreference(modelPreferences);
         } else {
             Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
             ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
@@ -46,7 +43,6 @@ public class UpdateModelInputWidgetsAction {
                 if (updateModelWidgetsBean.getWidgets().containsKey(item.getMetaData().getId())) {
                     item.setType(
                             updateModelWidgetsBean.getWidgets().get(item.getMetaData().getId()));
-                    //ModelInputItemLocalServiceUtil.updateModelInputItem(item);
                 }
 
                 if (updateModelWidgetsBean.getGroups().containsKey(item.getMetaData().getId())) {

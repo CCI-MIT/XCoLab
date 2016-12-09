@@ -5,16 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ext.portlet.model.ModelInputItem;
-import com.ext.portlet.service.ModelInputItemLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
+import org.xcolab.client.modeling.ModelingClientUtil;
 import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelUIFactory;
+import org.xcolab.client.modeling.pojo.ModelInputItem;
 import org.xcolab.portlets.modelsadmin.web.form.UpdateIndividualInputGroupBean;
 
 import java.io.IOException;
@@ -30,8 +27,8 @@ public class UpdateModelIndividualInputGroupAction {
             "tab=inputTabs"})
     public void update(ActionRequest request, ActionResponse response,
             UpdateIndividualInputGroupBean updateModelInputGroup,
-            @RequestParam Long modelId) throws SystemException,
-            IllegalUIConfigurationException, IOException, PortalException {
+            @RequestParam Long modelId) throws
+            IllegalUIConfigurationException, IOException {
 
         Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
         ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
@@ -47,13 +44,12 @@ public class UpdateModelIndividualInputGroupAction {
             return;
         }
 
-        ModelInputItem inputItem = ModelInputItemLocalServiceUtil
-                .getItemForMetaData(modelId, displayItem.getMetaData());
+        ModelInputItem inputItem = ModelingClientUtil.getItemForMetaData(modelId, displayItem.getMetaData());
         inputItem.setDisplayItemOrder(updateModelInputGroup.getOrder());
         inputItem.setModelGroupId(updateModelInputGroup.getGroupId());
 
 
-        ModelInputItemLocalServiceUtil.updateModelInputItem(inputItem);
+        ModelingClientUtil.updateModelInputItem(inputItem);
     }
 
 }

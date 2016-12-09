@@ -5,17 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ext.portlet.model.ModelInputGroup;
-import com.ext.portlet.service.ModelInputGroupLocalServiceUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
+import org.xcolab.client.modeling.ModelingClientUtil;
 import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelUIFactory;
+import org.xcolab.client.modeling.pojo.ModelInputGroup;
 import org.xcolab.portlets.modelsadmin.web.form.UpdateModelInputGroupBean;
 
 import java.io.IOException;
@@ -30,8 +26,8 @@ public class AddUpdateModelInputGroupAction {
     @RequestMapping(params = {"action=addUpdateInputGroup", "modelId", "tab=inputTabs"})
     public void update(ActionRequest request, ActionResponse response,
             UpdateModelInputGroupBean updateModelInputGroup,
-            @RequestParam Long modelId) throws SystemException,
-            IllegalUIConfigurationException, IOException, PortalException {
+            @RequestParam Long modelId)
+            throws IllegalUIConfigurationException, IOException {
         Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
         ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 
@@ -39,16 +35,14 @@ public class AddUpdateModelInputGroupAction {
         ModelInputGroup modelInputGroup;
         if (updateModelInputGroup.getId() == 0) {
             // create new one
-            modelInputGroup = ModelInputGroupLocalServiceUtil.createModelInputGroup(
-                    CounterLocalServiceUtil.increment(ModelInputGroup.class.getName()));
+            modelInputGroup = new ModelInputGroup();
             modelInputGroup.setModelId(modelId);
         } else {
-            modelInputGroup = ModelInputGroupLocalServiceUtil
-                    .getModelInputGroup(updateModelInputGroup.getId());
+            modelInputGroup = ModelingClientUtil.getModelInputGroup(updateModelInputGroup.getId());
         }
         if (updateModelInputGroup.getId() > 0 && "delete"
                 .equals(updateModelInputGroup.getInputAction())) {
-            ModelInputGroupLocalServiceUtil.deleteModelInputGroup(updateModelInputGroup.getId());
+            ModelingClientUtil.deleteModelInputGroup(updateModelInputGroup.getId());
             return;
         }
 
@@ -70,9 +64,9 @@ public class AddUpdateModelInputGroupAction {
         modelInputGroup.setParentGroupPK(updateModelInputGroup.getParentGroupPK());
 
         if (updateModelInputGroup.getId() == 0) {
-            ModelInputGroupLocalServiceUtil.addModelInputGroup(modelInputGroup);
+            ModelingClientUtil.createModelInputGroup(modelInputGroup);
         } else {
-            ModelInputGroupLocalServiceUtil.updateModelInputGroup(modelInputGroup);
+            ModelingClientUtil.updateModelInputGroup(modelInputGroup);
         }
 
     }

@@ -175,4 +175,8 @@ public final class ModelingClientUtil {
     public static void setModelPositions(Long modelId, List<Long> positionIds) {
         client.setModelPositions(modelId, positionIds);
     }
+
+    public static boolean updateModelPreference(ModelGlobalPreference modelPreferences) {
+        return client.updateModelPreference(modelPreferences);
+    }
 }

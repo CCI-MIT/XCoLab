@@ -9,16 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ext.portlet.model.ModelInputGroup;
-import com.ext.portlet.model.ModelInputItem;
-import com.ext.portlet.model.ModelOutputChartOrder;
-import com.ext.portlet.service.ModelInputGroupLocalServiceUtil;
-import com.ext.portlet.service.ModelInputItemLocalServiceUtil;
-import com.ext.portlet.service.ModelOutputChartOrderLocalServiceUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
+import org.xcolab.client.modeling.ModelingClientUtil;
 import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
@@ -29,6 +20,9 @@ import org.xcolab.client.modeling.models.ui.ModelOutputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelOutputSeriesDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelOutputSeriesType;
 import org.xcolab.client.modeling.models.ui.ModelUIFactory;
+import org.xcolab.client.modeling.pojo.ModelInputGroup;
+import org.xcolab.client.modeling.pojo.ModelInputItem;
+import org.xcolab.client.modeling.pojo.ModelOutputChartOrder;
 import org.xcolab.portlets.modelsadmin.web.form.UpdateModelDisplayFromJSONBean;
 
 import java.io.IOException;
@@ -45,8 +39,7 @@ public class UpdateModelDisplayFromJSONAction {
             "tab=modelDisplayByJSON"})
     public void update(ActionRequest request, ActionResponse response,
             UpdateModelDisplayFromJSONBean bean, @RequestParam Long modelId)
-            throws SystemException, IllegalUIConfigurationException, IOException, ParseException,
-            PortalException {
+            throws IllegalUIConfigurationException, IOException, ParseException {
 
         Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
         ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
@@ -54,27 +47,25 @@ public class UpdateModelDisplayFromJSONAction {
         try {
             JSONObject conf = (JSONObject) new JSONParser().parse(bean.getJson());
 
-            for (ModelInputGroup group : ModelInputGroupLocalServiceUtil
-                    .getInputGroups(simulation)) {
-                ModelInputGroupLocalServiceUtil.deleteModelInputGroup(group.getModelInputGroupPK());
+            for (ModelInputGroup group : ModelingClientUtil.getInputGroups(simulation)) {
+                ModelingClientUtil.deleteModelInputGroup(group.getModelInputGroupPK());
             }
-            for (ModelInputItem item : ModelInputItemLocalServiceUtil
-                    .getItemsForModel(simulation)) {
-                item.setModelGroupId(0);
-                ModelInputItemLocalServiceUtil.updateModelInputItem(item);
+            for (ModelInputItem item : ModelingClientUtil.getItemsForModel(simulation)) {
+                item.setModelGroupId(0L);
+                ModelingClientUtil.updateModelInputItem(item);
             }
 
             for (ModelOutputDisplayItem modi : modelDisplay.getOutputs()) {
-                ModelOutputChartOrder moco = ModelOutputChartOrderLocalServiceUtil
-                        .getChartOrder(simulation, modi.getName());
-                ModelOutputChartOrderLocalServiceUtil.deleteModelOutputChartOrder(moco);
+                ModelOutputChartOrder
+                        moco = ModelingClientUtil.getModelOutputChartOrder(simulation, modi.getName());
+                ModelingClientUtil.deleteModelOutputChartOrder(moco);
             }
 
             // iterate over inputs and create appropriate groups/inputs config
 
             configureInputArray(modelId, modelDisplay, (JSONArray) conf.get("inputs"), 0, 0);
 
-            configureOutputArray(modelId, modelDisplay, (JSONArray) conf.get("outputs"), 0);
+            configureOutputArray(modelDisplay, (JSONArray) conf.get("outputs"), 0);
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -84,7 +75,7 @@ public class UpdateModelDisplayFromJSONAction {
 
 
     private int configureInputArray(long modelId, ModelDisplay modelDisplay, JSONArray inputArray,
-            int order, long parentGroup) throws SystemException {
+            int order, long parentGroup) {
         for (int i = 0; i < inputArray.size(); i++) {
             configureInput(modelId, modelDisplay, (JSONObject) inputArray.get(i), order + i,
                     parentGroup);
@@ -94,12 +85,11 @@ public class UpdateModelDisplayFromJSONAction {
     }
 
     private int configureInput(long modelId, ModelDisplay modelDisplay, JSONObject inputConf,
-            int order, long parentGroup) throws SystemException {
+            int order, long parentGroup) {
         String type = (String) inputConf.get("type");
         int count = 1;
         if (type.equals("TAB") || type.equals("HORIZONTAL")) {
-            long groupId = CounterLocalServiceUtil.increment(ModelInputGroup.class.getName());
-            ModelInputGroup group = ModelInputGroupLocalServiceUtil.createModelInputGroup(groupId);
+            ModelInputGroup group = new ModelInputGroup();
             group.setGroupType(type);
             group.setModelId(modelId);
             if (inputConf.containsKey("name")) {
@@ -120,12 +110,12 @@ public class UpdateModelDisplayFromJSONAction {
             }
             group.setDisplayItemOrder(order);
             group.setParentGroupPK(parentGroup);
-            ModelInputGroupLocalServiceUtil.addModelInputGroup(group);
+            group = ModelingClientUtil.createModelInputGroup(group);
 
             if (inputConf.containsKey("children")) {
                 JSONArray children = (JSONArray) inputConf.get("children");
                 count += configureInputArray(modelId, modelDisplay, children, order + count + 1,
-                        groupId);
+                        group.getModelInputGroupPK());
             }
         } else {
             String name = (String) inputConf.get("name");
@@ -153,8 +143,8 @@ public class UpdateModelDisplayFromJSONAction {
     }
 
 
-    private void configureOutputArray(Long modelId, ModelDisplay modelDisplay, JSONArray jsonArray,
-            int order) throws SystemException {
+    private void configureOutputArray(ModelDisplay modelDisplay, JSONArray jsonArray,
+            int order) {
         for (Object aJsonArray : jsonArray) {
             JSONObject outputObj = (JSONObject) aJsonArray;
 

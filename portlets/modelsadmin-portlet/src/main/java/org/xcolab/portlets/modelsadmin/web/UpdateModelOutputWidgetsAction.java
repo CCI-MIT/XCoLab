@@ -5,8 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
@@ -31,7 +29,7 @@ public class UpdateModelOutputWidgetsAction {
     public void update(ActionRequest request, ActionResponse response,
             UpdateModelOutputWidgetsBean updateModelWidgetsBean,
             @RequestParam Long modelId)
-            throws SystemException, IllegalUIConfigurationException, IOException {
+            throws IllegalUIConfigurationException, IOException {
 
         Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
         ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);

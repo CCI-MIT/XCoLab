@@ -46,7 +46,7 @@ public class ModelingClient {
     private ModelingClient(RestService modelingService) {
         this.modelingService = modelingService;
         modelResource = new RestResource1<>(this.modelingService, "models", Model.TYPES);
-        modelPreferenceResource = new RestResource2L<>(modelResource, "modelPreferences", ModelGlobalPreferenceDto.TYPES);
+        modelPreferenceResource = new RestResource2L<>(modelResource, "preferences", ModelGlobalPreferenceDto.TYPES);
 
         modelCategoryResource = new RestResource1<>(modelingService, "modelCategories", ModelCategoryDto.TYPES);
         modelDiscussionResource = new RestResource1<>(modelingService, "modelDiscussions", ModelDiscussionDto.TYPES);
@@ -62,42 +62,34 @@ public class ModelingClient {
     }
 
     public ModelGlobalPreference getModelPreference(long modelId) {
-        ModelGlobalPreference modelPreference =
-                modelPreferenceResource.resolveParent(modelResource.id(modelId))
-                        .list()
-                        .executeWithResult()
-                        .getOneIfExists().toPojo(modelingService);
-        if (modelPreference == null) {
-            modelPreference = new ModelGlobalPreference();
-            modelPreference.setModelId(modelId);
-            modelPreference.setWeight(0);
-            modelPreference.setVisible(false);
-            return modelPreferenceResource.resolveParent(modelResource.id(modelId))
-                    .create(new ModelGlobalPreferenceDto(modelPreference))
-                    .execute().toPojo(modelingService);
-        }
-        return modelPreference;
+        return modelPreferenceResource.resolveParent(modelResource.id(modelId))
+                .list()
+                .executeWithResult()
+                .getOneIfExists().toPojo(modelingService);
+    }
+
+    public boolean updateModelPreference(ModelGlobalPreference pojo) {
+        return modelPreferenceResource.resolveParent(modelResource.id(pojo.getModelId()))
+                .update(new ModelGlobalPreferenceDto(pojo), pojo.getModelId())
+                .execute();
     }
 
     public List<ModelInputGroup> getInputGroups(Simulation sim) {
         return DtoUtil.toPojos(modelInputGroupResource.list()
                 .queryParam("modelId", sim.getId())
                 .execute(), modelingService);
-//        return modelInputGroupPersistence.findByModelId(sim.getId());
     }
 
     public List<ModelInputGroup> getChildGroups(ModelInputGroup group) {
         return DtoUtil.toPojos(modelInputGroupResource.list()
                 .queryParam("parentModelId", group.getModelInputGroupPK())
                 .execute(), modelingService);
-//        return modelInputGroupPersistence.findByparentModelId(group.getModelInputGroupPK());
     }
 
     public List<ModelInputItem> getInputItems(ModelInputGroup group) {
         return DtoUtil.toPojos(modelInputItemResource.list()
                 .queryParam("modelInputGroupId", group.getModelInputGroupPK())
                 .execute(), modelingService);
-//        return ModelInputItemLocalServiceUtil.getItemForGroupId(group.getModelInputGroupPK());
     }
 
     public ModelInputGroup getParent(ModelInputGroup group) {
@@ -105,7 +97,6 @@ public class ModelingClient {
                 .queryParam("parentGroupId", group.getParentGroupPK())
                 .executeWithResult()
                 .getOneIfExists().toPojo(modelingService);
-//        return ModelInputGroupLocalServiceUtil.getModelInputGroup(group.getParentGroupPK());
     }
 
     public Simulation getModel(ModelInputGroup group) throws IOException {
