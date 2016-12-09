@@ -11,6 +11,7 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.commons.beans.SortFilterPage;
@@ -141,6 +142,19 @@ public class MembersController {
             jsonMembers.put(jsonMember);
         }
         response.getPortletOutputStream().write(jsonMembers.toString().getBytes());
+    }
+
+    @ResourceMapping("getUserByScreenName")
+    public void getUserByScreenName(ResourceRequest request, ResourceResponse response,
+            @RequestParam String screenName)
+            throws IOException, MemberNotFoundException {
+        final Member member = MembersClient.findMemberByScreenName(screenName);
+        final JSONObject jsonMember = new JSONObject();
+        jsonMember.put("userId", member.getId_());
+        jsonMember.put("screenName", member.getScreenName());
+        jsonMember.put("firstName", member.getFirstName());
+        jsonMember.put("lastName", member.getLastName());
+        response.getPortletOutputStream().write(jsonMember.toString().getBytes());
     }
 
     @ResourceMapping("downloadMembersList")
