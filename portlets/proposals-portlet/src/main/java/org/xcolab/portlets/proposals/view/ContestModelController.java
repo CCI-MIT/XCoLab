@@ -16,7 +16,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.modeling.RomaClientUtil;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 
 import java.io.IOException;
@@ -42,8 +42,8 @@ public class ContestModelController extends BaseProposalsController {
             throws PortalException, SystemException, IOException {
     	
     	if (refreshModels) {
-			RomaClientUtil.repository().getManager().clearCache();
-			RomaClientUtil.repository().getManager().refreshSimulations();
+			RomaClientUtil.client().getManager().clearCache();
+			RomaClientUtil.client().getManager().refreshSimulations();
     	}
 		Long modelId = 0L;
     	Long contestPK = proposalsContext.getContest(request).getContestPK();

@@ -4,10 +4,10 @@ import edu.mit.cci.roma.client.MetaData;
 import edu.mit.cci.roma.client.Simulation;
 import edu.mit.cci.roma.client.TupleStatus;
 import edu.mit.cci.roma.client.Variable;
-import edu.mit.cci.roma.client.comm.ClientRepository;
 
 import org.xcolab.client.modeling.ModelingClientUtil;
 import org.xcolab.client.modeling.pojo.ModelOutputItem;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.io.IOException;
@@ -94,10 +94,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
      */
     public MetaData getAssociatedMetaData() throws IOException {
         long l = item.getRelatedOutputItem();
-        // FIXME CollaboratoriumModelingService won't work as PropsUtil can't be found from portlet
-        //return l==null?null:CollaboratoriumModelingService.repository().getMetaData(item
-        // .getRelatedOutputItem());
-        return l <= 0 ? null : ClientRepository.instance().getMetaData(item.getRelatedOutputItem());
+        return l <= 0 ? null : RomaClientUtil.client().getMetaData(item.getRelatedOutputItem());
     }
 
     public void setAssociatedMetaData(MetaData md) {

@@ -18,6 +18,7 @@ import org.xcolab.client.modeling.pojo.ModelOutputItem;
 import org.xcolab.client.modeling.pojo.ModelOutputItemDto;
 import org.xcolab.client.modeling.pojo.ModelPosition;
 import org.xcolab.client.modeling.pojo.ModelPositionDto;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
@@ -100,12 +101,12 @@ public class ModelingClient {
     }
 
     public Simulation getModel(ModelInputGroup group) throws IOException {
-        return RomaClientUtil.repository().getSimulation(group.getModelId());
+        return RomaClientUtil.client().getSimulation(group.getModelId());
     }
 
     public MetaData getMetaData(ModelInputGroup group) throws IOException {
         if (group.getNameAndDescriptionMetaDataId() > 0) {
-            return RomaClientUtil.repository().getMetaData(group.getNameAndDescriptionMetaDataId());
+            return RomaClientUtil.client().getMetaData(group.getNameAndDescriptionMetaDataId());
         }
         return null;
     }
@@ -153,11 +154,11 @@ public class ModelingClient {
     }
 
     public MetaData getMetaData(ModelInputItem item) throws IOException {
-        return RomaClientUtil.repository().getMetaData(item.getModelInputItemID());
+        return RomaClientUtil.client().getMetaData(item.getModelInputItemID());
     }
 
     public Simulation getModel(ModelInputItem item) throws IOException {
-        return RomaClientUtil.repository().getSimulation(item.getModelId());
+        return RomaClientUtil.client().getSimulation(item.getModelId());
     }
 
     public Map<String,String> getPropertyMap(ModelInputItem item) {

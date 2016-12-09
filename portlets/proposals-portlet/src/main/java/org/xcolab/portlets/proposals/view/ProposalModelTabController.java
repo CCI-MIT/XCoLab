@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.modeling.RomaClientUtil;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.util.IdListUtil;
@@ -58,7 +58,7 @@ public class ProposalModelTabController extends BaseProposalTabController {
         Map<Long, String> ret = new HashMap<>();
         for (Long modelId: modelIds) {
             try {
-                Simulation s = RomaClientUtil.repository().getSimulation(modelId);
+                Simulation s = RomaClientUtil.client().getSimulation(modelId);
                 ret.put(s.getId(), s.getName());
 
             } catch (IOException e) {

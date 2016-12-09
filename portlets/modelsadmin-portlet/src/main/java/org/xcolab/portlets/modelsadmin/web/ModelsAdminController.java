@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.modeling.ModelingClientUtil;
-import org.xcolab.client.modeling.RomaClientUtil;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
@@ -42,11 +42,11 @@ public class ModelsAdminController {
     public String showAvailableModels(Model model,
             @RequestParam(value = "refresh", required = false) boolean refresh) {
         if (refresh) {
-            RomaClientUtil.repository().getManager().clearCache();
+            RomaClientUtil.client().getManager().clearCache();
         }
 
         List<Simulation> simulationsSorted = new ArrayList<>(
-                RomaClientUtil.repository().getAllSimulations());
+                RomaClientUtil.client().getAllSimulations());
         Collections.sort(simulationsSorted, new Comparator<Simulation>() {
 
             @Override
@@ -63,7 +63,7 @@ public class ModelsAdminController {
     public String showModelDetails(Model model, @RequestParam Long modelId)
             throws IOException {
 
-        model.addAttribute("model", RomaClientUtil.repository().getSimulation(modelId));
+        model.addAttribute("model", RomaClientUtil.client().getSimulation(modelId));
 
         model.addAttribute("tab", "details");
         model.addAttribute("modelPreferences", ModelingClientUtil.getModelPreference(modelId));
@@ -74,7 +74,7 @@ public class ModelsAdminController {
     public String showModelInputWidgets(Model model, @RequestParam Long modelId)
             throws IOException, IllegalUIConfigurationException {
 
-        Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
+        Simulation simulation = RomaClientUtil.client().getSimulation(modelId);
         ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 
         List<ModelInputGroupDisplayItem> groupsAndTabs =
@@ -108,7 +108,7 @@ public class ModelsAdminController {
     public String showModelOutputWidgets(Model model, @RequestParam Long modelId)
             throws IOException, IllegalUIConfigurationException {
 
-        Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
+        Simulation simulation = RomaClientUtil.client().getSimulation(modelId);
         ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 
         model.addAttribute("model", simulation);
@@ -143,7 +143,7 @@ public class ModelsAdminController {
     public String showModelInputTabsEditWidget(Model model, @RequestParam Long modelId)
             throws IOException, IllegalUIConfigurationException {
 
-        Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
+        Simulation simulation = RomaClientUtil.client().getSimulation(modelId);
         ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 
         Map<Long, String> individualInputsById = new HashMap<>();
@@ -185,7 +185,7 @@ public class ModelsAdminController {
     public String modelDisplayByJSON(Model model, @RequestParam Long modelId)
             throws IOException, IllegalUIConfigurationException {
 
-        Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
+        Simulation simulation = RomaClientUtil.client().getSimulation(modelId);
         ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
         model.addAttribute("command", new UpdateModelDisplayFromJSONBean());
         model.addAttribute("model", simulation);

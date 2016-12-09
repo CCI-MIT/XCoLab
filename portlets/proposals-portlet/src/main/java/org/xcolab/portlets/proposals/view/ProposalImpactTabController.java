@@ -20,7 +20,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.impact.ImpactIteration;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.modeling.RomaClientUtil;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
@@ -158,7 +158,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                proposalWrapper.getScenarioId() != null && proposalWrapper.getScenarioId() > 0;
         if(scenarioIdValid){
             try {
-                modelId = RomaClientUtil.repository()
+                modelId = RomaClientUtil.client()
                         .getScenario(proposalWrapper.getScenarioId()).getSimulation().getId();
             } catch (IOException e){
                 _log.warn("Could not fetch simulation id for proposal scenario: ", e);

@@ -20,7 +20,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonTypeDto;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseTypeDto;
-import org.xcolab.client.modeling.RomaClientUtil;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.Plurality;
@@ -292,7 +292,7 @@ public class ContestClient {
             Map<Long, String> ret = new HashMap<>();
             for (Long modelId : modelIds) {
                 try {
-                    Simulation s = RomaClientUtil.repository().getSimulation(modelId);
+                    Simulation s = RomaClientUtil.client().getSimulation(modelId);
                     ret.put(s.getId(), s.getName());
 
                 } catch (IOException e) {

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.modeling.ModelingClientUtil;
-import org.xcolab.client.modeling.RomaClientUtil;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
@@ -58,7 +58,7 @@ public class ModelingJsonController {
             throws IOException {
         JsonObject scenarioJson = Json.createObjectBuilder().build();
         try {
-            Scenario scenario = RomaClientUtil.repository().getScenario(scenarioId);
+            Scenario scenario = RomaClientUtil.client().getScenario(scenarioId);
             scenarioJson = convertScenario(scenario, request, response);
         } catch (IOException | IllegalUIConfigurationException e) {
             _log.error("", e);
@@ -70,7 +70,7 @@ public class ModelingJsonController {
     public void getModel(long modelId, ResourceRequest request, ResourceResponse response)
             throws IOException, IllegalUIConfigurationException {
 
-        Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
+        Simulation simulation = RomaClientUtil.client().getSimulation(modelId);
 
         response.getPortletOutputStream().write(convertModel(simulation).toString().getBytes());
     }
@@ -86,10 +86,10 @@ public class ModelingJsonController {
             inputsValues.put(Long.parseLong(key), inputsObject.getString(key));
         }
 
-        Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
+        Simulation simulation = RomaClientUtil.client().getSimulation(modelId);
 
         try {
-            Scenario scenario = RomaClientUtil.repository()
+            Scenario scenario = RomaClientUtil.client()
                     .runModel(simulation, inputsValues, 0L, false);
 
             if (StringUtils.isNotBlank(scenario.getErrorStackTrace())) {

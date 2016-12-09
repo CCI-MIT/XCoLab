@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.modeling.ModelingClientUtil;
-import org.xcolab.client.modeling.RomaClientUtil;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
@@ -28,7 +28,7 @@ public class AddUpdateModelInputGroupAction {
             UpdateModelInputGroupBean updateModelInputGroup,
             @RequestParam Long modelId)
             throws IllegalUIConfigurationException, IOException {
-        Simulation simulation = RomaClientUtil.repository().getSimulation(modelId);
+        Simulation simulation = RomaClientUtil.client().getSimulation(modelId);
         ModelDisplay modelDisplay = ModelUIFactory.getInstance().getDisplay(simulation);
 
 
