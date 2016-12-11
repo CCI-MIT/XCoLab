@@ -336,28 +336,31 @@
 
     <!-- Modeling JSON endpoints -->
     <route>
-        <pattern>/models/getScenario</pattern>
+        <pattern>/api/modeling/scenarios/{scenarioId}</pattern>
+        <generated-parameter name="scenarioId">{scenarioId}</generated-parameter>
         <implicit-parameter name="p_p_id">proposalsportlet_WAR_proposalsportlet</implicit-parameter>
         <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
         <implicit-parameter name="p_p_resource_id">getScenario</implicit-parameter>
     </route>
 
     <route>
-        <pattern>/models/getModel</pattern>
+        <pattern>/api/modeling/models/{modelId}</pattern>
+        <generated-parameter name="modelId">{modelId}</generated-parameter>
         <implicit-parameter name="p_p_id">proposalsportlet_WAR_proposalsportlet</implicit-parameter>
         <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
         <implicit-parameter name="p_p_resource_id">getModel</implicit-parameter>
     </route>
 
     <route>
-        <pattern>/models/runModel</pattern>
+        <pattern>/api/modeling/models/{modelId}/run</pattern>
+        <generated-parameter name="modelId">{modelId}</generated-parameter>
         <implicit-parameter name="p_p_id">proposalsportlet_WAR_proposalsportlet</implicit-parameter>
         <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
         <implicit-parameter name="p_p_resource_id">runModel</implicit-parameter>
     </route>
 
     <route>
-        <pattern>/models/refreshModels</pattern>
+        <pattern>/api/modeling/refreshModels</pattern>
         <implicit-parameter name="p_p_id">proposalsportlet_WAR_proposalsportlet</implicit-parameter>
         <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
         <implicit-parameter name="p_p_resource_id">refreshModels</implicit-parameter>

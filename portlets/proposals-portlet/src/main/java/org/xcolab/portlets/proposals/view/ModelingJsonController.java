@@ -9,20 +9,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.modeling.ModelingClientUtil;
-import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
 import org.xcolab.client.modeling.models.ui.ModelDisplay;
 import org.xcolab.client.modeling.models.ui.ModelInputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelOutputDisplayItem;
 import org.xcolab.client.modeling.models.ui.ModelUIFactory;
 import org.xcolab.client.modeling.pojo.ModelGlobalPreference;
-import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.util.exceptions.InternalException;
 
 import java.io.ByteArrayInputStream;
@@ -46,20 +46,13 @@ public class ModelingJsonController {
 
     private final static Logger _log = LoggerFactory.getLogger(ModelingJsonController.class);
 
-    private final ProposalsContext proposalsContext;
-
-    @Autowired
-    public ModelingJsonController(ProposalsContext proposalsContext) {
-        this.proposalsContext = proposalsContext;
-    }
-
     @ResourceMapping("getScenario")
-    public void getScenario(long scenarioId, ResourceRequest request, ResourceResponse response)
-            throws IOException {
+    public void getScenario(ResourceRequest request, ResourceResponse response,
+            @RequestParam long scenarioId) throws IOException {
         JsonObject scenarioJson = Json.createObjectBuilder().build();
         try {
             Scenario scenario = RomaClientUtil.client().getScenario(scenarioId);
-            scenarioJson = convertScenario(scenario, request, response);
+            scenarioJson = convertScenario(scenario);
         } catch (IOException | IllegalUIConfigurationException e) {
             _log.error("", e);
         }
@@ -67,16 +60,17 @@ public class ModelingJsonController {
     }
 
     @ResourceMapping("getModel")
-    public void getModel(long modelId, ResourceRequest request, ResourceResponse response)
+    public void getModel(ResourceRequest request, ResourceResponse response,
+            @RequestParam long modelId)
             throws IOException, IllegalUIConfigurationException {
 
         Simulation simulation = RomaClientUtil.client().getSimulation(modelId);
-
         response.getPortletOutputStream().write(convertModel(simulation).toString().getBytes());
     }
 
     @ResourceMapping("runModel")
-    public void runModel(long modelId, String inputs, ResourceRequest request, ResourceResponse response)
+    public void runModel(ResourceRequest request, ResourceResponse response,
+            @RequestParam long modelId, @RequestBody String inputs)
             throws IOException {
         JsonReader jsonReader = Json.createReader(new ByteArrayInputStream(inputs.getBytes("UTF-8")));
         JsonObject inputsObject = jsonReader.readObject();
@@ -98,13 +92,13 @@ public class ModelingJsonController {
             }
 
             response.getPortletOutputStream()
-                    .write(convertScenario(scenario, request, response).toString().getBytes());
+                    .write(convertScenario(scenario).toString().getBytes());
         } catch (IllegalUIConfigurationException | ScenarioNotFoundException | ModelNotFoundException e) {
             throw new InternalException(e);
         }
     }
 
-    private JsonObject convertScenario(Scenario scenario, ResourceRequest request, ResourceResponse response)
+    private JsonObject convertScenario(Scenario scenario)
             throws IOException, IllegalUIConfigurationException {
         if (StringUtils.isNotBlank(scenario.getErrorStackTrace())) {
             return Json.createObjectBuilder()

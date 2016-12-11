@@ -22,18 +22,15 @@ public class ModelDisplay implements Serializable {
     private static final Logger _log = LoggerFactory.getLogger(ModelDisplay.class);
 
 	private static final long serialVersionUID = 1L;
-	List<ModelInputDisplayItem> inputs;
-    List<ModelOutputDisplayItem> outputs;
+	private final List<ModelInputDisplayItem> inputs;
+    private final List<ModelOutputDisplayItem> outputs;
 
-    private List<ModelInputGroupDisplayItem> tabs = new ArrayList<>();
-    private List<ModelInputGroupDisplayItem> groups = new ArrayList<>();
-    private Map<MetaData, ModelInputIndividualDisplayItem> individuals = new HashMap<>();
-     List<ModelInputDisplayItem> nonTabs = new ArrayList<>();
-
-    private Simulation sim;
+    private final List<ModelInputGroupDisplayItem> tabs = new ArrayList<>();
+    private final List<ModelInputGroupDisplayItem> groups = new ArrayList<>();
+    private final Map<MetaData, ModelInputIndividualDisplayItem> individuals = new HashMap<>();
+    private final List<ModelInputDisplayItem> nonTabs = new ArrayList<>();
 
     public ModelDisplay(Simulation sim) throws IllegalUIConfigurationException, IOException {
-        this.sim = sim;
         inputs = ModelUIFactory.getInstance().parseInputs(sim);
         for (ModelInputDisplayItem item:inputs) {
             if (item instanceof ModelInputGroupDisplayItem) {
@@ -100,7 +97,7 @@ public class ModelDisplay implements Serializable {
     }
 
     private List<ModelInputDisplayItem> collectItems(ModelInputDisplayItem item) {
-        List<ModelInputDisplayItem> result = new ArrayList<ModelInputDisplayItem>();
+        List<ModelInputDisplayItem> result = new ArrayList<>();
         if (item instanceof ModelInputGroupDisplayItem) {
             for (ModelInputDisplayItem child:((ModelInputGroupDisplayItem)item).getAllItems()) {
                 result.addAll(collectItems(child));

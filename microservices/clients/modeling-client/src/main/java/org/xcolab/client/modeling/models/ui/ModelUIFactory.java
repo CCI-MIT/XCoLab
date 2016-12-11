@@ -193,7 +193,8 @@ public class ModelUIFactory {
             Set<MetaData> bareMetaData)
             throws IllegalUIConfigurationException, IOException {
         for (ModelInputItem item : ModelingClientUtil.getInputItems(group)) {
-            bareMetaData.remove(ModelingClientUtil.getMetaData(item));
+            final MetaData metaData = ModelingClientUtil.getMetaData(item);
+            bareMetaData.remove(metaData);
         }
         ModelInputGroupDisplayItem result;
         try {

@@ -93,9 +93,8 @@ function ModelingWidget(selector, options) {
 	this.options.defaultValues = this.options.defaultValues || {};
 }
 
-ModelingWidget.prototype.getScenarioUrl = '/web/guest/plans/-/plans/getScenario';
-ModelingWidget.prototype.getModelUrl = '/web/guest/plans/-/plans/getModel';
-ModelingWidget.prototype.runModelUrl = '/web/guest/plans/-/plans/runModel';
+ModelingWidget.prototype.scenarioUrl = '/web/guest/plans/-/plans/api/modeling/getScenario';
+ModelingWidget.prototype.modelUrl = '/web/guest/plans/-/plans/api/modeling/models';
 
 /**
  * returns true if value is valid, false otherwise, 
@@ -250,9 +249,9 @@ ModelingWidget.prototype.loadScenario = function(scenarioId) {
 
 	jQuery(modelingWidget).trigger("fetchingScenario");
 	jQuery.ajax({
-		url: this.getScenarioUrl, 
-		data: {scenarioId: scenarioId}, 
-		dataType: 'jsonp'
+		url: this.scenarioUrl + '/' + scenarioId,
+		data: {},
+		dataType: 'json'
 	}).done(function(data, textStatus, jqXHR) {
 		console.debug('scenario loaded', scenarioId, data, textStatus, jqXHR);
 		var event = jQuery.Event( "scenarioFetched" );
@@ -313,12 +312,12 @@ ModelingWidget.prototype.runTheModel = function() {
 	jQuery(modelingWidget).trigger("fetchingScenario");
 	jQuery(modelingWidget).trigger("runningModel");
 
-	
-	console.debug(modelingWidget.runModelUrl, values, modelingWidget.modelId, modelingWidget);
+	var runModelUrl = modelingWidget.modelUrl + '/' + modelingWidget.modelId + '/run';
+	console.debug(runModelUrl, values, modelingWidget.modelId, modelingWidget);
 	jQuery.ajax({
-		url: modelingWidget.runModelUrl, 
-		data: {modelId: modelingWidget.modelId, inputs: JSON.stringify(values)}, 
-		dataType: 'jsonp'
+		url: runModelUrl,
+		data: { inputs: JSON.stringify(values)},
+		dataType: 'json'
 	}).done(function(data) {
 		var event;
 		jQuery(modelingWidget).show();
@@ -351,9 +350,9 @@ ModelingWidget.prototype.loadModel = function(modelId) {
 
 	jQuery(modelingWidget).trigger("fetchingModel");
 	jQuery.ajax({
-		url: this.getModelUrl, 
-		data: {modelId: modelId}, 
-		dataType: 'jsonp',
+		url: this.modelUrl + '/' + modelId,
+		data: {},
+		dataType: 'json'
 	}).done(function(data, textStatus, jqXHR) {
 		console.debug('model loaded', modelId, data, textStatus, jqXHR);
 		
