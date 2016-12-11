@@ -1,14 +1,20 @@
 package org.xcolab.portlets.userprofile.view;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
+import org.xcolab.entity.utils.members.MemberAuthUtil;
+
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.userprofile.utils.JSONHelper;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 
@@ -32,23 +38,17 @@ public class SSOunlinkJSONController extends JSONHelper {
             ResourceResponse response) {
 
         boolean successStatus = true;
-        try {
-            User user = PortalUtil.getUser(request);
-            unlinkFacebookSSOuser(user);
-        } catch (PortalException | SystemException e) {
-            successStatus = false;
-        }
+            Member member = MemberAuthUtil.getMemberOrThrow(request);
+            //User user = PortalUtil.getUser(request);
+            unlinkFacebookSSOuser(member);
 
         this.writeSuccessResultResponseJSON(successStatus, response);
     }
 
-    private void unlinkFacebookSSOuser(User user)  {
-        user.setFacebookId(0);
-        try {
-            UserLocalServiceUtil.updateUser(user);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+    private void unlinkFacebookSSOuser(Member member)  {
+        member.setFacebookId(new Long(0));
+        MembersClient.updateMember(member);
+        //UserLocalServiceUtil.updateUser(user);
     }
 
     @ResourceMapping("unlinkGoogleSSO")

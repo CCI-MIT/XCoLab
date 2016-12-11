@@ -36,10 +36,7 @@ public class BadgeBean implements Serializable {
     }
 
     private void fetchBadges() {
-        for (Proposal p : ProposalClientUtil.getAllProposals()) {
-            if (!ProposalClientUtil.isUserInProposalTeam(p.getProposalId(), userId)) {
-                continue;
-            }
+        for(Proposal p : ProposalClientUtil.getMemberProposals(userId)) {
             try {
                 ContestPhaseRibbonType ribbon = getRibbonType(p);
                 int proposalRibbon = (ribbon == null) ? -1 : ribbon.getRibbon();
