@@ -1,9 +1,10 @@
 package org.xcolab.portlets.proposals.view;
 
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +14,6 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -38,10 +37,14 @@ import javax.portlet.ResourceResponse;
 public class ProposalPickerJSONController {
 
 	private static final int MAX_CHARS_FOR_NAMES = 75;
-	private static final Log _log = LogFactoryUtil.getLog(ProposalPickerJSONController.class);
+	private static final Logger _log = LoggerFactory.getLogger(ProposalPickerJSONController.class);
+
+	private final ProposalsContext proposalsContext;
 
 	@Autowired
-	private ProposalsContext proposalsContext;
+	public ProposalPickerJSONController(ProposalsContext proposalsContext) {
+		this.proposalsContext = proposalsContext;
+	}
 
 	@ResourceMapping("proposalPicker")
 	public void proposalPicker(
@@ -79,7 +82,7 @@ public class ProposalPickerJSONController {
 						sectionId, contestPK, request, proposalsContext);
 				break;
 			default:
-				_log.error("Proposal picker was loaded with unknown requestType " + requestType);
+				_log.error("Proposal picker was loaded with unknown requestType {}", requestType);
 				throw new InternalException("Unknown requestType " + requestType);
 		}
 
@@ -101,8 +104,10 @@ public class ProposalPickerJSONController {
 
 		} else {
 			totalCount = 0;
-			_log.error("Could not retrieve proposals: proposals variable should not be null for valid filterKeys." +
-					"(filterKey was "+filterType+")");
+			_log.error(
+					"Could not retrieve proposals: proposals variable should not be null for valid"
+							+ " filterKeys.(filterKey was {})",
+					filterType);
 		}
 		response.getPortletOutputStream().write(
 				getJSONObjectMapping(proposals, totalCount).getBytes());

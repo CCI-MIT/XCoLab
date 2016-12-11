@@ -60,8 +60,7 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
     }
 
     @RequestMapping(params = "tab=ONTOLOGY")
-    public String showOntologyTabController(PortletRequest request, PortletResponse response, Model model)
-            throws PortalException, SystemException {
+    public String showOntologyTabController(PortletRequest request, PortletResponse response, Model model) {
 
         if (!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;

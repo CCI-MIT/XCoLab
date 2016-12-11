@@ -1,8 +1,8 @@
 package org.xcolab.portlets.staffmembers;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 public class StaffMemberWrapper implements Serializable {
 
-    private static final Log _log = LogFactoryUtil.getLog(StaffMemberWrapper.class);
+    private static final Logger _log = LoggerFactory.getLogger(StaffMemberWrapper.class);
 
     private static final long serialVersionUID = 1L;
     private final StaffMember staffMember;
@@ -33,8 +33,8 @@ public class StaffMemberWrapper implements Serializable {
         try {
             return MembersClient.getMember(staffMember.getUserId());
         } catch (MemberNotFoundException e) {
-            _log.warn("Member account " + staffMember.getUserId()
-                    + " linked to staff member " + staffMember.getId_() + " does not exist ");
+            _log.warn("Member account {} linked to staff member {} does not exist ",
+                    staffMember.getUserId(), staffMember.getId_());
             return null;
         }
     }

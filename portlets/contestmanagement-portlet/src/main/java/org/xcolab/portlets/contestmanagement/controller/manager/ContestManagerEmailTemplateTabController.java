@@ -1,15 +1,14 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
@@ -33,7 +32,7 @@ import javax.portlet.PortletResponse;
 @RequestMapping("view")
 public class ContestManagerEmailTemplateTabController extends ContestManagerBaseTabController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestManagerEmailTemplateTabController.class);
+    private final static Logger _log = LoggerFactory.getLogger(ContestManagerEmailTemplateTabController.class);
     static final private TabEnum tab = ContestManagerTabs.EMAIL_TEMPLATES;
     static final private String TAB_VIEW = "manager/emailTab";
 

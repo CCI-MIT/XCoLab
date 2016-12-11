@@ -1,17 +1,16 @@
 package com.ext.utils.userInput.service;
 
 import com.ext.utils.userInput.UserInputFilter;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.ClassLoaderProxy;
-import com.liferay.portal.kernel.util.MethodHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.service.InvokableLocalService;
 
 public class UserInputFilterClp implements UserInputFilter {
     private InvokableLocalService _invokableLocalService;
     private MethodKey _filterHtml;
-    private final static Log _log = LogFactoryUtil.getLog(UserInputFilterClp.class);
+    private final static Logger _log = LoggerFactory.getLogger(UserInputFilterClp.class);
     
     public UserInputFilterClp(InvokableLocalService invokableLocalService) {
     	_invokableLocalService = invokableLocalService;

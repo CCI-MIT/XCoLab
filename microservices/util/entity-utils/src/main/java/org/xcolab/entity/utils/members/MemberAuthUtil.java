@@ -8,6 +8,7 @@ import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.exceptions.UncheckedMemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.entity.utils.portlet.PortletUtil;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.http.Cookie;
@@ -39,8 +40,7 @@ public final class MemberAuthUtil {
     }
 
     public static long getMemberId(PortletRequest request) {
-        HttpServletRequest servletRequest =
-                (HttpServletRequest) request.getAttribute("javax.servlet.request");
+        HttpServletRequest servletRequest = PortletUtil.getHttpServletRequest(request);
         return getMemberId(servletRequest);
     }
 
@@ -57,8 +57,7 @@ public final class MemberAuthUtil {
 
     public static Member getMemberOrThrow(PortletRequest request)
             throws UncheckedMemberNotFoundException {
-        HttpServletRequest servletRequest =
-                (HttpServletRequest) request.getAttribute("javax.servlet.request");
+        HttpServletRequest servletRequest = PortletUtil.getHttpServletRequest(request);
         return getMemberOrThrow(servletRequest);
     }
 
@@ -68,8 +67,7 @@ public final class MemberAuthUtil {
     }
 
     public static Member getMemberOrNull(PortletRequest request) {
-        HttpServletRequest servletRequest =
-                (HttpServletRequest) request.getAttribute("javax.servlet.request");
+        HttpServletRequest servletRequest = PortletUtil.getHttpServletRequest(request);
         return getMemberOrNull(servletRequest);
     }
 

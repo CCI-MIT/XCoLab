@@ -144,7 +144,7 @@ public class Proposal extends AbstractProposal {
             RestService contestService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
             contestClient = ContestClient.fromService(contestService);
             planTemplateClient = PlanTemplateClient.fromService(contestService);
-            proposalClient = ProposalClient.fromService(restService);;
+            proposalClient = ProposalClient.fromService(restService);
             proposalAttributeClient = ProposalAttributeClient.fromService(restService);
             proposalPhaseClient = ProposalPhaseClient.fromService(restService);
 
@@ -824,12 +824,11 @@ public class Proposal extends AbstractProposal {
         List<Proposal> subProposals = ProposalClientUtil.getContestIntegrationRelevantSubproposals(this.getProposalId());
 
         for (Proposal subProposal : subProposals) {
-            Proposal subProposalWrapper = (subProposal);
-            Long modelId = subProposalWrapper.getModelIdForStoredScenario();
+            Long modelId = subProposal.getModelIdForStoredScenario();
             if (!subProposalPerModel.containsKey(modelId)) {
-                subProposalPerModel.put(modelId, Collections.singletonList(subProposalWrapper));
+                subProposalPerModel.put(modelId, Collections.singletonList(subProposal));
             } else {
-                subProposalPerModel.get(modelId).add(subProposalWrapper);
+                subProposalPerModel.get(modelId).add(subProposal);
             }
         }
         return subProposalPerModel;

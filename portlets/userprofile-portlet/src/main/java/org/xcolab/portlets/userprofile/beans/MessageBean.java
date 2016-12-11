@@ -1,13 +1,11 @@
 package org.xcolab.portlets.userprofile.beans;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import org.hibernate.validator.constraints.NotBlank;
-import org.xcolab.client.members.pojo.Message;
-import org.xcolab.client.members.pojo.Member;
+
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.pojo.Message;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -84,8 +82,8 @@ public class MessageBean implements Serializable {
         return daysNow - createDay;
     }
 
-    public User getFrom() throws PortalException, SystemException {
-        return UserLocalServiceUtil.getUser(message.getFromId());
+    public Member getFrom() {
+        return MembersClient.getMemberUnchecked(message.getFromId());
     }
 
     public boolean isSelected() {

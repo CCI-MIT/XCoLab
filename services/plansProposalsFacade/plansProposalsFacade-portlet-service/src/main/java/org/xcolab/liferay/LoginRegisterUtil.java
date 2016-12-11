@@ -2,12 +2,12 @@ package org.xcolab.liferay;
 
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.ClassName;
 import com.liferay.portal.model.Contact;
 import com.liferay.portal.model.Group;
@@ -30,8 +30,8 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
-import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.entity.utils.email.notifications.member.MemberRegistrationNotification;
+import org.xcolab.util.html.HtmlUtil;
 
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
@@ -49,7 +49,8 @@ public final class LoginRegisterUtil {
 
     private static final long LIFERAY_COMPANY_ID = 10112L;
 
-    private final static Log _log = LogFactoryUtil.getLog(LoginRegisterUtil.class);
+    private final static Logger _log = LoggerFactory.getLogger(LoginRegisterUtil.class);
+    public static final long USER_GROUP_ID = 10136;
 
     private LoginRegisterUtil() {
     }
@@ -69,17 +70,17 @@ public final class LoginRegisterUtil {
     }
 
     private static User registerLiferayWithId(Long userId, String screenName, String password, String email, String firstName, String lastName, String fbStringId) {
-        User user = null;
-        long companyId = LIFERAY_COMPANY_ID;
-        long groupId = 10136;
-        long facebookId = 0;
+
+        long facebookId;
         try {
             facebookId = Long.parseLong(fbStringId);
         } catch (NumberFormatException ignored) {
             facebookId = 0;
         }
+        User user = null;
         try {
 
+            long companyId = LIFERAY_COMPANY_ID;
             Role role = RoleLocalServiceUtil.getRole(companyId, "User");
 
 
@@ -97,15 +98,15 @@ public final class LoginRegisterUtil {
             contact.setPrefixId(0);
             contact.setSuffixId(0);
             contact.setJobTitle("");
-            contact.setParentContactId(0l);
+            contact.setParentContactId(0L);
             contact.setBirthday(new Date());
             try {
                 ContactLocalServiceUtil.addContact(contact);
             } catch (SystemException ignored) {
-                _log.debug("LOGINREGISTERDEBUG: Creating contact failed userId: " + userId + " - screenName: " + screenName);
+                _log.debug(
+                        "LOGINREGISTERDEBUG: Creating contact failed userId: {} - screenName: {}",
+                        userId, screenName);
             }
-
-            String greeting = "Welcome " + firstName + " " + lastName;
 
             user = UserLocalServiceUtil.createUser(userId);
             user.setCompanyId(companyId);
@@ -117,7 +118,7 @@ public final class LoginRegisterUtil {
                 ByteBuffer byteBuffer = ByteBuffer.allocate(secretKeyBytes.length);
                 byteBuffer.put(secretKeyBytes);
                 encryptedPassword = DatatypeConverter.printBase64Binary((byteBuffer.array()));
-            } catch (NoSuchAlgorithmException e) {
+            } catch (NoSuchAlgorithmException ignored) {
 
             }
             user.setPassword("{SHA-1}" + encryptedPassword);
@@ -126,6 +127,7 @@ public final class LoginRegisterUtil {
             user.setFacebookId(facebookId);
             user.setOpenId("");
 
+            String greeting = "Welcome " + firstName + " " + lastName;
             user.setGreeting(greeting);
             user.setFirstName(HtmlUtil.cleanAll(firstName));
             user.setLastName(HtmlUtil.cleanAll(lastName));
@@ -158,18 +160,24 @@ public final class LoginRegisterUtil {
             try {
                 GroupLocalServiceUtil.addGroup(userGrp);
             } catch (SystemException ignored) {
-                _log.debug("LOGINREGISTERDEBUG: Creating group failed userId: " + userId + " - screenName: " + screenName + " gpId : " + gpId);
+                _log.debug(
+                        "LOGINREGISTERDEBUG: Creating group failed userId: {} - screenName: {} "
+                                + "gpId : {}",
+                        userId, screenName, gpId);
             }
 
 
             //Associate a role with user
-            long userid[] = {user.getUserId()};
-            long roleids[] = {role.getRoleId()};
+            long[] userIdArray = {user.getUserId()};
+            long[] roleIds = {role.getRoleId()};
             try {
-                UserGroupRoleLocalServiceUtil.addUserGroupRoles(user.getUserId(), groupId, roleids);
-                UserLocalServiceUtil.addRoleUsers(role.getRoleId(), userid);
+                UserGroupRoleLocalServiceUtil.addUserGroupRoles(user.getUserId(), USER_GROUP_ID, roleIds);
+                UserLocalServiceUtil.addRoleUsers(role.getRoleId(), userIdArray);
             } catch (SystemException ignored) {
-                _log.debug("LOGINREGISTERDEBUG: Creating addRoleUser failed userId: " + userId + " - screenName: " + screenName + " gpId : " + gpId);
+                _log.debug(
+                        "LOGINREGISTERDEBUG: Creating addRoleUser failed userId: {} - screenName:"
+                                + " {} gpId : {}",
+                        userId, screenName, gpId);
             }
 
             //Create AssetEntry
@@ -182,7 +190,10 @@ public final class LoginRegisterUtil {
             try {
                 AssetEntryLocalServiceUtil.addAssetEntry(ae);
             } catch (SystemException ignored) {
-                _log.debug("LOGINREGISTERDEBUG: Creating AssetEntry failed userId: " + userId + " - screenName: " + screenName + " gpId : " + gpId + " assetEntryId: " +assetEntryId);
+                _log.debug(
+                        "LOGINREGISTERDEBUG: Creating AssetEntry failed userId: {} - screenName: "
+                                + "{} gpId : {} assetEntryId: {}",
+                        userId, screenName, gpId, assetEntryId);
             }
 
             //Insert Layoutset for public and private
@@ -195,8 +206,10 @@ public final class LoginRegisterUtil {
             try {
                 LayoutSetLocalServiceUtil.addLayoutSet(layoutSetPub);
             } catch (SystemException se) {
-                _log.debug("LOGINREGISTERDEBUG: Creating LayoutSet failed userId: " + userId + " - screenName: " + screenName + " gpId : " + gpId + " assetEntryId: " +assetEntryId
-                + " layoutSetIdPub public " + layoutSetIdPub);
+                _log.debug(
+                        "LOGINREGISTERDEBUG: Creating LayoutSet failed userId: {} - screenName: "
+                                + "{} gpId : {} assetEntryId: {} layoutSetIdPub public {}",
+                        userId, screenName, gpId, assetEntryId, layoutSetIdPub);
             }
 
             long layoutSetIdPriv = CounterLocalServiceUtil.increment(LayoutSet.class.getName());
@@ -208,12 +221,16 @@ public final class LoginRegisterUtil {
             try {
                 LayoutSetLocalServiceUtil.addLayoutSet(layoutSetPriv);
             } catch (SystemException ignored) {
-                _log.debug("LOGINREGISTERDEBUG: Creating LayoutSet failed userId: " + userId + " - screenName: " + screenName + " gpId : " + gpId + " assetEntryId: " +assetEntryId
-                       + " layoutSetIdPriv private" + layoutSetIdPriv);
+                _log.debug(
+                        "LOGINREGISTERDEBUG: Creating LayoutSet failed userId: {} - screenName: "
+                                + "{} gpId : {} assetEntryId: {} layoutSetIdPriv private{}",
+                        userId, screenName, gpId, assetEntryId, layoutSetIdPriv);
             }
         } catch (SystemException | PortalException ignored) {
-            _log.debug("LOGINREGISTERDEBUG: Outside exception failed userId: " + userId + " - screenName: " + screenName
-                    +" exception: "+ ignored.getLocalizedMessage());
+            _log.debug(
+                    "LOGINREGISTERDEBUG: Outside exception failed userId: {} - screenName: {} "
+                            + "exception: {}",
+                    userId, screenName, ignored.getLocalizedMessage());
         }
 
         return user;

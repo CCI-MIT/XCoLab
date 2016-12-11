@@ -1,11 +1,16 @@
 package org.xcolab.portlets.loginregister.singlesignon;
 
 import com.ext.utils.authentication.service.AuthenticationServiceUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -14,10 +19,6 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.Authenticator;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 
@@ -34,7 +35,7 @@ import javax.portlet.PortletSession;
 @RequestMapping(value = "view", params = "SSO=general")
 public class SingleSignOnController {
 
-    private final static Log _log = LogFactoryUtil.getLog(SingleSignOnController.class);
+    private final static Logger _log = LoggerFactory.getLogger(SingleSignOnController.class);
 
     @RequestMapping(params = "action=provideSSOCredentials")
     public void linkUser(ActionRequest request, Model model, ActionResponse response,
@@ -101,7 +102,7 @@ public class SingleSignOnController {
             }
 
         } catch (Exception e) {
-            _log.error("Linking user " + login + " failed:", e);
+            _log.error("Linking user {} failed:", login, e);
         }
 
         // passwords don't match

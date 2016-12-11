@@ -1,7 +1,8 @@
 package org.xcolab.service.activities.activityEntry.member;
 
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
@@ -15,20 +16,19 @@ public class MemberJoinedActivityEntry implements ActivityEntryContentProvider {
 
     private ActivityEntry activityEntry;
 
-    //private static final Log _log = LogFactoryUtil.getLog(MemberJoinedActivityEntry.class);
+    private static final Logger _log = LoggerFactory.getLogger(MemberJoinedActivityEntry.class);
 
 
     @Override
     public String getBody() {
 
-        String bodyTemplate = "%s joined the %s community";
         try {
             Member member = MembersClient.getMember(activityEntry.getMemberId());
             String colabName = ConfigurationAttributeKey.COLAB_NAME.get();
-            return String.format(bodyTemplate, getUserLink(member), colabName);
+            return String.format("%s joined the %s community", getUserLink(member), colabName);
 
         } catch (MemberNotFoundException e) {
-            //_log.error("Member not found " + activityEntry.getMemberId());
+            _log.error("Member not found {}", activityEntry.getMemberId());
         }
 
         return null;
@@ -67,7 +67,7 @@ public class MemberJoinedActivityEntry implements ActivityEntryContentProvider {
     }
 
     public enum MemberSubActivityType{
-        MEMBER_JOINED(1l);
+        MEMBER_JOINED(1L);
         private final Long secondaryTypeId;
         MemberSubActivityType(Long type) {
             this.secondaryTypeId = type;

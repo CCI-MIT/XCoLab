@@ -1,15 +1,12 @@
 package org.xcolab.wrapper;
 
-import com.liferay.portal.kernel.util.Validator;
+import org.apache.commons.lang3.StringUtils;
 
-/**
- * Created by Mente on 29/07/15.
- */
 public class SimpleExceptionErrorReportWrapper {
-    String exceptionMessage;
-    String exceptionStacktrace;
-    String stepsToReproduce;
-    String userEmailAddress;
+    private String exceptionMessage;
+    private String exceptionStacktrace;
+    private String stepsToReproduce;
+    private String userEmailAddress;
 
     public SimpleExceptionErrorReportWrapper() {
 
@@ -34,7 +31,7 @@ public class SimpleExceptionErrorReportWrapper {
     }
 
     public boolean isWrapperFilledOut() {
-        return Validator.isNotNull(stepsToReproduce);
+        return StringUtils.isNotEmpty(stepsToReproduce);
     }
 
     public String getUserEmailAddress() {
@@ -54,15 +51,15 @@ public class SimpleExceptionErrorReportWrapper {
     }
 
     public boolean isExceptionMessageAvailable() {
-        return Validator.isNotNull(exceptionMessage);
+        return StringUtils.isNotEmpty(exceptionMessage);
     }
 
     public boolean isExceptionStacktraceAvailable() {
-        return Validator.isNotNull(exceptionMessage);
+        return StringUtils.isNotEmpty(exceptionMessage);
     }
 
     public String getExceptionMessage() {
-        return Validator.isNotNull(exceptionMessage) ? exceptionStacktrace : "";
+        return StringUtils.isNotEmpty(exceptionMessage) ? exceptionStacktrace : "";
     }
 
     public void setExceptionMessage(String exceptionMessage) {
@@ -70,7 +67,7 @@ public class SimpleExceptionErrorReportWrapper {
     }
 
     public String getExceptionStacktrace() {
-        return Validator.isNotNull(exceptionStacktrace) ? exceptionStacktrace : "";
+        return StringUtils.isNotEmpty(exceptionStacktrace) ? exceptionStacktrace : "";
     }
 
     public void setExceptionStacktrace(String exceptionStacktrace) {

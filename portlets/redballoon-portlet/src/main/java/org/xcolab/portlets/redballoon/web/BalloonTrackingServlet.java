@@ -1,9 +1,9 @@
 package org.xcolab.portlets.redballoon.web;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class BalloonTrackingServlet extends HttpServlet {
-	private final static Log _log = LogFactoryUtil.getLog(BalloonTrackingServlet.class);
+	private final static Logger _log = LoggerFactory.getLogger(BalloonTrackingServlet.class);
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -25,7 +25,9 @@ public class BalloonTrackingServlet extends HttpServlet {
 		
 		BalloonCookie bc = BalloonCookie.fromCookieArray(req.getCookies());
 		
-		if (bc == null || StringUtils.isBlank(bc.getUuid())) return;
+		if (bc == null || StringUtils.isBlank(bc.getUuid())) {
+			return;
+		}
 		
 		try {
 			BalloonUserTracking but = BalloonsClient.getBalloonUserTracking(bc.getUuid());
@@ -40,7 +42,7 @@ public class BalloonTrackingServlet extends HttpServlet {
 			resp.addCookie(bc.getHttpCookie());
 			
 		} catch (BalloonUserTrackingNotFound e) {
-			_log.error("Can't find balloonUserTracking for uuid: " + bc.getUuid());
+			_log.error("Can't find balloonUserTracking for uuid: {}", bc.getUuid());
 		}
 		
 	}

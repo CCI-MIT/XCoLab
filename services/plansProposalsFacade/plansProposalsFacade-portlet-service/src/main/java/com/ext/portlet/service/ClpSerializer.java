@@ -37,7 +37,6 @@ import com.ext.portlet.model.ProposalSupporterClp;
 import com.ext.portlet.model.ProposalUnversionedAttributeClp;
 import com.ext.portlet.model.ProposalVersionClp;
 import com.ext.portlet.model.ProposalVoteClp;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.io.unsync.UnsyncByteArrayInputStream;
@@ -51,9 +50,7 @@ import com.liferay.portal.model.BaseModel;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
 import java.lang.reflect.Method;
-
 import java.util.ArrayList;
 import java.util.List;
 

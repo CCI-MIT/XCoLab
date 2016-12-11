@@ -1,7 +1,8 @@
 package org.xcolab.hooks.climatecolab.utils;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 
@@ -29,9 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ImageDisplayerFilter implements Filter {
 
-    private final static Log _log = LogFactoryUtil.getLog(ImageDisplayerFilter.class);
+    private final static Logger _log = LoggerFactory.getLogger(ImageDisplayerFilter.class);
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
+    private void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException {
         String imageId = null;
 
@@ -118,7 +119,7 @@ public class ImageDisplayerFilter implements Filter {
 
             // Copy the contents of the file to the output stream
             byte[] buf = new byte[1024];
-            int count = 0;
+            int count;
             while ((count = in.read(buf)) >= 0) {
                 out.write(buf, 0, count);
             }
@@ -136,6 +137,7 @@ public class ImageDisplayerFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        //no initialization needed
     }
 
     @Override
@@ -147,7 +149,6 @@ public class ImageDisplayerFilter implements Filter {
 
     @Override
     public void destroy() {
-        // TODO Auto-generated method stub
-
+        //no destroy method needed
     }
 }

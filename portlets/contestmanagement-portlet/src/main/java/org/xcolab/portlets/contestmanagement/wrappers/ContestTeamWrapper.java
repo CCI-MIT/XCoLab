@@ -32,8 +32,7 @@ public class ContestTeamWrapper {
         this.contestId = contestTeamBean.getContestId();
     }
 
-    public void updateContestTeamMembers()
-            throws SystemException, PortalException {
+    public void updateContestTeamMembers() {
         removeAllContestTeamMembersForContest();
         assignMemberToContest(MemberRole.JUDGE, contestTeamBean.getUserIdsJudges());
         assignMemberToContest(MemberRole.ADVISOR, contestTeamBean.getUserIdsAdvisors());
@@ -41,8 +40,7 @@ public class ContestTeamWrapper {
         assignMemberToContest(MemberRole.CONTEST_MANAGER, contestTeamBean.getUserIdsContestManagers());
     }
 
-    private void assignMemberToContest(MemberRole memberRole, List<Long> userIds)
-            throws SystemException, PortalException {
+    private void assignMemberToContest(MemberRole memberRole, List<Long> userIds) {
         assignMembersToContestWithRole(userIds, memberRole);
         assignMemberRoleToUser(memberRole, userIds);
         subscribeUsersToContest(userIds);
@@ -55,13 +53,16 @@ public class ContestTeamWrapper {
         }
     }
 
-    private void assignMemberRoleToUser(MemberRole memberRole, List<Long> userIds)
-            throws SystemException, PortalException {
+    private void assignMemberRoleToUser(MemberRole memberRole, List<Long> userIds) {
         for (Long userId : userIds) {
             Long roleId = memberRole.getRoleId();
-            Role role = RoleLocalServiceUtil.getRole(roleId);
-            RoleLocalServiceUtil.addUserRole(userId, roleId);
-            RoleLocalServiceUtil.updateRole(role);
+            try {
+                Role role = RoleLocalServiceUtil.getRole(roleId);
+                RoleLocalServiceUtil.addUserRole(userId, roleId);
+                RoleLocalServiceUtil.updateRole(role);
+            } catch (SystemException | PortalException e) {
+                //TODO: remove liferay calls
+            }
         }
     }
 

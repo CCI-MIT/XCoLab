@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.servlet.SessionErrors;
@@ -31,6 +29,8 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
@@ -40,6 +40,8 @@ import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
+import org.xcolab.entity.utils.ModelAttributeUtil;
+import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.NewsletterBean;
@@ -47,11 +49,8 @@ import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.utils.UserProfileAuthorizationException;
 import org.xcolab.portlets.userprofile.utils.UserProfilePermissions;
 import org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper;
-import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.util.CountryUtil;
-import org.xcolab.entity.utils.ModelAttributeUtil;
-import org.xcolab.entity.utils.TemplateReplacementUtil;
+import org.xcolab.util.html.HtmlUtil;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -179,18 +178,15 @@ public class UserProfileController {
 
             final long contestTypeId = ConfigurationAttributeKey
                     .DEFAULT_CONTEST_TYPE_ID.get();
-            final ContestType contestType = ContestTypeLocalServiceUtil
-                    .getContestType(contestTypeId);
+            final ContestType contestType = ContestClientUtil.getContestType(contestTypeId);
             model.addAttribute("contestType", contestType);
 
             if (currentUserProfile.isViewingOwnProfile()) {
                 return "showUserSubscriptionsManage";
             }
-        } catch (PortalException | MemberNotFoundException e) {
+        } catch (MemberNotFoundException e) {
             _log.warn("Could not create user profile for {}", userId);
             return "showProfileNotInitialized";
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
         }
         ModelAttributeUtil.populateModelWithPlatformConstants(model);
         return "showUserProfile";
@@ -248,7 +244,7 @@ public class UserProfileController {
                 return "editUserProfile";
             }
         } catch (MemberNotFoundException e) {
-            _log.warn("Could not create user profile for " + userId);
+            _log.warn("Could not create user profile for {}", userId);
             return "showProfileNotInitialized";
         }
 

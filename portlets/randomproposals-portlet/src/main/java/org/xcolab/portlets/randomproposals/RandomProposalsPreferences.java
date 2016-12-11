@@ -2,9 +2,6 @@ package org.xcolab.portlets.randomproposals;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -75,7 +72,7 @@ public class RandomProposalsPreferences {
         
     }
     
-    public String submit(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException, PortalException, SystemException {
+    public String submit(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException {
         PortletPreferences prefs = request.getPreferences();
     	
         prefs.setValue(SELECTED_PHASES_PREFERENCE, StringUtils.join(convertLongsToStrings(selectedPhases), ","));

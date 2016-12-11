@@ -10,9 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -39,7 +36,7 @@ public class ContestModelController extends BaseProposalsController {
     @RequestMapping(params = "pageToDisplay=contestModel")
     public String showContestProposals(RenderRequest request, RenderResponse response, Model model,
 			@RequestParam(required = false) boolean refreshModels)
-            throws PortalException, SystemException, IOException {
+            throws IOException {
     	
     	if (refreshModels) {
 			RomaClientUtil.client().getManager().clearCache();

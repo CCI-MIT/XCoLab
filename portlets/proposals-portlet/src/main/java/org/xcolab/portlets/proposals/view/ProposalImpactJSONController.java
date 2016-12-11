@@ -58,8 +58,7 @@ public class ProposalImpactJSONController {
     @ResourceMapping("proposalImpactGetRegions")
     public void proposalImpactGetRegions(
             ResourceRequest request,
-            ResourceResponse response) throws IOException,
-            SystemException, PortalException {
+            ResourceResponse response) throws IOException {
 
         Map<OntologyTerm, List<OntologyTerm>> ontologyMap = getOntologyMap(request);
         List<OntologyTerm> regionTerms = new ArrayList<>(ontologyMap.keySet());
@@ -71,8 +70,7 @@ public class ProposalImpactJSONController {
     public void proposalImpactGetSectorForRegions(
             ResourceRequest request,
             ResourceResponse response,
-            @RequestParam(value = "regionTermId", required = true) Long regionTermId) throws IOException,
-            SystemException, PortalException {
+            @RequestParam(value = "regionTermId") Long regionTermId) throws IOException {
 
         Map<OntologyTerm, List<OntologyTerm>> ontologyMap = getOntologyMap(request);
 
@@ -85,8 +83,7 @@ public class ProposalImpactJSONController {
             ResourceRequest request,
             ResourceResponse response,
             @RequestParam(value = "sectorTermId") Long sectorTermId,
-            @RequestParam(value = "regionTermId") Long regionTermId) throws IOException,
-            SystemException, PortalException {
+            @RequestParam(value = "regionTermId") Long regionTermId) throws IOException {
 
         if (sectorTermId == 0 || regionTermId == 0) {
             return;
@@ -145,8 +142,7 @@ public class ProposalImpactJSONController {
     public void proposalImpactDeleteDataSeries(
             ResourceRequest request,
             ResourceResponse response,
-            @RequestParam(value = "focusAreaId") Long focusAreaId) throws IOException,
-            SystemException, PortalException {
+            @RequestParam(value = "focusAreaId") Long focusAreaId) throws IOException {
 
         JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
@@ -210,7 +206,7 @@ public class ProposalImpactJSONController {
     public void proposalImpactSaveBasicProposalComment(ResourceRequest request, ResourceResponse response,
                 @RequestParam(required = false) String impactAuthorComment,
                 @RequestParam(required = false) String impactIAFComment)
-            throws IOException, SystemException, PortalException {
+            throws IOException {
 
         JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
@@ -275,7 +271,7 @@ public class ProposalImpactJSONController {
         return array;
     }
 
-    private Map<OntologyTerm, List<OntologyTerm>> getOntologyMap(ResourceRequest request) throws SystemException, PortalException {
+    private Map<OntologyTerm, List<OntologyTerm>> getOntologyMap(ResourceRequest request) {
         Contest contest = proposalsContext.getContest(request);
         Proposal proposal = proposalsContext.getProposal(request);
 

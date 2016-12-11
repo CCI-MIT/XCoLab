@@ -1,7 +1,8 @@
 package org.xcolab.portlets.contestmanagement.controller.details;
 
-
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,11 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -53,7 +49,7 @@ import javax.portlet.ResourceResponse;
 @RequestMapping("view")
 public class ContestDetailsAdminTabController extends ContestDetailsBaseTabController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestDetailsAdminTabController.class);
+    private final static Logger _log = LoggerFactory.getLogger(ContestDetailsAdminTabController.class);
     static final private TabEnum tab = ContestDetailsTabs.ADMIN;
     static final private String TAB_VIEW = "details/adminTab";
 
@@ -95,8 +91,7 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
 
     @RequestMapping(params = "tab=ADMIN")
     public String showAdminTabController(PortletRequest request, PortletResponse response, Model model,
-                                         @RequestParam(required = false) Long contestId)
-            throws PortalException, SystemException {
+                                         @RequestParam(required = false) Long contestId) {
 
         if (!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
@@ -165,25 +160,22 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
     }
 
     @RequestMapping(params = {"action=updateContestAdmin", "error=true"})
-    public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {
+    public String reportError(PortletRequest request, Model model) {
         return TAB_VIEW;
     }
 
     @RequestMapping
-    public String updateTeamTabController(PortletRequest request, PortletResponse response, Model model)
-            throws PortalException, SystemException {
+    public String updateTeamTabController(PortletRequest request, PortletResponse response, Model model) {
         return NOT_FOUND_TAB_VIEW;
     }
 
     @RequestMapping(params = {"action=showNoPermission", "error=true"})
-    public String showNoPermissionErrorRenderParameter(PortletRequest request, PortletResponse response, Model model)
-            throws PortalException, SystemException {
+    public String showNoPermissionErrorRenderParameter(PortletRequest request, PortletResponse response, Model model) {
         return NO_PERMISSION_TAB_VIEW;
     }
 
     @RequestMapping(params = {"action=showNotFound", "error=true"})
-    public String showNotFoundErrorRenderParameter(PortletRequest request, PortletResponse response, Model model)
-            throws PortalException, SystemException {
+    public String showNotFoundErrorRenderParameter(PortletRequest request, PortletResponse response, Model model) {
         return NOT_FOUND_TAB_VIEW;
     }
 

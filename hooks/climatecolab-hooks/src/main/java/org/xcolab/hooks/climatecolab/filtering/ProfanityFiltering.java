@@ -1,12 +1,13 @@
 package org.xcolab.hooks.climatecolab.filtering;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.filtering.FilteringClient;
 import org.xcolab.client.filtering.enums.FilteringSource;
 import org.xcolab.client.filtering.enums.FilteringStatus;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 
 import java.io.IOException;
 
@@ -21,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ProfanityFiltering implements Filter {
 
-    private static final Log _log = LogFactoryUtil.getLog(ProfanityFiltering.class);
+    private static final Logger _log = LoggerFactory.getLogger(ProfanityFiltering.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -42,14 +43,13 @@ public class ProfanityFiltering implements Filter {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException {
 
-        //ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        //Long memberId = themeDisplay.getUserId();
+        long memberId = MemberAuthUtil.getMemberId(request);
         String fullText = request.getParameter("fullText");
         String source = request.getParameter("source");
 
 
         FilteredEntry filteredEntry = new FilteredEntry();
-        //filteredEntry.setAuthorId(memberId);
+        filteredEntry.setAuthorId(memberId);
         filteredEntry.setFullText(fullText);
         if (source.equals(FilteringSource.DISCUSSION.getSource())){
             filteredEntry.setSource(FilteringSource.DISCUSSION.getId());

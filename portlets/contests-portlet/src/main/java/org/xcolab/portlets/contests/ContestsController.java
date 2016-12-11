@@ -1,11 +1,10 @@
 package org.xcolab.portlets.contests;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -23,7 +22,7 @@ import javax.portlet.PortletResponse;
 @RequestMapping("view")
 public class ContestsController {
 
-    private static final Log _log = LogFactoryUtil.getLog(ContestsController.class);
+    private static final Logger _log = LoggerFactory.getLogger(ContestsController.class);
     
     public ContestsController() {
     }

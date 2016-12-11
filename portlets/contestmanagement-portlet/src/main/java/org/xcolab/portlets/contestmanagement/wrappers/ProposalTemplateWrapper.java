@@ -1,10 +1,7 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
@@ -14,19 +11,15 @@ import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.ProposalTemplateLifecycleUtil;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by Thomas on 2/18/2015.
- */
 public class ProposalTemplateWrapper {
 
-    private final static Log _log = LogFactoryUtil.getLog(ProposalTemplateWrapper.class);
+    private final static Logger _log = LoggerFactory.getLogger(ProposalTemplateWrapper.class);
     private List<SectionDefinitionWrapper> sections;
     private Integer numberOfSections;
     private PlanTemplate planTemplate;
@@ -38,7 +31,7 @@ public class ProposalTemplateWrapper {
     public ProposalTemplateWrapper() {
     }
 
-    public ProposalTemplateWrapper(Long planTemplateId) throws PortalException, SystemException {
+    public ProposalTemplateWrapper(Long planTemplateId) {
         this.planTemplate = PlanTemplateClientUtil.getPlanTemplate(planTemplateId);
         populateExistingProposalTemplateSections();
     }
@@ -56,18 +49,14 @@ public class ProposalTemplateWrapper {
 
     public void setPlanTemplateId(Long planTemplateId) {
         this.planTemplateId = planTemplateId;
-        try {
-            initPlanTemplate(planTemplateId);
-        } catch (SystemException | PortalException e) {
-            _log.warn("Failed to set plan template id: " + planTemplateId);
-        }
+        initPlanTemplate(planTemplateId);
     }
 
-    public void initPlanTemplate(Long planTemplateId) throws PortalException, SystemException {
+    private void initPlanTemplate(Long planTemplateId) {
         this.planTemplate = PlanTemplateClientUtil.getPlanTemplate(planTemplateId);
     }
 
-    private void populateExistingProposalTemplateSections() throws PortalException, SystemException {
+    private void populateExistingProposalTemplateSections() {
         sections = new ArrayList<>();
         if (planTemplate != null) {
             for (PlanSectionDefinition planSectionDefinition : PlanTemplateClientUtil

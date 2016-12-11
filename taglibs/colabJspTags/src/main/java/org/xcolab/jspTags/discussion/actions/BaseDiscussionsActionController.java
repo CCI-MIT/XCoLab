@@ -1,12 +1,12 @@
 package org.xcolab.jspTags.discussion.actions;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.util.PortalUtil;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
+import org.xcolab.entity.utils.portlet.PortletUtil;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public abstract class BaseDiscussionsActionController {
 
-    private static final Log _log = LogFactoryUtil.getLog(BaseDiscussionsActionController.class);
+    private static final Logger _log = LoggerFactory.getLogger(BaseDiscussionsActionController.class);
 
     public void checkPermissions(ActionRequest request, String accessDeniedMessage,
             long additionalId)
@@ -51,7 +51,7 @@ public abstract class BaseDiscussionsActionController {
 
         request.setAttribute("ACTION_REDIRECTING", true);
 
-        HttpServletRequest httpRequest = PortalUtil.getHttpServletRequest(request);
+        HttpServletRequest httpRequest = PortletUtil.getHttpServletRequest(request);
         String referrer = httpRequest.getHeader("referer");
 
         if (urlParametersToInclude != null && !urlParametersToInclude.isEmpty()) {

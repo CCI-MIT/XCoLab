@@ -1,9 +1,10 @@
 package org.xcolab.portlets.redballoon.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -16,6 +17,7 @@ import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.Location;
+import org.xcolab.entity.utils.portlet.PortletUtil;
 import org.xcolab.portlets.redballoon.BalloonCookie;
 import org.xcolab.util.exceptions.InternalException;
 
@@ -33,7 +35,7 @@ public class BalloonUtils {
 	
 	private static final Random rand = new Random();
 	private final static String SHARE_LINK_PATTERN = "%s/socialnetworkprize2016/-/link/%s";
-	private final static Log _log = LogFactoryUtil.getLog(BalloonUtils.class);
+	private final static Logger _log = LoggerFactory.getLogger(BalloonUtils.class);
 	
 	public static BalloonUserTracking getBalloonUserTracking(PortletRequest request,
 			PortletResponse response, String parent, String linkuuid, String context) {
@@ -55,7 +57,7 @@ public class BalloonUtils {
             response.addProperty(cookie.getHttpCookie());
 		}
 		
-		BalloonUserTracking but = null;
+		BalloonUserTracking but;
 		try { 
 			but = BalloonsClient.getBalloonUserTracking(cookie.getUuid());
 		}
@@ -72,10 +74,10 @@ public class BalloonUtils {
 			}
 
 			
-			HttpServletRequest httpServletRequest = PortalUtil.getHttpServletRequest(request);
+			HttpServletRequest httpServletRequest = PortletUtil.getHttpServletRequest(request);
 
 			but = new org.xcolab.client.balloons.pojo.BalloonUserTracking();
-			but.setUuid_(cookie.getUuid());;
+			but.setUuid_(cookie.getUuid());
 			but.setCreateDate(new Timestamp(new Date().getTime()));
 			but.setIp(PortalUtil.getHttpServletRequest(request).getRemoteAddr());
 			but.setParent(parent);

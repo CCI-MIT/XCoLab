@@ -1,24 +1,21 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
 import au.com.bytecode.opencsv.CSVWriter;
+import org.springframework.util.CollectionUtils;
 
-import com.ext.portlet.NoSuchContestException;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -37,10 +34,8 @@ import javax.portlet.ResourceResponse;
 
 public class CsvExportHelper {
 
-    private final static Log _log = LogFactoryUtil.getLog(CsvExportHelper.class);
-    private final static String URL_DOMAIN = "http://www.climatecolab.org";
+    private final static String URL_DOMAIN = ConfigurationAttributeKey.COLAB_URL.get();
     private final List<String[]> records = new ArrayList<>();
-
 
     public CsvExportHelper() {
     }
@@ -64,23 +59,19 @@ public class CsvExportHelper {
         records.add(rowData);
     }
 
-    public void addProposalAndAuthorDetailsToExportData(List<Proposal> proposals,
-                                                        ContestPhase contestPhase) {
-
+    public void addProposalAndAuthorDetailsToExportData(
+            List<Proposal> proposals, ContestPhase contestPhase) {
         for (Proposal proposal : proposals) {
-            try {
-                List<String[]> proposalAndAuthorDetailsRows =
-                        generateProposalAndAuthorDetailsRows(proposal, contestPhase);
+            List<String[]> proposalAndAuthorDetailsRows =
+                    generateProposalAndAuthorDetailsRows(proposal, contestPhase);
+            if (!CollectionUtils.isEmpty(proposalAndAuthorDetailsRows)) {
                 records.addAll(proposalAndAuthorDetailsRows);
-            } catch (SystemException | PortalException e) {
-                _log.warn("Failed to export data for csv: ", e);
             }
         }
     }
 
-    private List<String[]> generateProposalAndAuthorDetailsRows(Proposal proposal, ContestPhase contestPhase)
-            throws PortalException, SystemException {
-        List<String[]> proposalExportData = new ArrayList<>();
+    private List<String[]> generateProposalAndAuthorDetailsRows(Proposal proposal, ContestPhase contestPhase) {
+
         try {
             Proposal2Phase proposal2Phase = ProposalPhaseClientUtil
                     .getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
@@ -95,6 +86,7 @@ public class CsvExportHelper {
             String lastPhaseTitle = getContestPhaseTitle(contestPhase);
 
             List<ProposalTeamMember> proposalTeam = proposalWrapper.getMembers();
+            List<String[]> proposalExportData = new ArrayList<>();
             for (ProposalTeamMember teamMemberWrapper : proposalTeam) {
                 String[] csvRow =
                         generateProposalAndUserDetailsRow(contestTitle, proposalTitle, proposalLink, teamMemberWrapper,
@@ -108,8 +100,8 @@ public class CsvExportHelper {
         return null;
     }
 
-    private static Proposal getProposalWithLatestVersionInContestPhase(Proposal2Phase proposal2Phase,
-                                                                                  Proposal proposal) throws NoSuchContestException {
+    private static Proposal getProposalWithLatestVersionInContestPhase(
+            Proposal2Phase proposal2Phase, Proposal proposal) {
         if (proposal2Phase.getVersionTo() == -1 || proposal2Phase.getVersionFrom() == 0) {
             return (proposal);
         }
@@ -120,25 +112,24 @@ public class CsvExportHelper {
         return stringToBeCleaned.replace("`", "'").replace("’", "'");
     }
 
-    private static String getContestPhaseTitle(ContestPhase contestPhase) throws PortalException, SystemException {
+    private static String getContestPhaseTitle(ContestPhase contestPhase) {
         Long contestPhaseTypeId = contestPhase.getContestPhaseType();
         ContestPhaseType contestPhaseType = ContestClientUtil.getContestPhaseType(contestPhaseTypeId);
         return contestPhaseType.getName();
     }
 
     private String[] generateProposalAndUserDetailsRow(String contestTitle, String proposalTitle,
-                                                       String proposalLink, ProposalTeamMember member,
-                                                       String lastPhaseTitle) throws PortalException, SystemException {
-        User user = UserLocalServiceUtil.getUser(member.getUserId());
-        String username = user.getScreenName();
-        String firstName = user.getFullName();
-        String lastName = user.getLastName();
-        String emailAddress = user.getEmailAddress();
-        String role = member.getMemberType();
+                                                       String proposalLink, ProposalTeamMember teamMember,
+                                                       String lastPhaseTitle) {
+        Member member = MembersClient.getMemberUnchecked(teamMember.getUserId());
+        String username = member.getScreenName();
+        String firstName = member.getFullName();
+        String lastName = member.getLastName();
+        String emailAddress = member.getEmailAddress();
+        String role = teamMember.getMemberType();
 
-        return new String[]{contestTitle, proposalTitle, proposalLink
-                , username, firstName, lastName
-                , emailAddress, role, lastPhaseTitle};
+        return new String[]{contestTitle, proposalTitle, proposalLink, username, firstName,
+                lastName, emailAddress, role, lastPhaseTitle};
 
     }
 

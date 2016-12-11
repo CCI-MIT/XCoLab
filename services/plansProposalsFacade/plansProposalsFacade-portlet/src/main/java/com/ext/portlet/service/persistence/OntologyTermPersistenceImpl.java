@@ -4,8 +4,6 @@ import com.ext.portlet.NoSuchOntologyTermException;
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.model.impl.OntologyTermImpl;
 import com.ext.portlet.model.impl.OntologyTermModelImpl;
-import com.ext.portlet.service.persistence.OntologyTermPersistence;
-
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -33,7 +31,6 @@ import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

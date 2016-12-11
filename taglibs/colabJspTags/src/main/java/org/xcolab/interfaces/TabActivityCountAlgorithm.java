@@ -1,8 +1,5 @@
 package org.xcolab.interfaces;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
 import org.xcolab.client.flagging.FlaggingClient;
 
 import javax.portlet.PortletRequest;
@@ -25,7 +22,6 @@ public interface TabActivityCountAlgorithm {
         public int getActivityCount(TabContext context, PortletRequest request) {
             return 0;
         }
-        private final Log _log = LogFactoryUtil.getLog(TabActivityCountAlgorithm.class);
     };
 
 
@@ -35,7 +31,6 @@ public interface TabActivityCountAlgorithm {
         public int getActivityCount(TabContext context, PortletRequest request) {
             return 0;
         }
-        private final Log _log = LogFactoryUtil.getLog(TabActivityCountAlgorithm.class);
     };
     
     TabActivityCountAlgorithm membersCount = new TabActivityCountAlgorithm() {
@@ -43,7 +38,6 @@ public interface TabActivityCountAlgorithm {
         public int getActivityCount(TabContext context, PortletRequest request) {
             return 0;
         }
-        private final Log _log = LogFactoryUtil.getLog(TabActivityCountAlgorithm.class);
     };
 
     TabActivityCountAlgorithm flagCount = new TabActivityCountAlgorithm() {
@@ -51,6 +45,5 @@ public interface TabActivityCountAlgorithm {
         public int getActivityCount(TabContext context, PortletRequest request) {
             return FlaggingClient.countReports(null, null, null, null, null);
         }
-        private final Log _log = LogFactoryUtil.getLog(TabActivityCountAlgorithm.class);
     };
 }

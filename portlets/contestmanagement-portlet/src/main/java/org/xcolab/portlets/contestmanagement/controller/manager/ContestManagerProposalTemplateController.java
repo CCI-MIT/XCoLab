@@ -1,17 +1,14 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
@@ -36,7 +33,7 @@ import javax.portlet.PortletResponse;
 @RequestMapping("view")
 public class ContestManagerProposalTemplateController extends ContestProposalTemplateTabController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestManagerProposalTemplateController.class);
+    private final static Logger _log = LoggerFactory.getLogger(ContestManagerProposalTemplateController.class);
     static final private TabEnum tab = ContestManagerTabs.PROPOSALTEMPLATES;
 
     @ModelAttribute("tabs")
@@ -55,29 +52,22 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
 
     @RequestMapping(params = "tab=PROPOSALTEMPLATES")
     public String showProposalTemplatesTabController(PortletRequest request, PortletResponse response, Model model,
-            @RequestParam(value = "elementId", required = false) Long elementId)
-            throws PortalException, SystemException {
+            @RequestParam(value = "elementId", required = false) Long elementId) {
 
         if (!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
 
-        try {
-            Long planTemplateId = elementId != null ? elementId : getFirstPlanTemplateId();
-            model.addAttribute("planTemplateId", planTemplateId);
-            if (planTemplateId >= 0) {
-                ProposalTemplateWrapper proposalTemplateWrapper = new ProposalTemplateWrapper(planTemplateId);
-                model.addAttribute("contestProposalTemplateWrapper", proposalTemplateWrapper);
-            }
-            model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(planTemplateId,
-                    ProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
-            model.addAttribute("elementId", planTemplateId);
-            return ContestProposalTemplateTabController.TAB_VIEW;
-        } catch (SystemException | PortalException e) {
-            _log.warn("Exception while rendering CMS proposal template tab", e);
-            SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
+        Long planTemplateId = elementId != null ? elementId : getFirstPlanTemplateId();
+        model.addAttribute("planTemplateId", planTemplateId);
+        if (planTemplateId >= 0) {
+            ProposalTemplateWrapper proposalTemplateWrapper = new ProposalTemplateWrapper(planTemplateId);
+            model.addAttribute("contestProposalTemplateWrapper", proposalTemplateWrapper);
         }
-        return NOT_FOUND_TAB_VIEW;
+        model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(planTemplateId,
+                ProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
+        model.addAttribute("elementId", planTemplateId);
+        return ContestProposalTemplateTabController.TAB_VIEW;
     }
 
 
@@ -100,7 +90,7 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
 
     @RequestMapping(params = "action=deletePROPOSALTEMPLATES")
     public void deleteProposalTemplateTabController(ActionRequest request, Model model,
-            @RequestParam(value = "elementId", required = true) Long elementId,
+            @RequestParam(value = "elementId") Long elementId,
             ActionResponse response) {
 
         if (!tabWrapper.getCanEdit()) {
