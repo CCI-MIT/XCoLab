@@ -7,10 +7,8 @@ import edu.mit.cci.roma.client.Variable;
 
 import org.xcolab.client.modeling.ModelingClientUtil;
 import org.xcolab.client.modeling.pojo.ModelOutputItem;
-import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +19,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
 
     private final MetaData metaData;
     private final Map<TupleStatus, ModelOutputErrorBehavior> errorBehaviors = new HashMap<>();
-    ModelOutputItem item;
+    private ModelOutputItem item;
 
     /**
      * Clients should not need to call this method directly.  Instead, {@link
@@ -86,15 +84,6 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
             item.setItemType(type.name());
             ModelingClientUtil.updateModelOutputItem(item);
         }
-    }
-
-    /**
-     * If this metadata is "about" another piece of meta data within the same simulation,
-     * this method will return that metadata.
-     */
-    public MetaData getAssociatedMetaData() throws IOException {
-        long l = item.getRelatedOutputItem();
-        return l <= 0 ? null : RomaClientUtil.client().getMetaData(item.getRelatedOutputItem());
     }
 
     public void setAssociatedMetaData(MetaData md) {
@@ -186,25 +175,7 @@ public class ModelOutputSeriesDisplayItem extends ModelOutputDisplayItem {
         ModelingClientUtil.updateModelOutputItem(item);
     }
 
-    public String getLabelFormatString() {
+    private String getLabelFormatString() {
         return item.getModelItemLabelFormat();
     }
-
-    public void setLabelFormatString(String format) {
-        item.setModelItemLabelFormat(format);
-        ModelingClientUtil.updateModelOutputItem(item);
-    }
-
-    public void setErrorBehavior(TupleStatus status, ErrorPolicy policy, String msg) {
-        if (status == TupleStatus.OUT_OF_RANGE) {
-            item.setModelItemRangeMessage(msg);
-            item.setModelItemRangePolicy(policy != null ? policy.name() : null);
-        } else if (status == TupleStatus.INVALID) {
-            item.setModelItemErrorMessage(msg);
-            item.setModelItemErrorPolicy(policy != null ? policy.name() : null);
-        }
-        errorBehaviors.remove(status);
-        ModelingClientUtil.updateModelOutputItem(item);
-    }
-
 }

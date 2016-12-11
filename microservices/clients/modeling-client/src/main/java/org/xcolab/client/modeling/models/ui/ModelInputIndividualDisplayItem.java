@@ -18,8 +18,6 @@ import javax.json.JsonObjectBuilder;
 public class ModelInputIndividualDisplayItem extends ModelInputDisplayItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    ModelInputWidgetType type = ModelInputWidgetType.TEXT_FIELD;
     ModelInputItem item;
 
 

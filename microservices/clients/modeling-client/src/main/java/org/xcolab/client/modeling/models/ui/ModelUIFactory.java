@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.xcolab.client.modeling.ModelingClientUtil;
 import org.xcolab.client.modeling.pojo.ModelInputGroup;
 import org.xcolab.client.modeling.pojo.ModelInputItem;
-import org.xcolab.client.modeling.pojo.ModelPosition;
 import org.xcolab.util.json.JsonUtil;
 import org.xcolab.util.json.NullsafeJsonObjectBuilder;
 
@@ -32,35 +31,10 @@ public class ModelUIFactory {
     private static final Logger _log = LoggerFactory.getLogger(ModelUIFactory.class);
 
     private ModelUIFactory() {
-
     }
 
     public static ModelUIFactory getInstance() {
         return ourInstance;
-    }
-
-    public static boolean isSimulationVisible(Simulation sim) {
-        return ModelingClientUtil.getModelPreference(sim.getId()).getVisible();
-    }
-
-    public static void setSimulationVisible(Simulation sim, boolean b) {
-        ModelingClientUtil.getModelPreference(sim.getId()).setVisible(b);
-    }
-
-    public static int getSimulationWeight(Simulation sim) {
-        return ModelingClientUtil.getModelPreference(sim.getId()).getWeight();
-    }
-
-    public static void setSimulationWeight(Simulation sim, int weight) {
-        ModelingClientUtil.getModelPreference(sim.getId()).setWeight(weight);
-    }
-
-    public static Long getSimulationExpertEvaluationPageId(Simulation sim) {
-        return ModelingClientUtil.getModelPreference(sim.getId()).getExpertEvaluationPageId();
-    }
-
-    public static void setSimulationExpertEvaluationPageId(Simulation sim, Long pageId) {
-        ModelingClientUtil.getModelPreference(sim.getId()).setExpertEvaluationPageId(pageId);
     }
 
     /**
@@ -76,19 +50,6 @@ public class ModelUIFactory {
 
         }
         return result;
-    }
-
-    public static List<Long> getSimulationPositionsIds(Simulation sim) {
-        List<Long> ret = new ArrayList<>();
-        for (ModelPosition position : ModelingClientUtil
-                .getModelPositionsByModelId(sim.getId())) {
-            ret.add(position.getPositionId());
-        }
-        return ret;
-    }
-
-    public static void setSimulationPositionsIds(Simulation sim, List<Long> positionsIds) {
-        ModelingClientUtil.setModelPositions(sim.getId(), positionsIds);
     }
 
     public static JsonObjectBuilder convertToJson(Variable var) {
@@ -144,11 +105,11 @@ public class ModelUIFactory {
      * Package scoped helper function, used to build the output layout classes for the Simulation
      */
     List<ModelOutputDisplayItem> parseOutputs(Simulation s) {
-        Map<String, ModelOutputDisplayItem> found = new HashMap<String, ModelOutputDisplayItem>();
+        Map<String, ModelOutputDisplayItem> found = new HashMap<>();
         for (MetaData md : s.getOutputs()) {
 
             if (md.getVarContext() == MetaData.VarContext.INDEXED) {
-                ModelOutputIndexedDisplayItem item = null;
+                ModelOutputIndexedDisplayItem item;
                 if (md.getVarType() == MetaData.VarType.FREE) {
                     item = (ModelOutputIndexedDisplayItem) found.get(md.getName());
                     if (item == null) {

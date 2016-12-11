@@ -81,10 +81,6 @@ public class ModelOutputScalarDisplayItem extends ModelOutputDisplayItem {
         return true;
     }
 
-    public void setVisible(boolean visible) {
-        _log.warn("Setting visibility on scalar items is not currently supported");
-    }
-
     @Override
     public JsonObjectBuilder toJson() {
         return Json.createObjectBuilder()

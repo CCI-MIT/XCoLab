@@ -35,10 +35,10 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
 
     ModelInputGroup group;
 
-    ModelInputGroupDisplayItem parent;
-    List<ModelInputDisplayItem> items = new ArrayList<>();
-    List<ModelInputGroupDisplayItem> groups = new ArrayList<>();
-    Set<MetaData> knownmd = new HashSet<>();
+    private ModelInputGroupDisplayItem parent;
+    private List<ModelInputDisplayItem> items = new ArrayList<>();
+    private List<ModelInputGroupDisplayItem> groups = new ArrayList<>();
+    private Set<MetaData> knownMetaData = new HashSet<>();
 
     /**
      * Public constructor requires an existing backed dao. Generally, clients
@@ -53,10 +53,10 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
     }
 
     private void populateChildren() throws IOException {
-        knownmd = new HashSet<>();
+        knownMetaData = new HashSet<>();
         items = new ArrayList<>();
         for (ModelInputItem item : ModelingClientUtil.getInputItems(group)) {
-            knownmd.add(ModelingClientUtil.getMetaData(item));
+            knownMetaData.add(ModelingClientUtil.getMetaData(item));
             items.add(ModelUIFactory.getInstance().getInputItem(item));
         }
 
@@ -147,7 +147,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
      */
     public ModelInputDisplayItem addDisplayItem(MetaData d, ModelInputWidgetType type)
             throws IOException {
-        if (!knownmd.contains(d)) {
+        if (!knownMetaData.contains(d)) {
             ModelInputIndividualDisplayItem item =
                     ModelInputIndividualDisplayItem
                             .create(getSimulation(), d, type);
@@ -196,16 +196,16 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
      * accordingly
      */
     public void removeDisplayItem(MetaData d) throws IOException {
-        ModelInputIndividualDisplayItem toremove = null;
+        ModelInputIndividualDisplayItem toRemove = null;
         for (ModelInputDisplayItem item : getDisplayItems()) {
             if (item.getMetaData().equals(d)) {
-                toremove = (ModelInputIndividualDisplayItem) item;
+                toRemove = (ModelInputIndividualDisplayItem) item;
                 break;
             }
         }
-        if (toremove != null) {
-            knownmd.remove(toremove.getMetaData());
-            ModelingClientUtil.deleteModelInputItem(toremove.item);
+        if (toRemove != null) {
+            knownMetaData.remove(toRemove.getMetaData());
+            ModelingClientUtil.deleteModelInputItem(toRemove.item);
 
         }
         populateChildren();
@@ -220,13 +220,6 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
     public List<ModelInputDisplayItem> getDisplayItems() {
         Collections.sort(items);
         return items;
-    }
-
-    public void removeGroup(ModelInputGroupDisplayItem child) throws IOException {
-        if (groups.contains(child)) {
-            child.setParent(null);
-
-        }
     }
 
     /**
@@ -331,7 +324,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
                             : ModelingClientUtil.getMetaData(group).getDescription()
                     : group.getDescription();
         } catch (IOException e) {
-            _log.error("Could not retrive group description", e);
+            _log.error("Could not retrieve group description", e);
         }
         return null;
     }
@@ -364,9 +357,4 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
         return group.getParentGroupPK();
     }
 
-    public void setParentGroupId(Long groupId)
-            throws IOException {
-        setParent(new ModelInputGroupDisplayItem(
-                ModelingClientUtil.getModelInputGroup(groupId)));
-    }
 }
