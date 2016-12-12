@@ -13,9 +13,7 @@
 	<name>contactform-portlet Portlet</name>
 	<version>1.0-SNAPSHOT</version>
 
-	<properties>
-		<icefaces.version>3.2.0</icefaces.version>
-	</properties>
+
 		
 	<build>
 		<plugins>
@@ -67,17 +65,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.jboss.seam</groupId>
-			<artifactId>jboss-el</artifactId>
-			<version>2.0.0.GA</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>el-api</artifactId>
-					<groupId>javax.el</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -110,17 +98,7 @@
 		</dependency>
 
 
-		<dependency>
-			<groupId>org.xcolab.services</groupId>
-			<artifactId>plansProposalsFacade-portlet-service</artifactId>
-			<version>2.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>edu.mit.cci.roma</groupId>
-					<artifactId>simulation</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -134,8 +112,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.xcolab.taglibs</groupId>
-			<artifactId>colabJspTags</artifactId>
+			<groupId>org.xcolab</groupId>
+			<artifactId>entity-utils</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 
