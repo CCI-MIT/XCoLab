@@ -37,9 +37,6 @@
 	<bean id="com.ext.portlet.service.ContestTypeLocalService" class="com.ext.portlet.service.impl.ContestTypeLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ContestTypeService" class="com.ext.portlet.service.impl.ContestTypeServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ContestTypePersistence" class="com.ext.portlet.service.persistence.ContestTypePersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.EmailListLocalService" class="com.ext.portlet.service.impl.EmailListLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.EmailListService" class="com.ext.portlet.service.impl.EmailListServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.EmailListPersistence" class="com.ext.portlet.service.persistence.EmailListPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.FocusAreaLocalService" class="com.ext.portlet.service.impl.FocusAreaLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.FocusAreaService" class="com.ext.portlet.service.impl.FocusAreaServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.FocusAreaPersistence" class="com.ext.portlet.service.persistence.FocusAreaPersistenceImpl" parent="basePersistence" />
@@ -64,27 +61,6 @@
 	<bean id="com.ext.portlet.service.ImpactTemplateSeriesLocalService" class="com.ext.portlet.service.impl.ImpactTemplateSeriesLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ImpactTemplateSeriesService" class="com.ext.portlet.service.impl.ImpactTemplateSeriesServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ImpactTemplateSeriesPersistence" class="com.ext.portlet.service.persistence.ImpactTemplateSeriesPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.LandingPageLocalService" class="com.ext.portlet.service.impl.LandingPageLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.LandingPageService" class="com.ext.portlet.service.impl.LandingPageServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.LandingPagePersistence" class="com.ext.portlet.service.persistence.LandingPagePersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.MessagingIgnoredRecipientsLocalService" class="com.ext.portlet.service.impl.MessagingIgnoredRecipientsLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.MessagingIgnoredRecipientsService" class="com.ext.portlet.service.impl.MessagingIgnoredRecipientsServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistence" class="com.ext.portlet.service.persistence.MessagingIgnoredRecipientsPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.MessagingMessageLocalService" class="com.ext.portlet.service.impl.MessagingMessageLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.MessagingMessageService" class="com.ext.portlet.service.impl.MessagingMessageServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.MessagingMessagePersistence" class="com.ext.portlet.service.persistence.MessagingMessagePersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.MessagingMessageConversionLocalService" class="com.ext.portlet.service.impl.MessagingMessageConversionLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.MessagingMessageConversionService" class="com.ext.portlet.service.impl.MessagingMessageConversionServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.MessagingMessageConversionPersistence" class="com.ext.portlet.service.persistence.MessagingMessageConversionPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.MessagingMessageConversionTypeLocalService" class="com.ext.portlet.service.impl.MessagingMessageConversionTypeLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.MessagingMessageConversionTypeService" class="com.ext.portlet.service.impl.MessagingMessageConversionTypeServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistence" class="com.ext.portlet.service.persistence.MessagingMessageConversionTypePersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.MessagingMessageRecipientLocalService" class="com.ext.portlet.service.impl.MessagingMessageRecipientLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.MessagingMessageRecipientService" class="com.ext.portlet.service.impl.MessagingMessageRecipientServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.MessagingMessageRecipientPersistence" class="com.ext.portlet.service.persistence.MessagingMessageRecipientPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.MessagingRedirectLinkLocalService" class="com.ext.portlet.service.impl.MessagingRedirectLinkLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.MessagingRedirectLinkService" class="com.ext.portlet.service.impl.MessagingRedirectLinkServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.MessagingRedirectLinkPersistence" class="com.ext.portlet.service.persistence.MessagingRedirectLinkPersistenceImpl" parent="basePersistence" />
 	<bean id="com.ext.portlet.service.ModelCategoryLocalService" class="com.ext.portlet.service.impl.ModelCategoryLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.ModelCategoryService" class="com.ext.portlet.service.impl.ModelCategoryServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.ModelCategoryPersistence" class="com.ext.portlet.service.persistence.ModelCategoryPersistenceImpl" parent="basePersistence" />

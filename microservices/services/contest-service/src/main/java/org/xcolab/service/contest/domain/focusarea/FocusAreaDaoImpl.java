@@ -51,6 +51,14 @@ public class FocusAreaDaoImpl implements FocusAreaDao {
 
     }
 
+    public boolean update(FocusArea focusArea) {
+        return dslContext.update(FOCUS_AREA)
+                .set(FOCUS_AREA.NAME, focusArea.getName())
+                .set(FOCUS_AREA.ORDER_, focusArea.getOrder_())
+                .where(FOCUS_AREA.ID_.eq(focusArea.getId_()))
+                .execute() > 0;
+    }
+
     @Override
     public List<FocusArea> findByGiven() {
         final SelectQuery<Record> query = dslContext.select()
@@ -59,4 +67,13 @@ public class FocusAreaDaoImpl implements FocusAreaDao {
 
         return query.fetchInto(FocusArea.class);
     }
+
+    @Override
+    public int delete(Long id_) {
+        return dslContext.deleteFrom(FOCUS_AREA)
+                .where(FOCUS_AREA.ID_.eq(id_))
+                .execute();
+    }
+
+
 }

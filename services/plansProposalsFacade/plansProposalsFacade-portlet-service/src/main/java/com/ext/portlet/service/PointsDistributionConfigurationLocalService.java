@@ -239,26 +239,4 @@ public interface PointsDistributionConfigurationLocalService
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    public java.util.List<com.ext.portlet.model.PointsDistributionConfiguration> findByProposalIdPointTypeId(
-        long proposalId, long pointTypeId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public void removeByProposalId(long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.PointsDistributionConfiguration getByPlanSectionDefinitionId(
-        long planSectionDefinitionId)
-        throws com.ext.portlet.NoSuchPointsDistributionConfigurationException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    public com.ext.portlet.model.PointsDistributionConfiguration addDistributionConfiguration(
-        long proposalId, long pointTypeId, java.lang.Long targetUserId,
-        java.lang.Long targetSubProposalId, double percentage, long creator)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public void verifyDistributionConfigurationsForProposalId(long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
 }

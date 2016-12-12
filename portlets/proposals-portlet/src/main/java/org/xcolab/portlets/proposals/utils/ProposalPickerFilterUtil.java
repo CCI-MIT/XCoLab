@@ -1,11 +1,8 @@
 package org.xcolab.portlets.proposals.utils;
 
 import org.apache.commons.lang3.tuple.Pair;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
@@ -41,7 +38,7 @@ public class ProposalPickerFilterUtil {
     public static final String CONTEST_FILTER_REASON_FOCUS_AREA = "FOCUS_AREA";
     public static final String CONTEST_FILTER_REASON_TIER = "TIER";
 
-    private static final Log _log = LogFactoryUtil.getLog(ProposalPickerFilterUtil.class);
+    private static final Logger _log = LoggerFactory.getLogger(ProposalPickerFilterUtil.class);
 
     /**
      * Parse filter from frontend parameter and filter the contents of the proposals parameter
@@ -57,14 +54,13 @@ public class ProposalPickerFilterUtil {
     }
 
     public static List<Pair<Contest, Date>> getFilteredContests(
-            long sectionId, ResourceRequest request, ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
+            long sectionId, ResourceRequest request, ProposalsContext proposalsContext) {
         List<Pair<Contest, Date>> contests = ProposalPickerFilterUtil.getAllContests();
         ProposalPickerFilterUtil.filterContests(contests, sectionId, request, proposalsContext, false);
         return contests;
     }
 
-    public static List<Pair<Contest, Date>> getAllContests() throws SystemException, PortalException {
+    public static List<Pair<Contest, Date>> getAllContests() {
         List<Pair<Contest, Date>> contests = new ArrayList<>();
 
         for (Contest c: ContestClientUtil.getAllContests()) {
@@ -77,7 +73,7 @@ public class ProposalPickerFilterUtil {
 
 
 
-    public static List<Pair<Contest, Date>> getTextFilteredContests( long sectionId, String contestName) throws SystemException, PortalException {
+    public static List<Pair<Contest, Date>> getTextFilteredContests( long sectionId, String contestName) {
         List<Pair<Contest, Date>> contests = new ArrayList<>();
         PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
 
@@ -97,8 +93,7 @@ public class ProposalPickerFilterUtil {
 
 
     public static Map<Long, String> filterContests(List<Pair<Contest, Date>> contests,
-            long sectionId, ResourceRequest request, ProposalsContext proposalsContext, boolean trackRemovedContests)
-            throws SystemException, PortalException {
+            long sectionId, ResourceRequest request, ProposalsContext proposalsContext, boolean trackRemovedContests) {
         PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
         ProposalPickerFilter.CONTEST_TYPE_FILTER.filterContests(contests, planSectionDefinition.getAllowedContestTypeIds());
 
@@ -140,8 +135,7 @@ public class ProposalPickerFilterUtil {
     }
 
     public static List<Pair<Proposal, Date>> getFilteredSubscribedSupportingProposalsForUser(
-            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
+            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext) {
         List<Pair<Proposal, Date>> proposals = getFilteredSubscribedProposalsForUser(
                 userId, filterKey, sectionId, request, proposalsContext);
 
@@ -161,8 +155,7 @@ public class ProposalPickerFilterUtil {
     }
 
     public static List<Pair<Proposal, Date>> getFilteredSubscribedProposalsForUser(
-            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
+            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext) {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
         List<ActivitySubscription> activitySubscriptions = ActivitiesClientUtil.getActivitySubscriptions(null, null, userId);
 
@@ -186,8 +179,7 @@ public class ProposalPickerFilterUtil {
     }
 
     public static List<Pair<Proposal, Date>> getFilteredSupportingProposalsForUser(
-            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
+            long userId, String filterKey, long sectionId, PortletRequest request, ProposalsContext proposalsContext) {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
         for (ProposalSupporter ps : ProposalMemberRatingClientUtil.getProposalSupportersByUserId(userId)) {
             try{
@@ -203,8 +195,7 @@ public class ProposalPickerFilterUtil {
     }
 
     public static List<Pair<Proposal, Date>> getFilteredAllProposals(String filterText,
-            String filterKey, long sectionId, Long contestPK, PortletRequest request, ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
+            String filterKey, long sectionId, Long contestPK, PortletRequest request, ProposalsContext proposalsContext) {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
         List<Proposal> proposalsRaw;
 
@@ -253,8 +244,7 @@ public class ProposalPickerFilterUtil {
 
     private static void filterProposals(List<Pair<Proposal, Date>> proposals,
             String filterKey, long sectionId, PortletRequest request,
-            ProposalsContext proposalsContext)
-            throws SystemException, PortalException {
+            ProposalsContext proposalsContext) {
         filterByParameter(filterKey, proposals);
 
         filterByVisibility(proposals);
@@ -281,7 +271,7 @@ public class ProposalPickerFilterUtil {
     }
 
 
-    private static void filterByVisibility(List<Pair<Proposal, Date>> proposals) throws SystemException, PortalException {
+    private static void filterByVisibility(List<Pair<Proposal, Date>> proposals) {
         for (Iterator<Pair<Proposal, Date>> iterator = proposals.iterator(); iterator.hasNext(); ) {
 
             Proposal proposal = iterator.next().getLeft();

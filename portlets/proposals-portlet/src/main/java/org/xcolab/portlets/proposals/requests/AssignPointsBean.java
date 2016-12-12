@@ -2,15 +2,14 @@ package org.xcolab.portlets.proposals.requests;
 
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.PointsClientUtil;
+import org.xcolab.client.proposals.enums.points.DistributionStrategy;
+import org.xcolab.client.proposals.enums.points.ReceiverLimitationStrategy;
 import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
-import org.xcolab.points.DistributionStrategy;
-import org.xcolab.points.ReceiverLimitationStrategy;
 import org.xcolab.util.exceptions.InternalException;
 
 import java.text.DecimalFormat;
@@ -42,7 +41,7 @@ public class AssignPointsBean {
         assignmentsByUserIdByPointTypeId = new HashMap<>();
     }
 
-    public void addAllAssignments(PointType pointType, List<Member> members) throws SystemException, PortalException {
+    public void addAllAssignments(PointType pointType, List<Member> members) {
         if (pointType.getDistributionStrategyz().name().equals(DistributionStrategy.USER_DEFINED.name())) {
 
             PointsClientUtil.verifyDistributionConfigurationsForProposalId(proposalId);
@@ -54,7 +53,8 @@ public class AssignPointsBean {
             switch(pointType.getReceiverLimitationStrategyz().getType()) {
                 case USER:
                     List<Member> presetUsers = null;
-                    if (pointType.getReceiverLimitationStrategyz().name().equals(ReceiverLimitationStrategy.ANY_TEAM_MEMBER.name())) {
+                    if (pointType.getReceiverLimitationStrategyz().name().equals(
+                            ReceiverLimitationStrategy.ANY_TEAM_MEMBER.name())) {
                         presetUsers = members;
                     }
 
@@ -76,7 +76,7 @@ public class AssignPointsBean {
         initializeUsers(members);
     }
 
-    public void initializeUsers(List<Member> teamMembers) throws SystemException {
+    public void initializeUsers(List<Member> teamMembers) {
         usersNotInTeam = new ArrayList<>(MembersClient.listAllMembers());
         usersNotInTeam.removeAll(teamMembers);
     }

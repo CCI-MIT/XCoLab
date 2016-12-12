@@ -4,7 +4,6 @@ package org.xcolab.service.proposal.service.proposal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadClientUtil;
@@ -16,7 +15,6 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -257,7 +255,7 @@ public class ProposalService {
     }
 
     public Long getLatestContestPhaseIdInProposal(Long proposalId) {
-        List<Proposal2Phase> allP2p = proposal2PhaseDao.findByGiven(proposalId, null);
+        List<Proposal2Phase> allP2p = proposal2PhaseDao.findByGiven(proposalId, null, null);
         long newestVersionContestPhaseId = 0;
         int newestVersion = 0;
         for (Proposal2Phase p2p : allP2p) {

@@ -41,13 +41,13 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
 
     @ModelAttribute("tabs")
     @Override
-    public List<TabWrapper> populateTabs(Model model, PortletRequest request) throws PortalException, SystemException {
+    public List<TabWrapper> populateTabs(Model model, PortletRequest request) {
         return getAllVisibleTabsWrapped(request, ContestManagerTabs.values());
     }
 
     @ModelAttribute("currentTabWrapped")
     @Override
-    public TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException {
+    public TabWrapper populateCurrentTabWrapped(PortletRequest request) {
         tabWrapper = new TabWrapper(tab, request, tabContext);
         request.getPortletSession().setAttribute("tabWrapper", tabWrapper);
         return tabWrapper;
@@ -58,7 +58,7 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
             @RequestParam(value = "elementId", required = false) Long elementId)
             throws PortalException, SystemException {
 
-        if (!tabWrapper.getCanView() || request.getRemoteUser() == null) {
+        if (!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
 

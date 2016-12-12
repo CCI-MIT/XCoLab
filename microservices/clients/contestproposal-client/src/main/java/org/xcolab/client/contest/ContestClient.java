@@ -3,10 +3,12 @@ package org.xcolab.client.contest;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestDiscussion;
+import org.xcolab.client.contest.pojo.ContestDiscussionDto;
 import org.xcolab.client.contest.pojo.ContestDto;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.ContestScheduleDto;
@@ -31,6 +33,7 @@ import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,6 +51,7 @@ public class ContestClient {
 
     private final RestResource1<ContestDto, Long> contestResource;
     private final RestResource<ContestTypeDto, Long> contestTypeResource;
+    private final RestResource<ContestDiscussionDto, Long> contestDiscussionResource;
 
     private final RestResource2L<ContestDto, ContestPhaseDto> visiblePhasesResource;
     private final RestResource<ContestPhaseDto, Long> contestPhasesResource;
@@ -72,6 +76,7 @@ public class ContestClient {
                 "contests", ContestDto.TYPES);
         visiblePhasesResource = new RestResource2L<>(
                 contestResource, "visiblePhases", ContestPhaseDto.TYPES);
+        contestDiscussionResource = new RestResource1<>(this.contestService, "contestDiscussions", ContestDiscussionDto.TYPES);
     }
 
     public static ContestClient fromService(RestService contestService) {
@@ -83,7 +88,7 @@ public class ContestClient {
         return client;
     }
 
-    public Contest getContest(long contestId) throws ContestNotFoundException {
+    public Contest getContest(long contestId) {
         try {
             return contestResource.get(contestId)
                     //.withCache(CacheKeys.of(ContestDto.class, contestId), CacheRetention.)
@@ -150,6 +155,11 @@ public class ContestClient {
         return contestResource.create(new ContestDto(contest)).execute().toPojo(contestService);
     }
 
+    public boolean deleteContest(long contestId) {
+        return contestResource.delete(contestId)
+                .execute();
+    }
+
     public List<Contest> getContestsMatchingTier(Long contestTier) {
         return DtoUtil.toPojos(
                 contestResource.list().queryParam("contestTier", contestTier).queryParam("limitRecord", Integer.MAX_VALUE).execute(),
@@ -159,6 +169,20 @@ public class ContestClient {
     public boolean updateContest(Contest contest) {
         return contestResource.update(new ContestDto(contest), contest.getContestPK())
                 .execute();
+    }
+
+    public ContestDiscussion createContestDiscussion(long threadId, long contestId, String tab) {
+        ContestDiscussion contestDiscussion = new ContestDiscussion(threadId, contestId, tab);
+        return contestDiscussionResource.create(new ContestDiscussionDto(contestDiscussion)).execute()
+                .toPojo(contestService);
+    }
+
+    public ContestDiscussion getContestDiscussion(long contestId, String tab) {
+        return contestDiscussionResource.list()
+                .queryParam("contestId", contestId)
+                .queryParam("tab", tab)
+                .executeWithResult()
+                .getFirst().toPojo(contestService);
     }
 
     public Integer getProposalCount(Long contestId) {
@@ -201,6 +225,12 @@ public class ContestClient {
         return DtoUtil.toPojos(contestResource.list()
                 .optionalQueryParam("active", active)
                 .optionalQueryParam("featured", featured)
+                .execute(), contestService);
+    }
+
+    public List<Contest> findContestsByActive(boolean active) {
+        return DtoUtil.toPojos(contestResource.list()
+                .optionalQueryParam("active", active)
                 .execute(), contestService);
     }
 
@@ -326,6 +356,7 @@ public class ContestClient {
         return DtoUtil.toPojos(contestResource
                 .list()
                 .queryParam("contestTypeId", contestTypeId)
+                .queryParam("limitRecord", Integer.MAX_VALUE)
                 .execute(), contestService);
     }
 
@@ -341,9 +372,13 @@ public class ContestClient {
     }
 
     public ContestSchedule getContestSchedule(long id) {
-        return contestScheduleResource.get(id)
-                .withCache(CacheKeys.of(ContestScheduleDto.class, id), CacheRetention.REQUEST)
-                .execute().toPojo(contestService);
+        try {
+            return contestScheduleResource.get(id)
+                    .withCache(CacheKeys.of(ContestScheduleDto.class, id), CacheRetention.REQUEST)
+                    .execute().toPojo(contestService);
+        } catch (UncheckedEntityNotFoundException e) {
+            throw new ContestScheduleNotFoundException(id);
+        }
     }
 
     public boolean isContestScheduleUsed(long contestScheduleId) {
@@ -355,6 +390,10 @@ public class ContestClient {
         return DtoUtil.toPojos(contestScheduleResource.list().execute(), contestService);
     }
 
+    public boolean deleteContestSchedule(long contestScheduleId) {
+        return contestScheduleResource.delete(contestScheduleId)
+                .execute();
+    }
 
     public List<ContestPhase> getVisibleContestPhases(Long contestId) {
         return DtoUtil.toPojos(visiblePhasesResource.resolveParent(contestResource.id(contestId))
@@ -379,7 +418,8 @@ public class ContestClient {
     }
 
     public ContestPhase getActivePhase(Long contestId) {
-        return contestResource.service(contestId, "activePhase", ContestPhaseDto.class).get().toPojo(contestService);
+        return contestResource.service(contestId, "activePhase", ContestPhaseDto.class)
+                .get().toPojo(contestService);
     }
 
     public ContestPhaseType getContestPhaseType(Long contestPhaseTypeId) {
@@ -513,15 +553,9 @@ public class ContestClient {
         return getJoinedNameString(contestTypeIds, true, plurality, conjunction);
     }
 
-
     public String getContestNames(List<Long> contestTypeIds, String plurality, String conjunction) {
         return getJoinedNameString(contestTypeIds, false, plurality, conjunction);
     }
-
-
-
-
-
 
     private String getJoinedNameString(List<Long> contestTypeIds, boolean isProposal,
             String plurality, String conjuction) {
@@ -571,5 +605,4 @@ public class ContestClient {
         parameterList += list.get(list.size()-1);
         return parameterList;
     }
-
 }

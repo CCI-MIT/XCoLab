@@ -179,7 +179,7 @@ public final class ProposalClientUtil {
 
     public static ContestPhase getLatestContestPhaseInContest(
             Long proposalId) {
-        return client.getLatestContestPhaseInContest(proposalId);
+        return client.getLatestContestPhaseInProposal(proposalId);
     }
 
     public static void populateTableWithProposal(long proposalId) {

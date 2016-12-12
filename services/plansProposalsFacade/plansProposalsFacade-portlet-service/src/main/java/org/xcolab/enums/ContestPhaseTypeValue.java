@@ -1,9 +1,7 @@
 package org.xcolab.enums;
 
-import com.ext.portlet.model.ContestPhaseType;
-import com.ext.portlet.service.ContestPhaseTypeLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 
 public enum ContestPhaseTypeValue {
 
@@ -36,15 +34,11 @@ public enum ContestPhaseTypeValue {
         return typeId;
     }
 
-    public ContestPhaseType getContestPhaseType() throws SystemException {
-        try {
-            return ContestPhaseTypeLocalServiceUtil.getContestPhaseType(typeId);
-        } catch (PortalException e) {
-            throw new SystemException("ContestPhaseTypeValue enum contains invalid id: " + typeId);
-        }
+    public ContestPhaseType getContestPhaseType() {
+        return ContestClientUtil.getContestPhaseType(typeId);
     }
 
-    public static ContestPhaseTypeValue fromTypeId(long typeId) throws NoSuchContestPhaseTypeValueException {
+    public static ContestPhaseTypeValue fromTypeId(long typeId) {
         for (ContestPhaseTypeValue phaseType : ContestPhaseTypeValue.values()) {
             if (phaseType.getTypeId() == typeId) {
                 return phaseType;

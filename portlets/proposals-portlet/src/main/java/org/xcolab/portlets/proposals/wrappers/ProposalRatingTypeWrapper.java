@@ -1,18 +1,11 @@
 package org.xcolab.portlets.proposals.wrappers;
 
-
-
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValue;
 
 import java.util.List;
 
-/**
- * Created by Manuel Thurner
- */
 public class ProposalRatingTypeWrapper {
     private ProposalRatingType proposalRatingType;
 
@@ -21,7 +14,7 @@ public class ProposalRatingTypeWrapper {
         this.proposalRatingType = proposalRatingType;
     }
 
-    public List<ProposalRatingValue> getRatingValues() throws SystemException {
+    public List<ProposalRatingValue> getRatingValues() {
 
         return ProposalJudgeRatingClientUtil.getProposalRatingValuesByProposalRatingTypeId(this.proposalRatingType.getId_());
     }

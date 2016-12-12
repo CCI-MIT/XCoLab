@@ -1,6 +1,6 @@
 package org.xcolab.client.contest.exceptions;
 
-public class ContestNotFoundException extends Exception {
+public class ContestNotFoundException extends RuntimeException {
     public ContestNotFoundException(long contestId) {
         super("Contest with id " + contestId + " not found");
     }

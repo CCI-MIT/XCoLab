@@ -45,19 +45,6 @@ public class ContestServiceWrapper implements ContestService,
     }
 
     /**
-    * Returns a list of open contest for regular users and returns all contests for staff users
-    *
-    * @throws PortalException
-    * @throws SystemException
-    */
-    @Override
-    public java.util.List<com.ext.portlet.model.Contest> getContestsOpenForProposals()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestService.getContestsOpenForProposals();
-    }
-
-    /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */
     public ContestService getWrappedContestService() {

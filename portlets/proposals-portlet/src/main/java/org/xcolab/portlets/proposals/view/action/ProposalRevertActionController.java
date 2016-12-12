@@ -6,12 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
@@ -19,6 +13,7 @@ import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
@@ -41,7 +36,7 @@ public class ProposalRevertActionController {
     public void showProposalRevert(ActionRequest request, Model model,
                                     ActionResponse response)
 
-    throws PortalException, SystemException, ProposalsAuthorizationException, IOException {
+    throws ProposalsAuthorizationException, IOException {
 
         if (proposalsContext.getProposal(request) != null && !proposalsContext.getPermissions(request).getCanEdit()) {
             throw new ProposalsAuthorizationException("User is not allowed to edit proposal, user: "
@@ -49,14 +44,13 @@ public class ProposalRevertActionController {
                     + proposalsContext.getProposal(request).getProposalId());
         }
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        long userId = themeDisplay.getUserId();
+        long memberId = MemberAuthUtil.getMemberId(request);
 
         if (proposalsContext.getProposal(request) != null) {
             Proposal oldProposalVersionToBeBecomeCurrent = proposalsContext.getProposalWrapped(request);
-            updateProposalSpecialAttributes(userId, oldProposalVersionToBeBecomeCurrent);
+            updateProposalSpecialAttributes(memberId, oldProposalVersionToBeBecomeCurrent);
 
-            updateProposalAttributes(request, userId, oldProposalVersionToBeBecomeCurrent);
+            updateProposalAttributes(request, memberId, oldProposalVersionToBeBecomeCurrent);
 
             proposalsContext.invalidateContext(request);
 
@@ -65,7 +59,7 @@ public class ProposalRevertActionController {
         }
     }
 
-    private void updateProposalAttributes(ActionRequest request, long userId, Proposal oldProposalVersionToBeBecomeCurrent) throws PortalException, SystemException {
+    private void updateProposalAttributes(ActionRequest request, long userId, Proposal oldProposalVersionToBeBecomeCurrent) {
         boolean updateProposalReferences = false;
         for (PlanSectionDefinition section: oldProposalVersionToBeBecomeCurrent.getSections()) {
             String newSectionValue = section.getStringValue();
@@ -138,7 +132,7 @@ public class ProposalRevertActionController {
         }
     }
 
-    private void updateProposalSpecialAttributes(long userId, Proposal oldProposalVersionToBeBecomeCurrent) throws PortalException, SystemException {
+    private void updateProposalSpecialAttributes(long userId, Proposal oldProposalVersionToBeBecomeCurrent) {
         ProposalAttributeClientUtil.setProposalAttribute(userId,  oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.NAME,0l, oldProposalVersionToBeBecomeCurrent.getName());
         ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.PITCH,0l, oldProposalVersionToBeBecomeCurrent.getPitch());
         ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.DESCRIPTION,0l, oldProposalVersionToBeBecomeCurrent.getDescription());

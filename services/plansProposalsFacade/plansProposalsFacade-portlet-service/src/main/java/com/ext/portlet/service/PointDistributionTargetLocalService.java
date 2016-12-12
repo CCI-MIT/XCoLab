@@ -239,8 +239,4 @@ public interface PointDistributionTargetLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    public java.util.Collection<com.ext.portlet.model.PointDistributionTarget> findByContestId(
-        long contestId)
-        throws com.liferay.portal.kernel.exception.SystemException;
 }

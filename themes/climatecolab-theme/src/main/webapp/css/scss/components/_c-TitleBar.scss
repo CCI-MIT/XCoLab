@@ -42,6 +42,7 @@ $c-TitleBar__separator__color: #B9E3FF !default;
 
   &.light {
     background: $c-TitleBar__contestSummary__backgroundColor--light;
+    color: $b-Typography__textColor;
   }
 }
 

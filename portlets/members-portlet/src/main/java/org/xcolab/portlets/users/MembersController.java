@@ -19,7 +19,7 @@ import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.portlets.users.utils.MemberItem;
 import org.xcolab.portlets.users.utils.MemberListCsvConverter;
 import org.xcolab.portlets.users.utils.MembersPermissions;
-import org.xcolab.utils.TemplateReplacementUtil;
+import org.xcolab.entity.utils.TemplateReplacementUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;

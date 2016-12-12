@@ -262,14 +262,6 @@ public class ProposalRatingTypeLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForJudges() {
-        return getService().getRatingTypesForJudges();
-    }
-
-    public static java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForFellows() {
-        return getService().getRatingTypesForFellows();
-    }
-
     public static void clearService() {
         _service = null;
     }

@@ -277,13 +277,6 @@ public class PointDistributionTargetLocalServiceWrapper
             parameterTypes, arguments);
     }
 
-    @Override
-    public java.util.Collection<com.ext.portlet.model.PointDistributionTarget> findByContestId(
-        long contestId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _pointDistributionTargetLocalService.findByContestId(contestId);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

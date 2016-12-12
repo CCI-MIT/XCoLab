@@ -45,8 +45,6 @@ public class ContestDiscussionLocalServiceClp
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
-    private String _methodName19;
-    private String[] _methodParameterTypes19;
 
     public ContestDiscussionLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -141,12 +139,6 @@ public class ContestDiscussionLocalServiceClp
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
-
-        _methodName19 = "getDiscussionIdByContestIdAndTabName";
-
-        _methodParameterTypes19 = new String[] {
-                "java.lang.Long", "java.lang.String"
-            };
     }
 
     @Override
@@ -664,42 +656,5 @@ public class ContestDiscussionLocalServiceClp
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public java.lang.Long getDiscussionIdByContestIdAndTabName(
-        java.lang.Long contestId, java.lang.String tabName)
-        throws com.ext.portlet.NoSuchContestDiscussionException,
-            com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19,
-                    new Object[] {
-                        ClpSerializer.translateInput(contestId),
-                        
-                    ClpSerializer.translateInput(tabName)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.ext.portlet.NoSuchContestDiscussionException) {
-                throw (com.ext.portlet.NoSuchContestDiscussionException) t;
-            }
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.lang.Long) ClpSerializer.translateOutput(returnObj);
     }
 }

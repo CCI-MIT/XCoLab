@@ -34,7 +34,7 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
 
     @ModelAttribute("currentTabWrapped")
     @Override
-    public TabWrapper populateCurrentTabWrapped(PortletRequest request) throws PortalException, SystemException {
+    public TabWrapper populateCurrentTabWrapped(PortletRequest request) {
         tabWrapper = new TabWrapper(tab, request, tabContext);
         request.getPortletSession().setAttribute("tabWrapper", tabWrapper);
         return tabWrapper;

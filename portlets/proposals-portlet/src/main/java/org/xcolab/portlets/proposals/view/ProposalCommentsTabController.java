@@ -6,9 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.discussion.ProposalDiscussionPermissions;
@@ -25,8 +22,7 @@ public class ProposalCommentsTabController extends BaseProposalTabController {
     private ProposalsContext proposalsContext;
     
     @RequestMapping(params = {"pageToDisplay=proposalDetails_COMMENTS"})
-    public String showComments(PortletRequest request, Model model) 
-            throws PortalException, SystemException {
+    public String showComments(PortletRequest request, Model model) {
 
         final Proposal proposal = proposalsContext.getProposal(request);
         long discussionId = proposal.getDiscussionId();
@@ -46,8 +42,7 @@ public class ProposalCommentsTabController extends BaseProposalTabController {
         return "proposalComments";
     }
 
-    private long createCommentThread(PortletRequest request)
-            throws SystemException, PortalException {
+    private long createCommentThread(PortletRequest request) {
         Proposal proposal = proposalsContext.getProposal(request);
         final long discussionThreadId = createDiscussionThread(request, " comments", false);
         proposal.setDiscussionId(discussionThreadId);

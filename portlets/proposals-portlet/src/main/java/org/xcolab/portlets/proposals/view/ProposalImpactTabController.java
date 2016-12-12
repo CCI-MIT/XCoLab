@@ -24,7 +24,7 @@ import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
-import org.xcolab.enums.ContestTier;
+import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.enums.ProposalUnversionedAttributeName;
 import org.xcolab.portlets.proposals.impact.IntegratedProposalImpactSeries;
 import org.xcolab.portlets.proposals.impact.ProposalImpactScenarioCombinationWrapper;

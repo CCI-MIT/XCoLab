@@ -2,6 +2,10 @@ package org.xcolab.client.contest.pojo;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.ThreadClient;
+import org.xcolab.client.comment.pojo.CommentThread;
+import org.xcolab.client.comment.util.CommentClientUtil;
+import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClient;
@@ -35,17 +39,17 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 public class Contest extends AbstractContest {
 
     private final ContestClient contestClient;
-
     private final ContestTeamMemberClient contestTeamMemberClient;
-
     private final OntologyClient ontologyClient;
+    private CommentClient commentClient;
+    private ThreadClient threadClient;
 
-    //private final static Log _log = LogFactoryUtil.getLog(Contest.class);
     private final static Map<Long, FocusArea> faCache = new HashMap<>();
     private final Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<>();
 
@@ -70,42 +74,51 @@ public class Contest extends AbstractContest {
 
     protected ContestPhase activePhase;
 
-
-
-
     private RestService restService;
 
     public Contest(Long contestId) {
         contestClient = ContestClientUtil.getClient();
         contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
         ontologyClient = OntologyClientUtil.getClient();
+        commentClient = CommentClientUtil.getClient();
+        threadClient = ThreadClientUtil.getClient();
     }
 
     public Contest() {
         contestClient = ContestClientUtil.getClient();
         contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
         ontologyClient = OntologyClientUtil.getClient();
+        commentClient = CommentClientUtil.getClient();
+        threadClient = ThreadClientUtil.getClient();
     }
 
     public Contest(Contest value) {
         super(value);
-        if(value.getRestService()!=null){
+        if (value.getRestService() != null) {
             contestClient = ContestClient.fromService(restService);
             contestTeamMemberClient = ContestTeamMemberClient.fromService(restService);
             ontologyClient = OntologyClient.fromService(restService);
-        }else {
+            RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
+            commentClient = CommentClient.fromService(commentService);
+            threadClient = ThreadClient.fromService(commentService);
+        } else {
             contestClient = ContestClientUtil.getClient();
             contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
             ontologyClient = OntologyClientUtil.getClient();
+            commentClient = CommentClientUtil.getClient();
+            threadClient = ThreadClientUtil.getClient();
         }
     }
 
-    public Contest(AbstractContest abstractContest, RestService restServicez) {
+    public Contest(AbstractContest abstractContest, RestService restService) {
         super(abstractContest);
-        this.restService = restServicez;
-        contestClient = ContestClient.fromService(restService);
-        contestTeamMemberClient = ContestTeamMemberClient.fromService(restService);
-        ontologyClient = OntologyClient.fromService(restService);
+        this.restService = restService;
+        contestClient = ContestClient.fromService(this.restService);
+        contestTeamMemberClient = ContestTeamMemberClient.fromService(this.restService);
+        ontologyClient = OntologyClient.fromService(this.restService);
+        RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
+        commentClient = CommentClient.fromService(commentService);
+        threadClient = ThreadClient.fromService(commentService);
     }
 
     public String getContestLinkUrl() {
@@ -279,10 +292,8 @@ public class Contest extends AbstractContest {
         }*/
 
     public long getCommentsCount() {
-        RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
-        Integer contestComments = CommentClient.fromService(commentService).countComments(this.getDiscussionGroupId());
         //TODO: get each proposal comment count.
-        return contestComments;
+        return commentClient.countComments(this.getDiscussionGroupId());
     }
 
     public List<OntologyTerm> getWho() {
@@ -472,7 +483,7 @@ public class Contest extends AbstractContest {
         if(this.getIsSharedContestInForeignColab()) {
             return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()+"/web/guest/wiki/-/wiki/resources/" + this.getContestYear()
                     + "/" + this.getContestUrlName();
-        } else{
+        } else {
             return "/web/guest/wiki/-/wiki/resources/" + this.getContestYear()
                     + "/" + this.getContestUrlName();
         }
@@ -487,13 +498,9 @@ public class Contest extends AbstractContest {
         }
     }
     public long getTotalCommentsCount() {
-
-        RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
-
-
-        Integer contestComments = CommentClient.fromService(commentService).countComments(this.getDiscussionGroupId());
+        Integer contestComments = commentClient.countComments(this.getDiscussionGroupId());
         ContestPhase phase = contestClient.getActivePhase(this.getContestPK());
-        contestComments += CommentClient.fromService(commentService).countCommentsInContestPhase(
+        contestComments += commentClient.countCommentsInContestPhase(
                 phase.getContestPhasePK(), phase.getContestPK());
 
         return contestComments;
@@ -615,12 +622,12 @@ public class Contest extends AbstractContest {
         try {
             activePhase = contestClient.getActivePhase(this.getContestPK());
             type = activePhase.getContestPhaseTypeObject();
-        } catch (IllegalArgumentException | NullPointerException e) {
+        } catch (IllegalArgumentException e) {
             return false;
         }
-        return !(type == null || activePhase == null
-                || contestPhase.getContestPhasePK() != activePhase.getContestPhasePK()
-        ) && ("COMPLETED".equals(type.getStatus()));
+        return !(type == null || !Objects.equals(
+                contestPhase.getContestPhasePK(), activePhase.getContestPhasePK())
+        ) && "COMPLETED".equals(type.getStatus());
     }
 
     public List<ContestPhase> getVisiblePhases() {
@@ -638,15 +645,30 @@ public class Contest extends AbstractContest {
         return this.getFocusAreaId() > 0;
     }
 
-    public boolean isUserAmongAdvisors(Member memberInQuestion) {
+    public boolean isUserAmongAdvisors(long memberId) {
         for (Member judge : getContestAdvisors()) {
-            if (judge.getUserId() == memberInQuestion.getUserId()) {
+            if (judge.getUserId() == memberId) {
                 return true;
             }
         }
         return false;
     }
 
+    @Override
+    public Long getDiscussionGroupId() {
+        Long discussionGroupId = super.getDiscussionGroupId();
+        if (discussionGroupId == null) {
+            ContestType contestType = getContestType();
+            CommentThread thread = new CommentThread();
+            thread.setAuthorId(getAuthorId());
+            thread.setTitle(contestType.getContestName() + " discussion");
+            thread.setIsQuiet(false);
+            thread = threadClient.createThread(thread);
+            discussionGroupId = thread.getThreadId();
+            setDiscussionGroupId(discussionGroupId);
+        }
+        return discussionGroupId;
+    }
 
     public boolean getIsSharedContestInForeignColab(){
         return this.getIsSharedContest() && !ConfigurationAttributeKey.COLAB_NAME.get().equals(this.getSharedOrigin());
@@ -707,12 +729,13 @@ public class Contest extends AbstractContest {
     }
 
     public String getNewProposalLinkUrl() {
-        if(getIsSharedContestInForeignColab()){
-            final String portletUrl = ContestClientUtil.getClient().getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get())
-                    .getPortletUrl();
+        if (getIsSharedContestInForeignColab()) {
+            final ContestType contestType = ContestClientUtil.getClient()
+                    .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
+            final String portletUrl = contestType.getPortletUrl();
             return String.format("%s/%s/%s/createProposal",
                     portletUrl, this.getContestYear(), this.getContestUrlName());
-        }else {
+        } else {
             final String portletUrl = getContestType().getPortletUrl();
             return String.format("%s/%s/%s/createProposal",
                     portletUrl, this.getContestYear(), this.getContestUrlName());

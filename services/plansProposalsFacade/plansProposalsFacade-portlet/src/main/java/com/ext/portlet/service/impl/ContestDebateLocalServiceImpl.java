@@ -30,39 +30,4 @@ public class ContestDebateLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ContestDebateLocalServiceUtil} to access the contest debate local service.
      */
 
-    @Override
-    public ContestDebate createContestDebate(Long debateId, Long contestId) throws SystemException {
-        Long id = CounterLocalServiceUtil.increment(ContestDebate.class.getName());
-        
-        ContestDebate contestDebate = createContestDebate(id);
-        contestDebate.setDebateId(debateId);
-        contestDebate.setContestPK(contestId);
-        
-        store(contestDebate);
-        
-        return contestDebate;
-    }
-    
-    @Override
-    public List<ContestDebate> getContestDebates(Long contestId) throws SystemException {
-        return contestDebatePersistence.findByContestPK(contestId);
-    }
-    
-    
-    @Override
-    public void store(ContestDebate contestDebate) throws SystemException {
-        if (contestDebate.isNew()) {
-            ContestDebateLocalServiceUtil.addContestDebate(contestDebate);
-        }
-        else {
-            ContestDebateLocalServiceUtil.updateContestDebate(contestDebate);
-        }
-    }
-    
-    @Override
-    public void delete(ContestDebate contestDebate) throws SystemException {
-        if (!contestDebate.isNew()) {
-            ContestDebateLocalServiceUtil.deleteContestDebate(contestDebate);
-        }
-    }
 }

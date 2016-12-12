@@ -9,7 +9,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
 import org.parboiled.common.StringUtils;
 
-import org.xcolab.mail.EmailToAdminDispatcher;
+import org.xcolab.entity.utils.email.EmailToAdminDispatcher;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

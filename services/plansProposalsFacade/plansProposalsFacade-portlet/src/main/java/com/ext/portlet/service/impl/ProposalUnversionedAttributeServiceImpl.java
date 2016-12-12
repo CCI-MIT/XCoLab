@@ -28,8 +28,4 @@ public class ProposalUnversionedAttributeServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ProposalUnversionedAttributeServiceUtil} to access the proposal unversioned attribute remote service.
      */
 
-
-    public List<ProposalUnversionedAttribute> getAttributes(long proposalId) throws SystemException {
-        return  proposalUnversionedAttributePersistence.findByProposalId_ProposalUnversionedAttribute(proposalId);
-    }
 }

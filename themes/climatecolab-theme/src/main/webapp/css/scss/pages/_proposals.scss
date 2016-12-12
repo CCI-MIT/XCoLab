@@ -147,6 +147,9 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 .prop-left {
   float: left;
   width: 631px;
+  &.full-width {
+    width: 100%;
+  }
   margin-right: 23px;
   line-height: 24px;
 }
@@ -527,15 +530,27 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   font-size: 16px;
 }
 
-.addpropform input {
-  height: 42px;
-  width: 445px;
-  padding: 0 5px;
+.addpropform {
+  input {
+    height: 42px;
+    width: 445px;
+    padding: 0 5px;
+  }
+
+  &.full-width textarea {
+    width: 830px;
+  }
 }
 
-.addpropform textarea {
-  width: 440px;
-  padding: 5px;
+.addpropform {
+  textarea {
+    width: 440px;
+    padding: 5px;
+  }
+
+  &.full-width textarea {
+    width: 830px;
+  }
 }
 
 .addpropform .notation {

@@ -3,6 +3,7 @@ package org.xcolab.util;
 import org.xcolab.util.functions.Function;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,5 +52,25 @@ public final class GroupingUtil {
         DuplicateElementException(Object key, List<?> elements) {
             super("Duplicate element  for key " + key + ": " + elements);
         }
+    }
+
+    public static <SearchKey, MapKey, MapVal> Map<MapKey, MapVal> getInnerMapOrCreate(
+            SearchKey searchKey, Map<SearchKey, Map<MapKey, MapVal>> searchMap) {
+        Map<MapKey, MapVal> innerMap = searchMap.get(searchKey);
+        if (innerMap == null) {
+            innerMap = new HashMap<>();
+            searchMap.put(searchKey, innerMap);
+        }
+        return innerMap;
+    }
+
+    public static <SearchKey, ListVal> List<ListVal> getInnerListOrCreate(
+            SearchKey searchKey, Map<SearchKey, List<ListVal>> searchMap) {
+        List<ListVal> innerList = searchMap.get(searchKey);
+        if (innerList == null) {
+            innerList = new ArrayList<>();
+            searchMap.put(searchKey, innerList);
+        }
+        return innerList;
     }
 }

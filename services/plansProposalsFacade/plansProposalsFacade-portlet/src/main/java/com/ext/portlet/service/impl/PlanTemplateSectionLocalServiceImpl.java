@@ -31,44 +31,4 @@ public class PlanTemplateSectionLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.PlanTemplateSectionLocalServiceUtil} to access the plan template section local service.
      */
 
-    @Override
-    public List<PlanTemplateSection> findByPlanTemplateId(Long planTemplateId) throws SystemException {
-        return planTemplateSectionPersistence.findByPlanTemplateId(planTemplateId);
-    }
-
-    @Override
-    public List<PlanTemplateSection> findByPlanSectionDefinitionId(Long planSectionDefinitionId) throws SystemException {
-        return planTemplateSectionPersistence.findByPlanSectionId(planSectionDefinitionId);
-    }
-
-    @Override
-    public PlanTemplateSection addPlanTemplateSection(Long planTemplateId, Long sectionId, int weight) throws SystemException {
-        PlanTemplateSection pts = createPlanTemplateSection(new PlanTemplateSectionPK(planTemplateId, sectionId));
-        
-        pts.setWeight(weight);
-        PlanTemplateSectionLocalServiceUtil.store(pts);
-        
-        return pts;
-    }
-    
-    @Override
-    public void removePlanTemplateSection(Long planTemplateId, Long sectionId) throws SystemException, PortalException {
-        PlanTemplateSectionLocalServiceUtil.remove(getPlanTemplateSection(new PlanTemplateSectionPK(planTemplateId, sectionId)));
-    }
-    
-
-    @Override
-    public void store(PlanTemplateSection section) throws SystemException {
-        if (section.isNew()) {
-            PlanTemplateSectionLocalServiceUtil.addPlanTemplateSection(section);
-        } else {
-            PlanTemplateSectionLocalServiceUtil.updatePlanTemplateSection(section);
-        }
-    }
-    
-    @Override
-    public void remove(PlanTemplateSection section) throws SystemException {
-        PlanTemplateSectionLocalServiceUtil.deletePlanTemplateSection(section);
-    }
-
 }

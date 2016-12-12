@@ -27,9 +27,4 @@ public class ContestTeamMemberRoleLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ContestTeamMemberRoleLocalServiceUtil} to access the contest team member role local service.
      */
 
-    @Override
-    public ContestTeamMemberRole findForContestTeamMember(Long roleId) throws SystemException, NoSuchModelException {
-        return contestTeamMemberRolePersistence.findByPrimaryKey(roleId);
-    }
-
 }

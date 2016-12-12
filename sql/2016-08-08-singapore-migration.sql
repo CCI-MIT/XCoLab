@@ -297,13 +297,13 @@ where dcg.id_ not in (select groupId from comment_CategoryGroup);
 -- =======================================
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('BETA_RIBBON_SHOW', 0, 0, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('FACEBOOK_APPLICATION_ID', 0, 0, '1730936890460087', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('FACEBOOK_APPLICATION_SECRET', 0, 0, 'ec68412d9998a9149c7748537b6edc3b', 0);
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('FACEBOOK_APPLICATION_SECRET', 0, 0, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('FACEBOOK_VERIFIED_REQUIRED', 0, 0, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('FILTER_PROFANITY', 0, 0, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('FLAGGING_ALLOW_MEMBERS', 0, 0, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('GOOGLE_ANALYTICS_KEY', 0, 0, 'UA-11944310-1', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('GOOGLE_AUTH_CLIENT_ID', 0, 0, '668105823094-kts12sd1rkb899tkb1qvf204qt9a9051.apps.googleusercontent.com', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('GOOGLE_AUTH_CLIENT_SECRET', 0, 0, 'j29_6dW87-98rVoTN-0lMUCe', 0);
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('GOOGLE_AUTH_CLIENT_SECRET', 0, 0, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('IS_MY_EMMA_ACTIVE', 0, 0, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('IS_POINTS_ACTIVE', 0, 1, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PUBLISH_JUDGING_RESULTS', 0, 1, '', 0);

@@ -10,7 +10,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 
-import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.members.MembersClient;
@@ -47,7 +46,7 @@ public class NotificationUnregisterController {
 
                 user = MembersClient.getMember(userId);
 	            error = ! NotificationUnregisterUtils.isTokenValid(token, user) ||
-                        (typeId != NotificationUnregisterUtils.ACTIVITY_TYPE && typeId != NotificationUnregisterUtils.MASSMESSAGING_TYPE);
+                        typeId != NotificationUnregisterUtils.ACTIVITY_TYPE;
 	        }
 	        catch (Exception e) {
 	            _log.error("Error when unsubscribing", e);
@@ -93,8 +92,6 @@ public class NotificationUnregisterController {
     private NotificationUnregisterHandler getUnregisterUserHandler(int type) {
         if (type == NotificationUnregisterUtils.ACTIVITY_TYPE) {
             return new ActivityDailyDigestNotificationUnregisterHandler();
-        } else if (type == NotificationUnregisterUtils.MASSMESSAGING_TYPE) {
-            return new MassmessagingNotificationUnregisterHandler();
         } else {
             return null;
         }

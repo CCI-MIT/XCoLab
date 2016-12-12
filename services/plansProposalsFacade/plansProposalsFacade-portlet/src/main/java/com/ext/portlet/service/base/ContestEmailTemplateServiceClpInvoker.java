@@ -9,30 +9,30 @@ import java.util.Arrays;
  * @generated
  */
 public class ContestEmailTemplateServiceClpInvoker {
-    private String _methodName382;
-    private String[] _methodParameterTypes382;
-    private String _methodName383;
-    private String[] _methodParameterTypes383;
+    private String _methodName334;
+    private String[] _methodParameterTypes334;
+    private String _methodName335;
+    private String[] _methodParameterTypes335;
 
     public ContestEmailTemplateServiceClpInvoker() {
-        _methodName382 = "getBeanIdentifier";
+        _methodName334 = "getBeanIdentifier";
 
-        _methodParameterTypes382 = new String[] {  };
+        _methodParameterTypes334 = new String[] {  };
 
-        _methodName383 = "setBeanIdentifier";
+        _methodName335 = "setBeanIdentifier";
 
-        _methodParameterTypes383 = new String[] { "java.lang.String" };
+        _methodParameterTypes335 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
         Object[] arguments) throws Throwable {
-        if (_methodName382.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes382, parameterTypes)) {
+        if (_methodName334.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes334, parameterTypes)) {
             return ContestEmailTemplateServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName383.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes383, parameterTypes)) {
+        if (_methodName335.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes335, parameterTypes)) {
             ContestEmailTemplateServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

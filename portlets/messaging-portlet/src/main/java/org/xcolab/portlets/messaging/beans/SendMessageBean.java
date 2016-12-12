@@ -2,7 +2,6 @@ package org.xcolab.portlets.messaging.beans;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
 
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
@@ -39,9 +38,9 @@ public class SendMessageBean implements Serializable {
         this.replyMessage = replyMessage;
     }
 
-    public SendMessageBean(User user) {
+    public SendMessageBean(long memberId) {
         this();
-        numberOfMessagesLeft = MessagingClient.getNumberOfMessagesLeft(user.getUserId());
+        numberOfMessagesLeft = MessagingClient.getNumberOfMessagesLeft(memberId);
     }
 
     public SendMessageBean() {

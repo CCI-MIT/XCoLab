@@ -16,6 +16,7 @@ public interface MemberDao {
     boolean updatePassword(long memberId, String hashedPassword);
 
     Integer getMemberMaterializedPoints(Long memberId);
+    Integer getMemberHypotheticalPoints(Long memberId);
 
     Integer getMemberActivityCount(Long memberId);
 

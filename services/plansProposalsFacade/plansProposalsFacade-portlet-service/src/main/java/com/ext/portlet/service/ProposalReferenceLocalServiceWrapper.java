@@ -277,44 +277,6 @@ public class ProposalReferenceLocalServiceWrapper
             parameterTypes, arguments);
     }
 
-    @Override
-    public java.util.List<com.ext.portlet.model.ProposalReference> getByProposalId(
-        long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _proposalReferenceLocalService.getByProposalId(proposalId);
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.ProposalReference> getBySubProposalId(
-        long subProposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _proposalReferenceLocalService.getBySubProposalId(subProposalId);
-    }
-
-    @Override
-    public com.ext.portlet.model.ProposalReference getByProposalIdSubProposalId(
-        long proposalId, long subProposalId)
-        throws com.ext.portlet.NoSuchProposalReferenceException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _proposalReferenceLocalService.getByProposalIdSubProposalId(proposalId,
-            subProposalId);
-    }
-
-    @Override
-    public void populateTable()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _proposalReferenceLocalService.populateTable();
-    }
-
-    @Override
-    public void populateTableWithProposal(
-        com.ext.portlet.model.Proposal proposal)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _proposalReferenceLocalService.populateTableWithProposal(proposal);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

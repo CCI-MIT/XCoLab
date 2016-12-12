@@ -45,14 +45,6 @@ public class PlanSectionDefinitionLocalServiceClp
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
-    private String _methodName19;
-    private String[] _methodParameterTypes19;
-    private String _methodName20;
-    private String[] _methodParameterTypes20;
-    private String _methodName21;
-    private String[] _methodParameterTypes21;
-    private String _methodName22;
-    private String[] _methodParameterTypes22;
 
     public PlanSectionDefinitionLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -147,30 +139,6 @@ public class PlanSectionDefinitionLocalServiceClp
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
-
-        _methodName19 = "store";
-
-        _methodParameterTypes19 = new String[] {
-                "com.ext.portlet.model.PlanSectionDefinition"
-            };
-
-        _methodName20 = "getFocusArea";
-
-        _methodParameterTypes20 = new String[] {
-                "com.ext.portlet.model.PlanSectionDefinition"
-            };
-
-        _methodName21 = "getPlanSectionDefinition";
-
-        _methodParameterTypes21 = new String[] {
-                "com.ext.portlet.model.FocusArea", "java.lang.String", "long"
-            };
-
-        _methodName22 = "getAdditionalIds";
-
-        _methodParameterTypes22 = new String[] {
-                "com.ext.portlet.model.PlanSectionDefinition"
-            };
     }
 
     @Override
@@ -690,121 +658,5 @@ public class PlanSectionDefinitionLocalServiceClp
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void store(com.ext.portlet.model.PlanSectionDefinition psd)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        try {
-            _invokableLocalService.invokeMethod(_methodName19,
-                _methodParameterTypes19,
-                new Object[] { ClpSerializer.translateInput(psd) });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-    }
-
-    @Override
-    public com.ext.portlet.model.FocusArea getFocusArea(
-        com.ext.portlet.model.PlanSectionDefinition psd)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName20,
-                    _methodParameterTypes20,
-                    new Object[] { ClpSerializer.translateInput(psd) });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
-            }
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.FocusArea) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public com.ext.portlet.model.PlanSectionDefinition getPlanSectionDefinition(
-        com.ext.portlet.model.FocusArea focusArea, java.lang.String type,
-        long contestTierType)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName21,
-                    _methodParameterTypes21,
-                    new Object[] {
-                        ClpSerializer.translateInput(focusArea),
-                        
-                    ClpSerializer.translateInput(type),
-                        
-                    contestTierType
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.PlanSectionDefinition) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public java.util.List<java.lang.Long> getAdditionalIds(
-        com.ext.portlet.model.PlanSectionDefinition planSectionDefinition) {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName22,
-                    _methodParameterTypes22,
-                    new Object[] {
-                        ClpSerializer.translateInput(planSectionDefinition)
-                    });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.List<java.lang.Long>) ClpSerializer.translateOutput(returnObj);
     }
 }

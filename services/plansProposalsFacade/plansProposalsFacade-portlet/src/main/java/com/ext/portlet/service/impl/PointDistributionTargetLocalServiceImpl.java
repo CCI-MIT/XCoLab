@@ -22,9 +22,5 @@ import java.util.Collection;
  */
 public class PointDistributionTargetLocalServiceImpl
     extends PointDistributionTargetLocalServiceBaseImpl {
-	
-	@Override
-	public Collection<PointDistributionTarget> findByContestId(long contestId) throws SystemException {
-		return pointDistributionTargetPersistence.findByContestId(contestId);
-	}
+
 }

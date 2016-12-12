@@ -45,16 +45,6 @@ public class ProposalReferenceLocalServiceClp
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
-    private String _methodName19;
-    private String[] _methodParameterTypes19;
-    private String _methodName20;
-    private String[] _methodParameterTypes20;
-    private String _methodName21;
-    private String[] _methodParameterTypes21;
-    private String _methodName22;
-    private String[] _methodParameterTypes22;
-    private String _methodName23;
-    private String[] _methodParameterTypes23;
 
     public ProposalReferenceLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -157,26 +147,6 @@ public class ProposalReferenceLocalServiceClp
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
-
-        _methodName19 = "getByProposalId";
-
-        _methodParameterTypes19 = new String[] { "long" };
-
-        _methodName20 = "getBySubProposalId";
-
-        _methodParameterTypes20 = new String[] { "long" };
-
-        _methodName21 = "getByProposalIdSubProposalId";
-
-        _methodParameterTypes21 = new String[] { "long", "long" };
-
-        _methodName22 = "populateTable";
-
-        _methodParameterTypes22 = new String[] {  };
-
-        _methodName23 = "populateTableWithProposal";
-
-        _methodParameterTypes23 = new String[] { "com.ext.portlet.model.Proposal" };
     }
 
     @Override
@@ -706,148 +676,5 @@ public class ProposalReferenceLocalServiceClp
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.ProposalReference> getByProposalId(
-        long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19, new Object[] { proposalId });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.List<com.ext.portlet.model.ProposalReference>) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.ProposalReference> getBySubProposalId(
-        long subProposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName20,
-                    _methodParameterTypes20, new Object[] { subProposalId });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.List<com.ext.portlet.model.ProposalReference>) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public com.ext.portlet.model.ProposalReference getByProposalIdSubProposalId(
-        long proposalId, long subProposalId)
-        throws com.ext.portlet.NoSuchProposalReferenceException,
-            com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName21,
-                    _methodParameterTypes21,
-                    new Object[] { proposalId, subProposalId });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.ext.portlet.NoSuchProposalReferenceException) {
-                throw (com.ext.portlet.NoSuchProposalReferenceException) t;
-            }
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.ProposalReference) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public void populateTable()
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        try {
-            _invokableLocalService.invokeMethod(_methodName22,
-                _methodParameterTypes22, new Object[] {  });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
-            }
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-    }
-
-    @Override
-    public void populateTableWithProposal(
-        com.ext.portlet.model.Proposal proposal)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        try {
-            _invokableLocalService.invokeMethod(_methodName23,
-                _methodParameterTypes23,
-                new Object[] { ClpSerializer.translateInput(proposal) });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.PortalException) {
-                throw (com.liferay.portal.kernel.exception.PortalException) t;
-            }
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
     }
 }

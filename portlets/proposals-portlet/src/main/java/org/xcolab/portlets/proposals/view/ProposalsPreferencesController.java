@@ -7,9 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -22,13 +19,14 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
+import org.xcolab.entity.utils.EntityIdListUtil;
 import org.xcolab.enums.ContestPhaseTypeValue;
-import org.xcolab.mail.ContestPhasePromotionEmail;
+import org.xcolab.portlets.proposals.utils.ContestPhasePromotionEmail;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
+import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import org.xcolab.utils.IdListUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -74,7 +72,7 @@ public class ProposalsPreferencesController {
     }
 
     @RequestMapping
-    public String showPreferences(RenderRequest request, RenderResponse response, Model model) throws SystemException, PortalException {
+    public String showPreferences(RenderRequest request, RenderResponse response, Model model) {
         model.addAttribute("prefs", new ProposalsPreferencesWrapper(request));
 
         //get all contests
@@ -138,7 +136,7 @@ public class ProposalsPreferencesController {
         Long ribbonId = preferences.getRibbonId();
 
         //moving parameters are set
-        String message = moveProposals(IdListUtil.PROPOSALS.fromIdList(proposalIdsToBeMoved), moveFromContestId, moveToContestPhaseId, ribbonId, false,
+        String message = moveProposals(EntityIdListUtil.PROPOSALS.fromIdList(proposalIdsToBeMoved), moveFromContestId, moveToContestPhaseId, ribbonId, false,
                 request);
         model.addAttribute("message", message);
     }
@@ -292,7 +290,7 @@ public class ProposalsPreferencesController {
                         }
                     }
                     if (lastPhaseContainingProposal == null) {
-                        throw new SystemException("Proposal is not contained in any phases");
+                        throw new IllegalStateException("Proposal is not contained in any phases");
                     }
 
                     //let's make sure that the last phase is before the phase which we move the proposal to!
@@ -307,7 +305,7 @@ public class ProposalsPreferencesController {
                         //update the last phase association - set the end version to the current version minus one
                         Integer currentProposalVersion = ProposalsContextUtil.getClients(request).getProposalClient().countProposalVersions(proposal.getProposalId());
                         if (currentProposalVersion < 0) {
-                            throw new SystemException("Proposal not found");
+                            throw new IllegalStateException("Proposal not found");
                         }
                         try {
                             Proposal2Phase oldP2p = proposalsContext.getClients(request).getProposalPhaseClient().getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), lastPhaseContainingProposal.getContestPhasePK());
@@ -361,7 +359,7 @@ public class ProposalsPreferencesController {
                 }
 
                 message.append("The operation completed successfully!<br/>\n");
-            } catch (SystemException|ContestNotFoundException e) {
+            } catch (ContestNotFoundException e) {
                 _log.warn("Exception thrown while moving proposals", e);
                 message.append("There was a problem moving the proposals.<br/>\n");
             }

@@ -4,7 +4,6 @@
 <liferay-portlet-app>
 	<portlet>
 		<portlet-name>contests-portlet</portlet-name>
-        <indexer-class>org.xcolab.portlets.contests.Indexer</indexer-class>
         <instanceable>true</instanceable>
         <requires-namespaced-parameters>false</requires-namespaced-parameters> 
 	</portlet>

@@ -18,7 +18,7 @@ import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
-import org.xcolab.utils.LinkUtils;
+import org.xcolab.entity.utils.LinkUtils;
 
 import java.io.IOException;
 

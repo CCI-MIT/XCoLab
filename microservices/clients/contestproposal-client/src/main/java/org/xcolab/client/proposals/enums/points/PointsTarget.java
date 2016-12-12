@@ -1,6 +1,5 @@
 package org.xcolab.client.proposals.enums.points;
 
-
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -12,15 +11,17 @@ public class PointsTarget {
 	private double percentage;
 	private double percentageIn;
 
-	public PointsTarget(){}
+	public PointsTarget() {
+	}
+
 	public PointsTarget(PointsTarget pointsTarget) {
 		this.proposalId = pointsTarget.getProposalId();
 		this.userId = pointsTarget.getUserId();
 		this.points = pointsTarget.getPoints();
 		this.percentage = pointsTarget.getPercentage();
 		this.percentageIn = 1;
-
 	}
+
 	public PointsTarget(PointsTarget target, double percentageIn) {
 		this(target);
 		this.percentageIn = percentageIn;
@@ -29,22 +30,26 @@ public class PointsTarget {
 	public long getProposalId() {
 		return proposalId;
 	}
+
 	public void setProposalId(long proposalId) {
 		this.proposalId = proposalId;
 	}
+
 	public long getUserId() {
 		return userId;
 	}
+
 	public void setUserId(long userId) {
 		this.userId = userId;
 	}
+
 	public double getPoints() {
 		return points;
 	}
+
 	public void setPoints(double points) {
 		this.points = points;
 	}
-
 
 	public void setPercentage(double percentage) {
 		this.percentage = percentage;
@@ -71,10 +76,11 @@ public class PointsTarget {
         target.percentage = percentage;
         return target;
     }
+
 	public Proposal getProposal(){
 		try {
 			return ProposalClientUtil.getProposal(this.getProposalId());
-		}catch (ProposalNotFoundException ignored){
+		} catch (ProposalNotFoundException ignored) {
 			return null;
 		}
 	}
@@ -82,6 +88,5 @@ public class PointsTarget {
 	public double getPercentage() {
 		return this.percentage * percentageIn;
 	}
-
 	
 }

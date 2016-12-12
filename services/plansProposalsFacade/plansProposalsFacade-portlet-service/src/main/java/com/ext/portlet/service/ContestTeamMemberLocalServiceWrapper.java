@@ -275,51 +275,6 @@ public class ContestTeamMemberLocalServiceWrapper
             parameterTypes, arguments);
     }
 
-    @Override
-    public com.ext.portlet.model.ContestTeamMember addContestTeamMember(
-        java.lang.Long userId, java.lang.Long contestPk,
-        org.xcolab.enums.MemberRole memberRole)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestTeamMemberLocalService.addContestTeamMember(userId,
-            contestPk, memberRole);
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.ContestTeamMember> findForContest(
-        java.lang.Long contestPk)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestTeamMemberLocalService.findForContest(contestPk);
-    }
-
-    @Override
-    public void store(com.ext.portlet.model.ContestTeamMember contestTeamMember)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _contestTeamMemberLocalService.store(contestTeamMember);
-    }
-
-    @Override
-    public void delete(
-        com.ext.portlet.model.ContestTeamMember contestTeamMember)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _contestTeamMemberLocalService.delete(contestTeamMember);
-    }
-
-    @Override
-    public com.liferay.portal.model.User getUser(
-        com.ext.portlet.model.ContestTeamMember contestTeamMember)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestTeamMemberLocalService.getUser(contestTeamMember);
-    }
-
-    @Override
-    public com.ext.portlet.model.Contest getContest(
-        com.ext.portlet.model.ContestTeamMember contestTeamMember)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _contestTeamMemberLocalService.getContest(contestTeamMember);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

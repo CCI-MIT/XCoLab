@@ -8,7 +8,6 @@ package org.xcolab.hooks.climatecolab;
 
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -25,8 +24,8 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,12 +42,13 @@ public class EXTServicePreAction extends Action {
     @Override
     public void run(HttpServletRequest req, HttpServletResponse res) throws ActionException {
 
-
         ThemeDisplay themeDisplay = (ThemeDisplay) req.getAttribute(WebKeys.THEME_DISPLAY);
         Map<String, Object> vmVariables = (Map) req.getAttribute(WebKeys.VM_VARIABLES);
         if (vmVariables == null) {
             vmVariables = new HashMap<>();
         }
+        //Liferay doesn't seem to set this reliably
+        req.setAttribute("javax.servlet.request", req);
 
         List<Theme> themes = ThemeLocalServiceUtil.getThemes(themeDisplay.getCompanyId());
 
@@ -60,24 +60,31 @@ public class EXTServicePreAction extends Action {
             }
         }
 
-        vmVariables.put("unreadMessages", MessagingClient.countUnreadMessagesForUser(themeDisplay.getUserId()));
-
-        //Decide whether to show contest menu items
-        try {
-            vmVariables.put("_contest_pages", ContestTypeLocalServiceUtil.getActiveContestTypes());
-        } catch (SystemException e) {
-            _log.error("Could not retrieve contest types to populate menu items", e);
+        final long memberId = MemberAuthUtil.getMemberId(req);
+        final boolean isImpersonating = MemberAuthUtil.isImpersonating(req);
+        vmVariables.put("_showImpersonationBar", isImpersonating);
+        if (isImpersonating) {
+            final long trueMemberId = MemberAuthUtil.getRealMemberId(req);
+            vmVariables.put("_trueMember", MembersClient.getMemberUnchecked(trueMemberId));
         }
+        if (memberId != 0L) {
+            Member member = MembersClient.getMemberUnchecked(memberId);
+            vmVariables.put("member", member);
+        }
+
+        vmVariables.put("unreadMessages", MessagingClient.countUnreadMessagesForUser(memberId));
+
+        vmVariables.put("_contest_pages", ContestClientUtil.getActiveContestTypes());
         vmVariables.put("_colab_name", ConfigurationAttributeKey.COLAB_NAME.get());
         vmVariables.put("_colab_short_name", ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
         vmVariables.put("_googleAnalyticsKey", ConfigurationAttributeKey.GOOGLE_ANALYTICS_KEY.get());
 
         vmVariables.put("betaRibbonShow", ConfigurationAttributeKey.BETA_RIBBON_SHOW.get());
+        vmVariables.put("_showSearchMenuItem", ConfigurationAttributeKey.SHOW_SEARCH_MENU_ITEM.get());
         vmVariables.put("_openGraphShareTitle", ConfigurationAttributeKey.OPEN_GRAPH_SHARE_TITLE.get());
         vmVariables.put("_openGraphShareDescription", ConfigurationAttributeKey.OPEN_GRAPH_SHARE_DESCRIPTION.get());
 
-        vmVariables.put("isSharedColab",
-                ConfigurationAttributeKey.IS_SHARED_COLAB.get());
+        vmVariables.put("isSharedColab", ConfigurationAttributeKey.IS_SHARED_COLAB.get());
         final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.get();
         final String partnerColabImgsAndClasses = partnerColabName.replace(" ","");
         vmVariables.put("partnerColabName",partnerColabName);
@@ -106,14 +113,6 @@ public class EXTServicePreAction extends Action {
                 _log.error("An exception has been thrown when trying to parse contest id " + contestIdStr);
             } catch (PortalException | SystemException e) {
                 _log.error("An exception has been thrown when loading contest with id " + contestIdStr, e);
-            }
-        }
-        if (themeDisplay.getUserId()!= 0L) {
-            try {
-                Member member = MembersClient.getMember(themeDisplay.getUserId());
-                vmVariables.put("member", member);
-            } catch(MemberNotFoundException ignore) {
-
             }
         }
 

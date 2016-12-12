@@ -277,35 +277,6 @@ public class ProposalSupporterLocalServiceWrapper
             parameterTypes, arguments);
     }
 
-    @Override
-    public com.ext.portlet.model.ProposalSupporter create(long proposalID,
-        long userID) {
-        return _proposalSupporterLocalService.create(proposalID, userID);
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.ProposalSupporter> getProposals(
-        long userId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _proposalSupporterLocalService.getProposals(userId);
-    }
-
-    @Override
-    public java.util.List<com.liferay.portal.model.User> getSupportingUsersForProposal(
-        long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _proposalSupporterLocalService.getSupportingUsersForProposal(proposalId);
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.ProposalSupporter> getProposalSupportersForProposals(
-        java.util.List<com.ext.portlet.model.Proposal> proposals)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _proposalSupporterLocalService.getProposalSupportersForProposals(proposals);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

@@ -6,13 +6,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * Utility class for common conversions of ids lists to strings or models.
  */
-//TODO: this is currently an incomplete copy of the equivalent in liferay's service layer
 public final class IdListUtil {
     private final static Logger _log = LoggerFactory.getLogger(IdListUtil.class);
 
@@ -42,50 +42,7 @@ public final class IdListUtil {
     /**
      * Converts a list of ids into a comma separated string
      */
-    public static String getStringFromIds(List<Long> ids) {
+    public static String getStringFromIds(Collection<Long> ids) {
         return StringUtils.join(ids, ',');
     }
-
-    public static abstract class IdListObjectConverter<T> {
-
-        public final List<T> fromIdList(List<Long> idList) {
-            List<T> objects = new ArrayList<>(idList.size());
-            for (long id : idList) {
-                objects.add(getObject(id));
-            }
-            return objects;
-        }
-
-        public final List<Long> toIdList(List<T> objectList) {
-            List<Long> ids = new ArrayList<>(objectList.size());
-            for (T object : objectList) {
-                ids.add(getId(object));
-            }
-            return ids;
-        }
-
-        public final String toIdString(List<T> objects) {
-            return getStringFromIds(toIdList(objects));
-        }
-
-        public final List<T> fromIdString(String idString) {
-            return fromIdList(getIdsFromString(idString));
-        }
-
-        /**
-         * Retrieves a single object of type T from an id.
-         * @param id the id of the object to be fetched
-         * @return an object of type T
-         */
-        public abstract T getObject(long id);
-
-        /**
-         * Gets the id of a single object of type T
-         * @param object the object
-         * @return the object's id
-         */
-        public abstract long getId(T object);
-    }
-
-
 }

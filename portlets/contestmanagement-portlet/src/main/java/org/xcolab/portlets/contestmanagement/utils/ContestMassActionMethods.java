@@ -1,13 +1,5 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
-
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ProposalLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.util.PortalUtil;
-import com.liferay.util.mail.MailEngineException;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -15,22 +7,25 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
 import org.xcolab.portlets.contestmanagement.entities.MassActionRequiresConfirmationException;
-import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.html.HtmlUtil;
 
-import javax.mail.internet.AddressException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.*;
 
 public class ContestMassActionMethods {
 
@@ -47,39 +42,31 @@ public class ContestMassActionMethods {
         csvExportHelper.addRowToExportData(CSV_EXPORT_HEADER);
 
         for (Long contestId : contestList) {
-            try {
-                List<Proposal> proposalsInActiveContestPhase = getProposalsInActiveContestPhase(contestId);
-                ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contestId);
-                csvExportHelper
-                        .addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase, activeContestPhase);
-            } catch (SystemException e) {
-                throw new DatabaseAccessException(e);
-            } catch (PortalException e) {
-                throw new InternalException("Failed to export data to csv: ", e);
-            }
+            List<Proposal> proposalsInActiveContestPhase = getProposalsInActiveContestPhase(contestId);
+            ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contestId);
+            csvExportHelper
+                    .addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase, activeContestPhase);
         }
 
         String exportFileName = "reportOfPeopleInCurrentPhase";
         csvExportHelper.initiateDownload(exportFileName, request, response);
     }
 
-    public static void sendMassMessage(List<Long> contestList, Object massMessageWrapperObject, PortletRequest request)
-            throws PortalException, SystemException, MailEngineException, AddressException,
-            UnsupportedEncodingException {
+    public static void sendMassMessage(List<Long> contestList, Object massMessageWrapperObject, PortletRequest request) {
 
         MassMessageBean massMessageBean = (MassMessageBean) massMessageWrapperObject;
         Set<Long> recipientIds = new HashSet<>();
         final StringBuilder contestNames = new StringBuilder();
 
         for (Long contestId : contestList) {
-            contestNames.append(ContestLocalServiceUtil.getContest(contestId).getContestShortName()).append("; ");
+            contestNames.append(ContestClientUtil.getContest(contestId).getContestShortName()).append("; ");
             List<Proposal> proposalsInActiveContestPhase = getProposalsInActiveContestPhase(contestId);
 
             for (Proposal proposal : proposalsInActiveContestPhase) {
-                List<User> proposalMember = ProposalLocalServiceUtil.getMembers(proposal.getProposalId());
-                for (User user : proposalMember) {
-                    if (!recipientIds.contains(user.getUserId())) {
-                        recipientIds.add(user.getUserId());
+                List<Member> proposalMember = ProposalClientUtil.getProposalMembers(proposal.getProposalId());
+                for (Member member : proposalMember) {
+                    if (!recipientIds.contains(member.getUserId())) {
+                        recipientIds.add(member.getUserId());
                     }
                 }
             }
@@ -103,91 +90,84 @@ public class ContestMassActionMethods {
     }
 
     public static void changeSubscriptionStatus(List<Long> contestList, Object subscriptionStatusObject,
-                                                PortletRequest request) throws PortalException, SystemException {
-        Long loggedInUserId = PortalUtil.getUserId(request);
+                                                PortletRequest request) {
+        long memberId = MemberAuthUtil.getMemberId(request);
         for (Long contestId : contestList) {
             Boolean subscriptionStatus = (boolean) subscriptionStatusObject;
             if (subscriptionStatus) {
-                ContestLocalServiceUtil.subscribe(contestId, loggedInUserId);
+                ContestClientUtil.subscribeMemberToContest(contestId, memberId);
             } else {
-                ContestLocalServiceUtil.unsubscribe(contestId, loggedInUserId);
+                ContestClientUtil.unsubscribeMemberFromContest(contestId, memberId);
             }
         }
     }
 
-    private static void deleteContestPhases(Long contestId) throws PortalException, SystemException {
-
-
+    private static void deleteContestPhases(Long contestId) {
         List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(contestId);
         for (ContestPhase contestPhase : contestPhases) {
             ContestClientUtil.deleteContestPhase(contestPhase.getContestPhasePK());
         }
     }
 
-    private static void deleteContestAndPhases(Long contestId) throws PortalException, SystemException {
+    private static void deleteContestAndPhases(Long contestId) {
         deleteContestPhases(contestId);
-        ContestLocalServiceUtil.deleteContest(contestId);
+        ContestClientUtil.deleteContest(contestId);
     }
 
     public static void deleteContest(List<Long> contestList, Object actionConfirmed, PortletRequest request)
-            throws PortalException, SystemException, MassActionRequiresConfirmationException {
-        if((Boolean) actionConfirmed) {
+            throws MassActionRequiresConfirmationException {
+        if ((Boolean) actionConfirmed) {
             for (Long contestId : contestList) {
-                ContestLocalServiceUtil.deleteContest(contestId);
+                ContestClientUtil.deleteContest(contestId);
             }
-        }
-        else {
+        } else {
             throw new MassActionRequiresConfirmationException();
         }
     }
 
     public static void deleteContestwithPhases(List<Long> contestList, Object actionConfirmed, PortletRequest request)
-            throws PortalException, SystemException, MassActionRequiresConfirmationException {
-        if((Boolean) actionConfirmed) {
+            throws MassActionRequiresConfirmationException {
+        if ((Boolean) actionConfirmed) {
             for (Long contestId : contestList) {
                 List<ContestPhase> contestPhases =
                         ContestClientUtil.getAllContestPhases(contestId);
                 if (!contestPhases.isEmpty()) {
                     deleteContestAndPhases(contestId);
                 } else {
-                    ContestLocalServiceUtil.deleteContest(contestId);
+                    ContestClientUtil.deleteContest(contestId);
                 }
             }
-        }
-        else {
+        } else {
             throw new MassActionRequiresConfirmationException();
         }
     }
 
-    public static void setFlag(List<Long> contestList, Object flagTexToolTipValue, PortletRequest request)
-            throws PortalException, SystemException {
+    public static void setFlag(List<Long> contestList, Object flagTexToolTipValue, PortletRequest request) {
         for (Long contestId : contestList) {
-            try{
+            try {
                 Contest contest = ContestClientUtil.getContest(contestId);
                 ContestFlagTextToolTipBean contestFlagTextToolTipBean = (ContestFlagTextToolTipBean) flagTexToolTipValue;
                 contestFlagTextToolTipBean.persist(contest);
-            }catch (ContestNotFoundException ignored){
+            } catch (ContestNotFoundException ignored) {
 
             }
 
         }
     }
 
-    public static void setModelSettings(List<Long> contestList, Object modelSettings, PortletRequest request)
-            throws PortalException, SystemException {
+    public static void setModelSettings(List<Long> contestList, Object modelSettings, PortletRequest request) {
         for (Long contestId : contestList) {
             try {
                 Contest contest = ContestClientUtil.getContest(contestId);
                 ContestModelSettingsBean contestModelSettingsBean = (ContestModelSettingsBean) modelSettings;
                 contestModelSettingsBean.persist(contest);
-            }catch (ContestNotFoundException ignored){
+            } catch (ContestNotFoundException ignored){
 
             }
         }
     }
 
-    private static List<Proposal> getProposalsInActiveContestPhase(Long contestPK)
-            throws PortalException, SystemException {
+    private static List<Proposal> getProposalsInActiveContestPhase(Long contestPK) {
         ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contestPK);
         return ProposalClientUtil.getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK());
     }

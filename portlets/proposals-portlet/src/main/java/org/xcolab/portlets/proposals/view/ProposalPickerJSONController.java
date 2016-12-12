@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -20,9 +18,11 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil;
 import org.xcolab.portlets.proposals.utils.ProposalPickerSortingUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
+import org.xcolab.util.exceptions.InternalException;
 
 import java.io.IOException;
 import java.util.Date;
@@ -55,24 +55,23 @@ public class ProposalPickerJSONController {
 			@RequestParam(required = false) String sortOrder,
 			@RequestParam(required = false) String sortColumn,
 			@RequestParam(required = false) Long sectionId,
-			@RequestParam(required = false) long contestPK) throws IOException,
-			SystemException, PortalException {
+			@RequestParam(required = false) long contestPK) throws IOException {
 
 		List<Pair<Proposal, Date>> proposals;
-		final long userId = Long.parseLong(request.getRemoteUser());
+		final long memberId = MemberAuthUtil.getMemberId(request);
 
 		switch (requestType.toUpperCase()) {
 			case "SUBSCRIPTIONSANDSUPPORTING":
 				proposals = ProposalPickerFilterUtil.getFilteredSubscribedSupportingProposalsForUser(
-						userId, filterType, sectionId, request, proposalsContext);
+						memberId, filterType, sectionId, request, proposalsContext);
 				break;
 			case "SUBSCRIPTIONS":
 				proposals = ProposalPickerFilterUtil.getFilteredSubscribedProposalsForUser(
-						userId, filterType, sectionId, request, proposalsContext);
+						memberId, filterType, sectionId, request, proposalsContext);
 				break;
 			case "SUPPORTING":
 				proposals = ProposalPickerFilterUtil.getFilteredSupportingProposalsForUser(
-						userId, filterType, sectionId, request, proposalsContext);
+						memberId, filterType, sectionId, request, proposalsContext);
 				break;
 			case "ALL":
 			case "CONTESTS":
@@ -81,7 +80,7 @@ public class ProposalPickerJSONController {
 				break;
 			default:
 				_log.error("Proposal picker was loaded with unknown requestType " + requestType);
-				throw new PortalException("Unknown requestType " + requestType);
+				throw new InternalException("Unknown requestType " + requestType);
 		}
 
 		int totalCount;
@@ -120,8 +119,7 @@ public class ProposalPickerJSONController {
 			@RequestParam(required = false) int end,
 			@RequestParam(required = false) String sortOrder,
 			@RequestParam(required = false, value = "contestSortColumn") String sortColumn,
-			@RequestParam(required = false) Long sectionId) throws IOException,
-			SystemException, PortalException {
+			@RequestParam(required = false) Long sectionId) throws IOException {
 
 		List<Pair<Contest, Date>> contests = ProposalPickerFilterUtil.getTextFilteredContests(sectionId, filterText);
 		//List<Pair<ContestWrapper, Date>> contests = ProposalPickerFilterUtil.getAllContests();
@@ -156,13 +154,12 @@ public class ProposalPickerJSONController {
 	 */
 	@ResourceMapping("proposalPickerCounter")
 	public void proposalPickerCounter(ResourceRequest request,
-									  ResourceResponse response) throws IOException, SystemException,
-			PortalException {
+									  ResourceResponse response) throws IOException {
 				/*
 		TODO: Removed to increase performance
 		String filterType = request.getParameter("filterKey");
 		long sectionId = Long.parseLong(request.getParameter("sectionId"));
-		long userId = Long.parseLong(request.getRemoteUser());
+		long userId = MemberAuthUtil.getMemberId(request);
 		int numberOfSubscriptions = ProposalPickerFilterUtil.getFilteredSubscribedProposalsForUser(
 				userId, filterType, sectionId, request, proposalsContext).size();
 		int numberOfSupporting = ProposalPickerFilterUtil.getFilteredSupportingProposalsForUser(userId,
@@ -186,7 +183,7 @@ public class ProposalPickerJSONController {
 	}
 
 	private String getJSONObjectMapping(List<Pair<Proposal, Date>> proposals,
-										int totalNumberOfProposals) throws SystemException, PortalException {
+										int totalNumberOfProposals) {
 		JSONObject wrapper = JSONFactoryUtil.createJSONObject();
 		JSONArray proposalsJSON = JSONFactoryUtil.createJSONArray();
 
@@ -233,8 +230,7 @@ public class ProposalPickerJSONController {
 	}
 
 	private String getJSONObjectMappingContests(
-			List<Pair<Contest, Date>> contests, int totalNumberOfContests, Map<Long, String> removedContests)
-			throws SystemException, PortalException {
+			List<Pair<Contest, Date>> contests, int totalNumberOfContests, Map<Long, String> removedContests) {
 		JSONObject wrapper = JSONFactoryUtil.createJSONObject();
 		JSONArray proposalsJSON = JSONFactoryUtil.createJSONArray();
 

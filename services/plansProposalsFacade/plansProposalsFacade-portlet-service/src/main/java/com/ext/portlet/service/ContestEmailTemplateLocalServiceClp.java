@@ -45,8 +45,6 @@ public class ContestEmailTemplateLocalServiceClp
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
-    private String _methodName19;
-    private String[] _methodParameterTypes19;
 
     public ContestEmailTemplateLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -141,10 +139,6 @@ public class ContestEmailTemplateLocalServiceClp
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
-
-        _methodName19 = "getEmailTemplateByType";
-
-        _methodParameterTypes19 = new String[] { "java.lang.String" };
     }
 
     @Override
@@ -669,33 +663,5 @@ public class ContestEmailTemplateLocalServiceClp
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public com.ext.portlet.model.ContestEmailTemplate getEmailTemplateByType(
-        java.lang.String type)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19,
-                    new Object[] { ClpSerializer.translateInput(type) });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (com.ext.portlet.model.ContestEmailTemplate) ClpSerializer.translateOutput(returnObj);
     }
 }

@@ -3,11 +3,6 @@ package org.xcolab.portlets.contestmanagement.controller.details;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -23,8 +18,6 @@ import javax.portlet.PortletRequest;
 
 public abstract class ContestDetailsBaseTabController extends BaseTabController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestDetailsBaseTabController.class);
-
     private Contest contest;
     private Contest contestWrapper;
     protected TabWrapper tabWrapper;
@@ -34,14 +27,13 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
 
     @ModelAttribute("tabs")
     @Override
-    public List<TabWrapper> populateTabs(Model model, PortletRequest request) throws PortalException, SystemException {
+    public List<TabWrapper> populateTabs(Model model, PortletRequest request) {
         return getAllVisibleTabsWrapped(request, ContestDetailsTabs.values());
     }
 
     @ModelAttribute("currentTabWrapped")
     @Override
-    public abstract TabWrapper populateCurrentTabWrapped(PortletRequest request)
-            throws PortalException, SystemException;
+    public abstract TabWrapper populateCurrentTabWrapped(PortletRequest request);
 
     @ModelAttribute("contestWrapper")
     public Contest populateContestWrapper(Model model, PortletRequest request) {
@@ -60,8 +52,7 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
     }
 
     @Override
-    public void setPageAttributes(PortletRequest request, Model model, TabEnum tab)
-            throws PortalException, SystemException {
+    public void setPageAttributes(PortletRequest request, Model model, TabEnum tab) {
 
         String pageTitle = contest.getContestShortName();
         String pageSubTitle = tab.getDisplayName() + " - " + pageTitle;

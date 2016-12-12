@@ -334,23 +334,22 @@ public class Proposal extends AbstractProposal {
         return null;
     }
 
-
-
     public String getProposalLinkUrl(Contest contest) {
         return getProposalLinkUrl(contest, 0L);
     }
 
     public String getProposalLinkUrl(Contest contest, long contestPhaseId) {
-        String link = "/";
         Long proposalId = this.getProposalId();
         ContestType contestType;
-        if(contest.getIsSharedContest() && ! contest.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME.get())) {
-            contestType =
-                    ContestClientUtil.getClient().getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
-        }else{
+        if (contest.getIsSharedContest()
+                && !contest.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME.get())) {
+            contestType = ContestClientUtil.getClient()
+                    .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
+        } else {
             contestType =
                     contestClient.getContestType(contest.getContestTypeId());
         }
+        String link = "/";
         link += contestType.getFriendlyUrlStringContests();
 
         String friendlyUrlStringProposal = contestType.getFriendlyUrlStringProposal();
@@ -375,8 +374,6 @@ public class Proposal extends AbstractProposal {
                 .format(link, contest.getContestYear(), contest.getContestUrlName(), proposalId);
     }
 
-
-
     public boolean isDeleted() {
         if (this.getProposalId() == 0) {
             return false;
@@ -397,6 +394,7 @@ public class Proposal extends AbstractProposal {
 
     }
 
+    @Override
     public Long getFellowDiscussionId() {
         long fellowDiscussionId = super.getFellowDiscussionId();
         if (fellowDiscussionId == 0) {
@@ -426,18 +424,18 @@ public class Proposal extends AbstractProposal {
         return proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.DESCRIPTION, "");
     }
 
-    public boolean isUserAmongFellows(Member memberInQuestion) {
+    public boolean isUserAmongFellows(long memberId) {
         for (Long fellowId : contestTeamMemberClient.getFellowsForContest(contest.getContestPK())) {
-            if (fellowId == memberInQuestion.getUserId()) {
+            if (fellowId == memberId) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean isUserAmongJudges(Member userInQuestion) {
+    public boolean isUserAmongJudges(long memberId) {
         for (Long judge : contestTeamMemberClient.getJudgesForContest(contest.getContestPK())) {
-            if (judge == userInQuestion.getUserId()) {
+            if (judge == memberId) {
                 return true;
             }
         }
@@ -499,11 +497,11 @@ public class Proposal extends AbstractProposal {
 
 
     public boolean isOpen() {
-        if( this.getProposalId() > 0 ) {
+        if (this.getProposalId() > 0) {
             ProposalAttribute attribute = proposalAttributeClient
                     .getProposalAttribute(this.getProposalId(), ProposalAttributeKeys.OPEN, 0L);
             return attribute != null && attribute.getNumericValue() > 0;
-        }else{
+        } else {
             return false;
         }
     }
@@ -721,7 +719,7 @@ public class Proposal extends AbstractProposal {
 
     public boolean isUserAmongSelectedJudge(Member user) {
         if (!getFellowScreeningNecessary()) {
-            return isUserAmongJudges(user);
+            return isUserAmongJudges(user.getUserId());
         }
 
         for (Long userId : getSelectedJudges()) {

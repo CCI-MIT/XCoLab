@@ -8,7 +8,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.pojo.FileEntry;
-import org.xcolab.utils.FileUploadUtil;
+import org.xcolab.entity.utils.upload.FileUploadUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
