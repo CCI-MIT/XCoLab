@@ -90,10 +90,10 @@ public class SearchBean implements Serializable {
     }
 
     public boolean getShowBlogReference() {
-        return ConfigurationAttributeKey.COLAB_SHORT_NAME.get().equals("CoLab");
+        return !ConfigurationAttributeKey.BLOG_URL.get().isEmpty();
     }
 
     public String getSearchBlogURL() {
-        return "http://news.climatecolab.com/?submit=Search&s=" + getSearchPhrase();
+        return ConfigurationAttributeKey.BLOG_URL.get() + "/?submit=Search&s=" + getSearchPhrase();
     }
 }
