@@ -1,15 +1,15 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 
-import com.ext.portlet.model.FocusAreaOntologyTerm;
-import com.ext.portlet.model.OntologySpace;
-import com.ext.portlet.model.OntologyTerm;
-import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
-import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
-import com.ext.portlet.service.OntologyTermLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.SystemException;
 
+import org.xcolab.client.contest.OntologyClient;
+import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
+import org.xcolab.client.contest.pojo.ontology.OntologySpace;
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.wrapper.OntologySpaceWrapper;
 import org.xcolab.wrapper.OntologyTermWrapper;
@@ -55,26 +55,20 @@ public class OntologyWrapper {
     }
 
     public List<Long> getOntologyTermIdsForFocusAreaOfContest(Contest contest) {
-        try {
             List<Long> ontologyTermIds = new ArrayList<>();
             Long focusAreaId = contest.getFocusAreaId();
-            for (FocusAreaOntologyTerm focusAreaOntologyTerm : FocusAreaOntologyTermLocalServiceUtil
-                    .findTermsByFocusArea(focusAreaId)) {
+            for (FocusAreaOntologyTerm focusAreaOntologyTerm : OntologyClientUtil.getFocusAreaOntologyTermsByFocusArea(focusAreaId)) {
                 Long ontologyTermId = focusAreaOntologyTerm.getOntologyTermId();
                 ontologyTermIds.add(ontologyTermId);
             }
             return ontologyTermIds;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 
     private void initOntologySpacesAndTerms() {
-        try {
-            List<OntologySpace> ontologySpacesRaw = OntologySpaceLocalServiceUtil
-                    .getOntologySpaces(0, Integer.MAX_VALUE);
-            List<OntologyTerm> ontologyTermsRaw = OntologyTermLocalServiceUtil
-                    .getOntologyTerms(0, Integer.MAX_VALUE);
+
+            List<OntologySpace> ontologySpacesRaw = OntologyClientUtil.getAllOntologySpaces();
+            List<OntologyTerm> ontologyTermsRaw = OntologyClientUtil.getAllOntologyTerms();
 
             for (OntologySpace space : ontologySpacesRaw) {
                 ontologySpaces.put(space.getId(), new OntologySpaceWrapper(space));
@@ -92,9 +86,7 @@ public class OntologyWrapper {
                             .setParent(ontologyTerms.get(term.getParentId()));
                 }
             }
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 
 }

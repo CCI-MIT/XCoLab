@@ -10,9 +10,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 
+
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestTeamBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
@@ -39,25 +40,18 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
     private static final String TAB_VIEW = "details/teamTab";
 
     @ModelAttribute("usersList")
-    public List<User> populateUsers() {
-        try {
-            return UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+    public List<Member> populateUsers() {
+            return MembersClient.listAllMembers();
     }
 
     @ModelAttribute("userNames")
     public List<String> populateUserNames() {
-        try {
             ArrayList<String> userNamesList = new ArrayList<>();
-            for (User user : UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE)) {
+            for (Member user : MembersClient.listAllMembers()) {
                 userNamesList.add(user.getScreenName());
             }
             return userNamesList;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 
     @ModelAttribute("currentTabWrapped")

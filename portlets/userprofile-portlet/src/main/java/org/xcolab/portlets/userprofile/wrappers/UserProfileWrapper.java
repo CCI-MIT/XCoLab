@@ -1,7 +1,6 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
 import com.ext.portlet.Activity.ActivityUtil;
-import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -332,11 +331,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public long getUserActivityCount() {
-        try {
-            return Xcolab_UserLocalServiceUtil.getUserActivityCount(getUserId());
-        } catch (SystemException e) {
-            return 0;
-        }
+            return ActivitiesClientUtil.countActivities(getUserId(),null);
     }
 
     public Long getUserId() {

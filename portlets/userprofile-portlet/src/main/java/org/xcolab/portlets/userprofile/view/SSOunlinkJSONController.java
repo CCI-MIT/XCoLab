@@ -5,18 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.util.PortalUtil;
-
-import org.xcolab.entity.utils.members.MemberAuthUtil;
-
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.userprofile.utils.JSONHelper;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceResponse;
@@ -48,7 +41,6 @@ public class SSOunlinkJSONController extends JSONHelper {
     private void unlinkFacebookSSOuser(Member member)  {
         member.setFacebookId(new Long(0));
         MembersClient.updateMember(member);
-        //UserLocalServiceUtil.updateUser(user);
     }
 
     @ResourceMapping("unlinkGoogleSSO")
@@ -60,22 +52,20 @@ public class SSOunlinkJSONController extends JSONHelper {
 
         boolean successStatus = true;
         try {
-            User user = PortalUtil.getUser(request);
+            long memberId = MemberAuthUtil.getMemberId(request);
+            Member user = MembersClient.getMember(memberId);
+
             unlinkGoogleSSOuser(user);
-        } catch (PortalException | SystemException e) {
+        } catch (MemberNotFoundException e) {
             successStatus = false;
         }
 
         this.writeSuccessResultResponseJSON(successStatus, response);
     }
 
-    private void unlinkGoogleSSOuser(User user) {
+    private void unlinkGoogleSSOuser(Member user) {
         user.setOpenId("");
-        try {
-            UserLocalServiceUtil.updateUser(user);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+        MembersClient.updateMember(user);
     }
 
 }

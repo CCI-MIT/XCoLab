@@ -1,6 +1,8 @@
 package org.xcolab.wrapper;
 
-import com.ext.portlet.model.OntologySpace;
+
+
+import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 
 import java.util.ArrayList;
 import java.util.List;
