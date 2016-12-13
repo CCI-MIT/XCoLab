@@ -33,7 +33,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
 
     private static final Logger _log = LoggerFactory.getLogger(ModelInputGroupDisplayItem.class);
 
-    ModelInputGroup group;
+    private final ModelInputGroup group;
 
     private ModelInputGroupDisplayItem parent;
     private List<ModelInputDisplayItem> items = new ArrayList<>();
@@ -45,9 +45,8 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
      * will not call this directly, and the factory will take care of instantiating groups
      * or the static factory method on this class is called.
      */
-    public ModelInputGroupDisplayItem(ModelInputGroup group) throws IOException {
-        super(ModelingClientUtil.getModel(group),
-                ModelingClientUtil.getMetaData(group));
+    public ModelInputGroupDisplayItem(Simulation simulation, ModelInputGroup group) throws IOException {
+        super(simulation, ModelingClientUtil.getMetaData(group));
         this.group = group;
         populateChildren();
     }
@@ -62,7 +61,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
 
         groups = new ArrayList<>();
         for (ModelInputGroup child : ModelingClientUtil.getChildGroups(group)) {
-            groups.add(ModelUIFactory.getInstance().getGroupItem(child));
+            groups.add(ModelUIFactory.getInstance().getGroupItem(getSimulation(), child));
         }
         //why is this here?
         ModelingClientUtil.updateModelInputGroup(group);
@@ -85,8 +84,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
 
         ModelingClientUtil.createModelInputGroup(group);
 
-        return new ModelInputGroupDisplayItem(group);
-
+        return new ModelInputGroupDisplayItem(s, group);
     }
 
     /**
@@ -104,11 +102,11 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
         }
         ModelingClientUtil.createModelInputGroup(group);
 
-        return new ModelInputGroupDisplayItem(group);
+        return new ModelInputGroupDisplayItem(s, group);
     }
 
     /**
-     * Sets the scdenario for this display group; sets the scenario for all children
+     * Sets the scenario for this display group; sets the scenario for all children
      */
     @Override
     public void setScenario(Scenario s) throws IncompatibleScenarioException {

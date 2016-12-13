@@ -65,9 +65,9 @@ public class RomaClient {
     }
 
     public Scenario runModel(Simulation s,
-            Map<Long, Object> inputs, Long userid, boolean save)
+            Map<Long, Object> inputs, Long userId, boolean save)
             throws ModelNotFoundException, IOException, ScenarioNotFoundException {
-        return repositoryOrThrow().runModel(s, inputs, userid, save);
+        return repositoryOrThrow().runModel(s, inputs, userId, save);
     }
 
     public Scenario runModelWithInputNames(Simulation s,

@@ -25,7 +25,7 @@ final class ClientRepositoryInitializationUtil {
 
     static ClientRepository load(String host) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<ClientRepository> future = executor.submit(new InitializationTask(host));
+        Future<ClientRepository> future = executor.submit(new InitTask(host));
         ClientRepository clientRepository = null;
         try {
             log.warn("Initializing ROMA ClientRepository - may take up to {} seconds", TIMEOUT_IN_SECONDS);
@@ -46,12 +46,12 @@ final class ClientRepositoryInitializationUtil {
         return clientRepository;
     }
 
-    private static class InitializationTask implements Callable<ClientRepository> {
+    private static class InitTask implements Callable<ClientRepository> {
 
-        private static final Logger log = LoggerFactory.getLogger(InitializationTask.class);
+        private static final Logger log = LoggerFactory.getLogger(InitTask.class);
         private final String host;
 
-        public InitializationTask(String host) {
+        public InitTask(String host) {
             this.host = host;
         }
 

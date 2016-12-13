@@ -93,7 +93,7 @@ function ModelingWidget(selector, options) {
 	this.options.defaultValues = this.options.defaultValues || {};
 }
 
-ModelingWidget.prototype.scenarioUrl = '/web/guest/plans/-/plans/api/modeling/getScenario';
+ModelingWidget.prototype.scenarioUrl = '/web/guest/plans/-/plans/api/modeling/scenarios';
 ModelingWidget.prototype.modelUrl = '/web/guest/plans/-/plans/api/modeling/models';
 
 /**
@@ -242,14 +242,15 @@ ModelingWidget.prototype.getInputValue = function(input) {
  * 
  */
 ModelingWidget.prototype.loadScenario = function(scenarioId) {
-	console.debug('loading scenario', scenarioId);
 	this.spinner.spin(document.getElementsByClassName("spinner-area")[0]);
 	this.container.fadeOut();
 	var modelingWidget = this;
 
 	jQuery(modelingWidget).trigger("fetchingScenario");
-	jQuery.ajax({
-		url: this.scenarioUrl + '/' + scenarioId,
+    var loadScenarioUrl = this.scenarioUrl + '/' + scenarioId;
+    console.debug("Loading scenario from " + loadScenarioUrl);
+    jQuery.ajax({
+		url: loadScenarioUrl,
 		data: {},
 		dataType: 'json'
 	}).done(function(data, textStatus, jqXHR) {
@@ -349,8 +350,10 @@ ModelingWidget.prototype.loadModel = function(modelId) {
 	var modelingWidget = this;
 
 	jQuery(modelingWidget).trigger("fetchingModel");
+	var getModelUrl = this.modelUrl + '/' + modelId;
+	console.debug('Getting model from ' + getModelUrl);
 	jQuery.ajax({
-		url: this.modelUrl + '/' + modelId,
+		url: getModelUrl,
 		data: {},
 		dataType: 'json'
 	}).done(function(data, textStatus, jqXHR) {
@@ -400,9 +403,10 @@ ModelingWidget.prototype.showStackTrace = function(data) {
         console.log(tempDom, appContainer[0]);
 
         // Attach Modal
-        jQuery('#errorModal').remove();
+		var $errorModal = jQuery('#errorModal');
+		$errorModal.remove();
         jQuery('body').append('<div id="errorModal" class="modal fade" style="width:700px;background: none;border: none;box-shadow: none;"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">Error</h4></div><div class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div></div></div></div>');
-        jQuery("#errorModal").modal('show');
+        $errorModal.modal('show');
         jQuery('.modal-body').html(jQuery('#main', tempDom));
     }
 };
@@ -423,11 +427,7 @@ ModelingWidget.prototype.updateEditMaskAppearance = function() {
  * Toggles the model's edit mode setting
  */
 ModelingWidget.prototype.toggleEditMask = function(allowInputEdit) {
-	if (allowInputEdit) {
-		this.inputFreezed = false;
-	} else {
-		this.inputFreezed = true;
-	}
+	this.inputFreezed = !allowInputEdit;
 };
 
 XCoLab.modeling.outputItemRenderers = [];

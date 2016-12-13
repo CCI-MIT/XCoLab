@@ -151,7 +151,7 @@ public class ModelUIFactory {
      * Recursive call to process groups
      */
     private ModelInputGroupDisplayItem processGroup(ModelInputGroup group,
-            Set<MetaData> bareMetaData)
+            Set<MetaData> bareMetaData, Simulation simulation)
             throws IllegalUIConfigurationException, IOException {
         for (ModelInputItem item : ModelingClientUtil.getInputItems(group)) {
             final MetaData metaData = ModelingClientUtil.getMetaData(item);
@@ -159,13 +159,13 @@ public class ModelUIFactory {
         }
         ModelInputGroupDisplayItem result;
         try {
-            result = new ModelInputGroupDisplayItem(group);
+            result = new ModelInputGroupDisplayItem(simulation, group);
         } catch (IOException e) {
             _log.error("", e);
             return null;
         }
         for (ModelInputGroup g : ModelingClientUtil.getChildGroups(group)) {
-            result.addChildGroup(processGroup(g, bareMetaData));
+            result.addChildGroup(processGroup(g, bareMetaData, simulation));
         }
         return result;
     }
@@ -180,7 +180,7 @@ public class ModelUIFactory {
 
         for (ModelInputGroup group : ModelingClientUtil.getInputGroups(s)) {
             if (group.getParentGroupPK() <= 0) {
-                result.add(processGroup(group, inputs));
+                result.add(processGroup(group, inputs, s));
             }
         }
 
@@ -211,14 +211,13 @@ public class ModelUIFactory {
 
     }
 
-    public ModelInputGroupDisplayItem getGroupItem(ModelInputGroup item) {
+    public ModelInputGroupDisplayItem getGroupItem(Simulation simulation, ModelInputGroup item) {
         try {
-            return new ModelInputGroupDisplayItem(item);
+            return new ModelInputGroupDisplayItem(simulation, item);
         } catch (IOException e) {
             _log.error("", e);
         }
         return null;
-
     }
 
 }
