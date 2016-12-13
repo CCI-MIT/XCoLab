@@ -140,7 +140,7 @@ public class ContestsIndexController extends BaseProposalsController {
                 Collections.sort(collectionCards, new Comparator<CollectionCardWrapper>() {
                     @Override
                     public int compare(CollectionCardWrapper o1, CollectionCardWrapper o2) {
-                        return o1.getOrder()< o2.getOrder() ? 1 : o1.getOrder() == o2.getOrder() ? 0 : -1;
+                        return o1.getOrder()< o2.getOrder() ? -1 : o1.getOrder() == o2.getOrder() ? 0 : 1;
                     }
                 });
                 long tempId = currentCollectionCardId;
@@ -149,6 +149,9 @@ public class ContestsIndexController extends BaseProposalsController {
                     tempId = ContestClientUtil.getContestCollectionCard(tempId).getParent();
                 }
                 collectionHierarchy.addFirst(new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(tempId), viewType));
+                if(collectionHierarchy.size() == 1) {
+                    collectionHierarchy.clear();
+                }
             }
 
             model.addAttribute("collectionCards", new CollectionCardFilterBean(collectionCards));

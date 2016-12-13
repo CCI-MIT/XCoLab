@@ -135,10 +135,10 @@
             <a class="c-Button__primary innerVerticalCenter" href="#" onclick="closeOntologyPicker();">CANCEL</a>
         </div>
         <br/>
-        <h3> WHERE </h3>
-        <div class="whereArea">
+        <h3> WHAT </h3>
+        <div class="whatArea">
             <ul class="level-1">
-                <c:forEach var="ontologyTerm" items="${ontologyTermsWhere }">
+                <c:forEach var="ontologyTerm" items="${ontologyTermsWhat }">
                     <li class="ontologyTermListItem" >
                         <a href="#"  ontology-id="${ontologyTerm.id}">
                             <span>${ontologyTerm.name}</span>
@@ -151,10 +151,10 @@
             </ul>
         </div>
         <br/>
-        <h3> WHAT </h3>
-        <div class="whatArea">
+        <h3> WHERE </h3>
+        <div class="whereArea">
             <ul class="level-1">
-                <c:forEach var="ontologyTerm" items="${ontologyTermsWhat }">
+                <c:forEach var="ontologyTerm" items="${ontologyTermsWhere }">
                     <li class="ontologyTermListItem" >
                         <a href="#"  ontology-id="${ontologyTerm.id}">
                             <span>${ontologyTerm.name}</span>
@@ -393,6 +393,13 @@
             } else {
                 jQuery(".ontologyPicker").hide();
                 jQuery(".collectionCard-edit-form #" + currentTermType).val(currentOntologyId);
+                if(currentTermType == "ontologyTermToLoad") {
+                    jQuery(".collectionCard-edit-form #bigOntologyTerm").val(currentOntologyId);
+                    jQuery(".collectionCard-edit-form #smallOntologyTerm").val(currentOntologyId);
+                    jQuery(".collectionCard-edit-form #smallOntologyTerm").val(currentOntologyId);
+                    jQuery(".collectionCard-edit-form #description").val("");
+                    jQuery(".collectionCard-edit-form #shortName").val("");
+                }
             }
         }
 

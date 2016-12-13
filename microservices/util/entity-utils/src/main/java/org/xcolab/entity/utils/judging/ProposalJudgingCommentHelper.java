@@ -1,7 +1,5 @@
 package org.xcolab.entity.utils.judging;
 
-import org.xcolab.util.enums.promotion.JudgingSystemActions;
-
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -11,8 +9,9 @@ import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.entity.utils.email.notifications.EmailTemplateWrapper;
+import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.promotion.JudgingSystemActions;
 
 /**
  * This is a helper class that interprets the Judging Feedback message made during judging contest
