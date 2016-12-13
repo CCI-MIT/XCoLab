@@ -149,6 +149,7 @@ for D in *; do
     fi
 done
 
+cd ..
 cd microservices/util/service-utils
 mvn clean compile package install clean
 cd ../../..
