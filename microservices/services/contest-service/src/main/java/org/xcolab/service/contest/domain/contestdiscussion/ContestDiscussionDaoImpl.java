@@ -1,0 +1,68 @@
+package org.xcolab.service.contest.domain.contestdiscussion;
+
+import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.SelectQuery;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import org.xcolab.model.tables.pojos.ContestDiscussion;
+import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.service.utils.PaginationHelper;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.xcolab.model.Tables.CONTEST_DISCUSSION;
+
+@Repository
+public class ContestDiscussionDaoImpl implements ContestDiscussionDao {
+
+    private final DSLContext dslContext;
+
+    @Autowired
+    public ContestDiscussionDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
+
+    @Override
+    public ContestDiscussion create(ContestDiscussion contest) {
+        this.dslContext.insertInto(CONTEST_DISCUSSION)
+                .set(CONTEST_DISCUSSION.DISCUSSION_ID, contest.getDiscussionId())
+                .set(CONTEST_DISCUSSION.CONTEST_ID, contest.getContestId())
+                .set(CONTEST_DISCUSSION.CONTEST_ID, contest.getContestId())
+                .execute();
+        return contest;
+    }
+
+    @Override
+    public boolean update(ContestDiscussion contest) {
+        return dslContext.update(CONTEST_DISCUSSION)
+                .set(CONTEST_DISCUSSION.CONTEST_ID, contest.getContestId())
+                .set(CONTEST_DISCUSSION.CONTEST_ID, contest.getContestId())
+                .set(CONTEST_DISCUSSION.TAB, contest.getTab())
+                .where(CONTEST_DISCUSSION.DISCUSSION_ID.eq(contest.getDiscussionId()))
+                .execute() > 0;
+    }
+
+    @Override
+    public Optional<ContestDiscussion> get(Long contestDiscussion) throws NotFoundException {
+        final Record record = this.dslContext.selectFrom(CONTEST_DISCUSSION)
+                .where(CONTEST_DISCUSSION.DISCUSSION_ID.eq(contestDiscussion))
+                .fetchOne();
+
+        if (record == null) {
+            return Optional.empty();
+        }
+        return Optional.of(record.into(ContestDiscussion.class));
+    }
+
+    @Override
+    public List<ContestDiscussion> findByGiven(PaginationHelper paginationHelper, Long contestId,
+            String tab) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(CONTEST_DISCUSSION).getQuery();
+
+        return query.fetchInto(ContestDiscussion.class);
+    }
+}

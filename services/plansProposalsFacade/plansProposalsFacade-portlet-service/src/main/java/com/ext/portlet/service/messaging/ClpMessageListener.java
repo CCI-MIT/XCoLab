@@ -25,8 +25,6 @@ import com.ext.portlet.service.ContestTeamMemberRoleServiceUtil;
 import com.ext.portlet.service.ContestTeamMemberServiceUtil;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
 import com.ext.portlet.service.ContestTypeServiceUtil;
-import com.ext.portlet.service.EmailListLocalServiceUtil;
-import com.ext.portlet.service.EmailListServiceUtil;
 import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermServiceUtil;
@@ -43,20 +41,6 @@ import com.ext.portlet.service.ImpactTemplateMaxFocusAreaLocalServiceUtil;
 import com.ext.portlet.service.ImpactTemplateMaxFocusAreaServiceUtil;
 import com.ext.portlet.service.ImpactTemplateSeriesLocalServiceUtil;
 import com.ext.portlet.service.ImpactTemplateSeriesServiceUtil;
-import com.ext.portlet.service.LandingPageLocalServiceUtil;
-import com.ext.portlet.service.LandingPageServiceUtil;
-import com.ext.portlet.service.MessagingIgnoredRecipientsLocalServiceUtil;
-import com.ext.portlet.service.MessagingIgnoredRecipientsServiceUtil;
-import com.ext.portlet.service.MessagingMessageConversionLocalServiceUtil;
-import com.ext.portlet.service.MessagingMessageConversionServiceUtil;
-import com.ext.portlet.service.MessagingMessageConversionTypeLocalServiceUtil;
-import com.ext.portlet.service.MessagingMessageConversionTypeServiceUtil;
-import com.ext.portlet.service.MessagingMessageLocalServiceUtil;
-import com.ext.portlet.service.MessagingMessageRecipientLocalServiceUtil;
-import com.ext.portlet.service.MessagingMessageRecipientServiceUtil;
-import com.ext.portlet.service.MessagingMessageServiceUtil;
-import com.ext.portlet.service.MessagingRedirectLinkLocalServiceUtil;
-import com.ext.portlet.service.MessagingRedirectLinkServiceUtil;
 import com.ext.portlet.service.ModelCategoryLocalServiceUtil;
 import com.ext.portlet.service.ModelCategoryServiceUtil;
 import com.ext.portlet.service.ModelDiscussionLocalServiceUtil;
@@ -176,9 +160,6 @@ public class ClpMessageListener extends BaseMessageListener {
             ContestTypeLocalServiceUtil.clearService();
 
             ContestTypeServiceUtil.clearService();
-            EmailListLocalServiceUtil.clearService();
-
-            EmailListServiceUtil.clearService();
             FocusAreaLocalServiceUtil.clearService();
 
             FocusAreaServiceUtil.clearService();
@@ -203,27 +184,6 @@ public class ClpMessageListener extends BaseMessageListener {
             ImpactTemplateSeriesLocalServiceUtil.clearService();
 
             ImpactTemplateSeriesServiceUtil.clearService();
-            LandingPageLocalServiceUtil.clearService();
-
-            LandingPageServiceUtil.clearService();
-            MessagingIgnoredRecipientsLocalServiceUtil.clearService();
-
-            MessagingIgnoredRecipientsServiceUtil.clearService();
-            MessagingMessageLocalServiceUtil.clearService();
-
-            MessagingMessageServiceUtil.clearService();
-            MessagingMessageConversionLocalServiceUtil.clearService();
-
-            MessagingMessageConversionServiceUtil.clearService();
-            MessagingMessageConversionTypeLocalServiceUtil.clearService();
-
-            MessagingMessageConversionTypeServiceUtil.clearService();
-            MessagingMessageRecipientLocalServiceUtil.clearService();
-
-            MessagingMessageRecipientServiceUtil.clearService();
-            MessagingRedirectLinkLocalServiceUtil.clearService();
-
-            MessagingRedirectLinkServiceUtil.clearService();
             ModelCategoryLocalServiceUtil.clearService();
 
             ModelCategoryServiceUtil.clearService();

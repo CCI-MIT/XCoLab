@@ -18,6 +18,10 @@ for D in *-client; do
 done
 cd ../..
 
+cd microservices/util/entity-utils
+mvn clean compile package install clean
+cd ../../..
+
 cd services/plansProposalsFacade/plansProposalsFacade-portlet-service
 mvn clean compile package install clean
 cd ../../..

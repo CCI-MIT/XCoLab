@@ -21,10 +21,10 @@ import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.enums.ContestTier;
+import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.utils.IdListUtil;
+import org.xcolab.util.IdListUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;

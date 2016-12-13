@@ -5,7 +5,7 @@ import org.springframework.util.Assert;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.enums.ContestPhasePromoteType;
+import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 
 import java.util.ArrayList;
 import java.util.Date;

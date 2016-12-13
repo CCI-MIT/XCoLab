@@ -36,48 +36,4 @@ public class ContestTeamMemberLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ContestTeamMemberLocalServiceUtil} to access the contest team member local service.
      */
 
-    @Override
-    public ContestTeamMember addContestTeamMember(Long userId, Long contestPk, MemberRole memberRole) throws SystemException {
-        ContestTeamMember member = ContestTeamMemberLocalServiceUtil.createContestTeamMember(CounterLocalServiceUtil.increment(ContestTeamMember.class.getName()));
-        member.setUserId(userId);
-        member.setContestId(contestPk);
-        member.setRoleId(memberRole.getRoleId());
-        store(member);
-        
-        return member;
-    }
-    
-    @Override
-    public List<ContestTeamMember> findForContest(Long contestPk) throws SystemException {
-        return contestTeamMemberPersistence.findByContestId(contestPk);
-    }
-    
-
-    @Override
-    public void store(ContestTeamMember contestTeamMember) throws SystemException {
-        if (contestTeamMember.isNew()) {
-            if (contestTeamMember.getId() <= 0) {
-                contestTeamMember.setId(CounterLocalServiceUtil.increment(ContestTeamMember.class.getName()));
-            }
-            ContestTeamMemberLocalServiceUtil.addContestTeamMember(contestTeamMember);
-        }
-        else {
-            ContestTeamMemberLocalServiceUtil.updateContestTeamMember(contestTeamMember);
-        }
-    }
-    
-    @Override
-    public void delete(ContestTeamMember contestTeamMember) throws SystemException {
-        ContestTeamMemberLocalServiceUtil.deleteContestTeamMember(contestTeamMember);
-    }
-    
-    @Override
-    public User getUser(ContestTeamMember contestTeamMember) throws PortalException, SystemException {
-        return UserLocalServiceUtil.getUser(contestTeamMember.getUserId());
-    }
-    
-    @Override
-    public Contest getContest(ContestTeamMember contestTeamMember) throws PortalException, SystemException {
-        return ContestLocalServiceUtil.getContest(contestTeamMember.getContestId());
-    }
 }

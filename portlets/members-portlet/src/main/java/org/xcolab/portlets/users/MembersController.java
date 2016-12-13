@@ -1,25 +1,24 @@
 package org.xcolab.portlets.users;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.commons.beans.SortFilterPage;
+import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.portlets.users.utils.MemberItem;
 import org.xcolab.portlets.users.utils.MemberListCsvConverter;
 import org.xcolab.portlets.users.utils.MembersPermissions;
-import org.xcolab.utils.TemplateReplacementUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -130,11 +129,12 @@ public class MembersController {
     public void getUsersByPartialName(ResourceRequest request, ResourceResponse response,
             @RequestParam String partialName)
             throws IOException {
-        final JSONArray jsonMembers = JSONFactoryUtil.createJSONArray();
+        //final JSONArray jsonMembers = JSONFactoryUtil.createJSONArray();
+        final JSONArray jsonMembers = new JSONArray();
         final List<Member> members = MembersClient
                 .findMembersMatching(partialName, AUTOCOMPLETE_MAX_USERS);
         for (Member member : members) {
-            final JSONObject jsonMember = JSONFactoryUtil.createJSONObject();
+            final JSONObject jsonMember = new JSONObject();
             jsonMember.put("userId", member.getId_());
             jsonMember.put("screenName", member.getScreenName());
             jsonMember.put("firstName", member.getFirstName());
@@ -142,6 +142,19 @@ public class MembersController {
             jsonMembers.put(jsonMember);
         }
         response.getPortletOutputStream().write(jsonMembers.toString().getBytes());
+    }
+
+    @ResourceMapping("getUserByScreenName")
+    public void getUserByScreenName(ResourceRequest request, ResourceResponse response,
+            @RequestParam String screenName)
+            throws IOException, MemberNotFoundException {
+        final Member member = MembersClient.findMemberByScreenName(screenName);
+        final JSONObject jsonMember = new JSONObject();
+        jsonMember.put("userId", member.getId_());
+        jsonMember.put("screenName", member.getScreenName());
+        jsonMember.put("firstName", member.getFirstName());
+        jsonMember.put("lastName", member.getLastName());
+        response.getPortletOutputStream().write(jsonMember.toString().getBytes());
     }
 
     @ResourceMapping("downloadMembersList")

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ext.portlet.JudgingSystemActions;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
@@ -23,6 +22,7 @@ import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalFellowWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.enums.promotion.JudgingSystemActions;
 
 import java.util.ArrayList;
 import java.util.HashMap;

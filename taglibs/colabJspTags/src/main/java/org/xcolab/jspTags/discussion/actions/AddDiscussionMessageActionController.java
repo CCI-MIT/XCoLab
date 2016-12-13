@@ -4,15 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.search.Indexer;
-import com.liferay.portal.kernel.search.IndexerRegistryUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
-import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.activities.ActivitiesClient;
@@ -35,6 +28,7 @@ import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
@@ -65,9 +59,9 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
     public void handleAction(ActionRequest request, ActionResponse response,
             @RequestParam(value = "contestId", required = false) String contestId,
             NewMessageWrapper newMessage)
-            throws IOException, PortalException, SystemException, DiscussionAuthorizationException {
+            throws IOException, DiscussionAuthorizationException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        long memberId = MemberAuthUtil.getMemberId(request);
 
         try {
             final CommentClient commentClient;
@@ -114,7 +108,6 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             long threadId = Long.parseLong(newMessage.getThreadId());
 
             checkPermissions(request, "User isn't allowed to add comment", 0L);
-            long userId = themeDisplay.getUser().getUserId();
 
             // Since linebreaks are escaped by HtmlUtil
             String body = newMessage.getDescription().replaceAll("\\r\\n|\\r|\\n", "</br>");
@@ -122,12 +115,12 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             // .getBaseUri(request));
             Comment comment = new Comment();
             comment.setContent(body);
-            comment.setAuthorId(userId);
+            comment.setAuthorId(memberId);
             comment.setThreadId(threadId);
             comment = commentClient.createComment(comment);
             CommentThread commentThread = threadClient.getThread(threadId);
 
-            updateAnalyticsAndActivities(commentThread, comment, userId, request);
+            updateAnalyticsAndActivities(commentThread, comment, memberId, request);
 
             if (!commentThread.getIsQuiet()) {
 
@@ -137,7 +130,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     if (proposalIdForThread != null && proposalIdForThread != 0L) {
 
 
-                        ActivityEntryHelper.createActivityEntry(activityClient, userId,
+                        ActivityEntryHelper.createActivityEntry(activityClient, memberId,
                                 commentThread.getThreadId(),
                                 comment.getCommentId() + "",
                                 ActivityProvidersType.DiscussionAddProposalCommentActivityEntry
@@ -146,13 +139,13 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                             Contest contest = proposalClient
                                     .getCurrentContestForProposal(proposalIdForThread);
                             SharedColabUtil.checkTriggerForAutoUserCreationInContest(
-                                    contest.getContestPK(), userId);
+                                    contest.getContestPK(), memberId);
                         } catch (ContestNotFoundException ignored) {
 
                         }
                     }
                 } else {
-                    ActivityEntryHelper.createActivityEntry(activityClient, userId,
+                    ActivityEntryHelper.createActivityEntry(activityClient, memberId,
                             commentThread.getCategory().getCategoryId(),
                             comment.getCommentId() + "",
                             ActivityProvidersType.DiscussionAddCommentActivityEntry.getType());
@@ -163,7 +156,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                     FilteredEntry filteredEntry = FilteringClient
                             .getFilteredEntryByUuid(newMessage.getUuid());
                     filteredEntry.setSourceId(comment.getCommentId());
-                    filteredEntry.setAuthorId(userId);
+                    filteredEntry.setAuthorId(memberId);
                     FilteringClient.updateFilteredEntry(filteredEntry);
                 } catch (FilteredEntryNotFoundException ignored) {
                 }
@@ -186,22 +179,15 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
         } catch (NumberFormatException e) {
             _log.warn(String.format(
                     "Could not convert discussionId %s and threadId %s to longs (userId = %d)",
-                    newMessage.getDiscussionId(), newMessage.getThreadId(),
-                    themeDisplay.getUserId()));
+                    newMessage.getDiscussionId(), newMessage.getThreadId(), memberId));
         } catch (ThreadNotFoundException ignored) {
         }
 
         redirectToReferrer(request, response);
     }
 
-    @SuppressWarnings("OverlyBroadThrowsClause")
     public void updateAnalyticsAndActivities(CommentThread thread, Comment comment, long userId,
-            ActionRequest request)
-            throws SystemException, PortalException {
-        // Update activity counter for user
-        Indexer indexer = IndexerRegistryUtil.nullSafeGetIndexer(User.class);
-        indexer.reindex(userId);
-
+            ActionRequest request) {
         int commentCount = CommentClientUtil.countCommentsByAuthor(userId);
         if (commentCount > 0) {
             int analyticsValue = AnalyticsUtil.getAnalyticsValueForCount(commentCount);

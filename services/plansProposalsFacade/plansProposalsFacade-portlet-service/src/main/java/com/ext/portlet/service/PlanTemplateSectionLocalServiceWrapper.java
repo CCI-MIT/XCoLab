@@ -278,49 +278,6 @@ public class PlanTemplateSectionLocalServiceWrapper
             parameterTypes, arguments);
     }
 
-    @Override
-    public java.util.List<com.ext.portlet.model.PlanTemplateSection> findByPlanTemplateId(
-        java.lang.Long planTemplateId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _planTemplateSectionLocalService.findByPlanTemplateId(planTemplateId);
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.PlanTemplateSection> findByPlanSectionDefinitionId(
-        java.lang.Long planSectionDefinitionId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _planTemplateSectionLocalService.findByPlanSectionDefinitionId(planSectionDefinitionId);
-    }
-
-    @Override
-    public com.ext.portlet.model.PlanTemplateSection addPlanTemplateSection(
-        java.lang.Long planTemplateId, java.lang.Long sectionId, int weight)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _planTemplateSectionLocalService.addPlanTemplateSection(planTemplateId,
-            sectionId, weight);
-    }
-
-    @Override
-    public void removePlanTemplateSection(java.lang.Long planTemplateId,
-        java.lang.Long sectionId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _planTemplateSectionLocalService.removePlanTemplateSection(planTemplateId,
-            sectionId);
-    }
-
-    @Override
-    public void store(com.ext.portlet.model.PlanTemplateSection section)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planTemplateSectionLocalService.store(section);
-    }
-
-    @Override
-    public void remove(com.ext.portlet.model.PlanTemplateSection section)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _planTemplateSectionLocalService.remove(section);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

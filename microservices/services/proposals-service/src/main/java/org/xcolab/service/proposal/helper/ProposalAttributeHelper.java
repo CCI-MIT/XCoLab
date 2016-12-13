@@ -1,14 +1,9 @@
 package org.xcolab.service.proposal.helper;
 
-
-
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
-import org.xcolab.util.EntityGroupingUtil;
+import org.xcolab.util.GroupingUtil;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -42,7 +37,7 @@ public class ProposalAttributeHelper {
             if (attributesByNameAndAdditionalId == null) {
                 attributesByNameAndAdditionalId = new HashMap<>();
                 for (ProposalAttribute attribute : attributes) {
-                    Map<Long, ProposalAttribute> currentAttributes = EntityGroupingUtil
+                    Map<Long, ProposalAttribute> currentAttributes = GroupingUtil
                             .getInnerMapOrCreate(
                                     attribute.getName(), attributesByNameAndAdditionalId);
 

@@ -262,13 +262,6 @@ public class ContestTeamMemberRoleLocalServiceUtil {
         return getService().invokeMethod(name, parameterTypes, arguments);
     }
 
-    public static com.ext.portlet.model.ContestTeamMemberRole findForContestTeamMember(
-        java.lang.Long roleId)
-        throws com.liferay.portal.NoSuchModelException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return getService().findForContestTeamMember(roleId);
-    }
-
     public static void clearService() {
         _service = null;
     }

@@ -1,6 +1,5 @@
 package org.xcolab.client.proposals.enums.points;
 
-
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.PointsClientUtil;
@@ -8,7 +7,6 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
-import org.xcolab.client.proposals.utils.IdListUtil;
 import org.xcolab.util.enums.contest.ContestTier;
 
 import java.util.ArrayList;
@@ -94,7 +92,10 @@ public enum ReceiverLimitationStrategy {
                                                   PointType pointType, DistributionStrategy distributionStrategy) {
             List<Proposal> subProposals = ProposalClientUtil
                     .getSubproposals(proposal.getProposalId(), false);
-            Set<Long> subProposalIds = new HashSet<>(IdListUtil.PROPOSALS.toIdList(subProposals));
+            Set<Long> subProposalIds = new HashSet<>();
+            for (Proposal subProposal : subProposals) {
+                subProposalIds.add(subProposal.getProposalId());
+            }
             return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
         }
 

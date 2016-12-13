@@ -18,15 +18,15 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.emails.EmailClient;
-import org.xcolab.enums.ContestTier;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.entity.utils.TemplateReplacementUtil;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestAdminBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
@@ -34,7 +34,7 @@ import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
-import org.xcolab.utils.TemplateReplacementUtil;
+import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.wrapper.TabWrapper;
 
 import java.io.IOException;
@@ -130,44 +130,38 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
     @ResourceMapping(value = "submitContest")
     public
     @ResponseBody
-    void handleSubmitContest(ResourceRequest request,
-                             ResourceResponse response, @RequestParam long contestId, @RequestParam String tab)
+    void handleSubmitContest(ResourceRequest request, ResourceResponse response,
+            @RequestParam long contestId, @RequestParam String tab)
             throws IOException {
 
-        boolean success = true;
-        try {
-            String contestUrl = ConfigurationAttributeKey.COLAB_URL.get()
-                    + "/web/guest/cms/-/contestmanagement/contestId/" + contestId;
-            if (!tab.isEmpty()) {
-                contestUrl += "/tab/" + tab;
-            }
-            contestUrl += "<br/>";
-
-            User user = UserLocalServiceUtil.getUser(Long.parseLong(request.getRemoteUser()));
-            String body = "The following <contest/>: <br />" + contestUrl +
-                    "was submitted by the user: " + user.getFullName() + "<br/>";
-
-            InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
-
-            final String emailRecipient = ConfigurationAttributeKey.ADMIN_EMAIL.get();
-
-            List<String> addressTo = new ArrayList<>();
-            addressTo.add(emailRecipient);
-
-            String subject = "<contest/> draft was submitted from the <contest/> management tool!";
-
-            ContestType contestType = ContestClientUtil.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
-            subject = TemplateReplacementUtil.replaceContestTypeStrings(subject, contestType);
-            body = TemplateReplacementUtil.replaceContestTypeStrings(body, contestType);
-
-            EmailClient.sendEmail(fromEmail.getAddress(), addressTo, subject, body, true, null);
-
-        } catch (SystemException | PortalException e) {
-            success = false;
+        String contestUrl = ConfigurationAttributeKey.COLAB_URL.get()
+                + "/web/guest/cms/-/contestmanagement/contestId/" + contestId;
+        if (!tab.isEmpty()) {
+            contestUrl += "/tab/" + tab;
         }
+        contestUrl += "<br/>";
+
+        Member user = MemberAuthUtil.getMemberOrThrow(request);
+        String body = "The following <contest/>: <br />" + contestUrl +
+                "was submitted by the user: " + user.getFullName() + "<br/>";
+
+        InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
+
+        final String emailRecipient = ConfigurationAttributeKey.ADMIN_EMAIL.get();
+
+        List<String> addressTo = new ArrayList<>();
+        addressTo.add(emailRecipient);
+
+        String subject = "<contest/> draft was submitted from the <contest/> management tool!";
+
+        ContestType contestType = ContestClientUtil.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
+        subject = TemplateReplacementUtil.replaceContestTypeStrings(subject, contestType);
+        body = TemplateReplacementUtil.replaceContestTypeStrings(body, contestType);
+
+        EmailClient.sendEmail(fromEmail.getAddress(), addressTo, subject, body, true, null);
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json");
-        response.getWriter().write(mapper.writeValueAsString(success));
+        response.getWriter().write(mapper.writeValueAsString(true));
     }
 
     @RequestMapping(params = {"action=updateContestAdmin", "error=true"})

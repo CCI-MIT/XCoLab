@@ -9,13 +9,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.exceptions.ReportTargetNotFoundException;
 import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.flagging.pojo.ReportTarget;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
@@ -99,8 +98,7 @@ public class ContestManagerFlaggingTabController extends ContestManagerBaseTabCo
         if (!tabWrapper.getCanEdit()) {
             return;
         }
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        final long memberId = themeDisplay.getUserId();
+        long memberId = MemberAuthUtil.getMemberId(request);
         FlaggingClient.handleReport(memberId, managerAction, reportId);
         SetRenderParameterUtil.addActionSuccessMessageToSession(request, "Report " + managerAction.name() + "D");
         response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tab.getName());

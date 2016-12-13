@@ -6,10 +6,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.PointsClientUtil;
+import org.xcolab.client.proposals.enums.points.DistributionStrategy;
+import org.xcolab.client.proposals.enums.points.ReceiverLimitationStrategy;
 import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
-import org.xcolab.points.DistributionStrategy;
-import org.xcolab.points.ReceiverLimitationStrategy;
 import org.xcolab.util.exceptions.InternalException;
 
 import java.text.DecimalFormat;
@@ -53,7 +53,8 @@ public class AssignPointsBean {
             switch(pointType.getReceiverLimitationStrategyz().getType()) {
                 case USER:
                     List<Member> presetUsers = null;
-                    if (pointType.getReceiverLimitationStrategyz().name().equals(ReceiverLimitationStrategy.ANY_TEAM_MEMBER.name())) {
+                    if (pointType.getReceiverLimitationStrategyz().name().equals(
+                            ReceiverLimitationStrategy.ANY_TEAM_MEMBER.name())) {
                         presetUsers = members;
                     }
 

@@ -1,34 +1,31 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
 import com.liferay.portal.service.RoleLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.interfaces.TabPermissions;
 
 import javax.portlet.PortletRequest;
 
 public class ContestManagementPermissions implements TabPermissions {
-    private final User user;
-    private final boolean isUserNotLoggedIn;
+    private final boolean isLoggedIn;
+    private final long memberId;
 
     public ContestManagementPermissions(PortletRequest request) {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        user = themeDisplay.getUser();
-        isUserNotLoggedIn = user.isDefaultUser();
+        memberId = MemberAuthUtil.getMemberId(request);
+        isLoggedIn = memberId > 0;
     }
 
     @Override
     public boolean getCanRole(MemberRole role) {
-        if (isUserNotLoggedIn) {
+        if (!isLoggedIn) {
             return false;
         }
         try {
-            return RoleLocalServiceUtil.hasUserRole(user.getUserId(), role.getRoleId());
+            return RoleLocalServiceUtil.hasUserRole(memberId, role.getRoleId());
         } catch (SystemException ignored) { }
         return false;
     }
@@ -41,37 +38,37 @@ public class ContestManagementPermissions implements TabPermissions {
 
     @Override
     public boolean getCanAdmin() {
-        return !isUserNotLoggedIn && PermissionsClient.canAdminAll(user.getUserId());
+        return PermissionsClient.canAdminAll(memberId);
     }
 
     @Override
     public boolean getCanStaff() {
-        if (isUserNotLoggedIn) {
+        if (!isLoggedIn) {
             return false;
         }
         try {
-            return RoleLocalServiceUtil.hasUserRole(user.getUserId(), MemberRole.STAFF.getRoleId());
+            return RoleLocalServiceUtil.hasUserRole(memberId, MemberRole.STAFF.getRoleId());
         } catch (SystemException ignored) { }
         return false;
     }
 
     public boolean getCanEdit() {
         // TODO check who needs this
-        return !isUserNotLoggedIn && !user.isDefaultUser();
+        return isLoggedIn;
     }
 
     @Override
     public boolean getCanDelete() {
-        return !isUserNotLoggedIn && !user.isDefaultUser();
+        return isLoggedIn;
     }
 
     @Override
     public boolean getCanCreate() {
         // TODO check who needs this
-        return !isUserNotLoggedIn && !user.isDefaultUser();
+        return isLoggedIn;
     }
 
     public boolean getCanAdminAll() {
-        return PermissionsClient.canAdminAll(user.getUserId());
+        return PermissionsClient.canAdminAll(memberId);
     }
 }

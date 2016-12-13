@@ -18,6 +18,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.proposals.utils.ProposalPickerFilterUtil;
 import org.xcolab.portlets.proposals.utils.ProposalPickerSortingUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
@@ -57,20 +58,20 @@ public class ProposalPickerJSONController {
 			@RequestParam(required = false) long contestPK) throws IOException {
 
 		List<Pair<Proposal, Date>> proposals;
-		final long userId = Long.parseLong(request.getRemoteUser());
+		final long memberId = MemberAuthUtil.getMemberId(request);
 
 		switch (requestType.toUpperCase()) {
 			case "SUBSCRIPTIONSANDSUPPORTING":
 				proposals = ProposalPickerFilterUtil.getFilteredSubscribedSupportingProposalsForUser(
-						userId, filterType, sectionId, request, proposalsContext);
+						memberId, filterType, sectionId, request, proposalsContext);
 				break;
 			case "SUBSCRIPTIONS":
 				proposals = ProposalPickerFilterUtil.getFilteredSubscribedProposalsForUser(
-						userId, filterType, sectionId, request, proposalsContext);
+						memberId, filterType, sectionId, request, proposalsContext);
 				break;
 			case "SUPPORTING":
 				proposals = ProposalPickerFilterUtil.getFilteredSupportingProposalsForUser(
-						userId, filterType, sectionId, request, proposalsContext);
+						memberId, filterType, sectionId, request, proposalsContext);
 				break;
 			case "ALL":
 			case "CONTESTS":
@@ -158,7 +159,7 @@ public class ProposalPickerJSONController {
 		TODO: Removed to increase performance
 		String filterType = request.getParameter("filterKey");
 		long sectionId = Long.parseLong(request.getParameter("sectionId"));
-		long userId = Long.parseLong(request.getRemoteUser());
+		long userId = MemberAuthUtil.getMemberId(request);
 		int numberOfSubscriptions = ProposalPickerFilterUtil.getFilteredSubscribedProposalsForUser(
 				userId, filterType, sectionId, request, proposalsContext).size();
 		int numberOfSupporting = ProposalPickerFilterUtil.getFilteredSupportingProposalsForUser(userId,

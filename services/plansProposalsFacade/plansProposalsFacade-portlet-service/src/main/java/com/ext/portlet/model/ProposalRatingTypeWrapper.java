@@ -315,12 +315,6 @@ public class ProposalRatingTypeWrapper implements ProposalRatingType,
     }
 
     @Override
-    public java.util.List<com.ext.portlet.model.ProposalRatingValue> getRatingValues()
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _proposalRatingType.getRatingValues();
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;

@@ -6,9 +6,6 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 	
 	<bean id="org.xcolab.services.EventBusService" class="org.xcolab.services.EventBusServiceImpl" />
-	
-	<bean id="org.xcolab.proposals.events.handlers.SubscribeProposalForAllContestSubscribersEventHandler" 
-		class="org.xcolab.proposals.events.handlers.SubscribeProposalForAllContestSubscribersEventHandler" />
 		
 	<bean id="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityAttributeUpdateHandler" 
 		class="org.xcolab.proposals.events.handlers.social.ProposalSocialActivityAttributeUpdateHandler" />

@@ -9,6 +9,8 @@ import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestCollectionCard;
 import org.xcolab.client.contest.pojo.ContestCollectionCardDto;
+import org.xcolab.client.contest.pojo.ContestDiscussion;
+import org.xcolab.client.contest.pojo.ContestDiscussionDto;
 import org.xcolab.client.contest.pojo.ContestDto;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.ContestScheduleDto;
@@ -51,6 +53,7 @@ public class ContestClient {
 
     private final RestResource1<ContestDto, Long> contestResource;
     private final RestResource<ContestTypeDto, Long> contestTypeResource;
+    private final RestResource<ContestDiscussionDto, Long> contestDiscussionResource;
 
     private final RestResource2L<ContestDto, ContestPhaseDto> visiblePhasesResource;
     private final RestResource<ContestPhaseDto, Long> contestPhasesResource;
@@ -77,7 +80,9 @@ public class ContestClient {
         visiblePhasesResource = new RestResource2L<>(
                 contestResource, "visiblePhases", ContestPhaseDto.TYPES);
         contestCollectionCardRestResource =
-                new RestResource1<>(contestService, "contestCollectionCards", ContestCollectionCardDto.TYPES);
+                new RestResource1<>(this.contestService, "contestCollectionCards", ContestCollectionCardDto.TYPES);
+        contestDiscussionResource =
+                new RestResource1<>(this.contestService, "contestDiscussions", ContestDiscussionDto.TYPES);
     }
 
     public static ContestClient fromService(RestService contestService) {
@@ -172,6 +177,20 @@ public class ContestClient {
                 .execute();
     }
 
+    public ContestDiscussion createContestDiscussion(long threadId, long contestId, String tab) {
+        ContestDiscussion contestDiscussion = new ContestDiscussion(threadId, contestId, tab);
+        return contestDiscussionResource.create(new ContestDiscussionDto(contestDiscussion)).execute()
+                .toPojo(contestService);
+    }
+
+    public ContestDiscussion getContestDiscussion(long contestId, String tab) {
+        return contestDiscussionResource.list()
+                .queryParam("contestId", contestId)
+                .queryParam("tab", tab)
+                .executeWithResult()
+                .getFirst().toPojo(contestService);
+    }
+
     public Integer getProposalCount(Long contestId) {
         try {
             return contestResource.<Proposal, Integer>service(contestId,
@@ -212,6 +231,12 @@ public class ContestClient {
         return DtoUtil.toPojos(contestResource.list()
                 .optionalQueryParam("active", active)
                 .optionalQueryParam("featured", featured)
+                .execute(), contestService);
+    }
+
+    public List<Contest> findContestsByActive(boolean active) {
+        return DtoUtil.toPojos(contestResource.list()
+                .optionalQueryParam("active", active)
                 .execute(), contestService);
     }
 

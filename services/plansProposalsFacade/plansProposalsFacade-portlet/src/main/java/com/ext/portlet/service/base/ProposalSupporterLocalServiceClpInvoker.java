@@ -41,18 +41,10 @@ public class ProposalSupporterLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName398;
-    private String[] _methodParameterTypes398;
-    private String _methodName399;
-    private String[] _methodParameterTypes399;
-    private String _methodName404;
-    private String[] _methodParameterTypes404;
-    private String _methodName405;
-    private String[] _methodParameterTypes405;
-    private String _methodName406;
-    private String[] _methodParameterTypes406;
-    private String _methodName407;
-    private String[] _methodParameterTypes407;
+    private String _methodName350;
+    private String[] _methodParameterTypes350;
+    private String _methodName351;
+    private String[] _methodParameterTypes351;
 
     public ProposalSupporterLocalServiceClpInvoker() {
         _methodName0 = "addProposalSupporter";
@@ -145,29 +137,13 @@ public class ProposalSupporterLocalServiceClpInvoker {
                 "com.ext.portlet.model.ProposalSupporter"
             };
 
-        _methodName398 = "getBeanIdentifier";
+        _methodName350 = "getBeanIdentifier";
 
-        _methodParameterTypes398 = new String[] {  };
+        _methodParameterTypes350 = new String[] {  };
 
-        _methodName399 = "setBeanIdentifier";
+        _methodName351 = "setBeanIdentifier";
 
-        _methodParameterTypes399 = new String[] { "java.lang.String" };
-
-        _methodName404 = "create";
-
-        _methodParameterTypes404 = new String[] { "long", "long" };
-
-        _methodName405 = "getProposals";
-
-        _methodParameterTypes405 = new String[] { "long" };
-
-        _methodName406 = "getSupportingUsersForProposal";
-
-        _methodParameterTypes406 = new String[] { "long" };
-
-        _methodName407 = "getProposalSupportersForProposals";
-
-        _methodParameterTypes407 = new String[] { "java.util.List" };
+        _methodParameterTypes351 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -259,37 +235,16 @@ public class ProposalSupporterLocalServiceClpInvoker {
             return ProposalSupporterLocalServiceUtil.updateProposalSupporter((com.ext.portlet.model.ProposalSupporter) arguments[0]);
         }
 
-        if (_methodName398.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes398, parameterTypes)) {
+        if (_methodName350.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes350, parameterTypes)) {
             return ProposalSupporterLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName399.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes399, parameterTypes)) {
+        if (_methodName351.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes351, parameterTypes)) {
             ProposalSupporterLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
-        }
-
-        if (_methodName404.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes404, parameterTypes)) {
-            return ProposalSupporterLocalServiceUtil.create(((Long) arguments[0]).longValue(),
-                ((Long) arguments[1]).longValue());
-        }
-
-        if (_methodName405.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes405, parameterTypes)) {
-            return ProposalSupporterLocalServiceUtil.getProposals(((Long) arguments[0]).longValue());
-        }
-
-        if (_methodName406.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes406, parameterTypes)) {
-            return ProposalSupporterLocalServiceUtil.getSupportingUsersForProposal(((Long) arguments[0]).longValue());
-        }
-
-        if (_methodName407.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes407, parameterTypes)) {
-            return ProposalSupporterLocalServiceUtil.getProposalSupportersForProposals((java.util.List<com.ext.portlet.model.Proposal>) arguments[0]);
         }
 
         throw new UnsupportedOperationException();

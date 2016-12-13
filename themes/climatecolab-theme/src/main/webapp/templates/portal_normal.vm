@@ -131,6 +131,20 @@
         Beta
     </div>
 #end
+
+#if ($_showImpersonationBar)
+<div class="c-TitleBar">
+    <div class="c-TitleBar__pageMargins">
+        <div class="c-TitleBar__element" style="padding-left: 0;">
+            <span style="display: inline-block">Impersonating user $member.screenName (Logged in as $_trueMember.screenName)</span>
+        </div>
+
+        <div class="c-TitleBar__element c-TitleBar__actionButton right">
+            <a href="/impersonate/logout">Stop impersonating</a>
+        </div>
+    </div>
+</div>
+#end
 #if ($mitHeaderBarShow)
     <div class="c-TitleBar light">
         <div class="c-TitleBar__pageMargins">
@@ -163,8 +177,8 @@
 
 #if ($themeDisplay.signedIn)
     <ul id="c-Header__menu__right">
-        <li class="user #if($user.screenName.length() > 22)small#end">
-           <a href="javascript:;" id="userPopupTrigger" >$user.screenName <img src="/image/user_male_portrait?userId=$user.userId&screenName=$user.screenName&companyId=$user.companyId&portraitId=$user.portraitId" width="24" height="25" alt="$user.screenName" /></a>
+        <li class="user #if($member.screenName.length() > 22)small#end">
+           <a href="javascript:;" id="userPopupTrigger" >$member.screenName <img src="/image/user_male_portrait?userId=$member.userId&screenName=$member.screenName&portraitId=$member.portraitId" width="24" height="25" alt="$member.screenName" /></a>
             #if ($unreadMessages > 0)
                <div class="c-Header__user__notification c-Header__user__notification__top">$unreadMessages</div>
             #end
@@ -175,17 +189,17 @@
 
   <!-- USER POPUP -->
   <div class="c-Header__user__pop" id="userPopupContainer">
-   <div class="c-Header__user__top"><img src="/image/user_male_portrait?userId=$user.userId&screenName=$user.screenName&companyId=$user.companyId&portraitId=$member.portraitFileEntryId" width="24" height="25" alt="$user.screenName" /></div>
+   <div class="c-Header__user__top"><img src="/image/user_male_portrait?userId=$member.userId&screenName=$member.screenName&portraitId=$member.portraitFileEntryId" width="24" height="25" alt="$member.screenName" /></div>
    <div class="c-Header__user__box">
     <ul>
-     <li><a href="/web/guest/member/-/member/userId/$user.userId">My profile</a></li>
+     <li><a href="/web/guest/member/-/member/userId/$member.userId">My profile</a></li>
      <li>
          <a href="/web/guest/messaging">My messages</a>
          #if ($unreadMessages > 0)
              <div class="c-Header__user__notification c-Header__user__notification__message">$unreadMessages</div>
          #end
      </li>
-     <li><a href="/web/guest/member/-/member/userId/$user.userId/page/subscriptions">My subscriptions</a></li>
+     <li><a href="/web/guest/member/-/member/userId/$member.userId/page/subscriptions">My subscriptions</a></li>
      #if ($permissionChecker.isOmniadmin())
      #if ($show_control_panel)
         <li>
@@ -194,7 +208,7 @@
      #end
         #end
         
-   		#foreach($role in $user.getRoles())
+   		#foreach($role in $member.getRoles())
    			#if($role.getName().toLowerCase() == "outreach specialist")
    				<li><a href="/group/control_panel">Control panel</a></li>
 			#end
@@ -320,7 +334,7 @@ $theme.include($top_messages_include)
 // disabled in test env
 	try {
 	        $request.getSession().removeAttribute('collab_user_has_registered')
-        	pageTracker._trackPageview('/colab/$user.screenName/registered');
+        	pageTracker._trackPageview('/colab/$member.screenName/registered');
 		pageTracker._trackEvent('Users', 'registered', '', 1);
 	}
 	catch(err) {
@@ -368,7 +382,7 @@ $theme.include($body_bottom_include)
 
 $theme.include($bottom_include)
 <script src="$javascript_folder/balloon.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
-<script>var usertracking_userId = $user.userId;var usertracking_hash = $user.uuid.hashCode();</script>
+<script>var usertracking_userId = $_trueMember.userId;var usertracking_hash = $user.uuid.hashCode();</script>
 <script src="$javascript_folder/usertracking.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
 </body>
 

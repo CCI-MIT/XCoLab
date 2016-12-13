@@ -22,7 +22,7 @@ import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.OntologyWrapper;
-import org.xcolab.utils.IdListUtil;
+import org.xcolab.util.IdListUtil;
 import org.xcolab.wrapper.TabWrapper;
 
 import java.io.IOException;

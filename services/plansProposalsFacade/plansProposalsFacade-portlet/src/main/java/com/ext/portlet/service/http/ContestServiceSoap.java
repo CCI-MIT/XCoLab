@@ -1,12 +1,5 @@
 package com.ext.portlet.service.http;
 
-import com.ext.portlet.service.ContestServiceUtil;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import java.rmi.RemoteException;
-
 /**
  * Provides the SOAP utility for the
  * {@link com.ext.portlet.service.ContestServiceUtil} service utility. The
@@ -48,24 +41,4 @@ import java.rmi.RemoteException;
  * @generated
  */
 public class ContestServiceSoap {
-    private static Log _log = LogFactoryUtil.getLog(ContestServiceSoap.class);
-
-    /**
-    * Returns a list of open contest for regular users and returns all contests for staff users
-    *
-    * @throws PortalException
-    * @throws SystemException
-    */
-    public static com.ext.portlet.model.ContestSoap[] getContestsOpenForProposals()
-        throws RemoteException {
-        try {
-            java.util.List<com.ext.portlet.model.Contest> returnValue = ContestServiceUtil.getContestsOpenForProposals();
-
-            return com.ext.portlet.model.ContestSoap.toSoapModels(returnValue);
-        } catch (Exception e) {
-            _log.error(e, e);
-
-            throw new RemoteException(e.getMessage());
-        }
-    }
 }

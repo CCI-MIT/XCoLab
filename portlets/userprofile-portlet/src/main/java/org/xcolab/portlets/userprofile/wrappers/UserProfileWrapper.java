@@ -1,20 +1,12 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ext.portlet.Activity.ActivityUtil;
-import com.ext.portlet.service.PointsLocalServiceUtil;
 import com.ext.portlet.service.Xcolab_UserLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.Company;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.util.Encryptor;
-import com.liferay.util.EncryptorException;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
@@ -33,14 +25,13 @@ import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
-import org.xcolab.enums.Plurality;
+import org.xcolab.entity.utils.EntityGroupingUtil;
 import org.xcolab.portlets.userprofile.beans.BadgeBean;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
 import org.xcolab.portlets.userprofile.entity.Badge;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.utils.EntityGroupingUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -54,10 +45,7 @@ import javax.portlet.PortletRequest;
 
 public class UserProfileWrapper implements Serializable {
 
-    private static final Logger _log = LoggerFactory.getLogger(UserProfileWrapper.class);
-
     private static final long serialVersionUID = 1L;
-    private static final long DEFAULT_COMPANY_ID = 10112L;
 
     private static final int MAX_ACTIVITIES_COUNT = 50;
     private static final boolean FIRE_GOOGLE_EVENT = false;
@@ -360,11 +348,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public long getActualPoints() {
-        try {
-            return PointsLocalServiceUtil.getUserMaterializedPoints(getUserId());
-        } catch (SystemException e) {
-            return 0;
-        }
+        return MembersClient.getMemberMaterializedPoints(getUserId());
     }
 
     public String getPotentialPointsFormatted() {
@@ -372,11 +356,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public long getPotentialPoints() {
-        try {
-            return PointsLocalServiceUtil.getUserHypotheticalPoints(getUserId());
-        } catch (SystemException e) {
-            return 0;
-        }
+        return MembersClient.getMemberHypotheticalPoints(getUserId());
     }
 
     public List<Proposal> getLinkingProposals() {
@@ -408,14 +388,5 @@ public class UserProfileWrapper implements Serializable {
                     "or");
         }
         return proposalString;
-    }
-
-    public String getDoAsUserString() {
-        try {
-            final Company company = CompanyLocalServiceUtil.getCompany(DEFAULT_COMPANY_ID);
-            return Encryptor.encrypt(company.getKeyObj(), String.valueOf(getUserId()));
-        } catch (PortalException | SystemException | EncryptorException e) {
-            return "";
-        }
     }
 }

@@ -106,10 +106,6 @@ public class Proposal extends AbstractProposal {
     private ProposalRibbon ribbonWrapper;
     private List<MembershipRequest> membershipRequests;
 
-    //private final static Log _log = LogFactoryUtil.getLog(Contest.class)
-
-
-
     public Proposal(Proposal proposal, ContestPhase contestPhase) {
         this(proposal, proposal.getCurrentVersion(), null, contestPhase, null);
     }
@@ -143,23 +139,23 @@ public class Proposal extends AbstractProposal {
 
     public Proposal(Proposal value) {
         super(value);
-        if(value.getRestService()!=null){
+        if (value.getRestService() != null) {
             this.restService = value.getRestService();
-            RestService contestservice =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
-            contestClient = ContestClient.fromService(contestservice);
-            planTemplateClient = PlanTemplateClient.fromService(contestservice);
+            RestService contestService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
+            contestClient = ContestClient.fromService(contestService);
+            planTemplateClient = PlanTemplateClient.fromService(contestService);
             proposalClient = ProposalClient.fromService(restService);;
             proposalAttributeClient = ProposalAttributeClient.fromService(restService);
             proposalPhaseClient = ProposalPhaseClient.fromService(restService);
 
-            contestTeamMemberClient =  ContestTeamMemberClient.fromService(contestservice);
+            contestTeamMemberClient =  ContestTeamMemberClient.fromService(contestService);
 
             RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
             commentClient = CommentClient.fromService(commentService);
             proposalMemberRatingClient = ProposalMemberRatingClient.fromService(restService);
             proposalJudgeRatingClient = ProposalJudgeRatingClient.fromService(restService);
             membershipClient = MembershipClient.fromService(restService);
-        }else {
+        } else {
             contestClient = ContestClientUtil.getClient();
             proposalClient = ProposalClientUtil.getClient();
             proposalAttributeClient = ProposalAttributeClientUtil.getClient();
@@ -182,8 +178,6 @@ public class Proposal extends AbstractProposal {
         proposalAttributeHelper = new ProposalAttributeHelper(this, this.getVersion(),proposalAttributeClient);
 
     }
-
-
 
 
     public Proposal(Proposal proposal, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
@@ -299,9 +293,9 @@ public class Proposal extends AbstractProposal {
             if (contestPhase != null) {
                 return contestClient.getContest(contestPhase.getContestPK());
             }
-            if(this.getProposalId() != null && this.getProposalId().longValue() != 0l) {
+            if (this.getProposalId() != null && this.getProposalId() != 0L) {
                 return proposalClient.getCurrentContestForProposal(this.getProposalId());
-            }else{
+            } else {
                 return null;
             }
         } catch (ContestNotFoundException e) {
@@ -334,23 +328,22 @@ public class Proposal extends AbstractProposal {
         return null;
     }
 
-
-
     public String getProposalLinkUrl(Contest contest) {
         return getProposalLinkUrl(contest, 0L);
     }
 
     public String getProposalLinkUrl(Contest contest, long contestPhaseId) {
-        String link = "/";
         Long proposalId = this.getProposalId();
         ContestType contestType;
-        if(contest.getIsSharedContest() && ! contest.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME.get())) {
-            contestType =
-                    ContestClientUtil.getClient().getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
-        }else{
+        if (contest.getIsSharedContest()
+                && !contest.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME.get())) {
+            contestType = ContestClientUtil.getClient()
+                    .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
+        } else {
             contestType =
                     contestClient.getContestType(contest.getContestTypeId());
         }
+        String link = "/";
         link += contestType.getFriendlyUrlStringContests();
 
         String friendlyUrlStringProposal = contestType.getFriendlyUrlStringProposal();
@@ -375,8 +368,6 @@ public class Proposal extends AbstractProposal {
                 .format(link, contest.getContestYear(), contest.getContestUrlName(), proposalId);
     }
 
-
-
     public boolean isDeleted() {
         if (this.getProposalId() == 0) {
             return false;
@@ -397,6 +388,7 @@ public class Proposal extends AbstractProposal {
 
     }
 
+    @Override
     public Long getFellowDiscussionId() {
         long fellowDiscussionId = super.getFellowDiscussionId();
         if (fellowDiscussionId == 0) {
@@ -426,18 +418,18 @@ public class Proposal extends AbstractProposal {
         return proposalAttributeHelper.getAttributeValueString(ProposalAttributeKeys.DESCRIPTION, "");
     }
 
-    public boolean isUserAmongFellows(Member memberInQuestion) {
+    public boolean isUserAmongFellows(long memberId) {
         for (Long fellowId : contestTeamMemberClient.getFellowsForContest(contest.getContestPK())) {
-            if (fellowId == memberInQuestion.getUserId()) {
+            if (fellowId == memberId) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean isUserAmongJudges(Member userInQuestion) {
+    public boolean isUserAmongJudges(long memberId) {
         for (Long judge : contestTeamMemberClient.getJudgesForContest(contest.getContestPK())) {
-            if (judge == userInQuestion.getUserId()) {
+            if (judge == memberId) {
                 return true;
             }
         }
@@ -499,11 +491,11 @@ public class Proposal extends AbstractProposal {
 
 
     public boolean isOpen() {
-        if( this.getProposalId() > 0 ) {
+        if (this.getProposalId() > 0) {
             ProposalAttribute attribute = proposalAttributeClient
                     .getProposalAttribute(this.getProposalId(), ProposalAttributeKeys.OPEN, 0L);
             return attribute != null && attribute.getNumericValue() > 0;
-        }else{
+        } else {
             return false;
         }
     }
@@ -721,7 +713,7 @@ public class Proposal extends AbstractProposal {
 
     public boolean isUserAmongSelectedJudge(Member user) {
         if (!getFellowScreeningNecessary()) {
-            return isUserAmongJudges(user);
+            return isUserAmongJudges(user.getUserId());
         }
 
         for (Long userId : getSelectedJudges()) {

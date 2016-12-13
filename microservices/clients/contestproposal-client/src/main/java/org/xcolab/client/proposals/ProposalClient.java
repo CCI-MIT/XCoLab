@@ -326,7 +326,6 @@ public final class ProposalClient {
     }
 
     public Contest getCurrentContestForProposal(Long proposalId) throws ContestNotFoundException {
-
         Long contestPhaseId = getLatestContestPhaseIdInProposal(proposalId);
         ContestPhase contestPhase = contestClient.getContestPhase(contestPhaseId);
         return contestClient.getContest(contestPhase.getContestPK());
@@ -340,11 +339,11 @@ public final class ProposalClient {
 
     public Contest getLatestContestInProposal(Long proposalId) throws ContestNotFoundException {
         return contestClient
-                .getContest(getLatestContestPhaseInContest(proposalId).getContestPK());
+                .getContest(getLatestContestPhaseInProposal(proposalId).getContestPK());
     }
 
 
-    public ContestPhase getLatestContestPhaseInContest(Long proposalId) {
+    public ContestPhase getLatestContestPhaseInProposal(Long proposalId) {
         Long contestPhaseId = getLatestContestPhaseIdInProposal(proposalId);
         return contestClient.getContestPhase(contestPhaseId);
     }

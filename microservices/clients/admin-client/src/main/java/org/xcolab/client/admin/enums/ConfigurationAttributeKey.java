@@ -23,7 +23,9 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> COLAB_URL =
             ConfigurationAttributes.newStringAttribute("COLAB_URL")
                     .withCache().build();
-
+    public static final AttributeGetter<String> BLOG_URL =
+            ConfigurationAttributes.newStringAttribute("BLOG_URL")
+                    .withCache().build();
     public static final AttributeGetter<Long> DEFAULT_CONTEST_TYPE_ID =
             ConfigurationAttributes.newLongAttribute("DEFAULT_CONTEST_TYPE_ID")
                     .withCache().build();

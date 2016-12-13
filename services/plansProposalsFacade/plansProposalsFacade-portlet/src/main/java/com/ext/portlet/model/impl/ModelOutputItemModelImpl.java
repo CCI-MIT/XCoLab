@@ -62,7 +62,7 @@ public class ModelOutputItemModelImpl extends BaseModelImpl<ModelOutputItem>
             { "itemType", Types.VARCHAR },
             { "relatedOutputItem", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ModelOutputItem (modelOutputItemModifierPK LONG not null primary key,modelId LONG,modelOutputItemId LONG,modelOutputItemOrder INTEGER,modelItemRangePolicy VARCHAR(2048) null,modelItemRangeMessage VARCHAR(2048) null,modelItemErrorPolicy VARCHAR(2048) null,modelItemErrorMessage VARCHAR(2048) null,modelItemLabelFormat VARCHAR(2048) null,modelItemIsVisible BOOLEAN,itemType VARCHAR(256) null,relatedOutputItem LONG)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ModelOutputItem (modelOutputItemModifierPK LONG not null primary key,modelId LONG,modelOutputItemId LONG,modelOutputItemOrder INTEGER,modelItemRangePolicy VARCHAR(75) null,modelItemRangeMessage VARCHAR(75) null,modelItemErrorPolicy VARCHAR(75) null,modelItemErrorMessage VARCHAR(75) null,modelItemLabelFormat VARCHAR(75) null,modelItemIsVisible BOOLEAN,itemType VARCHAR(75) null,relatedOutputItem LONG)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ModelOutputItem";
     public static final String ORDER_BY_JPQL = " ORDER BY modelOutputItem.modelOutputItemModifierPK ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ModelOutputItem.modelOutputItemModifierPK ASC";

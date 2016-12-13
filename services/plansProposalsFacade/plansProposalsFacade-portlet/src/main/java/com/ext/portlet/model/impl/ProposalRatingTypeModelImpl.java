@@ -55,7 +55,7 @@ public class ProposalRatingTypeModelImpl extends BaseModelImpl<ProposalRatingTyp
             { "judgeType", Types.INTEGER },
             { "isActive", Types.BOOLEAN }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalRatingType (id_ LONG not null primary key,label VARCHAR(75) null,description TEXT null,judgeType INTEGER,isActive BOOLEAN)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ProposalRatingType (id_ LONG not null primary key,label VARCHAR(75) null,description VARCHAR(75) null,judgeType INTEGER,isActive BOOLEAN)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ProposalRatingType";
     public static final String ORDER_BY_JPQL = " ORDER BY proposalRatingType.id ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ProposalRatingType.id_ ASC";

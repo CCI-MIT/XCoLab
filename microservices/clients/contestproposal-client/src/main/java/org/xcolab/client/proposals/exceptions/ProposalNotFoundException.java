@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals.exceptions;
 
-public class ProposalNotFoundException extends Exception {
+public class ProposalNotFoundException extends RuntimeException {
     public ProposalNotFoundException(long proposalId) {
         this("Proposal with id " + proposalId + " does not exist");
     }

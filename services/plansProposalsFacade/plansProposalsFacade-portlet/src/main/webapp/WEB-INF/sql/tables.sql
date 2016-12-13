@@ -12,13 +12,13 @@ create table xcolab_AnalyticsUserEvent (
 create table xcolab_Contest (
 	ContestPK LONG not null primary key,
 	contestTypeId LONG,
-	ContestName VARCHAR(1024) null,
-	ContestShortName VARCHAR(512) null,
+	ContestName VARCHAR(75) null,
+	ContestShortName VARCHAR(75) null,
 	ContestUrlName VARCHAR(75) null,
 	ContestYear LONG,
-	ContestDescription TEXT null,
-	ContestModelDescription TEXT null,
-	ContestPositionsDescription TEXT null,
+	ContestDescription VARCHAR(75) null,
+	ContestModelDescription VARCHAR(75) null,
+	ContestPositionsDescription VARCHAR(75) null,
 	created DATE null,
 	updated DATE null,
 	authorId LONG,
@@ -36,15 +36,15 @@ create table xcolab_Contest (
 	featured_ BOOLEAN,
 	plansOpenByDefault BOOLEAN,
 	sponsorLogoId LONG,
-	sponsorText VARCHAR(500) null,
+	sponsorText VARCHAR(75) null,
 	sponsorLink VARCHAR(75) null,
 	flag INTEGER,
-	flagText VARCHAR(256) null,
-	flagTooltip VARCHAR(512) null,
+	flagText VARCHAR(75) null,
+	flagTooltip VARCHAR(75) null,
 	groupId LONG,
 	discussionGroupId LONG,
 	weight INTEGER,
-	resourcesUrl VARCHAR(1024) null,
+	resourcesUrl VARCHAR(75) null,
 	contestPrivate BOOLEAN,
 	usePermissions BOOLEAN,
 	contestCreationStatus VARCHAR(75) null,
@@ -54,7 +54,7 @@ create table xcolab_Contest (
 	points DOUBLE,
 	defaultParentPointType LONG,
 	pointDistributionStrategy VARCHAR(75) null,
-	emailTemplateUrl VARCHAR(500) null,
+	emailTemplateUrl VARCHAR(75) null,
 	show_in_tile_view BOOLEAN,
 	show_in_list_view BOOLEAN,
 	show_in_outline_view BOOLEAN,
@@ -76,9 +76,9 @@ create table xcolab_ContestDiscussion (
 
 create table xcolab_ContestEmailTemplate (
 	type_ VARCHAR(75) not null primary key,
-	subject TEXT null,
-	header TEXT null,
-	footer TEXT null
+	subject VARCHAR(75) null,
+	header VARCHAR(75) null,
+	footer VARCHAR(75) null
 );
 
 create table xcolab_ContestPhase (
@@ -88,7 +88,7 @@ create table xcolab_ContestPhase (
 	contestScheduleId LONG,
 	fellowScreeningActive BOOLEAN,
 	contestPhaseAutopromote VARCHAR(75) null,
-	ContestPhaseDescriptionOverride TEXT null,
+	ContestPhaseDescriptionOverride VARCHAR(75) null,
 	phaseActiveOverride BOOLEAN,
 	phaseInactiveOverride BOOLEAN,
 	PhaseStartDate DATE null,
@@ -119,8 +119,8 @@ create table xcolab_ContestPhaseRibbonType (
 
 create table xcolab_ContestPhaseType (
 	id_ LONG not null primary key,
-	name VARCHAR(1024) null,
-	description TEXT null,
+	name VARCHAR(75) null,
+	description VARCHAR(75) null,
 	status VARCHAR(75) null,
 	fellowScreeningActiveDefault BOOLEAN,
 	contestPhaseAutopromoteDefault VARCHAR(75) null,
@@ -169,13 +169,13 @@ create table xcolab_ContestType (
 
 create table xcolab_EmailList (
 	id_ LONG not null primary key,
-	name VARCHAR(256) null,
-	email VARCHAR(256) null
+	name VARCHAR(75) null,
+	email VARCHAR(75) null
 );
 
 create table xcolab_FocusArea (
 	id_ LONG not null primary key,
-	name VARCHAR(256) null,
+	name VARCHAR(75) null,
 	order_ INTEGER
 );
 
@@ -189,7 +189,7 @@ create table xcolab_FocusAreaOntologyTerm (
 create table xcolab_ImpactDefaultSeries (
 	seriesId LONG not null,
 	name VARCHAR(75) not null,
-	description VARCHAR(1000) null,
+	description VARCHAR(75) null,
 	focusAreaId LONG,
 	visible BOOLEAN,
 	editable BOOLEAN,
@@ -228,8 +228,8 @@ create table xcolab_ImpactTemplateSeries (
 
 create table xcolab_LandingPage (
 	id_ LONG not null primary key,
-	baseUrl VARCHAR(1024) null,
-	targetUrl VARCHAR(1024) null,
+	baseUrl VARCHAR(75) null,
+	targetUrl VARCHAR(75) null,
 	updated DATE null
 );
 
@@ -245,22 +245,22 @@ create table xcolab_LoginLog (
 
 create table xcolab_MessagingIgnoredRecipients (
 	ignoredRecipientId LONG not null primary key,
-	email VARCHAR(512) null,
-	name VARCHAR(512) null,
+	email VARCHAR(75) null,
+	name VARCHAR(75) null,
 	userId LONG,
 	createDate DATE null
 );
 
 create table xcolab_MessagingMessage (
 	messageId LONG not null primary key,
-	name VARCHAR(1024) null,
-	description TEXT null,
-	subject VARCHAR(2048) null,
-	body TEXT null,
-	replyTo VARCHAR(1024) null,
+	name VARCHAR(75) null,
+	description VARCHAR(75) null,
+	subject VARCHAR(75) null,
+	body VARCHAR(75) null,
+	replyTo VARCHAR(75) null,
 	sendToAll BOOLEAN,
 	conversionCount LONG,
-	redirectURL VARCHAR(1024) null,
+	redirectURL VARCHAR(75) null,
 	creatorId LONG,
 	createDate DATE null,
 	modifiedDate DATE null
@@ -271,35 +271,35 @@ create table xcolab_MessagingMessageConversion (
 	conversionTypeId LONG,
 	messageId LONG,
 	ipAddress VARCHAR(75) null,
-	extraData VARCHAR(2048) null,
-	extraData2 VARCHAR(2048) null,
+	extraData VARCHAR(75) null,
+	extraData2 VARCHAR(75) null,
 	createDate DATE null
 );
 
 create table xcolab_MessagingMessageConversionType (
 	typeId LONG not null primary key,
-	name VARCHAR(1024) null,
-	description VARCHAR(2048) null
+	name VARCHAR(75) null,
+	description VARCHAR(75) null
 );
 
 create table xcolab_MessagingMessageRecipient (
 	recipientId LONG not null primary key,
 	messageId LONG,
 	userId LONG,
-	emailAddress VARCHAR(512) null
+	emailAddress VARCHAR(75) null
 );
 
 create table xcolab_MessagingRedirectLink (
 	redirectId LONG not null primary key,
-	link VARCHAR(1024) null,
+	link VARCHAR(75) null,
 	messageId LONG,
 	createDate DATE null
 );
 
 create table xcolab_ModelCategory (
 	modelCategoryPK LONG not null primary key,
-	modelCategoryName VARCHAR(256) null,
-	modelCategoryDescription VARCHAR(2048) null,
+	modelCategoryName VARCHAR(75) null,
+	modelCategoryDescription VARCHAR(75) null,
 	modelCategoryDisplayWeight INTEGER
 );
 
@@ -317,17 +317,17 @@ create table xcolab_ModelGlobalPreference (
 	expertEvaluationPageId LONG,
 	modelCategoryId LONG,
 	usesCustomInputs BOOLEAN,
-	customInputsDefinition TEXT null
+	customInputsDefinition VARCHAR(75) null
 );
 
 create table xcolab_ModelInputGroup (
 	modelInputGroupPK LONG not null primary key,
 	modelId LONG,
 	nameAndDescriptionMetaDataId LONG,
-	name VARCHAR(1024) null,
-	description TEXT null,
+	name VARCHAR(75) null,
+	description VARCHAR(75) null,
 	displayItemOrder INTEGER,
-	groupType VARCHAR(256) null,
+	groupType VARCHAR(75) null,
 	parentGroupPK LONG
 );
 
@@ -337,19 +337,19 @@ create table xcolab_ModelInputItem (
 	modelInputItemID LONG,
 	modelGroupId LONG,
 	displayItemOrder INTEGER,
-	type_ VARCHAR(256) null,
-	properties VARCHAR(2048) null
+	type_ VARCHAR(75) null,
+	properties VARCHAR(75) null
 );
 
 create table xcolab_ModelOutputChartOrder (
 	modelOutputChartOrderPK LONG not null primary key,
 	modelId LONG,
-	modelOutputLabel VARCHAR(1024) null,
+	modelOutputLabel VARCHAR(75) null,
 	modelOutputChartOrder INTEGER,
-	modelIndexRangePolicy VARCHAR(2048) null,
-	modelIndexRangeMessage VARCHAR(2048) null,
-	modelIndexErrorPolicy VARCHAR(2048) null,
-	modelIndexErrorMessage VARCHAR(2048) null,
+	modelIndexRangePolicy VARCHAR(75) null,
+	modelIndexRangeMessage VARCHAR(75) null,
+	modelIndexErrorPolicy VARCHAR(75) null,
+	modelIndexErrorMessage VARCHAR(75) null,
 	modelChartIsVisible BOOLEAN
 );
 
@@ -358,13 +358,13 @@ create table xcolab_ModelOutputItem (
 	modelId LONG,
 	modelOutputItemId LONG,
 	modelOutputItemOrder INTEGER,
-	modelItemRangePolicy VARCHAR(2048) null,
-	modelItemRangeMessage VARCHAR(2048) null,
-	modelItemErrorPolicy VARCHAR(2048) null,
-	modelItemErrorMessage VARCHAR(2048) null,
-	modelItemLabelFormat VARCHAR(2048) null,
+	modelItemRangePolicy VARCHAR(75) null,
+	modelItemRangeMessage VARCHAR(75) null,
+	modelItemErrorPolicy VARCHAR(75) null,
+	modelItemErrorMessage VARCHAR(75) null,
+	modelItemLabelFormat VARCHAR(75) null,
 	modelItemIsVisible BOOLEAN,
-	itemType VARCHAR(256) null,
+	itemType VARCHAR(75) null,
 	relatedOutputItem LONG
 );
 
@@ -376,8 +376,8 @@ create table xcolab_ModelPosition (
 
 create table xcolab_OntologySpace (
 	id_ LONG not null primary key,
-	name VARCHAR(256) null,
-	description TEXT null,
+	name VARCHAR(75) null,
+	description VARCHAR(75) null,
 	order_ INTEGER
 );
 
@@ -385,8 +385,8 @@ create table xcolab_OntologyTerm (
 	id_ LONG not null primary key,
 	parentId LONG,
 	ontologySpaceId LONG,
-	name VARCHAR(256) null,
-	descriptionUrl VARCHAR(1024) null,
+	name VARCHAR(75) null,
+	descriptionUrl VARCHAR(75) null,
 	order_ INTEGER
 );
 
@@ -400,10 +400,10 @@ create table xcolab_OntologyTermEntity (
 create table xcolab_PlanSectionDefinition (
 	id_ LONG not null primary key,
 	type_ VARCHAR(75) null,
-	adminTitle VARCHAR(1024) null,
-	title VARCHAR(1024) null,
-	defaultText TEXT null,
-	helpText TEXT null,
+	adminTitle VARCHAR(75) null,
+	title VARCHAR(75) null,
+	defaultText VARCHAR(75) null,
+	helpText VARCHAR(75) null,
 	characterLimit INTEGER,
 	focusAreaId LONG,
 	tier LONG,
@@ -416,7 +416,7 @@ create table xcolab_PlanSectionDefinition (
 
 create table xcolab_PlanTemplate (
 	id_ LONG not null primary key,
-	name VARCHAR(1024) null,
+	name VARCHAR(75) null,
 	baseTemplateId LONG,
 	impactSeriesTemplateId LONG,
 	focusAreaListTemplateId LONG
@@ -503,7 +503,7 @@ create table xcolab_ProposalAttribute (
 	name VARCHAR(75) null,
 	additionalId LONG,
 	numericValue LONG,
-	stringValue TEXT null,
+	stringValue VARCHAR(75) null,
 	realValue DOUBLE
 );
 
@@ -514,7 +514,7 @@ create table xcolab_ProposalContestPhaseAttribute (
 	name VARCHAR(75) null,
 	additionalId LONG,
 	numericValue LONG,
-	stringValue TEXT null,
+	stringValue VARCHAR(75) null,
 	realValue DOUBLE
 );
 
@@ -537,7 +537,7 @@ create table xcolab_ProposalRating (
 	contestPhaseId LONG,
 	userId LONG,
 	ratingValueId LONG,
-	comment_ TEXT null,
+	comment_ VARCHAR(75) null,
 	commentEnabled BOOLEAN,
 	otherDataString VARCHAR(75) null,
 	onlyForInternalUsage BOOLEAN
@@ -546,7 +546,7 @@ create table xcolab_ProposalRating (
 create table xcolab_ProposalRatingType (
 	id_ LONG not null primary key,
 	label VARCHAR(75) null,
-	description TEXT null,
+	description VARCHAR(75) null,
 	judgeType INTEGER,
 	isActive BOOLEAN
 );
@@ -556,7 +556,7 @@ create table xcolab_ProposalRatingValue (
 	ratingTypeId LONG,
 	value LONG,
 	name VARCHAR(75) null,
-	description TEXT null
+	description VARCHAR(75) null
 );
 
 create table xcolab_ProposalReference (

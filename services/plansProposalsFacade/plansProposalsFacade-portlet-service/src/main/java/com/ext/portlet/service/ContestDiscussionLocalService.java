@@ -240,10 +240,4 @@ public interface ContestDiscussionLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.lang.Long getDiscussionIdByContestIdAndTabName(
-        java.lang.Long contestId, java.lang.String tabName)
-        throws com.ext.portlet.NoSuchContestDiscussionException,
-            com.liferay.portal.kernel.exception.SystemException;
 }

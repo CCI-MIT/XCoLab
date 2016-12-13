@@ -277,13 +277,6 @@ public class ProposalRatingValueLocalServiceWrapper
             parameterTypes, arguments);
     }
 
-    @Override
-    public java.util.List<com.ext.portlet.model.ProposalRatingValue> getRatingValuesForRatingTypeId(
-        long proposalRatingTypeId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _proposalRatingValueLocalService.getRatingValuesForRatingTypeId(proposalRatingTypeId);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

@@ -4,7 +4,7 @@ package org.xcolab.client.proposals.helpers;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
-import org.xcolab.util.EntityGroupingUtil;
+import org.xcolab.util.GroupingUtil;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -12,14 +12,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class ProposalAttributeHelper {
     private final Proposal proposal;
     private final int version;
     private Map<String, Map<Long, ProposalAttribute>> attributesByNameAndAdditionalId;
 
-
-    private ProposalAttributeClient proposalAttributeClient;
+    private final ProposalAttributeClient proposalAttributeClient;
 
     public ProposalAttributeHelper(Proposal proposal, int version, ProposalAttributeClient proposalAttributeClient) {
         this.proposal = proposal;
@@ -38,7 +36,7 @@ public class ProposalAttributeHelper {
             if (attributesByNameAndAdditionalId == null) {
                 attributesByNameAndAdditionalId = new HashMap<>();
                 for (ProposalAttribute attribute : attributes) {
-                    Map<Long, ProposalAttribute> currentAttributes = EntityGroupingUtil
+                    Map<Long, ProposalAttribute> currentAttributes = GroupingUtil
                             .getInnerMapOrCreate(
                                     attribute.getName(), attributesByNameAndAdditionalId);
 

@@ -88,5 +88,12 @@
         <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
         <implicit-parameter name="p_p_resource_id">getUsersByPartialName</implicit-parameter>
     </route>
+    <route>
+        <pattern>/users/screenName/{screenName}</pattern>
+        <generated-parameter name="screenName">{screenName}</generated-parameter>
+        <implicit-parameter name="p_p_id">membersportlet_WAR_membersportlet</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+        <implicit-parameter name="p_p_resource_id">getUserByScreenName</implicit-parameter>
+    </route>
     
 </routes>

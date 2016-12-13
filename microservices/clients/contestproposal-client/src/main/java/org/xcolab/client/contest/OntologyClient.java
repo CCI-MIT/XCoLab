@@ -75,6 +75,12 @@ public class OntologyClient {
         return DtoUtil.toPojos(ontologyTermResource.list()
                 .execute(), contestService);
     }
+    public List<OntologyTerm> getOntologyTerms(Long parentId, Long ontologySpaceId) {
+        return DtoUtil.toPojos(ontologyTermResource.list()
+                .queryParam("parentId", parentId)
+                .queryParam("ontologySpaceId",ontologySpaceId)
+                .execute(), contestService);
+    }
 
     public List<FocusArea> getAllFocusAreas() {
         return DtoUtil.toPojos(focusAreaResource.list()
@@ -91,7 +97,7 @@ public class OntologyClient {
         faot.setFocusAreaId(focusAreaId);
         faot.setOntologyTermId(ontologyTermId);
         faot.setOrder_((int) new Date().getTime());
-        focusAreaOntologyTermResource.create(faot);
+        focusAreaOntologyTermResource.create(faot).execute();
 
     }
 
@@ -111,6 +117,25 @@ public class OntologyClient {
         return ontologyTermResource.get(Id_)
                 .execute().toPojo(contestService);
     }
+
+    public OntologyTerm createOntologyTerm(OntologyTerm ontologyTerm) {
+        return ontologyTermResource.create(new OntologyTermDto(ontologyTerm)).execute().toPojo(contestService);
+    }
+
+
+
+
+    public boolean updateOntologyTerm(OntologyTerm ontologyTerm) {
+        return ontologyTermResource.update(new OntologyTermDto(ontologyTerm), ontologyTerm.getId_())
+                .execute();
+    }
+
+    public boolean deleteOntologyTerm(Long id_) {
+        return  ontologyTermResource.delete(id_).execute();
+    }
+
+
+
 
     public Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
             Long focusAreaId, Long ontologyTermId) {
@@ -159,6 +184,21 @@ public class OntologyClient {
         return DtoUtil.toPojos(ontologyTermResource.list()
                 .optionalQueryParam("parentId", ontologyTermId)
                 .execute(), contestService);
+    }
+
+    public boolean updateFocusArea(FocusArea focusArea) {
+        return focusAreaResource.update(new FocusAreaDto(focusArea), focusArea.getId_())
+                .execute();
+    }
+
+    public boolean deleteFocusArea(Long id_) {
+        return  focusAreaResource.delete(id_).execute();
+    }
+
+    public boolean deleteFocusAreaOntologyTerm(Long focusAreaId,Long ontologyTermId) {
+        return  focusAreaOntologyTermResource.service("deleteFocusAreaOntologyTerm",Boolean.class)
+                .queryParam("focusAreaId",focusAreaId)
+                .queryParam("ontologyTermId", ontologyTermId).delete();
     }
 
     public FocusArea getFocusArea(long Id_) {

@@ -53,7 +53,7 @@ public class FocusAreaModelImpl extends BaseModelImpl<FocusArea>
             { "name", Types.VARCHAR },
             { "order_", Types.INTEGER }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_FocusArea (id_ LONG not null primary key,name VARCHAR(256) null,order_ INTEGER)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_FocusArea (id_ LONG not null primary key,name VARCHAR(75) null,order_ INTEGER)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_FocusArea";
     public static final String ORDER_BY_JPQL = " ORDER BY focusArea.order ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_FocusArea.order_ ASC";

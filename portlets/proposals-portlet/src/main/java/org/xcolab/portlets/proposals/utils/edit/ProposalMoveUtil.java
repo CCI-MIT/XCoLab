@@ -2,8 +2,6 @@ package org.xcolab.portlets.proposals.utils.edit;
 
 import org.apache.commons.lang.NotImplementedException;
 
-import com.liferay.portal.theme.ThemeDisplay;
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -16,7 +14,6 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
-
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.exceptions.InternalException;
 
@@ -30,7 +27,7 @@ public final class ProposalMoveUtil {
 
     public static void moveProposal(@Valid UpdateProposalDetailsBean updateProposalSectionsBean,
             Proposal proposal, ContestPhase contestPhase, Contest targetContest,
-            ThemeDisplay themeDisplay, PortletRequest request) {
+            long memberId, PortletRequest request) {
         try {
             final Contest fromContest = ProposalsContextUtil.getClients(request).getProposalClient().getCurrentContestForProposal(proposal.getProposalId());
             ContestPhase targetPhase = ContestClientUtil.getActivePhase(targetContest.getContestPK());
@@ -52,7 +49,7 @@ public final class ProposalMoveUtil {
                 case MOVE_PERMANENTLY:
                     proposalMoveClient.createProposalMoveHistory(proposal.getProposalId(),
                             fromContest.getContestPK(), targetContest.getContestPK(), 0L, targetPhase.getContestPhasePK(),
-                            themeDisplay.getUserId());
+                            memberId);
                     for (Proposal2Phase p2p : ProposalPhaseClientUtil
                             .getProposal2PhaseByProposalId(proposal.getProposalId())) {
                         if (ContestClientUtil.getContestPhase(p2p.getContestPhaseId()).getContestPK()
@@ -81,7 +78,7 @@ public final class ProposalMoveUtil {
                 case COPY:
                     proposalMoveClient.createCopyProposalMoveHistory(proposal.getProposalId(),
                             fromContest.getContestPK(), targetContest.getContestPK(), 0L, targetPhase.getContestPhasePK(),
-                            themeDisplay.getUserId());
+                            memberId);
                     for (Proposal2Phase p2p : ProposalPhaseClientUtil
                             .getProposal2PhaseByProposalId(proposal.getProposalId())) {
                         if (p2p.getVersionTo() < 0) {

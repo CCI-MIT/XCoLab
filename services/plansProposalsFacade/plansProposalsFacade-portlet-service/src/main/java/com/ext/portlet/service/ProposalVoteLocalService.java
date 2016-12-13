@@ -240,29 +240,4 @@ public interface ProposalVoteLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    public com.ext.portlet.model.ProposalVote create(long contestPhaseId,
-        long userID);
-
-    public com.ext.portlet.model.ProposalVote findByProposalIdContestPhaseIdUserId(
-        long contestPhaseId, long userId)
-        throws com.ext.portlet.NoSuchProposalVoteException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    /**
-    * <p>Returns true if user has voted for a proposal in context of a contest phase</p>
-    *
-    * @param contestPhaseId contest phase id
-    * @param userId         user id
-    * @return true if user has voted for proposal in context of a contest phase
-    * @throws SystemException
-    */
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public boolean hasUserVoted(long contestPhaseId, long userId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public com.ext.portlet.model.ProposalVote findByProposalIdUserId(
-        long proposalId, long userId)
-        throws com.ext.portlet.NoSuchProposalVoteException,
-            com.liferay.portal.kernel.exception.SystemException;
 }

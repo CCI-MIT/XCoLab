@@ -273,12 +273,6 @@ public class ContestScheduleLocalServiceWrapper
             arguments);
     }
 
-    @Override
-    public java.lang.Boolean isContestScheduleUsed(long contestScheduleId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _contestScheduleLocalService.isContestScheduleUsed(contestScheduleId);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

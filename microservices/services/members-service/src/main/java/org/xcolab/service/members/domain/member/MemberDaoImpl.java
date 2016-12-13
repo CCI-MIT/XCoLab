@@ -274,6 +274,12 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
+    public Integer getMemberHypotheticalPoints(Long memberId) {
+        return dslContext.select(sum(POINTS.HYPOTHETICAL_POINTS))
+                .from(POINTS).where(POINTS.USER_ID.eq(memberId)).fetchOne(0, Integer.class);
+    }
+
+    @Override
     public Integer getMemberActivityCount(Long memberId) {
         return this.dslContext.selectCount()
                 .from(SOCIAL_ACTIVITY).where(SOCIAL_ACTIVITY.USER_ID.equal(memberId))

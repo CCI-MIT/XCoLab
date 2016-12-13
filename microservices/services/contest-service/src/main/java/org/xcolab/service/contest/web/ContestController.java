@@ -13,13 +13,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.pojos.ContestCollectionCard;
+import org.xcolab.model.tables.pojos.Contest;
+import org.xcolab.model.tables.pojos.ContestDiscussion;
 import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.model.tables.pojos.ContestType;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestcollectioncard.ContestCollectionCardDao;
-
+import org.xcolab.service.contest.domain.contestdiscussion.ContestDiscussionDao;
 import org.xcolab.service.contest.domain.contesttype.ContestTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.collectioncard.CollectionCardService;
@@ -43,11 +44,23 @@ public class ContestController {
     private ContestDao contestDao;
 
     @Autowired
-    private ContestTypeDao contestTypeDao;
+    private ContestCollectionCardDao contestCollectionCardDao;
+
+    @Autowired
+    private final ContestTypeDao contestTypeDao;
+
+    @Autowired
+    private final ContestDiscussionDao contestDiscussionDao;
 
 
     @Autowired
-    private ContestCollectionCardDao contestCollectionCardDao;
+    public ContestController(ContestService contestService, ContestDao contestDao,
+            ContestTypeDao contestTypeDao, ContestDiscussionDao contestDiscussionDao) {
+        this.contestService = contestService;
+        this.contestDao = contestDao;
+        this.contestTypeDao = contestTypeDao;
+        this.contestDiscussionDao = contestDiscussionDao;
+    }
 
     @GetMapping(value = "/contestCollectionCards/{contestCollectionCardId}")
     public ContestCollectionCard getContestCollectionCard( @PathVariable long contestCollectionCardId) throws NotFoundException {
@@ -92,7 +105,7 @@ public class ContestController {
             @RequestParam(required = false) Long contestTier,
             @RequestParam(required = false) Long contestScheduleId,
             @RequestParam(required = false) Long planTemplateId,
-			@RequestParam(required = false) List<Long> focusAreaOntologyTerms,
+            @RequestParam(required = false) List<Long> focusAreaOntologyTerms,
             @RequestParam(required = false) Long contestTypeId,
             @RequestParam(required = false) Boolean contestPrivate){
         final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
@@ -164,6 +177,39 @@ public class ContestController {
         } else {
             contest.setUpdated(new Timestamp(new Date().getTime()));
             return contestDao.update(contest);
+        }
+    }
+
+    @RequestMapping(value = "/contestDiscussions", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<ContestDiscussion> getContestDiscussions(
+            @RequestParam(required = false) Integer startRecord,
+            @RequestParam(required = false) Integer limitRecord,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) Long contestId,
+            @RequestParam(required = false) String tab){
+        final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
+                sort);
+        return contestDiscussionDao.findByGiven(paginationHelper, contestId, tab);
+    }
+
+    @PostMapping(value = "/contestDiscussions")
+    public ContestDiscussion createContestDiscussion(@RequestBody ContestDiscussion contestDiscussion) {
+        return this.contestDiscussionDao.create(contestDiscussion);
+    }
+
+    @GetMapping("/contestDiscussions/{discussionId}")
+    public ContestDiscussion getContestDiscussion(@PathVariable long discussionId) throws NotFoundException {
+        return contestDiscussionDao.get(discussionId).orElseThrow(NotFoundException::new);
+    }
+
+    @PutMapping(value = "/contestDiscussions/{discussionId}")
+    public boolean updateContestDiscussion(@RequestBody ContestDiscussion contestDiscussion,
+            @PathVariable long discussionId) throws NotFoundException {
+
+        if (contestDiscussionDao.get(discussionId) == null) {
+            throw new NotFoundException("No ContestDiscussion with id " + discussionId);
+        } else {
+            return contestDiscussionDao.update(contestDiscussion);
         }
     }
 

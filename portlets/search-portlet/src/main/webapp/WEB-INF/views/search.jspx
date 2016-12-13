@@ -17,6 +17,9 @@
         <input value="${searchBean.searchPhrase}" class="searchPhrase" id="searchPhrase"/>
         <a class="c-Button__primary" href="javascript:;"
            onclick="window.location = '/web/guest/search/-/search/for/' + encodeURI($('#searchPhrase').val())">Search</a>
+        <c:if test="${searchBean.showBlogReference and not empty searchBean.searchPhrase}">
+            <collab:blogSearchLink searchPhrase="${searchBean.searchPhrase}" target="${searchBean.searchBlogURL}"/>
+        </c:if>
     </div>
 
     <div class="clearfix">

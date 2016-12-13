@@ -277,44 +277,6 @@ public class PointsDistributionConfigurationLocalServiceWrapper
             parameterTypes, arguments);
     }
 
-    @Override
-    public java.util.List<com.ext.portlet.model.PointsDistributionConfiguration> findByProposalIdPointTypeId(
-        long proposalId, long pointTypeId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _pointsDistributionConfigurationLocalService.findByProposalIdPointTypeId(proposalId,
-            pointTypeId);
-    }
-
-    @Override
-    public void removeByProposalId(long proposalId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        _pointsDistributionConfigurationLocalService.removeByProposalId(proposalId);
-    }
-
-    @Override
-    public com.ext.portlet.model.PointsDistributionConfiguration getByPlanSectionDefinitionId(
-        long planSectionDefinitionId)
-        throws com.ext.portlet.NoSuchPointsDistributionConfigurationException,
-            com.liferay.portal.kernel.exception.SystemException {
-        return _pointsDistributionConfigurationLocalService.getByPlanSectionDefinitionId(planSectionDefinitionId);
-    }
-
-    @Override
-    public com.ext.portlet.model.PointsDistributionConfiguration addDistributionConfiguration(
-        long proposalId, long pointTypeId, java.lang.Long targetUserId,
-        java.lang.Long targetSubProposalId, double percentage, long creator)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        return _pointsDistributionConfigurationLocalService.addDistributionConfiguration(proposalId,
-            pointTypeId, targetUserId, targetSubProposalId, percentage, creator);
-    }
-
-    @Override
-    public void verifyDistributionConfigurationsForProposalId(long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException {
-        _pointsDistributionConfigurationLocalService.verifyDistributionConfigurationsForProposalId(proposalId);
-    }
-
     /**
      * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
      */

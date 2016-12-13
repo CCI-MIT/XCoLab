@@ -27,9 +27,4 @@ public class ContestDiscussionLocalServiceImpl
      * Never reference this interface directly. Always use {@link com.ext.portlet.service.ContestDiscussionLocalServiceUtil} to access the contest discussion local service.
      */
 
-    @Override
-    public Long getDiscussionIdByContestIdAndTabName(Long contestId, String tabName) throws SystemException, NoSuchContestDiscussionException {
-        ContestDiscussion contestDiscussion =  contestDiscussionPersistence.findByContestIdAndTab(contestId, tabName);
-        return contestDiscussion.getDiscussionId();
-    }
 }

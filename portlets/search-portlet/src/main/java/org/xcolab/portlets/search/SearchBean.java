@@ -1,10 +1,13 @@
 package org.xcolab.portlets.search;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
+
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.ParseException;
 import com.liferay.portal.kernel.search.SearchException;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
+
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.portlets.search.paging.PageLinkWrapper;
 import org.xcolab.portlets.search.paging.SearchDataPage;
 import org.xcolab.util.html.HtmlUtil;
@@ -84,5 +87,13 @@ public class SearchBean implements Serializable {
         }
         pageLinks.add(new PageLinkWrapper("Last >>", dataPage.getNumberOfPages(), searchPhrase, searchLocation));
         return pageLinks;
+    }
+
+    public boolean getShowBlogReference() {
+        return !ConfigurationAttributeKey.BLOG_URL.get().isEmpty();
+    }
+
+    public String getSearchBlogURL() {
+        return ConfigurationAttributeKey.BLOG_URL.get() + "/?submit=Search&s=" + getSearchPhrase();
     }
 }

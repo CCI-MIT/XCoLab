@@ -9,7 +9,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.utils.FileUploadUtil;
+import org.xcolab.entity.utils.upload.FileUploadUtil;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

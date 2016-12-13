@@ -240,27 +240,4 @@ public interface PlanTemplateSectionLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    public java.util.List<com.ext.portlet.model.PlanTemplateSection> findByPlanTemplateId(
-        java.lang.Long planTemplateId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public java.util.List<com.ext.portlet.model.PlanTemplateSection> findByPlanSectionDefinitionId(
-        java.lang.Long planSectionDefinitionId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public com.ext.portlet.model.PlanTemplateSection addPlanTemplateSection(
-        java.lang.Long planTemplateId, java.lang.Long sectionId, int weight)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public void removePlanTemplateSection(java.lang.Long planTemplateId,
-        java.lang.Long sectionId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    public void store(com.ext.portlet.model.PlanTemplateSection section)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    public void remove(com.ext.portlet.model.PlanTemplateSection section)
-        throws com.liferay.portal.kernel.exception.SystemException;
 }

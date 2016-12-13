@@ -1,9 +1,8 @@
 package org.xcolab.portlets.messaging.paging;
 
-import com.liferay.portal.model.User;
-
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.legacy.enums.MessageType;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.portlets.messaging.beans.MessageBean;
 
@@ -12,19 +11,19 @@ import java.util.List;
 
 public class MessageDataPage {
 
-    private User user;
+    private Member member;
     private List<MessageBean> messages;
 
     @SuppressWarnings("unused")
     public MessageDataPage() { }
 
-    public MessageDataPage(User user, MessageType messageType, int pageSize, int pageNumber) {
-        this.user = user;
+    public MessageDataPage(Member member, MessageType messageType, int pageSize, int pageNumber) {
+        this.member = member;
 
         final int firstMessage = pageSize * (pageNumber - 1);
         final int lastMessage = pageSize * pageNumber;
         List<Message> messagesRaw = MessagingClient
-                .getMessages(user.getUserId(), firstMessage, lastMessage, messageType);
+                .getMessages(member.getUserId(), firstMessage, lastMessage, messageType);
 
         this.messages = new ArrayList<>();
         for (Message message : messagesRaw) {
@@ -32,12 +31,12 @@ public class MessageDataPage {
         }
     }
 
-    public User getUser() {
-        return user;
+    public Member getUser() {
+        return member;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Member user) {
+        this.member = user;
     }
 
     public List<MessageBean> getMessages() {

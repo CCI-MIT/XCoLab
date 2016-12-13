@@ -236,42 +236,4 @@ public interface ContestTypeLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.ContestType getContestTypeFromProposalId(
-        long proposalId)
-        throws com.liferay.portal.kernel.exception.PortalException,
-            com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.ContestType getContestTypeFromContestId(
-        long contestId)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.ContestType getContestType(
-        com.ext.portlet.model.Contest contest)
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.ext.portlet.model.ContestType> getAllContestTypes()
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.util.List<com.ext.portlet.model.ContestType> getActiveContestTypes()
-        throws com.liferay.portal.kernel.exception.SystemException;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.lang.String getLabelName(
-        com.ext.portlet.model.ContestType contestType);
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.lang.String getProposalNames(
-        java.util.List<java.lang.Long> contestTypeIds,
-        java.lang.String plurality, java.lang.String conjunction);
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public java.lang.String getContestNames(
-        java.util.List<java.lang.Long> contestTypeIds,
-        java.lang.String plurality, java.lang.String conjunction);
 }

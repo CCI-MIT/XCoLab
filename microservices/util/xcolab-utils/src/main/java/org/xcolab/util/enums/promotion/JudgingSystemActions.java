@@ -19,8 +19,10 @@ public class JudgingSystemActions {
         }
 
         public static AdvanceDecision fromInt(Integer value) {
-            for(AdvanceDecision a : values()) {
-                if(a.attributeValue == value) return a;
+            for (AdvanceDecision a : values()) {
+                if(a.attributeValue == value) {
+                    return a;
+                }
             }
 
             return NO_DECISION;

@@ -1,6 +1,8 @@
 package org.xcolab.portlets.loginregister;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,16 +23,12 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
-import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
@@ -48,13 +46,12 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.Location;
+import org.xcolab.entity.utils.LinkUtils;
+import org.xcolab.entity.utils.ModelAttributeUtil;
 import org.xcolab.liferay.LoginRegisterUtil;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.utils.LinkUtils;
-import org.xcolab.utils.ModelAttributeUtil;
-import org.xcolab.utils.UserCreationUtil;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -77,12 +74,14 @@ import javax.validation.Valid;
 @RequestMapping("view")
 public class MainViewController {
 
+    private static final Logger _log = LoggerFactory.getLogger(MainViewController.class);
+
     public static final String SSO_TARGET_KEY = "SSO_TARGET_KEY";
     public static final String SSO_TARGET_REGISTRATION = "SSO_TARGET_REGISTRATION";
     public static final String SSO_TARGET_LOGIN = "SSO_TARGET_LOGIN";
     public static final String PRE_LOGIN_REFERRER_KEY = "PRE_LOGIN_REFERRER_KEY";
-    private final static Log _log = LogFactoryUtil.getLog(MainViewController.class);
-    private static final long DEFAULT_COMPANY_ID = 10112L;
+
+    private static final String USER_NAME_REGEX = "^[a-zA-Z0-9]+$";
 
     @Autowired
     private Validator validator;
@@ -308,10 +307,7 @@ public class MainViewController {
                 (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID, PortletSession.APPLICATION_SCOPE);
         String openId = (String) portletSession.getAttribute(SSOKeys.SSO_OPENID_ID, PortletSession.APPLICATION_SCOPE);
 
-        ServiceContext serviceContext = ServiceContextFactory
-                .getInstance(User.class.getName(), request);
-        ThemeDisplay themeDisplay = (ThemeDisplay) request
-                .getAttribute(WebKeys.THEME_DISPLAY);
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
         BalloonCookie balloonCookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
 
@@ -319,7 +315,7 @@ public class MainViewController {
             final Member user = LoginRegisterUtil.register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
                             newAccountBean.getEmail(), newAccountBean.getFirstName(), newAccountBean.getLastName(),
                             newAccountBean.getShortBio(), newAccountBean.getCountry(), fbIdString, openId,
-                            newAccountBean.getImageId(), serviceContext);
+                            newAccountBean.getImageId(), themeDisplay.getPortalURL());
 
             // SSO
             if (StringUtils.isNotBlank(fbIdString)) {
@@ -338,7 +334,8 @@ public class MainViewController {
                     but.setUserId(user.getId_());
                     BalloonsClient.updateBalloonUserTracking(but);
                 } catch (BalloonUserTrackingNotFound e) {
-                    _log.error("Can't find balloon user tracking for uuid: " + balloonCookie.getUuid());
+                    _log.error("Can't find balloon user tracking for uuid: {}",
+                            balloonCookie.getUuid());
                 }
             }
 
@@ -402,7 +399,7 @@ public class MainViewController {
 
         if (!loggedInUser.getScreenName().equals(screenName)) {
             if (StringUtils.isNotEmpty(screenName) && SharedColabClient.isScreenNameUsed(screenName)
-                    && UserCreationUtil.isUsernameValid(screenName)) {
+                    && screenName.matches(USER_NAME_REGEX)) {
                 loggedInUser.setScreenName(screenName);
                 json.getJSONObject("screenName").put("success", true);
             } else {

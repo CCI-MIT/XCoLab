@@ -1,13 +1,11 @@
 package org.xcolab.portlets.discussions;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
+import java.io.IOException;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
-import java.io.IOException;
 
 public class DiscussionPreferences {
     private final static String CATEGORY_GROUP_ID_PREFERENCE = "CATEGORY_GROUP_ID";
@@ -26,7 +24,7 @@ public class DiscussionPreferences {
         }
     }
 
-    public String submit(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException, PortalException, SystemException {
+    public String submit(PortletRequest request) throws ReadOnlyException, ValidatorException, IOException {
         PortletPreferences prefs = request.getPreferences();
 
         prefs.setValue(CATEGORY_GROUP_ID_PREFERENCE, categoryGroupId+"");

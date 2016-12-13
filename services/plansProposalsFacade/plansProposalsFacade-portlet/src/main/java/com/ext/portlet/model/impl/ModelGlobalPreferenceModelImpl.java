@@ -56,9 +56,9 @@ public class ModelGlobalPreferenceModelImpl extends BaseModelImpl<ModelGlobalPre
             { "expertEvaluationPageId", Types.BIGINT },
             { "modelCategoryId", Types.BIGINT },
             { "usesCustomInputs", Types.BOOLEAN },
-            { "customInputsDefinition", Types.CLOB }
+            { "customInputsDefinition", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table xcolab_ModelGlobalPreference (modelGlobalPreferencePK LONG not null primary key,modelId LONG,visible BOOLEAN,weight INTEGER,expertEvaluationPageId LONG,modelCategoryId LONG,usesCustomInputs BOOLEAN,customInputsDefinition TEXT null)";
+    public static final String TABLE_SQL_CREATE = "create table xcolab_ModelGlobalPreference (modelGlobalPreferencePK LONG not null primary key,modelId LONG,visible BOOLEAN,weight INTEGER,expertEvaluationPageId LONG,modelCategoryId LONG,usesCustomInputs BOOLEAN,customInputsDefinition VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table xcolab_ModelGlobalPreference";
     public static final String ORDER_BY_JPQL = " ORDER BY modelGlobalPreference.modelGlobalPreferencePK ASC";
     public static final String ORDER_BY_SQL = " ORDER BY xcolab_ModelGlobalPreference.modelGlobalPreferencePK ASC";

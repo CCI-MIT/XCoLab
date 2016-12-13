@@ -240,9 +240,4 @@ public interface ContestEmailTemplateLocalService extends BaseLocalService,
     public java.lang.Object invokeMethod(java.lang.String name,
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable;
-
-    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-    public com.ext.portlet.model.ContestEmailTemplate getEmailTemplateByType(
-        java.lang.String type)
-        throws com.liferay.portal.kernel.exception.SystemException;
 }

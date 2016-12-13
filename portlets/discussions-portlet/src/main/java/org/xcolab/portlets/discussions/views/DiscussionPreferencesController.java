@@ -1,7 +1,5 @@
 package org.xcolab.portlets.discussions.views;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +28,7 @@ public class DiscussionPreferencesController {
 
     @RequestMapping(params = "action=save")
     public void savePreferences(ActionRequest request, ActionRequest response, Model model, DiscussionPreferences preferences)
-            throws ReadOnlyException, ValidatorException, IOException, SystemException, PortalException {
+            throws ReadOnlyException, ValidatorException, IOException {
         preferences.submit(request);
     }
 }

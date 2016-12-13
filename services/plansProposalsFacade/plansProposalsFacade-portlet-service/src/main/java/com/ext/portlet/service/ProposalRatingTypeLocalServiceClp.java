@@ -45,10 +45,6 @@ public class ProposalRatingTypeLocalServiceClp
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
-    private String _methodName19;
-    private String[] _methodParameterTypes19;
-    private String _methodName20;
-    private String[] _methodParameterTypes20;
 
     public ProposalRatingTypeLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -143,14 +139,6 @@ public class ProposalRatingTypeLocalServiceClp
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
-
-        _methodName19 = "getRatingTypesForJudges";
-
-        _methodParameterTypes19 = new String[] {  };
-
-        _methodName20 = "getRatingTypesForFellows";
-
-        _methodParameterTypes20 = new String[] {  };
     }
 
     @Override
@@ -670,47 +658,5 @@ public class ProposalRatingTypeLocalServiceClp
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForJudges() {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19, new Object[] {  });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.List<com.ext.portlet.model.ProposalRatingType>) ClpSerializer.translateOutput(returnObj);
-    }
-
-    @Override
-    public java.util.List<com.ext.portlet.model.ProposalRatingType> getRatingTypesForFellows() {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName20,
-                    _methodParameterTypes20, new Object[] {  });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.List<com.ext.portlet.model.ProposalRatingType>) ClpSerializer.translateOutput(returnObj);
     }
 }

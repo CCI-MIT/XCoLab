@@ -17,7 +17,7 @@ import org.xcolab.client.modeling.RomaClientUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.utils.IdListUtil;
+import org.xcolab.util.IdListUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;

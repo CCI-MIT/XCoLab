@@ -45,8 +45,6 @@ public class PointDistributionTargetLocalServiceClp
     private String[] _methodParameterTypes16;
     private String _methodName17;
     private String[] _methodParameterTypes17;
-    private String _methodName19;
-    private String[] _methodParameterTypes19;
 
     public PointDistributionTargetLocalServiceClp(
         InvokableLocalService invokableLocalService) {
@@ -141,10 +139,6 @@ public class PointDistributionTargetLocalServiceClp
         _methodName17 = "setBeanIdentifier";
 
         _methodParameterTypes17 = new String[] { "java.lang.String" };
-
-        _methodName19 = "findByContestId";
-
-        _methodParameterTypes19 = new String[] { "long" };
     }
 
     @Override
@@ -664,32 +658,5 @@ public class PointDistributionTargetLocalServiceClp
         java.lang.String[] parameterTypes, java.lang.Object[] arguments)
         throws java.lang.Throwable {
         throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public java.util.Collection<com.ext.portlet.model.PointDistributionTarget> findByContestId(
-        long contestId)
-        throws com.liferay.portal.kernel.exception.SystemException {
-        Object returnObj = null;
-
-        try {
-            returnObj = _invokableLocalService.invokeMethod(_methodName19,
-                    _methodParameterTypes19, new Object[] { contestId });
-        } catch (Throwable t) {
-            t = ClpSerializer.translateThrowable(t);
-
-            if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-                throw (com.liferay.portal.kernel.exception.SystemException) t;
-            }
-
-            if (t instanceof RuntimeException) {
-                throw (RuntimeException) t;
-            } else {
-                throw new RuntimeException(t.getClass().getName() +
-                    " is not a valid exception");
-            }
-        }
-
-        return (java.util.Collection<com.ext.portlet.model.PointDistributionTarget>) ClpSerializer.translateOutput(returnObj);
     }
 }

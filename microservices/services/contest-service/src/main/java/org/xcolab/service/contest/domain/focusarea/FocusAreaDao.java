@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface FocusAreaDao {
     FocusArea get(Long id_) throws NotFoundException;
-    //List<FocusAreaOntologyTerm> findByGiven(Long focusAreaId, Long ontologyTermId);
     List<FocusArea> findByGiven();
     FocusArea create(FocusArea focusArea);
+    int delete(Long id_);
+    boolean update(FocusArea focusArea);
 }

@@ -19,13 +19,14 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
+import org.xcolab.entity.utils.EntityIdListUtil;
 import org.xcolab.enums.ContestPhaseTypeValue;
-import org.xcolab.mail.ContestPhasePromotionEmail;
+import org.xcolab.portlets.proposals.utils.ContestPhasePromotionEmail;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalsPreferencesWrapper;
+import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import org.xcolab.utils.IdListUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -135,7 +136,7 @@ public class ProposalsPreferencesController {
         Long ribbonId = preferences.getRibbonId();
 
         //moving parameters are set
-        String message = moveProposals(IdListUtil.PROPOSALS.fromIdList(proposalIdsToBeMoved), moveFromContestId, moveToContestPhaseId, ribbonId, false,
+        String message = moveProposals(EntityIdListUtil.PROPOSALS.fromIdList(proposalIdsToBeMoved), moveFromContestId, moveToContestPhaseId, ribbonId, false,
                 request);
         model.addAttribute("message", message);
     }

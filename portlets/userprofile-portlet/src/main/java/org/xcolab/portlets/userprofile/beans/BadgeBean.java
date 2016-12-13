@@ -13,11 +13,13 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.portlets.userprofile.entity.Badge;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BadgeBean implements Serializable {
@@ -34,10 +36,7 @@ public class BadgeBean implements Serializable {
     }
 
     private void fetchBadges() {
-        for (Proposal p : ProposalClientUtil.getAllProposals()) {
-            if (!ProposalClientUtil.isUserInProposalTeam(p.getProposalId(), userId)) {
-                continue;
-            }
+        for(Proposal p : ProposalClientUtil.getMemberProposals(userId)) {
             try {
                 ContestPhaseRibbonType ribbon = getRibbonType(p);
                 int proposalRibbon = (ribbon == null) ? -1 : ribbon.getRibbon();
@@ -60,17 +59,21 @@ public class BadgeBean implements Serializable {
         ContestPhaseRibbonType contestPhaseRibbonType = null;
         List<Long> phasesForProposal = ProposalPhaseClientUtil.getContestPhasesForProposal(p.getProposalId());
 
-        long contestPhaseType = 0;
+        Date phaseStartDate = p.getCreateDate();
         for (Long phaseId : phasesForProposal) {
-            long typeId = ProposalPhaseClientUtil.getProposalContestPhaseAttribute(p.getProposalId(),
-                    phaseId, ProposalContestPhaseAttributeKeys.RIBBON).getNumericValue();
+            final ProposalContestPhaseAttribute ribbonAttribute =
+                    ProposalPhaseClientUtil.getProposalContestPhaseAttribute(p.getProposalId(),
+                            phaseId, ProposalContestPhaseAttributeKeys.RIBBON);
+            if (ribbonAttribute != null) {
+                long typeId = ribbonAttribute.getNumericValue();
 
-            ContestPhase contestPhase = ContestClientUtil.getContestPhase(phaseId);
+                ContestPhase contestPhase = ContestClientUtil.getContestPhase(phaseId);
 
-            // Only consider the latest ribbon per proposal
-            if (contestPhase.getContestPhaseType() > contestPhaseType) {
-                contestPhaseRibbonType = ContestClientUtil.getContestPhaseRibbonType(typeId);
-                contestPhaseType = contestPhase.getContestPhaseType();
+                //if there are several phases with ribbons, the latest takes precedence
+                if (!phaseStartDate.after(contestPhase.getPhaseStartDateDt())) {
+                    contestPhaseRibbonType = ContestClientUtil.getContestPhaseRibbonType(typeId);
+                    phaseStartDate = contestPhase.getPhaseStartDateDt();
+                }
             }
         }
 
