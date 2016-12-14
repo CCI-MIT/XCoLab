@@ -14,7 +14,8 @@ import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.util.List;
 
-public abstract class AbstractRestResource<ResourceT, IdT> extends AbstractServiceResource implements RestResource<ResourceT, IdT> {
+public abstract class AbstractRestResource<ResourceT, IdT>
+        extends AbstractServiceResource implements RestResource<ResourceT, IdT> {
 
     private final Class<ResourceT> entityType;
     private final ParameterizedTypeReference<List<ResourceT>> typeReference;

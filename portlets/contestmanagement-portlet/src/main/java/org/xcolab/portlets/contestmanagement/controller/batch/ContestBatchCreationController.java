@@ -36,6 +36,7 @@ import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleLifec
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleUtil;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.contest.ContestTier;
+import org.xcolab.util.exceptions.InternalException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -81,8 +82,7 @@ public class ContestBatchCreationController {
     }
 
     @RequestMapping(params = "batchCreateContest=true")
-    public String batchCreateContestController(PortletRequest request, Model model, PortletResponse response)
-            throws PortalException, SystemException {
+    public String batchCreateContestController(PortletRequest request, Model model, PortletResponse response) {
 
         long memberId = MemberAuthUtil.getMemberId(request);
 
@@ -90,7 +90,7 @@ public class ContestBatchCreationController {
             model.addAttribute("contestBatchBean", new ContestBatchBean());
             return "batch/uploadContestCSV";
         }
-        throw new PortalException("User not authorized to create contest");
+        throw new InternalException("User not authorized to create contest");
     }
 
     @RequestMapping(params = "action=createBatchContest")
@@ -128,7 +128,7 @@ public class ContestBatchCreationController {
     }
 
     private void processOntologyTerms(ContestCSVBean contestCSVBean, Contest contest) {
-        List<Long> inputedOntologyTerms = null;
+        List<Long> inputedOntologyTerms;
         Map<Long, Integer> uniqueSelectedOntologyTerms = new HashMap<>();
 
         if (contestCSVBean.getOntologyTerms() != null) {
@@ -263,7 +263,7 @@ public class ContestBatchCreationController {
     @ResourceMapping("validateOntologyTerm")
     public void validateOntologyTerm(ResourceRequest request, ResourceResponse response,
                                      @RequestParam(required = false) String ontologyTerms)
-            throws IOException, SystemException, PortalException {
+            throws IOException {
         JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
         JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
 

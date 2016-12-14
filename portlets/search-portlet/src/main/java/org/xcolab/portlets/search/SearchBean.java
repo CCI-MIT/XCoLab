@@ -3,7 +3,6 @@ package org.xcolab.portlets.search;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.search.ParseException;
 import com.liferay.portal.kernel.search.SearchException;
 
@@ -28,7 +27,7 @@ public class SearchBean implements Serializable {
     private final SearchDataPage dataPage;
 
     public SearchBean(String searchPhrase, String searchLocation, Integer pageNumber)
-            throws IOException, ParseException, org.apache.lucene.queryParser.ParseException, SystemException,
+            throws IOException, ParseException, org.apache.lucene.queryParser.ParseException,
             SearchException, InvalidTokenOffsetsException {
         this.pageNumber = pageNumber == null || pageNumber < 1 ? 1 : pageNumber;
         this.searchLocation = searchLocation == null ? "" : searchLocation;

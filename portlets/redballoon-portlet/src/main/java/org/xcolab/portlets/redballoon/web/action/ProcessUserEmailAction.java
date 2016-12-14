@@ -1,15 +1,14 @@
 package org.xcolab.portlets.redballoon.web.action;
 
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.util.mail.MailEngineException;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.liferay.util.mail.MailEngineException;
+
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonLink;
@@ -22,6 +21,7 @@ import org.xcolab.portlets.redballoon.web.beans.UserEmailBean;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -52,7 +52,7 @@ public class ProcessUserEmailAction {
 
     @RequestMapping(params = "action=sendEmail")
     public void processUserEmail(ActionRequest request, ActionResponse response, Model model,
-                                 @Valid UserEmailBean userEmailBean, BindingResult bindingResult) throws PortalException, SystemException, IOException, AddressException, MailEngineException {
+                                 @Valid UserEmailBean userEmailBean, BindingResult bindingResult) throws IOException, AddressException, MailEngineException {
 
         if (userEmailBean != null && !bindingResult.hasErrors()) {
             BalloonUserTracking but = BalloonUtils.getBalloonUserTracking(request, response, null, null, null);
@@ -72,6 +72,7 @@ public class ProcessUserEmailAction {
 
             link.setBalloonUserUuid(but.getUuid_());
             link.setCreateDate(new Timestamp(new Date().getTime()));
+            //TODO: this doesn't look right
             link.setTargetUrl(String.format(BALLOON_LINK_PATTERN, link.getUuid_()));
 
             BalloonsClient.createBalloonLink(link);
@@ -83,18 +84,19 @@ public class ProcessUserEmailAction {
 
 
     private void sendNotificationEmail(PortletRequest request, BalloonUserTracking but, BalloonLink link) throws AddressException,
-            MailEngineException, PortalException, SystemException {
+            MailEngineException {
 
         PortletSession session = request.getPortletSession();
-        if (session.getAttributeMap().containsKey(EMAIL_SENT))
+        if (session.getAttributeMap().containsKey(EMAIL_SENT)) {
             return;
+        }
 
-        if (but.getBalloonTextId() <= 0)
+        if (but.getBalloonTextId() <= 0) {
             return;
+        }
 
-        BalloonText text = null;
         try {
-            text = BalloonsClient.getBalloonText(but.getBalloonTextId());
+            BalloonText text = BalloonsClient.getBalloonText(but.getBalloonTextId());
             String messageSubject = text.getEmailSubjectTemplate();
             String messageBody = text.getEmailTemplate().replaceAll(URLPLACEHOLDER, BalloonUtils.getBalloonUrlForLink(request, link));
 
@@ -102,15 +104,13 @@ public class ProcessUserEmailAction {
 
             String mailAdr = session.getAttribute(USER_EMAIL) == null ? but.getEmail() : session.getAttribute(USER_EMAIL).toString();
 
-            if (StringUtils.isBlank(mailAdr))
+            if (StringUtils.isBlank(mailAdr)) {
                 return;
+            }
 
             String[] recipients = new String[]{mailAdr};
             List<String> addressTo = new ArrayList<>();
-            for (int i = 0; i < recipients.length; i++) {
-                addressTo.add(recipients[i]);
-            }
-
+            Collections.addAll(addressTo, recipients);
 
             EmailClient.sendEmail(FROM_ADDRESS, addressTo, messageSubject, messageBody, true, FROM_ADDRESS);
 

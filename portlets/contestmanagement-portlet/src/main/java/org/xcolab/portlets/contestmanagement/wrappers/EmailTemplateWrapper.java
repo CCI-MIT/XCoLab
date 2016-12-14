@@ -1,17 +1,11 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 
 import java.util.List;
 
 public class EmailTemplateWrapper {
-
-    private final static Log _log = LogFactoryUtil.getLog(EmailTemplateWrapper.class);
 
     private ContestEmailTemplate emailTemplate;
     private Boolean createNew = false;

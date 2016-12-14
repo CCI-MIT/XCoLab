@@ -14,7 +14,6 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ProposalRatings {
-    //private final static Log _log = LogFactoryUtil.getLog(ProposalRatingsWrapper.class);
     private final List<ProposalRating> proposalRatings;
     private final Member author;
     private String comment;

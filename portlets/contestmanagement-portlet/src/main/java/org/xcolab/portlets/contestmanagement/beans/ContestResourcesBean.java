@@ -1,8 +1,6 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -12,12 +10,11 @@ import org.joda.time.format.DateTimeFormatter;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.portlets.contestmanagement.utils.ContestResourcesHtmlParserUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.SectionDefinitionWrapper;
-
-import org.xcolab.entity.utils.TemplateReplacementUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -86,7 +83,7 @@ public class ContestResourcesBean implements Serializable {
     private int numberOfSections;
 
     @SuppressWarnings("unused")
-    public ContestResourcesBean() throws SystemException, PortalException {
+    public ContestResourcesBean() {
         this(ContestClientUtil.getContestType(
                 ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));
     }

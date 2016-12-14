@@ -2,9 +2,8 @@ package org.xcolab.portlets.contestmanagement.beans;
 
 
 import org.hibernate.validator.constraints.Length;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
@@ -22,7 +21,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 public class ContestDescriptionBean implements Serializable {
-    private static final Log _log = LogFactoryUtil.getLog(ContestDescriptionBean.class);
+    private static final Logger _log = LoggerFactory.getLogger(ContestDescriptionBean.class);
 
     private static final long serialVersionUID = 1L;
     private static final String NO_SPECIAL_CHAR_REGEX = "^[a-zA-Z:.,;'’0-9äöüÄÖÜ?! ]*$";
@@ -85,8 +84,8 @@ public class ContestDescriptionBean implements Serializable {
                     contestType.getContestName(), contest.getContestShortName()));
             ThreadClientUtil.updateThread(thread);
         } catch (ThreadNotFoundException e) {
-            _log.warn("No thread (id = " + contest.getDiscussionGroupId() + ") exists for contest "
-                    + contest.getContestPK());
+            _log.warn("No thread (id = {}) exists for contest {}", contest.getDiscussionGroupId(),
+                    contest.getContestPK());
         }
 
         if (shouldUpdateContestUrlName && !contest.getContestShortName().equals(oldContestName)) {

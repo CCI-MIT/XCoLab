@@ -1,7 +1,5 @@
 package org.xcolab.portlets.proposals.view;
 
-
-
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.modeling.RomaClientUtil;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
-import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.IdListUtil;
+import org.xcolab.util.exceptions.InternalException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,16 +28,21 @@ import javax.portlet.PortletRequest;
 @RequestMapping("view")
 public class ProposalModelTabController extends BaseProposalTabController {
 
+    private final ProposalsContext proposalsContext;
+
     @Autowired
-    private ProposalsContext proposalsContext;
-    
+    public ProposalModelTabController(ProposalsContext proposalsContext) {
+        this.proposalsContext = proposalsContext;
+    }
+
     @RequestMapping(params = {"pageToDisplay=proposalDetails_ACTIONSIMPACTS"})
     public String show(Model model, @RequestParam(required = false) boolean edit, PortletRequest request) {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.ACTIONSIMPACTS);
         
         if (edit) {
-        	Map<Long, String> modelIdsWithNames = getModelIdsAndNames(proposalsContext.getContest(request).getContestPK());
+        	Map<Long, String> modelIdsWithNames =
+                    getModelIdsAndNames(proposalsContext.getContest(request).getContestPK());
         	if (modelIdsWithNames.size() > 1) {
         		model.addAttribute("availableModels", modelIdsWithNames);
         	}
@@ -50,13 +52,13 @@ public class ProposalModelTabController extends BaseProposalTabController {
         return "proposalModel";
     }
 
-    public Map<Long, String> getModelIdsAndNames(long contestPK) {
+    private Map<Long, String> getModelIdsAndNames(long contestPK) {
         List<Long> modelIds = getModelIds(contestPK);
 
         Map<Long, String> ret = new HashMap<>();
         for (Long modelId: modelIds) {
             try {
-                Simulation s = RomaClientUtil.repository().getSimulation(modelId);
+                Simulation s = RomaClientUtil.client().getSimulation(modelId);
                 ret.put(s.getId(), s.getName());
 
             } catch (IOException e) {
@@ -65,23 +67,20 @@ public class ProposalModelTabController extends BaseProposalTabController {
         }
         return ret;
     }
-    public List<Long> getModelIds(long contestPK) {
-        try {
-            Contest contest = ContestClientUtil.getContest(contestPK);
 
-            List<Long> modelIds = new ArrayList<>();
+    private List<Long> getModelIds(long contestPK) {
+        Contest contest = ContestClientUtil.getContest(contestPK);
 
-            if (StringUtils.isNotBlank(contest.getOtherModels())) {
-                modelIds.addAll(IdListUtil.getIdsFromString(contest.getOtherModels()));
-            }
-            if (!modelIds.contains(contest.getDefaultModelId())) {
-                modelIds.add(contest.getDefaultModelId());
-            }
+        List<Long> modelIds = new ArrayList<>();
 
-            return modelIds;
-        }catch (ContestNotFoundException ignored){
-            return null;
+        if (StringUtils.isNotBlank(contest.getOtherModels())) {
+            modelIds.addAll(IdListUtil.getIdsFromString(contest.getOtherModels()));
         }
+        if (!modelIds.contains(contest.getDefaultModelId())) {
+            modelIds.add(contest.getDefaultModelId());
+        }
+
+        return modelIds;
     }
 
 }

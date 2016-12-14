@@ -1,22 +1,13 @@
 package org.xcolab.portlets.search.paging;
 
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.search.Document;
-import com.liferay.portal.kernel.search.Hits;
-import com.liferay.portal.kernel.search.ParseException;
-import com.liferay.portal.kernel.search.Query;
-import com.liferay.portal.kernel.search.SearchEngineUtil;
-import com.liferay.portal.kernel.search.SearchException;
-import com.liferay.portal.kernel.search.StringQueryImpl;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
-import org.apache.lucene.util.Version;
+
+import com.liferay.portal.kernel.search.ParseException;
+import com.liferay.portal.kernel.search.SearchException;
+
 import org.xcolab.client.search.SearchClient;
 import org.xcolab.client.search.pojo.SearchPojo;
-import org.xcolab.portlets.search.SearchItemType;
 import org.xcolab.portlets.search.SearchResultItem;
 
 import java.io.IOException;
@@ -37,13 +28,13 @@ public class SearchDataPage {
 
     @SuppressWarnings("unused")
     public SearchDataPage()
-            throws SystemException, SearchException, ParseException, org.apache.lucene.queryParser.ParseException,
+            throws SearchException, ParseException, org.apache.lucene.queryParser.ParseException,
             InvalidTokenOffsetsException, IOException {
         this(1, "", "");
     }
 
     public SearchDataPage(int page, String searchPhrase, String searchLocation)
-            throws SystemException, SearchException, ParseException, org.apache.lucene.queryParser.ParseException,
+            throws SearchException, ParseException, org.apache.lucene.queryParser.ParseException,
             InvalidTokenOffsetsException, IOException {
         this.page = page;
         this.searchPhrase = StringUtils.trim(searchPhrase);
@@ -53,14 +44,14 @@ public class SearchDataPage {
     }
 
     private void initializeItems() throws SearchException, org.apache.lucene.queryParser.ParseException, ParseException,
-            InvalidTokenOffsetsException, IOException, SystemException {
+            InvalidTokenOffsetsException, IOException {
 
         if (StringUtils.isEmpty(searchPhrase)) {
             items = Collections.emptyList();
             return;
         }
 
-        String queryStr = searchPhrase.toString().trim();
+        String queryStr = searchPhrase.trim();
         if (queryStr.isEmpty()) {
             items = Collections.emptyList();
             return;

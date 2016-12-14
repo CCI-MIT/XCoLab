@@ -1,17 +1,6 @@
 package com.ext.portlet.service.impl;
 
-import com.ext.portlet.NoSuchProposalContestPhaseAttributeException;
-import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import com.ext.portlet.model.ProposalContestPhaseAttribute;
-import com.ext.portlet.service.ProposalContestPhaseAttributeLocalServiceUtil;
 import com.ext.portlet.service.base.ProposalContestPhaseAttributeLocalServiceBaseImpl;
-import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-import java.util.List;
 
 /**
  * The implementation of the proposal contest phase attribute local service.
@@ -30,7 +19,6 @@ import java.util.List;
 public class ProposalContestPhaseAttributeLocalServiceImpl
     extends ProposalContestPhaseAttributeLocalServiceBaseImpl {
 
-    private final static Log _log = LogFactoryUtil.getLog(ProposalContestPhaseAttributeLocalServiceImpl.class);
     /*
      * NOTE FOR DEVELOPERS:
      *

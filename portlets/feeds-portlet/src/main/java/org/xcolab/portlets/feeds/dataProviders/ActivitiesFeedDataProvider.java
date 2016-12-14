@@ -1,25 +1,21 @@
 package org.xcolab.portlets.feeds.dataProviders;
 
-import com.ext.portlet.Activity.ActivityUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.DateUtil;
-import com.liferay.portal.service.RoleLocalServiceUtil;
-import com.liferay.portal.util.PortalUtil;
 import org.springframework.ui.Model;
 
-import org.xcolab.client.activities.ActivitiesClient;
+import com.ext.portlet.Activity.ActivityUtil;
+import com.liferay.portal.kernel.search.SearchException;
+import com.liferay.portal.kernel.util.DateUtil;
+import com.liferay.portal.util.PortalUtil;
+
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.beans.SortFilterPage;
-import org.xcolab.enums.MemberRole;
 import org.xcolab.portlets.feeds.FeedTypeDataProvider;
 import org.xcolab.portlets.feeds.FeedsPreferences;
 import org.xcolab.portlets.feeds.wrappers.SocialActivityWrapper;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.util.exceptions.InternalException;
 
 import java.util.ArrayList;
@@ -43,13 +39,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
             HttpServletRequest originalRequest = PortalUtil
                     .getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
 
-            List<SocialActivityWrapper> activities = new ArrayList<>();
-            int lastDaysBetween = -1;
-            Date now = new Date();
-            int i = 0;
             Map<String, String[]> parameters = request.getParameterMap();
-            long filterUserId = 0L;
-            Member filterUser;
             final int pageSize = feedsPreferences.getFeedSize();
             String userIdStr = null;
             if (parameters.containsKey("userId")) {
@@ -57,10 +47,11 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
             } else if (originalRequest.getParameter("userId") != null) {
                 userIdStr = originalRequest.getParameter("userId");
             }
+            long filterUserId = 0L;
             if (userIdStr != null) {
                 try {
                     filterUserId = Long.parseLong(userIdStr);
-                    filterUser = MembersClient.getMember(filterUserId);
+                    Member filterUser = MembersClient.getMember(filterUserId);
                     model.addAttribute("filterUserId", filterUserId);
                     model.addAttribute("filterUser", filterUser);
                 } catch (Throwable ignored) {
@@ -79,6 +70,10 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
                         .getActivityEntries(startRetrievalAt, endRetrievalAt, filterUserId, null);
             }
 
+            int lastDaysBetween = -1;
+            int i = 0;
+            List<SocialActivityWrapper> activities = new ArrayList<>();
+            Date now = new Date();
             for (ActivityEntry activity : windowedActivities) {
 
                 if (SocialActivityWrapper.isEmpty(activity, request)) {
@@ -87,8 +82,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
                 if (!feedsPreferences.getRemoveAdmin() && PermissionsClient.canAdminAll(activity.getMemberId())) {
                     continue;
                 }
-                if (RoleLocalServiceUtil
-                        .hasUserRole(activity.getMemberId(), MemberRole.STAFF.getRoleId())) {
+                if (PermissionsClient.canStaff(activity.getMemberId())) {
                     continue;
                 }
                 if (i >= feedsPreferences.getFeedSize()) {
@@ -118,9 +112,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
             }
 
             return "activities";
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        } catch (PortalException e) {
+        } catch (SearchException e) {
             throw new InternalException(e);
         }
     }

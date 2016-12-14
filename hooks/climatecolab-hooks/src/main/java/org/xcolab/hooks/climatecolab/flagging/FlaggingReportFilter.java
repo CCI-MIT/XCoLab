@@ -1,9 +1,10 @@
 package org.xcolab.hooks.climatecolab.flagging;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import org.xcolab.client.flagging.FlaggingClient;
@@ -24,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class FlaggingReportFilter implements Filter {
 
-    private static final Log _log = LogFactoryUtil.getLog(FlaggingReportFilter.class);
+    private static final Logger _log = LoggerFactory.getLogger(FlaggingReportFilter.class);
 
     private void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -44,7 +45,7 @@ public class FlaggingReportFilter implements Filter {
                     targetAdditionalId, targetType, reason, comment);
             json.put("success", true);
         } catch (MemberNotFoundException | NumberFormatException e) {
-            _log.warn(e);
+            _log.warn("", e);
             json.put("success", false);
         }
 

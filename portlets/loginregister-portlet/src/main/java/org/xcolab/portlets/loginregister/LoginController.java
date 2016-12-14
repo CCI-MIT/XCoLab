@@ -1,7 +1,8 @@
 package org.xcolab.portlets.loginregister;
 
-
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
@@ -14,8 +15,6 @@ import com.liferay.portal.UserIdException;
 import com.liferay.portal.UserLockoutException;
 import com.liferay.portal.UserPasswordException;
 import com.liferay.portal.UserScreenNameException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Validator;
@@ -43,7 +42,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping(value = "view", params = "isLoggingIn=true")
 public class LoginController {
-    private final static Log _log = LogFactoryUtil.getLog(LoginController.class);
+    private final static Logger _log = LoggerFactory.getLogger(LoginController.class);
 
     @ActionMapping
     public void doLogin(ActionRequest request, ActionResponse response) throws IOException {

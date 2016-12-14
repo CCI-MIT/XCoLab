@@ -1,34 +1,37 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.MassActionConfirmationWrapper;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+
 @Controller
 @RequestMapping("view")
 public class ContestManagerConfirmMassActionController {
-    private final static Log _log = LogFactoryUtil.getLog(ContestManagerConfirmMassActionController.class);
+    private final static Logger _log = LoggerFactory.getLogger(ContestManagerConfirmMassActionController.class);
     static final private String CONFIRM_VIEW_PATH = "manager/massActionConfirmation/";
 
     @RequestMapping(params = {"action=showMassActionConfirmation"})
-    public String showConfirmation(PortletRequest request, Model model) throws PortalException, SystemException {
+    public String showConfirmation(PortletRequest request, Model model) {
         Integer massActionId = Math.abs(Integer.parseInt(request.getParameter("massActionId")));
         ContestMassActions contestMassAction = ContestMassActions.values()[massActionId];
         String confirmView = contestMassAction.getMethod().getName();

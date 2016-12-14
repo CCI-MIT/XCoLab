@@ -1,24 +1,14 @@
 package org.xcolab.portlets.search;
 
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.search.Document;
-import com.liferay.portal.kernel.search.Field;
-import com.liferay.portal.kernel.search.Query;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.search.highlight.Formatter;
-import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
-import org.apache.lucene.search.highlight.QueryScorer;
-import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
-import org.apache.lucene.util.Version;
+
 import org.xcolab.client.search.pojo.SearchPojo;
 import org.xcolab.portlets.search.items.AbstractSearchItem;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class SearchResultItem {
 
@@ -31,7 +21,7 @@ public class SearchResultItem {
 
     public SearchResultItem(SearchPojo searchPojo, String query, boolean odd)
             throws ParseException, IOException, com.liferay.portal.kernel.search.ParseException,
-            InvalidTokenOffsetsException, SystemException {
+            InvalidTokenOffsetsException {
 
         for (SearchItemType type : SearchItemType.values()) {
             if (type.isOfGivenType(searchPojo)) {

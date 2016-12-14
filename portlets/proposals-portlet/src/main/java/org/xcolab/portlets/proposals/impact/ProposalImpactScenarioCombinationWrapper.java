@@ -9,7 +9,7 @@ import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
 import org.apache.log4j.Logger;
 
-import org.xcolab.client.modeling.RomaClientUtil;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 
 import java.io.IOException;
@@ -61,7 +61,6 @@ public class ProposalImpactScenarioCombinationWrapper {
 
 
     public ProposalImpactScenarioCombinationWrapper(List<Proposal> proposals) throws IOException {
-        initRomaClient();
         presentRegion = new HashSet<>();
         scenarios = new HashSet<>();
         modelIdToScenarioMap = new HashMap<>();
@@ -99,9 +98,9 @@ public class ProposalImpactScenarioCombinationWrapper {
         if (!scenarios.isEmpty()) {
             Scenario scenario = (Scenario) scenarios.toArray()[0];
             if (isModelEnRoads(scenario.getSimulation())) {
-                combinedSimulation = getRomaClient().getSimulation(ENROADS_MODEL_ID);
+                combinedSimulation = RomaClientUtil.client().getSimulation(ENROADS_MODEL_ID);
             } else {
-                combinedSimulation = getRomaClient().getSimulation(EMF_MODEL_ID);
+                combinedSimulation = RomaClientUtil.client().getSimulation(EMF_MODEL_ID);
             }
             List<Variable> combinedInputParameters = scenario.getInputSet();
         }
@@ -142,20 +141,8 @@ public class ProposalImpactScenarioCombinationWrapper {
         return getModelIdForScenarioId(scenarioId).equals(combinedSimulation.getId());
     }
 
-    private ClientRepository getRomaClient() {
-        if (romaClient == null) {
-            initRomaClient();
-        }
-        return romaClient;
-    }
-
-    private void initRomaClient() {
-        // TODO implement: Wait for roma Client Thread to be stared!
-        romaClient = RomaClientUtil.repository();
-    }
-
     private Scenario getScenarioForScenarioId(Long scenarioId) throws IOException {
-        return getRomaClient().getScenario(scenarioId);
+        return RomaClientUtil.client().getScenario(scenarioId);
     }
 
     public boolean isConsolidationOfScenariosPossible() {
@@ -292,7 +279,7 @@ public class ProposalImpactScenarioCombinationWrapper {
             if (combinedInputParametersMap == null) {
                 calculateCombinedInputParameters();
             }
-            combinedScenario = getRomaClient().runModel(combinedSimulation, combinedInputParametersMap, 0L, false);
+            combinedScenario = RomaClientUtil.client().runModel(combinedSimulation, combinedInputParametersMap, 0L, false);
         }
     }
 

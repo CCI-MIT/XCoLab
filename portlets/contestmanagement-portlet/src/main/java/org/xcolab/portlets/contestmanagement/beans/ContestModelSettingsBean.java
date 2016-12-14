@@ -1,7 +1,6 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
 import edu.mit.cci.roma.client.Simulation;
-import edu.mit.cci.roma.client.comm.ClientRepository;
 
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -10,7 +9,8 @@ import com.liferay.portal.kernel.util.Validator;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.modeling.RomaClientUtil;
+import org.xcolab.client.modeling.roma.RomaClient;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.enums.ModelRegions;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
@@ -134,7 +134,7 @@ public class ContestModelSettingsBean implements Serializable {
     }
 
     public static List<LabelValue> getAllModelIds() {
-        final ClientRepository repository = RomaClientUtil.repository();
+        final RomaClient repository = RomaClientUtil.client();
         List<Simulation> simulationsSorted;
         if (repository != null) { //will be null on very first call - fail gracefully
             simulationsSorted = new ArrayList<>(repository.getAllSimulations());

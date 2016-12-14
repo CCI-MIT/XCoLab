@@ -1,7 +1,6 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 
-import com.liferay.portal.kernel.exception.SystemException;
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
@@ -48,7 +47,7 @@ public class WikiPageWrapper {
     }
 
     public void updateWikiPage(ContestResourcesBean updatedContestResourcesBean)
-            throws UnsupportedEncodingException, ParseException, SystemException {
+            throws UnsupportedEncodingException, ParseException {
         updatedContestResourcesBean.fillOverviewSectionContent(contest);
         String updatedResourcesContent = updatedContestResourcesBean.getSectionsAsHtml();
         if (!contentArticleVersion.getContent().equals(updatedResourcesContent)) {

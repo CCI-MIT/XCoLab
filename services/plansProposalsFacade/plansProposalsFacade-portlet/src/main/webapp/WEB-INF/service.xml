@@ -9,7 +9,6 @@
 <service-builder package-path="com.ext.portlet">
     <namespace>xcolab</namespace>
     <service-builder-import file="services/service-contests.xml" />
-    <service-builder-import file="services/service-modeling.xml" />
     <service-builder-import file="services/service-ontology.xml" />
     <service-builder-import file="services/service-plans.xml" />
     <service-builder-import file="services/service-proposals.xml" />
