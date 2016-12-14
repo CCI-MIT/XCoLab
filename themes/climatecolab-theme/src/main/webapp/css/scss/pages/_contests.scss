@@ -40,6 +40,9 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
 }
 
 .c-ontology-selector {
+
+  height: 50px;
+
   .c-arrow {
     float:left;
     border-left: 30px solid transparent;
@@ -53,13 +56,16 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
     }
   }
 
-  height: 50px;
   a {
     font-weight: bold;
     margin-right: 50px;
     &.selected {
       color: $t-Color__grey--medium;
     }
+  }
+
+  .filter {
+    margin-right: 65px;
   }
 }
 
@@ -280,7 +286,6 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
   float: right;
   width: 180px;
   height: 27px;
-  margin-right: 65px;
 }
 
 .filter input {
