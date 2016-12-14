@@ -126,7 +126,7 @@
     </div>
 
     <div class="ontologyPicker" style="display:none;">
-        <h2> Pick the OntolgoyTerm</h2>
+        <h2 style="float:left;"> Pick the OntolgoyTerm</h2>
         <br/>
         <div>
             <a class="c-Button__primary innerVerticalCenter" style="float:left; margin-left:20px;" href="#" onclick="setOntologyTerm();">SELECT</a>
@@ -395,7 +395,6 @@
             if(1 > $('.ontologyPicker .active .open').length) {
                 alert("Please select a new Ontology Term!")
             } else {
-                jQuery(".ontologyPicker").hide();
                 jQuery(".collectionCard-edit-form #" + currentTermType).val(currentOntologyId);
                 if(currentTermType == "ontologyTermToLoad") {
                     jQuery(".collectionCard-edit-form #bigOntologyTerm").val(currentOntologyId);
@@ -404,6 +403,7 @@
                     jQuery(".collectionCard-edit-form #description").val("");
                     jQuery(".collectionCard-edit-form #shortName").val("");
                 }
+                closeOntologyPicker();
             }
         }
 
