@@ -11,6 +11,8 @@ public interface ModelInputGroupDao {
 
     List<ModelInputGroup> list();
 
+    List<ModelInputGroup> findByGiven(Long parentGroupPk, Long modelId);
+
     ModelInputGroup create(ModelInputGroup pojo);
 
     boolean update(ModelInputGroup pojo);

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.ModelCategory;
@@ -76,14 +77,6 @@ public class ModelingController {
         return modelGlobalPreferenceDao.update(pojo);
     }
 
-//    modelCategoryResource = new RestResource1<>(modelingService, "modelCategories", ModelCategoryDto.TYPES);
-//    modelDiscussionResource = new RestResource1<>(modelingService, "modelDiscussions", ModelDiscussionDto.TYPES);
-//    modelInputGroupResource = new RestResource1<>(modelingService, "modelInputGroups", ModelInputGroupDto.TYPES);
-//    modelInputItemResource = new RestResource1<>(modelingService, "modelInputItems", ModelInputItemDto.TYPES);
-//    modelOutputChartOrderResource = new RestResource1<>(modelingService, "modelOutputChartOrders", ModelOutputChartOrderDto.TYPES);
-//    modelOutputItemResource = new RestResource1<>(modelingService, "modelOutputItems", ModelOutputItemDto.TYPES);
-//    modelPositionResource = new RestResource1<>(modelingService, "modelPositions", ModelPositionDto.TYPES);
-
     @GetMapping("/modelCategories")
     public List<ModelCategory> listModelCategories() {
         return modelCategoryDao.list();
@@ -137,8 +130,10 @@ public class ModelingController {
     }
 
     @GetMapping("/modelInputGroups")
-    public List<ModelInputGroup> listModelInputGroups() {
-        return modelInputGroupDao.list();
+    public List<ModelInputGroup> listModelInputGroups(
+            @RequestParam(required = false) Long parentGroupPk,
+            @RequestParam(required = false) Long modelId) {
+        return modelInputGroupDao.findByGiven(parentGroupPk, modelId);
     }
 
     @GetMapping("/modelInputGroups/{id}")
@@ -163,8 +158,11 @@ public class ModelingController {
     }
 
     @GetMapping("/modelInputItems")
-    public List<ModelInputItem> listModelInputItems() {
-        return modelInputItemDao.list();
+    public List<ModelInputItem> listModelInputItems(
+            @RequestParam(required = false) Long modelInputGroupPk,
+            @RequestParam(required = false) Long modelId,
+            @RequestParam(required = false) Long modelInputId) {
+        return modelInputItemDao.findByGiven(modelInputGroupPk, modelId, modelInputId);
     }
 
     @GetMapping("/modelInputItems/{id}")
@@ -189,8 +187,10 @@ public class ModelingController {
     }
 
     @GetMapping("/modelOutputChartOrders")
-    public List<ModelOutputChartOrder> listModelOutputChartOrders() {
-        return modelOutputChartOrderDao.list();
+    public List<ModelOutputChartOrder> listModelOutputChartOrders(
+            @RequestParam(required = false) Long modelId,
+            @RequestParam(required = false) String label) {
+        return modelOutputChartOrderDao.findByGiven(modelId, label);
     }
 
     @GetMapping("/modelOutputChartOrders/{id}")
@@ -241,8 +241,9 @@ public class ModelingController {
     }
 
     @GetMapping("/modelPositions")
-    public List<ModelPosition> listModelPositions() {
-        return modelPositionDao.list();
+    public List<ModelPosition> listModelPositions(
+            @RequestParam(required = false) Long modelId) {
+        return modelPositionDao.findByGiven(modelId);
     }
 
     @GetMapping("/modelPositions/{id}")

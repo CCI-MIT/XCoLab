@@ -83,21 +83,20 @@ public class ModelingClient {
 
     public List<ModelInputGroup> getChildGroups(ModelInputGroup group) {
         return DtoUtil.toPojos(modelInputGroupResource.list()
-                .queryParam("parentModelId", group.getModelInputGroupPK())
+                .queryParam("parentGroupPk", group.getModelInputGroupPK())
                 .execute(), modelingService);
     }
 
     public List<ModelInputItem> getInputItems(ModelInputGroup group) {
         return DtoUtil.toPojos(modelInputItemResource.list()
-                .queryParam("modelInputGroupId", group.getModelInputGroupPK())
+                .queryParam("modelInputGroupPk", group.getModelInputGroupPK())
                 .execute(), modelingService);
     }
 
-    public ModelInputGroup getParent(ModelInputGroup group) {
-        return modelInputGroupResource.list()
-                .queryParam("parentGroupId", group.getParentGroupPK())
-                .executeWithResult()
-                .getOneIfExists().toPojo(modelingService);
+    public ModelInputGroup getParentGroup(ModelInputGroup group) {
+        final Long parentGroupPK = group.getParentGroupPK();
+        return modelInputGroupResource.get(parentGroupPK)
+                .execute().toPojo(modelingService);
     }
 
     public Simulation getModel(ModelInputGroup group) throws IOException {
@@ -149,7 +148,7 @@ public class ModelingClient {
 
     public List<ModelInputItem> getItemForGroupId(Long groupid) {
         return DtoUtil.toPojos(modelInputItemResource.list()
-                .queryParam("modelGroupId", groupid)
+                .queryParam("modelInputGroupPk", groupid)
                 .execute(), modelingService);
     }
 

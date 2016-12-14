@@ -2,6 +2,7 @@ package org.xcolab.service.modeling.domain;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -40,6 +41,22 @@ public class ModelOutputChartOrderDaoImpl implements ModelOutputChartOrderDao {
         return dslContext.select()
                 .from(MODEL_OUTPUT_CHART_ORDER)
                 .fetch().into(ModelOutputChartOrder.class);
+    }
+
+    @Override
+    public List<ModelOutputChartOrder> findByGiven(Long modelId, String label) {
+        final SelectQuery<Record> query = dslContext.select().from(MODEL_OUTPUT_CHART_ORDER)
+                .getQuery();
+
+        if (modelId != null) {
+            query.addConditions(MODEL_OUTPUT_CHART_ORDER.MODEL_ID.eq(modelId));
+        }
+
+        if (label != null) {
+            query.addConditions(MODEL_OUTPUT_CHART_ORDER.MODEL_OUTPUT_LABEL.eq(label));
+        }
+
+        return query.fetch().into(ModelOutputChartOrder.class);
     }
 
     @Override

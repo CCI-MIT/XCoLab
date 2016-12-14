@@ -2,6 +2,7 @@ package org.xcolab.service.modeling.domain;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -40,6 +41,18 @@ public class ModelPositionDaoImpl implements ModelPositionDao {
         return dslContext.select()
                 .from(MODEL_POSITION)
                 .fetch().into(ModelPosition.class);
+    }
+
+    @Override
+    public List<ModelPosition> findByGiven(Long modelId) {
+        final SelectQuery<Record> query = dslContext.select().from(MODEL_POSITION)
+                .getQuery();
+
+        if (modelId != null) {
+            query.addConditions(MODEL_POSITION.MODEL_ID.eq(modelId));
+        }
+
+        return query.fetch().into(ModelPosition.class);
     }
 
     @Override

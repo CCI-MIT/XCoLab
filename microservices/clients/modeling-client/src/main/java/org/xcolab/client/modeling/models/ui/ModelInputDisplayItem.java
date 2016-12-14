@@ -3,6 +3,8 @@ package org.xcolab.client.modeling.models.ui;
 import edu.mit.cci.roma.client.MetaData;
 import edu.mit.cci.roma.client.Simulation;
 
+import org.xcolab.util.json.NullsafeJsonObjectBuilder;
+
 import java.io.Serializable;
 
 import javax.json.Json;
@@ -31,7 +33,7 @@ public abstract class ModelInputDisplayItem extends ModelDisplayItem implements 
 
     @Override
     public JsonObjectBuilder toJson() {
-        return Json.createObjectBuilder()
+        return NullsafeJsonObjectBuilder.of(Json.createObjectBuilder())
                 .add("description", getDescription())
                 .add("displayItemType", getDisplayItemType().name())
                 .add("widgetType", getType().name());

@@ -11,6 +11,8 @@ public interface ModelPositionDao {
 
     List<ModelPosition> list();
 
+    List<ModelPosition> findByGiven(Long modelId);
+
     ModelPosition create(ModelPosition pojo);
 
     boolean update(ModelPosition pojo);

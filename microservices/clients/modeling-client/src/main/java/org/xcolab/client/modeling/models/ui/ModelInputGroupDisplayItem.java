@@ -275,8 +275,7 @@ public class ModelInputGroupDisplayItem extends ModelInputDisplayItem implements
             childInputs.add(input.toJson());
         }
 
-        return jsonBuilder
-                .add("inputs", childInputs);
+        return jsonBuilder.add("inputs", childInputs);
     }
 
     /**

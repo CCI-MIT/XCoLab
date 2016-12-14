@@ -3,6 +3,7 @@ package org.xcolab.client.modeling.models.ui;
 import edu.mit.cci.roma.client.MetaData;
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
+import edu.mit.cci.roma.client.Tuple;
 import edu.mit.cci.roma.client.Variable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +12,7 @@ import org.xcolab.client.modeling.ModelingClientUtil;
 import org.xcolab.client.modeling.pojo.ModelInputGroup;
 import org.xcolab.client.modeling.pojo.ModelInputItem;
 import org.xcolab.util.json.JsonUtil;
+import org.xcolab.util.json.NullsafeJsonArrayBuilder;
 import org.xcolab.util.json.NullsafeJsonObjectBuilder;
 
 import java.io.IOException;
@@ -53,10 +55,15 @@ public class ModelUIFactory {
     }
 
     public static JsonObjectBuilder convertToJson(Variable var) {
+        NullsafeJsonArrayBuilder valuesArray = JsonUtil.nullsafe(Json.createArrayBuilder());
+        for (Tuple val : var.getValue()) {
+            valuesArray.addArray(val.getValues());
+        }
         return JsonUtil.nullsafe(Json.createObjectBuilder())
                 .add("id", var.getId())
                 .add("metaData", convertToJson(var.getMetaData()))
-                .addArray("values", var.getValue());
+                .add("values", valuesArray);
+
     }
 
     public static JsonObjectBuilder convertToJson(MetaData md) {

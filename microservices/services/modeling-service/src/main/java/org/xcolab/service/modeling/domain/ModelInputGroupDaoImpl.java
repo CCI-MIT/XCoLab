@@ -2,6 +2,7 @@ package org.xcolab.service.modeling.domain;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -40,6 +41,22 @@ public class ModelInputGroupDaoImpl implements ModelInputGroupDao {
         return dslContext.select()
                 .from(MODEL_INPUT_GROUP)
                 .fetch().into(ModelInputGroup.class);
+    }
+
+    @Override
+    public List<ModelInputGroup> findByGiven(Long parentGroupPk, Long modelId) {
+        final SelectQuery<Record> query = dslContext.select().from(MODEL_INPUT_GROUP)
+                .getQuery();
+
+        if (parentGroupPk != null) {
+            query.addConditions(MODEL_INPUT_GROUP.PARENT_GROUP_PK.eq(parentGroupPk));
+        }
+
+        if (modelId != null) {
+            query.addConditions(MODEL_INPUT_GROUP.MODEL_ID.eq(modelId));
+        }
+
+        return query.fetch().into(ModelInputGroup.class);
     }
 
     @Override

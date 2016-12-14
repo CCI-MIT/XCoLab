@@ -45,7 +45,7 @@ public final class ModelingClientUtil {
 
     public static ModelInputGroup getParent(
             ModelInputGroup group) {
-        return client.getParent(group);
+        return client.getParentGroup(group);
     }
 
     public static Simulation getModel(

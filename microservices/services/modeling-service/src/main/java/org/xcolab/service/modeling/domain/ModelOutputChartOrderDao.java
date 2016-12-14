@@ -11,6 +11,8 @@ public interface ModelOutputChartOrderDao {
 
     List<ModelOutputChartOrder> list();
 
+    List<ModelOutputChartOrder> findByGiven(Long modelId, String label);
+
     ModelOutputChartOrder create(ModelOutputChartOrder pojo);
 
     boolean update(ModelOutputChartOrder pojo);

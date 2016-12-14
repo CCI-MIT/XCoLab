@@ -11,6 +11,8 @@ public interface ModelInputItemDao {
 
     List<ModelInputItem> list();
 
+    List<ModelInputItem> findByGiven(Long modelInputGroupPk, Long modelId, Long modelInputId);
+
     ModelInputItem create(ModelInputItem pojo);
 
     boolean update(ModelInputItem pojo);

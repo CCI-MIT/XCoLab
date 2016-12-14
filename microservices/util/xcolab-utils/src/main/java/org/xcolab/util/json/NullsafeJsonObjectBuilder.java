@@ -113,12 +113,18 @@ public class NullsafeJsonObjectBuilder implements JsonObjectBuilder {
 
     @Override
     public NullsafeJsonObjectBuilder add(String s, JsonObjectBuilder jsonObjectBuilder) {
-        return of(this.jsonObjectBuilder.add(s, jsonObjectBuilder));
+        if (jsonObjectBuilder != null) {
+            return of(this.jsonObjectBuilder.add(s, jsonObjectBuilder));
+        }
+        return this;
     }
 
     @Override
     public NullsafeJsonObjectBuilder add(String s, JsonArrayBuilder jsonArrayBuilder) {
-        return of(jsonObjectBuilder.add(s, jsonArrayBuilder));
+        if (jsonArrayBuilder != null) {
+            return of(jsonObjectBuilder.add(s, jsonArrayBuilder));
+        }
+        return this;
     }
 
     @Override
