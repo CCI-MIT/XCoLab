@@ -27,6 +27,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.QueryParam;
 
 @RestController
 @RequestMapping("/members")
@@ -122,6 +123,11 @@ public class MembersController {
         } else {
             return roleService.getMemberRolesInContest(memberId, contestId);
         }
+    }
+    @PutMapping("{memberId}/roles/assignRoleToUser")
+    public boolean assignMemberRole(@PathVariable long memberId,
+            @RequestParam Long roleId) {
+        return this.roleService.assignMemberRole(memberId,roleId);
     }
 
     @GetMapping("{memberId}/isMemberInGroup")

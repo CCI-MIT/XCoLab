@@ -64,5 +64,8 @@ public final class ContestTeamMemberClientUtil {
     public static List<Long> getContestManagersForContest(Long contestId) {
         return client.getContestManagersForContest(contestId);
     }
+    public static List<Long> getIAFellowsForContest(Long contestId){
+        return client.getIAFellowsForContest(contestId);
+    }
 
 }

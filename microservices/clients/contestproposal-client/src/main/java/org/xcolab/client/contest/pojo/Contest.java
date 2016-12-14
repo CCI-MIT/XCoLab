@@ -411,7 +411,18 @@ public class Contest extends AbstractContest {
         }
         return activePhase;
     }
-
+    public List<Member> getContestImpactAssessmentFellows() {
+        List<Member> iaf = null;
+        for (ContestTeamMemberRole c : getContestTeamMembersByRole()) {
+            if (c.getRoleName().equalsIgnoreCase("IAF")) {
+                iaf = c.getUsers();
+            }
+        }
+        if (iaf == null) {
+            return Collections.emptyList();
+        }
+        return iaf;
+    }
     public List<Member> getContestJudges() {
         List<Member> judges = null;
         for (ContestTeamMemberRole c : getContestTeamMembersByRole()) {
