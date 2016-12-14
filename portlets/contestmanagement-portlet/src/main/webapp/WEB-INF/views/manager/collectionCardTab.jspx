@@ -97,7 +97,7 @@
                     <strong class="inputTitleLeft">Weight</strong>
                     <input name="order" id="order" class="wideLargeInput" type="number" value="0" />
                     <br/>
-                    <strong class="inputTitleLeft">Only Featured</strong>
+                    <strong class="inputTitleLeft">Show "onlyFeatured"</strong>
                     <form:checkbox path="onlyFeatured" id="onlyFeatured" cssClass="wideLargeInput"/>
                     <br/>
                     <strong class="inputTitleLeft">Visible</strong>
@@ -129,7 +129,7 @@
         <h2> Pick the OntolgoyTerm</h2>
         <br/>
         <div>
-            <a class="c-Button__primary innerVerticalCenter" style="display:inline-block" href="#" onclick="setOntologyTerm();">SELECT</a>
+            <a class="c-Button__primary innerVerticalCenter" style="float:left; margin-left:20px;" href="#" onclick="setOntologyTerm();">SELECT</a>
         </div>
         <div>
             <a class="c-Button__primary innerVerticalCenter" href="#" onclick="closeOntologyPicker();">CANCEL</a>
@@ -385,6 +385,10 @@
         function openOntologyPicker(termType) {
             currentTermType = termType;
             jQuery(".ontologyPicker").show();
+            jQuery(".collectionCard-outline-left").css("filter", "blur(5px)");
+            jQuery(".collectionCard-outline-right").css("filter", "blur(5px)");
+            jQuery(".proposal-head").css("filter", "blur(5px)");
+            jQuery(".explanation").css("filter", "blur(5px)");
         }
 
         function setOntologyTerm() {
@@ -413,6 +417,10 @@
             currentTermType = "";
             currentOntologyId = 0;
             jQuery(".ontologyPicker").hide();
+            jQuery(".collectionCard-outline-left").css("filter","");
+            jQuery(".collectionCard-outline-right").css("filter","");
+            jQuery(".proposal-head").css("filter","");
+            jQuery(".explanation").css("filter","");
         }
 
         ]]>

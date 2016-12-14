@@ -180,18 +180,24 @@ $p-cms__uploadWidget__fontWeight: $b-Typography__fontWeight--bold !default;
 
 .ontologyPicker{
 
-  margin:50px;
-  padding: 100px;
+  margin:auto;
+  padding: 50px;
   display: block;
   position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 85%;
-  height: 100%;
+  top: 30px;
+  width: 50%;
   z-index: 100;
   background-color: $t-Color__grey--lightest;
-  border-radius: 50px;
+  border-radius: 10px;
   box-shadow: 0 1px 40px $t-Color__grey--lightest;
+
+  .whatArea {
+    width: 90%;
+  }
+
+  .whereArea {
+    width: 90%;
+  }
 
   .ontologyTermListItem {
     list-style: none;
