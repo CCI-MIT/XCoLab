@@ -451,3 +451,11 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
 .prop a, .comm a {
    font-weight: $b-Typography__fontWeight--bold;
 }
+
+.nothingFound {
+  text-align: center;
+  padding: 30px;
+  text-overflow: ellipsis;
+  width: 850px;
+  color:$t-Color__grey--medium
+}

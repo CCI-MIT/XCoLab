@@ -79,14 +79,17 @@
 			<portlet:renderURL var="changeFeaturedRootURL">
 				<portlet:param name="currentCollectionCardId" value="1" />
 				<portlet:param name="viewType" value="${viewType}" />
+				<portlet:param name="filter" value="${sortFilterPage.filter }" />
 			</portlet:renderURL>
 			<portlet:renderURL var="changeTopicRootURL">
 				<portlet:param name="currentCollectionCardId" value="2" />
 				<portlet:param name="viewType" value="${viewType}" />
+				<portlet:param name="filter" value="${sortFilterPage.filter }" />
 			</portlet:renderURL>
 			<portlet:renderURL var="changeLocationRootURL">
 				<portlet:param name="currentCollectionCardId" value="3" />
 				<portlet:param name="viewType" value="${viewType}" />
+				<portlet:param name="filter" value="${sortFilterPage.filter }" />
 			</portlet:renderURL>
 			<a href="${changeFeaturedRootURL}" class=" ${ontologySpaceId == 0 ? 'selected' : ''}">
 				Featured
@@ -132,6 +135,8 @@
 						<portlet:param name="currentCollectionCardId" value="${collectionCard.id}" />
 						<portlet:param name="showActiveContests" value="${showActiveContests }" />
 						<portlet:param name="showAllContests" value="${showAllContests }" />
+						<portlet:param name="viewType" value="${viewType}" />
+						<portlet:param name="filter" value="${sortFilterPage.filter }" />
 					</portlet:renderURL>
 					<a href="${changeToCollectionCardURL}">
 						<c:choose>
@@ -205,18 +210,21 @@
 						<portlet:param name="showActiveContests" value="true" />
 						<portlet:param name="showAllContests" value="false" />
 						<portlet:param name="currentCollectionCardId" value="${currentCollectionCardId}" />
+						<portlet:param name="filter" value="${sortFilterPage.filter }" />
 					</portlet:renderURL>
 					<portlet:renderURL var="changeToPriorURL">
 						<portlet:param name="viewType" value="${viewType}" />
 						<portlet:param name="showActiveContests" value="false" />
 						<portlet:param name="showAllContests" value="false" />
 						<portlet:param name="currentCollectionCardId" value="${currentCollectionCardId}" />
+						<portlet:param name="filter" value="${sortFilterPage.filter }" />
 					</portlet:renderURL>
 					<portlet:renderURL var="changeToAllURL">
 						<portlet:param name="viewType" value="${viewType}" />
 						<portlet:param name="showActiveContests" value="false" />
 						<portlet:param name="showAllContests" value="true" />
 						<portlet:param name="currentCollectionCardId" value="${currentCollectionCardId}" />
+						<portlet:param name="filter" value="${sortFilterPage.filter }" />
 					</portlet:renderURL>
 					<c:choose>
 						<c:when test="${showActiveContests }">
