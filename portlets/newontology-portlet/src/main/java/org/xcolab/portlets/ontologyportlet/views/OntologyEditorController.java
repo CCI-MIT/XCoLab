@@ -204,4 +204,25 @@ public class OntologyEditorController {
     private JSONObject ontologySpaceNode(String label, Long ontologySpaceId) {
         return treeNode(label, null, ontologySpaceId, "folder", true);
     }
+
+    private void printOntologyHierarchy() {
+        for(org.xcolab.client.contest.pojo.ontology.OntologyTerm oTerm : OntologyClientUtil.getAllOntologyTerms()) {
+            if (oTerm.getParent() == null) {
+                printOntologies(OntologyClientUtil.getOntologyTerm(oTerm.getId_()), 0);
+            } else if (oTerm.getParent().getId() == 0) {
+                printOntologies(OntologyClientUtil.getOntologyTerm(oTerm.getId_()), 0);
+            }
+        }
+    }
+
+    private void printOntologies(org.xcolab.client.contest.pojo.ontology.OntologyTerm term, int depth) {
+        for(org.xcolab.client.contest.pojo.ontology.OntologyTerm child : OntologyClientUtil.getChildOntologyTerms(term.getId())) {
+            String prefix = "";
+            for(int i = 0 ; i <depth; i++) {
+                prefix += "; ";
+            }
+            System.out.println(prefix + child.getId() + "; " + child.getName());
+            printOntologies(child, depth +1);
+        }
+    }
 }
