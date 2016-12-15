@@ -17,6 +17,7 @@ public class ContestTeamBean implements Serializable {
     private List<Long> userIdsAdvisors = new ArrayList<>();
     private List<Long> userIdsFellows = new ArrayList<>();
     private List<Long> userIdsContestManagers = new ArrayList<>();
+    private List<Long> userIdsIAFellows = new ArrayList<>();
     private Contest contest;
     private PortletRequest request;
 
@@ -34,6 +35,7 @@ public class ContestTeamBean implements Serializable {
             populateJudges();
             populateFellows();
             populateAdvisors();
+            poupulateAIF();
         }
     }
 
@@ -41,6 +43,7 @@ public class ContestTeamBean implements Serializable {
         userIdsJudges = IdListUtil.getIdsFromString(request.getParameter("userIdsJudges"));
         userIdsFellows = IdListUtil.getIdsFromString(request.getParameter("userIdsFellows"));
         userIdsAdvisors = IdListUtil.getIdsFromString(request.getParameter("userIdsAdvisors"));
+        userIdsIAFellows = IdListUtil.getIdsFromString(request.getParameter("userIdsIAFellows"));
         //userIdsContestManagers = IdListUtil.getIdsFromString(request.getParameter("userIdsManagers"));
     }
 
@@ -50,6 +53,12 @@ public class ContestTeamBean implements Serializable {
         }
     }
 
+    private void poupulateAIF() {
+        for (Long fellow : ContestTeamMemberClientUtil.getIAFellowsForContest(contest.getContestPK())) {
+            userIdsIAFellows.add(fellow);
+        }
+
+    }
     private void populateFellows() {
         for (Long fellow : ContestTeamMemberClientUtil.getFellowsForContest(contest.getContestPK())) {
             userIdsFellows.add(fellow);
@@ -105,5 +114,9 @@ public class ContestTeamBean implements Serializable {
 
     public void setUserIdsContestManagers(List<Long> userIdsContestManagers) {
         this.userIdsContestManagers = userIdsContestManagers;
+    }
+
+    public List<Long> getUserIdsIAFellows() {
+        return userIdsIAFellows;
     }
 }

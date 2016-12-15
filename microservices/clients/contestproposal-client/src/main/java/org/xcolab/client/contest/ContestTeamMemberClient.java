@@ -106,6 +106,8 @@ public class ContestTeamMemberClient {
 
     public List<Long> getContestManagersForContest(Long contestId) {
         return getRoleForContestTeam(contestId, MemberRole.CONTEST_MANAGER.getRoleId());
-
+    }
+    public List<Long> getIAFellowsForContest(Long contestId) {
+        return getRoleForContestTeam(contestId, MemberRole.IMPACT_ASSESSMENT_FELLOW.getRoleId());
     }
 }
