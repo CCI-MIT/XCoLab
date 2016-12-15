@@ -70,4 +70,22 @@ public class ModelGlobalPreferenceDaoImpl implements ModelGlobalPreferenceDao {
         }
         return Optional.of(record.into(ModelGlobalPreference.class));
     }
+
+    @Override
+    public boolean update(ModelGlobalPreference pojo) {
+        return dslContext.update(MODEL_GLOBAL_PREFERENCE)
+                .set(MODEL_GLOBAL_PREFERENCE.MODEL_ID, pojo.getModelId())
+                .set(MODEL_GLOBAL_PREFERENCE.MODEL_CATEGORY_ID,
+                        pojo.getModelCategoryId())
+                .set(MODEL_GLOBAL_PREFERENCE.USES_CUSTOM_INPUTS,
+                        pojo.getUsesCustomInputs())
+                .set(MODEL_GLOBAL_PREFERENCE.CUSTOM_INPUTS_DEFINITION,
+                        pojo.getCustomInputsDefinition())
+                .set(MODEL_GLOBAL_PREFERENCE.VISIBLE, pojo.getVisible())
+                .set(MODEL_GLOBAL_PREFERENCE.WEIGHT, pojo.getWeight())
+                .set(MODEL_GLOBAL_PREFERENCE.EXPERT_EVALUATION_PAGE_ID,
+                        pojo.getExpertEvaluationPageId())
+                .where(MODEL_GLOBAL_PREFERENCE.MODEL_ID.eq(pojo.getModelId()))
+                .execute() > 0;
+    }
 }

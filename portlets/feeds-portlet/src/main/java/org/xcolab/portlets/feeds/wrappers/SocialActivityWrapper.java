@@ -1,20 +1,20 @@
 package org.xcolab.portlets.feeds.wrappers;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 import com.ocpsoft.pretty.time.PrettyTime;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.liferay.portlet.social.model.SocialActivityFeedEntry;
+
 import org.xcolab.activityEntry.DiscussionActivitySubType;
 import org.xcolab.activityEntry.MemberSubActivityType;
 import org.xcolab.activityEntry.ProposalActivitySubType;
-import org.xcolab.util.enums.activity.ActivityEntryType;
-
 import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -24,35 +24,29 @@ import java.util.Map;
 import javax.portlet.PortletRequest;
 
 public class SocialActivityWrapper implements Serializable {
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private ActivityEntry activity;
 
-    private int daysBetween;
-    private boolean indicateNewDate;
-    private final static Log _log = LogFactoryUtil.getLog(SocialActivityWrapper.class);
-    private long daysAgo = 0;
+    private final static Logger _log = LoggerFactory.getLogger(SocialActivityWrapper.class);
+    private static final long serialVersionUID = 1L;
+    private static final PrettyTime timeAgoConverter = new PrettyTime();
+    private static final int MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
+
+    private final ActivityEntry activity;
+    private final int daysBetween;
+    private final boolean indicateNewDate;
+    private long daysAgo;
     private String body;
-    private static PrettyTime timeAgoConverter = new PrettyTime();
     private final boolean odd;
-    private PortletRequest request;
-
 
     public SocialActivityWrapper(ActivityEntry activity, int daysBetween, boolean indicateNewDate, boolean odd, PortletRequest request, int maxLength) {
         this.activity = activity;
-        this.request = request;
 
-        
         this.daysBetween = daysBetween;
         this.indicateNewDate = indicateNewDate;
 
-        final int milisecondsInDay = 1000 * 60 * 60 * 24;
-        long createDay = activity.getCreateDate().getTime() / milisecondsInDay;
-        long daysNow = new Date().getTime() / milisecondsInDay;
+        long createDay = activity.getCreateDate().getTime() / MILLISECONDS_PER_DAY;
+        long daysNow = new Date().getTime() / MILLISECONDS_PER_DAY;
         daysAgo = daysNow - createDay;
-        body = activity.getActivityEntryBody();//getBodyFromFeedEntry(activityFeedEntry, maxLength);
+        body = activity.getActivityEntryBody();
         if (body != null) {
             body = body.replaceAll("c.my_sites[^\\\"]*", "web/guest/member/-/member/userId/" + activity.getMemberId());
         }
@@ -120,18 +114,15 @@ public class SocialActivityWrapper implements Serializable {
     }
     
     public static Boolean isEmpty(ActivityEntry entry) {
-        String body = entry.getActivityEntryBody();//getBodyFromFeedEntry(entry, 0);
-        return body == null || body.trim().length() == 0;
+        String body = entry.getActivityEntryBody();
+        return body == null || body.trim().isEmpty();
     }
 
     public static Boolean isEmpty(ActivityEntry activity, PortletRequest request) {
         try {
-
-            //UserLocalServiceUtil.getUser(activity.getMemberId());
-            //SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil.interpret(activity, (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY));
             return isEmpty(activity);
         } catch (Throwable e) {
-            _log.error("Some error interpreting activity: "+e.getMessage());
+            _log.error("Some error interpreting activity: {}", e.getMessage());
             return false;
         }
     }
@@ -157,7 +148,7 @@ public class SocialActivityWrapper implements Serializable {
     }
 
 
-    public static enum ActivityType {
+    public enum ActivityType {
 		VOTE("up", ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalActivitySubType.PROPOSAL_VOTE.getSecondaryTypeId(),
                 ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalActivitySubType.PROPOSAL_VOTE_RETRACT.getSecondaryTypeId(),
                 ActivityEntryType.PROPOSAL.getPrimaryTypeId() +"" + ProposalActivitySubType.PROPOSAL_VOTE_SWITCH.getSecondaryTypeId(),

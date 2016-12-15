@@ -11,20 +11,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ImpactClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.impact.ImpactIteration;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.client.modeling.RomaClientUtil;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
-import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.enums.ProposalUnversionedAttributeName;
 import org.xcolab.portlets.proposals.impact.IntegratedProposalImpactSeries;
 import org.xcolab.portlets.proposals.impact.ProposalImpactScenarioCombinationWrapper;
@@ -34,6 +30,7 @@ import org.xcolab.portlets.proposals.impact.ProposalImpactUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
+import org.xcolab.util.enums.contest.ContestTier;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,7 +58,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_IMPACT"})
     public String showImpactTab(PortletRequest request, Model model, @RequestParam(required = false) boolean edit)
-            throws IOException, ScenarioNotFoundException, ModelNotFoundException, SystemException, PortalException {
+            throws IOException, ScenarioNotFoundException, ModelNotFoundException  {
 
         contest = proposalsContext.getContest(request);
         proposalWrapper = proposalsContext.getProposalWrapped(request);
@@ -158,7 +155,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                proposalWrapper.getScenarioId() != null && proposalWrapper.getScenarioId() > 0;
         if(scenarioIdValid){
             try {
-                modelId = RomaClientUtil.repository()
+                modelId = RomaClientUtil.client()
                         .getScenario(proposalWrapper.getScenarioId()).getSimulation().getId();
             } catch (IOException e){
                 _log.warn("Could not fetch simulation id for proposal scenario: ", e);

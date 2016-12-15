@@ -43,50 +43,6 @@
 	<bean id="com.ext.portlet.service.FocusAreaOntologyTermLocalService" class="com.ext.portlet.service.impl.FocusAreaOntologyTermLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.FocusAreaOntologyTermService" class="com.ext.portlet.service.impl.FocusAreaOntologyTermServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistence" class="com.ext.portlet.service.persistence.FocusAreaOntologyTermPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.ImpactDefaultSeriesLocalService" class="com.ext.portlet.service.impl.ImpactDefaultSeriesLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ImpactDefaultSeriesService" class="com.ext.portlet.service.impl.ImpactDefaultSeriesServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.ImpactDefaultSeriesPersistence" class="com.ext.portlet.service.persistence.ImpactDefaultSeriesPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.ImpactDefaultSeriesDataLocalService" class="com.ext.portlet.service.impl.ImpactDefaultSeriesDataLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ImpactDefaultSeriesDataService" class="com.ext.portlet.service.impl.ImpactDefaultSeriesDataServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.ImpactDefaultSeriesDataPersistence" class="com.ext.portlet.service.persistence.ImpactDefaultSeriesDataPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.ImpactIterationLocalService" class="com.ext.portlet.service.impl.ImpactIterationLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ImpactIterationService" class="com.ext.portlet.service.impl.ImpactIterationServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.ImpactIterationPersistence" class="com.ext.portlet.service.persistence.ImpactIterationPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.ImpactTemplateFocusAreaListLocalService" class="com.ext.portlet.service.impl.ImpactTemplateFocusAreaListLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ImpactTemplateFocusAreaListService" class="com.ext.portlet.service.impl.ImpactTemplateFocusAreaListServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.ImpactTemplateFocusAreaListPersistence" class="com.ext.portlet.service.persistence.ImpactTemplateFocusAreaListPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.ImpactTemplateMaxFocusAreaLocalService" class="com.ext.portlet.service.impl.ImpactTemplateMaxFocusAreaLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ImpactTemplateMaxFocusAreaService" class="com.ext.portlet.service.impl.ImpactTemplateMaxFocusAreaServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.ImpactTemplateMaxFocusAreaPersistence" class="com.ext.portlet.service.persistence.ImpactTemplateMaxFocusAreaPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.ImpactTemplateSeriesLocalService" class="com.ext.portlet.service.impl.ImpactTemplateSeriesLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ImpactTemplateSeriesService" class="com.ext.portlet.service.impl.ImpactTemplateSeriesServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.ImpactTemplateSeriesPersistence" class="com.ext.portlet.service.persistence.ImpactTemplateSeriesPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.ModelCategoryLocalService" class="com.ext.portlet.service.impl.ModelCategoryLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ModelCategoryService" class="com.ext.portlet.service.impl.ModelCategoryServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.ModelCategoryPersistence" class="com.ext.portlet.service.persistence.ModelCategoryPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.ModelDiscussionLocalService" class="com.ext.portlet.service.impl.ModelDiscussionLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ModelDiscussionService" class="com.ext.portlet.service.impl.ModelDiscussionServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.ModelDiscussionPersistence" class="com.ext.portlet.service.persistence.ModelDiscussionPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.ModelGlobalPreferenceLocalService" class="com.ext.portlet.service.impl.ModelGlobalPreferenceLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ModelGlobalPreferenceService" class="com.ext.portlet.service.impl.ModelGlobalPreferenceServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.ModelGlobalPreferencePersistence" class="com.ext.portlet.service.persistence.ModelGlobalPreferencePersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.ModelInputGroupLocalService" class="com.ext.portlet.service.impl.ModelInputGroupLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ModelInputGroupService" class="com.ext.portlet.service.impl.ModelInputGroupServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.ModelInputGroupPersistence" class="com.ext.portlet.service.persistence.ModelInputGroupPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.ModelInputItemLocalService" class="com.ext.portlet.service.impl.ModelInputItemLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ModelInputItemService" class="com.ext.portlet.service.impl.ModelInputItemServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.ModelInputItemPersistence" class="com.ext.portlet.service.persistence.ModelInputItemPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.ModelOutputChartOrderLocalService" class="com.ext.portlet.service.impl.ModelOutputChartOrderLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ModelOutputChartOrderService" class="com.ext.portlet.service.impl.ModelOutputChartOrderServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.ModelOutputChartOrderPersistence" class="com.ext.portlet.service.persistence.ModelOutputChartOrderPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.ModelOutputItemLocalService" class="com.ext.portlet.service.impl.ModelOutputItemLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ModelOutputItemService" class="com.ext.portlet.service.impl.ModelOutputItemServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.ModelOutputItemPersistence" class="com.ext.portlet.service.persistence.ModelOutputItemPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.ModelPositionLocalService" class="com.ext.portlet.service.impl.ModelPositionLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ModelPositionService" class="com.ext.portlet.service.impl.ModelPositionServiceImpl" />
-	<bean id="com.ext.portlet.service.persistence.ModelPositionPersistence" class="com.ext.portlet.service.persistence.ModelPositionPersistenceImpl" parent="basePersistence" />
-	<bean id="com.ext.portlet.service.ModelRunnerLocalService" class="com.ext.portlet.service.impl.ModelRunnerLocalServiceImpl" />
-	<bean id="com.ext.portlet.service.ModelRunnerService" class="com.ext.portlet.service.impl.ModelRunnerServiceImpl" />
 	<bean id="com.ext.portlet.service.OntologySpaceLocalService" class="com.ext.portlet.service.impl.OntologySpaceLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.OntologySpaceService" class="com.ext.portlet.service.impl.OntologySpaceServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.OntologySpacePersistence" class="com.ext.portlet.service.persistence.OntologySpacePersistenceImpl" parent="basePersistence" />

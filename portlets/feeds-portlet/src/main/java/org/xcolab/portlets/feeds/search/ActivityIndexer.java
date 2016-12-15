@@ -1,10 +1,11 @@
 package org.xcolab.portlets.feeds.search;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ext.portlet.Activity.ActivityUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BaseIndexer;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
@@ -28,8 +29,6 @@ import javax.portlet.PortletURL;
 
 /**
  * This class indexes all User activities that are already clustered together (like seen in the Feeds portlet)
- *
- * Created by kmang on 07/05/14.
  */
 public class ActivityIndexer extends BaseIndexer {
 
@@ -44,7 +43,7 @@ public class ActivityIndexer extends BaseIndexer {
 
     public static final String PORTLET_ID = PortletKeys.USERS_ADMIN;
 
-    private static Log _log = LogFactoryUtil.getLog(ActivityIndexer.class);
+    private static Logger _log = LoggerFactory.getLogger(ActivityIndexer.class);
 
     @Override
     protected void doDelete(Object obj) throws Exception {
@@ -127,16 +126,12 @@ public class ActivityIndexer extends BaseIndexer {
                 Document activityDoc =  hits.getDocs()[0];
                 try {
                     return SocialActivityLocalServiceUtil.getSocialActivity(GetterUtil.getLong(activityDoc.getField(ACTIVITY_ID_KEY).getValue()));
-                } catch (SystemException e) {
+                } catch (SystemException | PortalException e) {
                     _log.warn("Can't get social activity", e);
-                } catch (PortalException e) {
-                	_log.warn("Can't get social activity", e);
                 }
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (SearchException e) {
-            e.printStackTrace();
+        } catch (ParseException | SearchException e) {
+            _log.warn("Can't aggregate social activities", e);
         }
 
         return sa;

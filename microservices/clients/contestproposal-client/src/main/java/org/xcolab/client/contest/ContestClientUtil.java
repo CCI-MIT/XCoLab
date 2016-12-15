@@ -2,6 +2,7 @@ package org.xcolab.client.contest;
 
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestCollectionCard;
 import org.xcolab.client.contest.pojo.ContestDiscussion;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.ContestType;
@@ -95,6 +96,36 @@ public final class ContestClientUtil {
     public static List<Contest> getContestMatchingOntologyTerms(
             List<Long> ontologyTermIds) {
         return contestClient.getContestMatchingOntologyTerms(ontologyTermIds);
+    }
+
+    public static List<Contest> getContestByOntologyTerm(
+            Long ontologyTermId, Boolean getActive) {
+        return contestClient.getContestByOntologyTerm(ontologyTermId, getActive);
+    }
+
+    public static int getNumberOfContestsByOntologyTerm(
+            Long ontologyTermId) {
+        return contestClient.getNumberOfContestsByOntologyTerm(ontologyTermId);
+    }
+
+    public static int getNumberOfAllContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
+        return contestClient.getNumberOfAllContestsInCollectionCard(collectionCardId, viewType, onlyFeatured);
+    }
+
+    public static int getNumberOfPriorContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
+        return contestClient.getNumberOfPriorContestsInCollectionCard(collectionCardId, viewType, onlyFeatured);
+    }
+
+    public static int getNumberOfActiveContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
+        return contestClient.getNumberOfActiveContestsInCollectionCard(collectionCardId, viewType, onlyFeatured);
+    }
+
+    public static boolean updateContestCollectionCard(ContestCollectionCard contestCollectionCard) {
+        return contestClient.updateContestCollectionCard(contestCollectionCard);
+    }
+
+    public static ContestCollectionCard createContestCollectionCard(ContestCollectionCard contestCollectionCard) {
+        return contestClient.createContestCollectionCard(contestCollectionCard);
     }
 
     public static List<Contest> getSubContestsByOntologySpaceId(
@@ -280,6 +311,28 @@ public final class ContestClientUtil {
     public static void unsubscribeMemberFromContest(long contestPK, long userId) {
         contestClient.unsubscribeMemberFromContest(contestPK, userId);
     }
+
+    public static ContestClient fromService(RestService contestService) {
+        return ContestClient.fromService(contestService);
+    }
+
+    public static List<ContestCollectionCard> getSubContestCollectionCards(
+            long parentCollectionCardId) {
+        return contestClient.getSubContestCollectionCards(parentCollectionCardId);
+    }
+
+    public static List<ContestCollectionCard> getAllContestCollectionCards() {
+        return contestClient.getAllContestCollectionCards();
+    }
+
+    public static ContestCollectionCard getContestCollectionCard(long id) {
+        return contestClient.getContestCollectionCard(id);
+    }
+
+    public static boolean deleteContestCollectionCard(long id) {
+        return contestClient.deleteContestCollectionCard(id);
+    }
+
     public static void autoPromoteProposals() {
         contestClient.autoPromoteProposals();
     }

@@ -7,6 +7,8 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ContestCollectionCard;
+import org.xcolab.client.contest.pojo.ContestCollectionCardDto;
 import org.xcolab.client.contest.pojo.ContestDiscussion;
 import org.xcolab.client.contest.pojo.ContestDiscussionDto;
 import org.xcolab.client.contest.pojo.ContestDto;
@@ -20,7 +22,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonTypeDto;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseTypeDto;
-import org.xcolab.client.modeling.RomaClientUtil;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.Plurality;
@@ -59,6 +61,7 @@ public class ContestClient {
     private final RestResource1<ContestPhaseRibbonTypeDto, Long> contestPhaseRibbonTypeResource;
 
     private final RestResource1<ContestScheduleDto, Long> contestScheduleResource;
+    private final RestResource1<ContestCollectionCardDto, Long> contestCollectionCardRestResource;
 
     private ContestClient(RestService contestService) {
         this.contestService = contestService;
@@ -76,7 +79,10 @@ public class ContestClient {
                 "contests", ContestDto.TYPES);
         visiblePhasesResource = new RestResource2L<>(
                 contestResource, "visiblePhases", ContestPhaseDto.TYPES);
-        contestDiscussionResource = new RestResource1<>(this.contestService, "contestDiscussions", ContestDiscussionDto.TYPES);
+        contestCollectionCardRestResource =
+                new RestResource1<>(this.contestService, "contestCollectionCards", ContestCollectionCardDto.TYPES);
+        contestDiscussionResource =
+                new RestResource1<>(this.contestService, "contestDiscussions", ContestDiscussionDto.TYPES);
     }
 
     public static ContestClient fromService(RestService contestService) {
@@ -251,11 +257,64 @@ public class ContestClient {
                 .execute(), contestService);
     }
 
+    //TODO:Confusing Variable naming
     public List<Contest> getContestMatchingOntologyTerms(List<Long> ontologyTermIds) {
         return DtoUtil.toPojos(contestResource
-                .service("getContestMatchingOntologyTerms", ContestDto.TYPES.getTypeReference())
-                .queryParam("ontologyTermIds", ontologyTermIds)
+                .service("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
+                .queryParam("focusAreaOntologyTerms", ontologyTermIds.toArray())
                 .getList(), contestService);
+    }
+
+    public int getNumberOfAllContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
+        return contestResource.service("getNumberOfAllContestsInCollectionCard", Integer.class)
+                .queryParam("collectionCardId", collectionCardId)
+                .queryParam("viewType", viewType)
+                .queryParam("onlyFeatured", onlyFeatured)
+                .execute();
+    }
+
+    public int getNumberOfActiveContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
+        return contestResource.service("getNumberOfActiveContestsInCollectionCard", Integer.class)
+                .queryParam("collectionCardId", collectionCardId)
+                .queryParam("viewType", viewType)
+                .queryParam("onlyFeatured", onlyFeatured)
+                .execute();
+    }
+
+    public int getNumberOfPriorContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
+        return contestResource.service("getNumberOfPriorContestsInCollectionCard", Integer.class)
+                .queryParam("collectionCardId", collectionCardId)
+                .queryParam("viewType", viewType)
+                .queryParam("onlyFeatured", onlyFeatured)
+                .execute();
+    }
+
+    public boolean updateContestCollectionCard(ContestCollectionCard contestCollectionCard) {
+        return contestCollectionCardRestResource.update(new ContestCollectionCardDto(contestCollectionCard),contestCollectionCard.getId_())
+                .execute();
+    }
+
+    public boolean deleteContestCollectionCard(long id) {
+        return contestCollectionCardRestResource.delete(id).execute();
+    }
+
+    public ContestCollectionCard createContestCollectionCard(ContestCollectionCard contestCollectionCard) {
+        return contestCollectionCardRestResource.create(new ContestCollectionCardDto(contestCollectionCard)).execute().toPojo(contestService);
+
+    }
+
+    public List<Contest> getContestByOntologyTerm(Long ontologyTermId, Boolean getActive) {
+        return DtoUtil.toPojos(contestResource
+                .service("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
+                .queryParam("focusAreaOntologyTerm", ontologyTermId)
+                .queryParam("getActive", getActive)
+                .getList(), contestService);
+    }
+
+    public int getNumberOfContestsByOntologyTerm(Long ontologyTermId) {
+        return contestResource.service("getNumberOfContestsByOntologyTerm", Integer.class)
+                .queryParam("ontologyTermId", ontologyTermId)
+                .execute();
     }
 
     public List<Contest> getSubContestsByOntologySpaceId(Long contestId, Long ontologySpaceId) {
@@ -292,7 +351,7 @@ public class ContestClient {
             Map<Long, String> ret = new HashMap<>();
             for (Long modelId : modelIds) {
                 try {
-                    Simulation s = RomaClientUtil.repository().getSimulation(modelId);
+                    Simulation s = RomaClientUtil.client().getSimulation(modelId);
                     ret.put(s.getId(), s.getName());
 
                 } catch (IOException e) {
@@ -604,5 +663,21 @@ public class ContestClient {
         }
         parameterList += list.get(list.size()-1);
         return parameterList;
+    }
+
+    public List<ContestCollectionCard> getSubContestCollectionCards(long parentCollectionCardId) {
+        return DtoUtil.toPojos(contestCollectionCardRestResource.list()
+                .queryParam("parentCollectionCardId", parentCollectionCardId)
+                .execute(),contestService);
+    }
+
+    public List<ContestCollectionCard> getAllContestCollectionCards() {
+        return DtoUtil.toPojos(contestCollectionCardRestResource.list()
+                .execute(), contestService);
+    }
+
+    public ContestCollectionCard getContestCollectionCard(long id) {
+        return contestCollectionCardRestResource.get(id)
+                .execute().toPojo(contestService);
     }
 }

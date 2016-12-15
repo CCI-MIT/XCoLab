@@ -41,10 +41,10 @@ public class PlanTemplateLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName350;
-    private String[] _methodParameterTypes350;
-    private String _methodName351;
-    private String[] _methodParameterTypes351;
+    private String _methodName262;
+    private String[] _methodParameterTypes262;
+    private String _methodName263;
+    private String[] _methodParameterTypes263;
 
     public PlanTemplateLocalServiceClpInvoker() {
         _methodName0 = "addPlanTemplate";
@@ -129,13 +129,13 @@ public class PlanTemplateLocalServiceClpInvoker {
                 "com.ext.portlet.model.PlanTemplate"
             };
 
-        _methodName350 = "getBeanIdentifier";
+        _methodName262 = "getBeanIdentifier";
 
-        _methodParameterTypes350 = new String[] {  };
+        _methodParameterTypes262 = new String[] {  };
 
-        _methodName351 = "setBeanIdentifier";
+        _methodName263 = "setBeanIdentifier";
 
-        _methodParameterTypes351 = new String[] { "java.lang.String" };
+        _methodParameterTypes263 = new String[] { "java.lang.String" };
     }
 
     public Object invokeMethod(String name, String[] parameterTypes,
@@ -227,13 +227,13 @@ public class PlanTemplateLocalServiceClpInvoker {
             return PlanTemplateLocalServiceUtil.updatePlanTemplate((com.ext.portlet.model.PlanTemplate) arguments[0]);
         }
 
-        if (_methodName350.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes350, parameterTypes)) {
+        if (_methodName262.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes262, parameterTypes)) {
             return PlanTemplateLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName351.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes351, parameterTypes)) {
+        if (_methodName263.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes263, parameterTypes)) {
             PlanTemplateLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;

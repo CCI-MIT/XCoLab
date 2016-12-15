@@ -119,10 +119,6 @@ cd services/plansProposalsFacade/plansProposalsFacade-portlet-service
 mvn clean compile package install clean
 cd ../../..
 
-cd taglibs/colabIceFacelets
-mvn clean compile package install clean
-cd ../..
-
 cd taglibs/colabJspTags
 mvn clean compile package install clean
 cd ../..
@@ -153,6 +149,7 @@ for D in *; do
     fi
 done
 
+cd ..
 cd microservices/util/service-utils
 mvn clean compile package install clean
 cd ../../..

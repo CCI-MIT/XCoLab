@@ -1,5 +1,7 @@
 package org.xcolab.client.proposals;
 
+import org.springframework.core.ParameterizedTypeReference;
+
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -22,6 +24,7 @@ import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
@@ -37,6 +40,8 @@ public final class ProposalClient {
     private final RestService proposalService;
 
     private final RestResource<ProposalDto, Long> proposalResource;
+    private final RestResource<Long, Long> proposalThreadIdResource;
+    private final RestResource<Long, Long> proposalIdResource;
     private final RestResource1<ProposalVersionDto, Long> proposalVersionResource;
     private final RestResource1<ProposalReferenceDto, Long> proposalReferenceResource;
 
@@ -50,6 +55,16 @@ public final class ProposalClient {
 
         proposalResource = new RestResource1<>(
                 proposalService, "proposals", ProposalDto.TYPES);
+        proposalIdResource = new RestResource1<>(
+                proposalService, "proposalIds", new TypeProvider<>(Long.class,
+                new ParameterizedTypeReference<List<Long>>() {
+                })
+        );
+        proposalThreadIdResource = new RestResource1<>(
+                proposalService, "proposalThreadIds", new TypeProvider<>(Long.class,
+                new ParameterizedTypeReference<List<Long>>() {
+                })
+        );
         proposalVersionResource = new RestResource1<>(proposalService,
                 "proposalVersions", ProposalVersionDto.TYPES);
         proposalReferenceResource = new RestResource1<>(proposalService,
@@ -90,6 +105,28 @@ public final class ProposalClient {
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("ribbon", ribbon)
                 .execute(), proposalService);
+    }
+
+    public List<Long> listProposalIds(int start, int limit, Long contestId,
+            Boolean visible, Long contestPhaseId, Integer ribbon) {
+        return proposalIdResource.list()
+                .addRange(start, limit)
+                .optionalQueryParam("contestId", contestId)
+                .optionalQueryParam("visible", visible)
+                .optionalQueryParam("contestPhaseId", contestPhaseId)
+                .optionalQueryParam("ribbon", ribbon)
+                .execute();
+    }
+
+    public List<Long> listThreadIds(int start, int limit, Long contestId,
+            Boolean visible, Long contestPhaseId, Integer ribbon) {
+        return proposalThreadIdResource.list()
+                .addRange(start, limit)
+                .optionalQueryParam("contestId", contestId)
+                .optionalQueryParam("visible", visible)
+                .optionalQueryParam("contestPhaseId", contestPhaseId)
+                .optionalQueryParam("ribbon", ribbon)
+                .execute();
     }
 
     public List<Proposal> getProposalsInContestPhase(Long contestPhaseId) {

@@ -2,6 +2,8 @@ package org.xcolab.portlets.loginregister.singlesignon;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,8 +13,6 @@ import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -44,7 +44,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping(value = "view", params = "SSO=facebook")
 public class FacebookController {
 
-    private final static Log _log = LogFactoryUtil.getLog(FacebookController.class);
+    private final static Logger _log = LoggerFactory.getLogger(FacebookController.class);
 
     @RequestMapping(params = "action=initiateLogin")
     public void initiateFbLogin(ActionRequest request, ActionResponse response) throws IOException, SystemException {
@@ -206,7 +206,7 @@ public class FacebookController {
             portletSession.setAttribute(SSOKeys.SSO_COUNTRY, getCountry(jsonObject), PortletSession.APPLICATION_SCOPE);
         } catch (UserLocationNotResolvableException e) {
             portletSession.setAttribute(SSOKeys.SSO_COUNTRY, null, PortletSession.APPLICATION_SCOPE);
-            _log.warn(e);
+            _log.warn("", e);
         }
 
         // Get the FB image url

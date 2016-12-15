@@ -53,15 +53,15 @@ public class MembersController {
 
     @GetMapping
     public List<Member> listMembers(HttpServletResponse response,
-                                    @RequestParam(required = false) Integer startRecord,
-                                    @RequestParam(required = false) Integer limitRecord,
-                                    @RequestParam(required = false) String sort,
-                                    @RequestParam(required = false) String partialName,
-                                    @RequestParam(required = false) String roleName,
-                                    @RequestParam(required = false) String email,
-                                    @RequestParam(required = false) String screenName,
-                                    @RequestParam(required = false) Long facebookId,
-                                    @RequestParam(required = false) String openId) {
+            @RequestParam(required = false) Integer startRecord,
+            @RequestParam(required = false) Integer limitRecord,
+            @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String partialName,
+            @RequestParam(required = false) String roleName,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String screenName,
+            @RequestParam(required = false) Long facebookId,
+            @RequestParam(required = false) String openId) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
         response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
@@ -69,7 +69,7 @@ public class MembersController {
 
         return memberDao.findByGiven(paginationHelper, partialName, roleName,
                 email, screenName, facebookId, openId);
-}
+    }
 
     @GetMapping("findByIp")
     public List<Member> getMemberByIp(@RequestParam String ip){
@@ -131,11 +131,7 @@ public class MembersController {
             return false;
         } else {
             List<UserGroupRole> ret = this.userGroupRoleDao.findByGiven(memberId, groupId);
-            if (ret != null && ret.size() > 0 ){
-                return true;
-            }else {
-                return false;
-            }
+            return ret != null && !ret.isEmpty();
         }
     }
     @GetMapping("{memberId}/addMemberToGroup")
@@ -144,7 +140,7 @@ public class MembersController {
         UserGroupRole ugr = new UserGroupRole();
         ugr.setGroupId(groupId);
         ugr.setUserId(memberId);
-        ugr.setRoleId(10125l);
+        ugr.setRoleId(10125L);
         this.userGroupRoleDao.create(ugr);
         return true;
     }
@@ -171,9 +167,6 @@ public class MembersController {
                     member.getShortBio(), member.getCountry(), member.getFacebookId(),
                     member.getOpenId(), member.getPortraitFileEntryId(), member.getId_());
     }
-
-
-
 
 
     @GetMapping("{memberId}/activityCount")

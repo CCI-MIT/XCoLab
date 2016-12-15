@@ -1,11 +1,10 @@
 package org.xcolab.jspTags.discussion.actions;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.analytics.AnalyticsUtil;
 import org.xcolab.client.activities.ActivitiesClient;
@@ -47,8 +46,8 @@ import javax.servlet.http.Cookie;
 @RequestMapping("view")
 public class AddDiscussionMessageActionController extends BaseDiscussionsActionController {
 
-    private final static Log _log = LogFactoryUtil
-            .getLog(AddDiscussionMessageActionController.class);
+    private final static Logger _log = LoggerFactory
+            .getLogger(AddDiscussionMessageActionController.class);
 
     private final static String COMMENT_ANALYTICS_KEY = "COMMENT_CONTEST_ENTRIES";
     private final static String COMMENT_ANALYTICS_CATEGORY = "User";

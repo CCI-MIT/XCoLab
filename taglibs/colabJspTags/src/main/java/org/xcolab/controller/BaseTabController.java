@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.interfaces.TabContext;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.wrapper.TabWrapper;
@@ -38,7 +39,7 @@ public abstract class BaseTabController extends BaseController {
         List<TabWrapper> availableTabs = new ArrayList<>();
         for (TabEnum tab: Tabs) {
             TabWrapper tabWrapper = new TabWrapper(tab, request, tabContext);
-            if (tabWrapper.getCanView()) {
+            if (tabWrapper.getCanView() && (!tab.getName().equals("COLLECTION_CARDS") || ConfigurationAttributeKey.COLAB_USES_CARDS.get())) {
                 availableTabs.add(tabWrapper);
             }
         }

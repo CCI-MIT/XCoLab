@@ -37,7 +37,7 @@
                 <form:textarea path="messageContent" cssClass="rte commentbox commentContent"/> <br />
             </label>
 
-            <a id="messageSendButton" class="c-Button__primary" href="#">Send</a>
+            <a type="button" id="messageSendButton" class="c-Button__primary" href="#">Send</a>
         </form:form>
     </div>
 
@@ -48,19 +48,23 @@
     <script type="text/javascript">
         jQuery(function() {
             enableDirtyCheck();
-
             jQuery("#messageSendButton").click(function () {
-                var numberOfRecipients = $('#userListRecipients  li').length;
-                var numberOfMessagesLeft = parseInt($("#numberOfMessagesLeft").html());
-                if( numberOfMessagesLeft >= numberOfRecipients) {
-                    disableDirtyCheck();
-                    jQuery("#sendMessageForm").submit();
+                if(1 > $("#userSelectorInputRecipients").val().length) {
+                    var numberOfRecipients = $('#userListRecipients  li').length;
+                    var numberOfMessagesLeft = parseInt($("#numberOfMessagesLeft").html());
+                    if( numberOfMessagesLeft >= numberOfRecipients) {
+                        disableDirtyCheck();
+                        jQuery("#sendMessageForm").submit();
+                    } else {
+                        alert("Message Limit Exceeded, please remove at least " + (numberOfRecipients - numberOfMessagesLeft) + " recipients!");
+                    }
                 } else {
-                    alert("Message Limit Exceeded, please remove at least " + (numberOfRecipients - numberOfMessagesLeft) + " recipients!");
+                    alert("The user " + $("#userSelectorInputRecipients").val() + " couldn't be found!");
                 }
-
             });
         });
+
+
     </script>
 
 </jsp:root>

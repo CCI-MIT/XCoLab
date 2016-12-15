@@ -4,8 +4,6 @@ import com.ext.portlet.NoSuchPlanTemplateException;
 import com.ext.portlet.model.PlanTemplate;
 import com.ext.portlet.model.impl.PlanTemplateImpl;
 import com.ext.portlet.model.impl.PlanTemplateModelImpl;
-import com.ext.portlet.service.persistence.PlanTemplatePersistence;
-
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -30,7 +28,6 @@ import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

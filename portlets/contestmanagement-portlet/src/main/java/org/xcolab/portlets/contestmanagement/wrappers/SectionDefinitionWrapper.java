@@ -1,12 +1,11 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Validator;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import com.liferay.portal.kernel.util.Validator;
+
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
@@ -24,9 +23,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public class SectionDefinitionWrapper implements Serializable {
-    private final static Log _log = LogFactoryUtil.getLog(SectionDefinitionWrapper.class);
 
     private Long id;
     private String type = "";
@@ -72,7 +71,8 @@ public class SectionDefinitionWrapper implements Serializable {
 
         // TODO very inefficient, add finder to service layer
         for (PlanTemplateSection planTemplateSection : planTemplateSections) {
-            if (planTemplateSection.getPlanSectionId() == planSectionDefinition.getId_()) {
+            if (Objects.equals(
+                    planTemplateSection.getPlanSectionId(), planSectionDefinition.getId_())) {
                 initPlanTemplateSection(planTemplateSection);
                 break;
             }

@@ -1,9 +1,5 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -18,11 +14,11 @@ public class SupportedProposalWrapper implements Serializable {
     private final ProposalSupporter proposalSupporter;
     private Proposal proposalWrapper;
 
-    public SupportedProposalWrapper(ProposalSupporter ps) throws SystemException, PortalException {
+    public SupportedProposalWrapper(ProposalSupporter ps) {
         this.proposalSupporter = ps;
         try {
             this.proposalWrapper = (ProposalClientUtil.getProposal(ps.getProposalId()));
-        }catch (ProposalNotFoundException ignored){
+        } catch (ProposalNotFoundException ignored) {
             this.proposalWrapper = null;
         }
     }

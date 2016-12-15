@@ -11,10 +11,10 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.entity.utils.email.notifications.basic.ProposalNotification;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
-import org.xcolab.entity.utils.email.notifications.basic.ProposalNotification;
 
 public class ProposalVoteValidityConfirmation extends ProposalNotification {
 

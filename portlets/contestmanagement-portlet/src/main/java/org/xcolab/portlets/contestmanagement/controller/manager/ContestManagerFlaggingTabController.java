@@ -1,14 +1,13 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.exceptions.ReportTargetNotFoundException;
@@ -37,7 +36,7 @@ import javax.portlet.PortletResponse;
 @RequestMapping("view")
 public class ContestManagerFlaggingTabController extends ContestManagerBaseTabController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestManagerFlaggingTabController.class);
+    private final static Logger _log = LoggerFactory.getLogger(ContestManagerFlaggingTabController.class);
     static final private TabEnum tab = ContestManagerTabs.FLAGGING;
     static final private String TAB_VIEW = "manager/flaggingTab";
 

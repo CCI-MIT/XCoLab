@@ -1,0 +1,131 @@
+.c-ListView {
+  background-color: $t-Color__primary__grey--light;
+  overflow:hidden;
+}
+
+.c-ListItem {
+  border-radius: 3px;
+  color: $t-Color__grey--light;
+  height: 60px;
+  float: left;
+  width: 800px;
+  margin-left: 110px;
+  padding-bottom: 15px;
+  background-color: white;
+  margin-bottom: 15px;
+  border: 1px solid $t-Color__grey--light;
+  &:hover {
+    box-shadow: 0 0 3px 3px $t-Color__grey--light;
+  }
+}
+
+.c-ListItem--background-container {
+  border-radius: 3px;
+  color: $t-Color__grey--light;
+  height: 60px;
+  float: left;
+  width: 800px;
+  padding-bottom: 15px;
+  background-color: white;
+  margin-bottom: 15px;
+  border: 1px solid $t-Color__grey--light;
+  &:hover {
+    box-shadow: 0 0 3px 3px $t-Color__grey--light;
+  }
+}
+
+.c-ListItem__description {
+  width: 474px;
+  float: left;
+  padding: 8px;
+  font-size: 14px;
+  line-height: 19px;
+  h3{
+    color: $t-Color__primary;
+    font-size: 18px;
+    line-height: 22px;
+    &:hover {
+      color: black;
+    }
+  }
+
+  div {
+    overflow: hidden;
+    height: 38px;
+  }
+}
+
+.c-ListItem__meta {
+  width: 214px;
+  float: right;
+  padding: 8px;
+  height: 60px;
+}
+
+.c-ListItem__proposals {
+  float:right;
+  padding: 8px;
+  padding-right: 0px;
+  strong {
+    color:$t-Color__primary;
+  }
+}
+
+.c-ListItem__comments {
+  float:right;
+  padding: 8px;
+  strong {
+    color:$t-Color__primary;
+  }
+}
+
+.c-ListItem__phase {
+  margin-bottom: 20px;
+}
+
+.c-ListItem__meta__flag{
+  span {
+    padding: 2px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 3px;
+    line-height: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  text-align: right;
+  height: 20px;
+}
+
+.c-ListItem__meta__flag--grey {
+  color: $t-Color__grey--medium;
+  background: $t-Color__grey--lightest;
+ }
+
+.c-ListItem__meta__flag--color {
+  color: white;
+  background: $t-Color__secondary;
+}
+
+.c-ListItem__contests {
+  border-right: 1px dashed $t-Color__grey--light;
+  height: 59px;
+  width: 55px;
+  padding: 8px;
+  float: left;
+  color: $t-Color__grey--medium;
+}
+
+.c-ListItem__circle {
+  color: white;
+  text-align: center;
+  font-size: 15px;
+  line-height: 40px;
+  border-radius: 50%;
+  height: 40px;
+  background-color: $t-Color__primary;
+  width: 40px;
+  float: left;
+  margin-left: 8px;
+}

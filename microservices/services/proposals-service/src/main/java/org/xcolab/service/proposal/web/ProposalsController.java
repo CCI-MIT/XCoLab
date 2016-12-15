@@ -93,8 +93,9 @@ public class ProposalsController {
         return proposalService.getContestIntegrationRelevantSubproposals(proposalId);
     }
 
-    @RequestMapping(value = "/proposals/{proposalId}/getLatestContestPhaseIdInProposal", method = RequestMethod.GET)
-    public Long getLatestContestPhaseIdInProposal(@PathVariable long proposalId) {
+    @GetMapping("/proposals/{proposalId}/getLatestContestPhaseIdInProposal")
+    public Long getLatestContestPhaseIdInProposal(@PathVariable long proposalId)
+            throws NotFoundException {
         return proposalService.getLatestContestPhaseIdInProposal(proposalId);
     }
 
@@ -267,6 +268,36 @@ public class ProposalsController {
             throw new NotFoundException();
         }
 
+    }
+
+    @RequestMapping(value = "/proposalIds", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<Long> listProposalIds(
+            @RequestParam(required = false) Integer startRecord,
+            @RequestParam(required = false) Integer limitRecord,
+            @RequestParam(required = false) Long contestId,
+            @RequestParam(required = false) Boolean visible,
+            @RequestParam(required = false) Long contestPhaseId,
+            @RequestParam(required = false) Integer ribbon,
+            @RequestParam(required = false) String sort) {
+        PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
+
+        return proposalDao
+                .findIdsByGiven(paginationHelper, contestId, visible, contestPhaseId, ribbon);
+    }
+
+    @RequestMapping(value = "proposalThreadIds", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<Long> listThreadIds(
+            @RequestParam(required = false) Integer startRecord,
+            @RequestParam(required = false) Integer limitRecord,
+            @RequestParam(required = false) Long contestId,
+            @RequestParam(required = false) Boolean visible,
+            @RequestParam(required = false) Long contestPhaseId,
+            @RequestParam(required = false) Integer ribbon,
+            @RequestParam(required = false) String sort) {
+        PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
+
+        return proposalDao
+                .findThreadIdsByGiven(paginationHelper, contestId, visible, contestPhaseId, ribbon);
     }
 
     @RequestMapping(value = "/proposals/getProposalsByCurrentContests", method = {RequestMethod.GET})

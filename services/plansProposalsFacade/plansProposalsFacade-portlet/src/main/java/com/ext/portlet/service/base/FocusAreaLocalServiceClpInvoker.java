@@ -41,24 +41,24 @@ public class FocusAreaLocalServiceClpInvoker {
     private String[] _methodParameterTypes14;
     private String _methodName15;
     private String[] _methodParameterTypes15;
-    private String _methodName350;
-    private String[] _methodParameterTypes350;
-    private String _methodName351;
-    private String[] _methodParameterTypes351;
-    private String _methodName356;
-    private String[] _methodParameterTypes356;
-    private String _methodName357;
-    private String[] _methodParameterTypes357;
-    private String _methodName358;
-    private String[] _methodParameterTypes358;
-    private String _methodName359;
-    private String[] _methodParameterTypes359;
-    private String _methodName360;
-    private String[] _methodParameterTypes360;
-    private String _methodName361;
-    private String[] _methodParameterTypes361;
-    private String _methodName362;
-    private String[] _methodParameterTypes362;
+    private String _methodName262;
+    private String[] _methodParameterTypes262;
+    private String _methodName263;
+    private String[] _methodParameterTypes263;
+    private String _methodName268;
+    private String[] _methodParameterTypes268;
+    private String _methodName269;
+    private String[] _methodParameterTypes269;
+    private String _methodName270;
+    private String[] _methodParameterTypes270;
+    private String _methodName271;
+    private String[] _methodParameterTypes271;
+    private String _methodName272;
+    private String[] _methodParameterTypes272;
+    private String _methodName273;
+    private String[] _methodParameterTypes273;
+    private String _methodName274;
+    private String[] _methodParameterTypes274;
 
     public FocusAreaLocalServiceClpInvoker() {
         _methodName0 = "addFocusArea";
@@ -137,55 +137,55 @@ public class FocusAreaLocalServiceClpInvoker {
 
         _methodParameterTypes15 = new String[] { "com.ext.portlet.model.FocusArea" };
 
-        _methodName350 = "getBeanIdentifier";
+        _methodName262 = "getBeanIdentifier";
 
-        _methodParameterTypes350 = new String[] {  };
+        _methodParameterTypes262 = new String[] {  };
 
-        _methodName351 = "setBeanIdentifier";
+        _methodName263 = "setBeanIdentifier";
 
-        _methodParameterTypes351 = new String[] { "java.lang.String" };
+        _methodParameterTypes263 = new String[] { "java.lang.String" };
 
-        _methodName356 = "store";
+        _methodName268 = "store";
 
-        _methodParameterTypes356 = new String[] {
+        _methodParameterTypes268 = new String[] {
                 "com.ext.portlet.model.FocusArea"
             };
 
-        _methodName357 = "getTerms";
+        _methodName269 = "getTerms";
 
-        _methodParameterTypes357 = new String[] {
+        _methodParameterTypes269 = new String[] {
                 "com.ext.portlet.model.FocusArea"
             };
 
-        _methodName358 = "removeTerm";
+        _methodName270 = "removeTerm";
 
-        _methodParameterTypes358 = new String[] {
+        _methodParameterTypes270 = new String[] {
                 "com.ext.portlet.model.FocusArea", "java.lang.Long"
             };
 
-        _methodName359 = "addTerm";
+        _methodName271 = "addTerm";
 
-        _methodParameterTypes359 = new String[] {
+        _methodParameterTypes271 = new String[] {
                 "com.ext.portlet.model.FocusArea", "java.lang.Long"
             };
 
-        _methodName360 = "tagClass";
+        _methodName272 = "tagClass";
 
-        _methodParameterTypes360 = new String[] {
+        _methodParameterTypes272 = new String[] {
                 "com.ext.portlet.model.FocusArea", "java.lang.Class",
                 "java.lang.Long"
             };
 
-        _methodName361 = "getOntologyTermFromFocusAreaWithOntologySpace";
+        _methodName273 = "getOntologyTermFromFocusAreaWithOntologySpace";
 
-        _methodParameterTypes361 = new String[] {
+        _methodParameterTypes273 = new String[] {
                 "com.ext.portlet.model.FocusArea",
                 "com.ext.portlet.model.OntologySpace"
             };
 
-        _methodName362 = "getAllOntologyTermsFromFocusAreaWithOntologySpace";
+        _methodName274 = "getAllOntologyTermsFromFocusAreaWithOntologySpace";
 
-        _methodParameterTypes362 = new String[] {
+        _methodParameterTypes274 = new String[] {
                 "com.ext.portlet.model.FocusArea",
                 "com.ext.portlet.model.OntologySpace"
             };
@@ -280,62 +280,62 @@ public class FocusAreaLocalServiceClpInvoker {
             return FocusAreaLocalServiceUtil.updateFocusArea((com.ext.portlet.model.FocusArea) arguments[0]);
         }
 
-        if (_methodName350.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes350, parameterTypes)) {
+        if (_methodName262.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes262, parameterTypes)) {
             return FocusAreaLocalServiceUtil.getBeanIdentifier();
         }
 
-        if (_methodName351.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes351, parameterTypes)) {
+        if (_methodName263.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes263, parameterTypes)) {
             FocusAreaLocalServiceUtil.setBeanIdentifier((java.lang.String) arguments[0]);
 
             return null;
         }
 
-        if (_methodName356.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes356, parameterTypes)) {
+        if (_methodName268.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes268, parameterTypes)) {
             FocusAreaLocalServiceUtil.store((com.ext.portlet.model.FocusArea) arguments[0]);
 
             return null;
         }
 
-        if (_methodName357.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes357, parameterTypes)) {
+        if (_methodName269.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes269, parameterTypes)) {
             return FocusAreaLocalServiceUtil.getTerms((com.ext.portlet.model.FocusArea) arguments[0]);
         }
 
-        if (_methodName358.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes358, parameterTypes)) {
+        if (_methodName270.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes270, parameterTypes)) {
             FocusAreaLocalServiceUtil.removeTerm((com.ext.portlet.model.FocusArea) arguments[0],
                 (java.lang.Long) arguments[1]);
 
             return null;
         }
 
-        if (_methodName359.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes359, parameterTypes)) {
+        if (_methodName271.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes271, parameterTypes)) {
             FocusAreaLocalServiceUtil.addTerm((com.ext.portlet.model.FocusArea) arguments[0],
                 (java.lang.Long) arguments[1]);
 
             return null;
         }
 
-        if (_methodName360.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes360, parameterTypes)) {
+        if (_methodName272.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes272, parameterTypes)) {
             FocusAreaLocalServiceUtil.tagClass((com.ext.portlet.model.FocusArea) arguments[0],
                 (java.lang.Class) arguments[1], (java.lang.Long) arguments[2]);
 
             return null;
         }
 
-        if (_methodName361.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes361, parameterTypes)) {
+        if (_methodName273.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes273, parameterTypes)) {
             return FocusAreaLocalServiceUtil.getOntologyTermFromFocusAreaWithOntologySpace((com.ext.portlet.model.FocusArea) arguments[0],
                 (com.ext.portlet.model.OntologySpace) arguments[1]);
         }
 
-        if (_methodName362.equals(name) &&
-                Arrays.deepEquals(_methodParameterTypes362, parameterTypes)) {
+        if (_methodName274.equals(name) &&
+                Arrays.deepEquals(_methodParameterTypes274, parameterTypes)) {
             return FocusAreaLocalServiceUtil.getAllOntologyTermsFromFocusAreaWithOntologySpace((com.ext.portlet.model.FocusArea) arguments[0],
                 (com.ext.portlet.model.OntologySpace) arguments[1]);
         }

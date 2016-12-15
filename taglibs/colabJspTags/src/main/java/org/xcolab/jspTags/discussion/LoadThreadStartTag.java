@@ -1,7 +1,7 @@
 package org.xcolab.jspTags.discussion;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CategoryClient;
@@ -33,7 +33,7 @@ import javax.servlet.jsp.tagext.BodyTagSupport;
 
 public class LoadThreadStartTag extends BodyTagSupport {
 
-    private static final Log _log = LogFactoryUtil.getLog(LoadThreadStartTag.class);
+    private static final Logger _log = LoggerFactory.getLogger(LoadThreadStartTag.class);
 
     private long threadId;
     private long categoryId;
@@ -97,7 +97,7 @@ public class LoadThreadStartTag extends BodyTagSupport {
             if (discussionPermissions == null) {
                 discussionPermissions = new DiscussionPermissions(portletRequest);
             } else {
-                _log.info("Found custom DiscussionPermissions of type " + discussionPermissions
+                _log.info("Found custom DiscussionPermissions of type {}", discussionPermissions
                         .getClass().getName());
             }
 

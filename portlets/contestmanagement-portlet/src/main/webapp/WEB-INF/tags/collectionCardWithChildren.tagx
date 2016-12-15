@@ -1,0 +1,33 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:contestmanagementPortlet="urn:jsptagdir:/WEB-INF/tags"
+	version="2.0">
+	<jsp:directive.attribute name="collectionCard" type="org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper" required="true" rtexprvalue="true" description="Current Collection card" />
+	<jsp:directive.attribute name="section" type="java.lang.Integer" required="true" rtexprvalue="true" description="Section" />
+	<jsp:directive.attribute name="level" type="java.lang.Integer" required="true" rtexprvalue="true" description="Level" />
+	<c:if test="${not empty collectionCard }">
+		<ul class="level-${level }">
+			<c:forEach var="collectionCard" items="${collectionCard.children }">
+				<li class="collectionCardListItem" >
+					<a href="#"  data-card-id="${collectionCard.id}">
+						<span>
+							<c:choose>
+                                <c:when test="${not empty collectionCard.shortName}">
+                                    ${ collectionCard.shortName}
+                                </c:when>
+                                <c:otherwise>
+                                    ${collectionCard.ontologyTermToLoad}
+                                </c:otherwise>
+                            </c:choose>
+						</span>
+					</a>
+					<c:if test="${not empty collectionCard.children }">
+						<contestmanagementPortlet:collectionCardWithChildren collectionCard="${collectionCard}" section="${section + 1 }" level="${level + 1 }" />
+					</c:if>
+				</li>
+			</c:forEach>
+		</ul>
+	</c:if>
+
+	
+</jsp:root>

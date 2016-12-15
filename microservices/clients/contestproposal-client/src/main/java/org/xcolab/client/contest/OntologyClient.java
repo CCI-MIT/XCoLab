@@ -180,11 +180,16 @@ public class OntologyClient {
                 .execute(), contestService);
     }
 
+    public List<OntologyTerm> getChildOntologyTerms(Long ontologyTermId) {
+        return DtoUtil.toPojos(ontologyTermResource.list()
+                .optionalQueryParam("parentId", ontologyTermId)
+                .execute(), contestService);
+    }
+
     public boolean updateFocusArea(FocusArea focusArea) {
         return focusAreaResource.update(new FocusAreaDto(focusArea), focusArea.getId_())
                 .execute();
     }
-
 
     public boolean deleteFocusArea(Long id_) {
         return  focusAreaResource.delete(id_).execute();
@@ -195,9 +200,6 @@ public class OntologyClient {
                 .queryParam("focusAreaId",focusAreaId)
                 .queryParam("ontologyTermId", ontologyTermId).delete();
     }
-
-
-
 
     public FocusArea getFocusArea(long Id_) {
         return focusAreaResource.get(Id_)
