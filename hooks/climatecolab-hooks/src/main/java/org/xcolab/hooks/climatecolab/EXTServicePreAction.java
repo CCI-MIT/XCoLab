@@ -65,8 +65,8 @@ public class EXTServicePreAction extends Action {
         final boolean isImpersonating = MemberAuthUtil.isImpersonating(req);
         vmVariables.put("_showImpersonationBar", isImpersonating);
         if (isImpersonating) {
-            final long trueMemberId = MemberAuthUtil.getRealMemberId(req);
-            vmVariables.put("_trueMember", MembersClient.getMemberUnchecked(trueMemberId));
+            final long realMemberId = MemberAuthUtil.getRealMemberId(req);
+            vmVariables.put("_realMember", MembersClient.getMemberUnchecked(realMemberId));
         }
         if (memberId != 0L) {
             Member member = MembersClient.getMemberUnchecked(memberId);

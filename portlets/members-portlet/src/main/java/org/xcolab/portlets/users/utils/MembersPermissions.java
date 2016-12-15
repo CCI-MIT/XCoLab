@@ -14,6 +14,10 @@ public class MembersPermissions {
     }
 
     public boolean getCanDownloadMemberList() {
+        return getCanAdminAll();
+    }
+
+    public boolean getCanAdminAll() {
         return PermissionsClient.canAdminAll(memberId);
     }
 }

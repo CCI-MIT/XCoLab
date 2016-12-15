@@ -9,7 +9,8 @@
     <!--@elvariable id="colabName" type="java.lang.String"-->
 	<!--@elvariable id="userBean" type="org.xcolab.portlets.userprofile.beans.UserBean"-->
 	<!--@elvariable id="permissions" type="org.xcolab.portlets.userprofile.utils.UserProfilePermissions"-->
-	<!--@elvariable id="currentUserProfile" type="org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper"-->
+    <!--@elvariable id="currentUserProfile" type="org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper"-->
+    <!--@elvariable id="memberCategories" type="java.util.List<org.xcolab.client.members.pojo.MemberCategory>"-->
 
 	<c:if test="${updateError}">
 		<script type="text/javascript" >
@@ -24,7 +25,7 @@
     </c:if>
 
 	<portlet:resourceURL var="unlinkFacebookSSO" id="unlinkFacebookSSO" />
-	<portlet:resourceURL var="unlinkGoogleSSO" id="unlinkGoogleSSO"/>
+    <portlet:resourceURL var="unlinkGoogleSSO" id="unlinkGoogleSSO"/>
 
 	<portlet:resourceURL var="updateUserSendEmailOnMessageSettings" id="updateUserSendEmailOnMessageSettings"/>
 	<portlet:resourceURL var="updateUserSendEmailOnActivitySettings" id="updateUserSendEmailOnActivitySettings"/>
@@ -346,6 +347,38 @@
 		</div>
 	</div> <!-- /right_col4 -->
 
+    <c:if test="${permissions.canAdmin}">
+        <div class="right_col v1">
+            <div class="comm_rightcol">
+                <div class="comm_rightcol-title2">Roles</div>
+                <table border="0" cellpadding="0" cellspacing="0" class="colab">
+                    <c:forEach var="memberCategory" items="${memberCategories}">
+                        <tr class="colabRow">
+                            <td class="actionColumn">
+                                <c:choose>
+                                    <c:when test="${currentUserProfile.hasRole(memberCategory.roleId)}">
+                                        <input id="hasRole${memberCategory.roleId}" class="cmn-toggle cmn-toggle-round" type="checkbox"
+                                               value="true" checked="checked" onClick="removeRole(${memberCategory.roleId});" />
+                                    </c:when>
+                                    <c:otherwise>
+                                        <input id="hasRole${memberCategory.roleId}" class="cmn-toggle cmn-toggle-round" type="checkbox"
+                                               value="false" onClick="addRole(${memberCategory.roleId});" />
+                                    </c:otherwise>
+                                </c:choose>
+                                <label for="hasRole${memberCategory.roleId}"></label>
+                            </td>
+                            <td class="${memberCategory.showInList ? '' : 'text-muted'}">
+                                <img src="${themeDisplay.pathThemeImages}/${memberCategory.imageName}.png"
+                                     width="16" height="16" /> ${memberCategory.categoryName}
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </table>
+                <div class="clearfix"><!-- --></div>
+            </div>
+        </div> <!-- /right_col -->
+    </c:if>
+
 		<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js"><!-- --></script>
 	<script>
 		function updateTextarea() {
@@ -596,15 +629,15 @@
 
 		function unlinkSSOonServer(updateUrl) {
 			var deferred = jQuery.Deferred();
-				sendAjaxToServer(updateUrl).done(function(response){
-					if (response) {
-						deferred.resolve(true);
-						jQuery.growlUI('','Unlinking SSO successfull!');
-					} else {
-						deferred.resolve(false);
-						jQuery.growlUI('','Unlinking SSO failed!');
-					}
-				});
+            sendAjaxToServer(updateUrl).done(function(response){
+                if (response) {
+                    deferred.resolve(true);
+                    jQuery.growlUI('','Unlinking SSO successful!');
+                } else {
+                    deferred.resolve(false);
+                    jQuery.growlUI('','Unlinking SSO failed!');
+                }
+            });
 			return deferred;
 		}
 
@@ -635,6 +668,45 @@
 				}
 			});
 		}
+
+        function changeRoleOnServer(updateUrl) {
+            var deferred = jQuery.Deferred();
+            sendAjaxToServer(updateUrl).done(function(response){
+                if (response) {
+                    deferred.resolve(true);
+                    jQuery.growlUI('','Role updated successfully!');
+                } else {
+                    deferred.resolve(false);
+                    jQuery.growlUI('','Failed to update role!');
+                }
+            });
+            return deferred;
+        }
+
+        function addRole(roleId) {
+            var addRoleUrl = '/web/guest/member/-/member/api/members/${currentUserProfile.userId}/roles/' + roleId + '/add';
+            changeRoleOnServer(addRoleUrl).done(function(success) {
+                var $roleToggleElement = jQuery("#hasRole" + roleId);
+                if (success) {
+                    $roleToggleElement.attr('checked', true);
+                } else {
+                    $roleToggleElement.removeAttr('checked');
+                }
+            });
+        }
+
+		function removeRole(roleId) {
+            var removeRoleUrl = '/web/guest/member/-/member/api/members/${currentUserProfile.userId}/roles/' + roleId + '/remove';
+            changeRoleOnServer(removeRoleUrl).done(function(success) {
+                var $roleToggleElement = jQuery("#hasRole" + roleId);
+                if (success) {
+                    $roleToggleElement.removeAttr('checked');
+                } else {
+                    $roleToggleElement.attr('checked', true);
+
+                }
+            });
+        }
 
 	</script>
 

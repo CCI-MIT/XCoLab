@@ -39,6 +39,7 @@ $b-Typography__fontWeight__h5: $b-Typography__fontWeight !default;
 $b-Typography__fontWeight__h6: $b-Typography__fontWeight !default;
 
 $b-Typography__textColor: initial !default;
+$b-Typography__textColor--muted: $t-Color__grey--medium !default;
 $b-Typography__textColor__h1: $t-Color__grey--darkest !default;
 $b-Typography__textColor__a: $t-Color__primary !default;
 $b-Typography__textColor__a--isHover: black !default;
@@ -113,4 +114,8 @@ a:hover {
 
 .lowercase {
   text-transform: $b-Typography__capitalization--lowercase;
+}
+
+.text-muted {
+  color: $b-Typography__textColor--muted;
 }

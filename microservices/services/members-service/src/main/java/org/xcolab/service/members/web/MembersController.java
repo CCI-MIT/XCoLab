@@ -27,7 +27,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.QueryParam;
 
 @RestController
 @RequestMapping("/members")
@@ -58,6 +57,7 @@ public class MembersController {
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
             @RequestParam(required = false) String partialName,
+            @RequestParam(required = false) String partialEmail,
             @RequestParam(required = false) String roleName,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String screenName,
@@ -66,10 +66,10 @@ public class MembersController {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
         response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
-                Integer.toString(memberDao.countByGiven(partialName, roleName)));
+                Integer.toString(memberDao.countByGiven(partialName, partialEmail, roleName)));
 
-        return memberDao.findByGiven(paginationHelper, partialName, roleName,
-                email, screenName, facebookId, openId);
+        return memberDao.findByGiven(paginationHelper, partialName, partialEmail,
+                roleName, email, screenName, facebookId, openId);
     }
 
     @GetMapping("findByIp")
@@ -124,10 +124,17 @@ public class MembersController {
             return roleService.getMemberRolesInContest(memberId, contestId);
         }
     }
-    @PutMapping("{memberId}/roles/assignRoleToUser")
+
+    @PutMapping("{memberId}/roles/{roleId}")
     public boolean assignMemberRole(@PathVariable long memberId,
-            @RequestParam Long roleId) {
-        return this.roleService.assignMemberRole(memberId,roleId);
+            @PathVariable Long roleId) {
+        return this.roleService.assignMemberRole(memberId, roleId);
+    }
+
+    @DeleteMapping("{memberId}/roles/{roleId}")
+    public boolean deleteMemberRole(@PathVariable long memberId,
+            @PathVariable Long roleId) {
+        return this.roleService.deleteMemberRole(memberId, roleId);
     }
 
     @GetMapping("{memberId}/isMemberInGroup")
@@ -155,7 +162,7 @@ public class MembersController {
     public Integer countMembers(
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) String category) {
-        return memberDao.countByGiven(screenName, category);
+        return memberDao.countByGiven(screenName, null, category);
     }
 
     @PostMapping

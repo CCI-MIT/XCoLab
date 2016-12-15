@@ -64,7 +64,7 @@ public final class PermissionsClient {
                 .execute();
     }
 
-    private static boolean memberHasRole(Long memberId, long roleIdToTest) {
+    public static boolean memberHasRole(Long memberId, long roleIdToTest) {
         if (memberId == 0) {
             return false;
         }

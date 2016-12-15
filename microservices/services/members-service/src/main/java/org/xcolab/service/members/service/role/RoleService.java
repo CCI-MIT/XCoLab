@@ -26,10 +26,15 @@ public class RoleService {
         return this.roleDao.getMemberRolesInContest(memberId, contestId);
     }
 
-    public boolean assignMemberRole(Long memberId, Long roleId) {
+    public boolean assignMemberRole(long memberId, long roleId) {
         if(!memberHasRole(memberId,roleId)) {
             this.roleDao.assignMemberRole(memberId, roleId);
         }
+        return true;
+    }
+
+    public boolean deleteMemberRole(long memberId, long roleId) {
+        this.roleDao.deleteMemberRole(memberId, roleId);
         return true;
     }
 

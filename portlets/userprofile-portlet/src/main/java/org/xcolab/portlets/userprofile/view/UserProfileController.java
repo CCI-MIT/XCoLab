@@ -138,6 +138,7 @@ public class UserProfileController {
                         new NewsletterBean(currentUserProfile.getUserId()));
                 model.addAttribute("newsletterActive",
                         ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE.get());
+                model.addAttribute("memberCategories", MembersClient.listMemberCategories());
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return "editUserProfile";
             }

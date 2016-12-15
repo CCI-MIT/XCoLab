@@ -93,7 +93,23 @@
 					<tr class="c-Table__row">
 						<td class="c-Table__cell user">
 							<div class="usersFlag">
-								<a href="/web/guest/member/-/member/userId/${user.userId}">${user.screenName}</a>
+								<a href="/web/guest/member/-/member/userId/${user.userId}">
+								    ${user.screenName}
+                                </a>
+                                <c:if test="${permissions.canAdminAll}">
+                                    <div style="float: right">
+                                        <a href="/web/guest/member/-/member/userId/${user.userId}/page/edit"
+                                                style="margin-right: 10px">
+                                            <img src="${themeDisplay.pathThemeImages}/icon-activity-edit.png"
+                                                 height="15" style="vertical-align: middle" alt="edit" />
+                                        </a>
+                                        <a href="/impersonate?memberId=${user.userId}">
+                                            <img src="${themeDisplay.pathThemeImages}/icon-request-membership.png"
+                                                 height="15" style="vertical-align: middle" alt="impersonate" />
+                                        </a>
+                                    </div>
+                                </c:if>
+
 							</div>
 						</td>
                         <c:if test="${pointsActive}">
