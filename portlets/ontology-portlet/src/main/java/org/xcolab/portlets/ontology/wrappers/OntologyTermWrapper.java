@@ -1,12 +1,14 @@
 package org.xcolab.portlets.ontology.wrappers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.ext.portlet.model.OntologyTerm;
 import com.ext.portlet.service.OntologyTermLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+
+import org.xcolab.client.contest.OntologyClientUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OntologyTermWrapper {
     private OntologyTerm ontologyTerm;
@@ -75,5 +77,26 @@ public class OntologyTermWrapper {
 
     public Integer getWeight() {
         return ontologyTerm.getOrder_();
+    }
+
+    public void printOntologyHierarchy() {
+        for(org.xcolab.client.contest.pojo.ontology.OntologyTerm oTerm : OntologyClientUtil.getAllOntologyTerms()) {
+            if (oTerm.getParent() == null) {
+                printOntologies(OntologyClientUtil.getOntologyTerm(oTerm.getId_()), 0);
+            } else if (oTerm.getParent().getId() == 0) {
+                printOntologies(OntologyClientUtil.getOntologyTerm(oTerm.getId_()), 0);
+            }
+        }
+    }
+
+    private void printOntologies(org.xcolab.client.contest.pojo.ontology.OntologyTerm term, int depth) {
+        for(org.xcolab.client.contest.pojo.ontology.OntologyTerm child : OntologyClientUtil.getChildOntologyTerms(term.getId())) {
+            String prefix = "";
+            for(int i = 0 ; i <depth; i++) {
+                prefix += "; ";
+            }
+            System.out.println(prefix + child.getId() + "; " + child.getName());
+            printOntologies(child, depth +1);
+        }
     }
 }
