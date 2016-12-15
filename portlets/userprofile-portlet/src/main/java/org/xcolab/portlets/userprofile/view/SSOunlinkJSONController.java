@@ -46,14 +46,14 @@ public class SSOunlinkJSONController extends JSONHelper {
         boolean successStatus = false;
         Member member = MemberAuthUtil.getMemberOrNull(request);
         if (member != null) {
-            unlinkGoogleSso(member);
+            unlinkGoogleSSO(member);
             successStatus = true;
         }
 
         this.writeSuccessResultResponseJSON(successStatus, response);
     }
 
-    private void unlinkGoogleSSOuser(Member user) {
+    private void unlinkGoogleSSO(Member user) {
         user.setOpenId("");
         MembersClient.updateMember(user);
     }

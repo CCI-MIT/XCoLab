@@ -143,3 +143,6 @@ UPDATE `xcolab_ContestCollectionCard` SET `parent`='31' WHERE `id_`='17';
 
 ALTER TABLE `xcolab_BalloonText` 
 CHANGE COLUMN `id_` `id_` BIGINT(20) NOT NULL AUTO_INCREMENT ;
+
+INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('GOOGLE_RECAPTCHA_SITE_KEY', '0', '0', '6LcA3Q4UAAAAAIWNw2fgiCdQBIxlNvsVq5f15b-f', '0');
+INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('GOOGLE_RECAPTCHA_SITE_SECRET_KEY', '0', '0', '6LcA3Q4UAAAAABZ85aEpuvlLmpUeS6Qvsm8oexwk', '0');
