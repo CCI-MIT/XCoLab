@@ -136,7 +136,7 @@
 <div class="c-TitleBar">
     <div class="c-TitleBar__pageMargins">
         <div class="c-TitleBar__element" style="padding-left: 0;">
-            <span style="display: inline-block">Impersonating user $member.screenName (Logged in as $_trueMember.screenName)</span>
+            <span style="display: inline-block">Impersonating user $member.screenName (Logged in as $_realMember.screenName)</span>
         </div>
 
         <div class="c-TitleBar__element c-TitleBar__actionButton right">
@@ -382,7 +382,7 @@ $theme.include($body_bottom_include)
 
 $theme.include($bottom_include)
 <script src="$javascript_folder/balloon.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
-<script>var usertracking_userId = $_trueMember.userId;var usertracking_hash = $user.uuid.hashCode();</script>
+<script>var usertracking_userId = $member.userId;var usertracking_hash = $user.uuid.hashCode();</script>
 <script src="$javascript_folder/usertracking.js?tt=$themeTimestamp&v=$customThemeVersion"></script>
 </body>
 

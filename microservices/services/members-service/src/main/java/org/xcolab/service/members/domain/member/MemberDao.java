@@ -9,8 +9,9 @@ import java.util.Optional;
 public interface MemberDao {
 
     List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
-            String roleName, String email, String screenName, Long facebookId, String openId);
-    int countByGiven(String partialName, String roleName);
+            String partialEmail, String roleName, String email, String screenName, Long facebookId,
+            String openId);
+    int countByGiven(String partialName, String partialEmail, String roleName);
 
     Optional<Member> getMember(long memberId);
     boolean updatePassword(long memberId, String hashedPassword);

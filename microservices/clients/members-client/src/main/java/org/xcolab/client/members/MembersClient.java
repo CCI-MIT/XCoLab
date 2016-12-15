@@ -50,14 +50,15 @@ public final class MembersClient {
                 .execute();
     }
     public static List<Member> listAllMembers(){
-        return listMembers(null,null,null,true,0,Integer.MAX_VALUE);
+        return listMembers(null,null, null,null,true,0,Integer.MAX_VALUE);
     }
-    public static List<Member> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
-                                          boolean ascOrder, int firstMember, int lastMember) {
+    public static List<Member> listMembers(String categoryFilterValue, String screenNameFilterValue,
+            String emailFilterValue, String sortField, boolean ascOrder, int firstMember, int lastMember) {
 
         final ListQuery<Member> memberListQuery = memberResource.list()
                 .addRange(firstMember, lastMember)
                 .optionalQueryParam("partialName", screenNameFilterValue)
+                .optionalQueryParam("partialEmail", emailFilterValue)
                 .optionalQueryParam("roleName", categoryFilterValue);
 
         if (sortField != null && !sortField.isEmpty()) {
