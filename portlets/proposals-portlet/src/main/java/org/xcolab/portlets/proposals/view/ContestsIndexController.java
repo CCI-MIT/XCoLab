@@ -165,6 +165,7 @@ public class ContestsIndexController extends BaseProposalsController {
                         try {
                             Contest foreignContest =
                                     ch.getContestClient().getContest(contest.getContestPK());
+							foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
                             contests.add(foreignContest);
 
                         }catch (ContestNotFoundException notFound){

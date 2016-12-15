@@ -74,6 +74,8 @@ public class ContestOverviewWrapper {
                                 ConfigurationAttributeKey.PARTNER_COLAB_PORT);
 
                         Contest foreignContest = ContestClient.fromService(contestService).getContest(contest.getContestPK());
+                        foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
+
                         contestWrappers.add(foreignContest);
 
                     } catch (ContestNotFoundException notFound){
@@ -152,7 +154,11 @@ public class ContestOverviewWrapper {
     public void persistOrder() {
             for (Contest contestWrapper : contestWrappers) {
                 Contest contest = contestWrapper.getWrapped();
+                if(contest.getIsSharedContestInForeignColab()){
+                    contest = ContestClientUtil.getContest(contest.getContestPK());
+                }
                 contest.setWeight(contestWrapper.getWeight());
+
                 ContestClientUtil.updateContest(contest);
             }
     }
@@ -229,8 +235,14 @@ public class ContestOverviewWrapper {
             for (Contest contestWrapper : contestWrappers) {
                 int index = contestWrappers.indexOf(contestWrapper);
                 if (selectedContest.get(index)) {
-                    massActionMethod.invoke(contestWrapper, executeSetAction);
-                    contestWrapper.persist();
+                    Contest c;
+                    if(contestWrapper.getIsSharedContestInForeignColab()){
+                         c = ContestClientUtil.getContest(contestWrapper.getContestPK());
+                    }else{
+                         c = contestWrapper;
+                    }
+                    massActionMethod.invoke(c, executeSetAction);
+                    c.persist();
                 }
             }
 
