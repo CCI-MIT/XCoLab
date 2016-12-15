@@ -7,7 +7,6 @@ import org.xcolab.util.json.NullsafeJsonObjectBuilder;
 
 import java.io.Serializable;
 
-import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 
 /**
@@ -33,7 +32,7 @@ public abstract class ModelInputDisplayItem extends ModelDisplayItem implements 
 
     @Override
     public JsonObjectBuilder toJson() {
-        return NullsafeJsonObjectBuilder.of(Json.createObjectBuilder())
+        return NullsafeJsonObjectBuilder.of(super.toJson())
                 .add("description", getDescription())
                 .add("displayItemType", getDisplayItemType().name())
                 .add("widgetType", getType().name());

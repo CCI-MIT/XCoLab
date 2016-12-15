@@ -7,7 +7,6 @@ import edu.mit.cci.roma.client.Variable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 
 /**
@@ -83,7 +82,7 @@ public class ModelOutputScalarDisplayItem extends ModelOutputDisplayItem {
 
     @Override
     public JsonObjectBuilder toJson() {
-        return Json.createObjectBuilder()
+        return super.toJson()
                 .add("id", md.getId())
                 .add("outputType", "SCALAR");
     }
