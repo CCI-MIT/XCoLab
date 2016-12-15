@@ -178,13 +178,14 @@ public class UserProfileController {
 
             final long contestTypeId = ConfigurationAttributeKey
                     .DEFAULT_CONTEST_TYPE_ID.get();
-            final ContestType contestType = ContestClientUtil.getContestType(contestTypeId);
+            final ContestType contestType = ContestClientUtil
+                    .getContestType(contestTypeId);
             model.addAttribute("contestType", contestType);
 
             if (currentUserProfile.isViewingOwnProfile()) {
                 return "showUserSubscriptionsManage";
             }
-        } catch (MemberNotFoundException e) {
+        } catch ( MemberNotFoundException e) {
             _log.warn("Could not create user profile for {}", userId);
             return "showProfileNotInitialized";
         }
@@ -244,7 +245,7 @@ public class UserProfileController {
                 return "editUserProfile";
             }
         } catch (MemberNotFoundException e) {
-            _log.warn("Could not create user profile for {}", userId);
+            _log.warn("Could not create user profile for " + userId);
             return "showProfileNotInitialized";
         }
 

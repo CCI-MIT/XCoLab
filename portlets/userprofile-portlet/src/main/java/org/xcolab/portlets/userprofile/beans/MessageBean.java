@@ -3,6 +3,9 @@ package org.xcolab.portlets.userprofile.beans;
 import org.hibernate.validator.constraints.NotBlank;
 
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Message;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
@@ -82,8 +85,8 @@ public class MessageBean implements Serializable {
         return daysNow - createDay;
     }
 
-    public Member getFrom() {
-        return MembersClient.getMemberUnchecked(message.getFromId());
+    public Member getFrom() throws MemberNotFoundException {
+        return MembersClient.getMember(message.getFromId());
     }
 
     public boolean isSelected() {

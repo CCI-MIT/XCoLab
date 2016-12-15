@@ -140,3 +140,6 @@ UPDATE `xcolab_ContestCollectionCard` SET `parent`='78' WHERE `id_`='14';
 UPDATE `xcolab_ContestCollectionCard` SET `parent`='78' WHERE `id_`='15';
 UPDATE `xcolab_ContestCollectionCard` SET `parent`='78' WHERE `id_`='16';
 UPDATE `xcolab_ContestCollectionCard` SET `parent`='31' WHERE `id_`='17';
+
+ALTER TABLE `xcolab_BalloonText` 
+CHANGE COLUMN `id_` `id_` BIGINT(20) NOT NULL AUTO_INCREMENT ;

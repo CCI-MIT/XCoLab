@@ -5,10 +5,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 
+
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -35,14 +38,16 @@ public class UserTrackingServlet extends HttpServlet {
         String headers = getHeadersAsString(request);
 
         //if user is logged in, check if tuple (uuid, userid) already exists. if not, create it.
-        User user = getLoggedInUser(request);
+        long memberId = MemberAuthUtil.getMemberId(request);
+
+
 
         //find out uuid. if it is not sent as request parameter, try to retrieve existing token if user is logged in.
         String uuid = request.getParameter("uuid");
         String isTrackedVisitor = request.getParameter("isTrackedVisitor");
         if (StringUtils.isBlank(uuid)) {
-            if (user != null) {
-                uuid = TrackingClient.getTrackedVisitorOrCreate(user.getUserId()).getUuid_();
+            if (memberId != 0) {
+                uuid = TrackingClient.getTrackedVisitorOrCreate(memberId).getUuid_();
                 isTrackedVisitor = "true";
             } else {
                 uuid = TrackingClient.generateUUID();
@@ -99,21 +104,21 @@ public class UserTrackingServlet extends HttpServlet {
         return headerStringBuilder.toString();
     }
 
-    private User getLoggedInUser(HttpServletRequest request) {
+    private Member getLoggedInUser(HttpServletRequest request) {
         String userIdStr = request.getParameter("userId");
-        User user = null;
+        Member user = null;
         try {
             Integer userId = Integer.parseInt(userIdStr);
             if (userId > 0) {
                 try {
-                    user = UserLocalServiceUtil.getUser(userId);
+                    user = MembersClient.getMember(userId);
                     if (user != null) {
                         //make sure that the hash is correct
-                        if (!String.valueOf(user.getUuid().hashCode()).equals(request.getParameter("hash"))) {
+                        if (!String.valueOf(user.getUserId()).equals(request.getParameter("hash"))) {
                             user = null;
                         }//else the user is fine.
                     }
-                } catch (PortalException | SystemException e) {
+                } catch (MemberNotFoundException e) {
                     user = null;
                 }
             }
