@@ -1,6 +1,5 @@
 package org.xcolab.service.members.domain.role;
 
-
 import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,8 +15,12 @@ import static org.xcolab.model.Tables.USERS_ROLES;
 @Repository
 public class RoleDaoImpl implements RoleDao {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public RoleDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
 
     @Override
     public List<Role_> getMemberRoles(Long memberId) {
@@ -27,6 +30,7 @@ public class RoleDaoImpl implements RoleDao {
                 .where(USERS_ROLES.USER_ID.equal(memberId)).fetchInto(Role_.class);
     }
 
+    @Override
     public List<Role_> getMemberRolesInContest(Long memberId, Long contestId) {
         return this.dslContext.select()
                 .from(ROLE_)
@@ -36,12 +40,14 @@ public class RoleDaoImpl implements RoleDao {
                 .fetchInto(Role_.class);
     }
 
+    @Override
     public void assignMemberRole(Long memberId, Long roleId) {
         this.dslContext.insertInto(USERS_ROLES)
                 .set(USERS_ROLES.ROLE_ID, roleId)
                 .set(USERS_ROLES.USER_ID, memberId)
                 .execute();
     }
+    @Override
     public boolean memberHasRole(Long memberId, Long roleId) {
         return this.dslContext.selectCount()
                 .from(USERS_ROLES)
@@ -50,4 +56,10 @@ public class RoleDaoImpl implements RoleDao {
 
     }
 
+    @Override
+    public boolean deleteMemberRole(long memberId, long roleId) {
+        return dslContext.deleteFrom(USERS_ROLES)
+                .where(USERS_ROLES.USER_ID.eq(memberId).and(USERS_ROLES.ROLE_ID.eq(roleId)))
+                .execute() > 0;
+    }
 }

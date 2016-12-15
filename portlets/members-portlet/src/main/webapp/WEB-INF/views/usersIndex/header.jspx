@@ -57,7 +57,7 @@
 				</portlet:renderURL>
 				<form action="${filterURL }" id="filterUsersForm" method="post">
 					<input class="comm_search" type="text" value="${sortFilterPage.filter }" placeholder="Filter users" name="filter" />
-					<a class="c-Button__primary" href="javascript:document.forms[2].submit();">Search</a>
+					<button type="submit" class="c-Button__primary">Search</button>
 				</form>
 			</div>
 

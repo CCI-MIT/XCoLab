@@ -50,14 +50,15 @@ public final class MembersClient {
                 .execute();
     }
     public static List<Member> listAllMembers(){
-        return listMembers(null,null,null,true,0,Integer.MAX_VALUE);
+        return listMembers(null,null, null,null,true,0,Integer.MAX_VALUE);
     }
-    public static List<Member> listMembers(String categoryFilterValue, String screenNameFilterValue, String sortField,
-                                          boolean ascOrder, int firstMember, int lastMember) {
+    public static List<Member> listMembers(String categoryFilterValue, String screenNameFilterValue,
+            String emailFilterValue, String sortField, boolean ascOrder, int firstMember, int lastMember) {
 
         final ListQuery<Member> memberListQuery = memberResource.list()
                 .addRange(firstMember, lastMember)
                 .optionalQueryParam("partialName", screenNameFilterValue)
+                .optionalQueryParam("partialEmail", emailFilterValue)
                 .optionalQueryParam("roleName", categoryFilterValue);
 
         if (sortField != null && !sortField.isEmpty()) {
@@ -124,16 +125,20 @@ public final class MembersClient {
         return memberRoleResource.resolveParent(memberResource.id(memberId))
                 .list()
                 .withCache(CacheKeys.withClass(Role_.class)
-                        .withParameter("memberId", memberId).asList(), CacheRetention.MEDIUM)
+                        .withParameter("memberId", memberId).asList(), CacheRetention.REQUEST)
                 .execute();
     }
 
     public static void assignMemberRole(long memberId, long roleId) {
+        memberRoleResource.resolveParent(memberResource.id(memberId))
+                .update(null, roleId)
+                .execute();
+    }
 
-         memberRoleResource.resolveParent(memberResource.id(memberId))
-                .service("assignRoleToUser",Boolean.class)
-                .queryParam("roleId",roleId)
-                .put();
+    public static void removeMemberRole(long memberId, long roleId) {
+        memberRoleResource.resolveParent(memberResource.id(memberId))
+                .delete(roleId)
+                .execute();
     }
 
     public static List<Role_> getMemberRolesInContest(long memberId, long contestId) {
@@ -145,6 +150,10 @@ public final class MembersClient {
                                 .withParameter("contestId", contestId).asList(),
                         CacheRetention.SHORT)
                 .execute();
+    }
+
+    public static List<MemberCategory> listMemberCategories() {
+        return memberCategoryResource.list().execute();
     }
 
     public static MemberCategory getMemberCategory(long roleId) {

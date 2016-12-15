@@ -38,10 +38,11 @@ public class MembersController {
     private static final int AUTOCOMPLETE_MAX_USERS = 15;
 
     @RequestMapping
-    public String showUsers(PortletRequest request, PortletResponse response, SortFilterPage sortFilterPage,
-                            @RequestParam(value = "page", required = false) Long pageParam,
-                            @RequestParam(value = "memberCategory", required = false) String memberCategoryParam,
-                            Model model) {
+    public String showUsers(PortletRequest request, PortletResponse response,
+            SortFilterPage sortFilterPage,
+            @RequestParam(value = "page", required = false) Long pageParam,
+            @RequestParam(value = "memberCategory", required = false) String memberCategoryParam,
+            Model model) {
         int page = 1;
         if (pageParam != null) {
             page = pageParam.intValue();
@@ -80,8 +81,11 @@ public class MembersController {
         if (StringUtils.isEmpty(categoryFilterValue)) {
             categoryFilterValue = "Member";
         }
+
+        MembersPermissions membersPermissions = new MembersPermissions(request);
+        final String emailFilterParam = membersPermissions.getCanAdminAll() ? filterParam : null;
         List<Member> members = MembersClient.listMembers(categoryFilterValue, filterParam,
-                sortFilterPage.getSortColumn(), sortFilterPage.isSortAscending(),
+                emailFilterParam, sortFilterPage.getSortColumn(), sortFilterPage.isSortAscending(),
                 firstUser, endUser);
 
         List<MemberItem> users = new ArrayList<>();
@@ -119,7 +123,6 @@ public class MembersController {
                 ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
         model.addAttribute("pointsActive", isPointsActive);
 
-        MembersPermissions membersPermissions = new MembersPermissions(request);
         model.addAttribute("permissions", membersPermissions);
 
         return "users";

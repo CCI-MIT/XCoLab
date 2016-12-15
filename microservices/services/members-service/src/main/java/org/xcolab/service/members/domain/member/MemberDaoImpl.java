@@ -1,5 +1,6 @@
 package org.xcolab.service.members.domain.member;
 
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record;
@@ -39,7 +40,8 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
-            String roleName, String email, String screenName, Long facebookId, String openId) {
+            String partialEmail, String roleName, String email, String screenName, Long facebookId,
+            String openId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(MEMBER)
                 .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
@@ -47,10 +49,17 @@ public class MemberDaoImpl implements MemberDao {
                 .where(MEMBER.STATUS.eq(0))
                 .getQuery();
 
-        if (partialName != null) {
-            query.addConditions(MEMBER.SCREEN_NAME.contains(partialName)
-                    .or(MEMBER.FIRST_NAME.contains(partialName))
-                    .or(MEMBER.LAST_NAME.contains(partialName)));
+        if (partialName != null || partialEmail != null) {
+            Condition searchCondition = DSL.falseCondition();
+            if (partialName != null) {
+                searchCondition = MEMBER.SCREEN_NAME.contains(partialName)
+                        .or(MEMBER.FIRST_NAME.contains(partialName))
+                        .or(MEMBER.LAST_NAME.contains(partialName));
+            }
+            if (partialEmail != null) {
+                searchCondition = searchCondition.or(MEMBER.EMAIL_ADDRESS.contains(partialEmail));
+            }
+            query.addConditions(searchCondition);
         }
         if (roleName != null) {
             query.addConditions(ROLES_CATEGORY.CATEGORY_NAME.eq(roleName));
@@ -116,6 +125,7 @@ public class MemberDaoImpl implements MemberDao {
         return query.fetchInto(Member.class);
     }
 
+    @Override
     public List<Member> findByIp(String ip) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(MEMBER)
@@ -125,7 +135,7 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
-    public int countByGiven(String partialName, String roleName) {
+    public int countByGiven(String partialName, String partialEmail, String roleName) {
         final SelectQuery<Record1<Integer>> query = dslContext.select(countDistinct(MEMBER.ID_))
                 .from(MEMBER)
                 .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
@@ -137,6 +147,9 @@ public class MemberDaoImpl implements MemberDao {
             query.addConditions(MEMBER.SCREEN_NAME.contains(partialName)
                     .or(MEMBER.FIRST_NAME.contains(partialName))
                     .or(MEMBER.LAST_NAME.contains(partialName)));
+        }
+        if (partialEmail != null) {
+            query.addConditions(MEMBER.EMAIL_ADDRESS.contains(partialName));
         }
         if (roleName != null) {
             query.addConditions(ROLES_CATEGORY.CATEGORY_NAME.eq(roleName));
