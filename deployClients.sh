@@ -5,6 +5,9 @@ set -e
 
 cd microservices/util/xcolab-utils
 mvn clean compile package install clean
+
+cd ../entity-utils/
+mvn clean compile package install clean
 cd ../../..
 
 cd microservices/clients

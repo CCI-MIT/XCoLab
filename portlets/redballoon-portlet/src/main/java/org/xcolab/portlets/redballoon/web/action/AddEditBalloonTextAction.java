@@ -1,7 +1,7 @@
 package org.xcolab.portlets.redballoon.web.action;
 
 
-import com.liferay.counter.service.CounterLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.SystemException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +31,7 @@ public class AddEditBalloonTextAction {
             }
         } else {
             balloonText = new BalloonText();
-            balloonText.setId_(CounterLocalServiceUtil.increment("com.ext.portlet.model.BalloonText"));
+
 
         }
         balloonText.setName(addEditBalloonTextBean.getName());

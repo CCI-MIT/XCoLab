@@ -1,7 +1,5 @@
 package org.xcolab.client.proposals.pojo.proposals;
 
-
-
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
@@ -12,9 +10,7 @@ import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.http.client.RestService;
 
-
 public class ProposalRibbon {
-    //private final static Log _log = LogFactoryUtil.getLog(RibbonWrapper.class);
 
     private ContestPhaseRibbonType contestPhaseRibbonType;
     private final Proposal proposalWrapper;

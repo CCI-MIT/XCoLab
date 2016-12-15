@@ -2,14 +2,11 @@ package org.xcolab.utils;
 
 
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.messaging.MessageListenerException;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.Company;
-import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.portlet.PortletProps;
 
@@ -30,7 +27,7 @@ public class TestScheduler implements MessageListener {
 
         String requestUrl = null;
         try {
-            Company company = CompanyLocalServiceUtil.getCompany(COMPANY_ID);
+            //Company company = CompanyLocalServiceUtil.getCompany(COMPANY_ID);
 
             // Workaround to get the right port (80) on production
             int port = GetterUtil.getInteger(PortletProps.get(SERVER_PORT_PROPS_KEY));
@@ -38,8 +35,8 @@ public class TestScheduler implements MessageListener {
                 port = PortalUtil.getPortalPort(false);
             }
 
-            String baseUrl = PortalUtil.getPortalURL(company.getVirtualHostname(), port, false);
-            //String baseUrl = "http://localhost:8080";
+            //String baseUrl = PortalUtil.getPortalURL(company.getVirtualHostname(), port, false);
+            String baseUrl = "http://localhost:8080";
 
             requestUrl = baseUrl + EXECUTE_SCHEDULER_PATH;
             URL url = new URL(baseUrl + EXECUTE_SCHEDULER_PATH);
@@ -52,7 +49,7 @@ public class TestScheduler implements MessageListener {
             if (statusCode != 200) {
                 throw new MessageListenerException(String.format("Could not process request: Bad request: (%s)", requestUrl));
             }
-        } catch (IOException | SystemException | PortalException e) {
+        } catch (IOException  | PortalException e) {
             e.printStackTrace();
             throw new MessageListenerException(String.format("Could not process request (%s)", requestUrl), e);
         }

@@ -5,9 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
@@ -62,7 +59,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
 
     @RequestMapping(params = {"pageToDisplay=proposalDetails_ADVANCING", "error=true"})
     public String showJudgesPanelError(PortletRequest request, Model model)
-            throws PortalException, SystemException, ProposalsAuthorizationException {
+            throws ProposalsAuthorizationException {
         setCommonModelAndPageAttributes(request, model, ProposalTab.ADVANCING);
 
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);

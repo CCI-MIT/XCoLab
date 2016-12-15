@@ -1,13 +1,12 @@
 package org.xcolab.portlets.notificationunregister;
 
 import com.ext.utils.NotificationUnregisterUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
@@ -22,7 +21,7 @@ import javax.portlet.PortletResponse;
 @RequestMapping("view")
 public class NotificationUnregisterController {
 
-	private final static Log _log = LogFactoryUtil.getLog(NotificationUnregisterController.class);
+	private final static Logger _log = LoggerFactory.getLogger(NotificationUnregisterController.class);
 
     private static final String UNSUBSCRIBE_TITLE = "You have been unsubscribed";
     private static final String UNSUBSCRIBE_INDIVIDUAL_SUBSCRIPTION_RESPONSE_TEXT = "You may still receive email notifications if you are subscribed to other activity on the Climate CoLab.  " +
@@ -31,7 +30,7 @@ public class NotificationUnregisterController {
 
 
     @RequestMapping
-	public String register(PortletRequest request, PortletResponse response, Model model) throws SystemException {
+	public String register(PortletRequest request, PortletResponse response, Model model) {
 	    
 	    Long userId = ParamUtil.getLong(request, "userId", 0);
 	    Long subscriptionId = ParamUtil.getLong(request, "subscriptionId", 0);

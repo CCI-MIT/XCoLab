@@ -1,14 +1,13 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
+
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
@@ -18,17 +17,23 @@ import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.wrappers.ContestOverviewWrapper;
 import org.xcolab.wrapper.TabWrapper;
 
-import javax.portlet.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
+import javax.portlet.ResourceRequest;
+import javax.portlet.ResourceResponse;
+
 @Controller
 @RequestMapping("view")
 public class ContestManagerOverviewTabController extends ContestManagerBaseTabController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestManagerOverviewTabController.class);
+    private final static Logger _log = LoggerFactory.getLogger(ContestManagerOverviewTabController.class);
     static final private TabEnum tab = ContestManagerTabs.OVERVIEW;
     static final private String TAB_VIEW = "manager/overviewTab";
 
@@ -41,7 +46,7 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
     }
 
     @ModelAttribute("massActionsItems")
-    public List<LabelValue> populateMassActionsItems(PortletRequest request) throws PortalException, SystemException {
+    public List<LabelValue> populateMassActionsItems(PortletRequest request) {
         List<LabelValue> contestMassActionItems = new ArrayList<>();
 
         for (ContestMassActions contestMassAction : ContestMassActions.values()) {
@@ -57,8 +62,7 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
     }
 
     @RequestMapping(params = "tab=OVERVIEW")
-    public String showAdminTabController(PortletRequest request, PortletResponse response, Model model)
-            throws PortalException, SystemException {
+    public String showAdminTabController(PortletRequest request, PortletResponse response, Model model) {
         if (!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
         }
@@ -112,7 +116,7 @@ public class ContestManagerOverviewTabController extends ContestManagerBaseTabCo
     }
 
     @RequestMapping(params = {"action=updateContestOverview", "error=true"})
-    public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {
+    public String reportError(PortletRequest request, Model model) {
         return TAB_VIEW;
     }
 

@@ -1,13 +1,14 @@
 package org.xcolab.hooks.climatecolab.errorreporting;
 
+import org.parboiled.common.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.User;
 import com.liferay.portal.util.PortalUtil;
-import org.parboiled.common.StringUtils;
 
 import org.xcolab.entity.utils.email.EmailToAdminDispatcher;
 
@@ -40,7 +41,7 @@ public class ErrorReporting implements Filter {
 
     private static final String EMAIL_SUBJECT = "Error Report from User";
 
-    protected static final Log _log = LogFactoryUtil.getLog(ErrorReporting.class);
+    protected static final Logger _log = LoggerFactory.getLogger(ErrorReporting.class);
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -50,9 +51,9 @@ public class ErrorReporting implements Filter {
         String email = request.getParameter("email");
         String descriptionInHtmlFormat = request.getParameter("description").replaceAll("(\r\n|\n)", "<br />");
         String stackTrace = request.getParameter("stackTrace");
-        String userScreenName = "no user was logged in";
 
         if (!stackTrace.equals("${exception.stackTrace}")) {
+            String userScreenName = "no user was logged in";
             try {
                 final User user = PortalUtil.getUser(request);
                 if (user != null) {

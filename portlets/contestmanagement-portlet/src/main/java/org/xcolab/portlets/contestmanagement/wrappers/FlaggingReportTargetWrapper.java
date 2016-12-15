@@ -1,14 +1,14 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.exceptions.ReportTargetNotFoundException;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 
 public class FlaggingReportTargetWrapper {
-    private final static Log _log = LogFactoryUtil.getLog(FlaggingReportTargetWrapper.class);
+    private final static Logger _log = LoggerFactory.getLogger(FlaggingReportTargetWrapper.class);
 
     private ReportTarget reportTarget;
     private Boolean createNew = false;

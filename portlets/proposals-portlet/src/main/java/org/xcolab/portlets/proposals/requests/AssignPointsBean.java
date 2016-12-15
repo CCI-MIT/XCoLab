@@ -1,8 +1,6 @@
 package org.xcolab.portlets.proposals.requests;
 
 
-import com.liferay.portal.kernel.exception.PortalException;
-
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.PointsClientUtil;
@@ -129,7 +127,7 @@ public class AssignPointsBean {
         return assignmentsByUserId;
     }
 
-    public Set<Long> getUserIds(Long pointTypeId) throws PortalException {
+    public Set<Long> getUserIds(Long pointTypeId) {
         return getAssignmentsByUserId(pointTypeId).keySet();
     }
 

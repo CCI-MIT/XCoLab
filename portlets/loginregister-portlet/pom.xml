@@ -221,6 +221,11 @@
             <version>1.7.2</version>
         </dependency>
 
+		<dependency>
+			<groupId>org.xcolab</groupId>
+			<artifactId>entity-utils</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
 		<!-- microservice dependencies -->
 		<dependency>
 			<groupId>org.xcolab.microservices.clients</groupId>

@@ -1,18 +1,20 @@
 package org.xcolab.portlets.loginregister;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.liferay.portal.kernel.servlet.SessionErrors;
 
-import javax.portlet.ActionRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.portlet.ActionRequest;
+
 public class Helper {
 
-    private static final Log _log = LogFactoryUtil.getLog(Helper.class);
+    private static final Logger _log = LoggerFactory.getLogger(Helper.class);
 
     public static String removeParamFromRequestStr(String requestStr, String param) {
         return requestStr == null ? null : requestStr.replaceAll("&?" + param + "=[^&#]*", "");
@@ -45,7 +47,7 @@ public class Helper {
             sb.append("signinRegError=");
             String exception = iter.next();
             sb.append(exception.substring(exception.lastIndexOf(".") + 1));
-            _log.error("User encountered exception during login: " + exception);
+            _log.error("User encountered exception during login: {}", exception);
 
             appendAnd = true;
         }

@@ -1,16 +1,19 @@
 package org.xcolab.portlets.contests;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.RefreshingRestService;
+import org.xcolab.util.http.client.RestService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +26,7 @@ import javax.portlet.PortletResponse;
 @RequestMapping("view")
 public class ContestsController {
 
-    private static final Log _log = LogFactoryUtil.getLog(ContestsController.class);
+    private static final Logger _log = LoggerFactory.getLogger(ContestsController.class);
     
     public ContestsController() {
     }
@@ -54,7 +57,17 @@ public class ContestsController {
                     break;
                 }
                 try {
-                    contestWrappers.add(ContestClientUtil.getContest(contestId));
+                    Contest c = ContestClientUtil.getContest(contestId);
+                    if(c.getIsSharedContestInForeignColab()){
+                        RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
+                                ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                                ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                        Contest foreignContest = ContestClient.fromService(contestService).getContest(contestId);
+                        foreignContest.setUpForeignContestVisualConfigsFromLocal(c);
+                        contestWrappers.add(foreignContest);
+                    }else {
+                        contestWrappers.add(c);
+                    }
                 } catch (ContestNotFoundException e) {
                     _log.error("Could not find contest " + contestId);
                 }

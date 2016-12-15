@@ -2,10 +2,6 @@ package org.xcolab.portlets.proposals.utils;
 
 import jodd.util.StringUtil;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-
-
 import org.xcolab.client.contest.pojo.Contest;
 
 import java.util.Comparator;
@@ -106,8 +102,6 @@ public enum ContestsColumn {
     public Comparator<Contest> getColumnComparator() {
         return columnComparator;
     }
-
-    private final static Log _log = LogFactoryUtil.getLog(ContestsColumn.class);
 
     private static int compareContestsByStringValues(Contest c1, String s1, Contest c2, String s2) {
         if (StringUtil.isEmpty(s1)) {

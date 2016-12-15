@@ -7,16 +7,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ext.portlet.model.FocusArea;
-import com.ext.portlet.model.FocusAreaOntologyTerm;
-import com.ext.portlet.service.FocusAreaLocalServiceUtil;
-import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
-import com.liferay.counter.service.CounterLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.contest.ContestClientUtil;
+
+import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.ontology.FocusArea;
+import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
 import org.xcolab.enums.OntologySpaceEnum;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
@@ -60,8 +60,7 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
     }
 
     @RequestMapping(params = "tab=ONTOLOGY")
-    public String showOntologyTabController(PortletRequest request, PortletResponse response, Model model)
-            throws PortalException, SystemException {
+    public String showOntologyTabController(PortletRequest request, PortletResponse response, Model model) {
 
         if (!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
@@ -91,26 +90,26 @@ public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabCo
             Contest contest = getContest();
             Long focusAreaId = contest.getFocusAreaId();
             if (focusAreaId <= 0) {
-                FocusArea focusArea = FocusAreaLocalServiceUtil
-                        .createFocusArea(CounterLocalServiceUtil.increment(FocusArea.class.getName()));
-                focusArea.persist();
-                FocusAreaLocalServiceUtil.updateFocusArea(focusArea);
+                FocusArea focusArea = new FocusArea();
+
+                focusArea.setName(" Focus area for " + contest.getContestShortName());
+                focusArea.setOrder_(0);
+                focusArea = OntologyClientUtil.createFocusArea(focusArea);
                 focusAreaId = focusArea.getId();
                 contest.setFocusAreaId(focusAreaId);
                 ContestClientUtil.updateContest(contest);
             }
 
-            for (FocusAreaOntologyTerm focusAreaOntologyTerm : FocusAreaOntologyTermLocalServiceUtil
-                    .findTermsByFocusArea(focusAreaId)) {
-                FocusAreaOntologyTermLocalServiceUtil.deleteFocusAreaOntologyTerm(focusAreaOntologyTerm);
+            for (FocusAreaOntologyTerm focusAreaOntologyTerm : OntologyClientUtil.getFocusAreaOntologyTermsByFocusArea(focusAreaId)) {
+                OntologyClientUtil.deleteFocusAreaOntologyTerm(focusAreaOntologyTerm.getFocusAreaId(),focusAreaOntologyTerm.getOntologyTermId());
             }
 
             for (Long ontologyTerm : selectedOntologyTerms) {
-                FocusAreaOntologyTermLocalServiceUtil.addAreaTerm(focusAreaId, ontologyTerm);
+                OntologyClientUtil.addOntologyTermsToFocusAreaByOntologyTermId(focusAreaId,ontologyTerm);
             }
 
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch (SystemException | PortalException | IOException e) {
+        } catch (IOException e) {
             _log.warn("Update contest overview failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }

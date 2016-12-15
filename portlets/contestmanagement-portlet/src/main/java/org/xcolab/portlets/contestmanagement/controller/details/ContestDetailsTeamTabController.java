@@ -1,5 +1,7 @@
 package org.xcolab.portlets.contestmanagement.controller.details;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -8,11 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 
+
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestTeamBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
@@ -34,30 +35,24 @@ import javax.portlet.PortletResponse;
 @RequestMapping("view")
 public class ContestDetailsTeamTabController extends ContestDetailsBaseTabController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestDetailsTeamTabController.class);
+    private static final Logger _log = LoggerFactory.getLogger(ContestDetailsTeamTabController.class);
+
     private static final TabEnum tab = ContestDetailsTabs.TEAM;
     private static final String TAB_VIEW = "details/teamTab";
 
     @ModelAttribute("usersList")
-    public List<User> populateUsers() {
-        try {
-            return UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE);
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+    public List<Member> populateUsers() {
+            return MembersClient.listAllMembers();
     }
 
     @ModelAttribute("userNames")
     public List<String> populateUserNames() {
-        try {
             ArrayList<String> userNamesList = new ArrayList<>();
-            for (User user : UserLocalServiceUtil.getUsers(0, Integer.MAX_VALUE)) {
+            for (Member user : MembersClient.listAllMembers()) {
                 userNamesList.add(user.getScreenName());
             }
             return userNamesList;
-        } catch (SystemException e) {
-            throw new DatabaseAccessException(e);
-        }
+
     }
 
     @ModelAttribute("currentTabWrapped")
@@ -70,8 +65,7 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
 
     @RequestMapping(params = "tab=TEAM")
     public String showTeamTabController(PortletRequest request, PortletResponse response, Model model,
-            @RequestParam(required = false) Long contestId)
-            throws PortalException, SystemException {
+            @RequestParam(required = false) Long contestId) {
 
         if (!tabWrapper.getCanView()) {
             return NO_PERMISSION_TAB_VIEW;
@@ -95,7 +89,7 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
             ContestTeamWrapper contestTeamWrapper = new ContestTeamWrapper(contestTeamBeam);
             contestTeamWrapper.updateContestTeamMembers();
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch (SystemException | IOException | PortalException e) {
+        } catch (IOException e) {
             _log.warn("Update contest team failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }

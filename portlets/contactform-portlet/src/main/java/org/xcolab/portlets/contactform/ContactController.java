@@ -1,13 +1,5 @@
 package org.xcolab.portlets.contactform;
 
-import com.liferay.portal.kernel.captcha.CaptchaException;
-import com.liferay.portal.kernel.captcha.CaptchaUtil;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
-import com.liferay.util.mail.MailEngineException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -18,13 +10,21 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-import org.xcolab.client.emails.EmailClient;
-import org.xcolab.utils.PropertiesUtils;
 
-import java.io.IOException;
+import com.liferay.portal.kernel.servlet.SessionErrors;
+import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.util.PortalUtil;
+import com.liferay.util.mail.MailEngineException;
+
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.emails.EmailClient;
+import org.xcolab.entity.utils.ReCaptchaUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +33,6 @@ import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
-import javax.portlet.ResourceRequest;
-import javax.portlet.ResourceResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -61,7 +59,7 @@ public class ContactController {
     private String fromAddress = "no-reply@climatecolab.org";
 
     public ContactController() {
-        fromAddress = PropertiesUtils.get("contact.form.from.email");
+        fromAddress = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
     }
 
     @InitBinder("contactBean")
@@ -81,18 +79,11 @@ public class ContactController {
         return "view";
     }
 
-    @RequestMapping(params = "captcha=true")
-    public String getCaptchaImage(PortletRequest request, PortletResponse response) throws IOException {
-        CaptchaUtil.serveImage(PortalUtil.getHttpServletRequest(request), PortalUtil.getHttpServletResponse(response));
-
-        return null;
+    @ModelAttribute("recaptchaDataSiteKey")
+    public String getRecaptchaDataSiteKey(){
+        return ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_KEY.get();
     }
 
-    @ResourceMapping
-    public void captchaHandler(ResourceRequest request, ResourceResponse response) throws IOException {
-
-        CaptchaUtil.serveImage(request, response);
-    }
 
     @RequestMapping(params = "error=true")
     public String contactError(PortletRequest request, Model model, @Valid ContactBean contactBean,
@@ -122,19 +113,18 @@ public class ContactController {
                             @Valid ContactBean contactBean, BindingResult result, @RequestParam(required = false) String redirect) throws AddressException, MailEngineException {
         HttpServletRequest httpReq = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
 
+        String gRecaptchaResponse = request
+                .getParameter("g-recaptcha-response");
+        boolean captchaValid = ReCaptchaUtils.verify(gRecaptchaResponse,ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_SECRET_KEY.get());
+
 
         SessionErrors.clear(request);
         SessionMessages.clear(request);
         if (!result.hasErrors()) {
-            boolean captchaValid = true;
-            try {
-                CaptchaUtil.check(request);
-            } catch (CaptchaException e) {
-                captchaValid = false;
-            }
+
+
             if (!captchaValid) {
                 SessionErrors.clear(request);
-                contactBean.setCaptchaText("");
                 response.setRenderParameter("error", "true");
                 response.setRenderParameter("recaptchaError", "true");
             } else {

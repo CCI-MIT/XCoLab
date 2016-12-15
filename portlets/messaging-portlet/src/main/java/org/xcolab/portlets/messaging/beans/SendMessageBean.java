@@ -1,8 +1,5 @@
 package org.xcolab.portlets.messaging.beans;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
@@ -98,7 +95,7 @@ public class SendMessageBean implements Serializable {
         return messagingBean;
     }
 
-    public void setMessagingBean(MessagingBean messagingBean) throws PortalException, SystemException {
+    public void setMessagingBean(MessagingBean messagingBean) {
         this.messagingBean = messagingBean;
     }
 

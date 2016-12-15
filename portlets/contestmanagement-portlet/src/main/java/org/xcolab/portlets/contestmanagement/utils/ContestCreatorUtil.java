@@ -4,12 +4,8 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.Group;
-import com.liferay.portal.model.GroupConstants;
-import com.liferay.portal.service.GroupLocalServiceUtil;
-import com.liferay.portal.service.ServiceContext;
+
+
 
 import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
@@ -18,12 +14,15 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestSchedule;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.pojo.group.Group_;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleChangeHelper;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 import java.util.Random;
+import java.util.UUID;
 
 public final class ContestCreatorUtil {
 
@@ -57,11 +56,9 @@ public final class ContestCreatorUtil {
         ContestClientUtil.updateContest(contest);
         ContestScheduleChangeHelper changeHelper = new ContestScheduleChangeHelper(contest, contestScheduleId);
         changeHelper.changeScheduleForBlankContest();
-        try {
-            setGroupForContest(contest);
-        } catch (PortalException| SystemException ignored){
 
-        }
+        setGroupForContest(contest);
+
 
         return contest;
     }
@@ -92,15 +89,29 @@ public final class ContestCreatorUtil {
         }
     }
 
-    private static void setGroupForContest(Contest c) throws PortalException, SystemException {
-
-        ServiceContext groupServiceContext = new ServiceContext();
-        groupServiceContext.setUserId(c.getAuthorId());
+    private static void setGroupForContest(Contest c) {
 
         String groupName = c.getContestName() + "_" + System.currentTimeMillis() + "_" + rand.nextLong();
-        Group group = GroupLocalServiceUtil.addGroup(c.getAuthorId(), null, c.getContestPK(), "CONTEST:  " + c.getContestPK(),
-                String.format(DEFAULT_GROUP_DESCRIPTION, groupName),
-                GroupConstants.TYPE_SITE_RESTRICTED, null, true, true, groupServiceContext);
+        Group_ group = new Group_();
+        group.setCompanyId(10112l);
+        group.setCreatorUserId(10144l);
+        group.setClassNameId(10009l);
+        group.setParentGroupId(0l);
+        group.setLiveGroupId(0l);
+        group.setName(groupName);
+        group.setDescription(String.format(DEFAULT_GROUP_DESCRIPTION, groupName));
+        group.setType_(2);
+        group.setFriendlyURL("/contest-" + c.getContestPK());
+        group.setActive_(true);
+        group.setSite(true);
+        group.setUuid_(UUID.randomUUID().toString());
+        group.setManualMembership(true);
+        group.setMembershipRestriction(0);
+        group.setRemoteStagingGroupCount(0);
+        group = ProposalClientUtil.createGroup(group);
+        group.setTreePath("/" + group.getGroupId() + "/");
+        group.setClassPK(group.getGroupId());
+        ProposalClientUtil.updateGroup(group);
         c.setGroupId(group.getGroupId());
         ContestClientUtil.updateContest(c);
     }

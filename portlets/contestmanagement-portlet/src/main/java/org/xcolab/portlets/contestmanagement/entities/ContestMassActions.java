@@ -1,7 +1,7 @@
 package org.xcolab.portlets.contestmanagement.entities;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.portlets.contestmanagement.utils.ContestMassActionMethods;
@@ -20,7 +20,7 @@ public enum ContestMassActions {
     DELETE_WITH_PHASES("Delete contests including phases", ContestMassActionMethods.class, "deleteContestwithPhases"),
     ACTIVE("Active", "Prior", Contest.class, "setContestActive"),
     PRIVATE("Private", "Public", Contest.class, "setContestPrivate"),
-    FEATURED("Feature", "Remove feature", Contest.class, "setFeatured"),
+    FEATURED("Feature", "Remove feature", Contest.class, "setFeatured_"),
     FLAG("Set contest flag", ContestMassActionMethods.class, "setFlag"),
     MODEL_SETTINGS("Set model settings", ContestMassActionMethods.class, "setModelSettings"),
     SUBSCRIBE("Subscribe to activity", "Unsubscribe from activity", ContestMassActionMethods.class,
@@ -31,7 +31,7 @@ public enum ContestMassActions {
             "setShow_in_outline_view"),
     HIDE_RIBBONS("Hide contest ribbons", "Show contest ribbons", Contest.class, "setHideRibbons");
 
-    private final Log _log = LogFactoryUtil.getLog(ContestMassActions.class);
+    private final Logger _log = LoggerFactory.getLogger(ContestMassActions.class);
     private final String actionDisplayName;
     private String reverseActionDisplayName = "";
     private Boolean hasReverseAction = false;
@@ -62,7 +62,7 @@ public enum ContestMassActions {
                         .getMethod(methodName, List.class, Object.class, PortletRequest.class);
             }
         } catch (NoSuchMethodException e) {
-            _log.warn("Could not find mass action method with name: " + methodName);
+            _log.warn("Could not find mass action method with name: {}", methodName);
         }
     }
 

@@ -1,9 +1,10 @@
 package org.xcolab.hooks.climatecolab.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Indexer;
 import com.liferay.portal.kernel.search.IndexerRegistryUtil;
 import com.liferay.portal.kernel.search.SearchException;
@@ -14,12 +15,9 @@ import com.liferay.portlet.social.service.SocialActivityLocalServiceWrapper;
 
 import java.util.Date;
 
-/**
- * Created by Mente on 07/05/14.
- */
 public class CustomSocialActivityLocalServiceImpl extends SocialActivityLocalServiceWrapper {
 
-    private final Log _log = LogFactoryUtil.getLog(CustomSocialActivityLocalServiceImpl.class);
+    private final Logger _log = LoggerFactory.getLogger(CustomSocialActivityLocalServiceImpl.class);
 
     private static final Object mutex = new Object();
 
@@ -62,7 +60,8 @@ public class CustomSocialActivityLocalServiceImpl extends SocialActivityLocalSer
                     SocialActivity.class);
             indexer.reindex(socialActivity);
         } catch (SearchException e) {
-            _log.warn("Could not reindex SocialActivity with id " + socialActivity.getActivityId(), e);
+            _log.warn("Could not reindex SocialActivity with id {}", socialActivity.getActivityId(),
+                    e);
         }
     }
 }

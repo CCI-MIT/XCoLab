@@ -175,7 +175,17 @@
 												 <span>${contestWrapper.weight}</span>
 								</td>
 								<td >
-									<a href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}"> ${contestWrapper.contestShortName}</a>
+
+									<c:choose>
+										<c:when test="${not contestWrapper.isSharedContestInForeignColab}">
+											<a href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}"> ${contestWrapper.contestShortName}</a>
+										</c:when>
+										<c:otherwise>
+											<a>${contestWrapper.contestShortName}</a>
+										</c:otherwise>
+									</c:choose>
+
+
 									<!--<collab:contestLink contest="${contestWrapper}" />-->
 								</td>
 								<td >${contestWrapper.activePhase.name}</td>
@@ -189,8 +199,8 @@
 								<td>${contestWrapper.proposalsCount} </td>
 								<td>${contestWrapper.commentsCount} </td>
 								<td>
-									<!--<a class="c-Button__primary innerVerticalCenter" href="/web/guest/cms/-/contestmanagement/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>-->
 									<a class="c-Button__primary innerVerticalCenter" href="${contestWrapper.contestUrl}" target="_blank">VIEW</a>
+
 								</td>
 							</tr>
 					</c:forEach>
