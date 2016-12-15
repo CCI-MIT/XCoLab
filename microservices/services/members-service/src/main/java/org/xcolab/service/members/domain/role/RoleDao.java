@@ -12,4 +12,6 @@ public interface RoleDao {
     void assignMemberRole(Long memberId, Long roleId);
 
     boolean memberHasRole(Long memberId, Long roleId);
+
+    boolean deleteMemberRole(long memberId, long roleId);
 }

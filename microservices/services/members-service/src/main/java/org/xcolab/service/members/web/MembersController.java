@@ -124,10 +124,17 @@ public class MembersController {
             return roleService.getMemberRolesInContest(memberId, contestId);
         }
     }
-    @PutMapping("{memberId}/roles/assignRoleToUser")
+
+    @PutMapping("{memberId}/roles/{roleId}")
     public boolean assignMemberRole(@PathVariable long memberId,
-            @RequestParam Long roleId) {
-        return this.roleService.assignMemberRole(memberId,roleId);
+            @PathVariable Long roleId) {
+        return this.roleService.assignMemberRole(memberId, roleId);
+    }
+
+    @DeleteMapping("{memberId}/roles/{roleId}")
+    public boolean deleteMemberRole(@PathVariable long memberId,
+            @PathVariable Long roleId) {
+        return this.roleService.deleteMemberRole(memberId, roleId);
     }
 
     @GetMapping("{memberId}/isMemberInGroup")

@@ -58,9 +58,9 @@
 								<div class="memname">${currentUserProfile.realName}</div>
 								<div class="role-indicator" style="margin-top: 5px;">
 									<div style="width: 16px">
-										<img src="${themeDisplay.pathThemeImages}/${currentUserProfile.role.imageUrl}.png" width="16" height="16" />
+										<img src="${themeDisplay.pathThemeImages}/${currentUserProfile.highestRole.imageUrl}.png" width="16" height="16" />
 									</div>
-									${currentUserProfile.role.printName}
+									${currentUserProfile.highestRole.printName}
 								</div>
 							</td>
 							<td>
