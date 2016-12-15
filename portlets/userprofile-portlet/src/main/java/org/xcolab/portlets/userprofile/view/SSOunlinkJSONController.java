@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.userprofile.utils.JSONHelper;
@@ -45,16 +46,16 @@ public class SSOunlinkJSONController extends JSONHelper {
         boolean successStatus = false;
         Member member = MemberAuthUtil.getMemberOrNull(request);
         if (member != null) {
-            unlinkGoogleSso(member);
+            unlinkGoogleSSO(member);
             successStatus = true;
         }
 
         this.writeSuccessResultResponseJSON(successStatus, response);
     }
 
-    private void unlinkGoogleSso(Member member) {
-        member.setOpenId("");
-        MembersClient.updateMember(member);
+    private void unlinkGoogleSSO(Member user) {
+        user.setOpenId("");
+        MembersClient.updateMember(user);
     }
 
 }

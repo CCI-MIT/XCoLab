@@ -40,6 +40,9 @@ public final class JsonUtil {
         else if (obj instanceof Boolean) {
             arrayBuilder.add((Boolean) obj);
         }
+        else if (obj instanceof Class<?>) {
+            arrayBuilder.add(((Class<?>) obj).getName());
+        }
         else {
             arrayBuilder.add(String.valueOf(obj));
         }

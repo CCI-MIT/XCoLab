@@ -6,12 +6,11 @@ import org.slf4j.LoggerFactory;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.service.RoleLocalServiceUtil;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.contestmanagement.beans.ContestTeamBean;
@@ -38,6 +37,7 @@ public class ContestTeamWrapper {
         assignMemberToContest(MemberRole.ADVISOR, contestTeamBean.getUserIdsAdvisors());
         assignMemberToContest(MemberRole.FELLOW, contestTeamBean.getUserIdsFellows());
         assignMemberToContest(MemberRole.CONTEST_MANAGER, contestTeamBean.getUserIdsContestManagers());
+        assignMemberToContest(MemberRole.IMPACT_ASSESSMENT_FELLOW, contestTeamBean.getUserIdsIAFellows());
     }
 
     private void assignMemberToContest(MemberRole memberRole, List<Long> userIds) {
@@ -56,13 +56,7 @@ public class ContestTeamWrapper {
     private void assignMemberRoleToUser(MemberRole memberRole, List<Long> userIds) {
         for (Long userId : userIds) {
             Long roleId = memberRole.getRoleId();
-            try {
-                Role role = RoleLocalServiceUtil.getRole(roleId);
-                RoleLocalServiceUtil.addUserRole(userId, roleId);
-                RoleLocalServiceUtil.updateRole(role);
-            } catch (SystemException | PortalException e) {
-                //TODO: remove liferay calls
-            }
+            MembersClient.assignMemberRole(userId, roleId);
         }
     }
 

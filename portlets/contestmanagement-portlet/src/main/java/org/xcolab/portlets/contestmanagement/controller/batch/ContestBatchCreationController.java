@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -133,7 +133,6 @@ public class ContestBatchCreationController {
 
         if (contestCSVBean.getOntologyTerms() != null) {
             inputedOntologyTerms = IdListUtil.getIdsFromString(contestCSVBean.getOntologyTerms());
-            try {
                 for (Long termId : inputedOntologyTerms) {
                     OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(termId);
                     if (ontologyTerm != null) {
@@ -148,7 +147,7 @@ public class ContestBatchCreationController {
                     focusAreaId = focusArea.getId_();
 
                     for (Map.Entry<Long, Integer> ontologyTerm : uniqueSelectedOntologyTerms.entrySet()) {
-                        FocusAreaOntologyTermLocalServiceUtil.addAreaTerm(focusAreaId, ontologyTerm.getKey());
+                        OntologyClientUtil.addOntologyTermsToFocusAreaByOntologyTermId(focusAreaId, ontologyTerm.getKey());
 
                     }
                     if (!reusableFocusArea.containsKey(focusAreaId)) {
@@ -157,10 +156,6 @@ public class ContestBatchCreationController {
                 }
                 contest.setFocusAreaId(focusAreaId);
                 contest.persist();
-
-            } catch (SystemException | PortalException ignored) {
-                _log.warn("Update contest overview failed with: ", ignored);
-            }
         }
     }
 

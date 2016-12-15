@@ -128,6 +128,14 @@ public final class MembersClient {
                 .execute();
     }
 
+    public static void assignMemberRole(long memberId, long roleId) {
+
+         memberRoleResource.resolveParent(memberResource.id(memberId))
+                .service("assignRoleToUser",Boolean.class)
+                .queryParam("roleId",roleId)
+                .put();
+    }
+
     public static List<Role_> getMemberRolesInContest(long memberId, long contestId) {
         return memberRoleResource.resolveParent(memberResource.id(memberId))
                 .list()

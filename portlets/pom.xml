@@ -18,29 +18,26 @@
     <modules>
         <module>proposals-portlet</module>
         <module>discussions-portlet</module>
-        <module>adminstasks-portlet</module>
+
         <module>contactform-portlet</module>
         <module>contestmanagement-portlet</module>
         <module>contentdisplay-portlet</module>
         <module>contenteditor-portlet</module>
         <module>members-portlet</module>
         <module>userprofile-portlet</module>
+        <module>usertracking-portlet</module>
         <module>contests-portlet</module>
-        <module>reporting-portlet</module>
         <module>search-portlet</module>
         <module>feeds-portlet</module>
         <module>messaging-portlet</module>
         <module>modelsadmin-portlet</module>
-        <module>ontology-portlet</module>
         <module>newontology-portlet</module>
         <module>redballoon-portlet</module>
         <module>staffmembers-portlet</module>
-        <module>plansadmin-portlet</module>
         <module>loginregister-portlet</module>
-        <module>massmessaging-portlet</module>
         <module>notificationunregister-portlet</module>
         <module>blogsstats-portlet</module>
-        <module>landingpage-portlet</module>
         <module>randomproposals-portlet</module>
+        <module>wiki-portlet</module>
     </modules>
 </project>

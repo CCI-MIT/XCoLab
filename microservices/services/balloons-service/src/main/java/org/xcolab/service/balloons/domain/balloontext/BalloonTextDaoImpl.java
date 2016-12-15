@@ -62,7 +62,6 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
     @Override
     public BalloonText create(BalloonText balloonText) {
         BalloonTextRecord ret = this.dslContext.insertInto(BALLOON_TEXT)
-                .set(BALLOON_TEXT.ID_, balloonText.getId_())
                 .set(BALLOON_TEXT.NAME, balloonText.getName())
                 .set(BALLOON_TEXT.TEXT_BEFORE_FORM, balloonText.getTextBeforeForm())
                 .set(BALLOON_TEXT.TEXT_AFTER_FORM, balloonText.getTextAfterForm())

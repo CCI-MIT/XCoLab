@@ -32,9 +32,11 @@
 			<h2>Contest team</h2>
 		<form:form action="${updateContestTeamURL }" commandName="contestTeamBean" id="editForm" method="post">
 			<div class="teamTabContainer">
+				<collab:teamBox title="IAFellows" list="${contestWrapper.contestImpactAssessmentFellows}"/>
 				<collab:teamBox title="Advisors" list="${contestWrapper.contestAdvisors}"/>
 				<collab:teamBox title="Fellows" list="${contestWrapper.contestFellows}"/>
 				<collab:teamBox title="Judges" list="${contestWrapper.contestJudges}"/>
+
 				<!-- <collab:teamBox title="Managers" list="${contestWrapper.contestManager}"/> -->
 			</div>
 		</form:form>

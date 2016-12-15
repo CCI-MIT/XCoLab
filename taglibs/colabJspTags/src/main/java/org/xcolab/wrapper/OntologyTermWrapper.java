@@ -1,6 +1,8 @@
 package org.xcolab.wrapper;
 
-import com.ext.portlet.model.OntologyTerm;
+
+
+import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 
 import java.util.ArrayList;
 import java.util.List;

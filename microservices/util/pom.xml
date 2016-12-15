@@ -18,5 +18,6 @@
     <modules>
         <module>service-utils</module>
         <module>xcolab-utils</module>
+        <module>entity-utils</module>
     </modules>
 </project>

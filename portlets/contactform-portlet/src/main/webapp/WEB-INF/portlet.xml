@@ -17,7 +17,7 @@
 			<portlet-mode>edit</portlet-mode>
 		</supports>
 		<portlet-info>
-			<title>MIT Contact form (ICE)</title>
+			<title>MIT Contact form</title>
 			<short-title>Contact form</short-title>
 			<keywords>contact form</keywords>
 		</portlet-info>

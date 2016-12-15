@@ -42,10 +42,15 @@ public class ContestMassActionMethods {
         csvExportHelper.addRowToExportData(CSV_EXPORT_HEADER);
 
         for (Long contestId : contestList) {
-            List<Proposal> proposalsInActiveContestPhase = getProposalsInActiveContestPhase(contestId);
-            ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contestId);
-            csvExportHelper
-                    .addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase, activeContestPhase);
+            Contest c = ContestClientUtil.getContest(contestId);
+            if(!c.getIsSharedContestInForeignColab()) {
+                List<Proposal> proposalsInActiveContestPhase =
+                        getProposalsInActiveContestPhase(contestId);
+                ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contestId);
+                csvExportHelper
+                        .addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase,
+                                activeContestPhase);
+            }
         }
 
         String exportFileName = "reportOfPeopleInCurrentPhase";
@@ -59,14 +64,17 @@ public class ContestMassActionMethods {
         final StringBuilder contestNames = new StringBuilder();
 
         for (Long contestId : contestList) {
-            contestNames.append(ContestClientUtil.getContest(contestId).getContestShortName()).append("; ");
-            List<Proposal> proposalsInActiveContestPhase = getProposalsInActiveContestPhase(contestId);
+            Contest c = ContestClientUtil.getContest(contestId);
+            if(!c.getIsSharedContestInForeignColab()){
+                contestNames.append(c.getContestShortName()).append("; ");
+                List<Proposal> proposalsInActiveContestPhase = getProposalsInActiveContestPhase(contestId);
 
-            for (Proposal proposal : proposalsInActiveContestPhase) {
-                List<Member> proposalMember = ProposalClientUtil.getProposalMembers(proposal.getProposalId());
-                for (Member member : proposalMember) {
-                    if (!recipientIds.contains(member.getUserId())) {
-                        recipientIds.add(member.getUserId());
+                for (Proposal proposal : proposalsInActiveContestPhase) {
+                    List<Member> proposalMember = ProposalClientUtil.getProposalMembers(proposal.getProposalId());
+                    for (Member member : proposalMember) {
+                        if (!recipientIds.contains(member.getUserId())) {
+                            recipientIds.add(member.getUserId());
+                        }
                     }
                 }
             }
@@ -93,11 +101,14 @@ public class ContestMassActionMethods {
                                                 PortletRequest request) {
         long memberId = MemberAuthUtil.getMemberId(request);
         for (Long contestId : contestList) {
-            Boolean subscriptionStatus = (boolean) subscriptionStatusObject;
-            if (subscriptionStatus) {
-                ContestClientUtil.subscribeMemberToContest(contestId, memberId);
-            } else {
-                ContestClientUtil.unsubscribeMemberFromContest(contestId, memberId);
+            Contest contest = ContestClientUtil.getContest(contestId);
+            if(!contest.getIsSharedContestInForeignColab()) {
+                Boolean subscriptionStatus = (boolean) subscriptionStatusObject;
+                if (subscriptionStatus) {
+                    ContestClientUtil.subscribeMemberToContest(contestId, memberId);
+                } else {
+                    ContestClientUtil.unsubscribeMemberFromContest(contestId, memberId);
+                }
             }
         }
     }
@@ -118,7 +129,10 @@ public class ContestMassActionMethods {
             throws MassActionRequiresConfirmationException {
         if ((Boolean) actionConfirmed) {
             for (Long contestId : contestList) {
-                ContestClientUtil.deleteContest(contestId);
+                Contest c = ContestClientUtil.getContest(contestId);
+                if(!c.getIsSharedContestInForeignColab()) {
+                    ContestClientUtil.deleteContest(contestId);
+                }
             }
         } else {
             throw new MassActionRequiresConfirmationException();
@@ -129,12 +143,15 @@ public class ContestMassActionMethods {
             throws MassActionRequiresConfirmationException {
         if ((Boolean) actionConfirmed) {
             for (Long contestId : contestList) {
-                List<ContestPhase> contestPhases =
-                        ContestClientUtil.getAllContestPhases(contestId);
-                if (!contestPhases.isEmpty()) {
-                    deleteContestAndPhases(contestId);
-                } else {
-                    ContestClientUtil.deleteContest(contestId);
+                Contest c = ContestClientUtil.getContest(contestId);
+                if(!c.getIsSharedContestInForeignColab()) {
+                    List<ContestPhase> contestPhases =
+                            ContestClientUtil.getAllContestPhases(contestId);
+                    if (!contestPhases.isEmpty()) {
+                        deleteContestAndPhases(contestId);
+                    } else {
+                        ContestClientUtil.deleteContest(contestId);
+                    }
                 }
             }
         } else {
@@ -145,9 +162,12 @@ public class ContestMassActionMethods {
     public static void setFlag(List<Long> contestList, Object flagTexToolTipValue, PortletRequest request) {
         for (Long contestId : contestList) {
             try {
-                Contest contest = ContestClientUtil.getContest(contestId);
-                ContestFlagTextToolTipBean contestFlagTextToolTipBean = (ContestFlagTextToolTipBean) flagTexToolTipValue;
-                contestFlagTextToolTipBean.persist(contest);
+                //Contest contest = ContestClientUtil.getContest(contestId);
+                //if(!contest.getIsSharedContestInForeignColab()) {
+                    ContestFlagTextToolTipBean contestFlagTextToolTipBean =
+                            (ContestFlagTextToolTipBean) flagTexToolTipValue;
+                    contestFlagTextToolTipBean.persist(ContestClientUtil.getContest(contestId));
+                //}
             } catch (ContestNotFoundException ignored) {
 
             }
@@ -159,8 +179,11 @@ public class ContestMassActionMethods {
         for (Long contestId : contestList) {
             try {
                 Contest contest = ContestClientUtil.getContest(contestId);
-                ContestModelSettingsBean contestModelSettingsBean = (ContestModelSettingsBean) modelSettings;
-                contestModelSettingsBean.persist(contest);
+                if(!contest.getIsSharedContestInForeignColab()) {
+                    ContestModelSettingsBean contestModelSettingsBean =
+                            (ContestModelSettingsBean) modelSettings;
+                    contestModelSettingsBean.persist(contest);
+                }
             } catch (ContestNotFoundException ignored){
 
             }
