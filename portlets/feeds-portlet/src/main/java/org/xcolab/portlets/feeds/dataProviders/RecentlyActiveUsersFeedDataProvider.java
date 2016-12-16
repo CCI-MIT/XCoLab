@@ -3,10 +3,9 @@ package org.xcolab.portlets.feeds.dataProviders;
 import org.springframework.ui.Model;
 
 import com.ext.portlet.Activity.ActivityUtil;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.service.RoleLocalServiceUtil;
 
 import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.enums.MemberRole;
@@ -14,7 +13,6 @@ import org.xcolab.portlets.feeds.FeedTypeDataProvider;
 import org.xcolab.portlets.feeds.FeedsPreferences;
 import org.xcolab.portlets.feeds.wrappers.MemberWrapper;
 import org.xcolab.portlets.feeds.wrappers.SocialActivityWrapper;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,7 +30,6 @@ public class RecentlyActiveUsersFeedDataProvider implements
 			PortletResponse response, SortFilterPage sortFilterPage,
 			FeedsPreferences feedsPreferences, Model model) {
 
-		try {
 			List<MemberWrapper> recentlyActiveUsers = new ArrayList<>();
 			Set<Long> usersAlreadyAdded = new HashSet<>();
 			int activitiesCount = ActivityUtil.getAllActivitiesCount();
@@ -49,8 +46,8 @@ public class RecentlyActiveUsersFeedDataProvider implements
 							|| (feedsPreferences.getRemoveAdmin()
 							&& PermissionsClient.canAdminAll(activity.getMemberId()))
 							|| SocialActivityWrapper.isEmpty(activity, request)
-							|| RoleLocalServiceUtil
-							.hasUserRole(activity.getMemberId(), MemberRole.STAFF.getRoleId())) {
+							|| MembersClient.hasMemberRole
+							(activity.getMemberId(), MemberRole.STAFF.getRoleId())) {
 						continue;
 					}
 
@@ -67,8 +64,6 @@ public class RecentlyActiveUsersFeedDataProvider implements
 			model.addAttribute("recentlyActiveUsers", recentlyActiveUsers);
 
 			return "recentlyActiveUsers";
-		} catch (SystemException e) {
-			throw new DatabaseAccessException(e);
-		}
+
 	}
 }

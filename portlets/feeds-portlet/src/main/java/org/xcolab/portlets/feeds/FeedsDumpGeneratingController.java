@@ -1,19 +1,11 @@
 package org.xcolab.portlets.feeds;
 
 import au.com.bytecode.opencsv.CSVWriter;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.social.model.SocialActivity;
-import com.liferay.portlet.social.model.SocialActivityFeedEntry;
-import com.liferay.portlet.social.service.SocialActivityInterpreterLocalServiceUtil;
-import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.activities.pojo.ActivityEntry;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -50,9 +42,8 @@ public class FeedsDumpGeneratingController {
 
 	private synchronized void generateActivitiesDump(ResourceRequest request)
 			throws IOException {
-		try {
-			int currentCount = SocialActivityLocalServiceUtil
-					.getSocialActivitiesCount();
+
+			int currentCount = ActivitiesClientUtil.countActivities(null,null);
 			if (currentCount > activitiesInGeneratedDump) {
 				// regenerate
 
@@ -64,26 +55,18 @@ public class FeedsDumpGeneratingController {
 				Writer fw = new OutputStreamWriter(zos);
 				CSVWriter csvWriter = new CSVWriter(fw);
 
-				for (SocialActivity activity : SocialActivityLocalServiceUtil
-						.getSocialActivities(0, Integer.MAX_VALUE)) {
+				for (ActivityEntry activity : ActivitiesClientUtil.getActivityEntries(0,Integer.MAX_VALUE,null,null)) {
 					try {
-						User user = UserLocalServiceUtil.getUser(activity
-								.getUserId());
-						SocialActivityFeedEntry entry = SocialActivityInterpreterLocalServiceUtil
-								.interpret(activity, (ThemeDisplay) request
-										.getAttribute(WebKeys.THEME_DISPLAY));
-						String body = entry.getBody();
+
+						String body = activity.getActivityEntryBody();
 						if (body != null && body.trim().length() > 0) {
 							body = body.replace("/web/guest",
 									"http://climatecolab.org/web/guest");
-						/*csvWriter.writeNext(new String[] {
+						csvWriter.writeNext(new String[] {
 								body,
-								df.format(new Date(activity.getCreateDate())),
-								activity.getActivityId() + ""});*/
-							csvWriter.writeNext(new String[]{
-									body,
-									df.format(new Date(activity.getCreateDate())),
-									activity.getActivityId() + ""});
+								df.format(new Date(activity.getCreateDate().getTime())),
+								activity.getActivityEntryId() + ""});
+
 						}
 					} catch (Throwable t) {
 						// ignore
@@ -97,9 +80,7 @@ public class FeedsDumpGeneratingController {
 				generatedActivities = bos.toByteArray();
 				activitiesInGeneratedDump = currentCount;
 			}
-		} catch (SystemException e) {
-			throw new DatabaseAccessException(e);
-		}
+
 	}
 
 }

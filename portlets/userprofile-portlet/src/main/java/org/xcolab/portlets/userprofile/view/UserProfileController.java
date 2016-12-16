@@ -29,6 +29,7 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.mail.MailEngineException;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.emails.EmailClient;
@@ -516,6 +517,7 @@ public class UserProfileController {
         UserProfilePermissions permission = new UserProfilePermissions(request);
 
         if (permission.getCanEditMemberProfile(userId)) {
+
             UserLocalServiceUtil.updateStatus(userId, WorkflowConstants.STATUS_INACTIVE,
                     ServiceContextFactory.getInstance(request));
             MembersClient.deleteMember(userId);

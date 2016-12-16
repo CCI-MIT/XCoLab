@@ -270,26 +270,6 @@ public class Contest extends AbstractContest {
         return 0L;
     }
 
-        /*public long getTotalProposalsCount() {
-            Set<Proposal> proposalList = new HashSet<>();
-            try {
-                List<ContestPhase> contestPhases = ContestPhaseLocalServiceUtil
-                        .getPhasesForContest(contest);
-                for (ContestPhase contestPhase : contestPhases) {
-                    try {
-                        List<Proposal> proposals = ProposalLocalServiceUtil
-                                .getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
-                        proposalList.addAll(proposals);
-                    } catch (PortalException e) {
-                        _log.error("Proposal count: failed to retrieve active proposals in contest phase " + contestPhase
-                                .getContestPhasePK());
-                    }
-                }
-            } catch (SystemException e) {
-                throw new DatabaseAccessException(e);
-            }
-            return proposalList.size();
-        }*/
 
     public long getCommentsCount() {
         //TODO: get each proposal comment count.

@@ -8,10 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.liferay.portal.kernel.dao.orm.Criterion;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
-import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -20,8 +16,6 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 
@@ -32,6 +26,8 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
+import org.xcolab.entity.utils.email.notifications.proposal.ProposalMembershipInviteNotification;
+import org.xcolab.entity.utils.email.notifications.proposal.ProposalUserActionNotification;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.requests.RequestMembershipInviteBean;
@@ -39,8 +35,6 @@ import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.entity.utils.email.notifications.proposal.ProposalMembershipInviteNotification;
-import org.xcolab.entity.utils.email.notifications.proposal.ProposalUserActionNotification;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -159,10 +153,10 @@ public class ProposalRequestMembershipActionController {
             throws SystemException, PortalException {
         String input = request.getParameter("term");
 
-        List<User> recipients = getRecipientSuggestions(input, proposalsContext.getProposal(request).getProposalId(),
+        List<Member> recipients = getRecipientSuggestions(input, proposalsContext.getProposal(request).getProposalId(),
                 request);
         JSONArray responseJson = JSONFactoryUtil.createJSONArray();
-        for (User user : recipients) {
+        for (Member user : recipients) {
             responseJson.put(String.format("%s (%s %s)", user.getScreenName(), user.getFirstName(), user.getLastName()));
         }
         try {
@@ -217,46 +211,17 @@ public class ProposalRequestMembershipActionController {
         MessagingClient.sendMessage(subject, content, sender, sender, recipients);
     }
 
-    private List<User> getRecipientSuggestions(String input, long proposalId,
+    private List<Member> getRecipientSuggestions(String input, long proposalId,
             PortletRequest request) throws PortalException, SystemException {
         String[] inputParts = input.split(" ");
         if (inputParts.length == 0) {
             return new ArrayList<>();
         }
-
         List<Long> contributorIds = new ArrayList<>();
         for (Member contributor : proposalsContext.getClients(request).getProposalClient().getProposalMembers(proposalId)) {
             contributorIds.add(contributor.getUserId());
         }
-
-        List<User> recipients = new ArrayList<>();
-
-        Criterion criterion = RestrictionsFactoryUtil.not(RestrictionsFactoryUtil.in("userId", contributorIds));
-        // For the sake of performance we only search the first word for either screenname, firstname or last name match
-        // Search by screen name
-        DynamicQuery query = DynamicQueryFactoryUtil.forClass(User.class);
-        query.add(RestrictionsFactoryUtil.ilike("screenName", String.format("%s%%", inputParts[0])));
-        query.add(criterion);
-        query.setLimit(0, 5);
-        List<User> result = UserLocalServiceUtil.dynamicQuery(query);
-
-        if (!result.isEmpty()) {
-            recipients.addAll(result);
-        }
-
-        // Search by last name
-        DynamicQuery lnQuery = DynamicQueryFactoryUtil.forClass(User.class);
-        lnQuery.add(RestrictionsFactoryUtil.ilike("lastName", String.format("%s%%", inputParts[0])));
-        lnQuery.add(criterion);
-        lnQuery.setLimit(0, 5);
-        List<User> lnRecipients = UserLocalServiceUtil.dynamicQuery(lnQuery);
-
-        for (User user : lnRecipients) {
-            if (!recipients.contains(user)) {
-                recipients.add(user);
-            }
-        }
-
+        List<Member> recipients = MembersClient.listMembers(null,inputParts[0],inputParts[0],null,true,0,Integer.MAX_VALUE);
         return recipients;
     }
 
