@@ -69,4 +69,23 @@
         <generated-parameter name="userId">{userId}</generated-parameter>
         <generated-parameter name="deleteMessages">true</generated-parameter>
     </route>
+
+    <route>
+        <pattern>/api/members/{memberId}/roles/{roleId}/add</pattern>
+        <generated-parameter name="memberId">{memberId}</generated-parameter>
+        <generated-parameter name="roleId">{roleId}</generated-parameter>
+        <implicit-parameter name="p_p_id">userprofileportlet_WAR_userprofileportlet</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+        <implicit-parameter name="p_p_resource_id">addRole</implicit-parameter>
+    </route>
+
+    <route>
+        <pattern>/api/members/{memberId}/roles/{roleId}/remove</pattern>
+        <generated-parameter name="memberId">{memberId}</generated-parameter>
+        <generated-parameter name="roleId">{roleId}</generated-parameter>
+        <implicit-parameter name="p_p_id">userprofileportlet_WAR_userprofileportlet</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+        <implicit-parameter name="p_p_resource_id">removeRole</implicit-parameter>
+    </route>
+
 </routes>

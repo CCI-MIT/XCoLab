@@ -25,7 +25,8 @@ public class MemberListCsvConverter {
 
     private List<String[]> getMemberList() {
         List<Member> memberList = MembersClient
-                .listMembers(null, null, null, true, 0, Integer.MAX_VALUE);
+                .listMembers(null, null, null,
+                        null, true, 0, Integer.MAX_VALUE);
         List<String[]> rows = new ArrayList<>(memberList.size());
 
         for (Member member : memberList) {

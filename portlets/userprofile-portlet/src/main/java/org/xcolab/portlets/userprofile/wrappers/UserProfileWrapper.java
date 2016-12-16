@@ -1,7 +1,6 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
 import com.ext.portlet.Activity.ActivityUtil;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 
@@ -11,12 +10,14 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.legacy.utils.SendMessagePermissionChecker;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
+import org.xcolab.client.members.pojo.Role_;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
@@ -51,7 +52,7 @@ public class UserProfileWrapper implements Serializable {
     private UserBean userBean;
     private String realName;
     private Boolean attendsConference;
-    private MemberRole role;
+    private MemberRole highestRole;
     private int subscriptionsPageSize = 20;
     private int subscriptionsPaginationPageId;
     private String proposalsString;
@@ -85,40 +86,39 @@ public class UserProfileWrapper implements Serializable {
                     viewingOwnProfile = true;
                 }
             }
-            init(member);
+            init();
         }
     }
 
-    private void init(Member user) {
-        this.member = user;
+    private void init() {
 
-        userBean = new UserBean(user);
-        realName = getName(user.getFullName(), user.getScreenName());
+        userBean = new UserBean(member);
+        realName = getName(member.getFullName(), member.getScreenName());
 
         String firstPart = realName.substring(0, realName.length() / 2).trim();
         String secondPart = realName.substring(realName.length() / 2).trim();
 
         if (firstPart.equals(secondPart)) {
-            realName = user.getFirstName();
+            realName = member.getFirstName();
         }
 
         attendsConference = false; //TODO: store this outside expando if we want to reactive this
-        badges = new BadgeBean(user.getId_());
+        badges = new BadgeBean(member.getId_());
 
         try {
-            role = MemberRole.getHighestRole(user.getRoles());
+            highestRole = MemberRole.getHighestRole(member.getRoles());
         } catch (MemberRole.NoSuchMemberRoleException ignored) {
         }
 
-        userSubscriptions = new UserSubscriptionsWrapper(user);
+        userSubscriptions = new UserSubscriptionsWrapper(member);
         supportedProposals.clear();
         userActivities.clear();
-        for (ProposalSupporter ps : ProposalMemberRatingClientUtil.getProposalSupportersByUserId(user.getId_())) {
+        for (ProposalSupporter ps : ProposalMemberRatingClientUtil.getProposalSupportersByUserId(member.getId_())) {
             supportedProposals.add(new SupportedProposalWrapper(ps));
         }
 
         for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClientUtil
-                .getActivityEntries(0, MAX_ACTIVITIES_COUNT, user.getId_(), null))) {
+                .getActivityEntries(0, MAX_ACTIVITIES_COUNT, member.getId_(), null))) {
 
             UserActivityWrapper a = new UserActivityWrapper(activity, themeDisplay);
             if (a.getBody() != null && !a.getBody().equals("")) {
@@ -126,7 +126,7 @@ public class UserProfileWrapper implements Serializable {
             }
         }
 
-        List<Proposal> proposals = ProposalClientUtil.getMemberProposals(user.getId_());
+        List<Proposal> proposals = ProposalClientUtil.getMemberProposals(member.getId_());
         Map<ContestType, List<Proposal>> proposalsByContestType = EntityGroupingUtil
                 .groupByContestType(proposals);
         for (ContestType contestType : ContestClientUtil.getActiveContestTypes()) {
@@ -150,7 +150,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public boolean isStaffMemberProfile() {
-        return this.role == MemberRole.STAFF;
+        return this.highestRole == MemberRole.STAFF;
     }
 
     public boolean isInitialized() {
@@ -257,8 +257,16 @@ public class UserProfileWrapper implements Serializable {
         return FIRE_GOOGLE_EVENT;
     }
 
-    public MemberRole getRole() {
-        return role;
+    public MemberRole getHighestRole() {
+        return highestRole;
+    }
+
+    public List<Role_> getRoles() {
+        return member.getRoles();
+    }
+
+    public boolean hasRole(long roleId) {
+        return PermissionsClient.memberHasRole(member.getId_(), roleId);
     }
 
     public boolean isDisplayEMailErrorMessage() {

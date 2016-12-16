@@ -17,7 +17,7 @@ public class StaffMemberClient {
     public static List<StaffMember> getStaffMembersByCategoryId(long categoryId) {
         return staffMemberResource.list()
                 .queryParam("categoryId", categoryId)
-                .queryParam("limitRecord", 50) // since not all members are retrieved by default (20)
+                .queryParam("limitRecord", Integer.MAX_VALUE) // since not all members are retrieved by default (20)
                 .execute();
     }
 }
