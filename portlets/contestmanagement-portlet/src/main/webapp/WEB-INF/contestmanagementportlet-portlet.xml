@@ -29,6 +29,14 @@
         </property>
     </bean>
 
+    <bean class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key=".ContestScheduleChangeHelper$IllegalScheduleChangeException">common/notSupported</prop>
+            </props>
+        </property>
+    </bean>
+
     <mvc:annotation-driven/>
 
     <bean class="org.xcolab.jspTags.discussion.actions.AddDiscussionMessageActionController" />
