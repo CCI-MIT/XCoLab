@@ -1,0 +1,10 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <div id="content">
+        <div class="c-Alert__error__message">
+            <h3>Daily Message Limit Exceeded</h3>
+            <p>
+                You have exceeded your daily message limit, please wait up to 24 hours before sending more messages.
+            </p>
+        </div>
+    </div>
+</jsp:root>

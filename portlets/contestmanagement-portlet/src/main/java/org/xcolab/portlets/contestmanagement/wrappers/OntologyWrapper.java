@@ -1,16 +1,11 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 
-
-import com.liferay.portal.kernel.exception.SystemException;
-
-import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
 import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.wrapper.OntologySpaceWrapper;
 import org.xcolab.wrapper.OntologyTermWrapper;
 

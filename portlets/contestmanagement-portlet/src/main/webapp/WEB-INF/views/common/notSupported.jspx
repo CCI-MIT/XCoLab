@@ -5,5 +5,9 @@
 
     <h1>Error!</h1>
 
-    <h3>Sorry, the action you performed is not supported. If you tried to edit a contest schedule make sure that it is not used by any contests that have started.</h3>
+    <h3>Sorry, the action you performed is not supported.</h3>
+    <p>
+        If you tried to edit a contest schedule make sure that it is not used by any contests that have started.
+        If you tried changing a contest's schedule, make sure no proposals have been submitted to that contest.
+    </p>
 </jsp:root>

@@ -186,6 +186,8 @@ public class MessageDaoImpl implements MessageDao {
 
     @Override
     public boolean delete(long messageId) {
+        dslContext.deleteFrom(MESSAGE_RECIPIENT_STATUS)
+                .where(MESSAGE_RECIPIENT_STATUS.MESSAGE_ID.eq(messageId)).execute();
         return dslContext.deleteFrom(MESSAGE)
                 .where(MESSAGE.MESSAGE_ID.eq(messageId)).execute() > 0;
     }

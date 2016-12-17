@@ -13,14 +13,15 @@ import org.xcolab.model.tables.pojos.Message;
 import org.xcolab.service.members.domain.member.MemberDao;
 import org.xcolab.service.members.domain.messaging.MessageDao;
 import org.xcolab.service.members.exceptions.MessageLimitExceededException;
-import org.xcolab.util.IdListUtil;
+import org.xcolab.service.members.exceptions.MessageRecipientException;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Collection;
-import java.util.Optional;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class MessagingService {
@@ -73,30 +74,34 @@ public class MessagingService {
         }
     }
 
-    private Message sendMessage(Message message, Collection<Long> recipientIds) {
-        message = messageDao.createMessage(message).orElseThrow(
+    private Message sendMessage(Message messageBean, Collection<Long> recipientIds) {
+        if (messageBean.getSubject().isEmpty()) {
+            messageBean.setSubject("(No Subject)");
+        }
+        final Message message = messageDao.createMessage(messageBean).orElseThrow(
                 () -> new InternalException("Could not retrieve id of created message"));
 
-        int successfullySentMessages = 0;
-        for (long memberId : recipientIds) {
-            final Optional<Member> recipientOptional = memberDao.getMember(memberId);
-            if (recipientOptional.isPresent()) {
-                Member recipient = recipientOptional.get();
-                messageDao.createMessageRecipient(message.getMessageId(), memberId);
-                if (messagingUserPreferencesService.getByMemberId(memberId).getEmailOnReceipt()) {
-                    copyRecipient(recipient, message);
-                }
-                successfullySentMessages++;
-            } else {
-                log.error("Member {}, recipient of message {}, does not exist",
-                        memberId, message.getMessageId());
-            }
+        final Long messageId = message.getMessageId();
+        if (recipientIds.isEmpty()) {
+            messageDao.delete(messageId);
+            throw MessageRecipientException.empty(messageId);
         }
-        if (successfullySentMessages == 0) {
-            messageDao.delete(message.getMessageId());
-            throw new InternalException(String.format(
-                    "Could not send message %s from %d to members %s", message.getSubject(),
-                    message.getFromId(), IdListUtil.getStringFromIds(recipientIds)));
+        final Set<Long> recipientsFound = new HashSet<>();
+        for (long memberId : recipientIds) {
+            memberDao.getMember(memberId).ifPresent((recipientMember) -> {
+                messageDao.createMessageRecipient(messageId, memberId);
+                if (messagingUserPreferencesService.getByMemberId(memberId).getEmailOnReceipt()) {
+                    copyRecipient(recipientMember, message);
+                }
+                recipientsFound.add(memberId);
+            });
+
+        }
+        if (recipientsFound.size() < recipientIds.size()) {
+            if (recipientsFound.isEmpty()) {
+                messageDao.delete(messageId);
+            }
+            throw MessageRecipientException.notFound(messageId, recipientsFound, recipientIds);
         }
 
         return message;
@@ -131,4 +136,5 @@ public class MessagingService {
         String home = ConfigurationAttributeKey.COLAB_URL.get();
         return home + MessageConstants.EMAIL_MESSAGE_URL_TEMPLATE + m.getMessageId();
     }
+
 }
