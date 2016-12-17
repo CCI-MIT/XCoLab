@@ -92,7 +92,7 @@ function handleClickOnDiscussion(event){
         $.cookie("proposal-comment-body", $("#cke_messageContent iframe").contents().find("body").text(), {path: "/"});
     }
 
-    if ($(this).attr("data-is-deferred") == "true") {
+    if ($("#addCommentButton").attr("data-is-deferred") == "true") {
         deferUntilLogin();
     } else {
         if (! window.isAddCommentFormValid()) {
