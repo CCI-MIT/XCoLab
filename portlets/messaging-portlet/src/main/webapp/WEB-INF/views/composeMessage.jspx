@@ -46,25 +46,30 @@
 
 
     <script type="text/javascript">
+        <![CDATA[
         jQuery(function() {
             enableDirtyCheck();
             jQuery("#messageSendButton").click(function () {
-                if(1 > $("#userSelectorInputRecipients").val().length) {
-                    var numberOfRecipients = $('#userListRecipients  li').length;
+                var currentSearchText = $("#userSelectorInputRecipients").val();
+                if (currentSearchText.length == 0) {
+                    var numberOfRecipients = $('#userListRecipients').find('li').length;
                     var numberOfMessagesLeft = parseInt($("#numberOfMessagesLeft").html());
-                    if( numberOfMessagesLeft >= numberOfRecipients) {
+                    if (numberOfRecipients == 0) {
+                        alert("Please select at least one recipient");
+                    } else if (numberOfMessagesLeft < numberOfRecipients) {
+                        alert(
+                            "You've exceeded your message limit for today. Please remove at least " + (numberOfRecipients
+                            - numberOfMessagesLeft) + " recipients or wait 24 hours.");
+                    } else {
                         disableDirtyCheck();
                         jQuery("#sendMessageForm").submit();
-                    } else {
-                        alert("Message Limit Exceeded, please remove at least " + (numberOfRecipients - numberOfMessagesLeft) + " recipients!");
                     }
                 } else {
-                    alert("The user " + $("#userSelectorInputRecipients").val() + " couldn't be found!");
+                    alert("The member " + currentSearchText + " could not be found!");
                 }
             });
         });
-
-
+        ]]>
     </script>
 
 </jsp:root>

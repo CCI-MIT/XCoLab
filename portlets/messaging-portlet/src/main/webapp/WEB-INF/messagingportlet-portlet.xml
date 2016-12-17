@@ -20,6 +20,14 @@
         <property name="suffix" value=".jspx"/>
     </bean>
 
+    <bean class="org.springframework.web.portlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key=".MessageLimitExceededException">messageLimitExceeded</prop>
+            </props>
+        </property>
+    </bean>
+
     <bean class="org.springframework.web.portlet.mvc.annotation.AnnotationMethodHandlerAdapter" />
     <mvc:annotation-driven/>
 </beans>

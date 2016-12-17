@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
-import com.liferay.util.mail.MailEngineException;
-
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
@@ -25,10 +23,8 @@ import org.xcolab.portlets.messaging.beans.MessagingBean;
 import org.xcolab.portlets.messaging.beans.SendMessageBean;
 import org.xcolab.portlets.messaging.utils.MessagingPermissions;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import javax.mail.internet.AddressException;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.RenderRequest;
@@ -107,12 +103,9 @@ public class MessagingController {
     @RequestMapping(params = {"action=sendMessage"})
     public void sendMessage(ActionRequest request, ActionResponse response, Model model,
             @ModelAttribute("sendMessageBean") SendMessageBean sendMessageBean)
-            throws AddressException, UnsupportedEncodingException, MailEngineException,
-            //TODO: show better message for validation error
-            MessageLimitExceededException {
+            throws MessageLimitExceededException {
 
-        long memberId = MemberAuthUtil.getMemberId(request);
-        Member member = MembersClient.getMemberUnchecked(memberId);
+        Member member = MemberAuthUtil.getMemberOrThrow(request);
 
         final MessagingPermissions messagingPermissions = new MessagingPermissions(request);
 

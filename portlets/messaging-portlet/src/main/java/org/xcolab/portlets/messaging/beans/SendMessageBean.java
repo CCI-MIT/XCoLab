@@ -3,6 +3,7 @@ package org.xcolab.portlets.messaging.beans;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.util.IdListUtil;
 import org.xcolab.util.html.HtmlUtil;
 
 import java.io.Serializable;
@@ -56,15 +57,10 @@ public class SendMessageBean implements Serializable {
 //            return;
 //        }
 
-        List<Long> recipientIds = new ArrayList<>();
+        List<Long> recipientIds = IdListUtil.getIdsFromString(userIdsRecipients);
 
-        for (String recipientId : userIdsRecipients.split(",")) {
-            if (!recipientId.trim().equals("")) {
-                recipientIds.add(Long.parseLong(recipientId));
-            }
-        }
-
-        MessagingClient.checkLimitAndSendMessage(subject, HtmlUtil.cleanSome(messageContent, baseUri), sender.getUserId(), recipientIds);
+        MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(subject),
+                HtmlUtil.cleanSome(messageContent, baseUri), sender.getUserId(), recipientIds);
     }
 
     public String getUserIdsRecipients() {
