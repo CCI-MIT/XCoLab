@@ -93,7 +93,7 @@ public class ProposalMoveHistory extends AbstractProposalMoveHistory {
 
 
     //deal with this
-    public MoveType getMoveTypez() {
+    public MoveType getMoveTypeEnum() {
         return MoveType.valueOf(this.getMoveType());
     }
 

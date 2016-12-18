@@ -8,4 +8,8 @@ public interface RoleDao {
     List<Role_> getMemberRoles(Long memberId);
 
     List<Role_> getMemberRolesInContest(Long memberId, Long contestId);
+
+    void assignMemberRole(Long memberId, Long roleId);
+
+    boolean memberHasRole(Long memberId, Long roleId);
 }

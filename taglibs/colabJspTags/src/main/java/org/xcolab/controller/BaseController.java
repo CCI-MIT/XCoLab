@@ -4,6 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.liferay.portal.util.PortalUtil;
 
+import org.xcolab.entity.utils.portlet.PortletUtil;
+
 import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,7 +19,7 @@ public class BaseController {
     protected void setSeoTexts(PortletRequest request, String pageTitle,
             String pageSubtitle, String pageDescription) {
 
-        HttpServletRequest httpRequest = PortalUtil.getHttpServletRequest(request);
+        HttpServletRequest httpRequest = PortletUtil.getHttpServletRequest(request);
 
         if (StringUtils.isNotBlank(pageTitle)) {
             PortalUtil.setPageTitle(pageTitle, httpRequest);

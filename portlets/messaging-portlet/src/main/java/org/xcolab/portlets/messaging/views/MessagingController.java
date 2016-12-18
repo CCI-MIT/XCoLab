@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.util.mail.MailEngineException;
 
 import org.xcolab.client.members.MembersClient;
@@ -92,7 +90,7 @@ public class MessagingController {
     @RequestMapping(params = {"action=archiveMessages"})
     public void archiveMessages(ActionRequest request, ActionResponse response, Model model,
             @ModelAttribute("messagingBean") MessagingBean messagingBean)
-            throws PortalException, SystemException, MessageNotFoundException {
+            throws MessageNotFoundException {
         long memberId = MemberAuthUtil.getMemberId(request);
 
         if (messagingBean.getDataPage() != null) {

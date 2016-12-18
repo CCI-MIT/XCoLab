@@ -1,33 +1,26 @@
 package org.xcolab.portlets.contestmanagement.controller.common;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.User;
-import com.liferay.portal.util.PortalUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.email.EmailToAdminDispatcher;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.wrapper.SimpleExceptionErrorReportWrapper;
+
+import java.io.IOException;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
-import java.io.IOException;
-
-/**
- * Created by Thomas on 8/4/2015.
- */
 
 @Controller
 @RequestMapping("view")
 public class ExceptionController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ExceptionController.class);
-    public static final String EXCEPTION_VIEW = "common/showException";
+    private static final String EXCEPTION_VIEW = "common/showException";
     private static final String EMAIL_SUBJECT_FORMAT_STRING = "User encountered exception in CMS";
     private static final String EMAIL_ADDRESS_PLACEHOLDER = "(email address not specified)";
     private static final String USER_SCREEN_NAME_PLACEHOLDER = "(name not specified)";
@@ -40,7 +33,7 @@ public class ExceptionController {
                     "%s</p>";
 
     @RequestMapping(params = {"action=showException", "error=true"})
-    public String showException(PortletRequest request, Model model) throws PortalException, SystemException {
+    public String showException(PortletRequest request, Model model) {
         String exceptionMessage = request.getParameter("exceptionMessage");
         String exceptionStacktrace = request.getParameter("exceptionStacktrace");
         model.addAttribute("exceptionMessage", exceptionMessage);
@@ -50,36 +43,36 @@ public class ExceptionController {
 
     @RequestMapping(params = {"action=reportException"})
     public void reportException(ActionRequest request, Model model,
-            ActionResponse response) throws IOException, SystemException, PortalException {
+            ActionResponse response) throws IOException {
 
-        User user = PortalUtil.getUser(request);
+        Member member = MemberAuthUtil.getMemberOrNull(request);
         String stepsToReproduce = request.getParameter("stepsToReproduce");
         String exceptionMessage = request.getParameter("exceptionMessage");
         String exceptionStacktrace = request.getParameter("exceptionStacktrace");
-        String userEmailAddress = user.getEmailAddress();
+        String userEmailAddress = member != null ? member.getEmailAddress() : "";
         SimpleExceptionErrorReportWrapper invalidUrlErrorWrapper =
                 new SimpleExceptionErrorReportWrapper(stepsToReproduce, userEmailAddress, exceptionMessage,
                         exceptionStacktrace);
 
         if (invalidUrlErrorWrapper.isExceptionMessageAvailable()) {
             new EmailToAdminDispatcher(EMAIL_SUBJECT_FORMAT_STRING,
-                    getMessageBody(invalidUrlErrorWrapper, user)).sendMessage();
+                    getMessageBody(invalidUrlErrorWrapper, member)).sendMessage();
         }
 
         response.sendRedirect("/web/guest/cms/-/contestmanagement/manager");
     }
 
-    private String getMessageBody(SimpleExceptionErrorReportWrapper simpleExceptionErrorReportWrapper, User user) {
+    private String getMessageBody(SimpleExceptionErrorReportWrapper simpleExceptionErrorReportWrapper, Member member) {
         String emailAddress = EMAIL_ADDRESS_PLACEHOLDER;
-        if (Validator.isNotNull(simpleExceptionErrorReportWrapper.getUserEmailAddress())) {
+        if (StringUtils.isNotBlank(simpleExceptionErrorReportWrapper.getUserEmailAddress())) {
             emailAddress = simpleExceptionErrorReportWrapper.getUserEmailAddress();
         }
 
         String userScreenName = USER_SCREEN_NAME_PLACEHOLDER;
-        if (Validator.isNotNull(user)) {
-            userScreenName = user.getScreenName();
-            if (Validator.isNull(emailAddress) || emailAddress.equals(EMAIL_ADDRESS_PLACEHOLDER)) {
-                emailAddress = user.getEmailAddress();
+        if (member != null) {
+            userScreenName = member.getScreenName();
+            if (StringUtils.isBlank(emailAddress) || emailAddress.equals(EMAIL_ADDRESS_PLACEHOLDER)) {
+                emailAddress = member.getEmailAddress();
             }
         }
 

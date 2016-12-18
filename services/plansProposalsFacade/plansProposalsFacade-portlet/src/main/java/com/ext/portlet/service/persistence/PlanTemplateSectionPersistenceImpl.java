@@ -4,8 +4,6 @@ import com.ext.portlet.NoSuchPlanTemplateSectionException;
 import com.ext.portlet.model.PlanTemplateSection;
 import com.ext.portlet.model.impl.PlanTemplateSectionImpl;
 import com.ext.portlet.model.impl.PlanTemplateSectionModelImpl;
-import com.ext.portlet.service.persistence.PlanTemplateSectionPersistence;
-
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -31,7 +29,6 @@ import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

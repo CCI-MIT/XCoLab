@@ -1,7 +1,7 @@
 package org.xcolab.portlets.feeds;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -13,7 +13,7 @@ import javax.portlet.ValidatorException;
 
 public class FeedsPreferences implements Serializable {
 
-    private static final Log _log = LogFactoryUtil.getLog(FeedsPreferences.class);
+    private static final Logger _log = LoggerFactory.getLogger(FeedsPreferences.class);
 
 	private static final long serialVersionUID = 1L;
 

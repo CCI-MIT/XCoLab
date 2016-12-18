@@ -1,12 +1,11 @@
 package org.xcolab.wrapper;
 
-import com.liferay.portal.util.PortalUtil;
-
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestDiscussion;
+import org.xcolab.entity.utils.portlet.PortletUtil;
 import org.xcolab.interfaces.TabContext;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.interfaces.TabPermissions;
@@ -47,7 +46,7 @@ public class TabWrapper implements Serializable {
     }
 
     public String getTabUrl()  {
-        return PortalUtil.getCurrentURL(this.request);
+        return PortletUtil.getCurrentUrl(this.request);
     }
 
     public String getElementType()  {

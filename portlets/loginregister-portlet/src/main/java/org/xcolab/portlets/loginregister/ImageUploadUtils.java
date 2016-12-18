@@ -1,15 +1,16 @@
 package org.xcolab.portlets.loginregister;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.pojo.FileEntry;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.entity.utils.upload.FileUploadUtil;
+import org.xcolab.util.exceptions.DatabaseAccessException;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -22,9 +23,10 @@ import javax.imageio.ImageIO;
 
 public class ImageUploadUtils {
 
-    public static final int IMAGE_RESIZE_WIDTH = 300;
-    public static final int IMAGE_RESIZE_HEIGHT = 300;
-    private static final Log _log = LogFactoryUtil.getLog(ImageUploadUtils.class);
+    private static final Logger _log = LoggerFactory.getLogger(ImageUploadUtils.class);
+
+    private static final int IMAGE_RESIZE_WIDTH = 300;
+    private static final int IMAGE_RESIZE_HEIGHT = 300;
 
     public static long uploadImage(URL url, String path) {
         try {
@@ -42,7 +44,7 @@ public class ImageUploadUtils {
 
             return file.getFileEntryId();
         } catch (IOException  e) {
-            _log.error("Could not upload picture " + url.toString(), e);
+            _log.error("Could not upload picture {}", url.toString(), e);
         }
 
         return 0L;
@@ -65,7 +67,7 @@ public class ImageUploadUtils {
             URL url = new URL(picUrl);
             return ImageUploadUtils.uploadImage(url, path);
         } catch (MalformedURLException e) {
-            _log.warn("Could not upload  image with url " + picUrl, e);
+            _log.warn("Could not upload  image with url {}", picUrl, e);
         }
 
         return 0L;

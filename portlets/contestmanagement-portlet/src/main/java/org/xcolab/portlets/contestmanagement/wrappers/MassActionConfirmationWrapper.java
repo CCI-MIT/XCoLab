@@ -1,7 +1,5 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.Validator;
 
 import org.xcolab.client.contest.ContestClientUtil;
@@ -31,8 +29,7 @@ public class MassActionConfirmationWrapper {
         this.contestIds = new ArrayList<>();
     }
 
-    public MassActionConfirmationWrapper(List<Integer> contestIds, Integer massActionId)
-            throws PortalException, SystemException {
+    public MassActionConfirmationWrapper(List<Integer> contestIds, Integer massActionId) {
         this.selectedContest = new ArrayList<>();
         this.contestWrappers = new ArrayList<>();
         this.massActionId = massActionId;
@@ -81,7 +78,7 @@ public class MassActionConfirmationWrapper {
         this.massActionId = massActionId;
     }
 
-    private void populateValidContestWrapper(List<Integer> contestIds) throws PortalException, SystemException {
+    private void populateValidContestWrapper(List<Integer> contestIds) {
         for (Integer contestId : contestIds) {
             try {
                 Contest contest = ContestClientUtil.getContest(contestId);

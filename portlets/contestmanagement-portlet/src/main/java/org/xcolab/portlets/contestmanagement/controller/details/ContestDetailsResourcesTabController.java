@@ -1,5 +1,7 @@
 package org.xcolab.portlets.contestmanagement.controller.details;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,11 +11,6 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.interfaces.TabEnum;
@@ -35,7 +32,7 @@ import javax.portlet.PortletResponse;
 @RequestMapping("view")
 public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestDetailsResourcesTabController.class);
+    private final static Logger _log = LoggerFactory.getLogger(ContestDetailsResourcesTabController.class);
     static final private TabEnum tab = ContestDetailsTabs.RESOURCES;
     static final private String TAB_VIEW = "details/resourcesTab";
 
@@ -87,14 +84,14 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
         try {
             wikiPageWrapper.updateWikiPage(updatedContestResourcesBean);
             SetRenderParameterUtil.setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch (SystemException | ParseException | IOException e) {
+        } catch (ParseException | IOException e) {
             _log.warn("Update contest resources failed with: ", e);
             SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
     }
 
     @RequestMapping(params = {"action=updateContestResources", "error=true"})
-    public String reportError(PortletRequest request, Model model) throws PortalException, SystemException {
+    public String reportError(PortletRequest request, Model model) {
         return TAB_VIEW;
     }
 

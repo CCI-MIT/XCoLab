@@ -334,6 +334,38 @@
         <implicit-parameter name="p_p_lifecycle">1</implicit-parameter>
     </route>
 
+    <!-- Modeling JSON endpoints -->
+    <route>
+        <pattern>/api/modeling/scenarios/{scenarioId}</pattern>
+        <generated-parameter name="scenarioId">{scenarioId}</generated-parameter>
+        <implicit-parameter name="p_p_id">proposalsportlet_WAR_proposalsportlet</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+        <implicit-parameter name="p_p_resource_id">getScenario</implicit-parameter>
+    </route>
+
+    <route>
+        <pattern>/api/modeling/models/{modelId}</pattern>
+        <generated-parameter name="modelId">{modelId}</generated-parameter>
+        <implicit-parameter name="p_p_id">proposalsportlet_WAR_proposalsportlet</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+        <implicit-parameter name="p_p_resource_id">getModel</implicit-parameter>
+    </route>
+
+    <route>
+        <pattern>/api/modeling/models/{modelId}/run</pattern>
+        <generated-parameter name="modelId">{modelId}</generated-parameter>
+        <implicit-parameter name="p_p_id">proposalsportlet_WAR_proposalsportlet</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+        <implicit-parameter name="p_p_resource_id">runModel</implicit-parameter>
+    </route>
+
+    <route>
+        <pattern>/api/modeling/refreshModels</pattern>
+        <implicit-parameter name="p_p_id">proposalsportlet_WAR_proposalsportlet</implicit-parameter>
+        <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
+        <implicit-parameter name="p_p_resource_id">refreshModels</implicit-parameter>
+    </route>
+
     <!-- json endpoints for moving -->
     <route>
         <pattern>/api/contestsOpenForProposals</pattern>
@@ -352,6 +384,7 @@
         <implicit-parameter name="p_p_resource_id">getProposalContestSections</implicit-parameter>
     </route>
 
+    <!-- json endpoints for history -->
     <route>
         <pattern>/api/phases/{phaseId}/proposals/{proposalId}/versionsFirstIndex</pattern>
         <generated-parameter name="contestPhaseId">{phaseId}</generated-parameter>
@@ -379,6 +412,4 @@
         <implicit-parameter name="p_p_lifecycle">2</implicit-parameter>
         <implicit-parameter name="p_p_resource_id">getProposalVersions</implicit-parameter>
     </route>
-
-
 </routes>

@@ -1,6 +1,5 @@
 package org.xcolab.portlets.contentdisplay.views;
 
-import com.liferay.portal.kernel.exception.PortalException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +37,7 @@ public class ContentDisplayPreferencesController {
     @RequestMapping(params = "action=save")
     public void savePreferences(ActionRequest request, ActionResponse response, Model model,
             ContentDisplayPreferences preferences)
-            throws ReadOnlyException, ValidatorException, IOException, PortalException {
+            throws ReadOnlyException, ValidatorException, IOException {
         //save terms
         preferences.store(request);
     }

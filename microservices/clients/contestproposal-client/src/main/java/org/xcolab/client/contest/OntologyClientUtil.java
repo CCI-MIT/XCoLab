@@ -99,6 +99,10 @@ public final class OntologyClientUtil {
         return client.getOntologyTermsByName(name);
     }
 
+    public static List<OntologyTerm> getChildOntologyTerms(Long ontologyTermId) {
+        return client.getChildOntologyTerms(ontologyTermId);
+    }
+
     public static FocusArea getFocusArea(long Id_) {
         return client.getFocusArea(Id_);
     }

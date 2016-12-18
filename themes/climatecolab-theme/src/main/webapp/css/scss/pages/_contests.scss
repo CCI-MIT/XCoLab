@@ -3,6 +3,159 @@ $p-Contests__userslist__a__fontWeight: 700 !default;
 $p-Contests__userslist__td--g__background: url(../images/pattern-tbl-6x6.png) !default;
 $p-Contests__usersFilter__paddingRight: 0px !default;
 
+/* CollectionCardsView */
+
+.c-Headline .AdvancedView {
+  float: right;
+  height: 34px;
+  line-height: 34px;
+  margin-right: 55px;
+  font-size: 12px;
+  font-weight: $b-Typography__fontWeight--bold;
+  text-transform: uppercase;
+
+  > div {
+    float:left;
+    padding-left: 35px;
+  }
+
+  .outline {
+    background: url(../images/icon-list_outline-off.png) no-repeat 6px 8px;
+
+    &.selected {
+      background: url(../images/icon-list_card-on.png) no-repeat 6px 9px;
+    }
+  }
+}
+
+.c-Headline .showOptions{
+  margin-right: 40px;
+}
+
+.contests-container {
+  background-color: $t-Color__primary__grey--light;
+  padding-top:15px;
+  padding-left:35px;
+  overflow:hidden;
+}
+
+.c-ontology-selector {
+
+  height: 50px;
+
+  .c-arrow {
+    float:left;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-bottom: 32px solid transparent;
+    margin-right: 50px;
+
+    &.selected {
+      border-bottom: 32px solid $t-Color__primary__grey--light;
+      background-color:white;
+    }
+  }
+
+  a {
+    font-weight: bold;
+    margin-right: 50px;
+    &.selected {
+      color: $t-Color__grey--medium;
+    }
+  }
+
+  .filter {
+    margin-right: 65px;
+  }
+}
+
+.c-breadcrump {
+  font-size: 14px;
+  background-color: $t-Color__primary__grey--light;
+  padding: 17px;
+  padding-bottom: 0px;
+  padding-left: 20px;
+
+  span {
+    color: $t-Color__grey--medium
+  }
+
+  a {
+    color: $t-Color__primary;
+    text-decoration: none;
+  }
+}
+
+.c-display-selector {
+
+  background-color: $t-Color__primary__grey--light;
+  height: 65px;
+
+  .show-active {
+    float: right;
+    text-align: right;
+    position: relative;
+    font: 12px "Lucida Grande", Arial, sans-serif;
+    margin-right: 65px;
+    margin-top: 25px;
+    padding: 0 16px 0 0;
+  }
+
+  .view{
+    > div {
+      width:70px;
+      text-align: right;
+      padding-right: 5px;
+      margin: 15px;
+      float: left;
+      height: 34px;
+      line-height: 34px;
+      font-size: 12px;
+      font-weight: $b-Typography__fontWeight--bold;
+      text-transform: uppercase;
+
+      &.selected {
+        color: $t-Color__grey--medium;
+        border: solid 1px $t-Color__primary;
+        border-radius: 3px;
+        margin:14px;
+      }
+    }
+
+    .grid {
+      background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px;
+      &.selected {
+        background: url(../images/icon-grid_view-off.png) no-repeat 8px 8px white;
+      }
+    }
+
+    .list {
+      background: url(../images/icon-list_view-off.png) no-repeat 6px 8px;
+      &.selected {
+        background: url(../images/icon-list_view-off.png) no-repeat 6px 8px white;
+      }
+    }
+  }
+}
+
+
+.c-description {
+  margin-right: 400px;
+  color: $t-Color__grey--medium;
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.c-contest-title {
+  font-family: "Bree serif", Verdana, sans-serif;
+  font-size: 37px;
+  color: #404040;
+  line-height: 50px;
+}
+
+
+/* NOT CollectionCardView */
+
 /* columns  ------------- */
 .contest-left {
   float: left;
@@ -14,7 +167,7 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
   width: 484px;
 }
 
-/* grid-view / list-view button */
+/* outline-view button */
 .c-Headline .view {
   float: left;
   height: 34px;
@@ -178,20 +331,6 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
   height: 0;
 }
 
-.prop {
-  display: inline;
-  padding-right: 18px;
-  text-transform: lowercase;
-}
-
-.comm {
-  display: inline;
-}
-
-.prop a, .comm a {
-  font-weight: $b-Typography__fontWeight--bold;
-}
-
 /* the table with rows of users  */
 .userslist {
   clear: both;
@@ -239,7 +378,7 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
   background: white;
   text-align: left;
   padding: 10px 10px 10px 10px;
-  width: 125px;
+  width: 130px;
 }
 
 #priorActiveAllWidget ul {
@@ -302,4 +441,26 @@ $p-Contests__usersFilter__paddingRight: 0px !default;
 //contest outline view
 .accordion, .accordion li {
   list-style: none;
+}
+
+.prop {
+   display: inline;
+  padding-right: 18px;
+  text-transform: lowercase;
+}
+
+.comm {
+  display: inline;
+}
+
+.prop a, .comm a {
+   font-weight: $b-Typography__fontWeight--bold;
+}
+
+.nothingFound {
+  text-align: center;
+  padding: 30px;
+  text-overflow: ellipsis;
+  width: 850px;
+  color:$t-Color__grey--medium
 }

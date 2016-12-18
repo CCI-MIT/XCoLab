@@ -23,7 +23,9 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> COLAB_URL =
             ConfigurationAttributes.newStringAttribute("COLAB_URL")
                     .withCache().build();
-
+    public static final AttributeGetter<String> BLOG_URL =
+            ConfigurationAttributes.newStringAttribute("BLOG_URL")
+                    .withCache().build();
     public static final AttributeGetter<Long> DEFAULT_CONTEST_TYPE_ID =
             ConfigurationAttributes.newLongAttribute("DEFAULT_CONTEST_TYPE_ID")
                     .withCache().build();
@@ -46,6 +48,15 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> GOOGLE_AUTH_CLIENT_SECRET =
             ConfigurationAttributes.newStringAttribute("GOOGLE_AUTH_CLIENT_SECRET")
                     .build();
+
+    public static final AttributeGetter<String> GOOGLE_RECAPTCHA_SITE_KEY =
+            ConfigurationAttributes.newStringAttribute("GOOGLE_RECAPTCHA_SITE_KEY")
+                    .build();
+    public static final AttributeGetter<String> GOOGLE_RECAPTCHA_SITE_SECRET_KEY =
+            ConfigurationAttributes.newStringAttribute("GOOGLE_RECAPTCHA_SITE_SECRET_KEY")
+                    .build();
+
+
     public static final AttributeGetter<String> FACEBOOK_APPLICATION_ID =
             ConfigurationAttributes.newStringAttribute("FACEBOOK_APPLICATION_ID")
                     .build();
@@ -178,4 +189,9 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> MIT_HEADER_BAR_LINK_URL =
             ConfigurationAttributes.newStringAttribute("MIT_HEADER_BAR_LINK_URL")
                     .defaultValue("").build();
+
+    //Configuration of Collection Cards
+    public static final AttributeGetter<Boolean> COLAB_USES_CARDS =
+            ConfigurationAttributes.newBooleanAttribute("COLAB_USES_CARDS")
+                    .defaultValue(true).build();
 }

@@ -11,14 +11,14 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import com.ext.portlet.Activity.LoginRegisterActivityKeys;
-import com.liferay.portal.kernel.captcha.CaptchaException;
-import com.liferay.portal.kernel.captcha.CaptchaUtil;
+
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -48,6 +48,7 @@ import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.entity.utils.ModelAttributeUtil;
+import org.xcolab.entity.utils.ReCaptchaUtils;
 import org.xcolab.liferay.LoginRegisterUtil;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
@@ -211,12 +212,7 @@ public class MainViewController {
                 String.format("Could not retrieve country from IP address %s", ipAddr));
     }
 
-    @RequestMapping(params = "captcha=true")
-    public String getCaptchaImage(PortletRequest request, PortletResponse response) throws IOException {
-        CaptchaUtil.serveImage(PortalUtil.getHttpServletRequest(request), PortalUtil.getHttpServletResponse(response));
 
-        return null;
-    }
 
     @RequestMapping(params = "error=true")
     public String registerError(PortletRequest request, Model model,
@@ -224,7 +220,7 @@ public class MainViewController {
             @RequestParam(required = false) String redirect) {
         if (request.getParameter("recaptchaError") != null) {
             result.addError(new ObjectError("createUserBean",
-                    "Invalid words in captcha field"));
+                    "Please click the box"));
         }
 
         if (com.liferay.portal.kernel.util.Validator.isNotNull(redirect)) {
@@ -258,11 +254,9 @@ public class MainViewController {
             boolean captchaValid = true;
             // require captcha if user is not logged in via SSO
             if (fbIdString == null && openId == null) {
-                try {
-                    CaptchaUtil.check(request);
-                } catch (CaptchaException e) {
-                    captchaValid = false;
-                }
+                String gRecaptchaResponse = request
+                        .getParameter("g-recaptcha-response");
+                captchaValid = ReCaptchaUtils.verify(gRecaptchaResponse,ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_SECRET_KEY.get());
             }
             if (!captchaValid) {
                 SessionErrors.clear(request);
@@ -421,6 +415,10 @@ public class MainViewController {
 
         response.getWriter().write(json.toString());
     }
+    @ModelAttribute("recaptchaDataSiteKey")
+    public String getRecaptchaDataSiteKey(){
+        return ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_KEY.get();
+    }
 
     @ResourceMapping(value = "generateScreenName")
     public void generateScreenName(ResourceRequest request, ResourceResponse response)
@@ -442,8 +440,5 @@ public class MainViewController {
         response.getWriter().write(json.toString());
     }
 
-    @ResourceMapping
-    public void captchaHandler(ResourceRequest request, ResourceResponse response) throws IOException {
-        CaptchaUtil.serveImage(request, response);
-    }
+
 }

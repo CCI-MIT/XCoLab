@@ -8,7 +8,7 @@
     <liferay-theme:defineObjects />
 
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
-    <!--@elvariable id="contest" type="org.xcolab.portlets.proposals.wrappers.ContestWrapper"-->
+    <!--@elvariable id="contest" type="org.xcolab.client.contest.pojo.Contest"-->
     <!--@elvariable id="contestPhase" type="org.xcolab.wrappers.BaseContestPhaseWrapper"-->
     <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
 

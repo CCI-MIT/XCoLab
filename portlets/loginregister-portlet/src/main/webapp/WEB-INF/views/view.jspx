@@ -17,6 +17,8 @@
 
     <!--@elvariable id="createUserBean" type="org.xcolab.portlets.loginregister.CreateUserBean"-->
 
+	<script src='https://www.google.com/recaptcha/api.js'><!-- --></script>
+
 	<portlet:actionURL var="createAccountURL">
 		<portlet:param name="saveLastPath" value="${isRegistering ? 0 : 1 }" />
 		<portlet:param name="isRegistering" value="true" />
@@ -188,11 +190,9 @@
 
                 <c:if test="${ createUserBean.captchaNeeded }">
 				<tr>
-					<th nowrap="nowrap" class="required-field">Retype the numbers </th>
+					<th nowrap="nowrap" class="required-field">Click on the box </th>
 					<td colspan="3">
-						<portlet:resourceURL var="getCaptchaImage" id="ajaxHandler"/>
-						<img src="${getCaptchaImage }" style="margin-bottom: 10px;"/><br />
-						<form:input cssClass="popupreg_input" path="captchaText" />
+						<div class="g-recaptcha" data-sitekey="${recaptchaDataSiteKey}"><!-- --></div>
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="c-Alert c-Alert__error" path="captchaText" />
 						</div>

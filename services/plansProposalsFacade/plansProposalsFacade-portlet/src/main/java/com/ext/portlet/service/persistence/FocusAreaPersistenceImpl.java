@@ -4,8 +4,6 @@ import com.ext.portlet.NoSuchFocusAreaException;
 import com.ext.portlet.model.FocusArea;
 import com.ext.portlet.model.impl.FocusAreaImpl;
 import com.ext.portlet.model.impl.FocusAreaModelImpl;
-import com.ext.portlet.service.persistence.FocusAreaPersistence;
-
 import com.liferay.portal.kernel.cache.CacheRegistryUtil;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCacheUtil;
@@ -33,7 +31,6 @@ import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

@@ -6,12 +6,11 @@ import org.slf4j.LoggerFactory;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.Role;
-import com.liferay.portal.service.RoleLocalServiceUtil;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.enums.MemberRole;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.contestmanagement.beans.ContestTeamBean;
@@ -32,17 +31,16 @@ public class ContestTeamWrapper {
         this.contestId = contestTeamBean.getContestId();
     }
 
-    public void updateContestTeamMembers()
-            throws SystemException, PortalException {
+    public void updateContestTeamMembers() {
         removeAllContestTeamMembersForContest();
         assignMemberToContest(MemberRole.JUDGE, contestTeamBean.getUserIdsJudges());
         assignMemberToContest(MemberRole.ADVISOR, contestTeamBean.getUserIdsAdvisors());
         assignMemberToContest(MemberRole.FELLOW, contestTeamBean.getUserIdsFellows());
         assignMemberToContest(MemberRole.CONTEST_MANAGER, contestTeamBean.getUserIdsContestManagers());
+        assignMemberToContest(MemberRole.IMPACT_ASSESSMENT_FELLOW, contestTeamBean.getUserIdsIAFellows());
     }
 
-    private void assignMemberToContest(MemberRole memberRole, List<Long> userIds)
-            throws SystemException, PortalException {
+    private void assignMemberToContest(MemberRole memberRole, List<Long> userIds) {
         assignMembersToContestWithRole(userIds, memberRole);
         assignMemberRoleToUser(memberRole, userIds);
         subscribeUsersToContest(userIds);
@@ -55,13 +53,10 @@ public class ContestTeamWrapper {
         }
     }
 
-    private void assignMemberRoleToUser(MemberRole memberRole, List<Long> userIds)
-            throws SystemException, PortalException {
+    private void assignMemberRoleToUser(MemberRole memberRole, List<Long> userIds) {
         for (Long userId : userIds) {
             Long roleId = memberRole.getRoleId();
-            Role role = RoleLocalServiceUtil.getRole(roleId);
-            RoleLocalServiceUtil.addUserRole(userId, roleId);
-            RoleLocalServiceUtil.updateRole(role);
+            MembersClient.assignMemberRole(userId, roleId);
         }
     }
 

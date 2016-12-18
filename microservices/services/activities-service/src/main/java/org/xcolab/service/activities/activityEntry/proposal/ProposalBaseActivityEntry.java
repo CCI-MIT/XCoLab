@@ -1,6 +1,8 @@
 package org.xcolab.service.activities.activityEntry.proposal;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -24,7 +26,7 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
 
     protected static final String DEFAULT_FEED_ENTRY_PATTERN = "%s %s %s";
 
-    //private static final Log _log = LogFactoryUtil.getLog(ProposalBaseActivityEntry.class);
+    private static final Logger _log = LoggerFactory.getLogger(ProposalBaseActivityEntry.class);
 
     private Proposal rawProposal;
 
@@ -49,7 +51,7 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
                     .getProposalAttribute(rawProposal.getProposalId(), ProposalAttributeKeys.NAME,null).getStringValue();
 
         } catch (ContestNotFoundException| ProposalNotFoundException e){
-            //_log.error("Portal exception  " + e.getMessage());
+            _log.error("Error: {}", e.getMessage());
         }
 
     }

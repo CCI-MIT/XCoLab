@@ -2,9 +2,6 @@ package org.xcolab.portlets.contestmanagement.utils;
 
 import org.xcolab.portlets.contestmanagement.entities.ContestMassActions;
 
-/**
- * Created by Thomas on 10/23/2015.
- */
 public final class MassActionUtil {
 
     private MassActionUtil() { }

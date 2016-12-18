@@ -11,4 +11,6 @@ public interface ModelGlobalPreferenceDao {
     Optional<ModelGlobalPreference> get(long id);
 
     Optional<ModelGlobalPreference> getByModelId(long modelId);
+
+    boolean update(ModelGlobalPreference pojo);
 }

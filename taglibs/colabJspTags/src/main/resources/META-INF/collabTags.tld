@@ -39,6 +39,12 @@
     </tag-file>
 
     <tag-file>
+        <description>Blog Search Link</description>
+        <name>blogSearchLink</name>
+        <path>/META-INF/tags/collab/blogSearchLink.tagx</path>
+    </tag-file>
+
+    <tag-file>
         <description>Discussion Comments</description>
         <name>discussionComments</name>
         <path>/META-INF/tags/collab/discussion/comments.tagx</path>

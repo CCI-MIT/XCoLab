@@ -19,6 +19,7 @@ import org.xcolab.service.contest.utils.promotion.enums.ContestPhaseTypeValue;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -110,9 +111,41 @@ public class ContestService {
         }
     }
 
+
+    public List<Contest> getContestsByOntologyTerm(Long ontologyTerm, Boolean getActive, Boolean onlyPrivate) {
+
+
+        if (ontologyTerm == null) {
+            PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
+            if(getActive!=null) {
+                return contestDao.findByGiven(ph, null, null, getActive, null, null, null, null, null, null, onlyPrivate);
+            } else {
+                return contestDao.findByGiven(ph, null, null, null, null, null, null, null, null, null, onlyPrivate);
+            }
+        }
+
+        List<Long> focusAreaOntologyTermsIds = ontologyService.getFocusAreasIdForOntologyTermIds(
+                Arrays.asList(ontologyTerm));
+        List<Contest> contests = new ArrayList<>();
+
+        if(!focusAreaOntologyTermsIds.isEmpty()) {
+            PaginationHelper ph = new PaginationHelper(0, Integer.MAX_VALUE, null);
+            if(getActive!=null) {
+                contests.addAll(contestDao.findByGiven(ph, null, null, getActive, null, null,
+                        focusAreaOntologyTermsIds, null, null, null, onlyPrivate));
+            } else {
+                contests.addAll(contestDao.findByGiven(ph, null, null, getActive, null, null,
+                        focusAreaOntologyTermsIds, null, null, null, onlyPrivate));
+            }
+        }
+
+        return contests;
+    }
+
+
     public List<Contest> getContestsMatchingOntologyTerms(List<Long> ontologyTerms) {
 
-        if (ontologyTerms.isEmpty()) {
+        if (ontologyTerms == null || ontologyTerms.isEmpty()) {
             PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
             return contestDao.findByGiven(ph,null,null,null,null,null,null,null,null,null,null);
         }
@@ -124,8 +157,19 @@ public class ContestService {
 
         List<Long> focusAreaOntologyTermsIds = ontologyService.getFocusAreasIdForOntologyTermIds(allChildTerms);
         PaginationHelper ph = new PaginationHelper(0,Integer.MAX_VALUE,null);
-         return contestDao.findByGiven(ph,null,null,null,null,null,focusAreaOntologyTermsIds,null,null,null,null);
+        return contestDao.findByGiven(ph,null,null,null,null,null,focusAreaOntologyTermsIds,null,null,null,null);
 
+    }
+
+    public int getNumberOfContestsByOntologyTerm(Long ontologyTerm) {
+        int count = 0;
+        if (ontologyTerm != null) {
+            List<Long> focusAreaOntologyTermsIds = ontologyService.getFocusAreasIdForOntologyTermIds(Arrays.asList(ontologyTerm));
+            count += contestDao.countByGiven(null, null, null, null, null, focusAreaOntologyTermsIds, null, null, null, false);
+        } else {
+            count += contestDao.countByGiven(null, null, null, null, null, null, null, null, null, false);
+        }
+        return count;
     }
 
     private Integer getYearFromDate(Date date) {
@@ -133,41 +177,40 @@ public class ContestService {
         calendar.setTime(date);
         return calendar.get(Calendar.YEAR);
     }
+
     public void addContestYearSuffixToContest(Contest contest, boolean checkForCompleted) {
+        ContestPhase latestPhase = getActiveOrLastPhase(contest.getContestPK());
+        String[] contestNameParts = contest.getContestShortName().split(" ");
+        _log.info("addContestYearSuffixToContest: " + contest.getContestPK());
+        // Is in completed phase and inactive? - or is flag set to false?
+        boolean isCompleted = ((contestNameParts).length>0 &&
+                (latestPhase.getContestPhaseType() == ContestPhaseTypeValue.COMPLETED.getTypeId() ||
+                        latestPhase.getContestPhaseType() == ContestPhaseTypeValue.WINNERS_AWARDED.getTypeId()));
+        if (!checkForCompleted || isCompleted) {
+            _log.info("Contest phase type : " + latestPhase.getContestPhaseType());
 
-            ContestPhase latestPhase = getActiveOrLastPhase(contest.getContestPK());
-            String[] contestNameParts = contest.getContestShortName().split(" ");
-            _log.info("addContestYearSuffixToContest: " + contest.getContestPK());
-            // Is in completed phase and inactive? - or is flag set to false?
-            boolean isCompleted = ((contestNameParts).length>0 &&
-                    (latestPhase.getContestPhaseType() == ContestPhaseTypeValue.COMPLETED.getTypeId() ||
-                            latestPhase.getContestPhaseType() == ContestPhaseTypeValue.WINNERS_AWARDED.getTypeId()));
-            if (!checkForCompleted || isCompleted) {
-                _log.info("Contest phase type : " + latestPhase.getContestPhaseType());
+            String lastNamePart = contestNameParts[contestNameParts.length - 1];
+            Integer phaseEndYear = getYearFromDate(latestPhase.getPhaseStartDate());
 
-                String lastNamePart = contestNameParts[contestNameParts.length - 1];
-                Integer phaseEndYear = getYearFromDate(latestPhase.getPhaseStartDate());
+            String newContestShortName;
+            try {
+                final int suffixYear = Integer.parseInt(lastNamePart);
 
-                String newContestShortName;
-                try {
-                    final int suffixYear = Integer.parseInt(lastNamePart);
-
-                    // Same year suffix detected - skip contest
-                    if (suffixYear == phaseEndYear) {
-                        return;
-                    }
-
-                    // Unlikely event that a suffix has been created but the phase end date has changed - adapt to new suffix
-                    contestNameParts[contestNameParts.length - 1] = phaseEndYear.toString();
-                    newContestShortName = StringUtils.join(contestNameParts, " ");
-                } catch (NumberFormatException e) {
-                    // No year suffix detected - add new one
-                    newContestShortName = contest.getContestShortName() + " " + phaseEndYear;
+                // Same year suffix detected - skip contest
+                if (suffixYear == phaseEndYear) {
+                    return;
                 }
-                contest.setContestShortName(newContestShortName);
-                contestDao.update(contest);
-            }
 
+                // Unlikely event that a suffix has been created but the phase end date has changed - adapt to new suffix
+                contestNameParts[contestNameParts.length - 1] = phaseEndYear.toString();
+                newContestShortName = StringUtils.join(contestNameParts, " ");
+            } catch (NumberFormatException e) {
+                // No year suffix detected - add new one
+                newContestShortName = contest.getContestShortName() + " " + phaseEndYear;
+            }
+            contest.setContestShortName(newContestShortName);
+            contestDao.update(contest);
+        }
     }
 
 }

@@ -1,11 +1,10 @@
 package org.xcolab.portlets.contests;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
@@ -27,7 +26,7 @@ import javax.portlet.PortletResponse;
 @RequestMapping("view")
 public class ContestsController {
 
-    private static final Log _log = LogFactoryUtil.getLog(ContestsController.class);
+    private static final Logger _log = LoggerFactory.getLogger(ContestsController.class);
     
     public ContestsController() {
     }
@@ -63,10 +62,12 @@ public class ContestsController {
                         RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
                                 ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                                 ConfigurationAttributeKey.PARTNER_COLAB_PORT);
-                        c = ContestClient.fromService(contestService).getContest(contestId);
-
+                        Contest foreignContest = ContestClient.fromService(contestService).getContest(contestId);
+                        foreignContest.setUpForeignContestVisualConfigsFromLocal(c);
+                        contestWrappers.add(foreignContest);
+                    }else {
+                        contestWrappers.add(c);
                     }
-                    contestWrappers.add(c);
                 } catch (ContestNotFoundException e) {
                     _log.error("Could not find contest " + contestId);
                 }

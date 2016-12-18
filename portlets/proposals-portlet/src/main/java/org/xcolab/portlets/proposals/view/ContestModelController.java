@@ -10,13 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.ext.portlet.service.ModelRunnerServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 
 import java.io.IOException;
@@ -39,10 +36,11 @@ public class ContestModelController extends BaseProposalsController {
     @RequestMapping(params = "pageToDisplay=contestModel")
     public String showContestProposals(RenderRequest request, RenderResponse response, Model model,
 			@RequestParam(required = false) boolean refreshModels)
-            throws PortalException, SystemException, IOException {
+            throws IOException {
     	
     	if (refreshModels) {
-    		ModelRunnerServiceUtil.refreshModels();
+			RomaClientUtil.client().getManager().clearCache();
+			RomaClientUtil.client().getManager().refreshSimulations();
     	}
 		Long modelId = 0L;
     	Long contestPK = proposalsContext.getContest(request).getContestPK();

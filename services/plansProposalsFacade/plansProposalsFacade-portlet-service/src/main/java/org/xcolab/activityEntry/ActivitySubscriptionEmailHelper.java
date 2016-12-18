@@ -3,11 +3,11 @@ package org.xcolab.activityEntry;
 import com.ext.utils.NotificationUnregisterUtils;
 import com.ext.utils.subscriptions.ActivitySubscriptionConstraint;
 import org.apache.commons.collections.comparators.ComparatorChain;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -25,9 +25,9 @@ import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
+import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.entity.utils.TemplateReplacementUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
@@ -51,7 +51,7 @@ public class ActivitySubscriptionEmailHelper {
     // 1 am
     private final static int DAILY_DIGEST_TRIGGER_HOUR = 1;
 
-    private final static Log _log = LogFactoryUtil.getLog(ActivitySubscriptionEmailHelper.class);
+    private final static Logger _log = LoggerFactory.getLogger(ActivitySubscriptionEmailHelper.class);
 
     private static Date lastDailyEmailNotification = getLastDailyEmailNotificationDate();
 

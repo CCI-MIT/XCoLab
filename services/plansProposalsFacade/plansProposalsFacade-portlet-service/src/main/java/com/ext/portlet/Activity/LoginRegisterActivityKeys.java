@@ -1,16 +1,18 @@
 package com.ext.portlet.Activity;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ext.portlet.community.CommunityUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.model.User;
+
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 
 public enum LoginRegisterActivityKeys {
     USER_REGISTERED(1, "New account created", "%s joined the %s community");
-    private static final Log _log = LogFactoryUtil.getLog(LoginRegisterActivityKeys.class);
+    private static final Logger _log = LoggerFactory.getLogger(LoginRegisterActivityKeys.class);
 
     private final int type;
     private final String title;

@@ -411,7 +411,18 @@ public class Contest extends AbstractContest {
         }
         return activePhase;
     }
-
+    public List<Member> getContestImpactAssessmentFellows() {
+        List<Member> iaf = null;
+        for (ContestTeamMemberRole c : getContestTeamMembersByRole()) {
+            if (c.getRoleName().equalsIgnoreCase("IAF")) {
+                iaf = c.getUsers();
+            }
+        }
+        if (iaf == null) {
+            return Collections.emptyList();
+        }
+        return iaf;
+    }
     public List<Member> getContestJudges() {
         List<Member> judges = null;
         for (ContestTeamMemberRole c : getContestTeamMembersByRole()) {
@@ -730,6 +741,19 @@ public class Contest extends AbstractContest {
             return false;
         }
         return true;
+    }
+    public void setUpForeignContestVisualConfigsFromLocal(Contest c) {
+        this.setFeatured_(c.getFeatured_());
+        this.setContestActive(c.getContestActive());
+        this.setContestPrivate(c.getContestPrivate());
+        this.setFlag(c.getFlag());
+        this.setFlagText(c.getFlagText());
+        this.setFlagTooltip(c.getFlagText());
+        this.setFeatured_(c.getFeatured_());
+        this.setShowInListView(c.getShowInListView());
+        this.setShowInOutlineView(c.getShowInOutlineView());
+        this.setShowInTileView(c.getShowInTileView());
+        this.setWeight(c.getWeight());
     }
 
     public String getNewProposalLinkUrl() {

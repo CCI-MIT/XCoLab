@@ -1,13 +1,14 @@
 package org.xcolab.portlets.loginregister.singlesignon;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.util.http.RequestUtils;
@@ -22,7 +23,7 @@ import javax.portlet.PortletRequest;
 
 public final class FacebookUtil {
 
-    private static final Log _log = LogFactoryUtil.getLog(FacebookUtil.class);
+    private static final Logger _log = LoggerFactory.getLogger(FacebookUtil.class);
 
     public static final String FB_PROFILE_PIC_URL_FORMAT_STRING =
             "https://graph.facebook.com/%d/?fields=picture.type(large)";

@@ -10,6 +10,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
+import org.xcolab.client.proposals.pojo.group.Group_;
 import org.xcolab.client.proposals.pojo.tiers.ProposalReference;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RestService;
@@ -40,6 +41,16 @@ public final class ProposalClientUtil {
     public static List<Proposal> listProposals(int start, int limit,
             Long contestId, Boolean visible, Long contestPhaseId, Integer ribbon) {
         return client.listProposals(start, limit, contestId, visible, contestPhaseId, ribbon);
+    }
+
+    public static List<Long> listProposalIds(int start, int limit,
+            Long contestId, Boolean visible, Long contestPhaseId, Integer ribbon) {
+        return client.listProposalIds(start, limit, contestId, visible, contestPhaseId, ribbon);
+    }
+
+    public static List<Long> listProposalThreadIds(int start, int limit,
+            Long contestId, Boolean visible, Long contestPhaseId, Integer ribbon) {
+        return client.listThreadIds(start, limit, contestId, visible, contestPhaseId, ribbon);
     }
 
     public static List<Proposal> getProposalsInContestPhase(
@@ -212,6 +223,13 @@ public final class ProposalClientUtil {
     public static  List<Proposal> getProposalsByCurrentContests(List<Long> contestTypeIds, List<Long> contestTierIds,
             String filterText) {
             return client.getProposalsByCurrentContests(contestTypeIds, contestTierIds, filterText);
+    }
+
+    public static Group_ createGroup(Group_ group) {
+        return client.createGroup(group);
+    }
+    public static boolean updateGroup(Group_ group) {
+        return client.updateGroup(group);
     }
 
     public static List<Long> getProposalIdsFromLinksInText(String text) {

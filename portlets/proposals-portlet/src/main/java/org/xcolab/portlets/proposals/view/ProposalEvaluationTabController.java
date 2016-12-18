@@ -1,12 +1,11 @@
 package org.xcolab.portlets.proposals.view;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
@@ -17,6 +16,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
+import org.xcolab.entity.utils.judging.ProposalJudgingCommentHelper;
 import org.xcolab.enums.ColabConstants;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.discussion.ProposalDiscussionPermissions;
@@ -29,7 +29,6 @@ import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.client.RestService;
-import org.xcolab.entity.utils.judging.ProposalJudgingCommentHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,7 +42,7 @@ import javax.portlet.PortletRequest;
 @Controller
 @RequestMapping("view")
 public class ProposalEvaluationTabController extends BaseProposalTabController {
-    private final static Log _log = LogFactoryUtil.getLog(ProposalEvaluationTabController.class);
+    private final static Logger _log = LoggerFactory.getLogger(ProposalEvaluationTabController.class);
     private static final Long AVERAGE_RESULT_ROUND_FACTOR = 10L;
     private static final String EVALUATION_TAB_VIEW_NAME = "proposalEvaluation";
 
@@ -149,7 +148,6 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
 
     private List<ProposalRatings> getAverageRatingsForPastPhases(Contest contest,
             Proposal proposal, PortletRequest request) {
-        RestService contestRestService = contest.getRestService();
 
         List<ProposalRatings> proposalRatings = new ArrayList<>();
         List<ContestPhase> contestPhases = proposalsContext.getClients(request).getContestClient().getAllContestPhases(contest.getContestPK());

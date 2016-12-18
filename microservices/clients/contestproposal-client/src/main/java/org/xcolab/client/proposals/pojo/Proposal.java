@@ -26,7 +26,7 @@ import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.UsersGroups;
-import org.xcolab.client.modeling.RomaClientUtil;
+import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.MembershipClientUtil;
 import org.xcolab.client.proposals.ProposalAttributeClient;
@@ -106,10 +106,6 @@ public class Proposal extends AbstractProposal {
     private ProposalRibbon ribbonWrapper;
     private List<MembershipRequest> membershipRequests;
 
-    //private final static Log _log = LogFactoryUtil.getLog(Contest.class)
-
-
-
     public Proposal(Proposal proposal, ContestPhase contestPhase) {
         this(proposal, proposal.getCurrentVersion(), null, contestPhase, null);
     }
@@ -143,23 +139,23 @@ public class Proposal extends AbstractProposal {
 
     public Proposal(Proposal value) {
         super(value);
-        if(value.getRestService()!=null){
+        if (value.getRestService() != null) {
             this.restService = value.getRestService();
-            RestService contestservice =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
-            contestClient = ContestClient.fromService(contestservice);
-            planTemplateClient = PlanTemplateClient.fromService(contestservice);
-            proposalClient = ProposalClient.fromService(restService);;
+            RestService contestService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
+            contestClient = ContestClient.fromService(contestService);
+            planTemplateClient = PlanTemplateClient.fromService(contestService);
+            proposalClient = ProposalClient.fromService(restService);
             proposalAttributeClient = ProposalAttributeClient.fromService(restService);
             proposalPhaseClient = ProposalPhaseClient.fromService(restService);
 
-            contestTeamMemberClient =  ContestTeamMemberClient.fromService(contestservice);
+            contestTeamMemberClient =  ContestTeamMemberClient.fromService(contestService);
 
             RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
             commentClient = CommentClient.fromService(commentService);
             proposalMemberRatingClient = ProposalMemberRatingClient.fromService(restService);
             proposalJudgeRatingClient = ProposalJudgeRatingClient.fromService(restService);
             membershipClient = MembershipClient.fromService(restService);
-        }else {
+        } else {
             contestClient = ContestClientUtil.getClient();
             proposalClient = ProposalClientUtil.getClient();
             proposalAttributeClient = ProposalAttributeClientUtil.getClient();
@@ -182,8 +178,6 @@ public class Proposal extends AbstractProposal {
         proposalAttributeHelper = new ProposalAttributeHelper(this, this.getVersion(),proposalAttributeClient);
 
     }
-
-
 
 
     public Proposal(Proposal proposal, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
@@ -299,9 +293,9 @@ public class Proposal extends AbstractProposal {
             if (contestPhase != null) {
                 return contestClient.getContest(contestPhase.getContestPK());
             }
-            if(this.getProposalId() != null && this.getProposalId().longValue() != 0l) {
+            if (this.getProposalId() != null && this.getProposalId() != 0L) {
                 return proposalClient.getCurrentContestForProposal(this.getProposalId());
-            }else{
+            } else {
                 return null;
             }
         } catch (ContestNotFoundException e) {
@@ -830,12 +824,11 @@ public class Proposal extends AbstractProposal {
         List<Proposal> subProposals = ProposalClientUtil.getContestIntegrationRelevantSubproposals(this.getProposalId());
 
         for (Proposal subProposal : subProposals) {
-            Proposal subProposalWrapper = (subProposal);
-            Long modelId = subProposalWrapper.getModelIdForStoredScenario();
+            Long modelId = subProposal.getModelIdForStoredScenario();
             if (!subProposalPerModel.containsKey(modelId)) {
-                subProposalPerModel.put(modelId, Collections.singletonList(subProposalWrapper));
+                subProposalPerModel.put(modelId, Collections.singletonList(subProposal));
             } else {
-                subProposalPerModel.get(modelId).add(subProposalWrapper);
+                subProposalPerModel.get(modelId).add(subProposal);
             }
         }
         return subProposalPerModel;
@@ -846,14 +839,14 @@ public class Proposal extends AbstractProposal {
     }
 
     public Scenario getScenarioByProposalId(Long proposalId) throws IOException {
-        return RomaClientUtil.repository().getScenario(proposalId);
+        return RomaClientUtil.client().getScenario(proposalId);
     }
 
     private static Long getModelIdForScenarioId(Long scenarioId) {
         Long modelId;
 
         try {
-            Scenario scenario = RomaClientUtil.repository().getScenario(scenarioId);
+            Scenario scenario = RomaClientUtil.client().getScenario(scenarioId);
             Simulation simulation = scenario.getSimulation();
             modelId = simulation.getId();
         } catch (IOException e) {

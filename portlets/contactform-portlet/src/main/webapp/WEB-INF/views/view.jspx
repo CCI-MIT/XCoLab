@@ -2,6 +2,7 @@
 		  xmlns:jsp="http://java.sun.com/JSP/Page"
 		  xmlns:form="http://www.springframework.org/tags/form"
 		  xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+	<script src='https://www.google.com/recaptcha/api.js'><!-- --></script>
 	<c:if test="${success }">
 		<h1>Message has been sent</h1>
 	</c:if>
@@ -41,14 +42,11 @@
 				</tr>
 				
 				<tr>
-					<th class="required" nowrap="nowrap">Retype the words</th>
+					<th class="required" nowrap="nowrap">Click on the box</th>
 					<td colspan="3">
-						<portlet:resourceURL var="getCaptchaImage" id="ajaxHandler"/>
-						<img src="${getCaptchaImage }" style="margin-bottom: 10px;"/><br />
-						<form:input cssClass="popupreg_input" path="captchaText" />
-						<div class="reg_errors"><!--  -->
-							<form:errors cssClass="c-Alert c-Alert__error" path="captchaText" />
-						</div>
+
+						<div class="g-recaptcha" data-sitekey="${recaptchaDataSiteKey}"><!-- --></div>
+
 					</td>
 				</tr>
 				

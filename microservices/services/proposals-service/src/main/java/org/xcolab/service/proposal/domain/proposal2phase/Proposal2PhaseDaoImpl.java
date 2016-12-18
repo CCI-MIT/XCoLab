@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.Proposal2Phase;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.xcolab.model.Tables.PROPOSAL;
@@ -92,7 +93,7 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
         if (records != null && !records.isEmpty()) {
             return records.into(Proposal2Phase.class);
         } else {
-            return null;
+            return Collections.emptyList();
         }
     }
 

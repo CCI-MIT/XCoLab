@@ -1,8 +1,8 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
@@ -19,7 +19,7 @@ import org.xcolab.util.enums.flagging.TargetType;
 import java.util.Date;
 
 public class FlaggingReportWrapper {
-    private final static Log _log = LogFactoryUtil.getLog(FlaggingReportWrapper.class);
+    private final static Logger _log = LoggerFactory.getLogger(FlaggingReportWrapper.class);
 
     private final AggregatedReport report;
     private ManagerAction managerAction = ManagerAction.PENDING;
@@ -36,7 +36,7 @@ public class FlaggingReportWrapper {
         switch (TargetType.valueOf(report.getTargetType())) {
             case PROPOSAL:
                 final Proposal proposal = getTargetProposal();
-                return (proposal).getName();
+                return proposal != null ? proposal.getName() : "unknown proposal";
             case COMMENT:
                 final Comment commentTarget = getTargetComment();
                 if (commentTarget != null) {

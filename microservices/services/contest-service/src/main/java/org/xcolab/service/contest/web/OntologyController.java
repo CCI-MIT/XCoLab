@@ -27,6 +27,7 @@ import org.xcolab.service.contest.domain.ontologyterm.OntologyTermDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.ontology.OntologyService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -65,14 +66,13 @@ public class OntologyController {
         return ontologyService.getAllOntologyTermDescendantTerms(ontologyTerm);
     }
 
-
     @RequestMapping(value = "/ontologyTerms", method = {RequestMethod.GET, RequestMethod.HEAD})
+
     public List<OntologyTerm> getOntologyTerms(@RequestParam(required = false) String name,
             @RequestParam(required = false, defaultValue = "0") Long parentId,
             @RequestParam(required = false) Long ontologySpaceId) {
         return ontologyTermDao.findByGiven(name,parentId, ontologySpaceId);
     }
-
 
     @RequestMapping(value = "/ontologyTerms/{ontologyTermId}", method = RequestMethod.GET)
     public OntologyTerm getOntologyTerm(@PathVariable("ontologyTermId") Long ontologyTermId) throws NotFoundException {
@@ -133,8 +133,12 @@ public class OntologyController {
 
     @RequestMapping(value = "/focusAreas", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<FocusArea> getFocusAreas(
-    ) {
-        return focusAreaDao.findByGiven();
+        @RequestParam(required = false) Long ontologyTermId) throws NotFoundException{
+        List<FocusArea> focusAreas = new ArrayList<>();
+        for (FocusAreaOntologyTerm term: focusAreaOntologyTermDao.findByGiven(null, ontologyTermId)) {
+            focusAreas.add(focusAreaDao.get(term.getFocusAreaId()));
+        }
+        return focusAreas;
     }
 
     @RequestMapping(value = "/focusAreas", method = RequestMethod.POST)
@@ -241,8 +245,6 @@ public class OntologyController {
             @RequestParam(required = false) Long seriesId,
             @RequestParam(required = false) Integer year
     ) {
-        return impactDefaultSeriesDataDao.findByGiven(seriesId,year);
+        return impactDefaultSeriesDataDao.findByGiven(seriesId, year);
     }
-
-
 }

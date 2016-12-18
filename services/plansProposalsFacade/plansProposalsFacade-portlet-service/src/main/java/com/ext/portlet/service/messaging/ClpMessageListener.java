@@ -29,36 +29,6 @@ import com.ext.portlet.service.FocusAreaLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermLocalServiceUtil;
 import com.ext.portlet.service.FocusAreaOntologyTermServiceUtil;
 import com.ext.portlet.service.FocusAreaServiceUtil;
-import com.ext.portlet.service.ImpactDefaultSeriesDataLocalServiceUtil;
-import com.ext.portlet.service.ImpactDefaultSeriesDataServiceUtil;
-import com.ext.portlet.service.ImpactDefaultSeriesLocalServiceUtil;
-import com.ext.portlet.service.ImpactDefaultSeriesServiceUtil;
-import com.ext.portlet.service.ImpactIterationLocalServiceUtil;
-import com.ext.portlet.service.ImpactIterationServiceUtil;
-import com.ext.portlet.service.ImpactTemplateFocusAreaListLocalServiceUtil;
-import com.ext.portlet.service.ImpactTemplateFocusAreaListServiceUtil;
-import com.ext.portlet.service.ImpactTemplateMaxFocusAreaLocalServiceUtil;
-import com.ext.portlet.service.ImpactTemplateMaxFocusAreaServiceUtil;
-import com.ext.portlet.service.ImpactTemplateSeriesLocalServiceUtil;
-import com.ext.portlet.service.ImpactTemplateSeriesServiceUtil;
-import com.ext.portlet.service.ModelCategoryLocalServiceUtil;
-import com.ext.portlet.service.ModelCategoryServiceUtil;
-import com.ext.portlet.service.ModelDiscussionLocalServiceUtil;
-import com.ext.portlet.service.ModelDiscussionServiceUtil;
-import com.ext.portlet.service.ModelGlobalPreferenceLocalServiceUtil;
-import com.ext.portlet.service.ModelGlobalPreferenceServiceUtil;
-import com.ext.portlet.service.ModelInputGroupLocalServiceUtil;
-import com.ext.portlet.service.ModelInputGroupServiceUtil;
-import com.ext.portlet.service.ModelInputItemLocalServiceUtil;
-import com.ext.portlet.service.ModelInputItemServiceUtil;
-import com.ext.portlet.service.ModelOutputChartOrderLocalServiceUtil;
-import com.ext.portlet.service.ModelOutputChartOrderServiceUtil;
-import com.ext.portlet.service.ModelOutputItemLocalServiceUtil;
-import com.ext.portlet.service.ModelOutputItemServiceUtil;
-import com.ext.portlet.service.ModelPositionLocalServiceUtil;
-import com.ext.portlet.service.ModelPositionServiceUtil;
-import com.ext.portlet.service.ModelRunnerLocalServiceUtil;
-import com.ext.portlet.service.ModelRunnerServiceUtil;
 import com.ext.portlet.service.OntologySpaceLocalServiceUtil;
 import com.ext.portlet.service.OntologySpaceServiceUtil;
 import com.ext.portlet.service.OntologyTermEntityLocalServiceUtil;
@@ -166,51 +136,6 @@ public class ClpMessageListener extends BaseMessageListener {
             FocusAreaOntologyTermLocalServiceUtil.clearService();
 
             FocusAreaOntologyTermServiceUtil.clearService();
-            ImpactDefaultSeriesLocalServiceUtil.clearService();
-
-            ImpactDefaultSeriesServiceUtil.clearService();
-            ImpactDefaultSeriesDataLocalServiceUtil.clearService();
-
-            ImpactDefaultSeriesDataServiceUtil.clearService();
-            ImpactIterationLocalServiceUtil.clearService();
-
-            ImpactIterationServiceUtil.clearService();
-            ImpactTemplateFocusAreaListLocalServiceUtil.clearService();
-
-            ImpactTemplateFocusAreaListServiceUtil.clearService();
-            ImpactTemplateMaxFocusAreaLocalServiceUtil.clearService();
-
-            ImpactTemplateMaxFocusAreaServiceUtil.clearService();
-            ImpactTemplateSeriesLocalServiceUtil.clearService();
-
-            ImpactTemplateSeriesServiceUtil.clearService();
-            ModelCategoryLocalServiceUtil.clearService();
-
-            ModelCategoryServiceUtil.clearService();
-            ModelDiscussionLocalServiceUtil.clearService();
-
-            ModelDiscussionServiceUtil.clearService();
-            ModelGlobalPreferenceLocalServiceUtil.clearService();
-
-            ModelGlobalPreferenceServiceUtil.clearService();
-            ModelInputGroupLocalServiceUtil.clearService();
-
-            ModelInputGroupServiceUtil.clearService();
-            ModelInputItemLocalServiceUtil.clearService();
-
-            ModelInputItemServiceUtil.clearService();
-            ModelOutputChartOrderLocalServiceUtil.clearService();
-
-            ModelOutputChartOrderServiceUtil.clearService();
-            ModelOutputItemLocalServiceUtil.clearService();
-
-            ModelOutputItemServiceUtil.clearService();
-            ModelPositionLocalServiceUtil.clearService();
-
-            ModelPositionServiceUtil.clearService();
-            ModelRunnerLocalServiceUtil.clearService();
-
-            ModelRunnerServiceUtil.clearService();
             OntologySpaceLocalServiceUtil.clearService();
 
             OntologySpaceServiceUtil.clearService();

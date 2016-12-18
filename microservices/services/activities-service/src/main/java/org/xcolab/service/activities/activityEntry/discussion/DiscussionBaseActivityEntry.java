@@ -28,8 +28,6 @@ import org.xcolab.util.enums.activity.ActivityEntryType;
 
 public abstract class DiscussionBaseActivityEntry implements ActivityEntryContentProvider {
 
-    //private static final Log _log = LogFactoryUtil.getLog(DiscussionBaseActivityEntry.class);
-
     protected ActivityEntry activityEntry;
 
     protected Comment comment;

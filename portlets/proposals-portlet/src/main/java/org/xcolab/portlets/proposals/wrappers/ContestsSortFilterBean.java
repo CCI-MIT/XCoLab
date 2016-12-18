@@ -14,7 +14,6 @@ import java.util.List;
 public class ContestsSortFilterBean {
     private final List<Contest> contests;
     private ContestsColumn sortColumn;
-
     private List<Contest> contestsFeatured = new ArrayList<Contest>();
     private List<Contest> contestsNormal = new ArrayList<Contest>();
 
@@ -28,9 +27,11 @@ public class ContestsSortFilterBean {
 
         // filter contests
         if (StringUtils.isNotBlank(sortFilterPage.getFilter())) {
-            String filterString = sortFilterPage.getFilter();
-            filteredContests = new ArrayList<Contest>();
+
+            String filterString = sortFilterPage.getFilter().toLowerCase();
+            filteredContests = new ArrayList<>();
             for (Contest contest: contests) {
+
                 if (contest.getContestName().toLowerCase().contains(filterString) ||
                         contest.getContestShortName().toLowerCase().contains(filterString)) {
                     filteredContests.add(contest);
@@ -92,7 +93,6 @@ public class ContestsSortFilterBean {
     public List<Contest> getContests() {
         return contests;
     }
-
 
 
 }

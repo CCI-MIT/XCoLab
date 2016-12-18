@@ -6,14 +6,15 @@
 
 package org.xcolab.hooks.climatecolab;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ext.portlet.model.Contest;
 import com.ext.portlet.service.ContestLocalServiceUtil;
 import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Theme;
 import com.liferay.portal.service.ThemeLocalServiceUtil;
@@ -37,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 public class EXTServicePreAction extends Action {
     private static final String COLLABORATORIUM_THEME_NAME = "climatecolab-theme";
     private static final String THEME_TIMESTAMP_ATTRIBUTE = "THEME_TIMESTAMP";
-    private static final Log _log = LogFactoryUtil.getLog(EXTServicePreAction.class);
+    private static final Logger _log = LoggerFactory.getLogger(EXTServicePreAction.class);
 
     @Override
     public void run(HttpServletRequest req, HttpServletResponse res) throws ActionException {

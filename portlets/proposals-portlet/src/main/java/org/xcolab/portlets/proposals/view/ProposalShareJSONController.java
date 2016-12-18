@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -48,7 +47,7 @@ public class ProposalShareJSONController {
     private static final String SUCCESS_JSON_KEY = "success";
     private static final String MESSAGE_JSON_KEY = "message";
 
-    private List<Long> parseRecipientNames(long companyId, List<String> recipients) throws RecipientParseException {
+    private List<Long> parseRecipientNames(List<String> recipients) throws RecipientParseException {
         List<Long> recipientIds = new ArrayList<>();
         List<String> unresolvedRecipients = new ArrayList<>();
         for (String recipient : recipients) {
@@ -87,13 +86,11 @@ public class ProposalShareJSONController {
     }
 
     @ResourceMapping("proposalShare-validate")
-    public void validateRecipients(ResourceRequest request, ResourceResponse response) throws PortalException, IOException {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-
+    public void validateRecipients(ResourceRequest request, ResourceResponse response) throws IOException {
         String[] screenNames = request.getParameterValues("screenNames[]");
 
         try {
-            parseRecipientNames(themeDisplay.getCompanyId(), ListUtil.fromArray(screenNames));
+            parseRecipientNames(ListUtil.fromArray(screenNames));
         } catch (RecipientParseException e) {
             JSONArray array = JSONFactoryUtil.createJSONArray();
             for (String screenName : e.getUnresolvedScreenNames()) {
@@ -136,7 +133,7 @@ public class ProposalShareJSONController {
         List<Long> recipientIds = null;
         try {
             List<String> recipientsList = Arrays.asList(recipients);
-			recipientIds = parseRecipientNames(themeDisplay.getCompanyId(), recipientsList);
+			recipientIds = parseRecipientNames(recipientsList);
         } catch (RecipientParseException e) {
             List<String> unresolvedRecipients = e.getUnresolvedScreenNames();
             StringBuilder builder = new StringBuilder();
