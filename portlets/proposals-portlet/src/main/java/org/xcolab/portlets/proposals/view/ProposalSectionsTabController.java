@@ -18,6 +18,7 @@ import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
+import org.xcolab.entity.utils.EntityGroupingUtil;
 import org.xcolab.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
@@ -28,11 +29,9 @@ import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.enums.proposal.MoveType;
-import org.xcolab.entity.utils.EntityGroupingUtil;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -159,13 +158,8 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
     private void populateMoveHistory(Model model, Proposal proposal, Contest contest, PortletRequest request) {
 
-        List<ProposalMoveHistory> sourceMoveHistoriesRaw = ProposalsContextUtil.getClients(request).getProposalMoveClient()
+        List<ProposalMoveHistory> sourceMoveHistories = ProposalsContextUtil.getClients(request).getProposalMoveClient()
                 .getBySourceProposalIdContestId(proposal.getProposalId(), contest.getContestPK());
-        List<ProposalMoveHistory> sourceMoveHistories = new ArrayList<>();
-
-        for (ProposalMoveHistory sourceMoveHistory : sourceMoveHistoriesRaw) {
-            sourceMoveHistories.add((sourceMoveHistory));
-        }
         model.addAttribute("sourceMoveHistories", sourceMoveHistories);
 
 

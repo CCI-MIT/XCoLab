@@ -2,6 +2,7 @@ package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistoryDto;
+import org.xcolab.util.enums.proposal.MoveType;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
@@ -70,15 +71,14 @@ public final class ProposalMoveClient {
     }
 
     public ProposalMoveHistory createProposalMoveHistory(long proposalId, long srcContestId,
-            long targetContestId,
-            long srcPhaseId, long targetPhaseId, long userId) {
+            long targetContestId, long targetPhaseId, long userId) {
         return createProposalMoveHistory(proposalId, proposalId, srcContestId, targetContestId,
-                srcPhaseId, targetPhaseId, userId, "MOVE_PERMANENTLY");
+                targetPhaseId, userId, MoveType.MOVE_PERMANENTLY);
     }
 
     public ProposalMoveHistory createProposalMoveHistory(long srcProposalId, long targetProposalId,
             long srcContestId, long targetContestId,
-            long sourcePhaseId, long targetPhaseId, long userId, String moveType) {
+            long targetPhaseId, long userId, MoveType moveType) {
         ProposalMoveHistory proposalMoveHistory = new ProposalMoveHistory();
         proposalMoveHistory.setSourceProposalId(srcProposalId);
         proposalMoveHistory.setTargetProposalId(targetProposalId);
@@ -86,12 +86,11 @@ public final class ProposalMoveClient {
         proposalMoveHistory.setSourceContestId(srcContestId);
         proposalMoveHistory.setTargetContestId(targetContestId);
 
-        proposalMoveHistory.setSourcePhaseId(sourcePhaseId);
         proposalMoveHistory.setTargetPhaseId(targetPhaseId);
 
         proposalMoveHistory.setMovingUserId(userId);
         proposalMoveHistory.setMoveDate(new Timestamp(new Date().getTime()));
-        proposalMoveHistory.setMoveType(moveType);
+        proposalMoveHistory.setMoveType(moveType.name());
 
         proposalMoveHistory = createProposalMoveHistory(proposalMoveHistory);
 
@@ -106,15 +105,15 @@ public final class ProposalMoveClient {
 
     public ProposalMoveHistory createCopyProposalMoveHistory(long proposalId, long srcContestId,
             long targetContestId,
-            long srcPhaseId, long targetPhaseId, long userId) {
+            long targetPhaseId, long userId) {
         return createProposalMoveHistory(proposalId, proposalId, srcContestId, targetContestId,
-                srcPhaseId, targetPhaseId, userId, "COPY");
+                targetPhaseId, userId, MoveType.COPY);
     }
 
     public ProposalMoveHistory createForkProposalMoveHistory(long srcProposalId,
             long targetProposalId, long srcContestId, long targetContestId,
-            long srcPhaseId, long targetPhaseId, long userId) {
+            long targetPhaseId, long userId) {
         return createProposalMoveHistory(srcProposalId, targetProposalId, srcContestId,
-                targetContestId, srcPhaseId, targetPhaseId, userId, "FORK");
+                targetContestId, targetPhaseId, userId, MoveType.FORK);
     }
 }

@@ -64,7 +64,7 @@ public final class ProposalCreationUtil {
                         ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID, 0L, baseContestId);
                 clientHelper.getProposalMoveClient()
                         .createForkProposalMoveHistory(baseProposalId, proposalWrapper.getProposalId(),
-                        baseContestId, contest.getContestPK(), 0L, contestPhase.getContestPhasePK(), memberId);
+                        baseContestId, contest.getContestPK(), contestPhase.getContestPhasePK(), memberId);
 
                 for (ProposalAttribute attribute : proposalAttributeClient
                         .getAllProposalAttributes(baseProposalId)) {

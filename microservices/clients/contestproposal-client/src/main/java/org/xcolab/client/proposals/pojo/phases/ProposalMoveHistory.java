@@ -62,10 +62,6 @@ public class ProposalMoveHistory extends AbstractProposalMoveHistory {
         return (ContestClientUtil.getContestPhase(this.getSourcePhaseId()));
     }
 
-    public long getSourceContestPhaseId() {
-        return this.getSourcePhaseId();
-    }
-
     public Proposal getTargetProposal()  {
         try {
             return  ProposalClientUtil.getProposal(this.getTargetProposalId());
