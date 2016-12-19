@@ -1,11 +1,7 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;

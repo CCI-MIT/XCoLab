@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 
-import com.liferay.portal.kernel.util.Validator;
-
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -53,7 +51,7 @@ public class ContestProposalsController extends BaseProposalsController {
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         Contest contest = proposalsContext.getContest(request);
 
-        if (Validator.isNull(contest) || Validator.isNull(contestPhase)) {
+        if (contest == null || contestPhase == null) {
             throw new ProposalIdOrContestIdInvalidException();
         }
 

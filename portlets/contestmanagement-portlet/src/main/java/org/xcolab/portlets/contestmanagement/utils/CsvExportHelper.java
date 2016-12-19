@@ -1,12 +1,8 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
 import au.com.bytecode.opencsv.CSVWriter;
+import org.springframework.http.HttpHeaders;
 import org.springframework.util.CollectionUtils;
-
-import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -135,10 +131,6 @@ public class CsvExportHelper {
 
     public void initiateDownload(String downloadFileName, PortletRequest request,
                                  ResourceResponse response) throws IOException {
-
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        ServiceContext serviceContext = new ServiceContext();
-        serviceContext.setPortalURL(themeDisplay.getPortalURL());
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         String csvPayload = getCSVData();

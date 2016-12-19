@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.liferay.portal.util.PortalUtil;
 
+import org.xcolab.entity.utils.portlet.PortletUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 
 import javax.portlet.PortletRequest;
@@ -24,7 +25,7 @@ public class BaseProposalsController {
     protected void setSeoTexts(PortletRequest request,
             String pageTitle, String pageSubtitle, String pageDescription) {
 
-        HttpServletRequest httpRequest = PortalUtil.getHttpServletRequest(request);
+        HttpServletRequest httpRequest = PortletUtil.getHttpServletRequest(request);
 
         if (StringUtils.isNotBlank(pageTitle)) {
             PortalUtil.setPageTitle(pageTitle, httpRequest);

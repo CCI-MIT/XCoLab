@@ -5,6 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
+
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -25,8 +28,10 @@ public class RandomProposalsController {
 
         RandomProposalsPreferences preferences = new RandomProposalsPreferences(request);
 
-    	ProposalsModel proposalsModel = new ProposalsModel(getProposals(preferences), preferences
-    			, Helper.getThemeDisplay(request).getPathImage() + "/proposal?img_id=");
+        final ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
+        ProposalsModel proposalsModel = new ProposalsModel(getProposals(preferences), preferences
+    			, themeDisplay.getPathImage() + "/proposal?img_id=");
 
     	model.addAttribute("proposalsModel", proposalsModel);
 

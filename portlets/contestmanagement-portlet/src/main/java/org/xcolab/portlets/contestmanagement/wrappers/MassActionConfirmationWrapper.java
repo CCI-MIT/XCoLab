@@ -1,7 +1,5 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.liferay.portal.kernel.util.Validator;
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -12,9 +10,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Thomas on 10/23/2015.
- */
 public class MassActionConfirmationWrapper {
 
     private List<Contest> contestWrappers;
@@ -99,7 +94,7 @@ public class MassActionConfirmationWrapper {
         List<Long> contestToBeDeleted = new ArrayList<>();
         for (Integer contestId : contestIds) {
             int index = contestIds.indexOf(contestId);
-            if (index < selectedContest.size() && Validator.isNotNull(selectedContest.get(index)) && selectedContest
+            if (index < selectedContest.size() && selectedContest.get(index) != null && selectedContest
                     .get(index)) {
                 contestToBeDeleted.add(contestId.longValue());
             }

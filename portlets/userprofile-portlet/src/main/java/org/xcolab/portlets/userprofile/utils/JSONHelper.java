@@ -1,10 +1,10 @@
 package org.xcolab.portlets.userprofile.utils;
 
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import javax.portlet.ResourceResponse;
-import java.io.IOException;
 
 public class JSONHelper {
 
@@ -18,7 +18,7 @@ public class JSONHelper {
     }
 
     private static JSONObject createSuccessResultResponseJson(boolean success) {
-        JSONObject resultResponseJson = JSONFactoryUtil.createJSONObject();
+        JSONObject resultResponseJson = new JSONObject();
         resultResponseJson.put(JSON_SUCCESS_RESPONSE_MESSAGE, success);
         return resultResponseJson;
     }
@@ -35,7 +35,7 @@ public class JSONHelper {
     }
 
     private static JSONObject createErrorResultResponseJson(String errorMessage) {
-        JSONObject resultResponseJson = JSONFactoryUtil.createJSONObject();
+        JSONObject resultResponseJson = new JSONObject();
         resultResponseJson.put(JSON_SUCCESS_RESPONSE_MESSAGE, JSON_FALSE_RESPONSE_MESSAGE);
         resultResponseJson.put(JSON_ERROR_RESPONSE_MESSAGE, errorMessage);
         return resultResponseJson;

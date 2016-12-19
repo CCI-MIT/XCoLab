@@ -1,11 +1,8 @@
 package org.xcolab.portlets.contestmanagement.beans;
 
 import edu.mit.cci.roma.client.Simulation;
-
-import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.Validator;
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
@@ -41,7 +38,7 @@ public class ContestModelSettingsBean implements Serializable {
     }
 
     private void initOtherModelsAndRegion() {
-        if (Validator.isNotNull(this.otherModels)) {
+        if (StringUtils.isNotEmpty(this.otherModels)) {
             for (String otherModelId : this.otherModels.split(",")) {
                 otherModelIds.add(Long.parseLong(otherModelId.trim()));
             }
@@ -50,15 +47,8 @@ public class ContestModelSettingsBean implements Serializable {
     }
 
     private String getRegionFromDefaultModelSettings(String defaultModelSettingsString) {
-        String region = "";
-        try {
-            JSONObject defaultModelSettings = JSONFactoryUtil.createJSONObject(defaultModelSettingsString);
-            if (Validator.isNotNull(defaultModelSettings)) {
-                region = defaultModelSettings.has("region") ? defaultModelSettings.getString("region") : "";
-            }
-        } catch (JSONException ignored) {
-        }
-        return region;
+        JSONObject defaultModelSettings = new JSONObject(defaultModelSettingsString);
+        return defaultModelSettings.has("region") ? defaultModelSettings.getString("region") : "";
     }
 
     public String getModelRegion() {
@@ -67,10 +57,10 @@ public class ContestModelSettingsBean implements Serializable {
 
     public void setModelRegion(String modelRegion) {
         this.modelRegion = modelRegion;
-        if (Validator.isBlank(modelRegion)) {
+        if (StringUtils.isBlank(modelRegion)) {
             this.defaultModelSettings = "";
         } else {
-            JSONObject defaultModelSettings = JSONFactoryUtil.createJSONObject();
+            JSONObject defaultModelSettings = new JSONObject();
             defaultModelSettings.put("region", modelRegion);
             this.defaultModelSettings = defaultModelSettings.toString();
         }

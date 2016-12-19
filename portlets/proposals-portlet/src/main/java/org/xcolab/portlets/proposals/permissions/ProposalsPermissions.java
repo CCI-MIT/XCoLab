@@ -1,8 +1,6 @@
 package org.xcolab.portlets.proposals.permissions;
 
 import com.ext.portlet.contests.ContestStatus;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -44,7 +42,6 @@ public class ProposalsPermissions {
         this.request = request;
         this.proposalContextHelper = (ProposalContextHelper) request.getAttribute(ProposalsContextImpl.PROPOSAL_CONTEST_HELPER);
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         if (contestPhase != null) {
             final long contestPhaseTypeId = contestPhase.getContestPhaseType();
 
@@ -59,7 +56,7 @@ public class ProposalsPermissions {
 
         // set proper context group id
         if (proposal == null) {
-            groupId = themeDisplay.getScopeGroupId();
+            groupId = 0L;
             planIsEditable = false;
         } else {
             groupId = proposal.getGroupId();

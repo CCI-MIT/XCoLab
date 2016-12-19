@@ -7,9 +7,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
@@ -144,7 +141,6 @@ public class CategoryController extends BaseDiscussionController {
                                    @RequestParam String title, @RequestParam String description)
             throws IOException, DiscussionAuthorizationException, OperationNotSupportedException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
         checkCanEdit(request, "User does not have the necessary permissions to create a category",

@@ -1,6 +1,5 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
-import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.enums.MemberRole;
@@ -19,11 +18,7 @@ public class ContestManagementPermissions implements TabPermissions {
 
     @Override
     public boolean getCanRole(MemberRole role) {
-        if (!isLoggedIn) {
-            return false;
-        }
-
-        return MembersClient.hasMemberRole(memberId, role.getRoleId());
+        return isLoggedIn && PermissionsClient.memberHasRole(memberId, role.getRoleId());
     }
 
     @Override
@@ -39,10 +34,7 @@ public class ContestManagementPermissions implements TabPermissions {
 
     @Override
     public boolean getCanStaff() {
-        if (!isLoggedIn) {
-            return false;
-        }
-        return MembersClient.hasMemberRole(memberId, MemberRole.STAFF.getRoleId());
+        return isLoggedIn && PermissionsClient.canStaff(memberId);
     }
 
     public boolean getCanEdit() {
