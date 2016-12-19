@@ -23,7 +23,7 @@ import com.liferay.portal.kernel.search.SortFactoryUtil;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.enums.ColabConstants;
+import org.xcolab.entity.utils.enums.ColabConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;

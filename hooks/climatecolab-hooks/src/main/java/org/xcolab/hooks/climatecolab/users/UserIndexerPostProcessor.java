@@ -22,7 +22,7 @@ import com.liferay.portal.security.auth.DefaultFullNameGenerator;
 import com.liferay.portal.service.CountryServiceUtil;
 import com.liferay.portal.service.RegionServiceUtil;
 import com.liferay.portal.service.RoleLocalServiceUtil;
-import org.xcolab.enums.MemberRole;
+import org.xcolab.entity.utils.enums.MemberRole;
 
 import java.util.ArrayList;
 import java.util.HashMap;

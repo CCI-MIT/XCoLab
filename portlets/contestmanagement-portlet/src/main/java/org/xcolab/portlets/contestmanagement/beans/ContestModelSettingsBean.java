@@ -11,7 +11,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.modeling.roma.RomaClient;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
-import org.xcolab.enums.ModelRegions;
+import org.xcolab.entity.utils.enums.ModelRegions;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;
 

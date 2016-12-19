@@ -1,24 +1,16 @@
 package org.xcolab.hooks.climatecolab.strutsaction;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.MessageListenerException;
 import com.liferay.portal.kernel.struts.BaseStrutsAction;
 import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.theme.ThemeDisplay;
 
-import org.xcolab.activityEntry.ActivitySubscriptionEmailHelper;
+import org.xcolab.entity.utils.activityEntry.ActivitySubscriptionEmailHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Created by kmang on 18/04/14.
- */
 public class SchedulerDispatchStrutsAction extends BaseStrutsAction {
 
 	private static final Log _log = LogFactoryUtil
@@ -52,18 +44,7 @@ public class SchedulerDispatchStrutsAction extends BaseStrutsAction {
 			return null;
 		}
 
-		ServiceContext serviceContext = new ServiceContext();
-		serviceContext.setRequest(request);
-		serviceContext.setPortalURL(((ThemeDisplay) request
-				.getAttribute(WebKeys.THEME_DISPLAY)).getPortalURL());
-		try {
-			//ActivitySubscriptionLocalServiceUtil
-			//		.sendEmailNotifications(serviceContext);
-
-			ActivitySubscriptionEmailHelper.sendEmailNotifications(serviceContext);
-		} catch (SystemException | PortalException e) {
-			_log.error( "Could not process email notification of proposal subscription feature", e);
-		}
+		ActivitySubscriptionEmailHelper.sendEmailNotifications();
 
 		resetIsRunning();
 

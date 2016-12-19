@@ -21,7 +21,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.liferay.LoginRegisterUtil;
-import org.xcolab.utils.GlobalMessagesUtil;
+import org.xcolab.entity.utils.GlobalMessagesUtil;
 import org.xcolab.entity.utils.ModelAttributeUtil;
 import org.xcolab.entity.utils.email.notifications.member.MemberForgotPasswordNotification;
 
