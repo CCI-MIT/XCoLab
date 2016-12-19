@@ -5,6 +5,8 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
+
 import org.xcolab.model.tables.pojos.MembershipRequest;
 import org.xcolab.model.tables.records.MembershipRequestRecord;
 
@@ -17,10 +19,15 @@ import static org.xcolab.model.Tables.MEMBERSHIP_REQUEST;
 @Repository
 public class MembershipRequestDaoImpl implements MembershipRequestDao {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public MembershipRequestDaoImpl(DSLContext dslContext) {
+        Assert.notNull(dslContext, "DSLContext bean is required");
+        this.dslContext = dslContext;
+    }
 
-
+    @Override
     public MembershipRequest create(MembershipRequest membershipRequest) {
 
         MembershipRequestRecord ret = this.dslContext.insertInto(MEMBERSHIP_REQUEST)
@@ -42,9 +49,9 @@ public class MembershipRequestDaoImpl implements MembershipRequestDao {
         } else {
             return null;
         }
-
     }
 
+    @Override
     public boolean update(MembershipRequest membershipRequest) {
         return dslContext.update(MEMBERSHIP_REQUEST)
                 .set(MEMBERSHIP_REQUEST.REPLY_COMMENTS, membershipRequest.getReplyComments())
@@ -55,8 +62,7 @@ public class MembershipRequestDaoImpl implements MembershipRequestDao {
                 .execute() > 0;
     }
 
-
-
+    @Override
     public MembershipRequest get(Long membershipRequestId) throws NotFoundException {
 
         final Record record =  this.dslContext.selectFrom(MEMBERSHIP_REQUEST)

@@ -1,15 +1,13 @@
 package org.xcolab.hooks.climatecolab.flagging;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.WebKeys;
 
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.util.enums.flagging.TargetType;
 
 import java.io.IOException;
@@ -30,11 +28,11 @@ public class FlaggingReportFilter implements Filter {
     private void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        JSONObject json = JSONFactoryUtil.createJSONObject();
+        JSONObject json = new JSONObject();
 
         try {
             request.setCharacterEncoding("UTF-8");
-            Long userId = (Long) request.getSession().getAttribute(WebKeys.USER_ID);
+            long userId = MemberAuthUtil.getMemberId(request);
 
             TargetType targetType = TargetType.valueOf(request.getParameter("targetType"));
             long targetId = Long.valueOf(request.getParameter("targetId"));

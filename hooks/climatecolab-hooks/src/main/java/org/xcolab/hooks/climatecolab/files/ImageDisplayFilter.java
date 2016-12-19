@@ -1,10 +1,4 @@
-package org.xcolab.hooks.climatecolab.utils;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
+package org.xcolab.hooks.climatecolab.files;
 
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
@@ -28,28 +22,21 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ImageDisplayerFilter implements Filter {
-
-    private final static Logger _log = LoggerFactory.getLogger(ImageDisplayerFilter.class);
+public class ImageDisplayFilter implements Filter {
 
     private void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException {
         String imageId = null;
 
-        // image/contest?img_id=1272201
-        // image/proposal?img_id=1266433
-        // image/contest?img_id=1267815
         if (request.getParameter("img_id") != null) {
             imageId = request.getParameter("img_id");
         }
 
-        // /image/user_male_portrait?screenName=slocum&companyId=10112&portraitId=2051002&userId=40218
-        // image/user_male_portrait?screenName=carlosbpf&companyId=10112&portraitId=2390159
         if (request.getParameter("portraitId") != null) {
-            if(request.getParameter("userId") != null){
+            if (request.getParameter("userId") != null) {
                 try {
                     Member member = MembersClient.getMember(Long.parseLong(request.getParameter("userId")));
-                    if ( member.getPortraitFileEntryId() != null ) {
+                    if (member.getPortraitFileEntryId() != null) {
                         imageId = member.getPortraitFileEntryId() + "";
                     } else {
                         imageId = null;
@@ -57,7 +44,7 @@ public class ImageDisplayerFilter implements Filter {
                 } catch (MemberNotFoundException e) {
                     imageId = request.getParameter("portraitId");
                 }
-            }else {
+            } else {
                 imageId = request.getParameter("portraitId");
             }
         }
@@ -81,15 +68,12 @@ public class ImageDisplayerFilter implements Filter {
         }
 
         if (request.getRequestURI().contains("user_male_portrait")) {
-            String pathToFailOverImage;
-            ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-            if (themeDisplay != null) {
-                pathToFailOverImage =
-                        path + "../" + themeDisplay.getPathImage() + "user_default.png";
-            } else {
-                pathToFailOverImage = path + "../climatecolab-theme/images/user_default.png";
-                _log.warn("Theme display was null in image filter - falling back to default theme");
-            }
+//            if (themeDisplay != null) {
+//                pathToFailOverImage =
+//                        path + "../" + themeDisplay.getPathImage() + "user_default.png";
+//            } else {
+            String pathToFailOverImage = path + "../climatecolab-theme/images/user_default.png";
+            //            }
             sendImageToResponse(request, response, pathToFailOverImage);
             return;
         }
@@ -103,8 +87,8 @@ public class ImageDisplayerFilter implements Filter {
     private void sendImageToResponse(HttpServletRequest request, HttpServletResponse response, String filePath) {
 
         try {
-            ServletContext cntx = request.getSession().getServletContext();
-            String mime = cntx.getMimeType(filePath);
+            ServletContext servletContext = request.getSession().getServletContext();
+            String mime = servletContext.getMimeType(filePath);
             if (mime == null) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 return;
@@ -144,7 +128,6 @@ public class ImageDisplayerFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
             ServletException {
         doGet((HttpServletRequest) request, (HttpServletResponse) response);
-
     }
 
     @Override

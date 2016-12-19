@@ -21,6 +21,7 @@ public class BaseController {
 
         HttpServletRequest httpRequest = PortletUtil.getHttpServletRequest(request);
 
+        //TODO: liferay internal - needs to be removed after transition
         if (StringUtils.isNotBlank(pageTitle)) {
             PortalUtil.setPageTitle(pageTitle, httpRequest);
         }

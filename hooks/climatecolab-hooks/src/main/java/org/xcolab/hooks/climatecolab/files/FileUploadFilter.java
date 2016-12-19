@@ -1,4 +1,4 @@
-package org.xcolab.hooks.climatecolab.utils;
+package org.xcolab.hooks.climatecolab.files;
 
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
