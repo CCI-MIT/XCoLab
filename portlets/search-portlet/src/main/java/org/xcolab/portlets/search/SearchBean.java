@@ -93,6 +93,6 @@ public class SearchBean implements Serializable {
     }
 
     public String getSearchBlogURL() {
-        return ConfigurationAttributeKey.BLOG_URL.get() + "/?submit=Search&s=" + getSearchPhrase();
+        return "http://" + ConfigurationAttributeKey.BLOG_URL.get() + "/?submit=Search&s=" + getSearchPhrase();
     }
 }
