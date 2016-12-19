@@ -4,7 +4,6 @@
 <liferay-portlet-app>
 	<portlet>
 		<portlet-name>feeds-portlet</portlet-name>
-        <indexer-class>org.xcolab.portlets.feeds.search.ActivityIndexer</indexer-class>
         <friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
         <friendly-url-mapping>feeds</friendly-url-mapping>
         <friendly-url-routes>friendlyUrlRoutes.xml</friendly-url-routes>
