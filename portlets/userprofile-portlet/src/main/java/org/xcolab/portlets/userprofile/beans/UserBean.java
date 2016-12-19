@@ -78,8 +78,11 @@ public class UserBean implements Serializable {
         countryCode = member.getCountry();
         shortBio = member.getShortBio();
 
-        imageId = member.getPortraitFileEntryId();
-
+        if(member.getPortraitFileEntryId()==null){
+            imageId = 0;
+        } else {
+            imageId = member.getPortraitFileEntryId();
+        }
         final MessagingUserPreferences messagingPreferences = MessagingClient
                 .getMessagingPreferencesForMember(member.getId_());
         sendEmailOnMessage = messagingPreferences.getEmailOnReceipt();
