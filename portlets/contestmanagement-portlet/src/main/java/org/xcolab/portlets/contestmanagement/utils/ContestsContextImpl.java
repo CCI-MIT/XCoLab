@@ -2,7 +2,7 @@ package org.xcolab.portlets.contestmanagement.utils;
 
 import org.springframework.stereotype.Component;
 
-import com.liferay.portal.kernel.util.ParamUtil;
+
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -46,11 +46,11 @@ public class ContestsContextImpl implements TabContext {
     }
 
     private void init(PortletRequest request) {
-        final Boolean mangerView = ParamUtil.getBoolean(request, CONTEST_MANAGEMENT_PARAM);
+        final Boolean mangerView =  new Boolean(request.getParameter(CONTEST_MANAGEMENT_PARAM));
         if (mangerView) {
             request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestManagementPermissions(request));
         } else {
-            final Long contestId = ParamUtil.getLong(request, CONTEST_ID_PARAM);
+            final Long contestId = new Long(request.getParameter(CONTEST_ID_PARAM));
             Contest contest;
             try {
                 contest = ContestClientUtil.getContest(contestId);

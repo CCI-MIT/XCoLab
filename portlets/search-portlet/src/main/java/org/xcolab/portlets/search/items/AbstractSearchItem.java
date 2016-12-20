@@ -1,14 +1,6 @@
 package org.xcolab.portlets.search.items;
 
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.search.Document;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
-import org.apache.lucene.util.Version;
 import org.xcolab.client.search.pojo.SearchPojo;
-
-import java.io.IOException;
 
 public abstract class AbstractSearchItem {
     private static final String HTML_CLEAN_UP_REGEXP = "<[^>]*>";

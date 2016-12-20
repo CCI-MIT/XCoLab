@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.liferay.portal.util.PortalUtil;
+
 
 import org.xcolab.entity.utils.portlet.PortletUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
@@ -28,15 +28,16 @@ public class BaseProposalsController {
         HttpServletRequest httpRequest = PortletUtil.getHttpServletRequest(request);
 
         if (StringUtils.isNotBlank(pageTitle)) {
-            PortalUtil.setPageTitle(pageTitle, httpRequest);
+            PortletUtil.setPageTitle(pageTitle, httpRequest);
+
         }
 
         if (StringUtils.isNotBlank(pageDescription)) {
-            PortalUtil.setPageDescription(pageDescription, httpRequest);
+            PortletUtil.setPageDescription(pageDescription, httpRequest);
         }
 
         if (StringUtils.isNotBlank(pageSubtitle)) {
-            PortalUtil.setPageSubtitle(pageSubtitle, httpRequest);
+            PortletUtil.setPageSubtitle(pageSubtitle, httpRequest);
         }
     }
 }

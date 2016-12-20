@@ -1,8 +1,6 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
 import com.ext.portlet.Activity.ActivityUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
@@ -71,11 +69,11 @@ public class UserProfileWrapper implements Serializable {
     private boolean viewingOwnProfile;
 
     private String messagingPortletId = "messagingportlet_WAR_messagingportlet";
-    private final ThemeDisplay themeDisplay;
+
 
     public UserProfileWrapper(long userId, PortletRequest request)
             throws MemberNotFoundException {
-        themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
         member = MembersClient.getMember(userId);
         if (member.isActive()) {
             Member loggedInMember = MemberAuthUtil.getMemberOrNull(request);
@@ -120,7 +118,7 @@ public class UserProfileWrapper implements Serializable {
         for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClientUtil
                 .getActivityEntries(0, MAX_ACTIVITIES_COUNT, member.getId_(), null))) {
 
-            UserActivityWrapper a = new UserActivityWrapper(activity, themeDisplay);
+            UserActivityWrapper a = new UserActivityWrapper(activity);
             if (a.getBody() != null && !a.getBody().equals("")) {
                 userActivities.add(a);
             }
@@ -273,9 +271,6 @@ public class UserProfileWrapper implements Serializable {
         return DISPLAY_EMAIL_ERROR_MESSAGE;
     }
 
-    public ThemeDisplay getThemeDisplay() {
-        return themeDisplay;
-    }
 
     public boolean getCanSeeSendMessageButton() throws MemberRole.NoSuchMemberRoleException {
         return messagePermissionChecker == null || messagePermissionChecker
@@ -298,7 +293,7 @@ public class UserProfileWrapper implements Serializable {
             for (ActivityEntry activity : ActivityUtil.groupActivities(
                     ActivitiesClientUtil.getActivityEntries(0, 100, this.member.getId_(), null))) {
 
-                subscribedActivities.add(new UserActivityWrapper(activity, themeDisplay));
+                subscribedActivities.add(new UserActivityWrapper(activity));
             }
         }
         return subscribedActivities;

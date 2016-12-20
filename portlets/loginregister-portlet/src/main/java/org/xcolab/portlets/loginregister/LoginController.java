@@ -15,19 +15,22 @@ import com.liferay.portal.UserIdException;
 import com.liferay.portal.UserLockoutException;
 import com.liferay.portal.UserPasswordException;
 import com.liferay.portal.UserScreenNameException;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
+
+
+
 import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.AuthException;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
 
+
+
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.entity.utils.portlet.PortletUtil;
+import org.xcolab.entity.utils.portlet.session.SessionErrors;
+import org.xcolab.entity.utils.portlet.session.SessionMessages;
 import org.xcolab.liferay.LoginRegisterUtil;
 
 import java.io.IOException;
@@ -47,17 +50,17 @@ public class LoginController {
     @ActionMapping
     public void doLogin(ActionRequest request, ActionResponse response) throws IOException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
 
         HttpServletRequest httpRequest = PortletUtils.getOriginalRequest(request);
 
         String refererHeader = httpRequest.getHeader("referer");
-        String refererRequest =  PortalUtil.getHttpServletRequest(request).getHeader("referer");
+        String refererRequest =  PortletUtil.getHttpServletRequest(request).getHeader("referer");
 
         String redirect = httpRequest.getParameter("redirect");
         redirect = !StringUtils.isBlank(redirect) ? redirect : refererHeader;
         redirect = !StringUtils.isBlank(redirect) ? redirect : refererRequest;
-        redirect = !StringUtils.isBlank(redirect) ? redirect : themeDisplay.getURLHome();
+        redirect = !StringUtils.isBlank(redirect) ? redirect : ConfigurationAttributeKey.COLAB_URL.get();
 
         redirect = Helper.removeParamFromRequestStr(redirect, "signinRegError");
         redirect = Helper.removeParamFromRequestStr(redirect, "isSigningInPopup");
@@ -99,7 +102,8 @@ public class LoginController {
                 SessionErrors.add(request, e.getClass().getName());
             } else {
                 _log.error("Can't log user in", e);
-                PortalUtil.sendError(e, request, response);
+                //PortalUtil.sendError(e, request, response);
+                //TODO:INVESTIGATE THE SEND ERROR MSG
             }
         }
 
@@ -118,7 +122,7 @@ public class LoginController {
         SessionMessages.clear(request);
 
         BalloonCookie bc = BalloonCookie.fromCookieArray(request.getCookies());
-        if (StringUtils.isNotBlank(bc.getUuid()) && Validator.isNotNull(user)) {
+        if (StringUtils.isNotBlank(bc.getUuid()) && user!=null) {
             // cookie is present, get BalloonUserTracking if it exists and update association to the current user
             try {
                 BalloonUserTracking but = BalloonsClient.getBalloonUserTracking(bc.getUuid());

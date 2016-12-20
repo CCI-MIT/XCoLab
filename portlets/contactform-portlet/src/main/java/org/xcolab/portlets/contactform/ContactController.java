@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
+
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.entity.utils.ReCaptchaUtils;
+import org.xcolab.entity.utils.portlet.session.SessionErrors;
+import org.xcolab.entity.utils.portlet.session.SessionMessages;
 
 import java.util.ArrayList;
 import java.util.Collections;

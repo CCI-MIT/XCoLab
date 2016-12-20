@@ -7,12 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.portal.kernel.util.ParamUtil;
-
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.entity.utils.portlet.RequestParamUtil;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -32,10 +31,10 @@ public class NotificationUnregisterController {
     @RequestMapping
 	public String register(PortletRequest request, PortletResponse response, Model model) {
 	    
-	    Long userId = ParamUtil.getLong(request, "userId", 0);
-	    Long subscriptionId = ParamUtil.getLong(request, "subscriptionId", 0);
-        Integer typeId = ParamUtil.getInteger(request, "typeId", 0);
-	    String token = ParamUtil.getString(request, "token", "");
+	    Long userId = RequestParamUtil.getLong(request, "userId", 0l);
+	    Long subscriptionId = RequestParamUtil.getLong(request, "subscriptionId", 0l);
+        Integer typeId = RequestParamUtil.getInteger(request, "typeId", 0);
+	    String token = RequestParamUtil.getString(request, "token", "");
 	    
 	    
 	    Member user = null;

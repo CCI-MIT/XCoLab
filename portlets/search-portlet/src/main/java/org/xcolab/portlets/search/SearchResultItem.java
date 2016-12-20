@@ -1,12 +1,8 @@
 package org.xcolab.portlets.search;
 
-import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
-
 import org.xcolab.client.search.pojo.SearchPojo;
 import org.xcolab.portlets.search.items.AbstractSearchItem;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,9 +15,7 @@ public class SearchResultItem {
     private String url;
     private boolean odd;
 
-    public SearchResultItem(SearchPojo searchPojo, String query, boolean odd)
-            throws ParseException, IOException, com.liferay.portal.kernel.search.ParseException,
-            InvalidTokenOffsetsException {
+    public SearchResultItem(SearchPojo searchPojo, String query, boolean odd) {
 
         for (SearchItemType type : SearchItemType.values()) {
             if (type.isOfGivenType(searchPojo)) {

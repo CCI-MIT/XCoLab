@@ -43,7 +43,7 @@ public class Member {
     private int reportKarma;
     private Long portraitFileEntryId;
     private Integer   autoregisteredmemberstatus;
-
+    private String    uuid;
 
     public Member() {
     }
@@ -67,6 +67,7 @@ public class Member {
         this.reportKarma = value.reportKarma;
         this.portraitFileEntryId = value.portraitFileEntryId;
         this.autoregisteredmemberstatus = value.autoregisteredmemberstatus;
+        this.uuid = value.uuid;
     }
 
     public static Member fromId(String memberIdString) {
@@ -254,6 +255,14 @@ public class Member {
 
     public void setAutoRegisteredMemberStatus(Integer autoregisteredmemberstatus) {
         this.autoregisteredmemberstatus = autoregisteredmemberstatus;
+    }
+
+    public String getUuid() {
+        return this.uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     @Override

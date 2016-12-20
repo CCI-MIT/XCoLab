@@ -2,7 +2,7 @@ package org.xcolab.portlets.proposals.utils.context;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.liferay.portal.kernel.util.ParamUtil;
+
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -18,6 +18,7 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
+import org.xcolab.entity.utils.portlet.RequestParamUtil;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 
@@ -46,14 +47,14 @@ public class ProposalContextHelper {
 
     public ProposalContextHelper(PortletRequest request) {
         this.request = request;
-        final long proposalIdParam = ParamUtil.getLong(request, PROPOSAL_ID_PARAM);
+        final long proposalIdParam = RequestParamUtil.getLong(request, PROPOSAL_ID_PARAM);
         givenProposalId = (proposalIdParam == 0)
-                ? ParamUtil.getLong(request, PLAN_ID_PARAM) : proposalIdParam;
-        givenContestUrlName = ParamUtil.getString(request, CONTEST_URL_NAME_PARAM);
-        givenContestYear = ParamUtil.getLong(request, CONTEST_YEAR_PARAM);
-        givenContestId = ParamUtil.getLong(request, CONTEST_ID_PARAM);
-        givenPhaseId = ParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
-        givenVersion = ParamUtil.getInteger(request, VERSION_PARAM);
+                ? RequestParamUtil.getLong(request, PLAN_ID_PARAM) : proposalIdParam;
+        givenContestUrlName = RequestParamUtil.getString(request, CONTEST_URL_NAME_PARAM);
+        givenContestYear = RequestParamUtil.getLong(request, CONTEST_YEAR_PARAM);
+        givenContestId = RequestParamUtil.getLong(request, CONTEST_ID_PARAM);
+        givenPhaseId = RequestParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
+        givenVersion = RequestParamUtil.getInteger(request, VERSION_PARAM);
 
         Contest transientContest = fetchContest();
 

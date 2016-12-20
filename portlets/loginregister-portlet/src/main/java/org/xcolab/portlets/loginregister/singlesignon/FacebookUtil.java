@@ -2,13 +2,13 @@ package org.xcolab.portlets.loginregister.singlesignon;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
+
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.util.http.RequestUtils;
@@ -48,7 +48,7 @@ public final class FacebookUtil {
             IOUtils.copy(is, writer, "UTF-8");
             String json = writer.toString();
 
-            JSONObject fbJson = JSONFactoryUtil.createJSONObject(json);
+            JSONObject fbJson = new JSONObject(json);
             return fbJson.getJSONObject("picture").getJSONObject("data").getString("url");
         } catch (JSONException | IOException e) {
             _log.error("Error while getting facebook picture url", e);
@@ -86,7 +86,7 @@ public final class FacebookUtil {
                 .queryParam("fields", fields);
         final String json = RequestUtils.getUnchecked(uriBuilder, String.class);
         try {
-            return JSONFactoryUtil.createJSONObject(json);
+            return new JSONObject(json);
         } catch (JSONException e) {
             return null;
         }

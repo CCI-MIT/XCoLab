@@ -1,18 +1,14 @@
 package org.xcolab.portlets.search;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
-
-import com.liferay.portal.kernel.search.ParseException;
-import com.liferay.portal.kernel.search.SearchException;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.portlets.search.paging.PageLinkWrapper;
 import org.xcolab.portlets.search.paging.SearchDataPage;
 import org.xcolab.util.html.HtmlUtil;
 
-import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,15 +22,17 @@ public class SearchBean implements Serializable {
     private String searchPhrase = "";
     private final SearchDataPage dataPage;
 
-    public SearchBean(String searchPhrase, String searchLocation, Integer pageNumber)
-            throws IOException, ParseException, org.apache.lucene.queryParser.ParseException,
-            SearchException, InvalidTokenOffsetsException {
+    public SearchBean(String searchPhrase, String searchLocation, Integer pageNumber) {
         this.pageNumber = pageNumber == null || pageNumber < 1 ? 1 : pageNumber;
         this.searchLocation = searchLocation == null ? "" : searchLocation;
         if (StringUtils.isEmpty(searchPhrase)) {
             this.searchPhrase = "";
         } else {
-            this.searchPhrase = HtmlUtil.cleanAll(URLDecoder.decode(searchPhrase, "UTF-8"));
+            try {
+                this.searchPhrase = HtmlUtil.cleanAll(URLDecoder.decode(searchPhrase, "UTF-8"));
+            }catch (UnsupportedEncodingException ignored){
+
+            }
         }
 
         this.dataPage = new SearchDataPage(pageNumber != null ? pageNumber : 1, searchPhrase, searchLocation);

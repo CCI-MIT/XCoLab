@@ -36,7 +36,6 @@
         <module>staffmembers-portlet</module>
         <module>loginregister-portlet</module>
         <module>notificationunregister-portlet</module>
-        <module>blogsstats-portlet</module>
         <module>randomproposals-portlet</module>
         <module>wiki-portlet</module>
     </modules>

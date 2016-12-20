@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
-import com.liferay.portal.kernel.search.SearchException;
+
 
 import org.xcolab.portlets.search.SearchBean;
 
@@ -25,9 +25,7 @@ public class SearchController {
     public String showCategories(PortletRequest request, PortletResponse response, Model model,
                                  @RequestParam(required = false) String searchPhrase,
                                  @RequestParam(required = false) String searchLocation,
-                                 @RequestParam(required = false) Integer pageNumber)
-            throws IOException, ParseException, InvalidTokenOffsetsException,
-            SearchException, com.liferay.portal.kernel.search.ParseException {
+                                 @RequestParam(required = false) Integer pageNumber) {
 
         model.addAttribute("searchBean", new SearchBean(searchPhrase, searchLocation, pageNumber));
 

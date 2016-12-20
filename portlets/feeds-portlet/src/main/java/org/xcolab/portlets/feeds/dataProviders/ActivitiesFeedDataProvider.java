@@ -2,27 +2,21 @@ package org.xcolab.portlets.feeds.dataProviders;
 
 import org.springframework.ui.Model;
 
-import com.ext.portlet.Activity.ActivityUtil;
-import com.liferay.portal.kernel.search.SearchException;
-import com.liferay.portal.kernel.util.DateUtil;
-import com.liferay.portal.util.PortalUtil;
-
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.beans.SortFilterPage;
+import org.xcolab.entity.utils.portlet.PortletUtil;
 import org.xcolab.portlets.feeds.FeedTypeDataProvider;
 import org.xcolab.portlets.feeds.FeedsPreferences;
 import org.xcolab.portlets.feeds.wrappers.SocialActivityWrapper;
-import org.xcolab.util.exceptions.InternalException;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -35,9 +29,8 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 								PortletResponse response, SortFilterPage sortFilterPage,
 								FeedsPreferences feedsPreferences, Model model) {
 
-		try {
-            HttpServletRequest originalRequest = PortalUtil
-                    .getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
+
+            HttpServletRequest originalRequest = PortletUtil.getHttpServletRequest(request);
 
             Map<String, String[]> parameters = request.getParameterMap();
             final int pageSize = feedsPreferences.getFeedSize();
@@ -89,9 +82,8 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
                     break;
                 }
 
-                int curDaysBetween = DateUtil
-                        .getDaysBetween(new Date(activity.getCreateDate().getTime()), now,
-                                TimeZone.getDefault());
+                int curDaysBetween =
+                        getDaysBetween(new Date(activity.getCreateDate().getTime()), now);
                 activities.add(new SocialActivityWrapper(activity, curDaysBetween,
                         lastDaysBetween < curDaysBetween, i % 2 == 1, request,
                         feedsPreferences.getFeedMaxLength()));
@@ -101,19 +93,19 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 
             model.addAttribute("activities", activities);
 
+            int activitiesCount  = ActivitiesClientUtil.countActivities(filterUserId,null);
             if (filterUserId == 0) {
                 model.addAttribute("isLastPage",
-                        ((pageSize * (sortFilterPage.getPage() + 1)) >= ActivityUtil
-                                .getAllActivitiesCount()));
+                        ((pageSize * (sortFilterPage.getPage() + 1)) >= activitiesCount));
             } else {
                 model.addAttribute("isLastPage",
-                        ((pageSize * (sortFilterPage.getPage() + 1) >= ActivityUtil
-                                .getActivitiesCount(filterUserId))));
+                        ((pageSize * (sortFilterPage.getPage() + 1) >= activitiesCount)));
             }
 
             return "activities";
-        } catch (SearchException e) {
-            throw new InternalException(e);
-        }
+
+    }
+    private static int getDaysBetween(Date d1, Date d2){
+        return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
     }
 }

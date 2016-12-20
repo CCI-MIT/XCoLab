@@ -1,6 +1,8 @@
 package org.xcolab.portlets.loginregister;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,22 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.ext.portlet.Activity.LoginRegisterActivityKeys;
-
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.social.service.SocialActivityLocalServiceUtil;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
@@ -49,6 +40,11 @@ import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.entity.utils.ModelAttributeUtil;
 import org.xcolab.entity.utils.ReCaptchaUtils;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
+import org.xcolab.entity.utils.portlet.PortletUtil;
+import org.xcolab.entity.utils.portlet.RequestParamUtil;
+import org.xcolab.entity.utils.portlet.session.SessionErrors;
+import org.xcolab.entity.utils.portlet.session.SessionMessages;
 import org.xcolab.liferay.LoginRegisterUtil;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.portlets.loginregister.singlesignon.SSOKeys;
@@ -98,10 +94,9 @@ public class MainViewController {
     @RequestMapping
     public String register(PortletRequest request, PortletResponse response, Model model) {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request
-                .getAttribute(WebKeys.THEME_DISPLAY);
 
-        HttpServletRequest httpRequest = PortalUtil
+
+        HttpServletRequest httpRequest = PortletUtil
                 .getHttpServletRequest(request);
 
         while (httpRequest instanceof HttpServletRequestWrapper) {
@@ -109,7 +104,7 @@ public class MainViewController {
                     .getRequest();
         }
 
-        String redirect = ParamUtil.getString(request, "redirect");
+        String redirect = RequestParamUtil.getString(request, "redirect");
 
         if (redirect == null || redirect.trim().isEmpty()) {
             redirect = httpRequest.getParameter("redirect");
@@ -118,11 +113,11 @@ public class MainViewController {
                 redirect = (String) session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
             }
             if (redirect == null) {
-                redirect = PortalUtil.getHttpServletRequest(request).getHeader("referer");
+                redirect = PortletUtil.getHttpServletRequest(request).getHeader("referer");
             }
         }
-        if (themeDisplay.isSignedIn()) {
-            HttpServletResponse httpServletResponse = PortalUtil.getHttpServletResponse(response);
+        if (MemberAuthUtil.getMemberId(request)>0) {
+            HttpServletResponse httpServletResponse = PortletUtils.getHttpServletResponse(response);
             try {
                 httpServletResponse.sendRedirect("/");
                 return "";
@@ -143,7 +138,7 @@ public class MainViewController {
         if (com.liferay.portal.kernel.util.Validator.isNull(userBean.getCountry())) {
             try {
                 userBean.setCountry(
-                        getCountryCodeFromRemoteAddress(PortalUtil.getHttpServletRequest(request).getRemoteAddr()));
+                        getCountryCodeFromRemoteAddress(PortletUtil.getHttpServletRequest(request).getRemoteAddr()));
             } catch (UserLocationNotResolvableException ignored) {
             }
         }
@@ -295,13 +290,13 @@ public class MainViewController {
     public static void completeRegistration(ActionRequest request, ActionResponse response,
             CreateUserBean newAccountBean,
             String redirect, boolean postRegistration) throws Exception {
-        HttpServletRequest httpReq = PortalUtil.getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
+        HttpServletRequest httpReq = PortletUtil.getHttpServletRequest(request);
         PortletSession portletSession = request.getPortletSession();
         String fbIdString =
                 (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID, PortletSession.APPLICATION_SCOPE);
         String openId = (String) portletSession.getAttribute(SSOKeys.SSO_OPENID_ID, PortletSession.APPLICATION_SCOPE);
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
 
         BalloonCookie balloonCookie = BalloonCookie.fromCookieArray(httpReq.getCookies());
 
@@ -309,7 +304,7 @@ public class MainViewController {
             final Member user = LoginRegisterUtil.register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
                             newAccountBean.getEmail(), newAccountBean.getFirstName(), newAccountBean.getLastName(),
                             newAccountBean.getShortBio(), newAccountBean.getCountry(), fbIdString, openId,
-                            newAccountBean.getImageId(), themeDisplay.getPortalURL());
+                            newAccountBean.getImageId(), ConfigurationAttributeKey.COLAB_URL.get());
 
             // SSO
             if (StringUtils.isNotBlank(fbIdString)) {
@@ -338,18 +333,13 @@ public class MainViewController {
             httpReq.getSession().setAttribute("collab_user_has_registered", true);
 
 
-
-            SocialActivityLocalServiceUtil
-                    .addActivity(user.getId_(), themeDisplay.getScopeGroupId(), User.class.getName(),
-                            user.getId_(), LoginRegisterActivityKeys.USER_REGISTERED.getType(), null, 0);
-
             ActivityEntryHelper.createActivityEntry(ActivitiesClientUtil.getClient(), user.getUserId(), user.getUserId(),null, ActivityProvidersType.MemberJoinedActivityEntry.getType());
 
 
             request.getPortletSession().setAttribute("collab_user_has_registered", true);
-            PortalUtil.getHttpServletRequest(request).getSession().setAttribute("collab_user_has_registered", true);
+            PortletUtil.getHttpServletRequest(request).getSession().setAttribute("collab_user_has_registered", true);
             if (redirect == null) {
-                redirect = themeDisplay.getURLHome();
+                redirect = ConfigurationAttributeKey.COLAB_URL.get();
             }
 
             if (postRegistration) {
@@ -382,38 +372,47 @@ public class MainViewController {
     public void updateRegistrationParameters(ResourceRequest request, ResourceResponse response)
             throws IOException, SystemException, PortalException {
 
-        JSONObject json = JSONFactoryUtil.createJSONObject();
-        json.put("screenName", JSONFactoryUtil.createJSONObject());
-        json.put("bio", JSONFactoryUtil.createJSONObject());
+        try {
+            JSONObject json = new JSONObject();
+            json.put("screenName", new JSONObject());
+            json.put("bio", new JSONObject());
 
-        String screenName = request.getParameter("screenName");
-        String bio = request.getParameter("bio");
-        User loggedInUser = ((ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY)).getUser();
-        Member loggedInMember = MembersClient.getMemberUnchecked(loggedInUser.getUserId());
+            String screenName = request.getParameter("screenName");
+            String bio = request.getParameter("bio");
 
-        if (!loggedInUser.getScreenName().equals(screenName)) {
-            if (StringUtils.isNotEmpty(screenName) && SharedColabClient.isScreenNameUsed(screenName)
-                    && screenName.matches(USER_NAME_REGEX)) {
-                loggedInUser.setScreenName(screenName);
-                json.getJSONObject("screenName").put("success", true);
-            } else {
-                json.getJSONObject("screenName").put("success", false);
+            Member loggedInMember = MemberAuthUtil.getMemberOrNull(request);
+            if(loggedInMember!= null) {
+                User loggedInUser = UserLocalServiceUtil.getUser(loggedInMember.getId_());
+
+                if (!loggedInUser.getScreenName().equals(screenName)) {
+                    if (StringUtils.isNotEmpty(screenName) && SharedColabClient
+                            .isScreenNameUsed(screenName)
+                            && screenName.matches(USER_NAME_REGEX)) {
+                        loggedInUser.setScreenName(screenName);
+                        json.getJSONObject("screenName").put("success", true);
+                    } else {
+                        json.getJSONObject("screenName").put("success", false);
+                    }
+                }
+
+                json.getJSONObject("bio").put("success", true);
+                if (StringUtils.isNotEmpty(bio)) {
+                    if (bio.length() <= 2000) {
+                        loggedInMember
+                                .setShortBio(
+                                        HtmlUtil.cleanSome(bio, LinkUtils.getBaseUri(request)));
+                        MembersClient.updateMember(loggedInMember);
+                    } else {
+                        json.getJSONObject("bio").put("success", false);
+                    }
+                }
+
+                UserLocalServiceUtil.updateUser(loggedInUser);
             }
+            response.getWriter().write(json.toString());
+        }catch (JSONException ignored){
+
         }
-
-        json.getJSONObject("bio").put("success", true);
-        if (StringUtils.isNotEmpty(bio)) {
-            if (bio.length() <= 2000) {
-                loggedInMember.setShortBio(HtmlUtil.cleanSome(bio, LinkUtils.getBaseUri(request)));
-                MembersClient.updateMember(loggedInMember);
-            } else {
-                json.getJSONObject("bio").put("success", false);
-            }
-        }
-
-        UserLocalServiceUtil.updateUser(loggedInUser);
-
-        response.getWriter().write(json.toString());
     }
     @ModelAttribute("recaptchaDataSiteKey")
     public String getRecaptchaDataSiteKey(){
@@ -424,17 +423,21 @@ public class MainViewController {
     public void generateScreenName(ResourceRequest request, ResourceResponse response)
             throws IOException, SystemException, PortalException {
 
-        JSONObject json = JSONFactoryUtil.createJSONObject();
+        JSONObject json = new JSONObject();
         final String firstName = request.getParameter("firstName");
         final String lastName = request.getParameter("lastName");
 
         try {
-            json.put("screenName", MembersClient.generateScreenName(lastName, firstName));
-            json.put("success", true);
-        } catch (HttpClientErrorException e) {
-            _log.warn("Failed to generate user name ", e);
-            json.put("success", false);
-            json.put("error", e.toString());
+            try {
+                json.put("screenName", MembersClient.generateScreenName(lastName, firstName));
+                json.put("success", true);
+            } catch (HttpClientErrorException e) {
+                _log.warn("Failed to generate user name ", e);
+                json.put("success", false);
+                json.put("error", e.toString());
+            }
+        }catch (JSONException ignored){
+
         }
 
         response.getWriter().write(json.toString());

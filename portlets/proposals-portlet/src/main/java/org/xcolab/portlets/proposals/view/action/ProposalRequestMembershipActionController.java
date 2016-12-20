@@ -1,5 +1,6 @@
 package org.xcolab.portlets.proposals.view.action;
 
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,17 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
-
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
@@ -29,6 +20,9 @@ import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.entity.utils.email.notifications.proposal.ProposalMembershipInviteNotification;
 import org.xcolab.entity.utils.email.notifications.proposal.ProposalUserActionNotification;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
+import org.xcolab.entity.utils.portlet.PortletUtil;
+import org.xcolab.entity.utils.portlet.session.SessionErrors;
+import org.xcolab.entity.utils.portlet.session.SessionMessages;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;
 import org.xcolab.portlets.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
@@ -66,7 +60,7 @@ public class ProposalRequestMembershipActionController {
             BindingResult result, @RequestParam("requestComment") String comment)
             throws IOException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
         if (result.hasErrors()) {
             response.setRenderParameter("error", "true");
             response.setRenderParameter("action", "requestMembership");
@@ -88,7 +82,7 @@ public class ProposalRequestMembershipActionController {
                 .addRequestedMembershipRequest(proposalId, sender.getUserId(), comment);
 
         new ProposalUserActionNotification(proposal, contest, sender, proposalAuthor,
-                MEMBERSHIP_REQUEST_TEMPLATE, themeDisplay.getPortalURL()).sendMessage();
+                MEMBERSHIP_REQUEST_TEMPLATE, ConfigurationAttributeKey.COLAB_URL.get()).sendMessage();
 
         SessionMessages.add(request, "membershipRequestSent");
         response.sendRedirect(proposal.getProposalLinkUrl(contest) + "/tab/TEAM");
@@ -98,8 +92,7 @@ public class ProposalRequestMembershipActionController {
     public void invite(ActionRequest request, Model model,
                        ActionResponse response, @Valid RequestMembershipInviteBean requestMembershipInviteBean, BindingResult result)
             throws IOException {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(
-                WebKeys.THEME_DISPLAY);
+
 
         String input = requestMembershipInviteBean.getInviteRecipient();
         if (input == null || input.equals("")) {
@@ -122,7 +115,7 @@ public class ProposalRequestMembershipActionController {
                     String comment = HtmlUtil
                             .cleanAll(requestMembershipInviteBean.getInviteComment());
 
-                    if (Validator.isNull(comment)) {
+                    if (comment ==null) {
                         comment = "No message specified";
                     }
                     MembershipRequest memberRequest = proposalsContext.getClients(request).getMembershipClient()
@@ -133,7 +126,7 @@ public class ProposalRequestMembershipActionController {
 
                     new ProposalMembershipInviteNotification(proposal, contest, sender,
                             recipient,
-                            memberRequest, comment, themeDisplay.getPortalURL()).sendMessage();
+                            memberRequest, comment, ConfigurationAttributeKey.COLAB_URL.get()).sendMessage();
 
                     SessionMessages.add(request, "memberInviteSent");
                 }
@@ -145,17 +138,17 @@ public class ProposalRequestMembershipActionController {
         }
 
 
+
         response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/TEAM");
     }
 
     @ResourceMapping("inviteMembers-validateRecipient")
-    public void validateRecipient(ResourceRequest request, ResourceResponse response)
-            throws SystemException, PortalException {
+    public void validateRecipient(ResourceRequest request, ResourceResponse response) {
         String input = request.getParameter("term");
 
         List<Member> recipients = getRecipientSuggestions(input, proposalsContext.getProposal(request).getProposalId(),
                 request);
-        JSONArray responseJson = JSONFactoryUtil.createJSONArray();
+        JSONArray responseJson = new JSONArray();
         for (Member user : recipients) {
             responseJson.put(String.format("%s (%s %s)", user.getScreenName(), user.getFirstName(), user.getLastName()));
         }
@@ -170,13 +163,12 @@ public class ProposalRequestMembershipActionController {
     public void respond(ActionRequest request, Model model, ActionResponse response,
                         @RequestParam("approve") String approve,
                         @RequestParam("comment") String comment,
-                        @RequestParam("requestId") long requestId)
-            throws PortalException, SystemException, IOException {
-        if (PortalUtil.getUser(request) == null) {
+                        @RequestParam("requestId") long requestId) throws IOException {
+        if (MemberAuthUtil.getMemberOrNull(request) == null) {
             return;
         }
 
-        long userId = PortalUtil.getUser(request).getUserId();
+        long userId = MemberAuthUtil.getMemberId(request);
         long proposalId = proposalsContext.getProposal(request).getProposalId();
 
         MembershipRequest membershipRequest = null;
@@ -212,7 +204,7 @@ public class ProposalRequestMembershipActionController {
     }
 
     private List<Member> getRecipientSuggestions(String input, long proposalId,
-            PortletRequest request) throws PortalException, SystemException {
+            PortletRequest request) {
         String[] inputParts = input.split(" ");
         if (inputParts.length == 0) {
             return new ArrayList<>();

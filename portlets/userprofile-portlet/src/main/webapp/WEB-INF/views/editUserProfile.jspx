@@ -68,7 +68,7 @@
 			<div class="comm_member">
 				<div class="comm_member-photo">
 					<div style="float: right">
-						<img src="${baseImagePath}${userBean.portrait}" id="userPortrait"
+						<img src="${userBean.portraitString}" id="userPortrait"
 							 width="150" height="150" alt="${userBean.screenName}" />
 						<div class="clearfix"><!--  --></div>
 						<div id="uploadImageContainer"><!--  --></div>

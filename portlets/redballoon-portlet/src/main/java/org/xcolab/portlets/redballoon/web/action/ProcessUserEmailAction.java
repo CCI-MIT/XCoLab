@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.util.mail.MailEngineException;
+
 
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
@@ -52,7 +52,7 @@ public class ProcessUserEmailAction {
 
     @RequestMapping(params = "action=sendEmail")
     public void processUserEmail(ActionRequest request, ActionResponse response, Model model,
-                                 @Valid UserEmailBean userEmailBean, BindingResult bindingResult) throws IOException, AddressException, MailEngineException {
+                                 @Valid UserEmailBean userEmailBean, BindingResult bindingResult) throws IOException, AddressException {
 
         if (userEmailBean != null && !bindingResult.hasErrors()) {
             BalloonUserTracking but = BalloonUtils.getBalloonUserTracking(request, response, null, null, null);
@@ -83,8 +83,7 @@ public class ProcessUserEmailAction {
     }
 
 
-    private void sendNotificationEmail(PortletRequest request, BalloonUserTracking but, BalloonLink link) throws AddressException,
-            MailEngineException {
+    private void sendNotificationEmail(PortletRequest request, BalloonUserTracking but, BalloonLink link) throws AddressException {
 
         PortletSession session = request.getPortletSession();
         if (session.getAttributeMap().containsKey(EMAIL_SENT)) {

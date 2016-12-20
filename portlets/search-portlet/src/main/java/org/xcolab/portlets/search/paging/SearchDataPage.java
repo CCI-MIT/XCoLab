@@ -1,16 +1,11 @@
 package org.xcolab.portlets.search.paging;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
-
-import com.liferay.portal.kernel.search.ParseException;
-import com.liferay.portal.kernel.search.SearchException;
 
 import org.xcolab.client.search.SearchClient;
 import org.xcolab.client.search.pojo.SearchPojo;
 import org.xcolab.portlets.search.SearchResultItem;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,15 +22,11 @@ public class SearchDataPage {
     private List<SearchResultItem> items;
 
     @SuppressWarnings("unused")
-    public SearchDataPage()
-            throws SearchException, ParseException, org.apache.lucene.queryParser.ParseException,
-            InvalidTokenOffsetsException, IOException {
+    public SearchDataPage() {
         this(1, "", "");
     }
 
-    public SearchDataPage(int page, String searchPhrase, String searchLocation)
-            throws SearchException, ParseException, org.apache.lucene.queryParser.ParseException,
-            InvalidTokenOffsetsException, IOException {
+    public SearchDataPage(int page, String searchPhrase, String searchLocation){
         this.page = page;
         this.searchPhrase = StringUtils.trim(searchPhrase);
         this.searchLocation = searchLocation;
@@ -43,8 +34,7 @@ public class SearchDataPage {
         initializeItems();
     }
 
-    private void initializeItems() throws SearchException, org.apache.lucene.queryParser.ParseException, ParseException,
-            InvalidTokenOffsetsException, IOException {
+    private void initializeItems() {
 
         if (StringUtils.isEmpty(searchPhrase)) {
             items = Collections.emptyList();

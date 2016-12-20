@@ -1,10 +1,7 @@
 package org.xcolab.portlets.search;
 
-import com.liferay.portal.kernel.search.Document;
 import org.xcolab.client.search.pojo.SearchPojo;
 import org.xcolab.portlets.search.items.AbstractSearchItem;
-import org.xcolab.portlets.search.items.BlogSearchItem;
-import org.xcolab.portlets.search.items.ContentSearchItem;
 import org.xcolab.portlets.search.items.ContestSearchItem;
 import org.xcolab.portlets.search.items.DiscussionSearchItem;
 import org.xcolab.portlets.search.items.ProposalSearchItem;

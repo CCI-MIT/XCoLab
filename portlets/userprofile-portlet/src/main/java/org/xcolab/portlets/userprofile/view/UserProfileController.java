@@ -18,13 +18,12 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.User;
-import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
@@ -42,6 +41,8 @@ import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.entity.utils.ModelAttributeUtil;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
+import org.xcolab.entity.utils.portlet.session.SessionErrors;
+import org.xcolab.entity.utils.portlet.session.SessionMessages;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.NewsletterBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
@@ -115,7 +116,6 @@ public class UserProfileController {
 
     public void populateUserWrapper(UserProfileWrapper currentUserProfile, Model model) {
         model.addAttribute("currentUserProfile", currentUserProfile);
-        model.addAttribute("baseImagePath", currentUserProfile.getThemeDisplay().getPathImage());
         model.addAttribute("userBean", currentUserProfile.getUserBean());
         model.addAttribute("messageBean", new MessageBean());
     }
@@ -281,7 +281,10 @@ public class UserProfileController {
         }
         UserProfileWrapper currentUserProfile = new UserProfileWrapper(updatedUserBean.getUserId(), request);
         model.addAttribute("currentUserProfile", currentUserProfile);
-        model.addAttribute("baseImagePath", currentUserProfile.getThemeDisplay().getPathImage());
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(
+                WebKeys.THEME_DISPLAY);
+        themeDisplay.getPathImage();
+
         model.addAttribute("messageBean", new MessageBean());
         model.addAttribute("userBean", updatedUserBean);
 
@@ -407,11 +410,6 @@ public class UserProfileController {
         boolean changedMember = false;
         Member member = currentUserProfile.getUser();
 
-        long companyId = CompanyThreadLocal.getCompanyId();
-        if (companyId == 0) {
-            CompanyThreadLocal.setCompanyId(currentUserProfile.getThemeDisplay().getCompanyId());
-            changedMember = true;
-        }
 
         String existingBio = member.getShortBio();
         if (existingBio == null) {
