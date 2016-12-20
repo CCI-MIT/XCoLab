@@ -1,6 +1,6 @@
 package org.xcolab.interfaces;
 
-import org.xcolab.enums.MemberRole;
+import org.xcolab.entity.utils.enums.MemberRole;
 
 public interface TabPermissions {
 

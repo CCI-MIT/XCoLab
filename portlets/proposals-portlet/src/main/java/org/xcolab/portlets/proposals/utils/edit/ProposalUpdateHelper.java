@@ -2,7 +2,7 @@ package org.xcolab.portlets.proposals.utils.edit;
 
 import org.apache.commons.lang.StringUtils;
 
-import org.xcolab.analytics.AnalyticsUtil;
+import org.xcolab.entity.utils.analytics.AnalyticsUtil;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;

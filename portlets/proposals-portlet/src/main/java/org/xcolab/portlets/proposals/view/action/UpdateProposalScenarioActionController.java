@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
-import org.xcolab.enums.ProposalUnversionedAttributeName;
+import org.xcolab.entity.utils.enums.ProposalUnversionedAttributeName;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.wrappers.ProposalTab;

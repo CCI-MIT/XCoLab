@@ -6,21 +6,6 @@
 	<portal-properties>additionalProperties.properties</portal-properties>
 	
 	<custom-jsp-dir>/WEB-INF/jsps</custom-jsp-dir>
-	
-    <indexer-post-processor>
-    	<indexer-class-name>com.liferay.portal.model.User</indexer-class-name>
-    	<indexer-post-processor-impl>org.xcolab.hooks.climatecolab.users.UserIndexerPostProcessor</indexer-post-processor-impl>
-	</indexer-post-processor>
-
-    <!-- Services -->
-    <service>
-        <service-type>com.liferay.portal.service.MembershipRequestLocalService</service-type>
-        <service-impl>org.xcolab.hooks.climatecolab.service.CustomMembershipRequestLocalServiceImpl</service-impl>
-    </service>
-	<service>
-        <service-type>com.liferay.portlet.social.service.SocialActivityLocalService</service-type>
-        <service-impl>org.xcolab.hooks.climatecolab.service.CustomSocialActivityLocalServiceImpl</service-impl>
-    </service>
 
 	<servlet-filter>
 		<servlet-filter-name>SessionPingFilter</servlet-filter-name>
@@ -28,7 +13,7 @@
 	</servlet-filter>
 	<servlet-filter>
 		<servlet-filter-name>FileUploadFilter</servlet-filter-name>
-		<servlet-filter-impl>org.xcolab.hooks.climatecolab.utils.FileUploadFilter</servlet-filter-impl>
+		<servlet-filter-impl>org.xcolab.hooks.climatecolab.files.FileUploadFilter</servlet-filter-impl>
 	</servlet-filter>
 	<servlet-filter>
 		<servlet-filter-name>FlaggingReportFilter</servlet-filter-name>
@@ -44,20 +29,26 @@
     </servlet-filter>
 	<servlet-filter>
 		<servlet-filter-name>ImageDisplayerFilter</servlet-filter-name>
-		<servlet-filter-impl>org.xcolab.hooks.climatecolab.utils.ImageDisplayerFilter</servlet-filter-impl>
+		<servlet-filter-impl>org.xcolab.hooks.climatecolab.files.ImageDisplayFilter</servlet-filter-impl>
 	</servlet-filter>
 	<servlet-filter>
 		<servlet-filter-name>ErrorReporting</servlet-filter-name>
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.errorreporting.ErrorReporting</servlet-filter-impl>
 	</servlet-filter>
 	<servlet-filter>
-		<servlet-filter-name>CaptchaFilter</servlet-filter-name>
-		<servlet-filter-impl>org.xcolab.hooks.climatecolab.captcha.CaptchaFilter</servlet-filter-impl>
-	</servlet-filter>
-	<servlet-filter>
 		<servlet-filter-name>ProfanityFiltering</servlet-filter-name>
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.filtering.ProfanityFiltering</servlet-filter-impl>
 	</servlet-filter>
+    <servlet-filter>
+        <servlet-filter-name>ProposalMembershipInvitationResponseFilter</servlet-filter-name>
+        <servlet-filter-impl>org.xcolab.hooks.climatecolab.membership.ProposalMembershipInvitationResponseFilter</servlet-filter-impl>
+    </servlet-filter>
+    <servlet-filter>
+        <servlet-filter-name>ActivitySubscriptionEmailFilter</servlet-filter-name>
+        <servlet-filter-impl>org.xcolab.hooks.climatecolab.emails.ActivitySubscriptionEmailFilter</servlet-filter-impl>
+    </servlet-filter>
+
+
 	<servlet-filter>
 		<servlet-filter-name>GetWikiImageFixFilter</servlet-filter-name>
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.wiki.GetWikiImageFixFilter</servlet-filter-impl>
@@ -112,6 +103,10 @@
         <servlet-filter-name>ImpersonationLogoutFilter</servlet-filter-name>
         <url-pattern>/impersonate/logout</url-pattern>
     </servlet-filter-mapping>
+    <servlet-filter-mapping>
+        <servlet-filter-name>ActivitySubscriptionEmailFilter</servlet-filter-name>
+        <url-pattern>/emails/sendNotifications</url-pattern>
+    </servlet-filter-mapping>
 	<servlet-filter-mapping>
 		<servlet-filter-name>ImageDisplayerFilter</servlet-filter-name>
 		<url-pattern>/image/*</url-pattern>
@@ -120,6 +115,10 @@
 		<servlet-filter-name>ProfanityFiltering</servlet-filter-name>
 		<url-pattern>/profanityfiltering/*</url-pattern>
 	</servlet-filter-mapping>
+    <servlet-filter-mapping>
+        <servlet-filter-name>ProposalMembershipInvitationResponseFilter</servlet-filter-name>
+        <url-pattern>/membershipRequests/reply</url-pattern>
+    </servlet-filter-mapping>
 
 	<servlet-filter-mapping>
 		<servlet-filter-name>ErrorReporting</servlet-filter-name>
@@ -133,26 +132,4 @@
 		<servlet-filter-name>GetWikiImageFixFilter</servlet-filter-name>
 		<url-pattern>/c/wiki/get_page_attachment</url-pattern>
 	</servlet-filter-mapping>
-
-    <!-- Struts actions -->
-    <!-- Structs action for handling the SendActivitySubscriptionNotifications to subscribers -->
-    <struts-action>
-        <struts-action-path>/portal/schedulerSendEmailNotifications</struts-action-path>
-        <struts-action-impl>org.xcolab.hooks.climatecolab.strutsaction.SchedulerDispatchStrutsAction</struts-action-impl>
-    </struts-action>
-
-    <!-- Override password forget action -->
-    <struts-action>
-        <struts-action-path>/portal/update_password</struts-action-path>
-        <struts-action-impl>org.xcolab.hooks.climatecolab.strutsaction.UpdatePasswordStrutsAction</struts-action-impl>
-    </struts-action>
-
-    <!-- Respond to proposal contribution invitation -->
-    <struts-action>
-        <struts-action-path>/portal/proposal_invite_response</struts-action-path>
-        <struts-action-impl>org.xcolab.hooks.climatecolab.strutsaction.ProposalMembershipInvitationResponseStrutsAction</struts-action-impl>
-    </struts-action>
-
-
-    
 </hook>

@@ -17,7 +17,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
 
     private static final String DEFAULT_TEMPLATE_NAME = "PROPOSAL_MEMBERSHIP_INVITE_DEFAULT";
 
-    private static final String MEMBERSHIP_INVITE_STRUTS_ACTION_URL = "/c/portal/proposal_invite_response";
+    private static final String MEMBERSHIP_INVITE_STRUTS_ACTION_URL = "/membershipRequests/reply";
 
     private static final String MESSAGE_PLACEHOLDER = "message";
     private static final String ACCEPT_LINK_PLACEHOLDER = "accept-link";

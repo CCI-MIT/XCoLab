@@ -7,8 +7,8 @@ import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.impact.ImpactTemplateMaxFocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.enums.OntologySpaceEnum;
-import org.xcolab.utils.OntologyTermToFocusAreaMapper;
+import org.xcolab.entity.utils.enums.OntologySpaceEnum;
+import org.xcolab.client.contest.OntologyTermToFocusAreaMapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;

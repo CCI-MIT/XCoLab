@@ -23,7 +23,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
-import org.xcolab.enums.MemberRole;
+import org.xcolab.entity.utils.enums.MemberRole;
 import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;

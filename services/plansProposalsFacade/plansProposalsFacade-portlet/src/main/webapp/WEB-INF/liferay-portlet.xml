@@ -6,34 +6,6 @@
 		<portlet-name>plansProposalsFacade</portlet-name>
 		<icon>/icon.png</icon>
 		
-		<scheduler-entry>
-			<scheduler-event-listener-class>org.xcolab.services.tasks.ProposalReindexingTask</scheduler-event-listener-class>
-			<trigger>
-				<simple>
-					<simple-trigger-value>1</simple-trigger-value>
-					<time-unit>minute</time-unit>
-				</simple>
-			</trigger>
-		</scheduler-entry>
-        <scheduler-entry>
-            <scheduler-event-listener-class>org.xcolab.services.tasks.ProposalContestPhaseAutopromoteTask</scheduler-event-listener-class>
-            <trigger>
-                <simple>
-                    <simple-trigger-value>1</simple-trigger-value>
-                    <time-unit>minute</time-unit>
-                </simple>
-            </trigger>
-        </scheduler-entry>
-		<scheduler-entry>
-			<scheduler-event-listener-class>org.xcolab.services.tasks.ProposalPointsDistributionTask</scheduler-event-listener-class>
-			<trigger>
-				<cron>
-					<cron-trigger-value>0 0 1 * * *</cron-trigger-value>
-				</cron>
-			</trigger>
-		</scheduler-entry>
-		
-		
 		<instanceable>false</instanceable>
 		
 		<header-portlet-css>/css/main.css</header-portlet-css>

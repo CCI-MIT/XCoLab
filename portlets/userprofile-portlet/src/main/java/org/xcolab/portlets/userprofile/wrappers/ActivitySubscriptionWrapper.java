@@ -1,6 +1,6 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
-import com.ext.portlet.Activity.SubscriptionType;
+import org.xcolab.portlets.userprofile.SubscriptionType;
 
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.entity.utils.activity.ActivitySubscriptionNameGenerator;
