@@ -1,6 +1,4 @@
-package com.ext.portlet.Activity;
-
-import org.xcolab.util.enums.activity.ActivityEntryType;
+package org.xcolab.portlets.userprofile;
 
 import com.ext.portlet.model.ContestType;
 import com.ext.portlet.service.ContestTypeLocalServiceUtil;
@@ -9,6 +7,7 @@ import com.liferay.portal.kernel.exception.SystemException;
 
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 
 public enum SubscriptionType {
     DISCUSSION(ActivityEntryType.DISCUSSION.getPrimaryTypeId()),

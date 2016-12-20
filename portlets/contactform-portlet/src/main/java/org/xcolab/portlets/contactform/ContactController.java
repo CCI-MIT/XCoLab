@@ -1,6 +1,5 @@
 package org.xcolab.portlets.contactform;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -35,8 +34,6 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-//import javax.validation.Validator;
 
 @Controller
 @RequestMapping("view")

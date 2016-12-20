@@ -2,7 +2,7 @@ package org.xcolab.portlets.feeds.dataProviders;
 
 import org.springframework.ui.Model;
 
-import com.ext.portlet.Activity.ActivityUtil;
+import org.xcolab.entity.utils.ActivityUtil;
 
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.members.MembersClient;

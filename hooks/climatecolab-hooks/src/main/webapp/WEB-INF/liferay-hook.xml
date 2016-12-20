@@ -39,10 +39,14 @@
 		<servlet-filter-name>ProfanityFiltering</servlet-filter-name>
 		<servlet-filter-impl>org.xcolab.hooks.climatecolab.filtering.ProfanityFiltering</servlet-filter-impl>
 	</servlet-filter>
-	<servlet-filter>
-		<servlet-filter-name>ProposalMembershipInvitationResponseFilter</servlet-filter-name>
-		<servlet-filter-impl>org.xcolab.hooks.climatecolab.membership.ProposalMembershipInvitationResponseFilter</servlet-filter-impl>
-	</servlet-filter>
+    <servlet-filter>
+        <servlet-filter-name>ProposalMembershipInvitationResponseFilter</servlet-filter-name>
+        <servlet-filter-impl>org.xcolab.hooks.climatecolab.membership.ProposalMembershipInvitationResponseFilter</servlet-filter-impl>
+    </servlet-filter>
+    <servlet-filter>
+        <servlet-filter-name>ActivitySubscriptionEmailFilter</servlet-filter-name>
+        <servlet-filter-impl>org.xcolab.hooks.climatecolab.emails.ActivitySubscriptionEmailFilter</servlet-filter-impl>
+    </servlet-filter>
 
 
 	<servlet-filter>
@@ -99,6 +103,10 @@
         <servlet-filter-name>ImpersonationLogoutFilter</servlet-filter-name>
         <url-pattern>/impersonate/logout</url-pattern>
     </servlet-filter-mapping>
+    <servlet-filter-mapping>
+        <servlet-filter-name>ActivitySubscriptionEmailFilter</servlet-filter-name>
+        <url-pattern>/emails/sendNotifications</url-pattern>
+    </servlet-filter-mapping>
 	<servlet-filter-mapping>
 		<servlet-filter-name>ImageDisplayerFilter</servlet-filter-name>
 		<url-pattern>/image/*</url-pattern>
@@ -107,10 +115,10 @@
 		<servlet-filter-name>ProfanityFiltering</servlet-filter-name>
 		<url-pattern>/profanityfiltering/*</url-pattern>
 	</servlet-filter-mapping>
-	<servlet-filter-mapping>
-		<servlet-filter-name>ProposalMembershipInvitationResponseFilter</servlet-filter-name>
-		<url-pattern>/membershipRequests/reply</url-pattern>
-	</servlet-filter-mapping>
+    <servlet-filter-mapping>
+        <servlet-filter-name>ProposalMembershipInvitationResponseFilter</servlet-filter-name>
+        <url-pattern>/membershipRequests/reply</url-pattern>
+    </servlet-filter-mapping>
 
 	<servlet-filter-mapping>
 		<servlet-filter-name>ErrorReporting</servlet-filter-name>
@@ -124,15 +132,4 @@
 		<servlet-filter-name>GetWikiImageFixFilter</servlet-filter-name>
 		<url-pattern>/c/wiki/get_page_attachment</url-pattern>
 	</servlet-filter-mapping>
-
-    <!-- Struts actions -->
-
-    <!-- Respond to proposal contribution invitation -->
-    <struts-action>
-        <struts-action-path>/portal/proposal_invite_response</struts-action-path>
-        <struts-action-impl></struts-action-impl>
-    </struts-action>
-
-
-    
 </hook>

@@ -1,6 +1,6 @@
 package org.xcolab.entity.utils.activityEntry;
 
-import org.apache.commons.collections.comparators.ComparatorChain;
+import org.apache.commons.collections4.comparators.ComparatorChain;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -119,8 +119,6 @@ public class ActivitySubscriptionEmailHelper {
                 lastDailyEmailNotification = now;
             }
         }
-
-
     }
 
     private static void sendDailyDigestNotifications(List<ActivityEntry> activities) {

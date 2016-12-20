@@ -8,7 +8,6 @@
         <friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
         <friendly-url-mapping>login</friendly-url-mapping>
         <friendly-url-routes>friendlyUrlRoutes.xml</friendly-url-routes>
-        <social-activity-interpreter-class>org.xcolab.portlets.loginregister.activity.LoginRegisterFeedEntry</social-activity-interpreter-class>
         <instanceable>false</instanceable>
         <private-session-attributes>false</private-session-attributes>
         <requires-namespaced-parameters>false</requires-namespaced-parameters> 
