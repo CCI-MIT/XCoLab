@@ -84,7 +84,7 @@ public class RomaClient {
                 '}';
     }
 
-    private static class RomaClientNotConnectedException extends IllegalStateException {
+    public static class RomaClientNotConnectedException extends IllegalStateException {
         public RomaClientNotConnectedException(String host) {
             super("ROMA ClientRepository not connected to host " + host);
         }

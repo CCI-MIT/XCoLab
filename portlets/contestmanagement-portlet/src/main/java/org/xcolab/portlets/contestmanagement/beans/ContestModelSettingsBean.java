@@ -10,6 +10,7 @@ import com.liferay.portal.kernel.util.Validator;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.modeling.roma.RomaClient;
+import org.xcolab.client.modeling.roma.RomaClient.RomaClientNotConnectedException;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.entity.utils.enums.ModelRegions;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
@@ -134,25 +135,24 @@ public class ContestModelSettingsBean implements Serializable {
     }
 
     public static List<LabelValue> getAllModelIds() {
-        final RomaClient repository = RomaClientUtil.client();
-        List<Simulation> simulationsSorted;
-        if (repository != null) { //will be null on very first call - fail gracefully
-            simulationsSorted = new ArrayList<>(repository.getAllSimulations());
-        } else {
-            simulationsSorted = Collections.emptyList();
-        }
-        Collections.sort(simulationsSorted, new Comparator<Simulation>() {
-            @Override
-            public int compare(Simulation o1, Simulation o2) {
-                return (int) (o2.getId() - o1.getId());
+        try {
+            final RomaClient repository = RomaClientUtil.client();
+            List<Simulation> simulationsSorted = new ArrayList<>(repository.getAllSimulations());
+            Collections.sort(simulationsSorted, new Comparator<Simulation>() {
+                @Override
+                public int compare(Simulation o1, Simulation o2) {
+                    return (int) (o2.getId() - o1.getId());
+                }
+            });
+            List<LabelValue> allModelIds = new ArrayList<>();
+            for (Simulation simulation : simulationsSorted) {
+                allModelIds.add(new LabelValue(simulation.getId(),
+                        "(Id: " + simulation.getId() + ") " + simulation.getName()));
             }
-        });
-        List<LabelValue> allModelIds = new ArrayList<>();
-        for (Simulation simulation : simulationsSorted) {
-            allModelIds.add(new LabelValue(simulation.getId(),
-                    "(Id: " + simulation.getId() + ") " + simulation.getName()));
+            return allModelIds;
+        } catch (RomaClientNotConnectedException e) {
+            return Collections.emptyList();
         }
-        return allModelIds;
     }
 
     public static List<LabelStringValue> getAllModelRegions() {
