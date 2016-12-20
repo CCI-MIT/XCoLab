@@ -1,18 +1,6 @@
 package com.ext.portlet.service.impl;
 
-import com.ext.portlet.model.Contest;
-import com.ext.portlet.model.ContestTeamMember;
-import com.ext.portlet.service.ContestLocalServiceUtil;
-import com.ext.portlet.service.ContestTeamMemberLocalServiceUtil;
 import com.ext.portlet.service.base.ContestTeamMemberLocalServiceBaseImpl;
-import com.liferay.counter.service.CounterLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.User;
-import com.liferay.portal.service.UserLocalServiceUtil;
-import org.xcolab.enums.MemberRole;
-
-import java.util.List;
 
 /**
  * The implementation of the contest team member local service.

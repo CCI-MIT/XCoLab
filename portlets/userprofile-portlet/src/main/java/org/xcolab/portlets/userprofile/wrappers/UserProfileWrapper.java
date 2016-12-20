@@ -1,6 +1,6 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
-import com.ext.portlet.Activity.ActivityUtil;
+import org.xcolab.entity.utils.ActivityUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 

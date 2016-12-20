@@ -118,16 +118,5 @@
 	<bean id="com.ext.portlet.service.Xcolab_UserLocalService" class="com.ext.portlet.service.impl.Xcolab_UserLocalServiceImpl" />
 	<bean id="com.ext.portlet.service.Xcolab_UserService" class="com.ext.portlet.service.impl.Xcolab_UserServiceImpl" />
 	<bean id="com.ext.portlet.service.persistence.Xcolab_UserFinder" class="com.ext.portlet.service.persistence.Xcolab_UserFinderImpl" parent="basePersistence" />
-	<bean id="com.ext.utils.userInput.PolicyFct" class="com.ext.utils.userInput.PolicyFct">
-		<property name="policyFile">
-			<value>antisamy-policy.xml</value>
-		</property>
-	</bean>
-	<bean id="com.ext.utils.userInput.UserInputFilter" class="com.ext.utils.userInput.UserInputFilterImpl">
-		<property name="policyFactory" ref="com.ext.utils.userInput.PolicyFct" />
-	</bean>
-	<bean id="com.ext.utils.userInput.service.UserInputFilterUtil" class="com.ext.utils.userInput.service.UserInputFilterUtil">
-		<property name="service" ref="com.ext.utils.userInput.UserInputFilter" />
-	</bean>
 	<bean id="com.ext.utils.authentication.AuthenticationService" class="com.ext.utils.authentication.AuthenticationServiceImpl" />
 </beans>

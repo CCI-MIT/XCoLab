@@ -10,9 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 
-import org.xcolab.activityEntry.DiscussionActivitySubType;
-import org.xcolab.activityEntry.MemberSubActivityType;
-import org.xcolab.activityEntry.ProposalActivitySubType;
+import org.xcolab.entity.utils.activityEntry.DiscussionActivitySubType;
+import org.xcolab.entity.utils.activityEntry.MemberSubActivityType;
+import org.xcolab.entity.utils.activityEntry.ProposalActivitySubType;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 

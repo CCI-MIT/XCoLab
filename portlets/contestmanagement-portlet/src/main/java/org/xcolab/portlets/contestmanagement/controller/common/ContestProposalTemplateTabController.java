@@ -18,7 +18,7 @@ import org.xcolab.client.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.controller.BaseTabController;
 import org.xcolab.util.enums.contest.ContestTier;
-import org.xcolab.enums.OntologySpaceEnum;
+import org.xcolab.entity.utils.enums.OntologySpaceEnum;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.entities.LabelStringValue;
 import org.xcolab.portlets.contestmanagement.entities.LabelValue;

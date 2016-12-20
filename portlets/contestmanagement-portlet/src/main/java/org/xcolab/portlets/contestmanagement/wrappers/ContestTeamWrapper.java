@@ -4,14 +4,11 @@ package org.xcolab.portlets.contestmanagement.wrappers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.enums.MemberRole;
+import org.xcolab.entity.utils.enums.MemberRole;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.contestmanagement.beans.ContestTeamBean;
 import org.xcolab.util.enums.activity.ActivityEntryType;

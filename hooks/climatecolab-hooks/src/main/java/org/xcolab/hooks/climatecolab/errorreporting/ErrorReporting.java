@@ -1,16 +1,12 @@
 package org.xcolab.hooks.climatecolab.errorreporting;
 
-import org.parboiled.common.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.User;
-import com.liferay.portal.util.PortalUtil;
-
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.email.EmailToAdminDispatcher;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -54,18 +50,16 @@ public class ErrorReporting implements Filter {
 
         if (!stackTrace.equals("${exception.stackTrace}")) {
             String userScreenName = "no user was logged in";
-            try {
-                final User user = PortalUtil.getUser(request);
-                if (user != null) {
-                    userScreenName = user.getScreenName();
+            final Member member = MemberAuthUtil.getMemberOrNull(request);
+            if (member != null) {
+                userScreenName = member.getScreenName();
 
-                    if (email.isEmpty()) {
-                        email = user.getEmailAddress();
-                    }
+                if (email.isEmpty()) {
+                    email = member.getEmailAddress();
                 }
-            } catch (PortalException | SystemException ignored) { /* no user logged in */}
+            }
 
-            if (Validator.isNotNull(url)) {
+            if (StringUtils.isNotEmpty(url)) {
                 String body = buildErrorReportBody(url, userScreenName, email, stackTrace, descriptionInHtmlFormat);
                 new EmailToAdminDispatcher(EMAIL_SUBJECT, body).sendMessage();
             }
@@ -88,7 +82,8 @@ public class ErrorReporting implements Filter {
 
     }
 
-    private String buildErrorReportBody(String url, String userScreenName, String email, String stackTrace, String descriptionInHtmlFormat)
+    private String buildErrorReportBody(String url, String userScreenName, String email,
+            String stackTrace, String descriptionInHtmlFormat)
             throws UnsupportedEncodingException {
         StringBuilder messageBuilder = new StringBuilder();
 
@@ -99,7 +94,8 @@ public class ErrorReporting implements Filter {
                 messageBuilder.append(String.format(MESSAGE_BODY_EMAIL_FORMAT_STRING, email));
             }
 
-            messageBuilder.append(String.format(MESSAGE_BODY_FOOTER_FORMAT_STRING, URLDecoder.decode(stackTrace, "UTF-8")));
+            messageBuilder.append(String.format(MESSAGE_BODY_FOOTER_FORMAT_STRING,
+                    URLDecoder.decode(stackTrace, "UTF-8")));
         }
 
         return messageBuilder.toString();
