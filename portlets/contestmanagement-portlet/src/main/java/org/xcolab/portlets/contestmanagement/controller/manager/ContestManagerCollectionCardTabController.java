@@ -1,14 +1,13 @@
 package org.xcolab.portlets.contestmanagement.controller.manager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
@@ -33,7 +32,7 @@ import javax.portlet.PortletResponse;
 @RequestMapping("view")
 public class ContestManagerCollectionCardTabController extends ContestManagerBaseTabController {
 
-    private final static Log _log = LogFactoryUtil.getLog(ContestManagerCollectionCardTabController.class);
+    private final static Logger _log = LoggerFactory.getLogger(ContestManagerCollectionCardTabController.class);
     static final private TabEnum tab = ContestManagerTabs.COLLECTION_CARDS;
     static final private String TAB_VIEW = "manager/collectionCardTab";
     private static final int BY_TOPIC_COLLECTION_CARD_ID = 2;
@@ -101,7 +100,7 @@ public class ContestManagerCollectionCardTabController extends ContestManagerBas
 
     @RequestMapping(params = "action=deleteContestCollectionCard")
     public void deleteCollectionCardController(ActionRequest request,
-            @RequestParam(required = true) String  collectionCardId, ActionResponse response) {
+            @RequestParam String  collectionCardId, ActionResponse response) {
         if (!tabWrapper.getCanEdit()) {
             SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
             return;

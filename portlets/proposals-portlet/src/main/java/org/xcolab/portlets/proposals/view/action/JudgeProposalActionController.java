@@ -3,6 +3,7 @@ package org.xcolab.portlets.proposals.view.action;
 import au.com.bytecode.opencsv.CSVWriter;
 import com.google.common.collect.ImmutableSet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,15 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.liferay.portal.kernel.servlet.HttpHeaders;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.theme.ThemeDisplay;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
@@ -33,6 +27,9 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
+import org.xcolab.entity.utils.portlet.PortletUtil;
+import org.xcolab.entity.utils.portlet.session.SessionErrors;
+import org.xcolab.entity.utils.portlet.session.SessionMessages;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean;
@@ -160,14 +157,12 @@ public class JudgeProposalActionController {
             return;
         }
 
-        ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-        ServiceContext serviceContext = new ServiceContext();
-        serviceContext.setPortalURL(themeDisplay.getPortalURL());
+
 
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             String csvPayload = getProposalJudgeReviewCsv(proposalsContext.getContest(request),
-                    proposalsContext.getContestPhase(request), serviceContext, request);
+                    proposalsContext.getContestPhase(request), request);
 
             String separatorIndicationForExcel =  "sep=" + CSVWriter.DEFAULT_SEPARATOR + CSVWriter.DEFAULT_LINE_END;
             csvPayload = separatorIndicationForExcel + csvPayload;
@@ -186,8 +181,7 @@ public class JudgeProposalActionController {
         }
     }
 
-    public String getProposalJudgeReviewCsv(Contest contest, ContestPhase currentPhase,
-            ServiceContext serviceContext, PortletRequest request)  {
+    public String getProposalJudgeReviewCsv(Contest contest, ContestPhase currentPhase, PortletRequest request)  {
         Map<Proposal,List<ProposalReview>> proposalToProposalReviewsMap = new HashMap<>();
 
         List<Proposal> stillActiveProposals = ProposalsContextUtil.getClients(request).getProposalClient().getActiveProposalsInContestPhase(currentPhase.getContestPhasePK());
@@ -210,7 +204,7 @@ public class JudgeProposalActionController {
                     }
 
 
-                final String proposalUrl = serviceContext.getPortalURL() + proposal.getProposalLinkUrl(contest, judgingPhase.getContestPhasePK());
+                final String proposalUrl = ConfigurationAttributeKey.COLAB_URL.get() + proposal.getProposalLinkUrl(contest, judgingPhase.getContestPhasePK());
                 final ProposalReview proposalReview = new ProposalReview(proposal, judgingPhase, proposalUrl);
                 proposalReview.setReviewers(ImmutableSet.copyOf(getProposalReviewingJudges(proposal, judgingPhase,
                         request)));
@@ -246,7 +240,7 @@ public class JudgeProposalActionController {
                     proposalReview.addRatingAverage(key, avg);
                 }
 
-                if (Validator.isNull(proposalToProposalReviewsMap.get(proposal))) {
+                if ((proposalToProposalReviewsMap.get(proposal)==null)) {
                     proposalToProposalReviewsMap.put(proposal, new ArrayList<ProposalReview>());
                 }
 
@@ -271,11 +265,12 @@ public class JudgeProposalActionController {
                 selectedJudges = new ArrayList<>();
 
                 for (String element : judgeIdString.split(";")) {
-                    long userId = GetterUtil.getLong(element);
+
                     try {
+                        long userId = Long.parseLong(element);
                         Member judge = MembersClient.getMember(userId);
                         selectedJudges.add(judge);
-                    }catch (MemberNotFoundException ignore){
+                    }catch (MemberNotFoundException|NumberFormatException ignore){
 
                     }
                 }
@@ -383,7 +378,7 @@ public class JudgeProposalActionController {
             }
 
             // save fellow action
-            if (Validator.isNotNull(fellowProposalScreeningBean.getFellowScreeningAction())) {
+            if (fellowProposalScreeningBean.getFellowScreeningAction()!= 0) {
                 proposalsContext.getClients(request).getProposalPhaseClient().setProposalContestPhaseAttribute(
                         proposalId,
                         contestPhaseId,

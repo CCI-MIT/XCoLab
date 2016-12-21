@@ -12,15 +12,14 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.entity.utils.email.notifications.contest.ContestCreationNotification;
 import org.xcolab.interfaces.TabEnum;
 import org.xcolab.portlets.contestmanagement.beans.ContestDescriptionBean;
 import org.xcolab.portlets.contestmanagement.entities.ContestDetailsTabs;
@@ -29,7 +28,6 @@ import org.xcolab.portlets.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.portlets.contestmanagement.utils.schedule.ContestScheduleUtil;
 import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.entity.utils.email.notifications.contest.ContestCreationNotification;
 import org.xcolab.wrapper.TabWrapper;
 
 import java.io.IOException;
@@ -116,10 +114,8 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
             updatedContestDescriptionBean.persist(getContest());
             if (createNew) {
                 try {
-                    ThemeDisplay themeDisplay = (ThemeDisplay) request
-                            .getAttribute(WebKeys.THEME_DISPLAY);
                     Contest contest = ContestClientUtil.getContest(updatedContestDescriptionBean.getContestPK());
-                    sendEmailNotificationToAuthor(themeDisplay, contest);
+                    sendEmailNotificationToAuthor(contest);
                 } catch (ContestNotFoundException | MemberNotFoundException e) {
                     throw new DatabaseAccessException(e);
                 }
@@ -137,9 +133,10 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         return TAB_VIEW;
     }
 
-    private void sendEmailNotificationToAuthor(ThemeDisplay themeDisplay, Contest contest)
+    private void sendEmailNotificationToAuthor(Contest contest)
             throws MemberNotFoundException {
-        new ContestCreationNotification(contest, themeDisplay.getPortalURL()).sendMessage();
+        new ContestCreationNotification(contest, ConfigurationAttributeKey.COLAB_URL.get())
+                .sendMessage();
     }
 
     private List<LabelValue> getProposalTemplateSelectionItems() {

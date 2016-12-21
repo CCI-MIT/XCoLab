@@ -3,7 +3,8 @@ package org.xcolab.portlets.loginregister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.liferay.portal.kernel.servlet.SessionErrors;
+
+import org.xcolab.entity.utils.portlet.session.SessionErrors;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

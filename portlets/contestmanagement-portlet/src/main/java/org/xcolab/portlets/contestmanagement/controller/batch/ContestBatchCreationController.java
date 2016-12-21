@@ -1,6 +1,8 @@
 package org.xcolab.portlets.contestmanagement.controller.batch;
 
 import org.joda.time.DateTime;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -10,13 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
@@ -259,14 +254,14 @@ public class ContestBatchCreationController {
     public void validateOntologyTerm(ResourceRequest request, ResourceResponse response,
                                      @RequestParam(required = false) String ontologyTerms)
             throws IOException {
-        JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
-        JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+        JSONObject responseJSON = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
 
         List<Long> inputedOntologyTerms = IdListUtil.getIdsFromString(ontologyTerms);
         for (Long termId : inputedOntologyTerms) {
             OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(termId);
             if (ontologyTerm != null) {
-                JSONObject ontItem = JSONFactoryUtil.createJSONObject();
+                JSONObject ontItem = new JSONObject();
                 ontItem.put("termId", ontologyTerm.getId());
                 ontItem.put("name", ontologyTerm.getName());
                 jsonArray.put(ontItem);

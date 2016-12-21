@@ -8,11 +8,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.liferay.portal.kernel.security.SecureRandomUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
 
-import org.xcolab.entity.utils.analytics.AnalyticsUtil;
+
+
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -23,8 +22,11 @@ import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
+import org.xcolab.entity.utils.analytics.AnalyticsUtil;
 import org.xcolab.entity.utils.email.notifications.proposal.ProposalVoteNotification;
 import org.xcolab.entity.utils.email.notifications.proposal.ProposalVoteValidityConfirmation;
+
+
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
@@ -34,6 +36,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -74,16 +77,15 @@ public class VoteOnProposalActionController {
                     // User has voted for a different proposal. Vote will be retracted and converted to a vote of this proposal.
                     proposalMemberRatingClient.deleteProposalVote(contestPhaseId, memberId);
                 }
-                ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
 
                 proposalMemberRatingClient.addProposalVote(proposalId, contestPhaseId, memberId);
-
-                final boolean voteIsValid = validateVote(member, proposal, contest,
-                        themeDisplay.getPortalURL());
+                String portalUrl = ConfigurationAttributeKey.COLAB_URL.get();
+                final boolean voteIsValid = validateVote(member, proposal, contest,portalUrl);
                 if (voteIsValid) {
                     try {
                         org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
-                        new ProposalVoteNotification(proposal, contestMicro, member, themeDisplay.getPortalURL()).sendMessage();
+                        new ProposalVoteNotification(proposal, contestMicro, member, portalUrl).sendMessage();
                     } catch (ContestNotFoundException ignored) {
 
                     }
@@ -147,7 +149,7 @@ public class VoteOnProposalActionController {
     }
 
     private void sendConfirmationMail(ProposalVote vote, Proposal proposal, Contest contest, Member member, String baseUrl) {
-        String confirmationToken = Long.toHexString(SecureRandomUtil.nextLong());
+        String confirmationToken = UUID.randomUUID().toString();
         vote.setConfirmationToken(confirmationToken);
         vote.setConfirmationEmailSendDate(new Timestamp(new Date().getTime()));
             new ProposalVoteValidityConfirmation(proposal, contest, member, baseUrl,

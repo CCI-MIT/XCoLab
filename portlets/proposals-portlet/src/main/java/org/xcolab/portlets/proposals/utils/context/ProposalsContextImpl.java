@@ -2,17 +2,13 @@ package org.xcolab.portlets.proposals.utils.context;
 
 import org.springframework.stereotype.Component;
 
-import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
-import com.liferay.portal.theme.ThemeDisplay;
-
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.entity.utils.portlet.PortletUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.portlets.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
@@ -134,10 +130,7 @@ public class ProposalsContextImpl implements ProposalsContext {
         return getAttribute(request, CONTEST_TYPE_ATTRIBUTE);
     }
 
-    @Override
-    public User getUser(PortletRequest request) {
-        return getAttribute(request, USER_ATTRIBUTE);
-    }
+
 
     @Override
     public Member getMember(PortletRequest request) {
@@ -181,11 +174,11 @@ public class ProposalsContextImpl implements ProposalsContext {
         ProposalContextHelper contextHelper = new ProposalContextHelper(request);
 
         final Member member = contextHelper.getMember();
-        final ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-        final String currentUrl = themeDisplay.getPortalURL() + themeDisplay.getURLCurrent();
+
+        final String currentUrl = PortletUtil.getCurrentUrl(request);
 
         final HttpServletRequest httpServletRequest
-                = ((LiferayPortletRequest) request).getHttpServletRequest();
+                = PortletUtil.getHttpServletRequest(request);
         final String referralUrl = httpServletRequest.getHeader("Referer");
         final String userAgent = httpServletRequest.getHeader("User-Agent");
 

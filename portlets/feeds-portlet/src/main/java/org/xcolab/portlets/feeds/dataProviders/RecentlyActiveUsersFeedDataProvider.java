@@ -5,7 +5,6 @@ import org.springframework.ui.Model;
 import org.xcolab.entity.utils.ActivityUtil;
 
 import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.entity.utils.enums.MemberRole;
@@ -45,8 +44,7 @@ public class RecentlyActiveUsersFeedDataProvider implements FeedTypeDataProvider
 							|| (feedsPreferences.getRemoveAdmin()
 							&& PermissionsClient.canAdminAll(activity.getMemberId()))
 							|| SocialActivityWrapper.isEmpty(activity, request)
-							|| MembersClient.hasMemberRole
-							(activity.getMemberId(), MemberRole.STAFF.getRoleId())) {
+							|| PermissionsClient.canStaff(activity.getMemberId())) {
 						continue;
 					}
 

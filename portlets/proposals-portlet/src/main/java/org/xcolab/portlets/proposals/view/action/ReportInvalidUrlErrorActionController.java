@@ -4,11 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.model.User;
-import com.liferay.portal.util.PortalUtil;
 
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.email.EmailToAdminDispatcher;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.wrapper.SimpleExceptionErrorReportWrapper;
 
 import java.io.IOException;
@@ -48,9 +48,9 @@ public class ReportInvalidUrlErrorActionController {
         if (simpleExceptionErrorReportWrapper.isWrapperFilledOut()
                 && isUrlValid(url)) {
 
-            User user = null;
+            Member user = null;
             try {
-                user = PortalUtil.getUser(request);
+                user = MembersClient.getMember(MemberAuthUtil.getMemberId(request));
             } catch(Exception exception) {
                 // User not logged in
             }
@@ -63,19 +63,19 @@ public class ReportInvalidUrlErrorActionController {
     }
 
     private boolean isUrlValid(String url) {
-        return Validator.isNotNull(url) && url.matches(URL_REGEX);
+        return (url!= null) && url.matches(URL_REGEX);
     }
 
-    private String getMessageBody(String url, SimpleExceptionErrorReportWrapper simpleExceptionErrorReportWrapper, User user) {
+    private String getMessageBody(String url, SimpleExceptionErrorReportWrapper simpleExceptionErrorReportWrapper, Member user) {
         String userScreenName = USER_SCREEN_NAME_PLACEHOLDER;
         String emailAddress = EMAIL_ADDRESS_PLACEHOLDER;
-        if (Validator.isNotNull(simpleExceptionErrorReportWrapper.getUserEmailAddress())) {
+        if ((simpleExceptionErrorReportWrapper.getUserEmailAddress()!=null)) {
             emailAddress = simpleExceptionErrorReportWrapper.getUserEmailAddress();
         }
 
-        if (Validator.isNotNull(user)) {
+        if ((user!=null)) {
             userScreenName = user.getScreenName();
-            if (Validator.isNull(emailAddress) || emailAddress.equals(EMAIL_ADDRESS_PLACEHOLDER)) {
+            if ((emailAddress == null) || emailAddress.equals(EMAIL_ADDRESS_PLACEHOLDER)) {
                 emailAddress = user.getEmailAddress();
             }
         }

@@ -1,21 +1,18 @@
 package org.xcolab.portlets.contactform;
 
-import com.liferay.portal.model.User;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.io.Serializable;
 
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.List;
+
 @Component
 public class ContactPreferences implements Serializable {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String recipients;
     private String messageFormat;
@@ -27,18 +24,11 @@ public class ContactPreferences implements Serializable {
     private final static String MESSAGE_SUBJECT_PREF = "MESSAGE_SUBJECT";
     private final static String EXPAND_LINK_TEXT_PREF = "EXPAND_LINK_TEXT";
     
-    private final static String defaultRecipients = "pdeboer@mit.edu,lfi@mit.edu,knauert@mit.edu";
+    private final static String defaultRecipients = "pdeboer@mit.edu,lfi@mit.edu";
     private final static String defaultMessageFormat = "USER_NAME (USER_EMAIL) has sent message using contact form\nUSER_MESSAGE";
     private final static String defaultMessageSubject = "[CoLab] USER_NAME sent a message using contact form";
-    private final static String defaultExpandLinkText = "Send feedback message";    
-    
-    
+    private final static String defaultExpandLinkText = "Send feedback message";
 
-    public List<User> getMessageRecipients() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    
     public ContactPreferences() {
         messageFormat = defaultMessageFormat;
         messageSubject = defaultMessageSubject;

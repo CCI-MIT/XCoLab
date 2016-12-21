@@ -2,7 +2,7 @@ package org.xcolab.portlets.redballoon.web.action;
 
 
 
-import com.liferay.portal.kernel.exception.SystemException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,7 +19,7 @@ import javax.portlet.ActionResponse;
 public class AddEditBalloonTextAction {
 
     @RequestMapping(params = {"balloonTextId", "action=addEditBalloonText"})
-    private void execute(ActionRequest request, ActionResponse response, AddEditBalloonTextBean addEditBalloonTextBean) throws SystemException {
+    private void execute(ActionRequest request, ActionResponse response, AddEditBalloonTextBean addEditBalloonTextBean)  {
         BalloonText balloonText;
 
         if (addEditBalloonTextBean.getBalloonTextId() > 0) {

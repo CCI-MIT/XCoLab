@@ -1,6 +1,5 @@
 package org.xcolab.portlets.proposals.permissions;
 
-import com.liferay.portal.model.MembershipRequestConstants;
 
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -41,7 +40,7 @@ public class ProposalsDisplayPermissions {
         for (MembershipRequest mr : clientHelper.getMembershipClient()
                 .getMembershipRequests(proposal.getProposalId())) {
             if (mr.getUserId() == memberId && (
-                    (mr.getStatusId() == MembershipRequestConstants.STATUS_PENDING)
+                    (mr.getStatusId() == MembershipRequestStatus.STATUS_PENDING)
                             || mr.getStatusId()
                             == MembershipRequestStatus.STATUS_PENDING_REQUESTED)) {
                 return true;

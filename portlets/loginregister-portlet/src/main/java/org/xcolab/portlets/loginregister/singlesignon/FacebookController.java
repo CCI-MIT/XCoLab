@@ -2,6 +2,8 @@ package org.xcolab.portlets.loginregister.singlesignon;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -12,19 +14,16 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.CharPool;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
+
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.UserLocalServiceUtil;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
+
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.entity.utils.portlet.PortletUtil;
+import org.xcolab.entity.utils.portlet.RequestParamUtil;
 import org.xcolab.portlets.loginregister.CreateUserBean;
 import org.xcolab.portlets.loginregister.MainViewController;
 import org.xcolab.portlets.loginregister.exception.UserLocationNotResolvableException;
@@ -48,7 +47,7 @@ public class FacebookController {
 
     @RequestMapping(params = "action=initiateLogin")
     public void initiateFbLogin(ActionRequest request, ActionResponse response) throws IOException, SystemException {
-        HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(request);
+        HttpServletRequest httpReq = PortletUtil.getHttpServletRequest(request);
         HttpSession session = httpReq.getSession();
 
         // Set property and do redirect
@@ -58,7 +57,7 @@ public class FacebookController {
     }
 
     private void initiateFbRequest(ActionRequest request, ActionResponse response) throws SystemException, IOException {
-        HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(request);
+        HttpServletRequest httpReq = PortletUtil.getHttpServletRequest(request);
         HttpSession session = httpReq.getSession();
 
         String referrer = httpReq.getHeader("referer");
@@ -80,7 +79,7 @@ public class FacebookController {
     @RequestMapping(params = "action=initiateRegistration")
     public void initiateFbRegistration(ActionRequest request, ActionResponse response)
             throws IOException, SystemException {
-        HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(request);
+        HttpServletRequest httpReq = PortletUtil.getHttpServletRequest(request);
         HttpSession session = httpReq.getSession();
 
         // Set property and do redirect
@@ -91,20 +90,20 @@ public class FacebookController {
 
     @RequestMapping(params = "action=fbCallback")
     public void fbCallback(ActionRequest request, ActionResponse response) throws Exception {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
 
-        HttpServletRequest httpReq = PortalUtil.getHttpServletRequest(request);
+
+        HttpServletRequest httpReq = PortletUtil.getHttpServletRequest(request);
         HttpSession session = httpReq.getSession();
 
         session.removeAttribute(SSOKeys.SSO_OPENID_ID);
 
         String redirectUrl = (String) session
                 .getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
-        if (Validator.isNull(redirectUrl) || Validator.isBlank(redirectUrl)) {
-            redirectUrl = themeDisplay.getURLHome();
+        if ((redirectUrl) == null || (redirectUrl.isEmpty())) {
+            redirectUrl = ConfigurationAttributeKey.COLAB_URL.get();
         }
 
-        String code = ParamUtil.getString(request, "code");
+        String code = RequestParamUtil.getString(request, "code");
         String token = FacebookUtil.getAccessToken(request, code);
 
         JSONObject jsonObject = FacebookUtil.getGraphResources("/me", token,
@@ -140,7 +139,7 @@ public class FacebookController {
                     PortletSession.APPLICATION_SCOPE);
 
             try {
-                liferayUser = UserLocalServiceUtil.getUserByFacebookId(themeDisplay.getCompanyId(), facebookId);
+                liferayUser = UserLocalServiceUtil.getUserByFacebookId(10112l, facebookId);
 
                 /*
                 String realPictureURLString = FacebookUtil.getFacebookPictureURLString(fbProfilePictureURL);
@@ -160,10 +159,10 @@ public class FacebookController {
 
         // if email matches -> autologin
         String emailAddress = jsonObject.getString("email");
-        if ((liferayUser == null) && Validator.isNotNull(emailAddress)) {
+        if ((liferayUser == null) && (emailAddress!=null)) {
             try {
                 liferayUser = UserLocalServiceUtil.getUserByEmailAddress(
-                        themeDisplay.getCompanyId(), emailAddress);
+                        10112l, emailAddress);
                 updateUserWithFBId(liferayUser, facebookId);
 
                 /*
@@ -184,20 +183,20 @@ public class FacebookController {
             }
         }
 
-        if (Validator.isNotNull(jsonObject.getString("first_name"))) {
+        if ((jsonObject.getString("first_name")!=null)) {
             portletSession.setAttribute(SSOKeys.SSO_FIRST_NAME, jsonObject.getString("first_name"),
                     PortletSession.APPLICATION_SCOPE);
         }
 
-        if (Validator.isNotNull(jsonObject.getString("last_name"))) {
+        if ((jsonObject.getString("last_name")!=null)) {
             portletSession.setAttribute(SSOKeys.SSO_LAST_NAME, jsonObject.getString("last_name"),
                     PortletSession.APPLICATION_SCOPE);
         }
-        if (Validator.isNotNull(jsonObject.getString("email"))) {
+        if ((jsonObject.getString("email")!=null)) {
             portletSession
                     .setAttribute(SSOKeys.SSO_EMAIL, jsonObject.getString("email"), PortletSession.APPLICATION_SCOPE);
             // Screenname = email prefix until @ character
-            String screenName = emailAddress.substring(0, emailAddress.indexOf(CharPool.AT));
+            String screenName = emailAddress.substring(0, emailAddress.indexOf('@'));
             screenName = screenName.replaceAll("[^a-zA-Z0-9]", "");
             portletSession.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName, PortletSession.APPLICATION_SCOPE);
         }
@@ -240,7 +239,7 @@ public class FacebookController {
             String screenName = userBean.getScreenName();
             for (int i = 0; i < 5; i++) {
                 try {
-                    UserLocalServiceUtil.getUserByScreenName(themeDisplay.getCompanyId(), screenName);
+                    UserLocalServiceUtil.getUserByScreenName(10112l, screenName);
                     //TODO: find better way to resolve conflicts
                     screenName = userBean.getScreenName().concat(RandomStringUtils.random(4, false, true));
                 } catch (NoSuchUserException e) {
@@ -280,7 +279,7 @@ public class FacebookController {
         UserLocalServiceUtil.updateUser(u);
     }
 
-    private void updateUserAccountInformation(User user, JSONObject jsonObject) throws SystemException {
+    private void updateUserAccountInformation(User user, JSONObject jsonObject) throws  JSONException  {
         Member member = MembersClient.getMemberUnchecked(user.getUserId());
         String country = member.getCountry();
 
@@ -293,7 +292,7 @@ public class FacebookController {
         MembersClient.updateMember(member);
     }
 
-    private String getCountry(JSONObject response) throws UserLocationNotResolvableException {
+    private String getCountry(JSONObject response) throws UserLocationNotResolvableException , JSONException {
         try {
             return getCountryFromLocationObject(response);
         } catch (UserLocationNotResolvableException e) {
@@ -301,8 +300,8 @@ public class FacebookController {
         }
     }
 
-    private String getCountryFromLocationObject(JSONObject response) throws UserLocationNotResolvableException {
-        if (Validator.isNotNull(response.getJSONObject("location"))) {
+    private String getCountryFromLocationObject(JSONObject response) throws UserLocationNotResolvableException, JSONException {
+        if ((response.getJSONObject("location"))!=null) {
             String locationString = response.getJSONObject("location").getString("name");
 
             if (locationString.contains(",")) {
@@ -313,8 +312,8 @@ public class FacebookController {
         throw new UserLocationNotResolvableException("Could not retrieve country from Facebook location");
     }
 
-    private String getCountryFromLocaleObject(JSONObject response) throws UserLocationNotResolvableException {
-        if (Validator.isNotNull(response.getString("locale"))) {
+    private String getCountryFromLocaleObject(JSONObject response) throws UserLocationNotResolvableException , JSONException  {
+        if ((response.getString("locale")!=null)) {
             String[] localeParts = response.getString("locale").split("_");
             Locale locale = new Locale(localeParts[0], localeParts[1]);
 

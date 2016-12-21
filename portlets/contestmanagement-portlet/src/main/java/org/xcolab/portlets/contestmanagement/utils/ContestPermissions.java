@@ -1,7 +1,6 @@
 package org.xcolab.portlets.contestmanagement.utils;
 
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.entity.utils.enums.MemberRole;
@@ -41,10 +40,7 @@ public class ContestPermissions implements TabPermissions {
 
     @Override
     public boolean getCanStaff() {
-        if (!isLoggedIn) {
-            return false;
-        }
-        return MembersClient.hasMemberRole(memberId, MemberRole.STAFF.getRoleId());
+        return isLoggedIn && PermissionsClient.canStaff(memberId);
     }
 
     public boolean getCanEdit() {

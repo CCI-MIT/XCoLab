@@ -7,9 +7,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ActionMapping;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
@@ -79,7 +76,6 @@ public class ThreadController extends BaseDiscussionController {
                                      @RequestParam String body)
             throws IOException, DiscussionAuthorizationException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
         checkCanEdit(request, "User does not have the necessary permissions to create a thread ",

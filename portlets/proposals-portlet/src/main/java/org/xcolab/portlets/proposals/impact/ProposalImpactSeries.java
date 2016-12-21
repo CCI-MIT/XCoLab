@@ -1,8 +1,7 @@
 package org.xcolab.portlets.proposals.impact;
 
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import org.xcolab.client.contest.ImpactClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
@@ -258,7 +257,7 @@ public class ProposalImpactSeries {
 
     public JSONObject toJSONObjectByFiltering(Set<String> filteredSeriesNames) {
         JSONObject jsonObject = toJSONObject();
-        JSONObject newSeriesObject = JSONFactoryUtil.createJSONObject();
+        JSONObject newSeriesObject = new JSONObject();
         Iterator<String> seriesNameIterator = jsonObject.getJSONObject("serieses").keys();
         while (seriesNameIterator.hasNext()) {
             String seriesName = seriesNameIterator.next();
@@ -274,14 +273,14 @@ public class ProposalImpactSeries {
     }
 
     public JSONObject toJSONObject() {
-        JSONObject returnObject = JSONFactoryUtil.createJSONObject();
-        JSONObject serieses = JSONFactoryUtil.createJSONObject();
+        JSONObject returnObject = new JSONObject();
+        JSONObject serieses = new JSONObject();
 
         returnObject.put("focusAreaId", getFocusArea().getId_());
 
         if (getSeriesAuthor() != null && getUpdatedDate() != null) {
             // Author info
-            JSONObject authorObject = JSONFactoryUtil.createJSONObject();
+            JSONObject authorObject = new JSONObject();
             returnObject.put("author", authorObject);
             authorObject.put("userId", getSeriesAuthor().getUserId());
             MemberRoleChoiceAlgorithm impactRoleChoiceAlgorithm =
@@ -306,7 +305,7 @@ public class ProposalImpactSeries {
             ImpactDefaultSeries defaultSeries = OntologyClientUtil
                     .getImpactDefaultSeriesByFocusAreaName(focusArea.getId_(), seriesType);
 
-            JSONObject series = JSONFactoryUtil.createJSONObject();
+            JSONObject series = new JSONObject();
             series.put("name", defaultSeries.getName());
             series.put("description", defaultSeries.getDescription());
             series.put("editable", defaultSeries.getEditable());
@@ -314,7 +313,7 @@ public class ProposalImpactSeries {
             serieses.put(defaultSeries.getName(), series);
         }
 
-        JSONArray iterations = JSONFactoryUtil.createJSONArray();
+        JSONArray iterations = new JSONArray();
         for (ImpactIteration impactIteration : impactIterations) {
             iterations.put(impactIteration.getYear());
         }

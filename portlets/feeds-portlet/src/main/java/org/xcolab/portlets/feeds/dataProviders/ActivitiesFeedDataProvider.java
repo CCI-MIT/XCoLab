@@ -2,9 +2,6 @@ package org.xcolab.portlets.feeds.dataProviders;
 
 import org.springframework.ui.Model;
 
-import com.liferay.portal.kernel.util.DateUtil;
-import com.liferay.portal.util.PortalUtil;
-
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.members.MembersClient;
@@ -12,6 +9,7 @@ import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.entity.utils.ActivityUtil;
+import org.xcolab.entity.utils.portlet.PortletUtil;
 import org.xcolab.portlets.feeds.FeedTypeDataProvider;
 import org.xcolab.portlets.feeds.FeedsPreferences;
 import org.xcolab.portlets.feeds.wrappers.SocialActivityWrapper;
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -33,8 +30,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 								PortletResponse response, SortFilterPage sortFilterPage,
 								FeedsPreferences feedsPreferences, Model model) {
 
-        HttpServletRequest originalRequest = PortalUtil
-                .getOriginalServletRequest(PortalUtil.getHttpServletRequest(request));
+        HttpServletRequest originalRequest = PortletUtil.getHttpServletRequest(request);
 
         Map<String, String[]> parameters = request.getParameterMap();
         final int pageSize = feedsPreferences.getFeedSize();
@@ -86,9 +82,8 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
                 break;
             }
 
-            int curDaysBetween = DateUtil
-                    .getDaysBetween(new Date(activity.getCreateDate().getTime()), now,
-                            TimeZone.getDefault());
+            int curDaysBetween =
+                        getDaysBetween(new Date(activity.getCreateDate().getTime()), now);
             activities.add(new SocialActivityWrapper(activity, curDaysBetween,
                     lastDaysBetween < curDaysBetween, i % 2 == 1, request,
                     feedsPreferences.getFeedMaxLength()));
@@ -109,5 +104,8 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
         }
 
         return "activities";
+    }
+    private static int getDaysBetween(Date d1, Date d2){
+        return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
     }
 }

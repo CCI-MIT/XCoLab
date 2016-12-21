@@ -283,6 +283,7 @@ public final class LoginRegisterUtil {
 
         member.setShortBio(shortBio);
         member.setCountry(country);
+        member.setPortraitFileEntryId(0L);
         MembersClient.register(member);
         member = MembersClient.getMemberUnchecked(member.getId_());
 

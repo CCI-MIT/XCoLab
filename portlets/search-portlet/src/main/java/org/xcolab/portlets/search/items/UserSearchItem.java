@@ -1,16 +1,9 @@
 package org.xcolab.portlets.search.items;
 
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.search.Document;
-import com.liferay.portal.kernel.search.Field;
-import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.search.pojo.SearchPojo;
-
-import java.io.IOException;
 
 public class UserSearchItem extends AbstractSearchItem {
 
