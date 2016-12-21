@@ -25,7 +25,7 @@
         <form:form action="${newMessageUrl}" id="sendMessageForm" modelAttribute="sendMessageBean" method="post">
 
             <div>
-                <collab:teamBox title="UserIdsRecipients" list="${sendMessageBean.recipientList}"/>
+                <collab:teamBox title="Recipients" list="${sendMessageBean.recipientList}"/>
                 <div class="clearfix"><!-- --></div>
             </div>
             <label>
@@ -50,9 +50,9 @@
         jQuery(function() {
             enableDirtyCheck();
             jQuery("#messageSendButton").click(function () {
-                var currentSearchText = $("#userSelectorInputuserIdsRecipients").val();
+                var currentSearchText = $("#userListRecipients").val();
                 if (currentSearchText.length == 0) {
-                    var numberOfRecipients = $('#userListRecipients').find('li').length;
+                    var numberOfRecipients = $("#userListRecipients").find("li").length;
                     var numberOfMessagesLeft = parseInt($("#numberOfMessagesLeft").html());
                     if (numberOfRecipients == 0) {
                         alert("Please select at least one recipient");

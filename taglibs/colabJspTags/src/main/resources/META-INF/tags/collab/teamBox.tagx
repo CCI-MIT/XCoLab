@@ -39,32 +39,37 @@
   </div>
 
     <script type="text/javascript">
-    (function() {
 
       var userSelectorInput = "#"+"${inputBox}";
       var userListId = "${userList}";
       var unsavedStarTitle = "${unsavedStar}";
       var membersTitle = "${title}";
       var members = [];
+      var memberIds = [];
       var initialMembers = [];
       var memberList = "${memberList}";
       var currentUserMap = {};
 
       <c:forEach var="member" items="${list}">
+        memberIds.push("" + ${member.id_});
         members.push(usersMap["${member.screenName}"]);
         initialMembers.push(usersMap["${member.screenName}"]);
       </c:forEach>
 
       function updateMemberList(){
-        jQuery("#"+memberList).val(members);
+        jQuery("#"+memberList).val(memberIds);
       }
 
       function removeMemberFromList(userId, userName, userListId){
         var inpField = document.getElementById("${inputBox}");
         inpField.className += " editorDirty";
+        console.log("userId: " + userId);
         var elementIndex = members.indexOf(userId);
         members.splice(elementIndex, 1);
-        jQuery("#"+memberList).val(members);
+        var IdElementIndex = memberIds.indexOf(userId);
+        console.log("array index: " + IdElementIndex);
+        memberIds.splice(IdElementIndex, 1);
+        console.log("memberIds: " + memberIds);
         jQuery("#"+userListId +" #" +userId).remove();
         jQuery.growlUI('',userName + ' was removed from ' + membersTitle);
         if ($(members).not(initialMembers).length === 0 &amp;&amp; $(initialMembers).not(members).length === 0) {
@@ -118,8 +123,8 @@
 
       function initSearchMemberForm(usersMapParam) {
         usersMap = usersMapParam;
-        console.log("members",members);
-        jQuery("#"+memberList).val(members);
+        console.log("members: ",members);
+        jQuery("#"+memberList).val(memberIds);
 
         jQuery(userSelectorInput).focus(function () {
           jQuery(${pleaseChooseFromList}).hide();
@@ -175,6 +180,7 @@
                       var userId = currentUserMap[jQuery.trim(ui.item.value)]; //userMap
                       if(members.indexOf(userId) == -1) {
                         members.push(userId);
+                        memberIds.push("" + userId);
                         addUserToList(userId, ui.item.value, userListId);
                       }
                       this.value = "";
@@ -198,10 +204,10 @@
       }
 
       jQuery(document).ready(function() {
+        console.log("document ready...");
+        console.log("usermap: ", usersMap);
         initSearchMemberForm(usersMap);
       });
-
-    }());
 
   </script>
 
