@@ -1,0 +1,8 @@
+server:
+  port: 18083
+
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jspx

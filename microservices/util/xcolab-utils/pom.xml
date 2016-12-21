@@ -59,13 +59,6 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
-        <!-- Logging adapter for liferay - TODO: replace  -->
-        <dependency>
-            <groupId>com.liferay.portal</groupId>
-            <artifactId>util-slf4j</artifactId>
-            <version>6.2.4</version>
-        </dependency>
-
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
