@@ -1,6 +1,5 @@
 package org.xcolab.portlets.userprofile.view;
 
-import com.liferay.portal.util.PortalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -15,6 +14,7 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.utils.JSONHelper;
 
@@ -47,7 +47,7 @@ public class MessageJSONController extends JSONHelper {
 
         if (!result.hasErrors()) {
             try {
-                final long senderMemberId = PortalUtil.getUserId(request);
+                final long senderMemberId = MemberAuthUtil.getMemberId(request);
                 sendMessage(messageBean, senderMemberId, userIdRecipient);
                 this.writeSuccessResultResponseJSON(true, response);
             } catch (MessageLimitExceededException e) {

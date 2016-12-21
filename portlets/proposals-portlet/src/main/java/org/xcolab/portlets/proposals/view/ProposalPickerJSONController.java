@@ -3,6 +3,8 @@ package org.xcolab.portlets.proposals.view;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -189,12 +187,12 @@ public class ProposalPickerJSONController {
 
 	private String getJSONObjectMapping(List<Pair<Proposal, Date>> proposals,
 										int totalNumberOfProposals) {
-		JSONObject wrapper = JSONFactoryUtil.createJSONObject();
-		JSONArray proposalsJSON = JSONFactoryUtil.createJSONArray();
+		JSONObject wrapper = new JSONObject();
+		JSONArray proposalsJSON = new JSONArray();
 
 		for (Pair<Proposal, Date> p : proposals) {
 			Proposal wrappedProposal = new Proposal(p.getLeft());
-			JSONObject o = JSONFactoryUtil.createJSONObject();
+			JSONObject o = new JSONObject();
 			o.put("id", p.getLeft().getProposalId());
 			o.put("proposalName", StringUtils.abbreviate(
 					StringEscapeUtils.unescapeXml(wrappedProposal.getName()), MAX_CHARS_FOR_NAMES));
@@ -215,9 +213,9 @@ public class ProposalPickerJSONController {
 			o.put("ribbonText", wrappedProposal.getRibbonWrapper().getRibbonText());
 			o.put("featured", wrappedProposal.isFeatured());
 
-			JSONArray proposalContests = JSONFactoryUtil.createJSONArray();
+			JSONArray proposalContests = new JSONArray();
 			// for now there can be only one contest
-			JSONObject contest = JSONFactoryUtil.createJSONObject();
+			JSONObject contest = new JSONObject();
 			contest.put("name", wrappedProposal.getContest()
 					.getContestShortName());
 			contest.put("id", wrappedProposal.getContest().getContestPK());
@@ -236,13 +234,13 @@ public class ProposalPickerJSONController {
 
 	private String getJSONObjectMappingContests(
 			List<Pair<Contest, Date>> contests, int totalNumberOfContests, Map<Long, String> removedContests) {
-		JSONObject wrapper = JSONFactoryUtil.createJSONObject();
-		JSONArray proposalsJSON = JSONFactoryUtil.createJSONArray();
+		JSONObject wrapper = new JSONObject();
+		JSONArray proposalsJSON = new JSONArray();
 
 		for (Pair<Contest, Date> p : contests) {
 			Contest wrapped = p.getLeft();
 			final long contestPK = wrapped.getContestPK();
-			JSONObject o = JSONFactoryUtil.createJSONObject();
+			JSONObject o = new JSONObject();
 
 			o.put("id", contestPK);
 			o.put("contestShortName", StringUtils.abbreviate(

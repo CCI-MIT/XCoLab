@@ -121,15 +121,6 @@ public final class MembersClient {
         }
     }
 
-    public static boolean hasMemberRole(long memberId, long roleId) {
-        List<Role_> userRoles = getMemberRoles(memberId);
-        for(Role_ r: userRoles) {
-            if(r.getRoleId().longValue()==roleId){
-                return true;
-            }
-        }
-        return false;
-    }
     public static List<Role_> getMemberRoles(long memberId) {
         return memberRoleResource.resolveParent(memberResource.id(memberId))
                 .list()

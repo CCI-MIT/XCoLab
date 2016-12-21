@@ -18,18 +18,15 @@ import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.model.User;
-import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.util.mail.MailEngineException;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.emails.EmailClient;
@@ -44,6 +41,8 @@ import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.entity.utils.ModelAttributeUtil;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
+import org.xcolab.entity.utils.portlet.session.SessionErrors;
+import org.xcolab.entity.utils.portlet.session.SessionMessages;
 import org.xcolab.portlets.userprofile.beans.MessageBean;
 import org.xcolab.portlets.userprofile.beans.NewsletterBean;
 import org.xcolab.portlets.userprofile.beans.UserBean;
@@ -54,11 +53,9 @@ import org.xcolab.util.CountryUtil;
 import org.xcolab.util.html.HtmlUtil;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.Map;
 
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -119,7 +116,6 @@ public class UserProfileController {
 
     public void populateUserWrapper(UserProfileWrapper currentUserProfile, Model model) {
         model.addAttribute("currentUserProfile", currentUserProfile);
-        model.addAttribute("baseImagePath", currentUserProfile.getThemeDisplay().getPathImage());
         model.addAttribute("userBean", currentUserProfile.getUserBean());
         model.addAttribute("messageBean", new MessageBean());
     }
@@ -274,7 +270,7 @@ public class UserProfileController {
     @RequestMapping(params = "action=update")
     public void updateUserProfile(ActionRequest request, Model model, ActionResponse response,
                                   @ModelAttribute UserBean updatedUserBean, BindingResult result)
-            throws IOException, UserProfileAuthorizationException, SystemException, PortalException, MemberNotFoundException {
+            throws IOException, UserProfileAuthorizationException, MemberNotFoundException {
         UserProfilePermissions permissions = new UserProfilePermissions(request);
         model.addAttribute("permissions", permissions);
 
@@ -285,7 +281,10 @@ public class UserProfileController {
         }
         UserProfileWrapper currentUserProfile = new UserProfileWrapper(updatedUserBean.getUserId(), request);
         model.addAttribute("currentUserProfile", currentUserProfile);
-        model.addAttribute("baseImagePath", currentUserProfile.getThemeDisplay().getPathImage());
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(
+                WebKeys.THEME_DISPLAY);
+        themeDisplay.getPathImage();
+
         model.addAttribute("messageBean", new MessageBean());
         model.addAttribute("userBean", updatedUserBean);
 
@@ -304,11 +303,15 @@ public class UserProfileController {
                     final String newPassword = updatedUserBean.getPassword().trim();
                     MembersClient.updatePassword(memberId, currentPassword, newPassword);
                     //TODO: remove, currently needed to update password for liferay
-                    final User liferayUser = UserLocalServiceUtil.getUser(
-                            memberId);
-                    liferayUser.setPassword
-                            (MembersClient.hashPassword(newPassword));
-                    UserLocalServiceUtil.updateUser(liferayUser);
+                    try {
+                        final User liferayUser = UserLocalServiceUtil.getUser(
+                                memberId);
+                        liferayUser.setPassword
+                                (MembersClient.hashPassword(newPassword));
+                        UserLocalServiceUtil.updateUser(liferayUser);
+                    } catch (PortalException | SystemException e) {
+                        //TODO: remove after liferay
+                    }
                     changedUserPart = true;
                 } else {
                     validationError = true;
@@ -391,12 +394,7 @@ public class UserProfileController {
 
             if (eMailChanged) {
                 updatedUserBean.setEmailStored(updatedUserBean.getEmail());
-                try {
-                    sendUpdatedEmail(currentUserProfile.getUser());
-                } catch (MailEngineException | AddressException e) {
-                    _log.warn("Sending eMail confirmation after email change failed for userId: {}",
-                            currentUserProfile.getUser().getId_(), e);
-                }
+                sendUpdatedEmail(currentUserProfile.getUser());
             }
         } else {
             response.sendRedirect("/web/guest/member/-/member/userId/" + memberId.toString());
@@ -412,11 +410,6 @@ public class UserProfileController {
         boolean changedMember = false;
         Member member = currentUserProfile.getUser();
 
-        long companyId = CompanyThreadLocal.getCompanyId();
-        if (companyId == 0) {
-            CompanyThreadLocal.setCompanyId(currentUserProfile.getThemeDisplay().getCompanyId());
-            changedMember = true;
-        }
 
         String existingBio = member.getShortBio();
         if (existingBio == null) {
@@ -487,8 +480,7 @@ public class UserProfileController {
         return changedMember || changedMessagingPreferences;
     }
 
-    private void sendUpdatedEmail(Member user)
-            throws MailEngineException, AddressException, UnsupportedEncodingException {
+    private void sendUpdatedEmail(Member user) {
         String messageSubject = TemplateReplacementUtil
                 .replacePlatformConstants("Your email address on the <colab-name/> has been updated");
         String messageBody = TemplateReplacementUtil.replacePlatformConstants("Dear " + user.getFirstName() + ",\n" +

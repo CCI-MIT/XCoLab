@@ -1,14 +1,12 @@
 package org.xcolab.portlets.contenteditor.views;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
@@ -45,7 +43,7 @@ public class ContentEditorController {
                                         @RequestParam(required = false) String node)
             throws IOException {
 
-        JSONArray responseArray = JSONFactoryUtil.createJSONArray();
+        JSONArray responseArray = new JSONArray();
         Long folderId = 1L;
         if (node != null && !node.isEmpty()) {
             folderId = Long.parseLong(node);
@@ -72,7 +70,7 @@ public class ContentEditorController {
     public void contentEditorGetLatestArticleVersion(ResourceRequest request, ResourceResponse response,
                                                      @RequestParam(required = false) Long articleId)
             throws IOException, ContentNotFoundException {
-        JSONObject articleVersion = JSONFactoryUtil.createJSONObject();
+        JSONObject articleVersion = new JSONObject();
 
         ContentArticleVersion contentArticleVersion = ContentsClient.getLatestContentArticleVersion(articleId);
         if (contentArticleVersion != null) {
@@ -141,15 +139,15 @@ public class ContentEditorController {
     }
 
     private void defaultOperationReturnMessage(boolean success, String message, ResourceResponse response) throws IOException {
-        JSONObject articleVersion = JSONFactoryUtil.createJSONObject();
-        JSONObject folderNode = JSONFactoryUtil.createJSONObject();
+        JSONObject articleVersion = new JSONObject();
+        JSONObject folderNode = new JSONObject();
         folderNode.put("success", success);
         folderNode.put("msg", message);
         response.getPortletOutputStream().write(articleVersion.toString().getBytes());
     }
 
     private JSONObject treeNode(String label, String id, String kind, boolean loadOnDemand) {
-        JSONObject folderNode = JSONFactoryUtil.createJSONObject();
+        JSONObject folderNode = new JSONObject();
         folderNode.put("label", label);
         folderNode.put("id", id);
         folderNode.put("kind", kind);

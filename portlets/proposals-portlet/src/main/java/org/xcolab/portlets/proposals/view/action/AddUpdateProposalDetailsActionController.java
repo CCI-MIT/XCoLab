@@ -7,9 +7,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
@@ -21,6 +18,7 @@ import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
+import org.xcolab.entity.utils.portlet.PortletUtil;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
@@ -65,7 +63,7 @@ public class AddUpdateProposalDetailsActionController {
                     .getContestPK());
         }
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
 
         if (result.hasErrors()) {
             response.setRenderParameter("error", "true");
@@ -95,7 +93,7 @@ public class AddUpdateProposalDetailsActionController {
         proposalUpdateHelper.updateProposal();
 
         if (createNew) {
-            ProposalCreationUtil.sendAuthorNotification(themeDisplay.getPortalURL(),
+            ProposalCreationUtil.sendAuthorNotification(ConfigurationAttributeKey.COLAB_URL.get(),
                     proposalWrapper, contestPhase, request);
 
             ActivityEntryHelper.createActivityEntry(proposalsContext.getClients(request).getActivitiesClient(), memberId, proposalWrapper.getProposalId(), null,

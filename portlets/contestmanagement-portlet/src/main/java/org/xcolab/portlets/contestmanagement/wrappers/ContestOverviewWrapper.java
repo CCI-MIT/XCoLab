@@ -1,13 +1,12 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-import com.liferay.portal.util.PortalUtil;
-
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.AbstractContest;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.portlets.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.portlets.contestmanagement.beans.MassMessageBean;
@@ -44,7 +43,7 @@ public class ContestOverviewWrapper {
     public ContestOverviewWrapper(PortletRequest request) {
         initLists();
         populateContestWrappersAndSelectedContestList();
-        populateSubscribedToContestList(PortalUtil.getUserId(request));
+        populateSubscribedToContestList(MemberAuthUtil.getMemberId(request));
     }
 
     private void initLists() {

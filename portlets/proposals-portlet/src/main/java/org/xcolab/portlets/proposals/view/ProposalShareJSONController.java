@@ -1,18 +1,14 @@
 package org.xcolab.portlets.proposals.view;
 
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
@@ -24,6 +20,7 @@ import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
+import org.xcolab.entity.utils.portlet.PortletUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 
 import java.io.IOException;
@@ -70,7 +67,7 @@ public class ProposalShareJSONController {
     }
 
     private void sendResponseJSON (boolean success, String message, ResourceResponse response) throws IOException {
-        JSONObject json = JSONFactoryUtil.createJSONObject();
+        JSONObject json = new JSONObject();
         json.put(SUCCESS_JSON_KEY, success);
         json.put(MESSAGE_JSON_KEY, message);
 
@@ -78,7 +75,7 @@ public class ProposalShareJSONController {
     }
 
     private void sendResponseJSON (boolean success, JSONArray message, ResourceResponse response) throws IOException {
-        JSONObject json = JSONFactoryUtil.createJSONObject();
+        JSONObject json = new JSONObject();
         json.put(SUCCESS_JSON_KEY, success);
         json.put(MESSAGE_JSON_KEY, message);
 
@@ -90,9 +87,9 @@ public class ProposalShareJSONController {
         String[] screenNames = request.getParameterValues("screenNames[]");
 
         try {
-            parseRecipientNames(ListUtil.fromArray(screenNames));
+            parseRecipientNames(Arrays.asList(screenNames));
         } catch (RecipientParseException e) {
-            JSONArray array = JSONFactoryUtil.createJSONArray();
+            JSONArray array = new JSONArray();
             for (String screenName : e.getUnresolvedScreenNames()) {
                 array.put(screenName);
             }
@@ -106,7 +103,7 @@ public class ProposalShareJSONController {
     @ResourceMapping("proposalShare-send")
     public void send(ResourceRequest request, ResourceResponse response) throws IOException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
 
         // Parse parameters
 		String[] recipients = request.getParameterValues("recipients[]");
@@ -117,7 +114,7 @@ public class ProposalShareJSONController {
 		ContestPhase phase = proposalsContext.getContestPhase(request);
         final Contest contest = proposalsContext.getContest(request);
         final Proposal proposal = proposalsContext.getProposal(request);
-        String proposalUrl = themeDisplay.getPortalURL();
+        String proposalUrl = ConfigurationAttributeKey.COLAB_URL.get();
 
         if (phase == null || phase.getContestPhasePK() <= 0) {
 			proposalUrl += proposal.getProposalLinkUrl(contest);

@@ -3,23 +3,19 @@ package org.xcolab.portlets.redballoon.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
+
 
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonLink;
 import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.Location;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.entity.utils.portlet.PortletUtil;
 import org.xcolab.portlets.redballoon.BalloonCookie;
-import org.xcolab.util.exceptions.InternalException;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -41,19 +37,16 @@ public class BalloonUtils {
 			PortletResponse response, String parent, String linkuuid, String context) {
 		BalloonCookie cookie = BalloonCookie.fromCookieArray(request.getCookies());
 		
-		ThemeDisplay td = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-		User user = td.getUser();
+
+		Member member = MemberAuthUtil.getMemberOrNull(request);
 		if (cookie.getUuid() == null) {
-            try {
-                if (td.getUserId() > 0 && td.getUserId() != td.getDefaultUserId()) {
-                    cookie.setUuid(user.getUuid());
+                if (member !=null && member.getId_() > 0 ) {
+                    cookie.setUuid(member.getUuid());
                 }
                 else {
                     cookie.setUuid(UUID.randomUUID().toString());
                 }
-            } catch (PortalException | SystemException e) {
-                throw new InternalException(e);
-            }
+
             response.addProperty(cookie.getHttpCookie());
 		}
 		
@@ -63,11 +56,11 @@ public class BalloonUtils {
 		}
 		catch (BalloonUserTrackingNotFound e) {
 
-			if (! user.getDefaultUser()) {
-				List<BalloonUserTracking> buts = BalloonsClient.getBalloonUserTrackingByEmail(user.getEmailAddress());
+			if (member !=null && member.getId_() > 0 ) {
+				List<BalloonUserTracking> buts = BalloonsClient.getBalloonUserTrackingByEmail(member.getEmailAddress());
 				if (! buts.isEmpty()) {
 					but = buts.get(0);
-					but.setUserId(user.getUserId());
+					but.setUserId(member.getUserId());
 					BalloonsClient.updateBalloonUserTracking(but);
 					return but;
 				}
@@ -79,7 +72,7 @@ public class BalloonUtils {
 			but = new org.xcolab.client.balloons.pojo.BalloonUserTracking();
 			but.setUuid_(cookie.getUuid());
 			but.setCreateDate(new Timestamp(new Date().getTime()));
-			but.setIp(PortalUtil.getHttpServletRequest(request).getRemoteAddr());
+			but.setIp(PortletUtil.getHttpServletRequest(request).getRemoteAddr());
 			but.setParent(parent);
 			but.setBalloonLinkContext(context);
 			but.setBalloonLinkUuid(linkuuid);
@@ -88,7 +81,7 @@ public class BalloonUtils {
 			// populate GeoLocation data
 			try {
 				Location location = TrackingClient
-						.getLocationForIp(PortalUtil.getHttpServletRequest(request).getRemoteAddr());
+						.getLocationForIp(PortletUtil.getHttpServletRequest(request).getRemoteAddr());
 				if (location != null) {
 					but.setCity(location.getCity());
 					but.setCountry(location.getCountry());
@@ -101,8 +94,8 @@ public class BalloonUtils {
 			}
 			 
 			
-			if (! user.getDefaultUser()) {
-				but.setUserId(user.getUserId());
+			if (member !=null && member.getId_() > 0 ) {
+				but.setUserId(member.getUserId());
 			}
 			
 			// pick randomly balloon text to be displayed
@@ -120,7 +113,7 @@ public class BalloonUtils {
 	public static String getBalloonUrlForLink(PortletRequest request, BalloonLink bl) {
 
 		// create URL that should be used when sharing
-		String requestUrl = PortalUtil.getHttpServletRequest(request).getRequestURL().toString();
+		String requestUrl = PortletUtil.getHttpServletRequest(request).getRequestURL().toString();
 		// find first occurrence of / to get address and port
 		String protocolHostPort = requestUrl.substring(0, requestUrl.indexOf("/", 10));
 		

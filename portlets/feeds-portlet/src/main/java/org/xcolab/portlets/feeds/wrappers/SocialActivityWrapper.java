@@ -1,19 +1,14 @@
 package org.xcolab.portlets.feeds.wrappers;
 
 import com.ocpsoft.pretty.time.PrettyTime;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.liferay.portlet.social.model.SocialActivityFeedEntry;
 
+import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.entity.utils.activityEntry.DiscussionActivitySubType;
 import org.xcolab.entity.utils.activityEntry.MemberSubActivityType;
 import org.xcolab.entity.utils.activityEntry.ProposalActivitySubType;
-import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.io.Serializable;
@@ -54,41 +49,7 @@ public class SocialActivityWrapper implements Serializable {
         this.odd = odd;
     }
     
-    private static String getBodyFromFeedEntry(SocialActivityFeedEntry entry, int maxLength) {
-        if (entry == null) {
-            return "";
-        }
-        String body =  (entry.getBody().trim().equals("") ? entry.getTitle() : entry.getBody());
-		Document html = Jsoup.parse(body);
-        String plainText = html.text();
 
-		if (maxLength > 0 && plainText.length() > maxLength) {
-			String dots = "...";
-
-            // Determine length of all link texts
-            int linkTextLength = 0;
-            Elements linkElements = html.select("a");
-            for (Element linkElement : linkElements) {
-                linkTextLength += linkElement.text().length();
-            }
-
-            // Calculate max space left for link texts
-            int charactersForEachLink = (int)Math.floor(1.0 * (maxLength - (plainText.length() - linkTextLength)) / (1.0 * linkElements.size()));
-            for (int i = 0; i < linkElements.size(); i++) {
-                String text = linkElements.get(i).text();
-
-                // Trim text if necessary
-                if (text.length() > charactersForEachLink) {
-                    text = text.substring(0, charactersForEachLink - dots.length());
-                    linkElements.get(i).text(text + dots);
-                }
-            }
-
-			body = html.select("body").html();
-		}
-
-		return body;
-    }
     public String getBody() {
         return body;
     }

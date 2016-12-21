@@ -10,16 +10,17 @@ import org.springframework.web.portlet.bind.annotation.ActionMapping;
 
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.servlet.SessionErrors;
-import com.liferay.portal.kernel.servlet.SessionMessages;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portal.util.PortalUtil;
+
+
+
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.entity.utils.portlet.PortletUtil;
+import org.xcolab.entity.utils.portlet.session.SessionErrors;
+import org.xcolab.entity.utils.portlet.session.SessionMessages;
 import org.xcolab.liferay.LoginRegisterUtil;
 import org.xcolab.entity.utils.GlobalMessagesUtil;
 import org.xcolab.entity.utils.ModelAttributeUtil;
@@ -45,8 +46,7 @@ public class ForgotPasswordController {
     @ActionMapping(params = {"isForgotpass=true"})
     public void sendPassword(ActionRequest request, ActionResponse response) throws IOException {
 
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(
-                WebKeys.THEME_DISPLAY);
+
 
         HttpServletRequest httpRequest = PortletUtils.getOriginalRequest(request);
 
@@ -54,7 +54,7 @@ public class ForgotPasswordController {
         String referer = httpRequest.getHeader("referer");
         redirect = !StringUtils.isBlank(redirect) ? redirect : referer;
 
-        redirect = !StringUtils.isBlank(redirect) ? redirect : themeDisplay.getURLHome();
+        redirect = !StringUtils.isBlank(redirect) ? redirect : ConfigurationAttributeKey.COLAB_URL.get();
 
         redirect = Helper.removeParamFromRequestStr(redirect, "signinRegError");
         redirect = Helper.removeParamFromRequestStr(redirect, "isPasswordReminder");
@@ -76,8 +76,8 @@ public class ForgotPasswordController {
             String passwordLink = colabUrl + FORGOT_PASSWORD_URL + "" + token;
 
             sendEmailNotificationToForPasswordReset(
-                    PortalUtil.getHttpServletRequest(request).getRemoteAddr(),
-                    passwordLink, themeDisplay, member);
+                    PortletUtil.getHttpServletRequest(request).getRemoteAddr(),
+                    passwordLink,  member);
             GlobalMessagesUtil.addMessage(
                     "A password retrieval message has been sent, please check your email", request);
         } catch (MemberNotFoundException e) {
@@ -97,8 +97,8 @@ public class ForgotPasswordController {
     }
 
     private static void sendEmailNotificationToForPasswordReset(String memberIp, String link,
-            ThemeDisplay themeDisplay, Member recipient) {
-        new MemberForgotPasswordNotification(memberIp, link, recipient, themeDisplay.getPortalURL())
+             Member recipient) {
+        new MemberForgotPasswordNotification(memberIp, link, recipient, ConfigurationAttributeKey.COLAB_URL.get())
                 .sendEmailNotification();
     }
 
@@ -109,10 +109,10 @@ public class ForgotPasswordController {
     }
 
     private String redirectToErrorPageOnPasswordReset(Model model, PortletRequest request) {
-        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+
         model.addAttribute("message",
                 "Your password reset ticket has expired or is invalid. Please try to reset your password again.");
-        model.addAttribute("redirect_url", themeDisplay.getPortalURL());
+        model.addAttribute("redirect_url", ConfigurationAttributeKey.COLAB_URL.get());
 
         ModelAttributeUtil.populateModelWithPlatformConstants(model);
         return "password_reset_error";

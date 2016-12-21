@@ -1,8 +1,5 @@
 package org.xcolab.portlets.redballoon.web;
 
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.model.User;
-import com.liferay.portal.theme.ThemeDisplay;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +14,8 @@ import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
 import org.xcolab.client.balloons.pojo.BalloonLink;
 import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.redballoon.utils.BalloonUtils;
 import org.xcolab.portlets.redballoon.web.beans.UserEmailBean;
 
@@ -107,10 +106,10 @@ public class BalloonController {
                 model.addAttribute("userEmailBean", userEmailBean);
             } else {
                 UserEmailBean ueb = new UserEmailBean();
-                ThemeDisplay td = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-                User user = td.getUser();
-                if (!user.getDefaultUser()) {
-                    ueb.setEmail(user.getEmailAddress());
+
+                Member member = MemberAuthUtil.getMemberOrNull(request);
+                if (member != null && member.getId_() > 0) {
+                    ueb.setEmail(member.getEmailAddress());
                 }
                 model.addAttribute("userEmailBean", ueb);
             }

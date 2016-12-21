@@ -1,5 +1,7 @@
 package org.xcolab.portlets.proposals.view;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,14 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.Validator;
 
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
@@ -104,7 +98,7 @@ public class ProposalImpactJSONController {
         } catch (IOException e) {
             _log.error("Could not load impact series for contestId {}",
                     proposalsContext.getContest(request).getContestPK(), e);
-            JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
+            JSONObject responseJSON = new JSONObject();
             responseJSON.put("success", false);
             response.getPortletOutputStream().write(responseJSON.toString().getBytes());
         }
@@ -114,10 +108,9 @@ public class ProposalImpactJSONController {
     public void proposalImpactSaveDataSeries(
             ResourceRequest request,
             ResourceResponse response,
-            @RequestParam(value = "focusAreaId") Long focusAreaId) throws IOException,
-            SystemException, JSONException {
+            @RequestParam(value = "focusAreaId") Long focusAreaId) throws IOException {
 
-        JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
+        JSONObject responseJSON = new JSONObject();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
         if (!permissions.getCanEdit() && !permissions.getCanFellowActions() && !permissions.getCanIAFActions()) {
@@ -129,7 +122,7 @@ public class ProposalImpactJSONController {
         FocusArea focusArea = OntologyClientUtil.getFocusArea(focusAreaId);
         Contest contest = proposalsContext.getContest(request);
 
-        JSONObject requestJson = JSONFactoryUtil.createJSONObject(request.getParameter("json"));
+        JSONObject requestJson = new JSONObject(request.getParameter("json"));
         ProposalImpactSeries impactSeries = new ProposalImpactSeries(contest, proposalsContext.getProposal(request), focusArea, requestJson);
         Member member = proposalsContext.getMember(request);
         impactSeries.persistWithAuthor(member);
@@ -144,7 +137,7 @@ public class ProposalImpactJSONController {
             ResourceResponse response,
             @RequestParam(value = "focusAreaId") Long focusAreaId) throws IOException {
 
-        JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
+        JSONObject responseJSON = new JSONObject();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
         if (!permissions.getCanEdit() && !permissions.getCanFellowActions() && !permissions.getCanIAFActions()) {
@@ -168,10 +161,9 @@ public class ProposalImpactJSONController {
     @ResourceMapping("proposalImpactUpdateAllSeries")
     public void proposalImpactUpdateAllDataSeries(
             ResourceRequest request,
-            ResourceResponse response) throws IOException,
-            SystemException, JSONException {
+            ResourceResponse response) throws IOException {
 
-        JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
+        JSONObject responseJSON = new JSONObject();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
         if (!permissions.getCanIAFActions() && !permissions.getCanAdminProposal()) {
@@ -183,7 +175,7 @@ public class ProposalImpactJSONController {
 
         Proposal proposal = proposalsContext.getProposal(request);
         Contest contest = proposalsContext.getContest(request);
-        JSONObject requestJson = JSONFactoryUtil.createJSONObject(request.getParameter("json"));
+        JSONObject requestJson = new JSONObject(request.getParameter("json"));
 
         try {
             ProposalImpactDataParser dataParser = new ProposalImpactDataParser(requestJson.getString("data"), proposal, contest);
@@ -208,7 +200,7 @@ public class ProposalImpactJSONController {
                 @RequestParam(required = false) String impactIAFComment)
             throws IOException {
 
-        JSONObject responseJSON = JSONFactoryUtil.createJSONObject();
+        JSONObject responseJSON = new JSONObject();
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 
         if (!permissions.getCanEdit() && !permissions.getCanFellowActions() && !permissions.getCanIAFActions()) {
@@ -243,9 +235,9 @@ public class ProposalImpactJSONController {
 
 
     private JSONArray ontologyTermListToJSONArray(List<OntologyTerm> terms) {
-        JSONArray array = JSONFactoryUtil.createJSONArray();
+        JSONArray array = new JSONArray();
 
-        if (Validator.isNull(terms)) {
+        if (terms == null || terms.isEmpty()) {
             return array;
         }
 
@@ -262,7 +254,7 @@ public class ProposalImpactJSONController {
             }
         });
         for (OntologyTerm term: terms) {
-            JSONObject termJson = JSONFactoryUtil.createJSONObject();
+            JSONObject termJson = new JSONObject();
             termJson.put("id", term.getId_());
             termJson.put("name", term.getName());
             array.put(termJson);
@@ -279,7 +271,7 @@ public class ProposalImpactJSONController {
         return new ProposalImpactUtil(contest).calculateAvailableOntologyMap(proposalImpactSeriesList.getImpactSerieses());
     }
 
-    private ProposalImpactSeriesList getProposalImpactSeriesList(ResourceRequest request) throws SystemException, PortalException {
+    private ProposalImpactSeriesList getProposalImpactSeriesList(ResourceRequest request) {
         Contest contest = proposalsContext.getContest(request);
         Proposal proposal = proposalsContext.getProposalWrapped(request);
 

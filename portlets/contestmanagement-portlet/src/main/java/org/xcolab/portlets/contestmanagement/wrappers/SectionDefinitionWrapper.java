@@ -4,8 +4,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import com.liferay.portal.kernel.util.Validator;
-
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
@@ -397,7 +395,7 @@ public class SectionDefinitionWrapper implements Serializable {
         OntologyTermToFocusAreaMapper focusAreaMapper = new OntologyTermToFocusAreaMapper(termsToBeMatched);
         FocusArea focusArea = focusAreaMapper.getFocusAreaMatchingTermsExactly();
 
-        if (Validator.isNull(focusArea)) {
+        if (focusArea != null) {
             focusArea = createNewFocusAreaWithTerms(termsToBeMatched);
         }
 

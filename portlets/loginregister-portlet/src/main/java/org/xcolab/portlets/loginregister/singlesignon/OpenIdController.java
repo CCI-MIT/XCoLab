@@ -17,6 +17,7 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.portlets.loginregister.CreateUserBean;
@@ -55,10 +56,10 @@ public class OpenIdController {
         HttpServletRequest request = PortalUtil.getHttpServletRequest(actionRequest);
         HttpSession session = request.getSession();
 
-        GoogleAuthHelper helper = new GoogleAuthHelper(themeDisplay.getPortalURL() + SSOKeys.OPEN_ID_RESPONSE_URL);
+        GoogleAuthHelper helper = new GoogleAuthHelper(ConfigurationAttributeKey.COLAB_URL.get() + SSOKeys.OPEN_ID_RESPONSE_URL);
         String requestUrl = helper.buildLoginUrl();
         // Add the openid.realm parameter in order to get an OpenId 2.0 identifier
-        requestUrl += "&openid.realm=" + themeDisplay.getPortalURL() + SSOKeys.OPEN_ID_RESPONSE_URL;
+        requestUrl += "&openid.realm=" + ConfigurationAttributeKey.COLAB_URL.get() + SSOKeys.OPEN_ID_RESPONSE_URL;
 
         session.setAttribute(GOOGLE_OAUTH_REQUEST_STATE_TOKEN, helper.getStateToken());
         actionResponse.sendRedirect(requestUrl);
@@ -99,7 +100,7 @@ public class OpenIdController {
         String authCode = request.getParameter("code");
         if (authCode != null && stateToken != null && stateToken
                 .equals(session.getAttribute(GOOGLE_OAUTH_REQUEST_STATE_TOKEN))) {
-            JSONObject json = new GoogleAuthHelper(themeDisplay.getPortalURL() + SSOKeys.OPEN_ID_RESPONSE_URL)
+            JSONObject json = new GoogleAuthHelper(ConfigurationAttributeKey.COLAB_URL.get() + SSOKeys.OPEN_ID_RESPONSE_URL)
                     .getUserInfoJson(authCode);
 
             String openId = json.getString("openid_id");

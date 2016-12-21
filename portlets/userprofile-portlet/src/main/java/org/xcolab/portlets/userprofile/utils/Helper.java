@@ -1,6 +1,8 @@
 package org.xcolab.portlets.userprofile.utils;
 
-import com.liferay.portal.kernel.servlet.SessionErrors;
+
+
+import org.xcolab.entity.utils.portlet.session.SessionErrors;
 
 import javax.portlet.ActionRequest;
 import java.io.UnsupportedEncodingException;

@@ -1,12 +1,13 @@
 package org.xcolab.portlets.users.utils;
 
-import com.liferay.portal.kernel.search.Sort;
+
+
 
 public enum MembersListColumns {
-    ACTIVITY("activities", Sort.LONG_TYPE),
-    MEMBER_CATEGORY("memberCategory", Sort.STRING_TYPE),
-    REAL_NAME("realName", Sort.STRING_TYPE),
-    MEMBER_SINCE("joinDate", Sort.STRING_TYPE);
+    ACTIVITY("activities", SortType.LONG_TYPE.getValue()),
+    MEMBER_CATEGORY("memberCategory", SortType.STRING_TYPE.getValue()),
+    REAL_NAME("realName", SortType.STRING_TYPE.getValue()),
+    MEMBER_SINCE("joinDate", SortType.STRING_TYPE.getValue());
     
     private final String field;
     private final int type;
@@ -24,3 +25,15 @@ public enum MembersListColumns {
         return type;
     }
 }
+enum SortType{
+    LONG_TYPE(6),
+    STRING_TYPE(3);
+    private final int value;
+    SortType(int i){
+        this.value = i;
+    }
+    public int getValue(){
+        return this.value;
+    }
+}
+

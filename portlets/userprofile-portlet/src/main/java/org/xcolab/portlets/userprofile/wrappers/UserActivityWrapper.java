@@ -1,6 +1,6 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
-import com.liferay.portal.theme.ThemeDisplay;
+
 
 import org.xcolab.client.activities.pojo.ActivityEntry;
 
@@ -13,7 +13,7 @@ public class UserActivityWrapper implements Serializable {
     private final ActivityEntry activity;
     private String body;
 
-    public UserActivityWrapper(ActivityEntry activity, ThemeDisplay themeDisplay) {
+    public UserActivityWrapper(ActivityEntry activity) {
         this.activity = activity;
 
 

@@ -1,6 +1,5 @@
 package org.xcolab.portlets.contestmanagement.wrappers;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

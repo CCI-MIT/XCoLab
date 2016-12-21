@@ -1,11 +1,9 @@
 package org.xcolab.portlets.proposals.impact;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.liferay.portal.kernel.json.JSONArray;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
-import com.liferay.portal.kernel.json.JSONObject;
 
 import org.xcolab.client.contest.pojo.impact.ImpactIteration;
 
@@ -70,10 +68,10 @@ public class ProposalImpactSeriesValues {
     }
 
     public JSONArray toJSONArrayWithIteration(List<ImpactIteration> iterations) {
-        JSONArray jsonArray = JSONFactoryUtil.createJSONArray();
+        JSONArray jsonArray = new JSONArray();
 
         for (ImpactIteration iteration : iterations) {
-            JSONObject jsonValue = JSONFactoryUtil.createJSONObject();
+            JSONObject jsonValue = new JSONObject();
             jsonValue.put("year", iteration.getYear());
             jsonValue.put("value", yearToValueMap.get(iteration.getYear()));
             jsonArray.put(jsonValue);
