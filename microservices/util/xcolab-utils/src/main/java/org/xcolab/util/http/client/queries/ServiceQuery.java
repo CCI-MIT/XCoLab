@@ -143,6 +143,7 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
         return this;
     }
 
+    @Override
     public ServiceQuery<T, R> queryParam(String name, Object... values) {
         uriBuilder.queryParam(name, values);
         return this;

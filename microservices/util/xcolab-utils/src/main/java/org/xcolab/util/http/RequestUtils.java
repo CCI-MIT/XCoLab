@@ -94,7 +94,7 @@ public final class RequestUtils {
         return getCached(cacheRetention, cacheKey, new Supplier<R>() {
                     @Override
                     public R get() {
-                        return restTemplate.getForObject(uriBuilder.buildString(), returnType);
+                        return restTemplate.getForObject(uriBuilder.buildUri(), returnType);
                     }
                 });
     }

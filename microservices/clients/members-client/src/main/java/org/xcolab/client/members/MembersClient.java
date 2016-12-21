@@ -333,6 +333,13 @@ public final class MembersClient {
                 .get();
     }
 
+    public static boolean validatePassword(String password, String encodedPassword) {
+        return memberResource.service("validatePassword", Boolean.class)
+                .queryParam("password", password)
+                .queryParam("hash", encodedPassword)
+                .get();
+    }
+
     public static boolean updatePassword(long memberId, String oldPassword, String newPassword) {
         return memberResource.service(memberId, "updatePassword", Boolean.class)
                 .queryParam("oldPassword", oldPassword)
