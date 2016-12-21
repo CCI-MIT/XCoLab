@@ -120,6 +120,14 @@ public class SendMessageBean implements Serializable {
         return recipientList;
     }
 
+    public List<Long> getRecipientIdList() {
+        List<Long> recipientIds= new ArrayList<>();
+        for(Member recipient : recipientList) {
+            recipientIds.add(recipient.getId_());
+        }
+        return recipientIds;
+    }
+
     public int getNumberOfMessagesLeft() {
         return numberOfMessagesLeft;
     }
