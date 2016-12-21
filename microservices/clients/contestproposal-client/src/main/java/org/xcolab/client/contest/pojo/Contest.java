@@ -592,7 +592,11 @@ public class Contest extends AbstractContest {
 
         List<Contest> contests = contestClient
                 .findContestsTierLevelAndOntologyTermIds(CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS, focusAreaOntologyTermIds);
-        return contests.get(0);
+        if(!contests.isEmpty()) {
+            return contests.get(0);
+        }else{
+            return null;
+        }
     }
 
     public Long getVotingPhasePK() {

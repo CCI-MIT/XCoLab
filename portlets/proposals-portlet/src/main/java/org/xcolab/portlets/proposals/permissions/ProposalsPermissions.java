@@ -45,10 +45,10 @@ public class ProposalsPermissions {
         if (contestPhase != null) {
             final long contestPhaseTypeId = contestPhase.getContestPhaseType();
 
-                final ContestPhaseType contestPhaseType = proposalContextHelper.getClientHelper().getContestClient()
-                        .getContestPhaseType(contestPhaseTypeId);
-                String statusStr = contestPhaseType.getStatus();
-                contestStatus = ContestStatus.valueOf(statusStr);
+            final ContestPhaseType contestPhaseType = proposalContextHelper.getClientHelper().getContestClient()
+                    .getContestPhaseType(contestPhaseTypeId);
+            String statusStr = contestPhaseType.getStatus();
+            contestStatus = ContestStatus.valueOf(statusStr);
 
         } else {
             contestStatus = null;
@@ -170,7 +170,7 @@ public class ProposalsPermissions {
     }
 
     private boolean isProposalMember() {
-            return MembersClient.isUserInGroup(memberId, groupId);
+        return MembersClient.isUserInGroup(memberId, groupId);
     }
 
     public boolean getCanFellowActions() {
