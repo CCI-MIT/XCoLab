@@ -322,7 +322,7 @@ public class SectionDefinitionWrapper implements Serializable {
     }
 
     public long getFocusAreaId() {
-        if (ontologyTermsSet()) {
+        if (ontologyTermsSet() && getFocusAreaViaOntologyTerms()!=null) {
             focusAreaId = getFocusAreaViaOntologyTerms().getId_();
         }
         return focusAreaId;
@@ -469,9 +469,9 @@ public class SectionDefinitionWrapper implements Serializable {
         } else {
 
             psd = PlanTemplateClientUtil.getPlanSectionDefinition(id);
-            pdc = PointsClientUtil
-            /*
-            psd = PlanTemplateClient.getPlanSectionDefinition(id);
+            pdc = PointsClientUtil.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
+
+
             psd.setType_(this.getType());
             psd.setTitle(this.getTitle());
             psd.setDefaultText(this.getDefaultText());
@@ -486,18 +486,16 @@ public class SectionDefinitionWrapper implements Serializable {
             psd.setContestIntegrationRelevance(this.isContestIntegrationRelevance());
             psd.setLocked(false);
 
-            pdc = PointsDistributionConfigurationClient
-            */
-                    .getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
 
-            if (pointType == 0L) {
-                PointsClientUtil
-                        .deletePointsDistributionConfiguration(pdc.getId_());
-            } else {
-                pdc.setPercentage(Double.valueOf(pointPercentage));
-                pdc.setPointTypeId(pointType);
-                pdc.setTargetPlanSectionDefinitionId(id);
-                PointsClientUtil.updatePointsDistributionConfiguration(pdc);
+            if (pdc != null) {
+                if (pointType == 0L) {
+                    PointsClientUtil
+                            .deletePointsDistributionConfiguration(pdc.getId_());
+                } else {
+                    pdc.setPercentage(Double.valueOf(pointPercentage));
+                    pdc.setPointTypeId(pointType);
+                    pdc.setTargetPlanSectionDefinitionId(id);
+                    PointsClientUtil.updatePointsDistributionConfiguration(pdc);
             /*
                 if (pdc != null) {
                     PointsDistributionConfigurationClient
@@ -512,9 +510,9 @@ public class SectionDefinitionWrapper implements Serializable {
                     PointsDistributionConfigurationClient.updatePointsDistributionConfiguration(pdc);
                 }
             */
+                }
+
             }
-
-
         }
         if (pdc == null) {
             if (pointType > 0L) {
