@@ -19,7 +19,7 @@ import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
-import org.xcolab.enums.ProposalUnversionedAttributeName;
+import org.xcolab.entity.utils.enums.ProposalUnversionedAttributeName;
 import org.xcolab.portlets.proposals.exceptions.ProposalImpactDataParserException;
 import org.xcolab.portlets.proposals.impact.ProposalImpactDataParser;
 import org.xcolab.portlets.proposals.impact.ProposalImpactSeries;

@@ -152,6 +152,12 @@
                     </c:if>
                 </div>
                 <div class="p-ContestProposals__header__buttons">
+                    <c:if test="${showAdminLink}">
+                        <div class="p-ContestProposals__header__detailButton">
+                            <a href="/web/guest/cms/-/contestmanagement/contestId/${contest.contestPK}">Edit Contest</a>
+                        </div>
+                    </c:if>
+
                     <c:if test="${contest.resourceArticleId > 0}">
                         <div class="p-ContestProposals__header__detailButton">
                             <a href="${contest.resourceArticleUrl}">Resources</a>

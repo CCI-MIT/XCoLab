@@ -1,6 +1,6 @@
 package org.xcolab.portlets.notificationunregister;
 
-import com.ext.utils.NotificationUnregisterUtils;
+import org.xcolab.entity.utils.NotificationUnregisterUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;

@@ -17,7 +17,7 @@ import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
 import org.xcolab.entity.utils.judging.ProposalJudgingCommentHelper;
-import org.xcolab.enums.ColabConstants;
+import org.xcolab.entity.utils.enums.ColabConstants;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.portlets.proposals.discussion.ProposalDiscussionPermissions;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;

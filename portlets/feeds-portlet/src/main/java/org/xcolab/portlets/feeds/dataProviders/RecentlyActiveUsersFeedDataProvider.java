@@ -2,11 +2,12 @@ package org.xcolab.portlets.feeds.dataProviders;
 
 import org.springframework.ui.Model;
 
-import com.ext.portlet.Activity.ActivityUtil;
+import org.xcolab.entity.utils.ActivityUtil;
 
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.commons.beans.SortFilterPage;
+import org.xcolab.entity.utils.enums.MemberRole;
 import org.xcolab.portlets.feeds.FeedTypeDataProvider;
 import org.xcolab.portlets.feeds.FeedsPreferences;
 import org.xcolab.portlets.feeds.wrappers.MemberWrapper;
@@ -20,8 +21,7 @@ import java.util.Set;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 
-public class RecentlyActiveUsersFeedDataProvider implements
-		FeedTypeDataProvider {
+public class RecentlyActiveUsersFeedDataProvider implements FeedTypeDataProvider {
 
 	@Override
 	public String populateModel(PortletRequest request,

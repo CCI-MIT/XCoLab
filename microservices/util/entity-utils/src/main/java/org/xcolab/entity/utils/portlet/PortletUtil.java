@@ -1,11 +1,7 @@
 package org.xcolab.entity.utils.portlet;
 
-import java.util.Map;
-
 import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public final class PortletUtil {
 
@@ -21,16 +17,22 @@ public final class PortletUtil {
     public static String getCurrentUrl(PortletRequest portletRequest) {
         return (String)portletRequest.getAttribute("CURRENT_URL");
     }
-    public static void setPageTitle(String title, HttpServletRequest portletRequest){
+    public static void setPageTitle(String title, HttpServletRequest httpServletRequest){
         //To be done using new template engine
-        portletRequest.setAttribute("LIFERAY_SHARED_PAGE_TITLE", title);
+        if(httpServletRequest!=null) {
+            //httpServletRequest.setAttribute("LIFERAY_SHARED_PAGE_TITLE", title);
+        }
     }
 
-    public static void setPageDescription(String pageDescription, HttpServletRequest portletRequest){
-        portletRequest.setAttribute("LIFERAY_SHARED_PAGE_DESCRIPTION", pageDescription);
+    public static void setPageDescription(String pageDescription, HttpServletRequest httpServletRequest){
+        if(httpServletRequest!=null) {
+            //httpServletRequest.setAttribute("LIFERAY_SHARED_PAGE_DESCRIPTION", pageDescription);
+        }
     }
-    public static void setPageSubtitle(String pageSubTitle, HttpServletRequest portletRequest){
-        portletRequest.setAttribute("LIFERAY_SHARED_PAGE_SUBTITLE", pageSubTitle);
+    public static void setPageSubtitle(String pageSubTitle, HttpServletRequest httpServletRequest){
+        if(httpServletRequest!=null) {
+            //httpServletRequest.setAttribute("LIFERAY_SHARED_PAGE_SUBTITLE", pageSubTitle);
+        }
     }
 
 

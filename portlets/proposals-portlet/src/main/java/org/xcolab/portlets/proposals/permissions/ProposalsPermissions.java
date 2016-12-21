@@ -1,8 +1,8 @@
 package org.xcolab.portlets.proposals.permissions;
 
-import com.ext.portlet.contests.ContestStatus;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;

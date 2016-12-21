@@ -1,6 +1,6 @@
 package org.xcolab.portlets.userprofile.wrappers;
 
-import com.ext.portlet.Activity.ActivityUtil;
+
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
@@ -21,6 +21,7 @@ import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
+import org.xcolab.entity.utils.ActivityUtil;
 import org.xcolab.entity.utils.EntityGroupingUtil;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.userprofile.beans.BadgeBean;

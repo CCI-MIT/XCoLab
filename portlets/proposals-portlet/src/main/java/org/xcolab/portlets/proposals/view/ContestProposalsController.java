@@ -21,7 +21,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.commons.beans.SortFilterPage;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
-import org.xcolab.enums.MemberRole;
+import org.xcolab.entity.utils.enums.MemberRole;
 import org.xcolab.portlets.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
@@ -84,6 +84,11 @@ public class ContestProposalsController extends BaseProposalsController {
         model.addAttribute("defaultTimeZoneId", ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.get());
         model.addAttribute("contestCompleted", proposalsContext.getContestWrapped(request).isContestCompleted(proposalsContext.getContestPhaseWrapped(request)));
         model.addAttribute("showShareButtons", ConfigurationAttributeKey.SHOW_SHARE_BUTTONS.get());
+        boolean showAdminLink = false;
+        if(u != null) {
+            showAdminLink = PermissionsClient.canAdminAll(u.getUserId());
+        }
+        model.addAttribute("showAdminLink", showAdminLink);
 
         setSeoTexts(request, contest.getContestShortName(), null, contest.getContestDescription());
 

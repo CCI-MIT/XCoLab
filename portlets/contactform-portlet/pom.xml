@@ -7,13 +7,10 @@
 		<groupId>org.xcolab.portlets</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>org.xcolab.portlets</groupId>
 	<artifactId>contactform-portlet</artifactId>
 	<packaging>war</packaging>
 	<name>contactform-portlet Portlet</name>
 	<version>1.0-SNAPSHOT</version>
-
-
 		
 	<build>
 		<plugins>
@@ -153,7 +150,13 @@
 			<version>1.4</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>org.xcolab.microservices.clients</groupId>
+			<artifactId>admin-client</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 
 	<repositories>

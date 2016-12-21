@@ -1,15 +1,14 @@
 package com.ext.utils.authentication.service;
 
-import javax.portlet.PortletRequest;
-import javax.portlet.PortletResponse;
+import com.ext.utils.authentication.AuthenticationService;
 
 import com.ext.portlet.service.ClpSerializer;
-import com.ext.utils.authentication.AuthenticationService;
-import com.ext.utils.userInput.UserInputFilter;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.ReferenceRegistry;
 import com.liferay.portal.service.InvokableLocalService;
+
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletResponse;
 
 public class AuthenticationServiceUtil {
     private static AuthenticationService _service;

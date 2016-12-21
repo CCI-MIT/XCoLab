@@ -191,7 +191,7 @@ public class ContestsIndexController extends BaseProposalsController {
         //For other views
         /*--------------------------------*/
 
-        if(!ConfigurationAttributeKey.COLAB_USES_CARDS.get()) {
+        if(!ConfigurationAttributeKey.COLAB_USES_CARDS.get() || viewType.equals(VIEW_TYPE_OUTLINE)) {
 
             List<Contest> contestsToWrap = showAllContests
                     ? ContestClientUtil.getContestsByContestTypeId(contestType.getId_())
@@ -220,32 +220,7 @@ public class ContestsIndexController extends BaseProposalsController {
         }
 
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
-            List<Contest> contestsToWrap = showAllContests ? ContestClientUtil.getContestsByContestTypeId(contestType.getId_()) :
-                    ContestClientUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId_());
 
-            if (contestsToWrap.size() == 1) {
-                final Contest contest = contestsToWrap.get(0);
-            }
-
-            for (Contest contest: contestsToWrap) {
-                if (! contest.getContestPrivate()) {
-                    if (! contest.getContestPrivate()) {
-                        if(contest.getIsSharedContestInForeignColab()){
-                            ClientHelper ch = new ClientHelper(contest);
-                            try {
-                                Contest foreignContest =
-                                        ch.getContestClient().getContest(contest.getContestPK());
-                                contests.add(foreignContest);
-
-                            }catch (ContestNotFoundException notFound){
-
-                            }
-                        }else {
-                            contests.add((contest));
-                        }
-                    }
-                }
-            }
         	List<OntologySpace> ontologySpacesRaw = OntologyClientUtil.getAllOntologySpaces();
         	List<OntologyTerm> ontologyTermsRaw = OntologyClientUtil.getAllOntologyTerms();
         	List<FocusArea> focusAreasRaw = OntologyClientUtil.getAllFocusAreas();
@@ -282,20 +257,18 @@ public class ContestsIndexController extends BaseProposalsController {
             for (Contest contest: ContestClientUtil
                     .getContestsByActivePrivate(!showActiveContests, false)) {
                 if (! contest.getContestPrivate()) {
-                    if (! contest.getContestPrivate()) {
-                        if(contest.getIsSharedContestInForeignColab()){
-                            ClientHelper ch = new ClientHelper(contest);
-                            try {
-                                Contest foreignContest =
-                                        ch.getContestClient().getContest(contest.getContestPK());
-                                otherContests.add(foreignContest);
+                    if(contest.getIsSharedContestInForeignColab()){
+                        ClientHelper ch = new ClientHelper(contest);
+                        try {
+                            Contest foreignContest =
+                                    ch.getContestClient().getContest(contest.getContestPK());
+                            otherContests.add(foreignContest);
 
-                            }catch (ContestNotFoundException notFound){
+                        }catch (ContestNotFoundException notFound){
 
-                            }
-                        }else {
-                            otherContests.add(contest);
                         }
+                    }else {
+                        otherContests.add(contest);
                     }
                 }
             }

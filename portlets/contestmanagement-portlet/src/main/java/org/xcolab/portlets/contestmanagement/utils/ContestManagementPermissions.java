@@ -2,7 +2,7 @@ package org.xcolab.portlets.contestmanagement.utils;
 
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
-import org.xcolab.enums.MemberRole;
+import org.xcolab.entity.utils.enums.MemberRole;
 import org.xcolab.interfaces.TabPermissions;
 
 import javax.portlet.PortletRequest;

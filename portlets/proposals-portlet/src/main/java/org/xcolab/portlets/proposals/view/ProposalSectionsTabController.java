@@ -19,7 +19,7 @@ import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
 import org.xcolab.entity.utils.EntityGroupingUtil;
-import org.xcolab.enums.ContestPhaseTypeValue;
+import org.xcolab.entity.utils.enums.ContestPhaseTypeValue;
 import org.xcolab.portlets.proposals.permissions.ProposalsPermissions;
 import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;

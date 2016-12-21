@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 
-import org.xcolab.analytics.AnalyticsUtil;
+
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -22,9 +22,10 @@ import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
+import org.xcolab.entity.utils.analytics.AnalyticsUtil;
 import org.xcolab.entity.utils.email.notifications.proposal.ProposalVoteNotification;
 import org.xcolab.entity.utils.email.notifications.proposal.ProposalVoteValidityConfirmation;
-import org.xcolab.entity.utils.portlet.PortletUtil;
+
 
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
