@@ -37,6 +37,7 @@ import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
@@ -254,6 +255,8 @@ public final class LoginRegisterUtil {
             member.setFacebookId(memberInCurrentColab.getFacebookId());
             member.setShortBio(memberInCurrentColab.getShortBio());
             member.setCountry(memberInCurrentColab.getCountry());
+            member.setUuid(memberInCurrentColab.getCountry());
+            member.setPortraitFileEntryId(0l);
             SharedColabClient.registerInPartnerColab(member);
         } catch (MemberNotFoundException e) {
             e.printStackTrace();
@@ -276,6 +279,7 @@ public final class LoginRegisterUtil {
         member.setHashedPassword(password);
         member.setLastName(lastName);
         member.setOpenId(openId);
+        member.setUuid(UUID.randomUUID().toString());
         try {
             member.setFacebookId(Long.parseLong(fbIdString));
         } catch (NumberFormatException ignored) {

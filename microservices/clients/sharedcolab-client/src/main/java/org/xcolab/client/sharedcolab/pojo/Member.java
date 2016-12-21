@@ -41,7 +41,7 @@ public class Member implements Serializable {
     private int reportKarma;
     private Long portraitfileentryid;
     private Integer   autoregisteredmemberstatus;
-
+    private String    uuid;
 
 
     public Member() {
@@ -65,6 +65,7 @@ public class Member implements Serializable {
         this.status = value.status;
         this.reportKarma = value.reportKarma;
         this.portraitfileentryid = value.portraitfileentryid;
+        this.uuid = value.uuid;
     }
 
     public Long getId_() {
@@ -207,6 +208,13 @@ public class Member implements Serializable {
 
     public void setAutoregisteredmemberstatus(Integer autoregisteredmemberstatus) {
         this.autoregisteredmemberstatus = autoregisteredmemberstatus;
+    }
+    public String getUuid() {
+        return this.uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     @JsonIgnore
