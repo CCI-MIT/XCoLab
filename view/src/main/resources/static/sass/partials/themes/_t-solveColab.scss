@@ -1,0 +1,364 @@
+@import "compass";
+
+$t-Color__black: black;
+$t-Color__grey--dark: #354046;
+$t-Color__grey: #999999;
+$t-Color__blue: #2E89C7;
+$t-Color__blue--hover: #09aeed;
+
+$t-Color__make__blue: #4596E1;
+$t-Color__fuel__red: #F54004;
+$t-Color__learn__yellow: #E9B519;
+$t-Color__cure__green: #6CC8A6;
+
+//main colors:
+$t-Color__primary: $t-Color__blue; $__hex: #3D88C7;
+$t-Color__secondary: black;
+$t-Color__accent: black;
+$t-Color__auxiliary: black; // 4th color when needed (e.g. ontology) -- not used for now
+
+//lightness variations
+$t-Color__primary--light: lighten($t-Color__primary, 15); $__hex: #f04e47;
+$t-Color__secondary--light: black;
+
+$t-Color__primary--dark: darken($t-Color__primary, 15); $__hex: #8e110b;
+$t-Color__secondary--dark: black;
+
+$t-Color__primary--darkest: darken($t-Color__primary, 20); $__hex: #5f0b07;
+$t-Color__secondary--darkest: black;
+
+//desaturated (grey) variations of the primary color
+$t-Color__primary__grey: desaturate($t-Color__primary, 30); $__hex: #b43a34;
+$t-Color__primary__grey--dark: darken($t-Color__primary__grey, 10); $__hex_color: #8a2d28;
+$t-Color__primary__grey--light: lighten($t-Color__primary__grey--dark, 10); $__hex: #cd5751;
+
+//greys
+$t-Color__grey--lightest: #f6f6f6;
+$t-Color__grey--light: #dddddd;
+$t-Color__grey--medium: #999999;
+$t-Color__grey--dark: #57585a;
+$t-Color__grey--darkest: #404143;
+
+//alert and message colors:
+$t-Color__alert: #b94a48;
+$t-Color__alert--light: #f2dede;
+$t-Color__info__background: $t-Color__grey--light;
+$t-Color__success__background: #66b035;
+
+//standard text colors
+$t-Color__text--light: white;
+$t-Color__text--dark: $t-Color__grey--darkest;
+$t-Text__threshold: 175;
+
+//outline view TODO: see if we can adapt this to use our colors
+$t-Color__outline__level1: #e0dacb; // background slevel1
+$t-Color__outline__level2: #d1cbbf; // background slevel2
+$t-Color__outline__level3: #c1bcb2; // background slevel3
+$t-Color__outline__level4: #aaa69f; // background slevel4-6
+
+
+// ====
+// changes in component variables
+
+$b-Typography__fontWeight--light: 300;
+$b-Typography__fontWeight--regular: 400;
+$b-Typography__fontWeight--medium: 500;
+$b-Typography__fontWeight--hard: 700;
+
+$b-Typography__fontFamily: "Neue Haas Grotesk", Helvetica, sans-serif;
+$b-Typography__fontFamily__h1: "Neue Haas Grotesk", Helvetica, sans-serif;
+$b-Typography__fontWeight--bold: $b-Typography__fontWeight--hard;
+
+$b-Typography__textColor__a--isHover: $t-Color__blue--hover;
+$b-Typography__textDecoration__a--hover: underline;
+
+$c-Header__background: white;
+$c-Header__box-shadow: 0px 6px 5px #D7D9DA;
+$c-Header__menu__li__a__width: 75px;
+$c-Header__menu__li__a__fontWeight: $b-Typography__fontWeight--regular;
+$c-Header__menu__li__a__textAlign: center;
+$c-Header__menu__li__isCurrent__boxShadow: inset 0 -8px 0px $t-Color__blue !default;
+$c-Header__menu__right__li__register__backgroundUrl: none;
+$c-Header__menu__right__li__register--hover__backgroundUrl: none;
+$c-Header__menu__right__li__help__backgroundUrl: none;
+$c-Header__menu__right__li__help__border--left: none;
+$c-Header__menu__right__li__help--hover__backgroundUrl: none;
+$c-Header__menu__right__li__login__backgroundUrl: none;
+$c-Header__menu__right__li__login--hover__backgroundUrl: none;
+$c-Header__menu__right__li__a__paddingTop: 30px;
+$c-Header__menu__right__li__a__fontWeight: $b-Typography__fontWeight--regular;
+$c-Header__menu__li__a__textColor: $t-Color__primary;
+$c-Header__menu__li__isCurrent__a__textColor: black;
+$c-Header__menu__highlightedTextColor: black;
+$c-Header__search__submit__borderRadius: 0;
+$c-Header__search__submit__fontWeight: $b-Typography__fontWeight--light;
+$c-Header__search__pop__positionLeft: 502px;
+
+$c-Headline__days-left__span__textColor: white;
+$c-Headline__h2__span__textColor: black;
+$c-Headline__h2__span__fontWeight: $b-Typography__fontWeight--regular;
+
+$c-Footer__background: $t-Color__grey--lightest;
+$c-Footer__menu__li__a--hover__color: $t-Color__primary;
+$c-Footer__menu__li__textColor: black;
+$c-Footer__menu__background__isSimple: true;
+$c-Footer__menu__backgroundColor: transparent;
+$c-Footer__menu__boxShadow: none;
+
+$c-Button__padding: 7px 15px;
+$c-Button__padding--small: 5px 8px;
+$c-Button__padding--large: 7px 15px;
+$c-Button__fontWeight: $b-Typography__fontWeight--regular;
+$c-Button__borderRadius: 0;
+$c-Button__capitalization: uppercase;
+$c-Button__theme__textShadow: none;
+
+$c-Button__primary__borderColor: none;
+$c-Button__grey__borderColor: none;
+
+$c-TitleBar__backgroundColor: $t-Color__primary;
+$c-TitleBar__borderBottom: none;
+$c-TitleBar__element--active__capitalization: uppercase;
+$c-TitleBar__separator__color: white;
+$c-TitleBar__textColor: white;
+$c-TitleBar__element--disabled__textColor: $t-Color__grey--light;
+$c-TitleBar__element__fontWeight: 300;
+$c-TitleBar__a__textColor: white;
+$c-TitleBar__a__textColor--hover: white;
+$c-TitleBar__a__fontWeight: $b-Typography__fontWeight--regular;
+$c-TitleBar__contestSummary__backgroundColor: $t-Color__blue;
+$c-TitleBar__contestSummary__backgroundColor--light: $t-Color__grey--lightest;
+$c-TitleBar__capitalization: uppercase;
+
+$c-Comment__count__backgroundColor: white;
+$c-Comment__count__a__fontWeight: $b-Typography__fontWeight--regular;
+$c-Comment__count__a__margin--left: 10px;
+
+$p-About__left__li__a__fontWeight: $b-Typography__fontWeight--regular;
+$p-About__left__li__a__padding--left: 15px;
+$p-About__left__li__ul__li__a__padding--left: 33px;
+$p-About__left__li__a__current__border--left: 5px solid $t-Color__secondary ;
+$p-About__left__li__a__current__padding--left: 10px;
+$p-About__left__li__a__current__textColor: $t-Color__black;
+$p-About__checkout__backgroundColor: $t-Color__grey--light;
+$p-About__contribute__background: url(/images/about/getinvolved-top_illustration.png) no-repeat;
+$p-About__ge1__background: url(/images/about/getinvolved-row-01.png) no-repeat 50px 15px;
+$p-About__ge2__background: url(/images/about/getinvolved-row-02.png) no-repeat 45px 0px;
+$p-About__ge3__background: url(/images/about/getinvolved-row-03.png) no-repeat 40px 0px;
+$p-About__ge4__background: url(/images/about/getinvolved-row-04.png) no-repeat 45px 15px;
+$p-About__getinvolved__backgroundColor: white;
+$p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight--light;
+
+$c-ContestBox__meta__flag__capitalization: uppercase;
+$c-ContestBox__meta__flag__boxShadow: none;
+$c-ContestBox__meta__flag--color__border: none;
+$c-ContestBox__meta__flag__position: none;
+$c-ContestBox__meta__flag__padding: 0 8px;
+$c-ContestBox__meta__flag__textColor: $t-Color__grey--medium;
+$c-ContestBox__meta__flag__fontSize: 12px;
+$c-ContestBox__meta__flag__height: 25px;
+$c-ContestBox__meta__flag__marginTop: 10px;
+$c-ContestBox__meta__flag__fontWeight: $b-Typography__fontWeight--bold;
+$c-ContestBox__meta__flag__isGradient: false;
+$c-ContestBox__meta__flag__background--color: white;
+$c-ContestBox__meta__flag__background--grey: white;
+$c-ContestBox__text__height: 95px;
+$c-ContestBox__text__title__textColor: black;
+$c-ContestBox__background: $t-Color__grey--lightest;
+$c-ContestBox__border: none;
+$c-ContestBox__border__radius: 0;
+$c-ContestBox--hover__boxShadow: 0 0 15px $t-Color__grey--light;
+
+$p-Contests__userslist__a__fontWeight: $b-Typography__fontWeight--regular;
+$p-Contests__userslist__td--g__background: url(/images/bg-noise.png) $t-Color__grey--lightest;
+$p-Contests__usersFilter__paddingRight: 0px;
+
+$p-community__colab__th__background: $t-Color__primary;
+$p-community__colab__th__textColor: white;
+$p-community__commList__marginTop: 7px;
+$p-community__c-Message__column__width: 204px;
+$p-community__commList__h2__paddingBottom: 6px;
+$p-community__commList__h2__borderBottom: 1px solid $t-Color__grey--light;
+$p-community__commList__h2__fontWeight: $b-Typography__fontWeight--regular;
+$p-community__discHead__width: 680px;
+$p-community__infoLeft__fontStyle: normal;
+$p-community__infoLeft__capitalization: uppercase;
+$p-community__infoLeft__fontSize: 20px;
+$p-community__infoLeft__fontWeight: $b-Typography__fontWeight--light;
+$p-community__infoLeft__paddingTop: 10px;
+$p-community__infoLeft__span__fontSize: 20px;
+$p-community__infoLeft__span__textColor: $t-Color__primary;
+$p-community__infoLeft__span__paddingRight: 0px;
+$p-community__infoLeft__span__fontWeight: $b-Typography__fontWeight--regular;
+
+$p-Contests__contestDetail__backgroundColor: $t-Color__grey--lightest;
+$p-Contests__contestDetail__heading__background: none;
+
+$p-homepage__content__h2__fontSize: 18pt;
+$p-homepage__content__h2__textColor: black;
+
+$p-homepage__learn__backgroundColor: $t-Color__primary;
+$p-homepage__learn__borderColor: none;
+$p-homepage__learn__imageUrl: none;
+$p-homepage__get__backgroundColor: $t-Color__secondary;
+$p-homepage__get__borderColor: none;
+$p-homepage__get__imageUrl: none;
+$p-homepage__join__backgroundColor: white;
+$p-homepage__join__borderColor: none;
+$p-homepage__join__imageUrl: none;
+
+$p-proposal__header__background: transparent;
+$p-proposal__header__h1__textColor: $t-Color__blue;
+$p-proposal__propbox__h4__fontWeight: $b-Typography__fontWeight--regular;
+$p-proposal__propbox__titleAuthor__width: 602px;
+$p-proposal__propbox__padding: 15px 0px 30px 14px;
+$p-proposal__right__h5__topbox__backgroundColor: white;
+$p-proposal__settings__backgroundColor: white;
+$p-proposal__contest__backgroundColor: white;
+$p-proposal__votebox__top__left: 0px;
+$p-proposal__votebox__marginTop: 35px;
+$p-proposal__right__h5__topbox__padding--top: 20px;
+$p-proposal__right__h5__topbox__font-size: 14pt;
+$p-proposal__right__h5__topbox__fontWeight: $b-Typography__fontWeight--light;
+$p-proposal__right__h5__topbox__border--top: 1px solid $t-Color__grey--light;
+$c-Headline__h2__span__fontWeight: $b-Typography__fontWeight--regular;
+$p-proposal__settings__padding--bottom: 25px;
+$p-proposal__contest__padding--top--bottom: 20px;
+$p-proposal__title__addProp__fontWeight: $b-Typography__fontWeight--regular;
+$p-proposal__left__h2__textColor: $t-Color__black;
+$p-proposal__left__h2__fontWeight: $b-Typography__fontWeight--light;
+$p-proposal__thumbbox__a__fontWeight: $b-Typography__fontWeight--regular;
+$p-proposal__thumbbox__a__margin--left: 10px;
+$p-proposal__thumbbox__background--top: 0px;
+$p-proposal__propbox__judgementActions__featured__titleAuthor__width: 415px;
+$p-proposal__propbox__judgementActions__titleAuthor__width: 445px;
+
+$p-Proposal__subscribe__capitalization: uppercase;
+$p-Proposal__edit__button__backgroundColor: $t-Color__primary;
+$p-Proposal__box__offColor: $t-Color__grey--light;
+$p-Proposal__propbox--green: #a7da85;
+
+$p-community__left__lineHeight: default;
+
+$c-Table__shadebar__background: none;
+$c-Table__borderColor: $t-Color__grey--light;
+$c-Table__title__backgroundColor: white;
+$c-Table__title__fontColor: black;
+$c-Table__cell__fontWeight--active: $b-Typography__fontWeight--medium;
+$c-Table__row--title__borderTop: 1px solid $t-Color__grey--medium;
+$c-Table__row--title__borderBottom: 1px solid $t-Color__grey--medium;
+$c-Table__cell--odd__background: url(/images/bg-noise.png) $t-Color__grey--lightest;
+$c-Table__cell--title__a__capitalization: none;
+$c-Table__title__textColor--hover: $t-Color__primary;
+$c-Table__cell__count__backgroundColor: white;
+$c-Table__cell__count__hideImage: true;
+
+$p-ContestProposals__list__element--proposalname__width: 605px;
+$p-ContestProposals__list__element__border: 1px solid;
+$p-ContestProposals__list__element--comments__background__top: 10px;
+$p-ContestProposals__list__element--judgeFellow__width: 158px;
+$p-ContestProposals__list__element--judgeFellow__border--left: 1px solid;
+$p-ContestProposals__list__element--contributor__width: 146px;
+$p-ContestProposals__list__element--proposalname__judgeActions__width: 449px;
+$p-ContestProposals__header__title__fontWeight: $b-Typography__fontWeight--bold;
+$p-ContestProposals__header__ontology__term__useIcons: false;
+$p-ContestProposals__header__detailButton__fontWeight: $b-Typography__fontWeight--regular;
+$p-ContestProposals__header__detailButton__borderRadius: 0;
+$p-ContestProposals__header__detailButton__padding: 5px 10px 5px 10px;
+$p-ContestProposals__header__detailButton__border: none;
+$p-ContestProposals__header__detailButton__backgroundColor: transparent;
+
+$p-Members__list__element__fontWeight: $b-Typography__fontWeight--regular;
+
+$c-TableList__background--odd: url(/images/bg-noise.png) $t-Color__grey--lightest;
+
+$c-Box__shadow: none;
+$c-Box__boxColor--dark__margin--top: 0px;
+$c-Box__boxColor--light__padding--top: 15px;
+$c-Box__messaging__padding--top: 15px;
+$c-Box__background__color--dark: $t-Color__grey--lightest;
+$c-Box__background__color--light: $t-Color__grey--lightest;
+$c-Box__background__color--primary: $t-Color__primary;
+$c-Box__background--dark: url(/images/bg-noise.png) $c-Box__background__color--dark;
+$c-Box__background--light: url(/images/bg-noise.png) $c-Box__background__color--light;
+$c-Box__border: none;
+$c-Box__button__backgroundColor--light: $t-Color__primary;
+$c-Box__button__backgroundColor--dark: white;
+$c-Box__button__boxColor--dark__textColor: white;
+
+$b-Spacing__separatorColor: $t-Color__grey;
+
+$c-TabBar__background: url(/images/bg-noise.png) white;
+$c-TabBar__borderTop: 1px solid $t-Color__grey--medium;
+$c-TabBar__paddingTop: 35px;
+
+$c-TabBar__tab__paddingTop: 20px;
+$c-TabBar__tab__paddingBottom: 19px;
+$c-TabBar__tab__paddingSides: 25px;
+$c-TabBar__tab__background: rgba(255, 255, 255, 0);
+$c-TabBar__tab__background--highlight: $t-Color__grey--light;
+$c-TabBar__tab__shadow--active: inset 0 -4px 0 $t-Color__secondary;
+$c-TabBar__tab__fontWeight: $b-Typography__fontWeight--regular;
+$c-TabBar__tab__borderRadius: 0px;
+$c-TabBar__tab__borderTop: none;
+$c-TabBar__tab__borderRight: 1px solid $t-Color__grey--medium;
+$c-TabBar__tab__borderLeft: none;
+$c-TabBar__tab__borderLeft--first: 1px solid $t-Color__grey--medium;
+$c-TabBar__tab__borderRight--last: 1px solid $t-Color__grey--medium;
+$c-TabBar__tab__fontSize: 17px;
+$c-TabBar__tab__textColor: $t-Color__primary;
+$c-TabBar__tab__textColor--active: $t-Color__grey--darkest;
+$b-TabBar__tab__marginRight: 0;
+$c-TabBar__tab--first__margin--left: 30px;
+$c-TabBar__tab__active__border--right: 1px solid $t-Color__grey--medium;
+$c-TabBar__tab__active__border--right--left: none;
+
+$c-TabBar__tab__count__background: $t-Color__grey--light;
+
+$p-cms__uploadWidget__fontWeight: $b-Typography__fontWeight--regular;
+
+$p-userprofile__comm_rightcol-title2__height: auto ;
+$p-userprofile__comm_rightcol-title2__padding--bottom: 10px;
+
+$c-Helpbox__borderRadius: 0px;
+$c-Helpbox__borderColor: $t-Color__grey--dark;
+$c-Helpbox__header__padding: 8px 10px 4px 19px;
+$c-Helpbox__header__background: url(/images/bg-noise.png) $t-Color__grey--dark;
+$c-Helpbox__header__title__textColor: white;
+$c-Helpbox__header__title__capitalization: uppercase;
+$c-Helpbox__text__fontWeight: $b-Typography__fontWeight--light;
+$c-Helpbox__header__close__marginTop: 0px;
+
+$b-Spacing__paddingBottom: 10px;
+$c-Count__fontSize: 17px;
+$c-Count__capitalization: uppercase;
+$c-Count__number__color: $t-Color__primary;
+$c-Count__number__fontSize: 20px;
+$c-Count__number__fontWeight: $b-Typography__fontWeight--regular;
+$c-Count__number__verticalAlign: baseline;
+
+$p-Discussion__right__subscribeLinkSmall__capitalization: uppercase;
+$p-Discussion__right__borderBottom__marginTop: 8px !default;
+$p-Discussion__right__borderBottom__paddingBottom: 11px !default;
+
+$b-Spacing__inline--large__capitalization: uppercase;
+
+//solve colab additions
+$p-Homepage__homespot__background: none;
+$p-Homepage__homespot__background__background: url(/images/homespot/background.png) no-repeat center center;
+$p-Homepage__homespot__background__backgroundSize: cover;
+$p-Homepage__HeaderMenu__hover__background: none;
+
+$c-Footer__link__textColor--hover: $t-Color__primary;
+$c-Header__menu__right__li__a--hover__textColor: $t-Color__primary;
+$c-ContestBox__text__title__textColor--hover: $t-Color__primary;
+$c-Header__menu__li__a__search__textColor--hover: $t-Color__primary;
+$p-ContestProposals__header__paddingTop: 30px;
+$c-Headline__h2__span__fontSize: 27px;
+$c-Headline__days-left__span__padding: 7px 12px;
+$c-Headline__days-left__span__background: $t-Color__grey--medium;
+$c-Headline__days-left__span__fontSize: 15px;
+$c-TitleBar__actionButton__backgroundColor--hover: $t-Color__blue--hover;
+$c-Button__primary__backgroundColor--hover: $t-Color__blue--hover;
+$p-homepage__learn__backgroundColor--hover: $t-Color__blue--hover;
+$c-Box__button__boxColor--dark__backgroundColor--hover: $t-Color__blue--hover;

@@ -1,0 +1,63 @@
+$c-Helpbox__borderRadius: 10px !default;
+$c-Helpbox__backgroundColor: white !default;
+$c-Helpbox__borderColor: $t-Color__primary__grey--dark !default;
+
+$c-Helpbox__header__padding: 14px 10px 0 19px !default;
+
+$c-Helpbox__header__background: url(/images/grid_t.gif) !default;
+
+$c-Helpbox__header__title__textColor: $t-Color__secondary !default;
+$c-Helpbox__header__title__fontWeight: $b-Typography__fontWeight--bold !default;
+$c-Helpbox__header__title__capitalization: $b-Typography__capitalization--none !default;
+
+$c-Helpbox__text__textColor: $t-Color__grey--darkest !default;
+$c-Helpbox__text__fontWeight: $b-Typography__fontWeight !default;
+
+$c-Helpbox__header__close__marginTop: -5px !default;
+
+.c-Helpbox {
+  width: 970px;
+  background: $c-Helpbox__backgroundColor;
+  @include border-radius($c-Helpbox__borderRadius);
+  border: 1px solid $c-Helpbox__borderColor;
+  margin: 15px 0;
+}
+
+.c-Helpbox__header {
+  background: $c-Helpbox__header__background;
+  height: 24px;
+  padding: $c-Helpbox__header__padding;
+  color: black;
+  font-size: 15px;
+
+  //Typekit
+  .wf-active & {
+    font-size: 17px;
+  }
+}
+
+.c-Helpbox__header__title {
+  font-weight: $c-Helpbox__header__title__fontWeight;
+  color: $c-Helpbox__header__title__textColor;
+  text-transform: $c-Helpbox__header__title__capitalization;
+}
+
+.c-Helpbox__header__close {
+  float: right;
+  height: 20px;
+  width: 20px;
+  margin-top: $c-Helpbox__header__close__marginTop;
+}
+
+.c-Helpbox__text {
+  font-size: 14px;
+  color: $c-Helpbox__text__textColor;
+  padding: 15px 20px 18px 20px;
+  line-height: 24px;
+  font-weight: $c-Helpbox__text__fontWeight;
+
+  //Typekit
+  .wf-active & {
+    font-size: 16px;
+  }
+}
