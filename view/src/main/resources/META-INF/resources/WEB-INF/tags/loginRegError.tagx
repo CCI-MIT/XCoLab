@@ -1,0 +1,42 @@
+<!--suppress ELValidationInJSP -->
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:layout="urn:jsptagdir:/WEB-INF/tags"
+          version="2.0">
+    <c:if test="${request.getParameter('signinRegError')}">
+        <c:choose>
+            <c:when test="${request.getParameter('signinRegError') == 'AuthException'}">
+                <c:set var="error" value="Authentication failed, please check your screen name and password."/>
+            </c:when>
+            <c:when test="${request.getParameter('signinRegError') == 'MemberNotFoundException'}">
+                <c:set var="error" value="Authentication failed, please check your screen name and password."/>
+            </c:when>
+            <c:when test="${request.getParameter('signinRegError') == 'UserPasswordException'}">
+                <c:set var="error" value="Please enter a valid screen name and password"/>
+            </c:when>
+            <c:when test="${request.getParameter('signinRegError') == 'UserLockoutException'}">
+                <c:set var="error" value="This account has been locked"/>
+            </c:when>
+            <c:when test="${request.getParameter('signinRegError') == 'UserScreenNameException'}">
+                <c:set var="error" value="Please enter a valid screen name"/>
+            </c:when>
+            <c:when test="${request.getParameter('signinRegError') == 'CaptchaTextException'}">
+                <c:set var="error" value="Captcha verification failed"/>
+            </c:when>
+            <c:when test="${request.getParameter('signinRegError') == 'DuplicateUserEmailAddressException'}">
+                <c:set var="error" value="Requested email address is already taken"/>
+            </c:when>
+            <c:when test="${request.getParameter('signinRegError') == 'DuplicateUserScreenNameException'}">
+                <c:set var="error" value="Requested screen name is already taken"/>
+            </c:when>
+            <c:when test="${request.getParameter('signinRegError') == 'CookieNotSupportedException'}">
+                <c:set var="error" value="Please check your browser configuration, cookies must be enabled!"/>
+            </c:when>
+            <c:otherwise>
+                <c:set var="error" value="An error occurred"/>
+            </c:otherwise>
+        </c:choose>
+
+        <div class="c-Alert__error__message"><p>${error}</p></div>
+    </c:if>
+</jsp:root>
