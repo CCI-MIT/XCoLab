@@ -8,7 +8,3 @@ spring:
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jspx
-  resources:
-    static-locations:
-      - classpath:/static/
-      - classpath:/dist/
