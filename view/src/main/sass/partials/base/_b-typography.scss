@@ -1,0 +1,121 @@
+//Regular "bree"  400 normal
+//Regular "proxima-nova"  400 normal
+//Regular Italic  "proxima-nova"  400 italic
+//Bold    "proxima-nova"  700 normal
+//Bold Italic "proxima-nova"  700 italic
+
+
+//Variables
+
+$b-Typography__lineHeight: normal !default;
+$b-Typography__lineHeight__h1: 1em !default;
+
+$b-Typography__fontFamily: "proxima-nova", "proxima-nova-1", Arial, Helvetica, sans-serif !default;
+$b-Typography__fontFamily__h1: "Bree serif", Verdana, sans-serif !default;
+
+$b-Typography__fontWeight: 400 !default;
+$b-Typography__fontWeight--bold: 700 !default;
+$b-Typography__fontWeight__h1: 400 !default;
+
+$b-Typography__capitalization--none: none !default;
+$b-Typography__capitalization--capitalize: uppercase !default;
+$b-Typography__capitalization--lowercase: lowercase !default;
+
+$b-Typography__fontSize__h1: 32px !default;
+$b-Typography__fontSize__h2: 27px !default;
+$b-Typography__fontSize__h3: 19px !default;
+$b-Typography__fontSize__h4: 15px !default;
+$b-Typography__fontSize__h5: 14px !default;
+$b-Typography__fontSize__h6: 14px !default;
+
+$b-Typography__capitalization__h1: $b-Typography__capitalization--none !default;
+$b-Typography__capitalization__h2: $b-Typography__capitalization--none !default;
+
+$b-Typography__fontWeight__h1: $b-Typography__fontWeight !default;
+$b-Typography__fontWeight__h2: $b-Typography__fontWeight--bold !default;
+$b-Typography__fontWeight__h3: $b-Typography__fontWeight--bold !default;
+$b-Typography__fontWeight__h4: $b-Typography__fontWeight !default;
+$b-Typography__fontWeight__h5: $b-Typography__fontWeight !default;
+$b-Typography__fontWeight__h6: $b-Typography__fontWeight !default;
+
+$b-Typography__textColor: initial !default;
+$b-Typography__textColor--muted: $t-Color__grey--medium !default;
+$b-Typography__textColor__h1: $t-Color__grey--darkest !default;
+$b-Typography__textColor__a: $t-Color__primary !default;
+$b-Typography__textColor__a--isHover: black !default;
+
+$b-Typography__textDecoration__a: none !default;
+$b-Typography__textDecoration__a--hover: none !default;
+
+$b-Typography__margin__p: 0 0 20px 0 !default;
+
+
+//CSS rules
+
+body, .homespot-left h1, .proposal-head h1, .c-Header__login__submit {
+  line-height: $b-Typography__lineHeight;
+  font-family: $b-Typography__fontFamily;
+  font-weight: $b-Typography__fontWeight;
+  color: $b-Typography__textColor;
+}
+
+h1 {
+  font-family: $b-Typography__fontFamily__h1;
+  font-weight: $b-Typography__fontWeight__h1;
+  font-size: $b-Typography__fontSize__h1;
+  color: $b-Typography__textColor__h1;
+  line-height: $b-Typography__lineHeight__h1;
+  text-transform: $b-Typography__capitalization__h1;
+}
+
+h2 {
+  font-size: $b-Typography__fontSize__h2;
+  font-weight: $b-Typography__fontWeight__h2;
+  text-transform: $b-Typography__capitalization__h2;
+}
+
+h3 {
+  font-size: $b-Typography__fontSize__h3;
+  font-weight: $b-Typography__fontWeight__h3;
+}
+
+h4 {
+  font-size: $b-Typography__fontSize__h4;
+  font-weight: $b-Typography__fontWeight__h4;
+}
+
+h5 {
+  font-size: $b-Typography__fontSize__h5;
+  font-weight: $b-Typography__fontWeight__h5;
+}
+
+h6 {
+  font-size: $b-Typography__fontSize__h6;
+  font-weight: $b-Typography__fontWeight__h6;
+}
+
+p {
+  margin: $b-Typography__margin__p;
+}
+
+b, strong {
+  font-weight: $b-Typography__fontWeight--bold;
+}
+
+a {
+  color: $b-Typography__textColor__a;
+  text-decoration: $b-Typography__textDecoration__a;
+}
+
+a:hover {
+  color: $b-Typography__textColor__a--isHover;
+  text-decoration: $b-Typography__textDecoration__a--hover;
+}
+
+.lowercase {
+  text-transform: $b-Typography__capitalization--lowercase;
+}
+
+.text-muted {
+  color: $b-Typography__textColor--muted;
+}

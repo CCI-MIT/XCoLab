@@ -1,0 +1,109 @@
+$c-Footer__backgroundColor: $t-Color__grey--lightest !default;
+$c-Footer__background: url(../images/bg-noise.png) $c-Footer__backgroundColor !default;
+
+$c-Footer__menu__background__isSimple: false !default;
+$c-Footer__menu__backgroundColor: simple-gradient($t-Color__grey--dark) !default;
+
+$c-Footer__menu__li__a--hover__color: $t-Color__accent !default;
+$c-Footer__menu__li__textColor: white !default;
+$c-Footer__menu__boxShadow: none !default;
+
+$c-Footer__link__textColor--hover: $t-Color__accent !default;
+
+#c-Footer { //#footer
+  height: 210px;
+  background: $c-Footer__background;
+}
+
+#c-Footer__menu { //#footmenu
+  height: 49px;
+  @if $c-Footer__menu__background__isSimple {
+    background: $c-Footer__menu__backgroundColor;
+  } @else {
+    @include background(url(../images/bg-noise.png), $c-Footer__menu__backgroundColor);
+  }
+
+  -moz-box-shadow: $c-Footer__menu__boxShadow;
+  -webkit-box-shadow: $c-Footer__menu__boxShadow;
+  box-shadow: $c-Footer__menu__boxShadow;
+
+  li {
+    padding: 0;
+    margin-left: 0;
+    float: left;
+    list-style: none;
+    background: none;
+
+    &.c {
+      a {
+        color: $c-Footer__menu__li__a--hover__color;
+      }
+    }
+
+    a {
+      display: inline-block;
+      padding: 15px 15px 0 0;
+      color: $c-Footer__menu__li__textColor;
+
+      &:hover {
+        color: $c-Footer__menu__li__a--hover__color;
+      }
+    }
+  }
+}
+
+//TODO: unused in source code - verify if used elsewhere
+#footleft {
+  float: left;
+  width: 420px;
+  padding-top: 21px;
+}
+
+//TODO: unused in source code - verify if used elsewhere
+#footright {
+  float: right;
+  width: 510px;
+  padding-top: 34px;
+
+  #cc {
+    padding-top: 6px;
+  }
+
+  #txt {
+    float: left;
+    width: 400px;
+    margin-right: 16px;
+    font-size: 13px;
+    color: $t-Color__grey--dark;
+    line-height: 20px;
+
+    a {
+      padding-bottom: 2px;
+      border-bottom: 1px solid $t-Color__grey--light;
+      font-size: 12px;
+      font-weight: $b-Typography__fontWeight--bold;
+      color: black;
+
+      &:hover {
+        color: $c-Footer__link__textColor--hover;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+//TODO: unused in source code - verify if used elsewhere
+//TODO: experimentally removed, breaks tab bar on community page
+.portlet-journal-content ul, .portlet-journal-content ol, .portlet-wiki ul, .portlet-wiki ol {
+  //margin-bottom: 15px;
+}
+
+//TODO: unused in source code - verify if used elsewhere
+.whatWhoWhere {
+  display: inline;
+}
+
+//TODO: unused in source code - verify if used elsewhere
+.delta-selector {
+  display: none;
+}

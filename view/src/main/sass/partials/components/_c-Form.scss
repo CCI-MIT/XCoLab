@@ -1,0 +1,147 @@
+$c-Form__selectBox__background: url(../images/butt_arrowbdr.png) no-repeat right !default;
+$c-Form__selectBox__textColor: #666 !default;
+$c-Form__selectBox__span__textColor: $t-Color__accent !default;
+
+$c-Form__selectBox__input__background: url(../images/butt_arrowbdr.png) no-repeat right !default;
+$c-Form__selectBox__input__textColor: #666 !default;
+$c-Form__selectBox__input__span__textColor: $t-Color__accent !default;
+
+.c-Form__selectbox { //.selectbox
+  padding: 0 44px 0 9px;
+  width: 100%;
+  height: 35px;
+  display: block;
+  background: $c-Form__selectBox__background;
+  font-size: 15px;
+  font-style: italic;
+  color: $c-Form__selectBox__textColor;
+  border: none;
+  cursor: pointer;
+
+  span {
+    font-size: 11px;
+    font-style: normal;
+    font-weight: $b-Typography__fontWeight--bold;
+    color: $c-Form__selectBox__span__textColor;
+  }
+}
+
+.c-Form__selectbox__new { //.selectbox1
+  overflow: hidden;
+}
+
+input.c-Form__selectbox, input[type='text'].c-Form__selectbox { //input.selectbox
+  width: 100%;
+  height: 35px;
+  display: block;
+  background: $c-Form__selectBox__input__background;
+  font-size: 17px;
+  font-style: italic;
+  color: $c-Form__selectBox__input__textColor;
+  border: none;
+  cursor: pointer;
+  padding: 0 35px 0 9px;
+
+  span {
+    font-size: 13px;
+    font-style: normal;
+    font-weight: $b-Typography__fontWeight--bold;
+    color: $c-Form__selectBox__input__span__textColor;
+  }
+}
+
+//TODO: unused in source code - verify if used elsewhere
+.select-pro_wrap {
+  float: left;
+  width: 240px;
+  height: 35px;
+  background: url(../images/butt_lbdr.gif) no-repeat;
+  padding-left: 3px;
+}
+
+//TODO: unused in source code - verify if used elsewhere
+#main div.selectbox-wrapper,
+div.selectbox-wrapper {
+  position: absolute;
+  margin-top: -3px;
+  text-align: left;
+  overflow: auto;
+  background-color: white;
+  border: 1px solid $t-Color__grey--light;
+}
+
+//TODO: unused in source code - verify if used elsewhere
+#main div.selectbox-wrapper ul,
+div.selectbox-wrapper ul {
+  list-style: none;
+}
+
+//TODO: unused in source code - verify if used elsewhere
+#main div.selectbox-wrapper ul li.selected,
+div.selectbox-wrapper ul li.selected {
+  background-color: $t-Color__primary__grey--light;
+}
+
+//TODO: unused in source code - verify if used elsewhere
+#main div.selectbox-wrapper ul li.current,
+div.selectbox-wrapper ul li.current {
+  background-color: $t-Color__primary__grey;
+}
+
+//TODO: unused in source code - verify if used elsewhere
+#main div.selectbox-wrapper ul li,
+div.selectbox-wrapper ul li {
+  list-style: none;
+  display: block;
+  font-size: 12px;
+  padding: 2px 2px 2px 9px;
+  cursor: pointer;
+  background: none;
+  margin-left: 5px
+}
+
+//TODO: unused in source code - verify if used elsewhere
+.wf-active div.selectbox-wrapper ul li {
+  font-size: 14px;
+}
+
+//TODO: unused in source code - verify if used elsewhere
+.wf-active .c-Form__selectbox {
+  font-size: 17px;
+
+  span {
+    font-size: 13px;
+  }
+}
+
+//TODO: unused in source code - verify if used elsewhere
+.timepicker-popover-content ul li {
+  background: none !important;
+}
+
+//TODO: unused in source code - verify if used elsewhere
+ul.dropdown-menu {
+  float: left;
+}
+
+//TODO: unused in source code - verify if used elsewhere
+ul.dropdown-menu li {
+  background: none;
+}
+
+//TODO: unused in source code - verify if used elsewhere
+ul.helper-clearfix li {
+  background: none !important;
+}
+
+//TODO: unused in source code - verify if used elsewhere
+.form-section {
+  h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  div.control-group {
+    margin-right: 30px;
+  }
+}

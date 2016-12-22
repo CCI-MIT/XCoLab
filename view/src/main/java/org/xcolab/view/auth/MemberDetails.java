@@ -97,4 +97,8 @@ public class MemberDetails implements UserDetails {
             return g1.getAuthority().compareTo(g2.getAuthority());
         }
     }
+
+    public Member getMember() {
+        return new Member(member);
+    }
 }

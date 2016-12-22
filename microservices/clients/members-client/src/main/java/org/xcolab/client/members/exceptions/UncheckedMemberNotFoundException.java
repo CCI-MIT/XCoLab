@@ -4,4 +4,8 @@ public class UncheckedMemberNotFoundException extends IllegalStateException {
     public UncheckedMemberNotFoundException(long memberId) {
         super("Member does not exist: " + memberId);
     }
+
+    public UncheckedMemberNotFoundException(String msg) {
+        super(msg);
+    }
 }

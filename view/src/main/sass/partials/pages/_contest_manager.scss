@@ -1,0 +1,294 @@
+$p-cms__uploadWidget__fontWeight: $b-Typography__fontWeight--bold !default;
+
+.cmsDetailsBox {
+  border: 1px solid $t-Color__primary;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+.uploadWidget {
+  color: $t-Color__primary;
+  font-weight: $p-cms__uploadWidget__fontWeight;
+}
+
+.collectionCard-outline-left{
+  width:50%;
+  float: left;
+  padding-right: 60px;
+
+  .collectionCard-category {
+    padding: 10px;
+  }
+
+  .expand{
+    width: 100%;
+  }
+
+  .collectionCardListItem {
+    list-style: none;
+
+  }
+
+  .level-1 {
+    ul {
+      display: none;
+    }
+  }
+
+  .level-1 li.anything a.open {
+    background-color: $t-Color__primary--darkest;
+  }
+
+  .level-1 li a {
+    background: url(../images/contest-icon-plus.png) no-repeat 18px center;
+  }
+
+  .level-1 li.active > a {
+    color: white;
+    background-color: $t-Color__primary--darkest
+  }
+
+  .level-1 li a.open {
+    background-image: url(../images/contest-icon-minus-orange.png);
+  }
+
+  .level-1 li.active a.open {
+    background-image: url(../images/contest-icon-minus.png);
+  }
+
+  .level-1 li.active a.open.active .count {
+    color: white;
+  }
+
+  .level-1 li.no-child a, .level1 li.no-child a.open {
+    background-image: none;
+  }
+
+  .level-1 li.anything a {
+    background: white url(../images/pattern-6x6-lite.png) repeat top left;
+  }
+
+
+  ul {
+    margin-bottom: 0;
+  }
+
+  ul li {
+    background: none;
+    padding: 0;
+    font-size: 12px;
+  }
+
+  ul.level-1 li {
+    padding-left: 0;
+  }
+
+  ul.level-2 li {
+    padding-left: 32px;
+    font-size: 12px;
+  }
+
+  ul.level-3 li {
+    padding-left: 32px;
+  }
+
+  ul.level-4 li {
+    padding-left: 32px;
+  }
+
+  ul.level-1 li a {
+    padding: 10px 20px 10px 46px;
+    font-size: 14px;
+  }
+
+  ul.level-2 li a {
+    padding: 10px 20px 10px 40px;
+    font-size: 12px;
+  }
+
+  ul.level-3 li a {
+    padding: 10px 20px 10px 35px;
+  }
+
+   li a {
+    border-bottom: 1px solid #ccc;
+    display: inline-block;
+    width: 100%;
+    color: black;
+  }
+
+}
+
+.explanation {
+
+  .addpropbox{
+    padding: 4px 15px 4px 12px;
+    height: 38px;
+    width: 600px;
+    display: table-cell;
+    vertical-align: middle;
+  }
+}
+
+
+.collectionCard-outline-right {
+  float:left;
+  width:40%;
+
+  .buttonContainer{
+    width: 100%;
+    height: 50px;
+  }
+
+  .collectionCard-edit-form{
+
+    padding: 10px;
+
+    .addpropbox {
+      background: #efefe7;
+      -webkit-border-radius: 12px;
+      -moz-border-radius: 12px;
+      -ms-border-radius: 12px;
+      -o-border-radius: 12px;
+      border-radius: 12px;
+      padding: 13px 15px 12px 12px;
+      margin-bottom: 13px;
+      line-height: 19px;
+      display: block;
+
+      .inputTitleLeft {
+        float: left;
+        line-height: 30px;
+        padding-right: 10px;
+      }
+
+      .wideLargeInput {
+        height: 30px;
+        width: 250px;
+        font-size: 16px;
+        padding-left: 5px;
+        text-align: left;
+      }
+
+      button {
+        margin-left: 5px;
+        height: 30px;
+      }
+    }
+  }
+}
+
+.ontologyPicker{
+
+  margin:auto;
+  padding: 50px;
+  display: block;
+  position: absolute;
+  top: 30px;
+  width: 50%;
+  z-index: 100;
+  background-color: $t-Color__grey--lightest;
+  border-radius: 10px;
+  box-shadow: 0 1px 40px $t-Color__grey--lightest;
+
+  .whatArea {
+    width: 90%;
+  }
+
+  .whereArea {
+    width: 90%;
+  }
+
+  .ontologyTermListItem {
+    list-style: none;
+  }
+
+  .level-1 {
+    ul {
+      display: none;
+    }
+  }
+
+  .level-1 li.anything a.open {
+    background-color: $t-Color__primary--darkest;
+  }
+
+  .level-1 li a {
+    background: url(../images/contest-icon-plus.png) no-repeat 18px center;
+  }
+
+  .level-1 li.active > a {
+    color: white;
+    background-color: $t-Color__primary--darkest
+  }
+
+  .level-1 li a.open {
+    background-image: url(../images/contest-icon-minus-orange.png);
+  }
+
+  .level-1 li.active a.open {
+    background-image: url(../images/contest-icon-minus.png);
+  }
+
+  .level-1 li.active a.open.active .count {
+    color: white;
+  }
+
+  .level-1 li.no-child a, .level1 li.no-child a.open {
+    background-image: none;
+  }
+
+  .level-1 li.anything a {
+    background: white url(../images/pattern-6x6-lite.png) repeat top left;
+  }
+
+
+  ul {
+    margin-bottom: 0;
+  }
+
+  ul li {
+    background: none;
+    padding: 0;
+    font-size: 12px;
+  }
+
+  ul.level-1 li {
+    padding-left: 0;
+  }
+
+  ul.level-2 li {
+    padding-left: 32px;
+    font-size: 12px;
+  }
+
+  ul.level-3 li {
+    padding-left: 32px;
+  }
+
+  ul.level-4 li {
+    padding-left: 32px;
+  }
+
+  ul.level-1 li a {
+    padding: 10px 20px 10px 46px;
+    font-size: 14px;
+  }
+
+  ul.level-2 li a {
+    padding: 10px 20px 10px 40px;
+    font-size: 12px;
+  }
+
+  ul.level-3 li a {
+    padding: 10px 20px 10px 35px;
+  }
+
+  li a {
+    border-bottom: 1px solid #ccc;
+    display: inline-block;
+    width: 100%;
+    color: black;
+  }
+
+}

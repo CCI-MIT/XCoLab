@@ -1,0 +1,174 @@
+@import "compass";
+
+@import 'admin';
+
+//TODO: remove after liferay transition
+
+.portlet-content, .portlet-minimized .portlet-content-container {
+    padding: 0;
+}
+
+//other liferay things
+
+.clearfix.lfr-pagination {
+  visibility: visible;
+}
+
+.lfr-pagination .pager {
+  padding-top: 0;
+  text-align: inherit;
+}
+
+.lfr-pagination .pager li {
+  list-style: none;
+  background: none;
+  float: left;
+}
+
+.lfr-pagination .pager li a {
+  cursor: pointer;
+}
+
+.lfr-pagination .pager li.disabled a {
+  color: #ccc;
+  cursor: default;
+}
+
+.lfr-pagination .lfr-pagination-config {
+  display: none;
+}
+
+/* hide network connection lost message */
+.liferay-faces-bridge-body > iframe, .ice-status-indicator {
+  display: none;
+}
+
+/* liferay 6.2 fixes */
+.aui .portlet-content, .aui .portlet-minimized .portlet-content-container {
+  border: none;
+  padding: 0;
+}
+
+/* liferay 6.2 fixes */
+.aui .portlet-content, .aui .portlet-minimized .portlet-content-container {
+  border: none;
+  padding: 0;
+}
+
+.aui .portlet-content .lfr-icon-actions {
+  border: none !important;
+  @include box-shadow(none);
+}
+
+.aui .portlet-topper .portlet-title .taglib-text {
+  display: none;
+}
+
+.aui header.portlet-topper {
+  background: transparent;
+  padding-left: 5px;
+}
+
+header.portlet-topper {
+  display: none;
+}
+
+.aui .portlet-topper .dropdown-menu {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+}
+
+.aui .portlet-options .dropdown-toggle {
+  display: none;
+}
+
+.aui .portlet-topper-toolbar .dropdown-toggle .lfr-icon-menu-text {
+  display: none;
+}
+
+.aui .lfr-menu-list.dropdown-menu {
+  float: none;
+}
+
+.aui .lfr-icon-action a {
+  background: white;
+  border: 2px solid $t-Color__grey--medium;
+  padding: 5px;
+  margin: 5px;
+  color: black;
+  border-radius: 6px;
+}
+
+.aui .lfr-icon-action a:hover {
+  background: $t-Color__grey--lightest;
+}
+
+.aui .lfr-icon-menu ul.dropdown-menu li {
+  color: black;
+  padding: 2px;
+  margin: 5px;
+  float: left;
+}
+
+.aui .lfr-icon-menu ul.dropdown-menu li a {
+  color: black;
+  margin: 0 10px 0 10px;
+  border-radius: 6px;
+  padding: 2px;
+  font-weight: $b-Typography__fontWeight--bold;
+  height: 15px;
+  border-bottom: none;
+  font-size: 10pt;
+}
+
+.lfr-icon-actions span.lfr-icon-action {
+  margin-bottom: 30px;
+  height: 5px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+div.portlet-column {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.control-group .lfr-tags-selector-content {
+  border: none;
+}
+
+.popup-alert-warning {
+  margin: 10px;
+  padding: 10px;
+  background-color: rgb(255, 145, 5);
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+.popup-alert-notice {
+  margin: 10px;
+  padding: 10px;
+  background-color: rgb(255, 145, 5);
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+.popup-alert-close {
+  display: inline-block;
+  border: none;
+  padding: $c-Button__padding--small;
+  margin-left: 5px;
+  font-size: 12px;
+  font-weight: $c-Button__fontWeight;
+  line-height: normal;
+  text-transform: $c-Button__capitalization;
+  @include border-radius($c-Button__borderRadius);
+  @include background(hover-color($t-Color__primary));
+  color: contrasting-color($t-Color__primary, white, $t-Color__grey--darkest, $t-Text__threshold);
+
+  &:hover {
+    @include background(hover-color($t-Color__primary));
+  }
+}

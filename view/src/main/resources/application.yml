@@ -1,8 +1,14 @@
 server:
   port: 18083
+  compression:
+    enabled: true
 
 spring:
   mvc:
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jspx
+  resources:
+    static-locations:
+      - classpath:/static/
+      - classpath:/dist/

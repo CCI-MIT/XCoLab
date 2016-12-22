@@ -6,16 +6,16 @@
 	version="2.0">
 
 	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jcarousel/0.3.1/jquery.jcarousel-core.min.js"><!-- --></script>
-	
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"></link>
-	
+
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/jqplot/1.0.8/jquery.jqplot.min.css" type="text/css"/>
 	<script src="//cdn.jsdelivr.net/jqplot/1.0.8/jquery.jqplot.min.js"><!-- --></script>
 	<script src="//cdn.jsdelivr.net/jqplot/1.0.8/plugins/jqplot.ohlcRenderer.min.js"><!-- --></script>
 	<script src="//cdn.jsdelivr.net/jqplot/1.0.8/plugins/jqplot.canvasTextRenderer.js"><!-- --></script>
 	
 	<script src="//cdn.jsdelivr.net/jqplot/1.0.8/plugins/jqplot.canvasAxisLabelRenderer.js"><!-- --></script>
 	<script src="//cdn.jsdelivr.net/jqplot/1.0.8/plugins/jqplot.enhancedLegendRenderer.js"><!-- --></script>
-	
 	
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.core.js"><!-- --></script>
 	<script src="/proposals-portlet/js/modeling/xcolab.modeling.baseRenderers.js"><!-- --></script>

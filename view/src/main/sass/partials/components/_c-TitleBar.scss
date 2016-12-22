@@ -1,0 +1,126 @@
+$c-TitleBar__backgroundColor: $t-Color__primary__grey--light !default;
+$c-TitleBar__borderBottom: 1px solid $t-Color__primary__grey !default;
+$c-TitleBar__contestSummary__backgroundColor--light: $t-Color__grey--light !default;
+$c-TitleBar__textColor: $t-Color__grey--darkest !default;
+$c-TitleBar__element--active__capitalization: none !default;
+$c-TitleBar__element--disabled__textColor: $t-Color__grey--medium !default;
+$c-TitleBar__element__fontWeight: $b-Typography__fontWeight !default;
+$c-TitleBar__a__textColor: $t-Color__primary !default;
+$c-TitleBar__a__textColor--hover: black !default;
+$c-TitleBar__a__fontWeight: 700 !default;
+$c-TitleBar__capitalization: none !default;
+
+$c-TitleBar__contestSummary__backgroundColor: $t-Color__primary__grey--light !default;
+$c-TitleBar__contestSummary__display: block !default;
+
+$c-TitleBar__actionButton__backgroundColor: $c-TitleBar__backgroundColor !default;
+$c-TitleBar__actionButton__backgroundColor--hover: $c-TitleBar__backgroundColor !default;
+
+//TODO: theme
+$c-TitleBar__separator__color: #B9E3FF !default;
+
+.c-TitleBar {
+  background: $c-TitleBar__backgroundColor;
+  border-bottom: $c-TitleBar__borderBottom;
+  color: $c-TitleBar__textColor;
+  text-transform: $c-TitleBar__capitalization;
+
+  a {
+    color: $c-TitleBar__a__textColor;
+    font-weight: $c-TitleBar__a__fontWeight;
+  }
+
+  a:hover {
+    color: $c-TitleBar__a__textColor--hover;
+    text-decoration: none;
+  }
+
+  &.contestSummary {
+    background: $c-TitleBar__contestSummary__backgroundColor;
+    display: $c-TitleBar__contestSummary__display;
+  }
+
+  &.light {
+    background: $c-TitleBar__contestSummary__backgroundColor--light;
+    color: $b-Typography__textColor;
+  }
+}
+
+.c-TitleBar__pageMargins {
+  width: 984px;
+  margin: 0 auto;
+}
+
+.c-TitleBar__element {
+  height: 37px;
+  line-height: 37px;
+  display: inline-block;
+  position: relative;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  font-size: 13px;
+  font-weight: $c-TitleBar__element__fontWeight;
+
+  //inline icons
+  img {
+    height: 25px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  //states
+  &.right {
+    float: right;
+  }
+
+  &.disabled {
+    color: $c-TitleBar__element--disabled__textColor;
+    text-transform: none;
+  }
+
+  &.active {
+    font-weight: $b-Typography__fontWeight--bold;
+    text-transform: $c-TitleBar__element--active__capitalization;
+  }
+}
+
+.c-TitleBar__element--withSeparator {
+  @extend .c-TitleBar__element;
+
+  margin-right: 15px;
+
+  //arrow implementation:
+  &:after, &:before {
+    left: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+  //noinspection CssOptimizeSimilarProperties
+  &:after {
+    border-color: transparent;
+    border-width: 12px;
+    border-left-color: $c-TitleBar__contestSummary__backgroundColor;
+    margin-top: -12px;
+  }
+  //noinspection CssOptimizeSimilarProperties
+  &:before {
+    border-color: transparent;
+    border-width: 16px;
+    border-left-color: $c-TitleBar__separator__color;
+    margin-top: -16px;
+  }
+}
+
+.c-TitleBar__actionButton {
+  background: $c-TitleBar__actionButton__backgroundColor;
+
+  &:hover {
+    background: $c-TitleBar__actionButton__backgroundColor--hover;
+  }
+}

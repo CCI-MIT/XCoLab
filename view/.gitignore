@@ -1,0 +1,4 @@
+target/
+
+# generated css sources
+src/main/resources/dist/

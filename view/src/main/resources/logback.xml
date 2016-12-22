@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<configuration scan="true" scanPeriod="3 seconds">
+<configuration scan="false">
 
     <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
 
@@ -12,8 +12,11 @@
         </layout>
     </appender>
 
+    <logger name="org.sitemesh" level="INFO" />
+    <logger name="org.springframework.web" level="INFO"/>
+
     <root>
-        <level value="ERROR"/>
+        <level value="WARN"/>
         <appender-ref ref="STDOUT"/>
     </root>
 
