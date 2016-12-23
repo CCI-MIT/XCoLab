@@ -12,6 +12,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
+import org.xcolab.util.enums.theme.ColabTheme;
 import org.xcolab.view.auth.AuthenticationContext;
 
 import java.util.List;
@@ -52,11 +53,17 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
                         MessagingClient.countUnreadMessagesForUser(member.getUserId()));
             }
 
-            modelAndView.addObject("_themeCssFolder", "/css/themes/climateCoLab");
+            ColabTheme activeTheme = ConfigurationAttributeKey.ACTIVE_THEME.get();
+
+            modelAndView.addObject("_themeCssFolder", activeTheme.getCssPath());
+            modelAndView.addObject("_themeJsFolder", activeTheme.getJsPath());
+            modelAndView.addObject("_themeImageFolder", activeTheme.getImagePath());
             modelAndView.addObject("_libCssFolder", "/css/lib");
-            modelAndView.addObject("_themeJsFolder", "/js");
             modelAndView.addObject("_libJsFolder", "/js/lib");
-            modelAndView.addObject("_themeImageFolder", "/images");
+
+            modelAndView.addObject("_logoPath", activeTheme.getLogoPath());
+            modelAndView.addObject("_logoPathSocial", activeTheme.getLogoPathSocial());
+            modelAndView.addObject("_logoPathBig", activeTheme.getLogoPathBig());
 
             modelAndView.addObject("_contestPages", ContestClientUtil.getActiveContestTypes());
             modelAndView.addObject("_colabName", ConfigurationAttributeKey.COLAB_NAME.get());

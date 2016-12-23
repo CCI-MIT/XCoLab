@@ -13,11 +13,16 @@
     <!--@elvariable id="_realMember" type="org.xcolab.client.members.pojo.Member"-->
     <!--@elvariable id="_member" type="org.xcolab.client.members.pojo.Member"-->
     <!--@elvariable id="_unreadMessages" type="java.lang.Integer"-->
+
     <!--@elvariable id="_themeCssFolder" type="java.lang.String"-->
     <!--@elvariable id="_libCssFolder" type="java.lang.String"-->
     <!--@elvariable id="_themeJsFolder" type="java.lang.String"-->
     <!--@elvariable id="_libJsFolder" type="java.lang.String"-->
     <!--@elvariable id="_themeImageFolder" type="java.lang.String"-->
+    <!--@elvariable id="_logoPath" type="java.lang.String"-->
+    <!--@elvariable id="_logoPathSocial" type="java.lang.String"-->
+    <!--@elvariable id="_logoPathBig" type="java.lang.String"-->
+
     <!--@elvariable id="_contestPages" type="java.util.List<org.xcolab.client.contest.pojo.ContestType>"-->
     <!--@elvariable id="_colabName" type="java.lang.String"-->
     <!--@elvariable id="_colabShortName" type="java.lang.String"-->
@@ -108,8 +113,8 @@
     <meta property="og:site_name" content="${_colabName}" />
     <meta property="og:title" content="${_openGraphShareTitle}" />
     <meta property="og:description" content="${_openGraphShareDescription}" />
-    <meta property="og:image" content="${_themeImageFolder}/ClimateColabLogo_big.png" />
-    <link rel="image_src" type="image/png" href="${_themeImageFolder}/ClimateColabLogo_big.png" />
+    <meta property="og:image" content="${_logoPathBig}" />
+    <link rel="image_src" type="image/png" href="${_logoPathBig}" />
 </head>
 <body>
     <c:if test="${_betaRibbonShow}">
@@ -141,7 +146,7 @@
                 </div>
 
                 <div class="c-TitleBar__element c-TitleBar__actionButton right">
-                    <a href="$mitHeaderBarLinkUrl">${_mitHeaderBarLinkText}</a>
+                    <a href="${_mitHeaderBarLinkUrl}">${_mitHeaderBarLinkText}</a>
                 </div>
             </div>
         </div>
@@ -150,7 +155,7 @@
     <div id="c-Header">
         <div class="inner">
             <div id="c-Header__logo">
-                <a href="/"><img src="${_themeImageFolder}/logo-climate-colab.png" alt="${_colabName}" height="42" /></a>
+                <a href="/"><img src="${_logoPath}" alt="${_colabName}" height="42" /></a>
             </div>
             <ul id="c-Header__menu">
                 <!-- TODO: mark current page with class 'isCurrent' -->
@@ -459,7 +464,7 @@
         <div id="popup_SSO_login" class="c-Popup__wrapper small" style="display: none;">
             <div class="c-Popup">
                 <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_SSO_login').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a></div>
-                <div><img style="max-height:55px" src="${_themeImageFolder}/$partnerColabLogo"/> </div>
+                <div><img style="max-height:55px" src="${_themeImageFolder}/${_partnerColabLogo}" alt="${_partnerColabName}" /> </div>
                 <div style="margin-top: 15px;margin-bottom: 15px;">Are you a ${_partnerColabName} member? Login to ${_colabName} using your ${_partnerColabName} username and password.</div>
                 <div style="font-size: small;">${_colabName} will receive your ${_partnerColabName} public profile and email address.</div>
                 <div class="clearfix"></div>
@@ -487,7 +492,7 @@
         <div id="popup_SSO_autoreg" class="c-Popup__wrapper small" style="display: none;width: 473px;">
             <div class="c-Popup">
                 <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_SSO_autoreg').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a></div>
-                <div><img style="max-height:55px;margin-right: 10px;" src="${_themeImageFolder}/logo-climate-colab.png"/> <img style="max-height:55px" src="${_themeImageFolder}/$partnerColabLogo"/> </div>
+                <div><img style="max-height:55px;margin-right: 10px;" src="${_logoPath}"/> <img style="max-height:55px" src="${_themeImageFolder}/${_partnerColabLogo}"/> </div>
                 <div style="margin-top: 15px;margin-bottom: 15px;">${_colabName} has teamed up with ${_partnerColabName} to run this $contestNameLowerCase. To participate, click "OK" below.
                     When you save your $proposalNameLowerCase, you'll be able to see and make changes to it on either site – all edits and comments will be synced between the two platforms.
                     We'll even create a linked account so you can log into ${_partnerColabName}  with your ${_colabName} username and password.  It's easy!</div>

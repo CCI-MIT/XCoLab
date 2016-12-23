@@ -1,6 +1,7 @@
 package org.xcolab.client.admin.enums;
 
 import org.xcolab.util.attributes.AttributeGetter;
+import org.xcolab.util.enums.theme.ColabTheme;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +27,11 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> BLOG_URL =
             ConfigurationAttributes.newStringAttribute("BLOG_URL")
                     .withCache().build();
+    public static final AttributeGetter<ColabTheme> ACTIVE_THEME =
+            ConfigurationAttributes.newEnumAttribute("ACTIVE_THEME", ColabTheme.class)
+                    .defaultValue(ColabTheme.CLIMATE_COLAB)
+                    .build();
+
     public static final AttributeGetter<Long> DEFAULT_CONTEST_TYPE_ID =
             ConfigurationAttributes.newLongAttribute("DEFAULT_CONTEST_TYPE_ID")
                     .withCache().build();
