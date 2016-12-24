@@ -11,7 +11,7 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.entity.utils.members.MemberAuthUtil;
+import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.util.enums.theme.ColabTheme;
 import org.xcolab.view.auth.AuthenticationContext;
 

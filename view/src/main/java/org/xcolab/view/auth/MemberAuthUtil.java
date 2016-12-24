@@ -1,4 +1,4 @@
-package org.xcolab.entity.utils.members;
+package org.xcolab.view.auth;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.util.WebUtils;
@@ -16,10 +16,13 @@ public final class MemberAuthUtil {
 
     public static final String IMPERSONATE_MEMBER_ID_COOKIE_NAME = "X-Impersonate-memberId";
 
+    private static final AuthenticationContext authenticationContext = new AuthenticationContext();
+
     private MemberAuthUtil() {
     }
 
     private static Long getImpersonatedMemberId(HttpServletRequest request) {
+        //TODO: port impersonation
         final Cookie cookie = WebUtils.getCookie(request, IMPERSONATE_MEMBER_ID_COOKIE_NAME);
 
         Long impersonatedMemberId = null;
@@ -29,16 +32,20 @@ public final class MemberAuthUtil {
         return impersonatedMemberId;
     }
 
-    private static long getRemoteMemberId(HttpServletRequest request) {
-        final String remoteUserString = request.getRemoteUser();
-        if (StringUtils.isNumeric(remoteUserString)) {
-            return Long.parseLong(remoteUserString);
+    private static Member getRemoteMember() {
+        return authenticationContext.getMemberOrNull();
+    }
+
+    private static long getRemoteMemberId() {
+        final Member remoteMember = getRemoteMember();
+        if (remoteMember != null) {
+            return remoteMember.getId_();
         }
         return 0L;
     }
 
     public static long getMemberId(HttpServletRequest request) {
-        final long loggedInMemberId = getRemoteMemberId(request);
+        final long loggedInMemberId = getRemoteMemberId();
         if (PermissionsClient.canAdminAll(loggedInMemberId)) {
             Long impersonatedMemberId = getImpersonatedMemberId(request);
             if (impersonatedMemberId != null) {
@@ -62,10 +69,10 @@ public final class MemberAuthUtil {
     }
 
     public static long getRealMemberId(HttpServletRequest request) {
-        return getRemoteMemberId(request);
+        return getRemoteMemberId();
     }
 
     public static boolean isImpersonating(HttpServletRequest request) {
-        return getMemberId(request) != getRemoteMemberId(request);
+        return getMemberId(request) != getRemoteMemberId();
     }
 }

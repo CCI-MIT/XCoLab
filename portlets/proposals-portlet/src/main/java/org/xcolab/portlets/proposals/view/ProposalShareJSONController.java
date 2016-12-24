@@ -20,7 +20,6 @@ import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
-import org.xcolab.entity.utils.portlet.PortletUtil;
 import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 
 import java.io.IOException;

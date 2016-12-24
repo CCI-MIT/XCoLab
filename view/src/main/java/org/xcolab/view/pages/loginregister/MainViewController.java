@@ -12,7 +12,6 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -35,12 +34,12 @@ import org.xcolab.entity.utils.HttpUtils;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.entity.utils.ModelAttributeUtil;
 import org.xcolab.entity.utils.ReCaptchaUtils;
-import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.entity.utils.portlet.RequestParamUtil;
 import org.xcolab.entity.utils.portlet.session.SessionErrors;
 import org.xcolab.entity.utils.portlet.session.SessionMessages;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;
 
@@ -181,7 +180,7 @@ public class MainViewController {
                 String.format("Could not retrieve country from IP address %s", ipAddr));
     }
 
-    @RequestMapping(params = "error=true")
+    @GetMapping("/register/error")
     public String registerError(HttpServletRequest request, Model model,
             @Valid CreateUserBean newAccountBean, BindingResult result,
             @RequestParam(required = false) String redirect) {
@@ -207,7 +206,7 @@ public class MainViewController {
         return "view";
     }
 
-    @RequestMapping(params = "action=add")
+    @PostMapping("/register")
     public void registerUser(HttpServletRequest request, Model model,
             HttpServletResponse response, @Valid CreateUserBean newAccountBean,
             BindingResult result,
@@ -340,7 +339,7 @@ public class MainViewController {
         portletSession.setAttribute(SSOKeys.SSO_COUNTRY, createUserBean.getCountry());
     }
 
-    @PostMapping("/register")
+    @PostMapping("/api/register")
     public void updateRegistrationParameters(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
@@ -389,7 +388,7 @@ public class MainViewController {
         return ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_KEY.get();
     }
 
-    @RequestMapping("/api/login/generateScreenName")
+    @PostMapping("/api/register/generateScreenName")
     public void generateScreenName(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 

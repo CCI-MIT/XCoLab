@@ -18,7 +18,6 @@ import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
-import org.xcolab.entity.utils.portlet.PortletUtil;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
