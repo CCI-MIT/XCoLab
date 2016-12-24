@@ -37,6 +37,10 @@ public final class ServiceExceptionTranslatorUtil {
                 throw new Http429TooManyRequestsException(exceptionObject);
             case INTERNAL_SERVER_ERROR:
                 throw new Http500InternalServiceException(exceptionObject);
+            case FORBIDDEN:
+                throw new Http403ForbiddenException(exceptionObject);
+            case UNAUTHORIZED:
+                throw new Http401UnauthorizedException(exceptionObject);
             default:
                 throw new HttpRuntimeException(exceptionObject, exception);
         }

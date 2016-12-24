@@ -5,23 +5,25 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.ServletRequest;
+import org.xcolab.client.members.pojo.Member;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class LandingPageController {
 
     @RequestMapping(value = "/")
-    public String hello(ServletRequest request) {
+    public String hello(HttpServletRequest request, Member member) {
         return "home";
     }
 
     @RequestMapping(value = "/login")
-    public String login(ServletRequest request) {
+    public String login(HttpServletRequest request) {
         return "login";
     }
 
     @RequestMapping(value = "/admin")
-    public String admin(ServletRequest request, Model model) {
+    public String admin(HttpServletRequest request, Model model) {
         model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication().getName());
         return "admin";
     }

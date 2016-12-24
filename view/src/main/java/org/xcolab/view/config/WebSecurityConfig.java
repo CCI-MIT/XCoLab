@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+
+import org.xcolab.view.auth.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.MemberDetailsService;
 import org.xcolab.view.auth.MemberPasswordEncoder;
 
@@ -25,6 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/login")
                     .permitAll()
+                    .successHandler(new AuthenticationSuccessHandler("/"))
                     .and()
                 .logout()
                     .permitAll()

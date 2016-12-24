@@ -1,27 +1,22 @@
 package org.xcolab.entity.utils;
 
-import org.xcolab.entity.utils.portlet.PortletUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 public final class GlobalMessagesUtil {
 
-    public static final String GLOBAL_MESSAGES_SESSION_KEY = "xcolab_global_messages";
+    private static final String GLOBAL_MESSAGES_SESSION_KEY = "xcolab_global_messages";
 
-    private GlobalMessagesUtil() { }
-
-    public static void addMessage(String message, PortletRequest request) {
-        addMessage(message, PortletUtil.getHttpServletRequest(request));
+    private GlobalMessagesUtil() {
     }
 
     public static void addMessage(String message, HttpServletRequest servletRequest) {
         HttpSession session = servletRequest.getSession(true);
 
+        @SuppressWarnings("unchecked")
         List<Message> messages = (List<Message>) session.getAttribute(GLOBAL_MESSAGES_SESSION_KEY);
 
         if (messages == null) {
