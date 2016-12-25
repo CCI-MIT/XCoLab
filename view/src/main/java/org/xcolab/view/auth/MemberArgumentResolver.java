@@ -10,6 +10,8 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import org.xcolab.client.members.pojo.Member;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final AuthenticationContext authenticationContext;
@@ -30,7 +32,12 @@ public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
             WebDataBinderFactory binderFactory) {
 
         if (this.supportsParameter(methodParameter)) {
-            return authenticationContext.getMemberOrNull();
+            final HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
+            RealMember realMemberAnnotation = methodParameter.getParameterAnnotation(RealMember.class);
+            if (realMemberAnnotation != null) {
+                return authenticationContext.getRealMemberOrNull();
+            }
+            return authenticationContext.getMemberOrNull(request);
         } else {
             return WebArgumentResolver.UNRESOLVED;
         }

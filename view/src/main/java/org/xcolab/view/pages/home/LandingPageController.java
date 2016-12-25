@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.auth.RealMember;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 public class LandingPageController {
 
     @RequestMapping(value = "/")
-    public String hello(HttpServletRequest request, Member member) {
+    public String hello(HttpServletRequest request, Member member, @RealMember Member realMember) {
         return "home";
     }
 

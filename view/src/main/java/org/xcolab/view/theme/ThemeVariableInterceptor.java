@@ -8,10 +8,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.util.enums.theme.ColabTheme;
 import org.xcolab.view.auth.AuthenticationContext;
 
@@ -36,18 +34,15 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
         if (modelAndView != null) {
             final boolean isLoggedIn = authenticationContext.isLoggedIn();
             modelAndView.addObject("_isLoggedIn", isLoggedIn);
-
-            //        final boolean isImpersonating = MemberAuthUtil.isImpersonating(request);
-            final boolean isImpersonating = false;
+            final boolean isImpersonating = authenticationContext.isImpersonating(request);
             modelAndView.addObject("_showImpersonationBar", isImpersonating);
             if (isImpersonating) {
-                final long realMemberId = MemberAuthUtil.getRealMemberId(request);
-                modelAndView
-                        .addObject("_realMember", MembersClient.getMemberUnchecked(realMemberId));
+                final Member realMember = authenticationContext.getRealMemberOrNull();
+                modelAndView.addObject("_realMember", realMember);
             }
 
             if (isLoggedIn) {
-                Member member = authenticationContext.getMemberOrThrow();
+                Member member = authenticationContext.getMemberOrThrow(request);
                 modelAndView.addObject("_member", member);
                 modelAndView.addObject("_unreadMessages",
                         MessagingClient.countUnreadMessagesForUser(member.getUserId()));
