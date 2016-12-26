@@ -5,7 +5,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.ProposalPhaseClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
@@ -22,21 +22,23 @@ public class ProposalJudgingCommentHelper {
 
     private final Proposal proposal;
     private final ContestPhase contestPhase;
+    private final ProposalPhaseClient proposalPhaseClient;
 
     public ProposalJudgingCommentHelper(Proposal proposal, ContestPhase contestPhase) {
         this.proposal = proposal;
+        proposalPhaseClient = ProposalPhaseClient.fromService(proposal.getRestService());
         this.contestPhase = contestPhase;
     }
 
     public String getScreeningComment() {
         //get fellow decision
-        ProposalContestPhaseAttribute fellowActionAttribute = ProposalPhaseClientUtil.
+        ProposalContestPhaseAttribute fellowActionAttribute = proposalPhaseClient.
                 getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
         JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue().intValue());
 
         if (fellowAction != JudgingSystemActions.FellowAction.NO_DECISION &&
                 fellowAction != JudgingSystemActions.FellowAction.PASS_TO_JUDGES) {
-            String fellowRejectionText = ProposalPhaseClientUtil.
+            String fellowRejectionText = proposalPhaseClient.
                     getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT).getStringValue();
 
             return fellowRejectionText;
@@ -46,7 +48,7 @@ public class ProposalJudgingCommentHelper {
     }
 
     public void setScreeningComment(String comment) {
-        ProposalContestPhaseAttribute fellowActionAttribute = ProposalPhaseClientUtil.
+        ProposalContestPhaseAttribute fellowActionAttribute = proposalPhaseClient.
                 getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
         JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue().intValue());
 
@@ -58,7 +60,7 @@ public class ProposalJudgingCommentHelper {
     }
 
     public String getAdvancingComment() {
-            ProposalContestPhaseAttribute advanceDecisionAttribute = ProposalPhaseClientUtil.
+            ProposalContestPhaseAttribute advanceDecisionAttribute = proposalPhaseClient.
                     getProposalContestPhaseAttribute(proposal.getProposalId(),
                             contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.JUDGE_DECISION );
             JudgingSystemActions.AdvanceDecision advanceDecision =
@@ -67,7 +69,7 @@ public class ProposalJudgingCommentHelper {
 
             if (advanceDecision != JudgingSystemActions.AdvanceDecision.NO_DECISION) {
 
-                return ProposalPhaseClientUtil.
+                return proposalPhaseClient.
                         getProposalContestPhaseAttribute(proposal.getProposalId(),
                                 contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW).getStringValue();
             }
@@ -104,7 +106,7 @@ public class ProposalJudgingCommentHelper {
             //get fellow decision
             JudgingSystemActions.FellowAction fellowAction;
 
-            ProposalContestPhaseAttribute fellowActionAttribute = ProposalPhaseClientUtil
+            ProposalContestPhaseAttribute fellowActionAttribute = proposalPhaseClient
                     .
                             getProposalContestPhaseAttribute(proposal.getProposalId(),
                                     contestPhase.getContestPhasePK(),
@@ -115,13 +117,13 @@ public class ProposalJudgingCommentHelper {
 
             //JUDGE DECISION
             if (fellowAction == JudgingSystemActions.FellowAction.PASS_TO_JUDGES) {
-                    String reviewText = ProposalPhaseClientUtil.
+                    String reviewText = proposalPhaseClient.
                             getProposalContestPhaseAttribute(proposal.getProposalId(),
                                     contestPhase.getContestPhasePK(),
                                     ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW)
                             .getStringValue();
 
-                    ProposalContestPhaseAttribute advanceDecisionAttribute = ProposalPhaseClientUtil
+                    ProposalContestPhaseAttribute advanceDecisionAttribute = proposalPhaseClient
                             .
                                     getProposalContestPhaseAttribute(proposal.getProposalId(),
                                             contestPhase.getContestPhasePK(),
@@ -146,7 +148,7 @@ public class ProposalJudgingCommentHelper {
 
                 //FELLOW DECISION: Incomplete/Off-Topic
             } else if (fellowAction != JudgingSystemActions.FellowAction.NO_DECISION) {
-                String fellowReviewText = ProposalPhaseClientUtil
+                String fellowReviewText = proposalPhaseClient
                         .getProposalContestPhaseAttribute(
                                 proposal.getProposalId(),
                                 contestPhase.getContestPhasePK(),
@@ -180,14 +182,14 @@ public class ProposalJudgingCommentHelper {
     private boolean persistAttribute(String attributeName, String stringValue) {
         ProposalContestPhaseAttribute attribute = getProposalContestPhaseAttributeCreateIfNotExists(attributeName);
         attribute.setStringValue(stringValue);
-        ProposalPhaseClientUtil.updateProposalContestPhaseAttribute(attribute);
+        proposalPhaseClient.updateProposalContestPhaseAttribute(attribute);
 
         return true;
     }
 
     private ProposalContestPhaseAttribute getProposalContestPhaseAttributeCreateIfNotExists(String attributeName) {
 
-        return ProposalPhaseClientUtil.getOrCreateProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), attributeName, 0l, 0l, "");
+        return proposalPhaseClient.getOrCreateProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), attributeName, 0l, 0l, "");
     }
 
 
