@@ -55,7 +55,7 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
             //TODO: judging will only work in host colab for shared contests!
             Proposal proposal = ProposalClientUtil.getProposal(proposalId);
             ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
-            ProposalJudgeWrapper judgeWrapper = new ProposalJudgeWrapper(new Proposal(proposal, contestPhase), judge);
+            ProposalJudgeWrapper judgeWrapper = new ProposalJudgeWrapper(proposal, judge);
 
             PortletRequest portletRequest = (PortletRequest) pageContext.getAttribute("javax.portlet.request", PageContext.REQUEST_SCOPE);
             if (portletRequest == null) {

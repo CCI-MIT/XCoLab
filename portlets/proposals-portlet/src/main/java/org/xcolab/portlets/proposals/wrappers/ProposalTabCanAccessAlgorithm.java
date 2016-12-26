@@ -67,11 +67,8 @@ interface ProposalTabCanAccessAlgorithm {
 
 		@Override
 		public boolean canAccess(ProposalsPermissions permissions, ProposalsContext context, PortletRequest request) {
-			if(context.getContest(request).getIsSharedContestInForeignColab()) {
-				return false;
-			}else{
+
 				return ConfigurationAttributeKey.PUBLISH_JUDGING_RESULTS.get();
-			}
 		}
 	};
 
