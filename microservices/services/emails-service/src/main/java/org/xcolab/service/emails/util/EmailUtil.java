@@ -57,7 +57,7 @@ public class EmailUtil {
                             .sendMail(email);
             }
         }catch (Exception ignore){
-            
+
         }
     }
 }
