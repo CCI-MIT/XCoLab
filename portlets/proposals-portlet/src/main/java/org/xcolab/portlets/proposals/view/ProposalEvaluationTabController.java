@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -170,8 +171,9 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                             proposalRating = calculateAverageRating(judgeRatingsForProposal);
                         } else {
                             proposalRating = new ProposalRatings(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID);
-                            proposalRating.setContestPhase(contestPhase);
                         }
+                        proposalRating.setContestPhase(contestPhase);
+                        proposalRating.setContestPhaseTitle(proposalsContext.getClients(request).getContestClient().getContestPhaseName(contestPhase));
                         proposalRating.setComment(commentHelper.getAdvancingComment());
                         proposalRatings.add(proposalRating);
                     } catch (MemberNotFoundException e) {

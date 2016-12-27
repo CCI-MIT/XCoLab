@@ -7,6 +7,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
+import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.legacy.enums.MemberRole;
@@ -170,7 +171,7 @@ public class ProposalsPermissions {
     }
 
     private boolean isProposalMember() {
-        return MembersClient.isUserInGroup(memberId, groupId);
+        return ProposalsContextUtil.getClients(request).getProposalClient().isUserInProposalTeam(proposal.getProposalId(),memberId);
     }
 
     public boolean getCanFellowActions() {
