@@ -120,7 +120,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     }
 
     private boolean isUserFellowOrJudgeOrAdvisor(Proposal proposal) {
-        ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
+        ContestPhase contestPhase = ProposalsContextUtil.getClients(request).getContestClient().getContestPhase(contestPhaseId);
         Proposal proposalWrapper = new Proposal(proposal, contestPhase);
 
 
