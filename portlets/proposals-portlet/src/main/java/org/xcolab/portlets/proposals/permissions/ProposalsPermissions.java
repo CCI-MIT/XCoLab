@@ -171,7 +171,8 @@ public class ProposalsPermissions {
     }
 
     private boolean isProposalMember() {
-        return ProposalsContextUtil.getClients(request).getProposalClient().isUserInProposalTeam(proposal.getProposalId(),memberId);
+        return proposal != null && proposal.getProposalId() > 0 &&
+                ProposalsContextUtil.getClients(request).getProposalClient().isUserInProposalTeam(proposal.getProposalId(),memberId);
     }
 
     public boolean getCanFellowActions() {
