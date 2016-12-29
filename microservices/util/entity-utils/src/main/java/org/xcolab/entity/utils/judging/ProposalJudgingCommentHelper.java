@@ -12,6 +12,8 @@ import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.entity.utils.email.notifications.EmailTemplateWrapper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
+import org.xcolab.util.enums.promotion.JudgingSystemActions.AdvanceDecision;
+import org.xcolab.util.enums.promotion.JudgingSystemActions.FellowAction;
 
 /**
  * This is a helper class that interprets the Judging Feedback message made during judging contest
@@ -102,16 +104,14 @@ public class ProposalJudgingCommentHelper {
                     .getContestShortName();
 
             //get fellow decision
-            JudgingSystemActions.FellowAction fellowAction;
-
             ProposalContestPhaseAttribute fellowActionAttribute = ProposalPhaseClientUtil
-                    .
-                            getProposalContestPhaseAttribute(proposal.getProposalId(),
+                    .getProposalContestPhaseAttribute(proposal.getProposalId(),
                                     contestPhase.getContestPhasePK(),
                                     ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
-            fellowAction = JudgingSystemActions.FellowAction
-                    .fromInt((int) fellowActionAttribute.getNumericValue().intValue());
-
+            JudgingSystemActions.FellowAction fellowAction = fellowActionAttribute != null
+                    ? JudgingSystemActions.FellowAction
+                            .fromInt(fellowActionAttribute.getNumericValue().intValue())
+                    : FellowAction.NO_DECISION;
 
             //JUDGE DECISION
             if (fellowAction == JudgingSystemActions.FellowAction.PASS_TO_JUDGES) {
@@ -122,14 +122,16 @@ public class ProposalJudgingCommentHelper {
                             .getStringValue();
 
                     ProposalContestPhaseAttribute advanceDecisionAttribute = ProposalPhaseClientUtil
-                            .
-                                    getProposalContestPhaseAttribute(proposal.getProposalId(),
+                            .getProposalContestPhaseAttribute(proposal.getProposalId(),
                                             contestPhase.getContestPhasePK(),
                                             ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
-                    JudgingSystemActions.AdvanceDecision advanceDecision = JudgingSystemActions.AdvanceDecision
-                            .fromInt((int) advanceDecisionAttribute.getNumericValue().intValue());
+                JudgingSystemActions.AdvanceDecision advanceDecision =
+                        advanceDecisionAttribute != null
+                        ? JudgingSystemActions.AdvanceDecision
+                                .fromInt(advanceDecisionAttribute.getNumericValue().intValue())
+                        : AdvanceDecision.NO_DECISION;
 
-                    if (advanceDecision != JudgingSystemActions.AdvanceDecision.NO_DECISION) {
+                if (advanceDecision != JudgingSystemActions.AdvanceDecision.NO_DECISION) {
                         String templateToLoad =
                                 (advanceDecision == JudgingSystemActions.AdvanceDecision.MOVE_ON)
                                         ? "ADVANCING_ADVANCE_TO_SEMIFINALIST"
@@ -186,9 +188,6 @@ public class ProposalJudgingCommentHelper {
     }
 
     private ProposalContestPhaseAttribute getProposalContestPhaseAttributeCreateIfNotExists(String attributeName) {
-
         return ProposalPhaseClientUtil.getOrCreateProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), attributeName, 0l, 0l, "");
     }
-
-
 }
