@@ -95,7 +95,7 @@ public class FacebookController {
         JSONObject jsonObject = FacebookUtil.getGraphResources("/me", token,
                 "id,email,first_name,last_name,gender,verified,location,locale");
 
-        if ((jsonObject == null) || (jsonObject.getJSONObject("error") != null)) {
+        if ((jsonObject == null) || (jsonObject.optJSONObject("error") != null)) {
             //TODO: redirect
 //            response.setRenderParameter("error", "true");
 //            response.setRenderParameter("SSO", "general");
@@ -284,8 +284,10 @@ public class FacebookController {
     }
 
     private String getCountryFromLocationObject(JSONObject response) throws UserLocationNotResolvableException, JSONException {
-        if ((response.getJSONObject("location"))!=null) {
-            String locationString = response.getJSONObject("location").getString("name");
+
+        final JSONObject location = response.optJSONObject("location");
+        if (location != null) {
+            String locationString = location.getString("name");
 
             if (locationString.contains(",")) {
                 return locationString.split(",")[1].trim();
@@ -296,8 +298,10 @@ public class FacebookController {
     }
 
     private String getCountryFromLocaleObject(JSONObject response) throws UserLocationNotResolvableException , JSONException  {
-        if ((response.getString("locale")!=null)) {
-            String[] localeParts = response.getString("locale").split("_");
+
+        final String localeString = response.optString("locale");
+        if (localeString != null) {
+            String[] localeParts = localeString.split("_");
             Locale locale = new Locale(localeParts[0], localeParts[1]);
 
             return locale.getDisplayCountry();
