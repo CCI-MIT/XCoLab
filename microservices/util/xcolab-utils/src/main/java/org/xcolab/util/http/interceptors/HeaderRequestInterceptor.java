@@ -1,4 +1,4 @@
-package org.xcolab.util.http.client;
+package org.xcolab.util.http.interceptors;
 
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
