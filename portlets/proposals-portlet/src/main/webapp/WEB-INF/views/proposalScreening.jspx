@@ -51,7 +51,7 @@
                                                                            userId="${judge.userId}" width="30"
                                                                            height="30"/>
                                             <judging:judgeReviewStatus userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}"
-                                                                       proposalId="${proposal.proposalId}">
+                                                                       proposalId="${proposal.proposalId}" contestId="${contest.contestPK}">
                                                 <c:choose>
                                                     <c:when test="${judgeReviewStatus.statusValue eq 1}">
                                                         <img src="${themeDisplay.pathThemeImages}/icon_question-x.png" class="review-status-icon"/>
