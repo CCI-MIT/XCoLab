@@ -36,8 +36,6 @@ public interface ProposalsContext {
 
     ContestType getContestType(PortletRequest request);
 
-
-
     Member getMember(PortletRequest request);
 
     long getMemberId(PortletRequest request);

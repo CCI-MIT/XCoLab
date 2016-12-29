@@ -188,7 +188,7 @@ public class Proposal extends AbstractProposal {
             ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
         super(proposal);
 
-        if(proposal.getRestService()!=null){
+        if (proposal.getRestService() != null) {
             this.restService = proposal.getRestService();
             RestService contestservice =  restService.withServiceName("contest-service");
             planTemplateClient = PlanTemplateClient.fromService(contestservice);
@@ -203,7 +203,7 @@ public class Proposal extends AbstractProposal {
             proposalMemberRatingClient = ProposalMemberRatingClient.fromService(restService);
             membershipClient = MembershipClient.fromService(restService);
             proposalJudgeRatingClient = ProposalJudgeRatingClient.fromService(restService);
-        }else {
+        } else {
             contestClient = ContestClientUtil.getClient();
             proposalClient = ProposalClientUtil.getClient();
             proposalAttributeClient = ProposalAttributeClientUtil.getClient();
@@ -254,7 +254,7 @@ public class Proposal extends AbstractProposal {
 
 
 
-    public Proposal( RestService restService) {
+    public Proposal(RestService restService) {
         this();
         this.restService = restService;
     }
@@ -335,13 +335,11 @@ public class Proposal extends AbstractProposal {
     public String getProposalLinkUrl(Contest contest, long contestPhaseId) {
         Long proposalId = this.getProposalId();
         ContestType contestType;
-        if (contest.getIsSharedContest()
-                && !contest.getSharedOrigin().equals(ConfigurationAttributeKey.COLAB_NAME.get())) {
+        if (contest.getIsSharedContestInForeignColab()) {
             contestType = ContestClientUtil.getClient()
                     .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
         } else {
-            contestType =
-                    contestClient.getContestType(contest.getContestTypeId());
+            contestType = contestClient.getContestType(contest.getContestTypeId());
         }
         String link = "/";
         link += contestType.getFriendlyUrlStringContests();
@@ -349,7 +347,6 @@ public class Proposal extends AbstractProposal {
         String friendlyUrlStringProposal = contestType.getFriendlyUrlStringProposal();
 
         if (contestPhaseId > 0) {
-
             long activePhaseId =
                     contestClient.getActivePhase(contest.getContestPK()).getContestPhasePK();
             if (activePhaseId == contestPhaseId) {

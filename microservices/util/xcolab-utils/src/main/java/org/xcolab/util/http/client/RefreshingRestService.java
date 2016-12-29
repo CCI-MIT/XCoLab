@@ -8,10 +8,12 @@ public class RefreshingRestService extends RestService {
 
     private final AttributeGetter<String> hostNameAttribute;
     private final AttributeGetter<String> portAttribute;
+
     public RefreshingRestService(CoLabService serviceName,
             AttributeGetter<String> hostNameAttribute, AttributeGetter<String> portAttribute) {
         this(serviceName.getServiceName(),hostNameAttribute,portAttribute);
     }
+
     public RefreshingRestService(String serviceName,
             AttributeGetter<String> hostNameAttribute, AttributeGetter<String> portAttribute) {
         super(serviceName);

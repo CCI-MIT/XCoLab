@@ -18,7 +18,6 @@ import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
-import org.xcolab.entity.utils.portlet.PortletUtil;
 import org.xcolab.liferay.SharedColabUtil;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.portlets.proposals.requests.UpdateProposalDetailsBean;
@@ -26,6 +25,7 @@ import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.edit.ProposalCreationUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalMoveUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalUpdateHelper;
+import org.xcolab.util.http.client.RestService;
 
 import java.io.IOException;
 
@@ -128,7 +128,10 @@ public class AddUpdateProposalDetailsActionController {
 
         Proposal proposal = proposalsContext.getProposalWrapped(request);
         if (proposal == null) {
-            proposal = new Proposal(new Proposal(), 0, proposalsContext.getContest(request),
+            final Contest contest = proposalsContext.getContest(request);
+            final RestService proposalService =
+                    proposalsContext.getClients(request).getProposalService();
+            proposal = new Proposal(new Proposal(proposalService), 0, contest,
                     proposalsContext.getContestPhase(request), null);
             proposal.setAuthorId(proposalsContext.getMember(request).getUserId());
             model.addAttribute("proposal", proposal);
