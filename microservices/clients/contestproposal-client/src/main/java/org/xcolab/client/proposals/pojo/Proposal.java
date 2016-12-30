@@ -954,10 +954,7 @@ public class Proposal extends AbstractProposal {
             }
         }
         return true;
-
     }
-
-
 
     public boolean getJudgeReviewFinishedStatusUserId(long userId) {
 
@@ -970,7 +967,16 @@ public class Proposal extends AbstractProposal {
     }
 
     public Proposal getBaseProposal() {
-        return this;
+        long baseProposalId = proposalAttributeHelper
+                .getAttributeValueLong(ProposalAttributeKeys.BASE_PROPOSAL_ID, 0);
+        if (baseProposalId > 0) {
+            long baseProposalContestId = proposalAttributeHelper
+                    .getAttributeValueLong(ProposalAttributeKeys.BASE_PROPOSAL_CONTEST_ID, 0);
+            if (baseProposalContestId > 0) {
+                return proposalClient.getProposal(baseProposalId);
+            }
+        }
+        return null;
     }
 
     public List<ProposalRating> getRatings() {
@@ -993,7 +999,7 @@ public class Proposal extends AbstractProposal {
 
     public ProposalRibbon getRibbonWrapper() {
         if (ribbonWrapper == null) {
-            ribbonWrapper = new ProposalRibbon(this,restService);
+            ribbonWrapper = new ProposalRibbon(this, restService);
         }
         return ribbonWrapper;
     }

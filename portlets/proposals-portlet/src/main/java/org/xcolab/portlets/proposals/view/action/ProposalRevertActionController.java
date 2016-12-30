@@ -24,7 +24,6 @@ import java.io.IOException;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
-
 @Controller
 @RequestMapping("view")
 public class ProposalRevertActionController {
@@ -33,10 +32,8 @@ public class ProposalRevertActionController {
     private ProposalsContext proposalsContext;
 
     @RequestMapping(params = "action=proposalRevert")
-    public void showProposalRevert(ActionRequest request, Model model,
-                                    ActionResponse response)
-
-    throws ProposalsAuthorizationException, IOException {
+    public void showProposalRevert(ActionRequest request, ActionResponse response, Model model)
+            throws ProposalsAuthorizationException, IOException {
 
         if (proposalsContext.getProposal(request) != null && !proposalsContext.getPermissions(request).getCanEdit()) {
             throw new ProposalsAuthorizationException("User is not allowed to edit proposal, user: "
@@ -55,7 +52,7 @@ public class ProposalRevertActionController {
             proposalsContext.invalidateContext(request);
 
             request.setAttribute("ACTION_REDIRECTING", true);
-            response.sendRedirect((oldProposalVersionToBeBecomeCurrent).getBaseProposal().getProposalUrl());
+            response.sendRedirect(oldProposalVersionToBeBecomeCurrent.getProposalUrl());
         }
     }
 
@@ -133,10 +130,20 @@ public class ProposalRevertActionController {
     }
 
     private void updateProposalSpecialAttributes(long userId, Proposal oldProposalVersionToBeBecomeCurrent) {
-        ProposalAttributeClientUtil.setProposalAttribute(userId,  oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.NAME,0l, oldProposalVersionToBeBecomeCurrent.getName());
-        ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.PITCH,0l, oldProposalVersionToBeBecomeCurrent.getPitch());
-        ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.DESCRIPTION,0l, oldProposalVersionToBeBecomeCurrent.getDescription());
-        ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.TEAM,0l, oldProposalVersionToBeBecomeCurrent.getTeam());
-        ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.IMAGE_ID,0l, oldProposalVersionToBeBecomeCurrent.getImageId());
+        ProposalAttributeClientUtil.setProposalAttribute(userId,  oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.NAME,
+
+                0L, oldProposalVersionToBeBecomeCurrent.getName());
+        ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.PITCH,
+
+                0L, oldProposalVersionToBeBecomeCurrent.getPitch());
+        ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.DESCRIPTION,
+
+                0L, oldProposalVersionToBeBecomeCurrent.getDescription());
+        ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.TEAM,
+
+                0L, oldProposalVersionToBeBecomeCurrent.getTeam());
+        ProposalAttributeClientUtil.setProposalAttribute(userId, oldProposalVersionToBeBecomeCurrent.getProposalId(), ProposalAttributeKeys.IMAGE_ID,
+
+                0L, oldProposalVersionToBeBecomeCurrent.getImageId());
     }
 }
