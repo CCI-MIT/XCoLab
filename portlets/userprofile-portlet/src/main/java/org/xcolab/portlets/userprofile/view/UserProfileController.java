@@ -301,13 +301,11 @@ public class UserProfileController {
 
                 if (!result.hasErrors()) {
                     final String newPassword = updatedUserBean.getPassword().trim();
-                    MembersClient.updatePassword(memberId, currentPassword, newPassword);
+                    MembersClient.updatePassword(memberId, newPassword);
                     //TODO: remove, currently needed to update password for liferay
                     try {
-                        final User liferayUser = UserLocalServiceUtil.getUser(
-                                memberId);
-                        liferayUser.setPassword
-                                (MembersClient.hashPassword(newPassword));
+                        final User liferayUser = UserLocalServiceUtil.getUser(memberId);
+                        liferayUser.setPassword(MembersClient.hashPassword(newPassword));
                         UserLocalServiceUtil.updateUser(liferayUser);
                     } catch (PortalException | SystemException e) {
                         //TODO: remove after liferay
