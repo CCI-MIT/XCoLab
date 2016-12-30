@@ -1,14 +1,12 @@
 package org.xcolab.entity.utils;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-
-
-import org.json.JSONObject;
-
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -18,7 +16,7 @@ public class ReCaptchaUtils {
     private final static String USER_AGENT = "Mozilla/5.0";
 
     public static boolean verify(String gRecaptchaResponse, String secret) {
-        try{
+        try {
             if (gRecaptchaResponse == null || gRecaptchaResponse.isEmpty()) {
                 return false;
             }
@@ -48,10 +46,10 @@ public class ReCaptchaUtils {
                 response.append(inputLine);
             }
             in.close();
-            JSONObject  jsonObject = new org.json.JSONObject(response.toString());
+            JSONObject jsonObject = new JSONObject(response.toString());
 
             return jsonObject.getBoolean("success");
-        }catch(IOException e){
+        } catch(IOException e) {
             e.printStackTrace();
             return false;
         }
