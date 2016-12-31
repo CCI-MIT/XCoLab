@@ -11,8 +11,8 @@ import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.search.pojo.SearchPojo;
 
 public class DiscussionSearchItem extends AbstractSearchItem {
-    private CommentThread thread;
 
+    private CommentThread thread;
     private Comment comment;
 
     private String searchQuery;

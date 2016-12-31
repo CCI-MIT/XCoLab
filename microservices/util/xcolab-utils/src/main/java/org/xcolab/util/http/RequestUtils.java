@@ -16,16 +16,18 @@ import org.xcolab.util.http.caching.CacheKey;
 import org.xcolab.util.http.caching.CacheProvider;
 import org.xcolab.util.http.caching.CacheProviderNoOpImpl;
 import org.xcolab.util.http.caching.CacheRetention;
-import org.xcolab.util.http.client.HeaderRequestInterceptor;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.util.http.exceptions.RestTemplateErrorHandler;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
+import org.xcolab.util.http.interceptors.HeaderRequestInterceptor;
+import org.xcolab.util.http.interceptors.UriAwareResponseInterceptor;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -44,8 +46,8 @@ public final class RequestUtils {
         restTemplate.getMessageConverters()
                 .add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
         restTemplate.setErrorHandler(new RestTemplateErrorHandler());
-        restTemplate.setInterceptors(HeaderRequestInterceptor
-                .newAsSingletonList(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE));
+        restTemplate.setInterceptors(Arrays.asList(new UriAwareResponseInterceptor(),
+                new HeaderRequestInterceptor(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)));
     }
 
     private RequestUtils() {
@@ -171,6 +173,10 @@ public final class RequestUtils {
 
     public static void setCacheProvider(CacheProvider cacheProvider) {
         RequestUtils.cacheProvider = cacheProvider;
+    }
+
+    public static void invalidateCache(CacheKey<?, ?> cacheKey, CacheRetention cacheRetention) {
+        cacheProvider.delete(cacheKey, cacheRetention);
     }
 
     public static String getServicesPort() {

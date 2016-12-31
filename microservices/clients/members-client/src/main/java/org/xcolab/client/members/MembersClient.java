@@ -345,9 +345,8 @@ public final class MembersClient {
                 .get();
     }
 
-    public static boolean updatePassword(long memberId, String oldPassword, String newPassword) {
+    public static boolean updatePassword(long memberId, String newPassword) {
         return memberResource.service(memberId, "updatePassword", Boolean.class)
-                .queryParam("oldPassword", oldPassword)
                 .queryParam("newPassword", newPassword)
                 .post();
     }

@@ -121,7 +121,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
             updateAnalyticsAndActivities(commentThread, comment, memberId, request);
 
-            if (!commentThread.getIsQuiet()) {
+            if (commentThread.getIsQuiet() != null && !commentThread.getIsQuiet()) {
 
                 if (commentThread.getCategory() == null) {
                     final Long proposalIdForThread = threadClient

@@ -11,8 +11,8 @@
     <!--@elvariable id="pointsToDistribute" type="java.lang.Double"-->
     <!--@elvariable id="recursionLevel" type="java.lang.Integer"-->
     <!--@elvariable id="currentTabWrapped" type="org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper"-->
-    <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
-    <!--@elvariable id="subProposals" type="java.util.List<org.xcolab.portlets.proposals.wrappers.ProposalWrapper>"-->
+    <!--@elvariable id="contestType" type="org.xcolab.client.contest.pojo.ContestType"-->
+    <!--@elvariable id="subProposals" type="java.util.List<org.xcolab.client.proposals.pojo.Proposal>"-->
 
     <c:set var="childrenSize" value="${pointType.children.size()}" scope="request"/>
     <c:set var="parentPercentageOfTotalPoints">

@@ -32,9 +32,6 @@ public abstract class AbstractSearchItem {
     }
 
     public static AbstractSearchItem newInstance(Class<? extends AbstractSearchItem> clazz) {
-        if (BlogSearchItem.class == clazz) {
-            return new BlogSearchItem();
-        }
         if (ContentSearchItem.class == clazz) {
             return new ContentSearchItem();
         }

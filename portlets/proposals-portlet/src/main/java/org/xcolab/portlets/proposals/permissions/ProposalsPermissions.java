@@ -7,6 +7,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
+import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.legacy.enums.MemberRole;
@@ -45,10 +46,10 @@ public class ProposalsPermissions {
         if (contestPhase != null) {
             final long contestPhaseTypeId = contestPhase.getContestPhaseType();
 
-                final ContestPhaseType contestPhaseType = proposalContextHelper.getClientHelper().getContestClient()
-                        .getContestPhaseType(contestPhaseTypeId);
-                String statusStr = contestPhaseType.getStatus();
-                contestStatus = ContestStatus.valueOf(statusStr);
+            final ContestPhaseType contestPhaseType = proposalContextHelper.getClientHelper().getContestClient()
+                    .getContestPhaseType(contestPhaseTypeId);
+            String statusStr = contestPhaseType.getStatus();
+            contestStatus = ContestStatus.valueOf(statusStr);
 
         } else {
             contestStatus = null;
@@ -170,7 +171,8 @@ public class ProposalsPermissions {
     }
 
     private boolean isProposalMember() {
-            return MembersClient.isUserInGroup(memberId, groupId);
+        return proposal != null && proposal.getProposalId() > 0 &&
+                ProposalsContextUtil.getClients(request).getProposalClient().isUserInProposalTeam(proposal.getProposalId(),memberId);
     }
 
     public boolean getCanFellowActions() {

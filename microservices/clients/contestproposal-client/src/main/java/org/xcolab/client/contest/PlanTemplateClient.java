@@ -119,9 +119,8 @@ public class PlanTemplateClient {
     }
 
     public boolean updatePlanTemplateSection(PlanTemplateSection planTemplateSection) {
-        return planTemplateSectionResource.update(new PlanTemplateSectionDto(planTemplateSection),
-                planTemplateSection.getPlanTemplateId())
-                .execute();
+        return planTemplateSectionResource.service("updateTemplateSection",Boolean.class)
+                .post(new PlanTemplateSectionDto(planTemplateSection));
     }
 
     public List<PlanTemplateSection> getPlanTemplateSectionByPlanSectionDefinitionId(Long planSectionId) {

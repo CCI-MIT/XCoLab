@@ -7,9 +7,6 @@ import org.xcolab.client.search.pojo.SearchPojo;
 
 public class UserSearchItem extends AbstractSearchItem {
 
-    private final static String[] TITLE_FIELDS = {"screenName"};
-    private final static String[] CONTENT_FIELDS = {"firstName", "lastName"};
-
     private SearchPojo searchPojo;
     private String searchQuery;
 

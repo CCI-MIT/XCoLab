@@ -95,8 +95,8 @@ public class UserBean implements Serializable {
         return getPortraitString();
     }
 
-    private String getPortraitString() {
-        return "/user_male_portrait?img_id=" + this.imageId;
+    public String getPortraitString() {
+        return "/image/user_male_portrait?img_id=" + this.imageId;
     }
 
     public long getImageId() {

@@ -6,11 +6,6 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadClientUtil;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
-import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.model.tables.pojos.ProposalVersion;
@@ -45,7 +40,6 @@ public class ProposalAttributeService {
 
         try {
             Proposal proposal = proposalDao.get(proposalAttribute.getProposalId());
-            ProposalAttribute oldAttribute = null;
 
             int currentVersion = proposal.getCurrentVersion();
             int newVersion = currentVersion + 1;
@@ -69,7 +63,6 @@ public class ProposalAttributeService {
                     attribute.setVersion(newVersion);
                     proposalAttributeDao.update(attribute);
                 } else {
-                    oldAttribute = attribute;
                 }
             }
 

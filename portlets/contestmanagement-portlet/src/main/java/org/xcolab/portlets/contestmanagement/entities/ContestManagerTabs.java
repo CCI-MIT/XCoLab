@@ -20,7 +20,9 @@ public enum ContestManagerTabs implements TabEnum {
     FLAGGING("Flagging", "flagging", TabPermissionAlgorithm.adminOnlyViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero), //TODO: activate flag count
     COLLECTION_CARDS("Collection Cards", "collectionCard", TabPermissionAlgorithm.adminOnlyViewAndEdit,
-            TabActivityCountAlgorithm.alwaysZero);
+            TabActivityCountAlgorithm.alwaysZero),
+    EDITORS("Editors", "editors", TabPermissionAlgorithm.adminOnlyViewAndEdit,
+            TabActivityCountAlgorithm.alwaysZero);;
 
     private final String displayName;
     private final String elementType;

@@ -289,7 +289,11 @@ public final class ProposalClient {
 
     public boolean updateProposal(Proposal proposal) {
         return proposalResource
-                .update(new ProposalDto(proposal), proposal.getProposalId()).execute();
+                .update(new ProposalDto(proposal), proposal.getProposalId())
+                .cacheKey(CacheKeys.withClass(ProposalDto.class)
+                                .withParameter("proposalId", proposal.getProposalId())
+                                .withParameter("includeDeleted", false).build())
+                .execute();
     }
 
     public boolean deleteProposal(long proposalId) {

@@ -3,7 +3,7 @@
         xmlns:portlet="http://java.sun.com/portlet_2_0"
         xmlns:collab="http://climatecolab.org/tags/collab_1.0" version="2.0" >
 
-    <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
+    <!--@elvariable id="contestType" type="org.xcolab.client.contest.pojo.ContestType"-->
     <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
     <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
 

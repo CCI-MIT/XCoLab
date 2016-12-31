@@ -72,8 +72,6 @@ public class ProposalUpdateHelper {
                         long newNumericVal = Long.parseLong(newSectionValue);
                         if (newNumericVal != section.getNumericValue()) {
                             ProposalsContextUtil.getClients(request).getProposalAttributeClient().setProposalAttribute(
-
-
                                     memberId,
                                     proposalWrapper.getProposalId(), ProposalAttributeKeys.SECTION,
                                     section.getSectionDefinitionId(), newNumericVal);
@@ -127,7 +125,7 @@ public class ProposalUpdateHelper {
                 final Proposal updatedProposal = ProposalsContextUtil.getClients(request).getProposalClient().getProposal(proposalWrapper.getProposalId());
                 p2p.setVersionTo(updatedProposal.getCurrentVersion());
                 proposalsContext.getClients(request).getProposalPhaseClient().updateProposal2Phase(p2p);
-            }catch (ProposalNotFoundException ignored){
+            } catch (ProposalNotFoundException ignored) {
 
             }
         }
@@ -187,7 +185,7 @@ public class ProposalUpdateHelper {
         return filledAll;
     }
 
-    public void doAnalytics(ActionRequest request, boolean filledAll) {
+    private void doAnalytics(ActionRequest request, boolean filledAll) {
         int analyticsValue;
 
         if (filledAll) {

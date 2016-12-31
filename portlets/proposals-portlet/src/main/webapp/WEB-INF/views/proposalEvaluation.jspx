@@ -54,7 +54,14 @@
                         of the changes made in the discussion area below. This summary will serve as a guide for the
                         selection of Finalists. </p>
                 </c:if>
-                <evaluationTagFiles:evaluationComments threadId="${evaluationDiscussionId }"/>
+                <c:choose>
+                    <c:when test="${contest.isSharedContestInForeignColab}">
+                        <evaluationTagFiles:evaluationComments threadId="${evaluationDiscussionId }" sharedColabId="${contest.contestPK}" />
+                    </c:when>
+                    <c:otherwise>
+                        <evaluationTagFiles:evaluationComments threadId="${evaluationDiscussionId}"  />
+                    </c:otherwise>
+                </c:choose>
             </c:when>
             <c:otherwise>
                 <h2>The results of the judging period will be visible here.</h2>

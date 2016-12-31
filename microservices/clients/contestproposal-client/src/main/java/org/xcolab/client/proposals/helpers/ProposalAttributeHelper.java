@@ -1,6 +1,5 @@
 package org.xcolab.client.proposals.helpers;
 
-
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
@@ -31,26 +30,25 @@ public class ProposalAttributeHelper {
 
     //initialization is expensive --> be lazy
     private void init() {
+        if (attributesByNameAndAdditionalId == null) {
             List<ProposalAttribute> attributes = proposalAttributeClient
-                    .getAllProposalAttributes(proposal.getProposalId(),version);
-            if (attributesByNameAndAdditionalId == null) {
-                attributesByNameAndAdditionalId = new HashMap<>();
-                for (ProposalAttribute attribute : attributes) {
-                    Map<Long, ProposalAttribute> currentAttributes = GroupingUtil
-                            .getInnerMapOrCreate(
-                                    attribute.getName(), attributesByNameAndAdditionalId);
+                    .getAllProposalAttributes(proposal.getProposalId(), version);
+            attributesByNameAndAdditionalId = new HashMap<>();
+            for (ProposalAttribute attribute : attributes) {
+                Map<Long, ProposalAttribute> currentAttributes = GroupingUtil
+                        .getInnerMapOrCreate(
+                                attribute.getName(), attributesByNameAndAdditionalId);
 
-                    ProposalAttribute currentAttribute = currentAttributes
-                            .get(attribute.getAdditionalId());
+                ProposalAttribute currentAttribute = currentAttributes
+                        .get(attribute.getAdditionalId());
 
-                    //ignore older versions TODO: why are we even getting older versions from the db?
-                    if (currentAttribute == null || currentAttribute.getVersion() < attribute
-                            .getVersion()) {
-                        currentAttributes.put(attribute.getAdditionalId(), attribute);
-                    }
+                //ignore older versions TODO: why are we even getting older versions from the db?
+                if (currentAttribute == null || currentAttribute.getVersion() < attribute
+                        .getVersion()) {
+                    currentAttributes.put(attribute.getAdditionalId(), attribute);
                 }
             }
-
+        }
     }
 
     public boolean hasAttribute(String name) {
@@ -85,9 +83,7 @@ public class ProposalAttributeHelper {
     }
 
     public ProposalAttribute getAttributeOrNull(String attributeName, long additionalId) {
-        if (attributesByNameAndAdditionalId == null) {
-            init();
-        }
+        init();
         final Map<Long, ProposalAttribute> attributesByAdditionalId = attributesByNameAndAdditionalId.get(attributeName);
         if (attributesByAdditionalId == null) {
             return null;
@@ -96,9 +92,7 @@ public class ProposalAttributeHelper {
     }
 
     public ProposalAttribute getAttributeOrNull(String attributeName) {
-        if (attributesByNameAndAdditionalId == null) {
-            init();
-        }
+        init();
         final Map<Long, ProposalAttribute> attributesByAdditionalId = attributesByNameAndAdditionalId.get(attributeName);
         if (attributesByAdditionalId == null) {
             return null;
@@ -115,9 +109,7 @@ public class ProposalAttributeHelper {
     }
 
     public Collection<ProposalAttribute> getAttributesByName(String attributeName) {
-        if (attributesByNameAndAdditionalId == null) {
-            init();
-        }
+        init();
         final Map<Long, ProposalAttribute> attributesByAdditionalId = attributesByNameAndAdditionalId.get(attributeName);
         if (attributesByAdditionalId != null) {
             return attributesByAdditionalId.values();

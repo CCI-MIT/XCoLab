@@ -5,5 +5,5 @@ INSERT INTO xcolab_MemberCategory (roleId, displayName, categoryName, sortOrder,
 update xcolab_ProposalMoveHistory set sourcePhaseId = null where sourcePhaseId = 0 or sourcePhaseId = 20;
 
 -- COLAB-1485
-ALTER TABLE members_Member`
+ALTER TABLE members_Member
   ADD COLUMN `uuid` VARCHAR(40) NULL AFTER `autoRegisteredMemberStatus`;

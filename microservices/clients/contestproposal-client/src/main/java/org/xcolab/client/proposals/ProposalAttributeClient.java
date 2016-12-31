@@ -3,10 +3,12 @@ package org.xcolab.client.proposals;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.proposals.exceptions.ProposalAttributeNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.ProposalDto;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttributeDto;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttributeDto;
+import org.xcolab.util.http.RequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
@@ -114,6 +116,7 @@ public final class ProposalAttributeClient {
     public boolean updateProposalAttribute(ProposalAttribute proposalAttribute) {
         return proposalAttributeResource
                 .update(new ProposalAttributeDto(proposalAttribute), proposalAttribute.getId_())
+                .cacheKey(CacheKeys.of(ProposalAttributeDto.class, proposalAttribute.getId_()))
                 .execute();
     }
 
@@ -121,7 +124,7 @@ public final class ProposalAttributeClient {
         return DtoUtil.toPojos(proposalAttributeResource.list()
                 .withCache(CacheKeys.withClass(ProposalAttributeDto.class)
                                 .withParameter("proposalId", proposalId).asList(),
-                        CacheRetention.MEDIUM)
+                        CacheRetention.REQUEST)
                 .optionalQueryParam("proposalId", proposalId)
                 .execute(), proposalService);
     }
@@ -131,7 +134,7 @@ public final class ProposalAttributeClient {
                 .withCache(CacheKeys.withClass(ProposalAttributeDto.class)
                                 .withParameter("proposalId", proposalId)
                                 .withParameter("version", version).asList(),
-                        CacheRetention.REQUEST)
+                        CacheRetention.MEDIUM)
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("version", version)
                 .execute(), proposalService);
@@ -147,25 +150,21 @@ public final class ProposalAttributeClient {
     }
 
     private ProposalAttribute createProposalAttribute(Long userId, Long proposalId, String name,
-            Long aditionalId) {
+            Long additionalId) {
         ProposalAttribute proposalAttribute = new ProposalAttribute();
         proposalAttribute.setProposalId(proposalId);
         proposalAttribute.setName(name);
-        proposalAttribute.setAdditionalId(aditionalId);
+        proposalAttribute.setAdditionalId(additionalId);
         return proposalAttribute;
     }
 
     public ProposalAttribute setProposalAttribute(ProposalAttribute proposalAttribute,
             Long authorId) {
+        //TODO: replace with better cache invalidation mechanism
+        RequestUtils.invalidateCache(CacheKeys.withClass(ProposalDto.class)
+                .withParameter("proposalId", proposalAttribute.getProposalId())
+                .withParameter("includeDeleted", false).build(), CacheRetention.REQUEST);
         return proposalAttributeResource.service("setProposalAttribute", ProposalAttributeDto.class)
-//                .queryParam("proposalId", proposalAttribute.getProposalId())
-//                .queryParam("name", proposalAttribute.getName())
-//                .queryParam("stringValue", proposalAttribute.getStringValue())
-//                .queryParam("numericValue", proposalAttribute.getNumericValue())
-//                .queryParam("realValue", proposalAttribute.getRealValue())
-//                .queryParam("additionalId", proposalAttribute.getAdditionalId())
-//                .queryParam("version", proposalAttribute.getVersion())
-//                .queryParam("versionWhenCreated", proposalAttribute.getVersionWhenCreated())
                 .queryParam("authorId", authorId)
                 .post(proposalAttribute)
                 .toPojo(proposalService);

@@ -72,7 +72,7 @@ public class ContactController {
     public String contactError(PortletRequest request, Model model, @Valid ContactBean contactBean,
                                BindingResult result, @RequestParam(required = false) String redirect) {
         if (request.getParameter("recaptchaError") != null) {
-            result.addError(new ObjectError("createUserBean", "Invalid words in captcha field"));
+            result.addError(new ObjectError("createUserBean", "Please complete the captcha"));
         }
         model.addAttribute("error", true);
 
@@ -96,15 +96,13 @@ public class ContactController {
             @Valid ContactBean contactBean, BindingResult result,
             @RequestParam(required = false) String redirect) {
 
-        String gRecaptchaResponse = request
-                .getParameter("g-recaptcha-response");
-        boolean captchaValid = ReCaptchaUtils.verify(gRecaptchaResponse,ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_SECRET_KEY.get());
-
+        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+        boolean captchaValid = ReCaptchaUtils.verify(gRecaptchaResponse,
+                ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_SECRET_KEY.get());
 
         SessionErrors.clear(request);
         SessionMessages.clear(request);
         if (!result.hasErrors()) {
-
 
             if (!captchaValid) {
                 SessionErrors.clear(request);

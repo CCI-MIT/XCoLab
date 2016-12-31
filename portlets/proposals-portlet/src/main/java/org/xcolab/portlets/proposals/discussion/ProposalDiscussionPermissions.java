@@ -79,7 +79,12 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
         if (isEvaluationTabActive) {
             boolean isIdsInitialized = proposalId != null && contestPhaseId != null;
             if (isIdsInitialized) {
-                canSeeAddCommentButton = isAllowedToAddCommentsToProposalEvaluationInContestPhase();
+                if(isLoggedIn) {
+                    canSeeAddCommentButton =
+                            isAllowedToAddCommentsToProposalEvaluationInContestPhase();
+                }else{
+                    return false;
+                }
             }
         } else {
             canSeeAddCommentButton = true;
@@ -115,7 +120,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     }
 
     private boolean isUserFellowOrJudgeOrAdvisor(Proposal proposal) {
-        ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
+        ContestPhase contestPhase = ProposalsContextUtil.getClients(request).getContestClient().getContestPhase(contestPhaseId);
         Proposal proposalWrapper = new Proposal(proposal, contestPhase);
 
 

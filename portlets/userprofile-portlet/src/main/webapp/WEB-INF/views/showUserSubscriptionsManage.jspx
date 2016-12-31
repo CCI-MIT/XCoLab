@@ -9,7 +9,7 @@
 
   <jsp:directive.include file="./init.jspx" />
 
-  <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
+  <!--@elvariable id="contestType" type="org.xcolab.client.contest.pojo.ContestType"-->
   <!--@elvariable id="userSubscriptions" type="org.xcolab.portlets.userprofile.wrappers.UserSubscriptionsWrapper"-->
 
   <portlet:actionURL var="removeSubscriptionURL">

@@ -19,6 +19,9 @@ public class ProposalRatings {
     private String comment;
     private ContestPhase contestPhase;
 
+
+    private String contestPhaseTitle;
+
     public ProposalRatings(long authorId, List<ProposalRating> proposalRatings,
             Long roundFactor) throws MemberNotFoundException {
         this(MembersClient.getMember(authorId), proposalRatings, roundFactor);
@@ -85,22 +88,24 @@ public class ProposalRatings {
     public void setContestPhase(ContestPhase contestPhase){
         this.contestPhase = contestPhase;
     }
-
+    public void setContestPhaseTitle(String contestPhaseTitle) {
+        this.contestPhaseTitle = contestPhaseTitle;
+    }
     public String getContestPhase(){
-        String contestPhaseTitle = "";
+        String contestPhaseTitleAux = "";
 
             if(this.contestPhase != null) {
-                contestPhaseTitle = ContestClientUtil.getContestPhaseName(this.contestPhase);
+                contestPhaseTitleAux = this.contestPhaseTitle;
             } else {
-                if (!proposalRatings.isEmpty()) {
+                if (!proposalRatings.isEmpty()) {//this should never happen on cross lab otherwise oh snap
                     long contestPhaseId = proposalRatings.get(0).unwrap().getContestPhaseId();
                     ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
-                    contestPhaseTitle = ContestClientUtil.getContestPhaseName(contestPhase);
+                    contestPhaseTitleAux = ContestClientUtil.getContestPhaseName(contestPhase);
                 }
             }
 
 
-        return contestPhaseTitle.replace("selection", "Evaluation");
+        return contestPhaseTitleAux.replace("selection", "Evaluation");
     }
 
     public boolean isReviewComplete() {

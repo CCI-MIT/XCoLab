@@ -46,7 +46,7 @@
 			</c:if> -->
 
 			<div class="comm_member-photo">
-				<img src="${baseImagePath}${userBean.portrait}" width="150" height="150"
+				<img src="${userBean.portrait}" width="150" height="150"
 					 alt="${currentUserProfile.realName}" />
 			</div>
 

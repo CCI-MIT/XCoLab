@@ -38,27 +38,7 @@ public abstract class AbstractContestType {
         this.suggestionContestId = value.suggestionContestId;
         this.rulesPageName = value.rulesPageName;
         this.rulesPageUrl = value.rulesPageUrl;
-    }
-
-    public AbstractContestType(Long id_, String contestName, String contestNamePlural, String proposalName,
-            String proposalNamePlural, String portletName, String portletUrl,
-            String friendlyUrlStringContests, String friendlyUrlStringProposal,
-            String menuItemName, Boolean hasDiscussion, Long suggestionContestId,
-            String rulesPageName, String rulesPageUrl) {
-        this.id_ = id_;
-        this.contestName = contestName;
-        this.contestNamePlural = contestNamePlural;
-        this.proposalName = proposalName;
-        this.proposalNamePlural = proposalNamePlural;
-        this.portletName = portletName;
-        this.portletUrl = portletUrl;
-        this.friendlyUrlStringContests = friendlyUrlStringContests;
-        this.friendlyUrlStringProposal = friendlyUrlStringProposal;
-        this.menuItemName = menuItemName;
-        this.hasDiscussion = hasDiscussion;
-        this.suggestionContestId = suggestionContestId;
-        this.rulesPageName = rulesPageName;
-        this.rulesPageUrl = rulesPageUrl;
+        this.showProposalSummary = value.showProposalSummary;
     }
 
     public Long getId_() {

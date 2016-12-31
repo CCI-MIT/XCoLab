@@ -25,6 +25,7 @@ import org.xcolab.portlets.proposals.utils.context.ProposalsContext;
 import org.xcolab.portlets.proposals.utils.edit.ProposalCreationUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalMoveUtil;
 import org.xcolab.portlets.proposals.utils.edit.ProposalUpdateHelper;
+import org.xcolab.util.http.client.RestService;
 
 import java.io.IOException;
 
@@ -62,8 +63,6 @@ public class AddUpdateProposalDetailsActionController {
                     .getContestPK());
         }
 
-
-
         if (result.hasErrors()) {
             response.setRenderParameter("error", "true");
             response.setRenderParameter("action", "updateProposalDetails");
@@ -98,13 +97,13 @@ public class AddUpdateProposalDetailsActionController {
             ActivityEntryHelper.createActivityEntry(proposalsContext.getClients(request).getActivitiesClient(), memberId, proposalWrapper.getProposalId(), null,
                     ActivityProvidersType.ProposalCreatedActivityEntry.getType());
 
-        }else{
+        } else {
             ActivityEntryHelper.createActivityEntry(proposalsContext.getClients(request).getActivitiesClient(), memberId, proposalWrapper.getProposalId(), null,
                     ActivityProvidersType.ProposalAttributeUpdateActivityEntry.getType());
         }
         SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), memberId);
         
-        if(ConfigurationAttributeKey.FILTER_PROFANITY.get()){
+        if (ConfigurationAttributeKey.FILTER_PROFANITY.get()) {
             try {
                 FilteredEntry filteredEntry = FilteringClient.getFilteredEntryByUuid(updateProposalSectionsBean.getUuid());
                 filteredEntry.setSourceId(proposalWrapper.getProposalId());
@@ -127,7 +126,10 @@ public class AddUpdateProposalDetailsActionController {
 
         Proposal proposal = proposalsContext.getProposalWrapped(request);
         if (proposal == null) {
-            proposal = new Proposal(new Proposal(), 0, proposalsContext.getContest(request),
+            final Contest contest = proposalsContext.getContest(request);
+            final RestService proposalService =
+                    proposalsContext.getClients(request).getProposalService();
+            proposal = new Proposal(new Proposal(proposalService), 0, contest,
                     proposalsContext.getContestPhase(request), null);
             proposal.setAuthorId(proposalsContext.getMember(request).getUserId());
             model.addAttribute("proposal", proposal);

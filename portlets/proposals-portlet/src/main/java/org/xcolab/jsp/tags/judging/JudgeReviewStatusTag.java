@@ -1,15 +1,22 @@
 package org.xcolab.jsp.tags.judging;
 
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.portlets.proposals.wrappers.ProposalJudgeWrapper;
+import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.RefreshingRestService;
+import org.xcolab.util.http.client.RestService;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.jsp.JspException;
@@ -23,6 +30,16 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
     private long proposalId;
 
     private long contestPhaseId;
+
+    public long getContestId() {
+        return contestId;
+    }
+
+    public void setContestId(long contestId) {
+        this.contestId = contestId;
+    }
+
+    private long contestId;
 
     public long getUserId() {
         return userId;
@@ -52,12 +69,23 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
     public int doStartTag() throws JspException {
         try {
             Member judge = MembersClient.getMember(userId);
-            //TODO: judging will only work in host colab for shared contests!
-            Proposal proposal = ProposalClientUtil.getProposal(proposalId);
-            ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
-            ProposalJudgeWrapper judgeWrapper = new ProposalJudgeWrapper(new Proposal(proposal, contestPhase), judge);
+            Contest contest = ContestClientUtil.getContest(contestId);
+            ProposalClient proposalClient;
 
-            PortletRequest portletRequest = (PortletRequest) pageContext.getAttribute("javax.portlet.request", PageContext.REQUEST_SCOPE);
+            if (contest.getIsSharedContestInForeignColab()) {
+                RestService proposalsService = new RefreshingRestService(CoLabService.PROPOSAL,
+                        ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                        ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                proposalClient = ProposalClient.fromService(proposalsService);
+            } else {
+                proposalClient = ProposalClientUtil.getClient();
+            }
+            Proposal proposal = proposalClient.getProposal(proposalId);
+            //ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
+            ProposalJudgeWrapper judgeWrapper = new ProposalJudgeWrapper(proposal, judge);
+
+            PortletRequest portletRequest = (PortletRequest) pageContext
+                    .getAttribute("javax.portlet.request", PageContext.REQUEST_SCOPE);
             if (portletRequest == null) {
                 throw new JspException("Can't find portlet request");
             }
@@ -71,6 +99,5 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
         }
         return EVAL_BODY_INCLUDE;
     }
-
 
 }

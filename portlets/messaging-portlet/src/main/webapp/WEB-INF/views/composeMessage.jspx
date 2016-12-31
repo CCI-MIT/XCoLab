@@ -50,9 +50,9 @@
         jQuery(function() {
             enableDirtyCheck();
             jQuery("#messageSendButton").click(function () {
-                var currentSearchText = $("#userSelectorInputRecipients").val();
+                var currentSearchText = $("#userListRecipients").val();
                 if (currentSearchText.length == 0) {
-                    var numberOfRecipients = $('#userListRecipients').find('li').length;
+                    var numberOfRecipients = $("#userListRecipients").find("li").length;
                     var numberOfMessagesLeft = parseInt($("#numberOfMessagesLeft").html());
                     if (numberOfRecipients == 0) {
                         alert("Please select at least one recipient");

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.service.members.domain.member.MemberDao;
-import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.exceptions.ForbiddenException;
+import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.exceptions.UnauthorizedException;
 import org.xcolab.service.members.service.login.LoginBean;
 import org.xcolab.service.members.service.member.MemberService;
@@ -89,12 +89,9 @@ public class MembersLoginRegisterController {
 
     @PostMapping("{memberId}/updatePassword")
     public boolean updateForgottenPasswordByToken(@PathVariable long memberId,
-            @RequestParam String oldPassword, @RequestParam String newPassword)
-            throws NotFoundException, ForbiddenException {
-        if (memberService.validatePassword(oldPassword, memberId)) {
-            return memberService.updatePassword(memberId, newPassword);
-        }
-        throw new ForbiddenException("MemberId or old password incorrect");
+            @RequestParam String newPassword)
+            throws NotFoundException {
+        return memberService.updatePassword(memberId, newPassword);
     }
 
     @GetMapping("createForgotPasswordToken")

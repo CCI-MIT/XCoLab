@@ -64,7 +64,7 @@ public class ContestProposalsController extends BaseProposalsController {
                 Proposal2Phase p2p = proposalsContext.getClients(request).getProposalPhaseClient().getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(), contestPhase.getContestPhasePK());
                 Proposal proposalWrapper;
 
-                if (u != null && PermissionsClient.hasRoleGroup(u.getUserId(), MemberRole.JUDGE.getRoleId())) {
+                if (u != null && PermissionsClient.memberHasRole(u.getUserId(), MemberRole.JUDGE.getRoleId())) {
                     proposalWrapper = new ProposalJudgeWrapper(proposal, p2p.getVersionTo() == -1 ? proposal.getCurrentVersion() : p2p.getVersionTo(), contest, contestPhase, p2p, u);
 
                 } else {

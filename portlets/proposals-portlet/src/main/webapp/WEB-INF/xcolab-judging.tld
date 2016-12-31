@@ -47,6 +47,12 @@
             <type>java.lang.Long</type>
         </attribute>
         <attribute>
+            <name>contestId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Long</type>
+        </attribute>
+        <attribute>
             <name>contestPhaseId</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
