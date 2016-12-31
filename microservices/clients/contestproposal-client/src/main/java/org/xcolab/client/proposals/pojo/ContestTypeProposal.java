@@ -1,12 +1,9 @@
 package org.xcolab.client.proposals.pojo;
 
-
-
 import org.xcolab.client.contest.pojo.ContestType;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class ContestTypeProposal {
 

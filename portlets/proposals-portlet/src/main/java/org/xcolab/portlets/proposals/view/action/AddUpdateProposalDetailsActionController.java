@@ -63,8 +63,6 @@ public class AddUpdateProposalDetailsActionController {
                     .getContestPK());
         }
 
-
-
         if (result.hasErrors()) {
             response.setRenderParameter("error", "true");
             response.setRenderParameter("action", "updateProposalDetails");
@@ -99,13 +97,13 @@ public class AddUpdateProposalDetailsActionController {
             ActivityEntryHelper.createActivityEntry(proposalsContext.getClients(request).getActivitiesClient(), memberId, proposalWrapper.getProposalId(), null,
                     ActivityProvidersType.ProposalCreatedActivityEntry.getType());
 
-        }else{
+        } else {
             ActivityEntryHelper.createActivityEntry(proposalsContext.getClients(request).getActivitiesClient(), memberId, proposalWrapper.getProposalId(), null,
                     ActivityProvidersType.ProposalAttributeUpdateActivityEntry.getType());
         }
         SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), memberId);
         
-        if(ConfigurationAttributeKey.FILTER_PROFANITY.get()){
+        if (ConfigurationAttributeKey.FILTER_PROFANITY.get()) {
             try {
                 FilteredEntry filteredEntry = FilteringClient.getFilteredEntryByUuid(updateProposalSectionsBean.getUuid());
                 filteredEntry.setSourceId(proposalWrapper.getProposalId());

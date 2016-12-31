@@ -175,6 +175,10 @@ public final class RequestUtils {
         RequestUtils.cacheProvider = cacheProvider;
     }
 
+    public static void invalidateCache(CacheKey<?, ?> cacheKey, CacheRetention cacheRetention) {
+        cacheProvider.delete(cacheKey, cacheRetention);
+    }
+
     public static String getServicesPort() {
 
         if (servicesPort == null) {
