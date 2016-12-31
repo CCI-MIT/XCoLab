@@ -4,7 +4,7 @@
 
     <liferay-theme:defineObjects />
 
-    <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
+    <!--@elvariable id="contestType" type="org.xcolab.client.contest.pojo.ContestType"-->
 
     <jsp:directive.attribute name="wrapper" type="org.xcolab.client.proposals.pojo.proposals.ProposalRatings" required="true" rtexprvalue="true" description="ProposalRatings" />
     <jsp:directive.attribute name="showRating" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Rating should be displayed or not" />

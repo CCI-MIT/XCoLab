@@ -7,9 +7,6 @@ import java.net.URLEncoder;
 
 public class ContentSearchItem extends AbstractSearchItem {
 
-    private final static String[] TITLE_FIELDS = {"title"};
-    private final static String[] CONTENT_FIELDS = {"content"};
-
     @Override
     public void init(SearchPojo pojo, String searchQuery) {
 

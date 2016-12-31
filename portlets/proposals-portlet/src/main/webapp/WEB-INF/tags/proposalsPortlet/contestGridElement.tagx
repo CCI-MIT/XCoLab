@@ -2,7 +2,7 @@
         xmlns:jsp="http://java.sun.com/JSP/Page"
         xmlns:collab="http://climatecolab.org/tags/collab_1.0" version="2.0" >
 
-    <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
+    <!--@elvariable id="contestType" type="org.xcolab.client.contest.pojo.ContestType"-->
 
 	<jsp:directive.attribute name="contest" type="org.xcolab.client.contest.pojo.Contest" required="true" rtexprvalue="true" description="Contest" />
     <jsp:directive.attribute name="index" required="true" rtexprvalue="true" description="loopIndex" />

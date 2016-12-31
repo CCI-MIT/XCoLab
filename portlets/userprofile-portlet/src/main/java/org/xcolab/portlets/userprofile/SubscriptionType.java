@@ -1,12 +1,9 @@
 package org.xcolab.portlets.userprofile;
 
-import com.ext.portlet.model.ContestType;
-import com.ext.portlet.service.ContestTypeLocalServiceUtil;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.exception.SystemException;
-
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 
 public enum SubscriptionType {
@@ -35,13 +32,7 @@ public enum SubscriptionType {
         } else {
             final long contestTypeId = ConfigurationAttributeKey
                     .DEFAULT_CONTEST_TYPE_ID.get();
-            ContestType contestType;
-            try {
-                contestType = ContestTypeLocalServiceUtil
-                        .getContestType(contestTypeId);
-            } catch (PortalException | SystemException e) {
-                contestType = null;
-            }
+            ContestType contestType = ContestClientUtil.getContestType(contestTypeId);
 
             if (this == SubscriptionType.PROPOSAL) {
                 return contestType != null ? contestType.getProposalName() : "Proposal";

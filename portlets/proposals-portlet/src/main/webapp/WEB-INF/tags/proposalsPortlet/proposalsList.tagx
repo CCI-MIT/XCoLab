@@ -10,7 +10,7 @@
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
     <!--@elvariable id="contest" type="org.xcolab.client.contest.pojo.Contest"-->
     <!--@elvariable id="contestPhase" type="org.xcolab.wrappers.BaseContestPhaseWrapper"-->
-    <!--@elvariable id="contestType" type="com.ext.portlet.model.ContestType"-->
+    <!--@elvariable id="contestType" type="org.xcolab.client.contest.pojo.ContestType"-->
 
     <jsp:directive.attribute name="proposals" type="java.util.Collection" required="true" rtexprvalue="true" description="proposals" />
     <jsp:directive.attribute name="showShadebar" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If shadebar should be shown" />

@@ -7,8 +7,6 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.search.pojo.SearchPojo;
 
 public class ContestSearchItem extends AbstractSearchItem {
-    private final static String[] TITLE_FIELDS = {"title"};
-    private final static String[] CONTENT_FIELDS = {"content"};
 
     private SearchPojo searchPojo;
     private String searchQuery;
