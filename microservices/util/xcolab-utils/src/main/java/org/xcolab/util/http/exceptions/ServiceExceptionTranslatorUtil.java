@@ -42,9 +42,9 @@ public final class ServiceExceptionTranslatorUtil {
             case INTERNAL_SERVER_ERROR:
                 throw new Http500InternalServiceException(exceptionObject, location);
             case FORBIDDEN:
-                throw new Http403ForbiddenException(exceptionObject);
+                throw new Http403ForbiddenException(exceptionObject, location);
             case UNAUTHORIZED:
-                throw new Http401UnauthorizedException(exceptionObject);
+                throw new Http401UnauthorizedException(exceptionObject, location);
             default:
                 throw new HttpRuntimeException(exceptionObject, location, exception);
         }
