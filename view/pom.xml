@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.4.1.RELEASE</version>
+        <version>1.4.2.RELEASE</version>
     </parent>
 
     <groupId>org.xcolab.view</groupId>
@@ -44,6 +44,7 @@
         <!-- Misc -->
         <jsoup.version>1.10.1</jsoup.version>
         <json.version>20160212</json.version>
+        <google-api.version>1.22.0</google-api.version>
     </properties>
 
     <dependencies>
@@ -74,11 +75,15 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
+            <!-- defined by spring -->
+            <!--suppress MavenModelInspection -->
             <version>${tomcat.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
+            <!-- defined by spring -->
+            <!--suppress MavenModelInspection -->
             <version>${jstl.version}</version>
         </dependency>
         <dependency>
@@ -165,19 +170,25 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>org.xcolab.microservices.clients</groupId>
+            <artifactId>contents-client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client-jackson</artifactId>
-            <version>1.22.0</version>
+            <version>${google-api.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client</artifactId>
-            <version>1.22.0</version>
+            <version>${google-api.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client</artifactId>
-            <version>1.22.0</version>
+            <version>${google-api.version}</version>
         </dependency>
 
 

@@ -5,16 +5,29 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.members.pojo.Member;
-import org.xcolab.view.auth.RealMember;
+import org.xcolab.client.contents.ContentsClient;
+import org.xcolab.client.contents.pojo.ContentArticle;
+import org.xcolab.client.contents.pojo.ContentArticleVersion;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class LandingPageController {
 
+    private static final long HOME_SPOT_CONTENT_ARTICLE_ID = 1548L;
+
     @RequestMapping(value = "/")
-    public String hello(HttpServletRequest request, Member member, @RealMember Member realMember) {
+    public String hello(HttpServletRequest request, HttpServletResponse response, Model model) {
+        final long contentArticleId = HOME_SPOT_CONTENT_ARTICLE_ID;
+        if (contentArticleId > 0) {
+            final ContentArticle contentArticle = ContentsClient
+                    .getContentArticle(contentArticleId);
+            final long version = contentArticle.getMaxVersionId();
+            final ContentArticleVersion contentArticleVersion = ContentsClient
+                    .getContentArticleVersion(version);
+            model.addAttribute("homeSpotContentArticleVersion", contentArticleVersion);
+        }
         return "home";
     }
 
