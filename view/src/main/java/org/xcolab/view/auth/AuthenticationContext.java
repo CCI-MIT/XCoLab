@@ -11,6 +11,7 @@ import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.exceptions.UncheckedMemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.auth.login.spring.MemberDetails;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package org.xcolab.view.auth;
+package org.xcolab.view.auth.resolver;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.util.Assert;
@@ -9,6 +9,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.auth.AuthenticationContext;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -1,4 +1,4 @@
-package org.xcolab.view.auth;
+package org.xcolab.view.auth.login.spring;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;

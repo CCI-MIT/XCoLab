@@ -13,7 +13,7 @@ import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
 
 import org.xcolab.view.auth.AuthenticationContext;
-import org.xcolab.view.auth.MemberArgumentResolver;
+import org.xcolab.view.auth.resolver.MemberArgumentResolver;
 import org.xcolab.view.theme.ThemeResourceResolver;
 import org.xcolab.view.theme.ThemeVariableInterceptor;
 

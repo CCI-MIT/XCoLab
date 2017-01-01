@@ -1,4 +1,4 @@
-package org.xcolab.view.auth;
+package org.xcolab.view.auth.login.spring;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 

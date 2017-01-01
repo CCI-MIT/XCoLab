@@ -7,10 +7,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-
-import org.xcolab.view.auth.AuthenticationSuccessHandler;
-import org.xcolab.view.auth.MemberDetailsService;
-import org.xcolab.view.auth.MemberPasswordEncoder;
+import org.xcolab.view.auth.handlers.AuthenticationFailureHandler;
+import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
+import org.xcolab.view.auth.login.spring.MemberDetailsService;
+import org.xcolab.view.auth.login.spring.MemberPasswordEncoder;
+import org.xcolab.view.auth.handlers.LogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -28,11 +29,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/login")
                     .permitAll()
                     .successHandler(new AuthenticationSuccessHandler("/"))
+                    .failureHandler(new AuthenticationFailureHandler())
                     .and()
                 .logout()
                     .permitAll()
-                .and()
-                    .csrf()
+                    .logoutSuccessHandler(new LogoutSuccessHandler())
+                    .and()
+                .csrf()
                     .disable();
     }
 

@@ -1,4 +1,4 @@
-package org.xcolab.view.auth;
+package org.xcolab.view.auth.resolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
