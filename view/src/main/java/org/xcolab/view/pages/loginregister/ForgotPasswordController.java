@@ -92,7 +92,7 @@ public class ForgotPasswordController {
         model.addAttribute("message",
                 "Your password reset ticket has expired or is invalid. Please try to reset your password again.");
         model.addAttribute("redirect_url", "/");
-        return "password_reset_error";
+        return "loginregister/password_reset_error";
     }
 
 
@@ -106,7 +106,7 @@ public class ForgotPasswordController {
             CreateUserBean userBean = new CreateUserBean();
             model.addAttribute("createUserBean", userBean);
             model.addAttribute("resetToken", resetToken);
-            return "password_reset";
+            return "loginregister/password_reset";
         }
     }
 

@@ -63,8 +63,9 @@ public class MainViewController {
     public static final String PRE_LOGIN_REFERRER_KEY = "PRE_LOGIN_REFERRER_KEY";
 
     private static final String USER_NAME_REGEX = "^[a-zA-Z0-9]+$";
+    public static final String REGISTER_VIEW_NAME = "loginregister/register";
 
-//    @Autowired
+    //    @Autowired
 //    private Validator validator;
 //
 //    @InitBinder("createUserBean")
@@ -128,7 +129,7 @@ public class MainViewController {
         final String loginInfoText = ConfigurationAttributeKey.LOGIN_INFO_MESSAGE.get();
         model.addAttribute("hasLoginInfoText", StringUtils.isNotBlank(loginInfoText));
         model.addAttribute("loginInfoText", loginInfoText);
-        return "register";
+        return REGISTER_VIEW_NAME;
     }
 
     public static void getSSOUserInfo(HttpSession session, CreateUserBean createUserBean) {
@@ -203,7 +204,7 @@ public class MainViewController {
             model.addAttribute("partnerColabClassName",partnerColabImgsAndClasses+ "-sketchy");
             model.addAttribute("partnerColabName", partnerColabName);
         }
-        return "register";
+        return REGISTER_VIEW_NAME;
     }
 
     @PostMapping("/register")
@@ -397,7 +398,7 @@ public class MainViewController {
                 json.put("success", false);
                 json.put("error", e.toString());
             }
-        }catch (JSONException ignored){
+        } catch (JSONException ignored) {
 
         }
 

@@ -378,7 +378,9 @@ public final class MembersClient {
         LoginLog loginLog = new LoginLog();
         loginLog.setUserId(memberId);
         loginLog.setIpAddress(ipAddress);
-        loginLog.setEntryUrl(redirectUrl.substring(0,Math.min(250, redirectUrl.length())));
+        loginLog.setEntryUrl(redirectUrl != null
+                ? redirectUrl.substring(0, Math.min(250, redirectUrl.length()))
+                : "");
 
         return loginLogResource.create(loginLog)
                 .execute();

@@ -28,7 +28,7 @@ public class LandingPageController {
                     .getContentArticleVersion(version);
             model.addAttribute("homeSpotContentArticleVersion", contentArticleVersion);
         }
-        return "home";
+        return "home/home";
     }
 
     @RequestMapping(value = "/login")

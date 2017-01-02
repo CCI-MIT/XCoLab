@@ -2,11 +2,12 @@ package org.xcolab.view.auth.login;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 
 public enum AuthenticationError {
     CREDENTIALS("Authentication failed, please check your screen name and password.",
             BadCredentialsException.class),
-    LOCKOUT("This account has been locked"),
+    LOCKOUT("This account has been locked", LockedException.class),
     UNKNOWN("An error occurred");
 
     private final String message;

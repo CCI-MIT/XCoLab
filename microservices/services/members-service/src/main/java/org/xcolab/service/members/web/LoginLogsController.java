@@ -22,7 +22,6 @@ public class LoginLogsController {
         this.memberService = memberService;
     }
 
-    //TODO: remove once SSO is improved
     @PostMapping
     public LoginLog createLoginLog(@RequestBody LoginLog loginLog) {
         return memberService.createLoginLog(loginLog.getUserId(), loginLog.getIpAddress(),

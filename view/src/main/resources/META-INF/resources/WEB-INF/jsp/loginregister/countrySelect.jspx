@@ -1,12 +1,6 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-          xmlns:spring="http://www.springframework.org/tags"
-          xmlns:form="http://www.springframework.org/tags/form"
-          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:addthis="http://www.addthis.com/help/api-spec"
-          xmlns:collab="http://climatecolab.org/tags/collab_1.0" version="2.0">
+          xmlns:form="http://www.springframework.org/tags/form" version="2.0">
     <form:select cssClass="popupreg_input" path="country">
         <form:option value="" label="Select country"/>
         <form:option value="AF" label="Afghanistan"/>

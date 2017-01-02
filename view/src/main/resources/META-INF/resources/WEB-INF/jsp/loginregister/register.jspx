@@ -17,27 +17,6 @@
 
     <script src='https://www.google.com/recaptcha/api.js'><!-- --></script>
 
-    <!--<portlet:actionURL var="createAccountURL">-->
-        <!--<portlet:param name="saveLastPath" value="${isRegistering ? 0 : 1 }" />-->
-        <!--<portlet:param name="isRegistering" value="true" />-->
-        <!--<portlet:param name="redirect" value="${redirect}" />-->
-    <!--</portlet:actionURL>-->
-    <!--<portlet:actionURL name="initiateOpenIdRegistration" var="SSOGoogleURL">-->
-        <!--<portlet:param name="SSO" value="google" />-->
-        <!--<portlet:param name="action" value="initiateOpenIdRegistration" />-->
-    <!--</portlet:actionURL>-->
-    <!--<portlet:actionURL name="initiateRegistration" var="SSOFbURL">-->
-        <!--<portlet:param name="SSO" value="facebook" />-->
-        <!--<portlet:param name="action" value="initiateRegistration" />-->
-    <!--</portlet:actionURL>-->
-    <!--<portlet:resourceURL id="generateScreenName" var="generateScreenNameUrl">-->
-    <!--</portlet:resourceURL>-->
-
-    <!--<portlet:actionURL name="initiateLoginOrReg" var="saveCommentURL">-->
-        <!--<portlet:param name="SSO" value="colab" />-->
-        <!--<portlet:param name="action" value="initiateLoginOrReg" />-->
-    <!--</portlet:actionURL>-->
-
     <div class="popupreg_form">
 
         <div class="popupreg_head">
@@ -198,7 +177,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th></th>
+                    <th><!-- --></th>
                     <td colspan="3">
                         <a class="c-Button__primary" href="javascript:;" onclick="try {pageTracker._trackPageview('/user/registerSubmit')} catch(err) {};updateTextarea();jQuery('#registrationForm').submit();">CREATE
                             account</a>
@@ -335,7 +314,7 @@
         <c:if test="${generateScreenName}">
             <script type="text/javascript">
                 function generateScreenName() {
-                    var submitUrl = '${generateScreenNameUrl}';
+                    var submitUrl = '/api/register/generateScreenName';
                     jQuery.ajax({
                         type: "POST",
                         url: submitUrl,
