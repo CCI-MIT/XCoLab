@@ -17,7 +17,7 @@ public class FileSystemPersistenceProvider implements PersistenceProvider {
     public boolean saveFileToFinalDestination(byte[] imgBArr, FileEntry fileEntry, String path) {
 
         int shardingFolder = (fileEntry.getFileEntryId()).intValue() / LOCAL_FOLDER_MAX_AMOUNT_OF_FILES;
-        String finalPath = path + "../../../data/" + LOCAL_FOLDER_NAME + File.separator + shardingFolder + File.separator;
+        String finalPath = path + "data/" + LOCAL_FOLDER_NAME + File.separator + shardingFolder + File.separator;
         File folder = new File(finalPath);
         if (!folder.exists()) {
             folder.mkdirs();

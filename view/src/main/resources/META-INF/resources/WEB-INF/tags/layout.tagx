@@ -51,8 +51,6 @@
     <!--@elvariable id="__alertMessage" type="org.xcolab.entity.utils.flash.AlertMessage"-->
     <!--@elvariable id="__analyticsAttribute" type="org.xcolab.entity.utils.flash.AnalyticsAttribute"-->
 
-
-
 <![CDATA[<!DOCTYPE html>]]>
 <html>
 <head>
@@ -247,8 +245,8 @@
                     <div class="c-Header__login__box">
 
                         <div class="c-Header__login__with">
-                            <a href="/web/guest/loginregister/-/login/SSO/facebookLogin" class="sketchy-icon facebook-sketchy" style="margin:0 30px 0 15px;"><span>Facebook</span></a>
-                            <a href="/web/guest/loginregister/-/login/SSO/googleLogin" class="sketchy-icon google-sketchy"><span>Google</span></a>
+                            <a href="/sso/facebook/login" class="sketchy-icon facebook-sketchy" style="margin:0 30px 0 15px;"><span>Facebook</span></a>
+                            <a href="/sso/google/login" class="sketchy-icon google-sketchy"><span>Google</span></a>
                         </div>
 
                         <div class="c-Header__login__with__del"><!-- --></div>
@@ -324,11 +322,11 @@
                 <li><a href="/web/guest/resources/-/wiki/Main/Help">Help</a></li>
                 <c:choose>
                     <c:when test="${_isLoggedIn}">
-                        <li><a href="/c/portal/logout">Sign out</a></li>
+                        <li><a href="/logout">Sign out</a></li>
                         <li><a href="/web/guest/member/-/member/userId/${_member.id_}">My profile</a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><a href="/web/guest/loginregister" class="openreg">Register</a></li>
+                        <li><a href="/registerr" class="openreg">Register</a></li>
                         <li><a href="javascript:return false;" onclick="deferUntilLogin();">Sign In</a></li>
                     </c:otherwise>
                 </c:choose>
@@ -420,13 +418,12 @@
             </c:choose>
 
             <div class="c-Header__login__with">
-                <a href="/web/guest/loginregister/-/login/SSO/facebookRegister" class="sketchy-icon-black facebook-sketchy" style="margin:0 30px 0 70px;"><span>Facebook</span></a>
-                <a href="/web/guest/loginregister/-/login/SSO/googleRegister" class="sketchy-icon-black google-sketchy"><span>Google</span></a>
+                <a href="/sso/facebook/register" class="sketchy-icon-black facebook-sketchy" style="margin:0 30px 0 70px;"><span>Facebook</span></a>
+                <a href="/sso/google/register" class="sketchy-icon-black google-sketchy"><span>Google</span></a>
             </div>
             <div class="clearfix"><!-- --></div>
             <div class="login_popup_box">
-                <form id="signInForm_form" method="post" action="/web/guest/loginregister?p_p_id=loginregisterportlet_WAR_loginregisterportlet&amp;p_p_lifecycle=1&amp;p_p_state=normal&amp;p_p_mode=view&amp;p_p_col_id=column-1&amp;p_p_col_count=1&amp;saveLastPath=1&amp;_loginregisterportlet_WAR_loginregisterportlet_isLoggingIn=true"
-                      onsubmit="addRedirectBeforeSubmit('signInFormPopup'); return true;" >
+                <form id="signInForm_form" method="post" action="/login" onsubmit="addRedirectBeforeSubmit('signInFormPopup'); return true;" >
                     <input type="hidden" name="isLoggingIn" value="true" />
                     <label>Username:</label>
                     <input name="login" type="text" class="c-Header__login__username" onkeypress="return submitenter(this,event)" style="float: right;"/>
@@ -482,7 +479,7 @@
                     <div class="c-Alert__error__message"><p>Authentication failed, please check your username and password.</p></div>
                 </c:if>
                 <div class="login_popup_box">
-                    <form id="signInSSOForm_form" method="post" action="/web/guest/loginregister/-/login/SSO/colabSSO?p_auth=TLipuzLG&amp;_loginregisterportlet_WAR_loginregisterportlet_javax.portlet.action=initiateLoginOrReg"
+                    <form id="signInSSOForm_form" method="post" action="/sso/colab"
                           onsubmit="addRedirectBeforeSubmit('signInSSOForm_form'); return true;" >
 
                         <label>Username:</label>
@@ -610,7 +607,7 @@
                         <h3 style="margin-bottom: 30px;">You're all set!</h3>
                         <p>Now you can choose your username (or use the one we created for you) and complete a short bio to tell the ${_colabName} community about yourself.</p>
                         <div class="login_popup_box">
-                            <form id="postRegister_form" method="post" action="/web/guest/loginregister/-/login/register/finalize"
+                            <form id="postRegister_form" method="post" action="/register/finalize"
                                   onsubmit="addRedirectBeforeSubmit('signInFormPopup'); return true;" >
 
                                 <div id="error" class="popup-message" style="display: none;">
@@ -807,13 +804,13 @@
     </c:if>
 
     <c:if test='${not empty __analyticsAttribute}'>
-        <script type="text/javascript">
-            <c:forEach var="event" items='${__analyticsAttribute.events}'>
+        <c:forEach var="event" items='${__analyticsAttribute.events}'>
+            <script type="text/javascript">
             /* <![CDATA[ */
-            pageTracker._trackEvent('${event.category}', '$event.action', '$event.label', $event.value);
+                pageTracker._trackEvent('${event.category}', '$event.action', '$event.label', $event.value);
             /* ]]> */
-            </c:forEach>
-        </script>
+            </script>
+        </c:forEach>
     </c:if>
 
     <c:if test="${_isLoggedIn}">

@@ -1,8 +1,5 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-          xmlns:spring="http://www.springframework.org/tags"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
 
@@ -26,10 +23,10 @@
         <div class="sso-register">
             <div style="float: right">
                 <h1>Or sign in with:</h1><br/>
-                <a href="/register/sso/facebook" class="sketchy-icon-black facebook-sketchy" style="margin:0 30px 0 0;"><span>Facebook</span></a>
-                <a href="/register/sso/google" class="sketchy-icon-black google-sketchy" style="margin:0 30px 0 0;"><span>Google</span></a>
+                <a href="/sso/facebook/register" class="sketchy-icon-black facebook-sketchy" style="margin:0 30px 0 0;"><span>Facebook</span></a>
+                <a href="/sso/google/register" class="sketchy-icon-black google-sketchy" style="margin:0 30px 0 0;"><span>Google</span></a>
 
-                <a href="#" class="sketchy-icon-black ${partnerColabClassName}"  onclick="javascript:showSharedColabLogin()"><span>${partnerColabName}</span></a>
+                <a href="#" class="sketchy-icon-black ${partnerColabClassName}"  onclick="showSharedColabLogin()"><span>${partnerColabName}</span></a>
 
             </div>
         </div>

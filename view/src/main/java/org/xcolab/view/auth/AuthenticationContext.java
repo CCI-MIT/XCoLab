@@ -1,6 +1,7 @@
 package org.xcolab.view.auth;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -76,5 +77,15 @@ public class AuthenticationContext {
         }
 
         throw new UncheckedMemberNotFoundException("No member logged in - check before calling");
+    }
+
+    public void authenticate(HttpServletRequest request, Member member) {
+        //initialize session if it doesn't exist
+        request.getSession();
+
+        final MemberDetails memberDetails = new MemberDetails(member);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                memberDetails, null, memberDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }

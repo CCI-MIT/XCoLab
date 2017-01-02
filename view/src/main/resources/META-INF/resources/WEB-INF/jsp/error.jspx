@@ -1,0 +1,26 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
+    <!--@elvariable id="__errorMessage" type="org.xcolab.entity.utils.flash.ErrorMessage"-->
+
+    <h2>
+        ${not empty __errorMessage ? __errorMessage.title : 'Error'}
+    </h2>
+    <br />
+    <div class="c-Alert__danger">
+        <c:choose>
+            <c:when test="${not empty __errorMessage}">
+                ${__errorMessage.message}
+            </c:when>
+            <c:otherwise>
+                Sorry, we encountered an error while loading this page.
+            </c:otherwise>
+        </c:choose>
+    </div>
+
+</xcolab:layout>
+
+</jsp:root>

@@ -12,6 +12,7 @@ import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.entity.utils.flash.AnalyticsAttribute;
+import org.xcolab.entity.utils.flash.ErrorMessage;
 import org.xcolab.util.enums.theme.ColabTheme;
 import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.auth.login.AuthenticationError;
@@ -125,6 +126,7 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
 
             modelAndView.addObject("__alertMessage", AlertMessage.extract(request));
             modelAndView.addObject("__analyticsAttribute", AnalyticsAttribute.extract(request));
+            modelAndView.addObject("__errorMessage", ErrorMessage.extract(request));
         }
     }
 
