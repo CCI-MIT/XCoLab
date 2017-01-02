@@ -128,7 +128,7 @@ public class MainViewController {
         final String loginInfoText = ConfigurationAttributeKey.LOGIN_INFO_MESSAGE.get();
         model.addAttribute("hasLoginInfoText", StringUtils.isNotBlank(loginInfoText));
         model.addAttribute("loginInfoText", loginInfoText);
-        return "view";
+        return "register";
     }
 
     public static void getSSOUserInfo(HttpSession session, CreateUserBean createUserBean) {
@@ -203,52 +203,51 @@ public class MainViewController {
             model.addAttribute("partnerColabClassName",partnerColabImgsAndClasses+ "-sketchy");
             model.addAttribute("partnerColabName", partnerColabName);
         }
-        return "view";
+        return "register";
     }
 
     @PostMapping("/register")
-    public void registerUser(HttpServletRequest request, Model model,
-            HttpServletResponse response, @Valid CreateUserBean newAccountBean,
-            BindingResult result,
-            @RequestParam(required = false) String redirect) {
+    public void registerUser(HttpServletRequest request, HttpServletResponse response, Model model,
+            @Valid CreateUserBean newAccountBean, BindingResult result,
+            @RequestParam(required = false) String redirect) throws IOException {
 
         HttpSession portletSession = request.getSession();
-        String fbIdString =
-                (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID);
+        String fbIdString = (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID);
         String openId = (String) portletSession.getAttribute(SSOKeys.SSO_OPENID_ID);
 
         if (!result.hasErrors()) {
             boolean captchaValid = true;
             // require captcha if user is not logged in via SSO
             if (fbIdString == null && openId == null) {
-                String gRecaptchaResponse = request
-                        .getParameter("g-recaptcha-response");
-                captchaValid = ReCaptchaUtils.verify(gRecaptchaResponse,ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_SECRET_KEY.get());
+                String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+                captchaValid = ReCaptchaUtils.verify(gRecaptchaResponse,
+                        ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_SECRET_KEY.get());
             }
             if (!captchaValid) {
                 SessionErrors.clear(request);
-                //TODO: redirect
-//                response.setRenderParameter("error", "true");
-//                response.setRenderParameter("recaptchaError", "true");
                 if (StringUtils.isNotEmpty(redirect)) {
                     //TODO: or escape?
-                    model.addAttribute("redirect", HttpUtils.encodeURL(redirect));
+                    response.sendRedirect("/register/error?recaptchaError=true&redirect="
+                            + HttpUtils.encodeURL(redirect));
+                } else {
+                    response.sendRedirect("/register/error");
                 }
+                return;
             } else {
                 try {
                     completeRegistration(request, response, newAccountBean, redirect, false);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
             }
         } else {
-            //TODO: redirect
-//            response.setRenderParameter("error", "true");
             if (StringUtils.isNotEmpty(redirect)) {
                 //TODO: or escape?
-                model.addAttribute("redirect", HttpUtils.encodeURL(redirect));
+                response.sendRedirect("/register/error?redirect=" + HttpUtils.encodeURL(redirect));
+            } else {
+                response.sendRedirect("/register/error");
             }
+            return;
         }
         SessionErrors.clear(request);
         SessionMessages.clear(request);
@@ -265,12 +264,10 @@ public class MainViewController {
     public static void completeRegistration(HttpServletRequest request, HttpServletResponse response,
             CreateUserBean newAccountBean, String redirect, boolean postRegistration)
             throws MemberNotFoundException, IOException {
-        HttpSession portletSession = request.getSession();
+        HttpSession session = request.getSession();
         String fbIdString =
-                (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID);
-        String openId = (String) portletSession.getAttribute(SSOKeys.SSO_OPENID_ID);
-
-
+                (String) session.getAttribute(SSOKeys.FACEBOOK_USER_ID);
+        String openId = (String) session.getAttribute(SSOKeys.SSO_OPENID_ID);
 
         BalloonCookie balloonCookie = BalloonCookie.fromCookieArray(request.getCookies());
 
@@ -281,17 +278,16 @@ public class MainViewController {
 
         // SSO
         if (StringUtils.isNotBlank(fbIdString)) {
-            portletSession.removeAttribute(SSOKeys.FACEBOOK_USER_ID);
+            session.removeAttribute(SSOKeys.FACEBOOK_USER_ID);
         }
         if (StringUtils.isNotBlank(openId)) {
-            portletSession.removeAttribute(SSOKeys.SSO_OPENID_ID);
+            session.removeAttribute(SSOKeys.SSO_OPENID_ID);
         }
 
         if (balloonCookie != null && StringUtils.isNotBlank(balloonCookie.getUuid())) {
             try {
                 BalloonUserTracking but =
                         BalloonsClient.getBalloonUserTracking(balloonCookie.getUuid());
-                        //BalloonUserTrackingLocalServiceUtil.getBalloonUserTracking(balloonCookie.getUuid());
                 but.setRegistrationDate(new Timestamp(new Date().getTime()));
                 but.setUserId(user.getId_());
                 BalloonsClient.updateBalloonUserTracking(but);
@@ -309,14 +305,10 @@ public class MainViewController {
 
         request.getSession().setAttribute("collab_user_has_registered", true);
 
-
         ActivityEntryHelper.createActivityEntry(ActivitiesClientUtil.getClient(), user.getUserId(), user.getUserId(),null, ActivityProvidersType.MemberJoinedActivityEntry.getType());
 
-
-        request.getSession().setAttribute("collab_user_has_registered", true);
-        request.getSession().setAttribute("collab_user_has_registered", true);
         if (redirect == null) {
-            redirect = ConfigurationAttributeKey.COLAB_URL.get();
+            redirect = "/";
         }
 
         if (postRegistration) {

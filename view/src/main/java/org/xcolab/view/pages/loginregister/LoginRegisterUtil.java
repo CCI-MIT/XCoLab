@@ -13,7 +13,7 @@ import org.xcolab.client.members.exceptions.PasswordLoginException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.entity.utils.email.notifications.member.MemberRegistrationNotification;
-import org.xcolab.view.auth.MemberDetails;
+import org.xcolab.view.auth.login.spring.MemberDetails;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -111,9 +111,12 @@ public final class LoginRegisterUtil {
         boolean loggedIn = MembersClient
                 .login(member.getId_(), password, request.getRemoteAddr(), referer);
         if (loggedIn) {
+            //initialize session if it doesn't exist
+            request.getSession();
+
             final MemberDetails memberDetails = new MemberDetails(member);
             Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    memberDetails, memberDetails.getAuthorities());
+                    memberDetails, null, memberDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         return member;

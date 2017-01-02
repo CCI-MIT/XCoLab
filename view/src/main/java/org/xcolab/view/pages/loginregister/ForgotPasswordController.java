@@ -6,15 +6,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.entity.utils.GlobalMessagesUtil;
-import org.xcolab.entity.utils.ModelAttributeUtil;
+import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.entity.utils.email.notifications.member.MemberForgotPasswordNotification;
 import org.xcolab.entity.utils.portlet.session.SessionErrors;
 import org.xcolab.entity.utils.portlet.session.SessionMessages;
@@ -27,12 +25,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping(value = "view")
 public class ForgotPasswordController {
 
-    private static final String FORGOT_PASSWORD_URL = "/web/guest/loginregister/-/login/forgotPassword/";
+    private static final String FORGOT_PASSWORD_URL = "/login/resetPassword/update?resetToken=";
 
-    @PostMapping("/login/resetPassword/send")
+    @PostMapping("/login/resetPassword")
     public void sendPassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String redirect = request.getParameter("redirect");
@@ -58,20 +55,20 @@ public class ForgotPasswordController {
 
             String token = MembersClient.createForgotPasswordToken(member.getUserId());
             String colabUrl = ConfigurationAttributeKey.COLAB_URL.get();
-            String passwordLink = colabUrl + FORGOT_PASSWORD_URL + "" + token;
+            String passwordLink = colabUrl + FORGOT_PASSWORD_URL + token;
 
             sendEmailNotificationToForPasswordReset(request.getRemoteAddr(),
                     passwordLink,  member);
-            GlobalMessagesUtil.addMessage(
-                    "A password retrieval message has been sent, please check your email", request);
+            AlertMessage.success("A password retrieval message has been sent, please check your email")
+                    .flash(request);
         } catch (MemberNotFoundException e) {
             Map<String, String> parameters = new HashMap<>();
             parameters.put("isPasswordReminder", "true");
 
             redirect = Helper.modifyRedirectUrl(redirect, request, parameters);
 
-            GlobalMessagesUtil.addMessage(
-                    "Could not send password retrieval message, please check your screen name or email", request);
+            AlertMessage.danger("Could not send password retrieval message, please check your screen name or email")
+                    .flash(request);
         }
 
         SessionErrors.clear(request);
@@ -92,27 +89,23 @@ public class ForgotPasswordController {
     }
 
     private String redirectToErrorPageOnPasswordReset(Model model) {
-
         model.addAttribute("message",
                 "Your password reset ticket has expired or is invalid. Please try to reset your password again.");
-        model.addAttribute("redirect_url", ConfigurationAttributeKey.COLAB_URL.get());
-
-        ModelAttributeUtil.populateModelWithPlatformConstants(model);
+        model.addAttribute("redirect_url", "/");
         return "password_reset_error";
     }
 
 
-    @GetMapping("/login/resetPassword")
+    @GetMapping("/login/resetPassword/update")
     public String openResetPassword(HttpServletRequest request, HttpServletResponse response,
-                                    Model model, @RequestParam String resetTicket) {
+                                    Model model, @RequestParam String resetToken) {
 
-        if (!MembersClient.isForgotPasswordTokenValid(resetTicket)) {
+        if (!MembersClient.isForgotPasswordTokenValid(resetToken)) {
             return redirectToErrorPageOnPasswordReset(model);
         } else {
             CreateUserBean userBean = new CreateUserBean();
             model.addAttribute("createUserBean", userBean);
-            model.addAttribute("passwordResetToken", resetTicket);
-            model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.get());
+            model.addAttribute("resetToken", resetToken);
             return "password_reset";
         }
     }
@@ -120,26 +113,25 @@ public class ForgotPasswordController {
     @PostMapping("/login/resetPassword/update")
     public void updatePassword(HttpServletRequest request, HttpServletResponse response,
             Model model, CreateUserBean newAccountBean, BindingResult result,
-            @RequestParam(required = false) String passwordResetToken)
+            @RequestParam(required = false) String resetToken)
             throws IOException {
 
         String newPassword = newAccountBean.getPassword();
 
-        if (MembersClient.isForgotPasswordTokenValid(passwordResetToken)) {
+        if (MembersClient.isForgotPasswordTokenValid(resetToken)) {
             try {
-                LoginRegisterUtil.updatePassword(passwordResetToken, newPassword );
-                GlobalMessagesUtil
-                        .addMessage("Your password was successfully updated! ", request);
+                LoginRegisterUtil.updatePassword(resetToken, newPassword);
+                AlertMessage.success("Your password was successfully updated!")
+                        .flash(request);
                 SessionErrors.clear(request);
                 SessionMessages.clear(request);
                 response.sendRedirect("/");
-
             } catch (MemberNotFoundException e) {
-                response.sendRedirect("/login/forgotPassword/error");
+                response.sendRedirect("/login/resetPassword/error");
             }
 
         } else {
-            response.sendRedirect("/login/forgotPassword/error");
+            response.sendRedirect("/login/resetPassword/error");
         }
     }
 }

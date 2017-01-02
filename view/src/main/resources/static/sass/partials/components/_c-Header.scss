@@ -1,4 +1,5 @@
 $c-Header__background: url(/images/bg-noise.png), $t-Color__grey--lightest !default;
+$c-Header__background--hover: url(/images/bg-noise.png) !default;
 $c-Header__border--bottom: 1px solid #aaa9a5 !default;
 $c-Header__box-shadow: none !default;
 
@@ -75,6 +76,10 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   border-bottom: $c-Header__border--bottom;
   box-shadow: $c-Header__box-shadow;
 
+  &.backgroundLight {
+    background: white;
+  }
+
   .inner {
     position: relative;
     z-index: 11;
@@ -91,6 +96,18 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   float: left;
   width: 445px;
   height: 67px;
+
+  &.backgroundLight li:hover {
+    background: $c-Header__background--hover;
+  }
+  &.backgroundLight li a:hover {
+    height: 41px;
+    text-decoration: none;
+  }
+  &.backgroundLight li a.search:hover {
+    height: 22px;
+    text-decoration: none;
+  }
 
   li {
     float: left;

@@ -10,8 +10,11 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.entity.utils.flash.AlertMessage;
+import org.xcolab.entity.utils.flash.AnalyticsAttribute;
 import org.xcolab.util.enums.theme.ColabTheme;
 import org.xcolab.view.auth.AuthenticationContext;
+import org.xcolab.view.auth.login.AuthenticationError;
 
 import java.util.List;
 
@@ -103,6 +106,46 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
                 modelAndView.addObject("_mitHeaderBarLinkUrl",
                         ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_URL.get());
             }
+
+            boolean isSigningIn = readBooleanParameter(request, "isSigningIn");
+            boolean isPasswordReminder = readBooleanParameter(request, "isPasswordReminder");
+            boolean isSSOSigningIn = readBooleanParameter(request, "isSSOSigningIn");
+            if (isSigningIn) {
+                final AuthenticationError authError
+                        = AuthenticationError.fromName(request.getParameter("signinRegError"));
+                modelAndView.addObject("_authError", authError);
+            }
+
+            modelAndView.addObject("_showLoginPopup", isSigningIn);
+            modelAndView.addObject("_showPasswordResetPopup", isPasswordReminder);
+            modelAndView.addObject("_showSsoPopup", isSSOSigningIn);
+
+            modelAndView.addObject("_requestUri", request.getRequestURI());
+            modelAndView.addObject("_isHomePage", request.getRequestURI().equals("/"));
+
+            modelAndView.addObject("__alertMessage", AlertMessage.extract(request));
+            modelAndView.addObject("__analyticsAttribute", AnalyticsAttribute.extract(request));
         }
+    }
+
+    private boolean readBooleanParameter(HttpServletRequest request, String name) {
+        return Boolean.parseBoolean(request.getParameter(name));
+    }
+
+    private boolean addBooleanParameter(ModelAndView modelAndView, HttpServletRequest request,
+            String name) {
+        boolean value = request.getParameter(name) != null
+                && Boolean.parseBoolean(request.getParameter(name));
+        modelAndView.addObject("_" + name, value);
+        return value;
+    }
+
+    private String addStringParameter(ModelAndView modelAndView, HttpServletRequest request,
+            String name) {
+        final String value = request.getParameter(name);
+        if (value != null) {
+            modelAndView.addObject("_" + name, value);
+        }
+        return value;
     }
 }

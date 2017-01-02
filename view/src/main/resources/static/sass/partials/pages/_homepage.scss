@@ -2,8 +2,6 @@ $p-Homepage__homespot__background: url(/images/bg-noise.png) $t-Color__grey--lig
 $p-Homepage__homespot__background__background: url(/images/homespot/background.png) no-repeat right 0 center !default;
 $p-Homepage__homespot__background__backgroundSize: contain !default;
 
-$p-Homepage__HeaderMenu__hover__background: url(/images/bg-noise.png) !default;
-
 $p-homepage__content__h2__fontSize: 20px !default;
 $p-homepage__content__h2__textColor: $t-Color__grey--darkest !default;
 
@@ -386,6 +384,11 @@ a.join {
   width: 464px;
 }
 
+.home #content {
+  padding: 0;
+  width: 100%;
+}
+
 .home #content h2 {
   font-size: $p-homepage__content__h2__fontSize;
   color: $p-homepage__content__h2__textColor;
@@ -435,24 +438,6 @@ a.join {
   width: 50px;
   height: 50px;
   background-size: 25px;
-}
-
-.home #c-Header {
-  background: white;
-}
-
-.home #c-Header__menu li:hover {
-  background: $p-Homepage__HeaderMenu__hover__background;
-}
-
-.home #c-Header__menu li a:hover {
-  height: 41px;
-  text-decoration: none;
-}
-
-.home #c-Header__menu li a.search:hover {
-  height: 22px;
-  text-decoration: none;
 }
 
 .p-Homepage__voting__notice {
