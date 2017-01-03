@@ -644,7 +644,7 @@
                         </div>
                     </div>
                 </div>
-                <xcolab:script src="${_themeJsFolder}/widgetLoader.js" />
+
                 <script>
                     /* <![CDATA[ */
                     $(document).ready(initializeTextEditors);
@@ -823,6 +823,7 @@
     <xcolab:script src="${_themeJsFolder}/usertracking.js" />
     <xcolab:script src="${_themeJsFolder}/balloon.js" />
     <xcolab:script src="${_themeJsFolder}/errorTracker.js" />
+    <xcolab:script src="${_themeJsFolder}/widgetLoader.js" />
 </body>
 </html>
 </jsp:root>

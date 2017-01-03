@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LandingPageController {
 
     private static final long HOME_SPOT_CONTENT_ARTICLE_ID = 1548L;
+    private static final long HOME_BOTTOM_CONTENT_ARTICLE_ID = 1615L;
 
     @RequestMapping(value = "/")
     public String hello(HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -23,6 +24,7 @@ public class LandingPageController {
         if (contentArticleId > 0) {
 
             model.addAttribute("homeSpotContentArticleVersion", getContentArticleVersion(HOME_SPOT_CONTENT_ARTICLE_ID));
+            model.addAttribute("homeBottomContentArticleVersion", getContentArticleVersion(HOME_BOTTOM_CONTENT_ARTICLE_ID));
         }
         return "home/home";
     }
