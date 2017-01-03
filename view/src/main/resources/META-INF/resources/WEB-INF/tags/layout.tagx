@@ -142,7 +142,7 @@
                 </div>
 
                 <div class="c-TitleBar__element c-TitleBar__actionButton right">
-                    <a href="/impersonate/logout">Stop impersonating</a>
+                    <a href="/impersonate?logout">Stop impersonating</a>
                 </div>
             </div>
         </div>
