@@ -200,4 +200,13 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<Boolean> COLAB_USES_CARDS =
             ConfigurationAttributes.newBooleanAttribute("COLAB_USES_CARDS")
                     .defaultValue(true).build();
+
+    public static final AttributeGetter<String> PORTLET_CONTACT_FORM_PREFERENCES =
+            ConfigurationAttributes.newStringAttribute("PORTLET_CONTACT_FORM_PREFERENCES")
+                    .build();
+
+    public static final AttributeGetter<String> PORTLET_CONTESTS_PREFERENCES =
+            ConfigurationAttributes.newStringAttribute("PORTLET_CONTESTS_PREFERENCES")
+                    .build();
+
 }
