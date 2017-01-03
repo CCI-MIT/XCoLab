@@ -38,4 +38,9 @@ public enum ErrorText {
     public String flashAndReturnRedirect(HttpServletRequest request) throws IOException {
         return errorMessage.flashAndReturnRedirect(request);
     }
+
+    public String flashAndReturnView(HttpServletRequest request) {
+        errorMessage.flash(request);
+        return ErrorController.ERROR_VIEW;
+    }
 }

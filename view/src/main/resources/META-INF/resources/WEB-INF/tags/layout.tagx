@@ -326,7 +326,7 @@
                         <li><a href="/web/guest/member/-/member/userId/${_member.id_}">My profile</a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><a href="/registerr" class="openreg">Register</a></li>
+                        <li><a href="/register" class="openreg">Register</a></li>
                         <li><a href="javascript:return false;" onclick="deferUntilLogin();">Sign In</a></li>
                     </c:otherwise>
                 </c:choose>

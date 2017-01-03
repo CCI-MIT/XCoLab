@@ -44,19 +44,23 @@ public class WikiController {
     @GetMapping("/wiki/{pageTitle}")
     public String showWikiPage(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member, @PathVariable String pageTitle)
-            throws ContentNotFoundException, IOException {
+            throws IOException {
         final long folderId = ConfigurationAttributeKey.WIKI_CONTENT_FOLDER_ID.get();
 
         if (folderId > 0 && StringUtils.isNotBlank(pageTitle)) {
-            final ContentArticleVersion contentArticleVersion =
-                    ContentsClient.getLatestContentArticleVersion(folderId, pageTitle);
-            final ContentArticle contentArticle = ContentsClient
-                    .getContentArticle(contentArticleVersion.getContentArticleId());
+            try {
+                final ContentArticleVersion contentArticleVersion =
+                        ContentsClient.getLatestContentArticleVersion(folderId, pageTitle);
+                final ContentArticle contentArticle = ContentsClient
+                        .getContentArticle(contentArticleVersion.getContentArticleId());
 
-            if (!contentArticle.canView(member)) {
-                return ErrorText.ACCESS_DENIED.flashAndReturnRedirect(request);
+                if (!contentArticle.canView(member)) {
+                    return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+                }
+                model.addAttribute("contentArticleVersion", contentArticleVersion);
+            } catch (ContentNotFoundException e) {
+                return ErrorText.NOT_FOUND.flashAndReturnView(request);
             }
-            model.addAttribute("contentArticleVersion", contentArticleVersion);
         }
         return "content/wiki";
     }
@@ -77,7 +81,7 @@ public class WikiController {
                 model.addAttribute("contentArticleVersion", contentArticleVersion);
             }
         } catch (ContentNotFoundException e) {
-            return ErrorText.NOT_FOUND.flashAndReturnRedirect(request);
+            return ErrorText.NOT_FOUND.flashAndReturnView(request);
         }
 
         return "content/wiki";

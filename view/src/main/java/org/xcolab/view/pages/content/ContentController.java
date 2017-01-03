@@ -9,6 +9,7 @@ import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
+import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.errors.ErrorText;
 
@@ -20,27 +21,35 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class ContentController {
 
-    @GetMapping("/content/{contentArticleId}")
+    @GetMapping("/content/{pageTitle}")
     public String contentDisplay(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @PathVariable Long contentArticleId) throws IOException {
+            Model model, Member member, @PathVariable String pageTitle) throws IOException {
 
-        if (contentArticleId > 0) {
-                try {
-                    final ContentArticle contentArticle = ContentsClient
-                            .getContentArticle(contentArticleId);
+        try {
+            final ContentPage contentPage = ContentsClient.getContentPage(pageTitle);
+            final ContentArticle contentArticle = ContentsClient
+                    .getContentArticle(contentPage.getContentArticleId());
 
-                    if (!contentArticle.canView(member)) {
-                        return ErrorText.ACCESS_DENIED.flashAndReturnRedirect(request);
-                    }
-
-                    final long version = contentArticle.getMaxVersionId();
-                    final ContentArticleVersion contentArticleVersion = ContentsClient
-                            .getContentArticleVersion(version);
-                    model.addAttribute("contentArticleVersion", contentArticleVersion);
-                } catch (ContentNotFoundException e) {
-                    return ErrorText.NOT_FOUND.flashAndReturnRedirect(request);
-                }
+            if (!contentArticle.canView(member)) {
+                return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
             }
+
+            final ContentArticleVersion contentArticleVersion = getLatestArticleVersion(contentArticle);
+            model.addAttribute("contentArticleVersion", contentArticleVersion);
+
+            if (contentPage.getMenuArticleId() != null) {
+                final ContentArticle menuArticle = ContentsClient.getContentArticle(contentPage.getMenuArticleId());
+                final ContentArticleVersion menuArticleVersion = getLatestArticleVersion(menuArticle);
+                model.addAttribute("menuArticleVersion", menuArticleVersion);
+            }
+        } catch (ContentNotFoundException e) {
+            return ErrorText.NOT_FOUND.flashAndReturnView(request);
+        }
         return "content/contentPage";
+    }
+
+    private ContentArticleVersion getLatestArticleVersion(ContentArticle article) {
+        final long contentVersion = article.getMaxVersionId();
+        return ContentsClient.getContentArticleVersion(contentVersion);
     }
 }
