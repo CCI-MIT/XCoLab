@@ -21,6 +21,7 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
     public Configuration getConfiguration(ServletContext servletContext) {
         final ConfigurationBuilder configurationBuilder = ConfigurationBuilder.begin();
         redirectLegacyRegistration(configurationBuilder);
+        redirectLegacyWikiPages(configurationBuilder);
         return configurationBuilder;
 
     }

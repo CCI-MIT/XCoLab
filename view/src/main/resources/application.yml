@@ -3,6 +3,8 @@ server:
   compression:
     enabled: true
   error:
+    whitelabel:
+      enabled: false
     path: /spring/error
 
 spring:
@@ -10,3 +12,4 @@ spring:
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jspx
+    ignore-default-model-on-redirect: true

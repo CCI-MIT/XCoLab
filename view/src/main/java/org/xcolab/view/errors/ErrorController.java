@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.errors;
+package org.xcolab.view.errors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

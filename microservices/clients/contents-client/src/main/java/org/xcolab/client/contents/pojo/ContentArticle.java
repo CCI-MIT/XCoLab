@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
@@ -128,9 +129,9 @@ public class ContentArticle implements Serializable {
     }
 
     @JsonIgnore
-    public boolean canView(Long memberId) {
+    public boolean canView(Member member) {
         return viewRoleGroupId == null
-                || (memberId != null && PermissionsClient.hasRoleGroup(memberId, viewRoleGroupId));
+                || (member != null && PermissionsClient.hasRoleGroup(member.getId_(), viewRoleGroupId));
     }
 
     @JsonIgnore

@@ -31,6 +31,11 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newEnumAttribute("ACTIVE_THEME", ColabTheme.class)
                     .defaultValue(ColabTheme.CLIMATE_COLAB)
                     .build();
+    public static final AttributeGetter<Long> WIKI_CONTENT_FOLDER_ID =
+            ConfigurationAttributes.newLongAttribute("WIKI_CONTENT_FOLDER_ID")
+                    .defaultValue(3L)
+                    .withCache()
+                    .build();
 
     public static final AttributeGetter<Long> DEFAULT_CONTEST_TYPE_ID =
             ConfigurationAttributes.newLongAttribute("DEFAULT_CONTEST_TYPE_ID")

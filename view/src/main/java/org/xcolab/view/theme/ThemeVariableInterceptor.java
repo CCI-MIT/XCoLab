@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.view.RedirectView;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -35,7 +36,7 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response,
             Object handler, ModelAndView modelAndView) {
-        if (modelAndView != null) {
+        if (modelAndView != null && !isRedirectView(modelAndView)) {
             final boolean isLoggedIn = authenticationContext.isLoggedIn();
             modelAndView.addObject("_isLoggedIn", isLoggedIn);
             final boolean isImpersonating = authenticationContext.isImpersonating(request);
@@ -134,20 +135,9 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
         return Boolean.parseBoolean(request.getParameter(name));
     }
 
-    private boolean addBooleanParameter(ModelAndView modelAndView, HttpServletRequest request,
-            String name) {
-        boolean value = request.getParameter(name) != null
-                && Boolean.parseBoolean(request.getParameter(name));
-        modelAndView.addObject("_" + name, value);
-        return value;
+    private boolean isRedirectView(ModelAndView modelAndView) {
+        return (modelAndView.getView() != null && modelAndView.getView() instanceof RedirectView)
+                || modelAndView.getViewName().startsWith("redirect:");
     }
 
-    private String addStringParameter(ModelAndView modelAndView, HttpServletRequest request,
-            String name) {
-        final String value = request.getParameter(name);
-        if (value != null) {
-            modelAndView.addObject("_" + name, value);
-        }
-        return value;
-    }
 }

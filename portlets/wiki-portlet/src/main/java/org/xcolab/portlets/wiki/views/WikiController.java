@@ -15,7 +15,6 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.entity.utils.members.MemberAuthUtil;
 import org.xcolab.portlets.wiki.util.WikiPreferences;
 
 import java.util.List;

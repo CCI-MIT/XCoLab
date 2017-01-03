@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ErrorMessage {
 
     private static final FlashMessageStore MESSAGE_STORE = new FlashMessageStore();
+    public static final String ERROR_URI = "/error";
 
     private final String title;
     private final String message;
@@ -33,9 +34,15 @@ public class ErrorMessage {
         MESSAGE_STORE.put(request, this);
     }
 
+    public String flashAndReturnRedirect(HttpServletRequest request)
+            throws IOException {
+        flash(request);
+        return "redirect:" + ERROR_URI;
+    }
+
     public void flashAndRedirect(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        flashAndRedirect(request, response, "/error");
+        flashAndRedirect(request, response, ERROR_URI);
     }
 
     public void flashAndRedirect(HttpServletRequest request, HttpServletResponse response,
