@@ -1,7 +1,9 @@
 server:
-  port: 18083
+  port: 18082
   compression:
     enabled: true
+  error:
+    path: /spring/error
 
 spring:
   mvc:

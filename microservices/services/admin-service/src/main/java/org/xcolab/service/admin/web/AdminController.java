@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +32,12 @@ public class AdminController {
     @PostMapping("/attributes")
     public ConfigurationAttribute createConfigurationAttribute(@RequestBody ConfigurationAttribute pojo) {
         return configurationAttributeDao.create(pojo);
+    }
+
+    @PutMapping("/attributes/{attributeName}")
+    public boolean updateConfigurationAttribute(@RequestBody ConfigurationAttribute pojo,@PathVariable String attributeName)
+            throws NotFoundException {
+        return configurationAttributeDao.update(pojo);
     }
 
 }

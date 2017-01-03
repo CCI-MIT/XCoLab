@@ -9,4 +9,6 @@ public interface ConfigurationAttributeDao {
     ConfigurationAttribute create(ConfigurationAttribute pojo);
 
     Optional<ConfigurationAttribute> getConfigurationAttribute(String attributeName);
+
+    boolean update(ConfigurationAttribute pojo);
 }

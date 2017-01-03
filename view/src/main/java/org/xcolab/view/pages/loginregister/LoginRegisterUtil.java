@@ -1,9 +1,6 @@
 package org.xcolab.view.pages.loginregister;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
@@ -13,11 +10,14 @@ import org.xcolab.client.members.exceptions.PasswordLoginException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.entity.utils.email.notifications.member.MemberRegistrationNotification;
-import org.xcolab.view.auth.login.spring.MemberDetails;
+import org.xcolab.view.auth.AuthenticationContext;
 
 import javax.servlet.http.HttpServletRequest;
 
 public final class LoginRegisterUtil {
+
+    private static final AuthenticationContext authenticationContext
+            = new AuthenticationContext();
 
     private LoginRegisterUtil() {
     }
@@ -111,13 +111,7 @@ public final class LoginRegisterUtil {
         boolean loggedIn = MembersClient
                 .login(member.getId_(), password, request.getRemoteAddr(), referer);
         if (loggedIn) {
-            //initialize session if it doesn't exist
-            request.getSession();
-
-            final MemberDetails memberDetails = new MemberDetails(member);
-            Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    memberDetails, null, memberDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            authenticationContext.authenticate(request, member);
         }
         return member;
     }

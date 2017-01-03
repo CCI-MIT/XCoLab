@@ -4,15 +4,17 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.omg.CORBA.SystemException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.pages.loginregister.CreateUserBean;
 import org.xcolab.view.pages.loginregister.ImageUploadUtils;
 import org.xcolab.view.pages.loginregister.MainViewController;
@@ -26,14 +28,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping(value = "view", params = "SSO=google")
+@RequestMapping("/sso/google")
 public class OpenIdController {
 
     private static final String GOOGLE_OAUTH_REQUEST_STATE_TOKEN = "GOOGLE_OAUTH_REQUEST_STATE_TOKEN";
 
-    @RequestMapping(params = "action=initiateOpenIdRegistration")
+    private final AuthenticationContext authenticationContext;
+
+    @Autowired
+    public OpenIdController(AuthenticationContext authenticationContext) {
+        this.authenticationContext = authenticationContext;
+    }
+
+    @GetMapping("register")
     public void initiateOpenIdRegistration(HttpServletRequest request, Model model, HttpServletResponse HttpServletResponse)
-            throws IOException, SystemException {
+            throws IOException {
         HttpSession session = request.getSession();
         session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_REGISTRATION);
 
@@ -41,13 +50,15 @@ public class OpenIdController {
     }
 
     private void initiateOpenIdRequest(HttpServletRequest request, HttpServletResponse HttpServletResponse)
-            throws IOException, SystemException {
+            throws IOException {
         HttpSession session = request.getSession();
 
-        GoogleAuthHelper helper = new GoogleAuthHelper(ConfigurationAttributeKey.COLAB_URL.get() + SSOKeys.OPEN_ID_RESPONSE_URL);
+        final String callbackUrl = ConfigurationAttributeKey.COLAB_URL.get()
+                + SsoEndpoint.GOOGLE_CALLBACK.getUrl();
+        GoogleAuthHelper helper = new GoogleAuthHelper(callbackUrl);
         String requestUrl = helper.buildLoginUrl();
         // Add the openid.realm parameter in order to get an OpenId 2.0 identifier
-        requestUrl += "&openid.realm=" + ConfigurationAttributeKey.COLAB_URL.get() + SSOKeys.OPEN_ID_RESPONSE_URL;
+        requestUrl += "&openid.realm=" + callbackUrl;
 
         session.setAttribute(GOOGLE_OAUTH_REQUEST_STATE_TOKEN, helper.getStateToken());
         HttpServletResponse.sendRedirect(requestUrl);
@@ -56,21 +67,20 @@ public class OpenIdController {
         session.setAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY, referrer);
     }
 
-    @RequestMapping(params = "action=initiateOpenIdLogin")
+    @GetMapping("login")
     public void initiateOpenIdLogin(HttpServletRequest request, Model model, HttpServletResponse HttpServletResponse)
-            throws IOException, SystemException {
+            throws IOException {
         HttpSession session = request.getSession();
         session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_LOGIN);
 
         initiateOpenIdRequest(request, HttpServletResponse);
     }
 
-    @RequestMapping(params = "action=readOpenIdResponse")
+    @GetMapping("callback")
     public void readOpenIdResponse(HttpServletRequest request, Model model,
             HttpServletResponse response)
             throws IOException, JSONException, MemberNotFoundException {
 
-        HttpSession portletSession = request.getSession();
         HttpSession session = request.getSession();
         session.removeAttribute(SSOKeys.FACEBOOK_USER_ID);
 
@@ -85,8 +95,9 @@ public class OpenIdController {
         String authCode = request.getParameter("code");
         if (authCode != null && stateToken != null && stateToken
                 .equals(session.getAttribute(GOOGLE_OAUTH_REQUEST_STATE_TOKEN))) {
-            JSONObject json = new GoogleAuthHelper(ConfigurationAttributeKey.COLAB_URL.get() + SSOKeys.OPEN_ID_RESPONSE_URL)
-                    .getUserInfoJson(authCode);
+            final String callbackUrl = ConfigurationAttributeKey.COLAB_URL.get()
+                    + SsoEndpoint.GOOGLE_CALLBACK.getUrl();
+            JSONObject json = new GoogleAuthHelper(callbackUrl).getUserInfoJson(authCode);
 
             String openId = json.getString("openid_id");
             String firstName = json.getString("given_name").replaceAll("[^0-9a-zA-Z\\-\\_\\.]", "");
@@ -105,12 +116,13 @@ public class OpenIdController {
             Member member;
             try {
                 member = MembersClient.findMemberByOpenId(openId);
-                portletSession.setAttribute(SSOKeys.OPEN_ID_LOGIN, member.getUserId());
-
-                response.sendRedirect(redirectUrl);
+                session.setAttribute(SSOKeys.OPEN_ID_LOGIN, member.getUserId());
 
                 ImageUploadUtils.updateProfilePicture(path, member, profilePicURL);
+                authenticationContext.authenticate(request, member);
                 MembersClient.createLoginLog(member.getUserId(), request.getRemoteAddr(), redirectUrl);
+
+                response.sendRedirect(redirectUrl);
             } catch (MemberNotFoundException e) {
                 // try to get user by email
                 try {
@@ -126,51 +138,45 @@ public class OpenIdController {
                     }
 
                     MembersClient.updateMember(member);
-                    portletSession
-                            .setAttribute(SSOKeys.OPEN_ID_LOGIN, member.getUserId());
-                    response.sendRedirect(redirectUrl);
-                    MembersClient.createLoginLog(member.getUserId(), request.getRemoteAddr(), redirectUrl);
+                    session.setAttribute(SSOKeys.OPEN_ID_LOGIN, member.getUserId());
 
+                    authenticationContext.authenticate(request, member);
+                    MembersClient.createLoginLog(member.getUserId(), request.getRemoteAddr(), redirectUrl);
                     ImageUploadUtils.updateProfilePicture(path, member, profilePicURL);
+
+                    response.sendRedirect(redirectUrl);
                 } catch (MemberNotFoundException e2) {
                     // forward to login or register
-                    portletSession.setAttribute(SSOKeys.SSO_OPENID_ID, openId);
+                    session.setAttribute(SSOKeys.SSO_OPENID_ID, openId);
                     String screenName = null;
                     if (StringUtils.isNotBlank(emailAddress)) {
-                        portletSession.setAttribute(SSOKeys.SSO_EMAIL, emailAddress);
+                        session.setAttribute(SSOKeys.SSO_EMAIL, emailAddress);
                         // Screenname = email prefix until @ character
                         screenName = emailAddress.substring(0, emailAddress.indexOf("@"));
                         screenName = screenName.replaceAll("[^0-9a-zA-Z\\-\\_\\.]", "");
-                        portletSession
-                                .setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName);
+                        session.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName);
                     }
 
                     if (StringUtils.isNotBlank(firstName)) {
-                        portletSession
-                                .setAttribute(SSOKeys.SSO_FIRST_NAME, firstName);
+                        session.setAttribute(SSOKeys.SSO_FIRST_NAME, firstName);
                     }
                     if (StringUtils.isNotBlank(lastName)) {
-                        portletSession.setAttribute(SSOKeys.SSO_LAST_NAME, lastName);
+                        session.setAttribute(SSOKeys.SSO_LAST_NAME, lastName);
                     }
-                    portletSession.setAttribute(SSOKeys.SSO_COUNTRY, country);
+                    session.setAttribute(SSOKeys.SSO_COUNTRY, country);
 
                     long imageId = 0;
                     if (StringUtils.isNotBlank(profilePicURL)) {
                         imageId = ImageUploadUtils.linkProfilePicture(path, profilePicURL);
-                        portletSession.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId));
+                        session.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId));
                     }
 
                     if (session.getAttribute(MainViewController.SSO_TARGET_KEY)
                             .equals(MainViewController.SSO_TARGET_LOGIN)) {
-                        //TODO: redirect
-//                        response.setRenderParameter("SSO", "general");
-//                        response.setRenderParameter("status", "registerOrLogin");
-                        request.setAttribute("credentialsError", false);
-                    }
-
-                    // Create the user and login
-                    else if (session.getAttribute(MainViewController.SSO_TARGET_KEY)
+                        response.sendRedirect(SsoEndpoint.REGISTER_OR_LOGIN.getUrl());
+                    } else if (session.getAttribute(MainViewController.SSO_TARGET_KEY)
                             .equals(MainViewController.SSO_TARGET_REGISTRATION)) {
+                        // Create the user and login
                         // append SSO attributes
                         CreateUserBean userBean = new CreateUserBean();
                         String password = RandomStringUtils.random(12, true, true);
@@ -202,8 +208,8 @@ public class OpenIdController {
 
                         userBean.setScreenName(screenName);
 
-                        MainViewController
-                                .completeRegistration(request, response, userBean, redirectUrl, true);
+                        MainViewController.completeRegistration(request, response, userBean,
+                                redirectUrl, true);
                     }
                 }
             }

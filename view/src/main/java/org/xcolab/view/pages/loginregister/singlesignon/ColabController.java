@@ -2,47 +2,48 @@ package org.xcolab.view.pages.loginregister.singlesignon;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.members.exceptions.LockoutLoginException;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.exceptions.PasswordLoginException;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.view.pages.loginregister.CreateUserBean;
-import org.xcolab.view.pages.loginregister.Helper;
 import org.xcolab.view.pages.loginregister.LoginRegisterUtil;
 import org.xcolab.view.pages.loginregister.MainViewController;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping(value = "view", params = "SSO=colab")
+@RequestMapping("/sso/colab")
 public class ColabController {
-    @RequestMapping(params = "action=initiateLoginOrReg")
+
+    @PostMapping
     public void initiateLoginOrReg(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
 
         String redirect = request.getParameter("redirect");
-        if (StringUtils.isBlank(redirect) || redirect.contains("web/guest/loginregister")) {
+        if (StringUtils.isBlank(redirect) || redirect.contains("/register")) {
             redirect =  "/";
         }
-        redirect = Helper.removeParamFromRequestStr(redirect, "signinRegError");
-        redirect = Helper.removeParamFromRequestStr(redirect, "isSigningInPopup");
-        redirect = Helper.removeParamFromRequestStr(redirect, "isSigningIn");
-        redirect = Helper.removeParamFromRequestStr(redirect, "isRegistering");
-        redirect = Helper.removeParamFromRequestStr(redirect, "isPasswordReminder");
-        redirect = Helper.removeParamFromRequestStr(redirect, "isSSOSigningIn");
+        UriComponentsBuilder redirectUrl = UriComponentsBuilder.fromHttpUrl(redirect);
+        redirectUrl.replaceQueryParam("signinRegError");
+        redirectUrl.replaceQueryParam("isSigningInPopup");
+        redirectUrl.replaceQueryParam("isSigningIn");
+        redirectUrl.replaceQueryParam("isRegistering");
+        redirectUrl.replaceQueryParam("isPasswordReminder");
+        redirectUrl.replaceQueryParam("isSSOSigningIn");
 
         try {
             LoginRegisterUtil.login(request, login, password);
-            response.sendRedirect(redirect);
+            response.sendRedirect(redirectUrl.toUriString());
             return;
         } catch (MemberNotFoundException | LockoutLoginException | PasswordLoginException ignored) {
             //login failed
@@ -62,7 +63,8 @@ public class ColabController {
                 //TODO: get user imageId and save it locally
                 userBean.setShortBio(foreignColab.getShortBio());
                 try {
-                    MainViewController.completeRegistration(request, response, userBean, redirect, true);
+                    MainViewController.completeRegistration(request, response, userBean,
+                            redirectUrl.toUriString(), true);
                     return;
 
                 } catch (Exception ignored) {
@@ -73,15 +75,9 @@ public class ColabController {
         } catch (org.xcolab.client.sharedcolab.exceptions.MemberNotFoundException foreignNotFound) {
 
         }
+        redirectUrl.replaceQueryParam("isSSOSigningIn", true);
 
-        Map<String, String> parameters = new HashMap<>();
-        //boolean isSigningInPopup = ParamUtil.getBoolean(HttpServletRequest, "isSigningInPopup");
-
-        parameters.put("isSSOSigningIn", "true");
-
-        redirect = Helper.modifyRedirectUrl(redirect, request, parameters);
-
-        response.sendRedirect(redirect);
+        response.sendRedirect(redirectUrl.toUriString());
     }
 }
 

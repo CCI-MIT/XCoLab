@@ -26,7 +26,6 @@ public final class FacebookUtil {
     public static final String FB_PROFILE_PIC_URL_FORMAT_STRING =
             "https://graph.facebook.com/%d/?fields=picture.type(large)";
     public static final String AUTH_URL = "https://graph.facebook.com/oauth/authorize";
-    public static final String REDIRECT_URL = "/web/guest/loginregister/-/login/SSO/facebook/";
 
     private static final String GRAPH_URL = "https://graph.facebook.com";
     private static final String TOKEN_URL = "https://graph.facebook.com/oauth/access_token";
@@ -91,7 +90,7 @@ public final class FacebookUtil {
     }
 
     public static String getAuthRedirectURL(HttpServletRequest request) {
-        return FacebookUtil.getDomain(request) + FacebookUtil.REDIRECT_URL;
+        return FacebookUtil.getDomain(request) + SsoEndpoint.FACEBOOK_CALLBACK.getUrl();
     }
 
     public static String getDomain(HttpServletRequest request) {

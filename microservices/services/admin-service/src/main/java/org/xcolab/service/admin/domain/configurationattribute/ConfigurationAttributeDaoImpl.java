@@ -44,4 +44,16 @@ public class ConfigurationAttributeDaoImpl implements ConfigurationAttributeDao 
         }
         return Optional.of(attributeRecord.into(ConfigurationAttribute.class));
     }
+
+    @Override
+    public boolean update(ConfigurationAttribute pojo) {
+
+        return dslContext.update(CONFIGURATION_ATTRIBUTE)
+                .set(CONFIGURATION_ATTRIBUTE.ADDITIONAL_ID, pojo.getAdditionalId())
+                .set(CONFIGURATION_ATTRIBUTE.STRING_VALUE, pojo.getStringValue())
+                .set(CONFIGURATION_ATTRIBUTE.NUMERIC_VALUE, pojo.getNumericValue())
+                .set(CONFIGURATION_ATTRIBUTE.REAL_VALUE, pojo.getRealValue())
+                .where(CONFIGURATION_ATTRIBUTE.NAME.eq(pojo.getName()))
+                .execute() > 0;
+    }
 }

@@ -3,7 +3,10 @@ package org.xcolab.view.pages.feedback;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+import org.xcolab.util.IdListUtil;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -46,17 +49,19 @@ public class ContactPreferences implements Serializable {
         recipients = (prefs.has(RECIPIENTS_PREF))?(prefs.getString(RECIPIENTS_PREF)):( String.valueOf(defaultRecipients));
     }
 
-    public String store(JSONObject prefs) throws  IOException {
-
+    public void submit() throws  IOException {
+        JSONObject prefs = new JSONObject();
         prefs.put(MESSAGE_FORMAT_PREF, messageFormat);
         prefs.put(MESSAGE_SUBJECT_PREF, messageSubject);
         prefs.put(EXPAND_LINK_TEXT_PREF, expandLinkText);
         prefs.put(RECIPIENTS_PREF, recipients);
-        //TODO: figure out how to save config variables.
-        //prefs.store();
+        ConfigurationAttribute configurationAttribute = new ConfigurationAttribute();
+        configurationAttribute.setName("PORTLET_CONTACT_FORM_PREFERENCES");
+        configurationAttribute.setStringValue(prefs.toString());
+        AdminClient.updateConfigurationAttribute(configurationAttribute);
 
-        return null;
     }
+
 
 
     public String getRecipients() {

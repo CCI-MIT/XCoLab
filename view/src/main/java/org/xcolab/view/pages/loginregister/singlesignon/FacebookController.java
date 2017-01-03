@@ -4,11 +4,11 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.omg.CORBA.SystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -16,8 +16,11 @@ import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.entity.utils.flash.ErrorMessage;
 import org.xcolab.entity.utils.portlet.RequestParamUtil;
 import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.view.auth.AuthenticationContext;
+import org.xcolab.view.auth.login.AuthenticationError;
 import org.xcolab.view.pages.loginregister.CreateUserBean;
 import org.xcolab.view.pages.loginregister.MainViewController;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
@@ -30,22 +33,38 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping(value = "view", params = "SSO=facebook")
+@RequestMapping("/sso/facebook")
 public class FacebookController {
 
     private final static Logger _log = LoggerFactory.getLogger(FacebookController.class);
 
-    @RequestMapping(params = "action=initiateLogin")
-    public void initiateFbLogin(HttpServletRequest request, HttpServletResponse response) throws IOException, SystemException {
+    private final AuthenticationContext authenticationContext;
+
+    @Autowired
+    public FacebookController(AuthenticationContext authenticationContext) {
+        this.authenticationContext = authenticationContext;
+    }
+
+    @GetMapping("login")
+    public void initiateFbLogin(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
         HttpSession session = request.getSession();
-
-        // Set property and do redirect
-        session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_LOGIN);
-
+        session.setAttribute(MainViewController.SSO_TARGET_KEY,
+                MainViewController.SSO_TARGET_LOGIN);
         initiateFbRequest(request, response);
     }
 
-    private void initiateFbRequest(HttpServletRequest request, HttpServletResponse response) throws SystemException, IOException {
+    @GetMapping("register")
+    public void initiateFbRegistration(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        HttpSession session = request.getSession();
+        session.setAttribute(MainViewController.SSO_TARGET_KEY,
+                MainViewController.SSO_TARGET_REGISTRATION);
+        initiateFbRequest(request, response);
+    }
+
+    private void initiateFbRequest(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
         HttpSession session = request.getSession();
 
         String referrer = request.getHeader("referer");
@@ -64,20 +83,9 @@ public class FacebookController {
         response.sendRedirect(facebookAuthURL.build().toString());
     }
 
-    @RequestMapping(params = "action=initiateRegistration")
-    public void initiateFbRegistration(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, SystemException {
-        HttpSession session = request.getSession();
-
-        // Set property and do redirect
-        session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_REGISTRATION);
-
-        initiateFbRequest(request, response);
-    }
-
-    @RequestMapping(params = "action=fbCallback")
+    @GetMapping("callback")
     public void fbCallback(HttpServletRequest request, HttpServletResponse response)
-            throws JSONException, InternalException, MemberNotFoundException, IOException {
+            throws JSONException, MemberNotFoundException, IOException {
 
         HttpSession session = request.getSession();
 
@@ -86,7 +94,7 @@ public class FacebookController {
         String redirectUrl = (String) session
                 .getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
         if ((redirectUrl) == null || (redirectUrl.isEmpty())) {
-            redirectUrl = ConfigurationAttributeKey.COLAB_URL.get();
+            redirectUrl = "/";
         }
 
         String code = RequestParamUtil.getString(request, "code");
@@ -95,20 +103,18 @@ public class FacebookController {
         JSONObject jsonObject = FacebookUtil.getGraphResources("/me", token,
                 "id,email,first_name,last_name,gender,verified,location,locale");
 
-        if ((jsonObject == null) || (jsonObject.optJSONObject("error") != null)) {
-            //TODO: redirect
-//            response.setRenderParameter("error", "true");
-//            response.setRenderParameter("SSO", "general");
-            request.setAttribute("error", "No data received.");
+        if (jsonObject == null || jsonObject.optJSONObject("error") != null) {
+            ErrorMessage.error("No data received from Facebook")
+                    .flashAndRedirect(request, response);
             return;
         }
 
         if (ConfigurationAttributeKey.FACEBOOK_VERIFIED_REQUIRED.get()
                 && !jsonObject.getBoolean("verified")) {
-            //TODO: redirect
-//            response.setRenderParameter("error", "true");
-//            response.setRenderParameter("SSO", "general");
-            request.setAttribute("error", "Verified account required.");
+            ErrorMessage
+                    .error("A verified Facebook account is required to complete the registration")
+                    .withTitle("Could not complete the Facebook registration")
+                    .flashAndRedirect(request, response);
             return;
         }
 
@@ -116,7 +122,7 @@ public class FacebookController {
         String fbProfilePictureURL =
                 String.format(FacebookUtil.FB_PROFILE_PIC_URL_FORMAT_STRING, facebookId);
 
-        Member member = null;
+        Member member;
 
         if (facebookId > 0) {
             // SSO Attribute
@@ -132,6 +138,7 @@ public class FacebookController {
                     ImageUploadUtils.updateProfilePicture(path, liferayUser, realPictureURLString);
                 }*/
 
+                authenticationContext.authenticate(request, member);
                 MembersClient.createLoginLog(member.getUserId(), request.getRemoteAddr(), redirectUrl);
                 response.sendRedirect(redirectUrl);
                 return;
@@ -142,8 +149,8 @@ public class FacebookController {
         }
 
         // if email matches -> autologin
-        String emailAddress = jsonObject.getString("email");
-        if (member == null && emailAddress != null) {
+        String emailAddress = jsonObject.optString("email");
+        if (emailAddress != null) {
             try {
                 member = MembersClient.findMemberByEmailAddress(emailAddress);
                 updateUserWithFBId(member, facebookId);
@@ -157,6 +164,7 @@ public class FacebookController {
 
                 updateUserAccountInformation(member, jsonObject);
 
+                authenticationContext.authenticate(request, member);
                 MembersClient.createLoginLog(member.getUserId(), request.getRemoteAddr(), redirectUrl);
                 response.sendRedirect(redirectUrl);
                 return;
@@ -166,17 +174,16 @@ public class FacebookController {
             }
         }
 
-        if ((jsonObject.getString("first_name") != null)) {
+        if ((jsonObject.optString("first_name") != null)) {
             session.setAttribute(SSOKeys.SSO_FIRST_NAME, jsonObject.getString("first_name"));
         }
 
-        if ((jsonObject.getString("last_name")!=null)) {
+        if ((jsonObject.optString("last_name") != null)) {
             session.setAttribute(SSOKeys.SSO_LAST_NAME, jsonObject.getString("last_name"));
         }
-        if ((jsonObject.getString("email")!=null)) {
-            session
-                    .setAttribute(SSOKeys.SSO_EMAIL, jsonObject.getString("email"));
-            // Screenname = email prefix until @ character
+        if (emailAddress != null) {
+            session.setAttribute(SSOKeys.SSO_EMAIL, emailAddress);
+            // Screen name = email prefix until @ character
             String screenName = emailAddress.substring(0, emailAddress.indexOf('@'));
             screenName = screenName.replaceAll("[^a-zA-Z0-9]", "");
             session.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName);
@@ -234,27 +241,17 @@ public class FacebookController {
                     userBean.getScreenName().isEmpty() ||
                     userBean.getEmail() == null ||
                     userBean.getEmail().isEmpty()) {
-                //TODO: redirect
-//                response.setRenderParameter("status", "registerOrLogin");
-//                response.setRenderParameter("SSO", "general");
-                request.setAttribute("credentialsError", true);
+                ErrorMessage
+                        .error(AuthenticationError.CREDENTIALS.getMessage())
+                        .flashAndRedirect(request, response, SsoEndpoint.REGISTER_OR_LOGIN.getUrl());
             } else {
-
                 MainViewController.completeRegistration(request, response, userBean, redirectUrl, true);
             }
         } else {
-            //TODO: redirect
-//            response.setRenderParameter("status", "registerOrLogin");
-//            response.setRenderParameter("SSO", "general");
-            request.setAttribute("credentialsError", false);
+            ErrorMessage
+                    .error(AuthenticationError.UNKNOWN.getMessage())
+                    .flashAndRedirect(request, response, SsoEndpoint.REGISTER_OR_LOGIN.getUrl());
         }
-    }
-
-    @RequestMapping(params = "status=registerOrLogin")
-    public String registerOrLogin(HttpServletRequest request, Model model) {
-        model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.get());
-        model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
-        return "SSO/registerOrLogin";
     }
 
     private void updateUserWithFBId(Member member, long fbId) {

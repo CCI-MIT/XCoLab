@@ -1,56 +1,52 @@
 package org.xcolab.view.pages.loginregister.singlesignon;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.LockoutLoginException;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.exceptions.PasswordLoginException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.entity.utils.flash.ErrorMessage;
+import org.xcolab.view.auth.login.AuthenticationError;
 import org.xcolab.view.pages.loginregister.LoginRegisterUtil;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping(value = "view", params = "SSO=general")
 public class SingleSignOnController {
+    private static final String REGISTER_OR_LOGIN_VIEW = "loginregister/SSO/registerOrLogin";
 
-    private final static Logger _log = LoggerFactory.getLogger(SingleSignOnController.class);
+    @GetMapping("/sso/registerOrLogin")
+    public String registerOrLogin(HttpServletRequest request, Model model) {
+        return REGISTER_OR_LOGIN_VIEW;
+    }
 
-    @RequestMapping(params = "action=provideSSOCredentials")
+    @PostMapping("/sso/registerOrLogin/login")
     public void linkUser(HttpServletRequest request, Model model, HttpServletResponse response,
             @RequestParam String login, @RequestParam String password) throws IOException {
-        Member member;
         try {
             MembersClient.findMemberByScreenName(login);
         } catch (MemberNotFoundException e) {
-            // username incorrect
-            //TODO: redirect
-//            response.setRenderParameter("status", "registerOrLogin");
-//            response.setRenderParameter("SSO", "general");
-            request.setAttribute("credentialsError", true);
+            ErrorMessage.error(AuthenticationError.CREDENTIALS.getMessage())
+                    .flashAndRedirect(request, response, SsoEndpoint.REGISTER_OR_LOGIN.getUrl());
             return;
         }
 
         HttpSession session = request.getSession();
 
         try {
-            Map<String, Object> resultsMap = new HashMap<>();
             // Use local authentication API to check credentials
-            member = LoginRegisterUtil.login(request, login, password);
+            Member member = LoginRegisterUtil.login(request, login, password);
             // Do the linkage of OpenID or Facebook ID
             String fbIdString = (String) session.getAttribute(SSOKeys.FACEBOOK_USER_ID);
             String openId = (String) session.getAttribute(SSOKeys.SSO_OPENID_ID);
@@ -76,33 +72,12 @@ public class SingleSignOnController {
                 response.sendRedirect("/");
                 return;
             }
-            //TODO: redirect
-//                response.setRenderParameter("error", "true");
-//                response.setRenderParameter("SSO", "general");
-            request.setAttribute("error", "An unknown error occurred.");
+            ErrorMessage.error(AuthenticationError.UNKNOWN.getMessage())
+                    .flashAndRedirect(request, response, SsoEndpoint.REGISTER_OR_LOGIN.getUrl());
 
-            return;
-
-        } catch (MemberNotFoundException | IOException | LockoutLoginException | PasswordLoginException e) {
-            _log.error("Linking user {} failed:", login, e);
+        } catch (MemberNotFoundException | PasswordLoginException | LockoutLoginException e) {
+            ErrorMessage.error(AuthenticationError.fromException(e).getMessage())
+                    .flashAndRedirect(request, response, SsoEndpoint.REGISTER_OR_LOGIN.getUrl());
         }
-
-        // passwords don't match
-        //TODO: redirect
-//        response.setRenderParameter("status", "registerOrLogin");
-//        response.setRenderParameter("SSO", "general");
-        request.setAttribute("credentialsError", true);
-    }
-
-    @RequestMapping(params = "error=true")
-    public String registerError(HttpServletRequest request) {
-        return "SSO/error";
-    }
-
-    @RequestMapping(params = "status=registerOrLogin")
-    public String registerOrLogin(HttpServletRequest request, Model model) {
-        model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.get());
-        model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
-        return "SSO/registerOrLogin";
     }
 }

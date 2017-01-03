@@ -1,0 +1,47 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+         version="2.0">
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <xcolab:layout>
+        <h1>Edit Preferences</h1>
+        <style>
+            .contactform-preferences input, .contactform-preferences textarea {
+                width: 600px;
+                font-size: 1.1em;
+            }
+            .contactform-preferences textarea {
+                height: 200px;
+            }
+        </style>
+        <form:form action="/feedback/savePreferences" class="contactform-preferences" commandName="contactPreferences">
+            <p>
+                <strong>In messages you can use patterns like USER_NAME, USER_EMAIL, USER_MESSAGE as a placeholders for
+                    values entered by user.</strong>
+            </p>
+            <input type="hidden" name="action" value="savePreferences" />
+            <fieldset>
+                <p>
+                    Recipients, comma-separated:<br />
+                    <form:input path="recipients" />
+                </p>
+                <p>
+                    Message Format:<br />
+                    <form:textarea path="messageFormat" cols="30" rows="10" />
+                </p>
+                <p>
+                    Message Subject:<br />
+                    <form:input path="messageSubject" />
+                </p>
+                <p>
+                    Expand Link Text:<br />
+                    <form:input path="expandLinkText" />
+                </p>
+
+                <p>
+                    <input type="submit" value="Save" />
+                </p>
+            </fieldset>
+        </form:form>
+    </xcolab:layout>
+</jsp:root>

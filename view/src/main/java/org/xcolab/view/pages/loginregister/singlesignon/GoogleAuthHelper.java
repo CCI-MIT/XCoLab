@@ -10,7 +10,6 @@ import com.google.api.client.http.HttpRequestFactory;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.JsonParser;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -106,7 +105,7 @@ public final class GoogleAuthHelper {
         request.getHeaders().setContentType("application/json");
         final String jsonIdentity = request.execute().parseAsString();
 
-        JSONObject userInfo = null;
+        JSONObject userInfo;
 
         try {
             userInfo = new JSONObject(jsonIdentity);
@@ -126,12 +125,7 @@ public final class GoogleAuthHelper {
     private String deserialize(String tokenString) {
         String[] pieces = splitTokenString(tokenString);
         String jwtPayloadSegment = pieces[1];
-        try {
-            JsonParser parser = JSON_FACTORY.createJsonParser(decodeUrlSafe(jwtPayloadSegment));
-            return parser.parse(String.class);
-        } catch (IOException e) {
-            throw new InternalException(e);
-        }
+        return decodeUrlSafe(jwtPayloadSegment);
     }
 
     /**

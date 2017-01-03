@@ -332,7 +332,7 @@ public class MainViewController {
         portletSession.setAttribute(SSOKeys.SSO_COUNTRY, createUserBean.getCountry());
     }
 
-    @PostMapping("/api/register")
+    @PostMapping("/register/finalize")
     public void updateRegistrationParameters(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 

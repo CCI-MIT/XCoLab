@@ -2,7 +2,9 @@ package org.xcolab.view.pages.contestswidget;
 
 import org.json.JSONObject;
 
+import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.pojo.ConfigurationAttribute;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
@@ -128,7 +130,7 @@ public class ContestPreferences {
 
     }
 
-    public String submit(HttpServletRequest request)
+    public void submit()
             throws  IOException {
         JSONObject prefs = new JSONObject();
 
@@ -138,10 +140,10 @@ public class ContestPreferences {
         prefs.put(ALL_CONTESTS_TITLE, allContestsTitle);
         prefs.put(SHOW_COUNTS, Boolean.toString(showCounts));
         prefs.put(ALL_CONTESTS_URL, allContestsUrl);
-
-        //prefs.store();
-
-        return null;
+        ConfigurationAttribute configurationAttribute = new ConfigurationAttribute();
+        configurationAttribute.setName("PORTLET_CONTESTS_PREFERENCES");
+        configurationAttribute.setStringValue(prefs.toString());
+        AdminClient.updateConfigurationAttribute(configurationAttribute);
     }
 
     public List<Long> getSelectedContests() {
