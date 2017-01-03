@@ -31,4 +31,9 @@ public class OptionalAttribute<T> implements AttributeGetter<T> {
             return defaultValue;
         }
     }
+
+    @Override
+    public String name() {
+        return wrappedAttributeGetter.name();
+    }
 }
