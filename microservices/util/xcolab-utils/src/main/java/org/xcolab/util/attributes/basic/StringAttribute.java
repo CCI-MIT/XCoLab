@@ -10,7 +10,7 @@ import org.xcolab.util.attributes.AttributeProvider;
 public class StringAttribute extends AbstractAttributeGetter<String> {
 
     public StringAttribute(AttributeProvider<? extends Attribute> attributeProvider) {
-        super(attributeProvider, StringAttribute.class.getSimpleName());
+        super(attributeProvider);
     }
 
     @Override

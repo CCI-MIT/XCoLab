@@ -10,7 +10,7 @@ import org.xcolab.util.attributes.AttributeProvider;
 public class LongAttribute extends AbstractAttributeGetter<Long> {
 
     public LongAttribute(AttributeProvider<? extends Attribute> attributeProvider) {
-        super(attributeProvider, LongAttribute.class.getSimpleName());
+        super(attributeProvider);
     }
 
     @Override

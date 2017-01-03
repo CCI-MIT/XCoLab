@@ -74,7 +74,8 @@ public final class ContestCreatorUtil {
                     .createProposalCreationOnlySchedule(DEFAULT_SCHEDULE_NAME);
 
             ConfigurationAttribute defaultScheduleAttribute = new ConfigurationAttribute();
-            defaultScheduleAttribute.setName("DEFAULT_CONTEST_SCHEDULE_ID");
+            defaultScheduleAttribute
+                    .setName(ConfigurationAttributeKey.DEFAULT_CONTEST_SCHEDULE_ID.name());
             defaultScheduleAttribute.setNumericValue(newDefaultSchedule.getId_());
             AdminClient.createConfigurationAttribute(defaultScheduleAttribute);
 

@@ -10,7 +10,7 @@ import org.xcolab.util.attributes.AttributeProvider;
 public class DoubleAttribute extends AbstractAttributeGetter<Double> {
 
     public DoubleAttribute(AttributeProvider<? extends Attribute> attributeProvider) {
-        super(attributeProvider, DoubleAttribute.class.getSimpleName());
+        super(attributeProvider);
     }
 
     @Override

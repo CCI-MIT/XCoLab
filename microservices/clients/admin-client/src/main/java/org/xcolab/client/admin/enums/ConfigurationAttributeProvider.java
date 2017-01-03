@@ -16,6 +16,11 @@ class ConfigurationAttributeProvider implements AttributeProvider<ConfigurationA
     }
 
     @Override
+    public String name() {
+        return name;
+    }
+
+    @Override
     public ConfigurationAttribute get() {
         return AdminClient.getConfigurationAttribute(name);
     }
