@@ -209,4 +209,8 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newStringAttribute("PORTLET_CONTESTS_PREFERENCES")
                     .build();
 
+    public static final AttributeGetter<String> PORTLET_FEED_PREFERENCES =
+            ConfigurationAttributes.newStringAttribute("PORTLET_FEED_PREFERENCES")
+                    .build();
+
 }

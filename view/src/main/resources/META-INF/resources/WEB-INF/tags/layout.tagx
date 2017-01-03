@@ -644,7 +644,7 @@
                         </div>
                     </div>
                 </div>
-
+                <xcolab:script src="${_themeJsFolder}/widgetLoader.js" />
                 <script>
                     /* <![CDATA[ */
                     $(document).ready(initializeTextEditors);
