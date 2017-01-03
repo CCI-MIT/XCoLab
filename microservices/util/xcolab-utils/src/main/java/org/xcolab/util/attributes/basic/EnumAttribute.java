@@ -21,7 +21,7 @@ public class EnumAttribute<EnumT extends Enum<EnumT>> extends AbstractAttributeG
     private final Class<EnumT> enumType;
 
     public EnumAttribute(AttributeProvider<? extends Attribute> attributeProvider, Class<EnumT> enumType) {
-        super(attributeProvider, EnumAttribute.class.getSimpleName());
+        super(attributeProvider);
         this.enumType = enumType;
     }
 

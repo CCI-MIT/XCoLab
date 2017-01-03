@@ -5,14 +5,15 @@ import org.springframework.util.Assert;
 public abstract class AbstractAttributeGetter<ValueT> implements AttributeGetter<ValueT> {
 
     private final AttributeProvider<? extends Attribute> attributeProvider;
-    private final String getterName;
 
-    public AbstractAttributeGetter(AttributeProvider<? extends Attribute> attributeProvider,
-            String getterName) {
+    public AbstractAttributeGetter(AttributeProvider<? extends Attribute> attributeProvider) {
         Assert.notNull(attributeProvider, "AttributeProvider is required");
-        Assert.notNull(getterName, "GetterName is required");
-        this.getterName = getterName;
         this.attributeProvider = attributeProvider;
+    }
+
+    @Override
+    public String name() {
+        return attributeProvider.name();
     }
 
     @Override
@@ -31,7 +32,7 @@ public abstract class AbstractAttributeGetter<ValueT> implements AttributeGetter
     @Override
     public int hashCode() {
         int result = attributeProvider.hashCode();
-        result = 31 * result + getterName.hashCode();
+        result = 31 * result + getClass().hashCode();
         return result;
     }
 
@@ -47,6 +48,6 @@ public abstract class AbstractAttributeGetter<ValueT> implements AttributeGetter
 
         AbstractAttributeGetter other = (AbstractAttributeGetter) obj;
         return attributeProvider.equals(other.attributeProvider)
-                && getterName.equals(other.getterName);
+                && getClass().equals(other.getClass());
     }
 }

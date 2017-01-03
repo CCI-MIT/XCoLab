@@ -11,4 +11,6 @@ public interface AttributeGetter<ValueT> {
     ValueT get();
 
     ValueT get(long additionalId);
+
+    String name();
 }
