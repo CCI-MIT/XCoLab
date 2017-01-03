@@ -5,6 +5,7 @@
     <!--@elvariable id="homeSpotContentArticleVersion" type="org.xcolab.client.contents.pojo.ContentArticleVersion"-->
 
     ${homeSpotContentArticleVersion.content}
+    ${homeBottomContentArticleVersion.content}
 
 </layout:layout>
 

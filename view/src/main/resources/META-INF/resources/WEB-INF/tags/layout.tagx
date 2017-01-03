@@ -335,6 +335,7 @@
 
         <div class="inner">
             <!-- footer content -->
+            <jsp:include page="/contentdisplay?contentArticleId=4"></jsp:include>
         </div> <!-- .inner -->
     </div> <!-- #c-Footer -->
 

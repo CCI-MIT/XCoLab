@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contents.ContentsClient;
+import org.xcolab.client.contents.pojo.ContentArticle;
+import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.entity.utils.ReCaptchaUtils;
 import org.xcolab.entity.utils.portlet.session.SessionErrors;
@@ -24,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -32,7 +34,10 @@ import javax.validation.Valid;
 @Controller
 public class ContactController {
 
-    public static final String CONTACT_VIEW_NAME = "feedback/contactForm";
+    private static final String CONTACT_VIEW_NAME = "feedback/contactForm";
+
+    private final static Long LEFT_MENU_ARTICLE_ID = 1550l;
+    private final static Long TOP_INFO_ARTICLE_ID = 13l;
 
     @Autowired
     private ContactPreferences contactPreferences;
@@ -44,12 +49,14 @@ public class ContactController {
 
     public ContactController() {
         fromAddress = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
+
     }
 
-    //@InitBinder("contactBean")
-    //public void initBinder(WebDataBinder binder) {
-     //   binder.setValidator(validator);
-    //}
+    @InitBinder("contactBean")
+    public void initBinder(WebDataBinder binder) {
+        binder.setValidator(validator);
+    }
+
 
     /**
      * Main view displayed when user enters page with contactform portlet
@@ -59,7 +66,26 @@ public class ContactController {
         contactPreferences = new ContactPreferences(request);
         model.addAttribute("contactBean", new ContactBean());
 
+
         return CONTACT_VIEW_NAME;
+    }
+    @ModelAttribute("leftMenuArticle")
+    public ContentArticleVersion getLeftMenuArticle(){
+        return loadContentArticle(LEFT_MENU_ARTICLE_ID);
+    }
+
+    @ModelAttribute("topInfoArticle")
+    public ContentArticleVersion topInfoArticle(){
+        return loadContentArticle(TOP_INFO_ARTICLE_ID);
+    }
+
+    private ContentArticleVersion loadContentArticle(Long contentArticleId){
+        final ContentArticle contentArticle = ContentsClient
+                .getContentArticle(contentArticleId);
+        final long version = contentArticle.getMaxVersionId();
+        final ContentArticleVersion contentArticleVersion = ContentsClient
+                .getContentArticleVersion(version);
+        return contentArticleVersion;
     }
 
     @ModelAttribute("recaptchaDataSiteKey")

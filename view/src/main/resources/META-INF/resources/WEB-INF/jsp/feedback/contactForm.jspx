@@ -7,11 +7,11 @@
 	<xcolab:layout>
 
 		<div class="about-left">
-			<jsp:include page="/contentdisplay?contentArticleId=1550"></jsp:include>
+			${leftMenuArticle.content}
 		</div>
 
 		<div class="about-right">
-		<jsp:include page="/contentdisplay?contentArticleId=13"></jsp:include>
+			${topInfoArticle.content}
 
 			<script src='https://www.google.com/recaptcha/api.js'><!-- --></script>
 			<c:if test="${param.success }">

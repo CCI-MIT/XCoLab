@@ -32,6 +32,8 @@ public class ContactPreferences implements Serializable {
     private final static String defaultMessageSubject = "[CoLab] USER_NAME sent a message using contact form";
     private final static String defaultExpandLinkText = "Send feedback message";
 
+
+
     public ContactPreferences() {
         messageFormat = defaultMessageFormat;
         messageSubject = defaultMessageSubject;
@@ -56,7 +58,7 @@ public class ContactPreferences implements Serializable {
         prefs.put(EXPAND_LINK_TEXT_PREF, expandLinkText);
         prefs.put(RECIPIENTS_PREF, recipients);
         ConfigurationAttribute configurationAttribute = new ConfigurationAttribute();
-        configurationAttribute.setName("PORTLET_CONTACT_FORM_PREFERENCES");
+        configurationAttribute.setName(ConfigurationAttributeKey.PORTLET_CONTACT_FORM_PREFERENCES.name());
         configurationAttribute.setStringValue(prefs.toString());
         AdminClient.updateConfigurationAttribute(configurationAttribute);
 
