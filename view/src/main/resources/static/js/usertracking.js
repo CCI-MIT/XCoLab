@@ -32,7 +32,7 @@ if (isTrackedVisitor) {
 }
 
 
-jQuery.post("/usertracking-portlet/trackVisitor", postData, function(data) {
+jQuery.post("/trackVisitor", postData, function(data) {
     jQuery.cookie("userTrackingUuid", data.uuid, {path: '/'});
     if (data.isTrackedVisitor) {
         jQuery.cookie("userTrackingIsTrackedVisitor", data.isTrackedVisitor, {path: '/'});

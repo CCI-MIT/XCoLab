@@ -1,4 +1,4 @@
-package org.xcolab.portlets.usertracking;
+package org.xcolab.view.filters.tracking;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -7,7 +7,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.TrackingClient;
-import org.xcolab.entity.utils.members.MemberAuthUtil;
+import org.xcolab.view.auth.MemberAuthUtil;
 
 import java.io.IOException;
 import java.io.PrintWriter;

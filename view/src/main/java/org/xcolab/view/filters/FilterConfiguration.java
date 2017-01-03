@@ -1,6 +1,7 @@
 package org.xcolab.view.filters;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,6 +13,7 @@ import org.xcolab.view.filters.filtering.ProfanityFilteringFilter;
 import org.xcolab.view.filters.flagging.FlaggingReportFilter;
 import org.xcolab.view.filters.impersonation.ImpersonationFilter;
 import org.xcolab.view.filters.membership.ProposalMembershipInvitationResponseFilter;
+import org.xcolab.view.filters.tracking.UserTrackingServlet;
 
 import javax.servlet.Filter;
 
@@ -64,5 +66,13 @@ public class FilterConfiguration {
         registration.setFilter(filter);
         registration.addUrlPatterns(urlPattern);
         return registration;
+    }
+
+    @Bean
+    public ServletRegistrationBean userTracking() {
+        ServletRegistrationBean registrationBean = new ServletRegistrationBean();
+        registrationBean.setServlet(new UserTrackingServlet());
+        registrationBean.addUrlMappings("/trackVisitor");
+        return registrationBean;
     }
 }
