@@ -1,4 +1,4 @@
-package org.xcolab.view.config;
+package org.xcolab.view.config.spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -14,6 +14,7 @@ import org.springframework.web.servlet.resource.VersionResourceResolver;
 
 import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.auth.resolver.MemberArgumentResolver;
+import org.xcolab.view.config.rewrite.RewriteInitializer;
 import org.xcolab.view.theme.ThemeResourceResolver;
 import org.xcolab.view.theme.ThemeVariableInterceptor;
 
@@ -40,6 +41,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(new ResourceUrlEncodingFilter());
         return registrationBean;
+    }
+
+    @Bean
+    public RewriteInitializer rewriteInitializer() {
+        return new RewriteInitializer();
     }
 
     @Override

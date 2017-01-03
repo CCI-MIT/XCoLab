@@ -32,6 +32,7 @@
         <commons-lang3.version>3.5</commons-lang3.version>
         <commons-collections4.version>4.1</commons-collections4.version>
         <junit.version>4.12</junit.version>
+        <rewrite.version>3.4.1.Final</rewrite.version>
 
         <!-- JSP -->
         <sitemesh.version>3.0.1</sitemesh.version>
@@ -112,6 +113,13 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
+        </dependency>
+
+        <!-- url rewriting-->
+        <dependency>
+            <groupId>org.ocpsoft.rewrite</groupId>
+            <artifactId>rewrite-servlet</artifactId>
+            <version>${rewrite.version}</version>
         </dependency>
 
         <!-- Misc dependencies-->
