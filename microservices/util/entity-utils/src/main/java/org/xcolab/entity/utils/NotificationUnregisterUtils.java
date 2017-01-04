@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class NotificationUnregisterUtils {
 
-    private final static String UNREGISTER_LINK = "DOMAIN/notificationunregister/-/notificationunregister/subscriptionId/SUBSCRIPTION_ID/userId/USER_ID/token/TOKEN/typeId/TYPE_ID/";
+    private final static String UNREGISTER_LINK = "DOMAIN/notifications/unsubscribe/member/USER_ID/subscription/SUBSCRIPTION_ID/token/TOKEN/type/TYPE_ID";
     private final static String TOKEN_PARAM = "TOKEN";
     private final static String SUBSCRIPTION_ID = "SUBSCRIPTION_ID";
     private final static String TYPE_ID = "TYPE_ID";

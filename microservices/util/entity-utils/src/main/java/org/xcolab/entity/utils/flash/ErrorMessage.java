@@ -9,6 +9,7 @@ public class ErrorMessage {
 
     private static final FlashMessageStore MESSAGE_STORE = new FlashMessageStore();
     public static final String ERROR_URI = "/error";
+    public static final String ERROR_VIEW = "error";
 
     private final String title;
     private final String message;
@@ -49,6 +50,11 @@ public class ErrorMessage {
             String location) throws IOException {
         flash(request);
         response.sendRedirect(location);
+    }
+
+    public String flashAndReturnView(HttpServletRequest request) {
+        flash(request);
+        return ERROR_VIEW;
     }
 
     public String getMessage() {
