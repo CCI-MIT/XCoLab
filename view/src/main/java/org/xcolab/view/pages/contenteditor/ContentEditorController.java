@@ -1,4 +1,4 @@
-package org.xcolab.view.contenteditor;
+package org.xcolab.view.pages.contenteditor;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
@@ -24,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("view")
 public class ContentEditorController {  
     private static final Integer THRESHOLD_TO_AVOID_NODE_COLLISION = 1000;
 
@@ -32,7 +30,7 @@ public class ContentEditorController {
     public String handleRenderRequest(HttpServletRequest request, HttpServletRequest response, Model model) {
         long memberId = MemberAuthUtil.getMemberId(request);
         if (PermissionsClient.canAdminAll(memberId)) {
-            return "/content-editor/editor";
+            return "/contenteditor/editor";
         } else {
             return "notAllowed";
         }
