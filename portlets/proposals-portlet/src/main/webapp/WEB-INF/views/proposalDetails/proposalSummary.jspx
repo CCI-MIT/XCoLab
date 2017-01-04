@@ -10,6 +10,7 @@
 
     <c:if test="${contestType.showProposalSummary}">
         <div class="prop-right">
+            <c:if test="${proposal.proposalId > 0}">
             <div class="c-Box boxColor--dark hasShadow hasBorder">
                 <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
                     <div class="votebox-top clearfix">
@@ -124,6 +125,7 @@
                 </script>
                 <div class="clear"><!--  --></div>
             </div>
+            </c:if>
 
             <c:if test="${proposal.ribbonWrapper.ribbon > 0 and (not contest.hideRibbons or proposalsPermissions.canAdminAll)}">
                 <div class="c-Badge--big badge-${proposal.ribbonWrapper.ribbon}" style="float:none; text-align:center; margin: 0 0 36px 76px;">
