@@ -1,5 +1,0 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
-
-	<h2>The unsubscribe ticket has expired</h2>
-
-</jsp:root>
