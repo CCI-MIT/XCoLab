@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("view")
-public class ContentEditorController {
+public class ContentEditorController {  
     private static final Integer THRESHOLD_TO_AVOID_NODE_COLLISION = 1000;
 
     @GetMapping("/content-editor")
