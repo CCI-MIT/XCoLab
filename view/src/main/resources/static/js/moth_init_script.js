@@ -41,7 +41,7 @@ function initSearchUpperBox() {
 		if (searchPhrase == 'Search') {
 			searchPhrase = '';
 		}
-		window.location = "/web/guest/search/-/search/for/" + searchPhrase;
+		window.location = "/search?searchPhrase=" + searchPhrase;
 	});
 		
 }
