@@ -74,6 +74,13 @@ public class ProposalReviewCsvExporter {
                         }
                     }
 
+                    Boolean shouldAdvanceDecision = proposalReview.getShouldAdvanceDecision(reviewer);
+                    if (shouldAdvanceDecision == null) {
+                        commentString.append(delimiter + "\"\"");
+                    } else {
+                        commentString.append(String.format("%s\"%s%s\"", delimiter, shouldAdvanceDecision, TQF));
+                    }
+
                     String review = proposalReview.getReview(reviewer);
                     if (StringUtils.isEmpty(review)) {
                         commentString.append(delimiter + "\"\"");
@@ -131,6 +138,7 @@ public class ProposalReviewCsvExporter {
                 "\"Judge\"" + delimiter +
                 "\"Average\"" + delimiter +
                 ratingSubHeader.toString() +
+                "\"ShouldAdvance\"" + delimiter +
                 "\"Comment\"" + delimiter +
                 "\"Presented by\"" + "\n";
     }

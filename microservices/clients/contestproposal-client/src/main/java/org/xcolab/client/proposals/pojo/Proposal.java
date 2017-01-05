@@ -993,6 +993,13 @@ public class Proposal extends AbstractProposal {
         return this.proposalRatings.getComment();
     }
 
+    public Boolean getRatingShouldAdvance() {
+        if (this.proposalRatings == null) {
+            return null;
+        }
+        return this.proposalRatings.getShouldAdvance();
+    }
+
     public RestService getRestService() {
         return restService;
     }
