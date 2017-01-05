@@ -141,7 +141,7 @@ public class ContestPreferences {
         prefs.put(SHOW_COUNTS, Boolean.toString(showCounts));
         prefs.put(ALL_CONTESTS_URL, allContestsUrl);
         ConfigurationAttribute configurationAttribute = new ConfigurationAttribute();
-        configurationAttribute.setName("PORTLET_CONTESTS_PREFERENCES");
+        configurationAttribute.setName(ConfigurationAttributeKey.PORTLET_CONTESTS_PREFERENCES.name());
         configurationAttribute.setStringValue(prefs.toString());
         AdminClient.updateConfigurationAttribute(configurationAttribute);
     }

@@ -134,9 +134,7 @@
 	<modules>
 		<module>microservices</module>
 		<module>portlets</module>
-		<module>taglibs</module>
         <module>themes</module>
-        <module>hooks</module>
 		<module>view</module>
 	</modules>
 </project>

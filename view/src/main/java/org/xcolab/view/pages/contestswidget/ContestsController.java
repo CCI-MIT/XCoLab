@@ -30,7 +30,7 @@ public class ContestsController {
     public ContestsController() {
     }
 
-    @GetMapping("/contestsportlet")
+    @GetMapping("/contestswidget")
     public String showContests(HttpServletRequest request, HttpServletResponse response, Model model)  {
 
         ContestPreferences contestPreferences = new ContestPreferences();

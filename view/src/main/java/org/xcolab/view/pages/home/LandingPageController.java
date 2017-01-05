@@ -16,21 +16,27 @@ import javax.servlet.http.HttpServletResponse;
 public class LandingPageController {
 
     private static final long HOME_SPOT_CONTENT_ARTICLE_ID = 1548L;
+    private static final long HOME_BOTTOM_CONTENT_ARTICLE_ID = 1615L;
 
     @RequestMapping(value = "/")
     public String hello(HttpServletRequest request, HttpServletResponse response, Model model) {
         final long contentArticleId = HOME_SPOT_CONTENT_ARTICLE_ID;
         if (contentArticleId > 0) {
-            final ContentArticle contentArticle = ContentsClient
-                    .getContentArticle(contentArticleId);
-            final long version = contentArticle.getMaxVersionId();
-            final ContentArticleVersion contentArticleVersion = ContentsClient
-                    .getContentArticleVersion(version);
-            model.addAttribute("homeSpotContentArticleVersion", contentArticleVersion);
+
+            model.addAttribute("homeSpotContentArticleVersion", getContentArticleVersion(HOME_SPOT_CONTENT_ARTICLE_ID));
+            model.addAttribute("homeBottomContentArticleVersion", getContentArticleVersion(HOME_BOTTOM_CONTENT_ARTICLE_ID));
         }
         return "home/home";
     }
 
+    private ContentArticleVersion getContentArticleVersion(Long contentArticleId){
+        final ContentArticle contentArticle = ContentsClient
+                .getContentArticle(contentArticleId);
+        final long version = contentArticle.getMaxVersionId();
+        final ContentArticleVersion contentArticleVersion = ContentsClient
+                .getContentArticleVersion(version);
+        return contentArticleVersion;
+    }
     @RequestMapping(value = "/login")
     public String login(HttpServletRequest request) {
         return "login";

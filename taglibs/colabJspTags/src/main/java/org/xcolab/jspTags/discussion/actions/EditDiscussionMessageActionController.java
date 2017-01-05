@@ -62,7 +62,8 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
         }
 
         Comment comment = commentClient.getComment(commentId);
-        comment.setContent(HtmlUtil.cleanSome(content, LinkUtils.getBaseUri(request)));
+        //TODO:commented out to compile
+        //comment.setContent(HtmlUtil.cleanSome(content, LinkUtils.getBaseUri(request)));
         commentClient.updateComment(comment);
 
         redirectToReferrer(request, response);
