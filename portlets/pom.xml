@@ -24,14 +24,10 @@
 
         <module>members-portlet</module>
         <module>userprofile-portlet</module>
-
-        <module>search-portlet</module>
         <module>messaging-portlet</module>
         <module>modelsadmin-portlet</module>
         <module>redballoon-portlet</module>
         <module>staffmembers-portlet</module>
-        <module>notificationunregister-portlet</module>
-        <module>randomproposals-portlet</module>
-        <module>wiki-portlet</module>
+
     </modules>
 </project>

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
@@ -48,6 +49,25 @@ public class ContentController {
         return "content/contentPage";
     }
 
+    @GetMapping("/contentdisplay")
+    public String contentDisplay(HttpServletRequest request, Model model, @RequestParam Long contentArticleId) {
+
+        final Long contentArticleIdString = contentArticleId;
+
+        if (contentArticleId > 0) {
+            try {
+                final ContentArticle contentArticle = ContentsClient
+                        .getContentArticle(contentArticleId);
+                final long version = contentArticle.getMaxVersionId();
+                final ContentArticleVersion contentArticleVersion = ContentsClient
+                        .getContentArticleVersion(version);
+                model.addAttribute("contentArticleVersion", contentArticleVersion);
+            } catch (ContentNotFoundException e) {
+                //TODO: logging
+            }
+        }
+        return "content/contentDisplay";
+    }
     private ContentArticleVersion getLatestArticleVersion(ContentArticle article) {
         final long contentVersion = article.getMaxVersionId();
         return ContentsClient.getContentArticleVersion(contentVersion);
