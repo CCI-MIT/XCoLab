@@ -24,6 +24,7 @@ public class ProposalReview {
 
     private Map<ProposalRatingType, Double> ratingAverages;
     private Map<Member, String> reviews;
+    private final Map<Member, Boolean> shouldAdvanceDecisions;
     private Set<Member> reviewers;
     private final Map<Member, Map<ProposalRatingType, Double> > userRatings;
 
@@ -32,6 +33,7 @@ public class ProposalReview {
         this.contestPhase = contestPhase;
         this.proposalUrl = proposalUrl;
         this.reviews = new HashMap<>();
+        this.shouldAdvanceDecisions = new HashMap<>();
         this.reviewers = new HashSet<>();
         this.userRatings = new HashMap<>();
         this.ratingAverages = new HashMap<>();
@@ -40,8 +42,17 @@ public class ProposalReview {
     public void addReview(Member judge, String comment) {
         this.reviews.put(judge, comment);
     }
+
     public String getReview(Member user) {
         return reviews.get(user);
+    }
+
+    public void addShouldAdvanceDecision(Member judge, Boolean decision) {
+        shouldAdvanceDecisions.put(judge, decision);
+    }
+
+    public Boolean getShouldAdvanceDecision(Member judge) {
+        return shouldAdvanceDecisions.get(judge);
     }
 
     public void addRatingAverage(ProposalRatingType ratingType, double average) {
