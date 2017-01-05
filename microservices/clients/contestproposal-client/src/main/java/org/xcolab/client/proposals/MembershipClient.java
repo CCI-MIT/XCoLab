@@ -3,6 +3,7 @@ package org.xcolab.client.proposals;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.client.members.UsersGroupsClient;
 import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -115,7 +116,10 @@ public class MembershipClient {
                 membershipRequest.setReplyDate(new Timestamp((new Date()).getTime()));
                 updateMembershipRequest(membershipRequest);
 
-                UsersGroupsClientUtil.createUsersGroups(userId, membershipRequest.getGroupId());
+                RestService activitiesService  = proposalService.withServiceName(CoLabService.MEMBER.getServiceName());
+                UsersGroupsClient usersGroupsClient = UsersGroupsClient.fromService(activitiesService);
+
+                usersGroupsClient.createUsersGroups(userId, membershipRequest.getGroupId());
             } catch (MembershipRequestNotFoundException ignored) {
 
             }

@@ -109,9 +109,7 @@ public class ProposalMembershipInvitationResponseFilter implements Filter {
 
         if (membershipRequest != null) {
             Member invitee = MembersClient.getMemberUnchecked(membershipRequest.getUserId());
-            if(c.getIsSharedContest()) {
-                LoginRegisterUtil.registerMemberInSharedColab(invitee.getId_());
-            }
+
             if (action.equalsIgnoreCase("ACCEPT")) {
                 membershipClient
                         .approveMembershipRequest(proposalId, membershipRequest.getUserId(),
@@ -123,6 +121,10 @@ public class ProposalMembershipInvitationResponseFilter implements Filter {
                 sendMessage(invitee.getUserId(), recipients, MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,
                         String.format(membershipAcceptedMessage, invitee.getFullName(),
                                 proposalLink));
+
+                if(c.getIsSharedContest()) {
+                    LoginRegisterUtil.registerMemberInSharedColab(invitee.getId_());
+                }
             } else if (action.equalsIgnoreCase("DECLINE")) {
                 membershipClient
                         .denyMembershipRequest(proposalId, membershipRequest.getUserId(),
