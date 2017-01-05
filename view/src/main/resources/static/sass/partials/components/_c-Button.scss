@@ -94,5 +94,5 @@ a.c-Button__secondary, .c-Button__secondary a, input.c-Button__secondary, button
 a.c-Button__admin {
   @include theme-button($c-Button__primary__backgroundColor, grey);
   font-size: 12px;
-  float:left;
+  float:right;
 }

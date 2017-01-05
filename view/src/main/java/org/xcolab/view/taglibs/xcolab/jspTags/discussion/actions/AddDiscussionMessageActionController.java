@@ -43,8 +43,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Controller
-@RequestMapping("view")
+//@Controller
+//@RequestMapping("view")
 public class AddDiscussionMessageActionController extends BaseDiscussionsActionController {
 
     private final static Logger _log = LoggerFactory
@@ -55,7 +55,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
     private final static String COMMENT_ANALYTICS_ACTION = "Comment on contest entry";
     private final static String COMMENT_ANALYTICS_LABEL = "";
 
-    @RequestMapping(params = "action=addDiscussionMessage")
+   // @RequestMapping(params = "action=addDiscussionMessage")
     public void handleAction(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(value = "contestId", required = false) String contestId,
             NewMessageWrapper newMessage)

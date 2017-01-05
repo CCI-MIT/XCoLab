@@ -213,4 +213,8 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newStringAttribute("PORTLET_FEED_PREFERENCES")
                     .build();
 
+    public static final AttributeGetter<String> PORTLET_RANDOM_PROPOSALS_PREFERENCES =
+            ConfigurationAttributes.newStringAttribute("PORTLET_RANDOM_PROPOSALS_PREFERENCES")
+                    .build();
+
 }

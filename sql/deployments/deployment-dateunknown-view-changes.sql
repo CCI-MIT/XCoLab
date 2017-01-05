@@ -5,6 +5,15 @@ INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericVal
 
 INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('PORTLET_CONTESTS_PREFERENCES', '0', '0', '{\"SELECTED_CONTESTS_PREFERENCE\": \"1304501,1304115\",\"TITLE_PREFERENCE\":\"Featured Contests\",\"ALL_CONTESTS_TITLE\":\"See all contests\",\"SHOW_COUNTS\":\"true\",\"ALL_CONTESTS_URL\":\"http://climatecolab.org/contests\",\"FEED_SIZE_PREFERENCE\":\"2\"}', '0');
 INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('PORTLET_FEED_PREFERENCES', '0', '0', '{\"FEED_SIZE_PREF\":\"7\"},{\"FEED_TYPE_PREF\":\"ACTIVITIES\"},{\"FEED_TITLE_PREF\":\"Recent Activities\"},{\"PORTLET_TITLE\":\"\"},{\"FEED_REMOVE_ADMIN\":\"false\"},{\"FEED_SEE_MORE_LINK_SHOWN\":\"false\"},{\"FEED_MAX_LENGTH\":\"0\"},{\"FEED_DISPLAY_STYLE\":\"SHORT\"}', '0');
+INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('PORTLET_RANDOM_PROPOSALS_PREFERENCES', '0', '0',
+ '{
+ \"SELECTED_PHASES_PREFERENCE\": \"1312801\",
+ \"FLAG_FILTER_PREFERENCE\": \"\",
+ \"TITLE_PREFERENCE\": \"Interesting Proposals\",
+ \"ALL_PROPOSALS_TITLE\": \"see all finalists\",
+ \"ALL_PROPOSALS_URL\": \"/community/-/blogs/finalists-selected-vote-to-select-popular-choice-winner-2#Vote\",
+ \"FEED_SIZE_PREFERENCE\": \"4\",
+ \"IS_COMPACT\": \"false\"}', '0');
 
 -- COLAB IMAGE UPDATE ON CONTENT ARTICLE FOR FOOTER
 UPDATE  xcolab_ContentArticleVersion SET `content`='\n\n\n	<div id=\"footleft\"><a href=\"http://cci.mit.edu/\"><img alt=\"MIT\" height=\"51\" src=\"/images/footer_logo.png\" style=\"float: left;\" width=\"210\" /></a></div>\n\n<div id=\"footright\">\n<div id=\"txt\">Your use of the <a href=\"http://cci.mit.edu/\">MIT Center for Collective Intelligence</a> Climate CoLab is subject to our <a href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/us/\">Creative Commons License</a> and other <a href=\"/web/guest/resources/-/wiki/Main/Terms%20of%20use\">Terms of Use</a>.</div>\n\n<div id=\"cc\"><img alt=\"CC\" height=\"31\" src=\"/images/cc_logo.gif\" width=\"88\" /></div>\n</div>\n' WHERE `contentArticleVersionId`='1975';

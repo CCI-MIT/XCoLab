@@ -10,7 +10,7 @@
 <div class="clearfix"><!--  --></div>
 <h2>${portletTitle}</h2>
 <c:if test="${_isAdmin}">
-	<a href="/feedswidget/editPreferences" class="c-Button__admin">Edit preferences</a>
+	<a href="/feedswidget/editPreferences" class="c-Button__admin">Edit preferences</a><br/>
 </c:if>
 <c:choose>
 	<c:when test="${empty activities  }">

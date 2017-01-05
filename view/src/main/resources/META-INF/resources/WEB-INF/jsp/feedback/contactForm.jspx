@@ -18,7 +18,7 @@
 				<h1>Message has been sent</h1>
 			</c:if>
 			<c:if test="${_isAdmin}">
-				<a href="/feedback/editPreferences" class="c-Button__admin">Edit preferences</a>
+				<a href="/feedback/editPreferences" class="c-Button__admin">Edit preferences</a><br/>
 			</c:if>
 			<div id="contactForm" style="${not error ? 'display:none;' : ''};">
 
