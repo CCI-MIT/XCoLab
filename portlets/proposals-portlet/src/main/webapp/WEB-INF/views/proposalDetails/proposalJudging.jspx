@@ -15,12 +15,12 @@
         <form:hidden path="contestPhaseId" />
         <form:hidden path="screeningUserId" id="judgeUserId"/>
 
-        <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}}">
+        <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}">
             <i style="float: right;">Transfer rating/comment for selected judge:</i>
         </c:if>
 
         <h3><c:if test="${proposalsPermissions.canJudgeActions}">Judge </c:if>Rating</h3>
-        <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}}">
+        <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}">
             <select id="judges-select">
                 <c:forEach var="judge" items="${proposal.selectedJudgeUsers}">
                     <proposalsPortlet:userPortraitSelectOption
