@@ -63,6 +63,8 @@
 					</td>
 				</tr>
 			</table>
+			<a href="/" >Return to home </a>
+			<br/>
 			<input type="submit" value="Save" />
 		</form:form>
 	</xcolab:layout>

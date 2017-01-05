@@ -9,12 +9,14 @@ import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.entity.utils.flash.AnalyticsAttribute;
 import org.xcolab.entity.utils.flash.ErrorMessage;
 import org.xcolab.util.enums.theme.ColabTheme;
 import org.xcolab.view.auth.AuthenticationContext;
+import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.auth.login.AuthenticationError;
 
 import java.util.List;
@@ -38,6 +40,9 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
         if (modelAndView != null) {
             final boolean isLoggedIn = authenticationContext.isLoggedIn();
             modelAndView.addObject("_isLoggedIn", isLoggedIn);
+
+
+
             final boolean isImpersonating = authenticationContext.isImpersonating(request);
             modelAndView.addObject("_showImpersonationBar", isImpersonating);
             if (isImpersonating) {
@@ -50,6 +55,8 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
                 modelAndView.addObject("_member", member);
                 modelAndView.addObject("_unreadMessages",
                         MessagingClient.countUnreadMessagesForUser(member.getUserId()));
+                boolean isAdmin = PermissionsClient.canAdminAll(member.getUserId());
+                modelAndView.addObject("_isAdmin", isAdmin);
             }
 
             ColabTheme activeTheme = ConfigurationAttributeKey.ACTIVE_THEME.get();

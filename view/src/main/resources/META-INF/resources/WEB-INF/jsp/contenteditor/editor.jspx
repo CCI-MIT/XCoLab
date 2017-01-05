@@ -46,8 +46,16 @@
 
         <c:set  var="createArticleFolderURL" value="/content-editor/createArticleFolder"></c:set>
 
+        <c:if test="${not empty param.articleId}">
         <script>
             <![CDATA[
+                loadArticleVersionContent("${param.articleId}", "");
+            ]]>
+        </script>
+        </c:if>
+        <script>
+            <![CDATA[
+
             var getArticleVersionURL = '${getArticleVersionURL}';
             var saveArticleVersionURL = '${saveArticleVersionURL}';
             var moveArticleVersionURL = '${moveArticleVersionURL}';

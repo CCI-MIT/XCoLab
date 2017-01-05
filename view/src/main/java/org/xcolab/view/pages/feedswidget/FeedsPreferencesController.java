@@ -42,7 +42,7 @@ public class FeedsPreferencesController {
     	feedDisplayStyles.put("SHORT", "SHORT");
     	model.addAttribute("feedDisplayStyles", feedDisplayStyles);
     	
-        return "editPreferences";
+        return "/feedswidget/editPreferences";
     }
 	
 
@@ -50,7 +50,7 @@ public class FeedsPreferencesController {
     public String savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, FeedsPreferences preferences) throws  IOException {
     	preferences.store();
 		AlertMessage.success("Feeds widget preferences has been saved.").flash(request);
-		return "editPreferences";
+		return "/feedswidget/editPreferences";
 	}
 
 }

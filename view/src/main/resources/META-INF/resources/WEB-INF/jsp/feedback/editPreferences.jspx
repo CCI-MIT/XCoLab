@@ -37,7 +37,7 @@
                     Expand Link Text:<br />
                     <form:input path="expandLinkText" />
                 </p>
-
+                <p><a href="/" >Return to home </a></p>
                 <p>
                     <input type="submit" value="Save" />
                 </p>
