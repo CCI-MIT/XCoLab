@@ -49,7 +49,10 @@
         <c:if test="${not empty param.articleId}">
         <script>
             <![CDATA[
+            jQuery(document).ready(function () {
                 loadArticleVersionContent("${param.articleId}", "");
+            });
+
             ]]>
         </script>
         </c:if>

@@ -1,5 +1,4 @@
 jQuery(function() {
-    console.log("run colab widget")
     jQuery( ".colabwidget" ).each(function( index ) {
         var articleId = jQuery( this ).attr("data-article-id");
         if(articleId){
