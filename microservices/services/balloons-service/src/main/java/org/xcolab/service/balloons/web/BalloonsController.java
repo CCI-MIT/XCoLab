@@ -30,7 +30,7 @@ public class BalloonsController {
     @Autowired
     private BalloonTextDao balloonTextDao;
 
-    @RequestMapping(value = "/balloonLinks/", method = RequestMethod.POST)
+    @RequestMapping(value = "/balloonLinks", method = RequestMethod.POST)
     public BalloonLink createBalloonLink(@RequestBody BalloonLink balloonLink) {
 
         return this.balloonLinkDao.create(balloonLink);
@@ -69,7 +69,7 @@ public class BalloonsController {
         return this.balloonUserTrackingDao.getAllBalloonUserTracking();
     }*/
 
-    @RequestMapping(value = "/balloonUserTrackings/", method = RequestMethod.POST)
+    @RequestMapping(value = "/balloonUserTrackings", method = RequestMethod.POST)
     public BalloonUserTracking createBalloonUserTracking(@RequestBody BalloonUserTracking balloonUserTracking) {
 
         return this.balloonUserTrackingDao.create(balloonUserTracking);
@@ -84,7 +84,7 @@ public class BalloonsController {
         }
     }
 
-    @RequestMapping(value = "/balloonUserTrackings/", method = RequestMethod.GET)
+    @RequestMapping(value = "/balloonUserTrackings", method = RequestMethod.GET)
     public List<BalloonUserTracking> getBalloonUserTrackingByEmail(@RequestParam(required = false) String email) throws NotFoundException {
         if (email == null) {
             throw new NotFoundException();
@@ -132,13 +132,13 @@ public class BalloonsController {
         }
     }
 
-    @RequestMapping(value = "/balloonTexts/", method = RequestMethod.GET)
+    @RequestMapping(value = "/balloonTexts", method = RequestMethod.GET)
     public List<BalloonText> getAllEnabledBalloonLinks() {
 
         return this.balloonTextDao.getEnabledBalloonTexts();
     }
 
-    @RequestMapping(value = "/balloonTexts/", method = RequestMethod.POST)
+    @RequestMapping(value = "/balloonTexts", method = RequestMethod.POST)
     public BalloonText createBalloonText(@RequestBody BalloonText balloonText) {
         return this.balloonTextDao.create(balloonText);
     }
