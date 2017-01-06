@@ -48,6 +48,9 @@ public class ContestModelSettingsBean implements Serializable {
     }
 
     private String getRegionFromDefaultModelSettings(String defaultModelSettingsString) {
+        if(defaultModelSettingsString==null){
+            return "";
+        }
         JSONObject defaultModelSettings = new JSONObject(defaultModelSettingsString);
         return defaultModelSettings.has("region") ? defaultModelSettings.getString("region") : "";
     }
