@@ -27,7 +27,7 @@ public class FilterConfiguration {
 
     @Bean
     public FilterRegistrationBean errorReporting() {
-        return createRegistration(new ErrorReportingFilter(),"/c/reportError");
+        return createRegistration(new ErrorReportingFilter(),"/reportError");
     }
 
     @Bean

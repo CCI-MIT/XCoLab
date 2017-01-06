@@ -5,7 +5,7 @@ server:
   error:
     whitelabel:
       enabled: false
-    path: /spring/error
+    include-stacktrace: always
 
 spring:
   mvc:

@@ -6,21 +6,73 @@
 <xcolab:layout>
     <!--@elvariable id="__errorMessage" type="org.xcolab.entity.utils.flash.ErrorMessage"-->
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+
     <h2>
-        ${not empty __errorMessage ? __errorMessage.title : 'Error'}
+        ${not empty __errorMessage ? __errorMessage.title : 'Oh Snap!'}
     </h2>
     <br />
-    <div class="c-Alert__danger">
-        <c:choose>
-            <c:when test="${not empty __errorMessage}">
-                ${__errorMessage.message}
-            </c:when>
-            <c:otherwise>
-                Sorry, we encountered an error while loading this page.
-            </c:otherwise>
-        </c:choose>
-    </div>
 
+    <c:choose>
+        <c:when test="${not empty __errorMessage}">
+            <div class="c-Alert__danger">
+                <div class="c-Alert__error__message">
+                    ${__errorMessage.message}
+                </div>
+            </div>
+        </c:when>
+        <c:when test="${not empty timestamp}">
+            <!--@elvariable id="timestamp" type="java.util.Date"-->
+            <!--@elvariable id="status" type="java.lang.Integer"-->
+            <!--@elvariable id="error" type="java.lang.String"-->
+            <!--@elvariable id="exception" type="java.lang.String"-->
+            <!--@elvariable id="message" type="java.lang.String"-->
+            <!--@elvariable id="path" type="java.lang.String"-->
+            <!--@elvariable id="trace" type="java.lang.String"-->
+
+            <c:choose>
+                <c:when test="${status == 404}">
+
+                    <div class="c-Alert__info__message">
+                        <p>The page you are looking for does not exist: ${path}</p>
+
+                        <p>
+                            If you followed a link on our site to come here, you can let use know via the <a href="/feedback">feedback form</a>.
+                        </p>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="login_popup_box" style="margin: 0 8px 0 0;padding: 0;">
+                        <form id="signInForm_form" method="post" action="/reportError">
+                            <input name="url" type="hidden" />
+                            <input id="stackTrackeInput" name="stackTrace" type="hidden" value="${trace}"/>
+                            <div class="c-Alert__error__message" role="alert">
+                                <p>Unfortunately your request caused an error. To help us improve our service we would kindly ask you to provide a short description of the steps you took prior to receiving this message.</p>
+                            </div>
+                            <textarea name="description" class="form-control" placeholder="Description" ><!-- empty --></textarea>
+                            <br/>
+                            <div class="c-Alert__info__message" role="alert">
+                                <p>If you provide your e-Mail address below we will let you know as soon as we've fixed the problem</p>
+                            </div>
+                            <input type="text" name="email" class="form-control" placeholder="Email address" />
+                            <div class="clearfix"><!-- --></div>
+                            <div class="btns b-Spacing">
+                                <a class="c-Button__primary c-Header__login__submit" href="javascript:;" onclick="jQuery(this).parents('form').find('input[type=hidden]').filter(':first').val(document.location.href);jQuery(this).parents('form').submit();" id="errorReportPopupSubmit">Submit</a>
+                            </div>
+                        </form>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+
+        </c:when>
+        <c:otherwise>
+            <div class="c-Alert__danger">
+                <div class="c-Alert__error__message">
+                    Sorry, we encountered an error while loading this page.
+                </div>
+            </div>
+        </c:otherwise>
+    </c:choose>
 </xcolab:layout>
 
 </jsp:root>
