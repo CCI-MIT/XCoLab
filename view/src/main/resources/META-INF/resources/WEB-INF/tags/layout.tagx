@@ -125,6 +125,7 @@
     <meta property="og:title" content="${_openGraphShareTitle}" />
     <meta property="og:description" content="${_openGraphShareDescription}" />
     <meta property="og:image" content="${_logoPathBig}" />
+    <link href="${_themeImageFolder}/favicon.ico" rel="Shortcut Icon" />
     <link rel="image_src" type="image/png" href="${_logoPathBig}" />
 </head>
 <body class="${_isHomePage ? 'home' : ''}">

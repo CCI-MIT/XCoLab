@@ -12,4 +12,5 @@ spring:
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jspx
-    ignore-default-model-on-redirect: true
+    favicon:
+      enabled: false
