@@ -27,7 +27,7 @@
         <module>messaging-portlet</module>
         <module>modelsadmin-portlet</module>
         <module>redballoon-portlet</module>
-        <module>staffmembers-portlet</module>
+
 
     </modules>
 </project>
