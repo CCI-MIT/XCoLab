@@ -15,6 +15,14 @@ INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericVal
  \"FEED_SIZE_PREFERENCE\": \"4\",
  \"IS_COMPACT\": \"false\"}', '0');
 
+ INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('PORTLET_STAFF_MEMBERS_PREFERENCES', '0', '0',
+ '{
+ \"COLUMN_AMOUNT\": \"3\",
+ \"PORTLET_TITLE\": \"Project team\",
+ \"DISPLAY_PHOTO\": \"true\",
+ \"DISPLAY_URL\": \"true\",
+ \"CATEGORY_ID\": \"5\"}', '0');
+
 -- COLAB IMAGE UPDATE ON CONTENT ARTICLE FOR FOOTER
 UPDATE  xcolab_ContentArticleVersion SET `content`='\n\n\n	<div id=\"footleft\"><a href=\"http://cci.mit.edu/\"><img alt=\"MIT\" height=\"51\" src=\"/images/footer_logo.png\" style=\"float: left;\" width=\"210\" /></a></div>\n\n<div id=\"footright\">\n<div id=\"txt\">Your use of the <a href=\"http://cci.mit.edu/\">MIT Center for Collective Intelligence</a> Climate CoLab is subject to our <a href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/us/\">Creative Commons License</a> and other <a href=\"/web/guest/resources/-/wiki/Main/Terms%20of%20use\">Terms of Use</a>.</div>\n\n<div id=\"cc\"><img alt=\"CC\" height=\"31\" src=\"/images/cc_logo.gif\" width=\"88\" /></div>\n</div>\n' WHERE `contentArticleVersionId`='1975';
 

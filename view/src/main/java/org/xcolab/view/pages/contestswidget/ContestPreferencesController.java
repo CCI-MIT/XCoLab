@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("edit")
 public class ContestPreferencesController {
 	
     @GetMapping("contestswidget/editPreferences")

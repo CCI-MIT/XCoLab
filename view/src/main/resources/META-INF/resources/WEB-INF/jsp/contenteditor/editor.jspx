@@ -50,7 +50,13 @@
         <script>
             <![CDATA[
             jQuery(document).ready(function () {
+
                 loadArticleVersionContent(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.articleId}, "");
+
+                window.setTimeout(function(){
+                    $("#article-view").unmask()
+                }, 2000);
+
             });
 
             ]]>
