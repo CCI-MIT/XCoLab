@@ -5,11 +5,12 @@ server:
   error:
     whitelabel:
       enabled: false
-    path: /spring/error
+    include-stacktrace: always
 
 spring:
   mvc:
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jspx
-    ignore-default-model-on-redirect: true
+    favicon:
+      enabled: false

@@ -19,6 +19,8 @@ public enum ErrorText {
     ;
 
 
+    //    public static final String ERROR_PATH = "/error";
+        public static final String ERROR_VIEW = "error";
     private final ErrorMessage errorMessage;
 
     ErrorText(ErrorMessage errorMessage) {
@@ -41,6 +43,6 @@ public enum ErrorText {
 
     public String flashAndReturnView(HttpServletRequest request) {
         errorMessage.flash(request);
-        return ErrorController.ERROR_VIEW;
+        return ERROR_VIEW;
     }
 }

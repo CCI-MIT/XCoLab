@@ -1,5 +1,6 @@
 package org.xcolab.view.filters.files;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
 import org.xcolab.client.files.pojo.FileEntry;
@@ -25,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ImageDisplayFilter implements Filter {
 
     private void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException {
+            throws ServletException, IOException {
         String imageId = null;
 
         if (request.getParameter("img_id") != null) {
@@ -68,13 +69,10 @@ public class ImageDisplayFilter implements Filter {
         }
 
         if (request.getRequestURI().contains("user_male_portrait")) {
-//            if (themeDisplay != null) {
-//                pathToFailOverImage =
-//                        path + "../" + themeDisplay.getPathImage() + "user_default.png";
-//            } else {
-            String pathToFailOverImage = path + "../climatecolab-theme/images/user_default.png";
-            //            }
-            sendImageToResponse(request, response, pathToFailOverImage);
+
+            String pathToFailOverImage = ConfigurationAttributeKey
+                    .ACTIVE_THEME.get().getImagePath() + "/user_default.png";
+            response.sendRedirect(pathToFailOverImage);
             return;
         }
         try {

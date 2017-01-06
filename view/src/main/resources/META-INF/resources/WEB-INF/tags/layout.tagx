@@ -10,6 +10,8 @@
 
     <!-- interceptor variables -->
     <!--@elvariable id="_isLoggedIn" type="java.lang.Boolean"-->
+    <!--@elvariable id="_isAdmin" type="java.lang.Boolean"-->
+
     <!--@elvariable id="_showImpersonationBar" type="java.lang.Boolean"-->
     <!--@elvariable id="_realMember" type="org.xcolab.client.members.pojo.Member"-->
     <!--@elvariable id="_member" type="org.xcolab.client.members.pojo.Member"-->
@@ -126,6 +128,7 @@
     <meta property="og:title" content="${_openGraphShareTitle}" />
     <meta property="og:description" content="${_openGraphShareDescription}" />
     <meta property="og:image" content="${_logoPathBig}" />
+    <link href="${_themeImageFolder}/favicon.ico" rel="Shortcut Icon" />
     <link rel="image_src" type="image/png" href="${_logoPathBig}" />
 </head>
 <body class="${_isHomePage ? 'home' : ''}">
@@ -275,36 +278,6 @@
                 </div>
             </div>
             <!-- /SEARCH POPUP -->
-
-            <!-- ERROR REPORT POPUP -->
-            <div id="popup_error_reporting" class="c-Popup__wrapper" style="display: none;">
-                <div class="c-Popup">
-                    <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_error_reporting').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a></div>
-
-                    <h4>Oh Snap!</h4>
-                    <div class="login_popup_box" style="margin: 0 8px 0 0;padding: 0;">
-                        <form id="signInForm_form" method="post" action="/c/reportError">
-                            <input name="url" type="hidden" />
-                            <input id="stackTrackeInput" name="stackTrace" type="hidden" value="${exception.stackTrace}"/>
-                            <div class="c-Alert__info__message">
-                                <p>Unfortunately your request caused an error. To help us improve our service we would kindly ask you to provide a short description of the steps you took prior to receiving this message.</p>
-                            </div>
-                            <textarea name="description" class="c-Header__login__username" style="width:98%; min-height: 50px; margin-top: -10px;" placeholder="Description" ><!-- empty --></textarea>
-                            <br/>
-                            <br/>
-                            <div class="c-Alert__info__message">
-                                <p>If you provide your e-Mail address below we will let you know as soon as we've fixed the problem</p>
-                            </div>
-                            <input type="text" name="email" class="email" style="width:98%; min-height: 25px; padding-left: 2%; margin-top: -10px;" placeholder="Email address" />
-                            <div class="clearfix"><!-- --></div>
-                            <div class="btns">
-                                <a class="c-Button__primary c-Header__login__submit" href="javascript:;" onclick="jQuery(this).parents('form').find('input[type=hidden]').filter(':first').val(document.location.href);jQuery(this).parents('form').submit();" id="errorReportPopupSubmit">Submit</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- /ERROR REPORT POPUP -->
 
         </div>
     </div> <!-- /header -->
@@ -505,7 +478,7 @@
                 <div style="margin-top: 15px;margin-bottom: 15px;">${_colabName} has teamed up with ${_partnerColabName} to run this $contestNameLowerCase. To participate, click "OK" below.
                     When you save your $proposalNameLowerCase, you'll be able to see and make changes to it on either site – all edits and comments will be synced between the two platforms.
                     We'll even create a linked account so you can log into ${_partnerColabName}  with your ${_colabName} username and password.  It's easy!</div>
-                <div style="font-size: small;">${_partnerColabName} will receive your ${_colabName} public profile and email address. Questions? Contact $adminEmail.</div>
+                <div style="font-size: small;">${_partnerColabName} will receive your ${_colabName} public profile and email address. Questions? Contact ${_adminEmail}.</div>
                 <div class="clearfix"><!-- --></div>
                 <div class="login_popup_box">
                     <div class="btns" style="margin-top: 26px;text-align: right;">
