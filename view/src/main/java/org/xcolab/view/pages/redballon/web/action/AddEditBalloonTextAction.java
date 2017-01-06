@@ -2,6 +2,7 @@ package org.xcolab.view.pages.redballon.web.action;
 
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.balloons.BalloonsClient;
@@ -13,11 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("edit")
 public class AddEditBalloonTextAction {
 
-    @RequestMapping(params = {"balloonTextId", "action=addEditBalloonText"})
-    private void execute(HttpServletRequest request, HttpServletResponse response, AddEditBalloonTextBean addEditBalloonTextBean)  {
+    @PostMapping("redballoon/addEditBalloonText")
+    private String execute(HttpServletRequest request, HttpServletResponse response, AddEditBalloonTextBean addEditBalloonTextBean)  {
         BalloonText balloonText;
 
         if (addEditBalloonTextBean.getBalloonTextId() > 0) {
@@ -54,5 +54,6 @@ public class AddEditBalloonTextAction {
             BalloonsClient.createBalloonText(balloonText);
 
         }
+        return "redballoon/view";
     }
 }

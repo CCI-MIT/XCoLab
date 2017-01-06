@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.balloons.BalloonsClient;
@@ -30,11 +31,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-@RequestMapping("view")
+
 @Controller
 public class ProcessUserEmailAction {
 
-    private final static String BALLOON_LINK_PATTERN = "/socialnetworkprize2016";
+    private final static String BALLOON_LINK_PATTERN = "/redballoon/socialnetworkprize2016";
 
     private final static String FROM_ADDRESS = "no-reply@climatecolab.org";
 
@@ -45,7 +46,7 @@ public class ProcessUserEmailAction {
             + "USER_EMAIL";
     public static final String URLPLACEHOLDER = "URLPLACEHOLDER";
 
-    @RequestMapping(params = "action=sendEmail")
+    @PostMapping("redballoon/sendEmail")
     public void processUserEmail(HttpServletRequest request, HttpServletResponse response, Model model,
                                  @Valid UserEmailBean userEmailBean, BindingResult bindingResult) throws IOException, AddressException {
 
@@ -72,7 +73,7 @@ public class ProcessUserEmailAction {
 
             BalloonsClient.createBalloonLink(link);
             sendNotificationEmail(request, but, link);
-            response.sendRedirect(BALLOON_LINK_PATTERN+"/-/link/" + link.getUuid_());
+            response.sendRedirect(BALLOON_LINK_PATTERN+"/link/" + link.getUuid_());
 
         }
     }

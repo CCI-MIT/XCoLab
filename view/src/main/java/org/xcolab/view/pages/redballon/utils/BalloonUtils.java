@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 public class BalloonUtils {
 	
 	private static final Random rand = new Random();
-	private final static String SHARE_LINK_PATTERN = "%s/socialnetworkprize2016/-/link/%s";
+	private final static String SHARE_LINK_PATTERN = "%s/redballoon/socialnetworkprize2016/link/%s";
 	private final static Logger _log = LoggerFactory.getLogger(BalloonUtils.class);
 	
 	public static BalloonUserTracking getBalloonUserTracking(HttpServletRequest request,

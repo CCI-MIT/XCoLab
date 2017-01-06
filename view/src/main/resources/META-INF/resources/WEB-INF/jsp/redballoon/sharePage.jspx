@@ -4,54 +4,55 @@
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
 	xmlns:spring="http://www.springframework.org/tags"
 	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
 	xmlns:addthis="http://www.addthis.com/help/api-spec"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-	xmlns:portlet="http://java.sun.com/portlet_2_0"
 	xmlns:tw="http://api.twitter.com/" version="2.0">
-	<portlet:defineObjects/>
-${balloonText.textBeforeShareButtons }
+	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+	<xcolab:layout>
 
-<script>
-	if (window.location.toString() != '${shareLink}') {
-		window.location = '${shareLink}';
-	}
-</script>
+	${balloonText.textBeforeShareButtons }
 
-<div class="balloonContainer">
-			<input type="text" value="${shareLink}" class="linkContainer balloonInput" />
-			<div class="c-Button__primary">
-				<a href="javascript:;" id="copyButton"
-					data-clipboard-text="${shareLink}">Copy to clipboard</a>
-			</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.3.0/ZeroClipboard.Core.min.js"><!-- --></script>
 
-			<div
-				class="addthis_toolbox addthis_default_style addthis_32x32_style"
-				id="shareLink">
-				<a class="addthis_button_facebook" id="addThisButton1"
-					addthis:title="${balloonText.facebookSubject }"
-					addthis:description="${balloonText.facebookDescription }"
-					addthis:url="${shareLink}/facebook"><!--  --></a> 
-				<a class="addthis_button_twitter" id="addThisButton2"
-					addthis:title="${balloonText.twitterSubject }"
-					addthis:description="${balloonText.twitterDescription }"
-					addthis:url="${shareLink}/twitter"><!--  --></a>
+	<script>
+		if (window.location.toString() != '${shareLink}') {
+			window.location = '${shareLink}';
+		}
+	</script>
 
-				<a class="addthis_button_email" id="addThisButton2"
-					addthis:title="Be a part of the solution in the MIT @ClimateCoLab or spread the word to win some of the $2,000 #SocialNetworkPrize"
-					addthis:url="${shareLink}/email"><!--  --></a>
-			</div>
-			<div class="clear"><!--  --></div>
-</div>
-		<script type="text/javascript">
-			if (typeof (addthis) != 'undefined') {
-				addthis.toolbox("#shareLink");
-			}
-			$(function() {
-				initZeroClipboard()
-			});
-		</script>
+	<div class="balloonContainer">
+				<input id="linkToCopy" type="text" value="${shareLink}" class="linkContainer balloonInput" />
+				<div class="c-Button__primary">
+					<a href="javascript:;" id="copyButton" data-clipboard-target="#linkToCopy"
+						data-clipboard-text="${shareLink}">Copy to clipboard</a>
+				</div>
+				<br/>
+				<div
+					class="addthis_toolbox addthis_default_style addthis_32x32_style"
+					id="shareLink">
+					<a class="addthis_button_facebook" id="addThisButton1"
+						addthis:title="${balloonText.facebookSubject }"
+						addthis:description="${balloonText.facebookDescription }"
+						addthis:url="${shareLink}/facebook"><!--  --></a>
+					<a class="addthis_button_twitter" id="addThisButton2"
+						addthis:title="${balloonText.twitterSubject }"
+						addthis:description="${balloonText.twitterDescription }"
+						addthis:url="${shareLink}/twitter"><!--  --></a>
 
-${balloonText.textAfterShareButtons }
+					<a class="addthis_button_email" id="addThisButton2"
+						addthis:title="Be a part of the solution in the MIT @ClimateCoLab or spread the word to win some of the $2,000 #SocialNetworkPrize"
+						addthis:url="${shareLink}/email"><!--  --></a>
+				</div>
+				<div class="clear"><!--  --></div>
+	</div>
+			<script type="text/javascript">
+				if (typeof (addthis) != 'undefined') {
+					addthis.toolbox("#shareLink");
+				}
+			</script>
 
+	${balloonText.textAfterShareButtons }
+	</xcolab:layout>
 
 </jsp:root>

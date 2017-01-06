@@ -5,6 +5,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -32,10 +35,10 @@ import javax.xml.parsers.ParserConfigurationException;
 @Controller
 public class BalloonController {
 
-    @GetMapping("/redballoon")
+    @RequestMapping(value ={"/redballoon/{context}/link/{linkUuid}","/{context}"},  method = RequestMethod.GET)
     public String showBalloon(Model model, HttpServletRequest request, HttpServletResponse response,
-                              @RequestParam(required = false) String linkUuid,
-                              @RequestParam(required = false) String context,
+                              @PathVariable(required = false) String linkUuid,
+                              @PathVariable(required = false) String context,
                               @Valid UserEmailBean userEmailBean, BindingResult bindingResult)
             throws IOException, ParserConfigurationException {
 
@@ -102,7 +105,7 @@ public class BalloonController {
 
             model.addAttribute("shareLink", BalloonUtils.getBalloonUrlForLink(request, bl));
             model.addAttribute("balloonLink", bl);
-            return "sharePage";
+            return "redballoon/sharePage";
         } else {
             if (userEmailBean != null && userEmailBean.getEmail() != null) {
                 model.addAttribute("userEmailBean", userEmailBean);
@@ -115,7 +118,7 @@ public class BalloonController {
                 }
                 model.addAttribute("userEmailBean", ueb);
             }
-            return "view";
+            return "redballoon/view";
         }
     }
 }

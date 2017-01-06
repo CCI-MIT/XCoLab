@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.redballon.web.action;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -10,12 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("edit")
 public class DeleteBalloonTextAction {
 
-	@RequestMapping(params={"balloonTextId", "action=deleteBalloonText"})
-	private void execute(HttpServletRequest request, HttpServletResponse response, @RequestParam long balloonTextId) {
+	@PostMapping("redballoon/deleteBalloonText")
+	private String execute(HttpServletRequest request, HttpServletResponse response, @RequestParam long balloonTextId) {
 		BalloonsClient.deleteBalloonText(balloonTextId);
+		return "redballoon/view";
 	}
+
 
 }
