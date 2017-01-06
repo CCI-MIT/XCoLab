@@ -1,18 +1,8 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"><!-- --></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.55.0-2013.01.23/jquery.blockUI.min.js"><!-- --></script>
-	<script type="text/javascript" src="https://code.jquery.com/ui/1.10.1/jquery-ui.js"><!-- --></script>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jcarousel/0.3.1/jquery.jcarousel-core.min.js"><!-- --></script>
-    <script src="${pageContext.request.contextPath}/js/codemirror/codemirror.js"><!-- --></script>
-    <script src="${pageContext.request.contextPath}/js/codemirror/javascript.js"><!-- --></script>
-    <script src="${pageContext.request.contextPath}/js/codemirror/fullscreen.js"><!-- --></script>
-    <script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"><!-- --></script>
-	<link rel="stylesheet" href="/climatecolab-theme/css/style_additions.css"><!-- --></link>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"><!-- --></link>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/codemirror/codemirror.css"><!-- --></link>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/codemirror/fullscreen.css"><!-- --></link>
+    <script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"><!-- --></script>
 
     <!--@elvariable id="model" type="org.xcolab.view.pages.modeling.admin.ModelWrapper"-->
 
