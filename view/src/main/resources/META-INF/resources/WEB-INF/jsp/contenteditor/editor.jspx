@@ -50,7 +50,7 @@
         <script>
             <![CDATA[
             jQuery(document).ready(function () {
-                loadArticleVersionContent("${param.articleId}", "");
+                loadArticleVersionContent(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.articleId}, "");
             });
 
             ]]>

@@ -21,3 +21,10 @@ UPDATE  xcolab_ContentArticleVersion SET `content`='\n\n\n	<div id=\"footleft\">
 -- UPDATE FOR HOME BOTTOM ARTICLE
 UPDATE `xcolab_ContentArticleVersion` SET `content`='<div class=\"inner\">\n	<div class=\"home-left\">\n		<div class=\"colabwidget\" data-url=\"/contestswidget\"></div>\n		<div class=\"colabwidget\" data-url=\"/feedswidget\"></div>\n	</div>\n	<div class=\"home-right\">\n		<div class=\"colabwidget\" data-article-id=\"2\"></div>\n		<div class=\"colabwidget\" data-article-id=\"3\"></div>\n	</div>\n</div>\n' WHERE `contentArticleVersionId`='3577';
 
+
+
+-- bottom content article
+INSERT INTO xcolab_ContentArticle (`contentArticleId`, `authorId`, `createDate`, `maxVersionId`, `folderId`, `visible`) VALUES ('1615', '0', '2017-01-03 10:57:40', '3577', '5', '1');
+
+INSERT INTO xcolab_ContentArticleVersion (`contentArticleVersionId`, `contentArticleId`, `folderId`, `authorId`, `createDate`, `title`, `content`) VALUES ('3577', '1615', '5', '0', '2017-01-01 10:57:40', 'HomeBottom', '<div class=\"inner\"> 	<div class=\"home-left\"> 		<div class=\"colabwidget\" data-url=\"/contestswidget\"></div> 		<div class=\"colabwidget\" data-url=\"/feedswidget\"></div> 		<div class=\"colabwidget\" data-url=\"/randomproposalswidget\"></div> 	</div> 	<div class=\"home-right\"> 		<div class=\"colabwidget\" data-article-id=\"2\"></div> 		<div class=\"colabwidget\" data-article-id=\"3\"></div> 	</div> </div> ');
+
