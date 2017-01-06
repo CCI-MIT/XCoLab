@@ -64,6 +64,23 @@
                 </c:otherwise>
             </c:choose>
 
+            <c:if test="${_isAdmin}">
+                <div class="c-Alert__info__message b-Spacing" role="alert">
+                    <h2>Admin Error Details:</h2>
+                    <div>Status: ${status}</div>
+                    <div>Error: ${error}</div>
+                    <div>Exception: ${exception}</div>
+                    <div>Message: ${message}</div>
+                    <div>Path: ${path}</div>
+                    <div>
+                        Stack trace: (hidden)
+                        <div style="display: none">
+                            ${trace}
+                        </div>
+                    </div>
+                </div>
+            </c:if>
+
         </c:when>
         <c:otherwise>
             <div class="c-Alert__danger">

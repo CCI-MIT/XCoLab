@@ -9,6 +9,8 @@
 
     <!-- interceptor variables -->
     <!--@elvariable id="_isLoggedIn" type="java.lang.Boolean"-->
+    <!--@elvariable id="_isAdmin" type="java.lang.Boolean"-->
+
     <!--@elvariable id="_showImpersonationBar" type="java.lang.Boolean"-->
     <!--@elvariable id="_realMember" type="org.xcolab.client.members.pojo.Member"-->
     <!--@elvariable id="_member" type="org.xcolab.client.members.pojo.Member"-->
@@ -475,7 +477,7 @@
                 <div style="margin-top: 15px;margin-bottom: 15px;">${_colabName} has teamed up with ${_partnerColabName} to run this $contestNameLowerCase. To participate, click "OK" below.
                     When you save your $proposalNameLowerCase, you'll be able to see and make changes to it on either site – all edits and comments will be synced between the two platforms.
                     We'll even create a linked account so you can log into ${_partnerColabName}  with your ${_colabName} username and password.  It's easy!</div>
-                <div style="font-size: small;">${_partnerColabName} will receive your ${_colabName} public profile and email address. Questions? Contact $adminEmail.</div>
+                <div style="font-size: small;">${_partnerColabName} will receive your ${_colabName} public profile and email address. Questions? Contact ${_adminEmail}.</div>
                 <div class="clearfix"><!-- --></div>
                 <div class="login_popup_box">
                     <div class="btns" style="margin-top: 26px;text-align: right;">
