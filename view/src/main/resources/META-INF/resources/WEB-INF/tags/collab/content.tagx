@@ -1,0 +1,40 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0" version="2.0">
+
+    <jsp:directive.attribute name="articleId" type="java.lang.Long" required="true" rtexprvalue="true" description="Content article id" />
+    <jsp:directive.attribute name="withTitle" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the title should be included" />
+
+    <collab:loadContent articleId="${articleId}">
+        <!--@elvariable id="contentArticle" type="org.xcolab.client.contents.pojo.ContentArticle"-->
+        <!--@elvariable id="contentArticleVersion" type="org.xcolab.client.contents.pojo.ContentArticleVersion"-->
+        <c:choose>
+            <c:when test="${not empty contentArticleVersion}">
+                <c:if test="${withTitle}">
+                    <h1>${contentArticleVersion.title}</h1>
+                    <br />
+                </c:if>
+                <c:if test="${_isAdmin}">
+                    <a href="/content-editor/?articleId=${contentArticleVersion.contentArticleId}"
+                       class="c-Button__admin">
+                        Edit article
+                    </a>
+                    <br/>
+                </c:if>
+                <c:if test="${not empty contentArticleVersion}">
+                    ${contentArticleVersion.content}
+                </c:if>
+            </c:when>
+            <c:otherwise>
+                <c:if test="${_isAdmin}">
+                    <a href="/content-editor" class="c-Button__admin">Go to content editor</a>
+                    <br/>
+                    <div class="c-Alert__danger c-Alert__error__message">
+                        Error while loading content article ${articleId}, it might not exist.
+                    </div>
+                </c:if>
+            </c:otherwise>
+        </c:choose>
+    </collab:loadContent>
+
+</jsp:root>

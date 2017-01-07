@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
-import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.errors.ErrorText;
@@ -35,13 +34,10 @@ public class ContentController {
                 return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
             }
 
-            final ContentArticleVersion contentArticleVersion = getLatestArticleVersion(contentArticle);
-            model.addAttribute("contentArticleVersion", contentArticleVersion);
+            model.addAttribute("contentArticleId", contentPage.getContentArticleId());
 
             if (contentPage.getMenuArticleId() != null) {
-                final ContentArticle menuArticle = ContentsClient.getContentArticle(contentPage.getMenuArticleId());
-                final ContentArticleVersion menuArticleVersion = getLatestArticleVersion(menuArticle);
-                model.addAttribute("menuArticleVersion", menuArticleVersion);
+                model.addAttribute("menuArticleId", contentPage.getMenuArticleId());
             }
         } catch (ContentNotFoundException e) {
             return ErrorText.NOT_FOUND.flashAndReturnView(request);
@@ -49,27 +45,9 @@ public class ContentController {
         return "content/contentPage";
     }
 
-    @GetMapping("/contentdisplay")
+    @GetMapping("/contentwidget")
     public String contentDisplay(HttpServletRequest request, Model model, @RequestParam Long contentArticleId) {
-
-        final Long contentArticleIdString = contentArticleId;
-
-        if (contentArticleId > 0) {
-            try {
-                final ContentArticle contentArticle = ContentsClient
-                        .getContentArticle(contentArticleId);
-                final long version = contentArticle.getMaxVersionId();
-                final ContentArticleVersion contentArticleVersion = ContentsClient
-                        .getContentArticleVersion(version);
-                model.addAttribute("contentArticleVersion", contentArticleVersion);
-            } catch (ContentNotFoundException e) {
-                //TODO: logging
-            }
-        }
-        return "content/contentDisplay";
-    }
-    private ContentArticleVersion getLatestArticleVersion(ContentArticle article) {
-        final long contentVersion = article.getMaxVersionId();
-        return ContentsClient.getContentArticleVersion(contentVersion);
+        model.addAttribute("articleId", contentArticleId);
+        return "content/widget";
     }
 }

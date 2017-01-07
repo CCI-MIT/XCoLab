@@ -32,6 +32,22 @@
   	
     </tag>
 
+    <tag>
+        <name>loadContent</name>
+        <tag-class>org.xcolab.view.tags.LoadContentArticleTag</tag-class>
+        <attribute>
+            <name>articleId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Long</type>
+        </attribute>
+    </tag>
+
+    <tag-file>
+        <name>content</name>
+        <path>/WEB-INF/tags/collab/content.tagx</path>
+    </tag-file>
+
     <tag-file>
         <description>Contest link</description>
         <name>contestLink</name>
