@@ -58,32 +58,50 @@ public class ProposalMembershipInvitationResponseFilter implements Filter {
 
         long membershipId = parseLongParam(request.getParameter("requestId"));
         long proposalId = parseLongParam(request.getParameter("proposalId"));
-
+        long contestId = parseLongParam(request.getParameter("contestId"));
         String action = request.getParameter("do");
 
-        MembershipRequest membershipRequest =
-                MembershipClientUtil.getMembershipRequest(membershipId);
+
+        Contest c = ContestClientUtil.getContest(contestId);
+        MembershipClient membershipClient;
+        ProposalClient proposalClient;
+        ProposalAttributeClient proposalAttributeClient;
+        if(c.getIsSharedContestInForeignColab()){
+            RestService proposalService = new RefreshingRestService(CoLabService.PROPOSAL,
+                    ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                    ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+
+            proposalClient = ProposalClient.fromService(proposalService);
+            membershipClient = MembershipClient.fromService(proposalService);
+            proposalAttributeClient = ProposalAttributeClient.fromService(proposalService);
+        }else{
+            membershipClient = MembershipClientUtil.getClient();
+            proposalClient = ProposalClientUtil.getClient();
+            proposalAttributeClient = ProposalAttributeClientUtil.getClient();
+        }
+
+        MembershipRequest membershipRequest = membershipClient.getMembershipRequest(membershipId);
 
         List<Long> recipients = new ArrayList<>();
-        List<Member> contributors = ProposalClientUtil.getProposalMembers(proposalId);
+        List<Member> contributors = proposalClient.getProposalMembers(proposalId);
 
         for (Member user : contributors) {
             recipients.add(user.getUserId());
         }
 
-        //		TODO: get right client
-        Proposal proposal = ProposalClientUtil.getProposal(proposalId);
+        Proposal proposal = proposalClient.getProposal(proposalId);
         ContestType contestType = proposal.getContest().getContestType();
 
-        String proposalName = ProposalAttributeClientUtil
+        String proposalName = proposalAttributeClient
                 .getProposalAttribute(proposalId, ProposalAttributeKeys.NAME, 0L).getStringValue();
         String proposalLink = String.format("<a href='%s'>%s</a>",
                 proposal.getProposalLinkUrl(proposal.getContest()), proposalName);
 
         if (membershipRequest != null) {
             Member invitee = MembersClient.getMemberUnchecked(membershipRequest.getUserId());
+
             if (action.equalsIgnoreCase("ACCEPT")) {
-                MembershipClientUtil
+                membershipClient
                         .approveMembershipRequest(proposalId, membershipRequest.getUserId(),
                                 membershipRequest, "The invitation was accepted.",
                                 invitee.getUserId());
@@ -93,8 +111,12 @@ public class ProposalMembershipInvitationResponseFilter implements Filter {
                 sendMessage(invitee.getUserId(), recipients, MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,
                         String.format(membershipAcceptedMessage, invitee.getFullName(),
                                 proposalLink));
+
+                if(c.getIsSharedContest()) {
+                    LoginRegisterUtil.registerMemberInSharedColab(invitee.getId_());
+                }
             } else if (action.equalsIgnoreCase("DECLINE")) {
-                MembershipClientUtil
+                membershipClient
                         .denyMembershipRequest(proposalId, membershipRequest.getUserId(),
                                 membershipId, "The invitation was rejected.", invitee.getUserId());
                 final String membershipRejectedMessage = TemplateReplacementUtil
