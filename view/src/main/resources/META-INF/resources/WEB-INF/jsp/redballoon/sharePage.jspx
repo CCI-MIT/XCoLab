@@ -13,18 +13,19 @@
 
 	${balloonText.textBeforeShareButtons }
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/zeroclipboard/2.3.0/ZeroClipboard.Core.min.js"><!-- --></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"><!-- --></script>
 
 	<script>
 		if (window.location.toString() != '${shareLink}') {
 			window.location = '${shareLink}';
 		}
+		new Clipboard('#copyButton');
 	</script>
 
 	<div class="balloonContainer">
-				<input id="linkToCopy" type="text" value="${shareLink}" class="linkContainer balloonInput" />
+				<input id="linkToCopy" type="text" value="${shareLink}" style="border: 1px solid #DDD;color: #8d8d8d;font-weight: 200;margin-bottom: 7px;font-size: 20px;width: 307px;margin: 10px 0px 10px 0px;" class="linkContainer balloonInput" />
 				<div class="c-Button__primary">
-					<a href="javascript:;" id="copyButton" data-clipboard-target="#linkToCopy"
+					<a href="javascript:;" style="cursor:pointer" id="copyButton" data-clipboard-target="#linkToCopy"
 						data-clipboard-text="${shareLink}">Copy to clipboard</a>
 				</div>
 				<br/>

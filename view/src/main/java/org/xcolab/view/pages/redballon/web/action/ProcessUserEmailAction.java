@@ -46,7 +46,7 @@ public class ProcessUserEmailAction {
             + "USER_EMAIL";
     public static final String URLPLACEHOLDER = "URLPLACEHOLDER";
 
-    @PostMapping("redballoon/sendEmail")
+    @PostMapping("/redballoon/sendEmail")
     public void processUserEmail(HttpServletRequest request, HttpServletResponse response, Model model,
                                  @Valid UserEmailBean userEmailBean, BindingResult bindingResult) throws IOException, AddressException {
 

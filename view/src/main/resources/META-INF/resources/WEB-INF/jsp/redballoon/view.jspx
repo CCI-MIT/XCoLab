@@ -9,14 +9,14 @@
 		<div class="balloonContainer">
 		${balloonText.textBeforeForm }
 
-		<form:form modelAttribute="userEmailBean" action="/redBalloon/sendEmailURL" id="sendUserEmailForm">
+		<form:form modelAttribute="userEmailBean" action="/redballoon/sendEmail" id="sendUserEmailForm" method="post">
 
 			<div>
 				<form:checkbox path="acceptTos" />${balloonText.acceptTosText }<br />
 				<form:errors path="acceptTos" class="c-Alert c-Alert__error"/>
 			</div>
 
-			<form:input path="email" id="email" cssClass="text profileInput balloonInput" required="true" placeholder="Please enter your e-Mail address" />
+			<form:input path="email" id="email" style="border: 1px solid #DDD;color: #8d8d8d;font-weight: 200;margin-bottom: 7px;font-size: 20px;width: 307px;margin: 10px 0px 10px 0px;"  cssClass="text profileInput balloonInput" required="true" placeholder="Please enter your e-Mail address" />
 			<div class="c-Button__primary">
 				<a href="#" onclick="javascript:jQuery('#sendUserEmailForm').submit();">Request your unique link</a>
 			</div><br />
