@@ -1,4 +1,4 @@
-package org.xcolab.util.http.exceptions;
+package org.xcolab.util.http.exceptions.translation;
 
 import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpResponse;
@@ -11,9 +11,13 @@ import org.xcolab.util.http.interceptors.UriAwareResponseInterceptor;
 import java.io.IOException;
 import java.net.URI;
 
-public class RestTemplateErrorHandler implements ResponseErrorHandler {
-
+public class TranslationErrorHandler implements ResponseErrorHandler {
     private final ResponseErrorHandler defaultErrorHandler = new DefaultResponseErrorHandler();
+    private final ExceptionTranslator<?> exceptionTranslator;
+
+    public TranslationErrorHandler(ExceptionTranslator<?> exceptionTranslator) {
+        this.exceptionTranslator = exceptionTranslator;
+    }
 
     @Override
     public boolean hasError(ClientHttpResponse clientHttpResponse) throws IOException {
@@ -33,7 +37,7 @@ public class RestTemplateErrorHandler implements ResponseErrorHandler {
                 httpMethod = uriAwareResponse.getHttpMethod();
                 requestUri = uriAwareResponse.getUri();
             }
-            ServiceExceptionTranslatorUtil.translateException(e, httpMethod, requestUri);
+            exceptionTranslator.translateException(e, httpMethod, requestUri);
         }
     }
 }

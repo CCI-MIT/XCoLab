@@ -1,4 +1,4 @@
-package org.xcolab.util.http.exceptions;
+package org.xcolab.util.http.exceptions.translation.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

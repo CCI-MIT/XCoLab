@@ -9,8 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.RequestHelper;
 import org.xcolab.util.http.UriBuilder;
+import org.xcolab.util.http.exceptions.translation.TranslationErrorHandler;
+import org.xcolab.util.http.exceptions.translation.facebook.FacebookExceptionTranslator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +31,9 @@ public final class FacebookUtil {
 
     private static final String GRAPH_URL = "https://graph.facebook.com";
     private static final String TOKEN_URL = "https://graph.facebook.com/oauth/access_token";
+
+    private static final RequestHelper requestHelper = new RequestHelper(
+            new TranslationErrorHandler(new FacebookExceptionTranslator()));
 
     private FacebookUtil() {
     }
@@ -60,7 +65,7 @@ public final class FacebookUtil {
                 .queryParam("redirect_uri", getAuthRedirectURL(request))
                 .queryParam("client_secret", ConfigurationAttributeKey.FACEBOOK_APPLICATION_SECRET.get())
                 .queryParam("code", code);
-        final String requestResult = RequestUtils.post(uriBuilder, null, String.class);
+        final String requestResult = requestHelper.post(uriBuilder, null, String.class);
         //TODO: copied from liferay - this could be nicer
         if (StringUtils.isNotEmpty(requestResult)) {
             int x = requestResult.indexOf("access_token=");
@@ -81,7 +86,7 @@ public final class FacebookUtil {
         UriBuilder uriBuilder = new UriBuilder(UriComponentsBuilder.fromHttpUrl(GRAPH_URL + path))
                 .queryParam("access_token", accessToken)
                 .queryParam("fields", fields);
-        final String json = RequestUtils.getUnchecked(uriBuilder, String.class);
+        final String json = requestHelper.getUnchecked(uriBuilder, String.class);
         try {
             return new JSONObject(json);
         } catch (JSONException e) {

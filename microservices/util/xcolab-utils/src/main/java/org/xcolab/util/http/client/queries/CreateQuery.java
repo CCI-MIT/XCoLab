@@ -1,6 +1,6 @@
 package org.xcolab.util.http.client.queries;
 
-import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestResource;
 
@@ -18,7 +18,7 @@ public class CreateQuery<ElementT> implements Query<ElementT, ElementT> {
 
     @Override
     public ElementT execute() {
-        return RequestUtils.post(uriBuilder, pojo, entityType);
+        return ServiceRequestUtils.post(uriBuilder, pojo, entityType);
     }
 
     @Override

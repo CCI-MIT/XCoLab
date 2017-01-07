@@ -1,6 +1,6 @@
 package org.xcolab.util.http.client.queries;
 
-import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.caching.CacheKey;
 import org.xcolab.util.http.caching.CacheRetention;
@@ -21,17 +21,17 @@ public class GetQuery<ElementT, IdT> implements CacheableQuery<ElementT, Element
     @Override
     public ElementT execute() {
         if (cacheKey == null) {
-            return RequestUtils.getUnchecked(uriBuilder, entityType);
+            return ServiceRequestUtils.getUnchecked(uriBuilder, entityType);
         } else {
-            return RequestUtils.getUnchecked(uriBuilder, entityType, cacheKey, cacheRetention);
+            return ServiceRequestUtils.getUnchecked(uriBuilder, entityType, cacheKey, cacheRetention);
         }
     }
 
     public ElementT executeChecked() throws EntityNotFoundException {
         if (cacheKey == null) {
-            return RequestUtils.get(uriBuilder, entityType);
+            return ServiceRequestUtils.get(uriBuilder, entityType);
         } else {
-            return RequestUtils.get(uriBuilder, entityType, cacheKey, cacheRetention);
+            return ServiceRequestUtils.get(uriBuilder, entityType, cacheKey, cacheRetention);
         }
     }
 

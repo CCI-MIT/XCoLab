@@ -8,7 +8,7 @@ import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttributeDto;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttributeDto;
-import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
@@ -161,7 +161,7 @@ public final class ProposalAttributeClient {
     public ProposalAttribute setProposalAttribute(ProposalAttribute proposalAttribute,
             Long authorId) {
         //TODO: replace with better cache invalidation mechanism
-        RequestUtils.invalidateCache(CacheKeys.withClass(ProposalDto.class)
+        ServiceRequestUtils.invalidateCache(CacheKeys.withClass(ProposalDto.class)
                 .withParameter("proposalId", proposalAttribute.getProposalId())
                 .withParameter("includeDeleted", false).build(), CacheRetention.REQUEST);
         return proposalAttributeResource.service("setProposalAttribute", ProposalAttributeDto.class)

@@ -1,4 +1,4 @@
-package org.xcolab.util.http.exceptions;
+package org.xcolab.util.http.exceptions.translation.service;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,8 +8,13 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 
+import org.xcolab.util.http.exceptions.Http400BadRequestException;
+import org.xcolab.util.http.exceptions.Http500InternalServiceException;
+import org.xcolab.util.http.exceptions.ServiceNotFoundException;
+import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
+
 @SuppressWarnings("ThrowableInstanceNeverThrown")
-public class ServiceExceptionTranslatorUtilTest {
+public class ServiceExceptionTranslatorTest {
 
     private static final String HTTP_500_RUNTIME_EXCEPTION_STRING = "{\"timestamp\":1471028566513,"
                     + "\"status\":500, \"error\":\"Internal Server Error\""
@@ -48,12 +53,15 @@ public class ServiceExceptionTranslatorUtilTest {
 
     @Test(expected = ServiceNotFoundException.class)
     public void testGetExceptionObject__ServiceNotFoundException() throws Exception {
-        ServiceExceptionTranslatorUtil.getExceptionObject(HTTP_404_EMPTY_CLIENT_ERROR_EXCEPTION, null, null);
+        final ServiceExceptionTranslator translator = new ServiceExceptionTranslator();
+        translator.getExceptionObject(
+                HTTP_404_EMPTY_CLIENT_ERROR_EXCEPTION, null, null);
     }
 
     @Test
     public void testGetExceptionObject__500InternalServerError() throws Exception {
-        final HttpServiceExceptionObject exceptionObject = ServiceExceptionTranslatorUtil
+        final ServiceExceptionTranslator translator = new ServiceExceptionTranslator();
+        final HttpServiceExceptionObject exceptionObject = translator
                 .getExceptionObject(HTTP_500_SERVER_ERROR_EXCEPTION, null, null);
         Assert.assertNotNull(exceptionObject);
         Assert.assertEquals("Status code parsed wrong",
@@ -70,17 +78,20 @@ public class ServiceExceptionTranslatorUtilTest {
 
     @Test(expected = Http500InternalServiceException.class)
     public void testTranslateException__500InternalServerError() throws Exception {
-        ServiceExceptionTranslatorUtil.translateException(HTTP_500_SERVER_ERROR_EXCEPTION, null, null);
+        final ServiceExceptionTranslator translator = new ServiceExceptionTranslator();
+        translator.translateException(HTTP_500_SERVER_ERROR_EXCEPTION, null, null);
     }
 
     @Test(expected = Http400BadRequestException.class)
     public void testTranslateException__400BadRequest() throws Exception {
-        ServiceExceptionTranslatorUtil.translateException(HTTP_400_BAD_REQUEST_EXCEPTION, null, null);
+        final ServiceExceptionTranslator translator = new ServiceExceptionTranslator();
+        translator.translateException(HTTP_400_BAD_REQUEST_EXCEPTION, null, null);
     }
 
     @Test(expected = UncheckedEntityNotFoundException.class)
     public void testTranslateException__404NotFound() throws Exception {
-        ServiceExceptionTranslatorUtil.translateException(HTTP_404_NOT_FOUND_EXCEPTION, null, null);
+        final ServiceExceptionTranslator translator = new ServiceExceptionTranslator();
+        translator.translateException(HTTP_404_NOT_FOUND_EXCEPTION, null, null);
     }
 
     private static class ContentTypeJsonHeaders extends HttpHeaders {

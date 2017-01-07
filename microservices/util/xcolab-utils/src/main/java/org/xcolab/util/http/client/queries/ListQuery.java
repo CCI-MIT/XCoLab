@@ -3,7 +3,7 @@ package org.xcolab.util.http.client.queries;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.util.CollectionUtils;
 
-import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.caching.CacheKey;
 import org.xcolab.util.http.caching.CacheRetention;
@@ -26,9 +26,9 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
     @Override
     public List<T> execute() {
         if (cacheKey == null) {
-            return RequestUtils.getList(uriBuilder, typeReference);
+            return ServiceRequestUtils.getList(uriBuilder, typeReference);
         } else {
-            return RequestUtils.getList(uriBuilder, typeReference, cacheKey, cacheRetention);
+            return ServiceRequestUtils.getList(uriBuilder, typeReference, cacheKey, cacheRetention);
         }
     }
 

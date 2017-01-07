@@ -1,6 +1,6 @@
 package org.xcolab.util.http.client.queries;
 
-import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.caching.CacheKey;
 import org.xcolab.util.http.client.RestResource;
@@ -19,9 +19,9 @@ public class UpdateQuery<ElementT, IdT> implements Query<ElementT, Boolean> {
     @Override
     public Boolean execute() {
         if (cacheKey == null) {
-            return RequestUtils.put(uriBuilder, pojo);
+            return ServiceRequestUtils.put(uriBuilder, pojo);
         } else {
-            return RequestUtils.put(uriBuilder, pojo, cacheKey);
+            return ServiceRequestUtils.put(uriBuilder, pojo, cacheKey);
         }
     }
 

@@ -3,7 +3,7 @@ package org.xcolab.util.http.client;
 import org.springframework.util.Assert;
 
 import org.xcolab.util.clients.CoLabService;
-import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.UriProvider;
 import org.xcolab.util.http.client.interfaces.HttpEndpoint;
 
@@ -11,7 +11,7 @@ public class RestService implements HttpEndpoint {
 
     private static final String SCHEMA = "HTTP://";
     private static final String DEFAULT_HOST_NAME = "localhost";
-    private static final String DEFAULT_PORT = RequestUtils.getServicesPort();
+    private static final String DEFAULT_PORT = ServiceRequestUtils.getServicesPort();
 
     private final String serviceName;
     private final UriProvider uriProvider;
