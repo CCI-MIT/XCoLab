@@ -2,6 +2,7 @@ package org.xcolab.portlets.proposals.view.action;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import com.google.common.collect.ImmutableSet;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
@@ -10,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
-
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -27,7 +27,9 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
-import org.xcolab.entity.utils.portlet.PortletUtil;
+import org.xcolab.entity.utils.judging.ProposalJudgingCommentHelper;
+import org.xcolab.entity.utils.judging.ProposalReview;
+import org.xcolab.entity.utils.judging.ProposalReviewCsvExporter;
 import org.xcolab.entity.utils.portlet.session.SessionErrors;
 import org.xcolab.entity.utils.portlet.session.SessionMessages;
 import org.xcolab.portlets.proposals.exceptions.ProposalsAuthorizationException;
@@ -41,9 +43,6 @@ import org.xcolab.portlets.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.entity.utils.judging.ProposalJudgingCommentHelper;
-import org.xcolab.entity.utils.judging.ProposalReview;
-import org.xcolab.entity.utils.judging.ProposalReviewCsvExporter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -226,6 +225,9 @@ public class JudgeProposalActionController {
                         proposalReview.addReview(wrapper.getUser(), rating.getComment_());
                         occurringJudges.add(wrapper.getUser());
                     }
+                    if (StringUtils.isNotBlank(rating.getOtherDataString())) {
+                        proposalReview.addShouldAdvanceDecision(wrapper.getUser(), Boolean.parseBoolean(rating.getOtherDataString()));
+                    }
                 }
 
                 //take the average for each type
@@ -293,11 +295,11 @@ public class JudgeProposalActionController {
 
     @RequestMapping(params = {"action=saveJudgingFeedback"})
     public void saveJudgingFeedback(ActionRequest request, Model model, ActionResponse response,
-                                    @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
-                                    BindingResult result)
+            @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean, BindingResult result)
             throws IOException {
 
         if (result.hasErrors()) {
+            //TODO: redirect to error page
             return;
         }
 
@@ -309,16 +311,16 @@ public class JudgeProposalActionController {
         Boolean isPublicRating = permissions.getCanPublicRating();
 
         if (judgeProposalFeedbackBean.getScreeningUserId() != null) {
-
             member = MembersClient.getMemberUnchecked(judgeProposalFeedbackBean.getScreeningUserId());
         }
 
         // Security handling
         if (!(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(member) || isPublicRating)) {
+            //TODO: redirect to error page
             return;
         }
 
-        if(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(member)){
+        if (permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(member)) {
             isPublicRating = false;
         }
 
@@ -438,29 +440,35 @@ public class JudgeProposalActionController {
         Map<Long, String> ratingsFromForm = ratingBean.getRatingValues();
         //now update the values and save or create a new rating of not existent yet
         if (ratingsFromForm != null) {
-            boolean commentAdded = false;
+            boolean commentAndAdvanceAdded = false;
             for (Map.Entry<Long, String> entry : ratingsFromForm.entrySet()) {
                 ProposalRating existingRating = typeToRatingMap.get(entry.getKey());
                 long newRatingValueId = Long.parseLong(entry.getValue());
 
+                final Boolean shouldAdvance = ratingBean.getShouldAdvanceProposal();
                 if (existingRating != null) {
                     //rating exists. update and save
                     existingRating.setRatingValueId(newRatingValueId);
-                    //convention: save comment in first type
-                    if (!commentAdded) {
+                    //convention: save comment and shouldAdvance in first type
+                    if (!commentAndAdvanceAdded) {
                         existingRating.setComment_(ratingBean.getComment());
                         existingRating.setCommentEnabled(true);
-                        commentAdded = true;
+                        existingRating.setOtherDataString(shouldAdvance != null
+                                ? shouldAdvance.toString() : "");
+                        commentAndAdvanceAdded = true;
                     } else {
                         existingRating.setComment_(null);
+                        existingRating.setOtherDataString("");
                         existingRating.setCommentEnabled(false);
                     }
                     ProposalJudgeRatingClientUtil.updateProposalRating(existingRating);
                 } else {
                     String comment = null;
-                    if (!commentAdded) {
+                    String shouldAdvanceString = "";
+                    if (!commentAndAdvanceAdded) {
                         comment = ratingBean.getComment();
-                        commentAdded = true;
+                        shouldAdvanceString = shouldAdvance != null ? shouldAdvance.toString() : "";
+                        commentAndAdvanceAdded = true;
                     }
                     //create a new rating
                     ProposalRating proposalRating = new ProposalRating();
@@ -469,16 +477,15 @@ public class JudgeProposalActionController {
                     proposalRating.setUserId(currentUserId);
                     proposalRating.setRatingValueId(newRatingValueId);
                     proposalRating.setComment_(comment);
-                    proposalRating.setOtherDataString("");
-                    if (comment != null && !comment.isEmpty()) {
+                    proposalRating.setOtherDataString(shouldAdvanceString);
+                    if (StringUtils.isNotEmpty(comment)) {
                         proposalRating.setCommentEnabled(true);
-                    }else{
+                    } else {
                         proposalRating.setCommentEnabled(false);
                     }
                     proposalRating.setOnlyForInternalUsage(isPublicRating);
 
-                    proposalRating = ProposalJudgeRatingClientUtil.createProposalRating(proposalRating);
-
+                    ProposalJudgeRatingClientUtil.createProposalRating(proposalRating);
                 }
             }
         }

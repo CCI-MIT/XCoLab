@@ -12,12 +12,15 @@ import java.util.List;
 import java.util.Map;
 
 public class RatingBean {
+
     private List<ProposalRatingTypeWrapper> ratingTypes;
     private Map<Long, String> ratingValues;
 
     private Long contestPhaseId;
 
     private String comment;
+
+    private Boolean shouldAdvanceProposal;
 
     private Long screeningUserId;
 
@@ -33,9 +36,11 @@ public class RatingBean {
 
         //get the existing ratings from the wrapper
         for (ProposalRating ratingWrapper : wrapper.getRatings()) {
-            ratingValues.put(ratingWrapper.getRatingTypeId(), String.valueOf(ratingWrapper.unwrap().getRatingValueId()));
+            ratingValues.put(ratingWrapper.getRatingTypeId(),
+                    String.valueOf(ratingWrapper.unwrap().getRatingValueId()));
         }
         comment = wrapper.getRatingComment();
+        shouldAdvanceProposal = wrapper.getRatingShouldAdvance();
     }
 
     public RatingBean() {
@@ -50,7 +55,7 @@ public class RatingBean {
     }
 
     public String getComment() {
-       return comment;
+        return comment;
     }
 
     public void setComment(String comment) {
@@ -69,7 +74,19 @@ public class RatingBean {
         return ratingTypes;
     }
 
-    public void setScreeningUserId (Long screeningUserId){this.screeningUserId=screeningUserId;}
+    public Long getScreeningUserId() {
+        return screeningUserId;
+    }
 
-    public Long getScreeningUserId(){return screeningUserId;}
+    public void setScreeningUserId(Long screeningUserId) {
+        this.screeningUserId = screeningUserId;
+    }
+
+    public Boolean getShouldAdvanceProposal() {
+        return shouldAdvanceProposal;
+    }
+
+    public void setShouldAdvanceProposal(Boolean shouldAdvanceProposal) {
+        this.shouldAdvanceProposal = shouldAdvanceProposal;
+    }
 }

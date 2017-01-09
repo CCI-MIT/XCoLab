@@ -960,7 +960,7 @@ public class Proposal extends AbstractProposal {
 
         List<ProposalRating> proposalRatings = ProposalJudgeRatingClientUtil
                 .getProposalRatingsByProposalUserContestPhase(
-                        userId, this.getProposalId(), contestPhase.getContestPhasePK());
+                        this.getProposalId(), contestPhase.getContestPhasePK(), userId);
         ProposalRatings wrapper = new ProposalRatings(userId, proposalRatings);
         return wrapper.isReviewComplete();
 
@@ -991,6 +991,13 @@ public class Proposal extends AbstractProposal {
             return "";
         }
         return this.proposalRatings.getComment();
+    }
+
+    public Boolean getRatingShouldAdvance() {
+        if (this.proposalRatings == null) {
+            return null;
+        }
+        return this.proposalRatings.getShouldAdvance();
     }
 
     public RestService getRestService() {

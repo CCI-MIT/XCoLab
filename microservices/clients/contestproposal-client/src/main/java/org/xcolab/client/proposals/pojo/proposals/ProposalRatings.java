@@ -1,6 +1,8 @@
 package org.xcolab.client.proposals.pojo.proposals;
 
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
@@ -17,6 +19,7 @@ public class ProposalRatings {
     private final List<ProposalRating> proposalRatings;
     private final Member author;
     private String comment;
+    private Boolean shouldAdvance;
     private ContestPhase contestPhase;
 
 
@@ -71,6 +74,22 @@ public class ProposalRatings {
                 }
             }
             return "";
+        }
+    }
+
+    public Boolean getShouldAdvance() {
+        if (shouldAdvance != null){
+            return shouldAdvance;
+        } else {
+            for (ProposalRating r : proposalRatings) {
+                if (r.unwrap().getCommentEnabled()) {
+                    final String shouldAdvanceString = r.unwrap().getOtherDataString();
+                    shouldAdvance = StringUtils.isNotBlank(shouldAdvanceString)
+                            ? Boolean.parseBoolean(shouldAdvanceString) : null;
+                    return shouldAdvance;
+                }
+            }
+            return null;
         }
     }
 
