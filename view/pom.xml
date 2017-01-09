@@ -193,16 +193,6 @@
             <artifactId>emails-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-		<dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
-            <artifactId>filtering-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
-            <artifactId>flagging-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client-jackson</artifactId>
@@ -247,6 +237,11 @@
             <groupId>edu.mit.cci.roma</groupId>
             <artifactId>client</artifactId>
             <version>1.4-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind.version}</version>
         </dependency>
     </dependencies>
 
