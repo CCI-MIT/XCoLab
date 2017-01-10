@@ -1,0 +1,54 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core" 
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+
+	<!--@elvariable id="showCountdown" type="java.lang.Boolean"-->
+
+	<div class="c-Headline contest-page">
+		<div class="contest-image">
+			<img src="${contest.logoPath}" width="52" height="52" alt="Contest Image" />
+		</div>
+		<h1>${contest.contestShortName}</h1>
+		<c:if test="${contestPhase.active and contestPhase.millisecondsTillEnd > 0 and showCountdown}">
+			<div class="days-left">
+				<span>
+					<collab:formatTimeSpan value="${contestPhase.millisecondsTillEnd }" />
+				</span>
+				<collab:formatTimeSpan value="${contestPhase.millisecondsTillEnd }" returnUnit="true" />
+				until ${contestPhase.name} ends
+			</div>
+		</c:if>
+	</div>
+    <!-- /c-Headline -->
+
+	<div class="c-TitleBar contestSummary">
+		<jsp:directive.include file="./header_contestPhases.jspx" />
+		<c:if test="${proposalsDisplayPermissions.canSeeSubscribeContestButton || proposalsDisplayPermissions.canSeeUnsubscribeContestButton}">
+			<portlet:actionURL var="subscribeContestURL">
+				<portlet:param name="contestId" value="${contest.contestPK }" />
+				<portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
+				<portlet:param name="action" value="subscribeContest" />
+			</portlet:actionURL>
+			<div class="c-TitleBar__actionButton c-TitleBar__element right">
+				<span class="fieldWithTooltip tooltipAbove">
+					<a href="${proposalsPermissions.canSubscribeContest ? subscribeContestURL : '#' }" onclick="if(!deferUntilLogin()) return false;" >
+						<c:choose>
+							<c:when test="${proposalsDisplayPermissions.canSeeSubscribeContestButton }">
+								<img src="${themeDisplay.pathThemeImages}/subscribe-light.png" />Subscribe
+							</c:when>
+							<c:otherwise>
+								<img src="${themeDisplay.pathThemeImages}/unsubscribe-light.png" />Unsubscribe
+							</c:otherwise>
+						</c:choose>
+					</a>
+				</span>
+				<div class="c-Tooltip">
+					Receive daily activity digests about this ${contestType.contestName} and its ${contestType.proposalNamePlural} via email or under "My subscriptions".
+					<div class="c-Tooltip__arrow"><!--  --></div>
+				</div>
+			</div>
+		</c:if>
+	</div>
+	<div class="shadebar"><!--  --></div>
+</jsp:root>

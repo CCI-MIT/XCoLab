@@ -1,0 +1,162 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
+
+    <liferay-theme:defineObjects />
+
+    <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
+    <!--@elvariable id="contest" type="org.xcolab.client.contest.pojo.Contest"-->
+    <!--@elvariable id="contestPhase" type="org.xcolab.wrappers.BaseContestPhaseWrapper"-->
+    <!--@elvariable id="contestType" type="org.xcolab.client.contest.pojo.ContestType"-->
+
+    <jsp:directive.attribute name="proposals" type="java.util.Collection" required="true" rtexprvalue="true" description="proposals" />
+    <jsp:directive.attribute name="showShadebar" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If shadebar should be shown" />
+
+    <c:if test="${showShadebar }">
+	    <div class="shadebar"><!--  --></div>
+    </c:if>
+
+    <c:forEach var="proposal" items="${proposals }">
+        <!--@elvariable id="proposal" type="org.xcolab.portlets.proposals.wrappers.ProposalWrapper"-->
+
+        <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions}"><!-- Judges -->
+            <c:choose>
+                <c:when test="${proposal.judgeReviewStatus.statusValue == 1}">
+                    <c:set var="additionalCSSClasses" scope="session" value="propbox-red"/>
+                </c:when>
+                <c:when test="${proposal.judgeReviewStatus.statusValue == 2}">
+                    <c:set var="additionalCSSClasses" scope="session" value="propbox-green"/>
+                </c:when>
+                <c:otherwise>
+                    <c:set var="additionalCSSClasses" scope="session" value=""/>
+                </c:otherwise>
+            </c:choose>
+        </c:if>
+        <tr class="c-Table__row ${proposal.featured and (not contest.hideRibbons or proposalsPermissions.canAdminAll) ? 'featured' : ''}
+                    ${contest.isContestCompleted(contestPhase) ? 'completed' : ''}
+                    ${additionalCSSClasses}">
+            <td class="c-Table__cell propname-authors no-border">
+                <c:if test="${proposal.ribbonWrapper.ribbon != null and proposal.ribbonWrapper.ribbon > 0 and (not contest.hideRibbons or proposalsPermissions.canAdminAll)}">
+                    <div class="ribbonPlaceholder">
+                        <span class="fieldWithTooltip">
+                            <img src="${themeDisplay.pathThemeImages}/icon-prize${proposal.ribbonWrapper.ribbon}.png" />
+                        </span>
+                        <div class="c-Tooltip">
+                            ${proposal.ribbonWrapper.ribbonText}
+                        </div>
+                    </div>
+                </c:if>
+                <h4>
+                    <collab:proposalLink proposal="${proposal}" phase="${contestPhase}" escape="false" />
+                    /&#160;
+                    <c:choose>
+                        <c:when test="${not empty proposal.team}">
+                            <collab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.team}"/>
+                        </c:when>
+                        <c:when test="${proposal.members.size() > 1}">
+                            <collab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.author.screenName} and ${proposal.members.size() - 1} ${proposal.members.size() > 2 ? 'others' : 'other'}"/>
+                        </c:when>
+                        <c:otherwise>
+                            <collab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.author.screenName}"/>
+                        </c:otherwise>
+                    </c:choose>
+                </h4>
+            </td>
+            <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
+                <td class="c-Table__cell b-layout__center votes no-border">
+                    <div class="highlight">
+                        <img src="${themeDisplay.pathThemeImages}/icon-proposal-vote-small.png" />
+                        <collab:proposalLink proposal="${proposal}" text="${proposal.votesCount}" />
+                    </div>
+                </td>
+            </c:if>
+            <c:if test="${not contestPhase.canVote}">
+                <td class="c-Table__cell b-layout__center supporters no-border">
+                    <div class="highlight">
+                        <img src="${themeDisplay.pathThemeImages}/icon-proposal-support.png" />
+                        <collab:proposalLink proposal="${proposal}" text="${proposal.supportersCount}" tab="TEAM"/>
+                    </div>
+                </td>
+            </c:if>
+            <td class="c-Table__cell b-layout__center comments no-border">
+                <div class="highlight">
+                    <img src="${themeDisplay.pathThemeImages}/icon-proposal-comments.png" />
+                    <collab:proposalLink proposal="${proposal}" text="${proposal.commentsCount}" tab="COMMENTS" />
+                </div>
+            </td>
+            <c:if test="${not contest.isContestCompleted(contestPhase) }">
+                <td class="c-Table__cell b-layout__center modified no-border">
+                    <fmt:formatDate value="${proposal.lastModifiedDateForContestPhase}" type="date" dateStyle="short" timeZone="America/New_York" />
+                </td>
+                <td class="c-Table__cell b-layout__center contributors no-border">
+                    <c:choose>
+                        <c:when test="${proposal.open}">
+                            Anyone
+                        </c:when>
+                        <c:otherwise>
+                            Team only
+                        </c:otherwise>
+                    </c:choose>
+                </td>
+            </c:if>
+            <c:if test="${not contest.isContestCompleted(contestPhase) and (proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions)}">
+                <td class="c-Table__cell b-layout__center advancing-status no-border">
+                    <c:if test="${proposalsPermissions.canFellowActions}">
+                        <proposalsPortlet:proposalJudgingIcon value="${proposal.screeningStatus.statusValue}" />
+                        <div class="c-Tooltip">
+                            <c:choose>
+                                <c:when test="${proposal.screeningStatus.statusValue == 0}">
+                                    Fellows have not decided yet if the ${contestType.proposalName} will be forwarded to judges.
+                                </c:when>
+                                <c:when test="${proposal.screeningStatus.statusValue == 1}">
+                                    Fellows decided that the ${contestType.proposalName} will not proceed to next round.
+                                </c:when>
+                                <c:otherwise>
+                                    Fellows decided that the ${contestType.proposalName} should be forwarded to judges.
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </c:if>
+                    <proposalsPortlet:proposalJudgingIcon value="${proposal.judgeStatus.statusValue}" />
+                    <div class="c-Tooltip">
+                        <c:choose>
+                            <c:when test="${proposal.judgeStatus.statusValue == 0}">
+                                The judges have not rated this ${contestType.proposalName} yet.
+                            </c:when>
+                            <c:when test="${proposal.judgeStatus.statusValue == 1}">
+                                Fellows decided that the ${contestType.proposalName} will not proceed to next round.
+                            </c:when>
+                            <c:otherwise>
+                                All judges have completed the reviewing process.
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                    <proposalsPortlet:proposalJudgingIcon value="${proposal.overallStatus.statusValue}" />
+                    <div class="c-Tooltip">
+                        <c:choose>
+                            <c:when test="${proposal.overallStatus.statusValue == 0}">
+                                The ${contestType.proposalName} review has not been done yet.
+                            </c:when>
+                            <c:when test="${proposal.overallStatus.statusValue == 1}">
+                                ${contestType.proposalName} review has been prepared and ${contestType.proposalName} will not advance.
+                            </c:when>
+                            <c:otherwise>
+                                ${contestType.proposalName} review has been prepared and ${contestType.proposalName} will advance.
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </td>
+            </c:if>
+        </tr>
+        <tr class="c-Table__row ${proposal.featured and (not contest.hideRibbons or proposalsPermissions.canAdminAll) ? 'featured' : ''}
+                    ${contest.isContestCompleted(contestPhase) ? 'completed' : ''}
+                    ${additionalCSSClasses}">
+            <td class="c-Table__cell" colspan="10">
+                ${proposal.pitch}
+            </td>
+        </tr>
+    </c:forEach>
+</jsp:root>

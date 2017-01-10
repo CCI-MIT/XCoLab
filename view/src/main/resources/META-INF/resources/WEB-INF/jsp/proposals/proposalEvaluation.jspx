@@ -1,0 +1,73 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          xmlns:evaluationTagFiles="urn:jsptagdir:/WEB-INF/tags/evaluations"
+          version="2.0">
+
+    <!--@elvariable id="move" type="java.lang.Boolean"-->
+    <!--@elvariable id="showPublicRatingForm" type="java.lang.Boolean"-->
+    <!--@elvariable id="showEvaluation" type="java.lang.Boolean"-->
+    <!--@elvariable id="proposalRevisionPhaseActive" type="java.lang.Boolean"-->
+    <!--@elvariable id="evaluationDiscussionId" type="java.lang.Long"-->
+    <!--@elvariable id="averageRatingsPerPhase" type="org.xcolab.client.proposals.pojo.proposals.ProposalRatings>"-->
+
+    <jsp:directive.include file="./init_proposal_tab.jspx" />
+
+    <jsp:directive.include file="./proposalDetails/header.jspx"/>
+
+    <!-- ProposalJudgesTabController -->
+    <jsp:useBean id="judgeProposalBean" scope="request" class="org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean"/>
+
+    <div id="content">
+
+        <c:if test="${showPublicRatingForm}">
+            <h2>${contestType.proposalName} rating</h2>
+            <c:choose>
+                <c:when test="${proposalsPermissions.canPublicRating}">
+                    <div class="addpropbox evaluation">
+                        <jsp:directive.include file="./proposalDetails/proposalJudging.jspx"/>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    Please log in to tell us your opinion about this ${contestType.proposalName}. If you don't already have an account on
+                    our site, you can become a member for free <a href="web/guest/loginregister">here</a>.
+                </c:otherwise>
+            </c:choose>
+        </c:if>
+
+        <c:choose>
+            <c:when test="${showEvaluation}">
+                <p>Please find below the ${colabName} judging results for your ${contestType.proposalName}.</p>
+                <c:forEach var="ratingWrapper" items="${averageRatingsPerPhase}">
+                    <h2>${ratingWrapper.contestPhase}</h2>
+
+                    <div class="addpropbox evaluation">
+                        <proposalsPortlet:proposalRatingEvaluation showRating="true" showPhase="false"
+                                                                   showRatingDescription="false"
+                                                                   wrapper="${ratingWrapper}"/>
+                    </div>
+                </c:forEach>
+
+                <h2>Discussion area</h2>
+                <c:if test="${proposalsPermissions.canEdit and proposalRevisionPhaseActive}">
+                    <p> After you have integrated the Judges' feedback into your ${contestType.proposalName}, please write a short summary
+                        of the changes made in the discussion area below. This summary will serve as a guide for the
+                        selection of Finalists. </p>
+                </c:if>
+                <c:choose>
+                    <c:when test="${contest.isSharedContestInForeignColab}">
+                        <evaluationTagFiles:evaluationComments threadId="${evaluationDiscussionId }" sharedColabId="${contest.contestPK}" />
+                    </c:when>
+                    <c:otherwise>
+                        <evaluationTagFiles:evaluationComments threadId="${evaluationDiscussionId}"  />
+                    </c:otherwise>
+                </c:choose>
+            </c:when>
+            <c:otherwise>
+                <h2>The results of the judging period will be visible here.</h2>
+            </c:otherwise>
+        </c:choose>
+
+    </div>
+
+</jsp:root>

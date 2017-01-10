@@ -1,0 +1,255 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
+          xmlns:liferay-ui="http://liferay.com/tld/ui">
+
+    <!--@elvariable id="isFrozen" type="java.lang.Boolean"-->
+    <!--@elvariable id="hasAlreadyBeenPromoted" type="java.lang.Boolean"-->
+
+
+    <jsp:directive.include file="./init_proposal_tab.jspx" />
+
+    <jsp:directive.include file="./proposalDetails/header.jspx"/>
+
+    <!--ProposalJudgesTabController-->
+    <jsp:useBean id="proposalAdvancingBean" scope="request" type="org.xcolab.portlets.proposals.requests.ProposalAdvancingBean"/>
+
+    <style>h3 {
+        margin: 20px 0 10px 0 !important;
+    }</style>
+
+    <portlet:actionURL var="saveAdvanceDetailsURL">
+        <portlet:param name="contestId" value="${contest.contestPK }"/>
+        <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
+        <portlet:param name="proposalId" value="${proposal.proposalId }"/>
+        <portlet:param name="action" value="saveAdvanceDetails"/>
+    </portlet:actionURL>
+    <portlet:resourceURL id="getJudgingCsv" var="getJudgingCsvURL">
+    </portlet:resourceURL>
+
+    <div id="content" class="${proposalsPermissions.canJudgeActions and !proposalsPermissions.canFellowActions ? 'judgeReadOnly' : ''}">
+        This page is shared by ${contestType.contestName} Fellows only.  Advisors and Judges will not be able to view this page.
+        <br/>
+        <div style="display: inline-block;	float:right; margin-top: 20px;">
+            <liferay-ui:icon image="download" url="${resourceUrl}" /><a href="#" onClick="location.href = '${getJudgingCsvURL}'"> Judges rating as CSV</a>
+        </div>
+        <h1 style="margin-top:15px;">Rating</h1>
+
+        <c:if test="${!proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions}">
+            <div class="judging_left">
+                <c:choose>
+                    <c:when test="${not proposal.allJudgesReviewFinished}">
+                        Not all judges have completed the review yet or this ${contestType.proposalName} was not forwarded to any judges.
+                    </c:when>
+                    <c:otherwise>
+                        <form:form id="fellowRatingForm" action="${saveAdvanceDetailsURL}" method="post"
+                                   commandName="proposalAdvancingBean">
+                            <form:hidden path="contestPhaseId" />
+                            <div class="addpropbox">
+                                <h3>Advance ${contestType.proposalName} to Next Round?</h3>
+                                <form:select id="advanceDecision" path="advanceDecision" items="${advanceOptions}" itemValue="attributeValue" itemLabel="description"/>
+
+                                <div id="comment-container">
+                                    <h3>Comment to send to author:</h3>
+                                    <i>Your comment will be visible to the public.</i>
+
+                                    <div class="form-errors"><!--  -->
+                                        <form:errors cssClass="c-Alert c-Alert__error" path="advanceComment" />
+                                    </div>
+                                    <a name="advanceCommentAnchor" id="advanceCommentAnchor"></a>
+                                    <form:textarea id="advanceComment" cssClass="c-Comment__box" path="advanceComment" style="width:100%;"/>
+                                    <div id="comment-headers">
+                                        <c:forEach var="template" items="${emailTemplates}">
+                                            <div class="${template.key}">
+                                                ${template.value.header}
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                    <div id="comment-footers">
+                                        <c:forEach var="template" items="${emailTemplates}">
+                                            <div class="${template.key}">
+                                                ${template.value.footer}
+                                            </div>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                                <a href="${contest.emailTemplateUrl}" target="_blank">Go to Email Template</a>
+                                <div id="advance-save-buttons">
+                                    <c:choose>
+                                        <c:when test="${isFrozen}">
+                                            <p class="submitStatus">
+                                                <strong>The advancement is finalized and may not be changed anymore.</strong>
+                                            </p>
+                                            <c:if test="${proposalsPermissions.canAdminAll}">
+                                                <a id="submit-advancing-1" style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="#">
+                                                    Save
+                                                </a>
+                                                <input type="submit" id="submit-unfreeze" name="isUnfreeze" style="display:none" value="true" />
+                                                <a id="submit-unfreeze-link" style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="#">
+                                                    Unfreeze
+                                                </a>
+                                            </c:if>
+                                        </c:when>
+                                        <c:when test="${proposalsPermissions.canFellowActions}">
+                                            <a id="submit-advancing-2" style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="#">
+                                                Save
+                                            </a>
+                                            <div id="advancement-freeze-button">
+                                                <input type="submit" id="submit-freeze" name="isFreeze" style="display:none" value="true" />
+                                                <a id="submit-freeze-link" style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="#">
+                                                    Freeze
+                                                </a>
+                                            </div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <p class="submitStatus error">
+                                                <strong>You don't have the required permission to change the status of this ${contestType.proposalName}.</strong>
+                                            </p>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <div id="advancement-force-button">
+                                        <c:if test="${proposalsPermissions.canAdminAll and not hasAlreadyBeenPromoted}">
+                                                <input type="submit" id="submit-forcePromotion" name="isForcePromotion" style="display:none" value="true" />
+                                                <a id="submit-forcePromotion-link" style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="#">
+                                                    Execute judging decision
+                                                </a>
+                                        </c:if>
+                                    </div>
+                                    <c:if test="${hasAlreadyBeenPromoted}">
+                                        <p class="submitStatus error">
+                                            <strong>This ${contestType.proposalName} has already been promoted to the next phase. Thus, changes have no effect.</strong>
+                                        </p>
+                                    </c:if>
+
+                                </div>
+
+                            </div>
+                        </form:form>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+        </c:if>
+        <div class="judging_right">
+            <div class="addpropbox">
+                <h2>Evaluation criteria</h2>
+
+                <proposalsPortlet:ratingCriteriaText ratingTypes="${proposalAdvancingBean.ratingTypes}" />
+                </div>
+        </div>
+        <div class="judging_comments">
+            <h2>Comments by Judges</h2>
+            <c:choose>
+                <c:when test="${judgeRatings.size() > 0}">
+                    <div class="addpropbox">
+                        <proposalsPortlet:proposalRatingComments showRating="true" proposalRatingsWrappers="${judgeRatings}" proposalId="${proposal.proposalId}" />
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <p>No comments by judges yet.</p>
+                </c:otherwise>
+            </c:choose>
+            <h2>Comments by Fellows</h2>
+            <c:choose>
+                <c:when test="${fellowRatings.size() > 0}">
+                <div class="addpropbox">
+                    <proposalsPortlet:proposalRatingComments showRating="${proposalsPermissions.canAdminAll ? 'true' : 'false'}" proposalRatingsWrappers="${fellowRatings}" proposalId="${proposal.proposalId}" />
+                </div>
+                </c:when>
+                <c:otherwise>
+                    <p>No comments by fellows yet.</p>
+                </c:otherwise>
+            </c:choose>
+        </div>
+    </div>
+
+    <script>
+        jQuery( document ).ready(function() {
+            jQuery("#submit-forcePromotion-link").click(function () {
+                disableDirtyCheck();
+                $('#submit-forcePromotion').click();
+            });
+
+            jQuery("#submit-unfreeze-link").click(function () {
+                disableDirtyCheck();
+                $('#submit-unfreeze').click();
+            });
+
+            jQuery("#submit-freeze-link").click(function () {
+                disableDirtyCheck();
+                $('#submit-freeze').click();
+            });
+
+            jQuery("#submit-advancing-1").click(function () {
+                disableDirtyCheck();
+                jQuery(this).parents('form').submit();
+            });
+
+            jQuery("#submit-advancing-2").click(function () {
+                disableDirtyCheck();
+                jQuery(this).parents('form').submit();
+            });
+
+            jQuery('#advanceDecision').change(function() {
+                refreshCommentHeader();
+                refreshEmailTemplates();
+            });
+
+            refreshCommentHeader();
+            refreshEmailTemplates();
+        });
+
+        function refreshCommentHeader() {
+            var advanceDecisionIdx = document.getElementById("advanceDecision").selectedIndex;
+            if (advanceDecisionIdx > 0) {
+                $("#advancement-force-button").show();
+                $("#advancement-freeze-button").show();
+                $('#comment-container').slideDown();
+            } else {
+                $("#advancement-force-button").hide();
+                $("#advancement-freeze-button").hide();
+                $('#comment-container').slideUp();
+            }
+        }
+
+        function refreshEmailTemplates() {
+            jQuery("#comment-footers").find("> div").hide();
+            jQuery("#comment-headers").find("> div").hide();
+
+            var action = $("#advanceDecision").val();
+            var classToBeShown = "";
+            if (action == "1") {
+                classToBeShown = "ADVANCING_DO_NOT_ADVANCE";
+            } else if (action == "2") {
+                classToBeShown = "ADVANCING_ADVANCE_TO_SEMIFINALIST";
+            }
+            if (classToBeShown != "") {
+                jQuery("#comment-headers ."+classToBeShown).add("#comment-footers ."+classToBeShown).show();
+            }
+        }
+
+        function copyCommentsToTextArea(element) {
+            var text = "";
+            $(".comment-wrapper", $(element).closest(".c-Comment__list")).each(function() {text+="\n\n"+$(this).text()});
+            var $advanceCommentElement = $("#advanceComment");
+            $advanceCommentElement.val($advanceCommentElement.val()+text);
+        }
+    </script>
+    <c:if test="${!proposalsPermissions.canFellowActions or (isFrozen and not proposalsPermissions.canAdminAll)}">
+        <script>
+            var $fellowRatingFormElement = $("#fellowRatingForm");
+            $fellowRatingFormElement.find("select").add($fellowRatingFormElement.find("input")).add($fellowRatingFormElement.find("textarea")).attr("disabled", "disabled");
+        </script>
+    </c:if>
+    <c:if test="${not proposal.allJudgesReviewFinished}">
+        <script>
+            $(".judging_comments .c-Button__primary").hide();
+        </script>
+    </c:if>
+    <script type="text/javascript">
+        jQuery(function() {
+            enableDirtyCheck();
+        });
+    </script>
+</jsp:root>

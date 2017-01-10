@@ -1,0 +1,195 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+    xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+
+    <portlet:resourceURL id="proposalShare-send" var="sendURL">
+    </portlet:resourceURL>
+    <portlet:resourceURL id="proposalShare-validate" var="validationURL">
+    </portlet:resourceURL>
+
+    <div id="share-proposal-container">
+        <h4>Share this ${contestType.proposalName}</h4>
+        <form class="compose-message-form">
+            <div class="errors-container">
+                &#160;
+            </div>
+            <table border="0" cellpadding="0" cellspacing="0" class="colab" style="margin-top:0px;">
+                <tr>
+                    <td class="b" width="60px">To:</td>
+                    <td>
+                        <input id="recipient-input" type="text" class="profile_input messageReceipients"/>
+
+
+                        <!-- <input type="hidden" class="required profile_input"  />-->
+                        <!--<div id="please_choose_from_list"
+                             style="display: none; color: red; ">Please choose value from list
+                        </div>
+                        <div id="unknownUsersContainer" style="display: none; color: red; ">Unknown users:
+                            <ul></ul>
+                        </div>-->
+                    </td>
+                </tr>
+                <tr>
+                    <td>&#160;</td>
+                    <td>
+                        <div id="recipient-error" class="recipient-error">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="b">Subject:</td>
+                    <td>
+                        <input id="subject" class="required profile_input subject" value="I want to share a ${contestType.proposalName} with you!"/>
+                        <br/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="b">Message:</td>
+                    <td>
+                        <div id="composemessage">
+                            <textarea id="body" rows="6" class="profile_about required" style="width: 90%; ">Check out the ${contestType.proposalName} "${proposal.name}" in the "${contest.contestName}" ${contestType.contestName}.</textarea>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div>
+                <a class="c-Button__primary" href="javascript:;" id="send-button" onclick="send()">Send</a>
+                <a class="c-Button__primary" href="javascript:;" onclick="$('#messaging-overlay').hide()">Cancel</a>
+            </div>
+            <div id="send-error" class="recipient-error">
+
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript">
+        var validationURL = '${validationURL}';
+        var sendURL  = '${sendURL}';
+
+        // Public functions
+        function showOverlay() {
+            $('#messaging-overlay').show();
+        }
+
+        function send() {
+            if ($('#recipient-error').html().length == 0) {
+                $.ajax({
+                    type: "POST",
+                    //the url where you want to sent the userName and password to
+                    url: sendURL,
+                    dataType: 'json',
+                    async: false,
+                    //json object to sent to the authentication url
+                    data: {recipients : split($("#recipient-input").val()),
+                        subject: $("#subject").val(),
+                        body : $("#body").val()},
+                    success: function (data) {
+                        if (data.success == false) {
+                            $('#send-error').html(data.message);
+                        } else {
+                            $('#send-error').html("");
+                            $("#recipient-input").val("");
+                            $('#messaging-overlay').hide();
+                        }
+                    }
+                });
+            }
+        }
+
+        // Helper functions
+        function split( val ) {
+            return val.split( /,\s*/ );
+        }
+        function extractLast( term ) {
+            return split( term ).pop();
+        }
+        function validateRecipients() {
+            var input = $("#recipient-input").val();
+            var list = split(input);
+
+            $.ajax
+            ({
+                type: "POST",
+                //the url where you want to sent the userName and password to
+                url: validationURL,
+                dataType: 'json',
+                async: false,
+                //json object to sent to the authentication url
+                data: {screenNames : list},
+                success: function (data) {
+                    if (data.success) {
+                        $('#recipient-error').html("");
+                    } else {
+                        var error = "";
+                        var list = data.message;
+                        if (list.length > 0) {
+                            error += "The following recipients could not be resolved:&lt;ul&gt;";
+
+                            $.each(list, function(k, v) {
+                                error += "&lt;li&gt;" + v + "&lt;/li&gt;";
+                            });
+
+                            error += "&lt;ul&gt;";
+                        }
+
+                        $('#recipient-error').html(error);
+                    }
+                }
+            });
+        }
+
+        // jQuery autocomplete
+        var $recipientInputElement = $("#recipient-input");
+        $recipientInputElement
+            // don't navigate away from the field on tab when selecting an item
+                .bind("keydown", function (event) {
+                    if (event.keyCode === $.ui.keyCode.TAB &amp;&amp; $(this).data("ui-autocomplete").menu.active) {
+                        event.preventDefault();
+                    }
+                })
+                .autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            type: "GET",
+                            url: "/web/guest/members/-/members/users/partialName/" + extractLast(request.term),
+                            dataType: 'json',
+                            async: true,
+                            success: function (data, textStatus, jqXHR) {
+                                var screenNames = [];
+                                $.each(data, function(index, value) {
+                                    screenNames.push(value["screenName"]);
+                                });
+                                response(screenNames);
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                response([]);
+                            }
+                        });
+                    },
+                    search: function () {
+                        // custom minLength
+                        var term = extractLast(this.value);
+                        if (term.length &lt; 2) {
+                            return false;
+                        }
+                    },
+                    focus: function () {
+                        // prevent value inserted on focus
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        var terms = split(this.value);
+                        // remove the current input
+                        terms.pop();
+                        // add the selected item
+                        terms.push(ui.item.value);
+                        // add placeholder to get the comma-and-space at the end
+                        terms.push("");
+                        this.value = terms.join(", ");
+                        return false;
+                    }
+                });
+
+        $recipientInputElement.focusout(function(event) {
+            validateRecipients();
+        });
+    </script>
+</jsp:root>

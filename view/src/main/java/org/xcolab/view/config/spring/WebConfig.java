@@ -15,6 +15,8 @@ import org.springframework.web.servlet.resource.VersionResourceResolver;
 import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.auth.resolver.MemberArgumentResolver;
 import org.xcolab.view.config.rewrite.RewriteInitializer;
+import org.xcolab.view.pages.proposals.view.interceptors.PopulateContextInterceptor;
+import org.xcolab.view.pages.proposals.view.interceptors.ValidateTabPermissionsInterceptor;
 import org.xcolab.view.theme.ThemeResourceResolver;
 import org.xcolab.view.theme.ThemeVariableInterceptor;
 
@@ -25,15 +27,23 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     private final ThemeVariableInterceptor themeVariableInterceptor;
 
+    private final PopulateContextInterceptor populateContextInterceptor;
+
+    private final ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor;
+
     @Autowired
-    public WebConfig(ThemeVariableInterceptor themeVariableInterceptor) {
+    public WebConfig(ThemeVariableInterceptor themeVariableInterceptor , PopulateContextInterceptor populateContextInterceptor, ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor ) {
         Assert.notNull(themeVariableInterceptor, "ThemeVariableInterceptor bean is required");
         this.themeVariableInterceptor = themeVariableInterceptor;
+        this.populateContextInterceptor = populateContextInterceptor;
+        this.validateTabPermissionsInterceptor = validateTabPermissionsInterceptor;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(themeVariableInterceptor);
+        registry.addInterceptor(populateContextInterceptor);
+        registry.addInterceptor(validateTabPermissionsInterceptor);
     }
 
     @Bean
