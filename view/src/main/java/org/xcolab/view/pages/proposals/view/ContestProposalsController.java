@@ -44,13 +44,31 @@ public class ContestProposalsController extends BaseProposalsController {
     @Autowired
     private ProposalsContext proposalsContext;
 
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{contestPhaseId}")
+    public String showContestProposalsWithContestPhaseId(HttpServletRequest request, HttpServletResponse response,
+            @PathVariable String contestYear,
+            @PathVariable String contestUrlName,
+            @PathVariable String contestPhaseId,
+            final SortFilterPage sortFilterPage, Model model) {
+        return showContestProposalsPage(request, response, contestYear, contestUrlName, contestPhaseId,sortFilterPage, model);
+    }
     @GetMapping("/contests/{contestYear}/{contestUrlName}")
     public String showContestProposals(HttpServletRequest request, HttpServletResponse response,
-                                        @PathVariable String contestYear,
-                                        @PathVariable String contestUrlName,
-                                       final SortFilterPage sortFilterPage, Model model) {
+            @PathVariable String contestYear,
+            @PathVariable String contestUrlName,
+            final SortFilterPage sortFilterPage, Model model) {
+        return showContestProposalsPage(request, response, contestYear, contestUrlName,null, sortFilterPage, model);
+    }
+
+    private String showContestProposalsPage(HttpServletRequest request, HttpServletResponse response,
+            String contestYear,
+            String contestUrlName,
+            String phaseId,
+            final SortFilterPage sortFilterPage, Model model) {
+
         proposalsContext.addPathVariable("contestYear", contestYear);
         proposalsContext.addPathVariable("contestUrlName", contestUrlName);
+        proposalsContext.addPathVariable("phaseId",phaseId);
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         Contest contest = proposalsContext.getContest(request);
 
@@ -79,6 +97,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
             }
         }
+
 
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("showCountdown",

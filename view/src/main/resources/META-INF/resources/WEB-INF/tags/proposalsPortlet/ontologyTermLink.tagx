@@ -3,7 +3,7 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	version="2.0">
 	<jsp:directive.attribute name="ontologyTerms" type="java.util.ArrayList" required="true" rtexprvalue="true" description="Ontology terms" />
-    <c:set var="ontologyBaseUrl" value="/web/guest/plans/-/plans/contestsType/all/viewType/OUTLINE#term=" />
+    <c:set var="ontologyBaseUrl" value="/contests?contestsType=all&amp;viewType=OUTLINE&amp;term=" />
 	<c:forEach var="item" items="${ontologyTerms }" varStatus="status">
         <a id="ontologyTerm_${item.id}" href="${ontologyBaseUrl}">${item.name }</a>${status.last ? '' : ','}
         <script>
