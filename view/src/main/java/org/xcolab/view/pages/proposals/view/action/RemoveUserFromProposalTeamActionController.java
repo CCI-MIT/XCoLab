@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,7 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-//-- @RequestMapping("view")
+
 public class RemoveUserFromProposalTeamActionController {
 
     private final static Logger _log = LoggerFactory.getLogger(RemoveUserFromProposalTeamActionController.class);
@@ -32,7 +33,8 @@ public class RemoveUserFromProposalTeamActionController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-    //-- @RequestMapping(params = {"action=removeUserFromTeam"})
+
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/TEAM/removeUserFromTeam")
     public void handleAction(HttpServletRequest request, Model model, HttpServletResponse response, @RequestParam("member") long memberId)
             throws ProposalsAuthorizationException, IOException {
 

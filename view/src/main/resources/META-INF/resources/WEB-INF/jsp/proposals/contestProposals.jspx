@@ -104,7 +104,7 @@
                             <th class="c-Table__cell--title b-layout__center votes">
                                 <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=VOTES&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'VOTES' ? not sortFilterPage.sortAscending : true }" />
                                 <a href="${sortURL }">
-                                    <img src="${themeDisplay.pathThemeImages}/icon-proposal-vote.png" />
+                                    <img src="${_themeImageFolder}/icon-proposal-vote.png" />
                                 </a>
                                 <div class="c-Tooltip">
                                     click to sort by<br />number of votes

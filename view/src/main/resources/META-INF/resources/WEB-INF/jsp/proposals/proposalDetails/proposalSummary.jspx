@@ -15,7 +15,7 @@
                 <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
                     <div class="votebox-top clearfix">
                         <div class="vote">
-                            <img src="${themeDisplay.pathThemeImages}/icon-proposal-vote.png" width="22" height="18" alt="Vote" />
+                            <img src="${_themeImageFolder}/icon-proposal-vote.png" width="22" height="18" alt="Vote" />
                             <span>${proposal.votesCount}</span> votes
                             <c:if test="${proposalsPermissions.votingEnabled}">
                                 <portlet:actionURL var="voteOnProposalURL">
@@ -34,7 +34,7 @@
                         </div>
                         <div class="question">
                             <a href="/web/guest/resources/-/wiki/Main/contest+rules#Voting" target="_blank">
-                                <img src="${themeDisplay.pathThemeImages}/icon-proposal-question.png" width="23" height="23" alt="Question?" />
+                                <img src="${_themeImageFolder}/icon-proposal-question.png" width="23" height="23" alt="Question?" />
                             </a>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
 
                 <div class="votebox-bottom">
                 <span>
-                    <img src="${themeDisplay.pathThemeImages}/icon-proposal-thumb.png" width="20" height="22" alt="Thumbs up" />
+                    <img src="${_themeImageFolder}/icon-proposal-thumb.png" width="20" height="22" alt="Thumbs up" />
                     ${proposal.supportersCount}
                 </span> supporters
                     <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
@@ -97,10 +97,10 @@
                         <a href="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }" onclick="if(!deferUntilLogin()) return false;" >
                             <c:choose>
                                 <c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
-                                    <img height="20" src="${themeDisplay.pathThemeImages}/subscribe.png" /> Subscribe
+                                    <img height="20" src="${_themeImageFolder}/subscribe.png" /> Subscribe
                                 </c:when>
                                 <c:otherwise>
-                                    <img height="20" src="${themeDisplay.pathThemeImages}/unsubscribe.png" /> Unsubscribe
+                                    <img height="20" src="${_themeImageFolder}/unsubscribe.png" /> Unsubscribe
                                 </c:otherwise>
                             </c:choose>
                         </a>
@@ -110,7 +110,7 @@
             <div class="c-Box messaging">
                 <div class="message-share-button">
                     <a href="javascript:;" onclick="if (! deferUntilLogin()) { return false; } else { showOverlay(); }">
-                        <img src="${themeDisplay.pathThemeImages}/icon_new-message.png" width="31" height="29" /> Share via ${colabShortName} messaging
+                        <img src="${_themeImageFolder}/icon_new-message.png" width="31" height="29" /> Share via ${colabShortName} messaging
                     </a>
                 </div>
                 <c:if test="${proposalsPermissions.canReportProposal}">

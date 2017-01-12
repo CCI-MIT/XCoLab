@@ -28,6 +28,7 @@ public class BaseProposalTabController extends BaseProposalsController {
     @Autowired
     private ProposalsContext proposalsContext;
     
+
     @ModelAttribute
     public void getTabs(Model model, HttpServletRequest request) {
         // populate available tabs

@@ -16,7 +16,7 @@ public class RequestParamUtil {
 
     public static Long getLong(HttpServletRequest request, String paramName,
             HashMap<String, String> pathParameters, Long defaultValue) {
-        String value = request.getParameter(paramName);
+        String value = (request.getAttribute(paramName)!=null)?((String)request.getAttribute(paramName)):(request.getParameter(paramName));
         if (value != null) {
             try {
                 return Long.parseLong(value);
@@ -34,7 +34,7 @@ public class RequestParamUtil {
 
     public static Boolean getBoolean(HttpServletRequest request, String paramName) {
 
-        String value = request.getParameter(paramName);
+        String value = (request.getAttribute(paramName)!=null)?((String)request.getAttribute(paramName)):(request.getParameter(paramName));
         if (value != null) {
             return Boolean.valueOf(value);
         }
@@ -44,15 +44,16 @@ public class RequestParamUtil {
     public static String getString(HttpServletRequest request, String paramName,
             HashMap<String, String> pathParams,
             String defaultValue) {
-        String value = request.getParameter(paramName);
+
+        String value = (request.getAttribute(paramName)!=null)?((String)request.getAttribute(paramName)):(request.getParameter(paramName));
         if (value != null) {
             return value;
-        } else {
-            if (pathParams != null && pathParams.get(paramName)!=null ) {
-                return pathParams.get(paramName);
-            }
-            return defaultValue;
         }
+        if (pathParams != null && pathParams.get(paramName)!=null ) {
+            return pathParams.get(paramName);
+        }
+        return defaultValue;
+
     }
     public static String getString(HttpServletRequest request, String paramName,HashMap<String, String> pathParams ) {
         return getString(request, paramName,pathParams, null);
@@ -63,13 +64,14 @@ public class RequestParamUtil {
 
     public static Integer getInteger(HttpServletRequest request, String paramName, HashMap<String, String> pathParams,
             Integer defaultValue) {
-        String value = request.getParameter(paramName);
+        String value = (request.getAttribute(paramName)!=null)?((String)request.getAttribute(paramName)):(request.getParameter(paramName));
         if (value != null) {
             try {
                 return Integer.parseInt(value);
             } catch (NumberFormatException e) {
             }
         }
+
         if (pathParams != null && pathParams.get(paramName)!= null) {
             try {
                 return Integer.parseInt(pathParams.get(paramName));

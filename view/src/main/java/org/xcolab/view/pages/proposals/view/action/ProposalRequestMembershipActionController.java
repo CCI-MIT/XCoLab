@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
@@ -50,7 +52,7 @@ public class ProposalRequestMembershipActionController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-    //-- @RequestMapping(params = {"action=requestMembership"})
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/TEAM/requestMembership")
     public void show(HttpServletRequest request, Model model,
             HttpServletResponse response, @Valid RequestMembershipBean requestMembershipBean,
             BindingResult result, @RequestParam("requestComment") String comment)
@@ -84,7 +86,8 @@ public class ProposalRequestMembershipActionController {
         response.sendRedirect(proposal.getProposalLinkUrl(contest) + "/tab/TEAM");
     }
 
-    //-- @RequestMapping(params = {"action=inviteMember"})
+
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/TEAM/inviteMember")
     public void invite(HttpServletRequest request, Model model,
             HttpServletResponse response, @Valid RequestMembershipInviteBean requestMembershipInviteBean, BindingResult result)
             throws IOException {
@@ -138,7 +141,8 @@ public class ProposalRequestMembershipActionController {
         response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/TEAM");
     }
 
-    //-- @ResourceMapping("inviteMembers-validateRecipient")
+
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/TEAM/inviteMembers-validateRecipient")
     public void validateRecipient(HttpServletRequest request, HttpServletResponse response) {
         String input = request.getParameter("term");
 

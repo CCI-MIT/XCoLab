@@ -3,7 +3,7 @@
 	<jsp:directive.include file="./init_proposal.jspx" />
 
 	<!--BaseProposalTabController-->
-	<jsp:useBean id="currentTab" scope="request" type="org.xcolab.portlets.proposals.wrappers.ProposalTab"/>
-	<jsp:useBean id="currentTabWrapped" scope="request" type="org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper"/>
+	<jsp:useBean id="currentTab" scope="request" type="org.xcolab.view.pages.proposals.wrappers.ProposalTab"/>
+	<jsp:useBean id="currentTabWrapped" scope="request" type="org.xcolab.view.pages.proposals.wrappers.ProposalTabWrapper"/>
 	
 </jsp:root>

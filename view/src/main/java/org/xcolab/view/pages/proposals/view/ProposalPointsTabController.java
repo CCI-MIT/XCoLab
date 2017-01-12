@@ -3,6 +3,7 @@ package org.xcolab.view.pages.proposals.view;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.Contest;
@@ -25,7 +26,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-//-- @RequestMapping("view")
 public class ProposalPointsTabController extends BaseProposalTabController {
 
     private final ProposalsContext proposalsContext;
@@ -35,7 +35,8 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         this.proposalsContext = proposalsContext;
     }
 
-    //-- @RequestMapping(params = {"pageToDisplay=proposalDetails_POINTS"})
+
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/POINTS")
     public String showProposalDetails(Model model, HttpServletRequest request) {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.POINTS);
@@ -102,6 +103,6 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         model.addAttribute("proposal", proposal);
         model.addAttribute("contest", contest);
         model.addAttribute("linkingProposals", linkingProposalsWrapped);
-        return "proposalPoints";
+        return "/proposals/proposalPoints";
     }
 }

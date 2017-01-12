@@ -2,7 +2,6 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
 
-    <liferay-theme:defineObjects />
 
     <!--@elvariable id="contestType" type="org.xcolab.client.contest.pojo.ContestType"-->
 
@@ -20,7 +19,7 @@
             <c:if test="${showRating and wrapper.ratings != null and wrapper.ratings.size() > 0}">
                 <strong>Judges' Ratings <a href="/web/guest/resources/-/wiki/Main/contest+rules#Howwillproposalsbejudged" target="_blank">
                     <span class="fieldWithTooltip">
-                        <img src="${themeDisplay.pathThemeImages}/icon_question-chk-qm.png" height="15px" />
+                        <img src="${_themeImageFolder}/icon_question-chk-qm.png" height="15px" />
                     </span>
                     <div class="c-Tooltip">
                         Click here to see how ${contestType.proposalNamePlural} have been judged.

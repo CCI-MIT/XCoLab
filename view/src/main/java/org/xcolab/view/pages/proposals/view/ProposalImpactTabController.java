@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -56,14 +58,36 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private Contest contest;
     private Proposal proposalWrapper;
 
-    //-- @RequestMapping(params = {"pageToDisplay=proposalDetails_IMPACT"})
-    public String showImpactTab(HttpServletRequest request, Model model, @RequestParam(required = false) boolean edit)
+
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/IMPACT")
+    public String showProposalDetails(
+            @PathVariable Long proposalId,
+            @PathVariable String contestUrlName,
+            @PathVariable Long contestYear,
+            @PathVariable Long phaseId,
+            Model model, HttpServletRequest request) throws IOException, ScenarioNotFoundException, ModelNotFoundException  {
+        return showImpactTab(
+                proposalId,
+                contestUrlName,
+                contestYear,
+                phaseId,
+                 request, model, false);
+    }
+    private String showImpactTab(
+             Long proposalId,
+             String contestUrlName,
+             Long contestYear,
+            Long phaseId,
+            HttpServletRequest request, Model model, boolean edit)
             throws IOException, ScenarioNotFoundException, ModelNotFoundException  {
+
 
         contest = proposalsContext.getContest(request);
         proposalWrapper = proposalsContext.getProposalWrapped(request);
         setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
+
         boolean userAllowedToEdit = false;
+
 
         if (edit) {
             userAllowedToEdit = canEditImpactTab(request);
@@ -146,7 +170,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         }
         _log.warn("Using default impact tab view since contest tier is not set for contest: {}",
                 contest.getContestPK());
-        return "proposalImpactError";
+        return "/proposals/proposalImpactError";
     }
 
     private Long getModelIdIfProposalHasScenarioIdOrContestDefaultModelId() {
@@ -176,15 +200,15 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     }
 
     private String showImpactTabRegionSector() {
-        return "integratedProposalImpact";
+        return "/proposals/integratedProposalImpact";
     }
 
     private String showImpactTabRegionAggregate() {
-        return "integratedProposalImpact";
+        return "/proposals/integratedProposalImpact";
     }
 
     private String showImpactTabGlobal() {
-        return "integratedProposalImpact";
+        return "/proposals/integratedProposalImpact";
     }
 
     private String showImpactTabEditGlobal(HttpServletRequest request, Model model)
@@ -242,7 +266,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         model.addAttribute("consolidationPossible", isConsolidationPossible);
         model.addAttribute("consolidateOptions", getConsolidationOptions());
 
-        return "integratedProposalImpact";
+        return "/proposals/integratedProposalImpact";
     }
 
     private Map<String, String[]> getConsolidationOptions() {
@@ -263,7 +287,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         model.addAttribute("regionTerms", sortByName(ontologyMap.keySet()));
         model.addAttribute("proposalsPermissions", proposalsContext.getPermissions(request));
 
-        return "basicProposalImpact";
+        return "/proposals/basicProposalImpact";
     }
 
     private List<ProposalImpactSeries> getImpactTabBasicProposal(Proposal proposalParent,

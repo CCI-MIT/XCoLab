@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.Contest;
@@ -45,7 +47,7 @@ public class AssignPointsActionController {
         }
     }
 
-    //-- @RequestMapping(params = {"action=savePointAssignments"})
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/POINTS/savePointAssignments")
     public void savePointAssignments(HttpServletRequest request, Model model,
                                 HttpServletResponse response, @Valid AssignPointsBean assignPointsBean,
                                 BindingResult result)

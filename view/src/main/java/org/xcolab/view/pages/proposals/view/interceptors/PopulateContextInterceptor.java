@@ -14,8 +14,12 @@ import org.xcolab.view.pages.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 @Component
 public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
@@ -34,13 +38,36 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private ProposalsContext proposalsContext;
 
+    public boolean preHandle(HttpServletRequest request,
+            HttpServletResponse response, Object handler)
+            throws Exception {
+        if(request.getRequestURL().indexOf("/contests")>0||request.getRequestURL().indexOf("/challenges")>0) {
+            String requestUrl = request.getRequestURL().toString();
 
-    public void postHandle(
-            HttpServletRequest request, HttpServletResponse response,
+            String colabPattern =
+                    "/(\\w+)/(?<contestYear>\\d+)/(?<contestUrlName>[a-zA-Z0-9_-]+)(((/c/)|(/phase/(?<phaseId>\\d+)/))(?<proposalIdentifier>\\w+)/(?<proposalId>\\d+)(/tab/?(?<tab>\\w+))?)?";
+            Pattern pattern = Pattern.compile(colabPattern);
+            Matcher matcher = pattern.matcher(requestUrl);
+            String[] pathMatches =
+                    {"contestYear", "contestUrlName", "proposalId", "phaseId", "tab"};
+
+            if (matcher.find()) {
+                for (String field : pathMatches) {
+                    if (matcher.group(field) != null) {
+                        request.setAttribute(field, matcher.group(field));
+                    }
+                }
+
+            }
+        }
+        return true;
+    }
+
+
+    public void postHandle(HttpServletRequest request, HttpServletResponse response,
             Object handler, ModelAndView modelAndView)
             throws Exception {
 
-        if(request.getRequestURL().indexOf("/contests")>0) {
             if (modelAndView != null) {
                 Contest contest = proposalsContext.getContest(request);
                 ContestPhase contestPhase = proposalsContext.getContestPhase(request);
@@ -79,5 +106,5 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
                         ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
             }
         }
-    }
+
 }

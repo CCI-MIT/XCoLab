@@ -38,7 +38,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-//-- @RequestMapping("view")
 public class ContestProposalsController extends BaseProposalsController {
 
     @Autowired
@@ -66,9 +65,10 @@ public class ContestProposalsController extends BaseProposalsController {
             String phaseId,
             final SortFilterPage sortFilterPage, Model model) {
 
-        proposalsContext.addPathVariable("contestYear", contestYear);
-        proposalsContext.addPathVariable("contestUrlName", contestUrlName);
-        proposalsContext.addPathVariable("phaseId",phaseId);
+        //proposalsContext.addPathVariable("contestYear", contestYear);
+        //proposalsContext.addPathVariable("contestUrlName", contestUrlName);
+        //proposalsContext.addPathVariable("phaseId",phaseId);
+
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         Contest contest = proposalsContext.getContest(request);
 

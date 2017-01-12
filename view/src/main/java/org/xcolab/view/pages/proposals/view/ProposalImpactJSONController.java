@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
@@ -49,7 +51,9 @@ public class ProposalImpactJSONController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-    //-- @ResourceMapping("proposalImpactGetRegions")
+
+
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/IMPACT/proposalImpactGetRegions")
     public void proposalImpactGetRegions(
             HttpServletRequest request,
             HttpServletResponse response) throws IOException {
@@ -60,7 +64,7 @@ public class ProposalImpactJSONController {
         response.getOutputStream().write(ontologyTermListToJSONArray(regionTerms).toString().getBytes());
     }
 
-    //-- @ResourceMapping("proposalImpactGetSectorsForRegion")
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/IMPACT/proposalImpactGetSectorsForRegion")
     public void proposalImpactGetSectorForRegions(
             HttpServletRequest request,
             HttpServletResponse response,
@@ -72,7 +76,8 @@ public class ProposalImpactJSONController {
         response.getOutputStream().write(ontologyTermListToJSONArray(sectorTerms).toString().getBytes());
     }
 
-    //-- @ResourceMapping("proposalImpactGetDataSeries")
+
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/IMPACT/proposalImpactGetDataSeries")
     public void proposalImpactGetDataSeries(
             HttpServletRequest request,
             HttpServletResponse response,
@@ -105,6 +110,7 @@ public class ProposalImpactJSONController {
     }
 
     //-- @ResourceMapping("proposalImpactSaveDataSeries")
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/IMPACT/proposalImpactSaveDataSeries")
     public void proposalImpactSaveDataSeries(
             HttpServletRequest request,
             HttpServletResponse response,
@@ -131,7 +137,8 @@ public class ProposalImpactJSONController {
         response.getOutputStream().write(responseJSON.toString().getBytes());
     }
 
-    //-- @ResourceMapping("proposalImpactDeleteDataSeries")
+
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/IMPACT/proposalImpactDeleteDataSeries")
     public void proposalImpactDeleteDataSeries(
             HttpServletRequest request,
             HttpServletResponse response,
@@ -158,7 +165,8 @@ public class ProposalImpactJSONController {
         response.getOutputStream().write(responseJSON.toString().getBytes());
     }
 
-    //--  @ResourceMapping("proposalImpactUpdateAllSeries")
+
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/IMPACT/proposalImpactUpdateAllSeries")
     public void proposalImpactUpdateAllDataSeries(
             HttpServletRequest request,
             HttpServletResponse response) throws IOException {
@@ -194,7 +202,8 @@ public class ProposalImpactJSONController {
         response.getOutputStream().write(responseJSON.toString().getBytes());
     }
 
-    //-- @ResourceMapping("proposalImpactSaveBasicProposalComment")
+
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/IMPACT/proposalImpactSaveBasicProposalComment")
     public void proposalImpactSaveBasicProposalComment(HttpServletRequest request, HttpServletResponse response,
                 @RequestParam(required = false) String impactAuthorComment,
                 @RequestParam(required = false) String impactIAFComment)
