@@ -61,7 +61,7 @@ public class OverviewTabController extends AbstractTabController {
         return contestMassActionItems;
     }
 
-    @GetMapping("manager")
+    @GetMapping({"", "manager"})
     public String showAdminTabController(HttpServletRequest request, HttpServletResponse response,
             Model model) {
         if (!tabWrapper.getCanView()) {

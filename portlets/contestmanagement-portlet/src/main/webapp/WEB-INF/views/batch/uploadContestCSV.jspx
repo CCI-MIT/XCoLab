@@ -9,7 +9,7 @@
     <jsp:directive.include file="../init.jspx" />
 
 
-    <portlet:renderURL var="createBathContetsURL">
+    <portlet:renderURL var="createBatchContestsURL">
         <portlet:param name="action" value="createBatchContest"/>
     </portlet:renderURL>
 

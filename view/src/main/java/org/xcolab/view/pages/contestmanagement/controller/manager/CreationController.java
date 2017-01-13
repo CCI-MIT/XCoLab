@@ -1,15 +1,15 @@
-package org.xcolab.view.pages.contestmanagement.controller;
+package org.xcolab.view.pages.contestmanagement.controller.manager;
 
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.entity.utils.flash.InfoMessage;
-import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCreatorUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/admin/contest/manager")
 public class CreationController {
 
-    @PostMapping("createContest")
+    @GetMapping("createContest")
     public String createContestController(HttpServletRequest request, HttpServletResponse response) {
         long memberId = MemberAuthUtil.getMemberId(request);
 
@@ -27,13 +27,13 @@ public class CreationController {
             Contest contest = ContestCreatorUtil.createNewContest("created contest "
                     + DateTime.now().toString("yyyy.MM.dd HH.mm.ss"));
             String newContestLink = "/admin/contest/details/contestId/"
-                    + contest.getContestPK() + "/tab/DESCRIPTION";
+                    + contest.getContestPK();
 
-            return InfoMessage.message("<a href=\"${newContestLink}\">Click here to start "
+            return InfoMessage.message("<a href=\"" + newContestLink + "\">Click here to start "
                     + "editing!</a>")
                     .withTitle("You just created a new contest")
                     .flashAndReturnView(request);
         }
-        throw new InternalException("User not authorized to create contest");
+        return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
     }
 }

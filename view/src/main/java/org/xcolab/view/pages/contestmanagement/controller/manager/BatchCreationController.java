@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.contestmanagement.controller;
+package org.xcolab.view.pages.contestmanagement.controller.manager;
 
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -6,10 +6,11 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
@@ -20,10 +21,10 @@ import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.contest.ContestTier;
-import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.ContestBatchBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestCSVBean;
 import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
@@ -109,23 +110,26 @@ public class BatchCreationController {
         return selectItems;
     }
 
-    @RequestMapping(params = "batchCreateContest=true")
+    @GetMapping("manager/batchCreateContest")
     public String batchCreateContestController(HttpServletRequest request, Model model,
-            HttpServletResponse response) {
+            HttpServletResponse response, Member member) {
 
-        long memberId = MemberAuthUtil.getMemberId(request);
-
-        if (PermissionsClient.canAdminAll(memberId)) {
-            model.addAttribute("contestBatchBean", new ContestBatchBean());
-            return "batch/uploadContestCSV";
+        if (!PermissionsClient.canAdminAll(member)) {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
-        throw new InternalException("User not authorized to create contest");
+
+        model.addAttribute("contestBatchBean", new ContestBatchBean());
+        return "contestmanagement/batch/uploadContestCSV";
     }
 
-    @RequestMapping(params = "action=createBatchContest")
+    @PostMapping("manager/batchCreateContest")
     public String createBatchContestController(HttpServletRequest request, Model model,
-            @Valid ContestBatchBean contestBatchBean,
-            BindingResult result) throws IOException {
+            @Valid ContestBatchBean contestBatchBean, BindingResult result, Member member)
+            throws IOException {
+
+        if (!PermissionsClient.canAdminAll(member)) {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
 
         Map<String, String> contestLinks = new LinkedHashMap<>();
 
@@ -155,8 +159,7 @@ public class BatchCreationController {
         }
         model.addAttribute("newContestLinks", contestLinks);
 
-        return "/batch/newContestsCreated";
-
+        return "contestmanagement/batch/newContestsCreated";
     }
 
     private void processOntologyTerms(ContestCSVBean contestCSVBean, Contest contest) {
@@ -250,15 +253,15 @@ public class BatchCreationController {
 
     }
 
-    @ResourceMapping("validateOntologyTerm")
+    @GetMapping("api/validateOntologyTerm")
     public void validateOntologyTerm(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) String ontologyTerms)
             throws IOException {
         JSONObject responseJSON = new JSONObject();
         JSONArray jsonArray = new JSONArray();
 
-        List<Long> inputedOntologyTerms = IdListUtil.getIdsFromString(ontologyTerms);
-        for (Long termId : inputedOntologyTerms) {
+        List<Long> inputOntologyTerms = IdListUtil.getIdsFromString(ontologyTerms);
+        for (Long termId : inputOntologyTerms) {
             OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(termId);
             if (ontologyTerm != null) {
                 JSONObject ontItem = new JSONObject();

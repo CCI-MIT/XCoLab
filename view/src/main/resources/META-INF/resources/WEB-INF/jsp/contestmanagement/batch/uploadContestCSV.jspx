@@ -1,19 +1,19 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:form="http://www.springframework.org/tags/form"
-          xmlns:collab="http://climatecolab.org/tags/collab_1.0" version="2.0">
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
 
     <!--<jsp:directive.include file="../init.jspx" />-->
 
     <jsp:directive.include file="../init.jspx" />
 
 
-    <portlet:renderURL var="createBathContetsURL">
-        <portlet:param name="action" value="createBatchContest"/>
-    </portlet:renderURL>
+    <c:set var="createBatchContestsURL" value="/admin/contest/manager/batchCreateContest" />
 
-    <portlet:resourceURL var="validateOntologyTermsURL" id="validateOntologyTerm">
-    </portlet:resourceURL>
+    <c:set var="validateOntologyTermsURL" value="/admin/contest/api/validateOntologyTerm"/>
 
     <script>
         var validateOntologyTermsURL = '${validateOntologyTermsURL}';
@@ -28,7 +28,7 @@
 
         <h2>Contest data</h2>
 
-        <form:form action="${createBathContetsURL }" commandName="contestBatchBean"  cssClass="addpropform"
+        <form:form action="${createBatchContestsURL }" commandName="contestBatchBean" cssClass="addpropform"
                    id="batchForm" method="post">
             <div class="reg_errors"><!--  -->
                 <form:errors cssClass="alert alert-error" path="*"/>
@@ -408,4 +408,5 @@
             <div class="outerVerticalCenter"><a  class="c-Button__primary  innerVerticalCenter" href="#" id="createAllContestsAbove">Create all contests above</a></div>
         </form:form>
     </div>
+</xcolab:layout>
 </jsp:root>

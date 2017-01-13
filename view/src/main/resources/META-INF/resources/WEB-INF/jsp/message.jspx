@@ -11,11 +11,9 @@
     </h2>
     <br />
 
-    <c:if test="${not empty __inforMessage}">
-        <div class="c-Alert">
-            <div class="c-Alert__info__message">
-                ${__infoMessage.message}
-            </div>
+    <c:if test="${not empty __infoMessage}">
+        <div class="c-Alert__info__message">
+            ${__infoMessage.message}
         </div>
     </c:if>
 </xcolab:layout>
