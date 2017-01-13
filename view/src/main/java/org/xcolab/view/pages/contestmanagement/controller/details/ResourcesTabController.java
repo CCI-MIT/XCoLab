@@ -1,39 +1,38 @@
 package org.xcolab.view.pages.contestmanagement.controller.details;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.ContestResourcesBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
-import org.xcolab.view.pages.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
-import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("/admin/contest")
-public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabController {
+@RequestMapping("/admin/contest/details/contestId/{contestId}/tab/RESOURCES")
+public class ResourcesTabController extends AbstractTabController {
 
-    private final static Logger _log =
-            LoggerFactory.getLogger(ContestDetailsResourcesTabController.class);
-    static final private TabEnum tab = ContestDetailsTabs.RESOURCES;
-    static final private String TAB_VIEW = "details/resourcesTab";
+    private static final ContestDetailsTabs tab = ContestDetailsTabs.RESOURCES;
+    private static final String TAB_VIEW = "contestmanagement/details/resourcesTab";
 
     @Autowired
     private Validator validator;
@@ -52,12 +51,12 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
         return tabWrapper;
     }
 
-    @RequestMapping(params = "tab=RESOURCES")
+    @GetMapping
     public String showResourcesTabController(HttpServletRequest request,
             HttpServletResponse response, Model model) {
 
         if (!tabWrapper.getCanView()) {
-            return NO_PERMISSION_TAB_VIEW;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
         long memberId = MemberAuthUtil.getMemberId(request);
@@ -67,35 +66,23 @@ public class ContestDetailsResourcesTabController extends ContestDetailsBaseTabC
         return TAB_VIEW;
     }
 
-    @RequestMapping(params = "action=updateContestResources")
-    public void updateResourcesTabController(HttpServletRequest request, Model model,
-            HttpServletResponse response,
+    @PostMapping("update")
+    public String updateResourcesTabController(HttpServletRequest request,
+            HttpServletResponse response,  Model model, @PathVariable long contestId,
             @ModelAttribute ContestResourcesBean updatedContestResourcesBean,
-            BindingResult result) {
+            BindingResult result) throws UnsupportedEncodingException, ParseException {
 
         if (!tabWrapper.getCanEdit()) {
-            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
-            return;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
         if (result.hasErrors()) {
-            SetRenderParameterUtil.setErrorRenderParameter(response, "updateContestResources");
-            return;
+            AlertMessage.danger("An error occurred while updating").flash(request);
+            return tab.getTabUrl(contestId);
         }
 
-        try {
-            wikiPageWrapper.updateWikiPage(updatedContestResourcesBean);
-            SetRenderParameterUtil
-                    .setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch (ParseException | IOException e) {
-            _log.warn("Update contest resources failed with: ", e);
-            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
-        }
+        wikiPageWrapper.updateWikiPage(updatedContestResourcesBean);
+        AlertMessage.success("Changes saved").flash(request);
+        return "redirect:" + tab.getTabUrl(contestId);
     }
-
-    @RequestMapping(params = {"action=updateContestResources", "error=true"})
-    public String reportError(HttpServletRequest request, Model model) {
-        return TAB_VIEW;
-    }
-
 }

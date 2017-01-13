@@ -128,23 +128,6 @@ function markEditorDirty(editor) {
     editor.addClass('editorDirty');
 }
 
-function enableDirtyCheck() {
-    window.oldOnBeforeUnload = window.onbeforeunload;
-    window.onbeforeunload = function() {
-        if (jQuery(".editorDirty").length > 0) {
-            return 'You have modified this page but have not saved your changes.';
-        }
-        return null;
-    };
-}
-
-function disableDirtyCheck() {
-    if ('oldOnBeforeUnload' in window) {
-        window.onbeforeunload = window.oldOnBeforeUnload;
-    }
-    delete window.onbeforeunload;
-}
-
 function countCharacters(input, editor) {
     if (editor) {
         if (editor == null || editor.document == null) return 0;

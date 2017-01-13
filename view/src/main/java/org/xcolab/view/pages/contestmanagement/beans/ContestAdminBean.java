@@ -5,7 +5,6 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 
 import javax.validation.constraints.NotNull;
 
@@ -44,7 +43,7 @@ public class ContestAdminBean implements Serializable {
         }
     }
 
-    public void persist(Contest contest) throws UnsupportedEncodingException {
+    public void persist(Contest contest) {
 
         updateContest(contest);
         WikiPageWrapper.updateContestWiki(contest);

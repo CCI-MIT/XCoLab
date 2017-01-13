@@ -9,20 +9,27 @@ import org.xcolab.view.taglibs.xcolab.interfaces.TabPermissions;
 import javax.servlet.http.HttpServletRequest;
 
 
+//TODO: restore permissions
 public enum ContestDetailsTabs implements TabEnum {
-    DESCRIPTION("Homepage", "description", TabPermissionAlgorithm.contestCreationViewAndEdit,
+    DESCRIPTION("Homepage", "description",
+//            TabPermissionAlgorithm.contestCreationViewAndEdit,
+            TabPermissionAlgorithm.alwaysTrueViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
-    RESOURCES("Resources Page", "resources", TabPermissionAlgorithm.contestCreationViewAndEdit,
+    RESOURCES("Resources Page", "resources",
+//            TabPermissionAlgorithm.contestCreationViewAndEdit,
+            TabPermissionAlgorithm.alwaysTrueViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
-    TEAM("Team", "team", TabPermissionAlgorithm.contestCreationViewAndEdit,
+    TEAM("Team", "team",
+//            TabPermissionAlgorithm.contestCreationViewAndEdit,
+            TabPermissionAlgorithm.alwaysTrueViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
-    ONTOLOGY("Ontology", "ontology", TabPermissionAlgorithm.contestCreationViewAndEdit,
+    ONTOLOGY("Ontology", "ontology",
+//            TabPermissionAlgorithm.contestCreationViewAndEdit,
+            TabPermissionAlgorithm.alwaysTrueViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
-    ADMIN("Admin", "admin", TabPermissionAlgorithm.contestCreationViewAndEdit,
-            TabActivityCountAlgorithm.alwaysZero),
-    PROPOSALTEMPLATE("Proposal Template", "template", TabPermissionAlgorithm.alwaysFalseViewAndEdit,
-            TabActivityCountAlgorithm.alwaysZero),
-    ADVANCED("Advanced", "advanced", TabPermissionAlgorithm.alwaysFalseViewAndEdit,
+    ADMIN("Admin", "admin",
+//            TabPermissionAlgorithm.contestCreationViewAndEdit,
+            TabPermissionAlgorithm.alwaysTrueViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero);
 
     private final String displayName;

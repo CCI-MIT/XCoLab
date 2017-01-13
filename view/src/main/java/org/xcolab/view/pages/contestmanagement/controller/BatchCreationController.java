@@ -1,10 +1,8 @@
-package org.xcolab.view.pages.contestmanagement.controller.batch;
+package org.xcolab.view.pages.contestmanagement.controller;
 
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,10 +45,7 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/admin/contest")
-public class ContestBatchCreationController {
-
-    private final static Logger _log =
-            LoggerFactory.getLogger(ContestBatchCreationController.class);
+public class BatchCreationController {
 
     private final Map<Long, Map<Long, Integer>> reusableFocusArea = new HashMap<>();
 

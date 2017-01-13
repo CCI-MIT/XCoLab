@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/admin/contest/manager")
-public class ContestManagementBaseController {
+public class CreationController {
 
     @PostMapping("createContest")
     public String createContestController(HttpServletRequest request, HttpServletResponse response) {

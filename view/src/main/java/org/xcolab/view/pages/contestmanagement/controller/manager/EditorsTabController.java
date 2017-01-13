@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/admin/contest/manager")
-public class ContestManagerEditorsTabController extends ContestManagerBaseTabController {
+public class EditorsTabController extends AbstractTabController {
 
     static final private ContestManagerTabs tab = ContestManagerTabs.EDITORS;
 

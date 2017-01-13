@@ -16,7 +16,6 @@ import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class ContestModelSettingsBean implements Serializable {
@@ -48,7 +47,7 @@ public class ContestModelSettingsBean implements Serializable {
     }
 
     private String getRegionFromDefaultModelSettings(String defaultModelSettingsString) {
-        if (defaultModelSettingsString == null) {
+        if (StringUtils.isBlank(defaultModelSettingsString)) {
             return "";
         }
         JSONObject defaultModelSettings = new JSONObject(defaultModelSettingsString);
@@ -59,12 +58,7 @@ public class ContestModelSettingsBean implements Serializable {
         try {
             final RomaClient repository = RomaClientUtil.client();
             List<Simulation> simulationsSorted = new ArrayList<>(repository.getAllSimulations());
-            Collections.sort(simulationsSorted, new Comparator<Simulation>() {
-                @Override
-                public int compare(Simulation o1, Simulation o2) {
-                    return (int) (o2.getId() - o1.getId());
-                }
-            });
+            simulationsSorted.sort((o1, o2) -> (int) (o2.getId() - o1.getId()));
             List<LabelValue> allModelIds = new ArrayList<>();
             for (Simulation simulation : simulationsSorted) {
                 allModelIds.add(new LabelValue(simulation.getId(),

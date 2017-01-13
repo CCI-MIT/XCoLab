@@ -1,7 +1,5 @@
 package org.xcolab.view.pages.contestmanagement.controller.manager;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,7 +14,7 @@ import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.view.errors.ErrorText;
-import org.xcolab.view.pages.contestmanagement.controller.common.ContestProposalTemplateTabController;
+import org.xcolab.view.pages.contestmanagement.controller.AbstractProposalTemplateTabController;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.utils.ProposalTemplateLifecycleUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper;
@@ -31,11 +29,9 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/admin/contest/manager")
-public class ContestManagerProposalTemplateController extends ContestProposalTemplateTabController {
+public class ProposalTemplateController extends AbstractProposalTemplateTabController {
 
-    private final static Logger _log =
-            LoggerFactory.getLogger(ContestManagerProposalTemplateController.class);
-    static final private ContestManagerTabs tab = ContestManagerTabs.PROPOSAL_TEMPLATES;
+    private static final ContestManagerTabs tab = ContestManagerTabs.PROPOSAL_TEMPLATES;
 
     @ModelAttribute("tabs")
     @Override

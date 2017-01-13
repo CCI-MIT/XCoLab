@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/admin/contest/manager")
-public class ContestManagerCollectionCardTabController extends ContestManagerBaseTabController {
+public class CollectionCardTabController extends AbstractTabController {
 
     static final private ContestManagerTabs tab = ContestManagerTabs.COLLECTION_CARDS;
     static final private String TAB_VIEW = "contestmanagement/manager/collectionCardTab";

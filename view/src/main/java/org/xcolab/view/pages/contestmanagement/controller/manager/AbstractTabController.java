@@ -12,7 +12,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-public abstract class ContestManagerBaseTabController extends BaseTabController {
+public abstract class AbstractTabController extends BaseTabController {
 
     static final String NO_PERMISSION_TAB_VIEW = "common/noPermissionTab";
     static final String NOT_FOUND_TAB_VIEW = "common/notFound";

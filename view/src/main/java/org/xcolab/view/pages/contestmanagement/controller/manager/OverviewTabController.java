@@ -29,10 +29,10 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/admin/contest")
-public class ContestManagerOverviewTabController extends ContestManagerBaseTabController {
+public class OverviewTabController extends AbstractTabController {
 
     private final static Logger _log =
-            LoggerFactory.getLogger(ContestManagerOverviewTabController.class);
+            LoggerFactory.getLogger(OverviewTabController.class);
     static final private ContestManagerTabs tab = ContestManagerTabs.OVERVIEW;
     static final private String TAB_VIEW = "contestmanagement/manager/overviewTab";
 

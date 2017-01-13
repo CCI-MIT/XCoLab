@@ -35,10 +35,10 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/admin/contest/manager")
-public class ContestManagerFlaggingTabController extends ContestManagerBaseTabController {
+public class FlaggingTabController extends AbstractTabController {
 
     private final static Logger _log =
-            LoggerFactory.getLogger(ContestManagerFlaggingTabController.class);
+            LoggerFactory.getLogger(FlaggingTabController.class);
     static final private ContestManagerTabs tab = ContestManagerTabs.FLAGGING;
     static final private String TAB_VIEW = "contestmanagement/manager/flaggingTab";
 

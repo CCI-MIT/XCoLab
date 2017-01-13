@@ -8,8 +8,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
@@ -20,17 +23,16 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.entity.utils.email.notifications.contest.ContestCreationNotification;
+import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.ContestDescriptionBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
-import org.xcolab.view.pages.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleUtil;
-import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,13 +42,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/admin/contest")
-public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTabController {
+@RequestMapping("/admin/contest/details/contestId/{contestId}")
+public class DescriptionTabController extends AbstractTabController {
 
     private final static Logger _log =
-            LoggerFactory.getLogger(ContestDetailsDescriptionTabController.class);
-    static final private TabEnum tab = ContestDetailsTabs.DESCRIPTION;
-    static final private String TAB_VIEW = "details/descriptionTab";
+            LoggerFactory.getLogger(DescriptionTabController.class);
+    static final private ContestDetailsTabs tab = ContestDetailsTabs.DESCRIPTION;
+    static final private String TAB_VIEW = "contestmanagement/details/descriptionTab";
 
     @Autowired
     private Validator validator;
@@ -78,12 +80,12 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
     }
 
     @ModelAttribute("scheduleTemplateSelectionItems")
-    public List<LabelValue> populateScheduleSelectionItems(HttpServletRequest request) {
-        return getContestScheduleSelectionItems(request);
+    public List<LabelValue> populateScheduleSelectionItems(HttpServletRequest request, @PathVariable long contestId) {
+        return getContestScheduleSelectionItems(contestId);
     }
 
-    private List<LabelValue> getContestScheduleSelectionItems(HttpServletRequest request) {
-        Contest contest = getContest(request);
+    private List<LabelValue> getContestScheduleSelectionItems(long contestId) {
+        Contest contest = getContest(contestId);
         Long existingContestScheduleId = contest.getContestScheduleId();
         Boolean contestHasProposals = contest.getProposalsCount() > 0;
         return ContestScheduleLifecycleUtil
@@ -98,12 +100,12 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         return tabWrapper;
     }
 
-    @RequestMapping(params = "tab=DESCRIPTION")
+    @GetMapping(value = {"", "tab/DESCRIPTION"})
     public String showDescriptionTabController(HttpServletRequest request,
             HttpServletResponse response, Model model) {
 
         if (!tabWrapper.getCanView()) {
-            return NO_PERMISSION_TAB_VIEW;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
         setPageAttributes(request, model, tab);
         Contest contest = getContest();
@@ -111,22 +113,21 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
         return TAB_VIEW;
     }
 
-    @RequestMapping(params = "action=updateContestDetails")
-    public void updateDescriptionTabController(HttpServletRequest request, Model model,
-            HttpServletResponse response,
+    @PostMapping("tab/DESCRIPTION/update")
+    public String updateDescriptionTabController(HttpServletRequest request, Model model,
+            HttpServletResponse response, @PathVariable long contestId,
             @Valid ContestDescriptionBean updatedContestDescriptionBean,
             BindingResult result) {
 
         boolean createNew = getCreateNewContestParameterFromRequest(request);
 
         if (!tabWrapper.getCanEdit()) {
-            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
-            return;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
         if (result.hasErrors()) {
-            SetRenderParameterUtil.setErrorRenderParameter(response, "updateContestDetails");
-            return;
+            AlertMessage.danger("Error while updating").flash(request);
+            return "redirect:" + tab.getTabUrl(contestId);
         }
 
         if (ContestScheduleUtil
@@ -136,24 +137,18 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
                     + "Please select a schedule with matching phases or contact a developer.");
         }
 
-        try {
-            // TODO check Input
-            updatedContestDescriptionBean.persist(getContest());
-            if (createNew) {
-                try {
-                    Contest contest = ContestClientUtil
-                            .getContest(updatedContestDescriptionBean.getContestPK());
-                    sendEmailNotificationToAuthor(contest);
-                } catch (ContestNotFoundException | MemberNotFoundException e) {
-                    throw new DatabaseAccessException(e);
-                }
+        // TODO check Input
+        updatedContestDescriptionBean.persist(getContest());
+        if (createNew) {
+            try {
+                Contest contest = ContestClientUtil
+                        .getContest(updatedContestDescriptionBean.getContestPK());
+                sendEmailNotificationToAuthor(contest);
+            } catch (ContestNotFoundException | MemberNotFoundException e) {
+                throw new DatabaseAccessException(e);
             }
-            SetRenderParameterUtil
-                    .setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch (IOException e) {
-            _log.warn("Update contest description failed with: ", e);
-            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
         }
+        return "redirect:" + tab.getTabUrl(contestId);
 
     }
 
@@ -161,10 +156,5 @@ public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTa
             throws MemberNotFoundException {
         new ContestCreationNotification(contest, ConfigurationAttributeKey.COLAB_URL.get())
                 .sendMessage();
-    }
-
-    @RequestMapping(params = {"action=updateContestDetails", "error=true"})
-    public String reportError(HttpServletRequest request, Model model) {
-        return TAB_VIEW;
     }
 }

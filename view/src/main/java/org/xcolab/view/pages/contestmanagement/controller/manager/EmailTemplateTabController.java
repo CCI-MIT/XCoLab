@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/admin/contest/manager")
-public class ContestManagerEmailTemplateTabController extends ContestManagerBaseTabController {
+public class EmailTemplateTabController extends AbstractTabController {
 
     static final private ContestManagerTabs tab = ContestManagerTabs.EMAIL_TEMPLATES;
     static final private String TAB_VIEW = "contestmanagement/manager/emailTab";

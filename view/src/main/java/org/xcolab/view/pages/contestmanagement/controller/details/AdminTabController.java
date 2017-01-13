@@ -1,19 +1,19 @@
 package org.xcolab.view.pages.contestmanagement.controller.details;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -23,14 +23,12 @@ import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.enums.contest.ContestTier;
-import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.ContestAdminBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.pages.contestmanagement.entities.LabelStringValue;
 import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
-import org.xcolab.view.pages.contestmanagement.utils.SetRenderParameterUtil;
-import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 
 import java.io.IOException;
@@ -42,13 +40,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("/admin/contest")
-public class ContestDetailsAdminTabController extends ContestDetailsBaseTabController {
+@RequestMapping("/admin/contest/details/contestId/{contestId}/tab/ADMIN")
+public class AdminTabController extends AbstractTabController {
 
-    private final static Logger _log =
-            LoggerFactory.getLogger(ContestDetailsAdminTabController.class);
-    static final private TabEnum tab = ContestDetailsTabs.ADMIN;
-    static final private String TAB_VIEW = "details/adminTab";
+    static final private ContestDetailsTabs tab = ContestDetailsTabs.ADMIN;
+    static final private String TAB_VIEW = "contestmanagement/details/adminTab";
 
     @Autowired
     private Validator validator;
@@ -106,13 +102,13 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
         return tabWrapper;
     }
 
-    @RequestMapping(params = "tab=ADMIN")
+    @GetMapping
     public String showAdminTabController(HttpServletRequest request, HttpServletResponse response,
             Model model,
             @RequestParam(required = false) Long contestId) {
 
         if (!tabWrapper.getCanView()) {
-            return NO_PERMISSION_TAB_VIEW;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
         setPageAttributes(request, model, tab);
@@ -120,32 +116,24 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
         return TAB_VIEW;
     }
 
-    @RequestMapping(params = "action=updateContestAdmin")
-    public void updateAdminTabController(HttpServletRequest request, Model model,
-            @ModelAttribute ContestAdminBean updateContestAdminBean,
-            HttpServletResponse response) {
+    @PostMapping("update")
+    public String updateAdminTabController(HttpServletRequest request, HttpServletResponse response,
+            Model model, @ModelAttribute ContestAdminBean updateContestAdminBean,
+            @PathVariable long contestId) {
 
         if (!tabWrapper.getCanEdit()) {
-            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
-            return;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
-        try {
-            Contest c = getContest();
-            updateContestAdminBean.persist(c);
-            SetRenderParameterUtil
-                    .setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch (IOException e) {
-            _log.warn("Update contest admin failed with: ", e);
-            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
-        }
+        Contest c = getContest();
+        updateContestAdminBean.persist(c);
+        return "redirect:" + tab.getTabUrl(contestId);
     }
 
-    @ResourceMapping(value = "submitContest")
-    public
-    @ResponseBody
-    void handleSubmitContest(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam long contestId, @RequestParam String tab)
+    @PostMapping("submit")
+    public @ResponseBody void handleSubmitContest(HttpServletRequest request,
+            HttpServletResponse response, @PathVariable long contestId, @RequestParam String tab,
+            Member member)
             throws IOException {
 
         String contestUrl = ConfigurationAttributeKey.COLAB_URL.get()
@@ -155,9 +143,8 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
         }
         contestUrl += "<br/>";
 
-        Member user = MemberAuthUtil.getMemberOrThrow(request);
         String body = "The following <contest/>: <br />" + contestUrl +
-                "was submitted by the user: " + user.getFullName() + "<br/>";
+                "was submitted by the member: " + member.getFullName() + "<br/>";
 
         InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
 
@@ -178,28 +165,4 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
         response.setContentType("application/json");
         response.getWriter().write(mapper.writeValueAsString(true));
     }
-
-    @RequestMapping(params = {"action=updateContestAdmin", "error=true"})
-    public String reportError(HttpServletRequest request, Model model) {
-        return TAB_VIEW;
-    }
-
-    @RequestMapping
-    public String updateTeamTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model) {
-        return NOT_FOUND_TAB_VIEW;
-    }
-
-    @RequestMapping(params = {"action=showNoPermission", "error=true"})
-    public String showNoPermissionErrorRenderParameter(HttpServletRequest request,
-            HttpServletResponse response, Model model) {
-        return NO_PERMISSION_TAB_VIEW;
-    }
-
-    @RequestMapping(params = {"action=showNotFound", "error=true"})
-    public String showNotFoundErrorRenderParameter(HttpServletRequest request,
-            HttpServletResponse response, Model model) {
-        return NOT_FOUND_TAB_VIEW;
-    }
-
 }

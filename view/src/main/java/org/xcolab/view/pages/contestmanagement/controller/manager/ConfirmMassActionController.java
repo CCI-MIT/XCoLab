@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/admin/contest/manager")
-public class ContestManagerConfirmMassActionController {
+public class ConfirmMassActionController {
 
     static final private String CONFIRM_VIEW_PATH = "contestmanagement/manager/massActionConfirmation/";
 

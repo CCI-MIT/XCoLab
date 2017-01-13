@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.contestmanagement.controller.common;
+package org.xcolab.view.pages.contestmanagement.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.ui.Model;
@@ -35,12 +35,9 @@ import java.util.Stack;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
-public abstract class ContestProposalTemplateTabController extends BaseTabController {
+public abstract class AbstractProposalTemplateTabController extends BaseTabController {
 
     public static final String TAB_VIEW = "contestmanagement/manager/proposalTemplateTab";
-    public static final String NO_PERMISSION_TAB_VIEW = "common/noPermissionTab";
-    protected static final String NOT_FOUND_TAB_VIEW = "common/notFound";
 
     protected TabWrapper tabWrapper;
 

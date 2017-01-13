@@ -1,23 +1,22 @@
 package org.xcolab.view.pages.contestmanagement.controller.details;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.ContestTeamBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
-import org.xcolab.view.pages.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.ContestTeamWrapper;
-import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,14 +25,11 @@ import javax.servlet.http.HttpServletResponse;
 
 
 @Controller
-@RequestMapping("/admin/contest")
-public class ContestDetailsTeamTabController extends ContestDetailsBaseTabController {
+@RequestMapping("/admin/contest/details/contestId/{contestId}/tab/TEAM")
+public class TeamTabController extends AbstractTabController {
 
-    private static final Logger _log =
-            LoggerFactory.getLogger(ContestDetailsTeamTabController.class);
-
-    private static final TabEnum tab = ContestDetailsTabs.TEAM;
-    private static final String TAB_VIEW = "details/teamTab";
+    private static final ContestDetailsTabs tab = ContestDetailsTabs.TEAM;
+    private static final String TAB_VIEW = "contestmanagement/details/teamTab";
 
     @ModelAttribute("usersList")
     public List<Member> populateUsers() {
@@ -58,13 +54,12 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
         return tabWrapper;
     }
 
-    @RequestMapping(params = "tab=TEAM")
+    @GetMapping
     public String showTeamTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model,
-            @RequestParam(required = false) Long contestId) {
+            Model model, @RequestParam(required = false) Long contestId) {
 
         if (!tabWrapper.getCanView()) {
-            return NO_PERMISSION_TAB_VIEW;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
         setPageAttributes(request, model, ContestDetailsTabs.TEAM);
@@ -72,30 +67,17 @@ public class ContestDetailsTeamTabController extends ContestDetailsBaseTabContro
         return TAB_VIEW;
     }
 
-    @RequestMapping(params = "action=updateContestTeam")
-    public void updateTeamTabController(HttpServletRequest request, Model model,
-            HttpServletResponse response) {
+    @PostMapping("update")
+    public String updateTeamTabController(HttpServletRequest request,
+            HttpServletResponse response, Model model, @PathVariable long contestId) {
 
         if (!tabWrapper.getCanEdit()) {
-            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
-            return;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
-        try {
-            ContestTeamBean contestTeamBeam = new ContestTeamBean(request, getContest());
-            ContestTeamWrapper contestTeamWrapper = new ContestTeamWrapper(contestTeamBeam);
-            contestTeamWrapper.updateContestTeamMembers();
-            SetRenderParameterUtil
-                    .setSuccessRenderRedirectDetailsTab(response, getContestPK(), tab.getName());
-        } catch (IOException e) {
-            _log.warn("Update contest team failed with: ", e);
-            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
-        }
+        ContestTeamBean contestTeamBeam = new ContestTeamBean(request, getContest());
+        ContestTeamWrapper contestTeamWrapper = new ContestTeamWrapper(contestTeamBeam);
+        contestTeamWrapper.updateContestTeamMembers();
+        return "redirect:" + tab.getTabUrl(contestId);
     }
-
-    @RequestMapping(params = {"action=updateContestTeam", "error=true"})
-    public String reportError(HttpServletRequest request, Model model) {
-        return TAB_VIEW;
-    }
-
 }

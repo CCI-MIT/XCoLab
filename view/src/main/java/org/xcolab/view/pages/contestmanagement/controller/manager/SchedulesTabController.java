@@ -34,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/admin/contest/manager")
-public class ContestManagerSchedulesTabController extends ContestManagerBaseTabController {
+public class SchedulesTabController extends AbstractTabController {
 
     private static final ContestManagerTabs tab = ContestManagerTabs.SCHEDULES;
     private static final String TAB_VIEW = "contestmanagement/manager/schedulesTab";

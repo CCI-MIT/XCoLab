@@ -2,6 +2,7 @@ package org.xcolab.view.pages.contestmanagement.controller.details;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -17,10 +18,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 
-public abstract class ContestDetailsBaseTabController extends BaseTabController {
+public abstract class AbstractTabController extends BaseTabController {
 
-    public static final String NO_PERMISSION_TAB_VIEW = "common/noPermissionTab";
-    public static final String NOT_FOUND_TAB_VIEW = "common/notFound";
     protected TabWrapper tabWrapper;
     private Contest contest;
     private Contest contestWrapper;
@@ -50,13 +49,12 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
     }
 
     @ModelAttribute("contestWrapper")
-    public Contest populateContestWrapper(Model model, HttpServletRequest request) {
-        initContest(request);
+    public Contest populateContestWrapper(Model model, HttpServletRequest request, @PathVariable long contestId) {
+        initContest(contestId);
         return contestWrapper;
     }
 
-    private void initContest(HttpServletRequest request) {
-        Long contestId = getContestIdFromRequest(request);
+    private void initContest(long contestId) {
         try {
             contest = ContestClientUtil.getContest(contestId);
             contestWrapper = (contest);
@@ -77,11 +75,11 @@ public abstract class ContestDetailsBaseTabController extends BaseTabController 
         this.contest = contest;
     }
 
-    public Contest getContest(HttpServletRequest request) {
+    public Contest getContest(long contestId) {
         if (contest != null) {
             return contest;
         }
-        initContest(request);
+        initContest(contestId);
         return contest;
     }
 

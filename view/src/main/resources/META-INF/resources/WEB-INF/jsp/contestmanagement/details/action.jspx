@@ -1,0 +1,47 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+		  xmlns:jsp="http://java.sun.com/JSP/Page"
+		  xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+		  version="2.0">
+
+	<c:set var="submitContest" value="/admin/contest/details/contestId/${contestWrapper.contestPK }/tab/ADMIN/submit" />
+
+	<div class="actionItems">
+		<a class="c-Button__primary" href="#" id="saveChangesButton">SAVE ${currentTabWrapped.elementType}</a>
+		<collab:contestLink contest="${contestWrapper}" text="VIEW contest" cssClass="c-Button__primary" linkId="previewContestButton" target="_blank"/>
+		<a class="c-Button__primary" href="#" id="submitContestButton">SUBMIT contest</a>
+		<a class="c-Button__secondary" href="${currentTabWrapped.tabUrl}" id="saveChangesButton">DISCARD changes</a>
+	</div>
+
+	<script type="text/javascript">
+	<![CDATA[
+	(function() {
+		jQuery('document').ready(function(){
+			jQuery("#saveChangesButton").click(function () {
+				disableDirtyCheck();
+				jQuery("#editForm").submit();
+			});
+
+			jQuery("#submitContestButton").click(function () {
+				disableDirtyCheck();
+				jQuery.ajax({
+					type: 'POST',
+					dataType: 'text',
+					url : "${submitContest}",
+					data: "contestId=${contestWrapper.contestPK}&tab=${currentTabWrapped.name}",
+					success: function(response){
+						if(response){
+							jQuery.growlUI('Success', 'The contest was successfully submitted!');
+						} else{
+							jQuery.growlUI('Error', 'There was an error while submitting the contest!');
+						}
+					}
+				});
+
+			});
+
+		});
+	}());
+
+	]]>
+	</script>
+</jsp:root>

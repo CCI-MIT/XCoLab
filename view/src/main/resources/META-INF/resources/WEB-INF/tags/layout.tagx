@@ -795,6 +795,25 @@
             var usertracking_hash = '${_member.uuid}';
         </script>
     </c:if>
+
+    <script type="text/javascript">
+        function enableDirtyCheck() {
+            window.oldOnBeforeUnload = window.onbeforeunload;
+            window.onbeforeunload = function() {
+                if (jQuery(".editorDirty").length > 0) {
+                    return 'You have modified this page but have not saved your changes.';
+                }
+                return null;
+            };
+        }
+
+        function disableDirtyCheck() {
+            if ('oldOnBeforeUnload' in window) {
+                window.onbeforeunload = window.oldOnBeforeUnload;
+            }
+            delete window.onbeforeunload;
+        }
+    </script>
     <xcolab:script src="${_themeJsFolder}/usertracking.js" />
     <xcolab:script src="${_themeJsFolder}/balloon.js" />
     <xcolab:script src="${_themeJsFolder}/errorTracker.js" />
