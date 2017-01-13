@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 @Controller
-@RequestMapping("view")
+@RequestMapping("/admin/contest")
 public class ContestDetailsTeamTabController extends ContestDetailsBaseTabController {
 
     private static final Logger _log =

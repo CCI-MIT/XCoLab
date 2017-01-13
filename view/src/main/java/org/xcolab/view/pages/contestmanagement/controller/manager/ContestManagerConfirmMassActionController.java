@@ -1,9 +1,8 @@
 package org.xcolab.view.pages.contestmanagement.controller.manager;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -21,12 +20,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("view")
+@RequestMapping("/admin/contest/manager")
 public class ContestManagerConfirmMassActionController {
 
-    private final static Logger _log =
-            LoggerFactory.getLogger(ContestManagerConfirmMassActionController.class);
-    static final private String CONFIRM_VIEW_PATH = "manager/massActionConfirmation/";
+    static final private String CONFIRM_VIEW_PATH = "contestmanagement/manager/massActionConfirmation/";
 
     @RequestMapping(params = {"action=showMassActionConfirmation"})
     public String showConfirmation(HttpServletRequest request, Model model) {
@@ -50,20 +47,16 @@ public class ContestManagerConfirmMassActionController {
         return contestIds;
     }
 
-    @RequestMapping(params = "action=confirmMassActionExecution")
+    @GetMapping("confirmMassAction")
     public void confirmMassActionExecution(HttpServletRequest request, Model model,
             @ModelAttribute MassActionConfirmationWrapper massActionConfirmationWrapper,
-            HttpServletResponse response) {
-        try {
-            massActionConfirmationWrapper.invokeMassActionForSelectedContests();
-            SetRenderParameterUtil.addActionSuccessMessageToSession(request,
-                    massActionConfirmationWrapper.getSelectedMassActionTitle());
-            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response,
-                    ContestManagerTabs.OVERVIEW.getName());
-        } catch (InvocationTargetException | IllegalAccessException | IOException e) {
-            _log.warn("Update contest overview failed with: ", e);
-            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
-        }
+            HttpServletResponse response)
+            throws IOException, InvocationTargetException, IllegalAccessException {
+        massActionConfirmationWrapper.invokeMassActionForSelectedContests();
+        SetRenderParameterUtil.addActionSuccessMessageToSession(request,
+                massActionConfirmationWrapper.getSelectedMassActionTitle());
+        SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response,
+                ContestManagerTabs.OVERVIEW.getName());
     }
 
 }

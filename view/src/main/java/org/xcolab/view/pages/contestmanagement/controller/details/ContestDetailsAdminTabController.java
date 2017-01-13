@@ -42,7 +42,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("view")
+@RequestMapping("/admin/contest")
 public class ContestDetailsAdminTabController extends ContestDetailsBaseTabController {
 
     private final static Logger _log =
@@ -149,7 +149,7 @@ public class ContestDetailsAdminTabController extends ContestDetailsBaseTabContr
             throws IOException {
 
         String contestUrl = ConfigurationAttributeKey.COLAB_URL.get()
-                + "/web/guest/cms/-/contestmanagement/contestId/" + contestId;
+                + "/admin/contest/details/contestId/" + contestId;
         if (!tab.isEmpty()) {
             contestUrl += "/tab/" + tab;
         }

@@ -40,7 +40,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("view")
+@RequestMapping("/admin/contest")
 public class ContestDetailsDescriptionTabController extends ContestDetailsBaseTabController {
 
     private final static Logger _log =

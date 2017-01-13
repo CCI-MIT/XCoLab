@@ -16,6 +16,11 @@ public enum ErrorText {
     NOT_FOUND(
             ErrorMessage.error("The content you are looking for does not exist.")
                             .withTitle("Content not found")),
+    ILLEGAL_SCHEDULE_CHANGE(ErrorMessage.error("If you tried to edit a contest schedule make sure"
+            + " that it is not used by any contests that have started.\n"
+            + "        If you tried changing a contest's schedule, make sure no proposals have "
+            + "been submitted to that contest.")
+            .withTitle("Illegal schedule change"))
     ;
 
 

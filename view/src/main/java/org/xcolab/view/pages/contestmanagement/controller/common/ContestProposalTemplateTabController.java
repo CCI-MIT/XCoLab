@@ -2,10 +2,10 @@ package org.xcolab.view.pages.contestmanagement.controller.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
@@ -28,8 +28,6 @@ import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
@@ -40,7 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public abstract class ContestProposalTemplateTabController extends BaseTabController {
 
-    public static final String TAB_VIEW = "manager/proposalTemplateTab";
+    public static final String TAB_VIEW = "contestmanagement/manager/proposalTemplateTab";
     public static final String NO_PERMISSION_TAB_VIEW = "common/noPermissionTab";
     protected static final String NOT_FOUND_TAB_VIEW = "common/notFound";
 
@@ -129,12 +127,9 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
         return getHowTerms();
     }
 
-    @ResourceMapping(value = "getSectionDefinition")
-    public
-    @ResponseBody
-    void getSectionDefinition(
-            @RequestParam("sectionDefinitionId") Long sectionDefinitionId,
-            HttpServletResponse response)
+    @GetMapping("/admin/contest/api/getSectionDefinition/{sectionDefinitionId}")
+    public @ResponseBody void getSectionDefinition(HttpServletResponse response,
+            @PathVariable long sectionDefinitionId)
             throws IOException {
 
         PlanSectionDefinition planSectionDefinition =
@@ -191,15 +186,8 @@ public abstract class ContestProposalTemplateTabController extends BaseTabContro
 
     private void sortOntologyTermParentPathsAlphabetically(
             List<Stack<OntologyTerm>> allParentsPaths) {
-        Collections.sort(allParentsPaths, new Comparator<Stack<OntologyTerm>>() {
-
-            @Override
-            public int compare(Stack<OntologyTerm> o1, Stack<OntologyTerm> o2) {
-                return compareOntologyTermStacks((Stack<OntologyTerm>) o1.clone(),
-                        (Stack<OntologyTerm>) o2.clone());
-            }
-
-        });
+        allParentsPaths.sort((o1, o2) -> compareOntologyTermStacks(
+                (Stack<OntologyTerm>) o1.clone(), (Stack<OntologyTerm>) o2.clone()));
     }
 
     private int compareOntologyTermStacks(Stack<OntologyTerm> stack1, Stack<OntologyTerm> stack2) {

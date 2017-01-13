@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("view")
+@RequestMapping("/admin/contest")
 public class ExceptionController {
 
     private static final String EXCEPTION_VIEW = "common/showException";

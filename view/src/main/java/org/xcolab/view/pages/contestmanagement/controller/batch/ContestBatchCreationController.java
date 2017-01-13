@@ -46,7 +46,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("view")
+@RequestMapping("/admin/contest")
 public class ContestBatchCreationController {
 
     private final static Logger _log =
@@ -152,7 +152,7 @@ public class ContestBatchCreationController {
                         contestBatchBean.getContestType());
 
                 contestLinks.put("" + contest.getContestShortName(),
-                        "/web/guest/cms/-/contestmanagement/contestId/"
+                        "/admin/contest/details/contestId/"
                                 + contest.getContestPK() + "/tab/DESCRIPTION");
 
                 processOntologyTerms(contestCSVBean, contest);

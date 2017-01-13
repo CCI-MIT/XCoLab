@@ -82,4 +82,8 @@ public enum ContestDetailsTabs implements TabEnum {
         return activitiesCountAlgorithm.getActivityCount(context, request);
     }
 
+    public String getTabUrl(long contestId) {
+        return "/admin/contest/details/contestId/" + contestId + "/tab/" + name();
+    }
+
 }

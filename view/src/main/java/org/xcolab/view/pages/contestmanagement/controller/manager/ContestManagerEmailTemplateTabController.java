@@ -1,25 +1,24 @@
 package org.xcolab.view.pages.contestmanagement.controller.manager;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.entities.LabelStringValue;
 import org.xcolab.view.pages.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.EmailTemplateWrapper;
-import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,13 +26,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("view")
+@RequestMapping("/admin/contest/manager")
 public class ContestManagerEmailTemplateTabController extends ContestManagerBaseTabController {
 
-    private final static Logger _log =
-            LoggerFactory.getLogger(ContestManagerEmailTemplateTabController.class);
-    static final private TabEnum tab = ContestManagerTabs.EMAIL_TEMPLATES;
-    static final private String TAB_VIEW = "manager/emailTab";
+    static final private ContestManagerTabs tab = ContestManagerTabs.EMAIL_TEMPLATES;
+    static final private String TAB_VIEW = "contestmanagement/manager/emailTab";
 
     @ModelAttribute("currentTabWrapped")
     @Override
@@ -43,12 +40,12 @@ public class ContestManagerEmailTemplateTabController extends ContestManagerBase
         return tabWrapper;
     }
 
-    @RequestMapping(params = "tab=EMAIL_TEMPLATES")
+    @GetMapping("tab/EMAIL_TEMPLATES")
     public String showEmailTabController(HttpServletRequest request, HttpServletResponse response,
             Model model,
             @RequestParam(required = false) String elementId) {
         if (!tabWrapper.getCanView()) {
-            return NO_PERMISSION_TAB_VIEW;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
         String templateType = elementId != null ? elementId : getFirstTemplateName();
@@ -78,29 +75,23 @@ public class ContestManagerEmailTemplateTabController extends ContestManagerBase
         return "";
     }
 
-    @RequestMapping(params = "action=updateEmailTemplate")
-    public void updateEmailTemplateTabController(HttpServletRequest request, Model model,
+    @PostMapping("tab/EMAIL_TEMPLATES/update")
+    public String updateEmailTemplateTabController(HttpServletRequest request, Model model,
             @ModelAttribute EmailTemplateWrapper updateEmailTemplateWrapper,
             BindingResult result, HttpServletResponse response) {
         if (!tabWrapper.getCanEdit()) {
-            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
-            return;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
         if (result.hasErrors()) {
             SetRenderParameterUtil.setErrorRenderParameter(response, "updateEmailTemplate");
-            return;
+            //TODO: errors
+            return TAB_VIEW;
         }
 
-        try {
-            updateEmailTemplateWrapper.persist();
-            SetRenderParameterUtil.addActionSuccessMessageToSession(request);
-            response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tab.getName()
-                    + "/elementId/" + updateEmailTemplateWrapper.getType());
-        } catch (IOException e) {
-            _log.warn("Update email template failed with: ", e);
-            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
-        }
+        updateEmailTemplateWrapper.persist();
+        SetRenderParameterUtil.addActionSuccessMessageToSession(request);
+        return "redirect:" + tab.getTabUrl(updateEmailTemplateWrapper.getType());
     }
 
     //TODO
@@ -142,9 +133,4 @@ public class ContestManagerEmailTemplateTabController extends ContestManagerBase
     //            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
     //        }
     //    }
-
-    @RequestMapping(params = {"action=updateEmailTemplate", "error=true"})
-    public String reportError(HttpServletRequest request, Model model) {
-        return TAB_VIEW;
-    }
 }

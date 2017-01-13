@@ -5,20 +5,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
-import org.xcolab.view.pages.contestmanagement.controller.common
-        .ContestProposalTemplateTabController;
+import org.xcolab.entity.utils.flash.AlertMessage;
+import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.pages.contestmanagement.controller.common.ContestProposalTemplateTabController;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.utils.ProposalTemplateLifecycleUtil;
-import org.xcolab.view.pages.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.ProposalTemplateWrapper;
-import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 
 import java.io.IOException;
@@ -28,12 +30,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("view")
+@RequestMapping("/admin/contest/manager")
 public class ContestManagerProposalTemplateController extends ContestProposalTemplateTabController {
 
     private final static Logger _log =
             LoggerFactory.getLogger(ContestManagerProposalTemplateController.class);
-    static final private TabEnum tab = ContestManagerTabs.PROPOSALTEMPLATES;
+    static final private ContestManagerTabs tab = ContestManagerTabs.PROPOSAL_TEMPLATES;
 
     @ModelAttribute("tabs")
     @Override
@@ -49,13 +51,13 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
         return tabWrapper;
     }
 
-    @RequestMapping(params = "tab=PROPOSALTEMPLATES")
+    @GetMapping("tab/PROPOSAL_TEMPLATES")
     public String showProposalTemplatesTabController(HttpServletRequest request,
             HttpServletResponse response, Model model,
-            @RequestParam(value = "elementId", required = false) Long elementId) {
+            @RequestParam(required = false) Long elementId) {
 
         if (!tabWrapper.getCanView()) {
-            return NO_PERMISSION_TAB_VIEW;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
         Long planTemplateId = elementId != null ? elementId : getFirstPlanTemplateId();
@@ -68,7 +70,7 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
         model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(planTemplateId,
                 ProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
         model.addAttribute("elementId", planTemplateId);
-        return ContestProposalTemplateTabController.TAB_VIEW;
+        return TAB_VIEW;
     }
 
     private Long getFirstPlanTemplateId() {
@@ -82,78 +84,53 @@ public class ContestManagerProposalTemplateController extends ContestProposalTem
 
     }
 
-    @RequestMapping(params = "action=createPROPOSALTEMPLATES")
-    public void createNewProposalTemplateTabController(HttpServletRequest request, Model model,
-            HttpServletResponse response) {
+    @PostMapping("tab/PROPOSAL_TEMPLATES/create")
+    public String createNewProposalTemplateTabController(HttpServletRequest request, Model model,
+            HttpServletResponse response) throws IOException {
 
         if (!tabWrapper.getCanEdit()) {
-            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
-            return;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
-        try {
-            PlanTemplate newTemplate = ProposalTemplateLifecycleUtil.create();
-            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(),
-                    newTemplate.getId_());
-        } catch (IOException e) {
-            _log.warn("Create proposal template failed with: ", e);
-            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
-        }
+        PlanTemplate newTemplate = ProposalTemplateLifecycleUtil.create();
+        return "redirect:" + tab.getTabUrl(newTemplate.getId_());
     }
 
-    @RequestMapping(params = "action=deletePROPOSALTEMPLATES")
-    public void deleteProposalTemplateTabController(HttpServletRequest request, Model model,
-            @RequestParam(value = "elementId") Long elementId,
-            HttpServletResponse response) {
+    @PostMapping("tab/PROPOSAL_TEMPLATES/delete/{elementId}")
+    public String deleteProposalTemplateTabController(HttpServletRequest request, Model model,
+            @PathVariable Long elementId,
+            HttpServletResponse response) throws IOException {
 
         if (!tabWrapper.getCanEdit()) {
-            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
-            return;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
-        try {
-            ProposalTemplateLifecycleUtil.delete(elementId);
-            SetRenderParameterUtil
-                    .setSuccessRenderRedirectManagerTab(response, tab.getName(),
-                            getFirstPlanTemplateId());
-        } catch (IOException e) {
-            _log.warn("Delete proposal template failed with: ", e);
-            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
-        }
+        ProposalTemplateLifecycleUtil.delete(elementId);
+        AlertMessage.success("Element deleted!").flash(request);
+        return "redirect:" + tab.getTabUrl();
     }
 
-    @RequestMapping(params = {"action=updatePROPOSALTEMPLATES"})
-    public void updateProposalTemplatesTabController(HttpServletRequest request, Model model,
+    @PostMapping("tab/PROPOSAL_TEMPLATES/update")
+    public String updateProposalTemplatesTabController(HttpServletRequest request, Model model,
             HttpServletResponse response,
             @ModelAttribute ProposalTemplateWrapper updatedProposalTemplateWrapper,
-            BindingResult result) {
+            BindingResult result) throws IOException {
 
         if (!tabWrapper.getCanEdit()) {
-            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
-            return;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
         if (result.hasErrors()) {
             model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(
                     updatedProposalTemplateWrapper.getPlanTemplateId(),
                     ProposalTemplateWrapper.getAllPlanTemplateSelectionItems()));
-            SetRenderParameterUtil
-                    .setErrorRenderParameter(response, "updateContestProposalTemplate");
-            return;
+            //TODO: process errors
+            AlertMessage.danger("Failed to update element").flash(request);
+            return "redirect:" + tab.getTabUrl(updatedProposalTemplateWrapper.getPlanTemplateId());
         }
 
-        try {
-            updatedProposalTemplateWrapper.setUpdateExistingTemplate(true);
-            updatedProposalTemplateWrapper.persist();
-            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(),
-                    updatedProposalTemplateWrapper.getPlanTemplateId());
-        } catch (IOException e) {
-            _log.warn("Update proposal template failed with: ", e);
-            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
-        }
-    }
-
-    @RequestMapping(params = {"action=updatePROPOSALTEMPLATES", "error=true"})
-    public String reportError(HttpServletRequest request, Model model) {
-        return TAB_VIEW;
+        updatedProposalTemplateWrapper.setUpdateExistingTemplate(true);
+        updatedProposalTemplateWrapper.persist();
+        AlertMessage.success("Changes saved!").flash(request);
+        return "redirect:" + tab.getTabUrl(updatedProposalTemplateWrapper.getPlanTemplateId());
     }
 }

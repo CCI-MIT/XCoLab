@@ -19,5 +19,4 @@ public interface TabEnum {
     boolean getCanAddComment(TabPermissions permissions, TabContext context, HttpServletRequest request);
 
     int getActivityCount(TabContext context, HttpServletRequest request);
-
 }

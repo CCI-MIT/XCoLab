@@ -5,7 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -15,12 +18,12 @@ import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
 import org.xcolab.view.pages.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportTargetWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportWrapper;
-import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 
 import java.io.IOException;
@@ -31,13 +34,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("view")
+@RequestMapping("/admin/contest/manager")
 public class ContestManagerFlaggingTabController extends ContestManagerBaseTabController {
 
     private final static Logger _log =
             LoggerFactory.getLogger(ContestManagerFlaggingTabController.class);
-    static final private TabEnum tab = ContestManagerTabs.FLAGGING;
-    static final private String TAB_VIEW = "manager/flaggingTab";
+    static final private ContestManagerTabs tab = ContestManagerTabs.FLAGGING;
+    static final private String TAB_VIEW = "contestmanagement/manager/flaggingTab";
 
     @ModelAttribute("currentTabWrapped")
     @Override
@@ -47,12 +50,12 @@ public class ContestManagerFlaggingTabController extends ContestManagerBaseTabCo
         return tabWrapper;
     }
 
-    @RequestMapping(params = "tab=FLAGGING")
-    public String showEmailTabController(HttpServletRequest request, HttpServletResponse response,
+    @GetMapping("tab/FLAGGING")
+    public String showFlaggingTab(HttpServletRequest request, HttpServletResponse response,
             Model model,
             @RequestParam(required = false) Long elementId) {
         if (!tabWrapper.getCanView()) {
-            return NO_PERMISSION_TAB_VIEW;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
         try {
@@ -99,70 +102,54 @@ public class ContestManagerFlaggingTabController extends ContestManagerBaseTabCo
         return 0L;
     }
 
-    @RequestMapping(params = "action=handleReport")
-    public void approveContent(HttpServletRequest request, HttpServletResponse response,
+    @PostMapping("tab/FLAGGING/handle/{reportId}/{managerAction}")
+    public String approveContent(HttpServletRequest request, HttpServletResponse response,
             Model model,
-            @RequestParam long reportId, @RequestParam ManagerAction managerAction)
+            @PathVariable long reportId, @PathVariable ManagerAction managerAction)
             throws IOException {
         if (!tabWrapper.getCanEdit()) {
-            return;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
         long memberId = MemberAuthUtil.getMemberId(request);
         FlaggingClient.handleReport(memberId, managerAction, reportId);
         SetRenderParameterUtil
                 .addActionSuccessMessageToSession(request, "Report " + managerAction.name() + "D");
-        response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tab.getName());
+        return "redirect:" + tab.getTabUrl();
     }
 
-    @RequestMapping(params = "action=updateReportTarget")
-    public void updateEmailTemplateTabController(HttpServletRequest request, Model model,
+    @PostMapping("tab/FLAGGING/update")
+    public String updateEmailTemplateTabController(HttpServletRequest request, Model model,
             @ModelAttribute FlaggingReportTargetWrapper reportTargetWrapper,
             BindingResult result, HttpServletResponse response) {
         if (!tabWrapper.getCanEdit()) {
-            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
-            return;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
         if (result.hasErrors()) {
             SetRenderParameterUtil.setErrorRenderParameter(response, "updateEmailTemplate");
-            return;
+            //TODO: errors
+            return TAB_VIEW;
         }
 
-        try {
-            reportTargetWrapper.persist();
-            SetRenderParameterUtil.addActionSuccessMessageToSession(request);
-            response.sendRedirect("/web/guest/cms/-/contestmanagement/manager/tab/" + tab.getName()
-                    + "/elementId/" + reportTargetWrapper.getReportTargetId());
-        } catch (IOException e) {
-            _log.warn("Update email template failed with: ", e);
-            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
-        }
+        reportTargetWrapper.persist();
+        SetRenderParameterUtil.addActionSuccessMessageToSession(request);
+        return "redirect:" + tab.getTabUrl(reportTargetWrapper.getReportTargetId());
     }
 
-    @RequestMapping(params = {"action=updateReportTarget", "error=true"})
-    public String reportError(HttpServletRequest request, Model model) {
-        return TAB_VIEW;
-    }
-
-    @RequestMapping(params = "action=deleteReportTarget")
-    public void deleteEmailTemplateTabController(HttpServletRequest request,
+    @PostMapping("tab/FLAGGING/delete/{reportTargetId}")
+    public String deleteEmailTemplateTabController(HttpServletRequest request,
             HttpServletResponse response,
-            Model model, @RequestParam long reportTargetId) {
+            Model model, @PathVariable long reportTargetId) throws IOException {
         if (!tabWrapper.getCanEdit()) {
-            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
-            return;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
-        try {
-            final boolean success = FlaggingClient.deleteReportTarget(reportTargetId);
-            if (success) {
-                SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName(),
-                        getFirstReportTargetId());
-            } else {
-                SetRenderParameterUtil.setErrorRenderParameter(response, "deleteReportTarget");
-            }
-        } catch (IOException e) {
-            _log.warn("Delete contest schedule failed with: ", e);
-            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
+        final boolean success = FlaggingClient.deleteReportTarget(reportTargetId);
+        if (success) {
+            return "redirect:" + tab.getTabUrl();
+        } else {
+            SetRenderParameterUtil.setErrorRenderParameter(response, "deleteReportTarget");
+            //TODO: error
+            return TAB_VIEW;
         }
     }
 }

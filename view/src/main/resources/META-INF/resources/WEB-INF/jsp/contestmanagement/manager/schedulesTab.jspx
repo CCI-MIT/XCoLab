@@ -1,0 +1,443 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
+    <!--@elvariable id="scheduleId" type="java.lang.Long"-->
+    <!--@elvariable id="contestScheduleWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper"-->
+    <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper"-->
+    <!--@elvariable id="contestPhaseTypesSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="contestPhaseAutopromoteSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+
+    <jsp:directive.include file="../init.jspx"/>
+    <jsp:directive.include file="./header.jspx"/>
+
+    <c:set var="changeElementURL" value="/admin/contest/manager/tab/SCHEDULES?elementId=" />
+    <c:set var="createContestScheduleURL" value="/admin/contest/manager/tab/SCHEDULES/create" />
+    <c:set var="updateContestScheduleURL" value="/admin/contest/manager/tab/SCHEDULES/update" />
+    <c:set var="deleteContestScheduleURL"
+           value="/admin/contest/manager/tab/SCHEDULES/delete/${contestScheduleWrapper.scheduleId}" />
+
+
+    <form action="${deleteContestScheduleURL}" id="deleteScheduleForm" method="post" style="visibility: hidden;">
+        <!-- -->
+    </form>
+
+    <form action="${createContestScheduleURL}" id="createScheduleForm" method="post" style="visibility: hidden;">
+
+        <!-- -->
+    </form>
+
+    <div class="cmsDetailsBox">
+        <div style="margin-bottom: 40px;">
+            <div class="floatRight outerVerticalCenter">
+                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="saveExistingSchedule()">SAVE schedule</a>
+                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="saveAsNewSchedule()">SAVE as new schedule</a>
+                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitCreateScheduleForm()">CREATE new schedule</a>
+                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitDeleteScheduleForm()">DELETE schedule</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="cmsDetailsBox">
+        <div class="reg_errors"><!--  -->
+            <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
+        </div>
+
+        <form:form action="${changeContestScheduleURL }" commandName="elementSelectIdWrapper" id="selectForm"
+                   method="post">
+
+            <div class="addpropbox">
+                <strong class="inputTitleLeft">Schedule template:</strong>
+
+                <div class="addpropInputContainer">
+                    <form:select path="elementId" id="changeContestScheduleSelect" cssClass="wideLargeInput">
+                        <form:options items="${elementSelectIdWrapper.selectionItems}" itemValue="value"
+                                      itemLabel="lable"/>
+                    </form:select>
+
+                    <div class="reg_errors">
+                        <form:errors cssClass="c-Alert c-Alert__error" path="elementId"/>
+                    </div>
+                </div>
+            </div>
+        </form:form>
+        <c:if test="${scheduleId >= 0}">
+            <form:form action="${updateContestScheduleURL }" commandName="contestScheduleWrapper" id="editForm"
+                       method="post">
+                <form:hidden path="scheduleId"/>
+
+                <form:hidden path="createNew" id="createNewFlag"/>
+
+                <div class="addpropbox">
+                    <strong class="inputTitleLeft">Schedule name:</strong>
+                    <form:input path="scheduleName" cssClass="wideLargeInput"/>
+
+                    <div class="reg_errors"><!--  -->
+                        <form:errors cssClass="c-Alert c-Alert__error" path="scheduleName"/>
+                    </div>
+                </div>
+
+                <div class="addpropbox">
+                    <strong class="inputTitleLeft">Contest phases for this schedule:</strong>
+
+                    <div class="outerVerticalCenter floatRight">
+                        <a class="c-Button__primary innerVerticalCenter" href="#" onclick="addContestPhase(event)">Add contest phase</a>
+                    </div>
+                    <table class="contestOverview">
+                        <col span="1" class="extraSmallColumn"/>
+                        <!-- <col span="1" class="extraSmallColumn"/> -->
+                        <col span="4" class="mediumColumn"/>
+                        <col span="1" class="extraSmallColumn"/>
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Phase Type</th>
+                            <!-- <th>Buffer</th> -->
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Autopromote</th>
+                            <th>Fellow <br/>Screening</th>
+                            <th><!-- --></th>
+                        </tr>
+                        </thead>
+                        <tbody id="contestOverviewBody" class="contestPhases">
+                        <c:set var="dateTimePickerIndex" value="0"/>
+                        <c:forEach var="schedulePhase" items="${contestScheduleWrapper.schedulePhases}" varStatus="x">
+                            <tr data-filter-attribute="${fn:length(contestScheduleWrapper.schedulePhases) - 1 eq x.index ? 'dummyPhase' : ''}"
+                                data-form-index="${x.index}"
+                                style="${fn:length(contestScheduleWrapper.schedulePhases) - 1 eq x.index ? 'display:none' : ''}"
+                                    >
+
+                                <form:hidden path="schedulePhases[${x.index}].contestScheduleId"
+                                             data-form-name="contestScheduleId"/>
+                                <form:hidden path="schedulePhases[${x.index}].contestPhasePK"
+                                             data-form-name="contestPhasePK"/>
+                                <form:hidden path="schedulePhases[${x.index}].contestPK" data-form-name="contestPK"/>
+                                <form:hidden path="schedulePhases[${x.index}].contestPhaseDeleted"
+                                             data-form-name="contestPhaseDeleted"/>
+
+                                <div class="reg_errors"><!--  -->
+                                    <form:errors cssClass="c-Alert c-Alert__error"
+                                                 path="schedulePhases[${x.index}].phaseStartDate"/>
+                                </div>
+
+                                <td data-form-attribute="indexLable">${x.index + 1}</td>
+                                <td>
+                                    <form:hidden path="schedulePhases[${x.index}].contestPhaseTypeOld" data-form-name="contestPhaseTypeOld"/>
+                                    <form:select path="schedulePhases[${x.index}].contestPhaseType" class="autoWidth"
+                                                 data-form-name="contestPhaseType">
+                                        <form:options items="${contestPhaseTypesSelectionItems}" itemValue="value"
+                                                      itemLabel="lable"/>
+                                    </form:select>
+                                </td>
+                                <!-- <td>
+                                        <form:checkbox path="schedulePhases[${x.index}].hasBuffer"
+                                                       data-select-attribute="hasBufferCheckbox"/></td> -->
+                                <td>
+                                    <fmt:formatDate value="${schedulePhase.phaseStartDate}" pattern="MM/dd/yyyy HH:mm"
+                                                    type="date" dateStyle="short" timeZone="America/New_York"
+                                                    var="formatDate"/>
+
+                                    <form:input path="schedulePhases[${x.index}].phaseStartDate"
+                                                cssClass="datetimepicker" value="${formatDate}"
+                                                data-type-attribute="start"
+                                                data-index-attribute="${dateTimePickerIndex}"
+                                                data-select-attribute="datetimepicker"
+                                                data-form-name="phaseStartDate"
+                                            />
+                                </td>
+
+                                <td>
+                                    <form:input path="schedulePhases[${x.index}].phaseEndDateFormatted"
+                                                cssClass="datetimepicker"
+                                                data-type-attribute="end"
+                                                data-index-attribute="${dateTimePickerIndex + 1}"
+                                                data-select-attribute="datetimepicker"
+                                                data-form-name="phaseEndDateFormatted"
+                                            />
+                                </td>
+                                <td>
+                                    <form:select path="schedulePhases[${x.index}].contestPhaseAutopromote" class="autoWidth"
+                                                 data-form-name="contestPhaseAutopromote">
+                                        <form:options items="${contestPhaseAutopromoteSelectionItems}" itemValue="value"
+                                                      itemLabel="lable"/>
+                                    </form:select>
+                                </td>
+                                <td>
+                                    <form:checkbox path="schedulePhases[${x.index}].fellowScreeningActive"
+                                                   data-form-name="fellowScreeningActive">
+                                    </form:checkbox>
+                                </td>
+                                <td>
+                                    <c:if test="${not schedulePhase.contestPhaseHasProposalAssociations}">
+                                        <div class="deleteIcon"> <!-- --></div>
+                                    </c:if>
+                                </td>
+                            </tr>
+                            <c:set var="dateTimePickerIndex" value="${dateTimePickerIndex + 2}"/>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                    <i>Please do not put an end date to the last phase, otherwise the mass messaging function can't detect
+                        the contest!</i>
+                </div>
+            </form:form>
+        </c:if>
+    </div>
+
+
+    <div class="cmsDetailsBox">
+
+        <div class="addpropbox" style="margin-top: 20px;">
+            <strong class="inputTitleLeft">Contests using this schedule:</strong>
+            <table class="contestOverview">
+                <colgroup>
+                    <col class="extraSmallColumn" span="1" />
+                    <col style="text-align: center;" class="mediumColumn" span="1" />
+                    <col style="text-align: center;" class="smallColumn" span="1" />
+                    <col style="text-align: center;" class="mediumColumn" span="2" />
+                    <col style="text-align: center;" class="smallColumn" span="2" />
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Tier</th>
+                    <th>Current phase</th>
+                    <th>Current phase <br/>Autopromote state</th>
+                    <th>Current phase <br/>Fellow screening</th>
+                    <th><!-- --></th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${contestScheduleWrapper.contestsUsingSelectedSchedule}" var="contestWrapper"
+                           varStatus="x">
+                    <tr>
+                        <td data-form-name="index">${x.index + 1}</td>
+                        <td><collab:contestLink contest="${contestWrapper}" /></td>
+                        <td>Tier ${contestWrapper.contestTier}</td>
+                        <c:choose>
+                            <c:when test="${not empty contestWrapper.activePhase}">
+                                <td>
+                                        ${contestWrapper.activePhase.name}
+                                </td>
+                                <td>
+                                        ${contestWrapper.activePhase.contestPhaseAutopromote}
+                                </td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${contestWrapper.activePhase.fellowScreeningActive}">
+                                            <input type="checkbox" disabled="disabled" checked="checked"/>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <input type="checkbox" disabled="disabled"/>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                            </c:when>
+                            <c:otherwise>
+                                <td colspan="3">
+                                    No active phase!
+                                </td>
+                            </c:otherwise>
+                        </c:choose>
+                        <td>
+                            <a class="c-Button__primary innerVerticalCenter" href="/admin/contest/details/contestId/${contestWrapper.contestPK}"
+                                   target="_blank">EDIT</a>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        <![CDATA[
+
+        jQuery(function () {
+            initDateTimePicker();
+            bindDeleteClickEvents(deleteContestPhase);
+            bindContestScheduleSelectChange();
+            bindCheckBoxClick();
+            bindTemplateSelectChange();
+        });
+
+        function bindTemplateSelectChange() {
+
+            var dropDownElement = document.getElementById("changeContestScheduleSelect");
+
+            dropDownElement.addEventListener("change", function (ev) {
+                var templateName = ev.target.value;
+                window.location = "${changeElementURL}" + templateName;
+            })
+        }
+
+        function initDateTimePicker() {
+            jQuery('.datetimepicker').datetimepicker({
+                lazyInit: true,
+                weeks: true,
+                format: 'm/d/Y H:i',
+                onChangeDateTime: function (dateTimePickerDateString, inst) {
+                    var dateTimePickerIndex = inst[0].getAttribute("data-index-attribute");
+                    var nexDateTimePickerIndex = parseInt(dateTimePickerIndex) + 1;
+                    var nextDateTimePicker = document.querySelectorAll('[data-index-attribute="' + nexDateTimePickerIndex + '"]');
+                    nextDateTimePicker = nextDateTimePicker[0];
+                    if (nextDateTimePicker.value != undefined) {
+                        try {
+                            var nextDateTimePickerDate = new Date(nextDateTimePicker.value);
+                            var dateTimePickerDate = new Date(dateTimePickerDateString);
+                            if (dateTimePickerDate > nextDateTimePickerDate) {
+                                nextDateTimePicker.value = dateTimePickerDate.dateFormat('m/d/Y H:i');
+                            }
+                        } catch (e) {
+                            console.log("Couldn't parse nextDateTimePickerDate", e);
+                        }
+                    }
+                }
+            });
+        }
+
+        function bindCheckBoxClick() {
+            var hasBufferCheckboxElements = document.querySelectorAll('[data-select-attribute="hasBufferCheckbox"]');
+            [].forEach.call(hasBufferCheckboxElements, function (element) {
+                element.addEventListener("click", function (ev) {
+                    var checked = ev.target.checked;
+                    console.log("click -> ev", ev);
+                    console.log("click -> ev.target", ev.target);
+                    // TODO implement buffer
+                });
+            });
+        }
+
+        function bindContestScheduleSelectChange() {
+
+            var dropDownElement = document.getElementById("changeContestScheduleSelect");
+
+            dropDownElement.addEventListener("change", function (ev) {
+                var selectedScheduleId = ev.target.value;
+                window.location = "/admin/contest/manager/tab/SCHEDULES/elementId/" + selectedScheduleId;
+            })
+        }
+
+        function bindDeleteClickEvents(callback) {
+            [].forEach.call(document.getElementsByClassName('deleteIcon'), function (deletableSectionElements) {
+                deletableSectionElements.addEventListener('click', callback, false);
+            });
+        }
+
+        function deleteContestPhase(event) {
+            if (confirm("Do you want to remove this contestPhase ?")) {
+                var contestPhaseRow = getClosest(event.target, "tr");
+                var isNewContestPhase = contestPhaseRow.querySelectorAll("[data-form-name=contestPhasePK]")[0].value == -1;
+                if (isNewContestPhase) {
+                    contestPhaseRow.remove();
+                } else {
+                    contestPhaseRow.style.display = "none";
+                    var contestPhaseDeletedElement = contestPhaseRow.querySelectorAll("[data-form-name=contestPhaseDeleted]")[0];
+                    contestPhaseDeletedElement.value = true;
+                }
+                reCalculateIndex();
+            }
+        }
+
+        function addContestPhase(event) {
+            event.preventDefault();
+
+            var dummyContestPhaseRow = getDummyContestPhase();
+            var dummyContestPhaseIndex = dummyContestPhaseRow.getAttribute("data-form-index");
+
+            var newContestPhaseRow = dummyContestPhaseRow.cloneNode(true);
+            var newContestPhaseIndex = getHighestUsedContestPhaseIndex() + 1;
+
+            var sectionElementNames = extractInputElementsInNode(newContestPhaseRow);
+            var newSectionInputData = createFormInputsIdReplacements(dummyContestPhaseIndex, newContestPhaseIndex, sectionElementNames, "schedulePhases");
+            replaceSectionFormIds(newContestPhaseRow, newSectionInputData);
+
+            newContestPhaseRow.setAttribute("data-filter-attribute", "");
+            newContestPhaseRow.setAttribute("data-form-index", newContestPhaseIndex.toString());
+            newContestPhaseRow.getElementsByClassName('deleteIcon')[0].addEventListener('click', deleteContestPhase, false);
+
+            var contestPhasesListNode = document.getElementById("contestOverviewBody");
+            contestPhasesListNode.appendChild(newContestPhaseRow);
+
+            initDateTimePicker();
+            reCalculateIndex();
+        }
+
+        function getHighestUsedContestPhaseIndex() {
+            var maxIndex = 0;
+            [].forEach.call(document.querySelectorAll("[data-form-index]"), function (contestPhaseIndexElement) {
+                var contestPhaseIndexString = contestPhaseIndexElement.getAttribute("data-form-index");
+                var contestPhaseIndex = parseInt(contestPhaseIndexString);
+                var isNotElementDummyPhase = contestPhaseIndexElement.getAttribute("data-filter-attribute") !== "dummyPhase";
+                if (contestPhaseIndex > maxIndex && isNotElementDummyPhase) {
+                    maxIndex = contestPhaseIndex;
+                }
+            });
+            return maxIndex;
+        }
+
+        function reCalculateIndex() {
+            var firstElementInList = document.getElementById("contestOverviewBody");
+            var nextElementInList = firstElementInList.firstChild;
+            var index = 0;
+            do {
+                if (!isElementDummyContestPhase(nextElementInList)) {
+                    index++;
+                    var dataFormIndexLable = nextElementInList.querySelector("[data-form-attribute=indexLable]");
+                    dataFormIndexLable.innerHTML = index.toString();
+                }
+            } while (nextElementInList = nextElementInList.nextSibling)
+        }
+
+        function isElementDummyContestPhase(element) {
+            var dataFormAttribute = element.getAttribute("data-filter-attribute");
+            return dataFormAttribute == "dummyPhase";
+        }
+
+        function removeDummyContestPhases() {
+            var dummyContestPhaseRow = getDummyContestPhase();
+            dummyContestPhaseRow.remove();
+        }
+
+        function getDummyContestPhase() {
+            return document.querySelectorAll("[data-filter-attribute=dummyPhase]")[0];
+        }
+
+        function saveExistingSchedule() {
+
+            document.getElementById('createNewFlag').value = false;
+
+            removeDummyContestPhases();
+            document.getElementById('editForm').submit();
+        }
+
+        function saveAsNewSchedule() {
+
+            document.getElementById('createNewFlag').value = true;
+
+            removeDummyContestPhases();
+            document.getElementById('editForm').submit();
+        }
+
+        function submitCreateScheduleForm() {
+
+            document.getElementById('createScheduleForm').submit();
+        }
+
+        function submitDeleteScheduleForm() {
+            document.getElementById('deleteScheduleForm').submit();
+
+        }
+
+        ]]>
+    </script>
+    <xcolab:script src="/js/lib/jquery.datetimepicker.js" />
+</xcolab:layout>
+</jsp:root>

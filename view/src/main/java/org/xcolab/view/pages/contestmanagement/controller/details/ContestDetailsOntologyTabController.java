@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 @Controller
-@RequestMapping("view")
+@RequestMapping("/admin/contest")
 public class ContestDetailsOntologyTabController extends ContestDetailsBaseTabController {
 
     private final static Logger _log =

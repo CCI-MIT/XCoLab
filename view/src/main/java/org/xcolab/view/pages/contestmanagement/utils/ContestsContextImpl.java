@@ -43,15 +43,16 @@ public class ContestsContextImpl implements TabContext {
         if (contextInitialized == null) {
             init(request);
         }
+        //noinspection unchecked
         return (T) request.getAttribute(attributeName);
     }
 
     private void init(HttpServletRequest request) {
         final Boolean mangerView = Boolean.valueOf(request.getParameter(CONTEST_MANAGEMENT_PARAM));
-        if (mangerView) {
+        if (request.getParameter(CONTEST_ID_PARAM) == null) {
             request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestManagementPermissions(request));
         } else {
-            final Long contestId = new Long(request.getParameter(CONTEST_ID_PARAM));
+            final Long contestId = Long.valueOf(request.getParameter(CONTEST_ID_PARAM));
             Contest contest;
             try {
                 contest = ContestClientUtil.getContest(contestId);
