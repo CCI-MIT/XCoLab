@@ -15,7 +15,6 @@ import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
 import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
-import org.xcolab.view.pages.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.ContestOverviewWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 
@@ -83,7 +82,7 @@ public class OverviewTabController extends AbstractTabController {
         try {
             updateContestOverviewWrapper.executeMassAction(request, response);
             String massActionTitle = updateContestOverviewWrapper.getSelectedMassActionTitle();
-            AlertMessage.success("Success!").flash(request);
+            AlertMessage.CHANGES_SAVED.flash(request);
             return "redirect:/admin/contest/manager";
         } catch (InvocationTargetException e) {
             Boolean massActionRequiresConfirmation =
@@ -97,18 +96,13 @@ public class OverviewTabController extends AbstractTabController {
         }
     }
 
-    @GetMapping("api/export")
+    @GetMapping("api/massAction")
     public void getExportController(HttpServletRequest request, Model model,
             @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper,
-            HttpServletResponse response) {
+            HttpServletResponse response) throws InvocationTargetException, IllegalAccessException {
         if (!tabWrapper.getCanEdit()) {
             return;
         }
-        try {
-            updateContestOverviewWrapper.executeMassAction(request, response);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            _log.warn("Export failed with: ", e);
-            SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
-        }
+        updateContestOverviewWrapper.executeMassAction(request, response);
     }
 }

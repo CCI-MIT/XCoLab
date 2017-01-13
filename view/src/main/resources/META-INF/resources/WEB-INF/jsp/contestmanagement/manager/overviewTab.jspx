@@ -208,7 +208,7 @@
 		var MODEL_SETTINGS_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('MODEL_SETTINGS')}");
 
 		var actionURL = "/admin/contest/manager/update";
-		var resourceURL = "/admin/contest/api/export";
+		var massActionUrl = "/admin/contest/api/massAction";
 
 		jQuery('document').ready(function(){
 			bindMassActionChange();
@@ -230,7 +230,7 @@
 				var selectedDropDownId = ev.target.value;
 
 				if(selectedDropDownId == REPORT_SELECT_ID){
-					editFormElement.action = resourceURL;
+					editFormElement.action = massActionUrl;
 				} else {
 					editFormElement.action = actionURL;
 				}
@@ -303,7 +303,7 @@
 			var editFormElement = document.getElementById('editForm');
 			jQuery.ajax({
 				type: 'POST',
-				url: resourceURL,
+				url: massActionUrl,
 				data: jQuery(editFormElement).serialize(),
 				success: function(response){
 				},

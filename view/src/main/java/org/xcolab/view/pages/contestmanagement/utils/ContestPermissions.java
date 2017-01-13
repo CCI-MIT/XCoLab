@@ -8,8 +8,6 @@ import org.xcolab.view.taglibs.xcolab.interfaces.TabPermissions;
 
 import javax.servlet.http.HttpServletRequest;
 
-
-//TODO: what's the difference to ContestManagementPermissions?
 public class ContestPermissions implements TabPermissions {
 
     private final Contest contestWrapper;

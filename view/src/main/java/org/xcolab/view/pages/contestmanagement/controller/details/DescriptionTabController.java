@@ -80,7 +80,8 @@ public class DescriptionTabController extends AbstractTabController {
     }
 
     @ModelAttribute("scheduleTemplateSelectionItems")
-    public List<LabelValue> populateScheduleSelectionItems(HttpServletRequest request, @PathVariable long contestId) {
+    public List<LabelValue> populateScheduleSelectionItems(HttpServletRequest request,
+            @PathVariable long contestId) {
         return getContestScheduleSelectionItems(contestId);
     }
 

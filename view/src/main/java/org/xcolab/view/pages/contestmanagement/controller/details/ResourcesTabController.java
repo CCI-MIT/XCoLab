@@ -68,7 +68,7 @@ public class ResourcesTabController extends AbstractTabController {
 
     @PostMapping("update")
     public String updateResourcesTabController(HttpServletRequest request,
-            HttpServletResponse response,  Model model, @PathVariable long contestId,
+            HttpServletResponse response, Model model, @PathVariable long contestId,
             @ModelAttribute ContestResourcesBean updatedContestResourcesBean,
             BindingResult result) throws UnsupportedEncodingException, ParseException {
 
@@ -82,7 +82,7 @@ public class ResourcesTabController extends AbstractTabController {
         }
 
         wikiPageWrapper.updateWikiPage(updatedContestResourcesBean);
-        AlertMessage.success("Changes saved").flash(request);
+        AlertMessage.CHANGES_SAVED.flash(request);
         return "redirect:" + tab.getTabUrl(contestId);
     }
 }

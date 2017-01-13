@@ -16,12 +16,12 @@ import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.exceptions.ReportTargetNotFoundException;
 import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.flagging.pojo.ReportTarget;
+import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
-import org.xcolab.view.pages.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportTargetWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
@@ -53,44 +53,38 @@ public class FlaggingTabController extends AbstractTabController {
     @GetMapping("tab/FLAGGING")
     public String showFlaggingTab(HttpServletRequest request, HttpServletResponse response,
             Model model,
-            @RequestParam(required = false) Long elementId) {
+            @RequestParam(required = false) Long elementId) throws ReportTargetNotFoundException {
         if (!tabWrapper.getCanView()) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
-        try {
-            long reportTargetId = elementId != null ? elementId : getFirstReportTargetId();
-            model.addAttribute("reportTargetId", reportTargetId);
-            if (reportTargetId > 0) {
-                model.addAttribute("reportTargetWrapper",
-                        new FlaggingReportTargetWrapper(reportTargetId));
-            } else {
-                model.addAttribute("reportTargetWrapper", new FlaggingReportTargetWrapper());
-            }
-            final List<ReportTarget> reportTargets =
-                    FlaggingClient.listReportTargets(0, Integer.MAX_VALUE);
-            List<LabelValue> selectionItems = new ArrayList<>();
-            for (ReportTarget reportTarget : reportTargets) {
-                selectionItems.add(new LabelValue(reportTarget.getReportTargetId(),
-                        reportTarget.getType() + " - " + reportTarget.getReason()));
-            }
-            model.addAttribute("selectionItems", selectionItems);
-
-            final List<AggregatedReport> reports =
-                    FlaggingClient.listAggregatedReports(0, Integer.MAX_VALUE);
-            final List<FlaggingReportWrapper> reportWrappers = new ArrayList<>();
-            for (AggregatedReport report : reports) {
-                reportWrappers.add(new FlaggingReportWrapper(report));
-            }
-            model.addAttribute("reports", reportWrappers);
-
-            setPageAttributes(request, model, tab);
-            return TAB_VIEW;
-        } catch (ReportTargetNotFoundException e) {
-            _log.warn("Exception while rendering CMS flagging tab", e);
-            SetRenderParameterUtil.addActionExceptionMessageToSession(request, e);
+        long reportTargetId = elementId != null ? elementId : getFirstReportTargetId();
+        model.addAttribute("reportTargetId", reportTargetId);
+        if (reportTargetId > 0) {
+            model.addAttribute("reportTargetWrapper",
+                    new FlaggingReportTargetWrapper(reportTargetId));
+        } else {
+            model.addAttribute("reportTargetWrapper", new FlaggingReportTargetWrapper());
         }
-        return NOT_FOUND_TAB_VIEW;
+        final List<ReportTarget> reportTargets =
+                FlaggingClient.listReportTargets(0, Integer.MAX_VALUE);
+        List<LabelValue> selectionItems = new ArrayList<>();
+        for (ReportTarget reportTarget : reportTargets) {
+            selectionItems.add(new LabelValue(reportTarget.getReportTargetId(),
+                    reportTarget.getType() + " - " + reportTarget.getReason()));
+        }
+        model.addAttribute("selectionItems", selectionItems);
+
+        final List<AggregatedReport> reports =
+                FlaggingClient.listAggregatedReports(0, Integer.MAX_VALUE);
+        final List<FlaggingReportWrapper> reportWrappers = new ArrayList<>();
+        for (AggregatedReport report : reports) {
+            reportWrappers.add(new FlaggingReportWrapper(report));
+        }
+        model.addAttribute("reports", reportWrappers);
+
+        setPageAttributes(request, model, tab);
+        return TAB_VIEW;
     }
 
     private long getFirstReportTargetId() {
@@ -112,8 +106,7 @@ public class FlaggingTabController extends AbstractTabController {
         }
         long memberId = MemberAuthUtil.getMemberId(request);
         FlaggingClient.handleReport(memberId, managerAction, reportId);
-        SetRenderParameterUtil
-                .addActionSuccessMessageToSession(request, "Report " + managerAction.name() + "D");
+        AlertMessage.success("Report " + managerAction.name() + "D").flash(request);
         return "redirect:" + tab.getTabUrl();
     }
 
@@ -126,13 +119,12 @@ public class FlaggingTabController extends AbstractTabController {
         }
 
         if (result.hasErrors()) {
-            SetRenderParameterUtil.setErrorRenderParameter(response, "updateEmailTemplate");
-            //TODO: errors
-            return TAB_VIEW;
+            AlertMessage.danger("An error occurred").flash(request);
+            return "redirect:" + tab.getTabUrl(reportTargetWrapper.getReportTargetId());
         }
 
         reportTargetWrapper.persist();
-        SetRenderParameterUtil.addActionSuccessMessageToSession(request);
+        AlertMessage.CHANGES_SAVED.flash(request);
         return "redirect:" + tab.getTabUrl(reportTargetWrapper.getReportTargetId());
     }
 
@@ -147,9 +139,8 @@ public class FlaggingTabController extends AbstractTabController {
         if (success) {
             return "redirect:" + tab.getTabUrl();
         } else {
-            SetRenderParameterUtil.setErrorRenderParameter(response, "deleteReportTarget");
-            //TODO: error
-            return TAB_VIEW;
+            AlertMessage.ERROR.flash(request);
+            return "redirect:" + tab.getTabUrl(reportTargetId);
         }
     }
 }

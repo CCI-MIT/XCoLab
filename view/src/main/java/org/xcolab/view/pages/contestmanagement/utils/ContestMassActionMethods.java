@@ -36,8 +36,7 @@ public class ContestMassActionMethods {
                     "Last Name", "Email Address", "Role", "Last phase");
 
     public static void reportOfPeopleInCurrentPhase(List<Long> contestList,
-            Object ResourceResponseObject,
-            HttpServletRequest request) throws IOException {
+            Object ResourceResponseObject) throws IOException {
 
         HttpServletResponse response = (HttpServletResponse) ResourceResponseObject;
         CsvExportHelper csvExportHelper = new CsvExportHelper();
@@ -56,7 +55,7 @@ public class ContestMassActionMethods {
         }
 
         String exportFileName = "reportOfPeopleInCurrentPhase";
-        csvExportHelper.initiateDownload(exportFileName, request, response);
+        csvExportHelper.initiateDownload(exportFileName, response);
     }
 
     private static List<Proposal> getProposalsInActiveContestPhase(Long contestPK) {

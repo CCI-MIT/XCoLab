@@ -20,7 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 public class CreationController {
 
     @GetMapping("createContest")
-    public String createContestController(HttpServletRequest request, HttpServletResponse response) {
+    public String createContestController(HttpServletRequest request,
+            HttpServletResponse response) {
         long memberId = MemberAuthUtil.getMemberId(request);
 
         if (PermissionsClient.canAdminAll(memberId)) {

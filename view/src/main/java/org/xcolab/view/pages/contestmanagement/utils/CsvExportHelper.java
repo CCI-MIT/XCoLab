@@ -25,7 +25,6 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class CsvExportHelper {
@@ -125,8 +124,8 @@ public class CsvExportHelper {
 
     }
 
-    public void initiateDownload(String downloadFileName, HttpServletRequest request,
-            HttpServletResponse response) throws IOException {
+    public void initiateDownload(String downloadFileName, HttpServletResponse response)
+            throws IOException {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         String csvPayload = getCSVData();

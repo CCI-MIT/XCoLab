@@ -8,28 +8,21 @@ import org.xcolab.view.taglibs.xcolab.interfaces.TabPermissions;
 
 import javax.servlet.http.HttpServletRequest;
 
-
-//TODO: restore permissions
 public enum ContestDetailsTabs implements TabEnum {
     DESCRIPTION("Homepage", "description",
-//            TabPermissionAlgorithm.contestCreationViewAndEdit,
-            TabPermissionAlgorithm.alwaysTrueViewAndEdit,
+            TabPermissionAlgorithm.contestCreationViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
     RESOURCES("Resources Page", "resources",
-//            TabPermissionAlgorithm.contestCreationViewAndEdit,
-            TabPermissionAlgorithm.alwaysTrueViewAndEdit,
+            TabPermissionAlgorithm.contestCreationViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
     TEAM("Team", "team",
-//            TabPermissionAlgorithm.contestCreationViewAndEdit,
-            TabPermissionAlgorithm.alwaysTrueViewAndEdit,
+            TabPermissionAlgorithm.contestCreationViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
     ONTOLOGY("Ontology", "ontology",
-//            TabPermissionAlgorithm.contestCreationViewAndEdit,
-            TabPermissionAlgorithm.alwaysTrueViewAndEdit,
+            TabPermissionAlgorithm.contestCreationViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
     ADMIN("Admin", "admin",
-//            TabPermissionAlgorithm.contestCreationViewAndEdit,
-            TabPermissionAlgorithm.alwaysTrueViewAndEdit,
+            TabPermissionAlgorithm.contestCreationViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero);
 
     private final String displayName;

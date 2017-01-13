@@ -19,7 +19,6 @@ import org.xcolab.util.IdListUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -455,8 +454,6 @@ public class SectionDefinitionWrapper implements Serializable {
         }
 
         return focusArea;
-    }    public Long getPointType() {
-        return pointType;
     }
 
     private FocusArea createNewFocusAreaWithTerms(List<OntologyTerm> focusAreaOntologyTerms) {
@@ -474,8 +471,8 @@ public class SectionDefinitionWrapper implements Serializable {
 
         return newFocusArea;
 
-    }    public void setPointType(Long pointType) {
-        this.pointType = pointType;
+    }    public Long getPointType() {
+        return pointType;
     }
 
     private List<OntologyTerm> getAllSelectedOntologyTerms() {
@@ -493,14 +490,12 @@ public class SectionDefinitionWrapper implements Serializable {
         }
         return selectedOntologyTerms;
 
-    }    public String getPointPercentage() {
-        return pointPercentage;
     }
 
     public String getAdditionalIds() {
         return additionalIds;
-    }    public void setPointPercentage(String percentage) {
-        this.pointPercentage = percentage;
+    }    public void setPointType(Long pointType) {
+        this.pointType = pointType;
     }
 
     public void setAdditionalIds(String additionalIds) {
@@ -509,6 +504,8 @@ public class SectionDefinitionWrapper implements Serializable {
 
     public List<Long> getAllowedContestTypeIds() {
         return allowedContestTypeIds;
+    }    public String getPointPercentage() {
+        return pointPercentage;
     }
 
     public void setAllowedContestTypeIds(List<Long> allowedContestTypeIds) {
@@ -517,6 +514,10 @@ public class SectionDefinitionWrapper implements Serializable {
 
     public String getAllowedValues() {
         return allowedValues;
+    }
+
+    public void setPointPercentage(String percentage) {
+        this.pointPercentage = percentage;
     }
 
     public void setAllowedValues(String allowedValues) {
@@ -528,22 +529,6 @@ public class SectionDefinitionWrapper implements Serializable {
                 .getPlanSectionDefinition(id);
         return !this.equals(new SectionDefinitionWrapper(psd));
     }
-
-    static class MyComparator implements Comparator<SectionDefinitionWrapper> {
-
-        @Override
-        public int compare(SectionDefinitionWrapper o1, SectionDefinitionWrapper o2) {
-            return o1.getWeight() - o2.getWeight();
-        }
-    }
-
-
-
-
-
-
-
-
 
     @Override
     public int hashCode() {

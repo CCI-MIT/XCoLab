@@ -49,7 +49,8 @@ public abstract class AbstractTabController extends BaseTabController {
     }
 
     @ModelAttribute("contestWrapper")
-    public Contest populateContestWrapper(Model model, HttpServletRequest request, @PathVariable long contestId) {
+    public Contest populateContestWrapper(Model model, HttpServletRequest request,
+            @PathVariable long contestId) {
         initContest(contestId);
         return contestWrapper;
     }

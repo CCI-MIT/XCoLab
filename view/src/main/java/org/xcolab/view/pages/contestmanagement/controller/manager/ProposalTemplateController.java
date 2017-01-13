@@ -101,7 +101,7 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
         ProposalTemplateLifecycleUtil.delete(elementId);
-        AlertMessage.success("Element deleted!").flash(request);
+        AlertMessage.DELETED.flash(request);
         return "redirect:" + tab.getTabUrl();
     }
 
@@ -126,7 +126,7 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
 
         updatedProposalTemplateWrapper.setUpdateExistingTemplate(true);
         updatedProposalTemplateWrapper.persist();
-        AlertMessage.success("Changes saved!").flash(request);
+        AlertMessage.CHANGES_SAVED.flash(request);
         return "redirect:" + tab.getTabUrl(updatedProposalTemplateWrapper.getPlanTemplateId());
     }
 }

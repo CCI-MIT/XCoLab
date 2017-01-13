@@ -72,11 +72,11 @@ public class BatchCreationController {
     }
 
     @ModelAttribute("scheduleTemplateSelectionItems")
-    public List<LabelValue> populateScheduleSelectionItems(HttpServletRequest request) {
-        return getContestScheduleSelectionItems(request);
+    public List<LabelValue> populateScheduleSelectionItems() {
+        return getContestScheduleSelectionItems();
     }
 
-    private List<LabelValue> getContestScheduleSelectionItems(HttpServletRequest request) {
+    private List<LabelValue> getContestScheduleSelectionItems() {
         return ContestScheduleLifecycleUtil.getAllScheduleTemplateSelectionItems();
     }
 
@@ -163,12 +163,12 @@ public class BatchCreationController {
     }
 
     private void processOntologyTerms(ContestCSVBean contestCSVBean, Contest contest) {
-        List<Long> inputedOntologyTerms;
-        Map<Long, Integer> uniqueSelectedOntologyTerms = new HashMap<>();
 
         if (contestCSVBean.getOntologyTerms() != null) {
-            inputedOntologyTerms = IdListUtil.getIdsFromString(contestCSVBean.getOntologyTerms());
-            for (Long termId : inputedOntologyTerms) {
+            List<Long> inputOntologyTerms =
+                    IdListUtil.getIdsFromString(contestCSVBean.getOntologyTerms());
+            Map<Long, Integer> uniqueSelectedOntologyTerms = new HashMap<>();
+            for (Long termId : inputOntologyTerms) {
                 OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(termId);
                 if (ontologyTerm != null) {
                     uniqueSelectedOntologyTerms.put(ontologyTerm.getId(), 1);

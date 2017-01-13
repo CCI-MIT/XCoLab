@@ -9,36 +9,28 @@ import org.xcolab.view.taglibs.xcolab.interfaces.TabPermissions;
 
 import javax.servlet.http.HttpServletRequest;
 
-//TODO: adjust permissions!
 public enum ContestManagerTabs implements TabEnum {
     OVERVIEW("Contests", "Contests",
-//            TabPermissionAlgorithm.contestCreationViewAndEdit,
-            TabPermissionAlgorithm.alwaysTrueViewAndEdit,
+            TabPermissionAlgorithm.contestCreationViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
     SCHEDULES("Schedules", "schedule",
-//            TabPermissionAlgorithm.adminOnlyViewAndEdit,
-            TabPermissionAlgorithm.alwaysTrueViewAndEdit,
+            TabPermissionAlgorithm.adminOnlyViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
     PROPOSAL_TEMPLATES("Proposal Templates", "template",
-//            TabPermissionAlgorithm.adminOnlyViewAndEdit,
-            TabPermissionAlgorithm.alwaysTrueViewAndEdit,
+            TabPermissionAlgorithm.adminOnlyViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
     EMAIL_TEMPLATES("Emails", "emailTemplate",
-//            TabPermissionAlgorithm.adminOnlyViewAndEdit,
-            TabPermissionAlgorithm.alwaysTrueViewAndEdit,
+            TabPermissionAlgorithm.adminOnlyViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
     FLAGGING("Flagging", "flagging",
-//            TabPermissionAlgorithm.adminOnlyViewAndEdit,
-            TabPermissionAlgorithm.alwaysTrueViewAndEdit,
+            TabPermissionAlgorithm.adminOnlyViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero), //TODO: activate flag count
     COLLECTION_CARDS("Collection Cards", "collectionCard",
-//            TabPermissionAlgorithm.adminOnlyViewAndEdit,
-            TabPermissionAlgorithm.alwaysTrueViewAndEdit,
+            TabPermissionAlgorithm.adminOnlyViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
     EDITORS("Editors", "editors",
-//            TabPermissionAlgorithm.adminOnlyViewAndEdit,
-            TabPermissionAlgorithm.alwaysTrueViewAndEdit,
-            TabActivityCountAlgorithm.alwaysZero);;
+            TabPermissionAlgorithm.adminOnlyViewAndEdit,
+            TabActivityCountAlgorithm.alwaysZero);
 
     private final String displayName;
     private final String elementType;
@@ -97,12 +89,12 @@ public enum ContestManagerTabs implements TabEnum {
         return activitiesCountAlgorithm.getActivityCount(context, request);
     }
 
-    public String getTabUrl() {
-        return "/admin/contest/manager/tab/" + name();
-    }
-
     public String getTabUrl(long elementId) {
         return getTabUrl() + "?elementId=" + elementId;
+    }
+
+    public String getTabUrl() {
+        return "/admin/contest/manager/tab/" + name();
     }
 
     public String getTabUrl(String elementId) {

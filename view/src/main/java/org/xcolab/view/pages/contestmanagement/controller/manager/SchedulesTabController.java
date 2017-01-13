@@ -117,7 +117,7 @@ public class SchedulesTabController extends AbstractTabController {
         }
         ContestSchedule newContestSchedule = ContestScheduleLifecycleUtil.createNewSchedule();
 
-        AlertMessage.success("Schedule created!").flash(request);
+        AlertMessage.CREATED.flash(request);
         return "redirect:" + tab.getTabUrl(newContestSchedule.getId_());
     }
 
@@ -129,7 +129,7 @@ public class SchedulesTabController extends AbstractTabController {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
         ContestScheduleLifecycleUtil.deleteContestSchedule(scheduleId);
-        AlertMessage.success("Schedule deleted").flash(request);
+        AlertMessage.DELETED.flash(request);
         return "redirect:" + tab.getTabUrl();
     }
 
@@ -147,7 +147,7 @@ public class SchedulesTabController extends AbstractTabController {
         }
         try {
             updateContestScheduleWrapper.persist();
-            AlertMessage.success("Changes saved!").flash(request);
+            AlertMessage.CHANGES_SAVED.flash(request);
             return "redirect:" + tab.getTabUrl(updateContestScheduleWrapper.getScheduleId());
         } catch (IllegalScheduleChangeException e) {
             return ErrorText.ILLEGAL_SCHEDULE_CHANGE.flashAndReturnView(request);

@@ -6,9 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
+import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
-import org.xcolab.view.pages.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.MassActionConfirmationWrapper;
 
 import java.io.IOException;
@@ -23,7 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/admin/contest/manager")
 public class ConfirmMassActionController {
 
-    static final private String CONFIRM_VIEW_PATH = "contestmanagement/manager/massActionConfirmation/";
+    static final private String CONFIRM_VIEW_PATH =
+            "contestmanagement/manager/massActionConfirmation/";
 
     @RequestMapping(params = {"action=showMassActionConfirmation"})
     public String showConfirmation(HttpServletRequest request, Model model) {
@@ -48,15 +48,13 @@ public class ConfirmMassActionController {
     }
 
     @GetMapping("confirmMassAction")
-    public void confirmMassActionExecution(HttpServletRequest request, Model model,
+    public String confirmMassActionExecution(HttpServletRequest request, Model model,
             @ModelAttribute MassActionConfirmationWrapper massActionConfirmationWrapper,
             HttpServletResponse response)
             throws IOException, InvocationTargetException, IllegalAccessException {
         massActionConfirmationWrapper.invokeMassActionForSelectedContests();
-        SetRenderParameterUtil.addActionSuccessMessageToSession(request,
-                massActionConfirmationWrapper.getSelectedMassActionTitle());
-        SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response,
-                ContestManagerTabs.OVERVIEW.getName());
+        AlertMessage.success("Mass action successful").flash(request);
+        return "redirect:/admin/contest";
     }
 
 }

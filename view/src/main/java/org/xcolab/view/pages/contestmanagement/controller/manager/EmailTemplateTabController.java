@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.entities.LabelStringValue;
-import org.xcolab.view.pages.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.EmailTemplateWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 
@@ -84,53 +84,12 @@ public class EmailTemplateTabController extends AbstractTabController {
         }
 
         if (result.hasErrors()) {
-            SetRenderParameterUtil.setErrorRenderParameter(response, "updateEmailTemplate");
-            //TODO: errors
-            return TAB_VIEW;
+            AlertMessage.danger("An error occurred").flash(request);
+            return "redirect:" + tab.getTabUrl(updateEmailTemplateWrapper.getType());
         }
 
         updateEmailTemplateWrapper.persist();
-        SetRenderParameterUtil.addActionSuccessMessageToSession(request);
+        AlertMessage.CHANGES_SAVED.flash(request);
         return "redirect:" + tab.getTabUrl(updateEmailTemplateWrapper.getType());
     }
-
-    //TODO
-    //    @RequestMapping(params = "action=createEmailTemplate")
-    //    public void createEmailTemplateTabController(HttpServletRequest request, Model model,
-    // HttpServletResponse response) {
-    //
-    //        if (!tabWrapper.getCanEdit()) {
-    //            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
-    //            return;
-    //        }
-    //
-    //        try {
-    //            ContestSchedule newContestSchedule = ContestCreatorUtil.createNewSchedule();
-    //            SetRenderParameterUtil
-    //                    .setSuccessRenderRedirectManagerTab(response, tab.getName(),
-    // newContestSchedule.getId());
-    //
-    //        } catch (SystemException | IOException e) {
-    //            _log.warn("Create contest schedule failed with: ", e);
-    //            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
-    //        }
-    //    }
-    //
-    //    @RequestMapping(params = "action=deleteEmailTemplate")
-    //    public void deleteEmailTemplateTabController(HttpServletRequest request, Model model,
-    //            @RequestParam Long templateId,
-    //            HttpServletResponse response) {
-    //        if (!tabWrapper.getCanEdit()) {
-    //            SetRenderParameterUtil.setNoPermissionErrorRenderParameter(response);
-    //            return;
-    //        }
-    //        try {
-    //            ContestScheduleWrapper.deleteContestSchedule(scheduleId);
-    //            SetRenderParameterUtil.setSuccessRenderRedirectManagerTab(response, tab.getName
-    // (), getFirstTemplateName());
-    //        } catch (SystemException | PortalException | IOException e) {
-    //            _log.warn("Delete contest schedule failed with: ", e);
-    //            SetRenderParameterUtil.setExceptionRenderParameter(response, e);
-    //        }
-    //    }
 }

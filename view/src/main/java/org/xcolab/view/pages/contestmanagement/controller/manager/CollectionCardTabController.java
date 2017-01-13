@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
+import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
-import org.xcolab.view.pages.contestmanagement.utils.SetRenderParameterUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.CollectionCardWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.OntologyTermWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
@@ -83,9 +83,8 @@ public class CollectionCardTabController extends AbstractTabController {
         }
 
         if (result.hasErrors()) {
-            SetRenderParameterUtil.setErrorRenderParameter(response, "updateContestCollectionCard");
-            //TODO: errors
-            return TAB_VIEW;
+            AlertMessage.danger("An error occurred").flash(request);
+            return "redirect:" + tab.getTabUrl(collectionCardWrapper.getId());
         }
         collectionCardWrapper.persist();
         return "redirect:" + tab.getTabUrl(collectionCardWrapper.getId());
