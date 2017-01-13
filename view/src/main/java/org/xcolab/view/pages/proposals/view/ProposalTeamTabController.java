@@ -18,7 +18,8 @@ public class ProposalTeamTabController extends BaseProposalTabController {
     @Autowired 
     private ProposalsContext proposalsContext;
 
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/TEAM")
+    @GetMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/TEAM",
+                "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/TEAM"})
     public String show(Model model, HttpServletRequest request) {
         
         setCommonModelAndPageAttributes(request, model, ProposalTab.TEAM);

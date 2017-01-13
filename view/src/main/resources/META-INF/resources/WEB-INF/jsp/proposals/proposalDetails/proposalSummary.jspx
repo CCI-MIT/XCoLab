@@ -39,12 +39,8 @@
                         </div>
                     </div>
                 </c:if>
-                <portlet:actionURL var="supportProposalActionURL">
-                    <portlet:param name="contestId" value="${contest.contestPK }" />
-                    <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
-                    <portlet:param name="proposalId" value="${proposal.proposalId }" />
-                    <portlet:param name="action" value="supportProposalAction" />
-                </portlet:actionURL>
+
+                <c:set var="supportProposalActionURL" value="${proposal.proposalUrl}/supportProposalAction?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
 
                 <c:choose>
                     <c:when test="${contest.isSharedContest}">

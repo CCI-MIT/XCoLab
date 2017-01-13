@@ -3,6 +3,7 @@ package org.xcolab.view.taglibs.xcolab.jspTags.discussion.actions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -31,6 +32,7 @@ import org.xcolab.entity.utils.analytics.AnalyticsUtil;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.loginregister.SharedColabUtil;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
@@ -43,8 +45,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//@Controller
-//@RequestMapping("view")
+@Controller
+
 public class AddDiscussionMessageActionController extends BaseDiscussionsActionController {
 
     private final static Logger _log = LoggerFactory
@@ -55,14 +57,15 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
     private final static String COMMENT_ANALYTICS_ACTION = "Comment on contest entry";
     private final static String COMMENT_ANALYTICS_LABEL = "";
 
-   // @RequestMapping(params = "action=addDiscussionMessage")
+
+    @PostMapping("/discussions/addDiscussionMessage")
     public void handleAction(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(value = "contestId", required = false) String contestId,
             NewMessageWrapper newMessage)
             throws IOException, DiscussionAuthorizationException {
 
-        long memberId = 0;//MemberAuthUtil.getMemberId(request);
-        //TODO:COMMENTED OUT TO COMPILE
+        long memberId = MemberAuthUtil.getMemberId(request);
+
 
         try {
             final CommentClient commentClient;
@@ -71,7 +74,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             final ProposalClient proposalClient;
 
 
-            if (contestId != null && !contestId.equals("0")) {
+            if (contestId != null && !contestId.isEmpty() && !contestId.equals("0")) {
                 Long contestIdLong = Long.parseLong(contestId);
 
                 Contest contest = ContestClientUtil.getContest(contestIdLong);

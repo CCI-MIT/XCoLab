@@ -4,6 +4,7 @@ package org.xcolab.view.pages.proposals.view;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -16,12 +17,12 @@ import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-//-- @RequestMapping("view")
+
 public class ProposalCommentsTabController extends BaseProposalTabController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-    //-- @RequestMapping(params = {"pageToDisplay=proposalDetails_COMMENTS"})
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/COMMENTS")
     public String showComments(HttpServletRequest request, Model model) {
 
         final Proposal proposal = proposalsContext.getProposal(request);
@@ -39,7 +40,7 @@ public class ProposalCommentsTabController extends BaseProposalTabController {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.COMMENTS);
 
-        return "proposalComments";
+        return "proposals/proposalComments";
     }
 
     private long createCommentThread(HttpServletRequest request) {

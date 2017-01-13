@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.activities.enums.ActivityProvidersType;
@@ -34,7 +37,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
-//-- @RequestMapping("view")
 public class AddUpdateProposalDetailsActionController {
 
     private final ProposalsContext proposalsContext;
@@ -44,8 +46,13 @@ public class AddUpdateProposalDetailsActionController {
         this.proposalsContext = proposalsContext;
     }
 
-    //-- @RequestMapping(params = {"action=updateProposalDetails"})
+
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/updateProposalDetails")
     public void show(HttpServletRequest request, Model model,
+            @PathVariable String contestYear,
+            @PathVariable String contestUrlName,
+            @PathVariable String proposalUrlString,
+            @PathVariable String proposalId,
             HttpServletResponse response, @Valid UpdateProposalDetailsBean updateProposalSectionsBean, BindingResult result)
             throws ProposalsAuthorizationException, IOException {
 
@@ -67,6 +74,8 @@ public class AddUpdateProposalDetailsActionController {
             //-- response.setRenderParameter("action", "updateProposalDetails");
             //-- response.setRenderParameter("edit", "true");
             //-- request.setAttribute("ACTION_ERROR", true);
+            //return reportError(request,model,updateProposalSectionsBean,result);
+            response.sendRedirect(request.getRequestURL()+ "_error");
             return;
         }
         Proposal proposalWrapper;
@@ -116,9 +125,11 @@ public class AddUpdateProposalDetailsActionController {
 
         request.setAttribute("ACTION_REDIRECTING", true);
         response.sendRedirect(proposalWrapper.getProposalUrl());
+        return;
     }
 
-    //-- @RequestMapping(params = {"action=updateProposalDetails", "error=true"})
+
+    @RequestMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/updateProposalDetails_error")
     public String reportError(HttpServletRequest request, Model model,
             @ModelAttribute @Valid UpdateProposalDetailsBean updateProposalSectionsBean,
             BindingResult result) {
@@ -140,6 +151,6 @@ public class AddUpdateProposalDetailsActionController {
                 ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.get());
         request.setAttribute("imageUploadHelpText",
                 ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.get());
-        return "proposalDetails_edit";
+        return "proposals/proposalDetails_edit";
     }
 }

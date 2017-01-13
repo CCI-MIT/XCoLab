@@ -17,6 +17,7 @@
         <jsp:directive.include file="./init_proposal_tab.jspx" />
         <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
+
         <div id="content">
             <div class="prop-left ${contestType.showProposalSummary ? '' : 'full-width'}">
                 <div class="edit-prop-wrap" style="padding-top: 0">

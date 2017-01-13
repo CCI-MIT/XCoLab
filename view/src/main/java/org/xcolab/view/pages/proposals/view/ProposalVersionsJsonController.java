@@ -1,6 +1,8 @@
 package org.xcolab.view.pages.proposals.view;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
@@ -28,16 +30,17 @@ import javax.json.JsonObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 @Controller
-//-- @RequestMapping("view")
 public class ProposalVersionsJsonController {
 
     private final static long MILLISECONDS_TO_GROUP_VERSIONS = 1000 * 60;
 
     //TODO: get contest for sharing?
     //-- @ResourceMapping("getProposalVersionFirstIndex")
+    @GetMapping("/api/phases/{phaseId}/proposals/{proposalId}/versionsFirstIndex")
     public void getProposalVersionFirstIndex(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam long contestPhaseId, @RequestParam long proposalId)
+            @PathVariable("phaseId") long contestPhaseId, @PathVariable("proposalId") long proposalId)
             throws IOException {
         Proposal2Phase p2p = null;
         if (contestPhaseId > 0) {
@@ -66,9 +69,10 @@ public class ProposalVersionsJsonController {
         response.getOutputStream().write(json.toString().getBytes());
     }
 
-    //-- @ResourceMapping("getProposalVersionIndex")
+
+    @GetMapping("/api/proposals/{proposalId}/versions/{version}/index")
     public void getProposalVersionIndex(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam long version, @RequestParam long proposalId) throws IOException {
+            @PathVariable("version") Integer version, @PathVariable("proposalId") Long proposalId) throws IOException {
         int index = 0;
         Date oldDate = new Date();
         for (ProposalVersion proposalVersion: ProposalClientUtil.getAllProposalVersions(proposalId)) {
@@ -87,10 +91,11 @@ public class ProposalVersionsJsonController {
         response.getOutputStream().write(json.toString().getBytes());
     }
 
-    //-- @ResourceMapping("getProposalVersions")
+
+    @GetMapping("/api/contests/{contestId}/phases/{phaseId}/proposals/{proposalId}/versions")
     public void getProposalVersions(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam long contestId, @RequestParam long contestPhaseId,
-            @RequestParam long proposalId, @RequestParam int start, @RequestParam int end)
+            @PathVariable("contestId") long contestId, @PathVariable("phaseId") long contestPhaseId,
+            @PathVariable("proposalId") long proposalId, @RequestParam int start, @RequestParam int end)
             throws IOException {
 
         Proposal2Phase p2p = null;

@@ -3,7 +3,6 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:liferay-ui="http://liferay.com/tld/ui"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           version="2.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -17,10 +16,10 @@
             <jsp:useBean id="requestMembershipInviteBean" scope="request" type="org.xcolab.view.pages.proposals.requests.RequestMembershipInviteBean"/>
 
             <div id="content">
-                <liferay-ui:success key="membershipRequestSent" message="Membership request sent" />
-                <liferay-ui:success key="memberInviteSent" message="Membership invitation sent" />
+                <!-- liferay-ui:success key="membershipRequestSent" message="Membership request sent" />
+                <liferay-ui:success key="memberInviteSent" message="Membership invitation sent" / -->
 
-                <liferay-ui:error key="memberInviteRecipientError" message="The specified invitee is invalid." />
+                <!-- liferay-ui:error key="memberInviteRecipientError" message="The specified invitee is invalid." / -->
                 <div class="c-Headline prophead" style="position: relative;">
                     <h2>
                         <span>${fn:length(proposal.members)}</span> ${fn:length(proposal.members) == 1 ? 'member' : 'members'}
@@ -31,7 +30,7 @@
                                  width="24" height="22" alt="request membership" class="request-membership-icon"/>
 
 
-                            <c:set var="requestMembershipURL" value="${proposalUrl}/requestMembership"/>
+                            <c:set var="requestMembershipURL" value="${proposal.proposalUrl}/requestMembership"/>
 
 
                             <form:form id="requestMembershipForm" action="${requestMembershipURL }" method="post" commandName="requestMembershipBean" style="float:left;">
@@ -98,13 +97,7 @@
                         <span>${fn:length(proposal.supporters)}</span> ${fn:length(proposal.supporters) == 1 ? 'supporter' : 'supporters' }
                     </h2>
                     <c:if test="${proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton  }">
-                        <portlet:actionURL var="supportProposalActionURL">
-                            <portlet:param name="forwardToTab" value="TEAM" />
-                            <portlet:param name="contestId" value="${contest.contestPK }" />
-                            <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
-                            <portlet:param name="proposalId" value="${proposal.proposalId }" />
-                            <portlet:param name="action" value="supportProposalAction" />
-                        </portlet:actionURL>
+                        <c:set var="supportProposalActionURL" value="${proposal.proposalUrl}/supportProposalAction?forwardToTab=TEAM&amp;contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
                         <div class="prop-butt">
                             <img src="${_themeImageFolder}/icon-proposal-thumb.png" width="20" height="22" alt="support ${contestType.proposalName}" />
 

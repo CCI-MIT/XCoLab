@@ -269,7 +269,7 @@ function clearContents(element) {
 
 function requestMembership() {
     $('#requestComment').slideDown('slow');
-    $('.prop-butt-popover:first').css('background', 'url(/climatecolab-theme/images/search-bg.png)');
+    $('.prop-butt-popover:first').css('background', 'url('+_themeImageFolder+'/search-bg.png)');
     $('#requestButtons').empty();
     $('#requestButtons').append('<div class="c-Button__secondary"><a href="javascript:;" class="requestMembershipSubmitFormButton b-layout__left" onclick="hideRequestForm(true);">Cancel</a></div>');
     $('#requestButtons').append('<div class="c-Button__primary"><a href="javascript:;" class="requestMembershipSubmitFormButton b-layout__right" onclick="$(\'#requestMembershipForm\').submit();hideRequestForm(false);">Send</a></div>');
@@ -288,7 +288,7 @@ function hideRequestForm(animate) {
 function inviteMember() {
     $('#invite-comment').slideDown('slow');
     $('#invite-recipient').slideDown('slow');
-    $('.prop-butt-popover:first').css('background', 'url(/climatecolab-theme/images/search-bg.png)');
+    $('.prop-butt-popover:first').css('background', 'url('+_themeImageFolder+'/search-bg.png)');
     $('#requestButtons').empty();
     $('#requestButtons').append('<div class="c-Button__secondary"><a href="javascript:;" class="requestMembershipSubmitFormButton b-layout__left" onclick="hideInviteForm(true);">Cancel</a></div>');
     $('#requestButtons').append('<div class="c-Button__primary"><a href="javascript:;" class="requestMembershipSubmitFormButton b-layout__right" onclick="$(\'#requestInviteForm\').submit();hideInviteForm(false);">Send</a></div>');

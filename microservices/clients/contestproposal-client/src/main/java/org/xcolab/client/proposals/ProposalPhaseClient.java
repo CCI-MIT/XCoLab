@@ -73,11 +73,10 @@ public final class ProposalPhaseClient {
     }
 
     public Proposal2Phase getProposal2PhaseByProposalIdVersion(long proposalId, int version) {
-        return proposal2PhaseResource.list()
+         return proposal2PhaseResource.list()
                 .queryParam("proposalId", proposalId)
                 .queryParam("version", version)
-                .executeWithResult()
-                .getOne().toPojo(proposalService);
+                .executeWithResult().get().get(0).toPojo(proposalService);
     }
 
     public List<Proposal2Phase> getProposal2PhaseByContestPhaseId(Long contestPhaseId) {

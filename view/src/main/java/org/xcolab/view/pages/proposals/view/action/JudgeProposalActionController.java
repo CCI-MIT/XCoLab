@@ -8,7 +8,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
@@ -67,7 +69,9 @@ public class JudgeProposalActionController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-    //-- @RequestMapping(params = {"action=saveAdvanceDetails"})
+
+    @PostMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/ADVANCING/saveAdvanceDetails",
+            "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ADVANCING/saveAdvanceDetails"})
     public void saveAdvanceDetails(HttpServletRequest request, Model model, HttpServletResponse response,
             @Valid ProposalAdvancingBean proposalAdvancingBean, BindingResult result)
             throws IOException {
@@ -145,6 +149,9 @@ public class JudgeProposalActionController {
     }
 
     //-- @ResourceMapping("getJudgingCsv")
+
+    @GetMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/ADVANCING/getJudgingCsv",
+            "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ADVANCING/getJudgingCsv"})
     public void getJudgingCsv(HttpServletRequest request, HttpServletResponse response) {
 
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
@@ -340,6 +347,8 @@ public class JudgeProposalActionController {
     }
 
     //-- @RequestMapping(params = {"action=saveScreening"})
+    @PostMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/SCREENING/saveScreening",
+            "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/SCREENING/saveScreening"})
     public void saveScreening(HttpServletRequest request, Model model,
             HttpServletResponse response,
             @ModelAttribute("fellowProposalScreeningBean") @Valid FellowProposalScreeningBean fellowProposalScreeningBean,

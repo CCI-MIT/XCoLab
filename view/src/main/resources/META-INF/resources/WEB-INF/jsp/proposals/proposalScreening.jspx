@@ -4,241 +4,239 @@
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:judging="http://climatecolab.org/tags/xcollab_judging_1.0"
           xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/evaluations"
-          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          version="2.0">
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <xcolab:layout>
+        <jsp:directive.include file="./init_proposal_tab.jspx" />
 
-    <jsp:directive.include file="./init_proposal_tab.jspx" />
+        <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
-    <jsp:directive.include file="./proposalDetails/header.jspx"/>
+        <!--ProposalJudgesTabController-->
+        <jsp:useBean id="fellowProposalScreeningBean" scope="request" type="org.xcolab.view.pages.proposals.requests.FellowProposalScreeningBean"/>
 
-    <!--ProposalJudgesTabController-->
-    <jsp:useBean id="fellowProposalScreeningBean" scope="request" type="org.xcolab.portlets.proposals.requests.FellowProposalScreeningBean"/>
+        <style>h3 {
+            margin: 20px 0 10px 0 !important;
+        }</style>
 
-    <style>h3 {
-        margin: 20px 0 10px 0 !important;
-    }</style>
+        <div id="content">
+            <form:errors cssClass="c-Alert c-Alert__error" />
 
-    <div id="content">
-        <form:errors cssClass="c-Alert c-Alert__error" />
+            This page is shared by ${contestType.contestName} Fellows only. Advisors and Judges will not be able to view this page
+            <c:set var="saveScreeningURL" value="${proposal.proposalUrl}/saveScreening?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
 
-        This page is shared by ${contestType.contestName} Fellows only. Advisors and Judges will not be able to view this page
-        <portlet:actionURL var="saveScreeningURL">
-            <portlet:param name="contestId" value="${contest.contestPK }"/>
-            <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
-            <portlet:param name="proposalId" value="${proposal.proposalId }"/>
-            <portlet:param name="action" value="saveScreening"/>
-        </portlet:actionURL>
+            <div class="judging_left">
+                <form:form id="fellowRatingForm" action="${saveScreeningURL}" method="post"
+                           commandName="fellowProposalScreeningBean">
+                    <div class="addpropbox">
+                        <h3>Advance ${contestType.proposalName} to Judges for Review?</h3>
 
-        <div class="judging_left">
-            <form:form id="fellowRatingForm" action="${saveScreeningURL}" method="post"
-                       commandName="fellowProposalScreeningBean">
-                <div class="addpropbox">
-                    <h3>Advance ${contestType.proposalName} to Judges for Review?</h3>
+                        <form:hidden path="contestPhaseId" />
+                        <form:select id="fellowScreeningAction" path="fellowScreeningAction" items="${judgingOptions}" itemValue="attributeValue" itemLabel="description"/>
 
-                    <form:hidden path="contestPhaseId" />
-                    <form:select id="fellowScreeningAction" path="fellowScreeningAction" items="${judgingOptions}" itemValue="attributeValue" itemLabel="description"/>
+                        <div id="fellowSelectJudgesContainer" style="display: none;">
+                            <h3>Select Judge(s)</h3>
+                            Select which Judge(s) will review this ${contestType.proposalName}.
+                            <table class="judgingForm">
+                                <tbody>
+                                <tr>
+                                    <c:forEach var="judge" items="${contest.contestJudges}">
+                                        <td>
+                                            <div class="review-status-container">
+                                                <proposalsPortlet:userPortrait screenName="${judge.screenName}"
+                                                                               portraitId="${judge.portraitId}"
+                                                                               userId="${judge.userId}" width="30"
+                                                                               height="30"/>
+                                                <judging:judgeReviewStatus userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}"
+                                                                           proposalId="${proposal.proposalId}" contestId="${contest.contestPK}">
+                                                    <c:choose>
+                                                        <c:when test="${judgeReviewStatus.statusValue eq 1}">
+                                                            <img src="${themeDisplay.pathThemeImages}/icon_question-x.png" class="review-status-icon"/>
+                                                        </c:when>
+                                                        <c:when test="${judgeReviewStatus.statusValue eq 2}">
+                                                            <img src="${themeDisplay.pathThemeImages}/icon_question-chk.png" class="review-status-icon"/>
+                                                        </c:when>
+                                                    </c:choose>
+                                                </judging:judgeReviewStatus>
+                                            </div>
+                                            <br/>
+                                            <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}">
+                                                <proposalsPortlet:userLinkSimple userId="${judge.userId}"
+                                                                                 text="${judge.fullName} (${proposalCount})"/>
 
-                    <div id="fellowSelectJudgesContainer" style="display: none;">
-                        <h3>Select Judge(s)</h3>
-                        Select which Judge(s) will review this ${contestType.proposalName}.
-                        <table class="judgingForm">
-                            <tbody>
-                            <tr>
-                                <c:forEach var="judge" items="${contest.contestJudges}">
-                                    <td>
-                                        <div class="review-status-container">
-                                            <proposalsPortlet:userPortrait screenName="${judge.screenName}"
-                                                                           portraitId="${judge.portraitId}"
-                                                                           userId="${judge.userId}" width="30"
-                                                                           height="30"/>
-                                            <judging:judgeReviewStatus userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}"
-                                                                       proposalId="${proposal.proposalId}" contestId="${contest.contestPK}">
-                                                <c:choose>
-                                                    <c:when test="${judgeReviewStatus.statusValue eq 1}">
-                                                        <img src="${themeDisplay.pathThemeImages}/icon_question-x.png" class="review-status-icon"/>
-                                                    </c:when>
-                                                    <c:when test="${judgeReviewStatus.statusValue eq 2}">
-                                                        <img src="${themeDisplay.pathThemeImages}/icon_question-chk.png" class="review-status-icon"/>
-                                                    </c:when>
-                                                </c:choose>
-                                            </judging:judgeReviewStatus>
-                                        </div>
-                                        <br/>
-                                        <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}">
-                                            <proposalsPortlet:userLinkSimple userId="${judge.userId}"
-                                                                             text="${judge.fullName} (${proposalCount})"/>
-
-                                        </judging:judgeAssignedProposalCount>
-                                        <br/>
-                                        <form:checkbox path="selectedJudges" value="${judge.userId}"/>
-                                    </td>
-                                </c:forEach>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div id="fellowActionCommentContainer" style="display: none">
-                        <h3>Comment to send to author</h3>
-                        <i style="font-size:10pt;">The message below will be used as a template as the response message to the author.</i>
-                        <br/>
-                        <br/>
-                        <div id="comment-headers">
-                            <c:forEach var="template" items="${emailTemplates}">
-                                <div class="${template.key}">
-                                    ${template.value.header}
-                                </div>
-                            </c:forEach>
+                                            </judging:judgeAssignedProposalCount>
+                                            <br/>
+                                            <form:checkbox path="selectedJudges" value="${judge.userId}"/>
+                                        </td>
+                                    </c:forEach>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <i>Your comment will be visible to the public.</i>
-                        <div class="form-errors"><!--  -->
-                            <form:errors cssClass="c-Alert c-Alert__error" path="fellowScreeningActionCommentBody" />
-                        </div>
-                        <form:textarea id="fellowCommentBody" cssClass="c-Comment__box" path="fellowScreeningActionCommentBody" style="width:100%;"/>
-                        <div id="comment-footers">
-                            <c:forEach var="template" items="${emailTemplates}">
-                                <div class="${template.key}">
-                                        ${template.value.footer}
-                                </div>
-                            </c:forEach>
-                        </div>
-                    </div>
-                    <c:choose>
-                        <c:when test="${proposalsPermissions.canFellowActions}">
-                            <a id="saveProposalScreeningDecision" style="display:block; float:right;" href="#" class="c-Button__primary requestMembershipSubmitButton">
-                                Save ${contestType.proposalName} decision</a>
-                        </c:when>
-                        <c:otherwise>
-                            <p class="submitStatus error">
-                                <strong>You have no permission to advance this ${contestType.proposalName}.</strong>
-                            </p>
-                        </c:otherwise>
-                    </c:choose>
-                    <c:if test="${hasAlreadyBeenPromoted}">
-                        <p class="submitStatus error">
-                            <strong>This ${contestType.proposalName} has already been promoted to the next phase. Thus, changes have no effect.</strong>
-                        </p>
-                    </c:if>
-
-                </div>
-                <div class="addpropbox">
-                    <form:errors path="*" cssClass="c-Alert c-Alert__error" />
-
-                    <h3 style="margin-top: 0;">My Rating</h3>
-                    <c:choose>
-                        <c:when test="${proposalsPermissions.canFellowActions}">
-                            <p>
-                                This section is individualized for each Fellow and will be used for Climate CoLab's research purposes. Other Fellows and Judges will be able to see your comment (but not your rating) once all evaluations are submitted.
-                            </p>
-
-                            <div style="float: left; padding-left: 30px;"><h5>Least (1)</h5></div> <div style="text-align: right; padding-right: 30px;"><h5>Most (4)</h5></div>
+                        <div id="fellowActionCommentContainer" style="display: none">
+                            <h3>Comment to send to author</h3>
+                            <i style="font-size:10pt;">The message below will be used as a template as the response message to the author.</i>
                             <br/>
-                            <proposalsPortlet:proposalRating ratingTypes="${fellowProposalScreeningBean.ratingTypes}" ratingValuesPath="ratingValues" />
-
-                            <h4>Rating comment:</h4>
-                            <i>Your comment will be visible to other Fellows and Judges only.</i>
-                            <form:textarea id="fellowRatingComment" cssClass="c-Comment__box" path="comment" style="width:100%;"/>
-                                <a id="saveProposalScreeningComment" style="display:block; float:right;" href="#" class="c-Button__primary requestMembershipSubmitButton">
-                                    Save</a>
-                        </c:when>
-                        <c:otherwise>
+                            <br/>
+                            <div id="comment-headers">
+                                <c:forEach var="template" items="${emailTemplates}">
+                                    <div class="${template.key}">
+                                        ${template.value.header}
+                                    </div>
+                                </c:forEach>
+                            </div>
+                            <i>Your comment will be visible to the public.</i>
+                            <div class="form-errors"><!--  -->
+                                <form:errors cssClass="c-Alert c-Alert__error" path="fellowScreeningActionCommentBody" />
+                            </div>
+                            <form:textarea id="fellowCommentBody" cssClass="c-Comment__box" path="fellowScreeningActionCommentBody" style="width:100%;"/>
+                            <div id="comment-footers">
+                                <c:forEach var="template" items="${emailTemplates}">
+                                    <div class="${template.key}">
+                                            ${template.value.footer}
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                        <c:choose>
+                            <c:when test="${proposalsPermissions.canFellowActions}">
+                                <a id="saveProposalScreeningDecision" style="display:block; float:right;" href="#" class="c-Button__primary requestMembershipSubmitButton">
+                                    Save ${contestType.proposalName} decision</a>
+                            </c:when>
+                            <c:otherwise>
+                                <p class="submitStatus error">
+                                    <strong>You have no permission to advance this ${contestType.proposalName}.</strong>
+                                </p>
+                            </c:otherwise>
+                        </c:choose>
+                        <c:if test="${hasAlreadyBeenPromoted}">
                             <p class="submitStatus error">
-                                <strong>You have no permission to rate this ${contestType.proposalName}.</strong>
+                                <strong>This ${contestType.proposalName} has already been promoted to the next phase. Thus, changes have no effect.</strong>
                             </p>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-            </form:form>
-        </div>
+                        </c:if>
 
-        <div class="judging_right">
-            <div class="addpropbox">
-                <h2>Evaluation Criteria</h2>
-                <proposalsPortlet:ratingCriteriaText ratingTypes="${fellowProposalScreeningBean.ratingTypes}" />
+                    </div>
+                    <div class="addpropbox">
+                        <form:errors path="*" cssClass="c-Alert c-Alert__error" />
+
+                        <h3 style="margin-top: 0;">My Rating</h3>
+                        <c:choose>
+                            <c:when test="${proposalsPermissions.canFellowActions}">
+                                <p>
+                                    This section is individualized for each Fellow and will be used for Climate CoLab's research purposes. Other Fellows and Judges will be able to see your comment (but not your rating) once all evaluations are submitted.
+                                </p>
+
+                                <div style="float: left; padding-left: 30px;"><h5>Least (1)</h5></div> <div style="text-align: right; padding-right: 30px;"><h5>Most (4)</h5></div>
+                                <br/>
+                                <proposalsPortlet:proposalRating ratingTypes="${fellowProposalScreeningBean.ratingTypes}" ratingValuesPath="ratingValues" />
+
+                                <h4>Rating comment:</h4>
+                                <i>Your comment will be visible to other Fellows and Judges only.</i>
+                                <form:textarea id="fellowRatingComment" cssClass="c-Comment__box" path="comment" style="width:100%;"/>
+                                    <a id="saveProposalScreeningComment" style="display:block; float:right;" href="#" class="c-Button__primary requestMembershipSubmitButton">
+                                        Save</a>
+                            </c:when>
+                            <c:otherwise>
+                                <p class="submitStatus error">
+                                    <strong>You have no permission to rate this ${contestType.proposalName}.</strong>
+                                </p>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </form:form>
+            </div>
+
+            <div class="judging_right">
+                <div class="addpropbox">
+                    <h2>Evaluation Criteria</h2>
+                    <proposalsPortlet:ratingCriteriaText ratingTypes="${fellowProposalScreeningBean.ratingTypes}" />
+                </div>
             </div>
         </div>
-    </div>
 
-    <script type="text/javascript">
-        var fellowScreeningActions = {};
-    </script>
-
-    <c:forEach var="fellowScreeningActions" items="${judgingOptions}">
         <script type="text/javascript">
-        fellowScreeningActions[${fellowScreeningActions.attributeValue}] = {attributeValue: ${fellowScreeningActions.attributeValue},
-        description: "${fellowScreeningActions.description}", selectJudgesEnabled: ${fellowScreeningActions.selectJudgesEnabled},
-        commentEnabled: ${fellowScreeningActions.commentEnabled}};
+            var fellowScreeningActions = {};
         </script>
-    </c:forEach>
 
-    <script type="text/javascript">
+        <c:forEach var="fellowScreeningActions" items="${judgingOptions}">
+            <script type="text/javascript">
+            fellowScreeningActions[${fellowScreeningActions.attributeValue}] = {attributeValue: ${fellowScreeningActions.attributeValue},
+            description: "${fellowScreeningActions.description}", selectJudgesEnabled: ${fellowScreeningActions.selectJudgesEnabled},
+            commentEnabled: ${fellowScreeningActions.commentEnabled}};
+            </script>
+        </c:forEach>
 
-        jQuery( document ).ready(function() {
-            jQuery("#saveProposalScreeningDecision").click(function () {
-                disableDirtyCheck();
-                jQuery("#fellowRatingForm").submit();
-            });
+        <script type="text/javascript">
 
-            jQuery("#saveProposalScreeningComment").click(function () {
+            jQuery( document ).ready(function() {
+                jQuery("#saveProposalScreeningDecision").click(function () {
+                    disableDirtyCheck();
+                    jQuery("#fellowRatingForm").submit();
+                });
 
-                disableDirtyCheck();
-                jQuery(this).parents('form').submit();
-            });
+                jQuery("#saveProposalScreeningComment").click(function () {
 
-            jQuery('#fellowScreeningAction').change(function() {
+                    disableDirtyCheck();
+                    jQuery(this).parents('form').submit();
+                });
+
+                jQuery('#fellowScreeningAction').change(function() {
+                    refreshCommentFieldVisibility();
+                    refreshEmailTemplates();
+                });
+
                 refreshCommentFieldVisibility();
                 refreshEmailTemplates();
             });
 
-            refreshCommentFieldVisibility();
-            refreshEmailTemplates();
-        });
+            function refreshCommentFieldVisibility() {
+                var fellowAction = $("#fellowScreeningAction").val();
 
-        function refreshCommentFieldVisibility() {
-            var fellowAction = $("#fellowScreeningAction").val();
+                if (fellowScreeningActions[fellowAction].commentEnabled) {
+                    jQuery('#fellowActionCommentContainer').slideDown();
+                } else {
+                    jQuery('#fellowActionCommentContainer').slideUp();
+                }
 
-            if (fellowScreeningActions[fellowAction].commentEnabled) {
-                jQuery('#fellowActionCommentContainer').slideDown();
-            } else {
-                jQuery('#fellowActionCommentContainer').slideUp();
+                if (fellowScreeningActions[fellowAction].selectJudgesEnabled) {
+                    jQuery('#fellowSelectJudgesContainer').slideDown();
+                } else {
+                    jQuery('#fellowSelectJudgesContainer').slideUp();
+                }
             }
 
-            if (fellowScreeningActions[fellowAction].selectJudgesEnabled) {
-                jQuery('#fellowSelectJudgesContainer').slideDown();
-            } else {
-                jQuery('#fellowSelectJudgesContainer').slideUp();
+
+            function refreshEmailTemplates() {
+                jQuery("#comment-footers").find("> div").hide();
+                jQuery("#comment-headers").find("> div").hide();
+
+
+                var fellowAction = $("#fellowScreeningAction").val();
+                var classToBeShown = "";
+                if (fellowAction == "1") {
+                    classToBeShown = "SCREENING_DO_NOT_ADVANCE_INCOMPLETE";
+                } else if (fellowAction == "2") {
+                    classToBeShown = "SCREENING_DO_NOT_ADVANCE_OFF_TOPIC";
+                } else if (fellowAction == "4") {
+                    classToBeShown = "SCREENING_DO_NOT_ADVANCE_OTHER";
+                }
+                if (classToBeShown != "") {
+                    jQuery("#comment-headers ."+classToBeShown).add("#comment-footers ."+classToBeShown).show();
+                }
             }
-        }
-
-
-        function refreshEmailTemplates() {
-            jQuery("#comment-footers").find("> div").hide();
-            jQuery("#comment-headers").find("> div").hide();
-
-
-            var fellowAction = $("#fellowScreeningAction").val();
-            var classToBeShown = "";
-            if (fellowAction == "1") {
-                classToBeShown = "SCREENING_DO_NOT_ADVANCE_INCOMPLETE";
-            } else if (fellowAction == "2") {
-                classToBeShown = "SCREENING_DO_NOT_ADVANCE_OFF_TOPIC";
-            } else if (fellowAction == "4") {
-                classToBeShown = "SCREENING_DO_NOT_ADVANCE_OTHER";
-            }
-            if (classToBeShown != "") {
-                jQuery("#comment-headers ."+classToBeShown).add("#comment-footers ."+classToBeShown).show();
-            }
-        }
-    </script>
-
-    <c:if test="${!proposalsPermissions.canFellowActions}">
-        <script>
-            var $fellowRatingFormElement = $("#fellowRatingForm");
-            $fellowRatingFormElement.find("select").add($fellowRatingFormElement.find("input")).add($fellowRatingFormElement.find("textarea")).attr("disabled", "disabled");
         </script>
-    </c:if>
 
-    <script type="text/javascript">
-        jQuery(function() {
-            enableDirtyCheck();
-        });
-    </script>
+        <c:if test="${!proposalsPermissions.canFellowActions}">
+            <script>
+                var $fellowRatingFormElement = $("#fellowRatingForm");
+                $fellowRatingFormElement.find("select").add($fellowRatingFormElement.find("input")).add($fellowRatingFormElement.find("textarea")).attr("disabled", "disabled");
+            </script>
+        </c:if>
+
+        <script type="text/javascript">
+            jQuery(function() {
+                enableDirtyCheck();
+            });
+        </script>
+    </xcolab:layout>
 </jsp:root>

@@ -3,6 +3,7 @@ package org.xcolab.view.pages.proposals.view;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -30,12 +31,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-//-- @RequestMapping("view")
 public class ProposalJudgesTabController extends BaseProposalTabController {
     @Autowired
     private ProposalsContext proposalsContext;
 
     //-- @RequestMapping(params = {"pageToDisplay=proposalDetails_ADVANCING"})
+    @GetMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/ADVANCING",
+            "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ADVANCING"})
+
     public String showJudgesPanel(HttpServletRequest request, Model model)
             throws ProposalsAuthorizationException {
 
@@ -54,7 +57,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         model.addAttribute("proposalAdvancingBean", bean);
 
         setCommonAdvancingAttributes(request, bean, model);
-        return "proposalAdvancing";
+        return "proposals/proposalAdvancing";
     }
 
     //-- @RequestMapping(params = {"pageToDisplay=proposalDetails_ADVANCING", "error=true"})
@@ -139,7 +142,9 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         return wrappers;
     }
     
-    //-- @RequestMapping(params = {"pageToDisplay=proposalDetails_SCREENING"})
+
+    @GetMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/SCREENING",
+            "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/SCREENING"})
     public String showFellowsPanel(HttpServletRequest request, Model model) {
         setCommonModelAndPageAttributes(request, model, ProposalTab.SCREENING);
 
@@ -164,7 +169,7 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         model.addAttribute("judgingOptions", JudgingSystemActions.FellowAction.values());
         model.addAttribute("discussionId", proposal.getFellowDiscussionId());
 
-        return "proposalScreening";
+        return "proposals/proposalScreening";
     }
     
 }

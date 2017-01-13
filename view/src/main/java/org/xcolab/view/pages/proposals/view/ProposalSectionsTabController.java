@@ -54,6 +54,33 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         this.proposalsContext = proposalsContext;
     }
 
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/edit")
+    public String showProposalDetailsEdit(
+            @PathVariable Long proposalId,
+            @PathVariable String contestUrlName,
+            @PathVariable Long contestYear,
+            Model model, HttpServletRequest request) {
+        return showProposalDetailsPage(proposalId,contestYear,contestUrlName,null,true,false,null,null,false,model,request);
+    }
+
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/edit")
+    public String showProposalDetailsPhaseEdit(
+            @PathVariable Long proposalId,
+            @PathVariable String contestUrlName,
+            @PathVariable Long contestYear,
+            @PathVariable Long phaseId,
+            Model model, HttpServletRequest request) {
+        return showProposalDetailsPage(proposalId, contestYear, contestUrlName, phaseId, true,
+                false, null, null, false, model, request);
+    }
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/version/{version}")
+    public String showProposalDetailsVersion(
+            @PathVariable Long proposalId,
+            @PathVariable String contestUrlName,
+            @PathVariable Long contestYear,
+            Model model, HttpServletRequest request) {
+        return showProposalDetailsPage(proposalId,contestYear,contestUrlName,null,false,false,null,null,false,model,request);
+    }
     @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}")
     public String showProposalDetails(
             @PathVariable Long proposalId,
@@ -63,7 +90,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         return showProposalDetailsPage(proposalId,contestYear,contestUrlName,null,false,false,null,null,false,model,request);
     }
 
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}{proposalUrlString}/{proposalId}/")
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}")
     public String showProposalDetailsPhase(
             @PathVariable Long proposalId,
             @PathVariable String contestUrlName,
@@ -160,7 +187,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
                 model.addAttribute("mustFilterContent", ConfigurationAttributeKey.FILTER_PROFANITY.get());
 
-                return "proposalDetails_edit";
+                return "proposals/proposalDetails_edit";
             }
             if (proposalsPermissions.getCanJudgeActions()) {
                 setJudgeProposalBean(model, request);
@@ -172,7 +199,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
 
         }
 
-        return "/proposals/proposalDetails";
+        return "proposals/proposalDetails";
     }
 
     private void populateMoveHistory(Model model, Proposal proposal, Contest contest, HttpServletRequest request) {

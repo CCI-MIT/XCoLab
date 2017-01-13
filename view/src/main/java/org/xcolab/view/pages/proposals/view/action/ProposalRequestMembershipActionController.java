@@ -52,7 +52,7 @@ public class ProposalRequestMembershipActionController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-    @PostMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/TEAM/requestMembership")
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/requestMembership")
     public void show(HttpServletRequest request, Model model,
             HttpServletResponse response, @Valid RequestMembershipBean requestMembershipBean,
             BindingResult result, @RequestParam("requestComment") String comment)
@@ -87,7 +87,7 @@ public class ProposalRequestMembershipActionController {
     }
 
 
-    @PostMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/TEAM/inviteMember")
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/inviteMember")
     public void invite(HttpServletRequest request, Model model,
             HttpServletResponse response, @Valid RequestMembershipInviteBean requestMembershipInviteBean, BindingResult result)
             throws IOException {
@@ -142,7 +142,7 @@ public class ProposalRequestMembershipActionController {
     }
 
 
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/TEAM/inviteMembers-validateRecipient")
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/inviteMembers-validateRecipient")
     public void validateRecipient(HttpServletRequest request, HttpServletResponse response) {
         String input = request.getParameter("term");
 

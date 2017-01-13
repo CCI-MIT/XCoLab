@@ -3,10 +3,9 @@
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
           xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:discussions="http://climatecolab.org/tags/xcollab_discussions_2.0"
-          xmlns:portlet="http://java.sun.com/portlet_2_0"
-          xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
+		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+           version="2.0">
 
-    <liferay-theme:defineObjects />
 
     <jsp:directive.attribute name="threadId" type="java.lang.Long" required="true" rtexprvalue="true" description="Thread id" />
     <jsp:directive.attribute name="categoryGroupId" type="java.lang.Long" required="false" rtexprvalue="true" description="CategoryGroup id" />
@@ -19,8 +18,8 @@
 
 	<discussions:loadThread threadId="${threadId}" categoryGroupId="${categoryGroupId }" categoryId="${categoryId}" sharedColabId="${sharedColabId}">
         <!--@elvariable id="thread" type="org.xcolab.client.comment.pojo.CommentThread"-->
-        <!--@elvariable id="newMessage" type="org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper"-->
-        <!--@elvariable id="discussionPermissions" type="org.xcolab.jspTags.discussion.DiscussionPermissions"-->
+        <!--@elvariable id="newMessage" type="org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper"-->
+        <!--@elvariable id="discussionPermissions" type="org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions"-->
         <!--@elvariable id="shareTitle" type="java.lang.String"-->
         <!--@elvariable id="shareUrl" type="java.lang.String"-->
         <!--@elvariable id="reportTargets" type="java.util.List<org.xcolab.client.flagging.pojo.ReportTarget>"-->
@@ -29,7 +28,9 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.7.0/jquery.modal.min.css" rel="stylesheet" type="text/css" />
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.7.0/jquery.modal.min.js" type="text/javascript" charset="utf-8"><!-- --></script>
 
-		<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js" ><!-- --></script>
+		<script src="${_libJsFolder}/ckeditor/ckeditor.js" ><!-- Should not use the xcolab:script because this causes the script to fail to load its dependencies --> </script>
+
+
 		<c:if test="${discussionPermissions.mustFilterContent}">
 		<script>
 			function getMustFilterContent(){
@@ -47,7 +48,7 @@
 		</script>
 		</c:if>
 
-		<script type="text/javascript" src="/discussions-portlet/js/discussionComments.js" ><!-- --></script>
+		<xcolab:script src="${_themeJsFolder}/proposals/discussionComments.js" />
 
 		<c:if test="${discussionPermissions.mustFilterContent}">
 			<div id="modal_filtering_prof" style="display:none;">
@@ -72,7 +73,7 @@
 			<div class="c-Comment__button">
 				<c:if test="${discussionPermissions.canSeeAddCommentButton}">
 					<a href="javascript:;" onclick='if(!deferUntilLogin()) return false; jQuery(".c-Comment__new")[0].scrollIntoView(); return false;'>
-                        <img src="${themeDisplay.pathThemeImages}/icon-add-comment.png" id="addcomment_button1" width="24" height="22" alt="add a comment" /> Jump to comment form
+                        <img src="${_themeImageFolder}/icon-add-comment.png" id="addcomment_button1" width="24" height="22" alt="add a comment" /> Jump to comment form
                     </a>
 				</c:if>
 				<c:if test="${discussionPermissions.canSeeShareButtons}">
@@ -80,7 +81,7 @@
 						<a href="https://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact discussion_share"
 						   addthis:title="${shareTitle}"
 						   addthis:description="${shareTitle}">
-							<img src="${themeDisplay.pathThemeImages}/share.png" width="24" height="24" alt="Share" class="c-Comment__share" />
+							<img src="${_themeImageFolder}/share.png" width="24" height="24" alt="Share" class="c-Comment__share" />
 							Share conversation
 						</a>
 					</div>
@@ -120,7 +121,7 @@
 									<br />
 									<div class="role-indicator">
 										<div style="width: 16px">
-											<img src="${themeDisplay.pathThemeImages}/${role.imageUrl}.png"
+											<img src="${_themeImageFolder}/${role.imageUrl}.png"
 													width="16" height="16" />
 										</div>
 										${role.printName}
@@ -158,21 +159,13 @@
 											</c:if>
 										</c:if>
 										<c:if test="${discussionPermissions.getCanAdminMessage(message) }">
-											<portlet:actionURL var="editCommentURL">
-												<portlet:param name="action" value="editComment" />
-                                                <portlet:param name="commentId" value="${message.commentId}" />
-												<portlet:param name="proposalId" value="${proposalId}" />
-												<portlet:param name="contestId" value="${sharedColabId}" />
-											</portlet:actionURL>
+											<c:set var="editCommentURL" value="/discussions/editComment?commentId=${message.commentId}&amp;proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
+
 											<a style="margin-left: 10px;" href="javascript:;" onclick="editComment(${message.commentId},'${editCommentURL}');">Edit</a>
 
 											<c:if test="${discussionPermissions.canAdminMessages}">
-												<portlet:actionURL var="deleteMessageURL">
-													<portlet:param name="action" value="deleteDiscussionMessageFlag" />
-													<portlet:param name="commentId" value="${message.commentId }" />
-													<portlet:param name="proposalId" value="${proposalId}" />
-													<portlet:param name="contestId" value="${sharedColabId}" />
-												</portlet:actionURL>
+												<c:set var="deleteMessageURL" value="/discussions/deleteDiscussionMessageFlag?commentId=${message.commentId }&amp;proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
+
 												<a style="margin-left: 10px;" href="javascript:;" data-url="${deleteMessageURL }" onclick="if (confirm('Are you sure you want to delete this message?')) window.location = $(this).attr('data-url');">Delete message</a>
 											</c:if>
 										</c:if>
@@ -204,11 +197,7 @@
 					</c:choose>
 				</div>
 				<div class="c-Comment__new">
-					<portlet:actionURL var="addCommentURL">
-						<portlet:param name="action" value="addDiscussionMessage" />
-						<portlet:param name="proposalId" value="${proposalId}" />
-						<portlet:param name="contestId" value="${sharedColabId}" />
-					</portlet:actionURL>
+					<c:set var="addCommentURL" value="/discussions/addDiscussionMessage?proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
 					<form id="addCommentForm" action="${addCommentURL }#addCommentForm" method="post">
                         <input name="threadId" class="title text hidden" maxlength="255" value="${thread.threadId}" />
 						<input type="hidden" name="uuid" id="filtering_uuid"/>

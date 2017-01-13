@@ -4,7 +4,7 @@ var defaultPhaseId = -1;
 function loadHistory(page) {
     // Load the page with items of the current contest phase
     if (page == -1 && getPhaseId() != defaultPhaseId) {
-        $.getJSON('/web/guest/plans/-/plans/api/phases/' + getPhaseId() + '/proposals/' + proposalId + '/versionsFirstIndex', { get_param: 'value' }, function(data) {
+        $.getJSON('/api/phases/' + getPhaseId() + '/proposals/' + proposalId + '/versionsFirstIndex', { get_param: 'value' }, function(data) {
             var page = 0;
             page = Math.floor(data.index / itemsPerPage);
             load(page, defaultPhaseId);
@@ -16,7 +16,7 @@ function loadHistory(page) {
     }
 }
 function load(page, phaseId){
-    var url = '/web/guest/plans/-/plans/api/contests/' + currentProposal.contestId + '/phases/' + phaseId + '/proposals/' + proposalId + '/versions?start=' + (page * itemsPerPage) + '&end=' + ((1+page) * itemsPerPage - 1);
+    var url = '/api/contests/' + currentProposal.contestId + '/phases/' + phaseId + '/proposals/' + proposalId + '/versions?start=' + (page * itemsPerPage) + '&end=' + ((1+page) * itemsPerPage - 1);
     console.log(url);
     $.getJSON(url, { get_param: 'value' }, function(data) {
         $('#versions').find('> div > div > table > tbody').empty();
@@ -101,7 +101,7 @@ function getVersion(){
 }
 
 function loadHistoryForVersion(version) {
-    $.getJSON('/web/guest/plans/-/plans/api/proposals/' + proposalId + '/versions/' + version + '/index', {}, function(data) {
+    $.getJSON('/api/proposals/' + proposalId + '/versions/' + version + '/index', {}, function(data) {
         var page = 0;
         page = Math.floor(data.index / itemsPerPage);
         load(page, defaultPhaseId);
