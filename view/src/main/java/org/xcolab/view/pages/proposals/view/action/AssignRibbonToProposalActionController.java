@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
+import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
@@ -18,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-//-- @RequestMapping("view")
 public class AssignRibbonToProposalActionController {
 
     private final ProposalsContext proposalsContext;
@@ -29,7 +30,8 @@ public class AssignRibbonToProposalActionController {
         this.proposalsContext = proposalsContext;
     }
 
-    //-- @RequestMapping(params = {"action=assignRibbon"})
+
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ADMIN/assignRibbon")
     public void handleAction(HttpServletRequest request, Model model, HttpServletResponse response, @RequestParam int ribbon)
             throws ProposalsAuthorizationException, IOException {
         
@@ -40,6 +42,7 @@ public class AssignRibbonToProposalActionController {
             ProposalPhaseClientUtil.setProposalContestPhaseAttribute(proposalId, contestPhaseId,
                     ProposalContestPhaseAttributeKeys.RIBBON, null, (long) ribbon, null);
 
+            AlertMessage.success("The ribbon has been assigned to the proposal at the current contest phase!").flash(request);
             response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request),
                      proposalsContext.getContestPhase(request).getContestPhasePK()) + "/tab/ADMIN");
         }

@@ -15,6 +15,7 @@ import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.dto.DtoUtil;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -209,9 +210,16 @@ public final class ProposalAttributeClient {
             String attributeValue,
             String attributeName,
             Long proposalId) {
-        ProposalUnversionedAttribute pua =
-                getProposalUnversionedAttribute(proposalId, attributeName.toString());
-        if (pua == null) {
+        ProposalUnversionedAttribute pua;
+        try {
+             pua =
+                    getProposalUnversionedAttribute(proposalId, attributeName.toString());
+                pua.setCreateAuthorId(authorId);
+                pua.setLastUpdateDate(new Timestamp(new Date().getTime()));
+                pua.setStringValue(attributeValue);
+                updateProposalUnversionedAttribute(pua);
+
+        }catch (EntityNotFoundException ignored){
             pua = new ProposalUnversionedAttribute();
             pua.setCreateAuthorId(authorId);
             pua.setCreateDate(new Timestamp(new Date().getTime()));
@@ -220,11 +228,6 @@ public final class ProposalAttributeClient {
             pua.setStringValue(attributeValue);
             pua.setProposalId(proposalId);
             createProposalUnversionedAttribute(pua);
-        } else {
-            pua.setCreateAuthorId(authorId);
-            pua.setLastUpdateDate(new Timestamp(new Date().getTime()));
-            pua.setStringValue(attributeValue);
-            updateProposalUnversionedAttribute(pua);
         }
     }
 
@@ -236,12 +239,12 @@ public final class ProposalAttributeClient {
     }
 
     public ProposalUnversionedAttribute getProposalUnversionedAttribute(Long proposalId,
-            String name) {
+            String name) throws EntityNotFoundException{
         return proposalUnversionedAttributeResource
                 .service("getByProposalIdName", ProposalUnversionedAttributeDto.class)
                 .queryParam("proposalId", proposalId)
                 .queryParam("name", name)
-                .get()
+                .getChecked()
                 .toPojo(proposalService);
     }
 

@@ -1,7 +1,6 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-          xmlns:portlet="http://java.sun.com/portlet_2_0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           version="2.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -14,19 +13,24 @@
 
         <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
-        <c:set var="getRegionsUrl" value="${proposalUrl}/proposalImpactGetRegions"/>
+        <xcolab:script src="${_themeJsFolder}/proposals/jquery.spin.js"/>
+        <xcolab:script src="${_themeJsFolder}/proposals/handlebars.js"/>
+        <xcolab:script src="${_themeJsFolder}/proposals/jquery.scrolltable.js"/>
+        <xcolab:script src="${_themeJsFolder}/proposals/numeral.min.js"/>
 
-        <c:set var="getSectorsForRegionURL" value="${proposalUrl}/proposalImpactGetSectorsForRegion?regionTermId=@@REPLACE-REGION_TERM_ID@@"/>
+        <c:set var="getRegionsUrl" value="${proposal.proposalUrl}/tab/IMPACT/proposalImpactGetRegions"/>
 
-        <c:set var="getDataSeriesURL" value="${proposalUrl}/proposalImpactGetDataSeries?sectorTermId=@@REPLACE-SECTOR_TERM_ID@@&amp;regionTermId=@@REPLACE-REGION_TERM_ID@@"/>
+        <c:set var="getSectorsForRegionURL" value="${proposal.proposalUrl}/tab/IMPACT/proposalImpactGetSectorsForRegion?regionTermId=@@REPLACE-REGION_TERM_ID@@"/>
 
-        <c:set var="saveDataSeriesURL" value="${proposalUrl}/proposalImpactSaveDataSeries?focusAreaId=@@REPLACE-FOCUS_AREA_ID@@"/>
+        <c:set var="getDataSeriesURL" value="${proposal.proposalUrl}/tab/IMPACT/proposalImpactGetDataSeries?sectorTermId=@@REPLACE-SECTOR_TERM_ID@@&amp;regionTermId=@@REPLACE-REGION_TERM_ID@@"/>
 
-        <c:set var="deleteDataSeriesURL" value="${proposalUrl}/proposalImpactDeleteDataSeries?focusAreaId=@@REPLACE-FOCUS_AREA_ID@@"/>
+        <c:set var="saveDataSeriesURL" value="${proposal.proposalUrl}/tab/IMPACT/proposalImpactSaveDataSeries?focusAreaId=@@REPLACE-FOCUS_AREA_ID@@"/>
 
-        <c:set var="updateAllSeriesURL" value="${proposalUrl}/proposalImpactUpdateAllSeries" />
+        <c:set var="deleteDataSeriesURL" value="${proposal.proposalUrl}/tab/IMPACT/proposalImpactDeleteDataSeries?focusAreaId=@@REPLACE-FOCUS_AREA_ID@@"/>
 
-        <c:set var="saveCommentURL" value="${proposalUrl}/proposalImpactSaveBasicProposalComment" />
+        <c:set var="updateAllSeriesURL" value="${proposal.proposalUrl}/tab/IMPACT/proposalImpactUpdateAllSeries" />
+
+        <c:set var="saveCommentURL" value="${proposal.proposalUrl}/tab/IMPACT/proposalImpactSaveBasicProposalComment" />
         <script>
             // Placeholder strings
             var SECTOR_TERM_ID_PLACEHOLDER = "SECTOR_TERM_ID";
@@ -51,7 +55,7 @@
             <tr id="impact-edit-row-{{series.name}}" class="impact-edit-row">
                 <td width="45%">{{series.description}}
                     <a href="javascript:;" class="helpTrigger"><img
-                            src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                            src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/></a><br/>
 
                     <div class="addprophelp"><!-- --></div>
                     <div class="clearfix"><!-- --></div>
@@ -120,7 +124,7 @@
                                 <th class="blue-bg" style="width: 55%; text-align: center">
                                     Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
                                     <a href="javascript:;" class="helpTrigger"><img
-                                            src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15"
+                                            src="${_themeImageFolder}/icon-addprop-question.png" width="15"
                                             height="15"/></a><br/>
 
                                     <div class="addprophelp" style="color:white;">
@@ -556,9 +560,8 @@
             function replaceImpactURLPlaceholders(rawUrl, ids, values) {
                 var url = rawUrl;
                 for (var i = 0; i &lt; ids.length; i++) {
-                    url = url.replace('%40%40REPLACE-' + ids[i] + '%40%40', values[i]);
+                    url = url.replace('@@REPLACE-' + ids[i] + '@@', values[i]);
                 }
-
                 return url;
             }
 
@@ -613,7 +616,8 @@
                         tableRow = jQuery(impactSeriesEditTableRowTemplate({series: dataSeries}));
                         tableRow.find('.helpTrigger').hide();
                         tableRow.find('span.series-value').each(function (idx) {
-                            $(this).text(numeral(parseFloat($(this).text())).format('0,0.00'));
+                            if($(this).text()!="")
+                                $($(this)).text(numeral(parseFloat($($(this)).text())).format('0,0.00'));
                         });
                         tableRow.addClass("selected");
                         editTable.append(tableRow);
@@ -688,6 +692,7 @@
 
                     // Get sector terms
                     var url = replaceImpactURLPlaceholders(getSectorsForRegionURL, [REGION_TERM_ID_PLACEHOLDER], [regionTermId]);
+
                     setDetailViewSpinnerMode(true);
                     $('div#new-series select#sector').attr('disabled', 'disabled');
 
@@ -696,7 +701,9 @@
                         clearDropdown(sectorDropdownElement, "Select sector");
 
                         $.each(data, function (index, attr) {
+                            <![CDATA[
                             sectorDropdownElement.append('<option value="' + attr.id + '">' + attr.name + '</option>');
+                            ]]>
                         });
 
                         sectorDropdownElement.removeAttr('disabled');
@@ -719,7 +726,9 @@
 
             function clearDropdown(dropdownElement, defaultOptionString) {
                 dropdownElement.empty();
+                <![CDATA[
                 dropdownElement.append('<option value="' + 0 + '">' + defaultOptionString + '</option>');
+                ]]>
             }
 
             function loadRegionTerms() {
@@ -727,17 +736,22 @@
 
                 var sectorDropdownElement = $('div#new-series select#sector');
                 sectorDropdownElement.empty();
+                <![CDATA[
                 sectorDropdownElement.append('<option value="' + 0 + '">Select sector</option>');
+                ]]>
 
                 var url = replaceImpactURLPlaceholders(getRegionsURL, [], []);
                 setDetailViewSpinnerMode(true);
                 $.getJSON(url, {get_param: 'value'}, function (data) {
                     setDetailViewSpinnerMode(false);
                     regionDropdownElement.empty();
+                    <![CDATA[
                     regionDropdownElement.append('<option value="' + 0 + '">Select region</option>');
-
+                    ]]>
                     $.each(data, function (index, attr) {
+                        <![CDATA[
                         regionDropdownElement.append('<option value="' + attr.id + '">' + attr.name + '</option>');
+                        ]]>
                     });
                 });
             }
@@ -944,11 +958,15 @@
                             // Reload available sector terms
                             var regionsSelectElement = $('div#impact-series-detail div#new-series select#region');
                             regionsSelectElement.empty();
+                            <![CDATA[
                             regionsSelectElement.append('<option value="0" selected="selected">Select region</option>');
+                            ]]>
                             $.getJSON(getRegionsURL, {get_param: 'value'}, function (data) {
                                 if (data != null) {
                                     $.each(data, function (index, attr) {
+                                        <![CDATA[
                                         regionsSelectElement.append('<option value="' + attr.id + '">' + attr.name + '</option>');
+                                        ]]>
                                     });
                                 }
                             });

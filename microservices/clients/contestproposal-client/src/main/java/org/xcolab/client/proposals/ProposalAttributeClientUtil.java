@@ -120,10 +120,6 @@ public final class ProposalAttributeClientUtil {
         return client.createProposalUnversionedAttribute(proposalUnversionedAttribute);
     }
 
-    public static ProposalUnversionedAttribute getProposalUnversionedAttribute(
-            Long proposalId, String name) {
-        return client.getProposalUnversionedAttribute(proposalId, name);
-    }
 
     public static boolean updateProposalUnversionedAttribute(
             ProposalUnversionedAttribute proposalUnversionedAttribute) {

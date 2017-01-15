@@ -4,6 +4,7 @@ package org.xcolab.view.pages.proposals.view.action;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.proposals.ProposalClient;
@@ -18,13 +19,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-//-- @RequestMapping("view")
 public class SubscribeProposalActionController {
 
     @Autowired
     private ProposalsContext proposalsContext;
 
-    //-- @RequestMapping(params = {"action=subscribeProposal"})
+
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/subscribeProposal")
     public void handleAction(HttpServletRequest request, Model model, HttpServletResponse response)
             throws ProposalsAuthorizationException, IOException {
         

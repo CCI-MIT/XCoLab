@@ -2,6 +2,8 @@ package org.xcolab.view.pages.proposals.view;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
@@ -27,12 +29,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-//-- @RequestMapping("view")
+
 public class ProposalMoveJsonController {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    //-- @ResourceMapping("getContestsOpenForProposals")
+
+    @GetMapping("/api/contestsOpenForProposals")
     public void getContestsOpenForProposals(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
 
@@ -107,9 +110,10 @@ public class ProposalMoveJsonController {
         }
     }
 
-    //-- @ResourceMapping("getProposalContestSections")
+
+    @GetMapping("/api/contests/{contestId}/proposals/{proposalId}/versions/{version}/sections")
     public void getProposalContestSections(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam long proposalId, @RequestParam int version, @RequestParam long contestId)
+            @PathVariable long proposalId, @PathVariable int version, @PathVariable long contestId)
             throws IOException {
         List<ImmutableSection> returnList = new ArrayList<>();
 

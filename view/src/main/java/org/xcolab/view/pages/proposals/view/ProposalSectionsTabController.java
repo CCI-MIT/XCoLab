@@ -54,6 +54,18 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         this.proposalsContext = proposalsContext;
     }
 
+
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/moveFromContestPhaseId/{moveFromContestPhaseId}/move/{moveType}")
+    public String showProposalDetailsMove(
+            @PathVariable Long proposalId,
+            @PathVariable String contestUrlName,
+            @PathVariable Long contestYear,
+            @PathVariable Long moveFromContestPhaseId,
+            @PathVariable String moveType,
+            Model model, HttpServletRequest request) {
+        return showProposalDetailsPage(proposalId,contestYear,contestUrlName,null,false,true,moveType,moveFromContestPhaseId,false,model,request);
+    }
+
     @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/edit")
     public String showProposalDetailsEdit(
             @PathVariable Long proposalId,
@@ -62,6 +74,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             Model model, HttpServletRequest request) {
         return showProposalDetailsPage(proposalId,contestYear,contestUrlName,null,true,false,null,null,false,model,request);
     }
+
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/edit")
     public String showProposalDetailsPhaseEdit(

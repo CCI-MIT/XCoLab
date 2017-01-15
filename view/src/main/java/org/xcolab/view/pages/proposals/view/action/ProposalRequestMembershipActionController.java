@@ -21,6 +21,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.entity.utils.email.notifications.proposal.ProposalMembershipInviteNotification;
 import org.xcolab.entity.utils.email.notifications.proposal.ProposalUserActionNotification;
+import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.entity.utils.portlet.session.SessionErrors;
 import org.xcolab.entity.utils.portlet.session.SessionMessages;
 import org.xcolab.util.exceptions.InternalException;
@@ -52,7 +53,7 @@ public class ProposalRequestMembershipActionController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/requestMembership")
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/TEAM/requestMembership")
     public void show(HttpServletRequest request, Model model,
             HttpServletResponse response, @Valid RequestMembershipBean requestMembershipBean,
             BindingResult result, @RequestParam("requestComment") String comment)
@@ -82,12 +83,13 @@ public class ProposalRequestMembershipActionController {
         new ProposalUserActionNotification(proposal, contest, sender, proposalAuthor,
                 MEMBERSHIP_REQUEST_TEMPLATE, ConfigurationAttributeKey.COLAB_URL.get()).sendMessage();
 
-        SessionMessages.add(request, "membershipRequestSent");
+
+        AlertMessage.success("A membership request has been sent!").flash(request);
         response.sendRedirect(proposal.getProposalLinkUrl(contest) + "/tab/TEAM");
     }
 
 
-    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/inviteMember")
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ADMIN/inviteMember")
     public void invite(HttpServletRequest request, Model model,
             HttpServletResponse response, @Valid RequestMembershipInviteBean requestMembershipInviteBean, BindingResult result)
             throws IOException {
@@ -137,7 +139,7 @@ public class ProposalRequestMembershipActionController {
         }
 
 
-
+        AlertMessage.success("The member has been invited to join this proposal' team!").flash(request);
         response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/TEAM");
     }
 
@@ -159,7 +161,7 @@ public class ProposalRequestMembershipActionController {
         }
     }
 
-    //-- @RequestMapping(params = {"action=replyToMembershipRequest"})
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ADMIN/replyToMembershipRequest")
     public void respond(HttpServletRequest request, Model model, HttpServletResponse response,
                         @RequestParam("approve") String approve,
                         @RequestParam("comment") String comment,
@@ -193,6 +195,7 @@ public class ProposalRequestMembershipActionController {
                     .denyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId, comment, userId);
             sendMessage(proposalsContext.getMember(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED + comment);
         }
+        AlertMessage.success("The membership request has been replied !").flash(request);
         response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/ADMIN");
     }
 

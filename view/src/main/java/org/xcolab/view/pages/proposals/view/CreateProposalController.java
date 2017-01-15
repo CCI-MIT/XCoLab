@@ -3,6 +3,8 @@ package org.xcolab.view.pages.proposals.view;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -38,14 +40,38 @@ public class CreateProposalController extends BaseProposalsController {
     public CreateProposalController(ProposalsContext proposalsContext) {
         this.proposalsContext = proposalsContext;
     }
+             // /contests/2016/public-attitudes-and-behaviors-workspace/createProposal/basedOn/1327806/749/1303903
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/createProposal/basedOn/{baseProposalId}/{baseProposalVersion}/{baseContestId}")
+    public String createProposalsBasedOn(HttpServletRequest request, HttpServletResponse response,
+            @PathVariable String contestUrlName, @PathVariable(required = false) Long baseProposalId,
+            @PathVariable(required = false) Integer
+                    baseProposalVersion,
+            @PathVariable(required = false) Long baseContestId, Model model)
+            throws ProposalsAuthorizationException {
 
+        return showContestProposals( request,  response,
+                contestUrlName,   baseProposalId,
+                (baseProposalVersion!=null)?(baseProposalVersion): (-1),
+                baseContestId, model);
+    }
     //-- @RequestMapping(params = "pageToDisplay=createProposal")
-    public String showContestProposals(HttpServletRequest request, HttpServletResponse response,
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/createProposal")
+    public String createProposals(HttpServletRequest request, HttpServletResponse response,
             @RequestParam String contestUrlName, @RequestParam(required = false) Long baseProposalId,
             @RequestParam(required = false, defaultValue = "-1") int baseProposalVersion,
             @RequestParam(required = false) Long baseContestId, Model model)
             throws ProposalsAuthorizationException {
 
+        return showContestProposals( request,  response,
+                 contestUrlName,   baseProposalId,
+         baseProposalVersion,
+         baseContestId, model);
+    }
+    public String showContestProposals(HttpServletRequest request, HttpServletResponse response,
+                String contestUrlName,  Long baseProposalId,
+         int baseProposalVersion,
+         Long baseContestId, Model model)
+        throws ProposalsAuthorizationException {
         if (!proposalsContext.getPermissions(request).getCanCreate()) {
             throw new ProposalsAuthorizationException("creation not allowed");
         }
@@ -111,6 +137,6 @@ public class CreateProposalController extends BaseProposalsController {
         request.setAttribute("imageUploadServiceUrl",
                 ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.get());
         request.setAttribute("imageUploadHelpText", ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.get());
-        return "proposalDetails_edit";
+        return "/proposals/proposalDetails_edit";
     }
 }

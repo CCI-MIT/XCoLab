@@ -2,7 +2,7 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:judging="http://climatecolab.org/tags/xcollab_judging_1.0"
+          xmlns:judging="urn:jsptld:/WEB-INF/tlds/xcolab-judging.tld"
           xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/evaluations"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           version="2.0">
@@ -23,7 +23,7 @@
             <form:errors cssClass="c-Alert c-Alert__error" />
 
             This page is shared by ${contestType.contestName} Fellows only. Advisors and Judges will not be able to view this page
-            <c:set var="saveScreeningURL" value="${proposal.proposalUrl}/saveScreening?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
+            <c:set var="saveScreeningURL" value="${proposal.proposalUrl}/tab/SCREENING/saveScreening?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
 
             <div class="judging_left">
                 <form:form id="fellowRatingForm" action="${saveScreeningURL}" method="post"

@@ -53,7 +53,7 @@ public class OntologyClient {
         focusAreaOntologyTermResource = new RestResource1<>(this.contestService,
                 "focusAreaOntologyTerms", FocusAreaOntologyTermDto.TYPES);
         impactDefaultSeriesResource = new RestResource1<>(this.contestService,
-                "impactDefaultSeriesDatas", ImpactDefaultSeriesDto.TYPES);
+                "impactDefaultSeries", ImpactDefaultSeriesDto.TYPES);
         impactDefaultSeriesDataResource = new RestResource1<>(this.contestService,
                 "impactDefaultSeriesDatas", ImpactDefaultSeriesDataDto.TYPES);
     }

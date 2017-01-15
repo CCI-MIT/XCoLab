@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.entity.utils.email.EmailToAdminDispatcher;
+import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
@@ -34,7 +36,7 @@ public class RemoveUserFromProposalTeamActionController {
     private ProposalsContext proposalsContext;
 
 
-    @PostMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/TEAM/removeUserFromTeam")
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/TEAM/removeUserFromTeam")
     public void handleAction(HttpServletRequest request, Model model, HttpServletResponse response, @RequestParam("member") long memberId)
             throws ProposalsAuthorizationException, IOException {
 
@@ -81,6 +83,7 @@ public class RemoveUserFromProposalTeamActionController {
         }
 
         ProposalsContextUtil.getClients(request).getProposalClient().removeUserFromProposalTeam(proposalId,memberId);
+        AlertMessage.success("The member was removed from the proposal's team!").flash(request);
         response.sendRedirect(proposal.getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/TEAM");
     }
 }

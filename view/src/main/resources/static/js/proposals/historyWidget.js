@@ -16,7 +16,7 @@ function loadHistory(page) {
     }
 }
 function load(page, phaseId){
-    var url = '/api/contests/' + currentProposal.contestId + '/phases/' + phaseId + '/proposals/' + proposalId + '/versions?start=' + (page * itemsPerPage) + '&end=' + ((1+page) * itemsPerPage - 1);
+    var url = '/api/contests/' + currentProposal.contestPK + '/phases/' + phaseId + '/proposals/' + proposalId + '/versions?start=' + (page * itemsPerPage) + '&end=' + ((1+page) * itemsPerPage - 1);
     console.log(url);
     $.getJSON(url, { get_param: 'value' }, function(data) {
         $('#versions').find('> div > div > table > tbody').empty();

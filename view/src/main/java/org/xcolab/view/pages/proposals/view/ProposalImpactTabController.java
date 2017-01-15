@@ -47,7 +47,6 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-//-- @RequestMapping("view")
 public class ProposalImpactTabController extends BaseProposalTabController {
 
     private final static Logger _log = LoggerFactory.getLogger(ProposalImpactTabController.class);
@@ -58,6 +57,19 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private Contest contest;
     private Proposal proposalWrapper;
 
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/IMPACT/edit")
+    public String showProposalDetailsEdit(
+            @PathVariable Long proposalId,
+            @PathVariable String contestUrlName,
+            @PathVariable Long contestYear,
+            Model model, HttpServletRequest request) throws IOException, ScenarioNotFoundException, ModelNotFoundException  {
+        return showImpactTab(
+                proposalId,
+                contestUrlName,
+                contestYear,
+                null,
+                request, model, true);
+    }
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/IMPACT")
     public String showProposalDetails(

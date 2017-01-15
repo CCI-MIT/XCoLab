@@ -2,9 +2,7 @@ package org.xcolab.view.pages.proposals.judging;
 
 import org.xcolab.client.proposals.ProposalClientUtil;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
 public class JudgeAssignedProposalCountTag extends BodyTagSupport {
@@ -36,10 +34,7 @@ public class JudgeAssignedProposalCountTag extends BodyTagSupport {
         int judgeAssignedProposalCount = ProposalClientUtil
                 .getNumberOfProposalsForJudge(userId, contestPhaseId);
 
-        HttpServletRequest portletRequest = (HttpServletRequest) pageContext.getAttribute("javax.portlet.request", PageContext.REQUEST_SCOPE);
-        if (portletRequest == null) {
-            throw new JspException("Can't find portlet request");
-        }
+
         pageContext.setAttribute("proposalCount", judgeAssignedProposalCount);
 
         return EVAL_BODY_INCLUDE; 

@@ -4,6 +4,7 @@ package org.xcolab.view.pages.proposals.view.action;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -28,6 +29,7 @@ public class PromoteProposalActionController {
     private ProposalsContext proposalsContext;
 
     //-- @RequestMapping(params = {"action=promoteProposal"})
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/ADMIN/promoteProposal")
     public void handleAction(HttpServletRequest request, Model model, HttpServletResponse response,
                              @RequestParam Long contestId,
                              @RequestParam Long contestPhaseId,

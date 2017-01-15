@@ -30,7 +30,7 @@
                                  width="24" height="22" alt="request membership" class="request-membership-icon"/>
 
 
-                            <c:set var="requestMembershipURL" value="${proposal.proposalUrl}/requestMembership"/>
+                            <c:set var="requestMembershipURL" value="${proposal.proposalUrl}/tab/TEAM/requestMembership"/>
 
 
                             <form:form id="requestMembershipForm" action="${requestMembershipURL }" method="post" commandName="requestMembershipBean" style="float:left;">
@@ -81,7 +81,7 @@
                             <c:if test="${proposalsPermissions.canManageUsers}">
                                 <td>
                                     <c:if test="${member.memberType != 'Owner'}">
-                                        <c:set var="removeUserFromTeam" value="${proposalUrl}/?member=${member.userId}" />
+                                        <c:set var="removeUserFromTeam" value="${proposal.proposalUrl}/tab/TEAM/removeUserFromTeam?member=${member.userId}" />
 
                                         <a href="${removeUserFromTeam }">Remove</a>
                                     </c:if>
