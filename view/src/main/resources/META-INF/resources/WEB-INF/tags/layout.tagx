@@ -225,6 +225,11 @@
                                     </div>
                                 </c:if>
                             </li>
+                            <c:if test="${_isAdmin}">
+                                <li>
+                                    <a href="/admin/contest">Contest manager</a>
+                                </li>
+                            </c:if>
                             <li>
                                 <a href="/web/guest/member/-/member/userId/${_member.userId}/page/subscriptions">My subscriptions</a>
                             </li>

@@ -34,9 +34,6 @@
         <junit.version>4.12</junit.version>
         <rewrite.version>3.4.1.Final</rewrite.version>
 
-        <!-- JSP -->
-        <sitemesh.version>3.0.1</sitemesh.version>
-
         <!-- Service communication -->
         <ehcache.version>3.1.3</ehcache.version>
         <httpclient.version>4.5.2</httpclient.version>
@@ -86,11 +83,6 @@
             <!-- defined by spring -->
             <!--suppress MavenModelInspection -->
             <version>${jstl.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.sitemesh</groupId>
-            <artifactId>sitemesh</artifactId>
-            <version>${sitemesh.version}</version>
         </dependency>
 
         <!-- Core dependencies -->

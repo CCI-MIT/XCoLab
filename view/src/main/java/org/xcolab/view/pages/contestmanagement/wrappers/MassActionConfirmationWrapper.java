@@ -13,9 +13,9 @@ import java.util.List;
 public class MassActionConfirmationWrapper {
 
     private List<Contest> contestWrappers;
-    private List<Integer> contestIds;
+    private List<Long> contestIds;
     private List<Boolean> selectedContest;
-    private Integer massActionId;
+    private int massActionId;
     private Integer itemCount;
 
     public MassActionConfirmationWrapper() {
@@ -24,7 +24,7 @@ public class MassActionConfirmationWrapper {
         this.contestIds = new ArrayList<>();
     }
 
-    public MassActionConfirmationWrapper(List<Integer> contestIds, Integer massActionId) {
+    public MassActionConfirmationWrapper(List<Long> contestIds, int massActionId) {
         this.selectedContest = new ArrayList<>();
         this.contestWrappers = new ArrayList<>();
         this.massActionId = massActionId;
@@ -33,11 +33,11 @@ public class MassActionConfirmationWrapper {
         populateValidContestWrapper(contestIds);
     }
 
-    private void populateValidContestWrapper(List<Integer> contestIds) {
-        for (Integer contestId : contestIds) {
+    private void populateValidContestWrapper(List<Long> contestIds) {
+        for (long contestId : contestIds) {
             try {
                 Contest contest = ContestClientUtil.getContest(contestId);
-                this.contestWrappers.add(new Contest(contest));
+                this.contestWrappers.add(contest);
                 this.selectedContest.add(false);
             } catch (ContestNotFoundException ignored) {
                 // Contest was removed already
@@ -53,11 +53,11 @@ public class MassActionConfirmationWrapper {
         this.selectedContest = selectedContest;
     }
 
-    public List<Integer> getContestIds() {
+    public List<Long> getContestIds() {
         return contestIds;
     }
 
-    public void setContestIds(List<Integer> contestIds) {
+    public void setContestIds(List<Long> contestIds) {
         this.contestIds = contestIds;
     }
 
@@ -86,18 +86,18 @@ public class MassActionConfirmationWrapper {
     }
 
     public String getSelectedMassActionTitle() {
-        return MassActionUtil.getSelectedMassActionTitle(massActionId.longValue());
+        return MassActionUtil.getSelectedMassActionTitle(massActionId);
     }
 
     public void invokeMassActionForSelectedContests()
             throws InvocationTargetException, IllegalAccessException {
         List<Long> contestToBeDeleted = new ArrayList<>();
-        for (Integer contestId : contestIds) {
+        for (long contestId : contestIds) {
             int index = contestIds.indexOf(contestId);
             if (index < selectedContest.size() && selectedContest.get(index) != null
                     && selectedContest
                     .get(index)) {
-                contestToBeDeleted.add(contestId.longValue());
+                contestToBeDeleted.add(contestId);
             }
         }
         if (massActionId == ContestMassActions.DELETE.ordinal()) {

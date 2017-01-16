@@ -1,2 +1,4 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+    <xcolab:script src="/js/pages/admin/contest-manager.js"/>
 </jsp:root>

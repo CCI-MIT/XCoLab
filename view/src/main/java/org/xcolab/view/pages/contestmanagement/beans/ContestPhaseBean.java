@@ -35,10 +35,10 @@ public class ContestPhaseBean implements Serializable {
     private Long contestPhaseType;
     private Long contestPhaseTypeOld = 0L;
     private Long contestScheduleId;
-    @DateTimeFormat(pattern = "MM/dd/yyyy hh:mm")
+    @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm")
     @NotNull(message = "Phase start date must not be empty.")
     private Date phaseStartDate;
-    @DateTimeFormat(pattern = "MM/dd/yyyy hh:mm")
+    @DateTimeFormat(pattern = "MM/dd/yyyy HH:mm")
     private Date phaseEndDate;
     private Date phaseBufferEndDated;
     private String nextStatus;

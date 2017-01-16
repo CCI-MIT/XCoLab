@@ -1,28 +1,21 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.view.pages.contestmanagement.beans.ContestPhaseBean;
-import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleChangeHelper
-        .IllegalScheduleChangeException;
+import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleChangeHelper.IllegalScheduleChangeException;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.xcolab.view.pages.contestmanagement.beans.ContestPhaseBean
-        .CREATE_CONTEST_PHASE_PK;
+import static org.xcolab.view.pages.contestmanagement.beans.ContestPhaseBean.CREATE_CONTEST_PHASE_PK;
 
 public class ContestScheduleWrapper {
-
-    private final static Logger _log = LoggerFactory.getLogger(ContestScheduleWrapper.class);
 
     private List<ContestPhaseBean> schedulePhases;
     private ContestSchedule contestSchedule;

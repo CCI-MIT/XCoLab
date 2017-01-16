@@ -9,9 +9,7 @@
 
     <jsp:directive.include file="../../init.jspx"/>
 
-    <portlet:actionURL var="confirmDeleteContestURL">
-        <portlet:param name="action" value="confirmMassActionExecution"/>
-    </portlet:actionURL>
+    <c:set var="confirmDeleteContestURL" value="/admin/contest/manager/confirmMassAction" />
 
     <div class="proposal-head">
         <div class="inner">

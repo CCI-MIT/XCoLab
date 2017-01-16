@@ -6,7 +6,7 @@ public final class MassActionUtil {
 
     private MassActionUtil() { }
 
-    public static String getSelectedMassActionTitle(Long selectedMassAction) {
+    public static String getSelectedMassActionTitle(long selectedMassAction) {
         String selectedMassActionTitle = "";
         Long selectedMassActionAbsolute = Math.abs(selectedMassAction);
         for (ContestMassActions contestMassAction : ContestMassActions.values()) {

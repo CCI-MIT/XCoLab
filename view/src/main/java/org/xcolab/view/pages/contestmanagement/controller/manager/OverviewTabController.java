@@ -1,7 +1,5 @@
 package org.xcolab.view.pages.contestmanagement.controller.manager;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +14,7 @@ import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
 import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
 import org.xcolab.view.pages.contestmanagement.wrappers.ContestOverviewWrapper;
+import org.xcolab.view.pages.contestmanagement.wrappers.MassActionConfirmationWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 
 import java.io.IOException;
@@ -30,10 +29,11 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/admin/contest")
 public class OverviewTabController extends AbstractTabController {
 
-    private final static Logger _log =
-            LoggerFactory.getLogger(OverviewTabController.class);
     static final private ContestManagerTabs tab = ContestManagerTabs.OVERVIEW;
     static final private String TAB_VIEW = "contestmanagement/manager/overviewTab";
+
+    static final private String CONFIRM_VIEW_PATH =
+            "contestmanagement/manager/massActionConfirmation/";
 
     @ModelAttribute("currentTabWrapped")
     @Override
@@ -88,8 +88,15 @@ public class OverviewTabController extends AbstractTabController {
             Boolean massActionRequiresConfirmation =
                     e.getTargetException() instanceof MassActionRequiresConfirmationException;
             if (massActionRequiresConfirmation) {
-                //TODO: confirmation
-                throw e;
+                final int selectedMassActionId =
+                        updateContestOverviewWrapper.getSelectedMassAction().intValue();
+                ContestMassActions contestMassAction = ContestMassActions.values()[selectedMassActionId];
+                String confirmView = contestMassAction.getMethod().getName();
+                List<Long> contestIds = updateContestOverviewWrapper.getSelectedContestIds();
+                model.addAttribute("massActionConfirmationWrapper",
+                        new MassActionConfirmationWrapper(contestIds, selectedMassActionId));
+                model.addAttribute("massActionId", selectedMassActionId);
+                return CONFIRM_VIEW_PATH + confirmView;
             } else {
                 throw e;
             }
