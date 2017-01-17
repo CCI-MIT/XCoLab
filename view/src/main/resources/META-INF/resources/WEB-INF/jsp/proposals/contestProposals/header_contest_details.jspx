@@ -154,7 +154,7 @@
                 <div class="p-ContestProposals__header__buttons">
                     <c:if test="${showAdminLink}">
                         <div class="p-ContestProposals__header__detailButton">
-                            <a href="/web/guest/cms/-/contestmanagement/contestId/${contest.contestPK}">Edit Contest</a>
+                            <a href="/admin/contest/details/contestId/${contest.contestPK}">Edit Contest</a>
                         </div>
                     </c:if>
 

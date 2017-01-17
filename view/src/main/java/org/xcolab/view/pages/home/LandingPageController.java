@@ -31,4 +31,8 @@ public class LandingPageController {
         model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication().getName());
         return "admin";
     }
+    @RequestMapping(value = "/notAllowed")
+    public String error(HttpServletRequest request, Model model) {
+        return "notAllowed";
+    }
 }

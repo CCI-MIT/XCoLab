@@ -2,7 +2,8 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
     xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:form="http://www.springframework.org/tags/form"
-	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+	xmlns:portlet="http://java.sun.com/portlet_2_0"
+          version="2.0">
 
     <!--@elvariable id="contests" type="java.util.List<org.xcolab.client.contest.pojo.Contest>"-->
     <!--@elvariable id="availableRibbons" type="java.util.List<org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType>"-->
