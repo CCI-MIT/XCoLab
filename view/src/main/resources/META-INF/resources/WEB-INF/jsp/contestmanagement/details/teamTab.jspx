@@ -1,0 +1,45 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+		  xmlns:c="http://java.sun.com/jsp/jstl/core"
+		  xmlns:form="http://www.springframework.org/tags/form"
+		  xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
+
+	<!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.Contest"-->
+
+	<jsp:directive.include file="../init.jspx" />
+	<jsp:directive.include file="./header.jspx"/>
+
+	<c:set var="updateContestTeamURL" value="/admin/contest/details/contestId/${contestWrapper.contestPK}/tab/TEAM/update" />
+
+	<script type="text/javascript">
+		var users = [];
+		var usersMap = {};
+		var userNames = [];
+		<c:forEach var="user" items="${usersList}">
+			usersMap["${user.screenName}"] = "${user.userId}";
+			userNames.push("${user.screenName}");
+		</c:forEach>
+	</script>
+
+		<div class="cmsDetailsBox">
+			<p>Search by username to select contest team members. <a href="http://climatecolab.org/web/guest/loginregister" target="_blank">Register new members by clicking here. </a>
+				<i>(Click SAVE and reload this page to find newly registered members.)</i>
+			</p>
+			<h2>Contest team</h2>
+		<form:form action="${updateContestTeamURL }" commandName="contestTeamBean" id="editForm" method="post">
+			<div class="teamTabContainer">
+				<collab:teamBox title="IAFellows" list="${contestWrapper.contestImpactAssessmentFellows}"/>
+				<collab:teamBox title="Advisors" list="${contestWrapper.contestAdvisors}"/>
+				<collab:teamBox title="Fellows" list="${contestWrapper.contestFellows}"/>
+				<collab:teamBox title="Judges" list="${contestWrapper.contestJudges}"/>
+
+				<!-- <collab:teamBox title="Managers" list="${contestWrapper.contestManager}"/> -->
+			</div>
+		</form:form>
+		<div class="clear"><!-- --></div>
+	</div>
+	<jsp:directive.include file="./footer.jspx"/>
+</xcolab:layout>
+</jsp:root>

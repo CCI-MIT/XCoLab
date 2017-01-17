@@ -225,6 +225,11 @@
                                     </div>
                                 </c:if>
                             </li>
+                            <c:if test="${_isAdmin}">
+                                <li>
+                                    <a href="/admin/contest">Contest manager</a>
+                                </li>
+                            </c:if>
                             <li>
                                 <a href="/web/guest/member/-/member/userId/${_member.userId}/page/subscriptions">My subscriptions</a>
                             </li>
@@ -795,6 +800,25 @@
             var usertracking_hash = '${_member.uuid}';
         </script>
     </c:if>
+
+    <script type="text/javascript">
+        function enableDirtyCheck() {
+            window.oldOnBeforeUnload = window.onbeforeunload;
+            window.onbeforeunload = function() {
+                if (jQuery(".editorDirty").length > 0) {
+                    return 'You have modified this page but have not saved your changes.';
+                }
+                return null;
+            };
+        }
+
+        function disableDirtyCheck() {
+            if ('oldOnBeforeUnload' in window) {
+                window.onbeforeunload = window.oldOnBeforeUnload;
+            }
+            delete window.onbeforeunload;
+        }
+    </script>
     <xcolab:script src="${_themeJsFolder}/usertracking.js" />
     <xcolab:script src="${_themeJsFolder}/balloon.js" />
     <xcolab:script src="${_themeJsFolder}/errorTracker.js" />

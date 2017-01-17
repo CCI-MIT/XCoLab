@@ -10,7 +10,7 @@ public interface TabPermissionAlgorithm {
     boolean canEdit(TabPermissions permissions, TabContext context, HttpServletRequest request);
     boolean getCanAddComment(TabPermissions permissions, TabContext context, HttpServletRequest request);
 
-    public final static TabPermissionAlgorithm alwaysTrueViewAndEdit = new TabPermissionAlgorithm() {
+    TabPermissionAlgorithm alwaysTrueViewAndEdit = new TabPermissionAlgorithm() {
 
         @Override
         public boolean canView(TabPermissions permissions, TabContext context, HttpServletRequest request) {
@@ -26,7 +26,7 @@ public interface TabPermissionAlgorithm {
         }
     };
 
-    public final static TabPermissionAlgorithm alwaysFalseViewAndEdit = new TabPermissionAlgorithm() {
+    TabPermissionAlgorithm alwaysFalseViewAndEdit = new TabPermissionAlgorithm() {
 
         @Override
         public boolean canView(TabPermissions permissions, TabContext context, HttpServletRequest request) {
@@ -42,7 +42,7 @@ public interface TabPermissionAlgorithm {
         }
     };
 
-    public final static TabPermissionAlgorithm adminOnlyViewAndEdit = new TabPermissionAlgorithm() {
+    TabPermissionAlgorithm adminOnlyViewAndEdit = new TabPermissionAlgorithm() {
 
         @Override
         public boolean canView(TabPermissions permissions, TabContext context, HttpServletRequest request) {
@@ -58,7 +58,7 @@ public interface TabPermissionAlgorithm {
         }
     };
 
-    public final static TabPermissionAlgorithm
+    TabPermissionAlgorithm
             contestCreationViewAndEdit = new TabPermissionAlgorithm() {
 
         @Override

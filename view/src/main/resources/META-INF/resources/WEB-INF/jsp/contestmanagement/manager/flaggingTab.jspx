@@ -1,0 +1,194 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0"
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
+    <!--@elvariable id="reportTargetId" type="java.lang.Long"-->
+    <!--@elvariable id="reportTargetWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.FlaggingReportTargetWrapper"-->
+    <!--@elvariable id="selectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+
+    <!--@elvariable id="reports" type="java.util.List<org.xcolab.portlets.contestmanagement.wrappers.FlaggingReportWrapper>"-->
+
+    <jsp:directive.include file="../init.jspx"/>
+    <jsp:directive.include file="./header.jspx"/>
+
+    <c:set var="changeElementURL" value="/admin/contest/manager/tab/FLAGGING?elementId=" />
+    <c:set var="createReportTargetUrl" value="/admin/contest/manager/tab/FLAGGING/create" />
+    <c:set var="updateReportTargetUrl" value="/admin/contest/manager/tab/FLAGGING/update" />
+    <c:set var="deleteReportTargetUrl" value="/admin/contest/manager/tab/FLAGGING/delete/${reportTargetWrapper.reportTargetId}" />
+
+
+    <form action="${deleteReportTargetUrl}" id="deleteReportTargetForm" method="post" style="visibility: hidden;">
+        <!-- -->
+    </form>
+
+    <form action="${createReportTargetUrl}" id="createReportTargetForm" method="post" style="visibility: hidden;">
+
+        <!-- -->
+    </form>
+
+    <div class="cmsDetailsBox">
+        <div style="margin-bottom: 40px;">
+            <div class="floatRight outerVerticalCenter">
+                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="saveExistingReportTarget()">SAVE target</a>
+                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="saveAsNewReportTarget()">SAVE as new target</a>
+                <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitDeleteReportTargetForm()">DELETE target</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="cmsDetailsBox">
+        <div class="reg_errors"><!--  -->
+            <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
+        </div>
+
+        <div class="addpropbox">
+            <form:form commandName="reportTargetWrapper">
+                <strong class="inputTitleLeft">Report target:</strong>
+
+                <div class="addpropInputContainer">
+                    <form:select path="reportTargetId" id="changeReportTargetSelect" cssClass="wideLargeInput">
+                        <form:options items="${selectionItems}"
+                                      itemValue="value" itemLabel="lable" />
+                    </form:select>
+                </div>
+            </form:form>
+
+        </div>
+
+        <form:form action="${updateReportTargetUrl }" commandName="reportTargetWrapper"
+                   id="editForm" method="post">
+
+            <form:hidden path="createNew" id="createNewFlag"/>
+            <form:hidden path="reportTargetId" />
+
+            <div class="addpropbox">
+                <strong class="inputTitleLeft">Target type:</strong>
+                <form:input path="type" cssClass="wideLargeInput" disabled="disabled"/>
+
+                <div class="reg_errors"><!--  -->
+                    <form:errors cssClass="c-Alert c-Alert__error" path="type"/>
+                </div>
+            </div>
+
+            <div class="addpropbox">
+                <strong class="inputTitleLeft">Reason:</strong>
+                <form:input path="reason" cssClass="wideLargeInput"/>
+
+                <div class="reg_errors"><!--  -->
+                    <form:errors cssClass="c-Alert c-Alert__error" path="reason"/>
+                </div>
+            </div>
+
+            <div class="addpropbox">
+                <strong class="inputTitleLeft">Notification Threshold:</strong>
+                <form:textarea path="notificationThreshold" cssClass="wideLargeInput"/>
+
+                <div class="reg_errors"><!--  -->
+                    <form:errors cssClass="c-Alert c-Alert__error" path="notificationThreshold"/>
+                </div>
+            </div>
+
+            <div class="addpropbox">
+                <strong class="inputTitleLeft">Screening Threshold:</strong>
+                <form:input path="screeningThreshold" cssClass="wideLargeInput"/>
+
+                <div class="reg_errors"><!--  -->
+                    <form:errors cssClass="c-Alert c-Alert__error" path="screeningThreshold"/>
+                </div>
+            </div>
+
+        </form:form>
+    </div>
+
+    <div class="cmsDetailsBox">
+        <h2>Reports</h2>
+
+        <table class="c-Table">
+            <tr class="c-Table__row--title">
+                <th class="c-Table__cell--title">Type</th>
+                <th class="c-Table__cell--title">Reason</th>
+                <th class="c-Table__cell--title">Target</th>
+                <th class="c-Table__cell--title">No. Reports</th>
+                <th class="c-Table__cell--title">Weight</th>
+                <th class="c-Table__cell--title">First report</th>
+                <th class="c-Table__cell--title">Last report</th>
+                <th class="c-Table__cell--title">Actions</th>
+            </tr>
+            <c:forEach items="${reports}" var="report">
+                <c:set var="approveContentUrl" value="/admin/contest/manager/tab/FLAGGING/handle/${report.firstReportId}/APPROVE" />
+                <c:set var="removeContentUrl" value="/admin/contest/manager/tab/FLAGGING/handle/${report.firstReportId}/REMOVE" />
+                <tr class="c-Table__row">
+                    <td class="c-Table__cell">${report.targetType}</td>
+                    <td class="c-Table__cell">${report.reason}</td>
+                    <td class="c-Table__cell">
+                        <a href="${report.targetLink}">${report.targetName}</a>
+                    </td>
+                    <td class="c-Table__cell">${report.count}</td>
+                    <td class="c-Table__cell">${report.aggregatedWeight}</td>
+                    <td class="c-Table__cell">
+                        <fmt:formatDate value="${report.firstReportDate}" pattern="MM/dd/yyyy HH:mm"
+                                        type="date" dateStyle="short" timeZone="America/New_York"/>
+                    </td>
+                    <td class="c-Table__cell">
+                        <fmt:formatDate value="${report.lastReportDate}" pattern="MM/dd/yyyy HH:mm"
+                                        type="date" dateStyle="short" timeZone="America/New_York"/>
+                    </td>
+                    <td class="c-Table__cell">
+                        <a class="c-Button__primary small margins" href="${approveContentUrl}">
+                            Approve
+                        </a>
+                        <br />
+                        <a class="c-Button__primary small margins" href="${removeContentUrl}">
+                            Remove
+                        </a>
+                    </td>
+                </tr>
+            </c:forEach>
+        </table>
+    </div>
+
+    <script type="text/javascript">
+        <![CDATA[
+
+        jQuery('document').ready(function () {
+            bindSelectChange();
+        });
+
+        function bindSelectChange() {
+
+            var dropDownElement = document.getElementById("changeReportTargetSelect");
+
+            dropDownElement.addEventListener("change", function (ev) {
+                var val = ev.target.value;
+                window.location = "${changeElementURL}" + val;
+            })
+        }
+
+        function saveExistingReportTarget() {
+            document.getElementById('createNewFlag').value = false;
+
+            document.getElementById('editForm').submit();
+        }
+
+        function saveAsNewReportTarget() {
+            document.getElementById('createNewFlag').value = true;
+
+            document.getElementById('editForm').submit();
+        }
+
+        function submitCreateReportTargetForm() {
+            document.getElementById('createReportTargetForm').submit();
+        }
+
+        function submitDeleteReportTargetForm() {
+            document.getElementById('deleteReportTargetForm').submit();
+        }
+
+        ]]>
+    </script>
+</xcolab:layout>
+</jsp:root>

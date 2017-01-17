@@ -4,6 +4,12 @@ import javax.servlet.http.HttpServletRequest;
 
 public class AlertMessage {
 
+    public static final AlertMessage CHANGES_SAVED = AlertMessage.success("Changes saved");
+    public static final AlertMessage CREATED = AlertMessage.success("Element created");
+    public static final AlertMessage DELETED = AlertMessage.success("Element deleted");
+
+    public static final AlertMessage ERROR = AlertMessage.danger("An error occurred");
+
     private static final FlashMessageStore MESSAGE_STORE = new FlashMessageStore();
 
     private final String message;

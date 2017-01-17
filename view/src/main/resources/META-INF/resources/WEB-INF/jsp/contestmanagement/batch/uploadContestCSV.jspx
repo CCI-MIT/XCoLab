@@ -1,0 +1,413 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
+
+    <!--<jsp:directive.include file="../init.jspx" />-->
+
+    <jsp:directive.include file="../init.jspx" />
+
+
+    <c:set var="createBatchContestsURL" value="/admin/contest/manager/batchCreateContest" />
+
+    <c:set var="validateOntologyTermsURL" value="/admin/contest/api/validateOntologyTerm"/>
+
+    <script>
+        var validateOntologyTermsURL = '${validateOntologyTermsURL}';
+        $('#contestImageInput').css
+    </script>
+    <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js"><!-- --></script>
+    <div class="cmsDetailsBox">
+        <collab:imageUpload uploadImageDivId="contestImage"/>
+
+        <p>*Be sure to click <strong>Create all contests above</strong> before exiting this page or your content may be lost.</p>
+        <collab:imageUpload uploadImageDivId="logoImage" />
+
+        <h2>Contest data</h2>
+
+        <form:form action="${createBatchContestsURL }" commandName="contestBatchBean" cssClass="addpropform"
+                   id="batchForm" method="post">
+            <div class="reg_errors"><!--  -->
+                <form:errors cssClass="alert alert-error" path="*"/>
+            </div>
+
+
+            <div class="addpropbox">
+                <label>
+                    <strong>Description</strong>
+                    <a href="javascript:;" class="helpTrigger"><img
+                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                </label>
+
+                <div class="addprophelp">A short paragraph that states the specific problem the contest seeks to address
+                    and why it is important. The description is essentially a summary of the resources page (see next
+                    tab) and typically starts by briefly outlining the opportunity and/or challenge the contest seeks to
+                    tackle and concludes by stating the contest's focus.
+                </div>
+                <div class="clearfix"><!-- --></div>
+                <div class="addpropInputContainer" style="height: 248px;">
+                    <form:textarea path="contestDescription" id="contestDescription"
+                                   cssClass="ckeditor_placeholder contestDescription"/>
+
+                    <div class="reg_errors"><!--  -->
+                        <form:errors cssClass="alert alert-error" path="contestDescription"/>
+                    </div>
+                    <div class="clearfix"><!-- --></div>
+                    <div class="inputLimitContainer">
+                        <span class="limit_characterCount"><!--  --></span>/&#160;<span
+                            class="limit_charactersMax">1500</span> characters
+                    </div>
+                </div>
+            </div>
+
+            <div class="addpropbox blue">
+                <label>
+                    <strong>Contest image</strong>
+                </label>
+
+                <div class="addprophelp">The image symbolizes the contest challenge. Requirements: 300x300 pixels or
+                    larger (if the image is not square, it will appear warped); format in .PNG, JPEG or .JPG; no closed
+                    copyrights attached to the image.
+                </div>
+
+                <div class="upload contestImageUpload">
+
+                    <div class="uploadbox" id="contestImage">
+                        <c:choose>
+                            <c:when test='${contestWrapper.contestLogoId > 0}'>
+                                <c:set var="contestImageUrl"
+                                       value="/image/contest?img_id=${contestWrapper.contestLogoId}"/>
+                            </c:when>
+                            <c:otherwise>
+                                <c:set var="contestImageUrl" value="/climatecolab-theme/images/proposal_default.png"/>
+                            </c:otherwise>
+                        </c:choose>
+                        <img src="${contestImageUrl }" width="52" height="52" alt="${contestWrapper.contestName} image"
+                             id="contestImageImg"/>
+                        <form:input path="contestLogoId" cssStyle="display: none;" id="contestImageId"/>
+
+                        <div class="clearfix"><!-- --></div>
+                    </div>
+
+                    <div id="contestImageUploadWidget" class="uploadWidget"><!--  --></div>
+                    <div class="clear"><!--  --></div>
+                </div>
+            </div>
+            <div class="addpropbox">
+                <label>
+                    <strong>Organization/company logo</strong>
+                </label>
+
+                <div class="addprophelp">If available, it is preferred to use a version of the logo that is horizontal
+                    and has a transparent background.
+                </div>
+
+                <div class="upload logoImageUpload">
+                    <div class="uploadbox" id="logoImage">
+                        <c:choose>
+                            <c:when test='${contestWrapper.sponsorLogoId > 0}'>
+                                <c:set var="logoImageUrl"
+                                       value="/image/proposal?img_id=${contestWrapper.sponsorLogoId}"/>
+                            </c:when>
+                            <c:otherwise>
+                                <c:set var="logoImageUrl" value="/climatecolab-theme/images/proposal_default.png"/>
+                            </c:otherwise>
+                        </c:choose>
+                        <img src="${logoImageUrl }" width="52" height="52" alt="${contestWrapper.contestName} image"
+                             id="logoImageImg"/>
+                        <form:input path="sponsorLogoId" cssStyle="display: none;" id="logoImageId"/>
+                    </div>
+
+                    <div id="logoImageUploadWidget" class="uploadWidget optional"><!--  --></div>
+                    <div class="clear"><!--  --></div>
+                </div>
+            </div>
+            <div class="addpropbox blue">
+                <label>
+                    <strong>Proposal template</strong>
+                    <a href="javascript:;" class="helpTrigger"><img
+                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                </label>
+
+                <div class="addprophelp">Select the proposal template associated with your contest. Templates hold the
+                    set of questions members will be asked to answer in completing a proposal. If you would like any
+                    changes to your template or need help selecting the most appropriate template, please submit a
+                    comment below for the Climate CoLab team.
+                </div>
+                <div class="clearfix"><!-- --></div>
+                <div class="addpropInputContainer">
+                    <form:select path="planTemplateId">
+                        <form:options items="${proposalTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
+                    </form:select>
+
+                    <div class="reg_errors"><!--  -->
+                        <form:errors cssClass="alert alert-error" path="planTemplateId"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="addpropbox">
+                <label>
+                    <strong>Schedule template</strong>
+                    <a href="javascript:;" class="helpTrigger"><img
+                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                </label>
+
+                <div class="addprophelp">Select the schedule associated with your contest. If you would like any changes
+                    to your schedule, please submit a comment below for the Climate CoLab team.
+                </div>
+                <div class="clearfix"><!-- --></div>
+                <div class="addpropInputContainer">
+                    <form:select path="scheduleTemplateId">
+                        <form:option value="0" label="None"/>
+
+                        <form:options items="${scheduleTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
+                    </form:select>
+
+                    <div class="reg_errors">
+                        <form:errors cssClass="alert alert-error" path="scheduleTemplateId"/>
+                    </div>
+                </div>
+            </div>
+            <div class="addpropbox blue">
+                <label>
+                    <strong>Contest level</strong>
+                    <a href="javascript:;" class="helpTrigger"><img
+                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                </label>
+
+                <div class="addprophelp">Select the level associated with your contest. If you have questions on which
+                    level to select, please submit a comment below for the Climate CoLab team.
+                </div>
+                <div class="clearfix"><!-- --></div>
+                <div class="addpropInputContainer">
+                    <form:select path="contestTier">
+                        <form:options items="${contestLevelSelectionItems}" itemValue="value" itemLabel="lable"/>
+                    </form:select>
+
+                    <div class="reg_errors"><!--  -->
+                        <form:errors cssClass="alert alert-error" path="contestTier"/>
+                    </div>
+                </div>
+            </div>
+            <div class="addpropbox">
+                <label>
+                    <strong>Contest type</strong>
+                    <a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
+                </label>
+                <div class="addprophelp">Select the type of this contest. Types determine the name of the contest-entity and the proposal-entities and where they will appear. If you have a question about which type to select, please submit a comment below for the CoLab team.</div>
+                <div class="clearfix"><!-- --></div>
+                <div class="addpropInputContainer">
+                    <form:select path="contestType">
+                        <form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
+                    </form:select>
+                    <div class="reg_errors"><!--  -->
+                        <form:errors cssClass="alert alert-error" path="contestType" />
+                    </div>
+                </div>
+            </div>
+            <div class="addpropbox blue">
+                <label>
+                    <strong>Contests in CSV</strong>
+                    <a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
+                </label>
+                <div class="addprophelp">Select the file with the batch contests to be created. The file should be in the CSV (comma separated values) format.<br />  The fields should be in the following format: <br />
+                    contest_shortname ,contest_question ,ontology_id_term1 ,ontology_id_term2 ,ontology_id_term3
+                </div>
+                <div class="clearfix"><!-- --></div>
+                <div class="addpropInputContainer">
+                    <input type="file" id="fileCSV" name="file" />
+                    <div class="reg_errors"><!--  -->
+                        <form:errors cssClass="alert alert-error" path="contestType" />
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    <![CDATA[
+                    var fieldCounter =0;
+                    var validCSV = false;
+                    var fieldSizes = {
+                        "contestShortName": 60,
+                        "contestQuestion": 140,
+                        "ontologyTerms" : 60
+                    };
+
+                    $(function() {
+                        $("#fileCSV").change(function(evt){
+                            $("#cvsContests").empty();
+                            var f = evt.target.files[0];
+                            Papa.parse(f, {
+                                complete: function(results) {
+                                    console.log(results);
+                                    $("#cvsContainer").show();
+                                    fieldCounter = 0;
+                                    validCSV = true;
+                                },
+                                error: function(){
+                                    alert("Invalid file, please follow the structure in the field`s description.");
+                                    validCSV = false;
+                                },
+                                step: function(row) {
+                                    //console.log("Row:", row.data);
+                                    addTableRow(row.data[0]);
+                                }
+                            });
+                        });
+                        $("#createAllContestsAbove").click(function (){
+                            if(!validCSV) {
+                                alert("Please select a valid CSV file! Follow the structure described in the field Contests in CSV!")
+                                $("#fileCSV").focus();
+                                return;
+                            }
+                            if($("#scheduleTemplateId").val()==0){
+                                alert("Please select a Schedule Template")
+                                $("#scheduleTemplateId").focus();
+                                return;
+                            }
+                            if($("#contestTier").val()==0){
+                                alert("Please select a Contest Tier")
+                                $("#contestTier").focus();
+                                return;
+                            }
+                            if($("#contestTier").val()==0){
+                                alert("Please select a Contest Tier")
+                                $("#contestTier").focus();
+                                return;
+                            }
+                            if(validCSVFields()) {
+                                $("#batchForm").submit();
+                            }
+                        });
+
+                    });
+                    function validateField(fieldSelector,errorMessage){
+                        var arrayOfFields = $(fieldSelector);
+                        var field = null;
+                        for (var i = 0; i < arrayOfFields.length; i++) {
+                            field = arrayOfFields[i];
+                            if ($(field).val() == 0) {
+                                $(field).focus();
+                                alert(errorMessage);
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                    function validCSVFields() {
+                        if(!validateField(".contestShortName","Please input a value for the Contest Short Name!")) return false;
+                        if(!validateField(".contestQuestion","Please input a value for the Contest Question!")) return false;
+
+                        return true;
+                    }
+                    function addTableRow(data){
+                        if(data.length >= 3) {
+                            var tableRow = $('<tr>');
+
+                            tableRow.append(addTableCellInput(data[0],"contestShortName"));
+                            tableRow.append(addTableCellInput(data[1],"contestQuestion"));
+                            var ontField = "";
+
+                            if(data.length > 2) {
+                                for (var i = 2; i < data.length; i++) {
+                                    ontField += data[i] +((i+1 == data.length)?(""):(","));
+                                }
+                                tableRow.append(addTableCellOntology(ontField, "ontologyTerms"));
+                            }
+                            $("#cvsContests").append(tableRow);
+                            fieldCounter++;
+                        }
+                    }
+                    function addTableCellInput(data, fieldName){
+                        var cell = $('<td>');
+                        var input = $('<input>');
+                        input.attr("type","text");
+                        input.attr("name","contestCSVs["+fieldCounter+"]."+fieldName);
+                        input.attr("maxcharacters",fieldSizes[fieldName]);
+                        input.attr("value",trimFieldToSize(data,fieldSizes[fieldName]));
+                        input.attr("class",fieldName );
+
+
+                        cell.append(input);
+                        return cell;
+
+                    }
+                    function addTableCellOntology(data, fieldName){
+                        var cell = $('<td>');
+                        cell.attr("id",fieldCounter+"_"+fieldName);
+                        validateOntologyTerms(data,fieldCounter+"_"+fieldName);
+                        return cell;
+                    }
+                    function addOntologyDataAfterValidation(fieldID, validOntTerms){
+
+                        var cell = $('#'+fieldID);
+                        var fieldName = fieldID.split("_")[1];
+                        var fieldCounter = fieldID.split("_")[0];
+
+                        var input = $('<input>');
+                        input.attr("type","hidden");
+                        input.attr("name","contestCSVs["+fieldCounter+"]."+fieldName);
+
+                        var dataString = "";
+                        if(validOntTerms.length > 0 ){
+                            for(var i = 0 ; i < validOntTerms.length ; i++){
+                                dataString = dataString + validOntTerms[i].termId +((i + 1 == validOntTerms.length)?(""):(", "));
+                                var span = $('<span>');
+                                span.attr("class","token");
+                                span.html(validOntTerms[i].name);
+                                cell.append(span);
+
+                            }
+                        }else{
+                            var span = $('<span>');
+                            span.attr("class","token");
+                            span.html("No valid ontology term");
+                            cell.append(span);
+                        }
+                        input.attr("value",dataString);
+
+                        cell.append(input);
+                    }
+                    function trimFieldToSize(fieldValue,fieldSize){
+                        if(fieldValue.length > fieldSize){
+                            return fieldValue.substring(0,fieldSize);
+                        }else {
+                            return fieldValue;
+                        }
+                    }
+
+                    function validateOntologyTerms(ontologyTerms, fieldToPut) {
+                        var url = validateOntologyTermsURL;
+                        var postJson = {};
+                        var parameters={};
+                        var fieldId = fieldToPut;
+                        parameters.ontologyTerms = ontologyTerms;
+                        $.post(url ,parameters ,function(response){
+                            var responseData = JSON.parse(response);
+                            if (responseData.success === false) {
+                                alert("Could not process request. Please contact the Administrator");
+                            } else {
+                                var validTerms = responseData.validOntologyTerms;
+                                addOntologyDataAfterValidation(fieldId, validTerms);
+                            }
+                        });
+                    }
+
+                    ]]>
+                </script>
+            </div>
+            <div class="cmsDetailsBox" style="display: none" id="cvsContainer">
+                <table>
+                    <thead>
+                        <tr><th>Contest short name</th><th>Contest question </th><th>Ontology terms</th></tr>
+                    </thead>
+                    <tbody id="cvsContests" ></tbody>
+                </table>
+            </div>
+            <div class="outerVerticalCenter"><a  class="c-Button__primary  innerVerticalCenter" href="#" id="createAllContestsAbove">Create all contests above</a></div>
+        </form:form>
+    </div>
+    <xcolab:script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js" />
+</xcolab:layout>
+</jsp:root>

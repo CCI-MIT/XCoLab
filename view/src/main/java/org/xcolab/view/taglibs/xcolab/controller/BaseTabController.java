@@ -1,6 +1,5 @@
 package org.xcolab.view.taglibs.xcolab.controller;
 
-import org.apache.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,7 +15,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 @SessionAttributes("tabContext")
 public abstract class BaseTabController extends BaseController {
 
@@ -29,7 +27,7 @@ public abstract class BaseTabController extends BaseController {
     }
 
     @ModelAttribute("tabs")
-    public abstract List<TabWrapper> populateTabs(Model model, HttpRequest request);
+    public abstract List<TabWrapper> populateTabs(Model model, HttpServletRequest request);
 
     @ModelAttribute("currentTabWrapped")
     public abstract TabWrapper populateCurrentTabWrapped(HttpServletRequest request);

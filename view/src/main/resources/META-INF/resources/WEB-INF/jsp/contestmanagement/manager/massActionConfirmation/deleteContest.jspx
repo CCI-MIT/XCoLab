@@ -1,0 +1,112 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
+    <!--@elvariable id="massActionConfirmationWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.MassActionConfirmationWrapper"-->
+
+    <jsp:directive.include file="../../init.jspx"/>
+
+    <c:set var="confirmDeleteContestURL" value="/admin/contest/manager/confirmMassAction" />
+
+    <div class="proposal-head">
+        <div class="inner">
+            <div class="c-Headline" style="padding: 20px;">
+                <div class="proposal-title"><h1>Mass Action Confirmation</h1>
+                    <span class="floatLeft clearLeft">
+                    <h3>
+                    The following contest(s) have associated contest phases, which will preserve<br/>
+                    Please confirm the contest(s) that you want to delete!
+                    </h3>
+                </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="content">
+
+        <form:form action="${confirmDeleteContestURL }" modelAttribute="massActionConfirmationWrapper"
+                   id="editForm" method="post">
+            <div class="cmsDetailsBox">
+                <div class="outerVerticalCenter">
+                    <a class="c-Button__primary innerVerticalCenter" href="#" id="submitButton">DELETE contest(s)</a>
+                    <a class="c-Button__secondary innerVerticalCenter" href="/admin/contest/manager">DISCARD &amp; go back to overview</a>
+                </div>
+            </div>
+            <div class="cmsDetailsBox">
+                <table class="contestOverview">
+                    <col span="1" class="extraSmallColumn"/>
+                    <col span="1" class="wideColumn"/>
+                    <col span="1" class="mediumColumn"/>
+                    <col span="1" class="smallColumn"/>
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox" id="selectAllCheckbox"/></th>
+                        <th>Contest title</th>
+                        <th>Contest phases</th>
+                        <th># of Proposals</th>
+                    </tr>
+                    </thead>
+                    <tbody id="contestOverviewBody">
+                    <form:hidden path="massActionId"/>
+                    <form:hidden path="itemCount"/>
+                    <c:forEach var="contestWrapper" items="${massActionConfirmationWrapper.contestWrappers}"
+                               varStatus="x">
+                        <tr id="${contestWrapper.contestPK}">
+                            <form:hidden path="contestIds[${x.index}]"
+                                         data-form-name="contestPK"/>
+                            <td>
+                                <form:checkbox path="selectedContest[${x.index}]" cssClass="checkbox"/>
+                            </td>
+                            <td>
+                                <collab:contestLink contest="${contestWrapper}" />
+                            </td>
+                            <td>
+                                <c:forEach var="contestPhaseWrapper" items="${contestWrapper.phases}" varStatus="y">
+                                        ${contestPhaseWrapper.name}<br/>
+                                </c:forEach>
+                            </td>
+                            <td>${contestWrapper.proposalsCount} </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </form:form>
+    </div>
+
+    <script type="text/javascript">
+        <![CDATA[
+
+        jQuery('document').ready(function () {
+            bindSelectAllClick();
+            bindFormSubmits();
+        });
+
+        function bindSelectAllClick() {
+            var selectAllCheckboxElement = document.getElementById("selectAllCheckbox");
+            selectAllCheckboxElement.addEventListener("change", function (ev) {
+                var selectAllChecked = selectAllCheckboxElement.checked;
+                var contestsTableBody = document.getElementById('contestOverviewBody');
+                [].forEach.call(contestsTableBody.getElementsByClassName("checkbox"), function (element) {
+                    var parentRow = getClosest(element, "tr");
+                    element.checked = !!selectAllChecked;
+                });
+            });
+        }
+
+        function bindFormSubmits() {
+            var editFormElement = document.getElementById('editForm');
+            var submitButtonElement = document.getElementById("submitButton");
+            submitButtonElement.addEventListener("click", function () {
+                editFormElement.submit();
+            })
+        }
+
+        ]]>
+    </script>
+</xcolab:layout>
+</jsp:root>
