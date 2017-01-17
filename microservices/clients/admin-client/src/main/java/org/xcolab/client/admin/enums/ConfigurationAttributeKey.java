@@ -1,6 +1,7 @@
 package org.xcolab.client.admin.enums;
 
 import org.xcolab.util.attributes.AttributeGetter;
+import org.xcolab.util.enums.theme.ColabTheme;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +27,16 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> BLOG_URL =
             ConfigurationAttributes.newStringAttribute("BLOG_URL")
                     .withCache().build();
+    public static final AttributeGetter<ColabTheme> ACTIVE_THEME =
+            ConfigurationAttributes.newEnumAttribute("ACTIVE_THEME", ColabTheme.class)
+                    .defaultValue(ColabTheme.CLIMATE_COLAB)
+                    .build();
+    public static final AttributeGetter<Long> WIKI_CONTENT_FOLDER_ID =
+            ConfigurationAttributes.newLongAttribute("WIKI_CONTENT_FOLDER_ID")
+                    .defaultValue(3L)
+                    .withCache()
+                    .build();
+
     public static final AttributeGetter<Long> DEFAULT_CONTEST_TYPE_ID =
             ConfigurationAttributes.newLongAttribute("DEFAULT_CONTEST_TYPE_ID")
                     .withCache().build();
@@ -194,4 +205,29 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<Boolean> COLAB_USES_CARDS =
             ConfigurationAttributes.newBooleanAttribute("COLAB_USES_CARDS")
                     .defaultValue(true).build();
+
+    public static final AttributeGetter<String> PORTLET_CONTACT_FORM_PREFERENCES =
+            ConfigurationAttributes.newStringAttribute("PORTLET_CONTACT_FORM_PREFERENCES")
+                    .build();
+
+    public static final AttributeGetter<String> PORTLET_CONTESTS_PREFERENCES =
+            ConfigurationAttributes.newStringAttribute("PORTLET_CONTESTS_PREFERENCES")
+                    .build();
+
+    public static final AttributeGetter<String> PORTLET_FEED_PREFERENCES =
+            ConfigurationAttributes.newStringAttribute("PORTLET_FEED_PREFERENCES")
+                    .build();
+
+    public static final AttributeGetter<String> PORTLET_RANDOM_PROPOSALS_PREFERENCES =
+            ConfigurationAttributes.newStringAttribute("PORTLET_RANDOM_PROPOSALS_PREFERENCES")
+                    .build();
+
+    public static final AttributeGetter<String> PORTLET_STAFF_MEMBERS_PREFERENCES =
+            ConfigurationAttributes.newStringAttribute("PORTLET_STAFF_MEMBERS_PREFERENCES")
+                    .build();
+
+    public static final AttributeGetter<String> PORTLET_PROPOSALS_PREFERENCES =
+            ConfigurationAttributes.newStringAttribute("PORTLET_PROPOSALS_PREFERENCES")
+                    .build();
+
 }

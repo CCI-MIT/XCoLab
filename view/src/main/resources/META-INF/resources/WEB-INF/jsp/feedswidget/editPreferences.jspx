@@ -1,0 +1,71 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:form="http://www.springframework.org/tags/form"
+		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+		  version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+	<xcolab:layout>
+		<h1>Edit</h1>
+
+		<form:form action="/feedswidget/savePreferences" commandName="feedsPreferences">
+			<input type="hidden" name="action" value="savePreferences" />
+			<table>
+				<tr>
+					<td>Portlet title:</td>
+					<td>
+						<form:input path="portletTitle" />
+					</td>
+				</tr>
+				<tr>
+					<td>feed type:</td>
+					<td>
+						<form:select path="feedType" items="${feedTypes }" />
+						<select>
+							<option value="">--- choose</option>
+							<option value="ACTIVITIES">ACTIVITIES</option>
+							<option value="RECENTLY_ACTIVE">RECENTLY_ACTIVE</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>feed size:</td>
+					<td>
+						<form:input path="feedSize" />
+					</td>
+				</tr>
+				<tr>
+					<td>feed title:</td>
+					<td>
+						<form:input path="feedTitle" />
+					</td>
+				</tr>
+				<tr>
+					<td>feed display style:</td>
+					<td>
+						<form:select path="feedStyle" items="${feedDisplayStyles }" />
+					</td>
+				</tr>
+				<tr>
+					<td>feed max length:</td>
+					<td>
+						<form:input path="feedMaxLength" />
+					</td>
+				</tr>
+				<tr>
+					<td>remove admin:</td>
+					<td>
+						<form:checkbox path="removeAdmin"  />
+					</td>
+				</tr>
+				<tr>
+					<td>show see more link:</td>
+					<td>
+						<form:checkbox path="seeMoreLinkShown"  />
+					</td>
+				</tr>
+			</table>
+			<a href="/" >Return to home </a>
+			<br/>
+			<input type="submit" value="Save" />
+		</form:form>
+	</xcolab:layout>
+	</jsp:root>

@@ -1,0 +1,340 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
+
+    <!--@elvariable id="generateScreenName" type="java.lang.Boolean"-->
+    <!--@elvariable id="colabName" type="java.lang.String"-->
+    <!--@elvariable id="colabShortName" type="java.lang.String"-->
+
+    <!--@elvariable id="createUserBean" type="org.xcolab.portlets.loginregister.CreateUserBean"-->
+
+    <script src='https://www.google.com/recaptcha/api.js'><!-- --></script>
+
+    <div class="popupreg_form">
+
+        <div class="popupreg_head">
+            <h1>Join the ${colabName}</h1>
+        </div>
+
+        <div class="sso-register">
+            <div style="float: right">
+                <h1>Or sign in with:</h1><br/>
+                <a href="/sso/facebook/register" class="sketchy-icon-black facebook-sketchy" style="margin:0 30px 0 0;"><span>Facebook</span></a>
+                <a href="/sso/google/register" class="sketchy-icon-black google-sketchy" style="margin:0 30px 0 0;"><span>Google</span></a>
+
+                <a href="#" class="sketchy-icon-black ${partnerColabClassName}"  onclick="showSharedColabLogin()"><span>${partnerColabName}</span></a>
+
+            </div>
+        </div>
+
+        <div class="is-required">
+            <span class="required-field"><!-- --></span> is a required field.
+        </div>
+
+        <c:if test="${hasLoginInfoText}">
+            <div class="c-Alert" style="font-size: 15px">
+                ${loginInfoText}
+            </div>
+        </c:if>
+
+        <c:if test="${ error != null and isRegistering }">
+            <div class="c-Alert__error__message">${error}</div>
+        </c:if>
+
+        <form style="margin-top: 20px;" action="/loginregister-portlet/fileUploadServlet" method="post"
+              enctype="multipart/form-data" target="_fileUploadFrame"
+              id="fileUploadForm">
+            <input type="file" name="file" id="portraitUploadInput" />
+        </form>
+        <form:form action="/register" method="post" commandName="createUserBean" id="registrationForm">
+            <input type="hidden" name="action" value="add" />
+            <div class="reg_errors"><!--  --></div>
+            <form:errors cssClass="c-Alert c-Alert__error" />
+            <table class="reg">
+                <tr style="${ generateScreenName ? 'display: none;' : ''}">
+                    <th nowrap="nowrap" class="required-field">Screen name </th>
+                    <td><form:input cssClass="popupreg_input" path="screenName" /><br />
+                        <div class="reg_errors"><!--  -->
+                            <form:errors cssClass="c-Alert c-Alert__error" path="screenName" />
+                        </div></td>
+                </tr>
+                <tr>
+                    <th nowrap="nowrap" class="required-field">Email </th>
+                    <td><form:input cssClass="popupreg_input" path="email" />
+                        <div class="reg_errors"><!--  -->
+                            <form:errors cssClass="c-Alert c-Alert__error" path="email" />
+                        </div>
+                    </td>
+                    <th class="second" rowspan="4">Photo</th>
+                    <td rowspan="4">
+                        <div style="float: right">
+                            <c:choose>
+                                <c:when test="${ createUserBean.imageId != null }">
+                                    <img src="/image/user_male_portrait?img_id=${createUserBean.imageId }" id="userPortrait"
+                                         width="150" height="150" />
+                                </c:when>
+                                <c:otherwise>
+                                    <img src="/image/user_male_portrait?img_id=" id="userPortrait"
+                                         width="150" height="150" />
+                                </c:otherwise>
+                            </c:choose>
+                            <div class="clearfix">
+                                <!--  -->
+                            </div>
+                            <div id="uploadImageContainer"><!--  --></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th nowrap="nowrap" class="required-field">Retype email </th>
+                    <td><form:input cssClass="popupreg_input" path="retypeEmail" />
+                        <div class="reg_errors"><!--  -->
+                            <form:errors cssClass="c-Alert c-Alert__error" path="retypeEmail" />
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th nowrap="nowrap" class="required-field">First name </th>
+                    <td><form:input cssClass="popupreg_input" path="firstName" onchange="generateScreenName()"/>
+                        <div class="reg_errors"><!--  -->
+                            <form:errors cssClass="c-Alert c-Alert__error" path="firstName" />
+                        </div></td>
+                </tr>
+
+                <tr>
+                    <th nowrap="nowrap" class="required-field">Last name </th>
+                    <td><form:input cssClass="popupreg_input" path="lastName" onchange="generateScreenName()"/>
+                        <div class="reg_errors"><!--  -->
+                            <form:errors cssClass="c-Alert c-Alert__error" path="lastName" />
+                        </div></td>
+                </tr>
+
+                <tr>
+                    <th nowrap="nowrap" class="required-field">Password </th>
+                    <td><form:password cssClass="popupreg_input" path="password" />
+                        <div class="reg_errors"><!--  -->
+                            <form:errors cssClass="c-Alert c-Alert__error" path="password" />
+                        </div></td>
+                    <td colspan="2" class="p-LoginRegister__signup__infofield"><b>Note:</b> Passwords must be between 8 and 24 characters long.</td>
+                </tr>
+
+
+                <tr>
+                    <th nowrap="nowrap" class="required-field">Retype password </th>
+                    <td><form:password cssClass="popupreg_input"
+                                       path="retypePassword" />
+                        <div class="reg_errors"><!--  -->
+                            <form:errors cssClass="c-Alert c-Alert__error" path="retypePassword" />
+                        </div></td>
+
+                    <th class="second required-field">
+                        Country
+                    </th>
+                    <td>
+                        <jsp:include page="./countrySelect.jspx"/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Short bio</th>
+                    <td colspan="3"><form:textarea
+                            cssClass="ckeditor_placeholder shortBioContent" path="shortBio" />
+                        <div class="inputLimitContainer" style="margin-top: 10px; float:right; ">
+                            <span class="limit_characterCount"><!--  --></span>/&#160;
+                            <span class="limit_charactersMax">2000</span> characters
+                        </div>
+                        <div class="reg_errors"><!--  -->
+                            <form:errors cssClass="c-Alert c-Alert__error" path="shortBio" />
+                        </div>
+                    </td>
+                </tr>
+
+                <c:if test="${ createUserBean.captchaNeeded }">
+                    <tr>
+                        <th nowrap="nowrap" class="required-field">Click on the box </th>
+                        <td colspan="3">
+                            <div class="g-recaptcha" data-sitekey="${recaptchaDataSiteKey}"><!-- --></div>
+                            <div class="reg_errors"><!--  -->
+                                <form:errors cssClass="c-Alert c-Alert__error" path="captchaText" />
+                            </div>
+                        </td>
+                    </tr>
+                </c:if>
+                <tr>
+                    <th nowrap="nowrap">Terms of use</th>
+                    <td class="popupreg_terms-right" colspan="3">By registeringfor this site, you agree to abide<br />
+                        by the<a href="/web/guest/resources/-/wiki/Main/Terms+of+use">Terms of Use</a> and
+                        <a href="/web/guest/resources/-/wiki/Main/Community%20philosophy%20and%20policies">Community Philosophy and Policy</a>.
+                        <p>We require a valid email address in order to count your vote.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th><!-- --></th>
+                    <td colspan="3">
+                        <a class="c-Button__primary" href="javascript:;" onclick="try {pageTracker._trackPageview('/user/registerSubmit')} catch(err) {};updateTextarea();jQuery('#registrationForm').submit();">CREATE
+                            account</a>
+                    </td>
+                </tr>
+            </table>
+            <div class="clearfix">
+                <!--  -->
+            </div>
+
+            <form:hidden id="userRegistrationImageId" path="imageId" />
+        </form:form>
+
+        <xcolab:loadCkEditor/>
+        <script>
+            function updateTextarea() {
+                for ( var instance in CKEDITOR.instances) {
+                    CKEDITOR.instances[instance].updateElement();
+                }
+            }
+            updateTextarea();
+        </script>
+
+
+        <iframe name="_fileUploadFrame" id="fileUploadFrame" class="hidden"
+                style="display: none;">
+            <!-- comment -->
+        </iframe>
+
+        <script type="text/javascript">
+
+            jQuery("#portraitUploadInput").change(function() {
+                jQuery("#fileUploadForm").submit();
+                jQuery("#userPortrait").block();
+
+            });
+            jQuery("#fileUploadFrame").load(
+                function() {
+                    try {
+                        var response = eval("("
+                            + jQuery(this).contents().text() + ")");
+
+                        jQuery("#userPortrait").attr("src",
+                            "/image/contest?img_id=" + response.imageId);
+                        jQuery("#userPortrait").unblock();
+                        jQuery("#userRegistrationImageId")
+                            .val(response.imageId);
+                    }
+                    catch (e) {
+                        // ignore
+                    }
+
+                });
+
+            function updateUploadBtnOffset() {
+                var container = jQuery("#uploadImageContainer");
+                var containerOffset = container.offset();
+
+
+                jQuery("#portraitUploadInput").offset(containerOffset);
+
+            }
+            jQuery(function() {
+                updateUploadBtnOffset();
+                $(window).resize(updateUploadBtnOffset);
+                initializeCkeditor();
+
+                for (var key in CKEDITOR.instances) {
+                    // Set initial text length
+                    var len = jQuery.trim(strip(CKEDITOR.instances[key].getData()).replace(/&amp;lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
+                    validateCharlength( $('[id="'+key+'"]'), len);
+                }
+            });
+
+            var data = $('.ckeditor-placeholder').val();
+            function updateTextarea() {
+                for (var instance in CKEDITOR.instances) {
+                    CKEDITOR.instances[instance].updateElement();
+                }
+                data = jQuery('.ckeditor-placeholder').val();
+            }
+
+            function initializeCkeditor() {
+                jQuery('ckeditor_placeholder').val(data);
+                for (var key in CKEDITOR.instances) {
+                    CKEDITOR.instances[key].destroy(true);
+                }
+
+                $('.ckeditor_placeholder').each(function (idx, val) {
+                    var textId = $(this).attr('id');
+                    var editor = CKEDITOR.replace(textId);
+                    editor.setData($(this).val());
+                });
+
+                // Editor change callback
+                for (var key in CKEDITOR.instances) {
+                    CKEDITOR.instances[key].on('saveSnapshot', function(ev) {
+                        var len = jQuery.trim(CKEDITOR.instances["shortBio"].getData().replace(/&lt;[^&gt;]*&gt;/g, "")
+                            .replace(/&amp;nbsp;/g, " ").replace(/\s+/g, " ")).length;
+                        validateCharlength( $('[id="'+key+'"]'), len);
+                    });
+                }
+            }
+
+            function strip(html) {
+                var tmp = document.createElement("DIV");
+                tmp.innerHTML = html;
+                return tmp.textContent || tmp.innerText || "";
+            }
+
+            function validateCharlength(elem, len) {
+                var charCountContainer = elem.parent().find('.inputLimitContainer');
+
+                var $characterCountElement = charCountContainer.children('.limit_characterCount');
+                var max = parseInt(charCountContainer.children('.limit_charactersMax').text());
+                if ($characterCountElement) {
+                    if (len > max) {
+                        charCountContainer.addClass('overflow');
+                    } else {
+                        charCountContainer.removeClass('overflow');
+                    }
+                    $characterCountElement.text(""+len);
+                }
+            }
+
+            //TODO: workaround since our CKEditor version doesn't support on change events:
+            setInterval(function() {
+                var len = jQuery.trim(CKEDITOR.instances["shortBio"].getData().replace(/&lt;[^&gt;]*&gt;/g, "")
+                    .replace(/&amp;nbsp;/g, " ").replace(/\s+/g, " ")).length;
+                validateCharlength($("#shortBio"), len);
+            }, 250);
+
+        </script>
+        <c:if test="${generateScreenName}">
+            <script type="text/javascript">
+                function generateScreenName() {
+                    var submitUrl = '/api/register/generateScreenName';
+                    jQuery.ajax({
+                        type: "POST",
+                        url: submitUrl,
+                        dataType: 'json',
+                        async: false,
+                        data: {
+                            firstName : jQuery('#firstName').val(),
+                            lastName: jQuery('#lastName').val()
+                        },
+                        success: function (data) {
+                            if (data.success == false) {
+                                console.log(data.error);
+                            } else {
+                                jQuery('#screenName').val(data.screenName);
+                            }
+                        }
+                    });
+                }
+            </script>
+        </c:if>
+
+
+    </div>
+</xcolab:layout>
+
+</jsp:root>

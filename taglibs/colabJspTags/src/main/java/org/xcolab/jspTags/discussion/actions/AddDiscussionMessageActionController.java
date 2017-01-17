@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.entity.utils.analytics.AnalyticsUtil;
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
@@ -27,7 +26,7 @@ import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.entity.utils.members.MemberAuthUtil;
+import org.xcolab.entity.utils.analytics.AnalyticsUtil;
 import org.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 import org.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
@@ -60,7 +59,8 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             NewMessageWrapper newMessage)
             throws IOException, DiscussionAuthorizationException {
 
-        long memberId = MemberAuthUtil.getMemberId(request);
+        long memberId = 0;//MemberAuthUtil.getMemberId(request);
+        //TODO:COMMENTED OUT TO COMPILE
 
         try {
             final CommentClient commentClient;

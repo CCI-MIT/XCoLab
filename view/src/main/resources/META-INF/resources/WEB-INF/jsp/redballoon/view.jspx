@@ -1,0 +1,30 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+	 version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+	<xcolab:layout meta1="${meta1}" meta2="${meta2}">
+		<div class="balloonContainer">
+		${balloonText.textBeforeForm }
+
+		<form:form modelAttribute="userEmailBean" action="/redballoon/sendEmail" id="sendUserEmailForm" method="post">
+
+			<div>
+				<form:checkbox path="acceptTos" />${balloonText.acceptTosText }<br />
+				<form:errors path="acceptTos" class="c-Alert c-Alert__error"/>
+			</div>
+
+			<form:input path="email" id="email" style="border: 1px solid #DDD;color: #8d8d8d;font-weight: 200;margin-bottom: 7px;font-size: 20px;width: 307px;margin: 10px 0px 10px 0px;"  cssClass="text profileInput balloonInput" required="true" placeholder="Please enter your e-Mail address" />
+			<div class="c-Button__primary">
+				<a href="#" onclick="javascript:jQuery('#sendUserEmailForm').submit();">Request your unique link</a>
+			</div><br />
+			<form:errors path="email" class="c-Alert c-Alert__error"/>
+		</form:form>
+
+		${balloonText.textAfterForm }
+
+		</div>
+	</xcolab:layout>
+</jsp:root>

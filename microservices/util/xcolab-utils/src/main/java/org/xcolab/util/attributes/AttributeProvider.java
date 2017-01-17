@@ -8,6 +8,8 @@ package org.xcolab.util.attributes;
  */
 public interface AttributeProvider<AttributeT extends Attribute> {
 
+    String name();
+
     AttributeT get();
 
     AttributeT get(long additionalId);

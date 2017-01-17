@@ -1,0 +1,37 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+    xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	version="2.0">
+
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <!--@elvariable id="proposalsModel" type="org.xcolab.portlets.randomproposals.ProposalsModel"-->
+    <c:if test="${_isAdmin}">
+        <a href="/feedback/editPreferences" class="c-Button__admin">Edit preferences</a><br/>
+    </c:if>
+	<div>
+        <h2> ${proposalsModel.preferences.title}<span>
+            <a href="${proposalsModel.preferences.allProposalsUrl}">${proposalsModel.preferences.allProposalsTitle}</a>
+        </span></h2>
+        <c:forEach items="${proposalsModel.proposals}" var="proposal">
+        	<div class=" ${not proposalsModel.compact ? 'c-ContestBox' : 'c-ContestBox--compact'} backgroundLight">
+                <c:if test="${not proposalsModel.compact}">
+                    <div class="c-ContestBox__image">
+                        <a href="${proposal.proposalUrl}">
+                            <c:if test="${proposal.image > 0}">
+                                <img src="${proposalsModel.baseImagePath}${proposal.image}" width="151" height="151" alt="${proposal.name}" />
+                            </c:if>
+                            <c:if test="${empty proposal.image or proposal.image le 0}">
+                                <img src="${themeDisplay.pathThemeImages}/proposal_default.png" width="151" height="151" alt="${proposal.name}" style="border: 1px solid #bbb;"/>
+                            </c:if>
+                        </a>
+                    </div>
+                </c:if>
+                <div class="${not proposalsModel.compact ? 'c-ContestBox__text' : 'c-ContestBox__text--compact'}">
+                    <h3 class="c-ContestBox__text__title"><collab:proposalLink proposal="${proposal}" /></h3>
+                    ${proposalsModel.compact ? proposal.author.fullName : proposal.pitch}
+                </div>
+            </div> 
+        </c:forEach>
+ 	</div>
+ 	
+</jsp:root>

@@ -1,0 +1,431 @@
+$p-About__left__li__a__fontWeight: $b-Typography__fontWeight--bold !default;
+$p-About__left__li__a__padding--left: 4px !default;
+$p-About__left__li__a__current__background: $t-Color__grey--lightest !default;
+$p-About__left__li__a__current__border--left: none !default;
+$p-About__left__li__a__current__padding--left: 4px !default;
+$p-About__left__li__ul__li__a__padding--left: 28px !default;
+$p-About__left__li__a__current__textColor: $t-Color__grey--dark !default;
+$p-About__checkout__backgroundColor: $t-Color__primary__grey--light !default;
+$p-About__contribute__background: url(/images/about/getinvolved-top_illustration.jpg) no-repeat !default;
+$p-About__ge1__background: url(/images/about/getinvolved-row-01.png) no-repeat 42px 0 !default;
+$p-About__ge2__background: url(/images/about/getinvolved-row-02.png) no-repeat 31px 20px !default;
+$p-About__ge3__background: url(/images/about/getinvolved-row-03.png) no-repeat 10px 0 !default;
+$p-About__ge4__background: url(/images/about/getinvolved-row-04.png) no-repeat 20px 15px !default;
+$p-About__getinvolved__backgroundColor: $t-Color__grey--lightest !default;
+$p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !default;
+
+/* ABOUT ------------------------------------------------------------------------------------- */
+
+/* columns  ------------- */
+.about-left {
+  float: left;
+  width: 210px;
+  margin-right: 38px;
+}
+
+.about-right {
+  float: left;
+  width: 736px;
+  font-size: 16px;
+  line-height: 21px;
+  color: black;
+  position: relative;
+}
+
+/* about menu */
+#content .about-left ul {
+  width: 210px;
+  margin: 0;
+}
+
+#content .about-left li {
+  list-style: none;
+  background: none;
+  padding: 0;
+}
+
+.about-left li a {
+  width: 206px;
+  height: 30px;
+  padding: 11px 0 0 4px;
+  font-size: 18px;
+  font-weight: $p-About__left__li__a__fontWeight;
+  color: $t-Color__primary;
+  border-bottom: 1px solid #ccc;
+  display: inline-block;
+
+  padding-left: $p-About__left__li__a__padding--left;
+}
+
+.about-left li a:hover {
+  color: $t-Color__grey--medium;
+  text-decoration: none;
+}
+
+.about-left ul li a:hover, .about-left ul li.c > a {
+  background: $p-About__left__li__a__current__background;
+  border-left: $p-About__left__li__a__current__border--left;
+  padding-left: $p-About__left__li__a__current__padding--left;
+  color: $p-About__left__li__a__current__textColor;
+  text-decoration: none;
+}
+
+.about-left li ul {
+  padding: 13px 0 16px;
+  border-bottom: 1px solid #ccc;
+}
+
+.about-left li ul li {
+  height: 29px;
+}
+
+.about-left li ul li a {
+  width: 182px;
+  height: 21px;
+  padding: 6px 0 1px $p-About__left__li__ul__li__a__padding--left;
+  font-size: 14px;
+  color: $t-Color__primary;
+  border-bottom: none;
+}
+
+.about-left li ul li a:hover, .about-left li ul li.c > a {
+  background: $t-Color__grey--lightest;
+  text-decoration: none;
+  padding-left: 28px;
+}
+
+.about-right p {
+  margin: 0 0 15px;
+}
+
+.about-right h1 {
+  font-size: 36px;
+  color: black;
+  margin: 8px 0 31px 0;
+}
+
+.about-right h2 {
+  font-size: 24px;
+  color: black;
+  margin: 0 0 17px 0;
+}
+
+.about-right h3 {
+  font-size: 18px;
+  color: black;
+}
+
+.about-right h2.ex {
+  font-size: 24px;
+  font-weight: $b-Typography__fontWeight;
+  font-style: italic;
+  margin-top: 18px;
+}
+
+.how {
+  background: url(/images/about/how-top.jpg) no-repeat right;
+  width: 420px;
+  padding: 13px 290px 0 0;
+}
+
+.deciding {
+  margin-top: 40px;
+  margin-bottom: 20px
+}
+
+.breaking {
+  background: url(/images/about/how-break-1_small.jpg) no-repeat;
+  margin-top: 19px;
+  width: 460px;
+  padding: 0 0 0 260px;
+  margin-bottom: 48px
+}
+
+.breaking2 {
+  padding: 30px 0 0 12px;
+}
+
+.apad {
+  padding: 10px 30px 0 30px;
+}
+
+.cpad {
+  padding-right: 30px;
+}
+
+.putting {
+  background: url(/images/about/how-putting.jpg) no-repeat;
+  margin: 35px 0 40px 0;
+  width: 365px;
+  height: 179px;
+  padding: 40px 0 0 310px;
+}
+
+.putting img {
+  float: left;
+  margin-right: 40px;
+}
+
+.continue {
+  text-align: center;
+}
+
+.continue a {
+  padding: 28px 24px 24px;
+  display: inline-block;
+  background: $t-Color__primary__grey--light;
+  font-size: 18px;
+  font-weight: $b-Typography__fontWeight--bold;
+  text-align: center;
+  vertical-align: middle;
+  @include border-radius(12px);
+}
+
+.continue a img {
+  vertical-align: middle;
+}
+
+.webview {
+  position: absolute;
+  top: 116px;
+  left: 254px;
+}
+
+.one {
+  width: 315px;
+  background: url(/images/about/contests-1-number.png) no-repeat;
+  position: relative;
+  z-index: 5;
+}
+
+.one h2 {
+  padding: 22px 0 0 40px;
+}
+
+.one-collab {
+  margin-top: 70px;
+  background: url(/images/about/contests-3-illustration.jpg) no-repeat left top;
+  width: 436px;
+  padding-left: 300px;
+}
+
+.one-butt {
+  background: $t-Color__primary__grey--light;
+  border: 1px solid $t-Color__primary;
+  height: 27px;
+  padding: 7px 12px 0;
+  display: inline-block;
+  margin-top: 6px;
+  @include border-radius(5px);
+}
+
+.two {
+  width: 454px;
+  background: url(/images/about/contests-4-illustration.jpg) no-repeat right top;
+  padding: 0 260px 0 0;
+  margin: 56px 0 0 0;
+}
+
+.two .txt {
+  background: url(/images/about/contests-2-number.png) no-repeat;
+  padding: 0 0 0 55px;
+}
+
+.three {
+  width: 559px;
+  background: url(/images/about/getinvolved-row-04.png) no-repeat left top;
+  padding: 0 0 0 145px;
+  margin-top: 54px;
+  margin-left: 13px
+}
+
+.three .txt {
+  background: url(/images/about/contests-3-number.png) no-repeat;
+  padding: 0 0 0 55px;
+}
+
+.four {
+  width: 419px;
+  height: 204px;
+  background: url(/images/about/contests-5-webview.jpg) no-repeat top right;
+  padding: 14px 290px 0 0;
+  margin: 58px 29px 0 0;
+}
+
+.four .txt {
+  background: url(/images/about/contests-4-number.png) no-repeat;
+  padding: 0 0 0 55px;
+}
+
+.five {
+  width: 485px;
+  background: url(/images/about/contests-6-illustration.jpg) no-repeat;
+  padding: 0 0 0 212px;
+  margin: 46px 0 35px 0;
+}
+
+.five .txt {
+  background: url(/images/about/contests-5-number.png) no-repeat;
+  padding: 0 0 0 55px;
+}
+
+.one a, .two a, .three a, .four a, .five a, .six a {
+  font-weight: $b-Typography__fontWeight--bold;
+}
+
+.contribute {
+  width: 365px;
+  height: 131px;
+  background: $p-About__contribute__background;
+  padding: 34px 0 0 320px;
+  margin-top: 55px;
+}
+
+.getinvolved-img {
+  height: 118px;
+  margin-top: 56px;
+  position: relative;
+  z-index: 5;
+}
+
+.ge1, .ge2, .ge3, .ge4 {
+  height: 118px;
+  float: left;
+}
+
+.ge1 {
+  background: $p-About__ge1__background;
+  width: 182px;
+}
+
+.ge2 {
+  background: $p-About__ge2__background;
+  width: 180px;
+}
+
+.ge3 {
+  background: $p-About__ge3__background;
+  width: 182px;
+}
+
+.ge4 {
+  background: $p-About__ge4__background;
+  width: 148px;
+}
+
+.getinvolved {
+  background: $p-About__getinvolved__backgroundColor;
+  padding: 42px 22px 2px;
+  margin-top: -40px;
+}
+
+.getinvolved:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+.getinvolved {
+  display: inline-block;
+}
+
+* html .getinvolved {
+  height: 1%;
+}
+
+.getinvolved {
+  display: block;
+}
+
+.getinvolved h4 {
+  font-size: 22px;
+  color: black;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.ge1b, .ge2b, .ge3b, .ge4b {
+  float: left;
+  font-size: 14px;
+  line-height: normal;
+}
+
+.ge1b {
+  width: 162px;
+  margin-right: 20px;
+}
+
+.ge2b {
+  width: 142px;
+  margin-right: 38px;
+}
+
+.ge3b {
+  width: 164px;
+  margin-right: 18px;
+}
+
+.ge4b {
+  width: 148px;
+}
+
+.checkout-wrap {
+  border: 1px dashed $t-Color__grey--medium;
+  width: 553px;
+  padding: 5px;
+  margin: 52px auto 0;
+}
+
+.checkout {
+  background: url(/images/pattern-6x6-white.png) $p-About__checkout__backgroundColor;
+  width: 505px;
+  padding: 24px 16px 26px 32px;
+  font-size: 17px;
+  line-height: normal;
+}
+
+.checkout p {
+  padding-right: 55px;
+  background: url(/images/about/continue-arrow.png) no-repeat right center;
+  margin: 0;
+}
+
+.checkout a {
+  font-weight: $b-Typography__fontWeight--bold;
+}
+
+.p-About__approachIllustration {
+  margin-top: 30px;
+  background: $t-Color__grey--lightest;
+  border-top: 1px solid $t-Color__grey--medium;
+  border-bottom: 1px solid $t-Color__grey--medium;
+
+  h3 {
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  p {
+    text-align: center;
+    font-weight: $p-About__approachIllustration__p__fontWeight;
+  }
+
+  img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .p-About__approachIllustration__col {
+    display: inline-block;
+    width: 230px;
+    padding-bottom: 30px;
+
+    &:first-of-type {
+      margin-left: 15px;
+    }
+  }
+
+}

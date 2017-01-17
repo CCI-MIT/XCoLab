@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+      http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1">
+
+    <description>XCollab judging tags</description>
+    <display-name>XCollab judging tags</display-name>
+    <tlib-version>1.0</tlib-version>
+    <short-name>xcollabjudging</short-name>
+    <uri>http://climatecolab.org/tags/xcollab_judging_1.0</uri>
+
+    <tag>
+        <name>judgeAssignedProposalCount</name>
+        <tag-class>org.xcolab.view.pages.proposals.judging.JudgeAssignedProposalCountTag</tag-class>
+        <body-content>JSP</body-content>
+
+        <attribute>
+            <name>userId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Long</type>
+        </attribute>
+        <attribute>
+            <name>contestPhaseId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Long</type>
+        </attribute>
+    </tag>
+    <tag>
+        <name>judgeReviewStatus</name>
+        <tag-class>org.xcolab.view.pages.proposals.judging.JudgeReviewStatusTag</tag-class>
+        <body-content>JSP</body-content>
+
+        <attribute>
+            <name>userId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Long</type>
+        </attribute>
+        <attribute>
+            <name>proposalId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Long</type>
+        </attribute>
+        <attribute>
+            <name>contestId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Long</type>
+        </attribute>
+        <attribute>
+            <name>contestPhaseId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Long</type>
+        </attribute>
+    </tag>
+</taglib>  

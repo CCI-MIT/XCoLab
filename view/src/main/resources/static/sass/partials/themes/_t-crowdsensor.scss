@@ -1,0 +1,326 @@
+@import "compass";
+
+$t-Color__black: #060606;
+$t-Color__grey--dark: #354046;
+$t-Color__grey: #ACACAC;
+$t-Color__red: #D71A11;
+$t-Color__red--dark: #960800;
+$t-Color__green: #54BD14;
+
+$t-Color__pattern__gray: #68696D;
+$t-Color__pattern__gray--light: #D7D9DA;
+$t-Color__pattern__gray--lightest: #F5F5F4;
+
+//main colors:
+$t-Color__primary: $t-Color__red; $__hex: #D71A11;
+$t-Color__secondary: $t-Color__green; $__hex: #54BD14;
+$t-Color__accent: $t-Color__green; $__hex: #54BD14; //not using accent for now
+$t-Color__auxiliary: $t-Color__green; $__hex: #54BD14; // 4th color when needed (e.g. ontology) -- not used for now
+
+//lightness variations
+$t-Color__primary--light: lighten($t-Color__primary, 15); $__hex: #f04e47;
+$t-Color__secondary--light: lighten($t-Color__secondary, 10); $__hex: #6ae71d;
+
+$t-Color__primary--dark: darken($t-Color__primary, 15); $__hex: #8e110b;
+$t-Color__secondary--dark: darken($t-Color__secondary, 10); $__hex: #3d8a0f;
+
+$t-Color__primary--darkest: darken($t-Color__primary, 20); $__hex: #5f0b07;
+$t-Color__secondary--darkest: darken($t-Color__primary, 20); $__hex: #295c0a;
+
+//desaturated (grey) variations of the primary color
+$t-Color__primary__grey: desaturate($t-Color__primary, 30); $__hex: #b43a34;
+$t-Color__primary__grey--dark: darken($t-Color__primary__grey, 10); $__hex_color: #8a2d28;
+$t-Color__primary__grey--light: lighten($t-Color__primary__grey--dark, 10); $__hex: #cd5751;
+
+//greys
+$t-Color__grey--lightest: $t-Color__pattern__gray--lightest;
+$t-Color__grey--light: #babbbd;
+$t-Color__grey--medium: #808184;
+$t-Color__grey--dark: #57585a;
+$t-Color__grey--darkest: #404143;
+
+//alert and message colors:
+$t-Color__alert: #eb008a;
+$t-Color__alert--light: #f6dfec;
+$t-Color__info__background: $t-Color__primary__grey--light;
+$t-Color__success__background: $t-Color__secondary--light;
+
+//standard text colors
+$t-Color__text--light: white;
+$t-Color__text--dark: $t-Color__grey--darkest;
+$t-Text__threshold: 175;
+
+//outline view TODO: see if we can adapt this to use our colors
+$t-Color__outline__level1: #e0dacb; // background slevel1
+$t-Color__outline__level2: #d1cbbf; // background slevel2
+$t-Color__outline__level3: #c1bcb2; // background slevel3
+$t-Color__outline__level4: #aaa69f; // background slevel4-6
+
+
+// ====
+// changes in component variables
+
+@import url(https://fonts.googleapis.com/css?family=Fira+Sans:400,500,300);
+
+$b-Typography__fontWeight--light: 300;
+$b-Typography__fontWeight--regular: 400;
+$b-Typography__fontWeight--medium: 500;
+
+$b-Typography__fontFamily: "Fira Sans", Arial, sans-serif;
+$b-Typography__fontFamily__h1: "Fira Sans", Arial, sans-serif;
+$b-Typography__capitalization__h1: uppercase;
+$b-Typography__capitalization__h2: uppercase;
+$b-Typography__fontSize__h1: 33px;
+$b-Typography__fontSize__h2: 31px;
+$b-Typography__fontSize__h3: 24px;
+$b-Typography__fontSize__h4: 17px;
+$b-Typography__fontSize__h5: 17px;
+$b-Typography__fontSize__h6: 15px;
+$b-Typography__textColor__h1: $t-Color__primary;
+$b-Typography__fontWeight__h2: $b-Typography__fontWeight--light;
+$b-Typography__fontWeight__h3: $b-Typography__fontWeight--regular;
+$b-Typography__fontWeight__h5: $b-Typography__fontWeight--light;
+$b-Typography__fontWeight--bold: $b-Typography__fontWeight--medium;
+
+$c-Header__background: white;
+$c-Header__box-shadow: 0px 6px 5px #D7D9DA;
+$c-Header__menu__li__a__width: 75px;
+$c-Header__menu__li__a__fontWeight: $b-Typography__fontWeight--regular;
+$c-Header__menu__li__a__textAlign: center;
+$c-Header__menu__li__isCurrent__boxShadow: inset 0 -8px 0px $t-Color__red;
+$c-Header__menu__right__li__a__fontWeight: $b-Typography__fontWeight--regular;
+$c-Header__menu__li__a__textColor: $t-Color__grey--medium;
+$c-Header__menu__li__hoverColor: $t-Color__red;
+$c-Header__search__submit__borderRadius: 0;
+$c-Header__search__submit__fontWeight: $b-Typography__fontWeight--light;
+$c-Header__search__pop__positionLeft: 474px;
+
+$c-Headline__days-left__span__textColor: $t-Color__red;
+$c-Headline__h2__span__textColor: $t-Color__red;
+$c-Headline__h2__span__fontWeight: $b-Typography__fontWeight--regular;
+
+$c-Footer__backgroundColor: white;
+$c-Footer__menu__li__a--hover__color: $t-Color__primary;
+$c-Footer__menu__backgroundColor: linear-gradient(top, lighten($t-Color__grey--medium, 5%), darken($t-Color__grey--medium, 5%));
+$c-Footer__menu__boxShadow: inset 0px 5px 12px lighten($t-Color__grey--dark, 10%);
+
+$c-Button__padding: 10px 15px;
+$c-Button__padding--small: 8px 12px;
+$c-Button__padding--large: 15px 25px;
+$c-Button__fontWeight: $b-Typography__fontWeight--regular;
+$c-Button__borderRadius: 25px;
+$c-Button__capitalization: uppercase;
+$c-Button__theme__textShadow: none;
+
+$c-Button__primary__borderColor: none;
+$c-Button__grey__borderColor: none;
+
+$c-TitleBar__backgroundColor: $t-Color__red;
+$c-TitleBar__borderBottom: none;
+$c-TitleBar__element--active__capitalization: uppercase;
+$c-TitleBar__separator__color: white;
+$c-TitleBar__textColor: white;
+$c-TitleBar__element--disabled__textColor: $t-Color__pattern__gray--light;
+$c-TitleBar__a__textColor: white;
+$c-TitleBar__a__textColor--hover: $t-Color__grey--light;
+$c-TitleBar__a__fontWeight: $b-Typography__fontWeight--regular;
+$c-TitleBar__contestSummary__backgroundColor: $t-Color__grey--dark;
+$c-TitleBar__capitalization: uppercase;
+
+$c-Comment__count__backgroundColor: white;
+$c-Comment__count__a__fontWeight: $b-Typography__fontWeight--regular;
+$c-Comment__count__a__margin--left: 10px;
+
+$p-About__left__li__a__fontWeight: $b-Typography__fontWeight--regular;
+$p-About__left__li__a__padding--left: 15px;
+$p-About__left__li__ul__li__a__padding--left: 33px;
+$p-About__left__li__a__current__border--left: 5px solid $t-Color__secondary ;
+$p-About__left__li__a__current__padding--left: 10px;
+$p-About__left__li__a__current__textColor: $t-Color__black;
+$p-About__checkout__backgroundColor: $t-Color__pattern__gray--light;
+$p-About__contribute__background: url(/images/about/getinvolved-top_illustration.png) no-repeat;
+$p-About__ge1__background: url(/images/about/getinvolved-row-01.png) no-repeat 50px 15px;
+$p-About__ge2__background: url(/images/about/getinvolved-row-02.png) no-repeat 45px 0px;
+$p-About__ge3__background: url(/images/about/getinvolved-row-03.png) no-repeat 40px 0px;
+$p-About__ge4__background: url(/images/about/getinvolved-row-04.png) no-repeat 45px 15px;
+$p-About__getinvolved__backgroundColor: white;
+$p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight--light;
+
+$c-ContestBox__meta__flag__capitalization: uppercase;
+$c-ContestBox__meta__flag__boxShadow: 0px 0px 5px $t-Color__grey--light;
+$c-ContestBox__meta__flag--color__border: none;
+$c-ContestBox__border: none;
+$c-ContestBox__border__bottom: 1px solid $t-Color__grey;
+$c-ContestBox__border__radius: 0;
+$c-ContestBox--hover__boxShadow: 0 0 15px $t-Color__grey--light;
+
+$p-Contests__userslist__a__fontWeight: $b-Typography__fontWeight--regular;
+$p-Contests__userslist__td--g__background: url(/images/bg-noise.png) $t-Color__pattern__gray--lightest;
+$p-Contests__usersFilter__paddingRight: 0px;
+
+$p-community__colab__th__background: $t-Color__primary;
+$p-community__colab__th__textColor: white;
+$p-community__commList__marginTop: 7px;
+$p-community__c-Message__column__width: 204px;
+$p-community__commList__h2__paddingBottom: 6px;
+$p-community__commList__h2__borderBottom: 1px solid $t-Color__grey--light;
+$p-community__commList__h2__fontWeight: $b-Typography__fontWeight--regular;
+$p-community__discHead__width: 680px;
+$p-community__infoLeft__fontStyle: normal;
+$p-community__infoLeft__capitalization: uppercase;
+$p-community__infoLeft__fontSize: 20px;
+$p-community__infoLeft__fontWeight: $b-Typography__fontWeight--light;
+$p-community__infoLeft__paddingTop: 10px;
+$p-community__infoLeft__span__fontSize: 20px;
+$p-community__infoLeft__span__textColor: $t-Color__primary;
+$p-community__infoLeft__span__paddingRight: 0px;
+$p-community__infoLeft__span__fontWeight: $b-Typography__fontWeight--regular;
+
+$p-Contests__contestDetail__backgroundColor: $t-Color__pattern__gray--lightest;
+$p-Contests__contestDetail__heading__background: url(/images/bg-noise.png) $t-Color__pattern__gray--light;
+
+$p-homepage__content__h2__fontSize: 26pt;
+$p-homepage__content__h2__textColor: $t-Color__primary;
+
+$p-homepage__learn__backgroundColor: $t-Color__primary;
+$p-homepage__learn__borderColor: none;
+$p-homepage__learn__imageUrl: none;
+$p-homepage__get__backgroundColor: $t-Color__secondary;
+$p-homepage__get__borderColor: none;
+$p-homepage__get__imageUrl: none;
+$p-homepage__join__backgroundColor: white;
+$p-homepage__join__borderColor: none;
+$p-homepage__join__imageUrl: none;
+
+$p-proposal__header__background: transparent;
+$p-proposal__header__h1__textColor: $t-Color__red;
+$p-proposal__propbox__h4__fontWeight: $b-Typography__fontWeight--regular;
+$p-proposal__propbox__titleAuthor__width: 602px;
+$p-proposal__propbox__padding: 15px 0px 30px 14px;
+$p-proposal__right__h5__topbox__backgroundColor: white;
+$p-proposal__settings__backgroundColor: white;
+$p-proposal__contest__backgroundColor: white;
+$p-proposal__votebox__top__left: 0px;
+$p-proposal__votebox__marginTop: 35px;
+$p-proposal__right__h5__topbox__padding--top: 20px;
+$p-proposal__right__h5__topbox__font-size: 14pt;
+$p-proposal__right__h5__topbox__fontWeight: $b-Typography__fontWeight--light;
+$p-proposal__right__h5__topbox__border--top: 1px solid $t-Color__grey--light;
+$c-Headline__h2__span__fontWeight: $b-Typography__fontWeight--regular;
+$p-proposal__settings__padding--bottom: 25px;
+$p-proposal__contest__padding--top--bottom: 20px;
+$p-proposal__title__addProp__fontWeight: $b-Typography__fontWeight--regular;
+$p-proposal__left__h2__textColor: $t-Color__black;
+$p-proposal__left__h2__fontWeight: $b-Typography__fontWeight--light;
+$p-proposal__thumbbox__a__fontWeight: $b-Typography__fontWeight--regular;
+$p-proposal__thumbbox__a__margin--left: 10px;
+$p-proposal__thumbbox__background--top: 0px;
+$p-proposal__propbox__judgementActions__featured__titleAuthor__width: 415px;
+$p-proposal__propbox__judgementActions__titleAuthor__width: 445px;
+
+$p-Proposal__subscribe__capitalization: uppercase;
+$p-Proposal__edit__button__backgroundColor: $t-Color__primary;
+$p-Proposal__box__offColor: $t-Color__pattern__gray--light;
+
+$p-community__left__lineHeight: default;
+
+$c-Table__shadebar__background: none;
+$c-Table__borderColor: $t-Color__pattern__gray--light;
+$c-Table__title__backgroundColor: $t-Color__primary;
+$c-Table__title__fontColor: white;
+$c-Table__row__fontWeight: $b-Typography__fontWeight--regular;
+$c-Table__cell__fontWeight--active: $b-Typography__fontWeight--medium;
+$c-Table__cell--title__borderRight: 1px solid white;
+$c-Table__row--title__borderBottom: none;
+$c-Table__cell--odd__background: url(/images/bg-noise.png) $t-Color__pattern__gray--lightest;
+$c-Table__cell--title__a__capitalization: uppercase;
+$c-Table__title__textColor--hover: $t-Color__pattern__gray--lightest;
+$c-Table__cell__count__backgroundColor: white;
+
+$p-ContestProposals__list__element--proposalname__width: 605px;
+$p-ContestProposals__list__element__border: 1px solid;
+$p-ContestProposals__list__element--comments__background__top: 10px;
+$p-ContestProposals__list__element--judgeFellow__width: 158px;
+$p-ContestProposals__list__element--judgeFellow__border--left: 1px solid;
+$p-ContestProposals__list__element--contributor__width: 146px;
+$p-ContestProposals__list__element--proposalname__judgeActions__width: 449px;
+$p-ContestProposals__header__detailButton__fontWeight: $b-Typography__fontWeight--regular;
+$p-ContestProposals__header__detailButton__borderRadius: 20px;
+$p-ContestProposals__header__detailButton__padding: 5px 15px 5px 15px;
+$p-ContestProposals__header__detailButton__border: 1px solid $t-Color__grey;
+$p-ContestProposals__header__detailButton__backgroundColor: white;
+
+$p-Members__list__element__fontWeight: $b-Typography__fontWeight--regular;
+
+$c-TableList__background--odd: url(/images/bg-noise.png) $t-Color__pattern__gray--lightest;
+
+$c-Box__shadow: none;
+$c-Box__boxColor--dark__margin--top: 0px;
+$c-Box__boxColor--light__padding--top: 15px;
+$c-Box__messaging__padding--top: 15px;
+$c-Box__background__color--dark: #354046;
+$c-Box__background__color--light: $t-Color__grey--lightest;
+$c-Box__background__color--primary: $t-Color__primary;
+$c-Box__background--dark: url(/images/bg-noise.png) $c-Box__background__color--dark;
+$c-Box__background--light: url(/images/bg-noise.png) $c-Box__background__color--light;
+$c-Box__border: none;
+$c-Box__button__backgroundColor--light: white;
+$c-Box__button__backgroundColor--dark: $t-Color__grey--darkest;
+$c-Box__button__boxColor--dark__textColor: $t-Color__primary;
+
+$b-Spacing__separatorColor: $t-Color__grey;
+
+$c-TabBar__background: url(/images/bg-noise.png) white;
+$c-TabBar__borderTop: 1px solid $t-Color__grey--medium;
+$c-TabBar__paddingTop: 35px;
+
+$c-TabBar__tab__paddingTop: 20px;
+$c-TabBar__tab__paddingBottom: 19px;
+$c-TabBar__tab__paddingSides: 25px;
+$c-TabBar__tab__background: rgba(255, 255, 255, 0);
+$c-TabBar__tab__shadow--active: inset 0 -4px 0 $t-Color__green;
+$c-TabBar__tab__fontWeight: $b-Typography__fontWeight--regular;
+$c-TabBar__tab__borderRadius: 0px;
+$c-TabBar__tab__borderTop: none;
+$c-TabBar__tab__borderRight: 1px solid $t-Color__grey--medium;
+$c-TabBar__tab__borderLeft: none;
+$c-TabBar__tab__borderLeft--first: 1px solid $t-Color__grey--medium;
+$c-TabBar__tab__borderRight--last: 1px solid $t-Color__grey--medium;
+$c-TabBar__tab__fontSize: 17px;
+$c-TabBar__tab__textColor: $t-Color__primary;
+$c-TabBar__tab__textColor--active: $t-Color__grey--darkest;
+$b-TabBar__tab__marginRight: 0;
+$c-TabBar__tab--first__margin--left: 30px;
+$c-TabBar__tab__active__border--right: 1px solid $t-Color__grey--medium;
+$c-TabBar__tab__active__border--right--left: none;
+
+$c-TabBar__tab__count__background: $t-Color__pattern__gray--light;
+
+$p-cms__uploadWidget__fontWeight: $b-Typography__fontWeight--regular;
+
+$p-userprofile__comm_rightcol-title2__height: auto ;
+$p-userprofile__comm_rightcol-title2__padding--bottom: 10px;
+
+$c-Helpbox__borderRadius: 0px;
+$c-Helpbox__borderColor: $t-Color__grey--dark;
+$c-Helpbox__header__padding: 8px 10px 4px 19px;
+$c-Helpbox__header__background: url(/images/bg-noise.png) $t-Color__grey--dark;
+$c-Helpbox__header__title__textColor: white;
+$c-Helpbox__header__title__capitalization: uppercase;
+$c-Helpbox__text__fontWeight: $b-Typography__fontWeight--light;
+$c-Helpbox__header__close__marginTop: 0px;
+
+$b-Spacing__paddingBottom: 10px;
+$c-Count__fontSize: 17px;
+$c-Count__capitalization: uppercase;
+$c-Count__number__color: $t-Color__primary;
+$c-Count__number__fontSize: 20px;
+$c-Count__number__fontWeight: $b-Typography__fontWeight--regular;
+$c-Count__number__verticalAlign: baseline;
+
+$p-Discussion__right__subscribeLinkSmall__capitalization: uppercase;
+$p-Discussion__right__borderBottom__marginTop: 8px;
+$p-Discussion__right__borderBottom__paddingBottom: 11px;
+
+$b-Spacing__inline--large__capitalization: uppercase;
+

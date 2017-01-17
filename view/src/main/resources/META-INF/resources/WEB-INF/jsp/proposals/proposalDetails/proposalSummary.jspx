@@ -1,0 +1,263 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+	xmlns:addthis="http://www.addthis.com/help/api-spec"
+	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	 version="2.0">
+
+    <!--@elvariable id="linkedProposalContestTypeProposalWrappersByContestTypeId" type="java.util.Map<java.lang.Long, org.xcolab.wrappers.ContestTypeProposalWrapper>"-->
+
+    <c:if test="${contestType.showProposalSummary}">
+        <div class="prop-right">
+            <c:if test="${proposal.proposalId > 0}">
+            <div class="c-Box boxColor--dark hasShadow hasBorder">
+                <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
+                    <div class="votebox-top clearfix">
+                        <div class="vote">
+                            <img src="${_themeImageFolder}/icon-proposal-vote.png" width="22" height="18" alt="Vote" />
+                            <span>${proposal.votesCount}</span> votes
+                            <c:if test="${proposalsPermissions.votingEnabled}">
+                                <c:set var="voteOnProposalURL" value="${proposal.proposalUrl}/voteOnProposalAction?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
+
+                                <a class="c-Button__primary" href="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
+                                    <c:set var="voteForText" value="VOTE for ${contestType.proposalName}" />
+                                    ${proposalsDisplayPermissions.canSeeVoteButton ? voteForText  : 'RETRACT vote'}
+                                </a>
+                                <p style="margin:15px 0 15px 0;font-size:17px">You receive one vote per ${contestType.contestName}</p>
+                            </c:if>
+                        </div>
+                        <div class="question">
+                            <a href="/web/guest/resources/-/wiki/Main/contest+rules#Voting" target="_blank">
+                                <img src="${_themeImageFolder}/icon-proposal-question.png" width="23" height="23" alt="Question?" />
+                            </a>
+                        </div>
+                    </div>
+                </c:if>
+
+                <c:set var="supportProposalActionURL" value="${proposal.proposalUrl}/supportProposalAction?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
+
+                <c:choose>
+                    <c:when test="${contest.isSharedContest}">
+                        <script>
+                            function handleOnClickAtSupportBtn(event){
+                                return showSharedContestAutoRegPopUp(function(ref){
+                                    window.location = "${supportProposalActionURL}";
+                                },${contest.contestPK });
+                            }
+                        </script>
+                    </c:when>
+                    <c:otherwise>
+                        <script>
+                            function handleOnClickAtSupportBtn(){
+                                return deferUntilLogin();
+                            }
+                        </script>
+                    </c:otherwise>
+                </c:choose>
+
+                <div class="votebox-bottom">
+                <span>
+                    <img src="${_themeImageFolder}/icon-proposal-thumb.png" width="20" height="22" alt="Thumbs up" />
+                    ${proposal.supportersCount}
+                </span> supporters
+                    <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
+
+                        <a class="c-Box__button boxColor--dark" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!handleOnClickAtSupportBtn(this)) return false;">
+                            <c:set var="supportText" value="Support ${contestType.proposalName}" />
+                            ${proposalsDisplayPermissions.canSeeSupportButton ? supportText : 'Retract support' }
+                        </a>
+                    </c:if>
+                </div>
+            </div> <!-- /c-Box -->
+            <div class="c-Box boxColor--light clearfix">
+                <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="float: left;">
+                    <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
+                    <a class="addthis_button_twitter" id="addThisButton2" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
+                    <a class="addthis_button_email" id="addThisButton3" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
+                    <a class="addthis_button_linkedin" id="addThisButton4" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
+                </div>
+                <c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">
+
+                    <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
+                    <div class="p-Proposal__subscribe" style="float: right;">
+                        <a href="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }" onclick="if(!deferUntilLogin()) return false;" >
+                            <c:choose>
+                                <c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
+                                    <img height="20" src="${_themeImageFolder}/subscribe.png" /> Subscribe
+                                </c:when>
+                                <c:otherwise>
+                                    <img height="20" src="${_themeImageFolder}/unsubscribe.png" /> Unsubscribe
+                                </c:otherwise>
+                            </c:choose>
+                        </a>
+                    </div>
+                </c:if>
+            </div>
+            <div class="c-Box messaging">
+                <div class="message-share-button">
+                    <a href="javascript:;" onclick="if (! deferUntilLogin()) { return false; } else { showOverlay(); }">
+                        <img src="${_themeImageFolder}/icon_new-message.png" width="31" height="29" /> Share via ${colabShortName} messaging
+                    </a>
+                </div>
+                <c:if test="${proposalsPermissions.canReportProposal}">
+                    <div class="message-share-button">
+                        <a href="javascript:;" onclick="reportProposal(${proposal.proposalId})">Report</a>
+                    </div>
+                </c:if>
+                <script type="text/javascript">
+                    if (typeof(addthis) != 'undefined') {
+                        addthis.toolbox("#shareProposalToolbox");
+                    }
+                </script>
+                <div class="clear"><!--  --></div>
+            </div>
+            </c:if>
+
+            <c:if test="${proposal.ribbonWrapper.ribbon > 0 and (not contest.hideRibbons or proposalsPermissions.canAdminAll)}">
+                <div class="c-Badge--big badge-${proposal.ribbonWrapper.ribbon}" style="float:none; text-align:center; margin: 0 0 36px 76px;">
+                    <a class="c-Badge__title--big" href="#"
+                       style="${(proposal.ribbonWrapper.ribbonText.length() gt 8 and proposal.ribbonWrapper.ribbonText.length() lt 14)
+                    ? 'top: 26px;' : ''}">
+                        ${proposal.ribbonWrapper.ribbonTitle}
+                    </a>
+                    <div class="c-Badge__text--big" style="${proposal.ribbonWrapper.ribbonText.length() gt 15 ? 'font-size: 7px;' : ''}${fn:substring(proposal.ribbonWrapper.ribbonText,0,6) eq 'Judges' ? 'width: 47px;' : ''}">${proposal.ribbonWrapper.ribbonText.length() gt 13 ? proposal.ribbonWrapper.ribbonText : ''}</div>
+                    <span class="c-Badge__year--big">${contest.activePhase.phaseReferenceYear}</span>
+                </div>
+            </c:if>
+
+            <h5 class="topbox">${contestType.proposalName} Summary</h5>
+
+            <div class="prop-title addprop">
+                ${proposal.name}
+            </div>
+
+
+            <div class="prop-settings">
+                <c:choose>
+                    <c:when test="${proposal.open }">
+                        <strong>Public ${contestType.proposalName}:</strong> Anyone will be able to edit this ${contestType.proposalName}. The ${contestType.proposalName} owner can limit editing to team member using the ${contestType.proposalName}'s Admin tab. &#160;
+                    </c:when>
+                    <c:otherwise>
+                        <strong>Team ${contestType.proposalName}:</strong> Only members listed on the ${contestType.proposalName}'s Contributors tab will be able to edit this ${contestType.proposalName}.
+                        Members can request to join the ${contestType.proposalName} team on the Contributors tab. The ${contestType.proposalName} owner can open this ${contestType.proposalName} for anyone to edit using the Admin tab. &#160;
+                    </c:otherwise>
+                </c:choose>
+
+                <c:if test="${proposalsPermissions.canAdminProposal and false}">
+                    <a href="${proposal.proposalId }/tab/ADMIN">Change settings</a>
+                </c:if>
+
+            </div>
+
+            <div class="prop-avatar">
+                <proposalsPortlet:userPortrait height="42" screenName="${empty proposal.authorName }" portraitId="${proposal.author.portraitId }" userId="${proposal.author.userId}" width="42" />
+                By:&#160;
+                <c:choose>
+                    <c:when test="${empty proposal.team }">
+                        <proposalsPortlet:userLinkSimple userId="${proposal.authorId }" text="${proposal.authorName }" />
+                    </c:when>
+                    <c:otherwise>
+                        ${proposal.authorName }
+                    </c:otherwise>
+                </c:choose>
+            </div>
+
+            <div class="prop-contest">
+                <strong>${contestType.contestName}: </strong>
+                <proposalsPortlet:contestLink contest="${contest }" /><br />
+                ${contest.contestName}
+            </div>
+            <c:if test="${not empty linkedProposalContestTypeProposalWrappersByContestTypeId}">
+                <c:forEach var="contestTypeProposalWrapper" items="${linkedProposalContestTypeProposalWrappersByContestTypeId}">
+                    <c:if test="${not empty contestTypeProposalWrapper.value.proposals}">
+                        <div class="prop-contest">
+                            <strong>Related ${contestTypeProposalWrapper.value.contestType.proposalNamePlural}</strong> <br />
+                            <c:forEach var="linkedProposal" items="${contestTypeProposalWrapper.value.proposals}">
+                                <li>
+                                    <collab:proposalLink proposal="${linkedProposal}" /> <br />
+                                </li>
+                            </c:forEach>
+                        </div>
+                    </c:if>
+                </c:forEach>
+            </c:if>
+
+            <c:if test="${proposal.proposalAttributeHelper.hasAttribute('REGION') }">
+                <div class="prop-avatar" style="font-size: 13px">
+                    <strong>REGION</strong><br />
+                    <c:if test="${proposal.proposalAttributeHelper.hasAttribute('REGION_ECONOMY') }">
+                        <em>Economy:</em> ${proposal.proposalAttributeHelper.attributeString('REGION_ECONOMY')}<br />
+                    </c:if>
+                    <em>Transnational group/large country:</em> ${proposal.proposalAttributeHelper.attributeString('REGION')}<br />
+                    <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SUBREGION') }">
+                        <em>Country within transnational group:</em> ${proposal.proposalAttributeHelper.attributeString('SUBREGION')}
+                    </c:if>
+                </div>
+            </c:if>
+            <c:if test="${not empty proposal.baseProposal }">
+                <div class="prop-avatar" style="font-size: 13px">
+                    <strong>Base ${contestType.proposalName}: </strong>
+                    This ${contestType.proposalName} was created as a copy of
+                    <collab:proposalLink proposal="${proposal.baseProposal }" />
+                </div>
+            </c:if>
+
+            <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_ID') }">
+                <h5 class="toppad">Model Results Summary</h5>
+                <div class="div3"></div>
+                <div class="prop-results">
+                    <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_CO2_CONCENTRATION')}">
+                        <div><strong>CO2 concentration</strong><br />${proposal.proposalAttributeHelper.attributeString('SCENARIO_CO2_CONCENTRATION')} ppm in 2100</div>
+                    </c:if>
+                    <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_MITIGATION_COST_NO_ERRORS')}">
+                        <div><strong>Temperature Increase</strong><br />${proposal.proposalAttributeHelper.attributeString('SCENARIO_MITIGATION_COST_NO_ERRORS')} &amp;deg;C</div>
+                    </c:if>
+                    <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_CO2_CONCENTRATION')}">
+                        <div><strong>Mitigation Costs</strong><br />${proposal.proposalAttributeHelper.attributeString('SCENARIO_CO2_CONCENTRATION')} %GDP in 2100</div>
+                    </c:if>
+                    <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_DAMAGE_COST')}">
+                        <div><strong>Damage Costs</strong><br />${proposal.proposalAttributeHelper.attributeString('SCENARIO_DAMAGE_COST')} %GDP in 2100</div>
+                    </c:if>
+                </div>
+            </c:if>
+        </div>
+        <script type="text/javascript">
+            // Addthis: Alert a message when the user shares somewhere
+            function shareEventHandler(evt) {
+                if (evt.type == 'addthis.menu.share') {
+                    var service = evt.data.service;
+
+                    try {
+                        pageTracker._trackEvent('User', 'ShareProposalViaSocialMedia', service, 1);
+                    }
+                    catch (error) {
+                    }
+                }
+            }
+
+            // Listen for the share event
+            addthis.addEventListener('addthis.menu.share', shareEventHandler);
+        </script>
+
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
+                jQuery('#popup_flagging_form_targetType').attr('value', 'PROPOSAL');
+                <c:forEach items="${reportTargets}" var="reportTarget">
+                <![CDATA[
+                        jQuery('#popup_flagging_reasons').append(jQuery('<option>', {
+                            value: '${reportTarget.reason}',
+                            text: '${reportTarget.reason}'
+                        }));
+                ]]>
+                </c:forEach>
+            });
+
+            function reportProposal(proposalId) {
+                jQuery('#popup_flagging_form_targetId').attr('value', proposalId);
+                jQuery('#popup_flagging').show();
+            }
+        </script>
+    </c:if>
+
+</jsp:root>

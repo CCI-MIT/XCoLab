@@ -33,4 +33,9 @@ public class CachedAttribute<T> implements AttributeGetter<T> {
         }
         return value;
     }
+
+    @Override
+    public String name() {
+        return wrappedAttributeGetter.name();
+    }
 }

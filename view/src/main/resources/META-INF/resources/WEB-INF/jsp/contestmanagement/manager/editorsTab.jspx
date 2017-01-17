@@ -1,0 +1,36 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:contestmanagementPortlet="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
+
+    <!--@elvariable id="collectionCardWrapperWhat" type="org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper"-->
+    <!--@elvariable id="collectionCardWrapperWhere" type="org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper"-->
+    <!--@elvariable id="ontologyTermsWhat" type="java.util.List<org.xcolab.portlets.contestmanagement.wrappers.OntologyTermWrapper>"-->
+    <!--@elvariable id="ontologyTermsWhere" type="java.util.List<org.xcolab.portlets.contestmanagement.wrappers.OntologyTermWrapper>"-->
+    <!--@elvariable id="section" type="java.lang.Integer"-->
+    <!--@elvariable id="level" type="java.lang.Integer"-->
+
+    <jsp:directive.include file="../init.jspx"/>
+    <jsp:directive.include file="./header.jspx"/>
+
+    <div class="explanation">
+        <br/>
+        <h1>
+            Content and Ontology Editors
+        </h1>
+        <br/>
+        <div class="addpropbox">
+            <b>Click on the links below</b> to open the editor:<br/>
+            <a href="/ontology-editor">Ontology editor</a><br/>
+            <a href="/content-editor">Content editor</a>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+    </div>
+
+</xcolab:layout>
+</jsp:root>

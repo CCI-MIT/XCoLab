@@ -1,0 +1,19 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:layout="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+
+    <layout:layout>
+        <c:if test="${param.error != null}">
+            <div>Error</div>
+        </c:if>
+        <c:if test="${param.logout != null}">
+            <div>Logged out</div>
+        </c:if>
+        <form action="/login" method="post">
+            <div><label> User Name : <input type="text" name="username"/> </label></div>
+            <div><label> Password: <input type="password" name="password"/> </label></div>
+            <div><input type="submit" value="Sign In"/></div>
+        </form>
+    </layout:layout>
+</jsp:root>

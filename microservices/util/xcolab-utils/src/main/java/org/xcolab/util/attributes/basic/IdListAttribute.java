@@ -14,7 +14,7 @@ import java.util.List;
 public class IdListAttribute extends AbstractAttributeGetter<List<Long>> {
 
     public IdListAttribute(AttributeProvider<? extends Attribute> attributeProvider) {
-        super(attributeProvider, IdListAttribute.class.getSimpleName());
+        super(attributeProvider);
     }
 
     @Override

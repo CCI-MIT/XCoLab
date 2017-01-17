@@ -1,0 +1,98 @@
+$c-Button__padding: 8px !default;
+$c-Button__padding--large: 8px !default;
+$c-Button__padding--small: 6px !default;
+$c-Button__fontWeight: 700 !default;
+$c-Button__borderRadius: 5px !default;
+$c-Button__capitalization: none !default;
+
+$c-Button__primary__backgroundColor: $t-Color__primary !default;
+$c-Button__primary__borderColor: $t-Color__primary--dark !default;
+$c-Button__primary__backgroundColor--hover: null !default;
+
+$c-Button__grey__backgroundColor: $t-Color__grey--medium !default;
+$c-Button__grey__borderColor: $t-Color__grey--dark !default;
+
+%c-Button__base {
+  display: inline-block;
+  padding: $c-Button__padding;
+  margin-left: 5px;
+  font-weight: $c-Button__fontWeight;
+  line-height: normal;
+  text-transform: $c-Button__capitalization;
+
+  @include border-radius($c-Button__borderRadius);
+
+  &.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  &.small {
+    font-size: 14px;
+    padding: $c-Button__padding--small;
+  }
+  &.large {
+    font-size: 16px;
+    padding: $c-Button__padding--large;
+  }
+  &.margins {
+    margin: 5px;
+  }
+}
+
+@function hover-color($color, $hover-color: null) {
+  @if $hover-color == null {
+    @return darken($color, 10%);
+  } @else {
+    @return $hover-color;
+  }
+}
+
+@mixin theme-button($button-color, $border-color: null, $image-url: null, $hover-color: null) {
+  @extend %c-Button__base;
+  font-size: 16px;
+
+  @if $border-color == none {
+    @if $image-url == none or $image-url == null {
+      @include background($button-color);
+    } @else {
+      @include background($button-color, $image-url, 40px);
+    }
+  } @else {
+    @include background-gradient($button-color, $image-url, 40px);
+    border: 1px solid $border-color;
+  }
+
+  color: contrasting-color($button-color, white, $t-Color__grey--darkest, $t-Text__threshold);
+  $c-Button__theme__textShadow: 1px 1px 0 darken($button-color, 25%) !default;
+  text-shadow: $c-Button__theme__textShadow;
+
+  &:hover {
+    color: contrasting-color(darken($button-color, 10%), white, $t-Color__grey--darkest, $t-Text__threshold);
+    text-decoration: none;
+    @if $border-color == none {
+      @if $image-url == none or $image-url == null {
+        @include background(hover-color($button-color, $hover-color));
+      } @else {
+        @include background(hover-color($button-color), $image-url, 40px);
+      }
+    } @else {
+      @include background-gradient(hover-color($button-color), $image-url, 40px);
+    }
+  }
+}
+
+//blue-button.a is for legacy support (e.g. ice faclet portlets)
+a.c-Button__primary, .c-Button__primary a, input.c-Button__primary, button.c-Button__primary { //a.primary-button, .blue-button a, input.primary-button
+  @include theme-button($c-Button__primary__backgroundColor, $c-Button__primary__borderColor, $hover-color: $c-Button__primary__backgroundColor--hover);
+}
+
+//gray-button.a is for legacy support (e.g. ice faclet portlets)
+a.c-Button__secondary, .c-Button__secondary a, input.c-Button__secondary, button.c-Button__secondary { //a.grey-button, .gray-button a, input.grey-button
+  @include theme-button($c-Button__grey__backgroundColor, $c-Button__grey__borderColor);
+}
+a.c-Button__admin {
+  @include theme-button($c-Button__primary__backgroundColor, grey);
+  font-size: 12px;
+  float:right;
+}

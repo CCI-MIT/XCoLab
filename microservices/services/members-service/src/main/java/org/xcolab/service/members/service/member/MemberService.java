@@ -11,7 +11,9 @@ import org.xcolab.model.tables.pojos.LoginLog;
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.service.members.domain.loginlog.LoginLogDao;
 import org.xcolab.service.members.domain.member.MemberDao;
+import org.xcolab.service.members.exceptions.ForbiddenException;
 import org.xcolab.service.members.exceptions.NotFoundException;
+import org.xcolab.service.members.exceptions.UnauthorizedException;
 import org.xcolab.service.members.service.login.LoginBean;
 import org.xcolab.service.members.util.PBKDF2PasswordEncryptor;
 import org.xcolab.service.members.util.SHA1PasswordEncryptor;
@@ -115,15 +117,16 @@ public class MemberService {
             return member;
         });
     }
-    public boolean login(Member member, LoginBean loginBean) {
-        if (validatePassword(loginBean.getPassword(), member.getHashedPassword())) {
-
-            createLoginLog(member.getId_(), loginBean.getIpAddress(), loginBean.getRedirectUrl());
-
-            //TODO: do login
-            return true;
+    public void login(Member member, LoginBean loginBean)
+            throws UnauthorizedException, ForbiddenException {
+        if (member.getStatus() != null && member.getStatus() > 0) {
+            throw new ForbiddenException("Member locked");
         }
-        return false;
+        if (validatePassword(loginBean.getPassword(), member.getHashedPassword())) {
+            createLoginLog(member.getId_(), loginBean.getIpAddress(), loginBean.getRedirectUrl());
+        } else {
+            throw new UnauthorizedException("Invalid credentials provided");
+        }
     }
 
     public LoginLog createLoginLog(long memberId, String ipAddress, String redirectUrl) {

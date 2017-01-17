@@ -1,0 +1,16 @@
+server:
+  port: 18082
+  compression:
+    enabled: true
+  error:
+    whitelabel:
+      enabled: false
+    include-stacktrace: always
+
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jspx
+    favicon:
+      enabled: false

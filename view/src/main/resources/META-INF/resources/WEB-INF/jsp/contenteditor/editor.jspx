@@ -1,0 +1,365 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://java.sun.com/portlet_2_0 "
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          version="2.0">
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <xcolab:layout>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"><!-- --></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.js"><!-- --></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqtree/1.3.6/tree.jquery.min.js"><!-- --></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/ckeditor.js"><!-- --></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"><!-- --></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"><!-- --></script>
+        <xcolab:script src="${_libJsFolder}/jquery.loadmask.spin.js" />
+
+
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"><!-- --></link>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqtree/1.3.6/jqtree.min.css"><!-- --></link>
+        <!-- link rel="stylesheet" href="${pageContext.request.contextPath}/js/ckeditor/contents.css"></link -->
+        <style>
+
+            .contentEditor input {border: 1px solid #DDD; color: #8d8d8d;  font-weight: 200;  margin-bottom: 7px; height: 30px;  font-size: large;  width: 530px;}
+            .contentBody {margin: auto; width: 1022px;  height: 742px;}
+            .treeContainer {        height: 561px; overflow-y: scroll;}
+            #infoBox {padding: 8px 35px 8px 14px;margin-bottom: 20px;}
+            #innerContent{height: 610px}
+            .colFloatLef{float:left}
+            #tree-view{width:350px}
+            #saveArticle{cursor:pointer}
+            #articleURL{overflow:hidden}
+            #anchorArticleURL{display: block; width:0px; white-space: nowrap;}
+        </style>
+        <xcolab:stylesheet href="${_libCssFolder}/jquery.loadmask.spin.css" />
+
+        <c:set var="contentEditorListFolderURL" value="/content-editor/contentEditorListFolder"></c:set>
+
+
+        <c:set  var="getArticleVersionURL" value="/content-editor/contentEditorGetLatestArticleVersion"></c:set>
+
+        <c:set  var="saveArticleVersionURL" value="/content-editor/saveContentArticleVersion"></c:set>
+
+
+
+        <c:set  var="moveArticleVersionURL" value="/content-editor/moveArticleVersion"></c:set>
+
+        <c:set  var="createArticleFolderURL" value="/content-editor/createArticleFolder"></c:set>
+
+        <c:if test="${not empty param.articleId}">
+        <script>
+            <![CDATA[
+            jQuery(document).ready(function () {
+
+                loadArticleVersionContent(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.articleId}, "");
+
+                window.setTimeout(function(){
+                    $("#article-view").unmask()
+                }, 2000);
+
+            });
+
+            ]]>
+        </script>
+        </c:if>
+        <script>
+            <![CDATA[
+
+            var getArticleVersionURL = '${getArticleVersionURL}';
+            var saveArticleVersionURL = '${saveArticleVersionURL}';
+            var moveArticleVersionURL = '${moveArticleVersionURL}';
+            var createArticleFolderURL = '${createArticleFolderURL}';
+            var ckEditor = null;
+            var THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
+            jQuery(document).ready(function () {
+
+                $("#article-view").mask({'label':"Please click on an Article or create a new one clicking in the folder`s + article link!", spinner:false});
+
+                var styles = $('link');
+                for(var i=0 ; i <styles.length ; i++){
+                    if($(styles[i]).attr("href").indexOf("style.css")!= -1){
+                        CKEDITOR.config.contentsCss = $(styles[i]).attr("href");
+                        break;
+                    }
+                }
+
+                CKEDITOR.config.allowedContent = true;
+
+                $('#tree-view').tree({
+                                         //data:data,
+                                         saveState: true,
+                                         onCanSelectNode: function(node) {
+                                             //if(node.kind == "folder") return false;
+                                                return true;
+
+                                         },
+                                         onCreateLi: function(node, $li) {
+                                             // Append a link to the jqtree-element div.
+                                             // The link has an url '#node-[id]' and a data property 'node-id'.
+                                             if(node.kind == "folder")
+                                             $li.find('.jqtree-element').append(
+                                                     '&nbsp;&nbsp;<a href="#node-'+ node.id +'" class="addArticle" data-node-id="'+
+                                                     node.id +'">+ article</a>'+
+                                                     '&nbsp;&nbsp;<a href="#node-'+ node.id +'" class="addFolder" data-node-id="'+
+                                                     node.id +'">+ folder</a>'
+                                             );//<small>
+                                         },
+                                         onCanMoveTo: function(moved_node, target_node, position) {
+                                             console.log("target_node "+ target_node.id +" - "+target_node.kind)
+                                             if (target_node.kind == "folder") {
+                                                 return true;
+                                             }
+                                             else {
+                                                 return false;
+                                             }
+                                         },
+                                         onCanMove: function(node) {
+                                             if (! node.parent.parent) {
+                                                 // Example: Cannot move root node
+
+                                                 return false;
+                                             }
+                                             else {
+                                                 if(node.kind == "folder") return false;
+                                                 else
+                                                     return true;
+                                             }
+                                         },
+                                         dragAndDrop: true});
+
+                $('#tree-view').on(
+                        'click', '.addArticle',
+                        function(e) {
+                            // Get the id from the 'node-id' data property
+                            var node_id = $(e.target).data('node-id');
+
+                            // Get the node from the tree
+                            var node = $('#tree-view').tree('getNodeById', node_id);
+
+                            if (node) {
+                                updateArticleURL(node.name, "");
+                                //$('#tree-view').tree('selectNode', node);
+                                newArticleAtFolderId(node.id, node.name);
+                            }
+                        }
+                );
+
+                $('#tree-view').on(
+                        'click', '.addFolder',
+                        function(e) {
+                            // Get the id from the 'node-id' data property
+                            var node_id = $(e.target).data('node-id');
+
+                            // Get the node from the tree
+                            var node = $('#tree-view').tree('getNodeById', node_id);
+
+                            if (node) {
+                                $('#tree-view').tree('selectNode', node);
+                                var folderName = prompt("Create new folder under "+node.name+"\nPlease enter the new folder`s name: ", "");
+                                if(folderName != null)
+                                    createFolder(node.id,folderName )
+
+                            }
+                        }
+                );
+                $('#tree-view').bind(
+                        'tree.click',
+                        function(event) {
+                            var node = event.node;
+                            if(node.kind == "article"){
+                                $("#article-view").unmask();
+                                $("#article-view").mask();
+                                loadArticleVersionContent(node.id, node.parent.name);
+                            }else{
+                                /*
+                                event.preventDefault();
+                                return false;*/
+                            }
+                        }
+                );
+                $('#tree-view').bind(
+                        'tree.move',
+                        function(event) {
+                            event.preventDefault();
+                            if (confirm('Would you like to move the article to folder: '+event.move_info.target_node.name+'?')) {
+                                event.move_info.do_move();
+                                moveArticle(event.move_info.moved_node.id, event.move_info.target_node.id,event.move_info.target_node.name);
+                            }
+                        });
+
+                ckEditor = CKEDITOR.replace('articleVersionContent');
+                //CKEDITOR.instances['articleVersionContent'].setReadOnly(true);
+
+                $("#infoBox").hide();
+
+                $("#saveArticle").click(function(){
+
+                        saveArticle();
+                });
+                $('#contentArticleTitle').bind('input', function() {
+                    if ($("#folderName").html().indexOf("Wiki") !== -1) {
+                        updateArticleURL("Wiki", $('#contentArticleTitle').val().replace(/ /g,"+"));
+                        var input1 = $('#contentArticleTitle');
+                        input1.attr("value",$('#contentArticleTitle').val());
+                        $("#article-view").unmask()
+                    }
+                });
+            });
+            function addVersionEntry(dateOfEdit, versionId){
+                var cell = $('<li>');
+                cell.attr("id","articleVersionId_"+versionId);
+                cell.attr("class","articleVersionClass");
+                cell.html(dateOfEdit)
+                return cell;
+            }
+            function newArticleAtFolderId(folderId, folderName){
+                $("#article-view").unmask()
+                $('#contentArticleId').attr("value", "");
+                $("#folderName").html("Parent folder: " +folderName);
+                $('#contentArticleFolderId').attr("value",folderId);
+                $('#contentArticleTitle').attr("value","");
+                CKEDITOR.instances['articleVersionContent'].setData("");
+                $('#contentArticleFolderId').focus();
+            }
+            function updateArticleURL(folderName, articleTitle) {
+                if(folderName == "Wiki") {
+                    $("#articleURL").html("Article URL: <a id='anchorArticleURL' href='/web/guest/wiki/-/wiki/page/" + articleTitle +
+                            "'>~/web/guest/wiki/-/wiki/page/" + articleTitle + "</a>");
+                } else {
+                    $("#articleURL").html("");
+                }
+            }
+            function loadArticleVersionContent(id, folderName){
+                id = id - THRESHOLD_TO_AVOID_NODE_COLISION;
+
+                var url = getArticleVersionURL;
+
+                var parameters={articleId : id};
+
+                $.get(url ,parameters , function (response) {
+                    var responseData = JSON.parse(response);
+                    var data = responseData;
+                    var textarea = $('#articleVersionContent');
+                    $("#folderName").html("Parent folder: " +folderName);
+                    //textarea.html(data.content);
+                    CKEDITOR.instances['articleVersionContent'].setData(data.content);
+
+                    var input = $('#contentArticleId');
+                    input.attr("value",id);
+
+                    $('#contentArticleFolderId').attr("value",data.folderId);
+
+                    var input1 = $('#contentArticleTitle');
+                    input1.attr("value",data.title);
+
+                    updateArticleURL(folderName, data.title.replace(/ /g,"+"));
+
+                    ckEditor.setReadOnly(false);
+                    $("#article-view").unmask()
+
+                });
+
+            }
+            function saveArticle(){
+
+                if($('#contentArticleTitle').val() == ""){
+                    alert("Title field is mandatory!");
+                    return false;
+                }
+                $("#article-view").mask()
+                var url = saveArticleVersionURL;
+
+
+                var articleId = $('#contentArticleId').val();
+                var title = $('#contentArticleTitle').val();
+                var folderId =$('#contentArticleFolderId').val();
+                var content = ckEditor.getData();
+                var parameters={articleId : articleId, title: title, folderId: folderId
+                ,content: content};
+
+                $.post(url ,parameters , function (response) {
+                    var responseData = JSON.parse(response);
+                    var data = responseData;
+                    $("#infoBox").html("Article updated successfully!");
+                    $("#infoBox").show();
+                    $("#infoBox").delay(5000).fadeOut('slow');
+                    $("#article-view").unmask()
+                    $('#tree-view').tree('reload');
+
+                });
+            }
+            function moveArticle(articleId, folderId, folderName){
+                    var articleIdNoThreshold = articleId - THRESHOLD_TO_AVOID_NODE_COLISION;
+                    $(".treeContainer").mask();
+                    var url = moveArticleVersionURL;
+
+                    var parameters={articleId : articleIdNoThreshold, folderId: folderId };
+
+                    $.post(url ,parameters , function (response) {
+                        var responseData = JSON.parse(response);
+                        var data = responseData;
+                        $("#infoBox").html("Article moved successfully!");
+                        $("#infoBox").show();
+                        $("#infoBox").delay(5000).fadeOut('slow');
+                        $('#tree-view').tree('reload');
+                        $(".treeContainer").unmask()
+                        loadArticleVersionContent(articleId, folderName);
+
+                    });
+
+            }
+
+            function createFolder( parentFolderId, folderName){
+
+                $(".treeContainer").mask();
+                var url = createArticleFolderURL;
+
+                var parameters={parentFolderId : parentFolderId, folderName: folderName };
+
+                $.post(url ,parameters , function (response) {
+                    var responseData = JSON.parse(response);
+                    var data = responseData;
+                    $("#infoBox").html("Folder created successfully!");
+                    $("#infoBox").show();
+                    $("#infoBox").delay(5000).fadeOut('slow');
+                    $('#tree-view').tree('reload');
+                    $(".treeContainer").unmask()
+
+                });
+
+            }
+            ]]>
+        </script>
+        <div class="contentEditor">
+            <div class="contentBody">
+                <h2>Content Editor</h2>
+                <div id="infoBox"><!-- --></div>
+                <div  id="innerContent" class="addpropbox">
+                    <div class="colFloatLef">
+                        <h3>Content Folders</h3>
+                        <div class="treeContainer">
+                            <div id="tree-view" data-url="${contentEditorListFolderURL}" ><!-- --></div>
+                        </div>
+                    </div>
+                    <div class="colFloatLef" >
+                        <div id="article-view">
+                            <h3>Content article</h3>
+                            <div>
+                                <input type="hidden" id="contentArticleId"/>
+                                <input type="hidden" id="contentArticleFolderId"/>
+                                Article title: <input type="text" id="contentArticleTitle"  maxcharacters="300"  />
+                            </div>
+                            <div id="folderName">Parent folder: <!-- --></div>
+                            <br/>
+                            <div id="articleURL"><!-- Article URL:  --></div>
+                            <div>
+                                <textarea id="articleVersionContent" name="articleVersionContent" rows = "10" cols="80"><!-- --></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div> <div class="floatRight outerVerticalCenter" id="saveArticle" ><a  class="c-Button__primary" href="#">Save</a></div></div>
+            </div>
+        </div>
+    </xcolab:layout>
+</jsp:root>

@@ -1,0 +1,90 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+		  xmlns:c="http://java.sun.com/jsp/jstl/core"
+		  xmlns:form="http://www.springframework.org/tags/form"
+		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
+	<jsp:directive.include file="header.jspx" />
+
+	<h1>Input widgets</h1>
+
+	<form:form commandName="updateWidgetsBean"
+		action="/admin/modeling/model/${model.id}/toggleCustomInputs">
+
+		<c:choose>
+			<c:when test="${modelPreferences.usesCustomInputs }">
+				<button type="submit" class="btn btn-default">Disable
+					custom inputs</button>
+			</c:when>
+			<c:otherwise>
+				<button type="submit" class="btn btn-default">Enable custom
+					inputs</button>
+			</c:otherwise>
+
+		</c:choose>
+	</form:form>
+
+	<c:choose>
+		<c:when test="${not modelPreferences.usesCustomInputs }">
+			<form:form commandName="updateWidgetsBean"
+				action="/admin/modeling/model/${model.id}/updateInputs">
+
+				<table class='table table-striped'>
+					<tr>
+						<th>Name</th>
+						<th>Description</th>
+						<th>Widget</th>
+					</tr>
+					<c:forEach var="input" items="${modelDisplay.allIndividualInputs }">
+						<c:if test="${input.displayItemType == 'INDIVIDUAL' }">
+							<tr>
+								<td>${input.name }</td>
+								<td>${input.description }</td>
+								<td><form:select path="widgets[${input.metaData.id }]"
+										items="${availableInputWidgets}" /></td>
+								<td><form:input path="orders[${input.metaData.id }]" /></td>
+								<td><form:select path="groups[${input.metaData.id }]"
+										items="${groupInputsById}" /></td>
+							</tr>
+						</c:if>
+					</c:forEach>
+				</table>
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-default">Submit</button>
+					</div>
+				</div>
+			</form:form>
+		</c:when>
+		<c:otherwise>
+			<form:form commandName="updateWidgetsBean"
+				action="${updateInputsUrl }">
+				<form:textarea path="customInputWidgets"
+					style="width: 100%; height: 50%;" rows="20" />
+				<div class="form-group">
+                    <p>Press F1 when cursor is in the editor to toggle full screen editing, Esc to exit.</p>
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-default">Submit</button>
+					</div>
+				</div>
+			</form:form>
+		</c:otherwise>
+	</c:choose>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById("customInputWidgets"), {
+        lineNumbers: true,
+        mode: "application/json",
+            extraKeys: {
+                "F1": function(cm) {
+                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                },
+                "Esc": function(cm) {
+                    if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                }
+            }
+
+        });</script>
+</xcolab:layout>
+</jsp:root>

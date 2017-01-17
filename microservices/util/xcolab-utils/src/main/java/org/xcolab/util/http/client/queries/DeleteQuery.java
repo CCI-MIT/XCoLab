@@ -1,6 +1,6 @@
 package org.xcolab.util.http.client.queries;
 
-import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.client.RestResource;
 
@@ -14,7 +14,7 @@ public class DeleteQuery<ElementT, IdT> implements Query<ElementT, Boolean> {
 
     @Override
     public Boolean execute() {
-        return RequestUtils.delete(uriBuilder);
+        return ServiceRequestUtils.delete(uriBuilder);
     }
 
     @Override

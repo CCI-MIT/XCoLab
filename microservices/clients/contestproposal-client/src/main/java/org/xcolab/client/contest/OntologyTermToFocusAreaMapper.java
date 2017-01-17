@@ -57,7 +57,7 @@ public class OntologyTermToFocusAreaMapper {
             boolean focusAreaMatchesTerms = true;
             for (OntologyTerm toBeMatchedTerm : toBeMatchedTerms) {
                 OntologyTerm focusAreaOntologyTerm = getTermWithSpaceId(focusArea, toBeMatchedTerm.getOntologySpaceId());
-                if (focusAreaOntologyTerm!=null && (focusAreaOntologyTerm.getId_() != toBeMatchedTerm.getId_())) {
+                if (focusAreaOntologyTerm!=null && (focusAreaOntologyTerm.getId_().longValue() != toBeMatchedTerm.getId_().longValue())) {
                     focusAreaMatchesTerms = false;
                     break;
                 }

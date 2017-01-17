@@ -1,7 +1,10 @@
 package org.xcolab.service.contents.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,9 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.model.tables.pojos.ContentArticle;
 import org.xcolab.model.tables.pojos.ContentArticleVersion;
 import org.xcolab.model.tables.pojos.ContentFolder;
+import org.xcolab.model.tables.pojos.ContentPage;
 import org.xcolab.service.contents.domain.contentFolder.ContentFolderDao;
 import org.xcolab.service.contents.domain.contentarticle.ContentArticleDao;
 import org.xcolab.service.contents.domain.contentarticleversion.ContentArticleVersionDao;
+import org.xcolab.service.contents.domain.page.ContentPageDao;
 import org.xcolab.service.contents.exceptions.NotFoundException;
 import org.xcolab.service.contents.service.contentarticle.ContentArticleService;
 import org.xcolab.service.contents.service.contentarticleversion.ContentArticleVersionService;
@@ -43,6 +48,9 @@ public class ContentsController {
 
     @Autowired
     private ContentArticleVersionDao contentArticleVersionDao;
+
+    @Autowired
+    private ContentPageDao contentPageDao;
 
     @RequestMapping(value = "/contentArticles", method = RequestMethod.POST)
     public ContentArticle createContentArticle(@RequestBody ContentArticle contentArticle) {
@@ -223,5 +231,25 @@ public class ContentsController {
     @RequestMapping(value = "/contentArticles/{contentArticleId}", method = RequestMethod.DELETE)
     public int deleteArticle(@PathVariable long contentArticleId) {
         return contentArticleService.delete(contentArticleId);
+    }
+
+    @GetMapping("/contentPages")
+    public List<ContentPage> listContentPages(@RequestParam(required = false) String title) {
+        return contentPageDao.list(title);
+    }
+
+    @GetMapping("/contentPages/{pageId}")
+    public ContentPage getContentPage(@PathVariable long pageId) throws NotFoundException {
+        return contentPageDao.get(pageId).orElseThrow(NotFoundException::new);
+    }
+
+    @PostMapping("/contentPages")
+    public ContentPage createContentPage(@RequestBody ContentPage page) {
+        return contentPageDao.create(page);
+    }
+
+    @PutMapping("/contentPages/{pageId}")
+    public boolean updateContentPage(@PathVariable long pageId, @RequestBody ContentPage page) {
+        return pageId == page.getPageId() && contentPageDao.update(page);
     }
 }

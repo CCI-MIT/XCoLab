@@ -110,7 +110,7 @@ public class ActivitiesController {
     }
 
     @RequestMapping(value = "/activitySubscriptions/{activitySubscriptionId}", method = RequestMethod.GET)
-    public ActivitySubscription getActivitySubscription(long activitySubscriptionId)
+    public ActivitySubscription getActivitySubscription(@PathVariable long activitySubscriptionId)
             throws NotFoundException {
         return activitySubscriptionDao.get(activitySubscriptionId)
                 .orElseThrow(NotFoundException::new);

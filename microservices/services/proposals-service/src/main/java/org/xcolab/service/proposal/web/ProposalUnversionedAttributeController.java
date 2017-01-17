@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.model.tables.pojos.ProposalUnversionedAttribute;
 import org.xcolab.service.proposal.domain.proposalunversionedattribute.ProposalUnversionedAttributeDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.List;
 
@@ -36,11 +37,16 @@ public class ProposalUnversionedAttributeController {
     }
 
     @RequestMapping(value = "/proposalUnversionedAttributes/getByProposalIdName", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public ProposalUnversionedAttribute getProposalUnversionedAttributes(
+    public ProposalUnversionedAttribute getProposalUnversionedAttributes (
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) String name
-    ) {
-        return proposalUnversionedAttributeDao.getByProposalIdName(proposalId, name);
+    ) throws NotFoundException {
+        ProposalUnversionedAttribute rt = proposalUnversionedAttributeDao.getByProposalIdName(proposalId, name);
+        if(rt!= null) {
+            return rt;
+        }
+        throw new NotFoundException("Proposal Unversioned Attribute with id: "+ proposalId + " name: "+ name);
+
     }
 
     @RequestMapping(value = "/proposalUnversionedAttributes", method = {RequestMethod.GET, RequestMethod.HEAD})

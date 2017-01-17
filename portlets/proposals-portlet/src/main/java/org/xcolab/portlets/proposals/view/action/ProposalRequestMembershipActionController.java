@@ -20,7 +20,6 @@ import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.entity.utils.email.notifications.proposal.ProposalMembershipInviteNotification;
 import org.xcolab.entity.utils.email.notifications.proposal.ProposalUserActionNotification;
 import org.xcolab.entity.utils.members.MemberAuthUtil;
-import org.xcolab.entity.utils.portlet.PortletUtil;
 import org.xcolab.entity.utils.portlet.session.SessionErrors;
 import org.xcolab.entity.utils.portlet.session.SessionMessages;
 import org.xcolab.portlets.proposals.requests.RequestMembershipBean;

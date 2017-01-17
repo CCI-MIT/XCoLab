@@ -1,0 +1,677 @@
+<jsp:root 
+xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+	version="2.0">
+
+	<!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.ontology.OntologySpace>"-->
+    <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
+    <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
+
+	<div class="contestsContainer">
+	
+    <div class="contest-outline-left">
+        <div class="expand">
+        	<a href="#" class="showall" style="display: inline;">Expand All</a>
+        	<a href="#" class="hideall" style="display: none;">Collapse All</a>
+        </div>
+        <div class="contest-count">${contestType.contestNamePlural} <span class="count">0</span></div>
+        
+        <ul class="level0 accordion">
+        <c:forEach var="ontologySpace" items="${ontologySpaces }" varStatus="status">
+        	<li class="contest-section${status.index+1 }" data-space-id="${ontologySpace.id }">
+        		<a href="#${ontologySpace.id }" class="section-head trigger" data-space-id="${ontologySpace.id }" id='space_trigger_${ontologySpace.id }' >
+        			<span class="active-icon"><!--  --></span>
+        			<h2>${ontologySpace.name } <span>${ontologySpace.description}</span></h2>
+        			<span class="section-icon"><!--  --></span>
+        		</a>
+				<proposalsPortlet:outline_ontologyTermWithChildren terms="${ontologySpace.rootTerms }" section="${status.index+1 }" level="1" />
+        	</li>
+        </c:forEach> 
+                         
+        </ul>
+    
+    </div> <!-- / contest-outline-left -->
+
+
+
+<!-- 
+    <div class="cintro">
+        <h2>How to use the outline</h2>
+        <p>Each contest is specified by a combination of What-Where-Who-How, as defined by the expandable outline to the left.</p>
+        <p>Click any part of the outline to see the contests included in that item.</p>
+        
+        
+    </div>
+    --> 
+    
+    
+    <div class="contest-outline-right">
+        
+        <!-- 
+        <div class="show-active">Display: 
+        	<c:choose>
+				<c:when test="${showActiveContests }">
+					<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >Show active contests</a>
+				</c:when>
+				<c:otherwise>
+					<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'>Show prior contests</a>
+				</c:otherwise>
+			</c:choose>
+		</div>
+		
+        <div class="contest-count"><span class="count"></span> contests</div>
+         -->
+		<div class="clearfix"><!--  --></div>
+        <div class="section-list">
+        	<!--  -->
+        </div>
+
+        <div class="section-contest-count-container"><div class="contest-count"><span class="count"><!--  --></span>
+            <span class="active-title" style="display: none;"> active</span>
+            <span class="inactive-title" style="display: none;"> prior</span>
+            <span class='plural'> ${contestType.contestNamePlural}</span>
+            <span class='singular'> ${contestType.contestName}</span>
+        </div>
+
+            <div class="other-contest-count" style="display: none;">
+                (<span class="active-title" style="display:none;">
+                    <a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'><span class="count"><!-- --></span>
+                        active
+                        <span class='plural'> ${contestType.contestNamePlural}</span>
+                        <span class='singular'> ${contestType.contestName}</span>
+                    </a>
+                </span>
+                <span class="inactive-title" style="display:none;">
+                    <a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' ><span class="count"><!-- --></span>
+                        prior
+                        <span class='plural'> ${contestType.contestNamePlural}</span>
+                        <span class='singular'> ${contestType.contestName}</span>
+                    </a>
+                </span>)
+            </div>
+        </div>
+        <div class="prop-head">${contestType.proposalNamePlural}</div>
+        <div class="contest-list">
+       		<!--  -->
+        </div> <!-- / contest-list -->
+        <div class="otherContestsInfoContainer">
+        	<c:if test="${not showAllContests }">
+				<c:choose>
+					<c:when test="${showActiveContests }">
+						<span class="otherContestsCount prior">
+						<img src="${themeDisplay.pathThemeImages}/contests-archive.png" height='20px' />&amp;nbsp;
+						If you select
+							<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >prior contests</a>, 
+					
+							<span class='count'><!-- --></span>
+							completed 
+							<span class='plural'>${contestType.contestNamePlural}</span>
+							<span class='singular'>${contestType.contestName}</span>
+							will be displayed 
+						</span>
+					</c:when>
+					<c:otherwise>
+						<span class="otherContestsCount">If you select
+							<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'>active contests</a>, 
+							<span class='count'><!-- --></span> current
+							<span class='plural'>${contestType.contestNamePlural}</span>
+							<span class='singular'>${contestType.contestName}</span>
+							will be displayed
+						</span>
+					</c:otherwise>
+				</c:choose>
+			</c:if>
+		</div>
+
+ 		
+    </div> <!-- / contest-outline-right -->
+	</div>
+
+	<script>
+	    var ontologyTerms = {};
+		var contests = {};
+		var otherContests = {};
+		var focusAreas = {};
+		var ontologySpaces = {};
+
+        var showActiveContests = ${showActiveContests};
+        var showAllContests = ${showAllContests};
+		
+		<c:forEach var="ontologySpace" items="${ontologySpaces}">
+			ontologySpaces[${ontologySpace.id}] = {id: ${ontologySpace.id}, name: "${ontologySpace.name}", order: ${ontologySpace.order}, contests: [], otherContests: [], isSpace: true};
+		</c:forEach>
+		
+		<c:forEach var="term" items="${ontologyTerms}" varStatus='termStatus'>
+			ontologyTerms[${term.id_}] = {id: ${term.id_}, parentId: ${term.parentId}, name: "${term.name}", contests: [], otherContests: [], space: ontologySpaces[${term.ontologySpaceId}], order: ${term.order != 0 ? term.order * 1000000 : termStatus.index}  };
+		</c:forEach>
+		
+		for (var termId in ontologyTerms) {
+			if (ontologyTerms[termId].parentId > 0) {
+				ontologyTerms[termId].parent = ontologyTerms[ontologyTerms[termId].parentId ];
+			}
+			else {
+				ontologyTerms[termId].parent = null;
+			}
+		}
+		<c:forEach var="focusArea" items="${focusAreas}">
+			focusAreas[${focusArea.id_}] = {id: ${focusArea.id_}, terms: ${focusArea.termsIdsStr}};
+		</c:forEach>
+		var focusArea = null;
+		var contest = null;
+		
+		function addContestToTermAndParents(level, contest, term, isOther) {
+			
+			if (term == null || typeof(term) != 'object') return;
+			// don't add contests to the space root if they have been associated with one of its children 
+			/*if (term.parent == null &amp;&amp; level &gt; 0) return;*/
+			if (! ('orderFromTerm' in contest)) {
+				contest.orderFromTerm = [];
+			} 
+			if (! (term.space.id in contest.orderFromTerm)) {
+				contest.orderFromTerm[term.space.id] = [];
+			}
+			contest.orderFromTerm[term.space.id].push(term.order);
+			
+			if (isOther) {
+				for (var i = 0 ; i &lt; term.otherContests.length; i++) {
+					if (term.otherContests[i].id == contest.id) return;
+				}
+				term.otherContests.push(contest);
+			}
+			else {
+				for (var i = 0 ; i &lt; term.contests.length; i++) {
+					if (term.contests[i].id == contest.id) return;
+				}
+				term.contests.push(contest);
+			}
+			addContestToTermAndParents(level+1, contest, term.parent, isOther);
+			
+			if (level == 0) {
+				// all of the ordering informations have been processed, we need to reverse the ordering information so it starts from root
+				var before = contest.orderFromTerm[term.space.id].slice();
+				
+				contest.orderFromTerm[term.space.id].reverse();
+			}
+			
+		}
+		var contestsCount = 0;
+		<c:forEach var="contest" items="${contests}">
+            <c:if test="${contest.showInOutlineView}">
+                contest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId},
+                        proposalsCount: ${contest.proposalsCount}, contestLink: '<collab:contestLink contest="${contest}" text="visit" />',
+                        contestUrl: '${contest.contestUrl}', created: ${contest.createdTime}, active: ${contest.contestActive}};
+                contests[${contest.contestPK}] = contest;
+                contestsCount++;
+
+                focusArea = focusAreas[${contest.focusAreaId}];
+
+                for (var idx in focusArea.terms) {
+                    addContestToTermAndParents(0, contest, ontologyTerms[focusArea.terms[idx]]);
+                    ontologyTerms[focusArea.terms[idx]].space.contests.push(contest);
+                }
+            </c:if>
+		</c:forEach>
+
+		<c:forEach var="contest" items="${otherContests}">
+            <c:if test="${contest.showInOutlineView}">
+                otherContest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId},
+                        proposalsCount: ${contest.proposalsCount}, contestLink: '<collab:contestLink contest="${contest}" text="visit" />'};
+                otherContests[${contest.contestPK}] = otherContest;
+                focusArea = focusAreas[${contest.focusAreaId}];
+
+                for (var idx in focusArea.terms) {
+                    addContestToTermAndParents(0, otherContest, ontologyTerms[focusArea.terms[idx]], true);
+                    ontologyTerms[focusArea.terms[idx]].space.otherContests.push(contest);
+                }
+            </c:if>
+		</c:forEach>
+
+		<c:forEach var="contest" items="${otherContests}">
+            <c:if test="${contest.showInOutlineView}">
+                otherContest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId},
+                        proposalsCount: ${contest.proposalsCount}, contestLink: '<collab:contestLink contest="${contest}" text="visit" />'};
+                otherContests[${contest.contestPK}] = otherContest;
+                focusArea = focusAreas[${contest.focusAreaId}];
+
+                for (var idx in focusArea.terms) {
+                    addContestToTermAndParents(otherContest, ontologyTerms[focusArea.terms[idx]], true);
+                }
+            </c:if>
+		</c:forEach>
+		</script>
+		<script>
+		<![CDATA[
+		// update ontology term contest counts
+		
+		for (var termId in ontologyTerms) {
+			
+			jQuery("> a > .count", "#ontologyTerm_" + termId).each(function() {
+				var self = jQuery(this);
+				if (ontologyTerms[termId].contests.length > 0) 
+					self.removeClass("zero");
+				else 
+					self.addClass("zero");
+				
+				self.text(ontologyTerms[termId].contests.length);
+			});
+		}
+		jQuery(".contest-count .count").text(contestsCount);
+		
+		function renderContests(contests, space) {
+			//contests.sort(function(a, b) { - (a.created - b.created) });
+			contests.sort(function(a, b) { 
+				var orderArrayA = a.orderFromTerm[space.id],  orderArrayB = b.orderFromTerm[space.id];
+				for (var i = 0; i < orderArrayA.length && i < orderArrayB.length; i++) {
+					if (orderArrayA[i] != orderArrayB[i]) {
+						return orderArrayA[i] - orderArrayB[i];
+					}
+				}
+				// contests have the same "prefix" in ontology terms tree, check if the prefixes differ in length, if they do,
+				// contest with shorter prefix should be shown first
+				if (orderArrayA.length != orderArrayB.length) {
+					return orderArrayA.length - orderArrayB.length;
+				}
+				// contests have the same prefixes, then return 
+				if (a.created != b.created) {
+					return a.created - b.created;
+				}
+				return a.id - b.id;
+				
+			});
+			var container = jQuery(".contest-outline-right");
+			var contestsListHtml = [];
+			if (contests.length == 0) {
+				contestsListHtml.push('<div class="ctest"><p>No contests with the current selection</p></div>');
+			}
+			
+			var duplicateContestNames = {};
+			for (var i =0; i < contests.length; i++) {
+				// check for duplicates
+				var contest = contests[i];
+				if (!(contest.name in duplicateContestNames)) {
+					duplicateContestNames[contest.name] = 0;
+					
+				}
+				duplicateContestNames[contest.name] ++;
+			}
+			var uniqueCount = 0;
+			var duplicateContests = {};
+			for (var i =0; i < contests.length; i++) {
+				var contest = contests[i];
+				if (contest.id in duplicateContests) continue; 
+				else {
+					duplicateContests[contest.id] = true;
+				}
+				uniqueCount++;
+				
+				contestsListHtml.push("<div class='ctest'><a href='#' class='trigger'></a><a class='contestName' href='");
+				contestsListHtml.push(contest.contestUrl);
+				contestsListHtml.push("'>");
+				contestsListHtml.push(contest.name);
+                /*
+                // Add contest create year to prior contests
+				if ((duplicateContestNames[contest.name] > 1 && contest.created > 0) || !contest.active) {
+					contestsListHtml.push(" ");
+					var year = new Date(contest.created).getFullYear();
+					if (contest.name.indexOf("" + year) < 0) {
+						contestsListHtml.push(new Date(contest.created).getFullYear());
+					}
+				}*/
+				contestsListHtml.push("<span class='count'>");
+				contestsListHtml.push(contest.proposalsCount);
+				contestsListHtml.push("</span></a>");
+				contestsListHtml.push("<div class='detail'><p>");
+				contestsListHtml.push(contest.description);
+				contestsListHtml.push("</p>");
+				
+				var focusArea = focusAreas[contest.focusAreaId];
+				var terms =[];
+				for (var j = 0; j < focusArea.terms.length; j++) {
+					terms.push(ontologyTerms[focusArea.terms[j]]);
+				}
+				terms.sort(function(t1, t2) {
+					return t1.space.order - t2.space.order;
+				});
+				for (var j = 0; j < terms.length; j++) {
+					var term = terms[j];
+					contestsListHtml.push("<p><span class='");
+					contestsListHtml.push(term.space.name.toLowerCase());
+					contestsListHtml.push("'>");
+					contestsListHtml.push(term.space.name);
+					contestsListHtml.push(" </span> <span> ");
+					contestsListHtml.push(term.name);
+					contestsListHtml.push(" </span></p>");
+				}
+				contestsListHtml.push("</div></div>");
+			}
+			//alert('unique count' + uniqueCount);
+			container.find(".contest-count .count").text(uniqueCount);
+            container.find(".contest-count").removeClass("singular plural")
+                    .addClass(uniqueCount == 1 ? "singular" : "plural");
+			//contestsListHtml.push("<div class='otherContestsInfo'>");
+			//contestsListHtml.push(jQuery(".otherContestsInfoContainer").html());
+			//contestsListHtml.push("</div>");
+			
+			jQuery(".otherContestsInfoContainer").hide();
+			container.find(".contest-list").html(contestsListHtml.join(''));
+			
+			container.find(".contest-list").slideDown();
+			
+			jQuery(".showall").show();
+			jQuery(".hideall").hide();
+		}
+		
+		function renderBreadcrumbSections(termsToDisplay) {
+			var currentTerm = termsToDisplay[0];
+			var sectionsHtml = [];
+			var container = jQuery(".contest-outline-right");
+			// mark all sections as eligible for removal
+			jQuery(".section-list .section").addClass("sectionForRemoval");
+
+			container.find('.section-list .active').removeClass('active');
+			container.find("#sectionDetails_" + currentTerm.id).addClass('active');
+			
+			for (var i = 0; i < termsToDisplay.length; i++) {
+				var term = termsToDisplay[i];
+				var styleClass='section slevel' + (i+1) + ' s' + (i+1) + (term == currentTerm ? ' active' : '');
+				// check if term isn't already visible
+				var sectionElement = jQuery("#sectionDetails_" + term.id);
+				if (sectionElement.length > 0) {
+					// remove "for removal" mark
+					sectionElement.removeClass("sectionForRemoval");
+					continue;
+				}
+				sectionsHtml.push('<div class="');
+				sectionsHtml.push(styleClass);
+				sectionsHtml.push('" id="sectionDetails_');
+				sectionsHtml.push(term.id);
+				sectionsHtml.push('"><div class="spacr"><a href="#" class="txt" data-term-id="');
+				sectionsHtml.push(term.id);
+				sectionsHtml.push('"');
+				if (term.isSpace) {
+					sectionsHtml.push(" data-is-space='true' ");
+				}
+				sectionsHtml.push('>');
+				sectionsHtml.push(term.name);
+				sectionsHtml.push('</a></div></div>');
+			}
+			// all sections that are marked for removal append to separate container and slide it up
+			var forRemovalContainer = jQuery("<div class='forRemoval'><!-- --></div>");
+			forRemovalContainer.appendTo(container.find('.section-list')).append(jQuery(".sectionForRemoval"));
+			
+			// append to show container to section-list and set it's html to all new sections
+			var toShowContainer = jQuery("<div style='display: none;' class='toShowContainer'></div>");
+			toShowContainer.appendTo(container.find('.section-list')).html(sectionsHtml.join(""));
+			
+			container.find(".contest-list").hide();
+			if (forRemovalContainer.children().length > 0) {
+				forRemovalContainer.slideUp({complete: function() {
+				
+					// after sliding is complete remove unnecessary sections and show new sections
+					forRemovalContainer.remove();
+					toShowContainer.slideDown({complete: function() {
+						// move new sections to section-list as a main container and remove "toShowContainer" 
+					
+					}});
+				}});
+			}
+			else {
+				forRemovalContainer.remove();
+				toShowContainer.slideDown();
+			}
+			if (toShowContainer.children().length > 0) {
+				toShowContainer.find(".section").appendTo(container.find('.section-list'));
+				toShowContainer.remove();
+			}
+			container.find("#sectionDetails_" + currentTerm.id).addClass('active');
+			
+
+		}
+		
+		function showSpaceContests(spaceId) {
+			var currentSpace = ontologySpaces[spaceId];
+			window.location.hash = "space=" + spaceId + "_" + escape(currentSpace.name);
+			
+			// update links in show active dropdown
+			jQuery(".show-active li a").each(function(idx, elem) {
+				var elem = jQuery(elem);
+				var href = elem.attr('href');
+				var hashPos = href.indexOf("#");
+				
+				if (hashPos >= 0) {
+					href = href.substring(0, hashPos);
+				}
+				elem.attr('href', href + window.location.hash);
+				
+			});
+
+			var otherContestsInfoContainer = jQuery(".otherContestsInfoContainer");
+			if (currentSpace.otherContests.length > 0) {
+				otherContestsInfoContainer.find(".count").text(currentSpace.otherContests.length);
+				otherContestsInfoContainer.find(".otherContestsCount").show().removeClass("plural singular")
+                        .addClass(currentSpace.otherContests.length == 1 ? "singular" : "plural");
+			}
+
+            refreshInactiveContestDisplay(currentSpace.otherContests);
+			
+			renderBreadcrumbSections([currentSpace]);
+			renderContests(currentSpace.contests, currentSpace);
+			
+			
+		}
+		function showTermContests(termId) {
+			var container = jQuery(".contest-outline-right");
+			var currentTerm = ontologyTerms[termId];
+			
+			jQuery(".cintro").hide();
+			container.show();
+			container.find(".contest-count .count").text(currentTerm.contests.length);
+			
+			window.location.hash = "term=" + termId + "_" + escape(currentTerm.name);
+			// update toggle type link 
+			var otherContestsInfoContainer = jQuery(".otherContestsInfoContainer");
+			var showOtherContestsLink = otherContestsInfoContainer.find(".showOtherContestsLink");
+			showOtherContestsLink.attr('href', showOtherContestsLink.attr("data-base-url") + window.location.hash);
+
+			// update links in show active dropdown
+			jQuery(".show-active li a").each(function(idx, elem) {
+				var elem = jQuery(elem);
+				var href = elem.attr('href');
+				var hashPos = href.indexOf("#");
+				
+				if (hashPos >= 0) {
+					href = href.substring(0, hashPos);
+				}
+				elem.attr('href', href + window.location.hash);
+				
+			});
+			
+			if (currentTerm.otherContests.length > 0) {
+				otherContestsInfoContainer.find(".count").text(currentTerm.otherContests.length);
+				otherContestsInfoContainer.find(".otherContestsCount").show().removeClass("plural singular")
+                        .addClass(currentTerm.otherContests.length == 1 ? "singular" : "plural");
+			}
+			else {
+				otherContestsInfoContainer.find(".otherContestsCount").hide();
+			}
+
+            refreshInactiveContestDisplay(currentTerm.otherContests);
+			
+			var termAndParents = [];
+			var term = currentTerm;
+			while (term != null) {
+				termAndParents.push(term);
+				term = term.parent;
+			}
+			termAndParents.push(currentTerm.space);
+			
+			termAndParents.reverse();
+			renderBreadcrumbSections(termAndParents);
+			
+			renderContests(currentTerm.contests, currentTerm.space);
+			
+		}
+
+        function refreshInactiveContestDisplay(contests) {
+            if (contests.length == 0) {
+                jQuery(".section-contest-count-container .other-contest-count").hide();
+            }
+
+            jQuery(".other-contest-count").removeClass("singular plural")
+                    .addClass(contests.length == 1 ? "singular" : "plural");
+            jQuery(".other-contest-count .count").text(contests.length);
+
+            if (!showAllContests) {
+                var countContainer = jQuery(".section-contest-count-container .contest-count");
+                var otherCountContainer = jQuery(".section-contest-count-container .other-contest-count");
+                otherCountContainer.css('display', 'inline-block');
+
+                // Update link
+                jQuery('.other-contest-count .showOtherContestsLink').each(function() {
+                    $(this).attr('href', $(this).attr("data-base-url") + window.location.hash);
+                });
+
+
+                if (showActiveContests) {
+                    countContainer.find(".active-title").show();
+                    otherCountContainer.find(".inactive-title").show();
+                } else {
+                    countContainer.find(".inactive-title").show();
+                    otherCountContainer.find(".active-title").show();
+                }
+            }
+        }
+		jQuery(".contest-outline-left").on('click', 'a', function(event) {
+			event.preventDefault();
+			var that = this;
+			var self = jQuery(this);
+			if (self.hasClass('showall') || self.hasClass('hideall')) {
+				return;
+			}
+			var container = self.parent();
+			container.addClass('currentlyClicked');
+			jQuery('.contest-outline-left li.active').not('.currentlyClicked').removeClass('active');
+			jQuery('.contest-outline-left a.open').each(function() {
+				if (that == this) return;
+				
+				var parent = jQuery(this).parent();
+				if (!parent.hasClass('currentlyClicked') && parent.find(".currentlyClicked").length == 0) {
+					// this is different branch than the one currently clicked, close it
+					parent.find(".open").removeClass("open");
+					parent.find("> ul").slideUp();
+				}
+			});
+			container.removeClass('currentlyClicked').toggleClass('active');
+			if (!container.hasClass('active')) {
+				container.find("> ul").slideUp();
+				self.removeClass('open');
+			}
+			else {
+				self.addClass('open');
+				container.find("> ul").slideDown();
+				
+				// if this is a space, open also it's root term
+				if (container.parent().hasClass('level0')) {
+					showSpaceContests(container.attr('data-space-id'));
+				}
+				if (container.find("> ul > li").length == 1) {
+						container.find("> ul > li > a").not(".open").addClass('open');
+						container.find("> ul > li > ul").slideDown();
+				//		showTermContests(container.find("> ul > li > a").attr('data-term-id'));
+				}
+				//}
+
+			}
+			
+			
+
+			//else {
+			//	container.find("> ul").slideUp();
+			//}
+			var attr = self.attr('data-term-id');
+			if (typeof attr !== 'undefined' && attr !== false) { 
+				showTermContests(attr);
+			}
+		});
+
+		jQuery(".contest-outline-right").on('click', '.ctest > a.trigger', function(event) {
+			event.preventDefault();
+			var self = jQuery(this);
+			
+			self.parent().addClass('currentlyClicked');
+			var otherContests = jQuery(".contest-outline-right").find(".ctest").not(".currentlyClicked");
+			otherContests.find("a").removeClass("active");
+			otherContests.find(".detail").slideUp();
+			self.parent().removeClass('currentlyClicked');
+			
+			self.toggleClass('active');
+			if (self.hasClass('active')) {
+				self.parent().find('> .detail').slideDown();
+			}
+			else {
+				self.parent().find('.detail').slideUp();
+			}
+		});
+		
+		jQuery(".expand a").click(function() {
+			jQuery(".expand a").toggle();
+			if (jQuery(this).hasClass('showall')) {
+				jQuery(".contest-outline-left a").addClass('open');
+				jQuery(".contest-outline-left .level0 ul").slideDown();
+			}
+			else {
+				jQuery(".contest-outline-left a").removeClass('open');
+				jQuery(".contest-outline-left .level0 ul").slideUp();
+			}
+		});
+
+		jQuery(".contest-outline-right .section-list").on('click', 'a', function(event) {
+			event.preventDefault();
+			if (jQuery(this).attr('data-is-space')) {
+				jQuery("#space_trigger_" + jQuery(this).attr('data-term-id')).click();
+			}
+			else {
+				jQuery("#ontologyTerm_" + jQuery(this).attr('data-term-id')).find('> a').click();
+			}
+		});
+		
+		// initialize the screen with term provided in hash (if present) 
+		var termIdHashRegex = /#term=(\d*)_.*/;
+		var spaceIdHashRegex = /#space=(\d*)_.*/;
+		
+		var match = termIdHashRegex.exec(window.location.hash);
+		if (match != null) {
+			var termId = match[1];
+			showTermContests(termId);
+			var term = ontologyTerms[termId];
+			jQuery("#ontologyTerm_" + termId).addClass('active');
+			var termContainer = null;
+			while (term != null) {
+				termContainer = jQuery("#ontologyTerm_" + term.id);
+				termContainer.find('> ul').slideDown();
+				termContainer.find('> a').addClass('open');
+				jQuery("#ontologyterm_" + term.id).slideDown();
+				term = term.parent;
+			}
+			var spaceContainer = termContainer.parent().parent();
+			spaceContainer.find("> ul").slideDown();
+			termContainer.parent().slideDown();
+			spaceContainer.find("a.section-head").addClass("open");
+		}
+		
+		var spaceMatch = spaceIdHashRegex.exec(window.location.hash);
+		if (spaceMatch != null) {
+			var spaceId = spaceMatch[1];
+			jQuery("#space_trigger_" + spaceId).click();
+		}
+		if (spaceMatch == null && match == null) {
+			// show first space
+			jQuery(".level0 .section-head.trigger").eq(0).click();
+		
+		}
+		
+		]]>
+	</script>
+</jsp:root>

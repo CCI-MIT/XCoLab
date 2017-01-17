@@ -1,0 +1,150 @@
+package org.xcolab.view.pages.staffmemberswidget;
+
+import org.json.JSONObject;
+
+import org.xcolab.client.admin.AdminClient;
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+public class StaffMembersPreferences implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+    private final static String PORTLET_TITLE = "PORTLET_TITLE";
+    private final static String COLUMN_AMOUNT = "COLUMN_AMOUNT";
+    private final static String DISPLAY_PHOTO = "DISPLAY_PHOTO";
+    private final static String DISPLAY_URL = "DISPLAY_URL";
+    private final static String CATEGORY_ID = "CATEGORY_ID";
+
+
+    private final static int defaultColumnAmount = 4;
+    private final static boolean defaultDisplayPhoto = true;
+    private final static boolean defaultDisplayUrl = true;
+    private final static int defaultCategoryId = 1;
+    private final static String defaultPortletTitle = "";
+
+    private static final Map<Integer, String> categories;
+    static
+    {
+        categories = new HashMap<>();
+        categories.put(1, "Modeling Steering Committee: External Members");
+        categories.put(2, "Modeling Steering Committee: Climate CoLab Staff");
+        categories.put(3, "Expert Advisory Board");
+        categories.put(4, "Expert Council");
+        categories.put(5, "Project Staff: Team");
+        categories.put(6, "Project Staff: Vendors");
+        categories.put(7, "Project Staff: Advisors");
+        categories.put(8, "Project Staff: Alumni");
+        categories.put(9, "Advisors");
+        categories.put(10, "Judges");
+        categories.put(11, "Fellows 2014");
+        categories.put(12, "Fellows 2012 & 2013");
+        categories.put(13, "Catalysts");
+        categories.put(14, "Fellows 2015");
+        categories.put(15, "Impact Assessment Fellows 2015");
+        categories.put(16, "Fellows 2016");
+    }
+
+    public static Map<Integer, String> getCategories() {
+        return categories;
+    }
+
+    private String portletTitle;
+    private int columnAmount;
+    private boolean displayPhoto;
+    private boolean displayUrl;
+    private int categoryId;
+
+
+    public StaffMembersPreferences() {
+
+
+        JSONObject prefs = new JSONObject(ConfigurationAttributeKey.PORTLET_STAFF_MEMBERS_PREFERENCES.get());
+
+        columnAmount = defaultColumnAmount;
+        try {
+            columnAmount = Integer.parseInt((prefs.has(COLUMN_AMOUNT))?(prefs.getString(COLUMN_AMOUNT)):(String.valueOf(defaultColumnAmount)));
+        }
+        catch (NumberFormatException e) {
+            // ignore
+        }
+        
+        categoryId = defaultCategoryId;
+        try {
+            categoryId = Integer.parseInt((prefs.has(CATEGORY_ID))?(prefs.getString(CATEGORY_ID)):( String.valueOf(defaultCategoryId)));
+        } catch (Exception e) {
+            // ignore
+        }
+
+        try {
+            portletTitle = (prefs.has(PORTLET_TITLE))?(prefs.getString(PORTLET_TITLE)):(defaultPortletTitle);
+        } catch (Exception e) {
+            // ignore
+        }
+
+        displayPhoto = Boolean.parseBoolean((prefs.has(DISPLAY_PHOTO))?(prefs.getString(DISPLAY_PHOTO)):(String.valueOf(defaultDisplayPhoto)));
+        displayUrl = Boolean.parseBoolean((prefs.has(DISPLAY_URL))?(prefs.getString(DISPLAY_URL)):( String.valueOf(defaultDisplayUrl)));
+    }
+    
+    public String store() throws  IOException {
+        JSONObject prefs = new JSONObject();
+
+        prefs.put(COLUMN_AMOUNT, String.valueOf(columnAmount));
+        prefs.put(CATEGORY_ID, String.valueOf(categoryId));
+        prefs.put(DISPLAY_PHOTO, String.valueOf(displayPhoto));
+        prefs.put(DISPLAY_URL,String.valueOf(displayUrl));
+		prefs.put(PORTLET_TITLE, String.valueOf(portletTitle));
+
+        ConfigurationAttribute configurationAttribute = new ConfigurationAttribute();
+        configurationAttribute.setName(ConfigurationAttributeKey.PORTLET_STAFF_MEMBERS_PREFERENCES.name());
+        configurationAttribute.setStringValue(prefs.toString());
+        AdminClient.updateConfigurationAttribute(configurationAttribute);
+        
+        return null;
+    }
+
+	public String getPortletTitle() {
+        return portletTitle;
+	}
+
+	public void setPortletTitle(String portletTitle) {
+        this.portletTitle = portletTitle;
+	}
+
+    public int getColumnAmount() {
+        return columnAmount;
+    }
+
+    public void setColumnAmount(int columnAmount) {
+        this.columnAmount = columnAmount;
+    }
+
+    public boolean isDisplayPhoto() {
+        return displayPhoto;
+    }
+
+    public void setDisplayPhoto(boolean displayPhoto) {
+        this.displayPhoto = displayPhoto;
+    }
+
+    public boolean isDisplayUrl() {
+        return displayUrl;
+    }
+
+    public void setDisplayUrl(boolean displayUrl) {
+        this.displayUrl = displayUrl;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+}

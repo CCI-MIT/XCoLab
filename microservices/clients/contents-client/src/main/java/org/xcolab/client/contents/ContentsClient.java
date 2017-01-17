@@ -4,6 +4,7 @@ import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
+import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
@@ -25,6 +26,8 @@ public final class ContentsClient {
                     ContentArticleVersion.TYPES);
     private static final RestResource1<ContentFolder, Long> contentFolderResource =
             new RestResource1<>(contentService, "contentFolders", ContentFolder.TYPES);
+    private static final RestResource<ContentPage, Long> contentPageResource =
+            new RestResource1<>(contentService, "contentPages", ContentPage.TYPES);
 
     private ContentsClient() {
     }
@@ -156,5 +159,16 @@ public final class ContentsClient {
                 .nestedResource(folderId, "contentArticleVersions", ContentArticleVersion.TYPES)
                 .list()
                 .execute();
+    }
+
+    public static ContentPage getContentPage(String title) {
+        final ContentPage page = contentPageResource.list()
+                .queryParam("title", title)
+                .executeWithResult()
+                .getOneIfExists();
+        if (page == null) {
+            throw new ContentNotFoundException("Content page does not exist: " + title);
+        }
+        return page;
     }
 }

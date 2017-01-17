@@ -1,0 +1,19 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+    xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	version="2.0">
+
+	<script type="text/javascript">
+		jQuery(function() {
+			enableDirtyCheck();
+		});
+	</script>
+	<div class="cmsDetailsBox">
+		<jsp:directive.include file="./action.jspx"/>
+	</div>
+
+	<div class="cmsDetailsBox">
+		<h1>Ask your questions here: </h1>
+		<!-- TODO: re-enable comments -->
+		<!--<collab:discussionComments threadId="${currentTabWrapped.discussionId}" />-->
+	</div>
+</jsp:root>

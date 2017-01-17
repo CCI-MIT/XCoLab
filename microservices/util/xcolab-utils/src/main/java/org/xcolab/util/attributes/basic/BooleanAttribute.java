@@ -13,7 +13,7 @@ import org.xcolab.util.attributes.AttributeProvider;
 public class BooleanAttribute extends AbstractAttributeGetter<Boolean> {
 
     public BooleanAttribute(AttributeProvider<? extends Attribute> attributeProvider) {
-        super(attributeProvider, BooleanAttribute.class.getSimpleName());
+        super(attributeProvider);
     }
 
     @Override

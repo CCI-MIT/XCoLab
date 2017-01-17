@@ -1,0 +1,41 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+
+    <!--@elvariable id="showOnlyFeatured" type="java.lang.Boolean"-->
+    <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
+    <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
+    <!--@elvariable id="showContestManagementLink" type="java.lang.Boolean"-->
+    <!--@elvariable id="sortFilterPage" type="org.xcolab.commons.beans.SortFilterPage"-->
+    <!--@elvariable id="contest" type="org.xcolab.client.contest.pojo.Contest"-->
+    <!--@elvariable id="collectionCard" type="org.xcolab.portlets.proposals.wrappers.CollectionCardWrapper"-->
+    <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
+    <!--@elvariable id="contestsSorted" type="org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean"-->
+    <!--@elvariable id="collectionCards" type="org.xcolab.portlets.proposals.wrappers.CollectionCardFilterBean"-->
+
+
+    <div class="c-ListView tooltips">
+        <br/>
+        <proposalsPortlet:collectionListItem collectionCards="${collectionCards.collectionCards }"/>
+        <c:if test="${not empty contestsSorted.contestsFeatured }">
+            <proposalsPortlet:contestsListItem contests="${contestsSorted.contestsFeatured }" featured="true"/>
+        </c:if>
+        <c:if test="${not showOnlyFeatured}">
+            <c:if test="${not empty contestsSorted.contestsNormal }">
+                <proposalsPortlet:contestsListItem contests="${contestsSorted.contestsNormal }" featured="false"/>
+            </c:if>
+        </c:if>
+        <c:if test="${empty collectionCards.collectionCards}">
+            <c:if test="${empty contestsSorted.contestsFeatured}">
+                <c:if test="${empty contestsSorted.contestsNormal and not showOnlyFeatured}">
+					<div class="nothingFound">
+						We couldn't find any contests that match this criteria, but there may be some that are hidden.  Select "All Contests" in the dropdown above to see all of the active and completed contests in this collection.
+					</div>
+                    <br/><br/>
+                </c:if>
+            </c:if>
+        </c:if>
+	</div>
+</jsp:root>

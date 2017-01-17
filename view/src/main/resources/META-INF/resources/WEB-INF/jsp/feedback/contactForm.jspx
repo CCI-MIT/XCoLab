@@ -1,0 +1,77 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+		  xmlns:jsp="http://java.sun.com/JSP/Page"
+		  xmlns:form="http://www.springframework.org/tags/form"
+		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+		  version="2.0">
+	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+	<xcolab:layout>
+
+		<div class="about-left">
+			${leftMenuArticle.content}
+		</div>
+
+		<div class="about-right">
+			${topInfoArticle.content}
+
+			<script src='https://www.google.com/recaptcha/api.js'><!-- --></script>
+			<c:if test="${param.success }">
+				<h1>Message has been sent</h1>
+			</c:if>
+			<c:if test="${_isAdmin}">
+				<a href="/feedback/editPreferences" class="c-Button__admin">Edit preferences</a><br/>
+			</c:if>
+			<div id="contactForm" style="${not error ? 'display:none;' : ''};">
+
+
+				<form:form action="/feedback/sendFeedback" commandName="contactBean" id="contactFormForm">
+					<div class="reg_errors"><!--  --></div>
+					<form:errors cssClass="c-Alert c-Alert__error" />
+
+					<table class="reg">
+						<tr>
+							<th class="required" nowrap="nowrap">Your name</th>
+							<td><form:input cssClass="popupreg_input" path="name" /><br />
+								<div class="reg_errors"><!--  -->
+									<form:errors cssClass="c-Alert c-Alert__error" path="name" />
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th class="required" nowrap="nowrap">Email (only for reply)</th>
+							<td><form:input cssClass="popupreg_input" path="email" />
+								<div class="reg_errors"><!--  -->
+									<form:errors cssClass="c-Alert c-Alert__error" path="email" />
+								</div>
+							</td>
+						</tr>
+
+						<tr>
+							<th class="required" nowrap="nowrap">Message</th>
+							<td><form:textarea cssClass="shortBioContent" path="message" style="width: 100%; height: 150px;" />
+								<div class="reg_errors"><!--  -->
+									<form:errors cssClass="c-Alert c-Alert__error" path="message" />
+								</div></td>
+						</tr>
+
+						<tr>
+							<th class="required" nowrap="nowrap">Click on the box</th>
+							<td colspan="3">
+
+								<div class="g-recaptcha" data-sitekey="${recaptchaDataSiteKey}"><!-- --></div>
+
+							</td>
+						</tr>
+
+						<tr>
+							<th></th>
+							<td colspan="3">
+								<a class="c-Button__primary" href="javascript:;" onclick="$('#contactFormForm').submit()">Send message</a>
+							</td>
+						</tr>
+					</table>
+				</form:form>
+			</div>
+		</div>
+	</xcolab:layout>
+
+</jsp:root>

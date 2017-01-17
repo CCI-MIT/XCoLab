@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.service.members.domain.member.MemberDao;
+import org.xcolab.service.members.exceptions.ForbiddenException;
 import org.xcolab.service.members.exceptions.NotFoundException;
+import org.xcolab.service.members.exceptions.UnauthorizedException;
 import org.xcolab.service.members.service.login.LoginBean;
 import org.xcolab.service.members.service.member.MemberService;
 
@@ -34,9 +36,10 @@ public class MembersLoginRegisterController {
 
     @PostMapping("{memberId}/login")
     public boolean login(@PathVariable long memberId, @RequestBody LoginBean loginBean)
-            throws NotFoundException {
+            throws NotFoundException, UnauthorizedException, ForbiddenException {
         final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
-        return memberService.login(member, loginBean);
+        memberService.login(member, loginBean);
+        return true;
     }
 
     @GetMapping("generateScreenName")

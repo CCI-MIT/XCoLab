@@ -1,5 +1,5 @@
 function proposalCopy_loadContests(moveType) {
-    jQuery.getJSON('/web/guest/plans/-/plans/api/contestsOpenForProposals', function(data) {
+    jQuery.getJSON('/api/contestsOpenForProposals', function(data) {
     	var html = ["<table>"];
     	jQuery(data).each(function(idx, obj) {
     		html.push("<tr>");
@@ -41,7 +41,7 @@ function loadProposalSections() {
 	
 	if (proposalsLoaded) return;
 	
-    jQuery.getJSON('/web/guest/plans/-/plans/api/contests/' + baseContest.contestPK
+    jQuery.getJSON('/api/contests/' + baseContest.contestPK
 		+ '/proposals/' + baseProposal.proposalId
         + '/versions/' + baseProposal.version + '/sections', {
       }, function(data) {

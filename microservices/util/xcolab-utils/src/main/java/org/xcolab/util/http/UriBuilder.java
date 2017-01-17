@@ -3,6 +3,8 @@ package org.xcolab.util.http;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
+
 public class UriBuilder {
 
     private final UriComponentsBuilder uriComponentsBuilder;
@@ -61,5 +63,9 @@ public class UriBuilder {
 
     public String buildString() {
         return uriComponentsBuilder.build().toString();
+    }
+
+    public URI buildUri() {
+        return uriComponentsBuilder.build().toUri();
     }
 }

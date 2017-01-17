@@ -1,7 +1,0 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
-
-	<h2 style="margin-bottom: 10px;">
-	    ${responseTitle}
-	</h2>
-    ${responseText}
-</jsp:root>

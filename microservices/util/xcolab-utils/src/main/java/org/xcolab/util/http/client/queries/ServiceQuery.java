@@ -1,7 +1,7 @@
 package org.xcolab.util.http.client.queries;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.xcolab.util.http.RequestUtils;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.caching.CacheKey;
 import org.xcolab.util.http.caching.CacheRetention;
@@ -91,43 +91,43 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
 
     public R getChecked() throws EntityNotFoundException {
         if (cacheKey == null) {
-            return RequestUtils.get(uriBuilder, returnType);
+            return ServiceRequestUtils.get(uriBuilder, returnType);
         } else {
-            return RequestUtils.get(uriBuilder, returnType, cacheKey, CacheRetention.REQUEST);
+            return ServiceRequestUtils.get(uriBuilder, returnType, cacheKey, CacheRetention.REQUEST);
         }
     }
 
     public R get() {
         if (cacheKey == null) {
-            return RequestUtils.getUnchecked(uriBuilder, returnType);
+            return ServiceRequestUtils.getUnchecked(uriBuilder, returnType);
         } else {
-            return RequestUtils.getUnchecked(uriBuilder, returnType, cacheKey, cacheRetention);
+            return ServiceRequestUtils.getUnchecked(uriBuilder, returnType, cacheKey, cacheRetention);
         }
     }
 
     public List<T> getList() {
         if (cacheKey == null) {
-            return RequestUtils.getList(uriBuilder, typeReference);
+            return ServiceRequestUtils.getList(uriBuilder, typeReference);
         } else {
             //TODO : Implement cache for service lists
-            return RequestUtils.getList(uriBuilder, typeReference);
+            return ServiceRequestUtils.getList(uriBuilder, typeReference);
         }
     }
 
     public R post() {
-        return RequestUtils.post(uriBuilder, null, returnType);
+        return ServiceRequestUtils.post(uriBuilder, null, returnType);
     }
 
     public R post(Object pojo) {
-        return RequestUtils.post(uriBuilder, pojo, returnType);
+        return ServiceRequestUtils.post(uriBuilder, pojo, returnType);
     }
 
     public boolean put() {
-        return RequestUtils.put(uriBuilder);
+        return ServiceRequestUtils.put(uriBuilder);
     }
 
     public boolean delete() {
-        return RequestUtils.delete(uriBuilder);
+        return ServiceRequestUtils.delete(uriBuilder);
     }
 
     @Override
@@ -143,6 +143,7 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
         return this;
     }
 
+    @Override
     public ServiceQuery<T, R> queryParam(String name, Object... values) {
         uriBuilder.queryParam(name, values);
         return this;

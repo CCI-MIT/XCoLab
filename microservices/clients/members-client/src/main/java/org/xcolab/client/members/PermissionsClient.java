@@ -1,6 +1,7 @@
 package org.xcolab.client.members;
 
 import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Role_;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -26,6 +27,10 @@ public final class PermissionsClient {
 
     public static boolean canAdminAll(Long memberId) {
         return memberHasRole(memberId, MemberRole.ADMINISTRATOR.getRoleId());
+    }
+
+    public static boolean canAdminAll(Member member) {
+        return member != null && canAdminAll(member.getId_());
     }
 
     public static boolean canJudge(Long memberId, Long contestId) {

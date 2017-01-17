@@ -32,4 +32,9 @@ public class AdminClient {
             ConfigurationAttribute configurationAttribute) {
         return configurationAttributeResource.create(configurationAttribute).execute();
     }
+
+    public static boolean updateConfigurationAttribute(
+            ConfigurationAttribute configurationAttribute) {
+        return configurationAttributeResource.update(configurationAttribute,configurationAttribute.getName()).execute();
+    }
 }

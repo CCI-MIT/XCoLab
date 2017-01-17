@@ -1,0 +1,9 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          version="2.0">
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <xcolab:layout>
+        <h2>Access denied</h2>
+        <p>You are not logged into your account or do not have the correct permissions to access this page. Please login and try again.</p>
+    </xcolab:layout>
+</jsp:root>

@@ -1,0 +1,210 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:portlet="http://java.sun.com/portlet_2_0"
+          version="2.0">
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <xcolab:layout>
+        <!--@elvariable id="contestCompleted" type="java.lang.Boolean"-->
+
+        <jsp:directive.include file="./init_contest.jspx"/>
+
+        <jsp:useBean id="proposals" type="org.xcolab.view.pages.proposals.wrappers.ProposalsSortFilterBean" scope="request" />
+        <jsp:useBean id="sortFilterPage" type="org.xcolab.view.util.pagination.SortFilterPage" scope="request" />
+
+        <c:set var="showJudgingStatus" scope="request"
+               value="${proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions}"/>
+
+        <div id="content">
+            <jsp:directive.include file="./contestProposals/header.jspx"/>
+            <jsp:directive.include file="./contestProposals/header_contest_details.jspx"/>
+
+            <div class="c-Headline__fold">
+                <c:if test="${contest.hideRibbons and contestCompleted}">
+                    <div class="fold-message">
+                        <h3>We’re tallying the votes… winners will be announced soon!</h3>
+                    </div>
+                </c:if>
+            </div>
+            <div class="c-Headline c-Headline__subhead">
+                <h2>
+                    <span>${fn:length(proposals.proposals)}</span>
+                    <c:choose>
+                        <c:when test="${fn:length(proposals.proposals) == 1}">
+                            ${contestType.proposalName}
+                        </c:when>
+                        <c:otherwise>
+                            ${contestType.proposalNamePlural}
+                        </c:otherwise>
+                    </c:choose>
+                </h2>
+
+                <c:if test="${proposalsPermissions.isCreationAllowedByPhase }">
+                    <c:set var="createProposalURL" value="${contest.newProposalLinkUrl}"/>
+                </c:if>
+                <c:choose>
+                    <c:when test="${contest.isSharedContest}">
+                        <script>
+                            function handleOnClickAtSupportBtn(event){
+                                return showSharedContestAutoRegPopUp(function(ref){
+                                    if(deferUntilLoginTargeted()){
+                                        window.location = "${createProposalURL}";
+                                    }
+
+                                },${contest.contestPK });
+                            }
+                        </script>
+                    </c:when>
+                    <c:otherwise>
+                        <script>
+                            function handleOnClickAtSupportBtn(){
+                                return deferUntilLoginTargeted('${createProposalURL}');
+                            }
+                        </script>
+                    </c:otherwise>
+                </c:choose>
+
+                <div class="right">
+                    <c:if test="${proposalsPermissions.isCreationAllowedByPhase }">
+                        <a class="c-Button__primary large" href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
+                           onclick="if(!handleOnClickAtSupportBtn()) return false;">
+                            <span>CREATE</span> ${contestType.proposalName}
+                        </a>
+                    </c:if>
+                </div>
+            </div>
+            <table class="c-Table contest-proposals tooltips">
+                <thead>
+                    <tr class="c-Table__row--title">
+                        <th class="c-Table__cell--title propname-authors">
+                            <span>
+                                <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=NAME&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'NAME' ? not sortFilterPage.sortAscending : true }" />
+                                <a href="${sortURL }">${contestType.proposalName} name</a>
+                                <div class="c-Tooltip">
+                                    click to sort by name
+                                    <div class="c-Tooltip__arrow"><!-- --></div>
+                                </div>
+                                <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="NAME" />
+                            </span>
+                            /&#160;
+                            <span>
+                                <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=AUTHOR&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'AUTHOR' ? not sortFilterPage.sortAscending : true }" />
+                                <a href="${sortURL }">Author(s)</a>
+                                <div class="c-Tooltip">
+                                    click to sort by author
+                                    <div class="c-Tooltip__arrow"><!-- --></div>
+                                </div>
+                                <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="AUTHOR" />
+                            </span>
+                        </th>
+                        <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and not contest.hideRibbons)}">
+                            <th class="c-Table__cell--title b-layout__center votes">
+                                <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=VOTES&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'VOTES' ? not sortFilterPage.sortAscending : true }" />
+                                <a href="${sortURL }">
+                                    <img src="${_themeImageFolder}/icon-proposal-vote.png" />
+                                </a>
+                                <div class="c-Tooltip">
+                                    click to sort by<br />number of votes
+                                    <div class="c-Tooltip__arrow"><!-- --></div>
+                                </div>
+                                <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="VOTES" />
+                            </th>
+                        </c:if>
+                        <c:if test="${not contestPhase.canVote}">
+                            <th class="c-Table__cell--title b-layout__center supporters">
+                                <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=SUPPORTERS&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'SUPPORTERS' ? not sortFilterPage.sortAscending : true }" />
+                                <a href="${sortURL }">
+                                    <img src="${_themeImageFolder}/icon-proposal-thumb.png" />
+                                </a>
+                                <div class="c-Tooltip">
+                                    click to sort by<br />number of supporters
+                                    <div class="c-Tooltip__arrow"><!-- --></div>
+                                </div>
+                                <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SUPPORTERS" />
+                            </th>
+                        </c:if>
+                        <th class="c-Table__cell--title b-layout__center comments">
+                            <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=COMMENTS&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'COMMENTS' ? not sortFilterPage.sortAscending : true }" />
+                            <a href="${sortURL }">
+                                <img src="${_themeImageFolder}/icon-list-comment.png" />
+                            </a>
+                            <div class="c-Tooltip">
+                                click to sort by<br />number of comments
+                                <div class="c-Tooltip__arrow"><!-- --></div>
+                            </div>
+                            <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="COMMENTS" />
+                        </th>
+                        <c:if test="${not contest.isContestCompleted(contestPhase)}">
+                            <th class="c-Table__cell--title b-layout__center modified">
+
+                                <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=MODIFIED&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'MODIFIED' ? not sortFilterPage.sortAscending : true }" />
+                                <a href="${sortURL }">Modified</a>
+                                <div class="c-Tooltip">
+                                    click to sort by date
+                                    <div class="c-Tooltip__arrow"><!-- --></div>
+                                </div>
+                                <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MODIFIED" />
+                            </th>
+                            <th class="c-Table__cell--title b-layout__center contributors">
+
+                                <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=CONTRIBUTORS&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'CONTRIBUTORS' ? not sortFilterPage.sortAscending : true }" />
+                                <a href="${sortURL }">Contributors</a>
+                                <div class="c-Tooltip">
+                                    click to sort by contributor
+                                    <div class="c-Tooltip__arrow"><!-- --></div>
+                                </div>
+                                <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTRIBUTORS" />
+                            </th>
+                        </c:if>
+                        <c:if test="${not contestCompleted and (proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions)}">
+                            <th class="c-Table__cell--title b-layout__center advancing-status">
+                                Advancing Status<br />
+
+                                <!-- Sorting by Fellows -->
+                                <c:if test="${proposalsPermissions.canFellowActions}">
+                                    <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=SCREENINGSTATUS&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'SCREENINGSTATUS' ? not sortFilterPage.sortAscending : true }" />
+
+                                    <a href="${sortURL }" style="padding-left: 5px;">Fellows</a>
+                                    <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SCREENINGSTATUS" />
+                                </c:if>
+                                <div class="c-Tooltip">
+                                    Status of the fellows' screening decision
+                                    <div class="c-Tooltip__arrow"><!-- --></div>
+                                </div>
+                                <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=JUDGESTATUS&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'JUDGESTATUS' ? not sortFilterPage.sortAscending : true }" />
+                                <!-- Sorting by judges -->
+
+                                <a href="${sortURL }">
+                                    Judges
+                                </a>
+                                <div class="c-Tooltip">
+                                    Status of the judges' ratings
+                                    <div class="c-Tooltip__arrow"><!-- --></div>
+                                </div>
+                                <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="JUDGESTATUS" />
+
+                                <!-- Sorting by Overall -->
+                                <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=OVERALLSTATUS&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'OVERALLSTATUS' ? not sortFilterPage.sortAscending : true }" />
+                                <a href="${sortURL }">
+                                    Overall
+                                </a>
+                                <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="OVERALLSTATUS" />
+                                <div class="c-Tooltip">
+                                    State of the final advancing decision
+                                    <div class="c-Tooltip__arrow"><!-- --></div>
+                                </div>
+                            </th>
+                        </c:if>
+                    </tr>
+                </thead>
+                <tbody>
+                    <proposalsPortlet:proposalsList proposals="${proposals.proposalsWithRibbons }" showShadebar="true"/>
+                    <proposalsPortlet:proposalsList proposals="${proposals.proposalsNormal }" showShadebar="${fn:length(proposals.proposalsWithRibbons) > 0 and not contest.hideRibbons}"/>
+                </tbody>
+            </table>
+        </div>
+    </xcolab:layout>
+</jsp:root>

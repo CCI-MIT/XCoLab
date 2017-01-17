@@ -1,7 +1,9 @@
 package org.xcolab.client.members;
 
+import org.xcolab.client.members.exceptions.LockoutLoginException;
 import org.xcolab.client.members.exceptions.MemberCategoryNotFoundException;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.exceptions.PasswordLoginException;
 import org.xcolab.client.members.exceptions.UncheckedMemberNotFoundException;
 import org.xcolab.client.members.pojo.Contact_;
 import org.xcolab.client.members.pojo.LoginBean;
@@ -18,6 +20,9 @@ import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.util.http.exceptions.Http401UnauthorizedException;
+import org.xcolab.util.http.exceptions.Http403ForbiddenException;
+import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
 import java.util.List;
 
@@ -333,6 +338,13 @@ public final class MembersClient {
                 .get();
     }
 
+    public static boolean validatePassword(String password, String encodedPassword) {
+        return memberResource.service("validatePassword", Boolean.class)
+                .queryParam("password", password)
+                .queryParam("hash", encodedPassword)
+                .get();
+    }
+
     public static boolean updatePassword(long memberId, String newPassword) {
         return memberResource.service(memberId, "updatePassword", Boolean.class)
                 .queryParam("newPassword", newPassword)
@@ -343,13 +355,22 @@ public final class MembersClient {
         return memberResource.create(member).execute();
     }
 
-    public static boolean login(long memberId, String password, String remoteIp, String redirectUrl) {
+    public static boolean login(long memberId, String password, String remoteIp, String redirectUrl)
+            throws PasswordLoginException, LockoutLoginException {
         LoginBean loginBean = new LoginBean();
         loginBean.setPassword(password);
         loginBean.setIpAddress(remoteIp);
         loginBean.setRedirectUrl(redirectUrl);
-        return memberResource.service(memberId, "login", Boolean.class)
-                .post(loginBean);
+        try {
+            return memberResource.service(memberId, "login", Boolean.class)
+                    .post(loginBean);
+        } catch (UncheckedEntityNotFoundException e) {
+            throw new UncheckedMemberNotFoundException(memberId);
+        } catch (Http401UnauthorizedException e) {
+            throw new PasswordLoginException();
+        } catch (Http403ForbiddenException e) {
+            throw new LockoutLoginException();
+        }
     }
 
     //TODO: this shouldn't be done manually
@@ -357,7 +378,9 @@ public final class MembersClient {
         LoginLog loginLog = new LoginLog();
         loginLog.setUserId(memberId);
         loginLog.setIpAddress(ipAddress);
-        loginLog.setEntryUrl(redirectUrl.substring(0,Math.min(250, redirectUrl.length())));
+        loginLog.setEntryUrl(redirectUrl != null
+                ? redirectUrl.substring(0, Math.min(250, redirectUrl.length()))
+                : "");
 
         return loginLogResource.create(loginLog)
                 .execute();
