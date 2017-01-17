@@ -66,7 +66,7 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
     }
 
     private String getConfirmationLink(String linkText) {
-        final String confirmationUrl = String.format("%s/web/guest/plans/-/plans/confirmVote/%d/%d/%s",
+        final String confirmationUrl = String.format("%s"+this.proposal.getProposalUrl()+"/confirmVote/%d/%d/%s",
                 baseUrl, votedProposal.getProposalId(), recipient.getUserId(), confirmationToken);
         return String.format(LINK_FORMAT_STRING, confirmationUrl, linkText);
     }

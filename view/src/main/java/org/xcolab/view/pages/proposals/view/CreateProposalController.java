@@ -57,11 +57,14 @@ public class CreateProposalController extends BaseProposalsController {
     //-- @RequestMapping(params = "pageToDisplay=createProposal")
     @GetMapping("/contests/{contestYear}/{contestUrlName}/createProposal")
     public String createProposals(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam String contestUrlName, @RequestParam(required = false) Long baseProposalId,
-            @RequestParam(required = false, defaultValue = "-1") int baseProposalVersion,
-            @RequestParam(required = false) Long baseContestId, Model model)
+            @PathVariable String contestUrlName, @PathVariable(required = false) Long baseProposalId,
+            @PathVariable(required = false) Integer baseProposalVersion,
+            @PathVariable(required = false) Long baseContestId, Model model)
             throws ProposalsAuthorizationException {
 
+        if(baseProposalVersion == null){
+            baseProposalVersion = -1;
+        }
         return showContestProposals( request,  response,
                  contestUrlName,   baseProposalId,
          baseProposalVersion,

@@ -103,6 +103,14 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         return showProposalDetailsPage(proposalId,contestYear,contestUrlName,null,false,false,null,null,false,model,request);
     }
 
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/voted")
+    public String showProposalDetailsVote(
+            @PathVariable Long proposalId,
+            @PathVariable String contestUrlName,
+            @PathVariable Long contestYear,
+            Model model, HttpServletRequest request) {
+        return showProposalDetailsPage(proposalId,contestYear,contestUrlName,null ,false,false,null,null,true,model,request);
+    }
     @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}")
     public String showProposalDetailsPhase(
             @PathVariable Long proposalId,

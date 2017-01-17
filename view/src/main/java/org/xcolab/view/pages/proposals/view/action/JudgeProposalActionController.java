@@ -303,6 +303,7 @@ public class JudgeProposalActionController {
     }
 
     //-- @RequestMapping(params = {"action=saveJudgingFeedback"})
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ADVANCING/saveJudgingFeedback")
     public void saveJudgingFeedback(HttpServletRequest request, Model model, HttpServletResponse response,
             @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean, BindingResult result)
             throws IOException {

@@ -10,7 +10,7 @@
             <jsp:directive.include file="./init_proposal_tab.jspx" />
 
             <jsp:directive.include file="./proposalDetails/header.jspx" />
-
+            <xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>
             <!--ProposalTeamTabController-->
             <jsp:useBean id="requestMembershipBean" scope="request" type="org.xcolab.view.pages.proposals.requests.RequestMembershipBean"/>
             <jsp:useBean id="requestMembershipInviteBean" scope="request" type="org.xcolab.view.pages.proposals.requests.RequestMembershipInviteBean"/>
@@ -50,10 +50,10 @@
                                  width="24" height="22" alt="request membership" class="request-membership-icon"/>
 
 
-                            <c:set var="inviteMemberURL" value="${proposalUrl}/inviteMember"/>
+                            <c:set var="inviteMemberURL" value="${proposal.proposalUrl}/tab/TEAM/inviteMember"/>
 
 
-                            <c:set var="inviteMemberValidationURL" value="${proposalUrl}/inviteMembers-validateRecipient"/>
+                            <c:set var="inviteMemberValidationURL" value="${proposal.proposalUrl}/inviteMembers-validateRecipient"/>
 
 
                             <form:form id="requestInviteForm" action="${inviteMemberURL }" method="post" commandName="requestMembershipInviteBean" style="float:left;">

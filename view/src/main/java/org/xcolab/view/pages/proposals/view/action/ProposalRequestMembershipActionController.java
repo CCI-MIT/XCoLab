@@ -89,7 +89,7 @@ public class ProposalRequestMembershipActionController {
     }
 
 
-    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ADMIN/inviteMember")
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/TEAM/inviteMember")
     public void invite(HttpServletRequest request, Model model,
             HttpServletResponse response, @Valid RequestMembershipInviteBean requestMembershipInviteBean, BindingResult result)
             throws IOException {
@@ -145,6 +145,7 @@ public class ProposalRequestMembershipActionController {
 
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/inviteMembers-validateRecipient")
+
     public void validateRecipient(HttpServletRequest request, HttpServletResponse response) {
         String input = request.getParameter("term");
 

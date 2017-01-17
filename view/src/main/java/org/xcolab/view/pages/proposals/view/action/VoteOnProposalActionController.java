@@ -121,7 +121,7 @@ public class VoteOnProposalActionController {
                     final ProposalVote otherVote = proposalMemberRatingClient
                             .getProposalVoteByProposalIdUserId(proposal.getProposalId(), otherUser.getUserId());
                     //check if vote is less than 12 hours old
-                if(otherVote!=null) {
+                if(otherVote!=null&&otherUser.getId_() != member.getId_() ) {
                     if (new DateTime(otherVote.getCreateDate()).plusHours(12).isAfterNow()) {
                         recentVotesFromSharedIP++;
                     }
@@ -152,7 +152,7 @@ public class VoteOnProposalActionController {
 
     }
 
-    //-- @RequestMapping(params = "pageToDisplay=confirmVote")
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/confirmVote")
     public String confirmVote(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam long proposalId, @RequestParam long userId,
             @RequestParam String confirmationToken) {
@@ -175,6 +175,6 @@ public class VoteOnProposalActionController {
             throw new DatabaseAccessException(e);
         }
         model.addAttribute("success", success);
-        return "confirmVote";
+        return "proposals/confirmVote";
     }
 }

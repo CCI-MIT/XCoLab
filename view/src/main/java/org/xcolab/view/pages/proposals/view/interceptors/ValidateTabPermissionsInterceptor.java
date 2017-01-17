@@ -35,8 +35,7 @@ public class ValidateTabPermissionsInterceptor extends HandlerInterceptorAdapter
                             (ProposalTabWrapper) modelAndView.getModelMap()
                                     .get("currentTabWrapped");
                     if (!currentTabWrapped.getCanAccess()) {
-                        ErrorMessage.error(AuthenticationError.CREDENTIALS.getMessage())
-                                .flashAndRedirect(request, response, SsoEndpoint.REGISTER_OR_LOGIN.getUrl());
+                        response.sendRedirect("notAllowed.jsp");
                         //throw new ProposalsAuthorizationException(
                          //       "User isn't allowed to access requested tab");
                     }

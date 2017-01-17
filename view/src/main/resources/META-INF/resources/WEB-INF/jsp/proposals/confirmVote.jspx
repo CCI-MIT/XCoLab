@@ -1,7 +1,9 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
         xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
         version="2.0">
-
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <xcolab:layout>
     <jsp:directive.include file="./init.jspx"/>
 
     <!--@elvariable id="success" type="java.lang.Boolean"-->
@@ -10,7 +12,7 @@
     <div id="content">
         <c:choose>
             <c:when test="${success}">
-                <jsp:useBean id="proposal" type="org.xcolab.portlets.proposals.wrappers.ProposalWrapper" scope="request"/>
+                <jsp:useBean id="proposal" type="org.xcolab.client.proposals.pojo.Proposal" scope="request"/>
                 <div class="c-Alert__success__message">
                     Thank you for confirming your vote for the ${contestType.proposalName} ${proposal.name}. Your vote has been counted.
                 </div>
@@ -32,4 +34,5 @@
             </c:otherwise>
         </c:choose>
     </div>
+    </xcolab:layout>
 </jsp:root>

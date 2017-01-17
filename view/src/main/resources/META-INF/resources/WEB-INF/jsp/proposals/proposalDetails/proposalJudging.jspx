@@ -2,14 +2,10 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+	 version="2.0">
 
-    <portlet:actionURL var="saveJudgingFeedbackURL">
-        <portlet:param name="contestId" value="${contest.contestPK }"/>
-        <portlet:param name="contestUrlName" value="${contest.contestUrlName }"/>
-        <portlet:param name="proposalId" value="${proposal.proposalId }"/>
-        <portlet:param name="action" value="saveJudgingFeedback"/>
-    </portlet:actionURL>
+    <c:set var="saveJudgingFeedbackURL" value="${proposal.proposalUrl}/tab/ADVANCING/saveJudgingFeedback?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId}"/>
+
 
     <form:form id="fellowRatingForm" action="${saveJudgingFeedbackURL}" method="post" commandName="judgeProposalBean">
         <form:hidden path="contestPhaseId" />

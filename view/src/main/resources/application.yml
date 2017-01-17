@@ -1,5 +1,5 @@
 server:
-  port: 18082
+  port: 18083
   compression:
     enabled: true
   error:
