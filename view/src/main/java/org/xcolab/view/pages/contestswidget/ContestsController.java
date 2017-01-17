@@ -75,7 +75,7 @@ public class ContestsController {
 
 
         model.addAttribute("contests", contestWrappers);
-        model.addAttribute("preferences", contestPreferences);
+        model.addAttribute("contestPreferences", contestPreferences);
         //TODO: allow setting on a per-contest/per portlet basis
         model.addAttribute("contestType",
                 ContestClientUtil.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));

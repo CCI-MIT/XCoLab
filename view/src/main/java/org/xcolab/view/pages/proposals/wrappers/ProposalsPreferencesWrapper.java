@@ -31,6 +31,10 @@ public class ProposalsPreferencesWrapper {
     private String contestTypeId;
     private ContestType contestType;
 
+    private String title;
+    private String allContestsUrl;
+    private String allContestsTitle;
+
     private String proposalIdsToBeMoved;
     private long moveFromContestId;
     private long moveToContestId;
@@ -83,6 +87,15 @@ public class ProposalsPreferencesWrapper {
         AdminClient.updateConfigurationAttribute(configurationAttribute);
     }
 
+    public String getTitle(){
+        return title;
+    }
+    public String getAllContestsUrl(){
+        return allContestsUrl;
+    }
+    public String getAllContestsTitle(){
+        return allContestsTitle;
+    }
     public long getRibbonId() {
         return ribbonId;
     }

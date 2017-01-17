@@ -3,14 +3,14 @@
     xmlns:collab="http://climatecolab.org/tags/collab_1.0" version="2.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
-    <!--@elvariable id="preferences" type="org.xcolab.portlets.contests.ContestPreferences"-->
+    <!--@elvariable id="contestPreferences" type="org.xcolab.portlets.contests.ContestPreferences"-->
     <!--@elvariable id="contestType" type="org.xcolab.client.contest.pojo.ContestType"-->
 
     <div>
         <c:if test="${_isAdmin}">
-            <a href="/contestswidget/editPreferences" class="c-Button__admin">Edit preferences</a><br/>
+            <a href="/contestswidget/editPreferences" class="c-Button__admin">Edit contestPreferences</a><br/>
         </c:if>
-        <h2> ${preferences.title} <span><a href="${preferences.allContestsUrl}">${preferences.allContestsTitle}</a></span></h2>
+        <h2> ${contestPreferences.title} <span><a href="${contestPreferences.allContestsUrl}">${contestPreferences.allContestsTitle}</a></span></h2>
         <c:forEach var="contest" items="${contests }">
             <div class="c-ContestBox backgroundLight">
                 <div class="c-ContestBox__image">
@@ -31,7 +31,7 @@
                     </h3>
                     ${contest.contestName}
                 </div>
-                <c:if test="${preferences.showCounts}">
+                <c:if test="${contestPreferences.showCounts}">
                     <div class="c-ContestBox__meta">
                         <div class="c-ContestBox__meta__count">
                             <div class="prop"><strong>${contest.proposalsCount}</strong>
