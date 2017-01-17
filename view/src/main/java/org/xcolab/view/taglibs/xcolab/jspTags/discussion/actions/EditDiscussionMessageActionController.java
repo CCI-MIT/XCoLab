@@ -1,5 +1,7 @@
 package org.xcolab.view.taglibs.xcolab.jspTags.discussion.actions;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
@@ -10,7 +12,9 @@ import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
@@ -22,11 +26,11 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//@Controller
-//@RequestMapping("view")
+@Controller
 public class EditDiscussionMessageActionController extends BaseDiscussionsActionController {
 
-   // @RequestMapping(params = "action=editComment")
+
+    @PostMapping("/discussions/editComment")
     public void handleAction(HttpServletRequest request, HttpServletResponse response,
             @RequestParam long commentId,
             @RequestParam("comment") String content,
@@ -59,8 +63,8 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
         }
 
         Comment comment = commentClient.getComment(commentId);
-        //TODO:commented out to compile
-        //comment.setContent(HtmlUtil.cleanSome(content, LinkUtils.getBaseUri(request)));
+
+        comment.setContent(HtmlUtil.cleanSome(content, LinkUtils.getBaseUri(request)));
         commentClient.updateComment(comment);
 
         redirectToReferrer(request, response);

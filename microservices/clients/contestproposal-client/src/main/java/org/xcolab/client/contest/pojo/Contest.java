@@ -472,10 +472,10 @@ public class Contest extends AbstractContest {
 
     public String getResourceArticleUrl() {
         if(this.getIsSharedContestInForeignColab()) {
-            return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()+"/web/guest/wiki/-/wiki/resources/" + this.getContestYear()
+            return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()+"/resources/" + this.getContestYear()
                     + "/" + this.getContestUrlName();
         } else {
-            return "/web/guest/wiki/-/wiki/resources/" + this.getContestYear()
+            return "/resources/" + this.getContestYear()
                     + "/" + this.getContestUrlName();
         }
     }

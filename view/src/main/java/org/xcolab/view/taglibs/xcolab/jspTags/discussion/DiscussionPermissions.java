@@ -5,6 +5,7 @@ import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.view.auth.MemberAuthUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,7 +17,7 @@ public class DiscussionPermissions {
     protected boolean isLoggedIn;
 
     public DiscussionPermissions(HttpServletRequest request) {
-        memberId = 0;//MemberAuthUtil.getMemberId(request);
+        memberId = MemberAuthUtil.getMemberId(request);
         isLoggedIn = memberId > 0;
     }
 

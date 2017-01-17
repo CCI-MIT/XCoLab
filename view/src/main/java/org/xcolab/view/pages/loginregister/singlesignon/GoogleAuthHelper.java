@@ -122,6 +122,7 @@ public final class GoogleAuthHelper {
         return userInfo;
     }
 
+
     private String deserialize(String tokenString) {
         String[] pieces = splitTokenString(tokenString);
         String jwtPayloadSegment = pieces[1];

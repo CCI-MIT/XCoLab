@@ -34,7 +34,7 @@ import javax.validation.Valid;
 @Controller
 public class ContactController {
 
-    private static final String CONTACT_VIEW_NAME = "feedback/contactForm";
+    private static final String CONTACT_VIEW_NAME = "/feedback/contactForm";
 
     private final static Long LEFT_MENU_ARTICLE_ID = 1550l;
     private final static Long TOP_INFO_ARTICLE_ID = 13l;

@@ -1,0 +1,208 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:portlet="http://java.sun.com/portlet_2_0"
+          xmlns:addthis="http://www.addthis.com/help/api-spec"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          version="2.0">
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <xcolab:layout>
+        <!--@elvariable id="voted" type="java.lang.Boolean"-->
+        <!--@elvariable id="votingDeadline" type="java.lang.String"-->
+        <!--@elvariable id="targetMoveHistory" type="org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory"-->
+        <!--@elvariable id="sourceMoveHistories" type="java.util.List<org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory>"-->
+
+        <jsp:directive.include file="./init_proposal_tab.jspx" />
+        <jsp:directive.include file="./proposalDetails/header.jspx"/>
+
+
+        <div id="content">
+            <div class="prop-left ${contestType.showProposalSummary ? '' : 'full-width'}">
+                <div class="edit-prop-wrap" style="padding-top: 0">
+                    <div class="inner">
+                        <div style="display:inline-block; width: 616px;">
+                            <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
+                                <div class="edit-prop-butts" style="line-height: normal;">
+                                    <collab:proposalLink proposal="${proposal}" text="Go to current" />
+                                </div>
+                            </c:if>
+
+
+                            <div class="edit-prop-butts" style="line-height: normal;">
+                                <a href="javascript:;" id="versionContainerTrigger" onclick="triggerHistoryVisibility();">Show
+                                    history</a>
+                                <span id="versionId" style="display: none;">${proposal.selectedVersion.version}</span>
+                            </div>
+
+                            <c:if test="${not proposal.isLatestVersion}">
+                                <div class="edit-prop-butts" style="line-height: normal;">
+
+                                    <portlet:actionURL var="proposalRevertURL">
+                                        <portlet:param name="contestId" value="${contest.contestPK }" />
+                                        <portlet:param name="planId" value="${proposal.proposalId}" />
+                                        <portlet:param name="version" value="${proposal.selectedVersion.version}" />
+                                        <portlet:param name="action" value="proposalRevert" />
+                                    </portlet:actionURL>
+                                    <a href="${proposalRevertURL}">Revert</a>
+                                </div>
+                            </c:if>
+
+                            <c:if test="${proposal.wasMovedToContest != null}">
+                                <div>This ${contestType.proposalName} was moved to: <collab:contestLink contest="${proposal.wasMovedToContest}" /></div>
+                            </c:if>
+
+                            <c:if test="${not empty targetMoveHistory}">
+                                <div>
+                                    <c:choose>
+                                        <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'MOVE_PERMANENTLY'}">
+                                            This ${contestType.proposalName} was moved here from <collab:contestLink contest="${targetMoveHistory.sourceContest}"/>
+                                        </c:when>
+                                        <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'COPY'}">
+                                            This ${contestType.proposalName} was reopen here from <collab:contestLink contest="${targetMoveHistory.sourceContest}"/>
+                                        </c:when>
+                                        <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'FORK'}">
+                                            This ${contestType.proposalName} was forked from <collab:proposalLink proposal="${targetMoveHistory.sourceProposal}"/>
+                                            in the ${contestType.contestName} <collab:contestLink contest="${targetMoveHistory.sourceContest}"/>
+                                        </c:when>
+                                    </c:choose>
+                                    <c:if test="${proposalsPermissions.canAdminAll}">
+                                        by <collab:userLinkSimple userId="${targetMoveHistory.movingUser.userId}" text="${targetMoveHistory.movingUser.screenName}"/>
+                                    </c:if>
+                                </div>
+                            </c:if>
+
+                            <c:forEach var="sourceMoveHistory" items="${sourceMoveHistories}">
+                                <c:choose>
+                                    <c:when test="${sourceMoveHistory.moveTypeEnum.name() == 'COPY'
+                                                and (sourceMoveHistory.sourcePhaseId == null
+                                                        or sourceMoveHistory.sourcePhaseId == contestPhase.contestPhasePK)}">
+                                        <div>
+                                            This ${contestType.proposalName} was reopen in <collab:contestLink contest="${sourceMoveHistory.sourceContest}"/>
+                                            <c:if test="${proposalsPermissions.canAdminAll}">
+                                                by <collab:userLinkSimple userId="${sourceMoveHistory.movingUser.userId}" text="${sourceMoveHistory.movingUser.screenName}"/>
+                                            </c:if>
+                                        </div>
+                                    </c:when>
+                                </c:choose>
+                            </c:forEach>
+
+                            <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
+                                <div class="lastedited">
+                                    Currently viewing version from
+                                    <script>document.write(moment.unix(${proposal.selectedVersion.createDate.time} / 1000).format("MM/DD/YYYY hh:mm A"));
+                                        var version = ${proposal.selectedVersion.version};
+                                        triggerHistoryVisibility();
+                                    </script>
+                                    by
+                                    <proposalsPortlet:userLinkSimple userId="${proposal.selectedVersion.authorId}"
+                                                                     text="${proposal.userForSelectedVersion.screenName}"/>
+                                </div>
+                            </c:if>
+
+                        </div>
+
+                        <div id="versions" class="versionsContainer hidden">
+                            <div class="versions">
+                                <div class="historyTable">
+                                    <table>
+                                        <tbody class="ui-datatable-data ui-widget-content">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <c:if test="${not empty proposal.pitch }">
+                    <h2>Pitch</h2>
+
+                    <p class="intro">${proposal.pitch}</p>
+
+                    <div class="div1"><!--  --></div>
+                </c:if>
+
+                <h2>Description</h2>
+                <c:if test="${empty proposal.sections or fn:length(proposal.description) gt 0}">
+                            ${proposal.description }
+                </c:if>
+                <c:if test="${not empty proposal.sections }">
+                    <c:forEach var="section" items="${proposal.sections }" varStatus="status">
+                        <h3>${section.title }</h3>
+
+                        <proposalsPortlet:proposalSectionContent section="${section }" />
+
+                        <c:if test="${not status.last }">
+                            <div class="div2"><!--  --></div>
+                        </c:if>
+                    </c:forEach>
+                </c:if>
+
+                <c:catch var ="catchException">
+                    <c:if test="${proposalsPermissions.canJudgeActions and
+                    (not proposalsPermissions.canFellowActions or (proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions) and proposal.selectedJudges.size() > 0)}">
+                            <!-- TODO check what this is used for: and proposal.judgeReviewStatus.statusValue > 0   -->
+                        <jsp:directive.include file="./proposalDetails/proposalJudging.jspx"/>
+                    </c:if>
+                </c:catch>
+            </div>
+            <jsp:directive.include file="./proposalDetails/proposalSummary.jspx"/>
+        </div>
+        <div id="copyProposalContainer" style="display: none;">
+            <div class="c-Popup__wrapper p1" id="copyProposalPopup">
+                <div class="c-Popup">
+                    <h4>Please choose the ${contestType.contestName} to which you'd like to copy this ${contestType.proposalName}</h4>
+                    <div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
+                        <div id="copyProposalContests"><!--  --></div>
+                            <a class="c-Button__primary" href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <c:if test="${voted}">
+            <div id="popup_justVoted" class="c-Popup__wrapper small" style="">
+                <div class="c-Popup">
+                    <div class="closepopuplogin">
+                        <a href="javascript:;" onclick="jQuery('#popup_justVoted').hide()"><img src="${themeDisplay.pathThemeImages}/help_close.png" width="20" height="20" alt="X" /></a>
+                    </div>
+                    <h2 style="color: #66b035;">Thank you for voting!</h2>
+                    <div>
+                        <p style="color: #545454; margin-top: 5px;">
+                            You just voted for <b>${proposal.name}</b> in the ${contestType.contestName} <b>${proposal.contest.contestName}</b>. <br />
+                            <br />
+                            <c:if test="${not empty votingDeadline}">
+                                You can vote for one ${contestType.proposalName} in each ${contestType.contestName}, and can change your vote as many times as you’d like until ${votingDeadline}.<br/>
+                            </c:if>
+                        </p>
+                        <h4 style="color: #30a3fb;">Share your vote and invite others to vote, too:</h4>
+                        <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="width: 205px;">
+                            <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
+                            <a class="addthis_button_twitter" id="addThisButton2" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
+                            <a class="addthis_button_email" id="addThisButton3" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
+                            <a class="addthis_button_linkedin" id="addThisButton4" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </c:if>
+        <div id="messaging-overlay" class="c-Popup__wrapper small" style="display: none;">
+            <div class="c-Popup" style="overflow: hidden;">
+                <jsp:directive.include file="./proposalDetails/proposalShare.jspx" />
+            </div>
+        </div>
+        <script>
+            var currentProposal = {
+                    proposalId: ${proposal.proposalId},
+                    version: ${proposal.version},
+                    contestId: ${proposal.contest.contestPK}
+            }
+        </script>
+        <script type="text/javascript">
+            jQuery(function() {
+                enableDirtyCheck();
+            });
+        </script>
+    </xcolab:layout>
+</jsp:root>

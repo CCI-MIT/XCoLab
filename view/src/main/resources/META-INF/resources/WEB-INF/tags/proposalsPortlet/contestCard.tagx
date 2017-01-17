@@ -1,0 +1,70 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:collab="http://climatecolab.org/tags/collab_1.0" version="2.0" >
+
+    <!--@elvariable id="contestType" type="org.xcolab.client.contest.pojo.ContestType"-->
+
+	<jsp:directive.attribute name="contest" type="org.xcolab.client.contest.pojo.Contest" required="true" rtexprvalue="true" description="Contest" />
+    <jsp:directive.attribute name="index" required="true" rtexprvalue="true" description="loopIndex" />
+    <a href="${contest.contestUrl}">
+        <div class="c-ContestCard">
+            <div class="c-ContestCard__text">
+                <h3 class="c-ContestCard__text__title">
+                    ${contest.contestShortName}
+                </h3>
+                ${contest.contestName }
+            </div>
+            <div class="c-ContestCard__meta__flags">
+                <c:if test="${contest.flag ge 0}">
+                    <c:choose>
+                        <c:when test="${not empty contest.flagText and contest.flag == 1}">
+                            <div class="c-ContestCard__meta__flag--color"> ${contest.flagText} </div>
+                        </c:when>
+                        <c:when test="${not empty contest.flagText and contest.flag == 2}">
+                            <div class="c-ContestCard__meta__flag--grey"> ${contest.flagText} </div>
+                        </c:when>
+                        <c:when test="${contest.contestActive and not empty contest.activePhase.status and contest.activePhase.status eq 'COMPLETED'}">
+                            <div class="c-ContestCard__meta__flag--grey"> Winners to be announced </div>
+                        </c:when>
+                        <c:when test="${not empty contest.activePhase.status and contest.activePhase.status eq 'CLOSED' or contest.activePhase.status eq 'COMPLETED'}">
+                            <div class="c-ContestCard__meta__flag--grey"> ${contest.activePhase.name} </div>
+                        </c:when>
+                        <c:when test='${not empty contest.activePhase.status}'>
+                            <div class="c-ContestCard__meta__flag--grey"> ${contest.activePhase.name} </div>
+                        </c:when>
+                    </c:choose>
+                </c:if>
+            </div>
+            <div class="c-ContestCard__image">
+                <img src="${contest.logoPath}" alt="${contest.contestShortName }" />
+            </div>
+            <div class="c-ContestCard__meta__count">
+                <div class="prop"><strong>${contest.proposalsCount}</strong>
+                    <c:choose>
+                        <c:when test="${contest.proposalsCount == 1}">
+                            ${contestType.proposalName}</c:when>
+                        <c:otherwise> ${contestType.proposalNamePlural}</c:otherwise>
+                    </c:choose>
+                </div>
+                <c:choose>
+                    <c:when test="${not empty contest.activePhase and contest.activePhase.canVote }">
+                        <div class="comm" rendered="${contest.activePhase.canVote}"><strong>${contest.votesCount}</strong>
+                            <c:choose>
+                                <c:when test="${contest.votesCount == 1}"> vote</c:when>
+                                <c:otherwise> votes</c:otherwise>
+                            </c:choose>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="comm" rendered="${not contest.activePhase.canVote}"><strong>${contest.totalCommentsCount}</strong>
+                            <c:choose>
+                                <c:when test="${contest.totalCommentsCount == 1}"> comment</c:when>
+                                <c:otherwise> comments</c:otherwise>
+                            </c:choose>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+         </div>
+    </a>
+</jsp:root>

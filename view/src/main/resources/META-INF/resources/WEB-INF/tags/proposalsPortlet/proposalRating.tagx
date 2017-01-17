@@ -1,0 +1,47 @@
+<jsp:root
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+        xmlns:form="http://www.springframework.org/tags/form"
+        version="2.0">
+    <jsp:directive.attribute name="ratingTypes" type="java.util.Collection" required="true" rtexprvalue="true" description="List of ProposalRatingTypeWrapper" />
+    <jsp:directive.attribute name="ratingValuesPath" type="java.lang.String" required="true" rtexprvalue="true" description="Path to values" />
+
+    <c:forEach var="type" items="${ratingTypes}">
+        <c:if test="${type.isActive}">
+            <div>
+                    <h5 class="fieldWithTooltip tooltipAbove">
+                        <a>${type.label}</a>
+                    </h5>
+                    <div class="c-Tooltip">
+                        ${type.description}
+                    </div>
+            </div>
+            <table class="judgingForm">
+                <c:forEach var="value" items="${type.ratingValues}">
+                    <col width="${fn:substringBefore(100 / type.ratingValues.size(), '.')}%" />
+                </c:forEach>
+                <tbody>
+                <tr>
+                    <c:forEach var="value" items="${type.ratingValues}">
+                        <td>
+                            <label for="rating${value.id_}" class="fieldWithTooltip tooltipAbove">
+                                ${value.name}
+                            </label>
+                            <div class="c-Tooltip">
+                                ${value.description}
+                            </div>
+                        </td>
+
+                    </c:forEach>
+                </tr>
+                <tr>
+                    <c:forEach var="value" items="${type.ratingValues}">
+                        <td><form:radiobutton id="rating${value.id_}" path="${ratingValuesPath}[${type.id}]" value="${value.id_}"/></td>
+                    </c:forEach>
+                </tr>
+                </tbody>
+            </table>
+        </c:if>
+    </c:forEach>
+</jsp:root>

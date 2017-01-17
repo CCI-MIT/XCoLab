@@ -87,7 +87,12 @@ public class ProposalUnversionedAttributeDaoImpl implements ProposalUnversionedA
         if (name != null) {
             query.addConditions(PROPOSAL_UNVERSIONED_ATTRIBUTE.NAME.eq(name));
         }
-        return query.fetchOne().into(ProposalUnversionedAttribute.class);
+        Record rec = query.fetchOne();
+        if(rec == null){
+            return null;
+        }else {
+            return rec.into(ProposalUnversionedAttribute.class);
+        }
     }
 
     @Override

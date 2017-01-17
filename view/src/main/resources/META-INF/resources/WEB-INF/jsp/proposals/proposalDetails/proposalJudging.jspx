@@ -1,0 +1,100 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:form="http://www.springframework.org/tags/form"
+	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+	 version="2.0">
+
+    <c:set var="saveJudgingFeedbackURL" value="${proposal.proposalUrl}/tab/ADVANCING/saveJudgingFeedback?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId}"/>
+
+
+    <form:form id="fellowRatingForm" action="${saveJudgingFeedbackURL}" method="post" commandName="judgeProposalBean">
+        <form:hidden path="contestPhaseId" />
+        <form:hidden path="screeningUserId" id="judgeUserId"/>
+
+        <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}">
+            <i style="float: right;">Transfer rating/comment for selected judge:</i>
+        </c:if>
+
+        <h3><c:if test="${proposalsPermissions.canJudgeActions}">Judge </c:if>Rating</h3>
+        <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}">
+            <select id="judges-select">
+                <c:forEach var="judge" items="${proposal.selectedJudgeUsers}">
+                    <proposalsPortlet:userPortraitSelectOption
+                            screenName="${judge.screenName}"
+                            fullName="${judge.fullName}"
+                            portraitId="${judge.portraitId}"
+                            userId="${judge.userId}"
+                            width="30" height="30"
+                            judgeRatingSatus="${proposal.getJudgeReviewFinishedStatusUserId(judge.userId)}"/>
+                </c:forEach>
+            </select>
+        </c:if>
+        <i style="font-size:10pt;">Please <br />
+            1) Rate this ${contestType.proposalName}; <br />
+            2) Provide written feedback in the text box below; and <br />
+            3) Click save. <br />
+            Both ratings and feedback must be completed for the evaluation to save.
+            <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions or proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}}">
+                Your rating will be visible to the Judging team only.
+            </c:if>
+        </i>
+        <div class="clearfix"><!-- --></div>
+        <br/>
+        <form:errors cssClass="c-Alert c-Alert__error" />
+
+        <proposalsPortlet:proposalRating ratingTypes="${judgeProposalBean.ratingTypes}" ratingValuesPath="ratingValues" />
+
+        <c:if test="${proposalsPermissions.canJudgeActions}">
+            <h3>Would you like to see this proposal advance to the next round?</h3>
+            <form:select path="shouldAdvanceProposal">
+                <form:option value="" label="--- select one ---" />
+                <form:option value="true" label="Yes" />
+                <form:option value="false" label="No" />
+            </form:select>
+
+        </c:if>
+
+        <h3 style="margin-top: 10px;">${proposalsPermissions.canJudgeActions ? 'Judge' : ''} Feedback</h3>
+        <div class="form-errors"><!--  -->
+            <form:errors cssClass="c-Alert c-Alert__error" path="comment" />
+        </div>
+
+        <form:textarea path="comment" cssClass="c-Comment__box" style="width:100%;" placeholder="Write your review here..." />
+
+        <div class="clearfix" style="width: 100%;">
+            <a class="c-Button__primary" id="saveProposalJudging" style="display:block; float:right; margin-top: 10px;" href="#">Submit</a>
+        </div>
+
+    </form:form>
+    <div id="judge-evaluation-criteria">
+        <h3 style="display: inline-block">Evaluation Criteria</h3>
+        <proposalsPortlet:ratingCriteriaText ratingTypes="${judgeProposalBean.ratingTypes}"/>
+    </div>
+
+    <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}">
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
+                var $judgesSelectElement = jQuery('#judges-select');
+                $judgesSelectElement.ddslick({
+                    showSelectedHTML: true,
+                    width: 260,
+                    imagePosition: "left",
+                    onSelected: function (data) {
+                        jQuery('#judgeUserId').val(data.selectedData.value);
+                    }
+                });
+
+                $judgesSelectElement.css({'float': 'right'});
+            });
+        </script>
+    </c:if>
+
+    <script type="text/javascript">
+        jQuery(function() {
+            jQuery("#saveProposalJudging").click(function () {
+                disableDirtyCheck();
+                jQuery("#fellowRatingForm").submit();
+            });
+        });
+    </script>
+</jsp:root>
