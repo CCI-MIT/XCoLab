@@ -164,7 +164,7 @@
             <div id="popup_justVoted" class="c-Popup__wrapper small" style="">
                 <div class="c-Popup">
                     <div class="closepopuplogin">
-                        <a href="javascript:;" onclick="jQuery('#popup_justVoted').hide()"><img src="${themeDisplay.pathThemeImages}/help_close.png" width="20" height="20" alt="X" /></a>
+                        <a href="javascript:;" onclick="jQuery('#popup_justVoted').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a>
                     </div>
                     <h2 style="color: #66b035;">Thank you for voting!</h2>
                     <div>
@@ -183,7 +183,7 @@
                             <a class="addthis_button_linkedin" id="addThisButton4" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
                         </div>
                     </div>
-                    <div class="clearfix"></div>
+                    <div class="clearfix"><!-- --></div>
                 </div>
             </div>
         </c:if>

@@ -36,5 +36,5 @@ public interface MemberDao {
             Long facebookId, String openId, Long imageid, Long liferayUserId);
 
     List<Member> findByIp(String ip) ;
-
+    List<Member> findByScreenNameName(String name);
 }

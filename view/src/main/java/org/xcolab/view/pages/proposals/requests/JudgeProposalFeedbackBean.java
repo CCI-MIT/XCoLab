@@ -1,4 +1,4 @@
-package org.xcolab.portlets.proposals.requests;
+package org.xcolab.view.pages.proposals.requests;
 
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.view.pages.proposals.requests.RatingBean;

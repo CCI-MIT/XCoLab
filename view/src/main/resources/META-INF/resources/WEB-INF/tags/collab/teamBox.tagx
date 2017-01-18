@@ -93,7 +93,7 @@
         var imgPortrait = document.createElement("img");
         imgPortrait.height = "40";
         imgPortrait.width = "40";
-        var imageSrc ="/image/user_male_portrait?screenName=" + screenName + "&amp;companyId=10112";
+        var imageSrc ="/image/user_male_portrait?userId=" + userId + "&amp;companyId=10112";
         imgPortrait.setAttribute("src", imageSrc);
         spanPortrait.appendChild(imgPortrait);
 
@@ -152,10 +152,11 @@
                   })
                   .autocomplete({
                     minLength: 0,
-                    source: function (request, response) {
+                    source: "/api/members/getUserByScreenName",
+                            /*function (request, response) {
                       $.ajax({
                         type: "GET",
-                        url: "/web/guest/members/-/members/users/partialName/" + $(userSelectorInput).val(),
+                        url: "/api/members/getUserByScreenName/" + $(userSelectorInput).val(),
                         dataType: 'json',
                         async: true,
                         success: function (data, textStatus, jqXHR) {
@@ -164,6 +165,8 @@
                           $.each(data, function(index, value) {
                             screenNames.push(value["screenName"]);
                             currentUserMap[value["screenName"]] = value["userId"];
+                            console.log(">>" + value["screenName"])
+                            console.log(">>" + value["userId"])
                           });
                           response(screenNames);
                         },
@@ -171,13 +174,14 @@
                           response([]);
                         }
                       });
-                    },
+                    },*/
                     focus: function () {
                       // prevent value inserted on focus
                       return false;
                     },
                     select: function (event, ui) {
-                      var userId = currentUserMap[jQuery.trim(ui.item.value)]; //userMap
+                      console.log(" >>>> " + ui)
+                      var userId = ui.item.id; //currentUserMap[jQuery.trim(ui.item.value)]; //userMap
                       if(members.indexOf(userId) == -1) {
                         members.push(userId);
                         memberIds.push("" + userId);
@@ -204,8 +208,8 @@
       }
 
       jQuery(document).ready(function() {
-        console.log("document ready...");
-        console.log("usermap: ", usersMap);
+        //console.log("document ready...");
+        //console.log("usermap: ", usersMap);
         initSearchMemberForm(usersMap);
       });
 

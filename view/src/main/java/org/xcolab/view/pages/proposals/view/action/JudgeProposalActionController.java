@@ -11,8 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -34,13 +32,14 @@ import org.xcolab.entity.utils.judging.ProposalReview;
 import org.xcolab.entity.utils.judging.ProposalReviewCsvExporter;
 import org.xcolab.entity.utils.portlet.session.SessionErrors;
 import org.xcolab.entity.utils.portlet.session.SessionMessages;
-import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
+
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.FellowProposalScreeningBean;
+import org.xcolab.view.pages.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.view.pages.proposals.requests.ProposalAdvancingBean;
 import org.xcolab.view.pages.proposals.requests.RatingBean;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
@@ -145,6 +144,7 @@ public class JudgeProposalActionController {
         if (permissions.getCanAdminAll() && !isUndecided && request.getParameter("isForcePromotion") != null && request.getParameter("isForcePromotion").equals("true")) {
             ContestClientUtil.forcePromotionOfProposalInPhase(proposal.getProposalId(), contestPhase.getContestPhasePK());
         }
+
         response.sendRedirect(proposal.getProposalLinkUrl(contest, contestPhase.getContestPhasePK()) + "/tab/ADVANCING");
     }
 

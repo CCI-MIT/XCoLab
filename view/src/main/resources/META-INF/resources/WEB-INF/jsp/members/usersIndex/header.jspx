@@ -1,0 +1,64 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:spring="http://www.springframework.org/tags"
+	xmlns:form="http://www.springframework.org/tags/form"
+	 version="2.0">
+
+    <!--@elvariable id="memberCategory" type="org.xcolab.client.members.pojo.MemberCategory"-->
+
+	<script type="text/javascript" src="/members-portlet/js/main.js"><!-- --></script>
+
+	<div id="bread" class="pro">
+		<a href="/web/guest/community">Community</a>&#160; <img
+			src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
+		<a href="/web/guest/members">Members</a>
+	</div>
+
+	<!-- HELP DIVS -->
+	<div class="c-Helpbox" id="help1" style="display: none;">
+		<div class="c-Helpbox__header">
+			<span class="c-Helpbox__header__title">Registration and Contacting Members</span>
+			<div class="c-Helpbox__header__close">
+				<a href="javascript:;" onclick="jQuery.cookie('climatecolab_hide_members_msg', 'true'); jQuery('#help1').hide()">
+				<img src="${_themeImageFolder}/helpbox_close.png" width="20" height="20" alt="X" /></a>
+			</div>
+		</div>
+		<div class="c-Helpbox__text">
+			Anyone in the world can become a member of the ${colabName}
+			community by&#160;<a href="/web/guest/loginregister">registering</a>
+			on the site. Send a message to a member by clicking on the screen
+			name below to open their profile and then selecting "Send message."
+		</div>
+		<script>
+			if (!jQuery.cookie("climatecolab_hide_members_msg")) jQuery("#help1").show();
+		</script>
+	</div>
+
+	<!-- HELP DIV -->
+    <c:if test="${not empty memberCategory and not empty memberCategory.description}">
+        <p>
+            ${memberCategory.description}
+        </p>
+    </c:if>
+
+	<div class="comm_disc-head">
+		<div class="comm_info-left members">
+        	<span>${usersCount}</span> Members
+		</div>
+		<div>
+
+			<div class="users-filter" style="position: relative;">
+				<c:set var="filterURL" value="/members?sortFilterPage.sortColumn=${sortFilterPage.sortColumn}&amp;sortFilterPage.sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}" />
+
+				<form action="${filterURL }" id="filterUsersForm" method="post">
+					<input class="comm_search" type="text" value="${sortFilterPage.filter }" placeholder="Filter users" name="filter" />
+					<button type="submit" class="c-Button__primary">Search</button>
+				</form>
+			</div>
+
+		</div>
+	</div>
+
+</jsp:root>
