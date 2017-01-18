@@ -1,11 +1,11 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-          xmlns:portlet="http://java.sun.com/portlet_2_0"
-          xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          version="2.0">
 
-    <portlet:defineObjects />
-    <liferay-theme:defineObjects />
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <xcolab:layout>
 
     <!--@elvariable id="currentCategory" type="org.xcolab.client.comment.pojo.Category"-->
     <!--@elvariable id="categories" type="java.util.List<org.xcolab.client.comment.pojo.Category>"-->
@@ -23,14 +23,14 @@
             window.location = '/web/guest/discussion/-/discussion/' + newUrl;
         }
     </script>
-
+        <collab:content articleId="${communityTopContentArticleId}" />
     <div id="bread" class="pro">
         <a href="/web/guest/community">Community</a>&#160;
-        <img src="${themeDisplay.pathThemeImages}/arrow.gif" width="8" height="8" />&#160;
+        <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
         <a href="/web/guest/discussion">Discussion</a>
         <c:if test="${not empty currentCategory}">
             &#160;
-            <img src="${themeDisplay.pathThemeImages}/arrow.gif" width="8" height="8" />&#160;
+            <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
             <a href="${currentCategory.linkUrl}">${currentCategory.name}</a>&#160;
         </c:if>
     </div>
@@ -46,7 +46,7 @@
 
                         <a onclick="if(!deferUntilLogin()){return false}else{return true}" class="b-Spacing__inline--large" href="/web/guest/discussion/-/discussion/threads/create">
                             <img style="vertical-align: middle;" height="30"
-                                 src="${themeDisplay.pathThemeImages}/icon_new-topic.png" /> new discussion
+                                 src="${_themeImageFolder}/icon_new-topic.png" /> new discussion
                         </a>
                     </div>
 
@@ -58,17 +58,12 @@
 
                 </div>
                 <div class="p-Discussion__right border-bottom">
-                    <portlet:actionURL var="subscribeUrl">
-                        <portlet:param name="action" value="subscribeCategory" />
-                        <portlet:param name="categoryId" value="${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
-                    </portlet:actionURL>
-                    <portlet:actionURL var="unsubscribeUrl">
-                        <portlet:param name="action" value="unsubscribeCategory" />
-                        <portlet:param name="categoryId" value="${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
-                    </portlet:actionURL>
+                    <c:set var="subscribeUrl" value="/discussion/subscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
+
+                    <c:set var="unsubscribeUrl" value="/dicussion/unsubscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
                     <a class="subscribeLinkSmall" href="${isSubscribed ? unsubscribeUrl : subscribeUrl}"
                        onclick="if(!deferUntilLogin()) return false;">
-                        <img src="${themeDisplay.pathThemeImages}/subscribe_small_2.png" /> ${isSubscribed ? 'Unsubscribe' : 'Subscribe'}
+                        <img src="${_themeImageFolder}/subscribe_small_2.png" /> ${isSubscribed ? 'Unsubscribe' : 'Subscribe'}
                     </a>
                 </div>
             </div>
@@ -78,13 +73,8 @@
                 <thead>
                     <tr class="c-Table__row--title">
                         <th class="c-Table__cell--title">
-                            <portlet:actionURL var="sortURL">
-                                <portlet:param name="action" value="sortCategory" />
-                                <portlet:param name="categoryId" value="${currentCategory.categoryId}" />
-                                <portlet:param name="sortColumn" value="TITLE" />
-                                <portlet:param name="currentSortColumn" value="${sortColumn}" />
-                                <portlet:param name="currentSortAscending" value="${sortAscending}" />
-                            </portlet:actionURL>
+                            <c:set var="sortURL" value="/discussion/sortCategory?categoryId=${currentCategory.categoryId}&amp;sortColumn=TITLE&amp;currentSortColumn=${sortColumn}&amp;currentSortAscending=${sortAscending}" />
+
                             <a href="${sortURL }">Title</a>
                             <div class="c-Tooltip">
                                 click to sort by title
@@ -94,13 +84,8 @@
                         </th>
 
                         <th class="c-Table__cell--title">
-                            <portlet:actionURL var="sortURL">
-                                <portlet:param name="action" value="sortCategory" />
-                                <portlet:param name="categoryId" value="${currentCategory.categoryId}" />
-                                <portlet:param name="sortColumn" value="REPLIES" />
-                                <portlet:param name="currentSortColumn" value="${sortColumn}" />
-                                <portlet:param name="currentSortAscending" value="${sortAscending}" />
-                            </portlet:actionURL>
+                            <c:set var="sortURL" value="/discussion/sortCategory?categoryId=${currentCategory.categoryId}&amp;sortColumn=REPLIES&amp;currentSortColumn=${sortColumn}&amp;currentSortAscending=${sortAscending}" />
+
                             <a href="${sortURL }">Replies</a>
                             <div class="c-Tooltip">
                                 click to sort by replies
@@ -110,13 +95,8 @@
                         </th>
 
                         <th class="c-Table__cell--title">
-                            <portlet:actionURL var="sortURL">
-                                <portlet:param name="action" value="sortCategory" />
-                                <portlet:param name="categoryId" value="${currentCategory.categoryId}" />
-                                <portlet:param name="sortColumn" value="LAST_COMMENTER" />
-                                <portlet:param name="currentSortColumn" value="${sortColumn}" />
-                                <portlet:param name="currentSortAscending" value="${sortAscending}" />
-                            </portlet:actionURL>
+                            <c:set var="sortURL" value="/discussion/sortCategory?categoryId=${currentCategory.categoryId}&amp;sortColumn=LAST_COMMENTER&amp;currentSortColumn=${sortColumn}&amp;currentSortAscending=${sortAscending}" />
+
                             <a href="${sortURL }">Last Commenter</a>
                             <div class="c-Tooltip">
                                 click to sort by last commenter
@@ -126,13 +106,8 @@
                         </th>
 
                         <th class="c-Table__cell--title">
-                            <portlet:actionURL var="sortURL">
-                                <portlet:param name="action" value="sortCategory" />
-                                <portlet:param name="categoryId" value="${currentCategory.categoryId}" />
-                                <portlet:param name="sortColumn" value="DATE" />
-                                <portlet:param name="currentSortColumn" value="${sortColumn}" />
-                                <portlet:param name="currentSortAscending" value="${sortAscending}" />
-                            </portlet:actionURL>
+                            <c:set var="sortURL" value="/discussion/sortCategory?categoryId=${currentCategory.categoryId}&amp;sortColumn=DATE&amp;currentSortColumn=${sortColumn}&amp;currentSortAscending=${sortAscending}" />
+
                             <a href="${sortURL }">Date</a>
                             <div class="c-Tooltip">
                                 click to sort by date
@@ -165,5 +140,6 @@
             </div>
         </div>
     </div>
+    </xcolab:layout>
 
 </jsp:root>

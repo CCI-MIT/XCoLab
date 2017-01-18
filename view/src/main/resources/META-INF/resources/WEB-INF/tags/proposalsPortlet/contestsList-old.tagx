@@ -58,10 +58,10 @@
                             <span class="fieldWithTooltip">
                                 <c:choose>
 									<c:when test="${not contest.judgeStatus}">
-										<img src="${themeDisplay.pathThemeImages}/icon_question-x.png"/>
+										<img src="${_themeImageFolder}/icon_question-x.png"/>
 									</c:when>
 									<c:otherwise>
-										<img src="${themeDisplay.pathThemeImages}/icon_question-chk.png"/>
+										<img src="${_themeImageFolder}/icon_question-chk.png"/>
 									</c:otherwise>
 								</c:choose>
                             </span>
@@ -83,10 +83,10 @@
 							<span class="fieldWithTooltip">
 								<c:choose>
 									<c:when test="${contest.screeningStatus}">
-										<img src="${themeDisplay.pathThemeImages}/icon_question-chk.png"/>
+										<img src="${_themeImageFolder}/icon_question-chk.png"/>
 									</c:when>
 									<c:otherwise>
-										<img src="${themeDisplay.pathThemeImages}/icon_question-x.png"/>
+										<img src="${_themeImageFolder}/icon_question-x.png"/>
 									</c:otherwise>
 								</c:choose>
 							</span>

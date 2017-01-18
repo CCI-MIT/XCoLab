@@ -1,12 +1,10 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 		  xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:portlet="http://java.sun.com/portlet_2_0"
-		  xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-		  xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-		  xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
+
+		  version="2.0">
 
 
-	<liferay-theme:defineObjects />
+
 
 	<!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
     <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
@@ -16,12 +14,8 @@
 
 	<c:forEach var="collectionCard" items="${collectionCards }">
         <c:if test="${collectionCard.visible}">
-            <portlet:renderURL var="changeCurrentContestCardURL">
-                <portlet:param name="currentCollectionCardId" value="${collectionCard.id}" />
-                <portlet:param name="showActiveContests" value="${showActiveContests }" />
-                <portlet:param name="showAllContests" value="${showAllContests }" />
-                <portlet:param name="viewType" value="LIST" />
-            </portlet:renderURL>
+            <c:set var="changeCurrentContestCardURL" value="/contests?currentCollectionCardId=${collectionCard.id}&amp;showActiveContests=${showActiveContests }&amp;showAllContests=${showAllContests }&amp;viewType=LIST" />
+
             <a href="${changeCurrentContestCardURL}" style="overflow:hidden;"> <!-- -->
                 <div class="c-ListItem--background-container" style="  margin-left: 110px;">
                     <div class="c-ListItem--background-container" style="right:5px; position: relative; bottom:5px;">

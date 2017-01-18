@@ -1,0 +1,32 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          version="2.0">
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <xcolab:layout>
+        <jsp:include page="init.jspx"/>
+        <!--@elvariable id="isSubscribed" type="java.lang.Boolean"-->
+
+        <div id="content">
+            <div id="bread" class="pro">
+                <a href="/web/guest/community">Community</a>&#160;
+                <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
+                <a href="/web/guest/discussion">Discussion</a>&#160;
+                <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
+                <a href="${thread.category.linkUrl}">${thread.category.name}</a>&#160;
+                <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
+                <a href="${thread.linkUrl}">${thread.title}</a>&#160;
+            </div>
+
+            <h1>${thread.title}</h1>
+
+            <script type="text/javascript">
+                jQuery(function() {
+                    initializeTextEditors();
+                    enableDirtyCheck();
+                });
+            </script>
+        </div>
+        <collab:discussionComments threadId="${thread.threadId}"/>
+    </xcolab:layout>
+</jsp:root>

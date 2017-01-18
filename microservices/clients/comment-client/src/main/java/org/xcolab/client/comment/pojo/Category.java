@@ -65,7 +65,7 @@ public class Category extends AbstractCategory {
     public String getLinkUrl() {
         final CategoryGroup categoryGroup = getCategoryGroup();
         if (categoryGroup != null) {
-            return categoryGroup.getLinkUrl() + "/-/discussion/category/" + getCategoryId();
+            return categoryGroup.getLinkUrl() + "/category/" + getCategoryId();
         }
         return "";
     }

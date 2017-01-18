@@ -230,4 +230,7 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newStringAttribute("PORTLET_PROPOSALS_PREFERENCES")
                     .build();
 
+    public static final AttributeGetter<String> PORTLET_DISCUSSION_PREFERENCES =
+            ConfigurationAttributes.newStringAttribute("PORTLET_DISCUSSION_PREFERENCES")
+                    .build();
 }

@@ -34,7 +34,7 @@
 					<label>
 						<strong>Contest URL name</strong>
 						<a class="helpTrigger" href="javascript:;"><img
-								src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15" height="15"/></a><br/>
+								src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/></a><br/>
 					</label>
 
 					<div class="addprophelp">
@@ -62,7 +62,7 @@
 					<label>
 						<strong>Contest Year</strong>
 						<a class="helpTrigger" href="javascript:;"><img
-								src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15" height="15"/></a><br/>
+								src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/></a><br/>
 					</label>
 
 					<div class="addprophelp">
@@ -90,7 +90,7 @@
 					<label>
 						<strong>Email Template URL</strong>
 						<a class="helpTrigger" href="javascript:;"><img
-								src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15" height="15"/></a><br/>
+								src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/></a><br/>
 					</label>
 
 					<div class="addprophelp">The corresponding wiki template URL</div>
@@ -112,7 +112,7 @@
 					<label>
 						<strong>Contest level</strong>
 						<a href="javascript:;" class="helpTrigger"><img
-								src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15" height="15"/></a><br/>
+								src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/></a><br/>
 					</label>
 
 					<div class="addprophelp">Select the level associated with your contest. If you have questions on which
@@ -134,7 +134,7 @@
 					<label>
 						<strong>Hide Ribbons</strong>
 						<a href="javascript:;" class="helpTrigger"><img
-								src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15" height="15"/></a><br/>
+								src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/></a><br/>
 					</label>
 
 					<div class="addprophelp">
@@ -158,7 +158,7 @@
 					<label>
 						<strong>Contest model settings</strong>
 						<a href="javascript:;" class="helpTrigger"><img
-								src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15" height="15"/></a><br/>
+								src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15"/></a><br/>
 					</label>
 
 					<div class="addprophelp">Set the modeling settings for your contest. If you have questions on how to set
@@ -227,7 +227,7 @@
 				<div class="addpropbox">
 					<label>
 						<strong>Contest type</strong>
-						<a href="javascript:;" class="helpTrigger"><img src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" width="15" height="15" /></a><br />
+						<a href="javascript:;" class="helpTrigger"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
 					</label>
 					<div class="addprophelp">Select the type of this contest. Types determine the name of the contest-entity and the proposal-entities and where they will appear. If you have a question about which type to select, please submit a comment below for the CoLab team.</div>
 					<div class="clearfix"><!-- --></div>

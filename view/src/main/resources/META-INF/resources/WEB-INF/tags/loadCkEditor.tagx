@@ -3,5 +3,5 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           version="2.0">
 
-    <xcolab:script src="/js/lib/ckeditor/ckeditor.js" />
+    <script src="/js/lib/ckeditor/ckeditor.js" ><!-- --></script>
 </jsp:root>

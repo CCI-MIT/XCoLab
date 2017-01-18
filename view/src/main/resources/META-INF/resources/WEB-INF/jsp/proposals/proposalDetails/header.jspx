@@ -24,7 +24,7 @@
 							<img src="${contest.proposalLogoPath}image/proposal?img_id=${proposal.imageId}" width="52" height="52" alt="${proposal.name }" />
 						</c:when>
 						<c:otherwise>
-							<img src="${themeDisplay.pathThemeImages}/proposal_default.png" width="52" height="52" alt="${proposal.name}" />
+							<img src="${_themeImageFolder}/proposal_default.png" width="52" height="52" alt="${proposal.name}" />
 						</c:otherwise>
 					</c:choose>
 				</div>

@@ -11,10 +11,10 @@
   	<div class="c-Table__sortArrow">
   		<c:choose>
   			<c:when test="${sortAscending }">
-				<img src="${themeDisplay.pathThemeImages}/sort-arrow-up.png" style="height: 6px; width: 8px;" />
+				<img src="${_themeImageFolder}/sort-arrow-up.png" style="height: 6px; width: 8px;" />
 			</c:when>
 			<c:otherwise>
-				<img src="${themeDisplay.pathThemeImages}/sort-arrow-down.png" style="height: 6px; width: 8px;" />
+				<img src="${_themeImageFolder}/sort-arrow-down.png" style="height: 6px; width: 8px;" />
 			</c:otherwise>
   		</c:choose>
   	</div>

@@ -39,7 +39,7 @@
   </div>
 
     <script type="text/javascript">
-
+      (function () {
       var userSelectorInput = "#"+"${inputBox}";
       var userListId = "${userList}";
       var unsavedStarTitle = "${unsavedStar}";
@@ -52,8 +52,8 @@
 
       <c:forEach var="member" items="${list}">
         memberIds.push("" + ${member.id_});
-        members.push(usersMap["${member.screenName}"]);
-        initialMembers.push(usersMap["${member.screenName}"]);
+        members.push(${member.id_});
+        initialMembers.push(${member.id_});
       </c:forEach>
 
       function updateMemberList(){
@@ -71,7 +71,7 @@
         memberIds.splice(IdElementIndex, 1);
         console.log("memberIds: " + memberIds);
         jQuery("#"+userListId +" #" +userId).remove();
-        jQuery.growlUI('',userName + ' was removed from ' + membersTitle);
+        jQuery.jGrowl(''+userName + ' was removed from ' + membersTitle, { sticky: true, theme: 'iphone', themeState: 'none' });
         if ($(members).not(initialMembers).length === 0 &amp;&amp; $(initialMembers).not(members).length === 0) {
           jQuery("#"+unsavedStarTitle).removeClass("boxChanged");
         } else {
@@ -121,9 +121,9 @@
         updateMemberList();
       }
 
-      function initSearchMemberForm(usersMapParam) {
-        usersMap = usersMapParam;
-        console.log("members: ",members);
+      function initSearchMemberForm() {
+
+
         jQuery("#"+memberList).val(memberIds);
 
         jQuery(userSelectorInput).focus(function () {
@@ -151,7 +151,7 @@
                     }
                   })
                   .autocomplete({
-                    minLength: 0,
+                    minLength: 3,
                     source: "/api/members/getUserByScreenName",
                             /*function (request, response) {
                       $.ajax({
@@ -180,7 +180,7 @@
                       return false;
                     },
                     select: function (event, ui) {
-                      console.log(" >>>> " + ui)
+
                       var userId = ui.item.id; //currentUserMap[jQuery.trim(ui.item.value)]; //userMap
                       if(members.indexOf(userId) == -1) {
                         members.push(userId);
@@ -208,10 +208,11 @@
       }
 
       jQuery(document).ready(function() {
-        //console.log("document ready...");
-        //console.log("usermap: ", usersMap);
-        initSearchMemberForm(usersMap);
+
+        initSearchMemberForm();
       });
+
+      }());
 
   </script>
 

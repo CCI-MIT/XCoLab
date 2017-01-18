@@ -3,7 +3,6 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-          xmlns:portlet="http://java.sun.com/portlet_2_0"
           xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           version="2.0">
@@ -39,12 +38,8 @@
                             <c:if test="${not proposal.isLatestVersion}">
                                 <div class="edit-prop-butts" style="line-height: normal;">
 
-                                    <portlet:actionURL var="proposalRevertURL">
-                                        <portlet:param name="contestId" value="${contest.contestPK }" />
-                                        <portlet:param name="planId" value="${proposal.proposalId}" />
-                                        <portlet:param name="version" value="${proposal.selectedVersion.version}" />
-                                        <portlet:param name="action" value="proposalRevert" />
-                                    </portlet:actionURL>
+                                    <c:set var="proposalRevertURL" value="${proposal.proposalUrl}/proposalRevert?contestId=${contest.contestPK }&amp;planId=${proposal.proposalId}&amp;version=${proposal.selectedVersion.version}" />
+
                                     <a href="${proposalRevertURL}">Revert</a>
                                 </div>
                             </c:if>

@@ -26,7 +26,7 @@
 
                         <div class="role-indicator">
                             <div style="width: 16px">
-                                <img src="${themeDisplay.pathThemeImages}/${role.imageUrl}.png" width="16" height="16" />
+                                <img src="${_themeImageFolder}/${role.imageUrl}.png" width="16" height="16" />
                             </div>
                             ${role.printName}
                         </div>

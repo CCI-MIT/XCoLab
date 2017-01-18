@@ -181,7 +181,7 @@ fieldset.fieldset .control-group { //
 }
 
 .teamBox .teamMemberListing li {
-  line-height: 40px;
+  line-height: 10px;
   margin-bottom: 5px;
   background-size: 20px;
   background: #FFF url("/images/icon_question-x.png") no-repeat 215px;
@@ -196,12 +196,12 @@ fieldset.fieldset .control-group { //
 }
 
 .teamBox .teamMemberListing .portrait {
-  float: left;
-  margin-left: -19px;
+
 }
 
 .teamBox .teamMemberListing .name {
-  padding-left: 5px;
+  padding-left: 7px;
+  vertical-align: 11px;
 }
 
 //jquery list for user selection in teambox

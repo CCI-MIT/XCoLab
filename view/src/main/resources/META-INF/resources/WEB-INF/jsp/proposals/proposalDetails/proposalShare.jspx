@@ -1,10 +1,9 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
-    xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+     version="2.0">
 
-    <portlet:resourceURL id="proposalShare-send" var="sendURL">
-    </portlet:resourceURL>
-    <portlet:resourceURL id="proposalShare-validate" var="validationURL">
-    </portlet:resourceURL>
+    <c:set value="/proposals/proposalShare-send" var="sendURL"/>
+    <c:set value="/proposals/proposalShare-validate" var="validationURL"/>
 
     <div id="share-proposal-container">
         <h4>Share this ${contestType.proposalName}</h4>

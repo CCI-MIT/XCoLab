@@ -24,6 +24,9 @@ INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericVal
  \"CATEGORY_ID\": \"5\"}', '0');
 
 
+INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('PORTLET_DISCUSSION_PREFERENCES', '0', '0', '{}', '0');
+
+
  INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('PORTLET_PROPOSALS_PREFERENCES', '0', '0',
  '{
  \"CALL_TO_ACTION\": \"\",

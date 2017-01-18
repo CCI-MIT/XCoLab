@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
@@ -34,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
  * Created by Klemens Mang on 16.03.14.
  */
 @Controller
-//-- @RequestMapping("view")
+
 public class ProposalShareJSONController {
 
 	@Autowired
@@ -81,7 +82,7 @@ public class ProposalShareJSONController {
         response.getOutputStream().write(json.toString().getBytes());
     }
 
-    //-- @ResourceMapping("proposalShare-validate")
+    @GetMapping("/proposals/proposalShare-validate")
     public void validateRecipients(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String[] screenNames = request.getParameterValues("screenNames[]");
 
@@ -99,7 +100,7 @@ public class ProposalShareJSONController {
         sendResponseJSON(true, "", response);
     }
 
-    //-- @ResourceMapping("proposalShare-send")
+    @GetMapping("/proposals/proposalShare-send")
     public void send(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 

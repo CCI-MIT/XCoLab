@@ -55,7 +55,10 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
     }
 
 
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/EVALUATION")
+    @GetMapping({
+            "/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/EVALUATION"
+            ,"/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/EVALUATION"
+    })
     public String showEvaluation(HttpServletRequest request, Model model) {
 
         boolean isFellowScreeningActive = proposalsContext.getContestPhase(request).getFellowScreeningActive();

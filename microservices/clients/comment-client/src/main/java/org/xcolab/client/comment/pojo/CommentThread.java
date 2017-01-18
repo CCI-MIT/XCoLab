@@ -114,7 +114,7 @@ public class CommentThread extends AbstractCommentThread {
         if(category!=null) {
             final CategoryGroup categoryGroup = category.getCategoryGroup();
             if (categoryGroup != null) {
-                return categoryGroup.getLinkUrl() + "/-/discussion/thread/" + getThreadId();
+                return categoryGroup.getLinkUrl() + "/thread/" + getThreadId();
             }
         }
         //Long propId = CommentClientUtil.getProposalIdForThread(threadId);
