@@ -3,7 +3,9 @@
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:form="http://www.springframework.org/tags/form"
-    xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+	  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
 
     <jsp:directive.include file="./init.jspx" />
 
@@ -12,26 +14,22 @@
 	<!--@elvariable id="permissions" type="org.xcolab.portlets.userprofile.utils.UserProfilePermissions"-->
 	<!--@elvariable id="userBean" type="org.xcolab.portlets.userprofile.beans.UserBean"-->
 
-    <jsp:useBean id="currentUserProfile" type="org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper" scope="request" />
-    <c:if test="${not empty userBean}">
-		<jsp:useBean id="userBean" type="org.xcolab.portlets.userprofile.beans.UserBean" scope="request" />
-	</c:if>
-
 	<c:if test="${updateSuccess}">
 		<script type="text/javascript" >
 			updateSuccess();
 		</script>
 	</c:if>
 
-	<portlet:resourceURL var="submitSendMessageForm" id="submitSendMessageForm">
-		<portlet:param name="userIdRecipient" value="${currentUserProfile.userId}"/>
-	</portlet:resourceURL>
+	<!-- TODO: messaging -->
+	<!--<portlet:resourceURL var="submitSendMessageForm" id="submitSendMessageForm">-->
+		<!--<portlet:param name="userIdRecipient" value="${currentUserProfile.userId}"/>-->
+	<!--</portlet:resourceURL>-->
 
 	<div id="bread" class="pro">
 		<a href="/web/guest/community">Community</a>
-		<img src="${themeDisplay.pathThemeImages}/arrow.gif" width="8" height="8" />
+		<img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
 		<a href="/web/guest/members">Members</a>
-		<img src="${themeDisplay.pathThemeImages}/arrow.gif" width="8" height="8" />
+		<img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
 		<a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">${userBean.screenName}</a>
 	</div>
 	<c:choose>
@@ -42,7 +40,7 @@
 		<div class="comm_member" style="margin-top: 0;">
 
             <!-- <c:if test="${currentUserProfile.attendsConference}">
-				<a href="/web/guest/conference2014" class="attendingConference"><img src="${themeDisplay.pathThemeImages}/attending-conference.png" alt="Attends MIT Conference 2014"/></a>
+				<a href="/web/guest/conference2014" class="attendingConference"><img src="${_themeImageFolder}/attending-conference.png" alt="Attends MIT Conference 2014"/></a>
 			</c:if> -->
 
 			<div class="comm_member-photo">
@@ -58,7 +56,7 @@
 								<div class="memname">${currentUserProfile.realName}</div>
 								<div class="role-indicator" style="margin-top: 5px;">
 									<div style="width: 16px">
-										<img src="${themeDisplay.pathThemeImages}/${currentUserProfile.highestRole.imageUrl}.png" width="16" height="16" />
+										<img src="${_themeImageFolder}/${currentUserProfile.highestRole.imageUrl}.png" width="16" height="16" />
 									</div>
 									${currentUserProfile.highestRole.printName}
 								</div>
@@ -107,7 +105,7 @@
 						<c:if test="${pointsActive}">
 							<td class="b points_box left_border top_border" width="45%">
 								${colabShortName} Points (actual)
-								<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" /></a>
+								<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="${_themeImageFolder}/icon-addprop-question.png" /></a>
 								<br />
 								<div style="display: none;" class="profilehelp">
 									${colabShortName} Points are awarded to all the members who contributed to a winning integrated ${currentUserProfile.proposalString}, as well as those who contributed to any sub-${currentUserProfile.proposalsString} it contains.
@@ -129,7 +127,7 @@
 						<c:if test="${pointsActive}">
 							<td class="b points_box left_border bottom_border" width="43%">
 								${colabShortName} Points (max. potential)
-								<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="${themeDisplay.pathThemeImages}/icon-addprop-question.png" /></a>
+								<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="${_themeImageFolder}/icon-addprop-question.png" /></a>
 								<br />
 								<div style="display: none;" class="profilehelp">
 									The maximum number of ${colabShortName} Points this member could receive. This is a measure of how many times the member’s ${currentUserProfile.proposalsString} have been included in other ${currentUserProfile.proposalsString} and how important it is in those ${currentUserProfile.proposalsString}.
@@ -446,5 +444,5 @@
 
 	</script>
 
-
+</xcolab:layout>
 </jsp:root>

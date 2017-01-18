@@ -5,7 +5,9 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:subscriptions ="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
 
   <jsp:directive.include file="./init.jspx" />
 
@@ -102,5 +104,5 @@
       }
     });
     </script>
-
+</xcolab:layout>
 </jsp:root>

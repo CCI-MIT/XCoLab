@@ -1,7 +1,6 @@
 package org.xcolab.view.pages.profile.view;
 
 import org.apache.commons.lang3.StringUtils;
-import org.omg.CORBA.SystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +10,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.portlet.bind.annotation.RenderMapping;
@@ -32,11 +34,11 @@ import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.entity.utils.ModelAttributeUtil;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.entity.utils.flash.AlertMessage;
-import org.xcolab.entity.utils.portlet.session.SessionErrors;
-import org.xcolab.entity.utils.portlet.session.SessionMessages;
+import org.xcolab.entity.utils.flash.ErrorMessage;
 import org.xcolab.util.CountryUtil;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.profile.beans.MessageBean;
 import org.xcolab.view.pages.profile.beans.NewsletterBean;
 import org.xcolab.view.pages.profile.beans.UserBean;
@@ -45,18 +47,18 @@ import org.xcolab.view.pages.profile.utils.UserProfilePermissions;
 import org.xcolab.view.pages.profile.wrappers.UserProfileWrapper;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Map;
 
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("view")
+@RequestMapping("/members/profile")
 public class UserProfileController {
 
     private final static Logger _log = LoggerFactory.getLogger(UserProfileController.class);
+    public static final String SHOW_PROFILE_VIEW = "profile/showUserProfile";
+    public static final String EDIT_PROFILE_VIEW = "profile/editUserProfile";
 
     @Autowired
     private SmartValidator validator;
@@ -69,41 +71,42 @@ public class UserProfileController {
         binder.setValidator(validator);
     }
 
-    @RenderMapping
-    public String defaultShowUserProfileNotInitializedView(HttpServletRequest request) {
-        return "showProfileNotInitialized";
+    @GetMapping
+    public String showProfile(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member) throws IOException {
+        if (member != null) {
+            response.sendRedirect("/members/profile/" + member.getId_());
+            return ErrorMessage.ERROR_VIEW;
+        } else {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
     }
 
-    @RequestMapping(params = "page=view")
-    public String showUserProfileView(HttpServletRequest request, HttpServletResponse response, Model model,
-                                      @RequestParam Long userId) {
-        return showUserProfileOrNotInitialized(request, model, userId);
-    }
-
-    private String showUserProfileOrNotInitialized(HttpServletRequest request, Model model, Long userId) {
+    @GetMapping("{memberId}")
+    public String showUserProfileView(HttpServletRequest request, Model model,
+            @PathVariable long memberId) {
         try {
             UserProfilePermissions permissions = new UserProfilePermissions(request);
             model.addAttribute("permissions", permissions);
-            populateUserWrapper(new UserProfileWrapper(userId, request), model);
+            populateUserWrapper(new UserProfileWrapper(memberId, request), model);
             ModelAttributeUtil.populateModelWithPlatformConstants(model);
             model.addAttribute("pointsActive",
                     ConfigurationAttributeKey.IS_POINTS_ACTIVE.get());
-            return "showUserProfile";
+            return SHOW_PROFILE_VIEW;
         } catch (MemberNotFoundException e) {
-            _log.warn("Could not create user profile for {}", userId);
+            return ErrorMessage.error("User profile not found").flashAndReturnView(request);
         }
-        return "showProfileNotInitialized";
     }
 
-    public void populateUserWrapper(UserProfileWrapper currentUserProfile, Model model) {
+    private void populateUserWrapper(UserProfileWrapper currentUserProfile, Model model) {
         model.addAttribute("currentUserProfile", currentUserProfile);
         model.addAttribute("userBean", currentUserProfile.getUserBean());
         model.addAttribute("messageBean", new MessageBean());
     }
 
-    @RequestMapping(params = "page=edit")
-    public String showUserProfileEdit(HttpServletRequest request, HttpServletResponse response, Model model,
-                                      @RequestParam long userId) {
+    @GetMapping("{memberId}/edit")
+    public String showUserProfileEdit(HttpServletRequest request, HttpServletResponse response,
+            Model model, @PathVariable long userId) {
 
         UserProfilePermissions permissions = new UserProfilePermissions(request);
         model.addAttribute("permissions", permissions);
@@ -118,37 +121,35 @@ public class UserProfileController {
                         ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE.get());
                 model.addAttribute("memberCategories", MembersClient.listMemberCategories());
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
-                return "editUserProfile";
+                return EDIT_PROFILE_VIEW;
             }
         } catch (MemberNotFoundException e) {
             _log.warn("Could not create user profile for {}", userId);
             return "showProfileNotInitialized";
         }
         ModelAttributeUtil.populateModelWithPlatformConstants(model);
-        return "showUserProfile";
+        return SHOW_PROFILE_VIEW;
     }
 
-    @RequestMapping(params = "page=subscriptions")
+    @GetMapping("{memberId}/subscriptions")
     public String showUserProfileSubscriptions(HttpServletRequest request, HttpServletResponse response, Model model,
-                                               @RequestParam Long userId,
-                                               @RequestParam(required = false, defaultValue = "1") int paginationId) {
+            @RequestParam long memberId, @RequestParam(required = false, defaultValue = "1") int paginationId) {
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(userId, request);
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request);
             populateUserWrapper(currentUserProfile, model);
             currentUserProfile.setSubscriptionsPaginationPageId(paginationId);
             return "showUserSubscriptions";
         } catch (MemberNotFoundException e) {
-            _log.warn("Could not create user profile for {}", userId);
+            _log.warn("Could not create user profile for {}", memberId);
             return "showProfileNotInitialized";
         }
     }
 
-    @RequestMapping(params = "page=subscriptionsManage")
-    public String showUserSubscriptionsManage(HttpServletRequest request, HttpServletResponse response, Model model,
-                                              @RequestParam long userId,
-                                              @RequestParam(required = false) String typeFilter) {
+    @GetMapping("{memberId}/subscriptions/manage")
+    public String showUserSubscriptionsManage(HttpServletRequest request, HttpServletResponse response,
+            Model model, @RequestParam long memberId, @RequestParam(required = false) String typeFilter) {
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(userId, request);
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request);
             populateUserWrapper(currentUserProfile, model);
             if (typeFilter != null) {
                 currentUserProfile.getUserSubscriptions().setFilterType(typeFilter);
@@ -165,16 +166,17 @@ public class UserProfileController {
                 return "showUserSubscriptionsManage";
             }
         } catch ( MemberNotFoundException e) {
-            _log.warn("Could not create user profile for {}", userId);
+            _log.warn("Could not create user profile for {}", memberId);
             return "showProfileNotInitialized";
         }
         ModelAttributeUtil.populateModelWithPlatformConstants(model);
-        return "showUserProfile";
+        return SHOW_PROFILE_VIEW;
     }
 
-    @RequestMapping(params = "action=navigateSubscriptions")
-    public void navigateSubscriptions(HttpServletRequest request, Model model, HttpServletResponse response,
-                                      @RequestParam String paginationAction)
+    //TODO: what is this?
+    @GetMapping("{memberId}/subscriptions/navigate")
+    public void navigateSubscriptions(HttpServletRequest request, HttpServletResponse response,
+            Model model, @RequestParam String paginationAction)
             throws IOException, MemberNotFoundException {
 
         Integer paginationPageId = 1;
@@ -221,44 +223,27 @@ public class UserProfileController {
                 model.addAttribute("newsletterBean",
                         new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
-                return "editUserProfile";
+                return EDIT_PROFILE_VIEW;
             }
-        } catch (MemberNotFoundException e) {
-            _log.warn("Could not create user profile for " + userId);
-            return "showProfileNotInitialized";
-        }
-
-        return "showUserProfile";
-    }
-
-    @RequestMapping(params = "updateSuccess=true")
-    public String updateProfileSuccess(HttpServletRequest request, Model model,
-                                       @RequestParam Long userId) {
-
-        model.addAttribute("updateSuccess", true);
-        UserProfilePermissions permissions = new UserProfilePermissions(request);
-        model.addAttribute("permissions", permissions);
-        try {
-            populateUserWrapper(new UserProfileWrapper(userId, request), model);
-            ModelAttributeUtil.populateModelWithPlatformConstants(model);
         } catch (MemberNotFoundException e) {
             _log.warn("Could not create user profile for {}", userId);
             return "showProfileNotInitialized";
         }
-        return "showUserProfile";
+
+        return SHOW_PROFILE_VIEW;
     }
 
-    @RequestMapping(params = "action=update")
-    public String updateUserProfile(HttpServletRequest request, Model model, HttpServletResponse response,
-                                  @ModelAttribute UserBean updatedUserBean, BindingResult result)
-            throws IOException, UserProfileAuthorizationException, MemberNotFoundException {
+    @PostMapping("{memberId}/edit")
+    public String updateUserProfile(HttpServletRequest request, HttpServletResponse response,
+            Model model, @PathVariable long memberId, @ModelAttribute UserBean updatedUserBean,
+            BindingResult result)
+            throws IOException, MemberNotFoundException {
         UserProfilePermissions permissions = new UserProfilePermissions(request);
         model.addAttribute("permissions", permissions);
 
-        if (!permissions.getCanEditMemberProfile(updatedUserBean.getUserId())) {
-            throw new UserProfileAuthorizationException(String.format(
-                    "User %d does not have the permissions to update the profile of user %d",
-                    MemberAuthUtil.getMemberId(request), updatedUserBean.getUserId()));
+        if (!permissions.getCanEditMemberProfile(updatedUserBean.getUserId())
+                || memberId != updatedUserBean.getUserId()) {
+            return ErrorText.NOT_FOUND.flashAndReturnView(request);
         }
         UserProfileWrapper currentUserProfile = new UserProfileWrapper(updatedUserBean.getUserId(), request);
         model.addAttribute("currentUserProfile", currentUserProfile);
@@ -268,7 +253,6 @@ public class UserProfileController {
 
         boolean changedUserPart = false;
         boolean validationError = false;
-        final Long memberId = currentUserProfile.getUserId();
         if (StringUtils.isNotBlank(updatedUserBean.getPassword())) {
             final boolean isAdminEditingOtherProfile =
                     permissions.getCanAdmin() && !currentUserProfile.isViewingOwnProfile();
@@ -283,13 +267,13 @@ public class UserProfileController {
                     changedUserPart = true;
                 } else {
                     validationError = true;
-                    return "editUserProfile";
+                    return EDIT_PROFILE_VIEW;
                 }
             } else {
                 result.addError(
                         new ObjectError("currentPassword", "Password change failed: Current password is incorrect."));
                 validationError = true;
-                return "editUserProfile";
+                return EDIT_PROFILE_VIEW;
             }
         }
 
@@ -304,7 +288,7 @@ public class UserProfileController {
                 eMailChanged = true;
             } else {
                 validationError = true;
-                return "editUserProfile";
+                return EDIT_PROFILE_VIEW;
             }
         }
 
@@ -331,7 +315,7 @@ public class UserProfileController {
             }
         }
 
-        if(updatedUserBean.getCountryName() != null) {
+        if (updatedUserBean.getCountryName() != null) {
             validator.validate(updatedUserBean, result);
             if (!result.hasErrors() && !updatedUserBean.getCountryName().isEmpty()) {
                  currentUserProfile.getUser().setCountry(HtmlUtil.cleanAll(updatedUserBean.getCountryName()));
@@ -346,7 +330,7 @@ public class UserProfileController {
 
         if (validationError) {
             updatedUserBean.setImageId(currentUserProfile.getUserBean().getImageId());
-            return "editUserProfile";
+            return EDIT_PROFILE_VIEW;
         } else if (changedUserPart) {
             updatedUserBean.setImageId(currentUserProfile.getUser().getPortraitFileEntryId());
 
@@ -357,10 +341,10 @@ public class UserProfileController {
                 sendUpdatedEmail(currentUserProfile.getUser());
             }
             AlertMessage.CHANGES_SAVED.flash(request);
-            return "editUserProfile";
+            return EDIT_PROFILE_VIEW;
         } else {
-            response.sendRedirect("/web/guest/member/-/member/userId/" + memberId.toString());
-            return "editUserProfile";
+            response.sendRedirect("/web/guest/member/-/member/userId/" + memberId);
+            return EDIT_PROFILE_VIEW;
         }
     }
 
@@ -460,17 +444,17 @@ public class UserProfileController {
                 messageBody, false, addressFrom.getAddress());
     }
 
-    @RequestMapping(params = "action=deleteProfile")
+    @PostMapping("{memberId}/delete")
     public void deleteUserProfile(HttpServletRequest request, HttpServletResponse response,
-            Model model, long userId, Member loggedInMember)
+            Model model, long memberId, Member loggedInMember)
             throws IOException {
         UserProfilePermissions permission = new UserProfilePermissions(request);
 
-        if (permission.getCanEditMemberProfile(userId)) {
-            MembersClient.deleteMember(userId);
+        if (permission.getCanEditMemberProfile(memberId)) {
+            MembersClient.deleteMember(memberId);
         }
 
-        if (userId == loggedInMember.getId_()) {
+        if (memberId == loggedInMember.getId_()) {
             response.sendRedirect("/logout");
         } else {
             response.sendRedirect("/members");

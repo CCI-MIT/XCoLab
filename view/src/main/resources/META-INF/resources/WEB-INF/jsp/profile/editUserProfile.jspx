@@ -2,7 +2,9 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+	  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
     <jsp:directive.include file="./init.jspx" />
 
     <!--@elvariable id="colabShortName" type="java.lang.String"-->
@@ -709,5 +711,5 @@
         }
 
 	</script>
-
+</xcolab:layout>
 </jsp:root>

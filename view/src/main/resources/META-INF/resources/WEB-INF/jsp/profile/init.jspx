@@ -1,0 +1,5 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+
+	<xcolab:script src="/js/pages/profile/profile.js" />
+</jsp:root>
