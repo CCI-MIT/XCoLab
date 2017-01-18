@@ -22,6 +22,7 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
         final ConfigurationBuilder configurationBuilder = ConfigurationBuilder.begin();
         redirectLegacyRegistration(configurationBuilder);
         redirectLegacyWikiPages(configurationBuilder);
+        redirectLegacyUserProfile(configurationBuilder);
         return configurationBuilder;
 
     }
@@ -49,6 +50,16 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                         .or(Path.matches("/web/guest/handbook/-/wiki/Main/{page}")))
                     .perform(Forward.to("/web/guest/handbook/-/wiki/page/{page}"))
                     .where("page").matches(".*");
+    }
+
+    private void redirectLegacyUserProfile(ConfigurationBuilder configurationBuilder) {
+        configurationBuilder
+                .addRule()
+                    .when(Path.matches("/web/guest/member/-/member/userId/{memberId}"))
+                    .perform(Redirect.permanent("/members/profile/{memberId}"))
+                .addRule()
+                    .when(Path.matches("/web/guest/member/-/member/userId/{memberId}/edit"))
+                    .perform(Redirect.permanent("/members/profile/{memberId}/edit"));
     }
 
     //TODO: when proposals portlet is ported, we need compatibility with these old redirects:
