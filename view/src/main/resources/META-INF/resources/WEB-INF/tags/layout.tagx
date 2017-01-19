@@ -74,7 +74,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"><!-- empty --></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.min.js"><!-- empty --></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.3.1/moment.min.js"><!-- empty --></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.4.5/jquery.jgrowl.min.js"><!-- empty --></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.0/packaged/jquery.noty.packaged.min.js"><!-- empty --></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.1.4/js/jquery.tooltipster.min.js"><!-- empty --></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.1.4/css/tooltipster.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.4.5/jquery.jgrowl.min.css" />
@@ -132,6 +132,16 @@
     <meta property="og:image" content="${_logoPathBig}" />
     <link href="${_themeImageFolder}/favicon.ico" rel="Shortcut Icon" />
     <link rel="image_src" type="image/png" href="${_logoPathBig}" />
+
+    <script type="text/javascript">
+        // noty configuration
+        jQuery.noty.defaults.theme = 'relax';
+        jQuery.noty.defaults.type = 'information';
+        jQuery.noty.defaults.timeout = 3000;
+        jQuery.noty.defaults.animation.open = {opacity: 1.0, height: 'toggle'};
+        jQuery.noty.defaults.animation.close = {opacity: 0.0, height: 'toggle'};
+        jQuery.noty.defaults.animation.speed = 700;
+    </script>
 </head>
 <body class="${_isHomePage ? 'home' : ''}">
     <c:if test="${_betaRibbonShow}">
@@ -544,10 +554,10 @@
                 {
                     if (data.success) {
                         jQuery('#popup_flagging').hide();
-                        jQuery.growlUI('SUCCESS');
+                        noty({text: 'SUCCESS', type: 'success'});
                     } else {
                         jQuery('#popup_flagging').hide();
-                        jQuery.growlUI('ERROR');
+                        noty({text: 'ERROR', type: 'error'});
                     }
                 }
             });
@@ -781,7 +791,7 @@
 
     <c:if test="${not empty __alertMessage}">
         <script type="text/javascript">
-            jQuery.jGrowl('${__alertMessage.message}', { sticky: true, theme: 'iphone', themeState: 'none' });
+            noty({text: '${__alertMessage.message}', type: '${__alertMessage.type.notyType}'});
         </script>
     </c:if>
 

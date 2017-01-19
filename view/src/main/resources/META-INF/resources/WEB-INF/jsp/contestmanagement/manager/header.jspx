@@ -29,14 +29,6 @@
 		</div>
 	</div>
 
-	<c:if test="${not empty sessionScope.actionSuccessMessage }">
-		<script type="text/javascript" >
-			jQuery.growlUI('SUCCESS', "${sessionScope.actionSuccessMessage}");
-		</script>
-	</c:if>
-
-	<c:remove var="actionSuccessMessage" scope="session" />
-
     <!--@elvariable id="promptLoginWindow" type="java.lang.String"-->
     <c:if test="${promptLoginWindow == 'true' }">
         <script>

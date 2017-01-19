@@ -42,14 +42,6 @@
 	</div>
 	<!-- /proposal-head -->
 
-	<c:if test="${not empty sessionScope.actionSuccessMessage }">
-		<script type="text/javascript" >
-			jQuery.growlUI('SUCCESS', "${sessionScope.actionSuccessMessage}");
-		</script>
-	</c:if>
-
-	<c:remove var="actionSuccessMessage" scope="session" />
-
     <c:if test="${promptLoginWindow == 'true' }">
         <script>
             $( document ).ready(function() {

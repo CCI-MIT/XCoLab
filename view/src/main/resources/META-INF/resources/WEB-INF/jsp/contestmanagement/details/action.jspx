@@ -30,9 +30,9 @@
 					data: "contestId=${contestWrapper.contestPK}&tab=${currentTabWrapped.name}",
 					success: function(response){
 						if(response){
-							jQuery.growlUI('Success', 'The contest was successfully submitted!');
-						} else{
-							jQuery.growlUI('Error', 'There was an error while submitting the contest!');
+                            noty({text: 'The contest was successfully submitted!', type: 'success'});
+						} else {
+                            noty({text: 'There was an error while submitting the contest!', type: 'error'});
 						}
 					}
 				});

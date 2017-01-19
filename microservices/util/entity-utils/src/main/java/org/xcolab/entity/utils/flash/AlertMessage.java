@@ -59,9 +59,21 @@ public class AlertMessage {
     }
 
     public enum Type {
-        DANGER,
-        WARNING,
-        INFO,
-        SUCCESS
+        DANGER("error"),
+        WARNING("warning"),
+        INFO("information"),
+        SUCCESS("success"),
+        ALERT("alert");
+
+        private final String notyType;
+
+        Type(String notyType) {
+
+            this.notyType = notyType;
+        }
+
+        public String getNotyType() {
+            return notyType;
+        }
     }
 }

@@ -1,0 +1,450 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:jsp="http://java.sun.com/JSP/Page"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	xmlns:form="http://www.springframework.org/tags/form"
+	  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
+
+    <jsp:directive.include file="./init.jspx" />
+
+	<!--@elvariable id="colabName" type="java.lang.String"-->
+	<!--@elvariable id="colabShortName" type="java.lang.String"-->
+	<!--@elvariable id="permissions" type="org.xcolab.portlets.userprofile.utils.UserProfilePermissions"-->
+	<!--@elvariable id="userBean" type="org.xcolab.portlets.userprofile.beans.UserBean"-->
+    <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
+
+	<c:if test="${updateSuccess}">
+		<script type="text/javascript" >
+			updateSuccess();
+		</script>
+	</c:if>
+
+	<!-- TODO: messaging -->
+	<!--<portlet:resourceURL var="submitSendMessageForm" id="submitSendMessageForm">-->
+		<!--<portlet:param name="userIdRecipient" value="${currentUserProfile.userId}"/>-->
+	<!--</portlet:resourceURL>-->
+
+	<div id="bread" class="pro">
+		<a href="/community">Community</a>
+		<img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
+		<a href="/members">Members</a>
+		<img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
+		<a href="/members/profile/${currentUserProfile.userId}">${userBean.screenName}</a>
+	</div>
+	<c:choose>
+		<c:when test="${currentUserProfile.active}">
+
+		<div id="main" class="${currentUserProfile.viewingOwnProfile ? '' : 'full'} userProfile">
+		<h1>Member Profile</h1>
+		<div class="comm_member" style="margin-top: 0;">
+
+            <!-- <c:if test="${currentUserProfile.attendsConference}">
+				<a href="/web/guest/conference2014" class="attendingConference"><img src="${_themeImageFolder}/attending-conference.png" alt="Attends MIT Conference 2014"/></a>
+			</c:if> -->
+
+			<div class="comm_member-photo">
+				<img src="${userBean.portrait}" width="150" height="150"
+					 alt="${currentUserProfile.realName}" />
+			</div>
+
+			<div class="comm_member-info">
+				<table border="0" cellpadding="0" cellspacing="0" class="colab members topInfo">
+					<tbody>
+						<tr>
+							<td style="min-width: 106px">
+								<div class="memname">${currentUserProfile.realName}</div>
+								<div class="role-indicator" style="margin-top: 5px;">
+									<div style="width: 16px">
+										<img src="${_themeImageFolder}/${currentUserProfile.highestRole.imageUrl}.png" width="16" height="16" />
+									</div>
+									${currentUserProfile.highestRole.printName}
+								</div>
+							</td>
+							<td>
+								<div class="badge-container">
+									<c:forEach var="badge" items="${currentUserProfile.badges}">
+										<c:if test="${not badge.hideRibbon}">
+										<a href="${badge.proposalLinkUrl}">
+											<div class="c-Badge--small badge-${badge.badgeType} fieldWithTooltip tooltipAbove">
+												<span class="c-Badge__title--small" style="${badge.badgeTitle.length() gt 8 ? 'top: 11px;' : ''};">
+														${badge.badgeTitle}
+												</span>
+
+												<div class="c-Badge__text--small">20</div>
+												<span class="c-Badge__year--small">${badge.badgeYearShort}</span>
+												<div class="c-Tooltip">
+														${badge.badgeText} in ${badge.contestName}
+													<div class="c-Tooltip__arrow"><!--  --></div>
+												</div>
+											</div>
+										</a>
+										</c:if>
+									</c:forEach>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="memdiv" style="background-color:#707070;">.</div>
+
+				<table border="0" cellpadding="0" cellspacing="0" class="colab members otherInfo profileTable" style="width:100%;">
+					<tbody>
+					<tr>
+						<td class="b" nowrap="nowrap" width="23%">Screen Name</td>
+						<td width="23%">${userBean.screenName}</td>
+						<td class="b" width="43%">Activities</td>
+						<td class="align_right">${currentUserProfile.userActivityCountFormatted}</td>
+					</tr>
+					<tr>
+						<td class="b" nowrap="nowrap" width="23%">Member Since</td>
+						<td width="23%">
+							<fmt:formatDate value="${currentUserProfile.joinDate}" type="date" dateStyle="short" timeZone="America/New_York" />
+						</td>
+						<c:if test="${pointsActive}">
+							<td class="b points_box left_border top_border" width="45%">
+								${colabShortName} Points (actual)
+								<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="${_themeImageFolder}/icon-addprop-question.png" /></a>
+								<br />
+								<div style="display: none;" class="profilehelp">
+									${colabShortName} Points are awarded to all the members who contributed to a winning integrated ${currentUserProfile.proposalString}, as well as those who contributed to any sub-${currentUserProfile.proposalsString} it contains.
+									<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
+								</div>
+								<div class="clearfix"></div>
+							</td>
+							<td class="points_box right_border top_border align_right">${currentUserProfile.actualPointsFormatted}</td>
+						</c:if>
+					</tr>
+
+					<tr>
+						<td class="b" width="23%">Country</td>
+						<td width="23%">
+							<c:choose>
+							<c:when test="${not empty userBean.countryName}">${userBean.countryName}</c:when>
+							</c:choose>
+						</td>
+						<c:if test="${pointsActive}">
+							<td class="b points_box left_border bottom_border" width="43%">
+								${colabShortName} Points (max. potential)
+								<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="${_themeImageFolder}/icon-addprop-question.png" /></a>
+								<br />
+								<div style="display: none;" class="profilehelp">
+									The maximum number of ${colabShortName} Points this member could receive. This is a measure of how many times the member’s ${currentUserProfile.proposalsString} have been included in other ${currentUserProfile.proposalsString} and how important it is in those ${currentUserProfile.proposalsString}.
+									<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
+								</div>
+								<div class="clearfix"></div>
+							</td>
+							<td class="points_box right_border bottom_border align_right">${currentUserProfile.potentialPointsFormatted}</td>
+						</c:if>
+					</tr>
+
+					<c:if test="${currentUserProfile.viewingOwnProfile}">
+						<tr>
+							<td class="b" width="23%">Email</td>
+							<td colspan="3" style="white-space: nowrap;">
+								<a href="mailto:${userBean.email}">${userBean.emailStored}</a>
+
+								<c:if test="${currentUserProfile.displayEMailErrorMessage}">
+									<span class="iceMsgError portlet-msg-error Error form_error_messageError">Please update your email address. Only votes from members with valid email addresses will be counted. </span>
+								</c:if>
+
+							</td>
+						</tr>
+					</c:if>
+
+					<c:if test="${permissions.getCanEditMemberProfile(userBean.userId)}">
+						<tr>
+							<td colspan="4">
+								<a class="c-Button__primary"
+								   href="/members/profile/${currentUserProfile.userId}/edit">
+									Manage profile and settings
+								</a>
+							</td>
+						</tr>
+					</c:if>
+
+					</tbody>
+				</table>
+			</div>
+			<div class="clearfix">&#160;</div>
+		</div>
+		<c:if test="${currentUserProfile.canSeeSendMessageButton and not currentUserProfile.viewingOwnProfile }">
+			<a class="c-Button__primary" href="javascript:;"
+			   onclick="if (!deferUntilLogin()) { return false; } else { showSendMessageForm(); }">Send
+				<strong>${userBean.firstName}</strong> a Message </a>
+		</c:if>
+
+		<p>
+			${userBean.shortBio}
+		</p>
+
+		<c:if test="${not currentUserProfile.staffMemberProfile}">
+			<c:forEach var="contestTypeProposalWrapper" items="${currentUserProfile.contestTypeProposalWrappersByContestTypeId}">
+				<h2 style="margin-top: 20px;">${contestTypeProposalWrapper.contestType.proposalNamePlural}</h2>
+				<c:if test="${empty contestTypeProposalWrapper.proposals}">
+						${userBean.firstName} has not yet contributed to any <span class="lowercase">${contestTypeProposalWrapper.contestType.proposalNamePlural}</span>.
+				</c:if>
+
+				<table class="colab">
+					<c:forEach var="userProposal" items="${contestTypeProposalWrapper.proposals}">
+						<tr class="colabRow">
+							<td> <collab:proposalLink proposal="${userProposal}" /> </td>
+							<td style="text-align: right;"><fmt:formatDate value="${userProposal.createDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+						</tr>
+					</c:forEach>
+				</table>
+			</c:forEach>
+
+			<h2 style="margin-top: 20px;">${currentUserProfile.proposalString} Links</h2>
+			<c:if test="${empty currentUserProfile.linkingProposals}">
+					There are no proposals linking to this member's <span class="lowercase">${currentUserProfile.proposalsString}</span> yet.
+			</c:if>
+
+			<table class="colab">
+				<c:forEach var="linkingProposal" items="${currentUserProfile.linkingProposals}">
+					<c:if test="${linkingProposal.visible}">
+						<tr class="colabRow">
+							<td> <collab:proposalLink proposal="${linkingProposal}" /> </td>
+							<td style="text-align: right;"><fmt:formatDate value="${linkingProposal.lastModifiedDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+						</tr>
+					</c:if>
+				</c:forEach>
+			</table>
+
+			<h2>Supporting</h2>
+			<c:if test="${empty currentUserProfile.supportedProposals}">
+					${userBean.firstName} has not yet supported any <span class="lowercase">${currentUserProfile.proposalsString}</span>.
+			</c:if>
+
+			<table class="colab">
+				<c:forEach var="supportedProposal" items="${currentUserProfile.supportedProposals}">
+					<tr class="colabRow">
+						<td> <collab:proposalLink proposal="${supportedProposal.proposalWrapper}" /> </td>
+						<td style="text-align: right;"><fmt:formatDate value="${supportedProposal.supportedSinceDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+					</tr>
+				</c:forEach>
+			</table>
+
+			<h2 style="margin-top: 20px;">Activities</h2>
+			<c:if test="${empty currentUserProfile.activities}">
+					${userBean.firstName} does not have any ${colabName} activities yet.
+			</c:if>
+
+			<table class="colab">
+				<c:forEach var="activity" items="${currentUserProfile.activities}">
+					<tr class="colabRow">
+						<td>${activity.body}</td>
+						<td style="text-align: right;"><fmt:formatDate value="${activity.createdDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+					</tr>
+				</c:forEach>
+			</table>
+
+			<c:if test="${not empty currentUserProfile.activities}">
+				<a class="c-Button__primary" href="/web/guest/activities/-/feeds?userId=${currentUserProfile.userId}">SEE ALL</a>
+			</c:if>
+		</c:if>
+
+		<c:if test="true">
+
+		</c:if>
+
+	</div>
+	<!-- /main -->
+
+	<c:if test="${currentUserProfile.viewingOwnProfile}">
+		<div class="c-Message__column">
+			<div class="comm_rightcol">
+				<div class="comm_rightcol-title">INBOX</div>
+
+				<c:if test="${empty currentUserProfile.messages}">
+					<p>No new messages.</p>
+				</c:if>
+
+				<c:forEach var="message" items="${currentUserProfile.messages}"> <!-- test="${not empty currentUserProfile.messages}" -->
+
+					<div class="comm_rightcol-time">
+						<c:choose>
+							<c:when test="${message.daysAgo == 0}">
+								Today
+							</c:when>
+							<c:when test="${message.daysAgo == 1}">
+								Yesterday
+							</c:when>
+							<c:when test="${message.daysAgo > 1}">
+									${message.daysAgo} days ago
+							</c:when>
+						</c:choose>
+						&#160;
+						<fmt:formatDate value="${message.createDate}" type="time" timeStyle="medium" timeZone="America/New_York" />
+					</div>
+
+					<div class="activityBody">
+						<collab:userLinkSimple text="${message.from.screenName}" userId="${message.from.userId}" />
+						sent you a message:&#160; <a
+							href="/messaging?p_p_id=${currentUserProfile.messagingPortletId}&amp;messageId=${message.messageId}">${message.subject}</a>
+					</div>
+
+				</c:forEach>
+
+				<div class="rounded_button brn">
+					<a href="/messaging?p_p_id=${currentUserProfile.messagingPortletId}&amp;compose=true">COMPOSE</a>
+				</div>
+
+				<div class="rounded_button brn">
+					<a href="/messaging">ALL MESSAGES</a>
+				</div>
+
+				<div class="clearfix"></div>
+			</div>
+
+			<div class="comm_rightcol">
+				<form:form>
+					<div class="comm_rightcol-title">SUBSCRIBED ACTIVITY</div>
+
+					<c:if test="${empty currentUserProfile.subscribedActivities}">
+						<p>No new activities.</p>
+					</c:if>
+
+
+					<c:forEach var="activity" items="${currentUserProfile.subscribedActivities}" begin="0" end="5">
+
+						<div class="comm_rightcol-time">
+							<c:choose>
+								<c:when test="${activity.daysAgo == 0}">
+									Today
+								</c:when>
+								<c:when test="${activity.daysAgo == 1}">
+									Yesterday
+								</c:when>
+								<c:when test="${activity.daysAgo > 1}">
+									${activity.daysAgo} days ago
+								</c:when>
+							</c:choose>
+							&#160;
+							<fmt:formatDate value="${activity.createdDate}" type="time" timeStyle="medium" timeZone="America/New_York" />
+						</div>
+
+						<div class="activityBody">
+								${activity.body}
+						</div>
+
+					</c:forEach>
+
+					<div class="rounded_button brn">
+						<a href="/members/profile/${currentUserProfile.userId}/subscriptions/manage">MANAGE</a>
+					</div>
+
+					<div class="rounded_button brn">
+						<c:if test="${not empty currentUserProfile.subscribedActivities}">
+							<a href="/members/profile/${currentUserProfile.userId}/subscriptions">SEE ALL</a>
+						</c:if>
+					</div>
+				</form:form>
+			</div>
+		</div>
+	</c:if>
+	<!-- /c-Message__column -->
+
+	</c:when>
+	<c:otherwise>
+		<h2>The requested user profile is disabled.</h2>
+	</c:otherwise>
+	</c:choose>
+
+	<div id="sendMessageOverlay" class="c-Message__popup"
+		 style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none;">
+		<div class="savechanges-wrap ">
+			<div class="savechanges">
+				<h4>Send <strong>${currentUserProfile.realName}</strong> a message</h4>
+
+				<form:form commandName="messageBean" id="messageForm">
+					<div class="reg_errors"><!--  --></div>
+					<form:errors cssClass="c-Alert c-Alert__error" />
+
+					<div>
+						<p>
+							<strong>Subject:</strong> &#160; <span class="error hidden">
+								* value required</span><br />
+							<form:input cssClass="c-Message__input sendMessage_subject" path="messageSubject" /><br />
+						</p>
+
+						<c:if test="${messageBean.messageHoneypotPosition eq 0}">
+							<p class="p">
+								<strong>Leave this blank:</strong> &#160;  <span class="error hidden">
+								* value required</span><br />
+								<form:input cssClass="c-Message__input sendMessage_subject" path="messageHoneypot" /><br />
+							</p>
+						</c:if>
+
+						<p>
+							<strong>Message:</strong> &#160;
+							<form:textarea cssClass="c-Message__input sendMessage_message" path="messageText" /><br />
+							<div class="reg_errors"><!--  -->
+								<form:errors cssClass="c-Alert c-Alert__error error" path="messageText" />
+							</div>
+						</p>
+
+						<c:if test="${messageBean.messageHoneypotPosition eq 1}">
+							<p class="p">
+								<strong>Leave this blank:</strong> &#160; <span class="error hidden">
+								* value required</span><br />
+								<form:textarea cssClass="c-Message__input sendMessage_subject" path="messageHoneypot" /><br />
+							</p>
+						</c:if>
+					</div>
+
+					<div class="btns">
+						<a class="c-Button__primary" href="javascript:;" onclick="submitSendMessageForm()">Send message</a>
+						<a class="c-Button__secondary" href="javascript:;"
+						   onclick="clearSendMessageForm(); hideSendMessagForm(); return false;">Cancel</a>
+					</div>
+				</form:form>
+
+			</div>
+			<!-- /popup login -->
+			<div class="clearfix"></div>
+
+		</div>
+	</div>
+
+
+	<script type="text/javascript">
+
+		function submitSendMessageForm(){
+
+			if (sendMessageFormValid()) {
+				lockSendMessageForm();
+				var messageFormData = jQuery("#messageForm").serialize();
+				var sendMessageFormURL = '${submitSendMessageForm}';
+				submitSendMessageFormToServer(sendMessageFormURL, messageFormData).done(function () {
+					unblockSendMessageForm();
+					hideSendMessagForm();
+					clearSendMessageForm();
+				});
+			}
+		}
+
+		function submitSendMessageFormToServer(serverUrl, formData){
+			var deferred = jQuery.Deferred();
+			sendAjaxToServer(serverUrl, formData).done(function(response){
+				if(typeof response === 'boolean'){
+					if(response){
+						messageSent();
+					} else {
+						messageNotSent();
+					}
+				} else if(typeof response === 'string' &amp;&amp; response === 'LIMIT_SUCCEEDED'){
+					limitExceeded()
+				}
+				deferred.resolve();
+			});
+			return deferred;
+		}
+
+
+	</script>
+
+</xcolab:layout>
+</jsp:root>

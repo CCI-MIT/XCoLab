@@ -71,7 +71,7 @@
         memberIds.splice(IdElementIndex, 1);
         console.log("memberIds: " + memberIds);
         jQuery("#"+userListId +" #" +userId).remove();
-        jQuery.jGrowl(''+userName + ' was removed from ' + membersTitle, { sticky: true, theme: 'iphone', themeState: 'none' });
+        noty({text: userName + ' was removed from ' + membersTitle, type: 'success'});
         if ($(members).not(initialMembers).length === 0 &amp;&amp; $(initialMembers).not(members).length === 0) {
           jQuery("#"+unsavedStarTitle).removeClass("boxChanged");
         } else {
@@ -93,7 +93,7 @@
         var imgPortrait = document.createElement("img");
         imgPortrait.height = "40";
         imgPortrait.width = "40";
-        var imageSrc ="/image/user_male_portrait?userId=" + userId + "&amp;companyId=10112";
+        var imageSrc ="/image/user_male_portrait?screenName=" + screenName + "&amp;companyId=10112";
         imgPortrait.setAttribute("src", imageSrc);
         spanPortrait.appendChild(imgPortrait);
 
