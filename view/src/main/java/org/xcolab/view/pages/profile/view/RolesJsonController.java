@@ -1,29 +1,29 @@
 package org.xcolab.view.pages.profile.view;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.auth.resolver.RealMember;
 import org.xcolab.view.pages.profile.utils.JSONHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("view")
+@RequestMapping("/members/profile/{memberId}/api/roles")
 public class RolesJsonController extends JSONHelper {
 
-    @ResourceMapping("addRole")
+    @PostMapping("add/{roleId}")
     public @ResponseBody void addRole(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam long memberId, @RequestParam long roleId) {
-        long loggedInMemberId = MemberAuthUtil.getMemberId(request);
-        if (!PermissionsClient.canAdminAll(loggedInMemberId)) {
+            @PathVariable long memberId, @RealMember Member loggedInMember, @PathVariable long roleId) {
+        if (!PermissionsClient.canAdminAll(loggedInMember)) {
             this.writeSuccessResultResponseJSON(false, response);
             return;
         }
@@ -36,11 +36,11 @@ public class RolesJsonController extends JSONHelper {
 
     }
 
-    @ResourceMapping("removeRole")
+    @PostMapping("remove/{roleId}")
     public @ResponseBody void removeRole(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam long memberId, @RequestParam long roleId) {
-        long loggedInMemberId = MemberAuthUtil.getMemberId(request);
-        if (!PermissionsClient.canAdminAll(loggedInMemberId)) {
+            @PathVariable long memberId, @RealMember Member loggedInMember,
+            @PathVariable long roleId) {
+        if (!PermissionsClient.canAdminAll(loggedInMember)) {
             this.writeSuccessResultResponseJSON(false, response);
             return;
         }

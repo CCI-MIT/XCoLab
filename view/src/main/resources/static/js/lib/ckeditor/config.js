@@ -17,7 +17,7 @@ CKEDITOR.editorConfig = function( config )
     config.toolbar = 'Colab';
     config.skin = "colab";
     config.toolbarCanCollapse = false;
-    config.contentsCss = '/climatecolab-theme/css/style.css?test=2';
+    config.contentsCss = '/css/themes/climateColab/main.css';
     config.resize_enabled = 'true';
     config.extraPlugins = 'resize,proposalLink,scayt,menubutton,dialog';
     config.scayt_autoStartup = true;

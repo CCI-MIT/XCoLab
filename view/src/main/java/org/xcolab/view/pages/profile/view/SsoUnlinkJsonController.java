@@ -1,9 +1,9 @@
 package org.xcolab.view.pages.profile.view;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -14,12 +14,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("view")
-public class SSOunlinkJSONController extends JSONHelper {
+@RequestMapping("/members/profile/{memberId}/api/sso")
+public class SsoUnlinkJsonController extends JSONHelper {
 
-    public SSOunlinkJSONController() { }
+    public SsoUnlinkJsonController() { }
 
-    @ResourceMapping("unlinkFacebookSSO")
+    @PostMapping("facebook/unlink")
     public @ResponseBody void handleUnlinkFacebookSSOAJAXRequest(
             HttpServletRequest request, HttpServletResponse response) {
 
@@ -38,7 +38,7 @@ public class SSOunlinkJSONController extends JSONHelper {
         MembersClient.updateMember(member);
     }
 
-    @ResourceMapping("unlinkGoogleSSO")
+    @PostMapping("google/unlink")
     public @ResponseBody void handleUnlinkGoogleSSOAJAXRequest(
             HttpServletRequest request, HttpServletResponse response) {
 

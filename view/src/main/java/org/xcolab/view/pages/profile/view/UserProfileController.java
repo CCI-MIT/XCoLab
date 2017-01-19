@@ -106,29 +106,28 @@ public class UserProfileController {
 
     @GetMapping("{memberId}/edit")
     public String showUserProfileEdit(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable long userId) {
+            Model model, @PathVariable long memberId) {
 
         UserProfilePermissions permissions = new UserProfilePermissions(request);
+        if (!permissions.getCanEditMemberProfile(memberId)) {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
         model.addAttribute("permissions", permissions);
 
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(userId, request);
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request);
             populateUserWrapper(currentUserProfile, model);
-            if (permissions.getCanEditMemberProfile(currentUserProfile.getUserId())) {
-                model.addAttribute("newsletterBean",
-                        new NewsletterBean(currentUserProfile.getUserId()));
-                model.addAttribute("newsletterActive",
-                        ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE.get());
-                model.addAttribute("memberCategories", MembersClient.listMemberCategories());
-                ModelAttributeUtil.populateModelWithPlatformConstants(model);
-                return EDIT_PROFILE_VIEW;
-            }
+
+            model.addAttribute("newsletterBean",
+                    new NewsletterBean(currentUserProfile.getUserId()));
+            model.addAttribute("newsletterActive",
+                    ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE.get());
+            model.addAttribute("memberCategories", MembersClient.listMemberCategories());
+            ModelAttributeUtil.populateModelWithPlatformConstants(model);
+            return EDIT_PROFILE_VIEW;
         } catch (MemberNotFoundException e) {
-            _log.warn("Could not create user profile for {}", userId);
-            return "showProfileNotInitialized";
+            return ErrorText.NOT_FOUND.flashAndReturnView(request);
         }
-        ModelAttributeUtil.populateModelWithPlatformConstants(model);
-        return SHOW_PROFILE_VIEW;
     }
 
     @GetMapping("{memberId}/subscriptions")

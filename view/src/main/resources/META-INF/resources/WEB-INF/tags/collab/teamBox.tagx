@@ -71,7 +71,7 @@
         memberIds.splice(IdElementIndex, 1);
         console.log("memberIds: " + memberIds);
         jQuery("#"+userListId +" #" +userId).remove();
-        jQuery.growlUI('',userName + ' was removed from ' + membersTitle);
+        noty({text: userName + ' was removed from ' + membersTitle, type: 'success'});
         if ($(members).not(initialMembers).length === 0 &amp;&amp; $(initialMembers).not(members).length === 0) {
           jQuery("#"+unsavedStarTitle).removeClass("boxChanged");
         } else {

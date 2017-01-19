@@ -33,27 +33,27 @@ function unblockSendMessageForm() {
 }
 
 function updateSuccess(){
-    jQuery.growlUI('','User profile updated successfully.');
+    noty({text: 'User profile updated successfully.', type: 'success'})
 }
 
 function updateError(){
-    jQuery.growlUI('','Errors occurred while updating profile.');
+    noty({text: 'Errors occurred while updating profile.', type: 'error'});
 }
 
 function imageSizeError(){
-    jQuery.growlUI('','Your profile picture is too big, please upload a smaller one.');
+    noty({text: 'Your profile picture is too big, please upload a smaller one.', type: 'error'});
 }
 
 function messageSent() {
-    jQuery.growlUI('', 'Message has been sent.');
+    noty({text: 'Message has been sent.', type: 'success'})
 }
 
 function messageNotSent() {
-    jQuery.growlUI('','Message has NOT been sent.');
+    noty({text: 'Message has NOT been sent.', type: 'error'})
 }
 
 function limitExceeded() {
-    jQuery.growlUI('Please try again tomorrow.','Your daily message limit has been reached.');
+    noty({text: 'Your daily message limit has been reached.', type: 'error'});
 }
 
 function hideSendMessagForm() {

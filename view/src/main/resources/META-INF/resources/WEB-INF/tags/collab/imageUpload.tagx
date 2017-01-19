@@ -46,12 +46,12 @@
               if (response.hasOwnProperty("imageId") &amp;&amp; response.imageId > 0) {
                 updatePictureId(uploadImageDivId, response.imageId);
                 jQuery(uploadImageDivId).unblock();
-                jQuery.growlUI('', 'Image upload succeeded.');
+                noty({text: 'Image upload succeeded.', type: 'success'});
               }
             }
           }
           catch (e) {
-            jQuery.growlUI('', 'Image upload failed.');
+              noty({text: 'Image upload failed.', type: 'error'});
             console.log("fileUploadFrame error",e);
           }
 

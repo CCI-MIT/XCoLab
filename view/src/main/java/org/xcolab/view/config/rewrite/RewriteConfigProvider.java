@@ -58,7 +58,7 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .when(Path.matches("/web/guest/member/-/member/userId/{memberId}"))
                     .perform(Redirect.permanent("/members/profile/{memberId}"))
                 .addRule()
-                    .when(Path.matches("/web/guest/member/-/member/userId/{memberId}/edit"))
+                    .when(Path.matches("/web/guest/member/-/member/userId/{memberId}/page/edit"))
                     .perform(Redirect.permanent("/members/profile/{memberId}/edit"));
     }
 

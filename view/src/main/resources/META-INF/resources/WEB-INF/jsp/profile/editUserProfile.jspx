@@ -11,7 +11,7 @@
     <!--@elvariable id="colabName" type="java.lang.String"-->
 	<!--@elvariable id="userBean" type="org.xcolab.portlets.userprofile.beans.UserBean"-->
 	<!--@elvariable id="permissions" type="org.xcolab.portlets.userprofile.utils.UserProfilePermissions"-->
-    <!--@elvariable id="currentUserProfile" type="org.xcolab.portlets.userprofile.wrappers.UserProfileWrapper"-->
+    <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
     <!--@elvariable id="memberCategories" type="java.util.List<org.xcolab.client.members.pojo.MemberCategory>"-->
 
 	<c:if test="${updateError}">
@@ -26,24 +26,19 @@
         </script>
     </c:if>
 
-	<portlet:resourceURL var="unlinkFacebookSSO" id="unlinkFacebookSSO" />
-    <portlet:resourceURL var="unlinkGoogleSSO" id="unlinkGoogleSSO"/>
+	<c:set var="unlinkFacebookSSO" value="/members/profile/${userBean.userId}/api/sso/facebook/unlink" />
+    <c:set var="unlinkGoogleSSO" value="/members/profile/${userBean.userId}/api/sso/google/unlink" />
 
-	<portlet:resourceURL var="updateUserSendEmailOnMessageSettings" id="updateUserSendEmailOnMessageSettings"/>
-	<portlet:resourceURL var="updateUserSendEmailOnActivitySettings" id="updateUserSendEmailOnActivitySettings"/>
-	<portlet:resourceURL var="updateUserSendDailyEmailOnActivitySettings" id="updateUserSendDailyEmailOnActivitySettings"/>
+	<c:set var="updateUserSendEmailOnMessageSettings" value="/members/profile/${userBean.userId}/api/settings/messaging/updateEmailOnMessage" />
+	<c:set var="updateUserSendEmailOnActivitySettings" value="/members/profile/${userBean.userId}/api/settings/messaging/updateEmailOnActivity" />
+	<c:set var="updateUserSendDailyEmailOnActivitySettings" value="/members/profile/${userBean.userId}/api/settings/messaging/updateDailyEmail" />
 
-	<portlet:resourceURL var="newsletterSubscribe" id="newsletterSubscribe" />
-	<portlet:resourceURL var="newsletterUnSubscribe" id="newsletterUnSubscribe" />
+	<c:set var="newsletterSubscribe" value="/members/profile/${userBean.userId}/api/settings/newsletter/subscribe" />
+	<c:set var="newsletterUnSubscribe" value="/members/profile/${userBean.userId}/api/settings/newsletter/subscribe" />
 
-	<portlet:actionURL var="updateUserProfileForm">
-		<portlet:param name="action" value="update" />
-	</portlet:actionURL>
+	<c:set var="updateUserProfileForm" value="/members/profile/${userBean.userId}/edit" />
 
-    <portlet:actionURL var="deleteProfileUrl">
-        <portlet:param name="action" value="deleteProfile" />
-        <portlet:param name="userId" value="${userBean.userId}" />
-    </portlet:actionURL>
+    <c:set var="deleteProfileUrl" value="/members/profile/${userBean.userId}/delete" />
 
 	<form style="margin-top: 20px;" action="/fileUpload" method="post"
 		  enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
@@ -370,7 +365,7 @@
                                 <label for="hasRole${memberCategory.roleId}"></label>
                             </td>
                             <td class="${memberCategory.showInList ? '' : 'text-muted'}">
-                                <img src="${themeDisplay.pathThemeImages}/${memberCategory.imageName}.png"
+                                <img src="${_themeImageFolder}/${memberCategory.imageName}.png"
                                      width="16" height="16" /> ${memberCategory.categoryName}
                             </td>
                         </tr>
@@ -381,7 +376,7 @@
         </div> <!-- /right_col -->
     </c:if>
 
-		<script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js"><!-- --></script>
+	<xcolab:loadCkEditor />
 	<script>
 		function updateTextarea() {
 			for ( var instance in CKEDITOR.instances) {
@@ -427,11 +422,11 @@
 					if (response.hasOwnProperty("imageId") &amp;&amp; response.imageId > 0) {
 						updateProfilePictureId(response.imageId);
 						jQuery("#userPortrait").unblock();
-						jQuery.growlUI('', 'Profile image uploaded, press save to store!');
+                        noty({text: 'Profile image uploaded, press save to store!', type: 'success'});
 					}
 				}
 			} catch (e) {
-				jQuery.growlUI('', 'Profile image upload failed!');
+                noty({text: 'Profile image upload failed!', type: 'error'});
 				//console.log("fileUploadFrame error",e);
 			}
 		});
@@ -538,9 +533,9 @@
 			var deferred = jQuery.Deferred();
 				sendAjaxToServer(updateUrl, formData).done(function(response){
 					if (response) {
-						jQuery.growlUI('', 'Successfully updated message settings!');
+                        noty({text: 'Successfully updated message settings!', type: 'success'});
 					} else {
-						jQuery.growlUI('','Updating message settings failed!');
+                        noty({text: 'Updating message settings failed!', type: 'error'});
 					}
 				});
 			return deferred;
@@ -602,10 +597,10 @@
 				sendAjaxToServer(updateUrl).done(function(response) {
 					if (response) {
 						deferred.resolve(true);
-						jQuery.growlUI('', 'Successfully updated Newsletter settings!');
+                        noty({text: 'Successfully updated Newsletter settings!', type: 'success'});
 					} else {
 						deferred.resolve(false);
-						jQuery.growlUI('','Updating Newsletter settings failed!');
+                        noty({text: 'Updating Newsletter settings failed!', type: 'error'});
 					}
 				});
 			return deferred;
@@ -634,10 +629,10 @@
             sendAjaxToServer(updateUrl).done(function(response){
                 if (response) {
                     deferred.resolve(true);
-                    jQuery.growlUI('','Unlinking SSO successful!');
+                    noty({text: 'Unlinking SSO successful!', type: 'success'});
                 } else {
                     deferred.resolve(false);
-                    jQuery.growlUI('','Unlinking SSO failed!');
+                    noty({text: 'Unlinking SSO failed!', type: 'error'});
                 }
             });
 			return deferred;
@@ -676,17 +671,17 @@
             sendAjaxToServer(updateUrl).done(function(response){
                 if (response) {
                     deferred.resolve(true);
-                    jQuery.growlUI('','Role updated successfully!');
+                    noty({text: 'Role updated successfully!', type: 'success'});
                 } else {
                     deferred.resolve(false);
-                    jQuery.growlUI('','Failed to update role!');
+                    noty({text: 'Failed to update role!', type: 'error'});
                 }
             });
             return deferred;
         }
 
         function addRole(roleId) {
-            var addRoleUrl = '/web/guest/member/-/member/api/members/${currentUserProfile.userId}/roles/' + roleId + '/add';
+            var addRoleUrl = '/members/profile/${currentUserProfile.userId}/api/roles/add/' + roleId;
             changeRoleOnServer(addRoleUrl).done(function(success) {
                 var $roleToggleElement = jQuery("#hasRole" + roleId);
                 if (success) {
@@ -698,7 +693,7 @@
         }
 
 		function removeRole(roleId) {
-            var removeRoleUrl = '/web/guest/member/-/member/api/members/${currentUserProfile.userId}/roles/' + roleId + '/remove';
+            var removeRoleUrl = '/members/profile/${currentUserProfile.userId}/api/roles/remove/' + roleId;
             changeRoleOnServer(removeRoleUrl).done(function(success) {
                 var $roleToggleElement = jQuery("#hasRole" + roleId);
                 if (success) {

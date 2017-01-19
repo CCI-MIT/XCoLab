@@ -13,6 +13,7 @@
 	<!--@elvariable id="colabShortName" type="java.lang.String"-->
 	<!--@elvariable id="permissions" type="org.xcolab.portlets.userprofile.utils.UserProfilePermissions"-->
 	<!--@elvariable id="userBean" type="org.xcolab.portlets.userprofile.beans.UserBean"-->
+    <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
 
 	<c:if test="${updateSuccess}">
 		<script type="text/javascript" >
@@ -26,11 +27,11 @@
 	<!--</portlet:resourceURL>-->
 
 	<div id="bread" class="pro">
-		<a href="/web/guest/community">Community</a>
+		<a href="/community">Community</a>
 		<img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-		<a href="/web/guest/members">Members</a>
+		<a href="/members">Members</a>
 		<img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-		<a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">${userBean.screenName}</a>
+		<a href="/members/profile/${currentUserProfile.userId}">${userBean.screenName}</a>
 	</div>
 	<c:choose>
 		<c:when test="${currentUserProfile.active}">
@@ -157,7 +158,7 @@
 						<tr>
 							<td colspan="4">
 								<a class="c-Button__primary"
-								   href="/web/guest/member/-/member/userId/${currentUserProfile.userId}/page/edit">
+								   href="/members/profile/${currentUserProfile.userId}/edit">
 									Manage profile and settings
 								</a>
 							</td>
@@ -282,17 +283,17 @@
 					<div class="activityBody">
 						<collab:userLinkSimple text="${message.from.screenName}" userId="${message.from.userId}" />
 						sent you a message:&#160; <a
-							href="/web/guest/messaging?p_p_id=${currentUserProfile.messagingPortletId}&amp;messageId=${message.messageId}">${message.subject}</a>
+							href="/messaging?p_p_id=${currentUserProfile.messagingPortletId}&amp;messageId=${message.messageId}">${message.subject}</a>
 					</div>
 
 				</c:forEach>
 
 				<div class="rounded_button brn">
-					<a href="/web/guest/messaging?p_p_id=${currentUserProfile.messagingPortletId}&amp;compose=true">COMPOSE</a>
+					<a href="/messaging?p_p_id=${currentUserProfile.messagingPortletId}&amp;compose=true">COMPOSE</a>
 				</div>
 
 				<div class="rounded_button brn">
-					<a href="/web/guest/messaging">ALL MESSAGES</a>
+					<a href="/messaging">ALL MESSAGES</a>
 				</div>
 
 				<div class="clearfix"></div>
@@ -306,7 +307,8 @@
 						<p>No new activities.</p>
 					</c:if>
 
-					<c:forEach var="activity" items="${currentUserProfile.subscribedActivities}" begin="0" end="5"> <!-- test="${not empty currentUserProfile.subscribedActivities}" -->
+
+					<c:forEach var="activity" items="${currentUserProfile.subscribedActivities}" begin="0" end="5">
 
 						<div class="comm_rightcol-time">
 							<c:choose>
@@ -331,12 +333,12 @@
 					</c:forEach>
 
 					<div class="rounded_button brn">
-						<a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}/page/subscriptionsManage">MANAGE</a>
+						<a href="/members/profile/${currentUserProfile.userId}/subscriptions/manage">MANAGE</a>
 					</div>
 
 					<div class="rounded_button brn">
 						<c:if test="${not empty currentUserProfile.subscribedActivities}">
-							<a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}/page/subscriptions">SEE ALL</a>
+							<a href="/members/profile/${currentUserProfile.userId}/subscriptions">SEE ALL</a>
 						</c:if>
 					</div>
 				</form:form>

@@ -1,10 +1,11 @@
 package org.xcolab.view.pages.profile.view;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
@@ -15,14 +16,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("view")
+@RequestMapping("/members/profile/{memberId}/api/settings/messaging")
 public class MessageSettingsJSONController extends JSONHelper {
 
     public MessageSettingsJSONController() { }
 
-    @ResourceMapping("updateUserSendEmailOnMessageSettings")
+    @PostMapping("updateEmailOnMessage")
     public @ResponseBody void handleUpdateUserSendEmailOnMessageSettingAJAXRequest(
             HttpServletRequest request, HttpServletResponse response,
+            @PathVariable long memberId,
             @RequestParam("messageSetting") String messageSettingParameter) {
 
         boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
@@ -42,9 +44,10 @@ public class MessageSettingsJSONController extends JSONHelper {
         MessagingClient.updateMessagingPreferences(preferences);
     }
 
-    @ResourceMapping("updateUserSendEmailOnActivitySettings")
+    @PostMapping("updateEmailOnActivity")
     public @ResponseBody void handleUpdateUserSendEmailOnActivityAJAXRequest(
             HttpServletRequest request, HttpServletResponse response,
+            @PathVariable long memberId,
             @RequestParam("messageSetting") String messageSettingParameter) {
 
         boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
@@ -73,9 +76,10 @@ public class MessageSettingsJSONController extends JSONHelper {
         MessagingClient.updateMessagingPreferences(preferences);
     }
 
-    @ResourceMapping("updateUserSendDailyEmailOnActivitySettings")
+    @PostMapping("updateDailyEmail")
     public @ResponseBody void handleUpdateUserSendDailyEmailOnActivityAJAXRequest(
             HttpServletRequest request, HttpServletResponse response,
+            @PathVariable long memberId,
             @RequestParam("messageSetting") String messageSettingParameter) {
 
         boolean messageSetting = Boolean.parseBoolean(messageSettingParameter);
