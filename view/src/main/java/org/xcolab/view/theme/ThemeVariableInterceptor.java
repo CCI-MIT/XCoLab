@@ -90,6 +90,11 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
 
             modelAndView
                     .addObject("_isSharedColab", ConfigurationAttributeKey.IS_SHARED_COLAB.get());
+
+
+            modelAndView
+                    .addObject("_footerArticleId", ConfigurationAttributeKey.FOOTER_CONTENT_ARTICLE_ID.get());
+
             final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.get();
             final String partnerColabImgsAndClasses = partnerColabName.replace(" ", "");
             modelAndView.addObject("_partnerColabName", partnerColabName);

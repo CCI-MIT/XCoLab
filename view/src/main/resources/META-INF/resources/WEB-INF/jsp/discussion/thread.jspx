@@ -9,7 +9,7 @@
 
         <div id="content">
             <div id="bread" class="pro">
-                <a href="/web/guest/community">Community</a>&#160;
+                <a href="/web/guest/members">Community</a>&#160;
                 <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
                 <a href="/web/guest/discussion">Discussion</a>&#160;
                 <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;

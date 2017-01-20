@@ -1,7 +1,0 @@
-<jsp:root
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	version="2.0">
-	<jsp:directive.attribute name="userId" type="java.lang.Long" required="true" rtexprvalue="true" description="User id" />
-	<jsp:directive.attribute name="text" type="java.lang.String" required="true" rtexprvalue="true" description="Link text" />
-	<a href="/web/guest/member/-/member/userId/${userId }">${text }</a>
-</jsp:root>

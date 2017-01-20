@@ -24,6 +24,7 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
         redirectLegacyRegistration(configurationBuilder);
         redirectLegacyWikiPages(configurationBuilder);
         redirectLegacyUserProfile(configurationBuilder);
+        redirectLegacyProposals(configurationBuilder);
         return configurationBuilder;
 
     }
@@ -74,8 +75,8 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                         .or(Path.matches("/trends{path}"))
                         .or(Path.matches("/dialogues{path}"))
                 ))
-                .perform(Forward.to("/contests{anything}"))
-                .where("anything").matches(".*");
+                .perform(Forward.to("/contests{path}"))
+                .where("path").matches(".*");
 
     }
 

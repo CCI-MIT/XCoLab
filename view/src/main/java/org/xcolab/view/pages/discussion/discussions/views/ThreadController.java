@@ -39,7 +39,6 @@ public class ThreadController extends BaseDiscussionController {
 
     public static final String CREATE_THREAD_URL = "/discussion/threads/create";
 
-    private static final long COMMUNITY_TOP_CONTENT_ARTICLE_ID = 1614L;
 
 
     @GetMapping({"/web/guest/discussion/thread/{threadId}","/discussion/thread/{threadId}"})

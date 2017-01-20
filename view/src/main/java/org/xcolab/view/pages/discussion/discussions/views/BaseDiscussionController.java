@@ -2,6 +2,7 @@ package org.xcolab.view.pages.discussion.discussions.views;
 
 import org.springframework.stereotype.Controller;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.util.CategoryClientUtil;
@@ -16,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 
 public abstract class BaseDiscussionController {
+
+    protected static final long COMMUNITY_TOP_CONTENT_ARTICLE_ID = ConfigurationAttributeKey.DISCUSSION_CONTENT_ARTICLE_ID.get();
 
     protected CategoryGroup getCategoryGroup(HttpServletRequest request) {
         DiscussionPreferences preferences = new DiscussionPreferences();

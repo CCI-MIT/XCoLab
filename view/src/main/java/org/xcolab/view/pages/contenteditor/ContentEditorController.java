@@ -29,7 +29,7 @@ public class ContentEditorController {
     public String handleRenderRequest(HttpServletRequest request, HttpServletRequest response, Model model) {
         long memberId = MemberAuthUtil.getMemberId(request);
         if (PermissionsClient.canAdminAll(memberId)) {
-            return "/contenteditor/editor";
+            return "contenteditor/editor";
         } else {
             return "notAllowed";
         }

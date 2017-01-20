@@ -206,6 +206,7 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("COLAB_USES_CARDS")
                     .defaultValue(true).build();
 
+    //Portlet preferences config
     public static final AttributeGetter<String> PORTLET_CONTACT_FORM_PREFERENCES =
             ConfigurationAttributes.newStringAttribute("PORTLET_CONTACT_FORM_PREFERENCES")
                     .build();
@@ -233,4 +234,25 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> PORTLET_DISCUSSION_PREFERENCES =
             ConfigurationAttributes.newStringAttribute("PORTLET_DISCUSSION_PREFERENCES")
                     .build();
+
+    public static final AttributeGetter<Long> LANDING_PAGE_BANNER_CONTENT_ARTICLE_ID =
+            ConfigurationAttributes.newLongAttribute("LANDING_PAGE_BANNER_CONTENT_ARTICLE_ID")
+                    .build();
+
+    public static final AttributeGetter<Long> LANDING_PAGE_BOTTOM_CONTENT_ARTICLE_ID =
+            ConfigurationAttributes.newLongAttribute("LANDING_PAGE_BOTTOM_CONTENT_ARTICLE_ID")
+                    .build();
+
+    public static final AttributeGetter<Long> FOOTER_CONTENT_ARTICLE_ID =
+            ConfigurationAttributes.newLongAttribute("FOOTER_CONTENT_ARTICLE_ID")
+                    .build();
+
+    public static final AttributeGetter<Long> MEMBERS_CONTENT_ARTICLE_ID =
+            ConfigurationAttributes.newLongAttribute("MEMBERS_CONTENT_ARTICLE_ID")
+                    .build();
+
+    public static final AttributeGetter<Long> DISCUSSION_CONTENT_ARTICLE_ID =
+            ConfigurationAttributes.newLongAttribute("DISCUSSION_CONTENT_ARTICLE_ID")
+                    .build();
+
 }

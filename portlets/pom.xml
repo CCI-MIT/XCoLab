@@ -17,10 +17,10 @@
 
     <modules>
 
-        <module>discussions-portlet</module>
 
 
-        <module>contestmanagement-portlet</module>
+
+
 
         <module>members-portlet</module>
         <module>userprofile-portlet</module>

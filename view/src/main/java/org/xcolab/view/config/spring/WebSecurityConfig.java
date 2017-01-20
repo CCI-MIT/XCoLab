@@ -38,7 +38,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutSuccessHandler(new LogoutSuccessHandler())
                     .and()
                 .csrf()
-                    .disable();
+                    .disable()
+                .headers()
+                    .frameOptions().sameOrigin();
     }
 
     @Autowired

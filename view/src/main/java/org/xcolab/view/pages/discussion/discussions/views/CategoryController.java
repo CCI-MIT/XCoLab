@@ -6,9 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.ActionMapping;
-import org.springframework.web.portlet.bind.annotation.RenderMapping;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
@@ -39,7 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class CategoryController extends BaseDiscussionController {
 
-    private static final long COMMUNITY_TOP_CONTENT_ARTICLE_ID = 1614L;
+
 
     @GetMapping({"/web/guest/discussion","/discussion"})
     public String showCategories(HttpServletRequest request, HttpServletResponse response, Model model) {

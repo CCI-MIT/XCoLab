@@ -45,9 +45,10 @@
             <div class="c-Alert__error__message">${error}</div>
         </c:if>
 
-        <form style="margin-top: 20px;" action="/loginregister-portlet/fileUploadServlet" method="post"
+        <form style="margin-top: 20px;" action="/images/upload" method="post"
               enctype="multipart/form-data" target="_fileUploadFrame"
               id="fileUploadForm">
+            <input type="hidden" name="resize" value="true"/>
             <input type="file" name="file" id="portraitUploadInput" />
         </form>
         <form:form action="/register" method="post" commandName="createUserBean" id="registrationForm">
@@ -208,7 +209,7 @@
 
             jQuery("#portraitUploadInput").change(function() {
                 jQuery("#fileUploadForm").submit();
-                jQuery("#userPortrait").block();
+
 
             });
             jQuery("#fileUploadFrame").load(
@@ -219,7 +220,7 @@
 
                         jQuery("#userPortrait").attr("src",
                             "/image/contest?img_id=" + response.imageId);
-                        jQuery("#userPortrait").unblock();
+
                         jQuery("#userRegistrationImageId")
                             .val(response.imageId);
                     }

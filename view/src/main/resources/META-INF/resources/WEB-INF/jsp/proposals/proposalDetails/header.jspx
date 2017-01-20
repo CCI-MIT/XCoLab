@@ -8,8 +8,9 @@
 	<!--@elvariable id="edit" type="java.lang.Boolean"-->
 	<!--@elvariable id="tabs" type="java.util.List<org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper>"-->
 	<!--@elvariable id="promptLoginWindow" type="java.lang.String"-->
-	<xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>
+	<xcolab:script src="${_themeJsFolder}/proposals/discussionComments.js"/>
 	<xcolab:script src="${_themeJsFolder}/proposals/historyWidget.js"/>
+	<xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>
 	<script>
         var proposalId = ${ proposal.proposalId }; var contestId = ${contest.contestPK};
         var proposalUrl = "${proposal.proposalUrl}"; var phaseUrl = "${contestPhase.contestPhaseUrl}";

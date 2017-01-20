@@ -1,5 +1,0 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
-    <jsp:directive.attribute name="epoch" type="java.lang.Long" required="true" rtexprvalue="true" description="Unix Epoch" />
-    <jsp:directive.attribute name="format" type="java.lang.String" required="true" rtexprvalue="true" description="Format of Date" />
-    <script>document.write(dateTimeFormatter.${format}(${epoch}));</script>
-</jsp:root>

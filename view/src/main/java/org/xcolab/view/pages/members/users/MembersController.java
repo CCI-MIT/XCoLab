@@ -37,7 +37,7 @@ public class MembersController {
 
     private static final int AUTOCOMPLETE_MAX_USERS = 15;
 
-    private static final long COMMUNITY_TOP_CONTENT_ARTICLE_ID = 1613L;
+    private static final long COMMUNITY_TOP_CONTENT_ARTICLE_ID = ConfigurationAttributeKey.MEMBERS_CONTENT_ARTICLE_ID.get();
 
     @RequestMapping({"/web/guest/members","/members"})
     public String showUsers(HttpServletRequest request, HttpServletResponse response,
