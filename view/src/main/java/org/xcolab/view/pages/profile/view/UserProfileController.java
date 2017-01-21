@@ -84,9 +84,9 @@ public class UserProfileController {
 
     @GetMapping("{memberId}")
     public String showUserProfileView(HttpServletRequest request, Model model,
-            @PathVariable long memberId) {
+            @PathVariable long memberId, Member member) {
         try {
-            UserProfilePermissions permissions = new UserProfilePermissions(request);
+            UserProfilePermissions permissions = new UserProfilePermissions(member);
             model.addAttribute("permissions", permissions);
             populateUserWrapper(new UserProfileWrapper(memberId, request), model);
             ModelAttributeUtil.populateModelWithPlatformConstants(model);
@@ -106,9 +106,9 @@ public class UserProfileController {
 
     @GetMapping("{memberId}/edit")
     public String showUserProfileEdit(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable long memberId) {
+            Model model, @PathVariable long memberId, Member member) {
 
-        UserProfilePermissions permissions = new UserProfilePermissions(request);
+        UserProfilePermissions permissions = new UserProfilePermissions(member);
         if (!permissions.getCanEditMemberProfile(memberId)) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
@@ -130,82 +130,12 @@ public class UserProfileController {
         }
     }
 
-    @GetMapping("{memberId}/subscriptions")
-    public String showUserProfileSubscriptions(HttpServletRequest request, HttpServletResponse response, Model model,
-            @RequestParam long memberId, @RequestParam(required = false, defaultValue = "1") int paginationId) {
-        try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request);
-            populateUserWrapper(currentUserProfile, model);
-            currentUserProfile.setSubscriptionsPaginationPageId(paginationId);
-            return "showUserSubscriptions";
-        } catch (MemberNotFoundException e) {
-            _log.warn("Could not create user profile for {}", memberId);
-            return "showProfileNotInitialized";
-        }
-    }
-
-    @GetMapping("{memberId}/subscriptions/manage")
-    public String showUserSubscriptionsManage(HttpServletRequest request, HttpServletResponse response,
-            Model model, @RequestParam long memberId, @RequestParam(required = false) String typeFilter) {
-        try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request);
-            populateUserWrapper(currentUserProfile, model);
-            if (typeFilter != null) {
-                currentUserProfile.getUserSubscriptions().setFilterType(typeFilter);
-            }
-            model.addAttribute("userSubscriptions", currentUserProfile.getUserSubscriptions());
-
-            final long contestTypeId = ConfigurationAttributeKey
-                    .DEFAULT_CONTEST_TYPE_ID.get();
-            final ContestType contestType = ContestClientUtil
-                    .getContestType(contestTypeId);
-            model.addAttribute("contestType", contestType);
-
-            if (currentUserProfile.isViewingOwnProfile()) {
-                return "showUserSubscriptionsManage";
-            }
-        } catch ( MemberNotFoundException e) {
-            _log.warn("Could not create user profile for {}", memberId);
-            return "showProfileNotInitialized";
-        }
-        ModelAttributeUtil.populateModelWithPlatformConstants(model);
-        return SHOW_PROFILE_VIEW;
-    }
-
-    //TODO: what is this?
-    @GetMapping("{memberId}/subscriptions/navigate")
-    public void navigateSubscriptions(HttpServletRequest request, HttpServletResponse response,
-            Model model, @RequestParam String paginationAction)
-            throws IOException, MemberNotFoundException {
-
-        Integer paginationPageId = 1;
-        final long memberId = MemberAuthUtil.getMemberId(request);
-        UserProfileWrapper currentUserProfile =
-                new UserProfileWrapper(memberId, request);
-        switch (paginationAction) {
-            case "First":
-                paginationPageId = 1;
-                break;
-            case "<Previous":
-                paginationPageId = currentUserProfile.getSubscriptionsPaginationPageId() - 1;
-                break;
-            case "Next>":
-                paginationPageId = currentUserProfile.getSubscriptionsPaginationPageId() + 1;
-                break;
-            case "Last":
-                paginationPageId = currentUserProfile.getSubscriptionsPaginationPageMax();
-                break;
-        }
-        response.sendRedirect("/web/guest/member/-/member/userId/" + currentUserProfile.getUserId().toString() +
-                "/page/subscriptions/" + paginationPageId.toString());
-    }
-
     @RequestMapping(params = "updateError=true")
     public String updateProfileError(HttpServletRequest request, Model model,
                                      @RequestParam(required = false) boolean emailError,
                                      @RequestParam(required = false) boolean passwordError,
-                                     @RequestParam Long userId) {
-        UserProfilePermissions permissions = new UserProfilePermissions(request);
+                                     @RequestParam Long memberId, Member loggedInMember) {
+        UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
         model.addAttribute("permissions", permissions);
         model.addAttribute("updateError", true);
         if (emailError) {
@@ -217,15 +147,15 @@ public class UserProfileController {
         model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.get());
         model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(userId, request);
-            if (permissions.getCanEditMemberProfile(userId)) {
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request);
+            if (permissions.getCanEditMemberProfile(memberId)) {
                 model.addAttribute("newsletterBean",
                         new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
                 ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return EDIT_PROFILE_VIEW;
             }
         } catch (MemberNotFoundException e) {
-            _log.warn("Could not create user profile for {}", userId);
+            _log.warn("Could not create user profile for {}", memberId);
             return "showProfileNotInitialized";
         }
 
@@ -235,9 +165,9 @@ public class UserProfileController {
     @PostMapping("{memberId}/edit")
     public String updateUserProfile(HttpServletRequest request, HttpServletResponse response,
             Model model, @PathVariable long memberId, @ModelAttribute UserBean updatedUserBean,
-            BindingResult result)
+            BindingResult result, Member loggedInMember)
             throws IOException, MemberNotFoundException {
-        UserProfilePermissions permissions = new UserProfilePermissions(request);
+        UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
         model.addAttribute("permissions", permissions);
 
         if (!permissions.getCanEditMemberProfile(updatedUserBean.getUserId())
@@ -447,7 +377,7 @@ public class UserProfileController {
     public void deleteUserProfile(HttpServletRequest request, HttpServletResponse response,
             Model model, long memberId, Member loggedInMember)
             throws IOException {
-        UserProfilePermissions permission = new UserProfilePermissions(request);
+        UserProfilePermissions permission = new UserProfilePermissions(loggedInMember);
 
         if (permission.getCanEditMemberProfile(memberId)) {
             MembersClient.deleteMember(memberId);

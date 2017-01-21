@@ -14,19 +14,15 @@
   <!--@elvariable id="contestType" type="org.xcolab.client.contest.pojo.ContestType"-->
   <!--@elvariable id="userSubscriptions" type="org.xcolab.portlets.userprofile.wrappers.UserSubscriptionsWrapper"-->
 
-  <portlet:actionURL var="removeSubscriptionURL">
-    <portlet:param name="action" value="removeSubscription" />
-    <portlet:param name="userId" value="${currentUserProfile.userId}" />
-  </portlet:actionURL>
-
+  <c:set var="removeSubscriptionURL" value="/members/profile/${currentUserProfile.userId}/subscriptions/remove" />
 
   <div id="bread" class="pro">
     <a href="/web/guest/community">Community</a> <img
-          src="${themeDisplay.pathThemeImages}/arrow.gif" width="8" height="8" /> <a
+          src="${_themeImageFolder}/arrow.gif" width="8" height="8" /> <a
           href="/web/guest/members">Members</a> <img
-          src="${themeDisplay.pathThemeImages}/arrow.gif" width="8" height="8" /> <a
+          src="${_themeImageFolder}/arrow.gif" width="8" height="8" /> <a
           href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">${userBean.screenName}</a>
-    <img src="${themeDisplay.pathThemeImages}/arrow.gif" width="8" height="8" />Manage Subscriptions
+    <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />Manage Subscriptions
   </div>
 
   <div id="content">
@@ -84,7 +80,7 @@
           <h3>Settings</h3>
           <ul>
             <li>
-              <a href="/web/guest/member/-/member/userId/${currentUserProfile.userId}/page/edit">Manage your email notification settings</a>
+              <a href="/members/profile/${currentUserProfile.userId}/edit">Manage your email notification settings</a>
             </li>
           </ul>
         </div>

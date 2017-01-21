@@ -1,17 +1,14 @@
-package org.xcolab.entity.utils.activity;
+package org.xcolab.view.pages.profile.utils;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
-import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -21,10 +18,7 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.activity.ActivityEntryType;
-
-import java.util.List;
 
 public class ActivitySubscriptionNameGenerator {
     private static final Logger _log = LoggerFactory.getLogger(ActivitySubscriptionNameGenerator.class);
@@ -65,37 +59,42 @@ public class ActivitySubscriptionNameGenerator {
         return contest.getContestShortName() + " " + StringUtils.uncapitalize(contestNameString);
     }
 
-    private static String getNameForDiscussionSubscription(ActivitySubscription subscription){
+    private static String getNameForDiscussionSubscription(ActivitySubscription subscription) {
         final Long classPK = subscription.getClassPK();
-        final String extraData = subscription.getExtraData();
+//        final String extraData = subscription.getExtraData();
 
-        StringBuilder name = new StringBuilder();
+//        StringBuilder name = new StringBuilder();
 
         try {
-            CategoryGroup categoryGroup = CategoryClientUtil.getCategoryGroup(classPK);
-            name.append(getCategoryGroupHyperlink(categoryGroup));
+            CommentThread thread = ThreadClientUtil.getThread(classPK);
+            return String.format(HYPERLINK, thread.getLinkUrl(), thread.getTitle());
 
-            if (extraData != null && !extraData.isEmpty()) {
-                List<Long> ids = IdListUtil.getIdsFromString(extraData);
-                if (!ids.isEmpty()) {
-                    long categoryId = ids.get(0);
-                    Category category = CategoryClientUtil.getCategory(categoryId);
-                    name.append(" &gt; ");
-                    name.append(getCategoryHyperlink(category));
-                }
-                if (ids.size() > 1) {
-                    long threadId = ids.get(1);
-                    CommentThread thread = ThreadClientUtil.getThread(threadId);
+//            CategoryGroup categoryGroup = CategoryClientUtil.getCategoryGroup(classPK);
+//            name.append(getCategoryGroupHyperlink(categoryGroup));
 
-                    name.append(" &gt; ");
-                    name.append(getDiscussion(thread));
-                }
-            }
-        } catch (CategoryGroupNotFoundException | ThreadNotFoundException | CategoryNotFoundException e) {
-            _log.warn("Could not resolve discussion subscription name", e);
+            //TODO: what is stored in the extra data now?
+//            if (extraData != null && !extraData.isEmpty()) {
+//                List<Long> ids = IdListUtil.getIdsFromString(extraData);
+//                if (!ids.isEmpty()) {
+//                    long categoryId = ids.get(0);
+//                    Category category = CategoryClientUtil.getCategory(categoryId);
+//                    name.append(" &gt; ");
+//                    name.append(getCategoryHyperlink(category));
+//                }
+//                if (ids.size() > 1) {
+//                    long threadId = ids.get(1);
+//                    CommentThread thread = ThreadClientUtil.getThread(threadId);
+//
+//                    name.append(" &gt; ");
+//                    name.append(getDiscussion(thread));
+//                }
+//            }
+        } catch (ThreadNotFoundException e) {
+            _log.warn("Could not resolve discussion subscription name for subscription {}",
+                    subscription.getPk() , e);
         }
 
-        return name.toString();
+        return "[No title]";
     }
 
     private static  String getCategoryHyperlink(Category category) {

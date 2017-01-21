@@ -112,7 +112,7 @@
 									${colabShortName} Points are awarded to all the members who contributed to a winning integrated ${currentUserProfile.proposalString}, as well as those who contributed to any sub-${currentUserProfile.proposalsString} it contains.
 									<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
 								</div>
-								<div class="clearfix"></div>
+								<div class="clearfix"><!-- --></div>
 							</td>
 							<td class="points_box right_border top_border align_right">${currentUserProfile.actualPointsFormatted}</td>
 						</c:if>
@@ -134,7 +134,7 @@
 									The maximum number of ${colabShortName} Points this member could receive. This is a measure of how many times the member’s ${currentUserProfile.proposalsString} have been included in other ${currentUserProfile.proposalsString} and how important it is in those ${currentUserProfile.proposalsString}.
 									<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
 								</div>
-								<div class="clearfix"></div>
+								<div class="clearfix"><!-- --></div>
 							</td>
 							<td class="points_box right_border bottom_border align_right">${currentUserProfile.potentialPointsFormatted}</td>
 						</c:if>
@@ -296,7 +296,7 @@
 					<a href="/messaging">ALL MESSAGES</a>
 				</div>
 
-				<div class="clearfix"></div>
+				<div class="clearfix"><!-- --></div>
 			</div>
 
 			<div class="comm_rightcol">
@@ -404,7 +404,7 @@
 
 			</div>
 			<!-- /popup login -->
-			<div class="clearfix"></div>
+			<div class="clearfix"><!-- --></div>
 
 		</div>
 	</div>

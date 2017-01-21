@@ -242,7 +242,7 @@
                                 </li>
                             </c:if>
                             <li>
-                                <a href="/web/guest/member/-/member/userId/${_member.userId}/page/subscriptions">My subscriptions</a>
+                                <a href="/members/profile/${_member.userId}/subscriptions">My subscriptions</a>
                             </li>
                             <li><a href="/logout">Log out</a></li>
                         </ul>

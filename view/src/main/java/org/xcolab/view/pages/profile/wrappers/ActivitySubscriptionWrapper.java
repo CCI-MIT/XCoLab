@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.profile.wrappers;
 
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.entity.utils.activity.ActivitySubscriptionNameGenerator;
+import org.xcolab.view.pages.profile.utils.ActivitySubscriptionNameGenerator;
 import org.xcolab.view.pages.profile.SubscriptionType;
 
 import java.io.Serializable;
