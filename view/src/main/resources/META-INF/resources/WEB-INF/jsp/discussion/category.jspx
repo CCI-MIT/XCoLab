@@ -1,0 +1,147 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          version="2.0">
+
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <xcolab:layout>
+        <xcolab:script src="${_libJsFolder}/proposals/discussionComments.js"/>
+        <!--@elvariable id="currentCategory" type="org.xcolab.client.comment.pojo.Category"-->
+        <!--@elvariable id="categories" type="java.util.List<org.xcolab.client.comment.pojo.Category>"-->
+        <!--@elvariable id="threads" type="java.util.List<org.xcolab.client.comment.pojo.CommentThread>"-->
+        <!--@elvariable id="sortAscending" type="java.lang.Boolean"-->
+        <!--@elvariable id="sortColumn" type="java.lang.String"-->
+        <!--@elvariable id="isSubscribed" type="java.lang.Boolean"-->
+
+        <script type="text/javascript">
+            var hash = window.location.hash;
+            if (hash.slice(1, 11) == "discussion") {
+                //found old discussion url -> redirect to new url
+                var newUrl = hash.replace("#discussion%3DpageType%3ACATEGORY%2CcategoryId%3A", "category/");
+                newUrl = newUrl.replace("#discussion%3DpageType%3ATHREAD%2CthreadId%3A", "thread/");
+                window.location = '/web/guest/discussion/' + newUrl;
+            }
+        </script>
+        <collab:content articleId="${communityTopContentArticleId}" />
+        <div id="content">
+            <div id="bread" class="pro">
+                <a href="/web/guest/members">Community</a>&#160;
+                <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
+                <a href="/web/guest/discussion">Discussion</a>
+                <c:if test="${not empty currentCategory}">
+                    &#160;
+                    <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
+                    <a href="${currentCategory.linkUrl}">${currentCategory.name}</a>&#160;
+                </c:if>
+            </div>
+
+            <div class="c-Comment__threads">
+                <div>
+                    <h3>${empty currentCategory ? 'All Discussions' : currentCategory.name}</h3>
+                    <div class="p-Discussion__row">
+                        <div class="p-Discussion__left">
+                            <div class="b-Spacing ${not empty currentCategory ? 'separatorBelow' : ''}">
+
+                                <span class="c-Count"><span class="c-Count__number">${threads.size()}</span> discussions</span>
+
+                                <a onclick="if(!deferUntilLogin()){return false}else{return true}" class="b-Spacing__inline--large" href="/discussion/threads/create">
+                                    <img style="vertical-align: middle;" height="30"
+                                         src="${_themeImageFolder}/icon_new-topic.png" /> new discussion
+                                </a>
+                            </div>
+
+                            <c:if test="${not empty currentCategory}">
+                                <div class="b-Spacing">
+                                    ${currentCategory.description}
+                                </div>
+                            </c:if>
+
+                        </div>
+                        <div class="p-Discussion__right border-bottom">
+                            <c:set var="subscribeUrl" value="/discussion/subscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
+
+                            <c:set var="unsubscribeUrl" value="/dicussion/unsubscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
+                            <a class="subscribeLinkSmall" href="${isSubscribed ? unsubscribeUrl : subscribeUrl}"
+                               onclick="if(!deferUntilLogin()) return false;">
+                                <img src="${_themeImageFolder}/subscribe_small_2.png" /> ${isSubscribed ? 'Unsubscribe' : 'Subscribe'}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-Discussion__row">
+                    <table class="p-Discussion__left c-Table">
+                        <thead>
+                        <tr class="c-Table__row--title">
+                            <th class="c-Table__cell--title">
+                                <c:set var="sortURL" value="/discussion/sortCategory?categoryId=${currentCategory.categoryId}&amp;sortColumn=TITLE&amp;currentSortColumn=${sortColumn}&amp;currentSortAscending=${sortAscending}" />
+
+                                <a href="${sortURL }">Title</a>
+                                <div class="c-Tooltip">
+                                    click to sort by title
+                                    <div class="c-Tooltip__arrow"><!-- --></div>
+                                </div>
+                                <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="TITLE" />
+                            </th>
+
+                            <th class="c-Table__cell--title">
+                                <c:set var="sortURL" value="/discussion/sortCategory?categoryId=${currentCategory.categoryId}&amp;sortColumn=REPLIES&amp;currentSortColumn=${sortColumn}&amp;currentSortAscending=${sortAscending}" />
+
+                                <a href="${sortURL }">Replies</a>
+                                <div class="c-Tooltip">
+                                    click to sort by replies
+                                    <div class="c-Tooltip__arrow"><!-- --></div>
+                                </div>
+                                <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="REPLIES" />
+                            </th>
+
+                            <th class="c-Table__cell--title">
+                                <c:set var="sortURL" value="/discussion/sortCategory?categoryId=${currentCategory.categoryId}&amp;sortColumn=LAST_COMMENTER&amp;currentSortColumn=${sortColumn}&amp;currentSortAscending=${sortAscending}" />
+
+                                <a href="${sortURL }">Last Commenter</a>
+                                <div class="c-Tooltip">
+                                    click to sort by last commenter
+                                    <div class="c-Tooltip__arrow"><!-- --></div>
+                                </div>
+                                <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="LAST_COMMENTER" />
+                            </th>
+
+                            <th class="c-Table__cell--title">
+                                <c:set var="sortURL" value="/discussion/sortCategory?categoryId=${currentCategory.categoryId}&amp;sortColumn=DATE&amp;currentSortColumn=${sortColumn}&amp;currentSortAscending=${sortAscending}" />
+
+                                <a href="${sortURL }">Date</a>
+                                <div class="c-Tooltip">
+                                    click to sort by date
+                                    <div class="c-Tooltip__arrow"><!-- --></div>
+                                </div>
+                                <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="DATE" />
+                            </th>
+                        </tr>
+                        </thead>
+                        <c:forEach var="thread" items="${threads}">
+                            <tr class="c-Table__row">
+                                <td class="c-Table__cell"><a href="${thread.linkUrl}">${thread.title}</a></td>
+                                <td class="c-Table__cell">${thread.commentsCount}</td>
+                                <td class="c-Table__cell"><collab:userLinkSimple userId="${thread.lastActivityAuthor.userId}" text="${thread.lastActivityAuthor.screenName}"/></td>
+                                <td class="c-Table__cell">${thread.lastActivityDateFormatted}</td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+
+                    <div class="p-Discussion__right c-Comment__threads__sidebar">
+                        <div class="comm_list">
+                            <h2>Categories</h2>
+                            <ul class="discussionCategories">
+                                <li><a href="/web/guest/discussion">All Discussions</a></li>
+                                <c:forEach var="category" items="${categories}">
+                                    <li><a href="${category.linkUrl}">${category.name}</a></li>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </xcolab:layout>
+
+</jsp:root>

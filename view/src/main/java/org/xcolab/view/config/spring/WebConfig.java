@@ -55,6 +55,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public RewriteInitializer rewriteInitializer() {
+
         return new RewriteInitializer();
     }
 

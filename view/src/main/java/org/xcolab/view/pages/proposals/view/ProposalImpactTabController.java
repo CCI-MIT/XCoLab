@@ -71,7 +71,21 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 request, model, true);
     }
 
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/IMPACT")
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/IMPACT")
+    public String showProposalDetails(
+                @PathVariable Long proposalId,
+                @PathVariable String contestUrlName,
+                @PathVariable Long contestYear,
+                Model model, HttpServletRequest request) throws IOException, ScenarioNotFoundException, ModelNotFoundException  {
+        return showImpactTab(
+                proposalId,
+                contestUrlName,
+                contestYear,
+                null,
+                request, model, false);
+    }
+    @GetMapping(
+            "/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/IMPACT")
     public String showProposalDetails(
             @PathVariable Long proposalId,
             @PathVariable String contestUrlName,

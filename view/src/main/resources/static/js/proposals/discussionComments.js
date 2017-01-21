@@ -8,7 +8,7 @@ function isAddCommentFormValid() {
     if (!isValid) {
         isValid = jQuery.trim(CKEDITOR.instances.messageContent.getData()) != '';
     }
-    
+
     if (isValid) {
         $thecomment.find('.errorMsg').hide();
     }
@@ -76,39 +76,49 @@ jQuery(function() {
         }
 
         //submit button functionality for adding new comments
-        $("#addCommentButton").click(function() {
-            //save the comment in a cookie, in case the user is not logged in
-
-            if($("#cke_messageContent iframe") == null || $("#cke_messageContent iframe").contents().find("body").text() == "") {
-                $.removeCookie("proposal-comment-body", {path: "/"});
-                $.cookie("proposal-comment-body", $("#messageContent").val(), {path: "/"});
-            } else {
-                $.removeCookie("proposal-comment-body", {path: "/"});
-                $.cookie("proposal-comment-body", $("#cke_messageContent iframe").contents().find("body").text(), {path: "/"});
-            }
-
-            if ($(this).attr("data-is-deferred") == "true") {
-                deferUntilLogin();
-            } else {
-                if (! window.isAddCommentFormValid()) {
-                    return false;
-                }
-                window.disableAddComment();
-                if(getMustFilterContent()) {
-                    var $thecomment = jQuery(".c-Comment__new");
-                    var text = $thecomment.find(".commentContent").val()
-                    if(text == "") {
-                        text = CKEDITOR.instances.messageContent.getData();
-                    }
-
-                    return false;
-                } else {
-                    $('#addCommentForm').submit();
-                }
-            }
+        $("#addCommentButton").click(function(event) {
+            return handleClickOnDiscussion(event);
         });
     }
 });
+function handleClickOnDiscussion(event){
+    //save the comment in a cookie, in case the user is not logged in
+
+    if($("#cke_messageContent iframe") == null || $("#cke_messageContent iframe").contents().find("body").text() == "") {
+        $.removeCookie("proposal-comment-body", {path: "/"});
+        $.cookie("proposal-comment-body", $("#messageContent").val(), {path: "/"});
+    } else {
+        $.removeCookie("proposal-comment-body", {path: "/"});
+        $.cookie("proposal-comment-body", $("#cke_messageContent iframe").contents().find("body").text(), {path: "/"});
+    }
+
+    if ($("#addCommentButton").attr("data-is-deferred") == "true") {
+        deferUntilLogin();
+    } else {
+        if (! window.isAddCommentFormValid()) {
+            event.preventDefault();
+            return false;
+        }
+        disableDirtyCheck();
+        window.disableAddComment();
+
+        if(getMustFilterContent()) {
+            var text = "";
+            if(CKEDITOR.instances.messageContent === undefined) {
+                var $thecomment = jQuery(".c-Comment__new");
+                text = $thecomment.find(".commentContent").val();
+            }else{
+                text = CKEDITOR.instances.messageContent.getData();
+            }
+            handleFilteredContent(text,"DISCUSSION", "#filtering_uuid",function () { $('#addCommentForm').submit() });
+            event.preventDefault();
+            return false;
+        } else {
+            $('#addCommentForm').submit();
+        }
+
+    }
+}
 function handleFilteredContent(textInput, source, uuidField, callback){
 
     $("#processedFailed").hide();

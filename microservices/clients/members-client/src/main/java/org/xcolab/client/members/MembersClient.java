@@ -231,10 +231,25 @@ public final class MembersClient {
         return member;
     }
 
+    public static Member findMemberByScreenNameUnchecked(String screenName) {
+        Member member = memberResource.list()
+                .queryParam("screenName", screenName)
+                .executeWithResult().getFirstIfExists();
+        return member;
+    }
+
+
+
     public static List<Member> findMembersByIp(String ip) {
             return memberResource.service("findByIp",
                     Member.TYPES.getTypeReference())
                     .queryParam("ip", ip).getList();
+    }
+
+    public static List<Member> findByScreenNameOrName(String ip) {
+        return memberResource.service("findByScreenNameOrName",
+                Member.TYPES.getTypeReference())
+                .queryParam("name", ip).getList();
     }
 
     public static Member findMemberByScreenNameNoRole(String screenName) throws MemberNotFoundException {

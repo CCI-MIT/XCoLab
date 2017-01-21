@@ -296,7 +296,7 @@
                             var nextDateTimePickerDate = new Date(nextDateTimePicker.value);
                             var dateTimePickerDate = new Date(dateTimePickerDateString);
                             if (dateTimePickerDate > nextDateTimePickerDate) {
-                                nextDateTimePicker.value = dateTimePickerDate.dateFormat('m/d/Y H:i');
+                                nextDateTimePicker.value = inst.val();
                             }
                         } catch (e) {
                             console.log("Couldn't parse nextDateTimePickerDate", e);

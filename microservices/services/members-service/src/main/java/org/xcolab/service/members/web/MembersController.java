@@ -77,6 +77,11 @@ public class MembersController {
         return memberDao.findByIp(ip);
     }
 
+    @GetMapping("findByScreenNameOrName")
+    public List<Member> getMemberByScreenNameName(@RequestParam String name){
+        return memberDao.findByScreenNameName(name);
+    }
+
     @GetMapping("findByScreenName")
 
     public Member getMemberByScreenNameNoRole(@RequestParam String screenName) throws NotFoundException {

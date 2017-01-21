@@ -19,12 +19,13 @@ import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
 import org.xcolab.entity.utils.enums.ColabConstants;
 import org.xcolab.entity.utils.judging.ProposalJudgingCommentHelper;
-import org.xcolab.portlets.proposals.requests.JudgeProposalFeedbackBean;
+
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.view.pages.proposals.discussion.ProposalDiscussionPermissions;
+import org.xcolab.view.pages.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
@@ -54,7 +55,10 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
     }
 
 
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/EVALUATION")
+    @GetMapping({
+            "/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/EVALUATION"
+            ,"/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/EVALUATION"
+    })
     public String showEvaluation(HttpServletRequest request, Model model) {
 
         boolean isFellowScreeningActive = proposalsContext.getContestPhase(request).getFellowScreeningActive();

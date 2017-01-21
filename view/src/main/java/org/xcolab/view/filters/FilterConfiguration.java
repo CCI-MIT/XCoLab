@@ -35,10 +35,10 @@ public class FilterConfiguration {
         return createRegistration(new FileUploadFilter(),"/fileUpload");
     }
 
-    @Bean
-    public FilterRegistrationBean imageDisplay() {
-        return createRegistration(new ImageDisplayFilter(),"/image/*");
-    }
+//    @Bean
+//    public FilterRegistrationBean imageDisplay() {
+//        return createRegistration(new ImageDisplayFilter(),"/image/*");
+//    }
 
     @Bean
     public FilterRegistrationBean profanityFiltering() {

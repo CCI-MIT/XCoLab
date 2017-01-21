@@ -3,7 +3,7 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0"
+          version="2.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -44,7 +44,7 @@
         <c:if test="${mustFilterContent}">
         <div id="modal_filtering_prof" style="display:none;">
             <p style="font-size: large;font-weight: 600;">Preparing for submission...</p>
-            <div id="loading_filtering_image" style="text-align: left"><img border="0" src="/climatecolab-hook/images/loader.gif"/></div>
+            <div id="loading_filtering_image" style="text-align: left"><img border="0" src="/images/loader.gif"/></div>
             <div id="processedFailed" style="display:none;margin-top: 8px;">Your entry contains disallowed words. Please remove offensive words before saving again <a href="#" rel="modal:close">Close</a></div>
         </div>
         </c:if>
@@ -93,7 +93,7 @@
         </div> <!-- /c-Headline -->
 
 
-        <form action="/fileUpload" method="post" enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
+        <form action="/images/upload" method="post" enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
             <input type="file" name="file" id="fileUploadInput" />
         </form>
 
@@ -303,7 +303,7 @@
 
             jQuery("#fileUploadInput").change(function() {
                 jQuery("#fileUploadForm").submit();
-                jQuery("#proposalImage").block({message: "", css: {"font-size":"12px", margin: "0px", padding: 0}});
+
             });
             jQuery("#fileUploadFrame").load(
                     function() {
@@ -311,7 +311,7 @@
                             var response = eval("("	+ jQuery(this).contents().text() + ")");
 
                             jQuery("#proposalImageImg").attr("src", "/image/proposal?img_id=" + response.imageId);
-                            jQuery("#proposalImage").unblock();
+
                             jQuery("#proposalImageId").val(response.imageId);
                         }
                         catch (e) {

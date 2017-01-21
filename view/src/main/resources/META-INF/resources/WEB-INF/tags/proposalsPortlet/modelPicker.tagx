@@ -50,7 +50,7 @@
 						<c:if test="${not empty wikiUrl}">
 							<a href="${wikiUrl}" target="_blank">
 								<span class="fieldWithTooltip">
-									<img height="15" width="15" src="${themeDisplay.pathThemeImages}/icon-addprop-question.png"/>
+									<img height="15" width="15" src="${_themeImageFolder}/icon-addprop-question.png"/>
 								</span>
 							</a>
 						</c:if>

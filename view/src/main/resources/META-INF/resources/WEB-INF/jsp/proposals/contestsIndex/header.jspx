@@ -1,6 +1,6 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
+          version="2.0">
 
     <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
     <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
@@ -11,7 +11,7 @@
     <div class="c-Headline formmargin">
         <div style="position: relative;">
             <c:if test="${showContestManagementLink}">
-                <a href="/web/guest/cms/-/contestmanagement/manager/tab/OVERVIEW" target="_blank">Go to Contest Management Tool</a>
+                <a href="/admin/contest/manager" target="_blank">Go to Contest Management Tool</a>
             </c:if>
         </div>
         <h1>${contestType.contestNamePlural}</h1>
@@ -123,7 +123,7 @@
         </c:when>
         <c:otherwise>
             <div id="archivedContestsMarkerContainer">
-                <img src="${themeDisplay.pathThemeImages}/contests-archive.png" />
+                <img src="${_themeImageFolder}/contests-archive.png" />
                 <strong>Archived:</strong>&#160;You are currently viewing archived ${contestType.contestNamePlural}.&#160; <a href="${contestType.portletUrl}" >Back to active ${contestType.contestNamePlural}</a>
             </div>
         </c:otherwise>

@@ -20,7 +20,7 @@
                                 <img src="${contest.logoPath}" width="151" height="151" alt="${contest.contestShortName}" />
                             </c:when>
                             <c:otherwise>
-                                <img src="${themeDisplay.pathThemeImages}/blank.gif" width="151" height="151" alt="${contest.contestShortName}" style="border: 1px solid #bbb;"/>
+                                <img src="${_themeImageFolder}/blank.gif" width="151" height="151" alt="${contest.contestShortName}" style="border: 1px solid #bbb;"/>
                             </c:otherwise>
                         </c:choose>
                     </a>

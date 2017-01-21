@@ -17,10 +17,7 @@
 		var users = [];
 		var usersMap = {};
 		var userNames = [];
-		<c:forEach var="user" items="${usersList}">
-			usersMap["${user.screenName}"] = "${user.userId}";
-			userNames.push("${user.screenName}");
-		</c:forEach>
+
 	</script>
 
 		<div class="cmsDetailsBox">

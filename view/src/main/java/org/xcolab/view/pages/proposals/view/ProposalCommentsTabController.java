@@ -22,7 +22,10 @@ public class ProposalCommentsTabController extends BaseProposalTabController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/COMMENTS")
+
+    @GetMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/COMMENTS",
+            "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/COMMENTS"
+    })
     public String showComments(HttpServletRequest request, Model model) {
 
         final Proposal proposal = proposalsContext.getProposal(request);

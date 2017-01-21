@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
@@ -25,13 +26,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-//--@RequestMapping("view")
+
 public class ProposalRevertActionController {
 
     @Autowired
     private ProposalsContext proposalsContext;
 
-    //-- @RequestMapping(params = "action=proposalRevert")
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/proposalRevert")
     public void showProposalRevert(HttpServletRequest request, HttpServletResponse response, Model model)
             throws ProposalsAuthorizationException, IOException {
 

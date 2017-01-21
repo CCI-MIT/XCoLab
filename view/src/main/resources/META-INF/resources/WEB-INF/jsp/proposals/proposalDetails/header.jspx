@@ -8,8 +8,9 @@
 	<!--@elvariable id="edit" type="java.lang.Boolean"-->
 	<!--@elvariable id="tabs" type="java.util.List<org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper>"-->
 	<!--@elvariable id="promptLoginWindow" type="java.lang.String"-->
-	<xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>
+	<xcolab:script src="${_themeJsFolder}/proposals/discussionComments.js"/>
 	<xcolab:script src="${_themeJsFolder}/proposals/historyWidget.js"/>
+	<xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>
 	<script>
         var proposalId = ${ proposal.proposalId }; var contestId = ${contest.contestPK};
         var proposalUrl = "${proposal.proposalUrl}"; var phaseUrl = "${contestPhase.contestPhaseUrl}";
@@ -24,7 +25,7 @@
 							<img src="${contest.proposalLogoPath}image/proposal?img_id=${proposal.imageId}" width="52" height="52" alt="${proposal.name }" />
 						</c:when>
 						<c:otherwise>
-							<img src="${themeDisplay.pathThemeImages}/proposal_default.png" width="52" height="52" alt="${proposal.name}" />
+							<img src="${_themeImageFolder}/proposal_default.png" width="52" height="52" alt="${proposal.name}" />
 						</c:otherwise>
 					</c:choose>
 				</div>

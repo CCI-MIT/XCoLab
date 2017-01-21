@@ -40,9 +40,10 @@
 
     <c:set var="deleteProfileUrl" value="/members/profile/${userBean.userId}/delete" />
 
-	<form style="margin-top: 20px;" action="/fileUpload" method="post"
+	<form style="margin-top: 20px;" action="/images/upload" method="post"
 		  enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
 		<input type="file" name="file" id="portraitUploadInput" />
+		<input type="hidden" name="resize" value="true"/>
 	</form>
 
 	<h1>Edit Member Profile</h1>
@@ -396,9 +397,7 @@
 		jQuery("#portraitUploadInput").change(function() {
 			console.log("Start Upload.");
 			jQuery("#fileUploadForm").submit();
-			jQuery("#userPortrait").block({
-				message : "Sending message"
-			});
+
 		});
 
 		function isJSONavailable(){
@@ -421,7 +420,6 @@
 					}
 					if (response.hasOwnProperty("imageId") &amp;&amp; response.imageId > 0) {
 						updateProfilePictureId(response.imageId);
-						jQuery("#userPortrait").unblock();
                         noty({text: 'Profile image uploaded, press save to store!', type: 'success'});
 					}
 				}

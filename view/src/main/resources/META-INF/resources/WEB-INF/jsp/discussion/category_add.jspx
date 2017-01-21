@@ -1,0 +1,41 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+        version="2.0">
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <xcolab:layout>
+        <jsp:directive.include file="init.jspx"/>
+     <div id="content">
+        <div id="bread" class="pro">
+            <a href="/web/guest/members">Community</a>&#160;
+            <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
+            <a href="/web/guest/discussion">Discussion</a>&#160;
+            <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
+            <a href="/web/guest/discussion/-/discussion/categories/create">Create Category</a>&#160;
+        </div>
+
+        <h1>Create new category</h1>
+        <div class="addthread">
+            <div class="c-Comment__new">
+                <c:set var="addCategoryUrl" value="/discussion/category/createCategory" />
+                <form id="addThreadForm" action="${addCategoryUrl }" method="post">
+                    <div>
+                        <label class="portlet-form-label">Title: <br />
+                            <input class="portlet-form-input-field input_long" name="title" maxlength="255" style="width:660px;" type="text" value="" />
+                        </label>
+                    </div>
+                    <div>
+                        <label class="portlet-form-label">Description: <br />
+                            <textarea class="portlet-form-input-field profile_about" name="description" cols="20" rows="2" style="width: 660px; height: 100px;"><!-- --></textarea>
+                        </label>
+                    </div>
+                    <div>
+                        <input type="submit" class="c-Button__primary" value="Add" />
+                        <a class="c-Button__secondary" href="/web/guest/discussion">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+     </div>
+    </xcolab:layout>
+</jsp:root>

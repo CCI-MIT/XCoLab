@@ -135,6 +135,17 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
+    public List<Member> findByScreenNameName(String name) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(MEMBER)
+                .where(MEMBER.SCREEN_NAME.like("%"+name+"%"))
+                .or(MEMBER.FIRST_NAME.like("%"+name+"%"))
+                .orderBy(MEMBER.SCREEN_NAME)
+                .getQuery();
+        return query.fetchInto(Member.class);
+    }
+
+    @Override
     public int countByGiven(String partialName, String partialEmail, String roleName) {
         final SelectQuery<Record1<Integer>> query = dslContext.select(countDistinct(MEMBER.ID_))
                 .from(MEMBER)

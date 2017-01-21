@@ -47,9 +47,9 @@ public class ProposalModelTabController extends BaseProposalTabController {
         		model.addAttribute("availableModels", modelIdsWithNames);
         	}
         	
-            return "proposalModel_edit";
+            return "proposals/proposalModel_edit";
         }
-        return "proposalModel";
+        return "proposals/proposalModel";
     }
 
     private Map<Long, String> getModelIdsAndNames(long contestPK) {

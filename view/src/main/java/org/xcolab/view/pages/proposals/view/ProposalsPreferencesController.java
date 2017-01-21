@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.ContestClientUtil;
@@ -12,6 +14,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
+import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
@@ -23,6 +26,7 @@ import org.xcolab.entity.utils.EntityIdListUtil;
 import org.xcolab.entity.utils.enums.ContestPhaseTypeValue;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.utils.ContestPhasePromotionEmail;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
@@ -40,7 +44,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-//-- @RequestMapping("edit")
+
 public class ProposalsPreferencesController {
 
     private static final Logger _log = LoggerFactory.getLogger(ProposalsPreferencesController.class);
@@ -66,10 +70,14 @@ public class ProposalsPreferencesController {
         return contestPhases;
     }
 
-    //-- @RequestMapping
+    @GetMapping("/proposals/editPreferences")
     public String showPreferences(HttpServletRequest request, HttpServletResponse response, Model model) {
         model.addAttribute("prefs", new ProposalsPreferencesWrapper(request));
 
+        long memberId = MemberAuthUtil.getMemberId(request);
+        if (!PermissionsClient.canAdminAll(memberId)) {
+            return "notAllowed";
+        }
         //get all contests
         List<Contest> contests = ContestClientUtil.getContestsByActivePrivate(true,true);
 
@@ -103,7 +111,7 @@ public class ProposalsPreferencesController {
         model.addAttribute("proposals", proposalsMap);
         model.addAttribute("contestTypes", ContestClientUtil.getAllContestTypes());
 
-        return "preferences";
+        return "proposals/editPreferences";
     }
 
 
@@ -118,8 +126,9 @@ public class ProposalsPreferencesController {
         }
     }
 
-    //-- @RequestMapping(params = "action=save")
-    public void savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, ProposalsPreferencesWrapper preferences)
+
+    @PostMapping("/proposals/savePreferences")
+    public String savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, ProposalsPreferencesWrapper preferences)
             throws IOException {
         //save terms
         preferences.store();
@@ -134,10 +143,13 @@ public class ProposalsPreferencesController {
         String message = moveProposals(EntityIdListUtil.PROPOSALS.fromIdList(proposalIdsToBeMoved), moveFromContestId, moveToContestPhaseId, ribbonId, false,
                 request);
         model.addAttribute("message", message);
+
+        return "proposals/editPreferences";
     }
 
     //-- @RequestMapping(params = "action=checkForMissingTeamMembers")
-    public void checkForMissingTeamMembers(HttpServletRequest request, HttpServletResponse response, Model model)
+    @PostMapping("/proposals/checkForMissingTeamMembers")
+    public String checkForMissingTeamMembers(HttpServletRequest request, HttpServletResponse response, Model model)
             throws  IOException {
         List<Contest> activeContests = ContestClientUtil.getContestsByActivePrivate(true, false);
         StringBuilder message = new StringBuilder();
@@ -188,10 +200,12 @@ public class ProposalsPreferencesController {
 
             model.addAttribute("message", message.toString());
         }
+        return "proposals/editPreferences";
     }
 
-    //-- @RequestMapping(params = "action=runRibbonDistribution")
-    public void runRibbonDistribution(HttpServletRequest request, HttpServletResponse response, Model model)
+
+    @PostMapping("/proposals/runRibbonDistribution")
+    public String runRibbonDistribution(HttpServletRequest request, HttpServletResponse response, Model model)
             throws  IOException {
         List<Contest> activeContests = ContestClientUtil.getContestsByActivePrivate(true, false);
         StringBuilder message = new StringBuilder();
@@ -254,6 +268,7 @@ public class ProposalsPreferencesController {
 
         //moving parameters are set
         model.addAttribute("message", message.toString());
+        return "proposals/editPreferences";
     }
 
     private String moveProposals(List<Proposal> proposalsToBeMoved, Long moveFromContestId,

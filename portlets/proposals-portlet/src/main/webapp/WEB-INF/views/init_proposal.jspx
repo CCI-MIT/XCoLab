@@ -1,9 +1,0 @@
-<jsp:root 
-	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
-
-	<jsp:directive.include file="./init_contest.jspx" />
-
-	<!--PopulateContextInterceptor-->
-	<jsp:useBean id="proposal" scope="request" type="org.xcolab.client.proposals.pojo.Proposal"/>
-
-</jsp:root>

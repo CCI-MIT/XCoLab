@@ -47,7 +47,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
                     }
                 }
 
-                if (but != null && but.getUserId() != member.getUserId()) {
+                if (but != null && but.getUserId()!= null && but.getUserId() != member.getUserId()) {
                     but.setUserId(member.getUserId());
                     BalloonsClient.updateBalloonUserTracking(but);
 

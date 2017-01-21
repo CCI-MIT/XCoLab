@@ -326,7 +326,7 @@
 
         <div class="inner">
             <!-- footer content -->
-            <collab:content articleId="4"/>
+            <collab:content articleId="${_footerArticleId}"/>
         </div> <!-- .inner -->
     </div> <!-- #c-Footer -->
 

@@ -31,20 +31,7 @@ public class TeamTabController extends AbstractTabController {
     private static final ContestDetailsTabs tab = ContestDetailsTabs.TEAM;
     private static final String TAB_VIEW = "contestmanagement/details/teamTab";
 
-    @ModelAttribute("usersList")
-    public List<Member> populateUsers() {
-        return MembersClient.listAllMembers();
-    }
 
-    @ModelAttribute("userNames")
-    public List<String> populateUserNames() {
-        ArrayList<String> userNamesList = new ArrayList<>();
-        for (Member user : MembersClient.listAllMembers()) {
-            userNamesList.add(user.getScreenName());
-        }
-        return userNamesList;
-
-    }
 
     @ModelAttribute("currentTabWrapped")
     @Override

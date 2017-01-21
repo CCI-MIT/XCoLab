@@ -2,10 +2,9 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:portlet="http://java.sun.com/portlet_2_0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           version="2.0"
-          xmlns:liferay-ui="http://liferay.com/tld/ui">
+          >
 
     <!--@elvariable id="isFrozen" type="java.lang.Boolean"-->
     <!--@elvariable id="hasAlreadyBeenPromoted" type="java.lang.Boolean"-->

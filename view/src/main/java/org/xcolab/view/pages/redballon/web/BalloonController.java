@@ -67,7 +67,7 @@ public class BalloonController {
             // user wasn't following any link so we need to create new root of a reference tree
             but = BalloonUtils.getBalloonUserTracking(request, response, null, null, null);
         }
-        if (but.getBalloonTextId() > 0) {
+        if (but.getBalloonTextId()!=null && but.getBalloonTextId() > 0) {
             BalloonText text;
             try {
                 text = BalloonsClient.getBalloonText(but.getBalloonTextId());

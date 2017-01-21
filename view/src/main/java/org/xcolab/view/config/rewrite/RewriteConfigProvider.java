@@ -19,10 +19,12 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
 
     @Override
     public Configuration getConfiguration(ServletContext servletContext) {
+
         final ConfigurationBuilder configurationBuilder = ConfigurationBuilder.begin();
         redirectLegacyRegistration(configurationBuilder);
         redirectLegacyWikiPages(configurationBuilder);
         redirectLegacyUserProfile(configurationBuilder);
+        redirectLegacyProposals(configurationBuilder);
         return configurationBuilder;
 
     }
@@ -63,6 +65,21 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
     }
 
     //TODO: when proposals portlet is ported, we need compatibility with these old redirects:
+
+    private void redirectLegacyProposals(ConfigurationBuilder configurationBuilder) {
+
+        configurationBuilder
+                .addRule()
+                .when(Direction.isInbound().and(Path.matches("/challenges{path}")
+                        .or(Path.matches("/events{path}"))
+                        .or(Path.matches("/trends{path}"))
+                        .or(Path.matches("/dialogues{path}"))
+                ))
+                .perform(Forward.to("/contests{path}"))
+                .where("path").matches(".*");
+
+    }
+
 //    <rule>
 //        <from>^/contests(.*)$</from>
 //        <to>/web/guest/plans/-/plans/contests$1</to>

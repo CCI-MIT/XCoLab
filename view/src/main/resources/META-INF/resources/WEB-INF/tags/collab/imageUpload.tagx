@@ -9,7 +9,7 @@
   <c:set var="fileUploadInputForm" value="${fileUploadInputId}Form"/>
   <c:set var="fileUploadInputFrame" value="${fileUploadInputId}Frame"/>
 
-  <form action="/fileUpload" method="post" enctype="multipart/form-data"
+  <form action="/images/upload" method="post" enctype="multipart/form-data"
         target="_${fileUploadInputFrame}" id="${fileUploadInputForm}" class="fileUploadFrame">
   <c:if test="${keepFormat}">
     <input type="hidden" name="keepFormat"  value="true" />
@@ -29,7 +29,7 @@
 
       jQuery(fileUploadInputId).change(function() {
         jQuery(fileUploadInputForm).submit();
-        jQuery(uploadImageDivId).block({message: "", css: {"font-size":"12px", margin: "0px", padding: 0}});
+
       });
 
       jQuery(fileUploadInputFrame).load(
@@ -45,7 +45,6 @@
               console.log(response);
               if (response.hasOwnProperty("imageId") &amp;&amp; response.imageId > 0) {
                 updatePictureId(uploadImageDivId, response.imageId);
-                jQuery(uploadImageDivId).unblock();
                 noty({text: 'Image upload succeeded.', type: 'success'});
               }
             }

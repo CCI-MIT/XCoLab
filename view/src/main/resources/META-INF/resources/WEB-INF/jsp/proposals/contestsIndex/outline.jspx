@@ -101,9 +101,9 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 				<c:choose>
 					<c:when test="${showActiveContests }">
 						<span class="otherContestsCount prior">
-						<img src="${themeDisplay.pathThemeImages}/contests-archive.png" height='20px' />&amp;nbsp;
+						<img src="${_themeImageFolder}/contests-archive.png" height='20px' />&amp;nbsp;
 						If you select
-							<a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >prior contests</a>, 
+							<a href="/contests/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >prior contests</a>,
 					
 							<span class='count'><!-- --></span>
 							completed 
