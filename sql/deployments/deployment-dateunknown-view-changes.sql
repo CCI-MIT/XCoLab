@@ -51,7 +51,7 @@ INSERT INTO xcolab_ConfigurationAttribute (`name`, `additionalId`, `numericValue
 INSERT INTO xcolab_ConfigurationAttribute (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('LANDING_PAGE_BANNER_CONTENT_ARTICLE_ID', '0', '1548', ' ', '0');
 INSERT INTO xcolab_ConfigurationAttribute (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('LANDING_PAGE_BOTTOM_CONTENT_ARTICLE_ID', '0', '1615', ' ', '0');
 INSERT INTO xcolab_ConfigurationAttribute (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('FOOTER_CONTENT_ARTICLE_ID', '0', '4', ' ', '0');
-INSERT INTO xcolab_ConfigurationAttribute (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('MEMBERS_CONTENT_ARTICLE_ID', '0', '1613', ' ', '0');
+  INSERT INTO xcolab_ConfigurationAttribute (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('MEMBERS_CONTENT_ARTICLE_ID', '0', '1613', ' ', '0');
 INSERT INTO xcolab_ConfigurationAttribute (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('DISCUSSION_CONTENT_ARTICLE_ID', '0', '1614', ' ', '0');
 
 -- bottom content article
@@ -80,6 +80,16 @@ UPDATE `xcolab_ContentArticleVersion` SET `content`='<div id=\"footleft\" style=
 
 UPDATE xcolab_ConfigurationAttribute SET `stringValue`='{\n \"CALL_TO_ACTION\": \"\",\n \"CONTEST_TYPE_ID\": \"3\"}' WHERE `name`='PORTLET_PROPOSALS_PREFERENCES' and`additionalId`='0';
 
-
+-- COLAB-1506
+CREATE TABLE `xcolab_ContentPage` (
+  `pageId` bigint(11) AUTO_INCREMENT,
+  `title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `menuArticleId` bigint(11) DEFAULT NULL,
+  `contentArticleId` bigint(11) NOT NULL,
+  `createdDate` timestamp NULL DEFAULT NULL,
+  `modifiedDate` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`pageId`),
+  UNIQUE KEY `xcolab_ContentPage_title_uindex` (`title`)
+);
 
 

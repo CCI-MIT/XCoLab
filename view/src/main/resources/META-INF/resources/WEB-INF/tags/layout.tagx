@@ -187,7 +187,7 @@
             <ul id="c-Header__menu" class="${_isHomePage ? 'backgroundLight' : ''}">
                 <!-- TODO: mark current page with class 'isCurrent' -->
                 <!--#if ($pageName== 'about' || $parentPageName == 'about') isCurrent #end-->
-                <li class=""><a href="/web/guest/about">About</a></li>
+                <li class=""><a href="/page/about">About</a></li>
                 <c:forEach var="_contestPage" items="${_contestPages}">
                     <c:if test="${_contestPage.menuItemName != ''}">
                         <!-- TODO: mark current page with class 'isCurrent' -->
@@ -198,7 +198,7 @@
                     </c:if>
                 </c:forEach>
                 <!--#if ($pageName== 'community' || $parentPageName == 'community')) isCurrent #end-->
-                <li class="" ><a href="/web/guest/members">Community</a></li>
+                <li class="" ><a href="/members">Community</a></li>
                 <c:if test="${_showSearchMenuItem}">
                     <!--#if ($pageName == 'search') isCurrent #end-->
                     <li class="">
@@ -218,7 +218,7 @@
                             </div>
                         </c:if>
                     </li>
-                    <li class="help"><a href="/web/guest/resources/-/wiki/Main/Help">Help</a></li>
+                    <li class="help"><a href="/wiki/Help">Help</a></li>
                 </ul>
 
 
@@ -227,9 +227,9 @@
                     <div class="c-Header__user__top"><img src="/image/user_male_portrait?userId=${_member.userId}&amp;screenName=${_member.screenName}&amp;portraitId=${_member.portraitFileEntryId}" width="24" height="25" alt="${_member.screenName}" /></div>
                     <div class="c-Header__user__box">
                         <ul>
-                            <li><a href="/web/guest/member/-/member/userId/${_member.userId}">My profile</a></li>
+                            <li><a href="/members/profiel/${_member.userId}">My profile</a></li>
                             <li>
-                                <a href="/web/guest/messaging">My messages</a>
+                                <a href="/messaging">My messages</a>
                                 <c:if test="${_unreadMessages > 0}">
                                     <div class="c-Header__user__notification c-Header__user__notification__message">
                                         ${_unreadMessages}
@@ -255,7 +255,7 @@
                 <ul id="c-Header__menu__right">
                     <li class="register"><a href="/register?redirect=${_requestUri}">Register</a></li>
                     <li class="login" ><a  href="javascript:;" id="loginPopupTrigger">Login</a></li>
-                    <li class="help"><a href="/web/guest/resources/-/wiki/Main/Help">Help</a></li>
+                    <li class="help"><a href="/wiki/Help">Help</a></li>
                 </ul>
 
                 <!-- LOGIN POPUP -->
@@ -310,11 +310,11 @@
         <div id="c-Footer__menu">
             <ul>
                 <li><a href="/feedback">Contact</a></li>
-                <li><a href="/web/guest/resources/-/wiki/Main/Help">Help</a></li>
+                <li><a href="/wiki/Help">Help</a></li>
                 <c:choose>
                     <c:when test="${_isLoggedIn}">
                         <li><a href="/logout">Sign out</a></li>
-                        <li><a href="/web/guest/member/-/member/userId/${_member.id_}">My profile</a></li>
+                        <li><a href="/members/profile/${_member.id_}">My profile</a></li>
                     </c:when>
                     <c:otherwise>
                         <li><a href="/register" class="openreg">Register</a></li>

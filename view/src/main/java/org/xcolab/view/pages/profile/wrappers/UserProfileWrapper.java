@@ -67,9 +67,6 @@ public class UserProfileWrapper implements Serializable {
 
     private boolean viewingOwnProfile;
 
-    private String messagingPortletId = "messagingportlet_WAR_messagingportlet";
-
-
     public UserProfileWrapper(long userId, HttpServletRequest request)
             throws MemberNotFoundException {
 
@@ -236,14 +233,6 @@ public class UserProfileWrapper implements Serializable {
 
     public boolean getHasOpenId() {
         return (member.getOpenId() != null && !member.getOpenId().isEmpty());
-    }
-
-    public String getMessagingPortletId() {
-        return messagingPortletId;
-    }
-
-    public void setMessagingPortletId(String messagingPortletId) {
-        this.messagingPortletId = messagingPortletId;
     }
 
     public Member getWrapped() {

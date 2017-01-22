@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class ContentController {
 
-    @GetMapping("/content/{pageTitle}")
+    @GetMapping("/page/{pageTitle}")
     public String contentDisplay(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member, @PathVariable String pageTitle) throws IOException {
 
@@ -40,7 +40,7 @@ public class ContentController {
                 model.addAttribute("menuArticleId", contentPage.getMenuArticleId());
             }
         } catch (ContentNotFoundException e) {
-            return ErrorText.NOT_FOUND.flashAndReturnView(request);
+            return ErrorText.PAGE_NOT_FOUND.flashAndReturnView(request);
         }
         return "content/contentPage";
     }

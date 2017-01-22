@@ -13,8 +13,9 @@ public enum ErrorText {
                     + "the correct permissions to access this page. "
                     + "Please login and try again.")
                 .withTitle("Access Denied")),
-    NOT_FOUND(
-            ErrorMessage.error("The content you are looking for does not exist.")
+    PAGE_NOT_FOUND(ErrorMessage.error("The page you are looking for does not exist.")
+                            .withTitle("Page not found")),
+    NOT_FOUND(ErrorMessage.error("The content you are looking for does not exist.")
                             .withTitle("Content not found")),
     ILLEGAL_SCHEDULE_CHANGE(ErrorMessage.error("If you tried to edit a contest schedule make sure"
             + " that it is not used by any contests that have started.\n"
