@@ -50,7 +50,7 @@ public class WikiController {
         if (folderId > 0 && StringUtils.isNotBlank(pageTitle)) {
             try {
                 final ContentArticleVersion contentArticleVersion =
-                        ContentsClient.getLatestContentArticleVersion(folderId, pageTitle);
+                        ContentsClient.getLatestContentArticleVersion(folderId, pageTitle.replace('+', ' '));
                 final ContentArticle contentArticle = ContentsClient
                         .getContentArticle(contentArticleVersion.getContentArticleId());
 
