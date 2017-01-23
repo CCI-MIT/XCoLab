@@ -458,6 +458,7 @@ div.selected {
 .button-disabled a,
 .disabled {
     pointer-events: none;
+    opacity: .4;
 }
 
 /* Impact tab */
