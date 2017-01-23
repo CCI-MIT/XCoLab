@@ -70,7 +70,7 @@
     <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet" type="text/css" />
     <xcolab:stylesheet href="${_themeCssFolder}/main.css" />
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"><!-- empty --></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"><!-- empty --></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"><!-- empty --></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.min.js"><!-- empty --></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.3.1/moment.min.js"><!-- empty --></script>
@@ -227,7 +227,7 @@
                     <div class="c-Header__user__top"><img src="/image/user_male_portrait?userId=${_member.userId}&amp;screenName=${_member.screenName}&amp;portraitId=${_member.portraitFileEntryId}" width="24" height="25" alt="${_member.screenName}" /></div>
                     <div class="c-Header__user__box">
                         <ul>
-                            <li><a href="/members/profiel/${_member.userId}">My profile</a></li>
+                            <li><a href="/members/profile/${_member.userId}">My profile</a></li>
                             <li>
                                 <a href="/messaging">My messages</a>
                                 <c:if test="${_unreadMessages > 0}">
@@ -687,10 +687,10 @@
                                         }
                                     }
                                 }
-                                if (! jQuery.browser.ie || jQuery.browser.version.number >= 9) {
+//                                if (! jQuery.browser.ie || jQuery.browser.version.number >= 9) {
                                     // console.log("update set callback");
                                     updateEditorCharCount();
-                                }
+//                                }
 
                                 editor.on("blur", function() {
                                     updateCharacterCounter(thiz, editor);
@@ -830,6 +830,7 @@
             delete window.onbeforeunload;
         }
     </script>
+
     <xcolab:script src="${_themeJsFolder}/usertracking.js" />
     <xcolab:script src="${_themeJsFolder}/balloon.js" />
     <xcolab:script src="${_themeJsFolder}/errorTracker.js" />

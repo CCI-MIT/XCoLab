@@ -39,7 +39,8 @@
             </p>
 
             <c:if test="${user.userId != messageBean.from.userId}">
-                <jsp:directive.include file="composeForm.jspx"/>
+                <a class="c-Button__primary" data-toggle="modal" data-target="#sendMessageModal">Reply</a>
+                <xcolab:sendMessageModal replyToMessage="${messageBean}" />
             </c:if>
         </div>
     </xcolab:layout>

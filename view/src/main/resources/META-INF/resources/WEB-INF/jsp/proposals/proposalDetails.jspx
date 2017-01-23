@@ -182,11 +182,6 @@
                 </div>
             </div>
         </c:if>
-        <div id="messaging-overlay" class="c-Popup__wrapper small" style="display: none;">
-            <div class="c-Popup" style="overflow: hidden;">
-                <jsp:directive.include file="./proposalDetails/proposalShare.jspx" />
-            </div>
-        </div>
         <script>
             var currentProposal = {
                     proposalId: ${proposal.proposalId},

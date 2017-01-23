@@ -5,6 +5,7 @@
 
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
 <c:set var="newMessageUrl" value="/messaging/sendMessage" />
     <xcolab:script src="${_themeJsFolder}/messaging/main.js" />
 <xcolab:loadCkEditor />
@@ -45,22 +46,22 @@
     jQuery(function() {
         enableDirtyCheck();
         jQuery("#messageSendButton").click(function () {
-            var currentSearchText = $("#userListRecipients").val();
+            var $userListRecipients = $("#userListRecipients");
+            var currentSearchText = $userListRecipients.val();
             if (currentSearchText.length == 0) {
-                var numberOfRecipients = $("#userListRecipients").find("li").length;
+                var numberOfRecipients = $userListRecipients.find("li").length;
                 var numberOfMessagesLeft = parseInt($("#numberOfMessagesLeft").html());
                 if (numberOfRecipients == 0) {
-                    alert("Please select at least one recipient");
+                    noty({text: "Please select at least one recipient", type: 'error'});
                 } else if (numberOfMessagesLeft < numberOfRecipients) {
-                    alert(
-                            "You've exceeded your message limit for today. Please remove at least " + (numberOfRecipients
-                            - numberOfMessagesLeft) + " recipients or wait 24 hours.");
+                    noty({text: "You've exceeded your message limit for today. Please remove at least " + (numberOfRecipients
+                    - numberOfMessagesLeft) + " recipients or wait 24 hours.", type: 'error'});
                 } else {
                     disableDirtyCheck();
                     jQuery("#sendMessageForm").submit();
                 }
             } else {
-                alert("The member " + currentSearchText + " could not be found!");
+                noty({text: "The member " + currentSearchText + " could not be found!", type: 'error'});
             }
         });
     });

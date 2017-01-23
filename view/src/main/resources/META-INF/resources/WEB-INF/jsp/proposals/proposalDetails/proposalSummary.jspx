@@ -4,6 +4,7 @@
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	xmlns:addthis="http://www.addthis.com/help/api-spec"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
 	 version="2.0">
 
     <!--@elvariable id="linkedProposalContestTypeProposalWrappersByContestTypeId" type="java.util.Map<java.lang.Long, org.xcolab.wrappers.ContestTypeProposalWrapper>"-->
@@ -96,7 +97,7 @@
             </div>
             <div class="c-Box messaging">
                 <div class="message-share-button">
-                    <a href="javascript:;" onclick="if (! deferUntilLogin()) { return false; } else { showOverlay(); }">
+                    <a href="javascript:;" onclick="if (! deferUntilLogin()) { return false; } else { jQuery('#sendMessageModal').modal(); }">
                         <img src="${_themeImageFolder}/icon_new-message.png" width="31" height="29" /> Share via ${colabShortName} messaging
                     </a>
                 </div>
@@ -259,5 +260,7 @@
             }
         </script>
     </c:if>
+
+    <xcolab:sendMessageModal subject="I want to share a ${contestType.proposalName} with you!" content='Check out the ${contestType.proposalName} "${proposal.name}" in the "${contest.contestName}" ${contestType.contestName}.' />
 
 </jsp:root>

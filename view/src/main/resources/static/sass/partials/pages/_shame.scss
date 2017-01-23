@@ -195,16 +195,17 @@ fieldset.fieldset .control-group { //
   background-size: 20px;
 }
 
-.teamBox .teamMemberListing .portrait {
-
-}
-
 .teamBox .teamMemberListing .name {
   padding-left: 7px;
   vertical-align: 11px;
 }
 
 //jquery list for user selection in teambox
+
+.ui-autocomplete.ui-menu {
+  z-index: 1100;
+}
+
 li.ui-menu-item {
   border-bottom: 1px solid #ccc;
   background: #fff url("/images/contest-icon-cplus-blue.png") 225px;

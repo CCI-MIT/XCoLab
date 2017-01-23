@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -27,6 +26,7 @@ import org.xcolab.entity.utils.enums.ContestPhaseTypeValue;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.proposals.utils.ContestPhasePromotionEmail;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
@@ -76,7 +76,7 @@ public class ProposalsPreferencesController {
 
         long memberId = MemberAuthUtil.getMemberId(request);
         if (!PermissionsClient.canAdminAll(memberId)) {
-            return "notAllowed";
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
         //get all contests
         List<Contest> contests = ContestClientUtil.getContestsByActivePrivate(true,true);

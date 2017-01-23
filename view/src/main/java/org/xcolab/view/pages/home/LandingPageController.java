@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class LandingPageController {
 
-
-
     @RequestMapping(value = "/")
     public String hello(HttpServletRequest request, HttpServletResponse response, Model model) {
         model.addAttribute("homeSpotContentArticleId", ConfigurationAttributeKey.LANDING_PAGE_BANNER_CONTENT_ARTICLE_ID.get());
@@ -31,9 +29,5 @@ public class LandingPageController {
     public String admin(HttpServletRequest request, Model model) {
         model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication().getName());
         return "admin";
-    }
-    @RequestMapping(value = "/notAllowed")
-    public String error(HttpServletRequest request, Model model) {
-        return "notAllowed";
     }
 }

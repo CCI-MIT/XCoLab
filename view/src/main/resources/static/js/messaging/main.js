@@ -46,9 +46,9 @@ function initializeTextEditors() {
 					}
 				}
 			}
-			if (! jQuery.browser.ie || jQuery.browser.version.number >= 9) {
+			// if (! jQuery.browser.ie || jQuery.browser.version.number >= 9) {
 				updateEditorCharCount();
-			}
+			// }
 
 			editor.on("blur", function() {
 				updateCharacterCounter(thiz, editor);

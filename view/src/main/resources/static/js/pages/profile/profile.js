@@ -11,25 +11,12 @@ jQuery(function() {
 });
 
 function selectCountry() {
-    var userCountry = $("#userCountry").html()
-    $("#countryCode > option").each(function () {
+    var userCountry = $("#userCountry").html();
+    $("#countryCode").find("> option").each(function () {
         if(userCountry == $(this).html()){
             $(this).prop('selected', true);
         }
     });
-}
-function clearSendMessageForm() {
-    jQuery(".c-Message__popup, .c-Message__input, .c-Message__popup textarea").val('');
-}
-
-function lockSendMessageForm() {
-    jQuery(".c-Message__popup").block({
-        message : "Sending message"
-    });
-}
-
-function unblockSendMessageForm() {
-    jQuery(".c-Message__popup").unblock();
 }
 
 function updateSuccess(){
@@ -42,52 +29,6 @@ function updateError(){
 
 function imageSizeError(){
     noty({text: 'Your profile picture is too big, please upload a smaller one.', type: 'error'});
-}
-
-function messageSent() {
-    noty({text: 'Message has been sent.', type: 'success'})
-}
-
-function messageNotSent() {
-    noty({text: 'Message has NOT been sent.', type: 'error'})
-}
-
-function limitExceeded() {
-    noty({text: 'Your daily message limit has been reached.', type: 'error'});
-}
-
-function hideSendMessagForm() {
-    jQuery(".c-Message__popup").hide();
-}
-
-function showSendMessageForm() {
-    clearSendMessageForm();
-    jQuery(".c-Message__popup").show();
-
-}
-
-function sendMessageFormValid() {
-    var valid = true;
-    clearSendMessageForm();
-    var subj = jQuery(".sendMessage_subject");
-    var msg = jQuery(".sendMessage_message");
-
-    if (jQuery.trim(subj.val()) == '') {
-        subj.parent().find(".error").show();
-        valid = false;
-    }
-
-    if (jQuery.trim(msg.val()) == '') {
-        msg.parent().find(".error").show();
-        valid = false;
-    }
-
-    return valid;
-}
-
-function clearSendMessageForm() {
-    jQuery(".c-Message__popup .error").hide();
-    jQuery(".sendMessage_subject .sendMessage_message").val('');
 }
 
 function selectAllSubscriptions() {

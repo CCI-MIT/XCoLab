@@ -1,0 +1,117 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          version="2.0" xmlns:collab="http://climatecolab.org/tags/collab_1.0">
+
+    <jsp:directive.attribute name="recipient" type="org.xcolab.client.members.pojo.Member" required="false" rtexprvalue="true" description="Recipient"/>
+    <jsp:directive.attribute name="replyToMessage" type="org.xcolab.view.pages.messaging.beans.MessageBean" required="false" rtexprvalue="true" description="Message to reply to"/>
+
+    <jsp:directive.attribute name="subject" type="java.lang.String" required="false" rtexprvalue="true" description="Pre-filled subject"/>
+    <jsp:directive.attribute name="content" type="java.lang.String" required="false" rtexprvalue="true" description="Pre-filled content"/>
+
+    <!-- TODO: move bootstrap to layout.tagx when conflicts resolved -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"><!-- --></script>
+
+    <c:set var="showRecipients" value="${empty recipient and empty replyToMessage}"/>
+
+    <div id="sendMessageModal" class="modal bs-Modal fade" tab-index="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Send <strong>${not empty recipient ? recipient.fullName : ''}</strong> a message
+                    </h4>
+                </div>
+                <form method="post" id="messageForm" action="/messaging/sendMessage"
+                      onSubmit="checkMessageForm(${showRecipients});">
+                    <div class="modal-body">
+                        <c:choose>
+                            <c:when test="${not empty recipient}">
+                                <input name="userIdsRecipients" value="${recipient.userId}" type="hidden"/>
+                            </c:when>
+                            <c:when test="${not empty replyToMessage}">
+                                <input name="userIdsRecipients" value="${replyToMessage.from.userId}" type="hidden"/>
+                            </c:when>
+                            <c:otherwise>
+                                <div>
+                                    <collab:teamBox title="Recipients"/>
+                                    <div class="clearfix"><!-- --></div>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <div class="form-group">
+                            <label for="messageSubject">Subject: </label>
+                            <c:if test="${not empty replyToMessage}">
+                                <c:set var="subject" value="RE: ${replyToMessage.subject}" />
+                            </c:if>
+                            <input name="messageSubject" type="text" id="messageSubject" class="form-control" required="required"
+                                value="${subject}"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="messageContent">Content: </label>
+                            <textarea name="messageContent" id="messageContent" class="rte form-control" >
+                                <!-- -->
+                                <c:choose>
+                                    <c:when test="${not empty replyToMessage}">
+                                        <br /><br />-- original message begin --<br /><br />
+                                        ${replyToMessage.content}
+                                        <br /><br />-- original message end --<br />
+                                    </c:when>
+                                    <c:when test="${not empty content}">
+                                        ${content}
+                                    </c:when>
+                                </c:choose>
+                            </textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="close" id="messageSendButton" class="c-Button__secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" id="messageSendButton" class="c-Button__primary">Send</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /popup login -->
+        <div class="clearfix"><!-- --></div>
+    </div>
+
+    <script type="text/javascript">
+        <![CDATA[
+        function checkMessageForm(checkRecipients) {
+            var numberOfRecipients = 1;
+
+            if (checkRecipients) {
+                var $userListRecipients = $("#userListRecipients");
+                var currentSearchText = $userListRecipients.val();
+
+                if (currentSearchText.length != 0) {
+                    noty({
+                        text: "The member " + currentSearchText + " could not be found!",
+                        type: 'error'
+                    });
+                    return false;
+                }
+                numberOfRecipients = $userListRecipients.find("li").length;
+                if (numberOfRecipients == 0) {
+                    noty({text: "Please select at least one recipient", type: 'error'});
+                    return false;
+                }
+            }
+
+            var numberOfMessagesLeft = parseInt($("#numberOfMessagesLeft").html());
+            if (numberOfMessagesLeft < numberOfRecipients) {
+                noty({
+                    text: "You've exceeded your message limit for today. Please remove at least "
+                    + (numberOfRecipients
+                    - numberOfMessagesLeft) + " recipients or wait 24 hours.", type: 'error'
+                });
+                return false;
+            }
+
+            disableDirtyCheck();
+        }
+        ]]>
+    </script>
+
+</jsp:root>

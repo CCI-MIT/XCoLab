@@ -14,6 +14,7 @@ import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.errors.ErrorText;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,7 +32,7 @@ public class ContentEditorController {
         if (PermissionsClient.canAdminAll(memberId)) {
             return "contenteditor/editor";
         } else {
-            return "notAllowed";
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
     }
 

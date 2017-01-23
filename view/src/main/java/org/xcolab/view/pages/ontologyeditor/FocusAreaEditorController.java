@@ -15,6 +15,7 @@ import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.errors.ErrorText;
 
 import java.io.IOException;
 import java.util.List;
@@ -42,7 +43,7 @@ public class FocusAreaEditorController {
         if (PermissionsClient.canAdminAll(memberId)) {
             return "/ontology-editor/focusAreaEditor";
         } else {
-            return "notAllowed";
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
     }
 

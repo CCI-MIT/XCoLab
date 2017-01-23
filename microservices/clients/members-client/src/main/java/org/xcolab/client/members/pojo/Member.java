@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.sql.Timestamp;
@@ -286,20 +287,6 @@ public class Member {
                 ")";
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof Member
-                && ((Member) obj).getId_() == this.getId_();
-    }
-
-
-    @Override
-    public int hashCode() {
-        return (int) (this.getId_() ^ this.getId_() >>> 32);
-    }
-
-
-
     @JsonIgnore
     public  String generateUserURL() {
         if (this.getId_() <= 0) {
@@ -307,11 +294,27 @@ public class Member {
         }
         return "<a href='" + generateUserHref(this.getId_())+ "'>" + this.getScreenName()+ "</a>";
     }
-    @JsonIgnore
+
     private  String generateUserHref(long userId)  {
         if (userId <= 0) {
             return "";
         }
         return USER_PROFILE_PATH + userId;
+    }
+
+    @JsonIgnore
+    public int getNumberOfMessagesLeft() {
+        return MessagingClient.getNumberOfMessagesLeft(getId_());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Member
+                && ((Member) obj).getId_() == this.getId_();
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (this.getId_() ^ this.getId_() >>> 32);
     }
 }

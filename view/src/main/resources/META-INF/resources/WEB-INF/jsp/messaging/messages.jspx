@@ -34,7 +34,7 @@
                             <div style="float: right;">
                                 <c:choose>
                                     <c:when test="${messagingBean.numberOfMessagesLeft >= 1}">
-                                        <a href="/messaging/compose">
+                                        <a href="#" data-toggle="modal" data-target="#sendMessageModal">
                                             <img src="${_themeImageFolder}/icon_new-message.png" width="31" height="29" /> compose message
                                         </a>
                                     </c:when>
@@ -132,5 +132,7 @@
                 </div>
             </div>
         </div>
+
+        <xcolab:sendMessageModal />
     </xcolab:layout>
 </jsp:root>

@@ -460,8 +460,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   @include border-top-left-radius(3px);
 
   a {
-    height: 18px;
-    padding-top: 10px;
+    margin-top: 10px;
     font-size: 14px;
     font-weight: $b-Typography__fontWeight--bold;
     color: $c-Header__user__box__a__textColor;
@@ -470,6 +469,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
     &:hover {
       border-bottom: $c-Header__user__box__a--hover__border--bottom;
       text-decoration: none;
+      color: $c-Header__user__box__a__textColor;
     }
   }
 
