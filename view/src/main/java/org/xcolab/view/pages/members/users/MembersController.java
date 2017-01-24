@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
@@ -28,7 +27,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.websocket.server.PathParam;
 
 @Controller
 public class MembersController {
@@ -40,11 +38,11 @@ public class MembersController {
     private static final long COMMUNITY_TOP_CONTENT_ARTICLE_ID = ConfigurationAttributeKey.MEMBERS_CONTENT_ARTICLE_ID.get();
 
     @RequestMapping({"/web/guest/members","/members"})
-    public String showUsers(HttpServletRequest request, HttpServletResponse response,
+    public String showUsers(HttpServletRequest request, HttpServletResponse response, Model model,
             SortFilterPage sortFilterPage,
             @RequestParam(value = "page", required = false) Long pageParam,
-            @RequestParam(value = "memberCategory", required = false) String memberCategoryParam,
-            Model model) {
+            @RequestParam(value = "memberCategory", required = false) String memberCategoryParam) {
+
         model.addAttribute("communityTopContentArticleId", COMMUNITY_TOP_CONTENT_ARTICLE_ID);
         int page = 1;
         if (pageParam != null) {

@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletResponse;
 
-
 //TODO: combine this and CsvExportHelper in CMS
 public class MemberListCsvConverter {
 
