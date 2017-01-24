@@ -6,6 +6,10 @@
 -- UPDATE FOR HOME BOTTOM ARTICLE TODO
 UPDATE `xcolab_ContentArticleVersion` SET `content`='<div class=\"inner\">\n	<div class=\"home-left\">\n		<div class=\"colabwidget\" data-url=\"/contestswidget\"></div>\n		<div class=\"colabwidget\" data-url=\"/feedswidget\"></div>\n	</div>\n	<div class=\"home-right\">\n		<div class=\"colabwidget\" data-article-id=\"2\"></div>\n		<div class=\"colabwidget\" data-article-id=\"3\"></div>\n	</div>\n</div>\n' WHERE `contentArticleVersionId`='3577';
 
+UPDATE xcolab_ConfigurationAttribute SET numericValue = 0, stringValue = '{
+ "CALL_TO_ACTION": "",
+ "CONTEST_TYPE_ID": "2"}', realValue = 0 WHERE name = 'PORTLET_PROPOSALS_PREFERENCES' AND additionalId = 0;
+
 INSERT INTO xcolab_ConfigurationAttribute (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('ACTIVE_THEME', '0', '0', 'CROWDSENSOR', '0.0');
 
 -- content article ids TODO

@@ -1,6 +1,7 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
-          version="2.0" xmlns:collab="http://climatecolab.org/tags/collab_1.0">
+          version="2.0" xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <jsp:directive.attribute name="recipient" type="org.xcolab.client.members.pojo.Member" required="false" rtexprvalue="true" description="Recipient"/>
     <jsp:directive.attribute name="replyToMessage" type="org.xcolab.view.pages.messaging.beans.MessageBean" required="false" rtexprvalue="true" description="Message to reply to"/>
@@ -113,5 +114,7 @@
         }
         ]]>
     </script>
+
+    <xcolab:loadCkEditor />
 
 </jsp:root>
