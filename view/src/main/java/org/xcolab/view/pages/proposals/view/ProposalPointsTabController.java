@@ -36,7 +36,8 @@ public class ProposalPointsTabController extends BaseProposalTabController {
     }
 
 
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/POINTS")
+    @GetMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/POINTS",
+                "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/POINTS"})
     public String showProposalDetails(Model model, HttpServletRequest request) {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.POINTS);

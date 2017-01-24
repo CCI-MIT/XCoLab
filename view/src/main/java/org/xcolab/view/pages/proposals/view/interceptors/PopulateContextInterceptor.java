@@ -38,6 +38,8 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private ProposalsContext proposalsContext;
 
+
+
     public boolean preHandle(HttpServletRequest request,
             HttpServletResponse response, Object handler)
             throws Exception {
@@ -45,7 +47,7 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
             String requestUrl = request.getRequestURL().toString();
 
             String colabPattern =
-                    "/(\\w+)/(?<contestYear>\\d+)/(?<contestUrlName>[a-zA-Z0-9_-]+)(((/c/)|(/phase/(?<phaseId>\\d+)/))(?<proposalIdentifier>\\w+)/(?<proposalId>\\d+)(/tab/?(?<tab>\\w+))?(/version/?(?<version>\\d+))?)?";
+                    "/(\\w+)/(?<contestYear>\\d+)/(?<contestUrlName>[a-zA-Z0-9_-]+)(((/c/)|(/phase/(?<phaseId>\\d+)/?))((?<proposalIdentifier>\\w+)/(?<proposalId>\\d+)(/tab/?(?<tab>\\w+))?(/version/?(?<version>\\d+))?)?)?";
             Pattern pattern = Pattern.compile(colabPattern);
             Matcher matcher = pattern.matcher(requestUrl);
             String[] pathMatches =
@@ -54,7 +56,7 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
             if (matcher.find()) {
                 for (String field : pathMatches) {
                     if (matcher.group(field) != null) {
-                        request.setAttribute(field, matcher.group(field));
+                        request.setAttribute( field, matcher.group(field));
                     }
                 }
 

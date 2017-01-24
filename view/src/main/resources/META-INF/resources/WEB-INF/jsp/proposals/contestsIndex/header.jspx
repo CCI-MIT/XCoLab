@@ -97,12 +97,14 @@
         </c:if>
         <c:if test="${showFilter}">
             <div class="filter" style="position: relative;">
-                <c:set var="filterURL" value="/contests?viewType=${viewType}&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=${showActiveContests }&amp;showAllContests=${showAllContests }"/>
+                <c:set var="filterURL" value="/contests"/>
                 <form action="${filterURL }" id="filterContestsForm" method="get">
-                    <input type="hidden" name="p_p_id" value="${portletConfig.portlet.portletId }" />
+
+                    <input type="hidden" name="viewType" value="${viewType}"/>
                     <input type="hidden" name="showActiveContests" value="${showActiveContests }" />
                     <input type="hidden" name="sortColumn" value="${sortFilterPage.sortColumn }" />
                     <input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
+                    <input type="hidden" name="showAllContests" value="${showAllContests }"/>
                     <input type="text" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="Filter ${contestType.contestNamePlural}" name="filter" />
                     <c:if test="${not empty sortFilterPage.filter }">
                         <a href="javascript:;" id="contestsFilterClear">&#160;</a>

@@ -4,7 +4,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	version="2.0">
-
+	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 	<!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.ontology.OntologySpace>"-->
     <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
     <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
@@ -464,7 +464,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		function showTermContests(termId) {
 			var container = jQuery(".contest-outline-right");
 			var currentTerm = ontologyTerms[termId];
-			
+
 			jQuery(".cintro").hide();
 			container.show();
 			container.find(".contest-count .count").text(currentTerm.contests.length);
@@ -642,8 +642,10 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		var spaceIdHashRegex = /#space=(\d*)_.*/;
 		
 		var match = termIdHashRegex.exec(window.location.hash);
+
 		if (match != null) {
 			var termId = match[1];
+
 			showTermContests(termId);
 			var term = ontologyTerms[termId];
 			jQuery("#ontologyTerm_" + termId).addClass('active');
@@ -662,6 +664,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		}
 		
 		var spaceMatch = spaceIdHashRegex.exec(window.location.hash);
+
 		if (spaceMatch != null) {
 			var spaceId = spaceMatch[1];
 			jQuery("#space_trigger_" + spaceId).click();

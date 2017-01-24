@@ -65,9 +65,6 @@ public class ContestProposalsController extends BaseProposalsController {
             String phaseId,
             final SortFilterPage sortFilterPage, Model model) {
 
-        //proposalsContext.addPathVariable("contestYear", contestYear);
-        //proposalsContext.addPathVariable("contestUrlName", contestUrlName);
-        //proposalsContext.addPathVariable("phaseId",phaseId);
 
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         Contest contest = proposalsContext.getContest(request);

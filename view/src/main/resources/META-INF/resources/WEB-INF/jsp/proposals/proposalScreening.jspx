@@ -37,11 +37,11 @@
                         <div id="fellowSelectJudgesContainer" style="display: none;">
                             <h3>Select Judge(s)</h3>
                             Select which Judge(s) will review this ${contestType.proposalName}.
-                            <table class="judgingForm">
-                                <tbody>
-                                <tr>
+                            <div class="judgingForm">
+                                <div>
                                     <c:forEach var="judge" items="${contest.contestJudges}">
-                                        <td>
+                                        <div class="judge-review-status">
+
                                             <div class="review-status-container">
                                                 <proposalsPortlet:userPortrait screenName="${judge.screenName}"
                                                                                portraitId="${judge.portraitId}"
@@ -67,11 +67,10 @@
                                             </judging:judgeAssignedProposalCount>
                                             <br/>
                                             <form:checkbox path="selectedJudges" value="${judge.userId}"/>
-                                        </td>
+                                        </div>
                                     </c:forEach>
-                                </tr>
-                                </tbody>
-                            </table>
+                                </div>
+                            </div>
                         </div>
                         <div id="fellowActionCommentContainer" style="display: none">
                             <h3>Comment to send to author</h3>
