@@ -242,7 +242,7 @@
 			</table>
 
 			<c:if test="${not empty currentUserProfile.activities}">
-				<a class="c-Button__primary" href="/web/guest/activities/-/feeds?userId=${currentUserProfile.userId}">SEE ALL</a>
+				<a class="c-Button__primary" href="/activities?userId=${currentUserProfile.userId}">SEE ALL</a>
 			</c:if>
 		</c:if>
 
