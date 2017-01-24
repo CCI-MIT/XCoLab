@@ -46,7 +46,16 @@ public class ContestsController {
                     break;
                 }
                 if (!contest.getContestPrivate()) {
-                    contestWrappers.add(contest);
+                    if(contest.getIsSharedContestInForeignColab()){
+                        RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
+                                ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
+                                ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                        Contest foreignContest = ContestClient.fromService(contestService).getContest(contest.getContestPK());
+                        foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
+                        contestWrappers.add(foreignContest);
+                    }else {
+                        contestWrappers.add(contest);
+                    }
                 }
             }
         } else {

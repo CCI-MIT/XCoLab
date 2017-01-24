@@ -116,7 +116,7 @@ public class ContestPhase extends AbstractContestPhase {
         try {
             String link = "/";
             Contest contest = contestClient.getContest(this.getContestPK());
-            link += ContestClientUtil.getContestType(contest.getContestTypeId())
+            link += contestClient.getContestType(contest.getContestTypeId())
                     .getFriendlyUrlStringContests();
             link += "/%d/%s/phase/%d";
             return String.format(link, contest.getContestYear(), contest.getContestUrlName(),
