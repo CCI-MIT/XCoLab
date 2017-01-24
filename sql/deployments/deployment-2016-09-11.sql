@@ -1,4 +1,4 @@
---COLAB-1361
+-- COLAB-1361
 set @lukasId = (select u.userId
 from User_ u where screenName='lukasmohs');
 set @newId = (select Max(s.id_) from xcolab_StaffMember s);
