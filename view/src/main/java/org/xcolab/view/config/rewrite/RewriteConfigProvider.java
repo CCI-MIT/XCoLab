@@ -7,6 +7,8 @@ import org.ocpsoft.rewrite.servlet.config.Forward;
 import org.ocpsoft.rewrite.servlet.config.HttpConfigurationProvider;
 import org.ocpsoft.rewrite.servlet.config.Path;
 import org.ocpsoft.rewrite.servlet.config.Redirect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -15,6 +17,7 @@ import org.xcolab.client.contest.pojo.ContestType;
 import javax.servlet.ServletContext;
 
 public class RewriteConfigProvider extends HttpConfigurationProvider {
+    private static final Logger log = LoggerFactory.getLogger(RewriteConfigProvider.class);
 
     @Override
     public int priority() {
@@ -30,6 +33,7 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
         redirectLegacyProposals(configurationBuilder);
         redirectLegacyMembers(configurationBuilder);
         redirectLegacyDiscussions(configurationBuilder);
+        redirectContentPages(configurationBuilder);
 
         configurationBuilder
                 .addRule()
@@ -126,5 +130,56 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                 .addRule()
                     .when(Direction.isInbound().and(Path.matches("/web/guest/plans/-/plans/contestsType/all")))
                     .perform(Redirect.permanent(contestType.getPortletUrl() + "?viewType=GRID&filter=&showActiveContests=false&showAllContests=true"));
+    }
+
+    private void redirectContentPages(ConfigurationBuilder configurationBuilder) {
+        switch (ConfigurationAttributeKey.COLAB_NAME.get()) {
+            case "Climate CoLab":
+                redirectContentPagesClimateCoLab(configurationBuilder);
+                break;
+            default:
+                log.warn("No Content Pages loaded for {}",
+                        ConfigurationAttributeKey.COLAB_NAME.get());
+        }
+    }
+
+    private void redirectContentPagesClimateCoLab(ConfigurationBuilder configurationBuilder) {
+        configurationBuilder
+                .addRule()
+                .when(Direction.isInbound().and(Path.matches("/web/guest/about")))
+                .perform(Redirect.permanent("/page/about"))
+                .addRule()
+                .when(Direction.isInbound().and(Path.matches("/web/guest/crowdsourcing")))
+                .perform(Redirect.permanent("/page/crowdsourcing"))
+                .addRule()
+                .when(Direction.isInbound().and(Path.matches("/web/guest/contests")))
+                .perform(Redirect.permanent("/page/why-contests"))
+                .addRule()
+                .when(Direction.isInbound().and(Path.matches("/web/guest/get-involved")))
+                .perform(Redirect.permanent("/page/get-involved"))
+                .addRule()
+                .when(Direction.isInbound().and(Path.matches("/web/guest/conferences")))
+                .perform(Redirect.permanent("/page/conferences"))
+                .addRule()
+                .when(Direction.isInbound().and(Path.matches("/web/guest/faqs")))
+                .perform(Redirect.permanent("/page/faqs"))
+                .addRule()
+                .when(Direction.isInbound().and(Path.matches("/web/guest/sponsors")))
+                .perform(Redirect.permanent("/page/sponsors"))
+                .addRule()
+                .when(Direction.isInbound().and(Path.matches("/web/guest/people")))
+                .perform(Redirect.permanent("/page/people"))
+                .addRule()
+                .when(Direction.isInbound().and(Path.matches("/web/guest/press")))
+                .perform(Redirect.permanent("/page/press"));
+
+        //Conferences
+        configurationBuilder
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/conference{conferenceYear}")))
+                    .perform(Redirect.permanent("/page/conference{conferenceYear}"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/conference{conferenceYear}/{subPage}")))
+                    .perform(Redirect.permanent("/page/conference{conferenceYear}-{subPage}"));
     }
 }
