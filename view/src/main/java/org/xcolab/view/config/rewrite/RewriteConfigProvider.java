@@ -108,7 +108,7 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .when(Direction.isInbound().and(Path.matches("/web/guest/discussion/-/discussion/thread/{threadId}")))
                     .perform(Redirect.permanent("/discussion/thread/{threadId}"))
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("http://climatecolab.org/web/guest/discussion/-/discussion/category/{categoryId}")))
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/discussion/-/discussion/category/{categoryId}")))
                     .perform(Redirect.permanent("/discussion/category/{categoryId}"));
     }
 
@@ -136,6 +136,15 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
         switch (ConfigurationAttributeKey.COLAB_NAME.get()) {
             case "Climate CoLab":
                 redirectContentPagesClimateCoLab(configurationBuilder);
+                break;
+            case "Solve CoLab":
+                redirectContentPagesSolveCoLab(configurationBuilder);
+                break;
+            case "Crowdsensor":
+                redirectContentPagesCrowdsensor(configurationBuilder);
+                break;
+            case "Resilience Dialogues":
+                redirectContentPagesResilienceDialogues(configurationBuilder);
                 break;
             default:
                 log.warn("No Content Pages loaded for {}",
@@ -181,5 +190,106 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                 .addRule()
                     .when(Direction.isInbound().and(Path.matches("/conference{conferenceYear}/{subPage}")))
                     .perform(Redirect.permanent("/page/conference{conferenceYear}-{subPage}"));
+    }
+
+    private void redirectContentPagesSolveCoLab(ConfigurationBuilder configurationBuilder) {
+        configurationBuilder
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/about")))
+                    .perform(Redirect.permanent("/page/about"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/crowdsourcing")))
+                    .perform(Redirect.permanent("/page/crowdsourcing"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/why-these-challenges")))
+                    .perform(Redirect.permanent("/page/why-these-challenges"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/get-involved")))
+                    .perform(Redirect.permanent("/page/get-involved"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/faqs")))
+                    .perform(Redirect.permanent("/page/faqs"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/sponsors")))
+                    .perform(Redirect.permanent("/page/sponsors"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/people")))
+                    .perform(Redirect.permanent("/page/people"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/feedback")))
+                    .perform(Redirect.permanent("/page/contact"));
+    }
+
+    private void redirectContentPagesCrowdsensor(ConfigurationBuilder configurationBuilder) {
+        configurationBuilder
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/about")))
+                    .perform(Redirect.permanent("/page/about"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/crowdsourcing")))
+                    .perform(Redirect.permanent("/page/crowdsourcing"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/smart-nation")))
+                    .perform(Redirect.permanent("/page/smart-nation"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/get-involved")))
+                    .perform(Redirect.permanent("/page/get-involved"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/faqs")))
+                    .perform(Redirect.permanent("/page/faqs"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/sponsors")))
+                    .perform(Redirect.permanent("/page/sponsors"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/people")))
+                    .perform(Redirect.permanent("/page/people"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/feedback")))
+                    .perform(Redirect.permanent("/page/contact"));
+    }
+
+    private void redirectContentPagesResilienceDialogues(ConfigurationBuilder configurationBuilder) {
+        configurationBuilder
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/about")))
+                    .perform(Redirect.permanent("/page/about"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/crowdsourcing")))
+                    .perform(Redirect.permanent("/page/crowdsourcing"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/community")))
+                    .perform(Redirect.permanent("/page/community"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/get-involved")))
+                    .perform(Redirect.permanent("/page/get-involved"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/partners")))
+                    .perform(Redirect.permanent("/page/partners"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/participants1")))
+                    .perform(Redirect.permanent("/page/participants"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/materials")))
+                    .perform(Redirect.permanent("/page/materials"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/feedback")))
+                    .perform(Redirect.permanent("/page/contact"));
+
+        configurationBuilder
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/Coral_Gables")))
+                    .perform(Redirect.permanent("/pages/Coral_Gables"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/Dubuque")))
+                    .perform(Redirect.permanent("/pages/Dubuque"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/Knoxville")))
+                    .perform(Redirect.permanent("/pages/Knoxville"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/MARC")))
+                    .perform(Redirect.permanent("/pages/MARC"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/Minneapolis")))
+                    .perform(Redirect.permanent("/pages/Minneapolis"));
     }
 }
