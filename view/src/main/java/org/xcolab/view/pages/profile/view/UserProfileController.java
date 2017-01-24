@@ -375,7 +375,7 @@ public class UserProfileController {
 
     @PostMapping("{memberId}/delete")
     public void deleteUserProfile(HttpServletRequest request, HttpServletResponse response,
-            Model model, long memberId, Member loggedInMember)
+            Model model, @PathVariable long memberId, Member loggedInMember)
             throws IOException {
         UserProfilePermissions permission = new UserProfilePermissions(loggedInMember);
 

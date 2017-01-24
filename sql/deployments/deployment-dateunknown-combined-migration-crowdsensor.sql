@@ -139,3 +139,39 @@ INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericVal
 INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('GOOGLE_RECAPTCHA_SITE_SECRET_KEY', '0', '0', '', '0');
 
 INSERT INTO `xcolab_ContestTeamMemberRole` (`id_`, `role`, `sort`) VALUES ('1975251', 'IAF', '3');
+
+CREATE TABLE IF NOT EXISTS `xcolab_ContestCollectionCard` (
+  `id_` BIGINT NOT NULL AUTO_INCREMENT,
+  `parent` BIGINT NULL DEFAULT NULL,
+  `big_ontology_term` BIGINT NULL DEFAULT NULL,
+  `small_ontology_term` BIGINT NULL DEFAULT NULL,
+  `description` LONGTEXT COLLATE 'utf8mb4_unicode_ci' NULL DEFAULT NULL,
+  `short_name` LONGTEXT COLLATE 'utf8mb4_unicode_ci' NULL DEFAULT NULL,
+  `visible` TINYINT NULL DEFAULT 1,
+  `order` INT NULL DEFAULT 0,
+  `ontology_term_to_load` BIGINT NULL DEFAULT NULL,
+  `only_featured` TINYINT NULL DEFAULT 0,
+  PRIMARY KEY (`id_`),
+  INDEX `big_ontology_term_idx` (`big_ontology_term` ASC),
+  INDEX `small_ontology_term_idx` (`small_ontology_term` ASC),
+  INDEX `ontology_term_to_load_idx` (`ontology_term_to_load` ASC),
+  CONSTRAINT `FK_big_ontology_term`
+    FOREIGN KEY (`big_ontology_term`)
+    REFERENCES `xcolab_OntologyTerm` (`id_`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_small_ontology_term`
+    FOREIGN KEY (`small_ontology_term`)
+    REFERENCES `xcolab_OntologyTerm` (`id_`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_ontology_term_to_load`
+    FOREIGN KEY (`ontology_term_to_load`)
+    REFERENCES `xcolab_OntologyTerm` (`id_`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_parent`
+    FOREIGN KEY (`parent`)
+    REFERENCES `xcolab_ContestCollectionCard` (`id_`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);

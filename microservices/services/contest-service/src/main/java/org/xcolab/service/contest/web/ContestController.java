@@ -170,13 +170,23 @@ public class ContestController {
 
     @PutMapping(value = "/contests/{contestPK}")
     public boolean updateContest(@RequestBody Contest contest,
-                                 @PathVariable long contestPK) throws NotFoundException {
+            @PathVariable long contestPK) throws NotFoundException {
 
         if (contestDao.get(contestPK) == null) {
             throw new NotFoundException("No Contest with id " + contestPK);
         } else {
             contest.setUpdated(new Timestamp(new Date().getTime()));
             return contestDao.update(contest);
+        }
+    }
+
+    @DeleteMapping(value = "/contests/{contestPK}")
+    public boolean deleteContest(@PathVariable long contestPK) throws NotFoundException {
+        if (contestDao.get(contestPK) == null) {
+            throw new NotFoundException("No Contest with id " + contestPK);
+        } else {
+            //TODO: currently deleting phases is handled client side - this should be moved here
+            return contestDao.delete(contestPK);
         }
     }
 
