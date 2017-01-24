@@ -418,7 +418,7 @@
                 <form id="signInForm_form" method="post" action="/login" onsubmit="addRedirectBeforeSubmit('signInFormPopup'); return true;" >
                     <input type="hidden" name="isLoggingIn" value="true" />
                     <label>Username:</label>
-                    <input name="login" type="text" class="c-Header__login__username" onkeypress="return submitenter(this,event)" style="float: right;"/>
+                    <input name="username" type="text" class="c-Header__login__username" onkeypress="return submitenter(this,event)" style="float: right;"/>
                     <div class="clearfix"><!-- --></div>
                     <label>Password:</label> &#160;
                     <input name="password" type="password" class="c-Header__login__password" onkeypress="return submitenter(this,event)" style="float: right;"/>

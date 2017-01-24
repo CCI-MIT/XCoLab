@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import org.xcolab.service.members.domain.loginlog.LoginLogDaoImpl;
 import org.xcolab.service.members.domain.member.MemberDaoImpl;
+import org.xcolab.service.members.domain.role.RoleDaoImpl;
 import org.xcolab.service.members.service.member.MemberService;
 
 import java.security.NoSuchAlgorithmException;
@@ -20,8 +21,8 @@ public class MemberServiceTest {
     @Before
     public void setUp() {
         DSLContext dslContext = new DefaultDSLContext(SQLDialect.MYSQL);
-        memberService = new MemberService(
-                new MemberDaoImpl(dslContext), new LoginLogDaoImpl(dslContext), null);
+        memberService = new MemberService(new MemberDaoImpl(dslContext),
+                new RoleDaoImpl(dslContext), new LoginLogDaoImpl(dslContext), null);
     }
 
     @Test
