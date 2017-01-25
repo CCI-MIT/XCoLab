@@ -143,9 +143,14 @@ public class JudgeProposalActionController {
         //forcefully promote the advancement
         if (permissions.getCanAdminAll() && !isUndecided && request.getParameter("isForcePromotion") != null && request.getParameter("isForcePromotion").equals("true")) {
             ContestClientUtil.forcePromotionOfProposalInPhase(proposal.getProposalId(), contestPhase.getContestPhasePK());
-        }
+            response.sendRedirect(
+                    proposal.getProposalLinkUrl(contest, contestPhase.getContestPhasePK()));
+        }else {
 
-        response.sendRedirect(proposal.getProposalLinkUrl(contest, contestPhase.getContestPhasePK()) + "/tab/ADVANCING");
+            response.sendRedirect(
+                    proposal.getProposalLinkUrl(contest, contestPhase.getContestPhasePK())
+                            + "/tab/ADVANCING");
+        }
     }
 
     //-- @ResourceMapping("getJudgingCsv")

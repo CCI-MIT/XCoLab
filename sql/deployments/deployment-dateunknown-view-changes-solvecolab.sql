@@ -19,4 +19,4 @@ UPDATE xcolab_ConfigurationAttribute SET `stringValue`='{\n \"CALL_TO_ACTION\": 
 
 
 -- COLAB-1589 ContentPages for Solve CoLab
-INSERT INTO xcolab.xcolab_ContentPage (title, menuArticleId, contentArticleId, createdDate, modifiedDate) VALUES ('about', 29, 38, null, null);
+INSERT INTO xcolab_ContentPage (title, menuArticleId, contentArticleId, createdDate, modifiedDate) VALUES ('about', 29, 38, null, null);
