@@ -2,9 +2,9 @@
 INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('BLOG_URL', '0', '0', 'news.climatecolab.com', '0');
 
 #Configuration attribute to use CollectionCards
-INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('COLAB_USES_CARDS', '0', '1', ' ', '0');
+INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('COLAB_USES_CARDS', '0', '0', ' ', '0');
 
-#Create CollectionCcards table
+#Create CollectionCards table
 CREATE TABLE IF NOT EXISTS `xcolab_ContestCollectionCard` (
   `id_` BIGINT NOT NULL AUTO_INCREMENT,
   `parent` BIGINT NULL DEFAULT NULL,

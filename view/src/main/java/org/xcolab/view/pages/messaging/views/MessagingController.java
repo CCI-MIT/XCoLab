@@ -75,6 +75,7 @@ public class MessagingController {
                 StringUtils.isNotBlank(mailboxType) ? MessageType.valueOf(mailboxType) : MessageType.INBOX);
         model.addAttribute("messagingBean", messagingBean);
 
+        model.addAttribute("_activePageLink", "community");
         return "/messaging/messages";
     }
 
@@ -86,6 +87,7 @@ public class MessagingController {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
         model.addAttribute("sendMessageBean", new SendMessageBean(loggedInMember.getId_()));
+        model.addAttribute("_activePageLink", "community");
         return "/messaging/composeMessage";
     }
 
@@ -110,7 +112,7 @@ public class MessagingController {
         final SendMessageBean sendMessageBean = new SendMessageBean(messageBean);
         model.addAttribute("sendMessageBean", sendMessageBean);
         model.addAttribute("messageBean", messageBean);
-
+        model.addAttribute("_activePageLink", "community");
         return "/messaging/message";
     }
 

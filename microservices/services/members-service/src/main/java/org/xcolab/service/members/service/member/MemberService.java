@@ -11,6 +11,7 @@ import org.xcolab.model.tables.pojos.LoginLog;
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.service.members.domain.loginlog.LoginLogDao;
 import org.xcolab.service.members.domain.member.MemberDao;
+import org.xcolab.service.members.domain.role.RoleDao;
 import org.xcolab.service.members.exceptions.ForbiddenException;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.exceptions.UnauthorizedException;
@@ -32,13 +33,15 @@ public class MemberService {
     private final static int MAX_SCREEN_NAME_LENGTH = 26;
 
     private final MemberDao memberDao;
+    private final RoleDao roleDao;
     private final LoginLogDao loginLogDao;
     private final ConnectorEmmaAPI connectorEmmaAPI;
 
     @Autowired
-    public MemberService(MemberDao memberDao, LoginLogDao loginLogDao,
+    public MemberService(MemberDao memberDao, RoleDao roleDao, LoginLogDao loginLogDao,
             ConnectorEmmaAPI connectorEmmaAPI) {
         this.memberDao = memberDao;
+        this.roleDao = roleDao;
         this.loginLogDao = loginLogDao;
         this.connectorEmmaAPI = connectorEmmaAPI;
     }
@@ -99,7 +102,8 @@ public class MemberService {
                 shortBio, country, facebookId, openId, imageId, liferayUserId);
         final Member member = memberDao.findOneByScreenName(screenName)
                 .orElseThrow(IllegalStateException::new);
-
+        //TODO: centralize this ID in constant (see MemberRole enum)
+        roleDao.assignMemberRole(member.getId_(), 10122L);
         subscribeToNewsletter(member.getEmailAddress());
         return member;
     }

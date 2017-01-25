@@ -69,7 +69,7 @@ public class BaseProposalTabController extends BaseProposalsController {
             pageSubTitle = tab.getDisplayName() + " - " + pageTitle;
         }
         setSeoTexts(request, pageTitle, pageSubTitle, pageDescription);
-        
+        setBasePageAttributes(request, model);
     }
 
     protected long createDiscussionThread(HttpServletRequest request,

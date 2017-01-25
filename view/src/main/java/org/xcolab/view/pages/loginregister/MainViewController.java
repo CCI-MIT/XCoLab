@@ -119,7 +119,6 @@ public class MainViewController {
         ModelAttributeUtil.populateModelWithPlatformConstants(model);
         model.addAttribute("generateScreenName", ConfigurationAttributeKey.GENERATE_SCREEN_NAME.get());
         boolean isSharedColab = ConfigurationAttributeKey.IS_SHARED_COLAB.get();
-        model.addAttribute("isSharedCollab", isSharedColab);
         if (isSharedColab) {
             final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.get();
             final String partnerColabImgsAndClasses = partnerColabName.replace(" ","");
@@ -197,8 +196,7 @@ public class MainViewController {
         ModelAttributeUtil.populateModelWithPlatformConstants(model);
         newAccountBean.setCaptchaText("");
         boolean isSharedColab = ConfigurationAttributeKey.IS_SHARED_COLAB.get();
-        model.addAttribute("isSharedCollab", isSharedColab);
-        if(isSharedColab) {
+        if (isSharedColab) {
             final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.get();
             final String partnerColabImgsAndClasses = partnerColabName.replace(" ","");
             model.addAttribute("partnerColabClassName",partnerColabImgsAndClasses+ "-sketchy");
@@ -208,50 +206,38 @@ public class MainViewController {
     }
 
     @PostMapping("/register")
-    public void registerUser(HttpServletRequest request, HttpServletResponse response, Model model,
+    public String registerUser(HttpServletRequest request, HttpServletResponse response, Model model,
             @Valid CreateUserBean newAccountBean, BindingResult result,
             @RequestParam(required = false) String redirect) throws IOException {
 
-        HttpSession portletSession = request.getSession();
-        String fbIdString = (String) portletSession.getAttribute(SSOKeys.FACEBOOK_USER_ID);
-        String openId = (String) portletSession.getAttribute(SSOKeys.SSO_OPENID_ID);
+        HttpSession session = request.getSession();
+        String fbIdString = (String) session.getAttribute(SSOKeys.FACEBOOK_USER_ID);
+        String openId = (String) session.getAttribute(SSOKeys.SSO_OPENID_ID);
 
-        if (!result.hasErrors()) {
-            boolean captchaValid = true;
-            // require captcha if user is not logged in via SSO
-            if (fbIdString == null && openId == null) {
-                String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-                captchaValid = ReCaptchaUtils.verify(gRecaptchaResponse,
-                        ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_SECRET_KEY.get());
-            }
-            if (!captchaValid) {
-                SessionErrors.clear(request);
-                if (StringUtils.isNotEmpty(redirect)) {
-                    //TODO: or escape?
-                    response.sendRedirect("/register/error?recaptchaError=true&redirect="
-                            + HttpUtils.encodeURL(redirect));
-                } else {
-                    response.sendRedirect("/register/error");
-                }
-                return;
-            } else {
-                try {
-                    completeRegistration(request, response, newAccountBean, redirect, false);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            if (StringUtils.isNotEmpty(redirect)) {
-                //TODO: or escape?
-                response.sendRedirect("/register/error?redirect=" + HttpUtils.encodeURL(redirect));
-            } else {
-                response.sendRedirect("/register/error");
-            }
-            return;
+        if (result.hasErrors()) {
+            return showRegistrationError();
         }
+        boolean captchaValid = true;
+        // require captcha if user is not logged in via SSO
+        if (fbIdString == null && openId == null) {
+            String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+            captchaValid = ReCaptchaUtils.verify(gRecaptchaResponse,
+                    ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_SECRET_KEY.get());
+        }
+        if (!captchaValid) {
+            SessionErrors.clear(request);
+            result.addError(new ObjectError("createUserBean", "Please click the box"));
+            return showRegistrationError();
+        }
+        //TODO: improve redirect to avoid double handling
+        completeRegistration(request, response, newAccountBean, redirect, false);
         SessionErrors.clear(request);
         SessionMessages.clear(request);
+        return REGISTER_VIEW_NAME;
+    }
+
+    private String showRegistrationError() {
+        return REGISTER_VIEW_NAME;
     }
 
     /**
@@ -264,7 +250,7 @@ public class MainViewController {
      */
     public static void completeRegistration(HttpServletRequest request, HttpServletResponse response,
             CreateUserBean newAccountBean, String redirect, boolean postRegistration)
-            throws MemberNotFoundException, IOException {
+            throws IOException {
         HttpSession session = request.getSession();
         String fbIdString =
                 (String) session.getAttribute(SSOKeys.FACEBOOK_USER_ID);
@@ -300,13 +286,14 @@ public class MainViewController {
 
         try {
             LoginRegisterUtil.login(request, newAccountBean.getScreenName(), newAccountBean.getPassword(), redirect);
-        } catch (PasswordLoginException | LockoutLoginException e) {
+        } catch (MemberNotFoundException | PasswordLoginException | LockoutLoginException e) {
             throw new InternalException(e);
         }
 
-        request.getSession().setAttribute("collab_user_has_registered", true);
+        session.setAttribute("collab_user_has_registered", true);
 
-        ActivityEntryHelper.createActivityEntry(ActivitiesClientUtil.getClient(), user.getUserId(), user.getUserId(),null, ActivityProvidersType.MemberJoinedActivityEntry.getType());
+        ActivityEntryHelper.createActivityEntry(ActivitiesClientUtil.getClient(), user.getUserId(),
+                user.getUserId(), null, ActivityProvidersType.MemberJoinedActivityEntry.getType());
 
         if (redirect == null) {
             redirect = "/";

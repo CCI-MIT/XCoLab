@@ -299,4 +299,11 @@ public class ContestDaoImpl implements ContestDao {
                 .from(CONTEST)
                 .where(CONTEST.CONTEST_SCHEDULE_ID.eq(contestScheduleId)));
     }
+
+    @Override
+    public boolean delete(long contestPK) {
+        return dslContext.deleteFrom(CONTEST)
+                .where(CONTEST.CONTEST_PK.eq(contestPK))
+                .execute() > 0;
+    }
 }
