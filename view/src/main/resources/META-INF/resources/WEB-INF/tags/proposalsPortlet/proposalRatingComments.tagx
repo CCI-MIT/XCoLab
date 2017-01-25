@@ -2,9 +2,9 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:discussions="http://climatecolab.org/tags/xcollab_discussions_2.0"
-          xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
+           version="2.0">
 
-    <liferay-theme:defineObjects />
+
 
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
 
