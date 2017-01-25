@@ -149,7 +149,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             final Contest baseContest = ProposalsContextUtil.getClients(request).getProposalClient().getCurrentContestForProposal(proposal.getProposalId());
 
             if (voted) {
-                setVotingDeadline(model, baseContest);
+                setVotingDeadline(model, baseContest, request);
             }
 
             if (isMove) {
@@ -270,8 +270,8 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         model.addAttribute("judgeProposalBean", judgeProposalBean);
     }
 
-    private void setVotingDeadline(Model model, Contest baseContest) {
-        Date votingDeadline = getVotingDeadline(baseContest);
+    private void setVotingDeadline(Model model, Contest baseContest, HttpServletRequest request) {
+        Date votingDeadline = getVotingDeadline(baseContest, request);
         if (votingDeadline != null) {
             final DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, YYYY", Locale.US);
             model.addAttribute("votingDeadline", customDateFormat.format(votingDeadline));
@@ -280,8 +280,8 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         }
     }
 
-    private Date getVotingDeadline(Contest contest) {
-        List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(contest.getContestPK());
+    private Date getVotingDeadline(Contest contest, HttpServletRequest request) {
+        List<ContestPhase> contestPhases = proposalsContext.getClients(request).getContestClient().getAllContestPhases(contest.getContestPK());
         return getActiveVotingPhase(contestPhases).getPhaseEndDate();
     }
 
@@ -289,7 +289,9 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         for (ContestPhase phase : contestPhases) {
             if (phase.getContestPhaseType() == ContestPhaseTypeValue.SELECTION_OF_WINNERS.getTypeId() ||
                     phase.getContestPhaseType() == ContestPhaseTypeValue.SELECTION_OF_WINNERS_NEW.getTypeId() ||
-                    phase.getContestPhaseType() == ContestPhaseTypeValue.WINNERS_SELECTION.getTypeId()) {
+                    phase.getContestPhaseType() == ContestPhaseTypeValue.WINNERS_SELECTION.getTypeId() ||
+                    phase.getContestPhaseType() == ContestPhaseTypeValue.VOTING_PHASE_SOLVE.getTypeId()
+                    ) {
                 if (phase.getPhaseActive()) {
                     return phase;
                 }
