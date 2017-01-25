@@ -88,6 +88,7 @@ public class UserProfileController {
         try {
             UserProfilePermissions permissions = new UserProfilePermissions(member);
             model.addAttribute("permissions", permissions);
+            model.addAttribute("_activePageLink", "community");
             populateUserWrapper(new UserProfileWrapper(memberId, request), model);
             ModelAttributeUtil.populateModelWithPlatformConstants(model);
             model.addAttribute("pointsActive",
@@ -113,6 +114,7 @@ public class UserProfileController {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
         model.addAttribute("permissions", permissions);
+        model.addAttribute("_activePageLink", "community");
 
         try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request);
@@ -169,6 +171,7 @@ public class UserProfileController {
             throws IOException, MemberNotFoundException {
         UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
         model.addAttribute("permissions", permissions);
+        model.addAttribute("_activePageLink", "community");
 
         if (!permissions.getCanEditMemberProfile(updatedUserBean.getUserId())
                 || memberId != updatedUserBean.getUserId()) {

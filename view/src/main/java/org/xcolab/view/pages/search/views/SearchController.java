@@ -21,6 +21,7 @@ public class SearchController {
 
         model.addAttribute("searchBean", new SearchBean(searchPhrase, searchLocation, pageNumber));
 
+        model.addAttribute("_activePageLink", "search");
         return "search/search";
     }
 }

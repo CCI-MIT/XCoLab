@@ -6,9 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.ActionMapping;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -49,6 +47,7 @@ public class ContestProposalsController extends BaseProposalsController {
             @PathVariable String contestUrlName,
             @PathVariable String contestPhaseId,
             final SortFilterPage sortFilterPage, Model model) {
+        setBasePageAttributes(request, model);
         return showContestProposalsPage(request, response, contestYear, contestUrlName, contestPhaseId,sortFilterPage, model);
     }
     @GetMapping("/contests/{contestYear}/{contestUrlName}")
@@ -56,6 +55,7 @@ public class ContestProposalsController extends BaseProposalsController {
             @PathVariable String contestYear,
             @PathVariable String contestUrlName,
             final SortFilterPage sortFilterPage, Model model) {
+        setBasePageAttributes(request, model);
         return showContestProposalsPage(request, response, contestYear, contestUrlName,null, sortFilterPage, model);
     }
 
@@ -114,6 +114,7 @@ public class ContestProposalsController extends BaseProposalsController {
 
         setSeoTexts(request, contest.getContestShortName(), null, contest.getContestDescription());
 
+        setBasePageAttributes(request, model);
         return "/proposals/contestProposals";
     }
 

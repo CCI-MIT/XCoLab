@@ -6,11 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.ActionMapping;
-import org.springframework.web.portlet.bind.annotation.RenderMapping;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
@@ -25,8 +21,7 @@ import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
-        .DiscussionAuthorizationException;
+import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
 import java.io.IOException;
 import java.util.List;
@@ -38,8 +33,6 @@ import javax.servlet.http.HttpServletResponse;
 public class ThreadController extends BaseDiscussionController {
 
     public static final String CREATE_THREAD_URL = "/discussion/threads/create";
-
-
 
     @GetMapping({"/web/guest/discussion/thread/{threadId}","/discussion/thread/{threadId}"})
     public String showThread(HttpServletRequest request, HttpServletResponse response, Model model,
@@ -58,6 +51,7 @@ public class ThreadController extends BaseDiscussionController {
         model.addAttribute("thread", thread);
         model.addAttribute("isSubscribed", false); //threadWrapper.isSubscribed(themeDisplay.getUserId()));
 
+        model.addAttribute("_activePageLink", "community");
         return "/discussion/thread";
     }
 
@@ -79,6 +73,7 @@ public class ThreadController extends BaseDiscussionController {
 
         model.addAttribute("categories", categories);
 
+        model.addAttribute("_activePageLink", "community");
         return "/discussion/thread_add";
     }
 

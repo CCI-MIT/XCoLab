@@ -37,7 +37,7 @@ public class MembersController {
 
     private static final long COMMUNITY_TOP_CONTENT_ARTICLE_ID = ConfigurationAttributeKey.MEMBERS_CONTENT_ARTICLE_ID.get();
 
-    @RequestMapping({"/web/guest/members","/members"})
+    @RequestMapping("/members")
     public String showUsers(HttpServletRequest request, HttpServletResponse response, Model model,
             SortFilterPage sortFilterPage,
             @RequestParam(value = "page", required = false) Long pageParam,
@@ -126,6 +126,7 @@ public class MembersController {
 
         model.addAttribute("permissions", membersPermissions);
 
+        model.addAttribute("_activePageLink", "community");
         return "members/users";
     }
 

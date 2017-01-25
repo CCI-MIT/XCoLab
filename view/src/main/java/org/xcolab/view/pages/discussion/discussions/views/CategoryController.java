@@ -33,20 +33,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-
 public class CategoryController extends BaseDiscussionController {
 
-
-
-    @GetMapping({"/web/guest/discussion","/discussion"})
+    @GetMapping("/discussion")
     public String showCategories(HttpServletRequest request, HttpServletResponse response, Model model) {
+        model.addAttribute("_activePageLink", "community");
         return showCategories(request, response, model, ThreadSortColumn.DATE.name(), false);
     }
 
-    // @RenderMapping(params = "action=showCategories")
     @GetMapping("/discussion/categories/sort/{sortColumn}")
     public String showCategoriesSort(HttpServletRequest request, HttpServletResponse response, Model model,
                                  @PathVariable String sortColumn) {
+        model.addAttribute("_activePageLink", "community");
         return showCategories(request,response,model,sortColumn,false);
     }
 
@@ -56,10 +54,7 @@ public class CategoryController extends BaseDiscussionController {
     }
 
     public String showCategories(HttpServletRequest request, HttpServletResponse response, Model model,
-                 String sortColumn,
-                Boolean sortAscending) {
-
-
+                 String sortColumn, Boolean sortAscending) {
         long memberId = MemberAuthUtil.getMemberId(request);
 
         ThreadSortColumn threadSortColumn;
@@ -82,6 +77,7 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(memberId,
                 ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0, ""));
 
+        model.addAttribute("_activePageLink", "community");
         return "/discussion/category";
     }
 
@@ -114,6 +110,7 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(memberId,
                 ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0,Long.toString(categoryId) ));
 
+        model.addAttribute("_activePageLink", "community");
         return "/discussion/category";
     }
 
@@ -147,6 +144,7 @@ public class CategoryController extends BaseDiscussionController {
         checkCanEdit(request, "User does not have the necessary permissions to create a category",
                 categoryGroup, 0L);
 
+        model.addAttribute("_activePageLink", "community");
         return "/discussion/category_add";
     }
 
