@@ -19,4 +19,11 @@ UPDATE xcolab_ConfigurationAttribute SET `stringValue`='{\n \"CALL_TO_ACTION\": 
 
 
 -- COLAB-1589 ContentPages for Solve CoLab
-INSERT INTO xcolab.xcolab_ContentPage (title, menuArticleId, contentArticleId, createdDate, modifiedDate) VALUES ('about', 29, 38, null, null);
+INSERT INTO xcolab_ContentPage (title, menuArticleId, contentArticleId, createdDate, modifiedDate) VALUES ('about', 29, 38, null, null);
+INSERT INTO xcolab_ContentPage (title, menuArticleId, contentArticleId, createdDate, modifiedDate) VALUES ('crowdsourcing', 29, 39, null, null);
+INSERT INTO xcolab_ContentPage (title, menuArticleId, contentArticleId, createdDate, modifiedDate) VALUES ('why-these-challenges', 29, 20, null, null);
+INSERT INTO xcolab_ContentPage (title, menuArticleId, contentArticleId, createdDate, modifiedDate) VALUES ('get-involved', 29, 43, null, null);
+INSERT INTO xcolab_ContentPage (title, menuArticleId, contentArticleId, createdDate, modifiedDate) VALUES ('people', 29, 44, null, null);
+INSERT INTO xcolab_ContentPage (title, menuArticleId, contentArticleId, createdDate, modifiedDate) VALUES ('sponsors', 29, 19, null, null);
+INSERT INTO xcolab_ContentPage (title, menuArticleId, contentArticleId, createdDate, modifiedDate) VALUES ('faqs', 29, 46, null, null);
+INSERT INTO xcolab_ContentPage (title, menuArticleId, contentArticleId, createdDate, modifiedDate) VALUES ('contact', 29, 47, null, null);
