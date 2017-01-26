@@ -19,7 +19,9 @@
         var validateOntologyTermsURL = '${validateOntologyTermsURL}';
         $('#contestImageInput').css
     </script>
-    <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js"><!-- --></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.3/papaparse.js"><!-- --> </script>
+    <xcolab:loadCkEditor />
     <div class="cmsDetailsBox">
         <collab:imageUpload uploadImageDivId="contestImage"/>
 
@@ -39,7 +41,7 @@
                 <label>
                     <strong>Description</strong>
                     <a href="javascript:;" class="helpTrigger"><img
-                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                            src="images/icon-addprop-question.png" width="15" height="15"/></a><br/>
                 </label>
 
                 <div class="addprophelp">A short paragraph that states the specific problem the contest seeks to address
@@ -82,7 +84,7 @@
                                        value="/image/contest?img_id=${contestWrapper.contestLogoId}"/>
                             </c:when>
                             <c:otherwise>
-                                <c:set var="contestImageUrl" value="/climatecolab-theme/images/proposal_default.png"/>
+                                <c:set var="contestImageUrl" value="images/proposal_default.png"/>
                             </c:otherwise>
                         </c:choose>
                         <img src="${contestImageUrl }" width="52" height="52" alt="${contestWrapper.contestName} image"
@@ -113,7 +115,7 @@
                                        value="/image/proposal?img_id=${contestWrapper.sponsorLogoId}"/>
                             </c:when>
                             <c:otherwise>
-                                <c:set var="logoImageUrl" value="/climatecolab-theme/images/proposal_default.png"/>
+                                <c:set var="logoImageUrl" value="images/proposal_default.png"/>
                             </c:otherwise>
                         </c:choose>
                         <img src="${logoImageUrl }" width="52" height="52" alt="${contestWrapper.contestName} image"
@@ -129,7 +131,7 @@
                 <label>
                     <strong>Proposal template</strong>
                     <a href="javascript:;" class="helpTrigger"><img
-                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                            src="images/icon-addprop-question.png" width="15" height="15"/></a><br/>
                 </label>
 
                 <div class="addprophelp">Select the proposal template associated with your contest. Templates hold the
@@ -153,7 +155,7 @@
                 <label>
                     <strong>Schedule template</strong>
                     <a href="javascript:;" class="helpTrigger"><img
-                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                            src="images/icon-addprop-question.png" width="15" height="15"/></a><br/>
                 </label>
 
                 <div class="addprophelp">Select the schedule associated with your contest. If you would like any changes
@@ -176,7 +178,7 @@
                 <label>
                     <strong>Contest level</strong>
                     <a href="javascript:;" class="helpTrigger"><img
-                            src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15"/></a><br/>
+                            src="images/icon-addprop-question.png" width="15" height="15"/></a><br/>
                 </label>
 
                 <div class="addprophelp">Select the level associated with your contest. If you have questions on which
@@ -196,7 +198,7 @@
             <div class="addpropbox">
                 <label>
                     <strong>Contest type</strong>
-                    <a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
+                    <a href="javascript:;" class="helpTrigger"><img src="images/icon-addprop-question.png" width="15" height="15" /></a><br />
                 </label>
                 <div class="addprophelp">Select the type of this contest. Types determine the name of the contest-entity and the proposal-entities and where they will appear. If you have a question about which type to select, please submit a comment below for the CoLab team.</div>
                 <div class="clearfix"><!-- --></div>
@@ -212,7 +214,7 @@
             <div class="addpropbox blue">
                 <label>
                     <strong>Contests in CSV</strong>
-                    <a href="javascript:;" class="helpTrigger"><img src="/climatecolab-theme/images/icon-addprop-question.png" width="15" height="15" /></a><br />
+                    <a href="javascript:;" class="helpTrigger"><img src="images/icon-addprop-question.png" width="15" height="15" /></a><br />
                 </label>
                 <div class="addprophelp">Select the file with the batch contests to be created. The file should be in the CSV (comma separated values) format.<br />  The fields should be in the following format: <br />
                     contest_shortname ,contest_question ,ontology_id_term1 ,ontology_id_term2 ,ontology_id_term3
