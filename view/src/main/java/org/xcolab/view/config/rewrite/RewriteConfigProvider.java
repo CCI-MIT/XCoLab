@@ -92,6 +92,9 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
     private void redirectLegacyMembers(ConfigurationBuilder configurationBuilder) {
         configurationBuilder
                 .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/members")))
+                    .perform(Redirect.permanent("/members"))
+                .addRule()
                     .when(Direction.isInbound().and(Path.matches("/web/guest/messaging")))
                     .perform(Redirect.permanent("/messaging"))
                 .addRule()
@@ -246,6 +249,12 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                 .addRule()
                     .when(Direction.isInbound().and(Path.matches("/web/guest/feedback")))
                     .perform(Redirect.permanent("/page/contact"));
+
+        // news
+        configurationBuilder
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/community/-/blogs/{articleTitle}")))
+                    .perform(Redirect.permanent("/page/news-{articleTitle}"));
     }
 
     private void redirectContentPagesResilienceDialogues(ConfigurationBuilder configurationBuilder) {
