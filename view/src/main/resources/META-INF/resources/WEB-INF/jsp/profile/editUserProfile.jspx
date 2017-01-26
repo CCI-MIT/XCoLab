@@ -424,8 +424,7 @@
 					}
 				}
 			} catch (e) {
-                noty({text: 'Profile image upload failed!', type: 'error'});
-				//console.log("fileUploadFrame error",e);
+                noty({text: 'Profile image upload failed! Make sure the image is below 3Mb in size.', type: 'error'});
 			}
 		});
 
