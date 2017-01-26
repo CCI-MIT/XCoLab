@@ -28,8 +28,7 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.7.0/jquery.modal.min.css" rel="stylesheet" type="text/css" />
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.7.0/jquery.modal.min.js" type="text/javascript" charset="utf-8"><!-- --></script>
 
-		<script src="${_libJsFolder}/ckeditor/ckeditor.js" ><!-- Should not use the xcolab:script because this causes the script to fail to load its dependencies --> </script>
-
+		<xcolab:loadCkEditor />
 
 		<c:if test="${discussionPermissions.mustFilterContent}">
 		<script>
@@ -201,7 +200,7 @@
 					<form id="addCommentForm" action="${addCommentURL }#addCommentForm" method="post">
                         <input name="threadId" class="title text hidden" maxlength="255" value="${thread.threadId}" />
 						<input type="hidden" name="uuid" id="filtering_uuid"/>
-						<textarea id="messageContent" name="description"  class="rte c-Comment__box commentContent"><!-- --></textarea>
+						<textarea id="messageContent" name="description"  class="rte-editorPlaceholder c-Comment__box commentContent"><!-- --></textarea>
 						<div class="clearfix"><!-- --></div>
 						<br />
 						<span class="errorMsg portlet-msg-error" style="display: none;">Value is required</span>

@@ -26,57 +26,54 @@
         </div>
     </div>
 
-    <div id="content">
-
-        <form:form action="${confirmDeleteContestURL }" modelAttribute="massActionConfirmationWrapper"
-                   id="editForm" method="post">
-            <div class="cmsDetailsBox">
-                <div class="outerVerticalCenter">
-                    <a class="c-Button__primary innerVerticalCenter" href="#" id="submitButton">DELETE contest(s)</a>
-                    <a class="c-Button__secondary innerVerticalCenter" href="/admin/contest/manager">DISCARD &amp; go back to overview</a>
-                </div>
+    <form:form action="${confirmDeleteContestURL }" modelAttribute="massActionConfirmationWrapper"
+               id="editForm" method="post">
+        <div class="cmsDetailsBox">
+            <div class="outerVerticalCenter">
+                <a class="c-Button__primary innerVerticalCenter" href="#" id="submitButton">DELETE contest(s)</a>
+                <a class="c-Button__secondary innerVerticalCenter" href="/admin/contest/manager">DISCARD &amp; go back to overview</a>
             </div>
-            <div class="cmsDetailsBox">
-                <table class="contestOverview">
-                    <col span="1" class="extraSmallColumn"/>
-                    <col span="1" class="wideColumn"/>
-                    <col span="1" class="mediumColumn"/>
-                    <col span="1" class="smallColumn"/>
-                    <thead>
-                    <tr>
-                        <th><input type="checkbox" id="selectAllCheckbox"/></th>
-                        <th>Contest title</th>
-                        <th>Contest phases</th>
-                        <th># of Proposals</th>
+        </div>
+        <div class="cmsDetailsBox">
+            <table class="contestOverview">
+                <col span="1" class="extraSmallColumn"/>
+                <col span="1" class="wideColumn"/>
+                <col span="1" class="mediumColumn"/>
+                <col span="1" class="smallColumn"/>
+                <thead>
+                <tr>
+                    <th><input type="checkbox" id="selectAllCheckbox"/></th>
+                    <th>Contest title</th>
+                    <th>Contest phases</th>
+                    <th># of Proposals</th>
+                </tr>
+                </thead>
+                <tbody id="contestOverviewBody">
+                <form:hidden path="massActionId"/>
+                <form:hidden path="itemCount"/>
+                <c:forEach var="contestWrapper" items="${massActionConfirmationWrapper.contestWrappers}"
+                           varStatus="x">
+                    <tr id="${contestWrapper.contestPK}">
+                        <form:hidden path="contestIds[${x.index}]"
+                                     data-form-name="contestPK"/>
+                        <td>
+                            <form:checkbox path="selectedContest[${x.index}]" cssClass="checkbox"/>
+                        </td>
+                        <td>
+                            <collab:contestLink contest="${contestWrapper}" />
+                        </td>
+                        <td>
+                            <c:forEach var="contestPhaseWrapper" items="${contestWrapper.phases}" varStatus="y">
+                                    ${contestPhaseWrapper.name}<br/>
+                            </c:forEach>
+                        </td>
+                        <td>${contestWrapper.proposalsCount} </td>
                     </tr>
-                    </thead>
-                    <tbody id="contestOverviewBody">
-                    <form:hidden path="massActionId"/>
-                    <form:hidden path="itemCount"/>
-                    <c:forEach var="contestWrapper" items="${massActionConfirmationWrapper.contestWrappers}"
-                               varStatus="x">
-                        <tr id="${contestWrapper.contestPK}">
-                            <form:hidden path="contestIds[${x.index}]"
-                                         data-form-name="contestPK"/>
-                            <td>
-                                <form:checkbox path="selectedContest[${x.index}]" cssClass="checkbox"/>
-                            </td>
-                            <td>
-                                <collab:contestLink contest="${contestWrapper}" />
-                            </td>
-                            <td>
-                                <c:forEach var="contestPhaseWrapper" items="${contestWrapper.phases}" varStatus="y">
-                                        ${contestPhaseWrapper.name}<br/>
-                                </c:forEach>
-                            </td>
-                            <td>${contestWrapper.proposalsCount} </td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </div>
-        </form:form>
-    </div>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </form:form>
 
     <script type="text/javascript">
         <![CDATA[

@@ -56,7 +56,7 @@
 					<div colspan="4" id="proposalPickerSearchContainer">
 						<input id="prop-search" name="searchField" type="text"
 							placeholder="Filter" maxcharacters="80" validatelength="true"
-							class="rteInitialized"
+							class="rte-editorInitialized"
 							style="height: 22px; width: 175px; padding: 0 5px;" />
 						<a class="c-Button__primary" href="javascript:;">Search</a>
 					</div>
@@ -173,7 +173,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="proposalPicker_proposalsContainer">
-
+									<!-- -->
                                 </tbody>
                             </table>
                         </div>
@@ -182,7 +182,7 @@
 					</div>
 
 				</div>
-				<div id="warning"></div>
+				<div id="warning"><!-- --></div>
 				<div class="pickerButtons b-Spacing">
                 	<a class="c-Button__primary" href="#" id="savePickedProposals">Choose <span class="contestTypeProposalNames">&#160;</span></a>
                 	<a class="c-Button__secondary" href="#" id="cancelPickedProposals">Cancel</a>

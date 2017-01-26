@@ -1,81 +1,3 @@
-function initializeTextEditors() {
-    jQuery("input[type='text'], textarea").each(function() {
-        if (jQuery(this).hasClass('rteInitialized') || jQuery(this).parent().parent().attr('class') == "login_popup_box") {
-            return;
-        }
-
-        var tmp = this;
-        var thiz = jQuery(this);
-
-        var limitCharactersMax = thiz.parent().find(".limit_charactersMax");
-        var limitCharacterCount = thiz.parent().find(".limit_characterCount");
-
-        if (limitCharactersMax.length > 0) {
-            thiz.attr({maxCharacters: limitCharactersMax.text(), validateLength: true});
-            this.limitCharacterCounter = limitCharacterCount;
-            updateCharacterCounter(thiz);
-        } else {
-            thiz.attr({validateLength: false});
-        }
-
-        if (thiz.hasClass("ckeditor_placeholder")) {
-
-            var editor = CKEDITOR.replace(thiz.attr("id"));
-
-            thiz.get(0)["ckeditor"] = editor;
-            editor.updatedCharCount = false;
-
-            function updateEditorCharCount() {
-                try{
-                    if (editor == null) return;
-
-                    if (editor &&  editor.document && editor.document['$'] && (editor.checkDirty() || editor.updatedCharCount)) {
-                        markEditorDirty(thiz);
-                        updateCharacterCounter(thiz, editor);
-                        editor.updatedCharCount = true;
-                        editor.resetDirty();
-                    }
-
-                    setTimeout(updateEditorCharCount, 1000);
-                } catch (e) {
-                    if (typeof(console) != 'undefined' && typeof(console.log) != 'undefined') {
-                        console.log(e);
-                    }
-                }
-            }
-            // if (! jQuery.browser.ie || jQuery.browser.version.number >= 9) {
-                updateEditorCharCount();
-            // }
-
-            editor.on("blur", function() {
-                updateCharacterCounter(thiz, editor);
-            });
-
-            // initiate char counters
-            setTimeout(function() { updateCharacterCounter(thiz, editor); }, 2000);
-        }
-        else {
-            eventsToBind = {
-                keypress: function(event) {
-                    if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {
-                        updateCharacterCounter(thiz);
-                    }
-                },
-                keyup: function(event) {
-                    if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {
-                        updateCharacterCounter(thiz);
-                    }
-                },
-                change: function(event) {
-                    markEditorDirty(thiz);
-                }
-            };
-            thiz.bind(eventsToBind);
-        }
-        jQuery(this).addClass('rteInitialized');
-    });
-}
-
 function initializeDropDowns() {
     jQuery("select").each(function() {
         console.log("initializeDropDowns 2");
@@ -89,58 +11,6 @@ function initializeDropDowns() {
         };
         jQuery(this).bind(eventsToBind);
     });
-}
-
-function updateCharacterCounter(input, editor) {
-    var parent = input.parents('.addpropbox');
-    var elem = input.get(0);
-    var max = input.attr('maxCharacters');
-    if (elem && elem.limitCharacterCounter) {
-        var count = countCharacters(input, editor);
-        if (count > 1 * max) {
-            elem.limitCharacterCounter.parent().addClass('overflow');
-            input.addClass('invalid');
-        }
-        else {
-            elem.limitCharacterCounter.parent().removeClass('overflow');
-            input.removeClass('invalid');
-        }
-        elem.limitCharacterCounter.text(count);
-        if (count > 0) {
-            parent.removeClass('empty').addClass('notempty');
-        }
-        else {
-            parent.removeClass('notempty').addClass('empty');
-        }
-    }
-}
-
-function shouldAllowMoreCharacters(input) {
-    if (typeof(input.attr('validateLength')) == 'undefined' ||
-        typeof(input.attr('maxCharacters')) == 'undefined' ||
-        input.attr('maxCharacters') + 0 <= 0) {
-        return true;
-    }
-    return input.attr('maxCharacters') > input.val().length;
-}
-
-function markEditorDirty(editor) {
-    editor.addClass('editorDirty');
-}
-
-function countCharacters(input, editor) {
-    if (editor) {
-        if (editor == null || editor.document == null) return 0;
-        if (editor.document['$'].body.textContent) {
-            return jQuery.trim(editor.document['$'].body.textContent).length;
-
-        }
-        if (editor.document['$'].body.innerText) {
-            return jQuery.trim(editor.document['$'].body.innerText).length;
-        }
-    }
-    return jQuery.trim(input.val().replace(/&lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
-
 }
 
 function isJSONavailable(){
@@ -251,13 +121,11 @@ function filter(className, element){
 }
 
 jQuery(function() {
-
     jQuery(".addpropform .helpTrigger").click(function() {
         var trigger = jQuery(this);
         trigger.parent().parent().find(".addprophelp").slideToggle("fast");
     });
 
-    initializeTextEditors();
     initializeDropDowns();
     resizeAllTextareas();
 });

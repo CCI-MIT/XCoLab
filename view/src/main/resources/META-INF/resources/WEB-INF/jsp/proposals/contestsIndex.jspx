@@ -12,7 +12,7 @@
 
 		<c:choose>
 			<c:when test="${showCollectionCards}">
-				<div id="content">
+				<div>
 					<jsp:directive.include file="./contestsIndex/header-cards.jspx" />
 
 					<c:choose>
@@ -29,7 +29,7 @@
 				</div>
 			</c:when>
 			<c:otherwise>
-				<div id="content">
+				<div>
 					<jsp:directive.include file="contestsIndex/header.jspx" />
 
 					<c:choose>

@@ -9,22 +9,19 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
 
-  <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
-  <jsp:directive.include file="./init.jspx" />
+    <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
+    <jsp:directive.include file="./init.jspx" />
 
-
-  <div id="bread" class="pro">
+    <div id="bread" class="pro">
     <a href="/web/guest/community">Community</a> <img
           src="${_themeImageFolder}/arrow.gif" width="8" height="8" /> <a
           href="/web/guest/members">Members</a> <img
           src="${_themeImageFolder}/arrow.gif" width="8" height="8" /> <a
           href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">${userBean.screenName}</a>
     <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />Subscriptions
-  </div>
+    </div>
 
-  <div id="content">
-
-    <div class="main_long">
+    <div class="main_long clearfix">
         <h1>Subscribed activities</h1>
         <c:if test="${currentUserProfile.viewingOwnProfile}">
           <div class="profile_action">
@@ -65,9 +62,5 @@
         </c:if>
 
     </div>
-
-    <div class="clearfix"><!-- --></div>
-
-  </div> <!-- /main -->
 </xcolab:layout>
 </jsp:root>

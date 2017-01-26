@@ -92,11 +92,7 @@ public class MainViewController {
             }
         }
         if (MemberAuthUtil.getMemberId(request) > 0) {
-            try {
-                response.sendRedirect("/");
-                return "";
-            } catch (IOException ignored) {
-            }
+            return "redirect:/";
         }
 
         if (StringUtils.isNotEmpty(redirect)) {
@@ -178,31 +174,6 @@ public class MainViewController {
         }
         throw new UserLocationNotResolvableException(
                 String.format("Could not retrieve country from IP address %s", ipAddr));
-    }
-
-    @GetMapping("/register/error")
-    public String registerError(HttpServletRequest request, Model model,
-            @Valid CreateUserBean newAccountBean, BindingResult result,
-            @RequestParam(required = false) String redirect) {
-        if (request.getParameter("recaptchaError") != null) {
-            result.addError(new ObjectError("createUserBean",
-                    "Please click the box"));
-        }
-
-        if (StringUtils.isNotEmpty(redirect)) {
-            //TODO: or escape?
-            model.addAttribute("redirect", HttpUtils.encodeURL(redirect));
-        }
-        ModelAttributeUtil.populateModelWithPlatformConstants(model);
-        newAccountBean.setCaptchaText("");
-        boolean isSharedColab = ConfigurationAttributeKey.IS_SHARED_COLAB.get();
-        if (isSharedColab) {
-            final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.get();
-            final String partnerColabImgsAndClasses = partnerColabName.replace(" ","");
-            model.addAttribute("partnerColabClassName",partnerColabImgsAndClasses+ "-sketchy");
-            model.addAttribute("partnerColabName", partnerColabName);
-        }
-        return REGISTER_VIEW_NAME;
     }
 
     @PostMapping("/register")
@@ -391,6 +362,4 @@ public class MainViewController {
 
         response.getWriter().write(json.toString());
     }
-
-
 }
