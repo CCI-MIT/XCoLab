@@ -7,52 +7,46 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-    <xcolab:layout>
-        <!--@elvariable id="isMove" type="java.lang.Boolean"-->
-        <!--@elvariable id="hasNotMappedSections" type="java.lang.Boolean"-->
+<xcolab:layout>
+    <!--@elvariable id="isMove" type="java.lang.Boolean"-->
+    <!--@elvariable id="hasNotMappedSections" type="java.lang.Boolean"-->
 
-        <jsp:directive.include file="./init_proposal.jspx"/>
+    <jsp:directive.include file="./init_proposal.jspx"/>
 
+    <script type="text/javascript">
+        var EXTERNAL_IMAGE_UPLOAD_URL = '${requestScope.imageUploadServiceUrl}';
+        var IMAGE_UPLOAD_HELP_TEXT = '${requestScope.imageUploadHelpText}';
+    </script>
 
-        <script type="text/javascript">
-            var EXTERNAL_IMAGE_UPLOAD_URL = '${requestScope.imageUploadServiceUrl}';
-            var IMAGE_UPLOAD_HELP_TEXT = '${requestScope.imageUploadHelpText}';
-        </script>
+    <!-- Includes for profanity filter-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.7.0/jquery.modal.min.js" type="text/javascript" charset="utf-8"><!-- --></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.7.0/jquery.modal.min.css" rel="stylesheet" type="text/css" />
 
-        <script src="${_libJsFolder}/ckeditor/ckeditor.js" ><!-- Should not use the xcolab:script because this causes the script to fail to load its dependencies --> </script>
+    <jsp:directive.include file="./proposalDetails/header.jspx" />
 
-        <!-- Includes for profanity filter-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.7.0/jquery.modal.min.js" type="text/javascript" charset="utf-8"><!-- --></script>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.7.0/jquery.modal.min.css" rel="stylesheet" type="text/css" />
+    <!--ProposalSectionsTabController-->
+    <jsp:useBean id="updateProposalSectionsBean" scope="request" type="org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean"/>
+    <c:if test="${isMove}">
+        <jsp:useBean id="baseProposal" scope="request" type="org.xcolab.client.proposals.pojo.Proposal"/>
+        <jsp:useBean id="baseContest" scope="request" type="org.xcolab.client.contest.pojo.Contest"/>
+    </c:if>
 
-        <jsp:directive.include file="./proposalDetails/header.jspx" />
+    <style>
+        td em {
+            background: #000; border-radius: 5px; font-style: normal;
+            box-shadow: 0 0 2px #000;
+        }
+    </style>
 
-        <!--ProposalSectionsTabController-->
-        <jsp:useBean id="updateProposalSectionsBean" scope="request" type="org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean"/>
-        <c:if test="${isMove}">
-            <jsp:useBean id="baseProposal" scope="request" type="org.xcolab.client.proposals.pojo.Proposal"/>
-            <jsp:useBean id="baseContest" scope="request" type="org.xcolab.client.contest.pojo.Contest"/>
-        </c:if>
-
-        <style>
-            td em {
-                background: #000; border-radius: 5px; font-style: normal;
-                box-shadow: 0 0 2px #000;
-            }
-        </style>
-
-        <c:if test="${mustFilterContent}">
-        <div id="modal_filtering_prof" style="display:none;">
-            <p style="font-size: large;font-weight: 600;">Preparing for submission...</p>
-            <div id="loading_filtering_image" style="text-align: left"><img border="0" src="/images/loader.gif"/></div>
-            <div id="processedFailed" style="display:none;margin-top: 8px;">Your entry contains disallowed words. Please remove offensive words before saving again <a href="#" rel="modal:close">Close</a></div>
-        </div>
-        </c:if>
-
-        <div id="content">
+    <c:if test="${mustFilterContent}">
+    <div id="modal_filtering_prof" style="display:none;">
+        <p style="font-size: large;font-weight: 600;">Preparing for submission...</p>
+        <div id="loading_filtering_image" style="text-align: left"><img border="0" src="/images/loader.gif"/></div>
+        <div id="processedFailed" style="display:none;margin-top: 8px;">Your entry contains disallowed words. Please remove offensive words before saving again <a href="#" rel="modal:close">Close</a></div>
+    </div>
+    </c:if>
 
     <div class="prop-left">
-
         <c:choose>
             <c:when test="${proposal.proposalId > 0 }">
                 <c:set var="updateProposalSectionsURL" value="${proposal.proposalUrl}/updateProposalDetails?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
@@ -92,11 +86,9 @@
             </p>
         </div> <!-- /c-Headline -->
 
-
         <form action="/images/upload" method="post" enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
             <input type="file" name="file" id="fileUploadInput" />
         </form>
-
 
         <form:form action="${updateProposalSectionsURL }" commandName="updateProposalSectionsBean" modelAttribute="updateProposalSectionsBean"  cssClass="addpropform ${contestType.showProposalSummary ? '' : 'full-wdith'}" id="editForm">
             <form:hidden path="baseProposalId" />
@@ -206,7 +198,7 @@
                     </label>
 
                     <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
-                        <form:textarea cssClass="rte"  cols="54" rows="7" path="description" />
+                        <form:textarea cssClass="rte-editorPlaceholder"  cols="54" rows="7" path="description" />
                     </div>
                 </div>
             </c:if>
@@ -219,11 +211,8 @@
                 </c:if>
             </c:forEach>
         </form:form>
-
-
     </div>
     <jsp:directive.include file="./proposalDetails/proposalSummary.jspx" />
-
 
     <div id="c-Popup__accept__TOS" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none;">
         <div class="c-Popup__wrapper p1" id="c-Popup__accept__TOS">
@@ -292,114 +281,113 @@
         </div>
     </div>
 
-    </div>
-
     <iframe name="_fileUploadFrame" id="fileUploadFrame" class="hidden" style="display: none;"><!-- comment --></iframe>
 
-        <jsp:directive.include file="./proposalDetails/proposalPicker_widget.jspx" />
+    <jsp:directive.include file="./proposalDetails/proposalPicker_widget.jspx" />
 
-        <script type="text/javascript">
-            var submitTimer;
+    <script type="text/javascript">
+        var submitTimer;
 
-            jQuery("#fileUploadInput").change(function() {
-                jQuery("#fileUploadForm").submit();
+        jQuery("#fileUploadInput").change(function() {
+            jQuery("#fileUploadForm").submit();
 
-            });
-            jQuery("#fileUploadFrame").load(
-                    function() {
-                        try {
-                            var response = eval("("	+ jQuery(this).contents().text() + ")");
+        });
+        jQuery("#fileUploadFrame").load(
+                function() {
+                    try {
+                        var response = eval("("	+ jQuery(this).contents().text() + ")");
 
-                            jQuery("#proposalImageImg").attr("src", "/image/proposal?img_id=" + response.imageId);
+                        jQuery("#proposalImageImg").attr("src", "/image/proposal?img_id=" + response.imageId);
 
-                            jQuery("#proposalImageId").val(response.imageId);
-                        }
-                        catch (e) {
-                        }
+                        jQuery("#proposalImageId").val(response.imageId);
                     }
-            );
-
-            function updateUploadBtnOffset() {
-                var container = jQuery("#uploadWidget");
-                var containerOffset = container.offset();
-
-                jQuery("#fileUploadInput").offset(containerOffset);
-
-            }
-
-            function showAcceptTosPopup() {
-                jQuery("#c-Popup__accept__TOS").fadeIn("fast");
-            }
-
-            function closeAcceptTosPopup() {
-                jQuery("#c-Popup__accept__TOS").fadeOut("fast");
-                enableButtons();
-            }
-
-            function tosAcceptedSave() {
-                jQuery("#c-Popup__accept__TOS").fadeOut("fast");
-                disableButtons(true);
-                saveIfValid();
-            }
-
-            function saveIfValid() {
-                disableButtons();
-                if (validatePlanEditForm()) {
-                    disableDirtyCheck();
-                    if(getMustFilterContent()) {
-                        var text = "";
-                        text = text + $("#proposalName").val() + " ";
-                        text = text + $("#proposalTeam").val() + " ";
-                        text = text + $("#proposalPitchInput").val() + " ";
-                        for (var ckInstanceId in CKEDITOR.instances) {
-                            if (document.getElementById(ckInstanceId)) {
-                                var ckInstance = CKEDITOR.instances[ckInstanceId];
-                                text = text + (ckInstance.getData()) + " ";
-                            }
-                        }
-                        handleFilteredContent(text,"PROPOSAL", "#uuid",function () { jQuery("#editForm").submit() });
-                    }else {
-                        jQuery("#editForm").submit();
+                    catch (e) {
                     }
                 }
-            }
+        );
 
-            jQuery(function() {
-                updateUploadBtnOffset();
-                $(window).resize(updateUploadBtnOffset);
+        function updateUploadBtnOffset() {
+            var container = jQuery("#uploadWidget");
+            var containerOffset = container.offset();
 
-                jQuery("#saveChangesButton").click(function() {
-                    if (${proposal.proposalId > 0}) {
-                        disableButtons(true);
-                        saveIfValid();
+            jQuery("#fileUploadInput").offset(containerOffset);
+
+        }
+
+        function showAcceptTosPopup() {
+            jQuery("#c-Popup__accept__TOS").fadeIn("fast");
+        }
+
+        function closeAcceptTosPopup() {
+            jQuery("#c-Popup__accept__TOS").fadeOut("fast");
+            enableButtons();
+        }
+
+        function tosAcceptedSave() {
+            jQuery("#c-Popup__accept__TOS").fadeOut("fast");
+            disableButtons(true);
+            saveIfValid();
+        }
+
+        function saveIfValid() {
+            disableButtons();
+            if (validatePlanEditForm()) {
+                disableDirtyCheck();
+                if(getMustFilterContent()) {
+                    var text = "";
+                    text = text + $("#proposalName").val() + " ";
+                    text = text + $("#proposalTeam").val() + " ";
+                    text = text + $("#proposalPitchInput").val() + " ";
+                    for (var ckInstanceId in CKEDITOR.instances) {
+                        if (document.getElementById(ckInstanceId)) {
+                            var ckInstance = CKEDITOR.instances[ckInstanceId];
+                            text = text + (ckInstance.getData()) + " ";
+                        }
                     }
-                    else {
-                        disableButtons(false);
-                        showAcceptTosPopup();
-                    }
-                });
-
-                jQuery("#closeAcceptTos").click(closeAcceptTosPopup);
-                jQuery("#tosAccepted").click(tosAcceptedSave);
-
-                enableDirtyCheck();
-            });
-
-            function enableButtons() {
-                jQuery("#saveChangesButton,#discardChangesButton").removeClass("disabled");
-            }
-
-            function disableButtons(withTimeout) {
-                var buttons = jQuery("#saveChangesButton,#discardChangesButton");
-                buttons.addClass("disabled");
-
-                if (withTimeout) {
-                    setTimeout(function () {
-                        buttons.removeClass("disabled");
-                    }, 5000);
+                    handleFilteredContent(text,"PROPOSAL", "#uuid",function () { jQuery("#editForm").submit() });
+                }else {
+                    jQuery("#editForm").submit();
                 }
             }
-        </script>
+        }
+
+        jQuery(function() {
+            updateUploadBtnOffset();
+            $(window).resize(updateUploadBtnOffset);
+
+            jQuery("#saveChangesButton").click(function() {
+                if (${proposal.proposalId > 0}) {
+                    disableButtons(true);
+                    saveIfValid();
+                }
+                else {
+                    disableButtons(false);
+                    showAcceptTosPopup();
+                }
+            });
+
+            jQuery("#closeAcceptTos").click(closeAcceptTosPopup);
+            jQuery("#tosAccepted").click(tosAcceptedSave);
+
+            enableDirtyCheck();
+        });
+
+        function enableButtons() {
+            jQuery("#saveChangesButton,#discardChangesButton").removeClass("disabled");
+        }
+
+        function disableButtons(withTimeout) {
+            var buttons = jQuery("#saveChangesButton,#discardChangesButton");
+            buttons.addClass("disabled");
+
+            if (withTimeout) {
+                setTimeout(function () {
+                    buttons.removeClass("disabled");
+                }, 5000);
+            }
+        }
+    </script>
+
     <div id="copyProposalContainer" style="display: none;">
         <div class="c-Popup__wrapper p1" id="copyProposalPopup">
             <div class="c-Popup">
@@ -418,42 +406,48 @@
                 </div>
             </div>
         </div>
-        <script>
-            var currentProposal = {
-                    proposalId: ${proposal.proposalId},
-                    version: ${proposal.version}
-                }
-            <c:if test="${not empty baseProposal}">
-                var baseProposal = {
-                    proposalId: ${baseProposal.proposalId},
-                    version: ${baseProposal.version}
-                }
-            </c:if>
-            <c:if test="${not empty baseContest}">
-                var baseContest = {
-                    contestPK: ${baseContest.contestPK}
-                }
-            </c:if>
-
-        </script>
-
-        <c:if test="${mustFilterContent}">
-            <script>
-                function getMustFilterContent(){
-                    return true;
-
-                }
-            </script>
-        </c:if>
-        <c:if test="${not mustFilterContent}">
-            <script>
-                function getMustFilterContent(){
-                    return false;
-
-                }
-            </script>
-        </c:if>
     </div>
-    </xcolab:layout>
 
+    <script>
+        var currentProposal = {
+            proposalId: ${proposal.proposalId},
+            version: ${proposal.version}
+        }
+    </script>
+
+    <c:if test="${not empty baseProposal}">
+        <script>
+            var baseProposal = {
+                proposalId: ${baseProposal.proposalId},
+                version: ${baseProposal.version}
+            }
+        </script>
+    </c:if>
+    <c:if test="${not empty baseContest}">
+        <script>
+            var baseContest = {
+                contestPK: ${baseContest.contestPK}
+            }
+        </script>
+    </c:if>
+
+    <c:choose>
+    <c:when test="${mustFilterContent}">
+        <script>
+            function getMustFilterContent() {
+                return true;
+            }
+        </script>
+    </c:when>
+    <c:otherwise>
+        <script>
+            function getMustFilterContent() {
+                return false;
+            }
+        </script>
+    </c:otherwise>
+    </c:choose>
+
+    <xcolab:loadCkEditor />
+</xcolab:layout>
 </jsp:root>

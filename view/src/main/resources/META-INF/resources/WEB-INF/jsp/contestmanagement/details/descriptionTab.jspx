@@ -176,7 +176,7 @@
                 <div class="clearfix"><!-- --></div>
                 <div class="addpropInputContainer">
                     <form:textarea path="contestDescription" id="contestDescription"
-                                   cssClass="ckeditor_placeholder contestDescription"/>
+                                   cssClass="rte-editorPlaceholder contestDescription"/>
 
                     <div class="reg_errors"><!--  -->
                         <form:errors cssClass="c-Alert c-Alert__error" path="contestDescription"/>

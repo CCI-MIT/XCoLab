@@ -1,15 +1,13 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           version="2.0">
-    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-    <xcolab:layout>
-        <div id="content">
-            <div class="c-Alert__error__message">
-                <h3>Daily Message Limit Exceeded</h3>
-                <p>
-                    You have exceeded your daily message limit, please wait up to 24 hours before sending more messages.
-                </p>
-            </div>
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
+        <div class="c-Alert__error__message">
+            <h3>Daily Message Limit Exceeded</h3>
+            <p>
+                You have exceeded your daily message limit, please wait up to 24 hours before sending more messages.
+            </p>
         </div>
-    </xcolab:layout>
+</xcolab:layout>
 </jsp:root>

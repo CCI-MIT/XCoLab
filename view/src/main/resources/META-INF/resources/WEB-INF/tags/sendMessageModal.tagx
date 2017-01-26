@@ -51,7 +51,7 @@
                         </div>
                         <div class="form-group">
                             <label for="messageContent">Content: </label>
-                            <textarea name="messageContent" id="messageContent" class="rte form-control" >
+                            <textarea name="messageContent" id="messageContent" class="rte-editorPlaceholder form-control" >
                                 <!-- -->
                                 <c:choose>
                                     <c:when test="${not empty replyToMessage}">

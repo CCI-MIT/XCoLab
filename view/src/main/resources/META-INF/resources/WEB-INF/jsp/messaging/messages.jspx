@@ -4,135 +4,132 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:form="http://www.springframework.org/tags/form"
            version="2.0">
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
+    <collab:content articleId="${communityTopContentArticleId}" />
+    <!--@elvariable id="messagingBean" type="org.xcolab.portlets.messaging.beans.MessagingBean"-->
 
-    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-    <xcolab:layout>
-        <collab:content articleId="${communityTopContentArticleId}" />
-        <div id="content">
-        <!--@elvariable id="messagingBean" type="org.xcolab.portlets.messaging.beans.MessagingBean"-->
+    <div id="bread" class="pro">
+        <a href="/web/guest/community">Community</a>
+        <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
+        <a href="/web/guest/members">Members</a>
+        <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
+        <collab:userLinkSimple userId="${messagingBean.user.userId}" text="${messagingBean.user.screenName}" />
+        <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
+        <a href="/messaging">Messages</a>
+    </div>
 
-            <div id="bread" class="pro">
-                <a href="/web/guest/community">Community</a>
-                <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-                <a href="/web/guest/members">Members</a>
-                <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-                <collab:userLinkSimple userId="${messagingBean.user.userId}" text="${messagingBean.user.screenName}" />
-                <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-                <a href="/messaging">Messages</a>
-            </div>
-
-            <c:set var="archiveMessagesUrl" value="/messaging/archiveMessages"/>
+    <c:set var="archiveMessagesUrl" value="/messaging/archiveMessages"/>
 
 
-            <div class="messagingContainer">
-                <!--TODO view layer transition: note that this is already moved to /js/lib/jquery.validate.pack.j-->
-                <xcolab:script src="${_libJsFolder}/jquery.validate.pack.js"/>
-                <div class="main_long">
-                    <div class="left_col">
-                        <div id="message-info">
-                            <span class="num">${messagingBean.messagesCount}</span> messages
-                            <div style="float: right;">
-                                <c:choose>
-                                    <c:when test="${messagingBean.numberOfMessagesLeft >= 1}">
-                                        <a href="#" data-toggle="modal" data-target="#sendMessageModal">
-                                            <img src="${_themeImageFolder}/icon_new-message.png" width="31" height="29" /> compose message
-                                        </a>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a style="color: grey;">
-                                            <img src="${_themeImageFolder}/icon_new-message.png" width="31" height="29" /> message limit exceeded
-                                        </a>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
-                        </div>
+    <div class="messagingContainer">
+        <!--TODO view layer transition: note that this is already moved to /js/lib/jquery.validate.pack.j-->
+        <xcolab:script src="${_libJsFolder}/jquery.validate.pack.js"/>
+        <div class="main_long">
+            <div class="left_col">
+                <div id="message-info">
+                    <span class="num">${messagingBean.messagesCount}</span> messages
+                    <div style="float: right;">
+                        <c:choose>
+                            <c:when test="${messagingBean.numberOfMessagesLeft >= 1}">
+                                <a href="#" data-toggle="modal" data-target="#sendMessageModal">
+                                    <img src="${_themeImageFolder}/icon_new-message.png" width="31" height="29" /> compose message
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <a style="color: grey;">
+                                    <img src="${_themeImageFolder}/icon_new-message.png" width="31" height="29" /> message limit exceeded
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
 
-                        <form:form action="${archiveMessagesUrl}" id="archiveMessagesForm" method="post"
-                                   modelAttribute="messagingBean">
-                            <table class="c-Table">
-                                <thead>
-                                    <tr class="c-Table__row--title">
-                                        <th class="c-Table__cell--title"></th>
-                                        <th class="c-Table__cell--title">Subject</th>
-                                        <th class="c-Table__cell--title">${messagingBean.type != 'SENT' ? 'From' : 'To'}</th>
-                                        <th class="c-Table__cell--title">Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach var="message" items="${messagingBean.dataPage.messages}" varStatus="x">
-                                        <!--@elvariable id="message" type="org.xcolab.portlets.messaging.beans.MessageBean"-->
-                                        <tr class="c-Table__row">
-                                            <td class="c-Table__cell">
-                                                <c:if test="${messagingBean.type == 'INBOX'}">
-                                                    <form:checkbox path="dataPage.messages[${x.index}].selected" />
-                                                    <form:hidden path="dataPage.messages[${x.index}].messageId" />
+                <form:form action="${archiveMessagesUrl}" id="archiveMessagesForm" method="post"
+                           modelAttribute="messagingBean">
+                    <table class="c-Table">
+                        <thead>
+                            <tr class="c-Table__row--title">
+                                <th class="c-Table__cell--title"></th>
+                                <th class="c-Table__cell--title">Subject</th>
+                                <th class="c-Table__cell--title">${messagingBean.type != 'SENT' ? 'From' : 'To'}</th>
+                                <th class="c-Table__cell--title">Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="message" items="${messagingBean.dataPage.messages}" varStatus="x">
+                                <!--@elvariable id="message" type="org.xcolab.portlets.messaging.beans.MessageBean"-->
+                                <tr class="c-Table__row">
+                                    <td class="c-Table__cell">
+                                        <c:if test="${messagingBean.type == 'INBOX'}">
+                                            <form:checkbox path="dataPage.messages[${x.index}].selected" />
+                                            <form:hidden path="dataPage.messages[${x.index}].messageId" />
+                                        </c:if>
+                                    </td>
+                                    <td class="c-Table__cell ${messagingBean.type != 'SENT' and !message.isOpened ? 'highlight' : ''}">
+                                        <a href="${message.linkUrl}">${message.subject}</a>
+                                    </td>
+                                    <td class="c-Table__cell">
+                                        <c:choose>
+                                            <c:when test="${messagingBean.type == 'SENT'}">
+                                                <collab:userLinkSimple userId="${message.to.get(0).id_}" text="${message.to.get(0).screenName}" />
+                                                <c:if test="${message.to.size() > 1}">
+                                                    + ${message.to.size() - 1}
                                                 </c:if>
-                                            </td>
-                                            <td class="c-Table__cell ${messagingBean.type != 'SENT' and !message.isOpened ? 'highlight' : ''}">
-                                                <a href="${message.linkUrl}">${message.subject}</a>
-                                            </td>
-                                            <td class="c-Table__cell">
-                                                <c:choose>
-                                                    <c:when test="${messagingBean.type == 'SENT'}">
-                                                        <collab:userLinkSimple userId="${message.to.get(0).id_}" text="${message.to.get(0).screenName}" />
-                                                        <c:if test="${message.to.size() > 1}">
-                                                            + ${message.to.size() - 1}
-                                                        </c:if>
-                                                    </c:when>
-                                                    <c:when test="${messagingBean.type != 'SENT'}">
-                                                        <collab:userLinkSimple userId="${message.from.userId}" text="${message.from.screenName}" />
-                                                    </c:when>
-                                                </c:choose>
+                                            </c:when>
+                                            <c:when test="${messagingBean.type != 'SENT'}">
+                                                <collab:userLinkSimple userId="${message.from.userId}" text="${message.from.screenName}" />
+                                            </c:when>
+                                        </c:choose>
 
-                                            </td>
-                                            <td class="c-Table__cell">${message.createDateFormatted}</td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
+                                    </td>
+                                    <td class="c-Table__cell">${message.createDateFormatted}</td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
 
-                            <c:if test="${messagingBean.numberOfPages > 1}">
-                                <div class="pagination">
-                                    <c:forEach var="pageLink" items="${messagingBean.pageLinks}">
-                                        <a class="${pageLink.isCurrent(messagingBean) ? 'c' : ''}" href="${pageLink.linkUrl}">${pageLink.linkText}</a>
-                                    </c:forEach>
-                                </div>
-                            </c:if>
-                        </form:form>
-                    </div>
-                </div>
-
-                <div class="right_col">
-                    <div class="comm_list">
-                        <h3>Mailboxes</h3>
-                        <ul>
-                            <li class="${messagingBean.type == 'INBOX' ? 'c' : ''}">
-                                <a href="/messaging">Inbox</a>
-                            </li>
-                            <li class="${messagingBean.type == 'SENT' ? 'c' : ''}">
-                                <a href="/messaging/mailbox/SENT">Sent</a>
-                            </li>
-                            <li class="${messagingBean.type == 'ARCHIVED' ? 'c' : ''}">
-                                <a href="/messaging/mailbox/ARCHIVED">Archived</a>
-                            </li>
-                        </ul>
-
-                        <c:if test="${messagingBean.messagesCount > 0}">
-                            <c:if test="${messagingBean.type == 'INBOX'}">
-                                <br />
-                                <h3>Actions</h3>
-                                <p>
-                                    <a class="c-Button__primary" href="javascript:;" onclick="jQuery('#archiveMessagesForm').submit()">
-                                        Archive
-                                    </a>
-                                </p>
-                            </c:if>
-                        </c:if>
-                    </div>
-                </div>
+                    <c:if test="${messagingBean.numberOfPages > 1}">
+                        <div class="pagination">
+                            <c:forEach var="pageLink" items="${messagingBean.pageLinks}">
+                                <a class="${pageLink.isCurrent(messagingBean) ? 'c' : ''}" href="${pageLink.linkUrl}">${pageLink.linkText}</a>
+                            </c:forEach>
+                        </div>
+                    </c:if>
+                </form:form>
             </div>
         </div>
 
-        <xcolab:sendMessageModal />
-    </xcolab:layout>
+        <div class="right_col">
+            <div class="comm_list">
+                <h3>Mailboxes</h3>
+                <ul>
+                    <li class="${messagingBean.type == 'INBOX' ? 'c' : ''}">
+                        <a href="/messaging">Inbox</a>
+                    </li>
+                    <li class="${messagingBean.type == 'SENT' ? 'c' : ''}">
+                        <a href="/messaging/mailbox/SENT">Sent</a>
+                    </li>
+                    <li class="${messagingBean.type == 'ARCHIVED' ? 'c' : ''}">
+                        <a href="/messaging/mailbox/ARCHIVED">Archived</a>
+                    </li>
+                </ul>
+
+                <c:if test="${messagingBean.messagesCount > 0}">
+                    <c:if test="${messagingBean.type == 'INBOX'}">
+                        <br />
+                        <h3>Actions</h3>
+                        <p>
+                            <a class="c-Button__primary" href="javascript:;" onclick="jQuery('#archiveMessagesForm').submit()">
+                                Archive
+                            </a>
+                        </p>
+                    </c:if>
+                </c:if>
+            </div>
+        </div>
+    </div>
+
+    <xcolab:sendMessageModal />
+</xcolab:layout>
 </jsp:root>

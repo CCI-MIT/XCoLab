@@ -204,7 +204,7 @@
 							<div class="clearfix"><!--  --></div>
 							<strong>Help text:</strong><br/>
 							<div class="addpropInputContainer">
-								<form:textarea path="sections[${x.index}].helpText"  data-form-name="helpText"  />   <!-- cssClass="ckeditor_placeholder" -->
+								<form:textarea path="sections[${x.index}].helpText"  data-form-name="helpText"  />   <!-- cssClass="rte-editorPlaceholder" -->
 								<div class="reg_errors">
 									<form:errors cssClass="c-Alert c-Alert__error" path="sections[${x.index}].helpText" />
 								</div>
@@ -212,7 +212,7 @@
 							<div class="clearfix"><!--  --></div>
 							<strong>Default text:</strong><br/>
 							<div class="addpropInputContainer">
-								<form:textarea path="sections[${x.index}].defaultText"  data-form-name="defaultText"  />   <!-- cssClass="ckeditor_placeholder" -->
+								<form:textarea path="sections[${x.index}].defaultText"  data-form-name="defaultText"  />   <!-- cssClass="rte-editorPlaceholder" -->
 								<div class="reg_errors">
 									<form:errors cssClass="c-Alert c-Alert__error" path="sections[${x.index}].defaultText" />
 								</div>

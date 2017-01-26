@@ -23,7 +23,7 @@ function editComment(messageId, url){
     var $message = $('#message_' + messageId);
     $message.empty();
     var formContent = '<form method="post" action="' + url + '">';
-    formContent += '<textarea class="rte" id="text_' + messageId + '" name="comment" style="width: 100%; height: 150px;"></textarea>';
+    formContent += '<textarea class="rte-editorPlaceholder" id="text_' + messageId + '" name="comment" style="width: 100%; height: 150px;"></textarea>';
     formContent += '<input name="messageId" type="hidden" value="' + messageId + '"/>';
     formContent += '<a class="c-Button__primary" style="margin-left: 320px; margin-top: 10px;" onclick="disableDirtyCheck(); $(this).parents(\'form:first\').submit();" type="submit" href="javascript:;">Save</a>';
     formContent += '</form>';

@@ -5,7 +5,7 @@
 
     <!-- Avoid loading the editor more than once -->
     <c:if test="${empty _ckEditorLoaded}">
-        <c:set var="_ckEditorLoaded" value="true" />
+        <c:set var="_ckEditorLoaded" value="true" scope="request" />
 
         <script type="text/javascript">
             var CKEDITOR_BASEPATH = '/js/lib/ckeditor/';
@@ -13,88 +13,138 @@
 
         <xcolab:script src="/js/lib/ckeditor/ckeditor.js" />
 
-        <!-- TODO: a lot of this is currently duplicated on other pages (this snippet it from contest-manager.js) -->
+        <!-- TODO: a lot of this is currently duplicated on other pages (this snippet is from contest-manager.js) -->
         <!-- TODO: split CKEditor initialization (on demand) and dirty check (always)-->
-        <!--<script type="text/javascript">-->
-        <!--<![CDATA[-->
-        <!--jQuery(function() {-->
-            <!--jQuery("input[type='text'], textarea").each(function() {-->
-                <!--if (jQuery(this).hasClass('rteInitialized') || jQuery(this).parent().parent().attr('class') == "login_popup_box") {-->
-                    <!--return;-->
-                <!--}-->
+        <script type="text/javascript">
+        <![CDATA[
 
-                <!--var tmp = this;-->
-                <!--var thiz = jQuery(this);-->
+        function markEditorDirty(editor) {
+            editor.addClass('editorDirty');
+        }
 
-                <!--var limitCharactersMax = thiz.parent().find(".limit_charactersMax");-->
-                <!--var limitCharacterCount = thiz.parent().find(".limit_characterCount");-->
+        function countCharacters(input, editor) {
+            if (editor) {
+                if (editor == null || editor.document == null) return 0;
+                if (editor.document['$'].body.textContent) {
+                    return jQuery.trim(editor.document['$'].body.textContent).length;
 
-                <!--if (limitCharactersMax.length > 0) {-->
-                    <!--thiz.attr({maxCharacters: limitCharactersMax.text(), validateLength: true});-->
-                    <!--this.limitCharacterCounter = limitCharacterCount;-->
-                    <!--updateCharacterCounter(thiz);-->
-                <!--} else {-->
-                    <!--thiz.attr({validateLength: false});-->
-                <!--}-->
+                }
+                if (editor.document['$'].body.innerText) {
+                    return jQuery.trim(editor.document['$'].body.innerText).length;
+                }
+            }
+            return jQuery.trim(input.val().replace(/&lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
+        }
 
-                <!--if (thiz.hasClass("rte")) {-->
+        function updateCharacterCounter(input, editor) {
 
-                    <!--var editor = CKEDITOR.replace(thiz.attr("id"));-->
+            var max = input.attr('data-characterLimit');
+            if (input && input.limitCharacterCounter) {
+                var count = countCharacters(input, editor);
+                if (count > 1 * max) {
+                    input.limitCharacterCounter.parent().addClass('overflow');
+                    input.addClass('invalid');
+                }
+                else {
+                    input.limitCharacterCounter.parent().removeClass('overflow');
+                    input.removeClass('invalid');
+                }
+                input.limitCharacterCounter.text(count);
 
-                    <!--thiz.get(0)["ckeditor"] = editor;-->
-                    <!--editor.updatedCharCount = false;-->
+                // needed for copy from base proposal - hides button when there is content
+                var parent = input.parents('.addpropbox');
+                if (count > 0) {
+                    parent.removeClass('empty').addClass('notempty');
+                }
+                else {
+                    parent.removeClass('notempty').addClass('empty');
+                }
+            }
+        }
 
-                    <!--function updateEditorCharCount() {-->
-                        <!--try{-->
-                            <!--if (editor == null) return;-->
+        function initializeTextEditors() {
+            jQuery("input[type='text'], textarea").each(function() {
+                var element = this;
+                var $element = jQuery(this);
 
-                            <!--if (editor &&  editor.document && editor.document['$'] && (editor.checkDirty() || editor.updatedCharCount)) {-->
-                                <!--markEditorDirty(thiz);-->
-                                <!--updateCharacterCounter(thiz, editor);-->
-                                <!--editor.updatedCharCount = true;-->
-                                <!--editor.resetDirty();-->
-                            <!--}-->
+                if ($element.hasClass('rte-editorInitialized')) {
+                    return;
+                }
 
-                            <!--setTimeout(updateEditorCharCount, 1000);-->
-                        <!--} catch (e) {-->
-                            <!--if (typeof(console) != 'undefined' && typeof(console.log) != 'undefined') {-->
-                                <!--console.log(e);-->
-                            <!--}-->
-                        <!--}-->
-                    <!--}-->
-                    <!--// if (! jQuery.browser.ie || jQuery.browser.version.number >= 9) {-->
-                    <!--updateEditorCharCount();-->
-                    <!--// }-->
+                var limitCharactersMax = $element.parent().find(".limit_charactersMax");
+                var limitCharacterCount = $element.parent().find(".limit_characterCount");
 
-                    <!--editor.on("blur", function() {-->
-                        <!--updateCharacterCounter(thiz, editor);-->
-                    <!--});-->
+                var countCharacters = limitCharactersMax.length > 0;
+                if (countCharacters) {
+                    $element.attr({'data-characterLimit': limitCharactersMax.text(), 'data-validateLength': true});
+                    $element.limitCharacterCounter = limitCharacterCount;
+                    updateCharacterCounter($element);
+                } else {
+                    $element.attr({'data-validateLength': false});
+                }
 
-                    <!--// initiate char counters-->
-                    <!--setTimeout(function() { updateCharacterCounter(thiz, editor); }, 2000);-->
-                <!--}-->
-                <!--else {-->
-                    <!--eventsToBind = {-->
-                        <!--keypress: function(event) {-->
-                            <!--if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {-->
-                                <!--updateCharacterCounter(thiz);-->
-                            <!--}-->
-                        <!--},-->
-                        <!--keyup: function(event) {-->
-                            <!--if (thiz.attr('validateLength') && tmp.limitCharacterCounter) {-->
-                                <!--updateCharacterCounter(thiz);-->
-                            <!--}-->
-                        <!--},-->
-                        <!--change: function(event) {-->
-                            <!--markEditorDirty(thiz);-->
-                        <!--}-->
-                    <!--};-->
-                    <!--thiz.bind(eventsToBind);-->
-                <!--}-->
-                <!--jQuery(this).addClass('rteInitialized');-->
-            <!--});-->
-        <!--});-->
-        <!--]]>-->
-        <!--</script>-->
+                if ($element.hasClass("rte-editorPlaceholder")) {
+
+                    var editor = CKEDITOR.replace($element.attr("id"));
+
+                    $element.get(0)["ckeditor"] = editor;
+                    editor.updatedCharCount = false;
+
+                    function updateEditorCharCount() {
+                        try {
+                            if (editor == null) return;
+
+                            if (editor && editor.document && editor.document['$'] && (editor.checkDirty() || editor.updatedCharCount)) {
+                                markEditorDirty($element);
+                                updateCharacterCounter($element, editor);
+                                editor.updatedCharCount = true;
+                                editor.resetDirty();
+                            }
+
+                            setTimeout(updateEditorCharCount, 1000);
+                        } catch (e) {
+                            if (typeof(console) != 'undefined' && typeof(console.log) != 'undefined') {
+                                console.log(e);
+                            }
+                        }
+                    }
+                    // if (! jQuery.browser.ie || jQuery.browser.version.number >= 9) {
+                    updateEditorCharCount();
+                    // }
+
+                    editor.on("blur", function() {
+                        updateCharacterCounter($element, editor);
+                    });
+
+                    // initiate char counters
+                    setTimeout(function() { updateCharacterCounter($element, editor); }, 2000);
+                } else {
+                    eventsToBind = {
+                        keypress: function(event) {
+                            if ($element.attr('data-validateLength') && $element.limitCharacterCounter) {
+                                updateCharacterCounter($element);
+                            }
+                        },
+                        keyup: function(event) {
+                            console.log("keypup");
+                            if ($element.attr('data-validateLength') && $element.limitCharacterCounter) {
+                                updateCharacterCounter($element);
+                            }
+                        },
+                        change: function(event) {
+                            markEditorDirty($element);
+                        }
+                    };
+                    $element.bind(eventsToBind);
+                }
+                jQuery(this).addClass('rte-editorInitialized');
+            });
+        }
+
+        jQuery(function() {
+            initializeTextEditors();
+        });
+        ]]>
+        </script>
     </c:if>
 </jsp:root>

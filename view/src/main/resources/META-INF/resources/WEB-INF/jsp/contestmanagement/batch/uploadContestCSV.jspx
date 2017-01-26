@@ -19,7 +19,6 @@
         var validateOntologyTermsURL = '${validateOntologyTermsURL}';
         $('#contestImageInput').css
     </script>
-    <script type="text/javascript" src="/html/js/editor/ckeditor_old/ckeditor.js"><!-- --></script>
     <div class="cmsDetailsBox">
         <collab:imageUpload uploadImageDivId="contestImage"/>
 
@@ -50,7 +49,7 @@
                 <div class="clearfix"><!-- --></div>
                 <div class="addpropInputContainer" style="height: 248px;">
                     <form:textarea path="contestDescription" id="contestDescription"
-                                   cssClass="ckeditor_placeholder contestDescription"/>
+                                   cssClass="rte-editorPlaceholder contestDescription"/>
 
                     <div class="reg_errors"><!--  -->
                         <form:errors cssClass="alert alert-error" path="contestDescription"/>
@@ -402,12 +401,13 @@
                     <thead>
                         <tr><th>Contest short name</th><th>Contest question </th><th>Ontology terms</th></tr>
                     </thead>
-                    <tbody id="cvsContests" ></tbody>
+                    <tbody id="cvsContests" ><!-- --></tbody>
                 </table>
             </div>
             <div class="outerVerticalCenter"><a  class="c-Button__primary  innerVerticalCenter" href="#" id="createAllContestsAbove">Create all contests above</a></div>
         </form:form>
     </div>
+    <xcolab:loadCkEditor />
     <xcolab:script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js" />
 </xcolab:layout>
 </jsp:root>

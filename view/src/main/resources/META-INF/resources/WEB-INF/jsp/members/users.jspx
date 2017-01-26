@@ -3,13 +3,11 @@
 	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
 	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
 	version="2.0">
-	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-	<xcolab:layout>
-		<collab:content articleId="${communityTopContentArticleId}" />
-		<div id="content">
-			<jsp:directive.include file="./usersIndex/header.jspx" />
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
+	<collab:content articleId="${communityTopContentArticleId}" />
+	<jsp:directive.include file="./usersIndex/header.jspx" />
 
-			<jsp:directive.include file="./usersIndex/list.jspx" />
-		</div>
-	</xcolab:layout>
+	<jsp:directive.include file="./usersIndex/list.jspx" />
+</xcolab:layout>
 </jsp:root>

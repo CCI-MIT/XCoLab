@@ -80,7 +80,7 @@
 							<strong>Content:</strong>
 						</c:if>
 						<div class="addpropInputContainer">
-							<form:textarea path="sections[${x.index}].content" cssClass="${fn:length(contestResourcesBean.sections)-1 eq x.index ? '': 'ckeditor_placeholder'}" data-form-name="content" />
+							<form:textarea path="sections[${x.index}].content" cssClass="${fn:length(contestResourcesBean.sections)-1 eq x.index ? '': 'rte-editorPlaceholder'}" data-form-name="content" />
 							<div class="reg_errors">
 								<form:errors cssClass="c-Alert c-Alert__error" path="sections[${x.index}].content" />
 							</div>
@@ -156,8 +156,8 @@
 
 			[].forEach.call(newSectionElement.getElementsByTagName('textarea'), function(element) {
 				sectionElementNames.push(element.getAttribute("data-form-name"));
-				element.classList.remove("rteInitialized");
-				element.classList.add("ckeditor_placeholder");
+				element.classList.remove("rte-editorInitialized");
+				element.classList.add("rte-editorPlaceholder");
 			});
 
 			[].forEach.call(newSectionElement.getElementsByTagName('select'), function(element) {
