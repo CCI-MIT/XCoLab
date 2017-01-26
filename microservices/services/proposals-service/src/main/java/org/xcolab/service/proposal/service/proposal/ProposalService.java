@@ -263,7 +263,7 @@ public class ProposalService {
             long contestPhaseId = p2p.getContestPhaseId();
             if (p2p.getVersionTo() == -1) {
                 return contestPhaseId;
-            } else if (p2p.getVersionTo() > newestVersion) {
+            } else if (p2p.getVersionTo() >= newestVersion) {
                 newestVersion = p2p.getVersionTo();
                 newestVersionContestPhaseId = contestPhaseId;
             }
