@@ -98,7 +98,7 @@
             <div class="c-Box messaging">
                 <div class="message-share-button">
                     <a href="javascript:;" onclick="if (! deferUntilLogin()) { return false; } else { jQuery('#sendMessageModal').modal(); }">
-                        <img src="${_themeImageFolder}/icon_new-message.png" width="31" height="29" /> Share via ${colabShortName} messaging
+                        <img src="${_themeImageFolder}/icon_new-message.png" width="31" height="29" /> Share via ${_colabShortName} messaging
                     </a>
                 </div>
                 <c:if test="${proposalsPermissions.canReportProposal}">

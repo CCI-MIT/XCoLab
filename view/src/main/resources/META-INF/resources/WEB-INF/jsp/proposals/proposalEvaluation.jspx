@@ -39,7 +39,7 @@
 
             <c:choose>
                 <c:when test="${showEvaluation}">
-                    <p>Please find below the ${colabName} judging results for your ${contestType.proposalName}.</p>
+                    <p>Please find below the ${_colabName} judging results for your ${contestType.proposalName}.</p>
                     <c:forEach var="ratingWrapper" items="${averageRatingsPerPhase}">
                         <h2>${ratingWrapper.contestPhase}</h2>
 

@@ -261,7 +261,7 @@
 	<c:if test="${newsletterActive}">
 		<div class="right_col v1">
 			<div class="comm_rightcol">
-				<div class="comm_rightcol-title2">${colabShortName} Newsletter Settings</div>
+				<div class="comm_rightcol-title2">${_colabShortName} Newsletter Settings</div>
 				<table border="0" cellpadding="0" cellspacing="0" class="colab">
 					<form:form commandName="newsletterBean">
 						<tr class="colabRow">
@@ -271,7 +271,7 @@
 								<form:label path="emailSubscribedToNewsletter"/>
 							</td>
 							<td>
-								Send me the ${colabShortName} newsletter.
+								Send me the ${_colabShortName} newsletter.
 							</td>
 						</tr>
 					</form:form>
@@ -332,12 +332,12 @@
 			<table border="0" cellpadding="0" cellspacing="0" class="colab">
 				<tr class="colabRow">
 					<td class="actionColumn">
-						<form action="${deleteProfileUrl}" method="post" onsubmit="confirm('Are you sure you want to delete your ${colabName} account?')">
+						<form action="${deleteProfileUrl}" method="post" onsubmit="confirm('Are you sure you want to delete your ${_colabName} account?')">
 							<button type="submit" class="c-Button__secondary small">DELETE</button>
 						</form>
 					</td>
                     <td>
-                        Delete your ${colabName} account.
+                        Delete your ${_colabName} account.
                     </td>
 				</tr>
 			</table>

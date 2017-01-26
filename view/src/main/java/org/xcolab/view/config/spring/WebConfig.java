@@ -42,8 +42,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(themeVariableInterceptor);
-        registry.addInterceptor(populateContextInterceptor);
-        registry.addInterceptor(validateTabPermissionsInterceptor);
+
+        registry.addInterceptor(populateContextInterceptor).addPathPatterns("/contests/**");
+        registry.addInterceptor(validateTabPermissionsInterceptor).addPathPatterns("/contests/**");
     }
 
     @Bean

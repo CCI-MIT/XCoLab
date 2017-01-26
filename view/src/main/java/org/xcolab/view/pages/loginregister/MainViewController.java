@@ -32,7 +32,6 @@ import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.entity.utils.HttpUtils;
 import org.xcolab.entity.utils.LinkUtils;
-import org.xcolab.entity.utils.ModelAttributeUtil;
 import org.xcolab.entity.utils.ReCaptchaUtils;
 import org.xcolab.entity.utils.portlet.RequestParamUtil;
 import org.xcolab.entity.utils.portlet.session.SessionErrors;
@@ -112,7 +111,6 @@ public class MainViewController {
             } catch (UserLocationNotResolvableException ignored) {
             }
         }
-        ModelAttributeUtil.populateModelWithPlatformConstants(model);
         model.addAttribute("generateScreenName", ConfigurationAttributeKey.GENERATE_SCREEN_NAME.get());
         boolean isSharedColab = ConfigurationAttributeKey.IS_SHARED_COLAB.get();
         if (isSharedColab) {

@@ -17,11 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.RenderMapping;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
@@ -31,18 +28,15 @@ import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
-import org.xcolab.entity.utils.ModelAttributeUtil;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.entity.utils.flash.ErrorMessage;
 import org.xcolab.util.CountryUtil;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.profile.beans.MessageBean;
 import org.xcolab.view.pages.profile.beans.NewsletterBean;
 import org.xcolab.view.pages.profile.beans.UserBean;
-import org.xcolab.view.pages.profile.utils.UserProfileAuthorizationException;
 import org.xcolab.view.pages.profile.utils.UserProfilePermissions;
 import org.xcolab.view.pages.profile.wrappers.UserProfileWrapper;
 
@@ -90,7 +84,6 @@ public class UserProfileController {
             model.addAttribute("permissions", permissions);
             model.addAttribute("_activePageLink", "community");
             populateUserWrapper(new UserProfileWrapper(memberId, request), model);
-            ModelAttributeUtil.populateModelWithPlatformConstants(model);
             model.addAttribute("pointsActive",
                     ConfigurationAttributeKey.IS_POINTS_ACTIVE.get());
             return SHOW_PROFILE_VIEW;
@@ -125,7 +118,6 @@ public class UserProfileController {
             model.addAttribute("newsletterActive",
                     ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE.get());
             model.addAttribute("memberCategories", MembersClient.listMemberCategories());
-            ModelAttributeUtil.populateModelWithPlatformConstants(model);
             return EDIT_PROFILE_VIEW;
         } catch (MemberNotFoundException e) {
             return ErrorText.NOT_FOUND.flashAndReturnView(request);
@@ -146,14 +138,11 @@ public class UserProfileController {
         if (passwordError) {
             model.addAttribute("passwordError", true);
         }
-        model.addAttribute("colabName", ConfigurationAttributeKey.COLAB_NAME.get());
-        model.addAttribute("colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
         try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request);
             if (permissions.getCanEditMemberProfile(memberId)) {
                 model.addAttribute("newsletterBean",
                         new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
-                ModelAttributeUtil.populateModelWithPlatformConstants(model);
                 return EDIT_PROFILE_VIEW;
             }
         } catch (MemberNotFoundException e) {

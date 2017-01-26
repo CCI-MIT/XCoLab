@@ -25,10 +25,10 @@
             </h1>
             <div id="help-text">
                 <p>
-                    In 2014, the ${colabName} launched its first ${contestType.contestName} seeking <a href="/web/guest/resources/-/wiki/Main/Integrated+proposals">integrated proposals</a> which allow members to combine proposals from other ${contestType.contestNamePlural} into a larger whole. Other ${colabName} proposals used in these integrated proposals are called sub-proposals.
+                    In 2014, the ${_colabName} launched its first ${contestType.contestName} seeking <a href="/web/guest/resources/-/wiki/Main/Integrated+proposals">integrated proposals</a> which allow members to combine proposals from other ${contestType.contestNamePlural} into a larger whole. Other ${_colabName} proposals used in these integrated proposals are called sub-proposals.
                 </p>
                 <p style="margin-bottom:0">
-                    Good integrated ${contestType.proposalNamePlural} include ideas from the people who contributed to the sub-${contestType.proposalNamePlural}, not just those who created the integrated ${contestType.proposalName} itself. To recognize all these contributions, a winning integrated ${contestType.proposalName} receives CoLab Points that are distributed among all these people. Each ${contestType.proposalName} will show how points are divided among the project team and other contributors, and each community member’s profile will show points he or she has received For more information, see <a href="/resources/-/wiki/Main/Climate+CoLab+Points">${colabName} Points</a>.
+                    Good integrated ${contestType.proposalNamePlural} include ideas from the people who contributed to the sub-${contestType.proposalNamePlural}, not just those who created the integrated ${contestType.proposalName} itself. To recognize all these contributions, a winning integrated ${contestType.proposalName} receives CoLab Points that are distributed among all these people. Each ${contestType.proposalName} will show how points are divided among the project team and other contributors, and each community member’s profile will show points he or she has received For more information, see <a href="/resources/-/wiki/Main/Climate+CoLab+Points">${_colabName} Points</a>.
                 </p>
             </div>
             <c:set var="savePointsAssignmentsURL" value="${proposalUrl}/savePointAssignments"/>

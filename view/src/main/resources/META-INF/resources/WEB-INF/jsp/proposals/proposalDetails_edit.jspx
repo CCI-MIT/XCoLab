@@ -217,7 +217,7 @@
     <div id="c-Popup__accept__TOS" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none;">
         <div class="c-Popup__wrapper p1" id="c-Popup__accept__TOS">
             <div class="c-Popup">
-                <h4>By saving your ${fn:toLowerCase(contestType.proposalName)} you are entering the ${colabName} ${contestType.contestName} and agree to the&#160;
+                <h4>By saving your ${fn:toLowerCase(contestType.proposalName)} you are entering the ${_colabName} ${contestType.contestName} and agree to the&#160;
                     <a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of Use</a>
                     &#160;and <a href="${contestType.rulesPageUrl}">${contestType.rulesPageName}</a>.</h4>
 
