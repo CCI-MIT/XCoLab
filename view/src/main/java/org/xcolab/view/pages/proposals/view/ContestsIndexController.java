@@ -17,7 +17,6 @@ import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
 import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
-
 import org.xcolab.view.pages.proposals.utils.ContestsColumn;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.wrappers.CollectionCardFilterBean;
@@ -27,7 +26,6 @@ import org.xcolab.view.pages.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.view.util.pagination.SortFilterPage;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -137,12 +135,9 @@ public class ContestsIndexController extends BaseProposalsController {
                 for (ContestCollectionCard card: ContestClientUtil.getSubContestCollectionCards(currentCollectionCardId)) {
                     collectionCards.add(new CollectionCardWrapper(card, viewType));
                 }
-                Collections.sort(collectionCards, new Comparator<CollectionCardWrapper>() {
-                    @Override
-                    public int compare(CollectionCardWrapper o1, CollectionCardWrapper o2) {
-                        return o1.getOrder()< o2.getOrder() ? -1 : o1.getOrder() == o2.getOrder() ? 0 : 1;
-                    }
-                });
+                collectionCards.sort((o1, o2) ->
+                        o1.getOrder() < o2.getOrder() ? -1
+                                : o1.getOrder() == o2.getOrder() ? 0 : 1);
                 long tempId = currentCollectionCardId;
                 while(ContestClientUtil.getContestCollectionCard(tempId).getParent() != null) {
                     collectionHierarchy.addFirst(new CollectionCardWrapper(ContestClientUtil.getContestCollectionCard(tempId), viewType));
@@ -277,15 +272,7 @@ public class ContestsIndexController extends BaseProposalsController {
                 }
             }
         	List<OntologySpace> sortedSpaces = new ArrayList<>(ontologySpaces.values());
-        	Collections.sort(sortedSpaces, new Comparator<OntologySpace>() {
-
-				@Override
-				public int compare(OntologySpace o1,
-						OntologySpace o2) {
-					return o1.getOrder() - o2.getOrder();
-				}
-        		
-        	});
+        	sortedSpaces.sort(Comparator.comparingInt(OntologySpace::getOrder));
         	model.addAttribute("focusAreas", focusAreas.values());
         	model.addAttribute("ontologyTerms", ontologyTerms.values());
         	model.addAttribute("ontologySpaces", sortedSpaces);
@@ -311,5 +298,4 @@ public class ContestsIndexController extends BaseProposalsController {
         setBasePageAttributes(request, model);
         return "/proposals/contestsIndex";
     }
-
 }

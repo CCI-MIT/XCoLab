@@ -5,8 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -31,7 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-//-- @RequestMapping("view")
 public class CreateProposalController extends BaseProposalsController {
     
     private final ProposalsContext proposalsContext;
@@ -40,7 +37,7 @@ public class CreateProposalController extends BaseProposalsController {
     public CreateProposalController(ProposalsContext proposalsContext) {
         this.proposalsContext = proposalsContext;
     }
-             // /contests/2016/public-attitudes-and-behaviors-workspace/createProposal/basedOn/1327806/749/1303903
+
     @GetMapping("/contests/{contestYear}/{contestUrlName}/createProposal/basedOn/{baseProposalId}/{baseProposalVersion}/{baseContestId}")
     public String createProposalsBasedOn(HttpServletRequest request, HttpServletResponse response,
             @PathVariable String contestUrlName, @PathVariable(required = false) Long baseProposalId,
@@ -54,7 +51,7 @@ public class CreateProposalController extends BaseProposalsController {
                 (baseProposalVersion!=null)?(baseProposalVersion): (-1),
                 baseContestId, model);
     }
-    //-- @RequestMapping(params = "pageToDisplay=createProposal")
+
     @GetMapping("/contests/{contestYear}/{contestUrlName}/createProposal")
     public String createProposals(HttpServletRequest request, HttpServletResponse response,
             @PathVariable String contestUrlName, @PathVariable(required = false) Long baseProposalId,
@@ -70,6 +67,7 @@ public class CreateProposalController extends BaseProposalsController {
          baseProposalVersion,
          baseContestId, model);
     }
+
     public String showContestProposals(HttpServletRequest request, HttpServletResponse response,
                 String contestUrlName,  Long baseProposalId,
          int baseProposalVersion,
