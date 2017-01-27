@@ -2,9 +2,9 @@
 		  xmlns:jsp="http://java.sun.com/JSP/Page"
 		  xmlns:form="http://www.springframework.org/tags/form"
 		  xmlns:collab="http://climatecolab.org/tags/collab_1.0"
-		  xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
+		   version="2.0">
 
-	<liferay-theme:defineObjects />
+
 
 	<jsp:directive.attribute name="section" type="org.xcolab.client.contest.pojo.templates.PlanSectionDefinition"
 		required="true" rtexprvalue="true" description="Section which content should be displayed" />

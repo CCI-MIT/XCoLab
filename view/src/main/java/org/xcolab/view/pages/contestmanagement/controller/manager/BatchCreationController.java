@@ -253,7 +253,7 @@ public class BatchCreationController {
 
     }
 
-    @GetMapping("api/validateOntologyTerm")
+    @PostMapping("api/validateOntologyTerm")
     public void validateOntologyTerm(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) String ontologyTerms)
             throws IOException {

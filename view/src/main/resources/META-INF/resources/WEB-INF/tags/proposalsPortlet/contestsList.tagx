@@ -2,10 +2,10 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
+           version="2.0">
 
 
-    <liferay-theme:defineObjects />
+
 
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
 

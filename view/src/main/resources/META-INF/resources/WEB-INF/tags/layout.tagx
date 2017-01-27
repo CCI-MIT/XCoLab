@@ -422,7 +422,7 @@
                     <div class="btns">
                         <div style="float: left;">
                             <span><em><a href="javascript:;" class="c-Header__login__forgot" style="color:#900;" onclick="showForgotPasswordPopup()">Forgot your password?</a></em></span><br />
-                            <span><em><a href="/login?redirect=${_requestUri}" class="c-Header__login__forgot" >Haven't registered yet?</a></em></span><br />
+                            <span><em><a href="/register?redirect=${_requestUri}" class="c-Header__login__forgot" >Haven't registered yet?</a></em></span><br />
                             <div class="clearfix"><!-- --></div>
                         </div>
                         <a href="javascript:;" class="c-Button__primary c-Header__login__submit" onclick="jQuery(this).parents('form').submit();" id="deferLoginPopupSubmit">LOGIN</a>

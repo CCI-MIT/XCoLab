@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.pojo.ConfigurationAttribute;
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
 import org.xcolab.client.files.pojo.FileEntry;
@@ -58,6 +59,7 @@ public class ImageDisplayController {
 
         String path = request.getSession().getServletContext().getRealPath("/");
         String fileUploadPath = env.getProperty("files.upload.dir");
+
         path = (fileUploadPath!=null)?(fileUploadPath):(path);
         if (imageId != null && !imageId.isEmpty()) {
             try {
@@ -69,6 +71,14 @@ public class ImageDisplayController {
                     if(f.exists() && !f.isDirectory()) {
                         sendImageToResponse(request, response, filePath);
                         return;
+                    }else{
+                        String environmentStatus = env.getProperty("environment");
+                        if(!environmentStatus.equals("production")){
+                            response.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT);
+                            String newURL = ConfigurationAttributeKey.COLAB_URL.get() + "/"+ request.getRequestURI()+"?"+ request.getQueryString();
+                            response.setHeader("Location", newURL);
+                            return;
+                        }
                     }
                 }
             } catch (FileEntryNotFoundException ignored) {
@@ -117,6 +127,7 @@ public class ImageDisplayController {
             in.close();
             return;
         } catch (IOException ignored) {
+
         }
         try{
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

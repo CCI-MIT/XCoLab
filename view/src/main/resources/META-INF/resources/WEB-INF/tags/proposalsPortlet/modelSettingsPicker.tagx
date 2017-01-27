@@ -1,8 +1,8 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
+           version="2.0">
 
-    <liferay-theme:defineObjects />
+
 
     <!--@elvariable id="isGlobalContest" type="java.lang.Boolean"-->
     <!--@elvariable id="consolidationPossible" type="java.lang.Boolean"-->

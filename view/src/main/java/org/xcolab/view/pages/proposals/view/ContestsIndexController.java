@@ -193,9 +193,13 @@ public class ContestsIndexController extends BaseProposalsController {
 
         if(!ConfigurationAttributeKey.COLAB_USES_CARDS.get() || viewType.equals(VIEW_TYPE_OUTLINE)) {
 
+
             List<Contest> contestsToWrap = showAllContests
                     ? ContestClientUtil.getContestsByContestTypeId(contestType.getId_())
                     : ContestClientUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId_());
+
+
+
             priorContests = ContestClientUtil.getContestsByActivePrivateType(false, false, contestType.getId_());
 
             for (Contest contest: contestsToWrap) {
