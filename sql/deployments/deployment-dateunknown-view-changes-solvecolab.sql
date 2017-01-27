@@ -1,7 +1,7 @@
----------------------------
+-- -------------------------
 -- SOLVE COLAB SPECIFIC
 --
----------------------------
+-- -------------------------
 
 -- Solve colab content article ids
 INSERT INTO xcolab_ConfigurationAttribute (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('LANDING_PAGE_BANNER_CONTENT_ARTICLE_ID', '0', '6', ' ', '0');

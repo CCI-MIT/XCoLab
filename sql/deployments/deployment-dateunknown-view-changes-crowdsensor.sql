@@ -1,7 +1,7 @@
----------------------------
+-- -------------------------
 -- Crowdsensor SPECIFIC
 --
----------------------------
+-- -------------------------
 
 UPDATE xcolab_ConfigurationAttribute SET numericValue = 0, stringValue = '{
  "CALL_TO_ACTION": "",
