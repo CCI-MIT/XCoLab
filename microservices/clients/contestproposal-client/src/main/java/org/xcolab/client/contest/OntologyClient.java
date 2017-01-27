@@ -15,6 +15,7 @@ import org.xcolab.client.contest.pojo.ontology.OntologyTermDto;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.dto.DtoUtil;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -114,8 +115,13 @@ public class OntologyClient {
     }
 
     public OntologyTerm getOntologyTerm(long Id_) {
-        return ontologyTermResource.get(Id_)
-                .execute().toPojo(contestService);
+         try {
+             return ontologyTermResource.get(Id_)
+                    .executeChecked().toPojo(contestService);
+
+        }catch (EntityNotFoundException ignored){
+             return null;
+         }
     }
 
     public OntologyTerm createOntologyTerm(OntologyTerm ontologyTerm) {

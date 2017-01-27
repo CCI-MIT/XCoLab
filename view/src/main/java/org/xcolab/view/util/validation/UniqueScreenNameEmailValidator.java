@@ -37,7 +37,7 @@ public class UniqueScreenNameEmailValidator implements ConstraintValidator<Uniqu
             /* if custom message was provided, don't touch it, otherwise build the default message */
             if (isDefaultMessage) {
                 StringBuilder sb = new StringBuilder();
-                sb.append("User with given");
+                sb.append("A member with given");
                 if (!uniqueEmail) {
                     sb.append(" email");
                 }
@@ -51,7 +51,7 @@ public class UniqueScreenNameEmailValidator implements ConstraintValidator<Uniqu
                 if (!ConfigurationAttributeKey.IS_SHARED_COLAB.get()) {
                     sb.append(" already exists");
                 } else {
-                    sb.append(" already exists , or is already registered on another colab! Please use the Colab logo above to sign in!");
+                    sb.append(" already exists. \n Please choose another screen name or, if you are a member of "+ConfigurationAttributeKey.PARTNER_COLAB_NAME.get()+", please use the CoLab logo to the right to sign in!");
                 }
                 context.disableDefaultConstraintViolation();
                 ConstraintViolationBuilder violationBuilder =

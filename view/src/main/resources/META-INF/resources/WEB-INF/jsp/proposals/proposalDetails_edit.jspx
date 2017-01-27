@@ -86,9 +86,11 @@
             </p>
         </div> <!-- /c-Headline -->
 
-        <form action="/images/upload" method="post" enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
+
+        <form action="${contest.proposalLogoPath}images/upload" method="post" enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
             <input type="file" name="file" id="fileUploadInput" />
         </form>
+
 
         <form:form action="${updateProposalSectionsURL }" commandName="updateProposalSectionsBean" modelAttribute="updateProposalSectionsBean"  cssClass="addpropform ${contestType.showProposalSummary ? '' : 'full-wdith'}" id="editForm">
             <form:hidden path="baseProposalId" />
