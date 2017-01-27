@@ -263,7 +263,7 @@
 
                         <div class="c-Header__login__with">
                             <a href="/sso/facebook/login" class="sketchy-icon facebook-sketchy" style="margin:0 30px 0 15px;"><span>Facebook</span></a>
-                            <span href="/sso/google/login" class="disabled sketchy-icon google-sketchy"><span>Google</span></span>
+                            <a href="/sso/google/login" class="sketchy-icon google-sketchy"><span>Google</span></a>
                         </div>
 
                         <div class="c-Header__login__with__del"><!-- --></div>
@@ -407,7 +407,7 @@
 
             <div class="c-Header__login__with">
                 <a href="/sso/facebook/register" class="sketchy-icon-black facebook-sketchy" style="margin:0 30px 0 70px;"><span>Facebook</span></a>
-                <span href="/sso/google/register" class="disabled sketchy-icon-black google-sketchy"><span>Google</span></span>
+                <a href="/sso/google/register" class="sketchy-icon-black google-sketchy"><span>Google</span></a>
             </div>
             <div class="clearfix"><!-- --></div>
             <div class="login_popup_box">
