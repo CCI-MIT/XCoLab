@@ -17,7 +17,7 @@
     <div class="popupreg_form">
 
         <div class="popupreg_head">
-            <h1>Join the ${colabName}</h1>
+            <h1>Join the ${_colabName}</h1>
         </div>
 
         <div class="sso-register">

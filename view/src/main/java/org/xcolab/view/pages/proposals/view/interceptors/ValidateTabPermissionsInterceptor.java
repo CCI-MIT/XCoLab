@@ -20,14 +20,15 @@ public class ValidateTabPermissionsInterceptor extends HandlerInterceptorAdapter
             Object handler, ModelAndView modelAndView)
             throws IOException {
 
-        if (request.getRequestURL().indexOf("/contests") > 0) {
-            if (modelAndView != null) {
-                if (modelAndView.getModel().containsKey("currentTabWrapped")) {
-                    ProposalTabWrapper currentTabWrapped =
-                            (ProposalTabWrapper) modelAndView.getModelMap()
-                                    .get("currentTabWrapped");
+        if (modelAndView != null) {
+            if (modelAndView.getModel().containsKey("currentTabWrapped")) {
+                final Object tabObject = modelAndView.getModelMap()
+                        .get("currentTabWrapped");
+                if (tabObject instanceof ProposalTabWrapper) {
+                    ProposalTabWrapper currentTabWrapped = (ProposalTabWrapper) tabObject;
                     if (!currentTabWrapped.getCanAccess()) {
-                        modelAndView.setViewName(ErrorText.ACCESS_DENIED.flashAndReturnView(request));
+                        modelAndView
+                                .setViewName(ErrorText.ACCESS_DENIED.flashAndReturnView(request));
                     }
                 }
             }

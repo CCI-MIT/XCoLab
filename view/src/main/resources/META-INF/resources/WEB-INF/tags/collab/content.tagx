@@ -2,9 +2,10 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:collab="http://climatecolab.org/tags/collab_1.0" version="2.0">
 
-    <jsp:directive.attribute name="articleId" type="java.lang.Long" required="true" rtexprvalue="true" description="Content article id" />
-    <jsp:directive.attribute name="withTitle" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the title should be included" />
+<jsp:directive.attribute name="articleId" type="java.lang.Long" required="true" rtexprvalue="true" description="Content article id" />
+<jsp:directive.attribute name="withTitle" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the title should be included" />
 
+<div>
     <collab:loadContent articleId="${articleId}">
         <!--@elvariable id="contentArticle" type="org.xcolab.client.contents.pojo.ContentArticle"-->
         <!--@elvariable id="contentArticleVersion" type="org.xcolab.client.contents.pojo.ContentArticleVersion"-->
@@ -36,5 +37,5 @@
             </c:otherwise>
         </c:choose>
     </collab:loadContent>
-
+</div>
 </jsp:root>

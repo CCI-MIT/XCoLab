@@ -118,10 +118,6 @@ public class MembersController {
         model.addAttribute("memberCategoryParam", memberCategoryParam);
         model.addAttribute("memberCategories", MembersClient.getVisibleMemberCategories());
 
-        model.addAttribute("colabName",
-                ConfigurationAttributeKey.COLAB_NAME.get());
-        model.addAttribute("colabShortName",
-                ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
         model.addAttribute("pointsActive", isPointsActive);
 
         model.addAttribute("permissions", membersPermissions);

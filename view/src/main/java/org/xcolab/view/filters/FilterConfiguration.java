@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.xcolab.view.filters.emails.ActivitySubscriptionEmailFilter;
 import org.xcolab.view.filters.errorreporting.ErrorReportingFilter;
 import org.xcolab.view.filters.files.FileUploadFilter;
-import org.xcolab.view.filters.files.ImageDisplayFilter;
 import org.xcolab.view.filters.filtering.ProfanityFilteringFilter;
 import org.xcolab.view.filters.flagging.FlaggingReportFilter;
 import org.xcolab.view.filters.impersonation.ImpersonationFilter;
@@ -34,12 +33,7 @@ public class FilterConfiguration {
     public FilterRegistrationBean fileUpload() {
         return createRegistration(new FileUploadFilter(),"/fileUpload");
     }
-
-//    @Bean
-//    public FilterRegistrationBean imageDisplay() {
-//        return createRegistration(new ImageDisplayFilter(),"/image/*");
-//    }
-
+    
     @Bean
     public FilterRegistrationBean profanityFiltering() {
         return createRegistration(new ProfanityFilteringFilter(),"/profanityfiltering/*");
