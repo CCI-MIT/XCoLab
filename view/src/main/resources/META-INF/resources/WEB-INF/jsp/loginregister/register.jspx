@@ -52,7 +52,9 @@
             <input type="file" name="file" id="portraitUploadInput" />
         </form>
         <form:form action="/register" method="post" commandName="createUserBean" id="registrationForm">
-            <input type="hidden" name="action" value="add" />
+            <c:if test="${not empty redirect}">
+                <input type="hidden" name="redirect" value="${redirect}" />
+            </c:if>
             <div class="reg_errors"><!--  --></div>
             <form:errors cssClass="c-Alert c-Alert__error" />
             <table class="reg">

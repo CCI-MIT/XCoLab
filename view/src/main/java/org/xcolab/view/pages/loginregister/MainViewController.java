@@ -96,7 +96,7 @@ public class MainViewController {
 
         if (StringUtils.isNotEmpty(redirect)) {
             //TODO: or escape?
-            model.addAttribute("redirect", HttpUtils.encodeURL(redirect));
+            model.addAttribute("redirect", redirect);
         }
 
         // append SSO attributes
@@ -188,7 +188,8 @@ public class MainViewController {
         }
         boolean captchaValid = true;
         // require captcha if user is not logged in via SSO
-        if (fbIdString == null && googleId == null) {
+        if (fbIdString == null && googleId == null
+                && ConfigurationAttributeKey.GOOGLE_RECAPTCHA_IS_ACTIVE.get()) {
             String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
             captchaValid = ReCaptchaUtils.verify(gRecaptchaResponse,
                     ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_SECRET_KEY.get());
