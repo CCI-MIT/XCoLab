@@ -20,9 +20,7 @@ import org.xcolab.util.exceptions.InternalException;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.Collection;
-import java.util.regex.Pattern;
 
 /**
  * Requested from https://github.com/mdanter/OAuth2v1
@@ -105,54 +103,11 @@ public final class GoogleAuthHelper {
         request.getHeaders().setContentType("application/json");
         final String jsonIdentity = request.execute().parseAsString();
 
-        JSONObject userInfo;
-
         try {
-            userInfo = new JSONObject(jsonIdentity);
-
-            // Get openid token
-            String idTokenPayload = deserialize(response.getIdToken());
-            JSONObject idTokenJson = new JSONObject(idTokenPayload);
-
-            userInfo.put("openid_id", idTokenJson.getString("openid_id"));
+            return new JSONObject(jsonIdentity);
         } catch (JSONException e) {
             throw new InternalException(e);
         }
-
-        return userInfo;
-    }
-
-
-    private String deserialize(String tokenString) {
-        String[] pieces = splitTokenString(tokenString);
-        String jwtPayloadSegment = pieces[1];
-        return decodeUrlSafe(jwtPayloadSegment);
-    }
-
-    /**
-     * @param tokenString The original encoded representation of a JWT
-     * @return Three components of the JWT as an array of strings
-     */
-    private String[] splitTokenString(String tokenString) {
-        String[] pieces = tokenString.split(Pattern.quote("."));
-        if (pieces.length != 3) {
-            throw new IllegalStateException("Expected JWT to have 3 segments separated by '"
-                    + "." + "', but it has " + pieces.length + " segments");
-        }
-        return pieces;
-    }
-
-    private String decodeUrlSafe(String in) {
-        byte[] data = in.getBytes();
-        byte[] encoded = Arrays.copyOf(data, data.length);
-        for (int i = 0; i < encoded.length; i++) {
-            if (encoded[i] == '-') {
-                encoded[i] = '+';
-            } else if (encoded[i] == '_') {
-                encoded[i] = '/';
-            }
-        }
-        return new String(Base64.getDecoder().decode(encoded));
     }
 
 }

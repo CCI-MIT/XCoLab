@@ -47,3 +47,5 @@ CREATE TABLE `xcolab_ContentPage` (
 );
 
 
+-- COLAB-1596
+ALTER TABLE members_Member ADD googleId VARCHAR(50) NULL AFTER facebookId;

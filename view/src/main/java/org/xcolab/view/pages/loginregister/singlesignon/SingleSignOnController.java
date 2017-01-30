@@ -49,7 +49,7 @@ public class SingleSignOnController {
             Member member = LoginRegisterUtil.login(request, login, password);
             // Do the linkage of OpenID or Facebook ID
             String fbIdString = (String) session.getAttribute(SSOKeys.FACEBOOK_USER_ID);
-            String openId = (String) session.getAttribute(SSOKeys.SSO_OPENID_ID);
+            String openId = (String) session.getAttribute(SSOKeys.SSO_GOOGLE_ID);
             String profileImageId = (String) session.getAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID);
 
             if (StringUtils.isNumeric(profileImageId) && member.getPortraitId() == 0) {

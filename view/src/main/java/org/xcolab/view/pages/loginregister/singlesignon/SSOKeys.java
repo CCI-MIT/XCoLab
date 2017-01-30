@@ -12,7 +12,7 @@ public class SSOKeys {
     public final static String SSO_FIRST_NAME = "SSO_FIRST_NAME";
     public final static String SSO_LAST_NAME = "SSO_LAST_NAME";
     public final static String SSO_EMAIL = "SSO_EMAIL";
-    public final static String SSO_OPENID_ID = "SSO_OPENID_ID";
+    public final static String SSO_GOOGLE_ID = "SSO_GOOGLE_ID";
     public final static String SSO_COUNTRY = "SSO_COUNTRY";
     public final static String SSO_SCREEN_NAME = "SSO_SCREEN_NAME";
     public final static String SSO_PROFILE_IMAGE_ID = "SSO_PROFILE_IMAGE_ID";

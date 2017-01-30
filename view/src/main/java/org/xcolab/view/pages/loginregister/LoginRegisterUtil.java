@@ -54,7 +54,7 @@ public final class LoginRegisterUtil {
 
     public static Member register(String screenName, String password, String email,
             String firstName, String lastName, String shortBio, String country,
-            String fbIdString, String openId, String imageId, String baseUrl) {
+            String fbIdString, String googleId, String imageId, String baseUrl) {
 
         Long memberId = SharedColabClient.retrieveSharedId(email, screenName,
                 ConfigurationAttributeKey.COLAB_NAME.get());
@@ -66,7 +66,7 @@ public final class LoginRegisterUtil {
         member.setFirstName(firstName);
         member.setHashedPassword(password);
         member.setLastName(lastName);
-        member.setOpenId(openId);
+        member.setGoogleId(googleId);
         try {
             member.setFacebookId(Long.parseLong(fbIdString));
         } catch (NumberFormatException ignored) {

@@ -41,7 +41,7 @@ public class MemberDaoImpl implements MemberDao {
     @Override
     public List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
             String partialEmail, String roleName, String email, String screenName, Long facebookId,
-            String openId) {
+            String googleId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(MEMBER)
                 .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
@@ -73,8 +73,8 @@ public class MemberDaoImpl implements MemberDao {
         if (facebookId != null) {
             query.addConditions(MEMBER.FACEBOOK_ID.eq(facebookId));
         }
-        if (openId != null) {
-            query.addConditions(MEMBER.OPEN_ID.eq(openId));
+        if (googleId != null) {
+            query.addConditions(MEMBER.GOOGLE_ID.eq(googleId));
         }
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
