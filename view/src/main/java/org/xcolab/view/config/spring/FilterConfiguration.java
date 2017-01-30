@@ -1,4 +1,4 @@
-package org.xcolab.view.filters;
+package org.xcolab.view.config.spring;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -6,11 +6,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import org.xcolab.view.filters.emails.ActivitySubscriptionEmailFilter;
-import org.xcolab.view.filters.errorreporting.ErrorReportingFilter;
-import org.xcolab.view.filters.files.FileUploadFilter;
+import org.xcolab.view.errors.ErrorReportingFilter;
+import org.xcolab.view.files.FileUploadFilter;
 import org.xcolab.view.filters.filtering.ProfanityFilteringFilter;
 import org.xcolab.view.filters.flagging.FlaggingReportFilter;
-import org.xcolab.view.filters.impersonation.ImpersonationFilter;
+import org.xcolab.view.auth.ImpersonationFilter;
 import org.xcolab.view.filters.membership.ProposalMembershipInvitationResponseFilter;
 import org.xcolab.view.filters.tracking.UserTrackingServlet;
 

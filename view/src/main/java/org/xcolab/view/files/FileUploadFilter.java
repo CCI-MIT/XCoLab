@@ -1,4 +1,4 @@
-package org.xcolab.view.filters.files;
+package org.xcolab.view.files;
 
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;

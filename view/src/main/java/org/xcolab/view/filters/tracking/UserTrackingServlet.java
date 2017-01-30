@@ -3,9 +3,6 @@ package org.xcolab.view.filters.tracking;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.view.auth.MemberAuthUtil;
 
@@ -35,8 +32,6 @@ public class UserTrackingServlet extends HttpServlet {
 
         //if user is logged in, check if tuple (uuid, userid) already exists. if not, create it.
         long memberId = MemberAuthUtil.getMemberId(request);
-
-
 
         //find out uuid. if it is not sent as request parameter, try to retrieve existing token if user is logged in.
         String uuid = request.getParameter("uuid");
@@ -100,26 +95,4 @@ public class UserTrackingServlet extends HttpServlet {
         return headerStringBuilder.toString();
     }
 
-    private Member getLoggedInUser(HttpServletRequest request) {
-        String userIdStr = request.getParameter("userId");
-        Member user = null;
-        try {
-            Integer userId = Integer.parseInt(userIdStr);
-            if (userId > 0) {
-                try {
-                    user = MembersClient.getMember(userId);
-                    if (user != null) {
-                        //make sure that the hash is correct
-                        if (!String.valueOf(user.getUserId()).equals(request.getParameter("hash"))) {
-                            user = null;
-                        }//else the user is fine.
-                    }
-                } catch (MemberNotFoundException e) {
-                    user = null;
-                }
-            }
-        } catch (NumberFormatException ignored) { }
-
-        return user;
-    }
 }

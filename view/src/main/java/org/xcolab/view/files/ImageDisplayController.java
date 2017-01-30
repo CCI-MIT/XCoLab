@@ -1,4 +1,4 @@
-package org.xcolab.view.util.file;
+package org.xcolab.view.files;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.pojo.ConfigurationAttribute;
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
 import org.xcolab.client.files.pojo.FileEntry;

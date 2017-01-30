@@ -1,4 +1,4 @@
-package org.xcolab.view.filters.impersonation;
+package org.xcolab.view.auth;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
