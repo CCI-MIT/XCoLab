@@ -9,7 +9,7 @@
     <display-name>XCollab judging tags</display-name>
     <tlib-version>1.0</tlib-version>
     <short-name>xcollabjudging</short-name>
-    <uri>http://climatecolab.org/tags/xcollab_judging_1.0</uri>
+    <uri>http://climatecolab.org/tags/xcolab_judging_1.0</uri>
 
     <tag>
         <name>judgeAssignedProposalCount</name>

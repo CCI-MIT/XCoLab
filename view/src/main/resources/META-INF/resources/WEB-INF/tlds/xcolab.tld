@@ -5,11 +5,11 @@
       http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd" 
       version="2.1">
       
-    <description>Collab JSP tags</description>
-    <display-name>Collab JSP tags</display-name>
+    <description>XCoLab JSP tags</description>
+    <display-name>XCoLab JSP tags</display-name>
     <tlib-version>1.0</tlib-version>
-    <short-name>collab</short-name>
-    <uri>http://climatecolab.org/tags/collab_1.0</uri>
+    <short-name>xcolab</short-name>
+    <uri>http://climatecolab.org/tags/xcolab_1.0</uri>
 
     <tag>
         <name>formatTimeSpan</name>

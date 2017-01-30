@@ -9,7 +9,7 @@
   <display-name>XCollab discussions tags</display-name>
   <tlib-version>2.0</tlib-version>
   <short-name>xcollabdiscussions</short-name>
-  <uri>http://climatecolab.org/tags/xcollab_discussions_2.0</uri>
+  <uri>http://climatecolab.org/tags/xcolab_discussions_2.0</uri>
 
     <tag>
         <name>loadThread</name>

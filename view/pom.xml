@@ -276,6 +276,7 @@
                 <version>${sass-maven-plugin.version}</version>
                 <executions>
                     <execution>
+                        <id>sass-compilation</id>
                         <phase>generate-resources</phase>
                         <goals>
                             <goal>update-stylesheets</goal>
@@ -304,5 +305,26 @@
             </plugin>
         </plugins>
     </build>
-    
+
+
+    <profiles>
+        <profile>
+            <id>skip-sass</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>nl.geodienstencentrum.maven</groupId>
+                        <artifactId>sass-maven-plugin</artifactId>
+                        <version>${sass-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sass-compilation</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
