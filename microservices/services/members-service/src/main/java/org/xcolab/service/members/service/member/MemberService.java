@@ -97,9 +97,9 @@ public class MemberService {
 
     public Member register(String screenName, String password, String email, String firstName,
             String lastName, String shortBio, String country, Long facebookId, String openId,
-            Long imageId, Long liferayUserId) {
+            Long imageId, Long liferayUserId, String googleId) {
         memberDao.createMember(screenName, hashPassword(password), email, firstName, lastName,
-                shortBio, country, facebookId, openId, imageId, liferayUserId);
+                shortBio, country, facebookId, openId, imageId, liferayUserId, googleId);
         final Member member = memberDao.findOneByScreenName(screenName)
                 .orElseThrow(IllegalStateException::new);
         //TODO: centralize this ID in constant (see MemberRole enum)
@@ -107,12 +107,13 @@ public class MemberService {
         subscribeToNewsletter(member.getEmailAddress());
         return member;
     }
+
     public Member registerWithHashedPassword(String screenName, String password, String email,
             String firstName, String lastName, String shortBio, String country, Long facebookId,
-            String openId, Long imageId, Long liferayUserId) {
+            String openId, Long imageId, Long liferayUserId, String googleId) {
         return memberDao.getMember(liferayUserId).orElseGet(() -> {
             memberDao.createMember(screenName, password, email, firstName, lastName,
-                    shortBio, country, facebookId, openId, imageId, liferayUserId);
+                    shortBio, country, facebookId, openId, imageId, liferayUserId, googleId);
             final Member member = memberDao.findOneByScreenName(screenName)
                     .orElseThrow(IllegalStateException::new);
             member.setAutoRegisteredMemberStatus(1);
@@ -121,6 +122,7 @@ public class MemberService {
             return member;
         });
     }
+
     public void login(Member member, LoginBean loginBean)
             throws UnauthorizedException, ForbiddenException {
         if (member.getStatus() != null && member.getStatus() > 0) {

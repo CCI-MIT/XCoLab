@@ -33,7 +33,7 @@ public interface MemberDao {
     boolean updateMember(Member member);
     void createMember(String screenName, String password, String email,
             String firstName, String lastName, String shortBio, String country,
-            Long facebookId, String openId, Long imageid, Long liferayUserId);
+            Long facebookId, String openId, Long imageid, Long liferayUserId, String googleId);
 
     List<Member> findByIp(String ip) ;
     List<Member> findByScreenNameName(String name);
