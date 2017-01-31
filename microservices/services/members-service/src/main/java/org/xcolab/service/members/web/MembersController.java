@@ -62,14 +62,14 @@ public class MembersController {
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) Long facebookId,
-            @RequestParam(required = false) String openId) {
+            @RequestParam(required = false) String googleId) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
         response.setHeader(ControllerUtils.COUNT_HEADER_NAME,
                 Integer.toString(memberDao.countByGiven(partialName, partialEmail, roleName)));
 
         return memberDao.findByGiven(paginationHelper, partialName, partialEmail,
-                roleName, email, screenName, facebookId, openId);
+                roleName, email, screenName, facebookId, googleId);
     }
 
     @GetMapping("findByIp")
@@ -175,7 +175,7 @@ public class MembersController {
         return memberService.register(member.getScreenName(), member.getHashedPassword(),
                 member.getEmailAddress(), member.getFirstName(), member.getLastName(),
                 member.getShortBio(), member.getCountry(), member.getFacebookId(),
-                member.getOpenId(), member.getPortraitFileEntryId(), member.getId_());
+                member.getOpenId(), member.getPortraitFileEntryId(), member.getId_(), member.getGoogleId());
     }
 
     @PostMapping("registerFromSharedColab")
@@ -183,7 +183,7 @@ public class MembersController {
             return memberService.registerWithHashedPassword(member.getScreenName(), member.getHashedPassword(),
                     member.getEmailAddress(), member.getFirstName(), member.getLastName(),
                     member.getShortBio(), member.getCountry(), member.getFacebookId(),
-                    member.getOpenId(), member.getPortraitFileEntryId(), member.getId_());
+                    member.getOpenId(), member.getPortraitFileEntryId(), member.getId_(), member.getGoogleId());
     }
 
 

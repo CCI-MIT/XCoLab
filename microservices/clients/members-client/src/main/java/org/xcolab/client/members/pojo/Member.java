@@ -37,6 +37,7 @@ public class Member {
     private String country;
     private String shortBio;
     private Long facebookId;
+    private String googleId;
     private String openId;
     private String loginIP;
     private Timestamp loginDate;
@@ -173,6 +174,14 @@ public class Member {
         this.facebookId = facebookId;
     }
 
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
+    }
+
     public String getOpenId() {
         return this.openId;
     }
@@ -280,6 +289,7 @@ public class Member {
                 ", " + country +
                 ", " + shortBio +
                 ", " + facebookId +
+                ", " + googleId +
                 ", " + openId +
                 ", " + loginIP +
                 ", " + loginDate +

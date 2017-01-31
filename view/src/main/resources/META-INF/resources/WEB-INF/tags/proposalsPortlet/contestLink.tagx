@@ -2,7 +2,7 @@
 	xmlns:c="http://java.sun.com/jsp/jstl/core" 
 	xmlns:jsp="http://java.sun.com/JSP/Page"  
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
 	version="2.0">
 	<jsp:directive.attribute name="contest" type="org.xcolab.client.contest.pojo.Contest" required="true" rtexprvalue="true" description="Contest url" />
 	<jsp:directive.attribute name="text" type="java.lang.String" required="false" rtexprvalue="true" description="Link text" />

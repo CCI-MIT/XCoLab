@@ -66,6 +66,10 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> GOOGLE_RECAPTCHA_SITE_SECRET_KEY =
             ConfigurationAttributes.newStringAttribute("GOOGLE_RECAPTCHA_SITE_SECRET_KEY")
                     .build();
+    public static final AttributeGetter<Boolean> GOOGLE_RECAPTCHA_IS_ACTIVE =
+            ConfigurationAttributes.newBooleanAttribute("GOOGLE_RECAPTCHA_IS_ACTIVE")
+                    .defaultValue(true)
+                    .build();
 
 
     public static final AttributeGetter<String> FACEBOOK_APPLICATION_ID =

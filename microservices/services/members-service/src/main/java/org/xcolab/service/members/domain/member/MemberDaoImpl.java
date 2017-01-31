@@ -41,7 +41,7 @@ public class MemberDaoImpl implements MemberDao {
     @Override
     public List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
             String partialEmail, String roleName, String email, String screenName, Long facebookId,
-            String openId) {
+            String googleId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(MEMBER)
                 .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
@@ -73,8 +73,8 @@ public class MemberDaoImpl implements MemberDao {
         if (facebookId != null) {
             query.addConditions(MEMBER.FACEBOOK_ID.eq(facebookId));
         }
-        if (openId != null) {
-            query.addConditions(MEMBER.OPEN_ID.eq(openId));
+        if (googleId != null) {
+            query.addConditions(MEMBER.GOOGLE_ID.eq(googleId));
         }
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
@@ -259,6 +259,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.LOGIN_DATE, member.getLoginDate())
                 .set(MEMBER.LOGIN_IP, member.getLoginIP())
                 .set(MEMBER.FACEBOOK_ID, member.getFacebookId())
+                .set(MEMBER.GOOGLE_ID, member.getGoogleId())
                 .set(MEMBER.SHORT_BIO, member.getShortBio())
                 .set(MEMBER.AUTO_REGISTERED_MEMBER_STATUS, member.getAutoRegisteredMemberStatus())
                 .set(MEMBER.COUNTRY, member.getCountry())
@@ -273,7 +274,7 @@ public class MemberDaoImpl implements MemberDao {
     @Override
     public void createMember(String screenName, String hashedPassword, String email,
             String firstName, String lastName, String shortBio, String country, Long facebookId,
-            String openId, Long imageId, Long liferayUserId) {
+            String openId, Long imageId, Long liferayUserId, String googleId) {
         this.dslContext.insertInto(MEMBER)
                 .set(MEMBER.ID_, liferayUserId)
                 .set(MEMBER.SCREEN_NAME, screenName)
@@ -282,6 +283,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.FIRST_NAME, firstName)
                 .set(MEMBER.LAST_NAME, lastName)
                 .set(MEMBER.FACEBOOK_ID, facebookId)
+                .set(MEMBER.GOOGLE_ID, googleId)
                 .set(MEMBER.OPEN_ID, openId)
                 .set(MEMBER.SHORT_BIO, shortBio)
                 .set(MEMBER.COUNTRY, country)

@@ -1,6 +1,6 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
         xmlns:jsp="http://java.sun.com/JSP/Page"
-        xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+        xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
         version="2.0">
   <jsp:directive.attribute name="title" type="java.lang.String" required="true" rtexprvalue="true" description="Link text" />
   <jsp:directive.attribute name="list" type="java.util.List" required="false" rtexprvalue="true" description="List of members" />

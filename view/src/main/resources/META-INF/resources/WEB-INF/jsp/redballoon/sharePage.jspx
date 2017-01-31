@@ -6,7 +6,7 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
 	xmlns:addthis="http://www.addthis.com/help/api-spec"
-	xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+	xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
 	xmlns:tw="http://api.twitter.com/" version="2.0">
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 	<xcolab:layout>

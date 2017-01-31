@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ContentController {
 
     @GetMapping("/page/{pageTitle}")
-    public String contentDisplay(HttpServletRequest request, HttpServletResponse response,
+    public String showContentPage(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member, @PathVariable String pageTitle) throws IOException {
 
         try {
@@ -39,6 +39,9 @@ public class ContentController {
             if (contentPage.getMenuArticleId() != null) {
                 model.addAttribute("menuArticleId", contentPage.getMenuArticleId());
             }
+
+            //TODO: allow different active pages
+            model.addAttribute("_activePageLink", "about");
         } catch (ContentNotFoundException e) {
             return ErrorText.PAGE_NOT_FOUND.flashAndReturnView(request);
         }

@@ -2,7 +2,7 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           version="2.0">

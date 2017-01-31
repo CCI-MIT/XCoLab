@@ -89,7 +89,7 @@ public class FacebookController {
 
         HttpSession session = request.getSession();
 
-        session.removeAttribute(SSOKeys.SSO_OPENID_ID);
+        session.removeAttribute(SSOKeys.SSO_GOOGLE_ID);
 
         String redirectUrl = (String) session
                 .getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);

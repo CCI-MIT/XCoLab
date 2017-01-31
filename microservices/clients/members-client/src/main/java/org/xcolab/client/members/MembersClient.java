@@ -272,12 +272,12 @@ public final class MembersClient {
         return member;
     }
 
-    public static Member findMemberByOpenId(String openId) throws MemberNotFoundException {
+    public static Member findMemberByGoogleId(String googleId) throws MemberNotFoundException {
         Member member = memberResource.list()
-                .queryParam("openId", openId)
+                .queryParam("googleId", googleId)
                 .executeWithResult().getFirstIfExists();
         if (member == null) {
-            throw new MemberNotFoundException("Member with openId " + openId + " does not exist");
+            throw new MemberNotFoundException("Member with googleId " + googleId + " does not exist");
         }
         return member;
     }

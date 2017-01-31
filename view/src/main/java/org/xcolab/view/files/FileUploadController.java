@@ -1,4 +1,4 @@
-package org.xcolab.view.util.file;
+package org.xcolab.view.files;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;

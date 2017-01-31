@@ -53,6 +53,7 @@ public class SsoUnlinkJsonController extends JSONHelper {
     }
 
     private void unlinkGoogleSSO(Member user) {
+        user.setGoogleId("");
         user.setOpenId("");
         MembersClient.updateMember(user);
     }

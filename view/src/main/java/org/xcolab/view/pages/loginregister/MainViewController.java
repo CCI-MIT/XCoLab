@@ -96,7 +96,7 @@ public class MainViewController {
 
         if (StringUtils.isNotEmpty(redirect)) {
             //TODO: or escape?
-            model.addAttribute("redirect", HttpUtils.encodeURL(redirect));
+            model.addAttribute("redirect", redirect);
         }
 
         // append SSO attributes
@@ -129,7 +129,7 @@ public class MainViewController {
         // append SSO attributes from session
         String fbIdString =
                 (String) session.getAttribute(SSOKeys.FACEBOOK_USER_ID);
-        String openId = (String) session.getAttribute(SSOKeys.SSO_OPENID_ID);
+        String googleId = (String) session.getAttribute(SSOKeys.SSO_GOOGLE_ID);
         String firstName =
                 (String) session.getAttribute(SSOKeys.SSO_FIRST_NAME);
         session.removeAttribute(SSOKeys.SSO_FIRST_NAME);
@@ -146,7 +146,7 @@ public class MainViewController {
         String country = (String) session.getAttribute(SSOKeys.SSO_COUNTRY);
         session.removeAttribute(SSOKeys.SSO_COUNTRY);
 
-        if ((StringUtils.isNotBlank(fbIdString) || StringUtils.isNotBlank(openId))) {
+        if ((StringUtils.isNotBlank(fbIdString) || googleId != null)) {
             createUserBean.setFirstName(firstName);
             createUserBean.setLastName(lastName);
             createUserBean.setEmail(eMail);
@@ -181,14 +181,15 @@ public class MainViewController {
 
         HttpSession session = request.getSession();
         String fbIdString = (String) session.getAttribute(SSOKeys.FACEBOOK_USER_ID);
-        String openId = (String) session.getAttribute(SSOKeys.SSO_OPENID_ID);
+        String googleId = (String) session.getAttribute(SSOKeys.SSO_GOOGLE_ID);
 
         if (result.hasErrors()) {
             return showRegistrationError();
         }
         boolean captchaValid = true;
         // require captcha if user is not logged in via SSO
-        if (fbIdString == null && openId == null) {
+        if (fbIdString == null && googleId == null
+                && ConfigurationAttributeKey.GOOGLE_RECAPTCHA_IS_ACTIVE.get()) {
             String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
             captchaValid = ReCaptchaUtils.verify(gRecaptchaResponse,
                     ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_SECRET_KEY.get());
@@ -223,21 +224,21 @@ public class MainViewController {
         HttpSession session = request.getSession();
         String fbIdString =
                 (String) session.getAttribute(SSOKeys.FACEBOOK_USER_ID);
-        String openId = (String) session.getAttribute(SSOKeys.SSO_OPENID_ID);
+        String googleId = (String) session.getAttribute(SSOKeys.SSO_GOOGLE_ID);
 
         BalloonCookie balloonCookie = BalloonCookie.fromCookieArray(request.getCookies());
 
         final Member user = LoginRegisterUtil.register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
                         newAccountBean.getEmail(), newAccountBean.getFirstName(), newAccountBean.getLastName(),
-                        newAccountBean.getShortBio(), newAccountBean.getCountry(), fbIdString, openId,
+                        newAccountBean.getShortBio(), newAccountBean.getCountry(), fbIdString, googleId,
                         newAccountBean.getImageId(), ConfigurationAttributeKey.COLAB_URL.get());
 
         // SSO
         if (StringUtils.isNotBlank(fbIdString)) {
             session.removeAttribute(SSOKeys.FACEBOOK_USER_ID);
         }
-        if (StringUtils.isNotBlank(openId)) {
-            session.removeAttribute(SSOKeys.SSO_OPENID_ID);
+        if (googleId != null) {
+            session.removeAttribute(SSOKeys.SSO_GOOGLE_ID);
         }
 
         if (balloonCookie != null && StringUtils.isNotBlank(balloonCookie.getUuid())) {

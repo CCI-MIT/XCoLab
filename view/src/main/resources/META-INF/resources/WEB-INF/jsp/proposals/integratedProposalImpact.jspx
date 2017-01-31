@@ -3,7 +3,7 @@
           xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:collab="http://climatecolab.org/tags/collab_1.0"
+          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:liferay-ui="http://liferay.com/tld/ui"
           xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"

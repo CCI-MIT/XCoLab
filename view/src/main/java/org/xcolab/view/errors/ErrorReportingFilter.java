@@ -1,4 +1,4 @@
-package org.xcolab.view.filters.errorreporting;
+package org.xcolab.view.errors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
