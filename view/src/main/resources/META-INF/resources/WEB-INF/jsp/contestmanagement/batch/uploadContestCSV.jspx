@@ -213,7 +213,7 @@
                     <strong>Contests in CSV</strong>
                     <a href="javascript:;" class="helpTrigger"><img src="/images/icon-addprop-question.png" width="15" height="15" /></a><br />
                 </label>
-                <div class="addprophelp">Select the file with the batch contests to be created. The file should be in the CSV (comma separated values) format.<br />  The fields should be in the following format: <br />
+                <div class="addprophelp">Select the file with the batch contests to be created. The file should be in the CSV (comma separated values) format. <a href="/files/Contest_Batch_Creator_CSV_Template.csv">Example file</a> <br />  The fields should be in the following format: <br />
                     contest_shortname ,contest_question ,ontology_id_term1 ,ontology_id_term2 ,ontology_id_term3
                 </div>
                 <div class="clearfix"><!-- --></div>

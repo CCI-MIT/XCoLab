@@ -47,3 +47,6 @@ CREATE TABLE `xcolab_ContentPage` (
 );
 
 
+-- IMGUR configuration attribute - should be
+UPDATE xcolab_ConfigurationAttribute SET `stringValue`='<h4>Image upload in IMGUR:</h4><h5>This process works best on Google Chrome or Safari:</h5><p><a href=\"http://climatecolab.org/\" target=\"_blank\" style=\"color: blue; text-decoration: underline;\">Screencast</a></p><br /><ol><li>Click on Upload</li><li>Select your picture</li><li>Upload the picture to IMGUR</li><li>In Google Chrome or Safari, Right click on the IMGUR image, and select \"Copy image address\"</li><li>Paste it into the URL field</li><li>Verify the image in the preview</li><li>Click OK to insert the image</li></ol>' WHERE `name`='IMAGE_UPLOAD_HELP_TEXT' and`additionalId`='0';
+

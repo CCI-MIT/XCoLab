@@ -146,7 +146,7 @@
                     <div class="uploadbox" id="proposalImage">
                         <c:choose>
                             <c:when test='${proposal.imageId > 0}'>
-                                <c:set var="imageUrl" value="/image/proposal?img_id=${proposal.imageId}" />
+                                <c:set var="imageUrl" value="${contest.proposalLogoPath}image/proposal?img_id=${proposal.imageId}" />
                             </c:when>
                             <c:otherwise>
                                 <c:set var="imageUrl" value="${_themeImageFolder}/proposal_default.png" />
@@ -299,7 +299,7 @@
                     try {
                         var response = eval("("	+ jQuery(this).contents().text() + ")");
 
-                        jQuery("#proposalImageImg").attr("src", "/image/proposal?img_id=" + response.imageId);
+                        jQuery("#proposalImageImg").attr("src", "${contest.proposalLogoPath}image/proposal?img_id=" + response.imageId);
 
                         jQuery("#proposalImageId").val(response.imageId);
                     }
