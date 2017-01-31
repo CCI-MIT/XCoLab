@@ -72,7 +72,7 @@
                                             </c:forEach>
                                         </div>
                                     </div>
-                                    <a href="${contest.emailTemplateUrl}" target="_blank">Go to Email Template</a>
+                                    
                                     <div id="advance-save-buttons">
                                         <c:choose>
                                             <c:when test="${isFrozen}">
