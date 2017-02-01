@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.loginregister;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,7 +34,7 @@ public class ForgotPasswordController {
     public void sendPassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String redirect = request.getParameter("redirect");
-        String referer = request.getHeader("referer");
+        String referer = request.getHeader(HttpHeaders.REFERER);
         redirect = !StringUtils.isBlank(redirect) ? redirect : referer;
 
         redirect = !StringUtils.isBlank(redirect) ? redirect : ConfigurationAttributeKey.COLAB_URL.get();

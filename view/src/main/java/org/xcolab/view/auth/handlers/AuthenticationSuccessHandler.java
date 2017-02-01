@@ -1,6 +1,7 @@
 package org.xcolab.view.auth.handlers;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
@@ -56,7 +57,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
             }
         }
 
-        String refererHeader = request.getHeader("referer");
+        String refererHeader = request.getHeader(HttpHeaders.REFERER);
         MembersClient.createLoginLog(member.getId_(), request.getRemoteAddr(), refererHeader);
         if (StringUtils.isNotBlank(refererHeader)) {
             getRedirectStrategy().sendRedirect(request, response, refererHeader);

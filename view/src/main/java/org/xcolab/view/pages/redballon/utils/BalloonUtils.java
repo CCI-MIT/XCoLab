@@ -2,6 +2,7 @@ package org.xcolab.view.pages.redballon.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
@@ -72,8 +73,8 @@ public class BalloonUtils {
 			but.setParent(parent);
 			but.setBalloonLinkContext(context);
 			but.setBalloonLinkUuid(linkuuid);
-			but.setReferrer(request.getHeader("referer"));
-			but.setUserAgent(request.getHeader("User-Agent"));
+			but.setReferrer(request.getHeader(HttpHeaders.REFERER));
+			but.setUserAgent(request.getHeader(HttpHeaders.USER_AGENT));
 			// populate GeoLocation data
 			try {
 				Location location = TrackingClient

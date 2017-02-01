@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.proposals.utils.context;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import org.xcolab.client.contest.pojo.Contest;
@@ -185,8 +186,8 @@ public class ProposalsContextImpl implements ProposalsContext {
         final String currentUrl = request.getRequestURL().toString();
 
 
-        final String referralUrl = request.getHeader("Referer");
-        final String userAgent = request.getHeader("User-Agent");
+        final String referralUrl = request.getHeader(HttpHeaders.REFERER);
+        final String userAgent = request.getHeader(HttpHeaders.USER_AGENT);
 
         try {
             Contest contest = contextHelper.getContest();

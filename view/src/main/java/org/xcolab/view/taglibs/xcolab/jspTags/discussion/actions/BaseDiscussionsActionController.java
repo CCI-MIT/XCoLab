@@ -4,6 +4,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
@@ -50,8 +51,7 @@ public abstract class BaseDiscussionsActionController {
 
         request.setAttribute("ACTION_REDIRECTING", true);
 
-        HttpServletRequest httpRequest = request;
-        String referrer = httpRequest.getHeader("referer");
+        String referrer = request.getHeader(HttpHeaders.REFERER);
 
         if (urlParametersToInclude != null && !urlParametersToInclude.isEmpty()) {
             try {

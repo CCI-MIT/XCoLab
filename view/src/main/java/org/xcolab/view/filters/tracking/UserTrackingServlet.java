@@ -2,6 +2,7 @@ package org.xcolab.view.filters.tracking;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpHeaders;
 
 import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -24,8 +25,8 @@ public class UserTrackingServlet extends HttpServlet {
         String ip = getClientIpAddress(request);
         //city, country
         String url = request.getParameter("url");
-        String referer = request.getParameter("referer");
-        String browser = request.getHeader("User-Agent");
+        String referer = request.getParameter(HttpHeaders.REFERER);
+        String browser = request.getHeader(HttpHeaders.USER_AGENT);
 
         //get headers
         String headers = getHeadersAsString(request);

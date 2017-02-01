@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -61,7 +62,7 @@ public class GoogleController {
         session.setAttribute(GOOGLE_OAUTH_REQUEST_STATE_TOKEN, helper.getStateToken());
         HttpServletResponse.sendRedirect(requestUrl);
 
-        String referrer = request.getHeader("referer");
+        String referrer = request.getHeader(HttpHeaders.REFERER);
         session.setAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY, referrer);
     }
 

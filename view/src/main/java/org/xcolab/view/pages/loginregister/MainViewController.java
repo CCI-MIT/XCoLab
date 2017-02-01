@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -87,7 +88,7 @@ public class MainViewController {
                 redirect = (String) session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
             }
             if (redirect == null) {
-                redirect = request.getHeader("referer");
+                redirect = request.getHeader(HttpHeaders.REFERER);
             }
         }
         if (MemberAuthUtil.getMemberId(request) > 0) {
