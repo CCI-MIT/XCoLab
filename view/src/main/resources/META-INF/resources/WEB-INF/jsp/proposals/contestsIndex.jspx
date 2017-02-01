@@ -3,11 +3,10 @@
 	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
 	version="2.0">
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-		<xcolab:script src="${_themeJsFolder}/proposals/proposals.js" />
-		<xcolab:layout>
+	<xcolab:layout>
 		<!--@elvariable id="viewType" type="java.lang.String"-->
 		<!--@elvariable id="showCollectionCards" type="java.lang.Boolean"-->
-
+		<xcolab:script src="${_themeJsFolder}/proposals/proposals.js" />
 		<jsp:directive.include file="./init.jspx" />
 
 		<c:choose>
