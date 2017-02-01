@@ -1,6 +1,8 @@
 package org.xcolab.view.auth.handlers;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -15,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 
 public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthenticationFailureHandler.class);
+
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException exception) throws IOException, ServletException {
@@ -28,6 +32,7 @@ public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailure
 
         UriComponentsBuilder redirectUrlBuilder = UriComponentsBuilder.fromHttpUrl(redirectBaseUrl);
         redirectUrlBuilder.replaceQueryParam("isSigningIn", true);
+        log.error("Login failed", exception);
         final AuthenticationError authenticationError = AuthenticationError.fromException(exception);
         redirectUrlBuilder.replaceQueryParam("signinRegError", authenticationError);
         getRedirectStrategy().sendRedirect(request, response, redirectUrlBuilder.toUriString());
