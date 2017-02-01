@@ -207,59 +207,68 @@ public class JudgeProposalActionController {
                 ProposalContestPhaseAttribute fellowActionAttribute = ProposalPhaseClientUtil
                         .getProposalContestPhaseAttribute( proposal.getProposalId(),judgingPhase.getContestPhasePK(),
                                 ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
-                JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue().intValue());
-
-                // Ignore proposals that have not been passed to judge
-                if (fellowAction != JudgingSystemActions.FellowAction.PASS_TO_JUDGES && judgingPhase.getFellowScreeningActive()) {
-                    continue;
-                }
-
-
-                final String proposalUrl = ConfigurationAttributeKey.COLAB_URL.get() + proposal.getProposalLinkUrl(contest, judgingPhase.getContestPhasePK());
-                final ProposalReview proposalReview = new ProposalReview(proposal, judgingPhase, proposalUrl);
-                proposalReview.setReviewers(
-                        ImmutableSet.copyOf(getProposalReviewingJudges(proposal, judgingPhase,
-                                request)));
-                List<ProposalRating> ratings = ProposalJudgeRatingClientUtil
-                        .getJudgeRatingsForProposal(proposal.getProposalId(), judgingPhase.getContestPhasePK());
-                Map<ProposalRatingType, List<Long>> ratingsPerType = new HashMap<>();
-
-                for (ProposalRating rating: ratings) {
-                    org.xcolab.entity.utils.judging.ProposalRatingWrapper wrapper = new org.xcolab.entity.utils.judging.ProposalRatingWrapper(rating);
-                    if (ratingsPerType.get(wrapper.getRatingType()) == null) {
-                        ratingsPerType.put(wrapper.getRatingType(), new ArrayList<Long>());
+                if(fellowActionAttribute!=null) {
+                    JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue().intValue());
+                    // Ignore proposals that have not been passed to judge
+                    if (fellowAction != JudgingSystemActions.FellowAction.PASS_TO_JUDGES
+                            && judgingPhase.getFellowScreeningActive()) {
+                        continue;
                     }
-                    ratingsPerType.get(wrapper.getRatingType()).add(wrapper.getRatingValue().getValue());
 
-                    proposalReview.addUserRating(wrapper.getUser(),wrapper.getRatingType(),wrapper.getRatingValue().getValue());
 
-                    occurringRatingTypes.add(wrapper.getRatingType());
-                    if (rating.getCommentEnabled()) {
-                        proposalReview.addReview(wrapper.getUser(), rating.getComment_());
-                        occurringJudges.add(wrapper.getUser());
+                    final String proposalUrl = ConfigurationAttributeKey.COLAB_URL.get() + proposal
+                            .getProposalLinkUrl(contest, judgingPhase.getContestPhasePK());
+                    final ProposalReview proposalReview =
+                            new ProposalReview(proposal, judgingPhase, proposalUrl);
+                    proposalReview.setReviewers(
+                            ImmutableSet.copyOf(getProposalReviewingJudges(proposal, judgingPhase,
+                                    request)));
+                    List<ProposalRating> ratings = ProposalJudgeRatingClientUtil
+                            .getJudgeRatingsForProposal(proposal.getProposalId(),
+                                    judgingPhase.getContestPhasePK());
+                    Map<ProposalRatingType, List<Long>> ratingsPerType = new HashMap<>();
+
+                    for (ProposalRating rating : ratings) {
+                        org.xcolab.entity.utils.judging.ProposalRatingWrapper wrapper =
+                                new org.xcolab.entity.utils.judging.ProposalRatingWrapper(rating);
+                        if (ratingsPerType.get(wrapper.getRatingType()) == null) {
+                            ratingsPerType.put(wrapper.getRatingType(), new ArrayList<Long>());
+                        }
+                        ratingsPerType.get(wrapper.getRatingType())
+                                .add(wrapper.getRatingValue().getValue());
+
+                        proposalReview.addUserRating(wrapper.getUser(), wrapper.getRatingType(),
+                                wrapper.getRatingValue().getValue());
+
+                        occurringRatingTypes.add(wrapper.getRatingType());
+                        if (rating.getCommentEnabled()) {
+                            proposalReview.addReview(wrapper.getUser(), rating.getComment_());
+                            occurringJudges.add(wrapper.getUser());
+                        }
+                        if (StringUtils.isNotBlank(rating.getOtherDataString())) {
+                            proposalReview.addShouldAdvanceDecision(wrapper.getUser(),
+                                    Boolean.parseBoolean(rating.getOtherDataString()));
+                        }
                     }
-                    if (StringUtils.isNotBlank(rating.getOtherDataString())) {
-                        proposalReview.addShouldAdvanceDecision(wrapper.getUser(), Boolean.parseBoolean(rating.getOtherDataString()));
+
+                    //take the average for each type
+                    for (ProposalRatingType key : ratingsPerType.keySet()) {
+                        double sum = 0;
+                        int count = 0;
+                        for (Long val : ratingsPerType.get(key)) {
+                            sum += val;
+                            count++;
+                        }
+                        double avg = sum / count;
+                        proposalReview.addRatingAverage(key, avg);
                     }
-                }
 
-                //take the average for each type
-                for (ProposalRatingType key : ratingsPerType.keySet()) {
-                    double sum = 0;
-                    int count = 0;
-                    for (Long val: ratingsPerType.get(key)) {
-                        sum += val;
-                        count++;
+                    if ((proposalToProposalReviewsMap.get(proposal) == null)) {
+                        proposalToProposalReviewsMap.put(proposal, new ArrayList<ProposalReview>());
                     }
-                    double avg = sum/count;
-                    proposalReview.addRatingAverage(key, avg);
-                }
 
-                if ((proposalToProposalReviewsMap.get(proposal)==null)) {
-                    proposalToProposalReviewsMap.put(proposal, new ArrayList<ProposalReview>());
+                    proposalToProposalReviewsMap.get(proposal).add(proposalReview);
                 }
-
-                proposalToProposalReviewsMap.get(proposal).add(proposalReview);
             }
         }
 
