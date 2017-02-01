@@ -16,6 +16,8 @@ public enum ContestMassActions {
     ORDER("Order only"),
     MESSAGE("Message contributors in active phase", ContestMassActionMethods.class,
             "sendMassMessage"),
+    MESSAGE_ALL_AUTHORS("Message all proposal authors", ContestMassActionMethods.class,
+            "sendMassMessageToAllProposalAuthors"),
     REPORT_PEOPLE_IN_CURRENT_PHASE("Generate report of contributors in active phase",
             ContestMassActionMethods.class,
             "reportOfPeopleInCurrentPhase"),
