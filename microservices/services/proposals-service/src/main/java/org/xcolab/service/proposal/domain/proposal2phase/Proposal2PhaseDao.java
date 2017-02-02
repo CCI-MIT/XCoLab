@@ -15,7 +15,10 @@ public interface Proposal2PhaseDao {
 
     List<Proposal2Phase> findByGiven(Long proposalId, Long contestPhaseId, Integer version);
 
+    List<Proposal2Phase> findByContestAndProposal(Long proposalId, Long contestId);
+
     Integer getProposalCountForActiveContestPhase(Long contestPhasePK);
 
     int delete(Long proposalId, Long contestPhaseId);
+
 }

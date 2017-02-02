@@ -1,12 +1,13 @@
 var itemsPerPage = 10;
 var defaultPhaseId = -1;
-
+var totalCount = 0
 function loadHistory(page) {
     // Load the page with items of the current contest phase
     if (page == -1 && getPhaseId() != defaultPhaseId) {
         $.getJSON('/api/phases/' + getPhaseId() + '/proposals/' + proposalId + '/versionsFirstIndex', { get_param: 'value' }, function(data) {
             var page = 0;
             page = Math.floor(data.index / itemsPerPage);
+            totalCount= parseInt(data.index);
             load(page, defaultPhaseId);
         });
     } else if (page == -1) {
@@ -25,7 +26,7 @@ function load(page, phaseId){
             addVersionToTable(attr,even);
             even = !even;
         });
-        addPagination(page > 0, data.totalCount > ((page+1) * itemsPerPage),page,Math.ceil(data.totalCount / itemsPerPage) - 1);
+        addPagination(page > 0, totalCount > ((page+1) * itemsPerPage),page,Math.ceil(totalCount / itemsPerPage) - 1);
         visibilityCallback();
     });
 }
@@ -108,6 +109,7 @@ function loadHistoryForVersion(version) {
     $.getJSON('/api/proposals/' + proposalId + '/versions/' + version + '/index', {}, function(data) {
         var page = 0;
         page = Math.floor(data.index / itemsPerPage);
+        totalCount= parseInt(data.index);
         load(page, defaultPhaseId);
     });
 }

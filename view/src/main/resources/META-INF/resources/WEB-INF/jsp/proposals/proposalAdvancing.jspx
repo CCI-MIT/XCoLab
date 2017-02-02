@@ -72,7 +72,7 @@
                                             </c:forEach>
                                         </div>
                                     </div>
-                                    
+
                                     <div id="advance-save-buttons">
                                         <c:choose>
                                             <c:when test="${isFrozen}">

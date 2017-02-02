@@ -161,7 +161,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
             boolean isPhasePastScreeningPhase =
                     contestPhase.getFellowScreeningActive() && hasContestPhaseEnded(contestPhase);
             if (isPhasePastScreeningPhase) {
-
+                String contestPhaseName = proposalsContext.getClients(request).getContestClient().getContestPhaseName(contestPhase);
                 List<ProposalRating> judgeRatingsForProposal =
                         proposalsContext.getClients(request).getProposalJudgeRatingClient()
                         .getJudgeRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
@@ -177,15 +177,17 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                             proposalRating = new ProposalRatings(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID);
                         }
                         proposalRating.setContestPhase(contestPhase);
-                        proposalRating.setContestPhaseTitle(proposalsContext.getClients(request).getContestClient().getContestPhaseName(contestPhase));
+                        proposalRating.setContestPhaseTitle(contestPhaseName);
                         proposalRating.setComment(commentHelper.getAdvancingComment());
                         proposalRatings.add(proposalRating);
                     } catch (MemberNotFoundException e) {
                         throw new InternalException(e);
                     }
                 } else {
-                    ProposalRatings proposalRating = getProposalPromotionCommentRating(proposal, contestPhase);
-                    proposalRatings.add(proposalRating);
+                    ProposalRatings proposalRating = getProposalPromotionCommentRating(proposal, contestPhase, contestPhaseName);
+                    if(proposalRating!=null) {
+                        proposalRatings.add(proposalRating);
+                    }
                 }
             }
         }
@@ -209,7 +211,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         }
     }
 
-    private ProposalRatings getProposalPromotionCommentRating(Proposal proposal, ContestPhase contestPhase) {
+    private ProposalRatings getProposalPromotionCommentRating(Proposal proposal, ContestPhase contestPhase, String contestPhaseName) {
         try {
             ProposalRatings proposalRating = new ProposalRatings(
                     ColabConstants.CLIMATE_COLAB_TEAM_USER_ID);
@@ -219,10 +221,12 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
             if (!promoComment.trim().isEmpty()) {
                 proposalRating.setComment(promoComment);
                 proposalRating.setContestPhase(contestPhase);
+                proposalRating.setContestPhaseTitle(contestPhaseName);
                 return proposalRating;
             } else {
-                throw new IllegalStateException("No comment set for this proposal: " + proposal.getProposalId()
-                        + " in this rating phase: " + contestPhase.getContestPhasePK());
+                //throw new IllegalStateException("No comment set for this proposal: " + proposal.getProposalId()
+                //        + " in this rating phase: " + contestPhase.getContestPhasePK());
+                return null;
             }
         } catch (MemberNotFoundException e) {
             throw new InternalException(e);

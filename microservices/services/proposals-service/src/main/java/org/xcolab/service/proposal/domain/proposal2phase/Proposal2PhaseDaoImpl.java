@@ -14,6 +14,7 @@ import org.xcolab.service.proposal.exceptions.NotFoundException;
 import java.util.Collections;
 import java.util.List;
 
+import static org.xcolab.model.Tables.CONTEST_PHASE;
 import static org.xcolab.model.Tables.PROPOSAL;
 import static org.xcolab.model.Tables.PROPOSAL_2_PHASE;
 import static org.xcolab.model.Tables.PROPOSAL_CONTEST_PHASE_ATTRIBUTE;
@@ -88,6 +89,27 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
             query.addConditions(PROPOSAL_2_PHASE.VERSION_FROM.le(version).and(
                     PROPOSAL_2_PHASE.VERSION_TO.ge(version).or(PROPOSAL_2_PHASE.VERSION_TO.eq(-1))));
         }
+
+        Result<Record> records = query.fetch();
+        if (records != null && !records.isEmpty()) {
+            return records.into(Proposal2Phase.class);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<Proposal2Phase> findByContestAndProposal(Long proposalId, Long contestId) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(PROPOSAL_2_PHASE)
+                .join(CONTEST_PHASE).on(CONTEST_PHASE.CONTEST_PHASE_PK.eq(PROPOSAL_2_PHASE.CONTEST_PHASE_ID))
+                .getQuery();
+
+
+        query.addConditions(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(proposalId));
+        query.addConditions(PROPOSAL_2_PHASE.VERSION_TO.ne(-1));
+
+
+        query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(contestId));
 
         Result<Record> records = query.fetch();
         if (records != null && !records.isEmpty()) {

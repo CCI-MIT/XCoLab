@@ -307,7 +307,21 @@ public final class ProposalClient {
                 .get()
                 .toPojo(proposalService);
     }
+    public List<ProposalVersion> getProposalVersionsGroupedVersionsByContest(Long proposalId, Long contestId, int start, int end) {
+        return DtoUtil.toPojos(proposalVersionResource.service("getGroupedVersionsByContest", ProposalVersionDto.TYPES.getTypeReference())
+                .queryParam("proposalId", proposalId)
+                .queryParam("contestId", contestId)
+                .queryParam("start", start)
+                .queryParam("end", end)
+                .getList(),proposalService);
 
+    }
+    public Integer countProposalVersionsGroupedVersionsByContest(Long proposalId, Long contestId) {
+        return proposalVersionResource.service("countGroupedVersionsByContest", Integer.class)
+                .queryParam("proposalId", proposalId)
+                .queryParam("contestId", contestId)
+                .get();
+    }
     public Integer countProposalVersions(Long proposalId) {
         return proposalVersionResource.service("count", Integer.class)
                 .optionalQueryParam("proposalId", proposalId)

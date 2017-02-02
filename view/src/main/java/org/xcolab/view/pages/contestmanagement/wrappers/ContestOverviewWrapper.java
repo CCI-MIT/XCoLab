@@ -171,7 +171,8 @@ public class ContestOverviewWrapper {
         Boolean isResponseObjectRequiredForMassAction =
                 (selectedMassAction == ContestMassActions.REPORT_PEOPLE_IN_CURRENT_PHASE.ordinal());
         Boolean isMessageMassAction =
-                (selectedMassAction == ContestMassActions.MESSAGE.ordinal());
+                (selectedMassAction == ContestMassActions.MESSAGE.ordinal())|| (selectedMassAction == ContestMassActions.MESSAGE_ALL_AUTHORS.ordinal());
+
         Boolean isSetFlagTextToolTipAction =
                 (selectedMassAction == ContestMassActions.FLAG.ordinal());
         Boolean isSetModelSettingsAction =

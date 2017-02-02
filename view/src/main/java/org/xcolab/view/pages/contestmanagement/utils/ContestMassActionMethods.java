@@ -2,9 +2,11 @@ package org.xcolab.view.pages.contestmanagement.utils;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
@@ -20,8 +22,10 @@ import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfir
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -58,10 +62,82 @@ public class ContestMassActionMethods {
         csvExportHelper.initiateDownload(exportFileName, response);
     }
 
+    private static List<Proposal> getProposalsInOpenForSubmissionPhase(Long contestPK) {
+        List<ContestPhase> allPhases = ContestClientUtil.getAllContestPhases(contestPK);
+        Map<Long,Proposal> proposalsMap = new HashMap<>();
+        for(ContestPhase cp : allPhases){
+            ContestPhaseType cpt = ContestClientUtil.getContestPhaseType(cp.getContestPhaseType());
+            if(cpt.getStatus().equals(ContestStatus.OPEN_FOR_SUBMISSION.name())){
+                List<Proposal> proposals = ProposalClientUtil
+                        .getActiveProposalsInContestPhase(cp.getContestPhasePK());
+                for(Proposal p: proposals){
+                    if(proposalsMap.get(p.getProposalId())==null) {
+                        proposalsMap.put(p.getProposalId(),p);
+                    }
+                }
+            }
+
+
+        }
+
+        List<Proposal> ret = new ArrayList<>();
+        ret.addAll(proposalsMap.values());
+        return ret;
+    }
+
     private static List<Proposal> getProposalsInActiveContestPhase(Long contestPK) {
         ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contestPK);
         return ProposalClientUtil
                 .getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK());
+    }
+
+    public static void sendMassMessageToAllProposalAuthors(List<Long> contestList, Object massMessageWrapperObject,
+            HttpServletRequest request) {
+
+        MassMessageBean massMessageBean = (MassMessageBean) massMessageWrapperObject;
+        Set<Long> recipientIds = new HashSet<>();
+        final StringBuilder contestNames = new StringBuilder();
+
+        for (Long contestId : contestList) {
+            Contest c = ContestClientUtil.getContest(contestId);
+            if (!c.getIsSharedContestInForeignColab()) {
+                contestNames.append(c.getContestShortName()).append("; ");
+                List<Proposal> proposalsInActiveContestPhase =
+                        getProposalsInOpenForSubmissionPhase(contestId);
+
+                for (Proposal proposal : proposalsInActiveContestPhase) {
+                    List<Member> proposalMember =
+                            ProposalClientUtil.getProposalMembers(proposal.getProposalId());
+                    for (Member member : proposalMember) {
+                        if (!recipientIds.contains(member.getUserId())) {
+                            recipientIds.add(member.getUserId());
+                        }
+                    }
+                }
+            }
+        }
+        sendEmail(massMessageBean,recipientIds,contestList,contestNames);
+    }
+    private static void sendEmail(MassMessageBean massMessageBean, Set<Long> recipientIds,List<Long> contestList, StringBuilder contestNames){
+
+        final String messageSubject = massMessageBean.getSubject();
+        final String messageBody = massMessageBean.getBody();
+        MessagingClient.sendMessage(messageSubject, messageBody,
+                CLIMATE_COLAB_TEAM_USER_ID, CLIMATE_COLAB_TEAM_USER_ID,
+                new ArrayList<>(recipientIds));
+
+        final String emailSubject = "Mass message: " + messageSubject;
+        final String emailBody =
+                String.format(
+                        "The following message was sent to %d users in %d contests (%s): <br "
+                                + "/><br /><br />",
+                        recipientIds.size(), contestList.size(), contestNames) + HtmlUtil
+                        .addHtmlLineBreaks(messageBody);
+
+        final String adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.get();
+
+        EmailClient.sendEmail(adminEmail, adminEmail, emailSubject,
+                emailBody, true, null);
     }
 
     public static void sendMassMessage(List<Long> contestList, Object massMessageWrapperObject,
@@ -90,24 +166,8 @@ public class ContestMassActionMethods {
             }
         }
 
-        final String messageSubject = massMessageBean.getSubject();
-        final String messageBody = massMessageBean.getBody();
-        MessagingClient.sendMessage(messageSubject, messageBody,
-                CLIMATE_COLAB_TEAM_USER_ID, CLIMATE_COLAB_TEAM_USER_ID,
-                new ArrayList<>(recipientIds));
+        sendEmail(massMessageBean,recipientIds,contestList,contestNames);
 
-        final String emailSubject = "Mass message: " + messageSubject;
-        final String emailBody =
-                String.format(
-                        "The following message was sent to %d users in %d contests (%s): <br "
-                                + "/><br /><br />",
-                        recipientIds.size(), contestList.size(), contestNames) + HtmlUtil
-                        .addHtmlLineBreaks(messageBody);
-
-        final String adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.get();
-
-        EmailClient.sendEmail(adminEmail, adminEmail, emailSubject,
-                emailBody, true, null);
     }
 
     public static void changeSubscriptionStatus(List<Long> contestList,

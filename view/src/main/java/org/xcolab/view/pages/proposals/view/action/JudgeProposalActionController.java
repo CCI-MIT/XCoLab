@@ -207,6 +207,7 @@ public class JudgeProposalActionController {
                 ProposalContestPhaseAttribute fellowActionAttribute = ProposalPhaseClientUtil
                         .getProposalContestPhaseAttribute( proposal.getProposalId(),judgingPhase.getContestPhasePK(),
                                 ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
+
                 if(fellowActionAttribute!=null) {
                     JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue().intValue());
                     // Ignore proposals that have not been passed to judge

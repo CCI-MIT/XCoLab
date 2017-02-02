@@ -1,14 +1,19 @@
 package org.xcolab.service.proposal.domain.proposalversion;
 
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+
+import org.xcolab.model.tables.pojos.Proposal2Phase;
 import org.xcolab.model.tables.pojos.ProposalVersion;
 
 import java.util.List;
+
 
 
 import static org.xcolab.model.Tables.PROPOSAL_VERSION;
@@ -68,6 +73,30 @@ public class ProposalVersionDaoImpl implements ProposalVersionDao {
                 .getQuery();
 
         return query.fetchOne().into(Integer.class);
+    }
+
+
+    public List<ProposalVersion> findByProposal2Phase(List<Proposal2Phase> proposal2Phases, Long proposalId) {
+
+        final SelectQuery<Record> query = dslContext.selectDistinct()
+                .from(PROPOSAL_VERSION).getQuery();
+        Condition versionsRange = null;
+        Condition versionsRangeOr = null ;
+        for(Proposal2Phase p2p : proposal2Phases) {
+
+            versionsRange = PROPOSAL_VERSION.VERSION.ge(p2p.getVersionFrom()).and(PROPOSAL_VERSION.VERSION.le(p2p.getVersionTo()));
+            if(versionsRangeOr == null){
+                versionsRangeOr = versionsRange;
+            }else{
+                versionsRangeOr = versionsRangeOr.or(versionsRange);
+            }
+
+        }
+        query.addConditions(PROPOSAL_VERSION.PROPOSAL_ID.eq(proposalId));
+
+        query.addConditions(versionsRangeOr);
+
+        return query.fetchInto(ProposalVersion.class);
     }
 
 }

@@ -203,6 +203,7 @@
 		<![CDATA[
 
 		var MASS_MESSAGE_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('MESSAGE')}");
+		var MASS_MESSAGE_ALL_AUTHORS_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('MESSAGE_ALL_AUTHORS')}");
 		var REPORT_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('REPORT_PEOPLE_IN_CURRENT_PHASE')}");
 		var FLAG_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('FLAG')}");
 		var MODEL_SETTINGS_SELECT_ID = parseInt("${contestOverviewWrapper.getMassActionIndex('MODEL_SETTINGS')}");
@@ -235,7 +236,7 @@
 					editFormElement.action = actionURL;
 				}
 
-				if(selectedDropDownId == MASS_MESSAGE_SELECT_ID){
+				if(selectedDropDownId == MASS_MESSAGE_SELECT_ID || selectedDropDownId == MASS_MESSAGE_ALL_AUTHORS_SELECT_ID){
 					massMessageDiv.style.display = '';
 				} else{
 					massMessageDiv.style.display = 'none';
