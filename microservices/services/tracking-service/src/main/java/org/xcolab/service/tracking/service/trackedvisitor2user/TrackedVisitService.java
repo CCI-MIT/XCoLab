@@ -15,11 +15,15 @@ public class TrackedVisitService {
 
     private static final Logger log = LoggerFactory.getLogger(TrackedVisitService.class);
 
-    @Autowired
-    private TrackedVisitDao trackedVisitDao;
+    private final TrackedVisitDao trackedVisitDao;
+    private final IpTranslationService ipTranslationService;
 
     @Autowired
-    private IpTranslationService ipTranslationService;
+    public TrackedVisitService(IpTranslationService ipTranslationService,
+            TrackedVisitDao trackedVisitDao) {
+        this.ipTranslationService = ipTranslationService;
+        this.trackedVisitDao = trackedVisitDao;
+    }
 
     public TrackedVisit createTrackedVisit(TrackedVisit trackedVisit) {
         final String remoteIp = trackedVisit.getIp();
@@ -29,8 +33,14 @@ public class TrackedVisitService {
                 trackedVisit.setCity(location.getCity());
             });
         } catch (IpFormatException e) {
-            log.warn("Failed to resolve location for IP from {}", trackedVisit);
+            if (!isLocalhost(remoteIp)) {
+                log.warn("Failed to resolve location for IP {}", remoteIp);
+            }
         }
         return trackedVisitDao.create(trackedVisit);
+    }
+
+    private boolean isLocalhost(String remoteIp) {
+        return "127.0.0.1".equals(remoteIp) || "0:0:0:0:0:0:0:1".equals(remoteIp);
     }
 }

@@ -100,7 +100,7 @@ public class BalloonUtils {
 			if (! texts.isEmpty()) {
 				but.setBalloonTextId(texts.get(rand.nextInt(texts.size())).getId_());
 			}else{
-				but.setBalloonTextId(0l);
+				but.setBalloonTextId(0L);
 			}
 
 			BalloonsClient.createBalloonUserTracking(but);

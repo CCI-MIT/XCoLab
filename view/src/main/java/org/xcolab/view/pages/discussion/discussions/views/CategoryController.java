@@ -3,7 +3,6 @@ package org.xcolab.view.pages.discussion.discussions.views;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,8 +20,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
-        .DiscussionAuthorizationException;
+import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
 import java.io.IOException;
 import java.util.Comparator;
@@ -46,11 +44,6 @@ public class CategoryController extends BaseDiscussionController {
                                  @PathVariable String sortColumn) {
         model.addAttribute("_activePageLink", "community");
         return showCategories(request,response,model,sortColumn,false);
-    }
-
-    @ModelAttribute("communityTopContentArticleId")
-    public Long getCommunityTopContentArticleId(){
-        return  COMMUNITY_TOP_CONTENT_ARTICLE_ID;
     }
 
     public String showCategories(HttpServletRequest request, HttpServletResponse response, Model model,

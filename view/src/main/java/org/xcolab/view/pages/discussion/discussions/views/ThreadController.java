@@ -3,7 +3,6 @@ package org.xcolab.view.pages.discussion.discussions.views;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,11 +54,6 @@ public class ThreadController extends BaseDiscussionController {
         return "/discussion/thread";
     }
 
-
-    @ModelAttribute("communityTopContentArticleId")
-    public Long getCommunityTopContentArticleId(){
-        return  COMMUNITY_TOP_CONTENT_ARTICLE_ID;
-    }
     @GetMapping("/discussion/threads/create")
     public String createThread(HttpServletRequest request, HttpServletResponse response, Model model)
             throws DiscussionAuthorizationException {

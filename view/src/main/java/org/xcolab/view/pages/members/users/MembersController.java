@@ -35,15 +35,14 @@ public class MembersController {
 
     private static final int AUTOCOMPLETE_MAX_USERS = 15;
 
-    private static final long COMMUNITY_TOP_CONTENT_ARTICLE_ID = ConfigurationAttributeKey.MEMBERS_CONTENT_ARTICLE_ID.get();
-
     @RequestMapping("/members")
     public String showUsers(HttpServletRequest request, HttpServletResponse response, Model model,
             SortFilterPage sortFilterPage,
             @RequestParam(value = "page", required = false) Long pageParam,
             @RequestParam(value = "memberCategory", required = false) String memberCategoryParam) {
 
-        model.addAttribute("communityTopContentArticleId", COMMUNITY_TOP_CONTENT_ARTICLE_ID);
+        model.addAttribute("communityTopContentArticleId",
+                ConfigurationAttributeKey.MEMBERS_CONTENT_ARTICLE_ID.get());
         int page = 1;
         if (pageParam != null) {
             page = pageParam.intValue();

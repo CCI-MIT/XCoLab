@@ -37,11 +37,9 @@ import javax.servlet.http.HttpServletResponse;
 
 public class MessagingController {
 
-    private static final long COMMUNITY_TOP_CONTENT_ARTICLE_ID = ConfigurationAttributeKey.MEMBERS_CONTENT_ARTICLE_ID.get();
-
     @ModelAttribute("communityTopContentArticleId")
             public Long getCommunityTopContentArticleId(){
-        return COMMUNITY_TOP_CONTENT_ARTICLE_ID;
+        return ConfigurationAttributeKey.MEMBERS_CONTENT_ARTICLE_ID.get();
     }
 
     @GetMapping({"/messaging","/web/guest/messaging"})

@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.discussion.discussions.views;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
@@ -15,10 +16,7 @@ import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-
 public abstract class BaseDiscussionController {
-
-    protected static final long COMMUNITY_TOP_CONTENT_ARTICLE_ID = ConfigurationAttributeKey.DISCUSSION_CONTENT_ARTICLE_ID.get();
 
     protected CategoryGroup getCategoryGroup(HttpServletRequest request) {
         DiscussionPreferences preferences = new DiscussionPreferences();
@@ -55,6 +53,11 @@ public abstract class BaseDiscussionController {
         if (checkEditPermissions && !getCanEdit(permissions, categoryGroup, additionalId)) {
             throw new DiscussionAuthorizationException(accessDeniedMessage);
         }
+    }
+
+    @ModelAttribute("communityTopContentArticleId")
+    public Long getCommunityTopContentArticleId(){
+        return ConfigurationAttributeKey.DISCUSSION_CONTENT_ARTICLE_ID.get();
     }
 
     public abstract boolean getCanView(DiscussionPermissions permissions,
