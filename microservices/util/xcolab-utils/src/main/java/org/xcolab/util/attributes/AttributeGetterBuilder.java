@@ -26,6 +26,11 @@ public class AttributeGetterBuilder<ValueT> {
         return this;
     }
 
+    public AttributeGetterBuilder<ValueT> defaultValue(AttributeGetter<ValueT> defaultValueGetter) {
+        attributeGetter = new OptionalAttribute<>(attributeGetter, defaultValueGetter);
+        return this;
+    }
+
     public AttributeGetter<ValueT> build() {
         return attributeGetter;
     }

@@ -1,0 +1,14 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+          version="2.0">
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/css/jquery.fileupload.min.css" />
+
+    <h2>Upload your image</h2>
+    <collab:imageUpload uniqueName="fileupload1" shouldDisplayUrl="true" defaultImage="MEMBER"/>
+</xcolab:layout>
+</jsp:root>

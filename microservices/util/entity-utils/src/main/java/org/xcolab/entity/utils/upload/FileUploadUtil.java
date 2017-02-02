@@ -8,9 +8,11 @@ import javax.imageio.ImageIO;
 
 public class FileUploadUtil {
 
-    public static byte[] resizeAndCropImage(BufferedImage img, int IMAGE_CROP_WIDTH_PIXELS, int IMAGE_CROP_HEIGHT_PIXELS) throws IOException {
+    public static byte[] resizeAndCropImage(BufferedImage img,
+            int imageCropWidthPixels, int imageCropHeightPixels)
+            throws IOException {
         FileUploadUtilHelper helper = new FileUploadUtilHelper(img);
-        BufferedImage resImg = helper.resizeImage(IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS);
+        BufferedImage resImg = helper.resizeImage(imageCropWidthPixels, imageCropHeightPixels);
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         if (helper.getContainsTransparency()) {

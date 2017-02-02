@@ -1,72 +1,137 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-  xmlns:jsp="http://java.sun.com/JSP/Page"  
-  version="2.0">
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          version="2.0">
 
-  <jsp:directive.attribute name="uploadImageDivId" type="java.lang.String" required="true" rtexprvalue="true" description="uploadImageDivId" />
-  <jsp:directive.attribute name="keepFormat" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Should the image be cropped to square" />
+    <jsp:directive.attribute name="uniqueName" type="java.lang.String" required="true"
+                             rtexprvalue="true" description="Unique name for this upload widget"/>
+    <jsp:directive.attribute name="defaultImageId" type="java.lang.Long" required="false"
+                             rtexprvalue="true" description="Default image id, if any"/>
+    <jsp:directive.attribute name="imageIdInput" type="java.lang.String" required="false"
+                             rtexprvalue="true" description="Id of the input field
+                             to hold the new image id, if any"/>
+    <jsp:directive.attribute name="shouldDisplayUrl" type="java.lang.Boolean" required="false"
+                             rtexprvalue="true" description="If true, the image URL will be displayed after upload"/>
+    <jsp:directive.attribute name="defaultImage" type="java.lang.String" required="false"
+                             rtexprvalue="true" description="Fallback image type"/>
+    <jsp:directive.attribute name="compactView" type="java.lang.Boolean" required="false"
+                             rtexprvalue="true" description="If true, compact view will be used"/>
+    <jsp:directive.attribute name="buttonText" type="java.lang.String" required="false"
+                             rtexprvalue="true" description="Text for the upload button"/>
 
-  <c:set var="fileUploadInputId" value="${uploadImageDivId}Input"/>
-  <c:set var="fileUploadInputForm" value="${fileUploadInputId}Form"/>
-  <c:set var="fileUploadInputFrame" value="${fileUploadInputId}Frame"/>
+    <c:set var="shouldDisplayUrl" value="${(empty shouldDisplayUrl) ? false : shouldDisplayUrl}" />
+    <c:set var="compactView" value="${(empty compactView) ? false : compactView}" />
+    <c:set var="defaultImage" value="${(empty defaultImage) ? 'NONE' : defaultImage}" />
+    <c:set var="defaultImageId" value="${(empty defaultImageId) ? '' : defaultImageId}" />
+    <c:set var="buttonText" value="${(empty buttonText) ? 'UPLOAD image' : buttonText}" />
 
-  <form action="/images/upload" method="post" enctype="multipart/form-data"
-        target="_${fileUploadInputFrame}" id="${fileUploadInputForm}" class="fileUploadFrame">
-  <c:if test="${keepFormat}">
-    <input type="hidden" name="keepFormat"  value="true" />
-  </c:if>
-    <input type="file" name="file" id="${fileUploadInputId}" />
-  </form>
+    <c:set var="uploadImageInputId" value="${uniqueName}Input"/>
+    <c:set var="urlDisplayDiv" value="${uniqueName}ImageUrl"/>
+    <c:set var="previewImgId" value="${uniqueName}Preview" />
 
-  <iframe name="_${fileUploadInputFrame}" id="${fileUploadInputFrame}" class="hidden" style="display: none;"><!-- comment --></iframe>
+    <c:set var="FILE_UPLOAD_MAX_WIDTH" value="300" />
+    <c:set var="FILE_UPLOAD_MAX_HEIGHT" value="300" />
+    <c:set var="FILE_UPLOAD_MAX_FILE_SIZE" value="2097152" /> <!-- Max image size 2MB -->
+    <c:set var="FILE_UPLOAD_URL" value="/images/upload" />
 
-  <script type="text/javascript">
-    (function(){
-      var fileUploadInputId = "#" + "${fileUploadInputId}";
-      var fileUploadInputForm = "#" + "${fileUploadInputForm}";
-      var fileUploadInputFrame = "#" + "${fileUploadInputFrame}";
-      var uploadImageDivId  = "#" + "${uploadImageDivId}";
-      var uploadWidget = uploadImageDivId + "UploadWidget";
+    <c:if test="${empty _imageUploadScriptsLoaded}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/css/jquery.fileupload.min.css"/>
 
-      jQuery(fileUploadInputId).change(function() {
-        jQuery(fileUploadInputForm).submit();
+        <script>
+            var FILE_UPLOAD_URL = '${FILE_UPLOAD_URL}';
+            var FILE_UPLOAD_MAX_WIDTH = ${FILE_UPLOAD_MAX_WIDTH};
+            var FILE_UPLOAD_MAX_HEIGHT = ${FILE_UPLOAD_MAX_HEIGHT};
+            var FILE_UPLOAD_MAX_FILE_SIZE = ${FILE_UPLOAD_MAX_FILE_SIZE};
+            var fileUploadVars = {};
+        </script>
 
-      });
+        <c:set var="_imageUploadScriptsLoaded" value="true" scope="request"/>
+        <c:set var="initializeScripts" value="true"/>
+    </c:if>
 
-      jQuery(fileUploadInputFrame).load(
-        function() {
-          try {
-            if(jQuery(this).contents().text()) {
-              var response;
-              if (isJSONavailable()) {
-                response = JSON.parse(jQuery(this).contents().find("body").text());
-              } else {
-                response = eval("(" + jQuery(this).contents().find("body").text() + ")");
-              }
-              console.log(response);
-              if (response.hasOwnProperty("imageId") &amp;&amp; response.imageId > 0) {
-                updatePictureId(uploadImageDivId, response.imageId);
-                noty({text: 'Image upload succeeded.', type: 'success'});
-              }
-            }
-          }
-          catch (e) {
-              noty({text: 'Image upload failed.', type: 'error'});
-            console.log("fileUploadFrame error",e);
-          }
+    <div class="c-Upload ${compactView ? 'c-Upload--compact' : ''}">
+        <img id="${previewImgId}"
+             src="/image?img_id=${defaultImageId}&amp;defaultImage=${defaultImage}" />
+        <div class="c-Upload__button">
+            <span class="c-Button__primary fileinput-button">
+                ${buttonText}
+                <input id="${uploadImageInputId}" type="file" name="file" />
+            </span>
+        </div>
 
+        <div style="${shouldDisplayUrl ? '' : 'display: none'}">
+            Link to your image: <a id="${urlDisplayDiv}" href=""><!-- --></a>
+        </div>
+    </div>
+
+    <script>
+        fileUploadVars['${uniqueName}'] = {};
+        fileUploadVars['${uniqueName}'].fileUploadInputId = "#" + "${uploadImageInputId}";
+        fileUploadVars['${uniqueName}'].previewImgId = "#" + "${previewImgId}";
+        fileUploadVars['${uniqueName}'].imageIdInputId = '#' + '${imageIdInput}';
+        fileUploadVars['${uniqueName}'].urlDisplayDiv = '#' + '${urlDisplayDiv}';
+    </script>
+
+    <c:if test="${empty defaultImageId and not empty imageIdInput}">
+        <script>
+            jQuery(function() {
+                var vars = fileUploadVars['${uniqueName}'];
+                var imageIdInputVal = jQuery(vars.imageIdInputId).val();
+                if (imageIdInputVal > 0) {
+                    jQuery(vars.previewImgId).attr('src',
+                        '/image?img_id=' + imageIdInputVal + '&amp;defaultImage=${defaultImage}')
+                }
+            });
+        </script>
+    </c:if>
+
+    <c:if test="${initializeScripts}">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-load-image/2.10.0/load-image.all.min.js"><!-- --></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/javascript-canvas-to-blob/3.6.0/js/canvas-to-blob.min.js"><!-- --></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.iframe-transport/1.0.1/jquery.iframe-transport.min.js"><!-- --></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/js/jquery.fileupload.min.js"><!-- --></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/js/jquery.fileupload-process.min.js"><!-- --></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/js/jquery.fileupload-image.min.js"><!-- --></script>
+    </c:if>
+
+    <script>
+        jQuery(function() {
+            var vars = fileUploadVars['${uniqueName}'];
+            jQuery(vars.fileUploadInputId).fileupload({
+                url: FILE_UPLOAD_URL,
+                dataType: 'json',
+                autoUpload: true,
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)\$/i,
+                maxFileSize: FILE_UPLOAD_MAX_FILE_SIZE,
+                // Enable image resizing, except for Android and Opera,
+                // which actually support image resizing, but fail to
+                // send Blob objects via XHR requests:
+                disableImageResize: /Android(?!.*Chrome)|Opera/
+                    .test(window.navigator.userAgent),
+                imageMaxWidth: FILE_UPLOAD_MAX_WIDTH,
+                imageMaxHeight: FILE_UPLOAD_MAX_HEIGHT,
+                imageCrop: true,
+                previewMaxWidth: FILE_UPLOAD_MAX_WIDTH,
+                previewMaxHeight: FILE_UPLOAD_MAX_HEIGHT,
+                previewCrop: true
+            }).on('fileuploaddone', function (e, data) {
+                if (!data.result.error) {
+                    jQuery(vars.previewImgId).attr('src', data.result.imageUrl);
+                    jQuery(vars.imageIdInputId).val(data.result.imageId);
+                    jQuery(vars.urlDisplayDiv).attr('href', data.result.imageUrl);
+                    jQuery(vars.urlDisplayDiv).text(data.result.imageUrl);
+                    noty({text: 'Image upload succeeded.', type: 'success'});
+                } else {
+                    noty({text: 'Image upload failed.', type: 'error'});
+                    console.error('Image upload failed: ' + data.result.message);
+                }
+            }).on('fileuploadfail', function (e, data) {
+                noty({text: 'Image upload failed.', type: 'error'});
+            }).on('fileuploadprocessfail', function(e, data) {
+                noty({text: 'Invalid image! Make sure your image is below 2MB and is either ' +
+                'a .png, .jpg or .jpeg image.', type: 'warning'});
+            }).prop('disabled', !jQuery.support.fileInput)
+                .parent().addClass(jQuery.support.fileInput ? undefined : 'disabled');
         });
-
-      function updateUploadBtnOffset() {
-        var container = jQuery(uploadWidget);
-        var containerOffset = container.offset();
-        jQuery(fileUploadInputId).offset(containerOffset);
-      }
-
-      jQuery(function() {
-        updateUploadBtnOffset();
-        $(window).resize(updateUploadBtnOffset);
-      });
-    }());
     </script>
 
 </jsp:root>

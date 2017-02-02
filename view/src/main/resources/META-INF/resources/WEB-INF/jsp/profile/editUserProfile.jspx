@@ -2,7 +2,8 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-	  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+    xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
     <jsp:directive.include file="./init.jspx" />
@@ -40,12 +41,6 @@
 
     <c:set var="deleteProfileUrl" value="/members/profile/${userBean.userId}/delete" />
 
-	<form style="margin-top: 20px;" action="/images/upload" method="post"
-		  enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
-		<input type="file" name="file" id="portraitUploadInput" />
-		<input type="hidden" name="resize" value="true"/>
-	</form>
-
 	<h1>Edit Member Profile</h1>
 	<div class="is-required">
 		<span class="required-field"><!-- --></span> is a required field.
@@ -66,10 +61,9 @@
 			<div class="comm_member">
 				<div class="comm_member-photo">
 					<div style="float: right">
-						<img src="${userBean.portraitString}" id="userPortrait"
-							 width="150" height="150" alt="${userBean.screenName}" />
-						<div class="clearfix"><!--  --></div>
-						<div id="uploadImageContainer"><!--  --></div>
+                        <form:hidden id="userPortraitInput" path="imageId" />
+                        <collab:imageUpload uniqueName="userPortraitUpload" imageIdInput="userPortraitInput"
+                                            defaultImage="MEMBER" />
 					</div>
 				</div>
 				<div class="comm_member-info">
@@ -254,8 +248,6 @@
 				<div class="clearfix"><!-- --></div>
 			</div>
 		</div> <!-- /right_col -->
-
-		<form:hidden id="userRegistrationImageId" path="imageId" />
 	</form:form>
 
 	<c:if test="${newsletterActive}">
@@ -394,39 +386,6 @@
 	</iframe>
 
 	<script type="text/javascript">
-		jQuery("#portraitUploadInput").change(function() {
-			console.log("Start Upload.");
-			jQuery("#fileUploadForm").submit();
-
-		});
-
-		function isJSONavailable(){
-			return typeof JSON === 'object' &amp;&amp; typeof JSON.parse === 'function';
-		}
-
-		function updateProfilePictureId (imageId){
-			jQuery("#userPortrait").attr("src","/image/contest?img_id=" + imageId);
-			jQuery("#userRegistrationImageId").val(imageId);
-		}
-
-		jQuery("#fileUploadFrame").load(function() {
-			try {
-				if(jQuery(this).contents().text()) {
-					var response;
-					if (isJSONavailable()) {
-						response = JSON.parse(jQuery(this).contents().text());
-					} else {
-						response = eval("(" + jQuery(this).contents().text() + ")");
-					}
-					if (response.hasOwnProperty("imageId") &amp;&amp; response.imageId > 0) {
-						updateProfilePictureId(response.imageId);
-                        noty({text: 'Profile image uploaded, press save to store!', type: 'success'});
-					}
-				}
-			} catch (e) {
-                noty({text: 'Profile image upload failed! Make sure the image is below 3Mb in size.', type: 'error'});
-			}
-		});
 
 		function updateUploadBtnOffset() {
 			var container = jQuery("#uploadImageContainer");

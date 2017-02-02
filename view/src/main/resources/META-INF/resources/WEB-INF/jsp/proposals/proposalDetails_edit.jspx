@@ -142,23 +142,9 @@
                     <em>optional</em></span>
                 </label>
 
-                <div class="upload proposalImageUpload">
-                    <div class="uploadbox" id="proposalImage">
-                        <c:choose>
-                            <c:when test='${proposal.imageId > 0}'>
-                                <c:set var="imageUrl" value="${contest.proposalLogoPath}image/proposal?img_id=${proposal.imageId}" />
-                            </c:when>
-                            <c:otherwise>
-                                <c:set var="imageUrl" value="${_themeImageFolder}/proposal_default.png" />
-                            </c:otherwise>
-                        </c:choose>
-                        <img src="${imageUrl }" width="52" height="52" alt="${proposal.name}" id="proposalImageImg"/>
-                        <form:input path="imageId" cssStyle="display: none;" id="proposalImageId" />
-                    </div>
-
-                    <div id="uploadWidget" class="uploadWidget optional">Upload an image (optional)</div>
-                    <div class="clear"><!--  --></div>
-                </div>
+                <form:hidden path="imageId" id="proposalImageId" />
+                <collab:imageUpload uniqueName="proposalImageUpload" imageIdInput="proposalImageId"
+                                    compactView="true" defaultImage="PROPOSAL" buttonText="Upload an image (optional)" />
             </div>
 
             <div class="addpropbox q3">
@@ -289,24 +275,6 @@
 
     <script type="text/javascript">
         var submitTimer;
-
-        jQuery("#fileUploadInput").change(function() {
-            jQuery("#fileUploadForm").submit();
-
-        });
-        jQuery("#fileUploadFrame").load(
-                function() {
-                    try {
-                        var response = eval("("	+ jQuery(this).contents().text() + ")");
-
-                        jQuery("#proposalImageImg").attr("src", "${contest.proposalLogoPath}image/proposal?img_id=" + response.imageId);
-
-                        jQuery("#proposalImageId").val(response.imageId);
-                    }
-                    catch (e) {
-                    }
-                }
-        );
 
         function updateUploadBtnOffset() {
             var container = jQuery("#uploadWidget");

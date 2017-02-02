@@ -13,14 +13,6 @@ function initializeDropDowns() {
     });
 }
 
-function isJSONavailable(){
-    return typeof JSON === 'object' && typeof JSON.parse === 'function';
-}
-function updatePictureId (uploadImageDivId, imageId){
-    jQuery(uploadImageDivId + "Img").attr("src","/image/contest?img_id=" + imageId);
-    jQuery(uploadImageDivId + "Id").val(imageId);
-}
-
 function updateUploadBtnOffset(uploadWidget,fileUploadInputId) {
     console.log("updateUploadBtnOffset call");
     var container = jQuery(uploadWidget);

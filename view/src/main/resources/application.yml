@@ -16,4 +16,4 @@ spring:
       enabled: false
   http:
     multipart:
-      max-file-size: 5MB
+      max-file-size: 2MB

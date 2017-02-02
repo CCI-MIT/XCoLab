@@ -23,7 +23,6 @@
 
 		<p>*Be sure to click <strong>SAVE changes</strong> before exiting a tab or submitting a comment for the contest
 			team, or your content may be lost.</p>
-		<collab:imageUpload uploadImageDivId="logoImage" keepFormat="true"/>
 
 		<h1>Admin section</h1>
 		<div id="resourcesSections">

@@ -24,6 +24,10 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> COLAB_URL =
             ConfigurationAttributes.newStringAttribute("COLAB_URL")
                     .withCache().build();
+    public static final AttributeGetter<String> COLAB_URL_PRODUCTION =
+            ConfigurationAttributes.newStringAttribute("COLAB_URL_PRODUCTION")
+                    .withCache()
+                    .defaultValue(COLAB_URL).build();
     public static final AttributeGetter<String> BLOG_URL =
             ConfigurationAttributes.newStringAttribute("BLOG_URL")
                     .withCache().build();

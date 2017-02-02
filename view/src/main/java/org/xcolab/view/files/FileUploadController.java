@@ -4,9 +4,9 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.xcolab.client.files.FilesClient;
@@ -22,29 +22,35 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Controller
+@RestController
 @PropertySource({"file:${user.home}/.xcolab.application.properties"})
 public class FileUploadController {
 
+    private static final int IMAGE_CROP_WIDTH_PIXELS = 300;
+    private static final int IMAGE_CROP_HEIGHT_PIXELS = 300;
+
+    private final String fileUploadPath;
+
     @Autowired
-    private Environment env;
+    public FileUploadController(Environment env) {
+        fileUploadPath = env.getProperty("files.upload.dir");
+    }
 
     @PostMapping("/images/upload")
-    public void singleFileUpload(@RequestParam("file") MultipartFile file,
-            HttpServletRequest request, HttpServletResponse response) {
+    public ImageResponse singleFileUpload(@RequestParam("file") MultipartFile file,
+            HttpServletRequest request, HttpServletResponse response,
+            @RequestParam(required = false) Boolean resize) {
         try {
-
-            String fileUploadPath = env.getProperty("files.upload.dir");
-
             String path = request.getSession().getServletContext().getRealPath("/");
 
-            path = (fileUploadPath!=null)?(fileUploadPath):(path);
-            // Get the file and save it somewhere
+            path = (fileUploadPath != null) ? (fileUploadPath) : (path);
+
             byte[] bytes = file.getBytes();
 
-            if(request.getParameter("resize")!=null){
-                bytes = FileUploadUtil.resizeAndCropImage(ImageIO.read(new ByteArrayInputStream(bytes)),
-                        150, 150);
+            if (request.getParameter("resize") != null) {
+                bytes = FileUploadUtil
+                        .resizeAndCropImage(ImageIO.read(new ByteArrayInputStream(bytes)),
+                                IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS);
             }
 
             FileEntry fileEntry = new FileEntry();
@@ -55,16 +61,41 @@ public class FileUploadController {
             fileEntry.setFileEntryName(FilenameUtils.getName(nameExt));
 
             fileEntry = FilesClient.createFileEntry(fileEntry, bytes, path);
-            // return JSON with image id
-            response.getWriter()
-                    .append("{\"imageId\": ")
-                    .append(String.valueOf(fileEntry.getFileEntryId()))
-                    .append("}");
-            response.getWriter().close();
 
-
+            final String imageIdString = String.valueOf(fileEntry.getFileEntryId());
+            return new ImageResponse(imageIdString, fileEntry.getLinkUrl(), true, "");
         } catch (IOException e) {
+            return new ImageResponse(null, null, false, e.getMessage());
+        }
+    }
 
+    private static class ImageResponse {
+        private final String imageId;
+        private final String imageUrl;
+        private final boolean success;
+        private final String message;
+
+        private ImageResponse(String imageId, String imageUrl, boolean success, String message) {
+            this.imageId = imageId;
+            this.imageUrl = imageUrl;
+            this.success = success;
+            this.message = message;
+        }
+
+        public String getImageId() {
+            return imageId;
+        }
+
+        public String getImageUrl() {
+            return imageUrl;
+        }
+
+        public boolean isSuccess() {
+            return success;
+        }
+
+        public String getMessage() {
+            return message;
         }
     }
 }

@@ -18,11 +18,8 @@
     <xcolab:loadCkEditor />
 
     <div class="cmsDetailsBox">
-        <collab:imageUpload uploadImageDivId="contestImage"/>
-
         <p>*Be sure to click <strong>SAVE changes</strong> before exiting a tab or submitting a comment for the contest
             team, or your content may be lost.</p>
-        <collab:imageUpload uploadImageDivId="logoImage" keepFormat="true"/>
 
         <h2>Homepage content</h2>
         <form:form action="${updateContestDescriptionURL }" commandName="contestDescriptionBean" cssClass="addpropform"
@@ -107,28 +104,9 @@
                     copyrights attached to the image.
                 </div>
 
-                <div class="upload contestImageUpload">
-
-                    <div class="uploadbox" id="contestImage">
-                        <c:choose>
-                            <c:when test='${contestWrapper.contestLogoId > 0}'>
-                                <c:set var="contestImageUrl"
-                                       value="/image/contest?img_id=${contestWrapper.contestLogoId}"/>
-                            </c:when>
-                            <c:otherwise>
-                                <c:set var="contestImageUrl" value="${_themeImageFolder}/proposal_default.png"/>
-                            </c:otherwise>
-                        </c:choose>
-                        <img src="${contestImageUrl }" width="52" height="52" alt="${contestWrapper.contestName} image"
-                             id="contestImageImg"/>
-                        <form:input path="contestLogoId" cssStyle="display: none;" id="contestImageId"/>
-
-                        <div class="clearfix"><!-- --></div>
-                    </div>
-
-                    <div id="contestImageUploadWidget" class="uploadWidget">Upload an image</div>
-                    <div class="clear"><!--  --></div>
-                </div>
+                <form:hidden path="contestLogoId" id="contestImageId"/>
+                <collab:imageUpload uniqueName="contestImage" imageIdInput="contestImageId" compactView="true"
+                                    defaultImage="CONTEST" defaultImageId="${contestWrapper.contestLogoId}" />
             </div>
 
             <div class="addpropbox blue">
@@ -140,25 +118,9 @@
                     and has a transparent background.
                 </div>
 
-                <div class="upload logoImageUpload">
-                    <div class="uploadbox" id="logoImage">
-                        <c:choose>
-                            <c:when test='${contestWrapper.sponsorLogoId > 0}'>
-                                <c:set var="logoImageUrl"
-                                       value="/image/proposal?img_id=${contestWrapper.sponsorLogoId}"/>
-                            </c:when>
-                            <c:otherwise>
-                                <c:set var="logoImageUrl" value="${_themeImageFolder}/proposal_default.png"/>
-                            </c:otherwise>
-                        </c:choose>
-                        <img src="${logoImageUrl }" width="52" height="52" alt="${contestWrapper.contestName} image"
-                             id="logoImageImg"/>
-                        <form:input path="sponsorLogoId" cssStyle="display: none;" id="logoImageId"/>
-                    </div>
-
-                    <div id="logoImageUploadWidget" class="uploadWidget optional">Upload an image (optional)</div>
-                    <div class="clear"><!--  --></div>
-                </div>
+                <form:hidden path="sponsorLogoId" id="logoImageId"/>
+                <collab:imageUpload uniqueName="logoImage" imageIdInput="logoImageId" compactView="true"
+                                    defaultImage="CONTEST" defaultImageId="${contestWrapper.sponsorLogoId}" />
             </div>
 
             <div class="addpropbox">

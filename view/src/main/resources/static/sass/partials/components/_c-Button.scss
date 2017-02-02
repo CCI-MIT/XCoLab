@@ -83,12 +83,12 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
 }
 
 //blue-button.a is for legacy support (e.g. ice faclet portlets)
-a.c-Button__primary, .c-Button__primary a, input.c-Button__primary, button.c-Button__primary { //a.primary-button, .blue-button a, input.primary-button
+span.c-Button__primary, a.c-Button__primary, .c-Button__primary a, input.c-Button__primary, button.c-Button__primary { //a.primary-button, .blue-button a, input.primary-button
   @include theme-button($c-Button__primary__backgroundColor, $c-Button__primary__borderColor, $hover-color: $c-Button__primary__backgroundColor--hover);
 }
 
 //gray-button.a is for legacy support (e.g. ice faclet portlets)
-a.c-Button__secondary, .c-Button__secondary a, input.c-Button__secondary, button.c-Button__secondary { //a.grey-button, .gray-button a, input.grey-button
+span.c-Button__secondary, a.c-Button__secondary, .c-Button__secondary a, input.c-Button__secondary, button.c-Button__secondary { //a.grey-button, .gray-button a, input.grey-button
   @include theme-button($c-Button__grey__backgroundColor, $c-Button__grey__borderColor);
 }
 a.c-Button__admin {

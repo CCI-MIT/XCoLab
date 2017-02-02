@@ -7,11 +7,19 @@ public class OptionalAttribute<T> implements AttributeGetter<T> {
 
     private final AttributeGetter<T> wrappedAttributeGetter;
     private final T defaultValue;
+    private final AttributeGetter<T> defaultValueGetter;
 
     public OptionalAttribute(AttributeGetter<T> wrappedAttributeGetter, T defaultValue) {
 
         this.wrappedAttributeGetter = wrappedAttributeGetter;
         this.defaultValue = defaultValue;
+        this.defaultValueGetter = null;
+    }
+
+    public OptionalAttribute(AttributeGetter<T> wrappedAttributeGetter, AttributeGetter<T> defaultValueGetter) {
+        this.wrappedAttributeGetter = wrappedAttributeGetter;
+        this.defaultValue = null;
+        this.defaultValueGetter = defaultValueGetter;
     }
 
     @Override
@@ -19,7 +27,13 @@ public class OptionalAttribute<T> implements AttributeGetter<T> {
         try {
             return wrappedAttributeGetter.get();
         } catch (AttributeNotFoundException e) {
-            return defaultValue;
+            if (defaultValue != null) {
+                return defaultValue;
+            } else if (defaultValueGetter != null) {
+                return defaultValueGetter.get();
+            } else {
+                throw new IllegalStateException("Optional attribute has no default value");
+            }
         }
     }
 

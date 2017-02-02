@@ -5,6 +5,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.files.FilesClient;
@@ -27,79 +28,84 @@ import javax.servlet.http.HttpServletResponse;
 @PropertySource({"file:${user.home}/.xcolab.application.properties"})
 public class ImageDisplayController {
 
+    private final String fileUploadPath;
+    private final boolean isProduction;
+
     @Autowired
-    private Environment env;
+    public ImageDisplayController(Environment env) {
+        fileUploadPath = env.getProperty("files.upload.dir");
+        isProduction = "production".equals(env.getProperty("environment"));
+    }
 
-    @GetMapping({"/image/{whatever}"})
-    public void serveImage(
-            HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String imageId = null;
+    @GetMapping({"/image/{whatever}", "/image"})
+    public void serveImage(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam(value = "img_id", required = false) Long imgId,
+            @RequestParam(required = false) Long portraitId,
+            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false, defaultValue = "NONE") DefaultImage defaultImage)
+            throws IOException {
+        Long imageId = null;
 
-        if (request.getParameter("img_id") != null) {
-            imageId = request.getParameter("img_id");
-        }
-
-        if (request.getParameter("portraitId") != null) {
-            if (request.getParameter("userId") != null) {
-                try {
-                    Member member = MembersClient.getMember(Long.parseLong(request.getParameter("userId")));
-                    if (member.getPortraitFileEntryId() != null) {
-                        imageId = member.getPortraitFileEntryId() + "";
-                    } else {
-                        imageId = null;
-                    }
-                } catch (MemberNotFoundException e) {
-                    imageId = request.getParameter("portraitId");
+        if (imgId != null) {
+            imageId = imgId;
+        } else if (userId != null) {
+            try {
+                Member member =
+                        MembersClient.getMember(Long.parseLong(request.getParameter("userId")));
+                if (member.getPortraitFileEntryId() != null) {
+                    imageId = member.getPortraitFileEntryId();
                 }
-            } else {
-                imageId = request.getParameter("portraitId");
+            } catch (MemberNotFoundException ignored) {
             }
         }
 
-        String path = request.getSession().getServletContext().getRealPath("/");
-        String fileUploadPath = env.getProperty("files.upload.dir");
+        if (imageId == null && portraitId != null) {
+            imageId = portraitId;
+        }
 
-        path = (fileUploadPath!=null)?(fileUploadPath):(path);
-        if (imageId != null && !imageId.isEmpty()) {
+        if (imageId != null) {
+            String path = request.getSession().getServletContext().getRealPath("/");
+            path = (fileUploadPath != null) ? (fileUploadPath) : (path);
+
             try {
-                FileEntry fileEntry = FilesClient.getFileEntry(new Long(imageId));
+                FileEntry fileEntry = FilesClient.getFileEntry(imageId);
                 String filePath = FilesClient.getFilePathFromFinalDestination(fileEntry, path);
                 if (filePath != null) {
                     //check if file exists
                     File f = new File(filePath);
-                    if(f.exists() && !f.isDirectory()) {
+                    if (f.exists() && !f.isDirectory()) {
                         sendImageToResponse(request, response, filePath);
                         return;
-                    }else{
-                        String environmentStatus = env.getProperty("environment");
-                        if(!environmentStatus.equals("production")){
+                    } else {
+                        if (!isProduction) {
                             response.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT);
-                            String newURL = ConfigurationAttributeKey.COLAB_URL.get() + "/"+ request.getRequestURI()+"?"+ request.getQueryString();
+                            String newURL =
+                                    ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get() + request
+                                            .getRequestURI() + "?" + request.getQueryString();
                             response.setHeader("Location", newURL);
                             return;
                         }
                     }
                 }
             } catch (FileEntryNotFoundException ignored) {
-
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
             }
         }
 
         if (request.getRequestURI().contains("user_male_portrait")) {
+            defaultImage = DefaultImage.MEMBER;
+        }
 
-            String pathToFailOverImage = ConfigurationAttributeKey
-                    .ACTIVE_THEME.get().getImagePath() + "/user_default.png";
-            response.sendRedirect(pathToFailOverImage);
+        if (!defaultImage.equals(DefaultImage.NONE)) {
+            response.sendRedirect(defaultImage.getImagePath());
             return;
         }
-        try {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } catch (IOException ignored) {
-
-        }
+        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
 
-    private void sendImageToResponse(HttpServletRequest request, HttpServletResponse response, String filePath) {
+    private void sendImageToResponse(HttpServletRequest request, HttpServletResponse response,
+            String filePath) {
 
         try {
             ServletContext servletContext = request.getSession().getServletContext();
@@ -128,10 +134,27 @@ public class ImageDisplayController {
         } catch (IOException ignored) {
 
         }
-        try{
+        try {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }catch (IOException ignored){
+        } catch (IOException ignored) {
 
+        }
+    }
+
+    public enum DefaultImage {
+        NONE(""),
+        MEMBER("/images/user_default.png"),
+        PROPOSAL("/images/proposal_default.png"),
+        CONTEST("/images/proposal_default.png");
+
+        private final String imagePath;
+
+        DefaultImage(String imagePath) {
+            this.imagePath = imagePath;
+        }
+
+        public String getImagePath() {
+            return imagePath;
         }
     }
 }
