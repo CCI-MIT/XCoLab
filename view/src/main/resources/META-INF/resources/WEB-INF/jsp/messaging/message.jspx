@@ -8,7 +8,7 @@
     <collab:content articleId="${communityTopContentArticleId}" />
 
         <!--@elvariable id="messageBean" type="org.xcolab.portlets.messaging.beans.MessageBean"-->
-        <!--@elvariable id="user" type="com.liferay.portal.model.User"-->
+        <!--@elvariable id="user" type="org.xcolab.client.members.pojo.Member"-->
 
         <div id="bread" class="pro">
             <a href="/web/guest/community">Community</a>

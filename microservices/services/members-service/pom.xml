@@ -23,23 +23,11 @@
             <groupId>org.xcolab.microservices.clients</groupId>
             <artifactId>admin-client</artifactId>
             <version>1.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.liferay.portal</groupId>
-					<artifactId>util-slf4j</artifactId>
-				</exclusion>
-			</exclusions>
         </dependency>
 		<dependency>
 			<groupId>org.xcolab.microservices.clients</groupId>
 			<artifactId>sharedcolab-client</artifactId>
 			<version>1.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.liferay.portal</groupId>
-					<artifactId>util-slf4j</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>

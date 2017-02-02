@@ -56,17 +56,6 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>com.liferay.maven.plugins</groupId>
-				<artifactId>liferay-maven-plugin</artifactId>
-				<version>${liferay.version}</version>
-				<configuration>
-					<autoDeployDir>${liferay.auto.deploy.dir}</autoDeployDir>
-					<liferayVersion>${liferay.version}</liferayVersion>
-					<pluginName>sample-service-portlet</pluginName>
-					<pluginType>portlet</pluginType>
-				</configuration>
-			</plugin>
-			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<encoding>UTF-8</encoding>
@@ -80,60 +69,10 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>properties-maven-plugin</artifactId>
-				<version>1.0-alpha-2</version>
-				<configuration>
-					<files>
-						<file>${user.home}/.xcolab.deploy.properties</file>
-					</files>
-				</configuration>
-
-				<executions>
-					<execution>
-						<phase>initialize</phase>
-						<goals>
-							<goal>read-project-properties</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings 
-					only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId></groupId>
-										<artifactId></artifactId>
-										<versionRange>(0.0,)</versionRange>
-										<goals>
-											<goal></goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 	<modules>
 		<module>microservices</module>
-		<module>portlets</module>
 		<module>view</module>
 	</modules>
 </project>
