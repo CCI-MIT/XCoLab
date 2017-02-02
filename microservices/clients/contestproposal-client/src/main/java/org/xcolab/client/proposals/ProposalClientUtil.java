@@ -155,6 +155,14 @@ public final class ProposalClientUtil {
         return client.getProposalVersionByProposalIdVersion(proposalId, version);
     }
 
+    public static List<ProposalVersion> getProposalVersionsGroupedVersionsByContest(Long proposalId, Long contestId, int start , int end) {
+        return client.getProposalVersionsGroupedVersionsByContest(proposalId,contestId, start, end);
+
+    }
+    public static Integer countProposalVersionsGroupedVersionsByContest(Long proposalId, Long contestId) {
+        return client.countProposalVersionsGroupedVersionsByContest(proposalId,contestId);
+    }
+
     public static Integer countProposalVersions(Long proposalId) {
         return client.countProposalVersions(proposalId);
     }

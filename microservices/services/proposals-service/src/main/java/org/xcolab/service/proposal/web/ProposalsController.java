@@ -12,16 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalContestPhaseAttribute;
 import org.xcolab.model.tables.pojos.ProposalVersion;
 import org.xcolab.model.tables.pojos.ProposalVote;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
+import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
 import org.xcolab.service.proposal.domain.proposalcontestphaseattribute.ProposalContestPhaseAttributeDao;
 import org.xcolab.service.proposal.domain.proposalversion.ProposalVersionDao;
 import org.xcolab.service.proposal.domain.proposalvote.ProposalVoteDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 import org.xcolab.service.proposal.service.proposal.ProposalService;
+import org.xcolab.service.proposal.service.proposal.ProposalVersionService;
 import org.xcolab.service.proposal.service.proposal2phase.Proposal2PhaseService;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
@@ -36,13 +39,16 @@ public class ProposalsController {
 
     private final ProposalVoteDao proposalVoteDao;
     private final Proposal2PhaseService proposal2PhaseService;
+
     private final ProposalVersionDao proposalVersionDao;
+    private final ProposalVersionService proposalVersionService;
     private final ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao;
 
     @Autowired
     public ProposalsController(ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao,
             ProposalVersionDao proposalVersionDao, ProposalDao proposalDao,
             ProposalVoteDao proposalVoteDao, Proposal2PhaseService proposal2PhaseService,
+            ProposalVersionService proposalVersionService,
             ProposalService proposalService) {
         this.proposalContestPhaseAttributeDao = proposalContestPhaseAttributeDao;
         this.proposalVersionDao = proposalVersionDao;
@@ -50,6 +56,8 @@ public class ProposalsController {
         this.proposalVoteDao = proposalVoteDao;
         this.proposal2PhaseService = proposal2PhaseService;
         this.proposalService = proposalService;
+        this.proposalVersionService = proposalVersionService;
+
     }
 
     @RequestMapping(value = "/proposals", method = RequestMethod.POST)
@@ -199,6 +207,24 @@ public class ProposalsController {
             @RequestParam(required = false) Long proposalId
     ) {
         return proposalVersionDao.findByGiven(proposalId, null);
+    }
+
+    @RequestMapping(value = "/proposalVersions/getGroupedVersionsByContest", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<ProposalVersion> getGroupedVersionsByContest(
+            @RequestParam(required = false) Long proposalId,
+            @RequestParam(required = false) Long contestId,
+            @RequestParam(required = false) Integer start,
+            @RequestParam(required = false) Integer end
+
+    ) {
+        return proposalVersionService.getGroupedProposalVersionsForProposalAndContest(proposalId,contestId,start, end);
+    }
+    @RequestMapping(value = "/proposalVersions/countGroupedVersionsByContest", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public Integer countGroupedVersionsByContest(
+            @RequestParam(required = false) Long proposalId,
+            @RequestParam(required = false) Long contestId
+    ) {
+        return proposalVersionService.getGroupedProposalVersionsForProposalAndContest(proposalId,contestId,0, Integer.MAX_VALUE).size();
     }
 
     @RequestMapping(value = "/proposalVersions/count", method = RequestMethod.GET)

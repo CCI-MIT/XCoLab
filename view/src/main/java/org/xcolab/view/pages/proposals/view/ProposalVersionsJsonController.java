@@ -74,17 +74,11 @@ public class ProposalVersionsJsonController {
     public void getProposalVersionIndex(HttpServletRequest request, HttpServletResponse response,
             @PathVariable("version") Integer version, @PathVariable("proposalId") Long proposalId) throws IOException {
         int index = 0;
-        Date oldDate = new Date();
-        for (ProposalVersion proposalVersion: ProposalClientUtil.getAllProposalVersions(proposalId)) {
-            if (proposalVersion.getVersion() == version) {
-                break;
-            }
 
-            if (Math.abs(oldDate.getTime() - proposalVersion.getCreateDate().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS){
-                index++;
-                oldDate = proposalVersion.getCreateDate();
-            }
-        }
+        Contest c = ProposalClientUtil.getCurrentContestForProposal(proposalId);
+
+        ClientHelper clientHelper = new ClientHelper(c);
+        index = clientHelper.getProposalClient().countProposalVersionsGroupedVersionsByContest(proposalId,c.getContestPK());
 
         final JsonObject json = Json.createObjectBuilder()
                 .add("index", index).build();
@@ -105,47 +99,14 @@ public class ProposalVersionsJsonController {
         ProposalClient proposalClient = clientHelper.getProposalClient();
         ContestClient contestClient = clientHelper.getContestClient();
 
-        if (contestPhaseId > 0) {
-            p2p = proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposalId,contestPhaseId);
-        }
+
 
         final JsonArrayBuilder proposalVersionsArray = Json.createArrayBuilder();
-
-        // COUNT VERSIONS
-        int offset = 0;
         int counter = 0;
-        int numberOfVersions = 0;
-        Date oldDate = new Date();
-        for (ProposalVersion proposalVersion: proposalClient.getAllProposalVersions(proposalId)) {
-            long cphId = proposalVersion.getContestPhaseId();
+        for(ProposalVersion proposalVersion: clientHelper.getProposalClient().getProposalVersionsGroupedVersionsByContest(proposalId,contest.getContestPK(),start, end)){
 
-            final ContestPhase contestPhase = contestClient.getContestPhase(cphId);
-            if (contest != null){
-                // Skip versions that do not belong to this contest
-                Contest c2 = contestPhase.getContest();
-                if (!Objects.equals(c2.getContestPK(), contest.getContestPK())) {
-                    continue;
-                }
-            }
-
-            if (p2p != null && (proposalVersion.getVersion() <= p2p.getVersionFrom()
-                    || (proposalVersion.getVersion() > p2p.getVersionTo()
-                        && p2p.getVersionTo() != -1))) {
-                continue;
-            }
-
-            if (Math.abs(oldDate.getTime() - proposalVersion.getCreateDate().getTime()) > MILLISECONDS_TO_GROUP_VERSIONS) {
-                numberOfVersions++;
-                if (counter > (end-start)) {
-                    oldDate = proposalVersion.getCreateDate();
-                    continue;
-                }
-                if (offset < start){
-                    offset++;
-                    oldDate = proposalVersion.getCreateDate();
-                    continue;
-                }
-
+                long cphId = proposalVersion.getContestPhaseId();
+                final ContestPhase contestPhase = contestClient.getContestPhase(cphId);
                 Member author = Member.fromId(proposalVersion.getAuthorId());
                 proposalVersionsArray.add(Json.createObjectBuilder()
                         .add("version", proposalVersion.getVersion())
@@ -159,16 +120,15 @@ public class ProposalVersionsJsonController {
                                 .add("id", contestPhase.getContestPhasePK())
                                 .add("name", contestPhase.getName())));
 
-                oldDate = proposalVersion.getCreateDate();
                 counter++;
-            }
         }
+
 
         final JsonObject json = Json.createObjectBuilder()
                 .add("proposalId", proposalId)
                 .add("start", start)
                 .add("end", end)
-                .add("totalCount", numberOfVersions)
+                .add("totalCount", counter)
                 .add("versions", proposalVersionsArray)
                 .build();
 

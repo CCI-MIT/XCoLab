@@ -45,9 +45,10 @@ public class PopulateContextInterceptor extends HandlerInterceptorAdapter {
 
         String colabPattern =
                 "/(\\w+)/(?<contestYear>\\d+)/(?<contestUrlName>[a-zA-Z0-9_-]+)(((/c/)|"
-                        + "(/phase/(?<phaseId>\\d+)/))(?<proposalIdentifier>\\w+)/"
-                        + "(?<proposalId>\\d+)(/tab/?(?<tab>\\w+))?(/version/?"
-                        + "(?<version>\\d+))?)?";
+                        + "(/phase/(?<phaseId>\\d+)/?))"
+                        + "((?<proposalIdentifier>\\w+)/(?<proposalId>\\d+)"
+                        + "(/tab/?(?<tab>\\w+))?(/version/?(?<version>\\d+))?)?)?"
+                ;
         Pattern pattern = Pattern.compile(colabPattern);
         Matcher matcher = pattern.matcher(requestUrl);
 
