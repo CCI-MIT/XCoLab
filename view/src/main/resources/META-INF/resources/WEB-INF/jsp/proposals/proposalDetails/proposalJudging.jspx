@@ -31,9 +31,10 @@
         </c:if>
         <i style="font-size:10pt;">Please <br />
             1) Rate this ${contestType.proposalName}; <br />
-            2) Provide written feedback in the text box below; and <br />
-            3) Click save. <br />
-            Both ratings and feedback must be completed for the evaluation to save.
+            2) Select from the dropdown whether the proposal should advance to the next round; <br />
+            3) Provide written feedback in the text box below; and <br />
+            4) Click save. <br />
+            Note: Ratings, dropdown selection, and feedback must be completed for the evaluation to save.
             <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions or proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}}">
                 Your rating will be visible to the Judging team only.
             </c:if>

@@ -43,6 +43,8 @@ INSERT INTO xcolab_ContentArticle (contentArticleId, authorId, createDate, maxVe
 INSERT INTO xcolab_ContentArticle (contentArticleId, authorId, createDate, maxVersionId, folderId, editRoleGroupId, viewRoleGroupId, visible) VALUES (510, 2348404, '2017-01-26 15:10:28', 595, 10, null, null, 1);
 INSERT INTO xcolab_ContentArticle (contentArticleId, authorId, createDate, maxVersionId, folderId, editRoleGroupId, viewRoleGroupId, visible) VALUES (511, 2348404, '2017-01-26 15:26:17', 594, 10, null, null, 1);
 INSERT INTO xcolab_ContentArticle (contentArticleId, authorId, createDate, maxVersionId, folderId, editRoleGroupId, viewRoleGroupId, visible) VALUES (512, 2348404, '2017-01-26 15:40:32', 596, 11, null, null, 1);
+INSERT INTO xcolab_ContentArticle (contentArticleId, authorId, createDate, maxVersionId, folderId, editRoleGroupId, viewRoleGroupId, visible) VALUES (513, 2348404, '2017-02-01 00:00:00', 597, 11, null, null, 1);
+INSERT INTO xcolab_ContentArticle (contentArticleId, authorId, createDate, maxVersionId, folderId, editRoleGroupId, viewRoleGroupId, visible) VALUES (514, 2348404, '2017-02-01 00:00:00', 598, 11, null, null, 1);
 
 -- Pages
 INSERT INTO xcolab_ContentPage (pageId, title, menuArticleId, contentArticleId, createdDate, modifiedDate) VALUES (1, 'about', 498, 493, '2017-01-26 16:43:08', '2017-01-26 16:43:17');
@@ -68,7 +70,7 @@ INSERT INTO xcolab_ContentArticleVersion (contentArticleVersionId, contentArticl
 
 <p class="p10">Singapore&#39;s <a href="http://www.rahs.gov.sg/">Risk Assessment and Horizon Scanning (RAHS)</a>&nbsp;Programme Office and the <a href="http://cci.mit.edu">Center for Collective Intelligence&nbsp;</a><a a="" center="" collective="" for="" href="http://cci.mit.edu/">(CCI)</a> at the Massachusetts Institute of Technology (MIT) have developed this platform to elicit the best ideas from individuals around the world.</p>
 
-<div class="p-About__approachIllustration"><img alt="" src="/fow-theme/images/about/about_diagram.png" />
+<div class="p-About__approachIllustration"><img alt="" src="/images/about/about_diagram.png" />
 <div class="p-About__approachIllustration__col">
 <h3>World community</h3>
 
