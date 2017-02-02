@@ -8,7 +8,7 @@
 <xcolab:layout>
     <collab:content articleId="${communityTopContentArticleId}" />
     <!--@elvariable id="messagingBean" type="org.xcolab.portlets.messaging.beans.MessagingBean"-->
-
+    <div id="content">
     <div id="bread" class="pro">
         <a href="/web/guest/community">Community</a>
         <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
@@ -129,7 +129,8 @@
             </div>
         </div>
     </div>
-
+    </div>
     <xcolab:sendMessageModal />
+
 </xcolab:layout>
 </jsp:root>

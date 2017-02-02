@@ -6,8 +6,10 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
 	<collab:content articleId="${communityTopContentArticleId}" />
-	<jsp:directive.include file="./usersIndex/header.jspx" />
+	<div id="content">
+		<jsp:directive.include file="./usersIndex/header.jspx" />
 
-	<jsp:directive.include file="./usersIndex/list.jspx" />
+		<jsp:directive.include file="./usersIndex/list.jspx" />
+	</div>
 </xcolab:layout>
 </jsp:root>
