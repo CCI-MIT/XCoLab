@@ -99,7 +99,7 @@ public class ProposalRatings {
 
     public String getCommentEscaped() {
         String comment = this.getComment();
-        comment = org.apache.commons.lang.StringEscapeUtils.escapeHtml(comment);
+        //comment = org.apache.commons.lang.StringEscapeUtils.escapeHtml(comment);
         comment = comment.replaceAll("\n", "<br>");
         return comment;
     }
