@@ -287,7 +287,8 @@
 				</c:forEach>
 
 				<div class="rounded_button brn">
-					<a href="/messaging/compose">COMPOSE</a>
+					<a href="#" data-toggle="modal" data-target="#sendMessageModal">COMPOSE</a>
+					<xcolab:sendMessageModal />
 				</div>
 
 				<div class="rounded_button brn">

@@ -54,10 +54,6 @@
                 </table>
                 <br/>
             </c:if>
-            <div>
-                <strong>Would you like to see this proposal advance to the next round?</strong>
-                ${wrapper.shouldAdvance ? 'Yes' : 'No'}
-            </div>
             <p>
                 <strong>Judges' Comments</strong><br/>
                 <span class="comment-wrapper">${wrapper.commentEscaped}</span>

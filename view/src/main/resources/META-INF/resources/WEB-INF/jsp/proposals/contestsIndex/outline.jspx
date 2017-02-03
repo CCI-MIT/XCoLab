@@ -77,14 +77,14 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 
             <div class="other-contest-count" style="display: none;">
                 (<span class="active-title" style="display:none;">
-                    <a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'><span class="count"><!-- --></span>
+                    <a href="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=true&amp;showAllContests=${showAllContests}" data-base-url="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=true&amp;showAllContests=${showAllContests}" class='showOtherContestsLink'><span class="count"><!-- --></span>
                         active
                         <span class='plural'> ${contestType.contestNamePlural}</span>
                         <span class='singular'> ${contestType.contestName}</span>
                     </a>
                 </span>
                 <span class="inactive-title" style="display:none;">
-                    <a href="/web/guest/plans/-/plans/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' ><span class="count"><!-- --></span>
+                    <a href="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false&amp;showAllContests=${showAllContests}" data-base-url="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false&amp;showAllContests=${showAllContests}" class='showOtherContestsLink' ><span class="count"><!-- --></span>
                         prior
                         <span class='plural'> ${contestType.contestNamePlural}</span>
                         <span class='singular'> ${contestType.contestName}</span>
@@ -103,7 +103,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 						<span class="otherContestsCount prior">
 						<img src="${_themeImageFolder}/contests-archive.png" height='20px' />&amp;nbsp;
 						If you select
-							<a href="/contests/contestsType/prior" data-base-url="/web/guest/plans/-/plans/contestsType/prior" class='showOtherContestsLink' >prior contests</a>,
+							<a href="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false&amp;showAllContests=${showAllContests}" data-base-url="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false&amp;showAllContests=${showAllContests}" class='showOtherContestsLink' >prior contests</a>,
 					
 							<span class='count'><!-- --></span>
 							completed 
@@ -114,7 +114,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 					</c:when>
 					<c:otherwise>
 						<span class="otherContestsCount">If you select
-							<a href="/web/guest/plans/" data-base-url="/web/guest/plans/" class='showOtherContestsLink'>active contests</a>, 
+							<a href="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=true&amp;showAllContests=${showAllContests}" data-base-url="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false&amp;showAllContests=${showAllContests}" class='showOtherContestsLink'>active contests</a>,
 							<span class='count'><!-- --></span> current
 							<span class='plural'>${contestType.contestNamePlural}</span>
 							<span class='singular'>${contestType.contestName}</span>
