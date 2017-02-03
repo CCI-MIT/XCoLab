@@ -1,4 +1,8 @@
-package org.xcolab.view.filters.membership;
+package org.xcolab.view.pages.proposals.view.action;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -26,16 +30,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ProposalMembershipInvitationResponseFilter implements Filter {
+@Controller
+public class MembershipInvitationResponseController {
 
     private static final String MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT =
             "Response to your membership invite";
@@ -52,31 +51,18 @@ public class ProposalMembershipInvitationResponseFilter implements Filter {
     private static final String MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED =
             "Your invitation of %s to join the <proposal/> %s has been rejected.";
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        //no initialization
-    }
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
-        execute((HttpServletRequest) request, (HttpServletResponse) response);
-    }
-
-    private void execute(HttpServletRequest request, HttpServletResponse response)
+    @GetMapping("/membershipRequests/reply")
+    private void execute(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam long requestId, @RequestParam long proposalId,
+            @RequestParam long contestId, @RequestParam("do") String action)
             throws IOException {
 
-        long membershipId = parseLongParam(request.getParameter("requestId"));
-        long proposalId = parseLongParam(request.getParameter("proposalId"));
-        long contestId = parseLongParam(request.getParameter("contestId"));
-        String action = request.getParameter("do");
-
-
-        Contest c = ContestClientUtil.getContest(contestId);
+        Contest contest = ContestClientUtil.getContest(contestId);
         MembershipClient membershipClient;
         ProposalClient proposalClient;
         ProposalAttributeClient proposalAttributeClient;
-        if(c.getIsSharedContestInForeignColab()){
+        if (contest.getIsSharedContestInForeignColab()) {
             RestService proposalService = new RefreshingRestService(CoLabService.PROPOSAL,
                     ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                     ConfigurationAttributeKey.PARTNER_COLAB_PORT);
@@ -84,13 +70,13 @@ public class ProposalMembershipInvitationResponseFilter implements Filter {
             proposalClient = ProposalClient.fromService(proposalService);
             membershipClient = MembershipClient.fromService(proposalService);
             proposalAttributeClient = ProposalAttributeClient.fromService(proposalService);
-        }else{
+        } else {
             membershipClient = MembershipClientUtil.getClient();
             proposalClient = ProposalClientUtil.getClient();
             proposalAttributeClient = ProposalAttributeClientUtil.getClient();
         }
 
-        MembershipRequest membershipRequest = membershipClient.getMembershipRequest(membershipId);
+        MembershipRequest membershipRequest = membershipClient.getMembershipRequest(requestId);
 
         List<Long> recipients = new ArrayList<>();
         List<Member> contributors = proposalClient.getProposalMembers(proposalId);
@@ -122,13 +108,13 @@ public class ProposalMembershipInvitationResponseFilter implements Filter {
                         String.format(membershipAcceptedMessage, invitee.getFullName(),
                                 proposalLink));
 
-                if(c.getIsSharedContest()) {
+                if (contest.getIsSharedContest()) {
                     LoginRegisterUtil.registerMemberInSharedColab(invitee.getId_());
                 }
             } else if (action.equalsIgnoreCase("DECLINE")) {
                 membershipClient
                         .denyMembershipRequest(proposalId, membershipRequest.getUserId(),
-                                membershipId, "The invitation was rejected.", invitee.getUserId());
+                                requestId, "The invitation was rejected.", invitee.getUserId());
                 final String membershipRejectedMessage = TemplateReplacementUtil
                         .replaceContestTypeStrings(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED,
                                 contestType);
@@ -141,16 +127,7 @@ public class ProposalMembershipInvitationResponseFilter implements Filter {
         response.sendRedirect(proposal.getProposalLinkUrl(proposal.getContest()));
     }
 
-    private static long parseLongParam(String value) {
-        return value == null ? 0L : Long.parseLong(value.trim());
-    }
-
     private void sendMessage(long sender, List<Long> recipients, String subject, String content) {
         MessagingClient.sendMessage(subject, content, sender, sender, recipients);
-    }
-
-    @Override
-    public void destroy() {
-        //no destroy method
     }
 }

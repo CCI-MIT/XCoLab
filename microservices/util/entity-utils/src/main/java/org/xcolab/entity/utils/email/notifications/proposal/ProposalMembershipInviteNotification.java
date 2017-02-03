@@ -17,7 +17,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
 
     private static final String DEFAULT_TEMPLATE_NAME = "PROPOSAL_MEMBERSHIP_INVITE_DEFAULT";
 
-    private static final String MEMBERSHIP_INVITE_STRUTS_ACTION_URL = "/membershipRequests/reply";
+    private static final String MEMBERSHIP_INVITE_RESPONSE_URL = "/membershipRequests/reply";
 
     private static final String MESSAGE_PLACEHOLDER = "message";
     private static final String ACCEPT_LINK_PLACEHOLDER = "accept-link";
@@ -59,7 +59,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
     }
 
     private String getMembershipResponseUrl() {
-        return UriComponentsBuilder.fromHttpUrl(this.baseUrl + MEMBERSHIP_INVITE_STRUTS_ACTION_URL)
+        return UriComponentsBuilder.fromHttpUrl(this.baseUrl + MEMBERSHIP_INVITE_RESPONSE_URL)
                 .queryParam("contestId", contest.getContestPK())
                 .queryParam("requestId", membershipRequest.getMembershipRequestId())
                 .queryParam("proposalId", proposal.getProposalId())

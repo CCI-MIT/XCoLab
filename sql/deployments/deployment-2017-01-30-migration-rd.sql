@@ -1,5 +1,4 @@
 -- COLAB-1433
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('DEFAULT_CONTEST_SCHEDULE_ID', 0, 601, '', 0);
 ALTER TABLE xcolab_ContestType ADD COLUMN showProposalSummary TINYINT(4) DEFAULT 1;
 UPDATE xcolab_ContestType set showProposalSummary = 1;
 ALTER TABLE `xcolab_OntologyTerm`
@@ -17,7 +16,7 @@ INSERT INTO xcolab_ConfigurationAttribute
 -- 2016-12-18
 
 #Configuration attribute Blog URL
-INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('BLOG_URL', '0', '0', 'news.climatecolab.com', '0');
+INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('BLOG_URL', '0', '0', 'http://resiliencedialogues.org/', '0');
 
 #Configuration attribute to use CollectionCards
 INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('COLAB_USES_CARDS', '0', '0', ' ', '0');
