@@ -68,10 +68,12 @@ public class WikiPageWrapper {
 
     public static void updateContestWiki(Contest contest) {
         try {
-            final ContentArticleVersion resourceArticleVersion = ContentsClient
-                    .getLatestContentArticleVersion(contest.getResourceArticleId());
-            resourceArticleVersion.setTitle(contest.getContestShortName());
-            ContentsClient.updateContentArticleVersion(resourceArticleVersion);
+            if (contest.getResourceArticleId() != null) {
+                final ContentArticleVersion resourceArticleVersion = ContentsClient
+                        .getLatestContentArticleVersion(contest.getResourceArticleId());
+                resourceArticleVersion.setTitle(contest.getContestShortName());
+                ContentsClient.updateContentArticleVersion(resourceArticleVersion);
+            }
         } catch (ContentNotFoundException ignored) {
         }
     }
