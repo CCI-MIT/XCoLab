@@ -25,6 +25,7 @@ import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.html.HtmlUtil;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -86,13 +87,13 @@ public class ActivitySubscriptionEmailHelper {
 
         //to ease debug please leave it here
 
-        /*SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            lastEmailNotification = sdf.parse("2016-08-01 00:00:00");
-            lastDailyEmailNotification = sdf.parse("2016-08-01 00:00:00");
-        } catch (ParseException e) {
-            lastEmailNotification = new Date();
-        }*/
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        try {
+//            lastEmailNotification = sdf.parse("2017-01-01 00:00:00");
+//            lastDailyEmailNotification = sdf.parse("2017-01-01 00:00:00");
+//        } catch (ParseException e) {
+//            lastEmailNotification = new Date();
+//        }
 
 
         synchronized (lastEmailNotification) {
@@ -113,7 +114,7 @@ public class ActivitySubscriptionEmailHelper {
 
             // Send the daily digest at the predefined hour only
             if (now.getTime() - lastDailyEmailNotification.getTime() > 3600 * 1000
-                    && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == DAILY_DIGEST_TRIGGER_HOUR) {
+                    && Calendar.getInstance().get(Calendar.HOUR_OF_DAY) == DAILY_DIGEST_TRIGGER_HOUR) { //change here to do local tests
                 List<ActivityEntry> res = getActivitiesAfter(lastDailyEmailNotification);
                 sendDailyDigestNotifications(res);
                 lastDailyEmailNotification = now;

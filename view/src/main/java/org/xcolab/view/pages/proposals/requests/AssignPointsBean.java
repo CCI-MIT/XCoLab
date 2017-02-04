@@ -27,7 +27,7 @@ public class AssignPointsBean {
     //The percentages are from 0 to 100 here, in order to make it easier to display it to the user
     private final Map<Long, Map<Long, Double>> assignmentsByUserIdByPointTypeId;
 
-    private List<Member> usersNotInTeam;
+
 
     public AssignPointsBean() {
         this.proposalId = 0;
@@ -71,13 +71,10 @@ public class AssignPointsBean {
                 addAllAssignments(p, members);
             }
         }
-        initializeUsers(members);
+
     }
 
-    public void initializeUsers(List<Member> teamMembers) {
-        usersNotInTeam = new ArrayList<>(MembersClient.listAllMembers());
-        usersNotInTeam.removeAll(teamMembers);
-    }
+
 
     public void addAssignment(PointType pointType, List<Member> users,
                               List<PointsDistributionConfiguration> existingDistributionConfigurations) {
@@ -130,12 +127,19 @@ public class AssignPointsBean {
     public Set<Long> getUserIds(Long pointTypeId) {
         return getAssignmentsByUserId(pointTypeId).keySet();
     }
+    public ArrayList<Member> getMembers(Long pointTypeId) {
+        ArrayList<Member> members = new ArrayList<>();
+        for(Long userId: getAssignmentsByUserId(pointTypeId).keySet()){
+            Member m = MembersClient.getMemberUnchecked(userId);
+            if(m!=null){
+                members.add(m);
+            }
+        }
+        return members;
+    }
 
     public Map<Long, Map<Long, Double>> getAssignmentsByUserIdByPointTypeId() {
         return assignmentsByUserIdByPointTypeId;
     }
 
-    public List<Member> getUsersNotInTeam() {
-        return usersNotInTeam;
-    }
 }

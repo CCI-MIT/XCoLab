@@ -47,7 +47,8 @@ public class AssignPointsActionController {
         }
     }
 
-    @PostMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/POINTS/savePointAssignments")
+    @PostMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/POINTS/savePointAssignments",
+            "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/POINTS/savePointAssignments"})
     public void savePointAssignments(HttpServletRequest request, Model model,
                                 HttpServletResponse response, @Valid AssignPointsBean assignPointsBean,
                                 BindingResult result)

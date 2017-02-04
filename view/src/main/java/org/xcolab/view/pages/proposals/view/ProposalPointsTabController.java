@@ -52,12 +52,9 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             return "";
         }
 
-        List<Proposal> subProposals = ProposalClientUtil
+        List<Proposal> subProposalsWrapped = ProposalClientUtil
                 .getSubproposals(proposal.getProposalId(), false);
-        List<Proposal> subProposalsWrapped = new ArrayList<>();
-        for (Proposal p: subProposals) {
-            subProposalsWrapped.add(new Proposal(p));
-        }
+
         //TODO: make this flexible
         PointType pointType = ProposalsContextUtil.getClients(request).getPointsClient().getPointType(9L);
         DistributionStrategy distributionStrategy = DistributionStrategy.valueOf(pointType.getDistributionStrategy());
@@ -79,11 +76,9 @@ public class ProposalPointsTabController extends BaseProposalTabController {
             basicPercentages.add(new PointsTargetProposalWrapper(target, 2));
         }
 
-        List<Proposal> linkingProposalsWrapped = new ArrayList<>();
-        final List<Proposal> linkingProposals = ProposalsContextUtil.getClients(request).getProposalClient().getLinkingProposals(proposal.getProposalId());
-        for (Proposal p : linkingProposals) {
-            linkingProposalsWrapped.add(new Proposal(p));
-        }
+
+        final List<Proposal> linkingProposalsWrapped = ProposalsContextUtil.getClients(request).getProposalClient().getLinkingProposals(proposal.getProposalId());
+
 
         List<Member> members = ProposalsContextUtil.getClients(request).getProposalClient().getProposalMembers(proposal.getProposalId());
 

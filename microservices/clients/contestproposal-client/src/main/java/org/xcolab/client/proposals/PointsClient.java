@@ -92,7 +92,7 @@ public final class PointsClient {
 
     public Boolean deletePointsDistributionConfigurationByProposalId(Long proposalId) {
         return pointsDistributionConfigurationResource.service("removeByProposalId", Boolean.class)
-                .queryParam("proposalId", proposalId).execute();
+                .queryParam("proposalId", proposalId).delete();
     }
 
     public PointType getPointType(long Id_) {

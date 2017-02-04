@@ -7,7 +7,7 @@
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
         <xcolab:layout>
         <!--@elvariable id="linkingProposals" type="java.util.List<org.xcolab.portlets.proposals.wrappers.ProposalWrapper>"-->
-
+            <xcolab:script src="${_themeJsFolder}/proposals/proposalPoints.js" />
         <jsp:directive.include file="./init_proposal_tab.jspx" />
 
         <jsp:directive.include file="./proposalDetails/header.jspx" />
@@ -58,15 +58,16 @@
                 </tbody>
             </table>
             <script type="text/javascript">
-                var usersMap = {<c:forEach var="user" items="${assignPointsBean.usersNotInTeam}">'<c:out value="${user.screenName}"/>':'<c:out value="${user.userId}"/>',</c:forEach>};
-                var userNamesMap = {<c:forEach var="user" items="${assignPointsBean.usersNotInTeam}">'<c:out value="${user.userId}"/>':'<c:out value="${user.fullName}"/>',</c:forEach>};
-                jQuery.extend(userNamesMap, {<c:forEach var="user" items="${members}">'<c:out value="${user.userId}"/>':'<c:out value="${user.fullName}"/>',</c:forEach>});
+
                 jQuery(function() {
-                    jQuery(".replaceUserId").each(function() {
-                        jQuery(this).html(userNamesMap[jQuery.trim(jQuery(this).html())]);
-                    });
+
                     initUserAssignmentInputs();
                 });
+
+
+
+
+
                 $("#expand-help-text").click(function() {
                     var $helpTextElement = $("#help-text");
                     $helpTextElement.slideToggle("fast");
