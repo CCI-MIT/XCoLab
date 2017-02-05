@@ -1,25 +1,26 @@
-package org.xcolab.view.filters.tracking;
+package org.xcolab.view.auth.endpoints;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.TrackingClient;
-import org.xcolab.view.auth.MemberAuthUtil;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Enumeration;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class UserTrackingServlet extends HttpServlet {
+@RestController
+public class UserTrackingController {
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    @PostMapping("/trackVisitor")
+    protected ResponseJson trackVisitor(HttpServletRequest request, HttpServletResponse response,
+            Member loggedInMember)
             throws ServletException, IOException {
         //get ip
         String ip = getClientIpAddress(request);
@@ -31,15 +32,12 @@ public class UserTrackingServlet extends HttpServlet {
         //get headers
         String headers = getHeadersAsString(request);
 
-        //if user is logged in, check if tuple (uuid, userid) already exists. if not, create it.
-        long memberId = MemberAuthUtil.getMemberId(request);
-
         //find out uuid. if it is not sent as request parameter, try to retrieve existing token if user is logged in.
         String uuid = request.getParameter("uuid");
         String isTrackedVisitor = request.getParameter("isTrackedVisitor");
         if (StringUtils.isBlank(uuid)) {
-            if (memberId != 0) {
-                uuid = TrackingClient.getTrackedVisitorOrCreate(memberId).getUuid_();
+            if (loggedInMember != null) {
+                uuid = TrackingClient.getTrackedVisitorOrCreate(loggedInMember.getId_()).getUuid_();
                 isTrackedVisitor = "true";
             } else {
                 uuid = TrackingClient.generateUUID();
@@ -48,17 +46,7 @@ public class UserTrackingServlet extends HttpServlet {
 
         TrackingClient.addTrackedVisit(uuid, url, ip, browser, referer, headers);
 
-        //write back the uuid as json. this will be set as a cookie and will be sent on future requests.
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        out.print("{");
-        out.print("\"uuid\":\""+ StringEscapeUtils.escapeEcmaScript(uuid)+"\"");
-        //return the isTrackedVisitor to prevent additional unnecessary database queries
-        if (!StringUtils.isEmpty(isTrackedVisitor)) {
-            out.print(",\"isTrackedVisitor\":\""+StringEscapeUtils.escapeEcmaScript(isTrackedVisitor)+"\"");
-        }
-        out.print("}");
-        out.flush();
+        return new ResponseJson(uuid, Boolean.valueOf(isTrackedVisitor));
     }
 
     private String getClientIpAddress(HttpServletRequest request) {
@@ -94,6 +82,24 @@ public class UserTrackingServlet extends HttpServlet {
             }
         }
         return headerStringBuilder.toString();
+    }
+
+    private static class ResponseJson {
+        private final String uuid;
+        private final boolean isTrackedVisitor;
+
+        private ResponseJson(String uuid, boolean isTrackedVisitor) {
+            this.uuid = uuid;
+            this.isTrackedVisitor = isTrackedVisitor;
+        }
+
+        public String getUuid() {
+            return uuid;
+        }
+
+        public boolean isTrackedVisitor() {
+            return isTrackedVisitor;
+        }
     }
 
 }
