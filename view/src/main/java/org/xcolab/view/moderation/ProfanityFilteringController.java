@@ -1,6 +1,7 @@
 package org.xcolab.view.moderation;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
+@RequestMapping("/profanityfiltering")
 public class ProfanityFilteringController {
 
     @PostMapping

@@ -63,7 +63,7 @@ public class ImageDisplayController {
             imageId = portraitId;
         }
 
-        if (imageId != null) {
+        if (imageId != null && imageId > 0) {
             String path = request.getSession().getServletContext().getRealPath("/");
             path = (fileUploadPath != null) ? (fileUploadPath) : (path);
 
