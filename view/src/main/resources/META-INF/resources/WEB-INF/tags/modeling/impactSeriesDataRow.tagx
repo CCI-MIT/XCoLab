@@ -6,7 +6,7 @@
         xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
         version="2.0">
 
-    <jsp:directive.attribute name="seriesValues" type="org.xcolab.portlets.proposals.impact.ProposalImpactSeriesValues" required="true" rtexprvalue="true" description="seriesValues"/>
+    <jsp:directive.attribute name="seriesValues" type="org.xcolab.view.pages.proposals.impact.ProposalImpactSeriesValues" required="true" rtexprvalue="true" description="seriesValues"/>
     <jsp:directive.attribute name="seriesName" required="true" rtexprvalue="true" description="seriesName"/>
     <jsp:directive.attribute name="impactIterations" type="java.util.List" required="true" rtexprvalue="true" description="impactIterations"/>
     <jsp:directive.attribute name="seriesNameClass" required="false" rtexprvalue="true" description="seriesNameClass"/>

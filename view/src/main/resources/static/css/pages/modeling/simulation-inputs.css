@@ -1,0 +1,453 @@
+.sliderDef .sliderCol {
+  width: 125px;
+}
+
+.actions table .sliderDef .valueCol {
+  text-align: left;
+}
+
+.sliderDef .empty {
+  width: 0;
+}
+
+.slider-labels table {
+  margin-top: 5px;
+  width: 100%
+}
+
+div.slider-labels table td {
+  height: 10px;
+}
+
+.slider-labels table td.right-label {
+  text-align: right;
+}
+
+div.slider-labels {
+  padding-right: 2px;
+  padding-left: 2px;
+}
+
+.inputGroup .inputTitle h3 {
+  display: inline;
+}
+
+.inputGroup .inputTitle .actions {
+  float: right;
+  margin-right: 15px;
+}
+
+.inputGroup .inputTitle .actions input {
+  margin-left: 5px;
+}
+
+.actions table td {
+  height: 30px;
+}
+
+.actions .corcen_top {
+
+}
+
+.actions .corcen_bottom {
+
+}
+
+.actions .corcen {
+  border: thin solid #E1E1E1;
+  background: #FFFFFF;
+
+}
+
+.actions .title {
+  background: none repeat scroll 0 0 #EBEBEB;
+  border-bottom: 1px solid #E1E1E1;
+  border-top: 1px solid #E1E1E1;
+  height: 42px;
+  margin: 0 auto;
+  padding: 0;
+  width: 100%;
+}
+
+.actions .title h2 {
+  margin-top: 6px;
+  margin-left: 15px;
+  margin-bottom: 0;
+  margin-right: 0;
+
+}
+
+table.inputDefTable {
+  width: 100%
+}
+
+table.innerLayout td.label {
+  text-align: right;
+  vertical-align: middle;
+  font-weight: normal;
+  font-size: inherit;
+  color: #000;
+  display: table-cell;
+
+}
+
+table.innerLayout td.field {
+  text-align: left;
+  padding-left: 3px;
+
+}
+
+table.sliderDef {
+  width: 100%;
+}
+
+table.innerLayout {
+  width: 100%;
+}
+
+/*
+ INPUTS ROWS
+ */
+
+div.simulationInput {
+  padding: 3px 10px
+}
+
+.simulationInput.even {
+  background: #EAEAEA;
+}
+
+/*
+ INPUTS TABS
+ */
+
+/*
+.modelInputsTabs td {
+    height: 50px;
+    white-space: normal;
+
+}
+
+
+table.modelInputsTabs {
+    width:100%;
+}
+
+.modelInputsTabs table.icePnlTbOn,
+.modelInputsTabs table.icePnlTbOff,
+.modelInputsTabs table.icePnlTbOver {
+     height:50px;
+    width:40px;
+}
+
+.modelInputsTabs td.icePnlTb {
+    height: 50px;
+    width:40px;
+}
+
+
+.modelInputsTabs table.icePnlTbOn td,
+.modelInputsTabs table.icePnlTbOff td,
+.modelInputsTabs table.icePnlTbOver td {
+    height:auto;
+    width:50px;
+
+    background-image:none;  
+}
+
+.modelInputsTabs .actions table.innerLayout td.label {
+    text-align:right;
+}
+
+.modelInputsTabs .actions table.innerLayout td.field {
+    text-align:left;
+}
+
+table.modelInputsTab > tbody:first-child > tr:first-child table {
+    height:50px;
+}
+*/
+
+/** my additions */
+
+/*
+td.inputTabStyle {
+
+    border-top:1px solid #F0F0F0;
+    border-right:1px solid #F0F0F0;
+    border-left:1px solid #F0F0F0;
+    height:auto;
+}
+
+.inputTabStyleOn.icePnlTbOn td,
+.inputTabStyleOver.icePnlTbOver td,
+.inputTabStyleOff.icePnlTbOff td
+
+{
+  background-image:none;
+    white-space:normal;
+     height:auto;
+
+}
+
+.inputTabStyleOn.icePnlTbOn td {
+    background-color: #F0F0F0;
+   color: #000000;
+}
+
+
+
+.inputTabStyleOver.icePnlTbOver td {
+    background-color: #fbcb9c;
+   color: #606060;
+
+
+}
+.inputTabStyleOff.icePnlTbOff td {
+    background-color:#C0C0C0;
+    color: #606060;
+
+}
+
+.inputTabStyleOn.icePnlTbOn td.MidMid,
+.inputTabStyleOff.icePnlTbOff td.MidMid,
+.inputTabStyleOver.icePnlTbOver td.MidMid {
+    padding:3px;
+    font-weight:bold;
+
+}
+*/
+.actions .MidMid a,
+table.mainTabs .actions .MidMid a {
+  background: url(/climatecolab-theme/images/tab_off_long.gif) no-repeat #2498b3;
+  height: 40px;
+  padding: 7px 12px 3px 12px;
+  margin: 3px 6px 0 0;
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background-position: top;
+}
+
+.actions .icePnlTbOn a,
+.actions .icePnlTbOver a,
+table.mainTabs .actions .icePnlTbOn a,
+table.mainTabs .actions .icePnlTbOver a {
+  background: url(/climatecolab-theme/images/tab_on_long.png) no-repeat right #fff;
+  height: 43px;
+  padding: 10px 16px 0 8px;
+  margin: 0 6px 0 0;
+  color: #2498b3;
+  background-position: top right;
+}
+
+table.mainTabs .inputTabStyle td.LftBtm,
+table.mainTabs .inputTabStyle td.MidBtm,
+table.mainTabs .inputTabStyle td.RtBtm,
+table.mainTabs .inputTabStyle td.LftTop,
+table.mainTabs .inputTabStyle td.MidTop,
+table.mainTabs .inputTabStyle td.RtTop,
+.inputTabStyle td.LftBtm,
+.inputTabStyle td.MidBtm,
+.inputTabStyle td.RtBtm,
+.inputTabStyle td.LftTop,
+.inputTabStyle td.MidTop,
+.inputTabStyle td.RtTop {
+  height: 0;
+  width: 0;
+  display: none;
+}
+
+.modelInputValue .val {
+  color: #318EB5;
+}
+
+.actInputDef {
+  font: normal 11px/20px Verdana, sans-serif;
+}
+
+.input_def_header {
+  color: #000;
+}
+
+.input_def_inner_label {
+  color: #777777;
+}
+
+.modelInput_radio {
+  float: left;
+  margin-right: 20px;
+  margin-left: 20px;
+  margin-top: 5px;
+}
+
+.wizardScreen .inputContainer {
+  width: 20px;
+  padding-top: 15px;
+}
+
+.wizardScreen .optionDef.selected td {
+  background: #eeffee;
+}
+
+.wizardScreen .optionDef:hover td {
+
+}
+
+.wizardScreen .optionDef i.glyphicon {
+  color: green;
+}
+
+.wizardScreen .optionDef i.glyphicon.optionSelector {
+  color: #7777ff;
+  cursor: pointer;
+}
+
+.wizardRunTheModel, .wizardNavigateBack {
+  display: none;
+}
+
+.option-description-short {
+  cursor: pointer;
+}
+
+.option-description-long {
+  display: none;
+  margin-top: 10px;
+}
+
+.wizardScreen .table {
+  font-size: 11px;
+}
+
+.wizardScreen .table td h6 {
+  margin-top: 0;
+}
+
+.wizardScreen .table tr td {
+  background: #ffffff;
+}
+
+/*
+This is the visible area of you carousel.
+Set a width here to define how much items are visible.
+The width can be either fixed in px or flexible in %.
+Position must be relative!
+*/
+.wizardScreensContainer {
+  position: relative;
+  overflow: hidden;
+  margin-right: 20px;
+  width: 480px;
+}
+
+/*
+This is the container of the carousel items.
+You must ensure that the position is relative or absolute and
+that the width is big enough to contain all items.
+*/
+.wizardScreensContainer .wizardScreensCarouselContainer {
+  width: 20000em;
+  position: relative;
+
+  /* Optional, required in this case since it's a <ul> element */
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+These are the item elements. jCarousel works best, if the items
+have a fixed width and height (but it's not required).
+*/
+.wizardScreensContainer .wizardScreen {
+  /* Required only for block elements like <li>'s */
+  float: left;
+  width: 480px;
+}
+
+.wizardScreen .wizardTooltipPlaceholder {
+  display: inline-block;
+}
+
+.wizardScreen .wizardTooltipPlaceholder:after {
+  margin-left: 3px;
+  font-family: 'Glyphicons Halflings';
+  font-style: normal;
+  content: "\e085";
+}
+
+.ui-tooltip, .arrow:after {
+  background: black;
+  border: 2px solid black;
+}
+
+.ui-tooltip {
+  padding: 10px 20px;
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 7px black;
+  max-width: 300px;
+}
+
+.arrow {
+  width: 70px;
+  height: 16px;
+  overflow: hidden;
+  position: absolute;
+  left: 50%;
+  margin-left: -35px;
+  bottom: -16px;
+}
+
+.arrow.top {
+  top: -16px;
+  bottom: auto;
+}
+
+.arrow.left {
+  left: 20%;
+}
+
+.arrow:after {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: -20px;
+  width: 25px;
+  height: 25px;
+  box-shadow: 6px 5px 9px -9px black;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  tranform: rotate(45deg);
+}
+
+.arrow.top:after {
+  bottom: -20px;
+  top: auto;
+}
+
+.wizardControls {
+  text-align: right;
+}
+
+.tooltipTrigger {
+  display: inline;
+}
+
+.tooltipTrigger .qmark {
+  background: #30a3fb;
+  color: white;
+  font-weight: bold;
+  display: inline;
+  padding: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-left: 10px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+}

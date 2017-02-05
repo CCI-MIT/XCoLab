@@ -3,6 +3,7 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+    xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
 	xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
 	version="2.0">
 
@@ -47,7 +48,7 @@
 
 	<modeling:simulationLoadScripts />
 
-	<link rel="stylesheet" href="/proposals-portlet/css/simulation.css" ></link>
+	<xcolab:stylesheet href="/css/pages/modeling/simulation.css" />
         <div class="spinner-area" style="margin: auto; padding-top: 100px; margin-bottom: -100px;"><!-- --> </div>
 	<div id="modelsOutputContainer"></div>
 

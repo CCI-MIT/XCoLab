@@ -10,9 +10,10 @@ import org.jsoup.Jsoup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.modeling.ModelingClientUtil;
 import org.xcolab.client.modeling.models.ui.IllegalUIConfigurationException;
@@ -40,14 +41,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-//-- @RequestMapping("view")
+@RequestMapping("/api/modeling")
 public class ModelingJsonController {
 
     private final static Logger _log = LoggerFactory.getLogger(ModelingJsonController.class);
 
-    //-- @ResourceMapping("getScenario")
+    @GetMapping("scenarios/{scenarioId}")
     public void getScenario(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam long scenarioId) throws IOException {
+            @PathVariable long scenarioId) throws IOException {
         JsonObject scenarioJson = Json.createObjectBuilder().build();
         try {
             Scenario scenario = RomaClientUtil.client().getScenario(scenarioId);
@@ -58,18 +59,18 @@ public class ModelingJsonController {
         response.getOutputStream().write(scenarioJson.toString().getBytes());
     }
 
-    //-- @ResourceMapping("getModel")
+    @GetMapping("models/{modelId}")
     public void getModel(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam long modelId)
+            @PathVariable long modelId)
             throws IOException, IllegalUIConfigurationException {
 
         Simulation simulation = RomaClientUtil.client().getSimulation(modelId);
         response.getOutputStream().write(convertModel(simulation).toString().getBytes());
     }
 
-    //-- @ResourceMapping("runModel")
+    @GetMapping("models/{modelId}/run")
     public void runModel(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam long modelId, @RequestParam String inputs)
+            @PathVariable long modelId, @RequestParam String inputs)
             throws IOException {
         JsonReader jsonReader = Json.createReader(new ByteArrayInputStream(inputs.getBytes("UTF-8")));
         JsonObject inputsObject = jsonReader.readObject();

@@ -93,8 +93,8 @@ function ModelingWidget(selector, options) {
 	this.options.defaultValues = this.options.defaultValues || {};
 }
 
-ModelingWidget.prototype.scenarioUrl = '/web/guest/plans/-/plans/api/modeling/scenarios';
-ModelingWidget.prototype.modelUrl = '/web/guest/plans/-/plans/api/modeling/models';
+ModelingWidget.prototype.scenarioUrl = '/api/modeling/scenarios';
+ModelingWidget.prototype.modelUrl = '/api/modeling/models';
 
 /**
  * returns true if value is valid, false otherwise, 

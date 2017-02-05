@@ -1,0 +1,13 @@
+.simulationDetails {
+  padding: 10px;
+}
+
+.simulationDetails .title {
+  background: transparent none;
+  border-bottom: 1px solid #ddd;
+  height: auto;
+}
+
+.simulationDetails p {
+  padding: 5px 0;
+}
