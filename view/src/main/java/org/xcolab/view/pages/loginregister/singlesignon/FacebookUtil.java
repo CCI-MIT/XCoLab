@@ -95,15 +95,6 @@ public final class FacebookUtil {
     }
 
     public static String getAuthRedirectURL(HttpServletRequest request) {
-        return FacebookUtil.getDomain(request) + SsoEndpoint.FACEBOOK_CALLBACK.getUrl();
+        return ConfigurationAttributeKey.COLAB_URL.get() + SsoEndpoint.FACEBOOK_CALLBACK.getUrl();
     }
-
-    public static String getDomain(HttpServletRequest request) {
-        final boolean isStandardPort =
-                (request.getScheme().equals("http") && request.getServerPort() == 80)
-                        || (request.getScheme().equals("https") && request.getServerPort() == 443);
-        return request.getScheme() + "://" + request.getServerName()
-                + (!isStandardPort ? ":" + request.getServerPort() : "");
-    }
-
 }
