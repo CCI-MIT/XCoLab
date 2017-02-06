@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "tomcat.ajp.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Enable AJP connector for Tomcat."
+    },
+    {
+      "name": "tomcat.ajp.port",
+      "type": "java.lang.Integer",
+      "description": "Port for AJP connector."
+    }
+  ]
+}
