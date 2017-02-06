@@ -429,7 +429,7 @@ public class Contest extends AbstractContest {
     public List<Member> getContestAdvisors() {
         List<Member> advisors = null;
         for (ContestTeamMemberRole c : getContestTeamMembersByRole()) {
-            if (c.getRoleName().equalsIgnoreCase("Advisor")||c.getRoleName().equalsIgnoreCase("Curator")) {
+            if (c.getRoleName().equalsIgnoreCase("Advisor")||c.getRoleName().equalsIgnoreCase("Curator")||c.getRoleName().equalsIgnoreCase("Challenge leader")) {
                 advisors = c.getUsers();
             }
         }
