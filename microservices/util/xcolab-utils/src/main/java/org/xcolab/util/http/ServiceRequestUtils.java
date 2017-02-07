@@ -1,10 +1,10 @@
 package org.xcolab.util.http;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.stereotype.Component;
 
 import org.xcolab.util.http.caching.CacheKey;
 import org.xcolab.util.http.caching.CacheProvider;
+import org.xcolab.util.http.caching.CacheProviderEhcacheImpl;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.util.http.exceptions.translation.TranslationErrorHandler;
@@ -17,7 +17,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 
-@Component
 public final class ServiceRequestUtils {
 
     private static final RequestHelper requestHelper;
@@ -29,6 +28,9 @@ public final class ServiceRequestUtils {
         readProperties();
         requestHelper = new RequestHelper(new TranslationErrorHandler(new ServiceExceptionTranslator()));
         requestHelper.setCacheActive(cacheActive);
+        if (cacheActive) {
+            requestHelper.setCacheProvider(new CacheProviderEhcacheImpl());
+        }
     }
 
     private ServiceRequestUtils() {

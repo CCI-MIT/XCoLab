@@ -35,6 +35,7 @@ public class AdminClient {
 
     public static boolean updateConfigurationAttribute(
             ConfigurationAttribute configurationAttribute) {
-        return configurationAttributeResource.update(configurationAttribute,configurationAttribute.getName()).execute();
+        return configurationAttributeResource.update(configurationAttribute,
+                configurationAttribute.getName()).execute();
     }
 }

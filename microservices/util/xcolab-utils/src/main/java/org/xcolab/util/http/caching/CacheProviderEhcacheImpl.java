@@ -14,12 +14,10 @@ import org.ehcache.spi.loaderwriter.CacheWritingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.stereotype.Component;
 
 import static org.ehcache.config.builders.CacheConfigurationBuilder.newCacheConfigurationBuilder;
 import static org.ehcache.config.builders.CacheManagerBuilder.newCacheManagerBuilder;
 
-@Component
 public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
 
     private static final Logger log = LoggerFactory.getLogger(CacheProviderEhcacheImpl.class);
