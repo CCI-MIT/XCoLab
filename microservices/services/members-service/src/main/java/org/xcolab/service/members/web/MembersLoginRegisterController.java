@@ -18,6 +18,10 @@ import org.xcolab.service.members.exceptions.UnauthorizedException;
 import org.xcolab.service.members.service.login.LoginBean;
 import org.xcolab.service.members.service.member.MemberService;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+
 @RestController
 @RequestMapping("/members")
 public class MembersLoginRegisterController {
@@ -74,7 +78,11 @@ public class MembersLoginRegisterController {
             @RequestParam(required = false) String hash,
             @RequestParam(required = false) Long memberId)
             throws NotFoundException {
+        try{
+            hash = URLDecoder.decode(hash, "UTF-8");
+        }catch (UnsupportedEncodingException ignored){
 
+        }
         if (hash != null) {
             return memberService.validatePassword(password, hash);
         }

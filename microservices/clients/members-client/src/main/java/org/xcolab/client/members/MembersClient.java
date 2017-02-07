@@ -24,6 +24,8 @@ import org.xcolab.util.http.exceptions.Http401UnauthorizedException;
 import org.xcolab.util.http.exceptions.Http403ForbiddenException;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 public final class MembersClient {
@@ -350,10 +352,16 @@ public final class MembersClient {
         return memberResource.service("validatePassword", Boolean.class)
                 .queryParam("password", password)
                 .queryParam("memberId", memberId)
-                .get();
+                .post();
     }
 
     public static boolean validatePassword(String password, String encodedPassword) {
+        try{
+            encodedPassword = URLEncoder.encode(encodedPassword, "UTF-8");
+        }catch (UnsupportedEncodingException ignored){
+
+        }
+
         return memberResource.service("validatePassword", Boolean.class)
                 .queryParam("password", password)
                 .queryParam("hash", encodedPassword)
