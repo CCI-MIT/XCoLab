@@ -29,7 +29,7 @@ public final class ConfigurationAttributeKey {
                     .withCache().build();
     public static final AttributeGetter<ColabTheme> ACTIVE_THEME =
             ConfigurationAttributes.newEnumAttribute("ACTIVE_THEME", ColabTheme.class)
-                    .defaultValue(ColabTheme.CLIMATE_COLAB)
+                    .withCache()
                     .build();
     public static final AttributeGetter<Long> WIKI_CONTENT_FOLDER_ID =
             ConfigurationAttributes.newLongAttribute("WIKI_CONTENT_FOLDER_ID")

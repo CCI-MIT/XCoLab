@@ -177,12 +177,18 @@ public final class ProposalClient {
                 .getList(), proposalService);
     }
 
-    public List<Proposal> getActiveProposalsInContestPhase(Long contestPhaseId) {
+    public List<Proposal> getActiveProposalsInContestPhase(Long contestPhaseId, CacheRetention cacheRetention) {
         return DtoUtil.toPojos(proposalResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .optionalQueryParam("visible", true)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
+                .withCache(CacheKeys.withClass(ProposalDto.class)
+                        .withParameter("contestPhaseId", contestPhaseId).asList(), cacheRetention)
                 .execute(), proposalService);
+    }
+
+    public List<Proposal> getActiveProposalsInContestPhase(Long contestPhaseId) {
+        return getActiveProposalsInContestPhase(contestPhaseId, CacheRetention.REQUEST);
     }
 
     public Proposal createProposal(long authorId, long contestPhaseId, boolean publishActivity) {

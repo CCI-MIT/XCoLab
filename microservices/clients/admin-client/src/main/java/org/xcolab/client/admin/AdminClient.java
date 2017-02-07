@@ -21,7 +21,7 @@ public class AdminClient {
         try {
             return configurationAttributeResource.get(name)
                     .withCache(CacheKeys.of(ConfigurationAttribute.class, name),
-                            CacheRetention.SHORT)
+                            CacheRetention.MEDIUM)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ConfigurationAttributeNotFoundException(name);
