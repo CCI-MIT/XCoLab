@@ -63,7 +63,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         List<PointsTarget> targets = receiverLimitationStrategy.getTargets(proposal, pointType, distributionStrategy);
         List<PointsTargetProposalWrapper> regionalPercentages = new ArrayList<>();
         for (PointsTarget target : targets) {
-            regionalPercentages.add(new PointsTargetProposalWrapper(target, 93));
+            regionalPercentages.add(new PointsTargetProposalWrapper(target, 93l));
         }
 
         pointType = ProposalsContextUtil.getClients(request).getPointsClient().getPointType(4L);
@@ -73,7 +73,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         targets = receiverLimitationStrategy.getTargets(proposal, pointType, distributionStrategy);
         List<PointsTargetProposalWrapper> basicPercentages = new ArrayList<>();
         for (PointsTarget target : targets) {
-            basicPercentages.add(new PointsTargetProposalWrapper(target, 2));
+            basicPercentages.add(new PointsTargetProposalWrapper(target, 2l));
         }
 
 

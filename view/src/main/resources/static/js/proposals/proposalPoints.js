@@ -186,7 +186,7 @@ function initUserAutocomplete(idPostfix, canEdit) {
                             + '<label class="percentageInput">';
                         if (canEdit) {
                             htmlTemplate +=
-                                '<input type="text" name="assignments[' + idPostfix + ']['
+                                '<input type="text" name="assignmentsByUserIdByPointTypeId[' + idPostfix + ']['
                                 + ui.item.id +
                                 ']" class="popupreg_input" value="0.0" /> ';
                         } else {

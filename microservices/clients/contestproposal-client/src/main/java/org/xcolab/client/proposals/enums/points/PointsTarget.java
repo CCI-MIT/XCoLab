@@ -9,7 +9,7 @@ public class PointsTarget {
 	private long userId;
 	private double points;
 	private double percentage;
-	private double percentageIn;
+	private double percentageIn = 1d;
 
 	public PointsTarget() {
 	}
@@ -19,7 +19,7 @@ public class PointsTarget {
 		this.userId = pointsTarget.getUserId();
 		this.points = pointsTarget.getPoints();
 		this.percentage = pointsTarget.getPercentage();
-		this.percentageIn = 1;
+
 	}
 
 	public PointsTarget(PointsTarget target, double percentageIn) {

@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
-//-- @RequestMapping("view")
 public class AssignPointsActionController {
 
     @Autowired
