@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClientUtil;
@@ -25,7 +25,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-//-- @RequestMapping("view")
 public class ProposalModelTabController extends BaseProposalTabController {
 
     private final ProposalsContext proposalsContext;
@@ -35,7 +34,7 @@ public class ProposalModelTabController extends BaseProposalTabController {
         this.proposalsContext = proposalsContext;
     }
 
-    //--  @RequestMapping(params = {"pageToDisplay=proposalDetails_ACTIONSIMPACTS"})
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ACTIONSIMPACTS")
     public String show(Model model, @RequestParam(required = false) boolean edit, HttpServletRequest request) {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.ACTIONSIMPACTS);
