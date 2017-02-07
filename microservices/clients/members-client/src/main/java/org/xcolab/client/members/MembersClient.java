@@ -357,7 +357,7 @@ public final class MembersClient {
         return memberResource.service("validatePassword", Boolean.class)
                 .queryParam("password", password)
                 .queryParam("hash", encodedPassword)
-                .get();
+                .post();
     }
 
     public static boolean updatePassword(long memberId, String newPassword) {

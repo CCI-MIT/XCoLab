@@ -68,7 +68,7 @@ public class MembersLoginRegisterController {
                 .hashPassword(password, liferayCompatible != null ? liferayCompatible : false);
     }
 
-    @GetMapping("validatePassword")
+    @PostMapping("validatePassword")
     public Boolean validatePassword(
             @RequestParam String password,
             @RequestParam(required = false) String hash,
