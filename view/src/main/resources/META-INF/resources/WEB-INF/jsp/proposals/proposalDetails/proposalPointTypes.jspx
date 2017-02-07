@@ -3,6 +3,7 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
           xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           version="2.0">
 
     <!--@elvariable id="pointType" type="org.xcolab.client.proposals.pojo.points.PointType"-->
@@ -274,6 +275,7 @@
                                     <input type="hidden" class="messageRecipientsInput${pointType.id}" />
                                 </label>
 
+
                                 <div id="please_choose_from_list${pointType.id}" class="error" style="display: none;">Please choose a user from the list</div>
                                 <div id="unknownUsersContainer${pointType.id}" class="error" style="display: none;">Unknown user: <p><!-- --></p></div>
                                 <script type="text/javascript">
@@ -297,28 +299,28 @@
                                 <strong class="percentage">%</strong>
                                 <strong class="name">Name</strong>
                             </li>
-                            <c:forEach var="userId" items="${assignPointsBean.getUserIds(pointType.id)}">
-                                <li class="listItem${pointType.id}-${userId}">
+                            <c:forEach var="member" items="${assignPointsBean.getMembers(pointType.id)}">
+                                <li class="listItem${pointType.id}-${member.id_}">
                                     <label class="percentageInput">
                                         <c:choose>
                                             <c:when test="${currentTabWrapped.canEdit}">
                                                 <form:input data-changed-by-user="true"
-                                                        path="assignmentsByUserIdByPointTypeId[${pointType.id}][${userId}]"
+                                                        path="assignmentsByUserIdByPointTypeId[${pointType.id}][${member.id_}]"
                                                         class="popupreg_input"
-                                                        value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][userId]}"
+                                                        value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][member.id_]}"
                                                     />
                                             </c:when>
                                             <c:otherwise>
-                                                <span class="input" data-value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][userId]}">
-                                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][userId]}"/>%
+                                                <span class="input" data-value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][member.id_]}">
+                                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][member.id_]}"/>%
                                                 </span>
                                             </c:otherwise>
                                         </c:choose>
-                                        <a href="/web/guest/member/-/member/userId/${userId}" target="_blank">
-                                            <span class="replaceUserId">${userId}</span>
+                                        <a href="/web/guest/member/-/member/userId/${member.id_}" target="_blank">
+                                            <span class="">${member.screenName}</span>
                                         </a>
                                         <c:if test="${currentTabWrapped.canEdit and pointType.receiverLimitationStrategy != 'ANY_TEAM_MEMBER'}">
-                                            <span class="deleteListItem" data-item-id="${pointType.id}-${userId}">x</span>
+                                            <span class="deleteListItem" data-item-id="${pointType.id}-${member.id_}">x</span>
                                         </c:if>
                                     </label>
                                 </li>

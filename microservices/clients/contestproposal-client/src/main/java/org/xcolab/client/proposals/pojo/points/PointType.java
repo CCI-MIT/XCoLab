@@ -13,7 +13,7 @@ public class PointType extends AbstractPointType {
 
     private List<PointType> children;
 
-    private double percentageOfTotal;
+    private double percentageOfTotal = 1.0;
 
     public PointType() {}
 
