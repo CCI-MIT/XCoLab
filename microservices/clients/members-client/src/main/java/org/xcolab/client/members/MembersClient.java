@@ -132,7 +132,7 @@ public final class MembersClient {
         return memberRoleResource.resolveParent(memberResource.id(memberId))
                 .list()
                 .withCache(CacheKeys.withClass(Role_.class)
-                        .withParameter("memberId", memberId).asList(), CacheRetention.REQUEST)
+                        .withParameter("memberId", memberId).asList(), CacheRetention.SHORT)
                 .execute();
     }
 
