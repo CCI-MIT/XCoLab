@@ -27,6 +27,7 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
     @Override
     public Configuration getConfiguration(ServletContext servletContext) {
         final ConfigurationBuilder configurationBuilder = ConfigurationBuilder.begin();
+        redirectLegacyThemeImages(configurationBuilder);
         redirectLegacyRegistration(configurationBuilder);
         redirectLegacyWikiPages(configurationBuilder);
         redirectLegacyUserProfile(configurationBuilder);
@@ -40,6 +41,15 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .when(Direction.isInbound().and(Path.matches("/web/guest/feedback")))
                     .perform(Redirect.permanent("/feedback"));
         return configurationBuilder;
+    }
+
+    private void redirectLegacyThemeImages(ConfigurationBuilder configurationBuilder) {
+        configurationBuilder
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/{colabName}-theme/images/{path}")))
+                    .perform(Forward.to("/images/(path)"))
+                    .where("path").matches(".*");
     }
 
     private void redirectLegacyRegistration(ConfigurationBuilder configurationBuilder) {
