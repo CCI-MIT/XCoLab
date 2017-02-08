@@ -1,0 +1,46 @@
+.staffmembers-list, .staffmembers-photos {
+  font-size: 1.1em;
+  margin: 1em 0;
+}
+
+.staffmembers-role {
+  font-size: 0.9em;
+}
+
+.staffmembers-photos {
+  list-style-type: none;
+  margin-top: 0;
+
+  li {
+    background-image: none;
+    float: left;
+    text-align: center;
+    display: block;
+    width: 200px;
+    margin: 0;
+    margin-top: 2em;
+    padding: 0;
+  }
+  li.clear-row {
+    clear: left;
+  }
+
+  img {
+    margin: 0.5em 0;
+    max-width: 100px;
+    max-height: 100px;
+    height: auto;
+  }
+}
+
+.staffmembers-list {
+  line-height: 150%;
+}
+
+.descriptionContainer {
+  height: 50px;
+}
+
+.descriptionContainer .staffmembers-organization{
+  font-size: 9pt;
+}

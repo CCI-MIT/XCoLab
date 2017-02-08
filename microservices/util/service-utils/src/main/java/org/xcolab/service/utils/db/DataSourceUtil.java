@@ -10,9 +10,9 @@ public final class DataSourceUtil {
     private static final Logger log = LoggerFactory.getLogger(DataSourceUtil.class);
 
     /* Pool configuration constants  */
-    private static final int MAX_POOL_SIZE = 10;
+    private static final int MAX_POOL_SIZE = 6;
     private static final int MIN_IDLE = 2;
-    private static final int IDLE_TIMEOUT_MS = 120000;
+    private static final int IDLE_TIMEOUT_MS = 120_000;
     private static final int PREPARED_STATEMENT_CACHE_SIZE = 250;
     private static final int PREPARED_STATEMENT_CACHE_SQL_LIMIT = 1024;
 
