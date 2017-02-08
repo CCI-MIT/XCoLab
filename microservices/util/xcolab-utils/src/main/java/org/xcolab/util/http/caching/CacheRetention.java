@@ -6,10 +6,10 @@ import java.util.concurrent.TimeUnit;
 
 public enum CacheRetention {
     NONE(0, Duration.ZERO),
-    REQUEST(500L, Duration.of(3, TimeUnit.SECONDS)),
-    SHORT(100L, Duration.of(30, TimeUnit.SECONDS)),
-    MEDIUM(100L, Duration.of(10, TimeUnit.MINUTES)),
-    LONG(100L, Duration.of(1, TimeUnit.HOURS)),
+    REQUEST(600L, Duration.of(3, TimeUnit.SECONDS)),
+    SHORT(200L, Duration.of(5, TimeUnit.MINUTES)),
+    MEDIUM(400L, Duration.of(20, TimeUnit.MINUTES)),
+    LONG(200L, Duration.of(2, TimeUnit.HOURS)),
     RUNTIME(50L, Duration.INFINITE);
 
     private final long numberOfEntries;

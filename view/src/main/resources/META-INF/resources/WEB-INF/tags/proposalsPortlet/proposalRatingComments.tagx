@@ -31,7 +31,7 @@
                             ${role.printName}
                         </div>
                     </div>
-                    <proposalsPortlet:proposalRatingEvaluation showRating="true" showPhase="false" wrapper="${wrapper}" showRatingDescription="true"/>
+                    <proposalsPortlet:proposalRatingEvaluation showShouldAdvance="true" showRating="true" showPhase="false" wrapper="${wrapper}" showRatingDescription="true"/>
                 </div>
             </discussions:getRoleName>
         </c:forEach>

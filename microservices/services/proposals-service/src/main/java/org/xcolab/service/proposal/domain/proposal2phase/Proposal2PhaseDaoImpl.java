@@ -106,7 +106,6 @@ public class Proposal2PhaseDaoImpl implements Proposal2PhaseDao {
 
 
         query.addConditions(PROPOSAL_2_PHASE.PROPOSAL_ID.eq(proposalId));
-        query.addConditions(PROPOSAL_2_PHASE.VERSION_TO.ne(-1));
 
 
         query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(contestId));

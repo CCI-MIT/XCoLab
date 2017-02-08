@@ -60,7 +60,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 
-    <title>${title}</title>
+    <title>${title} ${(not empty title) ? '|' : ''} ${_colabName}</title>
 
     <script type="text/javascript">
         var _isLoggedIn = '${_isLoggedIn}' == 'true';

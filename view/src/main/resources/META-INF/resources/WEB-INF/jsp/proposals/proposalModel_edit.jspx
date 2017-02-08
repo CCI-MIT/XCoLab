@@ -2,8 +2,10 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling" version="2.0"
+    xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
     xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld">
-
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
 	<!--@elvariable id="availableModels" type="java.util.Map<java.lang.Long, java.lang.String>"-->
 
 	<jsp:directive.include file="./init_proposal_tab.jspx"/>
@@ -70,4 +72,5 @@
 	</script>
 	
 	</div>
+</xcolab:layout>
 </jsp:root>

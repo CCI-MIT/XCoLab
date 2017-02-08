@@ -42,8 +42,6 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             final boolean isLoggedIn = authenticationContext.isLoggedIn();
             modelAndView.addObject("_isLoggedIn", isLoggedIn);
 
-
-
             final boolean isImpersonating = authenticationContext.isImpersonating(request);
             modelAndView.addObject("_showImpersonationBar", isImpersonating);
             if (isImpersonating) {

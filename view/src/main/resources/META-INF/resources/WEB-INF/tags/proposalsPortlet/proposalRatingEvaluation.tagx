@@ -9,7 +9,7 @@
     <jsp:directive.attribute name="showRating" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Rating should be displayed or not" />
     <jsp:directive.attribute name="showPhase" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Phase for this Rating should be displayed or not" />
     <jsp:directive.attribute name="showRatingDescription" type="java.lang.Boolean" required="false" rtexprvalue="true"  description="Whether the Rating description should be displayed or not" />
-
+    <jsp:directive.attribute name="showShouldAdvance" type="java.lang.Boolean" required="false" rtexprvalue="true"  description="Whether the Judges option to advance proposal should be displayed or not" />
     <div class="c-Comment">
         <div class="content">
             <c:if test="${showPhase}">
@@ -56,6 +56,13 @@
             </c:if>
             <p>
                 <strong>Judges' Comments</strong><br/>
+                <c:if test="${showShouldAdvance}">
+                    <div>
+                        <strong>Would you like to see this proposal advance to the next round?</strong>
+                        ${wrapper.shouldAdvance ? 'Yes' : 'No'}
+                    </div>
+                </c:if>
+
                 <span class="comment-wrapper">${wrapper.commentEscaped}</span>
             </p>
         </div>
