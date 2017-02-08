@@ -1,11 +1,25 @@
 package org.xcolab.view.auth.handlers;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
+
+import org.xcolab.entity.utils.flash.AlertMessage;
 
 public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
     public LogoutSuccessHandler() {
         super();
-        setDefaultTargetUrl("/");
     }
+    public void onLogoutSuccess(javax.servlet.http.HttpServletRequest request,
+            javax.servlet.http.HttpServletResponse response,
+            Authentication authentication)
+            throws java.io.IOException,
+            javax.servlet.ServletException{
+
+        AlertMessage.success("We hope you come back soon!").flash(request);
+        response.sendRedirect("/");
+
+
+    }
+
 }
