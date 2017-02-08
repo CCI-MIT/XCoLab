@@ -122,13 +122,12 @@ public class Contest extends AbstractContest {
     }
 
     public String getContestLinkUrl() {
-
         String link = "/";
 
-        if(this.getIsSharedContestInForeignColab()){
+        if (this.getIsSharedContestInForeignColab()) {
             link += ContestClientUtil.getClient().getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get())
                     .getFriendlyUrlStringContests();
-        }else{
+        } else {
             link += contestClient.getContestType(this.getContestTypeId())
                     .getFriendlyUrlStringContests();
         }
@@ -136,6 +135,11 @@ public class Contest extends AbstractContest {
         link += "/%d/%s";
         return String.format(link, this.getContestYear(), this.getContestUrlName());
     }
+
+    public String getContestLinkUrl(long contestPhaseId) {
+        return getContestLinkUrl() + "/phase/" + contestPhaseId;
+    }
+
     public String getProposalLogoPath() {
         if(this.getIsSharedContestInForeignColab()) {
             return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()+"/";

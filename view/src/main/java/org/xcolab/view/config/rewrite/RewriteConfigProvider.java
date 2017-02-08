@@ -162,9 +162,23 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .where("portletName").matches("(plans|dialogues|challenges|trends)")
                 .addRule()
                     .when(Direction.isInbound()
-                            .and(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/planId/{proposalId}")))
+                            .and(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phase/{phaseId}")))
+                    .perform(Forward.to("/contests/legacy/contest/{contestId}?phaseId={phaseId}"))
+                    .where("portletName").matches("(plans|dialogues|challenges|trends)")
+                .addRule()
+                    .when(Direction.isInbound()
+                            .and(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/planId/{proposalId}")
+                                .or(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/planId/{proposalId}/{path}"))))
                     .perform(Forward.to("/contests/legacy/contest/{contestId}/proposal/{proposalId}"))
-                    .where("portletName").matches("(plans|dialogues|challenges|trends)");
+                    .where("portletName").matches("(plans|dialogues|challenges|trends)")
+                    .where("path").matches(".*")
+                .addRule()
+                    .when(Direction.isInbound()
+                            .and(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phaseId/{phaseId}/planId/{proposalId}")
+                                .or(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phaseId/{phaseId}/planId/{proposalId}/{path}"))))
+                    .perform(Forward.to("/contests/legacy/contest/{contestId}/proposal/{proposalId}?phaseId={phaseId}"))
+                    .where("portletName").matches("(plans|dialogues|challenges|trends)")
+                    .where("path").matches(".*");
     }
 
     private void redirectContentPages(ConfigurationBuilder configurationBuilder) {
