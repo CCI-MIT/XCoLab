@@ -26,15 +26,15 @@ public class ContestPreferencesController {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
-    	model.addAttribute("preferences", new ContestPreferences());
+    	model.addAttribute("contestPreferences", new ContestPreferences());
         return "contestswidget/editPreferences";
     }
 	
 
     @PostMapping("contestswidget/savePreferences")
-    public String savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, ContestPreferences preferences)
+    public String savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, ContestPreferences contestPreferences)
             throws  IOException {
-    	preferences.submit();
+        contestPreferences.submit();
         AlertMessage.success("Contest widget preferences has been saved.").flash(request);
         return "contestswidget/editPreferences";
     }

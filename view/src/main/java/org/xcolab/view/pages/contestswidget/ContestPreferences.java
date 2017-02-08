@@ -66,7 +66,7 @@ public class ContestPreferences {
         title = (prefs.has(TITLE_PREFERENCE))?(prefs.getString(TITLE_PREFERENCE)):( "Featured contests");
         allContestsTitle = (prefs.has(ALL_CONTESTS_TITLE))?(prefs.getString(ALL_CONTESTS_TITLE)):( "see all contests");
         showCounts = Boolean.parseBoolean((prefs.has(SHOW_COUNTS))?(prefs.getString(SHOW_COUNTS)):("true"));
-        allContestsUrl = (prefs.has(ALL_CONTESTS_URL))?(prefs.getString(ALL_CONTESTS_URL)):("/web/guest/plans");
+        allContestsUrl = (prefs.has(ALL_CONTESTS_URL))?(prefs.getString(ALL_CONTESTS_URL)):("/contests");
         try {
             feedSize = Integer.parseInt((prefs.has(FEED_SIZE_PREFERENCE))?(prefs.getString(FEED_SIZE_PREFERENCE)):("4"));
         } catch (NumberFormatException e) {
