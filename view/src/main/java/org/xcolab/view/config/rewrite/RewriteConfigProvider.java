@@ -68,6 +68,7 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .when(Direction.isInbound().and(
                             Path.matches("/web/guest/resources/-/wiki/Main/{page}")
                                     .or(Path.matches("/resources/-/wiki/Main/{page}"))
+                                    .or(Path.matches("/resources/-/wiki/main/{page}"))
                                     .or(Path.matches("/web/guest/wiki/-/wiki/page/{page}"))
                             ))
                     .perform(Redirect.permanent("/wiki/{page}"))
@@ -235,15 +236,47 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .perform(Redirect.permanent("/wiki/2016+Contest+Rules"))
                 .addRule()
                     .when(Direction.isInbound().and(Path.matches("/contest-rules")))
-                    .perform(Redirect.permanent("/wiki/Contest+Rules"))
+                    .perform(Redirect.permanent("/wiki/Contest+Rules"));
+
+        //staff members pages
+        configurationBuilder
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/project-staff1/-/wiki/Main/Project%20staff")))
+                    .perform(Redirect.permanent("/page/project-staff"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/impact_fellows")))
+                    .perform(Redirect.permanent("/page/people-impact-fellows"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/advisors/-/wiki/Main/Climate+CoLab+Advisors")))
+                    .perform(Redirect.permanent("/page/people-advisors"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/judges/-/wiki/Main/Climate+CoLab+Judges")))
+                    .perform(Redirect.permanent("/page/people-judges"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/fellows/-/wiki/Main/Climate+CoLab+Fellows")))
+                    .perform(Redirect.permanent("/page/people-fellows"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/expert-advisory-board/-/wiki/Main/Expert%20advisory%20board")))
+                    .perform(Redirect.permanent("/page/people-expert-advisory-board"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/expert-council/-/wiki/Main/Expert%20Council")))
+                    .perform(Redirect.permanent("/page/people-expert-council"));
 
         //Conferences
         configurationBuilder
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/conference{conferenceYear}")))
+                    .when(Direction.isInbound().and(Path.matches("/conference{conferenceYear}")
+                            .or(Path.matches("/web/guest/conference{conferenceYear}"))))
                     .perform(Redirect.permanent("/page/conference{conferenceYear}"))
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/conference{conferenceYear}/{subPage}")))
+                    .when(Direction.isInbound().and(Path.matches("/conference{conferenceYear}/{subPage}")
+                            .or(Path.matches("/web/guest/conference{conferenceYear}/{subPage}"))))
                     .perform(Redirect.permanent("/page/conference{conferenceYear}-{subPage}"));
     }
 
