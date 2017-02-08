@@ -27,6 +27,7 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
     @Override
     public Configuration getConfiguration(ServletContext servletContext) {
         final ConfigurationBuilder configurationBuilder = ConfigurationBuilder.begin();
+        redirectLegacyThemeImages(configurationBuilder);
         redirectLegacyRegistration(configurationBuilder);
         redirectLegacyWikiPages(configurationBuilder);
         redirectLegacyUserProfile(configurationBuilder);
@@ -40,6 +41,15 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .when(Direction.isInbound().and(Path.matches("/web/guest/feedback")))
                     .perform(Redirect.permanent("/feedback"));
         return configurationBuilder;
+    }
+
+    private void redirectLegacyThemeImages(ConfigurationBuilder configurationBuilder) {
+        configurationBuilder
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/{colabName}-theme/images/{path}")))
+                    .perform(Forward.to("/images/(path)"))
+                    .where("path").matches(".*");
     }
 
     private void redirectLegacyRegistration(ConfigurationBuilder configurationBuilder) {
@@ -58,6 +68,7 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .when(Direction.isInbound().and(
                             Path.matches("/web/guest/resources/-/wiki/Main/{page}")
                                     .or(Path.matches("/resources/-/wiki/Main/{page}"))
+                                    .or(Path.matches("/resources/-/wiki/main/{page}"))
                                     .or(Path.matches("/web/guest/wiki/-/wiki/page/{page}"))
                             ))
                     .perform(Redirect.permanent("/wiki/{page}"))
@@ -152,9 +163,23 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .where("portletName").matches("(plans|dialogues|challenges|trends)")
                 .addRule()
                     .when(Direction.isInbound()
-                            .and(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/planId/{proposalId}")))
+                            .and(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phase/{phaseId}")))
+                    .perform(Forward.to("/contests/legacy/contest/{contestId}?phaseId={phaseId}"))
+                    .where("portletName").matches("(plans|dialogues|challenges|trends)")
+                .addRule()
+                    .when(Direction.isInbound()
+                            .and(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/planId/{proposalId}")
+                                .or(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/planId/{proposalId}/{path}"))))
                     .perform(Forward.to("/contests/legacy/contest/{contestId}/proposal/{proposalId}"))
-                    .where("portletName").matches("(plans|dialogues|challenges|trends)");
+                    .where("portletName").matches("(plans|dialogues|challenges|trends)")
+                    .where("path").matches(".*")
+                .addRule()
+                    .when(Direction.isInbound()
+                            .and(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phaseId/{phaseId}/planId/{proposalId}")
+                                .or(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phaseId/{phaseId}/planId/{proposalId}/{path}"))))
+                    .perform(Forward.to("/contests/legacy/contest/{contestId}/proposal/{proposalId}?phaseId={phaseId}"))
+                    .where("portletName").matches("(plans|dialogues|challenges|trends)")
+                    .where("path").matches(".*");
     }
 
     private void redirectContentPages(ConfigurationBuilder configurationBuilder) {
@@ -205,15 +230,53 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .perform(Redirect.permanent("/page/people"))
                 .addRule()
                     .when(Direction.isInbound().and(Path.matches("/web/guest/press")))
-                    .perform(Redirect.permanent("/page/press"));
+                    .perform(Redirect.permanent("/page/press"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/2016-contest-rules")))
+                    .perform(Redirect.permanent("/wiki/2016+Contest+Rules"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/contest-rules")))
+                    .perform(Redirect.permanent("/wiki/Contest+Rules"));
+
+        //staff members pages
+        configurationBuilder
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/project-staff1/-/wiki/Main/Project%20staff")))
+                    .perform(Redirect.permanent("/page/project-staff"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/impact_fellows")))
+                    .perform(Redirect.permanent("/page/people-impact-fellows"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/advisors/-/wiki/Main/Climate+CoLab+Advisors")))
+                    .perform(Redirect.permanent("/page/people-advisors"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/judges/-/wiki/Main/Climate+CoLab+Judges")))
+                    .perform(Redirect.permanent("/page/people-judges"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/fellows/-/wiki/Main/Climate+CoLab+Fellows")))
+                    .perform(Redirect.permanent("/page/people-fellows"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/expert-advisory-board/-/wiki/Main/Expert%20advisory%20board")))
+                    .perform(Redirect.permanent("/page/people-expert-advisory-board"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/expert-council/-/wiki/Main/Expert%20Council")))
+                    .perform(Redirect.permanent("/page/people-expert-council"));
 
         //Conferences
         configurationBuilder
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/conference{conferenceYear}")))
+                    .when(Direction.isInbound().and(Path.matches("/conference{conferenceYear}")
+                            .or(Path.matches("/web/guest/conference{conferenceYear}"))))
                     .perform(Redirect.permanent("/page/conference{conferenceYear}"))
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/conference{conferenceYear}/{subPage}")))
+                    .when(Direction.isInbound().and(Path.matches("/conference{conferenceYear}/{subPage}")
+                            .or(Path.matches("/web/guest/conference{conferenceYear}/{subPage}"))))
                     .perform(Redirect.permanent("/page/conference{conferenceYear}-{subPage}"));
     }
 

@@ -220,7 +220,7 @@ public class Proposal extends AbstractProposal {
         this.proposal2Phase = proposal2Phase == null ? fetchProposal2Phase() : proposal2Phase;
 
         proposalContestPhaseAttributeHelper =
-                new ProposalContestPhaseAttributeHelper(this, contestPhase);
+                new ProposalContestPhaseAttributeHelper(this, this.contestPhase);
         proposalAttributeHelper = new ProposalAttributeHelper(this, this.getVersion(), proposalAttributeClient);
     }
 

@@ -1,5 +1,7 @@
 package org.xcolab.view.taglibs.xcolab.wrapper;
 
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -45,7 +47,7 @@ public class TabWrapper implements Serializable {
     }
 
     public String getTabUrl()  {
-        return this.request.getRequestURL().toString();//PortletUtil.getCurrentUrl(this.request);
+        return ServletUriComponentsBuilder.fromRequest(request).build().toUriString();
     }
 
     public String getElementType()  {

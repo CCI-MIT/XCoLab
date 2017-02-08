@@ -84,17 +84,21 @@ public class ProposalVersionDaoImpl implements ProposalVersionDao {
         Condition versionsRangeOr = null ;
         for(Proposal2Phase p2p : proposal2Phases) {
 
-            versionsRange = PROPOSAL_VERSION.VERSION.ge(p2p.getVersionFrom()).and(PROPOSAL_VERSION.VERSION.le(p2p.getVersionTo()));
-            if(versionsRangeOr == null){
-                versionsRangeOr = versionsRange;
-            }else{
-                versionsRangeOr = versionsRangeOr.or(versionsRange);
+            if(!p2p.getVersionTo().equals(-1)) {
+                versionsRange = PROPOSAL_VERSION.VERSION.ge(p2p.getVersionFrom())
+                        .and(PROPOSAL_VERSION.VERSION.le(p2p.getVersionTo()));
+                if (versionsRangeOr == null) {
+                    versionsRangeOr = versionsRange;
+                } else {
+                    versionsRangeOr = versionsRangeOr.or(versionsRange);
+                }
             }
 
         }
         query.addConditions(PROPOSAL_VERSION.PROPOSAL_ID.eq(proposalId));
-
-        query.addConditions(versionsRangeOr);
+        if(versionsRangeOr != null ) {
+            query.addConditions(versionsRangeOr);
+        }
 
         return query.fetchInto(ProposalVersion.class);
     }

@@ -13,10 +13,6 @@ public final class PortletUtil {
     }
 
 
-
-    public static String getCurrentUrl(PortletRequest portletRequest) {
-        return (String)portletRequest.getAttribute("CURRENT_URL");
-    }
     public static void setPageTitle(String title, HttpServletRequest httpServletRequest){
         //To be done using new template engine
         if(httpServletRequest!=null) {

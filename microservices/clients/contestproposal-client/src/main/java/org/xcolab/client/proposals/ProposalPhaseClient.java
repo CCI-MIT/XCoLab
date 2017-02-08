@@ -9,6 +9,8 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2PhaseDto;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttributeDto;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
@@ -58,6 +60,10 @@ public final class ProposalPhaseClient {
         final Proposal2PhaseDto dto = proposal2PhaseResource.list()
                 .queryParam("proposalId", proposalId)
                 .queryParam("contestPhaseId", contestPhaseId)
+                .withCache(CacheKeys.withClass(Proposal2PhaseDto.class)
+                                .withParameter("proposalId", proposalId)
+                                .withParameter("contestPhaseId", contestPhaseId).asList(),
+                        CacheRetention.MEDIUM)
                 .executeWithResult()
                 .getOneIfExists();
         if (dto == null) {

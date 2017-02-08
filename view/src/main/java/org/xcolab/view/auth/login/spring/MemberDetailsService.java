@@ -12,7 +12,11 @@ public class MemberDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         try {
-            return new MemberDetails(MembersClient.findMemberByScreenName(s));
+            if (s.contains("@")) {
+                return new MemberDetails(MembersClient.findMemberByEmailAddress(s));
+            } else {
+                return new MemberDetails(MembersClient.findMemberByScreenName(s));
+            }
         } catch (MemberNotFoundException e) {
             throw new UsernameNotFoundException("User " + s + " not found");
         }

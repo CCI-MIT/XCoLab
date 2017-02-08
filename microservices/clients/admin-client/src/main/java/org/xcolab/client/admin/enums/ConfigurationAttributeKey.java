@@ -33,7 +33,7 @@ public final class ConfigurationAttributeKey {
                     .withCache().build();
     public static final AttributeGetter<ColabTheme> ACTIVE_THEME =
             ConfigurationAttributes.newEnumAttribute("ACTIVE_THEME", ColabTheme.class)
-                    .defaultValue(ColabTheme.CLIMATE_COLAB)
+                    .withCache()
                     .build();
     public static final AttributeGetter<Long> WIKI_CONTENT_FOLDER_ID =
             ConfigurationAttributes.newLongAttribute("WIKI_CONTENT_FOLDER_ID")
@@ -143,6 +143,14 @@ public final class ConfigurationAttributeKey {
                     .build();
     public static final AttributeGetter<String> OPEN_GRAPH_SHARE_DESCRIPTION =
             ConfigurationAttributes.newStringAttribute("OPEN_GRAPH_SHARE_DESCRIPTION")
+                    .build();
+    public static final AttributeGetter<String> META_PAGE_DESCRIPTION =
+            ConfigurationAttributes.newStringAttribute("META_PAGE_DESCRIPTION")
+                    .defaultValue("")
+                    .build();
+    public static final AttributeGetter<String> META_PAGE_KEYWORDS =
+            ConfigurationAttributes.newStringAttribute("META_PAGE_KEYWORDS")
+                    .defaultValue("")
                     .build();
 
 

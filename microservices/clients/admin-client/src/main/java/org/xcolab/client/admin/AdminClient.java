@@ -21,7 +21,7 @@ public class AdminClient {
         try {
             return configurationAttributeResource.get(name)
                     .withCache(CacheKeys.of(ConfigurationAttribute.class, name),
-                            CacheRetention.SHORT)
+                            CacheRetention.MEDIUM)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ConfigurationAttributeNotFoundException(name);
@@ -35,6 +35,7 @@ public class AdminClient {
 
     public static boolean updateConfigurationAttribute(
             ConfigurationAttribute configurationAttribute) {
-        return configurationAttributeResource.update(configurationAttribute,configurationAttribute.getName()).execute();
+        return configurationAttributeResource.update(configurationAttribute,
+                configurationAttribute.getName()).execute();
     }
 }

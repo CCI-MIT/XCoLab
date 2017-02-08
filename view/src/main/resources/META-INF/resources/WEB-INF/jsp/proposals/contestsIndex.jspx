@@ -71,5 +71,6 @@
 			);
 		]]>
 		</script>
+		<xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>
 	</xcolab:layout>
 </jsp:root>

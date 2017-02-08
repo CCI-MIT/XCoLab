@@ -1,5 +1,6 @@
 package org.xcolab.view.theme;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,8 +18,10 @@ import org.xcolab.entity.utils.flash.AnalyticsAttribute;
 import org.xcolab.entity.utils.flash.ErrorMessage;
 import org.xcolab.entity.utils.flash.InfoMessage;
 import org.xcolab.util.enums.theme.ColabTheme;
+import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.auth.login.AuthenticationError;
+import org.xcolab.view.util.MetaKeys;
 
 import java.util.List;
 
@@ -41,8 +44,6 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
         if (modelAndView != null && !isRedirectView(modelAndView)) {
             final boolean isLoggedIn = authenticationContext.isLoggedIn();
             modelAndView.addObject("_isLoggedIn", isLoggedIn);
-
-
 
             final boolean isImpersonating = authenticationContext.isImpersonating(request);
             modelAndView.addObject("_showImpersonationBar", isImpersonating);
@@ -87,6 +88,19 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
                     ConfigurationAttributeKey.OPEN_GRAPH_SHARE_TITLE.get());
             modelAndView.addObject("_openGraphShareDescription",
                     ConfigurationAttributeKey.OPEN_GRAPH_SHARE_DESCRIPTION.get());
+
+            final String metaDescriptionAttribute = (String) request.getAttribute(MetaKeys.DESCRIPTION.getAttributeName());
+            if (StringUtils.isNotBlank(metaDescriptionAttribute)) {
+                modelAndView.addObject("_metaPageDescription", HtmlUtil.cleanAll(metaDescriptionAttribute));
+            } else {
+                modelAndView.addObject("_metaPageDescription", ConfigurationAttributeKey.META_PAGE_DESCRIPTION.get());
+            }
+            final String metaKeywordsAttribute = (String) request.getAttribute(MetaKeys.KEYWORDS.getAttributeName());
+            if (StringUtils.isNotBlank(metaKeywordsAttribute)) {
+                modelAndView.addObject("_metaPageKeywords", metaKeywordsAttribute);
+            } else {
+                modelAndView.addObject("_metaPageKeywords", ConfigurationAttributeKey.META_PAGE_KEYWORDS.get());
+            }
 
             modelAndView
                     .addObject("_isSharedColab", ConfigurationAttributeKey.IS_SHARED_COLAB.get());

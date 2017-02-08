@@ -35,6 +35,9 @@
     <!--@elvariable id="_showSearchMenuItem" type="java.lang.Boolean"-->
     <!--@elvariable id="_openGraphShareTitle" type="java.lang.String"-->
     <!--@elvariable id="_openGraphShareDescription" type="java.lang.String"-->
+    <!--@elvariable id="_metaPageKeywords" type="java.lang.String"-->
+    <!--@elvariable id="_metaPageDescription" type="java.lang.String"-->
+
     <!--@elvariable id="_isSharedColab" type="java.lang.Boolean"-->
     <!--@elvariable id="_partnerColabName" type="java.lang.String"-->
     <!--@elvariable id="_partnerColabClassName" type="java.lang.String"-->
@@ -59,8 +62,10 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta content="${_metaPageDescription}" lang="en-US" name="description" />
+    <meta content="${_metaPageKeywords}" lang="en-US" name="keywords" />
 
-    <title>${title}</title>
+    <title>${title} ${(not empty title) ? '|' : ''} ${_colabName}</title>
 
     <script type="text/javascript">
         var _isLoggedIn = '${_isLoggedIn}' == 'true';
