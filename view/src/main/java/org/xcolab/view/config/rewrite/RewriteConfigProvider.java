@@ -229,7 +229,13 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .perform(Redirect.permanent("/page/people"))
                 .addRule()
                     .when(Direction.isInbound().and(Path.matches("/web/guest/press")))
-                    .perform(Redirect.permanent("/page/press"));
+                    .perform(Redirect.permanent("/page/press"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/2016-contest-rules")))
+                    .perform(Redirect.permanent("/wiki/2016+Contest+Rules"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/contest-rules")))
+                    .perform(Redirect.permanent("/wiki/Contest+Rules"))
 
         //Conferences
         configurationBuilder
