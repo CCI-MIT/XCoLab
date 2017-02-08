@@ -9,6 +9,13 @@
     <c:if test="${not empty contentArticleVersion}">
         <h1>${contentArticleVersion.title}</h1>
         <br />
+        <c:if test="${_isAdmin}">
+            <a href="/content-editor/?articleId=${contentArticleVersion.contentArticleId}"
+               class="c-Button__admin">
+                Edit wiki article
+            </a>
+            <br/>
+        </c:if>
         <div>
             ${contentArticleVersion.content}
         </div>

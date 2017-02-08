@@ -6,6 +6,6 @@ public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
     public LogoutSuccessHandler() {
         super();
-        setUseReferer(true);
+        setDefaultTargetUrl("/");
     }
 }
