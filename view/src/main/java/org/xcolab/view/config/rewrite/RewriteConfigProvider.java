@@ -278,6 +278,43 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .when(Direction.isInbound().and(Path.matches("/conference{conferenceYear}/{subPage}")
                             .or(Path.matches("/web/guest/conference{conferenceYear}/{subPage}"))))
                     .perform(Redirect.permanent("/page/conference{conferenceYear}-{subPage}"));
+
+        //news
+        configurationBuilder
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/community/-/blogs/preparing-climate-colab-for-further-growth-developers-finish-liferay-transition")))
+                    .perform(Redirect.permanent("http://news.climatecolab.com/2016/12/improvements-to-the-climate-colab-platform/"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/community/-/blogs/climate-colab-featured-in-climatewire")))
+                    .perform(Redirect.permanent("http://news.climatecolab.com/2015/05/climate-colab-featured-in-climatewire/"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/community/-/blogs/climate-colab-featured-in-the-guardian")))
+                    .perform(Redirect.permanent("http://news.climatecolab.com/2014/04/climate-colab-featured-in-the-guardian/"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/news/-/blogs/climate-colab-tedx-talk")))
+                    .perform(Redirect.permanent("http://news.climatecolab.com/2015/11/climate-colab-tedx-talk/"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/news").or(Path.matches("/community"))))
+                    .perform(Redirect.permanent("http://news.climatecolab.com"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/community/-/blogs/2016-climate-colab-winners-announced")))
+                    .perform(Redirect.permanent("http://news.climatecolab.com/2016/08/2016-climate-colab-winners-announced/"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/community/-/blogs/press-release-grand-prize-winner-announced-2016")))
+                    .perform(Redirect.permanent("http://news.climatecolab.com/2016/09/press-release-grand-prize-winner-announced-2016/"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/community/-/blogs/2016-climate-colab-conference-in-review")))
+                    .perform(Redirect.permanent("http://news.climatecolab.com/2016/10/2016-crowds-climate-conference-in-review/"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/community/-/blogs/finalists-announced-vote-for-popular-choice-winners-")))
+                    .perform(Redirect.permanent("http://news.climatecolab.com/2016/07/finalists-announced-vote-for-popular-choice-winners/"))
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/community/-/blogs/2015-climate-colab-winners-announced")))
+                    .perform(Redirect.permanent("http://news.climatecolab.com/2015/09/2015-winners-announced-by-mit-climate-colab/"));
+
     }
 
     private void redirectContentPagesSolveCoLab(ConfigurationBuilder configurationBuilder) {
