@@ -80,6 +80,7 @@ public class MembersLoginRegisterController {
             throws NotFoundException {
         try{
             hash = URLDecoder.decode(hash, "UTF-8");
+            password = URLDecoder.decode(password, "UTF-8");
         }catch (UnsupportedEncodingException ignored){
 
         }

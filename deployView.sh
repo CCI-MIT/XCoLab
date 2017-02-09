@@ -4,5 +4,5 @@
 set -e
 
 cd view 
-mvn clean compile package
+mvn clean compile package spring-boot:repackage
 cd ../ 

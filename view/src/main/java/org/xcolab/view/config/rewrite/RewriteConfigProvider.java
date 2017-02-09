@@ -242,7 +242,7 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
         configurationBuilder
                 .addRule()
                     .when(Direction.isInbound().and(
-                            Path.matches("/web/guest/project-staff1/-/wiki/Main/Project%20staff")))
+                            Path.matches("/web/guest/project-staff1/-/wiki/Main/Project staff")))
                     .perform(Redirect.permanent("/page/project-staff"))
                 .addRule()
                     .when(Direction.isInbound().and(Path.matches("/impact_fellows")))
@@ -261,11 +261,11 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .perform(Redirect.permanent("/page/people-fellows"))
                 .addRule()
                     .when(Direction.isInbound().and(
-                            Path.matches("/web/guest/expert-advisory-board/-/wiki/Main/Expert%20advisory%20board")))
+                            Path.matches("/web/guest/expert-advisory-board/-/wiki/Main/Expert advisory board")))
                     .perform(Redirect.permanent("/page/people-expert-advisory-board"))
                 .addRule()
                     .when(Direction.isInbound().and(
-                            Path.matches("/web/guest/expert-council/-/wiki/Main/Expert%20Council")))
+                            Path.matches("/web/guest/expert-council/-/wiki/Main/Expert Council")))
                     .perform(Redirect.permanent("/page/people-expert-council"));
 
         //Conferences
