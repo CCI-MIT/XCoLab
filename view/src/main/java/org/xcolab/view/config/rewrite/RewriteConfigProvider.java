@@ -48,8 +48,9 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                 .addRule()
                     .when(Direction.isInbound().and(
                             Path.matches("/{colabName}-theme/images/{path}")))
-                    .perform(Forward.to("/images/(path)"))
-                    .where("path").matches(".*");
+                    .perform(Forward.to("/images/{path}"))
+                    .where("path").matches(".*")
+                    .where("colabName").matches("(climatecolab|fow|solve|rd)");
     }
 
     private void redirectLegacyRegistration(ConfigurationBuilder configurationBuilder) {
