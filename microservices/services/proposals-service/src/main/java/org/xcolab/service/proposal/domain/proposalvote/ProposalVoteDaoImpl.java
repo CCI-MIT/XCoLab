@@ -80,7 +80,6 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
             query.addConditions(PROPOSAL_VOTE.USER_ID.eq(userId));
         }
 
-        query.addConditions(PROPOSAL_VOTE.IS_VALID.eq(true));
 
         return query.fetchInto(ProposalVote.class);
     }
