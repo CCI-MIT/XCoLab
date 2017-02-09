@@ -151,7 +151,7 @@ public class FacebookController {
 
         // if email matches -> autologin
         String emailAddress = jsonObject.optString("email");
-        if (emailAddress != null) {
+        if (StringUtils.isNotBlank(emailAddress) && emailAddress.contains("@")) {
             try {
                 member = MembersClient.findMemberByEmailAddress(emailAddress);
                 updateUserWithFBId(member, facebookId);
@@ -175,14 +175,16 @@ public class FacebookController {
             }
         }
 
-        if ((jsonObject.optString("first_name") != null)) {
-            session.setAttribute(SSOKeys.SSO_FIRST_NAME, jsonObject.getString("first_name"));
+        final String firstName = jsonObject.optString("first_name");
+        if ((firstName != null)) {
+            session.setAttribute(SSOKeys.SSO_FIRST_NAME, firstName);
         }
 
-        if ((jsonObject.optString("last_name") != null)) {
-            session.setAttribute(SSOKeys.SSO_LAST_NAME, jsonObject.getString("last_name"));
+        final String lastName = jsonObject.optString("last_name");
+        if ((lastName != null)) {
+            session.setAttribute(SSOKeys.SSO_LAST_NAME, lastName);
         }
-        if (emailAddress != null) {
+        if (StringUtils.isNotBlank(emailAddress) && emailAddress.contains("@")) {
             session.setAttribute(SSOKeys.SSO_EMAIL, emailAddress);
             // Screen name = email prefix until @ character
             String screenName = emailAddress.substring(0, emailAddress.indexOf('@'));
