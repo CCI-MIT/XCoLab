@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -152,10 +153,10 @@ public class VoteOnProposalActionController {
 
     }
 
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/confirmVote")
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/confirmVote/{proposalId}/{userId}/{confirmationToken}")
     public String confirmVote(HttpServletRequest request, HttpServletResponse response, Model model,
-            @RequestParam long proposalId, @RequestParam long userId,
-            @RequestParam String confirmationToken) {
+            @PathVariable long proposalId, @PathVariable long userId,
+            @PathVariable String confirmationToken) {
         boolean success = false;
         try {
             ProposalVote vote = ProposalMemberRatingClientUtil
