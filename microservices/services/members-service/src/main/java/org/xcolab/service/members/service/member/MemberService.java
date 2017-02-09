@@ -26,6 +26,7 @@ import org.xcolab.util.exceptions.ReferenceResolutionException;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Service
 public class MemberService {
@@ -130,6 +131,9 @@ public class MemberService {
         }
         if (validatePassword(loginBean.getPassword(), member.getHashedPassword())) {
             createLoginLog(member.getId_(), loginBean.getIpAddress(), loginBean.getRedirectUrl());
+            member.setLoginDate(new Timestamp(new Date().getTime()));
+            member.setLoginIP(loginBean.getIpAddress());
+            memberDao.updateMember(member);
         } else {
             throw new UnauthorizedException("Invalid credentials provided");
         }

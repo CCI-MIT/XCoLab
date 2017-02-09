@@ -189,10 +189,10 @@
                     contestId: ${proposal.contest.contestPK}
             }
         </script>
-        <script type="text/javascript">
-            jQuery(function() {
-                enableDirtyCheck();
-            });
-        </script>
+        <!--<script type="text/javascript">-->
+            <!--jQuery(function() {-->
+                <!--enableDirtyCheck();-->
+            <!--});-->
+        <!--</script>-->
     </xcolab:layout>
 </jsp:root>
