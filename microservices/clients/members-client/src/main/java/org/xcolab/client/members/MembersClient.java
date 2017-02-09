@@ -349,6 +349,12 @@ public final class MembersClient {
     }
 
     public static boolean validatePassword(String password, long memberId) {
+
+        try{
+            password = URLEncoder.encode(password, "UTF-8");
+        }catch (UnsupportedEncodingException ignored){
+
+        }
         return memberResource.service("validatePassword", Boolean.class)
                 .queryParam("password", password)
                 .queryParam("memberId", memberId)
@@ -358,6 +364,7 @@ public final class MembersClient {
     public static boolean validatePassword(String password, String encodedPassword) {
         try{
             encodedPassword = URLEncoder.encode(encodedPassword, "UTF-8");
+            password = URLEncoder.encode(password, "UTF-8");
         }catch (UnsupportedEncodingException ignored){
 
         }
