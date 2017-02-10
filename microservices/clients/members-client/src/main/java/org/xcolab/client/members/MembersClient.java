@@ -12,6 +12,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Role_;
 import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource;
@@ -258,7 +259,7 @@ public final class MembersClient {
         try {
             return memberResource.service("findByScreenName", Member.class)
                     .queryParam("screenName", screenName).getChecked();
-        }catch (EntityNotFoundException ignored){
+        } catch (EntityNotFoundException ignored) {
             throw new MemberNotFoundException("Member with screenName " + screenName + " does not exist");
         }
 
@@ -311,10 +312,21 @@ public final class MembersClient {
     }
 
     public static Long updateUserPassword(String forgotPasswordToken, String password) {
+        password = encode(password);
+
         return memberResource.service("updateForgottenPassword", Long.class)
                 .queryParam("forgotPasswordToken", forgotPasswordToken)
                 .queryParam("password", password)
                 .post();
+    }
+
+    private static String encode(String password) {
+        try {
+            password = URLEncoder.encode(password, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new InternalException(e);
+        }
+        return password;
     }
 
     public static boolean isForgotPasswordTokenValid(String passwordToken) {
@@ -340,42 +352,34 @@ public final class MembersClient {
                 .get();
     }
 
-    //TODO: remove, needed for liferay
     public static String hashPassword(String password) {
+        password = encode(password);
         return memberResource.service("hashPassword", String.class)
                 .queryParam("password", password)
-                .queryParam("liferayCompatible", true)
                 .get();
     }
 
     public static boolean validatePassword(String password, long memberId) {
 
-        try{
-            password = URLEncoder.encode(password, "UTF-8");
-        }catch (UnsupportedEncodingException ignored){
-
-        }
+        password = encode(password);
         return memberResource.service("validatePassword", Boolean.class)
                 .queryParam("password", password)
                 .queryParam("memberId", memberId)
                 .post();
     }
 
-    public static boolean validatePassword(String password, String encodedPassword) {
-        try{
-            encodedPassword = URLEncoder.encode(encodedPassword, "UTF-8");
-            password = URLEncoder.encode(password, "UTF-8");
-        }catch (UnsupportedEncodingException ignored){
-
-        }
+    public static boolean validatePassword(String password, String hashedPassword) {
+        hashedPassword = encode(hashedPassword);
+        password = encode(password);
 
         return memberResource.service("validatePassword", Boolean.class)
                 .queryParam("password", password)
-                .queryParam("hash", encodedPassword)
+                .queryParam("hash", hashedPassword)
                 .post();
     }
 
     public static boolean updatePassword(long memberId, String newPassword) {
+        newPassword = encode(newPassword);
         return memberResource.service(memberId, "updatePassword", Boolean.class)
                 .queryParam("newPassword", newPassword)
                 .post();
