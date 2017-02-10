@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-     <link rel="stylesheet"  href="css/main.css" />
+     <link rel="stylesheet"  href="/css/main.css" />
     <title>Planned maintenance</title>
 <meta http-equiv="Cache-control" content="no-cache">
   </head>
@@ -26,7 +26,7 @@ Thank you! We will notify you at <?php echo $_POST["email"]?> as soon as we are 
 
 <?php else: ?>
 <div class="contestbox">
-<div style="text-align: center;"><img src="img/logo-climate-colab.png"/></div>
+<div style="text-align: center;"><img src="/img/logo-climate-colab.png"/></div>
 <p style="text-align: justify;"> 
 We are currently performing a planned maintenance on resiliencedialogues.mit.edu. During this time the site will be unavailable. We hope this won't be too much of an inconvenience as we work to perform some necessary upgrades that will provide you with more features in the future.
 </p>
