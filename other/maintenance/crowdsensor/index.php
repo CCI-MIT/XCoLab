@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet"  href="css/main.css" />
+        <link rel="stylesheet"  href="/css/main.css" />
         <title>Planned maintenance</title>
         <meta http-equiv="Cache-Control" content="no-cache">
     </head>
@@ -20,7 +20,7 @@
         <?php else: ?>
             <div class="contestbox">
                 <div style="text-align: center;">
-                    <img src="img/logo-climate-colab.png"/>
+                    <img src="/img/logo-climate-colab.png"/>
                 </div>
                 <p style="text-align: justify;">
                     We are currently performing a planned maintenance on crowdsensor.org. During this time the site will be unavailable. We hope this won't be too much of an inconvenience as we work to perform some necessary upgrades that will provide you with more features in the future.
