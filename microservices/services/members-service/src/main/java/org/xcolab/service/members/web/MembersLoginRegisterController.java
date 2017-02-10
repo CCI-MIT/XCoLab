@@ -17,10 +17,10 @@ import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.exceptions.UnauthorizedException;
 import org.xcolab.service.members.service.login.LoginBean;
 import org.xcolab.service.members.service.member.MemberService;
+import org.xcolab.util.exceptions.InternalException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 @RestController
 @RequestMapping("/members")
@@ -68,6 +68,7 @@ public class MembersLoginRegisterController {
     @GetMapping("hashPassword")
     public String hashPassword(@RequestParam String password,
             @RequestParam(required = false) Boolean liferayCompatible) {
+        password = decode(password);
         return memberService
                 .hashPassword(password, liferayCompatible != null ? liferayCompatible : false);
     }
@@ -78,20 +79,18 @@ public class MembersLoginRegisterController {
             @RequestParam(required = false) String hash,
             @RequestParam(required = false) Long memberId)
             throws NotFoundException {
-        try{
-            hash = URLDecoder.decode(hash, "UTF-8");
-            password = URLDecoder.decode(password, "UTF-8");
-        }catch (UnsupportedEncodingException ignored){
-
+        if (hash != null) {
+            hash = decode(hash);
         }
+        password = decode(password);
+
         if (hash != null) {
             return memberService.validatePassword(password, hash);
         }
 
         if (memberId != null) {
             final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
-            return memberService
-                    .validatePassword(password, member.getHashedPassword());
+            return memberService.validatePassword(password, member.getHashedPassword());
         }
         throw new NotFoundException("The endpoint you requested is not available for the given attributes");
     }
@@ -100,6 +99,7 @@ public class MembersLoginRegisterController {
     public boolean updateForgottenPasswordByToken(@PathVariable long memberId,
             @RequestParam String newPassword)
             throws NotFoundException {
+        newPassword = decode(newPassword);
         return memberService.updatePassword(memberId, newPassword);
     }
 
@@ -118,6 +118,7 @@ public class MembersLoginRegisterController {
             @RequestParam String forgotPasswordToken,
             @RequestParam String password)
             throws NotFoundException {
+        password = decode(password);
         return memberService.updateUserPasswordWithToken(forgotPasswordToken, password);
     }
 
@@ -126,5 +127,14 @@ public class MembersLoginRegisterController {
             @RequestParam String passwordToken)
             throws NotFoundException {
         return memberService.validateForgotPasswordToken(passwordToken);
+    }
+
+    private String decode(@RequestParam String newPassword) {
+        try {
+            newPassword = URLDecoder.decode(newPassword, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new InternalException(e);
+        }
+        return newPassword;
     }
 }
