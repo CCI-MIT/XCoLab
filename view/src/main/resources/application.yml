@@ -1,7 +1,5 @@
 server:
   port: 18082
-  compression:
-    enabled: true
   error:
     whitelabel:
       enabled: false

@@ -12,7 +12,6 @@
         </layout>
     </appender>
 
-    <logger name="org.sitemesh" level="INFO" />
     <logger name="org.springframework.web" level="INFO"/>
 
     <root>
