@@ -52,14 +52,9 @@
 
                             <c:set var="inviteMemberURL" value="${proposal.proposalUrl}/tab/TEAM/inviteMember"/>
 
-
-                            <c:set var="inviteMemberValidationURL" value="${proposal.proposalUrl}/inviteMembers-validateRecipient"/>
-
-
                             <form:form id="requestInviteForm" action="${inviteMemberURL }" method="post" commandName="requestMembershipInviteBean" style="float:left;">
                                 <div class="requestMembershipDIV">
                                     <form:textarea id="invite-recipient" cssClass="requestComment" path="inviteRecipient" placeholder="Enter screen name or last name" style="display:none;"/>
-                                    <div id="invite-member-validation-url" style="display: none">${inviteMemberValidationURL}</div>
                                     <form:textarea id="invite-comment" cssClass="requestComment" path="inviteComment" placeholder="Optional comment" style="display:none;"/>
                                     <!--<form:errors cssClass="c-Alert c-Alert__error" path="requestComment" />-->
                                     <div id="requestButtons">

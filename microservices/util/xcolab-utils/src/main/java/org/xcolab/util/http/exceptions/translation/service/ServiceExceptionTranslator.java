@@ -6,6 +6,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.xcolab.util.http.exceptions.Http400BadRequestException;
 import org.xcolab.util.http.exceptions.Http401UnauthorizedException;
 import org.xcolab.util.http.exceptions.Http403ForbiddenException;
+import org.xcolab.util.http.exceptions.Http409ConflictException;
 import org.xcolab.util.http.exceptions.Http429TooManyRequestsException;
 import org.xcolab.util.http.exceptions.Http500InternalServiceException;
 import org.xcolab.util.http.exceptions.HttpRuntimeException;
@@ -35,6 +36,8 @@ public class ServiceExceptionTranslator extends ExceptionTranslator<HttpServiceE
                 throw new Http403ForbiddenException(exceptionObject, location);
             case UNAUTHORIZED:
                 throw new Http401UnauthorizedException(exceptionObject, location);
+            case CONFLICT:
+                throw new Http409ConflictException(exceptionObject, location);
             default:
                 throw new HttpRuntimeException(exceptionObject, location, exception);
         }

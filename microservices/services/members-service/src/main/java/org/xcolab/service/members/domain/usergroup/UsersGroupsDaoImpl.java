@@ -3,11 +3,11 @@ package org.xcolab.service.members.domain.usergroup;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SelectQuery;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.xcolab.model.tables.pojos.Users_Groups;
-
 
 import java.util.List;
 
@@ -29,6 +29,14 @@ public class UsersGroupsDaoImpl implements UsersGroupsDao {
 
         return usersGroups;
 
+    }
+
+    @Override
+    public boolean exists(long userId, long groupId) {
+        return dslContext.fetchExists(DSL.select()
+                .from(USERS_GROUPS)
+                .where(USERS_GROUPS.USER_ID.eq(userId)
+                        .and(USERS_GROUPS.GROUP_ID.eq(groupId))));
     }
 
     @Override

@@ -4,7 +4,6 @@ import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.members.UsersGroupsClient;
-import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.client.proposals.exceptions.MembershipRequestNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -13,11 +12,13 @@ import org.xcolab.client.proposals.pojo.team.MembershipRequestDto;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
+import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.dto.DtoUtil;
+import org.xcolab.util.http.exceptions.Http409ConflictException;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -43,12 +44,8 @@ public class MembershipClient {
     }
 
     public static MembershipClient fromService(RestService proposalService) {
-        MembershipClient instance = instances.get(proposalService);
-        if (instance == null) {
-            instance = new MembershipClient(proposalService);
-            instances.put(proposalService, instance);
-        }
-        return instance;
+        return instances
+                .computeIfAbsent(proposalService, MembershipClient::new);
     }
 
     public void denyMembershipRequest(long proposalId, long userId, long membershipRequestId,
@@ -78,7 +75,7 @@ public class MembershipClient {
         try {
             Long groupId = proposalClient.getProposal(proposalId).getGroupId();
             List<MembershipRequest> userRequests = getMembershipRequestsByUser(groupId, userId);
-            if (userRequests != null && userRequests.size() > 0) {
+            if (userRequests != null && !userRequests.isEmpty()) {
                 return true;
             }
         } catch (ProposalNotFoundException ignored) {
@@ -116,26 +113,30 @@ public class MembershipClient {
                 membershipRequest.setReplyDate(new Timestamp((new Date()).getTime()));
                 updateMembershipRequest(membershipRequest);
 
-                RestService activitiesService  = proposalService.withServiceName(CoLabService.MEMBER.getServiceName());
-                UsersGroupsClient usersGroupsClient = UsersGroupsClient.fromService(activitiesService);
+                RestService memberService  = proposalService.withServiceName(CoLabService.MEMBER.getServiceName());
+                UsersGroupsClient usersGroupsClient = UsersGroupsClient.fromService(memberService);
 
-                usersGroupsClient.createUsersGroups(userId, membershipRequest.getGroupId());
-            } catch (MembershipRequestNotFoundException ignored) {
+                try {
+                    usersGroupsClient.createUsersGroups(userId, membershipRequest.getGroupId());
 
-            }
+                    RestService activitiesService  = proposalService.withServiceName(CoLabService.ACTIVITY.getServiceName());
+                    ActivitiesClient activityClient = ActivitiesClient.fromService(activitiesService);
 
-            RestService activitiesService  = proposalService.withServiceName(CoLabService.ACTIVITY.getServiceName());
-            ActivitiesClient activityClient = ActivitiesClient.fromService(activitiesService);
-
-            ActivityEntryHelper.createActivityEntry(activityClient,userId, proposalId, null,
-                    ActivityProvidersType.ProposalMemberAddedActivityEntry.getType());
+                    ActivityEntryHelper.createActivityEntry(activityClient,userId, proposalId, null,
+                            ActivityProvidersType.ProposalMemberAddedActivityEntry.getType());
 
 
-            if (!activityClient.isSubscribedToActivity(userId,
-                    ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "")) {
-                activityClient
-                        .addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+                    if (!activityClient.isSubscribedToActivity(userId,
+                            ActivityEntryType.PROPOSAL.getPrimaryTypeId(), proposalId, 0, "")) {
+                        activityClient
+                                .addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
 
+                    }
+                } catch (Http409ConflictException ignored) {
+                    // already a member - don't do anything
+                }
+            } catch (MembershipRequestNotFoundException e) {
+                throw new InternalException(e);
             }
         }
     }

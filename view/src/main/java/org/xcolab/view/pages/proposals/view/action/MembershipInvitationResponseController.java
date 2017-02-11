@@ -21,6 +21,7 @@ import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
+import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
@@ -111,6 +112,9 @@ public class MembershipInvitationResponseController {
                 if (contest.getIsSharedContest()) {
                     LoginRegisterUtil.registerMemberInSharedColab(invitee.getId_());
                 }
+                AlertMessage.success("You are now a contributor of this " + contestType.getProposalName()
+                        + "!").flash(request);
+
             } else if (action.equalsIgnoreCase("DECLINE")) {
                 membershipClient
                         .denyMembershipRequest(proposalId, membershipRequest.getUserId(),
@@ -121,7 +125,10 @@ public class MembershipInvitationResponseController {
                 sendMessage(invitee.getUserId(), recipients, MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,
                         String.format(membershipRejectedMessage, invitee.getFullName(),
                                 proposalLink));
+                AlertMessage.warning("Membership request DECLINED!").flash(request);
             }
+        } else {
+            AlertMessage.danger("Membership request not found!").flash(request);
         }
 
         response.sendRedirect(proposal.getProposalLinkUrl(proposal.getContest()));
