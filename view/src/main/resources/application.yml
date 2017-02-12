@@ -11,6 +11,9 @@ tomcat:
   ajp:
     enabled: true
 
+management:
+  add-application-context-header: false
+
 spring:
   mvc:
     view:
