@@ -245,6 +245,7 @@
                     input1.attr("value",data.title);
 
                     updateArticleURL(folderName, data.title.replace(/ /g,"+"));
+                    $("#articleId").html('Article ID: <a href="?articleId=' + id + '">' + id + '</a>');
 
                     ckEditor.setReadOnly(false);
                     $("#article-view").unmask()
@@ -349,6 +350,7 @@
                             <div>
                                 <textarea id="articleVersionContent" name="articleVersionContent" rows = "10" cols="80"><!-- --></textarea>
                             </div>
+                            <div id="articleId"><!-- Article ID: --></div>
                         </div>
                     </div>
                 </div>
