@@ -4,10 +4,17 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.Assert;
 
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 
+import java.io.IOException;
+import java.io.InvalidObjectException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,10 +25,17 @@ import java.util.TreeSet;
 
 public class MemberDetails implements UserDetails {
 
-    private final Member member;
-    private final Set<GrantedAuthority> authorities;
+    private static final long serialVersionUID = 1L;
+
+    transient private Member member;
+    transient private Set<GrantedAuthority> authorities;
 
     public MemberDetails(Member member) {
+        init(member);
+    }
+
+    private void init(Member member) {
+        Assert.notNull(member, "Member cannot be null");
         this.member = member;
         authorities = Collections.unmodifiableSet(getAuthoritiesForMember(member.getId_()));
     }
@@ -100,5 +114,42 @@ public class MemberDetails implements UserDetails {
 
     public Member getMember() {
         return new Member(member);
+    }
+
+    private void writeObject(ObjectOutputStream oos)
+            throws IOException {
+        oos.defaultWriteObject();
+        oos.writeLong(member.getId_());
+    }
+
+    private void readObject(ObjectInputStream ois)
+            throws ClassNotFoundException, IOException {
+        ois.defaultReadObject();
+        final long memberId = ois.readLong();
+        try {
+            member = MembersClient.getMember(memberId);
+        } catch (MemberNotFoundException e) {
+            throw new InvalidObjectException("Member with id " + memberId + " does not exist");
+        }
+        init(member);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof MemberDetails)) {
+            return false;
+        }
+
+        MemberDetails that = (MemberDetails) o;
+
+        return member.getId_() == that.member.getId_();
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (member.getId_() ^ member.getId_() >>> 32);
     }
 }

@@ -4,6 +4,8 @@ server:
     whitelabel:
       enabled: false
     include-stacktrace: always
+  session:
+    persistent: true
 
 tomcat:
   ajp:
