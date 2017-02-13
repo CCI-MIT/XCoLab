@@ -10,19 +10,7 @@ if (typeof (XCoLab) == 'undefined')
 	XCoLab = {};
 
 function initActTooltips(container) {
-    container.on('mouseover', '.tooltipTrigger', function() {
-            var actInputDef = jQuery(this).parents(".actInputDef");
-            var self = $(this);
-            var tooltip = actInputDef.find(".c-Tooltip__actions");
-            tooltip.css('left', self.position().left + self.width() -2);
-            tooltip.css('top', -16);
-            tooltip.show();
-    });
-    container.on('mouseout', '.tooltipTrigger', function() {
-        var actInputDef = jQuery(this).parents(".actInputDef");
-        var tooltip = actInputDef.find(".c-Tooltip__actions");
-        tooltip.hide();
-    });
+    $('.js-Tooltip').tooltipster();
 }
 
 

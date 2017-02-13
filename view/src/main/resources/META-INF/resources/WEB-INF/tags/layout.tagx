@@ -80,8 +80,6 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.min.js"><!-- empty --></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.3.1/moment.min.js"><!-- empty --></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.0/packaged/jquery.noty.packaged.min.js"><!-- empty --></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.1.4/js/jquery.tooltipster.min.js"><!-- empty --></script>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.1.4/css/tooltipster.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jgrowl/1.4.5/jquery.jgrowl.min.css" />
 
     <!-- looks like this is only used in modeling-->
@@ -92,6 +90,8 @@
 
     <xcolab:stylesheet href="${_libCssFolder}/autoSuggest.css" />
     <xcolab:stylesheet href="${_libCssFolder}/ui.dynatree.css" />
+    <xcolab:stylesheet href="${_libCssFolder}/tooltipster-4.1.8.bundle.min.css" />
+    <xcolab:script src="${_libJsFolder}/tooltipster-4.1.8.bundle.min.js" />
     <xcolab:script src="${_libJsFolder}/jquery.dynatree.min.js" />
     <xcolab:script src="${_libJsFolder}/jquery.ddslick.min.js" />
     <xcolab:script src="${_themeJsFolder}/dateTimeFormatter.js" />

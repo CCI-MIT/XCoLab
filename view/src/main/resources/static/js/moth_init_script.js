@@ -489,47 +489,53 @@ function updateBreadcrumb(placeholder, items) {
 		else
 			return true;
 	}
-	
+
+$(function() {
+    $('.js-Tooltip').tooltipster({
+        interactive: true,
+        contentAsHtml: true
+    });
+});
 	
 function initTooltips() {
-    function findTooltip(obj) {
-        if (obj.next().hasClass('c-Tooltip')) {
-            return obj.next();
-        }
-		var children = $(obj).children();
-		for (i = 0; i < children.length; ++i) {
-			if (jQuery(children[i]).hasClass('c-Tooltip')) {
-				return jQuery(children[i]);
-			}
-		}
-        if (obj.parent() != null && obj.parent() != obj) {
-            return findTooltip(obj.parent());
-        }
-        return jQuery("<span />");
-    }
-
-	const tooltipFields = jQuery(".tooltips div a, .tooltips th a, .fieldWithTooltip");
-	tooltipFields.not('.tooltipInitialized').mouseover(function() {
-        var self = jQuery(this);
-        self.addClass('tooltipInitialized');
-        var tooltip = findTooltip(self);
-
-        tooltip.parent().css("position", "relative");
-        if (tooltip.text().trim() != "") {
-            tooltip.show();
-        }
-
-        var offsets = {top: - tooltip.outerHeight() - 10, left: (self.outerWidth() - tooltip.outerWidth()) / 2};
-        if (self.hasClass('fieldWithTooltip') && ! self.hasClass('tooltipAbove')) {
-        	delete offsets.top;
-        	delete offsets.left;
-        }
-        
-        tooltip.css(offsets);
-    });
-    tooltipFields.mouseleave(function() {
-        findTooltip(jQuery(this)).hide();
-    });
+    // function findTooltip(obj) {
+    //     if (obj.next().hasClass('c-Tooltip')) {
+    //         return obj.next();
+    //     }
+		// var children = $(obj).children();
+		// for (i = 0; i < children.length; ++i) {
+		// 	if (jQuery(children[i]).hasClass('c-Tooltip')) {
+		// 		return jQuery(children[i]);
+		// 	}
+		// }
+    //     if (obj.parent() != null && obj.parent() != obj) {
+    //         return findTooltip(obj.parent());
+    //     }
+    //     return jQuery("<span />");
+    // }
+    //
+    // const tooltipFields = jQuery(".tooltips div a, .tooltips th a, .fieldWithTooltip");
+    // tooltipFields.not('.tooltipInitialized').mouseover(function() {
+    //     var self = jQuery(this);
+    //     self.addClass('tooltipInitialized');
+    //     var tooltip = findTooltip(self);
+    //
+    //     tooltip.parent().css("position", "relative");
+    //     if (tooltip.text().trim() != "") {
+    //         tooltip.show();
+    //     }
+    //
+    //     var offsets = {top: - tooltip.outerHeight() - 10, left: (self.outerWidth() - tooltip.outerWidth()) / 2};
+    //     if (self.hasClass('fieldWithTooltip') && ! self.hasClass('tooltipAbove')) {
+    //     	delete offsets.top;
+    //     	delete offsets.left;
+    //     }
+    //
+    //     tooltip.css(offsets);
+    // });
+    // tooltipFields.mouseleave(function() {
+    //     findTooltip(jQuery(this)).hide();
+    // });
 
 }
 

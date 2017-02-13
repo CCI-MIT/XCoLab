@@ -18,12 +18,9 @@
             </c:if>
             <c:if test="${showRating and wrapper.ratings != null and wrapper.ratings.size() > 0}">
                 <strong>Judges' Ratings <a href="/web/guest/resources/-/wiki/Main/contest+rules#Howwillproposalsbejudged" target="_blank">
-                    <span class="fieldWithTooltip">
+                    <span class="js-Tooltip" title="Click here to see how ${contestType.proposalNamePlural} have been judged.">
                         <img src="${_themeImageFolder}/icon_question-chk-qm.png" height="15px" />
                     </span>
-                    <div class="c-Tooltip">
-                        Click here to see how ${contestType.proposalNamePlural} have been judged.
-                    </div>
                 </a></strong>
                 <table>
                     <c:forEach var="rating" items="${wrapper.ratings}">

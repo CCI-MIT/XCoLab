@@ -76,44 +76,28 @@
                             <th class="c-Table__cell--title">
                                 <c:set var="sortURL" value="/discussion/sortCategory?categoryId=${currentCategory.categoryId}&amp;sortColumn=TITLE&amp;currentSortColumn=${sortColumn}&amp;currentSortAscending=${sortAscending}" />
 
-                                <a href="${sortURL }">Title</a>
-                                <div class="c-Tooltip">
-                                    click to sort by title
-                                    <div class="c-Tooltip__arrow"><!-- --></div>
-                                </div>
+                                <a class="js-Tooltip" title="click to sort by title" href="${sortURL }">Title</a>
                                 <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="TITLE" />
                             </th>
 
                             <th class="c-Table__cell--title">
                                 <c:set var="sortURL" value="/discussion/sortCategory?categoryId=${currentCategory.categoryId}&amp;sortColumn=REPLIES&amp;currentSortColumn=${sortColumn}&amp;currentSortAscending=${sortAscending}" />
 
-                                <a href="${sortURL }">Replies</a>
-                                <div class="c-Tooltip">
-                                    click to sort by replies
-                                    <div class="c-Tooltip__arrow"><!-- --></div>
-                                </div>
+                                <a class="js-Tooltip" title="click to sort by replies" href="${sortURL }">Replies</a>
                                 <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="REPLIES" />
                             </th>
 
                             <th class="c-Table__cell--title">
                                 <c:set var="sortURL" value="/discussion/sortCategory?categoryId=${currentCategory.categoryId}&amp;sortColumn=LAST_COMMENTER&amp;currentSortColumn=${sortColumn}&amp;currentSortAscending=${sortAscending}" />
 
-                                <a href="${sortURL }">Last Commenter</a>
-                                <div class="c-Tooltip">
-                                    click to sort by last commenter
-                                    <div class="c-Tooltip__arrow"><!-- --></div>
-                                </div>
+                                <a class="js-Tooltip" title="click to sort by last commenter" href="${sortURL }">Last Commenter</a>
                                 <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="LAST_COMMENTER" />
                             </th>
 
                             <th class="c-Table__cell--title">
                                 <c:set var="sortURL" value="/discussion/sortCategory?categoryId=${currentCategory.categoryId}&amp;sortColumn=DATE&amp;currentSortColumn=${sortColumn}&amp;currentSortAscending=${sortAscending}" />
 
-                                <a href="${sortURL }">Date</a>
-                                <div class="c-Tooltip">
-                                    click to sort by date
-                                    <div class="c-Tooltip__arrow"><!-- --></div>
-                                </div>
+                                <a class="js-Tooltip" title="click to sort by date" href="${sortURL }">Date</a>
                                 <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="DATE" />
                             </th>
                         </tr>

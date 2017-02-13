@@ -16,49 +16,41 @@
 				<th class="c-Table__cell--title user">
 					<c:set var="sortURL" value="/members?sortColumn=USER_NAME&amp;sortAscending=${sortFilterPage.sortColumn == 'USER_NAME' ? not sortFilterPage.sortAscending : true }&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
 
-					<a class="fieldWithTooltip" href="${sortURL }">User</a>
-					<div class="c-Tooltip">
-						Click to sort by user name
-					</div>
+					<a class="js-Tooltip" title="click to sort by user name" href="${sortURL }">User</a>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="USER_NAME" />
 				</th>
 				<c:if test="${pointsActive}">
 					<th class="c-Table__cell--title points">
 						<c:set var="sortURLPoints" value="/members?sortColumn=POINTS&amp;sortAscending=${sortFilterPage.sortColumn == 'POINTS' ? not sortFilterPage.sortAscending : false }&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
 
-						<span class="fieldWithTooltip tooltipAbove">
-							<img style="width: 15px; height: 15px;" src="${_themeImageFolder}/icon-addprop-question-bar.png" />
-							<div class="c-Tooltip">
-								CoLab Points are awarded to all the members who contributed to a winning integrated proposal, as well as those who contributed to any sub-proposals it contains.
-								<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
-								<div class="c-Tooltip__arrow"><!-- --></div>
-							</div>
+						<img class="js-Tooltip" data-tooltip-content="#js-Tooltip__content__points"
+							 style="width: 15px; height: 15px;" src="${_themeImageFolder}/icon-addprop-question-bar.png" />
+						<span id="js-Tooltip__content__points" class="c-Tooltip">
+							CoLab Points are awarded to all the members who contributed to a winning integrated proposal, as well as those who contributed to any sub-proposals it contains.
+							<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
 						</span>
-						<a class="fieldWithTooltip" href="${sortURLPoints }"> Points</a>
-						<div class="c-Tooltip">Click to sort by points</div>
+
+						<a class="js-Tooltip" title="click to sort by points" href="${sortURLPoints }"> Points</a>
 						<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="POINTS" />
 					</th>
 				</c:if>
 				<th class="c-Table__cell--title activity">
 					<c:set var="sortURLActivity" value="/members?sortColumn=ACTIVITY&amp;sortAscending=${sortFilterPage.sortColumn == 'ACTIVITY' ? not sortFilterPage.sortAscending : false }&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
 
-					<a class="fieldWithTooltip" href="${sortURLActivity }"> Activity</a>
-					<div class="c-Tooltip">Click to sort by activity</div>
+					<a class="js-Tooltip" title="click to sort by activity" href="${sortURLActivity }"> Activity</a>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="ACTIVITY" />
 				</th>
 				<th class="c-Table__cell--title category">
 					<c:set var="sortURLCategory" value="/members?sortColumn=CATEGORY&amp;sortAscending=${sortFilterPage.sortColumn == 'CATEGORY' ? not sortFilterPage.sortAscending : false }&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
 
-					<a class="fieldWithTooltip" href="${sortURLCategory }"> Category</a>
-					<div class="c-Tooltip">Click to sort by category</div>
+					<a class="js-Tooltip" title="click to sort by category" href="${sortURLCategory }"> Category</a>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CATEGORY" />
 				</th>
 				<th class="c-Table__cell--title member-since">
 					<c:set var="sortAscending" value="${sortFilterPage.sortColumn == 'MEMBER_SINCE' ? not sortFilterPage.sortAscending : false }" />
 					<c:set var="sortURLSeniority" value="/members?sortColumn=MEMBER_SINCE&amp;sortAscending=${sortAscending}&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
 
-					<a class="fieldWithTooltip" href="${sortURLSeniority }"> Member since</a>
-					<div class="c-Tooltip">Click to sort by seniority</div>
+					<a class="js-Tooltip" title="click to sort by seniority" href="${sortURLSeniority }"> Member since</a>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MEMBER_SINCE" />
 				</th>
 			</tr>

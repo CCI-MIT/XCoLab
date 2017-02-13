@@ -10,12 +10,9 @@
     <c:forEach var="type" items="${ratingTypes}">
         <c:if test="${type.isActive}">
             <div>
-                    <h5 class="fieldWithTooltip tooltipAbove">
+                    <h5 class="js-Tooltip" title="${type.description}">
                         <a>${type.label}</a>
                     </h5>
-                    <div class="c-Tooltip">
-                        ${type.description}
-                    </div>
             </div>
             <table class="judgingForm">
                 <c:forEach var="value" items="${type.ratingValues}">
@@ -25,12 +22,9 @@
                 <tr>
                     <c:forEach var="value" items="${type.ratingValues}">
                         <td>
-                            <label for="rating${value.id_}" class="fieldWithTooltip tooltipAbove">
+                            <label for="rating${value.id_}" class="js-Tooltip" title="${value.description}">
                                 ${value.name}
                             </label>
-                            <div class="c-Tooltip">
-                                ${value.description}
-                            </div>
                         </td>
 
                     </c:forEach>

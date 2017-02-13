@@ -18,7 +18,7 @@
 	    <div class="shadebar"><!--  --></div>
     </c:if>
 
-    <c:forEach var="proposal" items="${proposals }">
+    <c:forEach var="proposal" items="${proposals }" varStatus="status">
         <!--@elvariable id="proposal" type="org.xcolab.portlets.proposals.wrappers.ProposalWrapper"-->
 
         <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions}"><!-- Judges -->
@@ -40,12 +40,9 @@
             <td class="c-Table__cell propname-authors no-border">
                 <c:if test="${proposal.ribbonWrapper.ribbon != null and proposal.ribbonWrapper.ribbon > 0 and (not contest.hideRibbons or proposalsPermissions.canAdminAll)}">
                     <div class="ribbonPlaceholder">
-                        <span class="fieldWithTooltip">
+                        <span class="js-Tooltip" tile="${proposal.ribbonWrapper.ribbonText}">
                             <img src="${_themeImageFolder}/icon-prize${proposal.ribbonWrapper.ribbon}.png" />
                         </span>
-                        <div class="c-Tooltip">
-                            ${proposal.ribbonWrapper.ribbonText}
-                        </div>
                     </div>
                 </c:if>
                 <h4>
@@ -104,8 +101,10 @@
             <c:if test="${not contest.isContestCompleted(contestPhase) and (proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions)}">
                 <td class="c-Table__cell b-layout__center advancing-status no-border">
                     <c:if test="${proposalsPermissions.canFellowActions}">
-                        <proposalsPortlet:proposalJudgingIcon value="${proposal.screeningStatus.statusValue}" />
-                        <div class="c-Tooltip">
+                        <span class="js-Tooltip" data-tooltip-content="#js-Tooltip__content__fellow${proposal.proposalId}">
+                            <proposalsPortlet:proposalJudgingIcon value="${proposal.screeningStatus.statusValue}" />
+                        </span>
+                        <div class="c-Tooltip" id="js-Tooltip__content__fellow${proposal.proposalId}">
                             <c:choose>
                                 <c:when test="${proposal.screeningStatus.statusValue == 0}">
                                     Fellows have not decided yet if the ${contestType.proposalName} will be forwarded to judges.
@@ -119,8 +118,10 @@
                             </c:choose>
                         </div>
                     </c:if>
-                    <proposalsPortlet:proposalJudgingIcon value="${proposal.judgeStatus.statusValue}" />
-                    <div class="c-Tooltip">
+                    <span class="js-Tooltip" data-tooltip-content="#js-Tooltip__content__judge${proposal.proposalId}">
+                        <proposalsPortlet:proposalJudgingIcon value="${proposal.judgeStatus.statusValue}" />
+                    </span>
+                    <div class="c-Tooltip" id="js-Tooltip__content__judge${proposal.proposalId}">
                         <c:choose>
                             <c:when test="${proposal.judgeStatus.statusValue == 0}">
                                 The judges have not rated this ${contestType.proposalName} yet.
@@ -133,8 +134,10 @@
                             </c:otherwise>
                         </c:choose>
                     </div>
-                    <proposalsPortlet:proposalJudgingIcon value="${proposal.overallStatus.statusValue}" />
-                    <div class="c-Tooltip">
+                    <span class="js-Tooltip" data-tooltip-content="#js-Tooltip__content__review${proposal.proposalId}">
+                        <proposalsPortlet:proposalJudgingIcon value="${proposal.overallStatus.statusValue}" />
+                    </span>
+                    <div class="c-Tooltip" id="js-Tooltip__content__review${proposal.proposalId}">
                         <c:choose>
                             <c:when test="${proposal.overallStatus.statusValue == 0}">
                                 The ${contestType.proposalName} review has not been done yet.

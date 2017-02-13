@@ -27,34 +27,29 @@
 							<c:if test="${contest.flag ge 0}">
 								<c:choose>
 									<c:when test="${not empty contest.flagText and contest.flag == 1}">
-										<span class="c-ListItem__meta__flag--color ${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">${contest.flagText}</span>
-										<c:if test="${not empty contest.flagTooltip}">
-											<div class="c-Tooltip">${contest.flagTooltip}<div class="c-Tooltip__arrow"><!--  --></div></div>
-										</c:if>
+										<span class="c-ListItem__meta__flag--color ${not empty contest.flagTooltip ? 'js-Tooltip' : ''}" title="${contest.flagTooltip}">
+											${contest.flagText}
+										</span>
 									</c:when>
 									<c:when test="${not empty contest.flagText and contest.flag == 2}">
-										<span class="c-ListItem__meta__flag--grey ${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">${contest.flagText}</span>
-										<c:if test="${not empty contest.flagTooltip}">
-											<div class="c-Tooltip">${contest.flagTooltip}<div class="c-Tooltip__arrow"><!--  --></div></div>
-										</c:if>
+										<span class="c-ListItem__meta__flag--grey ${not empty contest.flagTooltip ? 'js-Tooltip' : ''}" title="${contest.flagTooltip}">
+											${contest.flagText}
+										</span>
 									</c:when>
 									<c:when test="${contest.contestActive and not empty contest.activePhase.status and contest.activePhase.status eq 'COMPLETED'}">
-										<span class="c-ListItem__meta__flag--grey ${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">Winners to be announced</span>
-										<c:if test="${not empty contest.flagTooltip}">
-											<div class="c-Tooltip">${contest.flagTooltip}<div class="c-Tooltip__arrow"><!--  --></div></div>
-										</c:if>
+										<span class="c-ListItem__meta__flag--grey ${not empty contest.flagTooltip ? 'js-Tooltip' : ''}" title="${contest.flagTooltip}">
+											Winners to be announced
+										</span>
 									</c:when>
 									<c:when test="${not empty contest.activePhase.status and contest.activePhase.status eq 'CLOSED' or contest.activePhase.status eq 'COMPLETED'}">
-										<span class="c-ListItem__meta__flag--grey ${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">${contest.activePhase.name} </span>
-										<c:if test="${not empty contest.flagTooltip}">
-											<div class="c-Tooltip">${contest.flagTooltip}<div class="c-Tooltip__arrow"><!--  --></div></div>
-										</c:if>
+										<span class="c-ListItem__meta__flag--grey ${not empty contest.flagTooltip ? 'js-Tooltip' : ''}" title="${contest.flagTooltip}">
+											${contest.activePhase.name}
+										</span>
 									</c:when>
 									<c:when test='${not empty contest.activePhase.status}'>
-										<span class="c-ListItem__meta__flag--grey ${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">${contest.activePhase.name} </span>
-										<c:if test="${not empty contest.flagTooltip}">
-											<div class="c-Tooltip">${contest.flagTooltip}<div class="c-Tooltip__arrow"><!--  --></div></div>
-										</c:if>
+										<span class="c-ListItem__meta__flag--grey ${not empty contest.flagTooltip ? 'js-Tooltip' : ''}" title="${contest.flagTooltip}">
+											${contest.activePhase.name}
+										</span>
 									</c:when>
 								</c:choose>
 							</c:if>

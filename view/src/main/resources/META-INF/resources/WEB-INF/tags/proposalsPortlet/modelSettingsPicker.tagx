@@ -50,13 +50,9 @@
 
                         <label for="${model.key }"> ${model.value[0] }</label>
 
-						<span class="fieldWithTooltip">
+						<span class="js-Tooltip" title="${model.value[1] }">
 							<img height="15" width="15" src="${_themeImageFolder}/icon-addprop-question.png"/>
 						</span>
-
-                        <div class="c-Tooltip" style="display: none; opacity: 1.0;">
-                            ${model.value[1] }
-                        </div>
                         <br/>
                     </c:forEach>
                 </fieldset>
