@@ -4,7 +4,7 @@ import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistoryDto;
 import org.xcolab.util.enums.proposal.MoveType;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.dto.DtoUtil;
@@ -51,7 +51,7 @@ public final class ProposalMoveClient {
                                 .withParameter("targetProposalId", targetProposalId)
                                 .withParameter("targetContestId", targetContestId)
                                 .asList(),
-                        CacheRetention.MEDIUM)
+                        CacheName.MISC_MEDIUM)
                 .optionalQueryParam("sourceProposalId", sourceProposalId)
                 .optionalQueryParam("sourceContestId", sourceContestId)
                 .optionalQueryParam("targetProposalId", targetProposalId)

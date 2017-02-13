@@ -5,7 +5,7 @@ import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryDto;
 import org.xcolab.client.comment.pojo.CategoryGroup;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.HashMap;
@@ -26,12 +26,12 @@ public class CategoryClient {
 
     public List<Category> listCategories(int start, int last, long groupId) {
         return CategoryDto.toPojos(commentServiceWrapper
-                .listCategories(start, last, "sort", null, groupId, CacheRetention.LONG),
+                .listCategories(start, last, "sort", null, groupId, CacheName.MISC_LONG),
                 commentService);
     }
 
     public Category getCategory(long categoryId) throws CategoryNotFoundException {
-        return commentServiceWrapper.getCategory(categoryId, CacheRetention.RUNTIME)
+        return commentServiceWrapper.getCategory(categoryId, CacheName.MISC_RUNTIME)
                 .toPojo(commentService);
     }
 
@@ -46,7 +46,7 @@ public class CategoryClient {
 
     public CategoryGroup getCategoryGroup(long groupId)
             throws CategoryGroupNotFoundException {
-        return commentServiceWrapper.getCategoryGroup(groupId, CacheRetention.RUNTIME)
+        return commentServiceWrapper.getCategoryGroup(groupId, CacheName.MISC_RUNTIME)
                 .toPojo(commentService);
     }
 

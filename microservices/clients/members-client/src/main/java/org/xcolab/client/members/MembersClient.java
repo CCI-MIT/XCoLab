@@ -14,7 +14,7 @@ import org.xcolab.client.members.pojo.Role_;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
@@ -96,7 +96,7 @@ public final class MembersClient {
                     .optionalQueryParam("category", categoryFilterValue)
                     .withCache(CacheKeys.withClass(Member.class)
                             .withParameter("screenName", screenNameFilterValue)
-                            .withParameter("category", categoryFilterValue).asCount(), CacheRetention.SHORT)
+                            .withParameter("category", categoryFilterValue).asCount(), CacheName.MISC_SHORT)
                     .getChecked();
         } catch (EntityNotFoundException e) {
             return 0;
@@ -133,7 +133,7 @@ public final class MembersClient {
         return memberRoleResource.resolveParent(memberResource.id(memberId))
                 .list()
                 .withCache(CacheKeys.withClass(Role_.class)
-                        .withParameter("memberId", memberId).asList(), CacheRetention.SHORT)
+                        .withParameter("memberId", memberId).asList(), CacheName.MISC_SHORT)
                 .execute();
     }
 
@@ -156,7 +156,7 @@ public final class MembersClient {
                 .withCache(CacheKeys.withClass(Role_.class)
                                 .withParameter("memberId", memberId)
                                 .withParameter("contestId", contestId).asList(),
-                        CacheRetention.SHORT)
+                        CacheName.MISC_SHORT)
                 .execute();
     }
 
@@ -168,7 +168,7 @@ public final class MembersClient {
         try {
             return memberCategoryResource.get(roleId)
                     .withCache(CacheKeys.of(MemberCategory.class, roleId),
-                            CacheRetention.MEDIUM).executeChecked();
+                            CacheName.MISC_MEDIUM).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new MemberCategoryNotFoundException("Category with role id " + roleId + " not found.");
         }
@@ -179,7 +179,7 @@ public final class MembersClient {
                 .queryParam("displayName", displayName)
                 .withCache(CacheKeys.withClass(MemberCategory.class)
                                 .withParameter("displayName", displayName).asSingletonList("ifExists"),
-                        CacheRetention.MEDIUM)
+                        CacheName.MISC_MEDIUM)
                 .executeWithResult().getFirstIfExists();
         if (memberCategory == null) {
             throw new MemberCategoryNotFoundException("Category with name " + displayName + " not found.");
@@ -197,7 +197,7 @@ public final class MembersClient {
         try {
             return memberResource.get(memberId)
                     .withCache(CacheKeys.of(Member.class, memberId),
-                            CacheRetention.REQUEST)
+                            CacheName.MISC_REQUEST)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new MemberNotFoundException("Member with id " + memberId + " not found.");
@@ -208,7 +208,7 @@ public final class MembersClient {
         try {
             return memberResource.get(memberId)
                     .withCache(CacheKeys.of(Member.class, memberId),
-                    CacheRetention.REQUEST).executeChecked();
+                    CacheName.MISC_REQUEST).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new UncheckedMemberNotFoundException(memberId);
         }

@@ -28,12 +28,16 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
         CacheManager newCacheManager;
         try {
             final CacheManagerBuilder<CacheManager> cacheManagerBuilder = newCacheManagerBuilder()
-                    .withCache(CacheRetention.REQUEST.name(), getTTLConfig(CacheRetention.REQUEST))
-                    .withCache(CacheRetention.SHORT.name(), getTTLConfig(CacheRetention.SHORT))
-                    .withCache(CacheRetention.MEDIUM.name(), getTTLConfig(CacheRetention.MEDIUM))
-                    .withCache(CacheRetention.LONG.name(), getTTLConfig(CacheRetention.LONG))
-                    .withCache(CacheRetention.RUNTIME.name(),
-                            getConfigBuilder(CacheRetention.RUNTIME).build());
+                    .withCache(CacheName.MISC_REQUEST
+                            .name(), getTTLConfig(CacheName.MISC_REQUEST))
+                    .withCache(CacheName.MISC_SHORT
+                            .name(), getTTLConfig(CacheName.MISC_SHORT))
+                    .withCache(CacheName.MISC_MEDIUM
+                            .name(), getTTLConfig(CacheName.MISC_MEDIUM))
+                    .withCache(CacheName.MISC_LONG
+                            .name(), getTTLConfig(CacheName.MISC_LONG))
+                    .withCache(CacheName.MISC_RUNTIME.name(),
+                            getConfigBuilder(CacheName.MISC_RUNTIME).build());
 
             newCacheManager = cacheManagerBuilder.build(true);
         } catch (RuntimeException e) {
@@ -44,20 +48,20 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
     }
 
     private CacheConfigurationBuilder<String, Object> getConfigBuilder(
-            CacheRetention cacheRetention) {
+            CacheName cacheName) {
         return newCacheConfigurationBuilder(String.class, Object.class,
-                ResourcePoolsBuilder.heap(cacheRetention.getNumberOfEntries()));
+                ResourcePoolsBuilder.heap(cacheName.getNumberOfEntries()));
     }
 
 
-    private CacheConfiguration<String, Object> getTTLConfig(CacheRetention cacheRetention) {
-        return getConfigBuilder(cacheRetention)
-                .withExpiry(Expirations.timeToLiveExpiration(cacheRetention.getDuration()))
+    private CacheConfiguration<String, Object> getTTLConfig(CacheName cacheName) {
+        return getConfigBuilder(cacheName)
+                .withExpiry(Expirations.timeToLiveExpiration(cacheName.getDuration().getDuration()))
                 .build();
     }
 
-    private Cache<String, Object> getCache(CacheRetention cacheRetention) {
-        return cacheManager.getCache(cacheRetention.name(), String.class, Object.class);
+    private Cache<String, Object> getCache(CacheName cacheName) {
+        return cacheManager.getCache(cacheName.name(), String.class, Object.class);
     }
 
     @Override
@@ -66,13 +70,13 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
     }
 
     @Override
-    public <T> T get(CacheKey<?, T> key, CacheRetention cacheRetention) {
+    public <T> T get(CacheKey<?, T> key, CacheName cacheName) {
         if (isActive()) {
             try {
                 //noinspection unchecked
-                return (T) getCache(cacheRetention).get(key.stringKey());
+                return (T) getCache(cacheName).get(key.stringKey());
             } catch (CacheLoadingException e) {
-                log.error("Error while loading cache {} using {}: {}", cacheRetention, key, e.toString());
+                log.error("Error while loading cache {} using {}: {}", cacheName, key, e.toString());
                 return null;
             }
         }
@@ -81,13 +85,13 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
     }
 
     @Override
-    public <T> boolean add(CacheKey<?, T> key, CacheRetention cacheRetention, T value) {
+    public <T> boolean add(CacheKey<?, T> key, CacheName cacheName, T value) {
         if (isActive()) {
             try {
-                getCache(cacheRetention).put(key.stringKey(), value);
+                getCache(cacheName).put(key.stringKey(), value);
                 return true;
             } catch (CacheWritingException e) {
-                log.error("Could not add entry {} to cache {}: {}", key, cacheRetention, e.toString());
+                log.error("Could not add entry {} to cache {}: {}", key, cacheName, e.toString());
                 return false;
             }
         }
@@ -95,17 +99,17 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
     }
 
     @Override
-    public <T> boolean replace(CacheKey<?, T> key, CacheRetention cacheRetention, T value) {
-        return add(key, cacheRetention, value);
+    public <T> boolean replace(CacheKey<?, T> key, CacheName cacheName, T value) {
+        return add(key, cacheName, value);
     }
 
     @Override
-    public boolean delete(CacheKey<?, ?> key, CacheRetention cacheRetention) {
+    public boolean delete(CacheKey<?, ?> key, CacheName cacheName) {
         if (isActive()) {
             try {
-                getCache(cacheRetention).remove(key.stringKey());
+                getCache(cacheName).remove(key.stringKey());
             } catch (CacheWritingException e) {
-                log.error("Could not delete entry {} from cache : {}", key, cacheRetention, e.toString());
+                log.error("Could not delete entry {} from cache {}: {}", key, cacheName, e.toString());
                 return false;
             }
         }
@@ -115,5 +119,22 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
     @Override
     public boolean isActive() {
         return cacheManager != null && cacheManager.getStatus() == Status.AVAILABLE;
+    }
+
+    @Override
+    public void clear() {
+        for (CacheName cacheName : CacheName.values()) {
+            clear(cacheName);
+        }
+    }
+
+    @Override
+    public void clear(CacheName cacheName) {
+        if (cacheName != CacheName.NONE) {
+            final Cache<String, Object> cache = getCache(cacheName);
+            if (cache != null) {
+                cache.clear();
+            }
+        }
     }
 }

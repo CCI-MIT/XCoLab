@@ -16,7 +16,7 @@ import org.xcolab.client.comment.pojo.CommentDto;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.pojo.CommentThreadDto;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
@@ -75,7 +75,7 @@ class CommentServiceWrapper {
 
 
     public int countCommentsInContestPhase(long contestPhaseId, long contestId,
-            CacheRetention cacheRetention) {
+            CacheName cacheName) {
         try {
             return commentResource.<Comment, Integer>service("countCommentsInContestPhase", Integer.class)
                     .queryParam("contestPhaseId", contestPhaseId)
@@ -83,20 +83,20 @@ class CommentServiceWrapper {
                     .withCache(CacheKeys.withClass(Comment.class)
                             .withParameter("contestPhaseId", contestPhaseId)
                             .withParameter("contestId", contestId)
-                            .asCount(), cacheRetention)
+                            .asCount(), cacheName)
                     .getChecked();
         } catch(EntityNotFoundException ignored) {
             return 0;
         }
     }
 
-    public int countCommentsInProposals(List<Long> threadIds, CacheRetention cacheRetention) {
+    public int countCommentsInProposals(List<Long> threadIds, CacheName cacheName) {
         try {
             return commentResource.<Comment, Integer>service("countCommentsInProposals", Integer.class)
                     .queryParam("threadIds", convertListToGetParameter(threadIds, "threadIds"))
                     .withCache(CacheKeys.withClass(Comment.class)
                             .withParameter("threadIds", convertListToGetParameter(threadIds, "threadIds"))
-                            .asCount(), cacheRetention)
+                            .asCount(), cacheName)
                     .getChecked();
         } catch(EntityNotFoundException ignored) {
             return 0;
@@ -104,7 +104,7 @@ class CommentServiceWrapper {
     }
 
     public CommentDto getComment(long commentId, boolean includeDeleted,
-            CacheRetention cacheRetention)
+            CacheName cacheName)
             throws CommentNotFoundException {
         try {
             return commentResource.get(commentId)
@@ -112,7 +112,7 @@ class CommentServiceWrapper {
                     .withCache(CacheKeys.withClass(CommentDto.class)
                             .withParameter("id", commentId)
                             .withParameter("includeDeleted", includeDeleted).build(),
-                            cacheRetention)
+                            cacheName)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new CommentNotFoundException(commentId);
@@ -144,24 +144,24 @@ class CommentServiceWrapper {
                 .execute();
     }
 
-    public CommentThreadDto getThread(long threadId, CacheRetention cacheRetention)
+    public CommentThreadDto getThread(long threadId, CacheName cacheName)
             throws ThreadNotFoundException {
         try {
             return threadResource.get(threadId)
-                    .withCache(CacheKeys.of(CommentThreadDto.class, threadId), cacheRetention)
+                    .withCache(CacheKeys.of(CommentThreadDto.class, threadId), cacheName)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ThreadNotFoundException(threadId);
         }
     }
 
-    public Long getProposalIdForThread(long threadId, CacheRetention cacheRetention) {
+    public Long getProposalIdForThread(long threadId, CacheName cacheName) {
         try {
             return threadResource.<CommentThread, Long>service(threadId, "getProposalIdForThread", Long.class)
                     .withCache(CacheKeys.withClass(CommentThread.class)
                             .withParameter("threadId", threadId)
                             .withParameter("service", "getProposalIdForThread")
-                            .build(Long.class), cacheRetention)
+                            .build(Long.class), cacheName)
                     .getChecked();
         } catch (EntityNotFoundException e) {
             return null;
@@ -176,26 +176,26 @@ class CommentServiceWrapper {
         return threadResource.create(thread).execute();
     }
 
-    public Date getLastActivityDate(long threadId, CacheRetention cacheRetention) {
+    public Date getLastActivityDate(long threadId, CacheName cacheName) {
         try {
             return threadResource.<CommentThread, Date>service(threadId, "lastActivityDate", Date.class)
                     .withCache(CacheKeys.withClass(CommentThread.class)
                             .withParameter("threadId", threadId)
                             .withParameter("date", "lastActivity")
-                            .build(Date.class), cacheRetention)
+                            .build(Date.class), cacheName)
                     .getChecked();
         } catch (EntityNotFoundException e) {
            throw new LastActivityNotFoundException(threadId);
         }
     }
 
-    public long getLastActivityAuthorId(long threadId, CacheRetention cacheRetention) {
+    public long getLastActivityAuthorId(long threadId, CacheName cacheName) {
         try {
             return threadResource.<CommentThread, Long>service(threadId, "lastActivityAuthorId", Long.class)
                     .withCache(CacheKeys.withClass(CommentThread.class)
                             .withParameter("threadId", threadId)
                             .withParameter("author", "lastActivity")
-                            .build(Long.class), cacheRetention)
+                            .build(Long.class), cacheName)
                     .getChecked();
         } catch (EntityNotFoundException e) {
             throw new LastActivityNotFoundException(threadId);
@@ -205,7 +205,7 @@ class CommentServiceWrapper {
     //    Category methods
 
     public List<CategoryDto> listCategories(Integer startRecord, Integer limitRecord,
-            String sort, Long authorId, Long groupId, CacheRetention cacheRetention) {
+            String sort, Long authorId, Long groupId, CacheName cacheName) {
         return categoryResource.list()
                 .addRange(startRecord, limitRecord)
                 .optionalQueryParam("sort", sort)
@@ -215,15 +215,15 @@ class CommentServiceWrapper {
                         .withParameter("groupId", groupId)
                         .withParameter("authorId", authorId)
                         .withParameter("sort", sort)
-                        .asList(), cacheRetention)
+                        .asList(), cacheName)
                 .execute();
     }
 
-    public CategoryDto getCategory(long categoryId, CacheRetention cacheRetention)
+    public CategoryDto getCategory(long categoryId, CacheName cacheName)
             throws CategoryNotFoundException {
         try {
             return categoryResource.get(categoryId)
-                    .withCache(CacheKeys.of(CategoryDto.class, categoryId), cacheRetention)
+                    .withCache(CacheKeys.of(CategoryDto.class, categoryId), cacheName)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new CategoryNotFoundException(categoryId);
@@ -240,11 +240,11 @@ class CommentServiceWrapper {
 
 //    Category Group
 
-    public CategoryGroupDto getCategoryGroup(long groupId, CacheRetention cacheRetention)
+    public CategoryGroupDto getCategoryGroup(long groupId, CacheName cacheName)
             throws CategoryGroupNotFoundException {
         try {
             return categoryGroupResource.get(groupId)
-                    .withCache(CacheKeys.of(CategoryGroupDto.class, groupId), cacheRetention)
+                    .withCache(CacheKeys.of(CategoryGroupDto.class, groupId), cacheName)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new CategoryGroupNotFoundException(groupId);

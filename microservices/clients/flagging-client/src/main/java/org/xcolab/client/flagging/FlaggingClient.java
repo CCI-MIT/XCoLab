@@ -10,7 +10,7 @@ import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
@@ -72,7 +72,7 @@ public final class FlaggingClient {
         try {
             return reportResource.get(reportId)
                     .withCache(CacheKeys.of(Report.class, reportId),
-                    CacheRetention.REQUEST).executeChecked();
+                    CacheName.MISC_REQUEST).executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ReportNotFoundException(reportId);
         }
@@ -99,7 +99,7 @@ public final class FlaggingClient {
                 .addRange(start, last)
                 .optionalQueryParam("type", targetType)
                 .withCache(CacheKeys.withClass(ReportTarget.class)
-                        .withParameter("type", targetType).asList(), CacheRetention.MEDIUM)
+                        .withParameter("type", targetType).asList(), CacheName.MISC_MEDIUM)
                 .execute();
     }
 
@@ -108,7 +108,7 @@ public final class FlaggingClient {
         try {
             return reportTargetResource.get(reportTargetId)
                     .withCache(CacheKeys.of(ReportTarget.class, reportTargetId),
-                            CacheRetention.REQUEST)
+                            CacheName.MISC_REQUEST)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ReportTargetNotFoundException(reportTargetId);
@@ -122,7 +122,7 @@ public final class FlaggingClient {
                 .queryParam("reason", reason)
                 .withCache(CacheKeys.withClass(ReportTarget.class)
                         .withParameter("type", type.name())
-                        .withParameter("reason", reason).asList(), CacheRetention.REQUEST)
+                        .withParameter("reason", reason).asList(), CacheName.MISC_REQUEST)
                 .executeWithResult().getFirstIfExists();
         if (reportTarget == null) {
             throw new ReportTargetNotFoundException(type, reason);

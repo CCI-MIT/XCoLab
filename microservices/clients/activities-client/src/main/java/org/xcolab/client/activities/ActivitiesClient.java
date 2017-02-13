@@ -7,7 +7,7 @@ import org.xcolab.client.activities.pojo.ActivitySubscription;
 
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
@@ -54,7 +54,7 @@ public final class ActivitiesClient {
         try {
             return activityEntryResource.get(activityEntryId)
                     .withCache(CacheKeys.of(ActivityEntry.class, activityEntryId),
-                            CacheRetention.REQUEST)
+                            CacheName.MISC_REQUEST)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ActivityEntryNotFoundException(
@@ -92,7 +92,7 @@ public final class ActivitiesClient {
                                     .withParameter("memberId", memberId)
                                     .withParameter("memberIdsToExclude", memberIdsToExclude)
                                     .asCount(),
-                            CacheRetention.REQUEST)
+                            CacheName.MISC_REQUEST)
                     .getChecked();
         } catch (EntityNotFoundException e) {
             return 0;
@@ -106,7 +106,7 @@ public final class ActivitiesClient {
             return activitySubscriptionResource
                     .get(activitySubscriptionId)
                     .withCache(CacheKeys.of(ActivitySubscription.class, activitySubscriptionId),
-                            CacheRetention.REQUEST)
+                            CacheName.MISC_REQUEST)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ActivitySubscriptionNotFoundException(

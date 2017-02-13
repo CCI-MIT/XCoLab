@@ -5,7 +5,7 @@ import org.xcolab.client.proposals.pojo.points.PointTypeDto;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfigurationDto;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.dto.DtoUtil;
@@ -97,7 +97,7 @@ public final class PointsClient {
 
     public PointType getPointType(long Id_) {
         return pointTypeResource.get(Id_)
-                .withCache(CacheKeys.of(PointTypeDto.class, Id_), CacheRetention.REQUEST)
+                .withCache(CacheKeys.of(PointTypeDto.class, Id_), CacheName.MISC_REQUEST)
                 .execute().toPojo(proposalService);
 
     }
@@ -112,7 +112,7 @@ public final class PointsClient {
                 .withCache(CacheKeys.withClass(PointTypeDto.class)
                                 .withParameter("parentPointTypeId", parentPointTypeId)
                                 .asList(),
-                        CacheRetention.MEDIUM)
+                        CacheName.MISC_MEDIUM)
                 .optionalQueryParam("parentPointTypeId", parentPointTypeId)
                 .execute(), proposalService);
     }

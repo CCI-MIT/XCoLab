@@ -18,7 +18,7 @@ import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.entity.utils.enums.MemberRole;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.pages.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
@@ -90,7 +90,7 @@ public class ContestProposalsController extends BaseProposalsController {
                 break;
             default:
                 activeProposals = proposalClient.getActiveProposalsInContestPhase(
-                        contestPhase.getContestPhasePK(), CacheRetention.LONG);
+                        contestPhase.getContestPhasePK(), CacheName.MISC_LONG);
         }
 
         List<Proposal> proposals = new ArrayList<>();

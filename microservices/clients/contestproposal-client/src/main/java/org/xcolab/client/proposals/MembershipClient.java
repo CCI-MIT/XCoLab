@@ -14,7 +14,7 @@ import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.dto.DtoUtil;
@@ -88,7 +88,7 @@ public class MembershipClient {
         return DtoUtil.toPojos(membershipRequestResource.list()
                 .withCache(CacheKeys.withClass(MembershipRequestDto.class)
                         .withParameter("groupId", groupId)
-                        .withParameter("userId", userId).asList(), CacheRetention.MEDIUM)
+                        .withParameter("userId", userId).asList(), CacheName.MISC_MEDIUM)
                 .optionalQueryParam("groupId", groupId)
                 .optionalQueryParam("userId", userId)
                 .execute(), proposalService);
@@ -208,7 +208,7 @@ public class MembershipClient {
         return DtoUtil.toPojos(membershipRequestResource.list()
                 .withCache(CacheKeys.withClass(MembershipRequestDto.class)
                         .withParameter("groupId", groupId)
-                        .withParameter("statusId", statusId).asList(), CacheRetention.REQUEST)
+                        .withParameter("statusId", statusId).asList(), CacheName.MISC_REQUEST)
                 .optionalQueryParam("groupId", groupId)
                 .optionalQueryParam("statusId", statusId)
                 .execute(), proposalService);

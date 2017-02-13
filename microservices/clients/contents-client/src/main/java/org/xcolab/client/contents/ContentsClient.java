@@ -7,7 +7,7 @@ import org.xcolab.client.contents.pojo.ContentFolder;
 import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
@@ -47,7 +47,7 @@ public final class ContentsClient {
                 .withCache(CacheKeys.withClass(ContentArticleVersion.class)
                         .withParameter("folderId", folderId)
                         .withParameter("title", title).asSingletonList("latest"),
-                        CacheRetention.REQUEST)
+                        CacheName.MISC_REQUEST)
                 .executeWithResult().getFirstIfExists();
         if (contentArticleVersion == null) {
             throw new ContentNotFoundException("No ContentArticleVersion with title " + title
@@ -63,7 +63,7 @@ public final class ContentsClient {
                 .queryParam("sort", "-contentArticleVersion")
                 .withCache(CacheKeys.withClass(ContentArticleVersion.class)
                         .withParameter("articleId", articleId).asSingletonList("latest"),
-                        CacheRetention.REQUEST)
+                        CacheName.MISC_REQUEST)
                 .executeWithResult().getFirstIfExists();
         if (contentArticleVersion == null) {
             throw new ContentNotFoundException(

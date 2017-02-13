@@ -3,7 +3,7 @@ package org.xcolab.util.http.client.queries;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.caching.CacheKey;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
@@ -11,7 +11,7 @@ public class GetQuery<ElementT, IdT> implements CacheableQuery<ElementT, Element
     private final UriBuilder uriBuilder;
     private final Class<ElementT> entityType;
     private CacheKey<ElementT, ElementT> cacheKey;
-    private CacheRetention cacheRetention;
+    private CacheName cacheName;
 
     public GetQuery(RestResource<ElementT, IdT> restResource, IdT id, Class<ElementT> entityType) {
         this.entityType = entityType;
@@ -23,7 +23,7 @@ public class GetQuery<ElementT, IdT> implements CacheableQuery<ElementT, Element
         if (cacheKey == null) {
             return ServiceRequestUtils.getUnchecked(uriBuilder, entityType);
         } else {
-            return ServiceRequestUtils.getUnchecked(uriBuilder, entityType, cacheKey, cacheRetention);
+            return ServiceRequestUtils.getUnchecked(uriBuilder, entityType, cacheKey, cacheName);
         }
     }
 
@@ -31,14 +31,14 @@ public class GetQuery<ElementT, IdT> implements CacheableQuery<ElementT, Element
         if (cacheKey == null) {
             return ServiceRequestUtils.get(uriBuilder, entityType);
         } else {
-            return ServiceRequestUtils.get(uriBuilder, entityType, cacheKey, cacheRetention);
+            return ServiceRequestUtils.get(uriBuilder, entityType, cacheKey, cacheName);
         }
     }
 
     @Override
-    public GetQuery<ElementT, IdT> withCache(CacheKey<ElementT, ElementT> cacheKey, CacheRetention cacheRetention) {
+    public GetQuery<ElementT, IdT> withCache(CacheKey<ElementT, ElementT> cacheKey, CacheName cacheName) {
         this.cacheKey = cacheKey;
-        this.cacheRetention = cacheRetention;
+        this.cacheName = cacheName;
         return this;
     }
 

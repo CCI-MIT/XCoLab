@@ -4,7 +4,7 @@ import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
@@ -20,7 +20,7 @@ public final class FilteringClient {
             throws FilteredEntryNotFoundException {
         try {
             return filteredEntryResource.get(uuid)
-                    .withCache(CacheKeys.of(FilteredEntry.class, uuid), CacheRetention.REQUEST)
+                    .withCache(CacheKeys.of(FilteredEntry.class, uuid), CacheName.MISC_REQUEST)
                     .executeChecked();
         } catch (EntityNotFoundException ignored) {
             throw new FilteredEntryNotFoundException(uuid);

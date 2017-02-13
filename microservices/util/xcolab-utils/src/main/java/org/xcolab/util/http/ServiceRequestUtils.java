@@ -5,7 +5,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.xcolab.util.http.caching.CacheKey;
 import org.xcolab.util.http.caching.CacheProvider;
 import org.xcolab.util.http.caching.CacheProviderEhcacheImpl;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.util.http.exceptions.translation.TranslationErrorHandler;
 import org.xcolab.util.http.exceptions.translation.service.ServiceExceptionTranslator;
@@ -44,8 +44,8 @@ public final class ServiceRequestUtils {
     public static <T, R> List<R> getList(UriBuilder uriBuilder,
             ParameterizedTypeReference<List<R>> typeReference,
             CacheKey<T, List<R>> cacheKey,
-            CacheRetention cacheRetention) {
-        return requestHelper.getList(uriBuilder, typeReference, cacheKey, cacheRetention);
+            CacheName cacheName) {
+        return requestHelper.getList(uriBuilder, typeReference, cacheKey, cacheName);
     }
 
     public static <T> T get(UriBuilder uriBuilder, Class<T> entityType)
@@ -55,8 +55,8 @@ public final class ServiceRequestUtils {
 
     public static <T, R> R get(UriBuilder uriBuilder, Class<R> entityType,
             CacheKey<T, R> cacheKey,
-            CacheRetention cacheRetention) throws EntityNotFoundException {
-        return requestHelper.get(uriBuilder, entityType, cacheKey, cacheRetention);
+            CacheName cacheName) throws EntityNotFoundException {
+        return requestHelper.get(uriBuilder, entityType, cacheKey, cacheName);
     }
 
     public static <R> R getUnchecked(UriBuilder uriBuilder, Class<R> returnType) {
@@ -65,8 +65,8 @@ public final class ServiceRequestUtils {
 
     public static <T, R> R getUnchecked(UriBuilder uriBuilder, Class<R> returnType,
             CacheKey<T, R> cacheKey,
-            CacheRetention cacheRetention) {
-        return requestHelper.getUnchecked(uriBuilder, returnType, cacheKey, cacheRetention);
+            CacheName cacheName) {
+        return requestHelper.getUnchecked(uriBuilder, returnType, cacheKey, cacheName);
     }
 
     public static int getCount(UriBuilder uriBuilder) {
@@ -75,8 +75,8 @@ public final class ServiceRequestUtils {
 
     public static int getCount(UriBuilder uriBuilder,
             CacheKey<?, Integer> cacheKey,
-            CacheRetention cacheRetention) {
-        return requestHelper.getCount(uriBuilder, cacheKey, cacheRetention);
+            CacheName cacheName) {
+        return requestHelper.getCount(uriBuilder, cacheKey, cacheName);
     }
 
     public static boolean put(UriBuilder uriBuilder) {
@@ -101,8 +101,16 @@ public final class ServiceRequestUtils {
     }
 
     public static void invalidateCache(CacheKey<?, ?> cacheKey,
-            CacheRetention cacheRetention) {
-        requestHelper.invalidateCache(cacheKey, cacheRetention);
+            CacheName cacheName) {
+        requestHelper.invalidateCache(cacheKey, cacheName);
+    }
+
+    public static void clearCache() {
+        requestHelper.clearCache();
+    }
+
+    public static void clearCache(CacheName cacheName) {
+        requestHelper.clearCache(cacheName);
     }
 
     public static void setCacheProvider(CacheProvider cacheProvider) {

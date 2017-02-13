@@ -10,7 +10,7 @@ import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVoteDto;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
@@ -53,7 +53,7 @@ public final class ProposalMemberRatingClient {
                 .withCache(CacheKeys.withClass(ProposalSupporterDto.class)
                                 .withParameter("proposalId", proposalId)
                                 .asList(),
-                        CacheRetention.MEDIUM)
+                        CacheName.MISC_MEDIUM)
                 .optionalQueryParam("proposalId", proposalId)
                 .execute(), proposalService);
     }
@@ -127,7 +127,7 @@ public final class ProposalMemberRatingClient {
                     .optionalQueryParam("contestPhaseId", contestPhaseId)
                     .withCache(CacheKeys.withClass(Proposal.class)
                             .withParameter("contestPhaseId", contestPhaseId)
-                            .asCount(), CacheRetention.REQUEST)
+                            .asCount(), CacheName.MISC_REQUEST)
                     .getChecked();
         } catch (EntityNotFoundException e) {
             return 0;

@@ -5,7 +5,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Role_;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
@@ -65,7 +65,7 @@ public final class PermissionsClient {
                 .list()
                 .withCache(CacheKeys.withClass(Role_.class)
                                 .withParameter("roleGroupId", roleGroupId).asList(),
-                        CacheRetention.RUNTIME)
+                        CacheName.MISC_RUNTIME)
                 .execute();
     }
 

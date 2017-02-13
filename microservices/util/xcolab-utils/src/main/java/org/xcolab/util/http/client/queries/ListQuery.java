@@ -6,7 +6,7 @@ import org.springframework.util.CollectionUtils;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.caching.CacheKey;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
     private final UriBuilder uriBuilder;
     private final ParameterizedTypeReference<List<T>> typeReference;
     private CacheKey<T, List<T>> cacheKey;
-    private CacheRetention cacheRetention;
+    private CacheName cacheName;
 
     public ListQuery(RestResource<T, ?> restResource,
             ParameterizedTypeReference<List<T>> typeReference) {
@@ -28,7 +28,7 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
         if (cacheKey == null) {
             return ServiceRequestUtils.getList(uriBuilder, typeReference);
         } else {
-            return ServiceRequestUtils.getList(uriBuilder, typeReference, cacheKey, cacheRetention);
+            return ServiceRequestUtils.getList(uriBuilder, typeReference, cacheKey, cacheName);
         }
     }
 
@@ -43,9 +43,9 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
     }
 
     @Override
-    public ListQuery<T> withCache(CacheKey<T, List<T>> cacheKey, CacheRetention cacheRetention) {
+    public ListQuery<T> withCache(CacheKey<T, List<T>> cacheKey, CacheName cacheName) {
         this.cacheKey = cacheKey;
-        this.cacheRetention = cacheRetention;
+        this.cacheName = cacheName;
         return this;
     }
 
@@ -73,7 +73,7 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
                 "uriBuilder=" + uriBuilder.buildString() +
                 ", typeReference=" + typeReference.toString() +
                 ", cacheKey=" + cacheKey +
-                ", cacheRetention=" + cacheRetention +
+                ", cacheRetention=" + cacheName +
                 '}';
     }
 

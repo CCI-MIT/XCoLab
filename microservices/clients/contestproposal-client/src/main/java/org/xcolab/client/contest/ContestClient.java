@@ -28,7 +28,7 @@ import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.Plurality;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
@@ -196,7 +196,7 @@ public class ContestClient {
             return contestResource.<Proposal, Integer>service(contestId,
                     "proposalCountForActivePhase", Integer.class)
                     .withCache(CacheKeys.withClass(Proposal.class)
-                            .withParameter("contestId", contestId).asCount(), CacheRetention.MEDIUM)
+                            .withParameter("contestId", contestId).asCount(), CacheName.MISC_MEDIUM)
                     .getChecked();
         } catch (EntityNotFoundException e) {
             return 0;
@@ -210,7 +210,7 @@ public class ContestClient {
                 .queryParam("contestYear", contestYear)
                 .withCache(CacheKeys.withClass(ContestDto.class)
                         .withParameter("contestUrlName", contestUrlName)
-                        .withParameter("contestYear", contestYear).asList(), CacheRetention.LONG)
+                        .withParameter("contestYear", contestYear).asList(), CacheName.MISC_LONG)
                 .executeWithResult().getFirstIfExists().toPojo(contestService);
         if (contest == null) {
             throw new ContestNotFoundException(contestUrlName, contestYear);
@@ -223,7 +223,7 @@ public class ContestClient {
                 .withCache(CacheKeys.withClass(Contest.class)
                         .withParameter("contestId", contestId)
                         .withParameter("service", "isShared")
-                        .build(Boolean.class), CacheRetention.LONG)
+                        .build(Boolean.class), CacheName.MISC_LONG)
                 .get();
     }
 
@@ -433,7 +433,7 @@ public class ContestClient {
     public ContestSchedule getContestSchedule(long id) {
         try {
             return contestScheduleResource.get(id)
-                    .withCache(CacheKeys.of(ContestScheduleDto.class, id), CacheRetention.REQUEST)
+                    .withCache(CacheKeys.of(ContestScheduleDto.class, id), CacheName.MISC_REQUEST)
                     .execute().toPojo(contestService);
         } catch (UncheckedEntityNotFoundException e) {
             throw new ContestScheduleNotFoundException(id);
@@ -460,7 +460,7 @@ public class ContestClient {
                 .withCache(CacheKeys.withClass(ContestPhaseDto.class)
                                 .withParameter("contestId", contestId)
                                 .withParameter("visible", true).asList(),
-                        CacheRetention.MEDIUM)
+                        CacheName.MISC_MEDIUM)
                 .execute(), contestService);
     }
 
@@ -484,7 +484,7 @@ public class ContestClient {
     public ContestPhaseType getContestPhaseType(Long contestPhaseTypeId) {
         return contestPhaseTypesResource.get(contestPhaseTypeId)
                 .withCache(CacheKeys.of(ContestPhaseTypeDto.class, contestPhaseTypeId),
-                        CacheRetention.MEDIUM)
+                        CacheName.MISC_MEDIUM)
                 .execute().toPojo(contestService);
     }
 
@@ -546,7 +546,7 @@ public class ContestClient {
 
     public ContestType getContestType(long id) {
         return contestTypeResource.get(id)
-                .withCache(CacheKeys.of(ContestTypeDto.class, id), CacheRetention.RUNTIME)
+                .withCache(CacheKeys.of(ContestTypeDto.class, id), CacheName.MISC_RUNTIME)
                 .execute().toPojo(contestService);
     }
 
@@ -563,7 +563,7 @@ public class ContestClient {
 
     public List<ContestType> getAllContestTypes() {
         return DtoUtil.toPojos(contestTypeResource.list()
-                .withCache(CacheKeys.withClass(ContestTypeDto.class).asList(), CacheRetention.LONG)
+                .withCache(CacheKeys.withClass(ContestTypeDto.class).asList(), CacheName.MISC_LONG)
                 .execute(), contestService);
     }
 

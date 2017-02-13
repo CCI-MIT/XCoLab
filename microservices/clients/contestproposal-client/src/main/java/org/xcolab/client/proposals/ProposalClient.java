@@ -22,7 +22,7 @@ import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
@@ -177,18 +177,18 @@ public final class ProposalClient {
                 .getList(), proposalService);
     }
 
-    public List<Proposal> getActiveProposalsInContestPhase(Long contestPhaseId, CacheRetention cacheRetention) {
+    public List<Proposal> getActiveProposalsInContestPhase(Long contestPhaseId, CacheName cacheName) {
         return DtoUtil.toPojos(proposalResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .optionalQueryParam("visible", true)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .withCache(CacheKeys.withClass(ProposalDto.class)
-                        .withParameter("contestPhaseId", contestPhaseId).asList(), cacheRetention)
+                        .withParameter("contestPhaseId", contestPhaseId).asList(), cacheName)
                 .execute(), proposalService);
     }
 
     public List<Proposal> getActiveProposalsInContestPhase(Long contestPhaseId) {
-        return getActiveProposalsInContestPhase(contestPhaseId, CacheRetention.REQUEST);
+        return getActiveProposalsInContestPhase(contestPhaseId, CacheName.MISC_REQUEST);
     }
 
     public Proposal createProposal(long authorId, long contestPhaseId, boolean publishActivity) {
@@ -247,7 +247,7 @@ public final class ProposalClient {
                     .withCache(CacheKeys.withClass(ProposalDto.class)
                                     .withParameter("proposalId", proposalId)
                                     .withParameter("includeDeleted", includeDeleted).build(),
-                            CacheRetention.REQUEST)
+                            CacheName.MISC_REQUEST)
                     .executeChecked().toPojo(proposalService);
         } catch (EntityNotFoundException e) {
             throw new ProposalNotFoundException(proposalId);

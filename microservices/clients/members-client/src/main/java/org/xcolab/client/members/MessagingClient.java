@@ -11,7 +11,7 @@ import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.client.members.pojo.SendMessageBean;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
@@ -114,7 +114,7 @@ public final class MessagingClient {
                 .list()
                 .withCache(CacheKeys.withClass(Member.class)
                         .withParameter("messageId", messageId)
-                        .withParameter("type", "recipients").asList(), CacheRetention.MEDIUM)
+                        .withParameter("type", "recipients").asList(), CacheName.MISC_MEDIUM)
                 .execute();
     }
 

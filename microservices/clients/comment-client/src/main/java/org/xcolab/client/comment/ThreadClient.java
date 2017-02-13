@@ -4,7 +4,7 @@ import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.pojo.CommentThreadDto;
 import org.xcolab.client.comment.util.ThreadSortColumn;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.Date;
@@ -31,12 +31,12 @@ public class ThreadClient {
     }
 
     public CommentThread getThread(long threadId) throws ThreadNotFoundException {
-        return commentServiceWrapper.getThread(threadId, CacheRetention.MEDIUM)
+        return commentServiceWrapper.getThread(threadId, CacheName.MISC_MEDIUM)
                 .toPojo(commentService);
     }
 
     public Long getProposalIdForThread(long threadId) {
-        return commentServiceWrapper.getProposalIdForThread(threadId, CacheRetention.RUNTIME);
+        return commentServiceWrapper.getProposalIdForThread(threadId, CacheName.MISC_RUNTIME);
     }
 
     public boolean updateThread(CommentThread thread) {
@@ -49,11 +49,11 @@ public class ThreadClient {
     }
 
     public Date getLastActivityDate(long threadId) {
-        return commentServiceWrapper.getLastActivityDate(threadId, CacheRetention.REQUEST);
+        return commentServiceWrapper.getLastActivityDate(threadId, CacheName.MISC_REQUEST);
     }
 
     public long getLastActivityAuthorId(long threadId) {
-        return commentServiceWrapper.getLastActivityAuthorId(threadId, CacheRetention.REQUEST);
+        return commentServiceWrapper.getLastActivityAuthorId(threadId, CacheName.MISC_REQUEST);
     }
 
     public static ThreadClient fromService(RestService contestService) {

@@ -3,13 +3,13 @@ package org.xcolab.util.http.client.queries;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.caching.CacheKey;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 
 public class CountQuery<ElementT> implements CacheableQuery<ElementT, Integer> {
     private final UriBuilder uriBuilder;
     private CacheKey<ElementT, Integer> cacheKey;
-    private CacheRetention cacheRetention;
+    private CacheName cacheName;
 
     public CountQuery(RestResource<ElementT, ?> restResource) {
         this.uriBuilder = restResource.getResourceUrl();
@@ -20,14 +20,14 @@ public class CountQuery<ElementT> implements CacheableQuery<ElementT, Integer> {
         if (cacheKey == null) {
             return ServiceRequestUtils.getCount(uriBuilder);
         } else {
-            return ServiceRequestUtils.getCount(uriBuilder, cacheKey, cacheRetention);
+            return ServiceRequestUtils.getCount(uriBuilder, cacheKey, cacheName);
         }
     }
 
     @Override
-    public CountQuery<ElementT> withCache(CacheKey<ElementT, Integer> cacheKey, CacheRetention cacheRetention) {
+    public CountQuery<ElementT> withCache(CacheKey<ElementT, Integer> cacheKey, CacheName cacheName) {
         this.cacheKey = cacheKey;
-        this.cacheRetention = cacheRetention;
+        this.cacheName = cacheName;
         return this;
     }
 

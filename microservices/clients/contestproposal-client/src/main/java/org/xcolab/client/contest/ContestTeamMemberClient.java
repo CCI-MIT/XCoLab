@@ -6,7 +6,7 @@ import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRoleDto;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
@@ -55,7 +55,7 @@ public class ContestTeamMemberClient {
 
     public ContestTeamMemberRole getContestTeamMemberRole(long id) {
         return contestTeamMemberRoleResource.get(id)
-                .withCache(CacheKeys.of(ContestTeamMemberRoleDto.class, id), CacheRetention.LONG)
+                .withCache(CacheKeys.of(ContestTeamMemberRoleDto.class, id), CacheName.MISC_LONG)
                 .execute().toPojo(contestService);
     }
 

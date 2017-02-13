@@ -7,8 +7,6 @@ import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingTypeDto;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValue;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValueDto;
-import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheRetention;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.dto.DtoUtil;
@@ -53,7 +51,7 @@ public final class ProposalJudgeRatingClient {
                 //                .withParameter("proposalId", proposalId)
                 //                .withParameter("contestPhaseId", contestPhaseId)
                 //                .withParameter("userId", userId).asList(),
-                //        CacheRetention.MEDIUM)
+                //        CacheRetention.MISC_MEDIUM)
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("userId", userId)

@@ -4,7 +4,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.caching.CacheKey;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.interfaces.HttpResource;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
@@ -15,7 +15,7 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
     private final Class<R> returnType;
     private final ParameterizedTypeReference<List<T>> typeReference;
     private CacheKey<T, R> cacheKey;
-    private CacheRetention cacheRetention;
+    private CacheName cacheName;
 
     public ServiceQuery(HttpResource httpResource, long id, String serviceName,
             Class<R> returnType) {
@@ -93,7 +93,7 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
         if (cacheKey == null) {
             return ServiceRequestUtils.get(uriBuilder, returnType);
         } else {
-            return ServiceRequestUtils.get(uriBuilder, returnType, cacheKey, CacheRetention.REQUEST);
+            return ServiceRequestUtils.get(uriBuilder, returnType, cacheKey, CacheName.MISC_REQUEST);
         }
     }
 
@@ -101,7 +101,7 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
         if (cacheKey == null) {
             return ServiceRequestUtils.getUnchecked(uriBuilder, returnType);
         } else {
-            return ServiceRequestUtils.getUnchecked(uriBuilder, returnType, cacheKey, cacheRetention);
+            return ServiceRequestUtils.getUnchecked(uriBuilder, returnType, cacheKey, cacheName);
         }
     }
 
@@ -131,9 +131,9 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
     }
 
     @Override
-    public ServiceQuery<T, R> withCache(CacheKey<T, R> cacheKey, CacheRetention cacheRetention) {
+    public ServiceQuery<T, R> withCache(CacheKey<T, R> cacheKey, CacheName cacheName) {
         this.cacheKey = cacheKey;
-        this.cacheRetention = cacheRetention;
+        this.cacheName = cacheName;
         return this;
     }
 

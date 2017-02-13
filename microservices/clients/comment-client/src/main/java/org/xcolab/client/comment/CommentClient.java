@@ -3,7 +3,7 @@ package org.xcolab.client.comment;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentDto;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.HashMap;
@@ -44,12 +44,12 @@ public class CommentClient {
 
     public int countCommentsInContestPhase(long contestPhaseId, long contestId) {
         return commentServiceWrapper.countCommentsInContestPhase(contestPhaseId, contestId,
-                CacheRetention.SHORT);
+                CacheName.MISC_SHORT);
     }
 
     public int countCommentsInProposals(List<Long> threadIds) {
         return commentServiceWrapper.countCommentsInProposals(threadIds,
-                CacheRetention.LONG);
+                CacheName.MISC_LONG);
     }
 
     public Comment getComment(long commentId) throws CommentNotFoundException {
@@ -58,7 +58,7 @@ public class CommentClient {
 
     public Comment getComment(long commentId, boolean includeDeleted)
             throws CommentNotFoundException {
-        return commentServiceWrapper.getComment(commentId, includeDeleted, CacheRetention.REQUEST)
+        return commentServiceWrapper.getComment(commentId, includeDeleted, CacheName.MISC_REQUEST)
                 .toPojo(commentService);
     }
 

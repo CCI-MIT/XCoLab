@@ -10,7 +10,7 @@ import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttributeDto;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
-import org.xcolab.util.http.caching.CacheRetention;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.queries.ListQuery;
@@ -87,7 +87,7 @@ public final class ProposalAttributeClient {
     public ProposalAttribute getProposalAttribute(long id_)
             throws ProposalAttributeNotFoundException {
         return proposalAttributeResource.get(id_)
-                .withCache(CacheKeys.of(ProposalAttributeDto.class, id_), CacheRetention.REQUEST)
+                .withCache(CacheKeys.of(ProposalAttributeDto.class, id_), CacheName.MISC_REQUEST)
                 .execute().toPojo(proposalService);
     }
 
@@ -125,7 +125,7 @@ public final class ProposalAttributeClient {
         return DtoUtil.toPojos(proposalAttributeResource.list()
                 .withCache(CacheKeys.withClass(ProposalAttributeDto.class)
                                 .withParameter("proposalId", proposalId).asList(),
-                        CacheRetention.REQUEST)
+                        CacheName.MISC_REQUEST)
                 .optionalQueryParam("proposalId", proposalId)
                 .execute(), proposalService);
     }
@@ -135,7 +135,7 @@ public final class ProposalAttributeClient {
                 .withCache(CacheKeys.withClass(ProposalAttributeDto.class)
                                 .withParameter("proposalId", proposalId)
                                 .withParameter("version", version).asList(),
-                        CacheRetention.MEDIUM)
+                        CacheName.MISC_MEDIUM)
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("version", version)
                 .execute(), proposalService);
@@ -164,7 +164,7 @@ public final class ProposalAttributeClient {
         //TODO: replace with better cache invalidation mechanism
         ServiceRequestUtils.invalidateCache(CacheKeys.withClass(ProposalDto.class)
                 .withParameter("proposalId", proposalAttribute.getProposalId())
-                .withParameter("includeDeleted", false).build(), CacheRetention.REQUEST);
+                .withParameter("includeDeleted", false).build(), CacheName.MISC_REQUEST);
         return proposalAttributeResource.service("setProposalAttribute", ProposalAttributeDto.class)
                 .queryParam("authorId", authorId)
                 .post(proposalAttribute)
@@ -201,7 +201,7 @@ public final class ProposalAttributeClient {
                 .withCache(CacheKeys.withClass(ProposalUnversionedAttributeDto.class)
                                 .withParameter("proposalId", proposalId)
                                 .asList(),
-                        CacheRetention.MEDIUM)
+                        CacheName.MISC_MEDIUM)
                 .optionalQueryParam("proposalId", proposalId)
                 .execute(), proposalService);
     }
