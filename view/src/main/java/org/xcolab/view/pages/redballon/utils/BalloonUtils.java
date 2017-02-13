@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.redballon.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -47,14 +48,17 @@ public class BalloonUtils {
             response.addCookie(cookie.getHttpCookie());
 		}
 		
-		BalloonUserTracking but;
-		try { 
-			but = BalloonsClient.getBalloonUserTracking(cookie.getUuid());
+		BalloonUserTracking but = null;
+		if (StringUtils.isNoneBlank(cookie.getUuid())) {
+			try {
+				but = BalloonsClient.getBalloonUserTracking(cookie.getUuid());
+			} catch (BalloonUserTrackingNotFound ignored) {
+			}
 		}
-		catch (BalloonUserTrackingNotFound e) {
-
+		if (but == null) {
 			if (member !=null && member.getId_() > 0 ) {
-				List<BalloonUserTracking> buts = BalloonsClient.getBalloonUserTrackingByEmail(member.getEmailAddress());
+				List<BalloonUserTracking> buts = BalloonsClient
+						.getBalloonUserTrackingByEmail(member.getEmailAddress());
 				if (! buts.isEmpty()) {
 					but = buts.get(0);
 					but.setUserId(member.getUserId());
@@ -62,9 +66,6 @@ public class BalloonUtils {
 					return but;
 				}
 			}
-
-			
-
 
 			but = new BalloonUserTracking();
 			but.setUuid_(cookie.getUuid());
@@ -89,12 +90,12 @@ public class BalloonUtils {
 			catch (Throwable t) {
 				_log.error("Error when processing user location", t);
 			}
-			 
-			
+
+
 			if (member !=null && member.getId_() > 0 ) {
 				but.setUserId(member.getUserId());
 			}
-			
+
 			// pick randomly balloon text to be displayed
 			List<BalloonText> texts = BalloonsClient.getAllEnabledBalloonTexts();
 			if (! texts.isEmpty()) {
@@ -104,7 +105,6 @@ public class BalloonUtils {
 			}
 
 			BalloonsClient.createBalloonUserTracking(but);
-
 		}
 		return but;
 	}

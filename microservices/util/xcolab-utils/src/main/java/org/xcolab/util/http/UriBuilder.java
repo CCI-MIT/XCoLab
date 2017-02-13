@@ -1,6 +1,7 @@
 package org.xcolab.util.http;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.Assert;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -28,6 +29,7 @@ public class UriBuilder {
     }
 
     public UriBuilder resource(String resourceName, Object id) {
+        Assert.notNull(id, "id cannot be null");
         uriComponentsBuilder.path("/" + resourceName + "/" + id.toString());
         return this;
     }
