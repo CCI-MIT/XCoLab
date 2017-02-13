@@ -1,0 +1,19 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:layout="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+
+<layout:layout>
+    <h2>Restricted access - login required</h2>
+    <c:if test="${not _isLoggedIn}">
+        <div class="c-Alert__info__message">
+            Please log into your account to verify that you are authorized to access this page.
+        </div>
+        <script type="text/javascript">
+            jQuery(function() {
+                jQuery("#popup_login").show();
+            });
+        </script>
+    </c:if>
+</layout:layout>
+</jsp:root>

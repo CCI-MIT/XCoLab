@@ -10,6 +10,8 @@ public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
     public LogoutSuccessHandler() {
         super();
     }
+
+    @Override
     public void onLogoutSuccess(javax.servlet.http.HttpServletRequest request,
             javax.servlet.http.HttpServletResponse response,
             Authentication authentication)

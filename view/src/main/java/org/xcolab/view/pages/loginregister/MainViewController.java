@@ -64,6 +64,7 @@ public class MainViewController {
 
     private static final String USER_NAME_REGEX = "^[a-zA-Z0-9]+$";
     public static final String REGISTER_VIEW_NAME = "loginregister/register";
+    public static final String LOGIN_VIEW_NAME = "loginregister/login";
 
     //    @Autowired
 //    private Validator validator;
@@ -72,6 +73,11 @@ public class MainViewController {
 //    public void initBinder(WebDataBinder binder) {
 //        binder.setValidator(validator);
 //    }
+
+    @GetMapping("/login")
+    public String login() {
+        return LOGIN_VIEW_NAME;
+    }
 
     /**
      * Main view displayed for contact form

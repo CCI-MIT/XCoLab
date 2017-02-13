@@ -13,6 +13,7 @@ tomcat:
 
 management:
   add-application-context-header: false
+  context-path: /admin/management
 
 spring:
   mvc:
