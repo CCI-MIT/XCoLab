@@ -103,7 +103,7 @@ public class OverviewTabController extends AbstractTabController {
         }
     }
 
-    @GetMapping("api/massAction")
+    @PostMapping("api/massAction")
     public void getExportController(HttpServletRequest request, Model model,
             @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper,
             HttpServletResponse response) throws InvocationTargetException, IllegalAccessException {

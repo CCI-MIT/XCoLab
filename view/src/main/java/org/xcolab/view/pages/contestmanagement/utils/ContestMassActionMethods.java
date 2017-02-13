@@ -40,7 +40,7 @@ public class ContestMassActionMethods {
                     "Last Name", "Email Address", "Role", "Last phase");
 
     public static void reportOfPeopleInCurrentPhase(List<Long> contestList,
-            Object ResourceResponseObject) throws IOException {
+            Object ResourceResponseObject, HttpServletRequest request) throws IOException {
 
         HttpServletResponse response = (HttpServletResponse) ResourceResponseObject;
         CsvExportHelper csvExportHelper = new CsvExportHelper();
