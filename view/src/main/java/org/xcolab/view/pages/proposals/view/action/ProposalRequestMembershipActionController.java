@@ -1,15 +1,13 @@
 package org.xcolab.view.pages.proposals.view.action;
 
-import org.json.JSONArray;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
@@ -17,18 +15,17 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.MembershipClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.entity.utils.email.notifications.proposal.ProposalMembershipInviteNotification;
 import org.xcolab.entity.utils.email.notifications.proposal.ProposalUserActionNotification;
 import org.xcolab.entity.utils.flash.AlertMessage;
-import org.xcolab.entity.utils.portlet.session.SessionErrors;
-import org.xcolab.entity.utils.portlet.session.SessionMessages;
-import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.RequestMembershipBean;
 import org.xcolab.view.pages.proposals.requests.RequestMembershipInviteBean;
+import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 
@@ -41,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
-//-- @RequestMapping("view")
 public class ProposalRequestMembershipActionController {
 
     private static final String MEMBERSHIP_REQUEST_TEMPLATE = "PROPOSAL_MEMBERSHIP_REQUEST_DEFAULT";
@@ -50,15 +46,19 @@ public class ProposalRequestMembershipActionController {
     private static final String MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED = "Your request has been accepted <br />Comments: ";
     private static final String MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED = "Your request has been rejected <br />Comments: ";
 
+    private final ProposalsContext proposalsContext;
+
     @Autowired
-    private ProposalsContext proposalsContext;
+    public ProposalRequestMembershipActionController(ProposalsContext proposalsContext) {
+        Assert.notNull(proposalsContext, "ProposalsContext bean is required");
+        this.proposalsContext = proposalsContext;
+    }
 
     @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/TEAM/requestMembership")
-    public void show(HttpServletRequest request, Model model,
-            HttpServletResponse response, @Valid RequestMembershipBean requestMembershipBean,
+    public void requestMembership(HttpServletRequest request, HttpServletResponse response, Model model,
+            Member sender, @Valid RequestMembershipBean requestMembershipBean,
             BindingResult result, @RequestParam("requestComment") String comment)
             throws IOException {
-
 
         if (result.hasErrors()) {
             //-- response.setRenderParameter("error", "true");
@@ -66,138 +66,136 @@ public class ProposalRequestMembershipActionController {
             return;
         }
 
-        long memberId = MemberAuthUtil.getMemberId(request);
-        if (memberId == 0) {
-            return;
-        }
-        final Member sender = MembersClient.getMemberUnchecked(memberId);
-
         final Proposal proposal = proposalsContext.getProposal(request);
-        final long proposalId = proposal.getProposalId();
-        final Member proposalAuthor = MembersClient.getMemberUnchecked(proposal.getAuthorId());
         final Contest contest = proposalsContext.getContest(request);
 
-        proposalsContext.getClients(request).getMembershipClient()
-                .addRequestedMembershipRequest(proposalId, sender.getUserId(), comment);
+        final String tabUrl = proposal.getProposalLinkUrl(contest) + "/tab/TEAM";
+
+        if (sender == null) {
+            AlertMessage.danger("You must be logged in to send a membership request").flash(request);
+            response.sendRedirect(tabUrl);
+            return;
+        }
+
+        final Member proposalAuthor = MembersClient.getMemberUnchecked(proposal.getAuthorId());
+
+        final ClientHelper clients = proposalsContext.getClients(request);
+        final MembershipClient membershipClient = clients.getMembershipClient();
+        membershipClient.addRequestedMembershipRequest(proposal.getProposalId(),
+                sender.getUserId(), comment);
 
         new ProposalUserActionNotification(proposal, contest, sender, proposalAuthor,
                 MEMBERSHIP_REQUEST_TEMPLATE, ConfigurationAttributeKey.COLAB_URL.get()).sendMessage();
 
 
         AlertMessage.success("A membership request has been sent!").flash(request);
-        response.sendRedirect(proposal.getProposalLinkUrl(contest) + "/tab/TEAM");
+        response.sendRedirect(tabUrl);
     }
 
 
     @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/TEAM/inviteMember")
-    public void invite(HttpServletRequest request, Model model,
-            HttpServletResponse response, @Valid RequestMembershipInviteBean requestMembershipInviteBean, BindingResult result)
+    public void invite(HttpServletRequest request, HttpServletResponse response, Model model,
+            Member sender, @Valid RequestMembershipInviteBean requestMembershipInviteBean,
+            BindingResult result)
             throws IOException {
 
+        final Proposal proposal = proposalsContext.getProposal(request);
+        final Contest contest = proposalsContext.getContest(request);
+        final String tabUrl = proposal.getProposalLinkUrl(contest) + "/tab/TEAM";
 
         String input = requestMembershipInviteBean.getInviteRecipient();
-        if (input == null || input.equals("")) {
-            response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/TEAM");
+        if (StringUtils.isBlank(input)) {
+            AlertMessage.danger("Please specify a member to invite.")
+                    .flash(request);
+            response.sendRedirect(tabUrl);
             return;
         }
 
+        final ClientHelper clients = proposalsContext.getClients(request);
+        final MembershipClient membershipClient = clients.getMembershipClient();
+
         String[] inputParts = input.split(" ");
-
-        if (inputParts.length > 0) {
-            String screenName = inputParts[0];
-            try {
-                Member recipient = MembersClient.findMemberByScreenName(screenName);
-
-                if (recipient != null) {
-                    final Proposal proposal = proposalsContext.getProposal(request);
-                    final long proposalId = proposal.getProposalId();
-                    final Contest contest = proposalsContext.getContest(request);
-
-                    String comment = HtmlUtil
-                            .cleanAll(requestMembershipInviteBean.getInviteComment());
-
-                    if (comment ==null) {
-                        comment = "No message specified";
-                    }
-                    MembershipRequest memberRequest = proposalsContext.getClients(request).getMembershipClient()
-                            .addInvitedMembershipRequest(proposalId, recipient.getUserId(),
-                                    comment);
-
-                    final Member sender = proposalsContext.getMember(request);
-
-                    new ProposalMembershipInviteNotification(proposal, contest, sender,
-                            recipient,
-                            memberRequest, comment, ConfigurationAttributeKey.COLAB_URL.get()).sendMessage();
-
-                    SessionMessages.add(request, "memberInviteSent");
-                }
-            } catch (MemberNotFoundException e) {
-                throw new IllegalArgumentException("Member with screen name not found: " + screenName);
-            }
-        } else {
-            SessionErrors.add(request, "memberInviteRecipientError");
-        }
-
-
-        AlertMessage.success("The member has been invited to join this proposal' team!").flash(request);
-        response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/TEAM");
-    }
-
-
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/inviteMembers-validateRecipient")
-
-    public void validateRecipient(HttpServletRequest request, HttpServletResponse response) {
-        String input = request.getParameter("term");
-
-        List<Member> recipients = getRecipientSuggestions(input, proposalsContext.getProposal(request).getProposalId(),
-                request);
-        JSONArray responseJson = new JSONArray();
-        for (Member user : recipients) {
-            responseJson.put(String.format("%s (%s %s)", user.getScreenName(), user.getFirstName(), user.getLastName()));
-        }
+        String screenName = inputParts[0];
         try {
-            response.getOutputStream().write(responseJson.toString().getBytes());
-        } catch (IOException e) {
-            throw new InternalException(e);
+            Member recipient = MembersClient.findMemberByScreenName(screenName);
+            String comment = HtmlUtil
+                    .cleanAll(requestMembershipInviteBean.getInviteComment());
+
+            if (StringUtils.isBlank(comment)) {
+                comment = "No message specified";
+            }
+            MembershipRequest memberRequest = membershipClient.addInvitedMembershipRequest(
+                    proposal.getProposalId(), recipient.getUserId(), comment);
+
+            new ProposalMembershipInviteNotification(proposal, contest, sender, recipient,
+                    memberRequest, comment).sendMessage();
+        } catch (MemberNotFoundException e) {
+            AlertMessage.danger("Member " + screenName + " could not be found.")
+                    .flash(request);
+            response.sendRedirect(tabUrl);
+            return;
         }
+
+        AlertMessage.success("The member has been invited to join this proposal's team!")
+                .flash(request);
+        response.sendRedirect(tabUrl);
     }
 
     @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ADMIN/replyToMembershipRequest")
-    public void respond(HttpServletRequest request, Model model, HttpServletResponse response,
-                        @RequestParam("approve") String approve,
-                        @RequestParam("comment") String comment,
-                        @RequestParam("requestId") long requestId) throws IOException {
-        if (MemberAuthUtil.getMemberOrNull(request) == null) {
+    public void respond(HttpServletRequest request, HttpServletResponse response, Model model,
+            Member loggedInMember, @RequestParam String approve,
+            @RequestParam String comment, @RequestParam long requestId)
+            throws IOException {
+
+        final Proposal proposal = proposalsContext.getProposal(request);
+        final Contest contest = proposalsContext.getContest(request);
+        final String tabUrl = proposal.getProposalLinkUrl(contest) + "/tab/ADMIN";
+
+        final ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        if (!permissions.getCanAdminProposal()) {
+            AlertMessage.danger("Access denied!").flash(request);
+            response.sendRedirect(tabUrl);
             return;
         }
 
-        long userId = MemberAuthUtil.getMemberId(request);
-        long proposalId = proposalsContext.getProposal(request).getProposalId();
+        final ClientHelper clients = ProposalsContextUtil.getClients(request);
+        final MembershipClient membershipClient = clients.getMembershipClient();
+
+        long proposalId = proposal.getProposalId();
 
         MembershipRequest membershipRequest = null;
-        for (MembershipRequest mr : ProposalsContextUtil.getClients(request).getMembershipClient().getMembershipRequests(proposalId)) {
+        for (MembershipRequest mr : membershipClient.getMembershipRequests(proposalId)) {
             if (mr.getMembershipRequestId() == requestId) {
                 membershipRequest = mr;
             }
         }
 
         if (membershipRequest == null) {
+            AlertMessage.danger("No membership request to approve!").flash(request);
+            response.sendRedirect(tabUrl);
             return;
         }
         comment = HtmlUtil.cleanAll(comment);
         if (comment == null || comment.equalsIgnoreCase("Optional response")) {
             comment = "no comments";
         }
+        final long senderId = loggedInMember.getId_();
+        final long recipientId = membershipRequest.getUserId();
         if (approve.equalsIgnoreCase("APPROVE")) {
-            proposalsContext.getClients(request).getMembershipClient().approveMembershipRequest(proposalId, membershipRequest.getUserId(), membershipRequest, comment, userId);
-            sendMessage(proposalsContext.getMember(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED + comment);
+            membershipClient.approveMembershipRequest(proposalId, recipientId,
+                    membershipRequest, comment, senderId);
+            sendMessage(senderId, recipientId, MSG_MEMBERSHIP_RESPONSE_SUBJECT,
+                    MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED + comment);
+            AlertMessage.success("The membership request has been APPROVED!").flash(request);
+
         } else if (approve.equalsIgnoreCase("DENY")) {
-            proposalsContext.getClients(request).getMembershipClient()
-                    .denyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId, comment, userId);
-            sendMessage(proposalsContext.getMember(request).getUserId(), membershipRequest.getUserId(), MSG_MEMBERSHIP_RESPONSE_SUBJECT, MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED + comment);
+            membershipClient.denyMembershipRequest(proposalId, recipientId,
+                            requestId, comment, senderId);
+            sendMessage(senderId, recipientId, MSG_MEMBERSHIP_RESPONSE_SUBJECT,
+                    MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED + comment);
+            AlertMessage.warning("The membership request has been DENIED!").flash(request);
         }
-        AlertMessage.success("The membership request has been replied !").flash(request);
-        response.sendRedirect(proposalsContext.getProposal(request).getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/ADMIN");
+        response.sendRedirect(tabUrl);
     }
 
     private void sendMessage(long sender, long recipient, String subject, String content) {
@@ -205,20 +203,6 @@ public class ProposalRequestMembershipActionController {
         recipients.add(recipient);
 
         MessagingClient.sendMessage(subject, content, sender, sender, recipients);
-    }
-
-    private List<Member> getRecipientSuggestions(String input, long proposalId,
-            HttpServletRequest request) {
-        String[] inputParts = input.split(" ");
-        if (inputParts.length == 0) {
-            return new ArrayList<>();
-        }
-        List<Long> contributorIds = new ArrayList<>();
-        for (Member contributor : proposalsContext.getClients(request).getProposalClient().getProposalMembers(proposalId)) {
-            contributorIds.add(contributor.getUserId());
-        }
-        List<Member> recipients = MembersClient.listMembers(null,inputParts[0],inputParts[0],null,true,0,Integer.MAX_VALUE);
-        return recipients;
     }
 
 }

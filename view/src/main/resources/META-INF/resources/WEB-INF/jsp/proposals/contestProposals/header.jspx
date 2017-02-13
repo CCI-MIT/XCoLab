@@ -27,7 +27,7 @@
 			<c:set var="subscribeContestURL" value="/contests/subscribeContest?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }"/>
 
 			<div class="c-TitleBar__actionButton c-TitleBar__element right">
-				<span class="fieldWithTooltip tooltipAbove">
+				<span class="js-Tooltip" title="Receive daily activity digests about this ${contestType.contestName} and its ${contestType.proposalNamePlural} via email or under 'My subscriptions'.">
 					<a href="${proposalsPermissions.canSubscribeContest ? subscribeContestURL : '#' }" onclick="if(!deferUntilLogin()) return false;" >
 						<c:choose>
 							<c:when test="${proposalsDisplayPermissions.canSeeSubscribeContestButton }">
@@ -39,10 +39,6 @@
 						</c:choose>
 					</a>
 				</span>
-				<div class="c-Tooltip">
-					Receive daily activity digests about this ${contestType.contestName} and its ${contestType.proposalNamePlural} via email or under "My subscriptions".
-					<div class="c-Tooltip__arrow"><!--  --></div>
-				</div>
 			</div>
 		</c:if>
 	</div>

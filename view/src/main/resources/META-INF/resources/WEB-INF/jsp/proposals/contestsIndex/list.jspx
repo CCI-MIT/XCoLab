@@ -18,79 +18,71 @@
             <th class="c-Table__cell--title">
                 <c:set var="sortURL" value="/contests?sortFilterPage.sortColumn=CONTEST_NAME&amp;showActiveContests=${showActiveContests }&amp;sortFilterPage.sortAscending=${sortFilterPage.sortColumn == 'CONTEST_NAME' ? not sortFilterPage.sortAscending : true }" />
 
-                <a href="${sortURL }">${contestType.contestName}</a>
-                <div class="c-Tooltip">
-                    click to sort by ${contestType.contestName} title <div class="c-Tooltip__arrow"><!--  --></div>
-                </div>
+                <a href="${sortURL }" class="js-Tooltip" title="click to sort by ${contestType.contestName} title">
+                    ${contestType.contestName}
+                </a>
                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTEST_NAME" />
 
             </th>
-            <th class="c-Table__cell--title proposals">
+            <th class="c-Table__cell--title proposals js-Tooltip" title="click to sort by number of ${contestType.proposalNamePlural}">
                 <c:set var="sortURLProposalsCount" value="/contests?sortFilterPage.sortColumn=PROPOSALS_COUNT&amp;showActiveContests=${showActiveContests }&amp;sortFilterPage.sortAscending=${sortFilterPage.sortColumn == 'PROPOSALS_COUNT' ? not sortFilterPage.sortAscending : true }" />
                 <a href="${sortURLProposalsCount}"><!--  --> </a>
-
-                <div class="c-Tooltip">
-                    click to sort by<br />number of ${contestType.proposalNamePlural}<div class="c-Tooltip__arrow"><!--  --></div>
-                </div>
                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="PROPOSALS_COUNT" />
             </th>
-            <th class="c-Table__cell--title ${contest.activePhase.canVote ? 'votes' : 'comments'}">
+            <th class="c-Table__cell--title ${contest.activePhase.canVote ? 'votes' : 'comments'} js-Tooltip"
+                title="${contest.activeOhase.canVote ? 'click to sort by number of votes' : 'click to sort by number of comments'}">
                 <c:choose>
                     <c:when test="${contest.activePhase.canVote }">
                         <c:set var="sortURLVotes" value="/contests?sortFilterPage.sortColumn=VOTES_COUNT&amp;showActiveContests=${showActiveContests }&amp;sortFilterPage.sortAscending=${sortFilterPage.sortColumn == 'VOTES_COUNT' ? not sortFilterPage.sortAscending : true }" />
 
                         <a href="${sortURLVotes }"> <!--  --></a>
-                        <div class="c-Tooltip">click to sort by number of votes<div class="c-Tooltip__arrow"><!--  --></div></div>
                         <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="VOTES_COUNT" />
                     </c:when>
                     <c:otherwise>
                         <c:set var="sortURLComments" value="/contests?sortFilterPage.sortColumn=COMMENTS_COUNT&amp;showActiveContests=${showActiveContests }&amp;sortFilterPage.sortAscending=${sortFilterPage.sortColumn == 'COMMENTS_COUNT' ? not sortFilterPage.sortAscending : true }" />
 
                         <a href="${sortURLComments }"> <!--  --></a>
-                        <div class="c-Tooltip">click to sort by number of comments<div class="c-Tooltip__arrow"><!--  --></div></div>
                         <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="COMMENTS_COUNT" />
                     </c:otherwise>
                 </c:choose>
             </th>
-            <th class="c-Table__cell--title ontology_what">
+            <th class="c-Table__cell--title ontology_what ">
                 <c:set var="sortURLWhat" value="/contests?sortFilterPage.sortColumn=WHAT&amp;showActiveContests=${showActiveContests }&amp;sortFilterPage.sortAscending=${sortFilterPage.sortColumn == 'WHAT' ? not sortFilterPage.sortAscending : true }" />
 
-                <a href="${sortURLWhat }"> What</a>
-                <div class="c-Tooltip">click to sort by actions<div class="c-Tooltip__arrow"><!--  --></div></div>
+                <a href="${sortURLWhat }" class="js-Tooltip" title="click to sort by actions"> What</a>
                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="WHAT" />
             </th>
             <th class="c-Table__cell--title ontology_where">
                 <c:set var="sortURLWhere" value="/contests?sortFilterPage.sortColumn=WHERE&amp;showActiveContests=${showActiveContests }&amp;sortFilterPage.sortAscending=${sortFilterPage.sortColumn == 'WHERE' ? not sortFilterPage.sortAscending : true }" />
 
-                <a href="${sortURLWhere }"> Where</a>
-                <div class="c-Tooltip">click to sort by<br />geographical area<div class="c-Tooltip__arrow"><!--  --></div></div>
+                <a href="${sortURLWhere }" class="js-Tooltip" title="click to sort by geographical area"> Where</a>
                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="WHERE" />
 
             </th>
             <th class="c-Table__cell--title ontology_who"><c:set var="sortAscending" value="${sortFilterPage.sortColumn == 'WHO' ? not sortFilterPage.sortAscending : true }" />
                 <c:set var="sortURLWho" value="/contests?sortFilterPage.sortColumn=WHO&amp;showActiveContests=${showActiveContests }&amp;sortFilterPage.sortAscending=${sortAscending}" />
 
-                <a href="${sortURLWho }"> Who</a>
-                <div class="c-Tooltip">click to sort by who<br />this issue affects<div class="c-Tooltip__arrow"><!--  --></div></div>
+                <a href="${sortURLWho }" class="js-Tooltip" title="click to sort by who this issue affects"> Who</a>
                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="WHO" />
             </th>
             <th class="c-Table__cell--title ontology_how">
                 <c:set var="sortAscending" value="${sortFilterPage.sortColumn == 'HOW' ? not sortFilterPage.sortAscending : true }" />
                 <c:set var="sortURLHow" value="/contests?sortFilterPage.sortColumn=HOW&amp;showActiveContests=${showActiveContests }&amp;sortFilterPage.sortAscending=${sortAscending}" />
 
-                <a href="${sortURLHow }"> How</a>
-                <div class="c-Tooltip">click to sort by how<br />this issue affects<div class="c-Tooltip__arrow"><!--  --></div></div>
+                <a href="${sortURLHow }" class="js-Tooltip" title="click to sort by how this issue affects"> How</a>
                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="HOW" />
             </th>
             <c:if test="${proposalsPermissions.canJudgeActions}">
                 <th class="c-Table__cell--title">
-                    <a href="#" style="background: none; margin-top: 9px;">Judge</a>
-                    <div class="c-Tooltip">see if judges are done<br />with this ${contestType.contestName}<div class="c-Tooltip__arrow"><!--  --></div></div>
+                    <a href="#" style="background: none; margin-top: 9px;" class="js-Tooltip" title="see if judges are done with this ${contestType.contestName}">
+                        Judge
+                    </a>
                 </th>
                 <th class="c-Table__cell--title">
                     <c:if test="${proposalsPermissions.canFellowActions}">
-                        <a href="#" style="background: none; margin-top: 9px;">Fellow</a>
-                        <div class="c-Tooltip">see if fellows are done<br />with this ${contestType.contestName}<div class="c-Tooltip__arrow"><!--  --></div></div>
+                        <a href="#" style="background: none; margin-top: 9px;" class="js-Tooltip" title="see if fellows are done with this ${contestType.contestName}">
+                            Fellow
+                        </a>
                     </c:if>
                 </th>
             </c:if>

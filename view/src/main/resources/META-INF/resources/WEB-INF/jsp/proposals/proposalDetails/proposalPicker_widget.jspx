@@ -68,48 +68,27 @@
 							<thead>
 							<tr class="c-Table__row--title">
 								<th class="c-Table__cell--title">
-									<a href="#" data-sort-column="Name"> Contest Name <span class="contestTypeContestNames">&#160;</span></a>
-									<div class="c-Tooltip">
-										click to sort by name
-										<div class="c-Tooltip__arrow"><!-- --></div>
-									</div>
+									<a href="#" data-sort-column="Name" class="js-Tooltip" title="click to sort by name"> Contest Name <span class="contestTypeContestNames">&#160;</span></a>
 								</th>
 								<th class="c-Table__cell--title">
-									<a href="#" data-sort-column="Proposals"> Proposals
+									<a href="#" data-sort-column="Proposals" class="js-Tooltip" data-tooltip-content="#js-Tooltip__content__numProposals"> Proposals
 										<span class="contestTypeProposalNamesPlural">&#160;</span>
 									</a>
-									<div class="c-Tooltip">
+									<div class="c-Tooltip" id="js-Tooltip__content__numProposals">
 										click to sort by<br />number of <span class="contestTypeProposalNamesPlural">&#160;</span>
-										<div class="c-Tooltip__arrow"><!-- --></div>
 									</div>
 								</th>
 								<th class="c-Table__cell--title">
-									<a href="#" data-sort-column="Comments"> Comments</a>
-									<div class="c-Tooltip">
-										click to sort by<br />number of comments
-										<div class="c-Tooltip__arrow"><!-- --></div>
-									</div>
+									<a href="#" data-sort-column="Comments" class="js-Tooltip" title="click to sort by<br />number of comments"> Comments</a>
 								</th>
 								<th class="c-Table__cell--title">
-									<a href="#" data-sort-column="What"> What</a>
-									<div class="c-Tooltip">
-										click to sort by what
-										<div class="c-Tooltip__arrow"><!-- --></div>
-									</div>
+									<a href="#" data-sort-column="What" class="js-Tooltip" title="click to sort by what"> What</a>
 								</th>
 								<th class="c-Table__cell--title">
-									<a href="#" data-sort-column="Where"> Where</a>
-									<div class="c-Tooltip">
-										click to sort by where
-										<div class="c-Tooltip__arrow"><!-- --></div>
-									</div>
+									<a href="#" data-sort-column="Where" class="js-Tooltip" title="click to sort by where"> Where</a>
 								</th>
 								<th class="c-Table__cell--title">
-									<a href="#" data-sort-column="Who"> Who</a>
-									<div class="c-Tooltip">
-										click to sort by who
-										<div class="c-Tooltip__arrow"><!-- --></div>
-									</div>
+									<a href="#" data-sort-column="Who" class="js-Tooltip" title="click to sort by who"> Who</a>
 								</th>
 							</tr>
 							</thead>
@@ -133,39 +112,23 @@
                                     <tr class="c-Table__row--title">
                                         <th class="c-Table__cell--title">
                                             <div style="display: inline-block">
-                                                <a href="#" data-sort-column="Proposal"><span class="contestTypeProposalNames">&#160;</span> name</a>
-                                                <div class="c-Tooltip">
-                                                    click to sort by name
-                                                    <div class="c-Tooltip__arrow"><!-- --></div>
-                                                </div>
+                                                <a href="#" data-sort-column="Proposal" class="js-Tooltip" title="click to sort by name"><span class="contestTypeProposalNames">&#160;</span> name</a>
                                             </div>
                                             /&#160;
 
                                             <div style="display: inline-block">
-                                                <a href="#" data-sort-column="Author">Author(s)</a>
-                                                <div class="c-Tooltip">
-                                                    click to sort by author
-                                                    <div class="c-Tooltip__arrow"><!-- --></div>
-                                                </div>
+                                                <a href="#" data-sort-column="Author" class="js-Tooltip" title="click to sort by author">Author(s)</a>
                                             </div>
                                         </th>
                                         <th class="c-Table__cell--title">
-                                            <a href="#" data-sort-column="Supporters">
+                                            <a href="#" data-sort-column="Supporters" class="js-Tooltip" title="click to sort by<br />number of supporters">
                                                 Supporters
                                             </a>
-                                            <div class="c-Tooltip">
-                                                click to sort by<br />number of supporters
-                                                <div class="c-Tooltip__arrow"><!-- --></div>
-                                            </div>
                                         </th>
                                         <th class="c-Table__cell--title">
-                                            <a href="#" data-sort-column="Comments">
+                                            <a href="#" data-sort-column="Comments" class="js-Tooltip" title="click to sort by<br />number of comments">
                                                 Comments
                                             </a>
-                                            <div class="c-Tooltip">
-                                                click to sort by<br />number of comments
-                                                <div class="c-Tooltip__arrow"><!-- --></div>
-                                            </div>
                                         </th>
                                         <th class="c-Table__cell--title">
                                             <span class='text'><span class="contestTypeContestNamesPlural">&#160;</span></span>
@@ -199,13 +162,10 @@
 			<td class="c-Table__cell no-border">
 				{{#if data.ribbon}}
 				<div class="ribbonPlaceholder" style="float: left;">
-                <span class="fieldWithTooltip">
+                <span class="js-Tooltip" title="{{data.ribbonText}}">
                     <br />
                     <img src="${_themeImageFolder}/icon-prize{{ data.ribbon }}.png" />
                 </span>
-					<div class="c-Tooltip">
-						{{data.ribbonText}}
-					</div>
 				</div>
 				{{/if}}
 
@@ -231,8 +191,7 @@
             <td class="c-Table__cell no-border">
                 {{#each data.contests}}
                 <div class="b-Spacing__inline">
-                    <img alt="{{this.name}}" class='fieldWithTooltip tooltipAbove' height="25" width="25" src="/image/contest?img_id={{this.contestLogoId}}" />
-                    <div class="c-Tooltip">Contest: {{this.name}}<div class="c-Tooltip__arrow"><!--  --></div></div>
+                    <img alt="{{this.name}}" class="js-Tooltip" title="Contest: {{this.name}" height="25" width="25" src="/image/contest?img_id={{this.contestLogoId}}" />
                 </div>
                 {{/each}}
             </td>
@@ -250,10 +209,7 @@
 			<td class="c-Table__cell">
 				<div class="contestFlag {{#if contest.wasFiltered}} greyed_out {{/if}}">
 					{{#if contest.flagText}}
-						<span class="{{#if contest.flagTooltip}} fieldWithTooltip {{/if}}">{{contest.flagText}}:&#160;</span>
-                    		<c:if test="${not empty contest.flagTooltip}">
-                        		<div class="c-Tooltip">{{contest.flagTooltip}}<div class="c-Tooltip__arrow"><!--  --></div></div>
-                        	</c:if>
+						<span class="{{#if contest.flagTooltip}} js-Tooltip {{/if}}" title="{{contest.flagTooltip}}">{{contest.flagText}}:&#160;</span>
                 	{{/if}}
                 		<a href="javascript:;" class="{{#if contest.wasFiltered}} box_tooltip greyed_out {{/if}}" title="{{#if contest.filterReasonFocusArea}} This contest does not fit this section's focus area. {{/if}} {{#if contest.filterReasonTier}} This contest does not fit this section's tier.{{/if}}">{{contest.contestShortName}}</a>
                 			{{contest.contestName}}

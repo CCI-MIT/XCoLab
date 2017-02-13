@@ -64,17 +64,14 @@
 									<c:forEach var="badge" items="${currentUserProfile.badges}">
 										<c:if test="${not badge.hideRibbon}">
 										<a href="${badge.proposalLinkUrl}">
-											<div class="c-Badge--small badge-${badge.badgeType} fieldWithTooltip tooltipAbove">
+											<div class="c-Badge--small badge-${badge.badgeType} js-Tooltip"
+												 title="${badge.badgeText} in ${badge.contestName}">
 												<span class="c-Badge__title--small" style="${badge.badgeTitle.length() gt 8 ? 'top: 11px;' : ''};">
 														${badge.badgeTitle}
 												</span>
 
 												<div class="c-Badge__text--small">20</div>
 												<span class="c-Badge__year--small">${badge.badgeYearShort}</span>
-												<div class="c-Tooltip">
-														${badge.badgeText} in ${badge.contestName}
-													<div class="c-Tooltip__arrow"><!--  --></div>
-												</div>
 											</div>
 										</a>
 										</c:if>

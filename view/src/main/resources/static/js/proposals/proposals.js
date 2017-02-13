@@ -139,80 +139,23 @@ function hideInviteForm(animate) {
     $('#invite-comment').slideUp('slow', function () {
         $('.prop-butt-popover:first').css('background', 'none');
         $('#requestButtons').empty();
-        $('#requestButtons').append('<div class="c-Button__primary" style="display:block;"><a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a></div>');
+        $('#requestButtons').append(
+            '<div class="c-Button__primary" style="display:block;"><a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a></div>');
     });
     $('#invite-recipient').slideUp('slow');
-
-function validateRecipients() {
-    var input = $("#recipient-input").val();
-    var list = split(input);
-    console.log("list: " + list);
-
-    $.each(list, function(k, v) {
-        console.log("item " + v);
-    });
-    var json = new Object();
-    json.params = list;
-    console.log("json: " + JSON.stringify(json));
-
-    $.ajax
-    ({
-        type: "POST",
-        //the url where you want to sent the userName and password to
-        url: validationURL,
-        dataType: 'json',
-        async: false,
-        //json object to sent to the authentication url
-        data: {screenNames : list},
-        success: function (data) {
-            if (data.success) {
-                $('#send-button').removeAttr('disabled');
-
-            } else {
-                var error = "";
-                var list = data.message;
-                if (list.length > 0) {
-                    error += "The following recipients could not be resolved:&lt;ul&gt;";
-
-                    $.each(list, function(k, v) {
-                        error += "&lt;li&gt;" + v + "&lt;/li&gt;";
-                    });
-
-                    error += "&lt;ul&gt;";
-                }
-
-                $('.recipient-error').html(error);
-                console.log(error);
-                $('#send-button').attr('disabled', 'disabled');
-            }
-        }
-    });
-}}
+}
 
 // jQuery autocomplete
 $(function() {
     var cache = {};
-    $( "#invite-recipient" ).autocomplete({
-        minLength: 3,
-        source: function( request, response ) {
-            var term = request.term;
-            if ( term in cache ) {
-                response( cache[ term ] );
-                return;
-            }
-
-            $.getJSON( $('#invite-member-validation-url').text(), request, function( data, status, xhr ) {
-                cache[ term ] = data;
-                response( data );
-            });
-        }
-    });
-    $( "#invite-recipient" ).bind("autocompleteselect", "select", function(event) {
-
+    var $recipientInput = $( "#invite-recipient" );
+    $recipientInput.autocomplete({
+            minLength: 3,
+            source: "/api/members/getUserByScreenName"
     });
 
-    $("#invite-recipient").focusout(function(event) {
-        validateRecipients();
+    $recipientInput.bind("autocompleteselect", "select", function(event) {
+
     });
 });
 

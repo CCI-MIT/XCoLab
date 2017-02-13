@@ -18,10 +18,7 @@
                 <td class="c-Table__cell">
                     <div class="contestFlag">
                         <c:if test="${not empty contest.flagText }">
-                            <span class="${not empty contest.flagTooltip ? 'fieldWithTooltip' : ''}">${contest.flagText}:&#160;</span>
-                            <c:if test="${not empty contest.flagTooltip}">
-                                <div class="c-Tooltip">${contest.flagTooltip}<div class="c-Tooltip__arrow"><!--  --></div></div>
-                            </c:if>
+                            <span class="${not empty contest.flagTooltip ? 'js-Tooltip' : ''}" title="${contest.flagTooltip}">${contest.flagText}:&#160;</span>
                         </c:if>
                         <collab:contestLink contest="${contest}" text="${contest.contestShortName}:" />
                         ${contest.contestName}
@@ -55,32 +52,21 @@
 
                 <c:if test="${proposalsPermissions.canJudgeActions}">
                     <td class="c-Table__cell odd">
-                            <span class="fieldWithTooltip">
-                                <c:choose>
-									<c:when test="${not contest.judgeStatus}">
-										<img src="${_themeImageFolder}/icon_question-x.png"/>
-									</c:when>
-									<c:otherwise>
-										<img src="${_themeImageFolder}/icon_question-chk.png"/>
-									</c:otherwise>
-								</c:choose>
-                            </span>
-
-                        <div class="c-Tooltip">
+                        <span class="js-Tooltip" title="Judge's decision ${not contest.judgeStatus ? 'incomplete' : 'completed'}.">
                             <c:choose>
                                 <c:when test="${not contest.judgeStatus}">
-                                    Judge's decision incomplete.
+                                    <img src="${_themeImageFolder}/icon_question-x.png"/>
                                 </c:when>
                                 <c:otherwise>
-                                    Judge's decision completed.
+                                    <img src="${_themeImageFolder}/icon_question-chk.png"/>
                                 </c:otherwise>
                             </c:choose>
-                        </div>
+                        </span>
                     </td>
 
                     <c:if test="${proposalsPermissions.canFellowActions}">
                         <td class="c-Table__cell">
-							<span class="fieldWithTooltip">
+							<span class="js-Tooltip" title="Fellow screening ${contest.screeningStatus ? 'completed' : 'incomplete'}.">
 								<c:choose>
 									<c:when test="${contest.screeningStatus}">
 										<img src="${_themeImageFolder}/icon_question-chk.png"/>
@@ -90,16 +76,6 @@
 									</c:otherwise>
 								</c:choose>
 							</span>
-                            <div class="c-Tooltip">
-                                <c:choose>
-                                    <c:when test="${contest.screeningStatus}">
-                                        Fellow screening completed.
-                                    </c:when>
-                                    <c:otherwise>
-                                        Fellow screening incomplete.
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
                         </td>
                     </c:if>
                 </c:if>

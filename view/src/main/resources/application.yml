@@ -1,15 +1,18 @@
 server:
   port: 18082
-  compression:
-    enabled: true
   error:
     whitelabel:
       enabled: false
     include-stacktrace: always
+  session:
+    persistent: true
 
 tomcat:
   ajp:
     enabled: true
+
+management:
+  add-application-context-header: false
 
 spring:
   mvc:

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +21,10 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.loginregister.SharedColabUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
+import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.edit.ProposalCreationUtil;
@@ -46,27 +47,24 @@ public class AddUpdateProposalDetailsActionController {
         this.proposalsContext = proposalsContext;
     }
 
-
     @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/updateProposalDetails")
-    public void show(HttpServletRequest request, Model model,
-            @PathVariable String contestYear,
-            @PathVariable String contestUrlName,
-            @PathVariable String proposalUrlString,
-            @PathVariable String proposalId,
-            HttpServletResponse response, @Valid UpdateProposalDetailsBean updateProposalSectionsBean, BindingResult result)
+    public void show(HttpServletRequest request, HttpServletResponse response, Model model,
+            @PathVariable String contestYear, @PathVariable String contestUrlName,
+            @PathVariable String proposalUrlString, @PathVariable String proposalId,
+            @Valid UpdateProposalDetailsBean updateProposalSectionsBean, BindingResult result)
             throws ProposalsAuthorizationException, IOException {
 
         long memberId = MemberAuthUtil.getMemberId(request);
         final Proposal proposal = proposalsContext.getProposal(request);
-        if (proposal != null && !proposalsContext.getPermissions(request).getCanEdit()) {
-            throw new ProposalsAuthorizationException("Member is not allowed to edit proposal, user: " +
-                    memberId + ", proposal: " + proposal.getProposalId());
+        final ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        if (proposal != null && !permissions.getCanEdit()) {
+            ErrorText.ACCESS_DENIED.flashAndRedirect(request, response);
+            return;
         }
         final Contest contest = proposalsContext.getContest(request);
-        if (proposal == null && !proposalsContext.getPermissions(request).getCanCreate()) {
-            throw new ProposalsAuthorizationException("Member is not allowed to create proposal, user: " +
-                    memberId + ", contest: " + contest
-                    .getContestPK());
+        if (proposal == null && !permissions.getCanCreate()) {
+            ErrorText.ACCESS_DENIED.flashAndRedirect(request, response);
+            return;
         }
 
         if (result.hasErrors()) {
@@ -122,8 +120,6 @@ public class AddUpdateProposalDetailsActionController {
         }
 
         proposalsContext.invalidateContext(request);
-
-        request.setAttribute("ACTION_REDIRECTING", true);
         response.sendRedirect(proposalWrapper.getProposalUrl());
         return;
     }
