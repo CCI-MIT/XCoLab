@@ -16,14 +16,10 @@ import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class ContestPreferences {
     private List<Long> selectedContests;
@@ -72,50 +68,44 @@ public class ContestPreferences {
         } catch (NumberFormatException e) {
             feedSize = 4;
         }
-
-
-        populateContestMap();
     }
 
     private void populateContestMap() {
             final List<Contest> contests = ContestClientUtil.getAllContests();
             contestMap = new LinkedHashMap<>();
 
-            Collections.sort(contests, new Comparator<Contest>() {
-                @Override
-                public int compare(Contest o1, Contest o2) {
-                    final Date created1 = o1.getCreated();
-                    final Date created2 = o2.getCreated();
-                    if (created1 != null && created2 != null) {
-                        if (created1.before(created2)) {
-                            return 1;
-                        } else {
-                            return -1;
-                        }
+            contests.sort((o1, o2) -> {
+                final Date created1 = o1.getCreated();
+                final Date created2 = o2.getCreated();
+                if (created1 != null && created2 != null) {
+                    if (created1.before(created2)) {
+                        return 1;
+                    } else {
+                        return -1;
                     }
-                    return (int) (o2.getContestPK() - o1.getContestPK());
                 }
+                return (int) (o2.getContestPK() - o1.getContestPK());
             });
 
-            ContestClient cc;
-            for (Contest c: contests) {
+        for (Contest c: contests) {
                 ContestPhase activeOrLastPhase = null;
 
-                if(c.getIsSharedContestInForeignColab()) {
+            ContestClient contestClient;
+            if (c.getIsSharedContestInForeignColab()) {
                     RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
                             ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
                             ConfigurationAttributeKey.PARTNER_COLAB_PORT);
-                    cc = ContestClient.fromService(contestService);
-                    activeOrLastPhase = cc.getActivePhase(c.getContestPK());
-                }else{
-                    cc = ContestClientUtil.getClient();
+                    contestClient = ContestClient.fromService(contestService);
+                    activeOrLastPhase = contestClient.getActivePhase(c.getContestPK());
+                } else {
+                    contestClient = ContestClientUtil.getClient();
                     activeOrLastPhase =
-                            cc.getActivePhase(c.getContestPK());
+                            contestClient.getActivePhase(c.getContestPK());
                 }
                 final String phaseName;
                 if (activeOrLastPhase != null) {
                     final long contestPhaseTypeId = activeOrLastPhase.getContestPhaseType();
-                    final ContestPhaseType contestPhaseType= cc.getContestPhaseType(contestPhaseTypeId);
+                    final ContestPhaseType contestPhaseType= contestClient.getContestPhaseType(contestPhaseTypeId);
                     phaseName = contestPhaseType.getName();
                 } else {
                     phaseName = " ";
@@ -155,6 +145,9 @@ public class ContestPreferences {
     }
 
     public Map<Long, String> getContestMap() {
+        if (contestMap == null) {
+            populateContestMap();
+        }
         return contestMap;
     }
 
