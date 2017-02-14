@@ -45,6 +45,10 @@ public class CacheKey<T, R> {
         return sb.toString();
     }
 
+    public Class<T> getElementType() {
+        return elementType;
+    }
+
     @Override
     public String toString() {
         return "CacheKey [" + stringKey() + "]";

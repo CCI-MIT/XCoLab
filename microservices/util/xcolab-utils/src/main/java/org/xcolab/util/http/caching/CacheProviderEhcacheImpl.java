@@ -15,6 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 
+import org.xcolab.util.http.caching.statistics.CacheStatisticProvider;
+import org.xcolab.util.http.caching.statistics.CacheStatisticProvider.CacheEvent;
+
 import static org.ehcache.config.builders.CacheConfigurationBuilder.newCacheConfigurationBuilder;
 import static org.ehcache.config.builders.CacheManagerBuilder.newCacheManagerBuilder;
 
@@ -24,40 +27,52 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
 
     private final CacheManager cacheManager;
 
+    private final CacheStatisticProvider cacheStatisticProvider = new CacheStatisticProvider();
+
     public CacheProviderEhcacheImpl() {
         CacheManager newCacheManager;
         try {
-            final CacheManagerBuilder<CacheManager> cacheManagerBuilder = newCacheManagerBuilder()
-                    .withCache(CacheName.MISC_REQUEST
-                            .name(), getTTLConfig(CacheName.MISC_REQUEST))
-                    .withCache(CacheName.MISC_SHORT
-                            .name(), getTTLConfig(CacheName.MISC_SHORT))
-                    .withCache(CacheName.MISC_MEDIUM
-                            .name(), getTTLConfig(CacheName.MISC_MEDIUM))
-                    .withCache(CacheName.MISC_LONG
-                            .name(), getTTLConfig(CacheName.MISC_LONG))
-                    .withCache(CacheName.MISC_RUNTIME.name(),
-                            getConfigBuilder(CacheName.MISC_RUNTIME).build());
-
+            CacheManagerBuilder<CacheManager> cacheManagerBuilder = newCacheManagerBuilder();
+            cacheManagerBuilder = configureCaches(cacheManagerBuilder);
             newCacheManager = cacheManagerBuilder.build(true);
         } catch (RuntimeException e) {
-            log.error("Error while creating CacheManager - cache inactive");
+            log.error("Error while creating CacheManager - cache inactive", e);
             newCacheManager = null;
         }
         cacheManager = newCacheManager;
+
+        for (CacheName cacheName : CacheName.values()) {
+            if (cacheName != CacheName.NONE) {
+                cacheStatisticProvider.initializeMeters(cacheName.name(), getCache(cacheName));
+            }
+        }
+    }
+
+    private CacheManagerBuilder<CacheManager> configureCaches(CacheManagerBuilder<CacheManager> cacheManagerBuilder) {
+        for (CacheName cacheName : CacheName.values()) {
+            if (cacheName != CacheName.NONE) {
+                if (cacheName.getDuration() == CacheDuration.RUNTIME) {
+                    cacheManagerBuilder = cacheManagerBuilder.withCache(cacheName.name(),
+                            getConfigBuilder(cacheName));
+                } else {
+                    cacheManagerBuilder =
+                            cacheManagerBuilder.withCache(cacheName.name(), getTTLConfig(cacheName));
+                }
+            }
+        }
+        return cacheManagerBuilder;
+    }
+
+    private CacheConfiguration<String, Object> getTTLConfig(CacheName cacheName) {
+        return getConfigBuilder(cacheName)
+                .withExpiry(Expirations.timeToLiveExpiration(cacheName.getDuration().getDuration()))
+                .build();
     }
 
     private CacheConfigurationBuilder<String, Object> getConfigBuilder(
             CacheName cacheName) {
         return newCacheConfigurationBuilder(String.class, Object.class,
                 ResourcePoolsBuilder.heap(cacheName.getNumberOfEntries()));
-    }
-
-
-    private CacheConfiguration<String, Object> getTTLConfig(CacheName cacheName) {
-        return getConfigBuilder(cacheName)
-                .withExpiry(Expirations.timeToLiveExpiration(cacheName.getDuration().getDuration()))
-                .build();
     }
 
     private Cache<String, Object> getCache(CacheName cacheName) {
@@ -74,7 +89,11 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
         if (isActive()) {
             try {
                 //noinspection unchecked
-                return (T) getCache(cacheName).get(key.stringKey());
+                final T ret = (T) getCache(cacheName).get(key.stringKey());
+                cacheStatisticProvider.recordCacheEvent(cacheName.name(), key.getElementType(),
+                                ret != null ? CacheEvent.HIT : CacheEvent.MISS);
+                return ret;
+
             } catch (CacheLoadingException e) {
                 log.error("Error while loading cache {} using {}: {}", cacheName, key, e.toString());
                 return null;

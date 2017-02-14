@@ -74,6 +74,10 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+        </dependency>
         <!-- JSON API -->
         <dependency>
             <groupId>javax.json</groupId>
