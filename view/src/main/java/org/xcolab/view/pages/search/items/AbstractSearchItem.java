@@ -1,5 +1,7 @@
 package org.xcolab.view.pages.search.items;
 
+import org.jsoup.Jsoup;
+
 import org.xcolab.client.search.pojo.SearchPojo;
 
 public abstract class AbstractSearchItem {
@@ -17,8 +19,17 @@ public abstract class AbstractSearchItem {
 
     public abstract String getContent();
 
+    public static String html2text(String html) {
+        if(html == null) {
+            return null;
+        }else {
+            return Jsoup.parse(html).text();
+        }
+    }
     public String highlight(String content, String queryToHighlight) {
+
         if (content == null) {return null;}
+        content = html2text(content);
         if (queryToHighlight == null) {return content;}
         String[] tokensInUserContent = queryToHighlight.split("[\\p{Punct}\\s]+");
         if (tokensInUserContent != null) {

@@ -17,9 +17,9 @@ public class SearchController {
     public String showCategories(HttpServletRequest request, HttpServletResponse response, Model model,
                                  @RequestParam(required = false) String searchPhrase,
                                  @RequestParam(required = false) String searchLocation,
-                                 @RequestParam(required = false) Integer pageNumber) {
+                                 @RequestParam(required = false) Integer page) {
 
-        model.addAttribute("searchBean", new SearchBean(searchPhrase, searchLocation, pageNumber));
+        model.addAttribute("searchBean", new SearchBean(searchPhrase, searchLocation, page));
 
         model.addAttribute("_activePageLink", "search");
         return "search/search";

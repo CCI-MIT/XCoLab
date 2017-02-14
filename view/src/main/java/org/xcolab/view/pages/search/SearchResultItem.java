@@ -1,5 +1,7 @@
 package org.xcolab.view.pages.search;
 
+import org.jsoup.Jsoup;
+
 import org.xcolab.client.search.pojo.SearchPojo;
 import org.xcolab.view.pages.search.items.AbstractSearchItem;
 
@@ -34,6 +36,7 @@ public class SearchResultItem {
         }
         this.odd = odd;
     }
+
 
     public List<Pair> getValues() {
         return new ArrayList<>();
