@@ -36,24 +36,16 @@ public class CacheStatisticProvider {
 
     private Meter getHitMeter(String cacheName, Class<?> cachedClass) {
         MeterMapKey key = new MeterMapKey(cacheName, cachedClass);
-        Meter meter = hitMeters.get(key);
-        if (meter == null) {
-            meter = MetricsUtil.REGISTRY.meter(name(CacheProviderEhcacheImpl.class,
-                    identityName, cacheName, cachedClass.getSimpleName(), "cache-hits"));
-            hitMeters.put(key, meter);
-        }
-        return meter;
+        return hitMeters.computeIfAbsent(key,
+                k -> MetricsUtil.REGISTRY.meter(name(CacheProviderEhcacheImpl.class,
+                        identityName, cacheName, cachedClass != null ? cachedClass.getSimpleName() : "stats", "cache-hits")));
     }
 
     private Meter getMissMeter(String cacheName, Class<?> cachedClass) {
         MeterMapKey key = new MeterMapKey(cacheName, cachedClass);
-        Meter meter = missMeters.get(key);
-        if (meter == null) {
-            meter = MetricsUtil.REGISTRY.meter(name(CacheProviderEhcacheImpl.class,
-                    identityName, cacheName, cachedClass.getSimpleName(), "cache-misses"));
-            missMeters.put(key, meter);
-        }
-        return meter;
+        return missMeters.computeIfAbsent(key,
+                k -> MetricsUtil.REGISTRY.meter(name(CacheProviderEhcacheImpl.class,
+                        identityName, cacheName, cachedClass != null ? cachedClass.getSimpleName() : "stats", "cache-misses")));
     }
 
     public void recordCacheEvent(String cacheName, Class<?> cachedClass, CacheEvent cacheEvent) {

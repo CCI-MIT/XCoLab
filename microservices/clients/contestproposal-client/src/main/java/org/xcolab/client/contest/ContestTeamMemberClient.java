@@ -5,6 +5,7 @@ import org.xcolab.client.contest.pojo.team.ContestTeamMemberDto;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRoleDto;
 import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
@@ -36,21 +37,23 @@ public class ContestTeamMemberClient {
     }
 
     public static ContestTeamMemberClient fromService(RestService contestService) {
-        ContestTeamMemberClient client = instances.get(contestService);
-        if (client == null) {
-            client = new ContestTeamMemberClient(contestService);
-            instances.put(contestService, client);
-        }
-        return client;
+        return instances
+                .computeIfAbsent(contestService, k -> new ContestTeamMemberClient(contestService));
     }
 
     public ContestTeamMember createContestTeamMember(ContestTeamMember contestTeamMember) {
-        return contestTeamMemberResource.create(new ContestTeamMemberDto(contestTeamMember))
-                .execute().toPojo(contestService);
+        final ContestTeamMember result =
+                contestTeamMemberResource.create(new ContestTeamMemberDto(contestTeamMember))
+                        .execute().toPojo(contestService);
+        //TODO: fine-grained cache removal
+        ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
+        return result;
     }
 
     public void deleteContestTeamMember(Long contestTeamMemberId) {
         contestTeamMemberResource.delete(contestTeamMemberId).execute();
+        //TODO: fine-grained cache removal
+        ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
     }
 
     public ContestTeamMemberRole getContestTeamMemberRole(long id) {
@@ -61,7 +64,22 @@ public class ContestTeamMemberClient {
 
     public List<Long> getAdvisorsForContest(Long contestId) {
         return getRoleForContestTeam(contestId, MemberRole.ADVISOR.getRoleId());
+    }
 
+    public List<Long> getJudgesForContest(Long contestId) {
+        return getRoleForContestTeam(contestId, MemberRole.JUDGE.getRoleId());
+    }
+
+    public List<Long> getFellowsForContest(Long contestId) {
+        return getRoleForContestTeam(contestId, MemberRole.FELLOW.getRoleId());
+    }
+
+    public List<Long> getContestManagersForContest(Long contestId) {
+        return getRoleForContestTeam(contestId, MemberRole.CONTEST_MANAGER.getRoleId());
+    }
+
+    public List<Long> getIAFellowsForContest(Long contestId) {
+        return getRoleForContestTeam(contestId, MemberRole.IMPACT_ASSESSMENT_FELLOW.getRoleId());
     }
 
     public List<Long> getRoleForContestTeam(Long contestId, Long roleId) {
@@ -77,15 +95,10 @@ public class ContestTeamMemberClient {
     public Map<Long, List<Long>> getContestTeamMembersByRole(Long contestId) {
         Map<Long, List<Long>> teamRoleToUsersMap = new TreeMap<>();
         for (ContestTeamMember ctm : getTeamMembers(contestId)) {
-            List<Long> roleUsers = teamRoleToUsersMap.get(ctm.getRoleId());
-
-            if (roleUsers == null) {
-                roleUsers = new ArrayList<>();
-                teamRoleToUsersMap.put(ctm.getRoleId(), roleUsers);
-            }
+            List<Long> roleUsers =
+                    teamRoleToUsersMap.computeIfAbsent(ctm.getRoleId(), k -> new ArrayList<>());
 
             roleUsers.add(ctm.getUserId());
-
         }
         return teamRoleToUsersMap;
     }
@@ -93,21 +106,7 @@ public class ContestTeamMemberClient {
     public List<ContestTeamMember> getTeamMembers(Long contestId) {
         return DtoUtil.toPojos(contestTeamMemberResource.list()
                 .optionalQueryParam("contestId", contestId)
+                .withCache(CacheName.CONTEST_DETAILS)
                 .execute(), contestService);
-    }
-
-    public List<Long> getJudgesForContest(Long contestId) {
-        return getRoleForContestTeam(contestId, MemberRole.JUDGE.getRoleId());
-    }
-
-    public List<Long> getFellowsForContest(Long contestId) {
-        return getRoleForContestTeam(contestId, MemberRole.FELLOW.getRoleId());
-    }
-
-    public List<Long> getContestManagersForContest(Long contestId) {
-        return getRoleForContestTeam(contestId, MemberRole.CONTEST_MANAGER.getRoleId());
-    }
-    public List<Long> getIAFellowsForContest(Long contestId) {
-        return getRoleForContestTeam(contestId, MemberRole.IMPACT_ASSESSMENT_FELLOW.getRoleId());
     }
 }

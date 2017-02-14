@@ -86,7 +86,7 @@ public class ProposalContextHelper {
         Contest localContest = null;
         if (StringUtils.isNotBlank(givenContestUrlName) && givenContestYear > 0) {
             localContest = ContestClientUtil
-                    .getContestByContestUrlNameContestYear(givenContestUrlName, givenContestYear);
+                    .getContest(givenContestUrlName, givenContestYear);
         } else if (givenContestId > 0) {
             try {
                 localContest = ContestClientUtil.getContest(givenContestId);

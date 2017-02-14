@@ -86,12 +86,8 @@ public final class ProposalClient {
     }
 
     public static ProposalClient fromService(RestService proposalService) {
-        ProposalClient instance = instances.get(proposalService);
-        if (instance == null) {
-            instance = new ProposalClient(proposalService);
-            instances.put(proposalService, instance);
-        }
-        return instance;
+        return instances
+                .computeIfAbsent(proposalService, k -> new ProposalClient(proposalService));
     }
 
     public Proposal createProposal(Proposal proposal) {

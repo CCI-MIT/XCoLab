@@ -72,6 +72,9 @@ public class WikiController {
 
         final Contest contest = ContestClientUtil.getContest(contestUrlName, contestYear);
 
+        if (contest == null) {
+            return ErrorText.NOT_FOUND.flashAndReturnView(request);
+        }
         try {
             if (contest.getResourceArticleId() > 0) {
                 final ContentArticle contentArticle = ContentsClient

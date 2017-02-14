@@ -2,11 +2,16 @@ package org.xcolab.util.http.caching;
 
 public enum CacheName {
     NONE(0, null),
-    MISC_REQUEST(600L, CacheDuration.REQUEST),
-    MISC_SHORT(200L, CacheDuration.SHORT),
-    MISC_MEDIUM(400L, CacheDuration.MEDIUM),
-    MISC_LONG(200L, CacheDuration.LONG),
-    MISC_RUNTIME(50L, CacheDuration.RUNTIME)
+    MISC_REQUEST(500L, CacheDuration.REQUEST),
+    MISC_SHORT(100L, CacheDuration.SHORT),
+    MISC_MEDIUM(200L, CacheDuration.MEDIUM),
+    MISC_LONG(100L, CacheDuration.LONG),
+    MISC_RUNTIME(50L, CacheDuration.RUNTIME),
+
+    CONTEST_DETAILS(100L, CacheDuration.DAILY),
+    CONTEST_LIST(100L, CacheDuration.DAILY),
+    CONTEST_ONTOLOGY(50L, CacheDuration.DAILY),
+    CONFIGURATION(50L, CacheDuration.DAILY),
     ;
 
     private final long numberOfEntries;

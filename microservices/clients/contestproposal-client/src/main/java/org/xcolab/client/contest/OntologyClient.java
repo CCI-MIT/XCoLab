@@ -12,6 +12,8 @@ import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologySpaceDto;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.contest.pojo.ontology.OntologyTermDto;
+import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.dto.DtoUtil;
@@ -60,37 +62,40 @@ public class OntologyClient {
     }
 
     public static OntologyClient fromService(RestService contestService) {
-        OntologyClient client = instances.get(contestService);
-        if (client == null) {
-            client = new OntologyClient(contestService);
-            instances.put(contestService, client);
-        }
-        return client;
+        return instances.computeIfAbsent(contestService, k -> new OntologyClient(contestService));
     }
 
     public List<OntologySpace> getAllOntologySpaces() {
-        return DtoUtil.toPojos(ontologySpaceResource.list().execute(), contestService);
+        return DtoUtil.toPojos(ontologySpaceResource.list()
+                .withCache(CacheName.CONTEST_ONTOLOGY)
+                .execute(), contestService);
     }
 
     public List<OntologyTerm> getAllOntologyTerms() {
         return DtoUtil.toPojos(ontologyTermResource.list()
+                .withCache(CacheName.CONTEST_ONTOLOGY)
                 .execute(), contestService);
     }
     public List<OntologyTerm> getOntologyTerms(Long parentId, Long ontologySpaceId) {
         return DtoUtil.toPojos(ontologyTermResource.list()
                 .queryParam("parentId", parentId)
                 .queryParam("ontologySpaceId",ontologySpaceId)
+                .withCache(CacheName.CONTEST_ONTOLOGY)
                 .execute(), contestService);
     }
 
     public List<FocusArea> getAllFocusAreas() {
         return DtoUtil.toPojos(focusAreaResource.list()
+                .withCache(CacheName.CONTEST_ONTOLOGY)
                 .execute(), contestService);
     }
 
     public FocusArea createFocusArea(FocusArea focusArea) {
-        return focusAreaResource.create(new FocusAreaDto(focusArea))
+        final FocusArea result = focusAreaResource.create(new FocusAreaDto(focusArea))
                 .execute().toPojo(contestService);
+        //TODO: fine-grained cache removal
+        ServiceRequestUtils.clearCache(CacheName.CONTEST_ONTOLOGY);
+        return result;
     }
 
     public void addOntologyTermsToFocusAreaByOntologyTermId(Long focusAreaId, Long ontologyTermId) {
@@ -104,6 +109,7 @@ public class OntologyClient {
 
     public List<FocusAreaOntologyTerm> getAllFocusAreaOntologyTerms() {
         return DtoUtil.toPojos(focusAreaOntologyTermResource.list()
+                .withCache(CacheName.CONTEST_ONTOLOGY)
                 .execute(), contestService);
     }
 
@@ -117,27 +123,39 @@ public class OntologyClient {
     public OntologyTerm getOntologyTerm(long Id_) {
          try {
              return ontologyTermResource.get(Id_)
-                    .executeChecked().toPojo(contestService);
-
-        }catch (EntityNotFoundException ignored){
+                     .withCache(CacheName.CONTEST_ONTOLOGY)
+                     .executeChecked().toPojo(contestService);
+         } catch (EntityNotFoundException ignored) {
              return null;
          }
     }
 
     public OntologyTerm createOntologyTerm(OntologyTerm ontologyTerm) {
-        return ontologyTermResource.create(new OntologyTermDto(ontologyTerm)).execute().toPojo(contestService);
+        final OntologyTerm result =
+                ontologyTermResource.create(new OntologyTermDto(ontologyTerm))
+                        .execute().toPojo(contestService);
+        //TODO: fine-grained cache removal
+        ServiceRequestUtils.clearCache(CacheName.CONTEST_ONTOLOGY);
+        return result;
     }
 
-
-
-
     public boolean updateOntologyTerm(OntologyTerm ontologyTerm) {
-        return ontologyTermResource.update(new OntologyTermDto(ontologyTerm), ontologyTerm.getId_())
+        final Boolean result = ontologyTermResource
+                .update(new OntologyTermDto(ontologyTerm), ontologyTerm.getId_())
+                .cacheName(CacheName.CONTEST_ONTOLOGY)
                 .execute();
+        //TODO: fine-grained cache removal
+        ServiceRequestUtils.clearCache(CacheName.CONTEST_ONTOLOGY);
+        return result;
     }
 
     public boolean deleteOntologyTerm(Long id_) {
-        return  ontologyTermResource.delete(id_).execute();
+        final Boolean result = ontologyTermResource.delete(id_)
+                .cacheName(CacheName.CONTEST_ONTOLOGY)
+                .execute();
+        //TODO: fine-grained cache removal
+        ServiceRequestUtils.clearCache(CacheName.CONTEST_ONTOLOGY);
+        return result;
     }
 
 

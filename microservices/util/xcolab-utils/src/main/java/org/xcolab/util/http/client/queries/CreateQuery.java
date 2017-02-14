@@ -38,6 +38,4 @@ public class CreateQuery<ElementT> implements Query<ElementT, ElementT> {
         uriBuilder.optionalQueryParam(name, value);
         return this;
     }
-
-
 }

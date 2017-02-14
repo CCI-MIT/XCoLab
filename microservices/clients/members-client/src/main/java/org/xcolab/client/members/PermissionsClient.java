@@ -4,7 +4,6 @@ import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Role_;
 import org.xcolab.util.clients.CoLabService;
-import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
@@ -63,9 +62,7 @@ public final class PermissionsClient {
         //TODO: think about structure
         return roleGroupRoleResource.resolveParent(roleGroupResource.id(roleGroupId))
                 .list()
-                .withCache(CacheKeys.withClass(Role_.class)
-                                .withParameter("roleGroupId", roleGroupId).asList(),
-                        CacheName.MISC_RUNTIME)
+                .withCache(CacheName.CONFIGURATION)
                 .execute();
     }
 

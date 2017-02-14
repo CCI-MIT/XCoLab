@@ -40,11 +40,8 @@ public final class ProposalMemberRatingClient {
     }
 
     public static ProposalMemberRatingClient fromService(RestService proposalService) {
-        ProposalMemberRatingClient instance = instances.get(proposalService);
-        if (instance == null) {
-            instance = new ProposalMemberRatingClient(proposalService);
-            instances.put(proposalService, instance);
-        }
+        ProposalMemberRatingClient instance = instances.computeIfAbsent(proposalService,
+                k -> new ProposalMemberRatingClient(proposalService));
         return instance;
     }
 
@@ -65,14 +62,12 @@ public final class ProposalMemberRatingClient {
     }
 
     public Integer getProposalSupportersCount(Long proposalId) {
-
         return proposalSupporterResource.service("count", Integer.class)
                 .optionalQueryParam("proposalId", proposalId)
                 .get();
     }
 
     public Boolean isMemberProposalSupporter(Long proposalId, Long memberId) {
-
         return proposalSupporterResource.service("isMemberProposalSupporter", Boolean.class)
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("memberId", memberId)
