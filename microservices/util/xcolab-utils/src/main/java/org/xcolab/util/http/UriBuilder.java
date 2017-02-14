@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
 public class UriBuilder {
 
     private final UriComponentsBuilder uriComponentsBuilder;
-    private final Map<String, Object> parameters = new TreeMap<>();
+    private final Map<String, Object> sortedParameters = new TreeMap<>();
+    private final StringBuilder pathBuilder = new StringBuilder();
 
     public UriBuilder(UriComponentsBuilder uriComponentsBuilder) {
         this.uriComponentsBuilder = uriComponentsBuilder;
@@ -24,35 +25,33 @@ public class UriBuilder {
 
     public UriBuilder path(String path) {
         uriComponentsBuilder.path(path);
+        pathBuilder.append(path);
         return this;
     }
 
     public UriBuilder resource(String resourceName) {
-        uriComponentsBuilder.path("/" + resourceName);
-        return this;
+        return path("/" + resourceName);
     }
 
     public UriBuilder resource(String resourceName, Object id) {
         Assert.notNull(id, "id cannot be null");
-        uriComponentsBuilder.path("/" + resourceName + "/" + id.toString());
-        return this;
+        return path("/" + resourceName + "/" + id.toString());
     }
 
     public UriBuilder addRange(int startRecord, int limitRecord) {
         queryParam("startRecord", startRecord);
-        queryParam("limitRecord", limitRecord);
-        return this;
+        return queryParam("limitRecord", limitRecord);
     }
 
     public UriBuilder queryParam(String parameterName, Object parameter) {
         uriComponentsBuilder.queryParam(parameterName, parameter);
-        parameters.put(parameterName, parameter);
+        sortedParameters.put(parameterName, parameter);
         return this;
     }
 
     public UriBuilder queryParam(String parameterName, Object... parameter) {
         uriComponentsBuilder.queryParam(parameterName, parameter);
-        parameters.put(parameterName, parameter);
+        sortedParameters.put(parameterName, parameter);
         return this;
     }
 
@@ -63,10 +62,14 @@ public class UriBuilder {
         return this;
     }
 
+    public String getPathString() {
+        return pathBuilder.toString();
+    }
+
     public String getParameterString() {
-        return parameters.entrySet().stream()
+        return sortedParameters.entrySet().stream()
                 .map(entry -> entry.getKey() + "=" + entry.getValue().toString())
-                .collect(Collectors.joining());
+                .collect(Collectors.joining("&"));
     }
 
     private boolean isNotBlankString(Object potentialString) {

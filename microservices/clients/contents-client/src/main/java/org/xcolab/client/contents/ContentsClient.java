@@ -6,7 +6,7 @@ import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
 import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.util.clients.CoLabService;
-import org.xcolab.util.http.caching.CacheKeys;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
@@ -35,6 +35,7 @@ public final class ContentsClient {
     public static List<ContentArticle> getContentArticles(Long folderId) {
         return contentArticleResource.list()
                 .optionalQueryParam("folderId", folderId)
+                .withCache(CacheName.CONTENT)
                 .execute();
     }
 
@@ -44,10 +45,7 @@ public final class ContentsClient {
                 .queryParam("folderId", folderId)
                 .queryParam("title", title)
                 .queryParam("sort", "-contentArticleVersion")
-                .withCache(CacheKeys.withClass(ContentArticleVersion.class)
-                        .withParameter("folderId", folderId)
-                        .withParameter("title", title).asSingletonList("latest"),
-                        CacheName.MISC_REQUEST)
+                .withCache(CacheName.CONTENT)
                 .executeWithResult().getFirstIfExists();
         if (contentArticleVersion == null) {
             throw new ContentNotFoundException("No ContentArticleVersion with title " + title
@@ -61,9 +59,7 @@ public final class ContentsClient {
         final ContentArticleVersion contentArticleVersion = contentArticleVersionResource.list()
                 .queryParam("contentArticleId", articleId)
                 .queryParam("sort", "-contentArticleVersion")
-                .withCache(CacheKeys.withClass(ContentArticleVersion.class)
-                        .withParameter("articleId", articleId).asSingletonList("latest"),
-                        CacheName.MISC_REQUEST)
+                .withCache(CacheName.CONTENT)
                 .executeWithResult().getFirstIfExists();
         if (contentArticleVersion == null) {
             throw new ContentNotFoundException(
@@ -82,6 +78,7 @@ public final class ContentsClient {
                 .optionalQueryParam("folderId", folderId)
                 .optionalQueryParam("contentArticleVersion", contentArticleVersion)
                 .optionalQueryParam("title", title)
+                .withCache(CacheName.CONTENT)
                 .execute();
     }
 
@@ -92,13 +89,16 @@ public final class ContentsClient {
     public static List<ContentFolder> getContentFolders(Long parentFolderId) {
         return contentFolderResource.list()
                 .queryParam("parentFolderId", parentFolderId)
+                .withCache(CacheName.CONTENT)
                 .execute();
     }
 
     public static ContentArticle getContentArticle(Long contentArticleId)
             throws ContentNotFoundException {
         try {
-            return contentArticleResource.get(contentArticleId).executeChecked();
+            return contentArticleResource.get(contentArticleId)
+                    .withCache(CacheName.CONTENT)
+                    .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ContentNotFoundException(
                     "ContentArticle " + contentArticleId + " does not exist");
@@ -106,18 +106,29 @@ public final class ContentsClient {
     }
 
     public static ContentArticle createContentArticle(ContentArticle contentArticle) {
-        return contentArticleResource.create(contentArticle).execute();
+        final ContentArticle result = contentArticleResource.create(contentArticle)
+                .execute();
+        //TODO: fine-grained cache control
+        ServiceRequestUtils.clearCache(CacheName.CONTENT);
+        return result;
     }
 
     public static boolean updateContentArticle(ContentArticle contentArticle) {
-        return contentArticleResource.update(contentArticle, contentArticle.getContentArticleId())
-                .execute();
+        final Boolean result =
+                contentArticleResource.update(contentArticle, contentArticle.getContentArticleId())
+                        .cacheName(CacheName.CONTENT)
+                        .execute();
+        //TODO: fine-grained cache control
+        ServiceRequestUtils.clearCache(CacheName.CONTENT);
+        return result;
     }
 
     public static ContentArticleVersion getContentArticleVersion(Long contentArticleVersionId)
             throws ContentNotFoundException {
         try {
-            return contentArticleVersionResource.get(contentArticleVersionId).executeChecked();
+            return contentArticleVersionResource.get(contentArticleVersionId)
+                    .withCache(CacheName.CONTENT)
+                    .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ContentNotFoundException(
                     "ContentArticleVersion " + contentArticleVersionId + " does not exist");
@@ -126,19 +137,29 @@ public final class ContentsClient {
 
     public static ContentArticleVersion createContentArticleVersion(
             ContentArticleVersion contentArticleVersion) {
-        return contentArticleVersionResource.create(contentArticleVersion).execute();
+        final ContentArticleVersion result =
+                contentArticleVersionResource.create(contentArticleVersion).execute();
+        //TODO: fine-grained cache control
+        ServiceRequestUtils.clearCache(CacheName.CONTENT);
+        return result;
     }
 
     public static boolean updateContentArticleVersion(ContentArticleVersion contentArticleVersion) {
-        return contentArticleVersionResource
+        final Boolean result = contentArticleVersionResource
                 .update(contentArticleVersion, contentArticleVersion.getContentArticleVersionId())
+                .cacheName(CacheName.CONTENT)
                 .execute();
+        //TODO: fine-grained cache control
+        ServiceRequestUtils.clearCache(CacheName.CONTENT);
+        return result;
     }
 
     public static ContentFolder getContentFolder(long contentFolderId)
             throws ContentNotFoundException {
         try {
-            return contentFolderResource.get(contentFolderId).executeChecked();
+            return contentFolderResource.get(contentFolderId)
+                    .withCache(CacheName.CONTENT)
+                    .executeChecked();
         } catch (EntityNotFoundException e) {
             throw new ContentNotFoundException(
                     "ContentFolder " + contentFolderId + " does not exist");
@@ -146,24 +167,34 @@ public final class ContentsClient {
     }
 
     public static ContentFolder createContentFolder(ContentFolder contentFolder) {
-        return contentFolderResource.create(contentFolder).execute();
+        final ContentFolder result = contentFolderResource.create(contentFolder).execute();
+        //TODO: fine-grained cache control
+        ServiceRequestUtils.clearCache(CacheName.CONTENT);
+        return result;
     }
 
     public static boolean updateContentFolder(ContentFolder contentFolder) {
-        return contentFolderResource.update(contentFolder, contentFolder.getContentFolderId())
-                .execute();
+        final Boolean result =
+                contentFolderResource.update(contentFolder, contentFolder.getContentFolderId())
+                        .cacheName(CacheName.CONTENT)
+                        .execute();
+        //TODO: fine-grained cache control
+        ServiceRequestUtils.clearCache(CacheName.CONTENT);
+        return result;
     }
 
     public static List<ContentArticleVersion> getChildArticleVersions(long folderId) {
         return contentFolderResource
                 .nestedResource(folderId, "contentArticleVersions", ContentArticleVersion.TYPES)
                 .list()
+                .withCache(CacheName.CONTENT)
                 .execute();
     }
 
     public static ContentPage getContentPage(String title) {
         final ContentPage page = contentPageResource.list()
                 .queryParam("title", title)
+                .withCache(CacheName.CONTENT)
                 .executeWithResult()
                 .getOneIfExists();
         if (page == null) {

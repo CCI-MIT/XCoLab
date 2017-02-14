@@ -12,6 +12,7 @@ public enum CacheName {
     CONTEST_LIST(100L, CacheDuration.DAILY),
     CONTEST_ONTOLOGY(50L, CacheDuration.DAILY),
     CONFIGURATION(50L, CacheDuration.DAILY),
+    CONTENT(50L, CacheDuration.DAILY)
     ;
 
     private final long numberOfEntries;
