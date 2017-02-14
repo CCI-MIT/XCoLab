@@ -93,7 +93,7 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
         if (cacheKey == null) {
             return ServiceRequestUtils.get(uriBuilder, returnType);
         } else {
-            return ServiceRequestUtils.get(uriBuilder, returnType, cacheKey, CacheName.MISC_REQUEST);
+            return ServiceRequestUtils.get(uriBuilder, returnType, cacheKey, cacheName);
         }
     }
 
@@ -135,6 +135,12 @@ public class ServiceQuery<T, R> implements CacheableQuery<T, R> {
         this.cacheKey = cacheKey;
         this.cacheName = cacheName;
         return this;
+    }
+
+    @Override
+    public Query<T, R> withCache(CacheName cacheName) {
+        throw new UnsupportedOperationException(
+                "Service queries don't support caching without explicit keys");
     }
 
     @Override

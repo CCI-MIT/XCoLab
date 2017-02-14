@@ -6,6 +6,7 @@ import org.springframework.util.CollectionUtils;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.caching.CacheKey;
+import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 
@@ -13,21 +14,28 @@ import java.util.List;
 
 public class ListQuery<T> implements CacheableQuery<T, List<T>> {
     private final UriBuilder uriBuilder;
+    private final Class<T> entityType;
     private final ParameterizedTypeReference<List<T>> typeReference;
     private CacheKey<T, List<T>> cacheKey;
     private CacheName cacheName;
 
-    public ListQuery(RestResource<T, ?> restResource,
+    public ListQuery(RestResource<T, ?> restResource, Class<T> entityType,
             ParameterizedTypeReference<List<T>> typeReference) {
+        this.entityType = entityType;
         this.typeReference = typeReference;
         this.uriBuilder = restResource.getResourceUrl();
     }
 
     @Override
     public List<T> execute() {
-        if (cacheKey == null) {
+        if (cacheName == null) {
             return ServiceRequestUtils.getList(uriBuilder, typeReference);
         } else {
+            if (cacheKey == null) {
+                cacheKey = CacheKeys.withClass(entityType)
+                        .withParameter("list-url", uriBuilder.getParameterString())
+                        .asList();
+            }
             return ServiceRequestUtils.getList(uriBuilder, typeReference, cacheKey, cacheName);
         }
     }
@@ -45,6 +53,12 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
     @Override
     public ListQuery<T> withCache(CacheKey<T, List<T>> cacheKey, CacheName cacheName) {
         this.cacheKey = cacheKey;
+        this.cacheName = cacheName;
+        return this;
+    }
+
+    @Override
+    public ListQuery<T> withCache(CacheName cacheName) {
         this.cacheName = cacheName;
         return this;
     }

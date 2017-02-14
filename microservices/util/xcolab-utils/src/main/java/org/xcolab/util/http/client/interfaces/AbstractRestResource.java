@@ -32,12 +32,12 @@ public abstract class AbstractRestResource<ResourceT, IdT>
 
     @Override
     public DeleteQuery<ResourceT, IdT> delete(IdT id) {
-        return new DeleteQuery<>(this, id);
+        return new DeleteQuery<>(this, entityType, id);
     }
 
     @Override
     public UpdateQuery<ResourceT, IdT> update(ResourceT pojo, IdT id) {
-        return new UpdateQuery<>(this, id, pojo);
+        return new UpdateQuery<>(this, entityType, id, pojo);
     }
 
     @Override
@@ -47,12 +47,12 @@ public abstract class AbstractRestResource<ResourceT, IdT>
 
     @Override
     public ListQuery<ResourceT> list() {
-        return new ListQuery<>(this, typeReference);
+        return new ListQuery<>(this, entityType, typeReference);
     }
 
     @Override
     public CountQuery<ResourceT> count() {
-        return new CountQuery<>(this);
+        return new CountQuery<>(this, entityType);
     }
 
     @Override

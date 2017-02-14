@@ -1,5 +1,7 @@
 package org.xcolab.util.http.caching;
 
+import org.springframework.util.Assert;
+
 import org.xcolab.util.http.caching.CacheKey.Builder;
 
 import java.util.Collections;
@@ -29,9 +31,15 @@ public final class CacheKeys {
     }
 
     public static <T> CacheKey<T, T> of(Class<T> elementType, String stringId) {
+        Assert.notNull(stringId, "stringId cannot be null");
         final HashMap<String, String> parameters = new HashMap<>();
         parameters.put("id", stringId);
         return new CacheKey<>(elementType, parameters);
+    }
+
+    public static <T> CacheKey<T, T> of(Class<T> elementType, Object objectId) {
+        Assert.notNull(objectId, "objectId cannot be null");
+        return of(elementType, objectId.toString());
     }
 
     private static class EmptyCacheKey extends CacheKey<Void, Void> {

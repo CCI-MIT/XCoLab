@@ -127,18 +127,18 @@ public class RequestHelper {
     }
 
     public boolean put(UriBuilder uriBuilder) {
-        return put(uriBuilder, null, null);
+        return put(uriBuilder, null, null, null);
     }
 
     public <T> boolean put(UriBuilder uriBuilder, T entity) {
-        return put(uriBuilder, entity, null);
+        return put(uriBuilder, entity, null, null);
     }
 
-    public <T> boolean put(UriBuilder uriBuilder, T entity, CacheKey<T, T> cacheKey) {
+    public <T> boolean put(UriBuilder uriBuilder, T entity, CacheKey<T, T> cacheKey, CacheName cacheName) {
 
         final boolean cacheActive = isCacheActive() && cacheProvider.isActive() && cacheKey != null;
         if (cacheActive) {
-            cacheProvider.replace(cacheKey, CacheName.MISC_REQUEST, entity);
+            cacheProvider.replace(cacheKey, cacheName, entity);
         }
 
         HttpEntity<T> httpEntity = new HttpEntity<>(entity);
@@ -151,6 +151,16 @@ public class RequestHelper {
         restTemplate.exchange(uriBuilder.buildString(), HttpMethod.DELETE, null, Void.class);
         return true;
     }
+
+    public <T> boolean delete(UriBuilder uriBuilder, CacheKey<T, T> cacheKey, CacheName cacheName) {
+        restTemplate.exchange(uriBuilder.buildString(), HttpMethod.DELETE, null, Void.class);
+        final boolean cacheActive = isCacheActive() && cacheProvider.isActive() && cacheKey != null;
+        if (cacheActive) {
+            cacheProvider.delete(cacheKey, cacheName);
+        }
+        return true;
+    }
+
 
     public <T> T post(UriBuilder uriBuilder, Object entity, Class<T> returnType) {
         return restTemplate.postForObject(uriBuilder.buildString(), entity, returnType);

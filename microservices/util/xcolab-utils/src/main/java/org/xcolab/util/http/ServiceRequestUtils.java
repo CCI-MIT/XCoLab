@@ -88,12 +88,16 @@ public final class ServiceRequestUtils {
     }
 
     public static <T> boolean put(UriBuilder uriBuilder, T entity,
-            CacheKey<T, T> cacheKey) {
-        return requestHelper.put(uriBuilder, entity, cacheKey);
+            CacheKey<T, T> cacheKey, CacheName cacheName) {
+        return requestHelper.put(uriBuilder, entity, cacheKey, cacheName);
     }
 
     public static boolean delete(UriBuilder uriBuilder) {
         return requestHelper.delete(uriBuilder);
+    }
+
+    public static <T> boolean delete(UriBuilder uriBuilder, CacheKey<T, T> cacheKey, CacheName cacheName) {
+        return requestHelper.delete(uriBuilder, cacheKey, cacheName);
     }
 
     public static <T> T post(UriBuilder uriBuilder, Object entity, Class<T> returnType) {
