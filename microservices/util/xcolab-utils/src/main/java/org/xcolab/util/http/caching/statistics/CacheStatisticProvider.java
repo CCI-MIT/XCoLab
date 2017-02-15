@@ -7,7 +7,6 @@ import org.ehcache.event.EventOrdering;
 import org.ehcache.event.EventType;
 import org.springframework.util.Assert;
 
-import org.xcolab.util.http.caching.CacheProviderEhcacheImpl;
 import org.xcolab.util.metrics.MetricsUtil;
 
 import java.util.HashMap;
@@ -20,7 +19,6 @@ public class CacheStatisticProvider {
     private final Map<MeterMapKey, Meter> hitMeters = new HashMap<>();
     private final Map<MeterMapKey, Meter> missMeters = new HashMap<>();
 
-    private final String identityName = MetricsUtil.getUniqueInstanceIdentifier(this);
 
     public CacheStatisticProvider() {
     }
@@ -28,7 +26,7 @@ public class CacheStatisticProvider {
     public void initializeMeters(String cacheName, Cache<String, Object> cache) {
         if (cache != null) {
             cache.getRuntimeConfiguration()
-                    .registerCacheEventListener(new StatisticsCacheEventAdapter(identityName, cacheName),
+                    .registerCacheEventListener(new StatisticsCacheEventAdapter(cacheName),
                             EventOrdering.UNORDERED, EventFiring.ASYNCHRONOUS,
                             EventType.EVICTED, EventType.EXPIRED, EventType.CREATED);
         }
@@ -37,15 +35,13 @@ public class CacheStatisticProvider {
     private Meter getHitMeter(String cacheName, Class<?> cachedClass) {
         MeterMapKey key = new MeterMapKey(cacheName, cachedClass);
         return hitMeters.computeIfAbsent(key,
-                k -> MetricsUtil.REGISTRY.meter(name(CacheProviderEhcacheImpl.class,
-                        identityName, cacheName, cachedClass != null ? cachedClass.getSimpleName() : "stats", "cache-hits")));
+                k -> MetricsUtil.REGISTRY.meter(name("cache", cacheName, cachedClass != null ? cachedClass.getSimpleName() : "stats", "cache-hits")));
     }
 
     private Meter getMissMeter(String cacheName, Class<?> cachedClass) {
         MeterMapKey key = new MeterMapKey(cacheName, cachedClass);
         return missMeters.computeIfAbsent(key,
-                k -> MetricsUtil.REGISTRY.meter(name(CacheProviderEhcacheImpl.class,
-                        identityName, cacheName, cachedClass != null ? cachedClass.getSimpleName() : "stats", "cache-misses")));
+                k -> MetricsUtil.REGISTRY.meter(name("cache", cacheName, cachedClass != null ? cachedClass.getSimpleName() : "stats", "cache-misses")));
     }
 
     public void recordCacheEvent(String cacheName, Class<?> cachedClass, CacheEvent cacheEvent) {

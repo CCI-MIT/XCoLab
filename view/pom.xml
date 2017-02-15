@@ -41,6 +41,7 @@
 
         <!-- Monitoring -->
         <metrics.version>3.1.2</metrics.version>
+        <metrics-librato.version>5.0.5</metrics-librato.version>
 
         <!-- Misc -->
         <jsoup.version>1.10.2</jsoup.version>
@@ -246,6 +247,12 @@
         <dependency>
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-core</artifactId>
+            <version>${metrics.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.librato.metrics</groupId>
+            <artifactId>metrics-librato</artifactId>
+            <version>${metrics-librato.version}</version>
         </dependency>
     </dependencies>
 
