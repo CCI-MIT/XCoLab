@@ -28,7 +28,8 @@ public class CacheStatisticProvider {
             cache.getRuntimeConfiguration()
                     .registerCacheEventListener(new StatisticsCacheEventAdapter(cacheName),
                             EventOrdering.UNORDERED, EventFiring.ASYNCHRONOUS,
-                            EventType.EVICTED, EventType.EXPIRED, EventType.CREATED);
+                            EventType.EVICTED, EventType.EXPIRED, EventType.CREATED,
+                            EventType.REMOVED);
         }
     }
 

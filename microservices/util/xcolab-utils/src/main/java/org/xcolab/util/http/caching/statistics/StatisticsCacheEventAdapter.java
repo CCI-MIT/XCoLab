@@ -39,6 +39,11 @@ public class StatisticsCacheEventAdapter extends CacheEventAdapter<String, Objec
         getSizeCounter().inc();
     }
 
+    @Override
+    protected void onRemoval(String key, Object removedValue) {
+        getSizeCounter().dec();
+    }
+
     private Meter getEvictionMeter() {
         if (evictionMeter == null) {
             evictionMeter = MetricsUtil.REGISTRY.meter(
