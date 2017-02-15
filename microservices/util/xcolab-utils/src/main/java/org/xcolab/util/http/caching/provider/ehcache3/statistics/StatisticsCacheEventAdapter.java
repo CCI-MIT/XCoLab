@@ -1,4 +1,4 @@
-package org.xcolab.util.http.caching.statistics;
+package org.xcolab.util.http.caching.provider.ehcache3.statistics;
 
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.Meter;

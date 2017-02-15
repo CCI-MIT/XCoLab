@@ -13,8 +13,8 @@ import org.springframework.web.client.RestTemplate;
 
 import org.xcolab.util.functions.Supplier;
 import org.xcolab.util.http.caching.CacheKey;
-import org.xcolab.util.http.caching.CacheProvider;
-import org.xcolab.util.http.caching.CacheProviderNoOpImpl;
+import org.xcolab.util.http.caching.provider.CacheProvider;
+import org.xcolab.util.http.caching.provider.CacheProviderNoOpImpl;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
