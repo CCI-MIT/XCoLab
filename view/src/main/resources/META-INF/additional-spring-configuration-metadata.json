@@ -9,6 +9,21 @@
       "name": "tomcat.ajp.port",
       "type": "java.lang.Integer",
       "description": "Port for AJP connector."
+    },
+    {
+      "name": "metrics.reporting.librato.enabled",
+      "type": "java.lang.String",
+      "description": "Enable the Librato metric reporter."
+    },
+    {
+      "name": "metrics.reporting.librato.email",
+      "type": "java.lang.String",
+      "description": "Email for Librato metric reporter."
+    },
+    {
+      "name": "metrics.reporting.librato.api-token",
+      "type": "java.lang.String",
+      "description": "API token to the Librato metric reporter."
     }
   ]
 }

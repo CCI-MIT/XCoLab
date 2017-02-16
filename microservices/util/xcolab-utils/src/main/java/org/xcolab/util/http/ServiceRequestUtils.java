@@ -3,8 +3,8 @@ package org.xcolab.util.http;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.util.http.caching.CacheKey;
-import org.xcolab.util.http.caching.CacheProvider;
-import org.xcolab.util.http.caching.CacheProviderEhcacheImpl;
+import org.xcolab.util.http.caching.provider.CacheProvider;
+import org.xcolab.util.http.caching.provider.ehcache3.CacheProviderEhcacheImpl;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.util.http.exceptions.translation.TranslationErrorHandler;

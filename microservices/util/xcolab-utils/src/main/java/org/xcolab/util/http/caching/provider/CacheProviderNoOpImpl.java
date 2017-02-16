@@ -1,4 +1,7 @@
-package org.xcolab.util.http.caching;
+package org.xcolab.util.http.caching.provider;
+
+import org.xcolab.util.http.caching.CacheKey;
+import org.xcolab.util.http.caching.CacheName;
 
 public class CacheProviderNoOpImpl implements CacheProvider {
 

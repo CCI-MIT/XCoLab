@@ -1,4 +1,4 @@
-package org.xcolab.util.http.caching;
+package org.xcolab.util.http.caching.provider.ehcache3;
 
 import org.ehcache.Cache;
 import org.ehcache.CacheManager;
@@ -15,8 +15,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 
-import org.xcolab.util.http.caching.statistics.CacheStatisticProvider;
-import org.xcolab.util.http.caching.statistics.CacheStatisticProvider.CacheEvent;
+import org.xcolab.util.http.caching.CacheDuration;
+import org.xcolab.util.http.caching.CacheKey;
+import org.xcolab.util.http.caching.CacheName;
+import org.xcolab.util.http.caching.provider.CacheProvider;
+import org.xcolab.util.http.caching.provider.ehcache3.statistics.CacheStatisticProvider;
+import org.xcolab.util.http.caching.provider.ehcache3.statistics.CacheStatisticProvider.CacheEvent;
 
 import static org.ehcache.config.builders.CacheConfigurationBuilder.newCacheConfigurationBuilder;
 import static org.ehcache.config.builders.CacheManagerBuilder.newCacheManagerBuilder;
@@ -32,7 +36,7 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
     public CacheProviderEhcacheImpl() {
         CacheManager newCacheManager;
         try {
-            CacheManagerBuilder<CacheManager> cacheManagerBuilder = newCacheManagerBuilder();
+            CacheManagerBuilder<? extends CacheManager> cacheManagerBuilder = newCacheManagerBuilder();
             cacheManagerBuilder = configureCaches(cacheManagerBuilder);
             newCacheManager = cacheManagerBuilder.build(true);
         } catch (RuntimeException e) {
@@ -48,7 +52,8 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
         }
     }
 
-    private CacheManagerBuilder<CacheManager> configureCaches(CacheManagerBuilder<CacheManager> cacheManagerBuilder) {
+    private CacheManagerBuilder<? extends CacheManager> configureCaches(
+                CacheManagerBuilder<? extends CacheManager> cacheManagerBuilder) {
         for (CacheName cacheName : CacheName.values()) {
             if (cacheName != CacheName.NONE) {
                 if (cacheName.getDuration() == CacheDuration.RUNTIME) {
@@ -72,7 +77,9 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
     private CacheConfigurationBuilder<String, Object> getConfigBuilder(
             CacheName cacheName) {
         return newCacheConfigurationBuilder(String.class, Object.class,
-                ResourcePoolsBuilder.heap(cacheName.getNumberOfEntries()));
+                ResourcePoolsBuilder
+                        .heap(cacheName.getNumberOfEntries())
+        );
     }
 
     private Cache<String, Object> getCache(CacheName cacheName) {
