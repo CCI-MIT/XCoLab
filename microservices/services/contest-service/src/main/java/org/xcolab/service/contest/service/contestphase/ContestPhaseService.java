@@ -6,6 +6,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -15,6 +19,8 @@ import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
+import org.xcolab.entity.utils.email.notifications.contest.ContestVoteQuestionNotification;
+import org.xcolab.entity.utils.email.notifications.proposal.ContestVoteNotification;
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.service.contest.domain.contest.ContestDao;
@@ -114,25 +120,21 @@ public class ContestPhaseService {
                 continue;
             }
 
-            /*
+
             // Directly transfer the support to a vote
             try {
                 Member member = MembersClient.getMember(user.getUserId());
                 if (proposals.size() == 1) {
-                    voteForProposal(user.getUserId(), proposals.get(0).getProposalId(), lastOrActivePhase.getContestPhasePK());
-                    try{
-                        org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
-                        new ContestVoteNotification(member, contestMicro, proposals.get(0), serviceContext).sendMessage();
-                    }catch (ContestNotFoundException ignored){
+                    ProposalMemberRatingClientUtil.addProposalVote(proposals.get(0).getProposalId(),lastOrActivePhase.getContestPhasePK(),user.getUserId());
 
-                    }
-
+                    org.xcolab.client.contest.pojo.Contest c = ContestClientUtil.getContest(contest.getContestPK());//THIS LOOKS UGLY as HELL
+                    new ContestVoteNotification(member, c, proposals.get(0), ConfigurationAttributeKey.COLAB_URL.get()).sendMessage();
                 }
                 // Send a notification to the user
                 else {
                     try {
-                        org.xcolab.client.contest.pojo.Contest contestMicro = ContestClient.getContest(contest.getContestPK());
-                        new ContestVoteQuestionNotification(member, contestMicro, proposals, serviceContext).sendMessage();
+                        org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());//THIS LOOKS UGLY as HELL
+                        new ContestVoteQuestionNotification(member, contestMicro, proposals,ConfigurationAttributeKey.COLAB_URL.get() ).sendMessage();
                     }catch (ContestNotFoundException ignored){
 
                     }
@@ -140,7 +142,7 @@ public class ContestPhaseService {
             } catch (MemberNotFoundException e) {
                 //ignore, we know it exists
             }
-            */
+
 
         }
     }
