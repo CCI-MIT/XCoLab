@@ -79,7 +79,7 @@
 									</div>
 								</th>
 								<th class="c-Table__cell--title">
-									<a href="#" data-sort-column="Comments" class="js-Tooltip" title="click to sort by<br />number of comments"> Comments</a>
+									<a href="#" data-sort-column="Comments" class="js-Tooltip" title="click to sort by number of comments"> Comments</a>
 								</th>
 								<th class="c-Table__cell--title">
 									<a href="#" data-sort-column="What" class="js-Tooltip" title="click to sort by what"> What</a>
@@ -121,12 +121,12 @@
                                             </div>
                                         </th>
                                         <th class="c-Table__cell--title">
-                                            <a href="#" data-sort-column="Supporters" class="js-Tooltip" title="click to sort by<br />number of supporters">
+                                            <a href="#" data-sort-column="Supporters" class="js-Tooltip" title="click to sort by number of supporters">
                                                 Supporters
                                             </a>
                                         </th>
                                         <th class="c-Table__cell--title">
-                                            <a href="#" data-sort-column="Comments" class="js-Tooltip" title="click to sort by<br />number of comments">
+                                            <a href="#" data-sort-column="Comments" class="js-Tooltip" title="click to sort by number of comments">
                                                 Comments
                                             </a>
                                         </th>

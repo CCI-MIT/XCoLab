@@ -7,9 +7,10 @@ import java.net.URLEncoder;
 
 public class ContentSearchItem extends AbstractSearchItem {
 
+    private String searchQuery;
     @Override
     public void init(SearchPojo pojo, String searchQuery) {
-
+        this.searchQuery = searchQuery;
     }
 
     @Override
@@ -32,9 +33,9 @@ public class ContentSearchItem extends AbstractSearchItem {
         return "";
     }
 
+
     @Override
     public String getContent() {
-        String content = "";
-        return content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)) + " ...";
+        return super.getContent("",searchQuery);
     }
 }
