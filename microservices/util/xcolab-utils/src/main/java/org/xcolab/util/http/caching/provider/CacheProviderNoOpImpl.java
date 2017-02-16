@@ -1,9 +1,16 @@
 package org.xcolab.util.http.caching.provider;
 
+import org.xcolab.util.http.caching.CacheCustomization;
 import org.xcolab.util.http.caching.CacheKey;
 import org.xcolab.util.http.caching.CacheName;
 
+import java.util.Map;
+
 public class CacheProviderNoOpImpl implements CacheProvider {
+
+    @Override
+    public void init(Map<CacheName, CacheCustomization> customizations) {
+    }
 
     @Override
     public <T> T get(CacheKey<?, T> key, CacheName cacheName) {

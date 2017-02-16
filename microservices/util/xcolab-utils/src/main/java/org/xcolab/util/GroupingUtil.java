@@ -1,12 +1,11 @@
 package org.xcolab.util;
 
-import org.xcolab.util.functions.Function;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 public final class GroupingUtil {
 
@@ -17,11 +16,7 @@ public final class GroupingUtil {
         Map<K, List<V>> groupedEntities = new LinkedHashMap<>();
         for (V value : list) {
             final K key = keyExtractor.apply(value);
-            List<V> valuesForKey = groupedEntities.get(key);
-            if (valuesForKey == null) {
-                valuesForKey = new ArrayList<V>();
-                groupedEntities.put(key, valuesForKey);
-            }
+            List<V> valuesForKey = groupedEntities.computeIfAbsent(key, k -> new ArrayList<V>());
             valuesForKey.add(value);
         }
         return groupedEntities;
@@ -56,21 +51,11 @@ public final class GroupingUtil {
 
     public static <SearchKey, MapKey, MapVal> Map<MapKey, MapVal> getInnerMapOrCreate(
             SearchKey searchKey, Map<SearchKey, Map<MapKey, MapVal>> searchMap) {
-        Map<MapKey, MapVal> innerMap = searchMap.get(searchKey);
-        if (innerMap == null) {
-            innerMap = new HashMap<>();
-            searchMap.put(searchKey, innerMap);
-        }
-        return innerMap;
+        return searchMap.computeIfAbsent(searchKey, k -> new HashMap<>());
     }
 
     public static <SearchKey, ListVal> List<ListVal> getInnerListOrCreate(
             SearchKey searchKey, Map<SearchKey, List<ListVal>> searchMap) {
-        List<ListVal> innerList = searchMap.get(searchKey);
-        if (innerList == null) {
-            innerList = new ArrayList<>();
-            searchMap.put(searchKey, innerList);
-        }
-        return innerList;
+        return searchMap.computeIfAbsent(searchKey, k -> new ArrayList<>());
     }
 }

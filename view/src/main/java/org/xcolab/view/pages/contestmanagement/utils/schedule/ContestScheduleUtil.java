@@ -5,7 +5,6 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.util.GroupingUtil;
 import org.xcolab.util.GroupingUtil.DuplicateElementException;
-import org.xcolab.util.functions.Function;
 
 import java.util.Iterator;
 import java.util.List;
@@ -28,8 +27,7 @@ public final class ContestScheduleUtil {
     }
 
     public static boolean isBlankContest(Contest contest) {
-        final Contest contestWrapper = (contest);
-        final boolean contestHasProposals = contestWrapper.getTotalProposalsCount() > 0;
+        final boolean contestHasProposals = contest.getTotalProposalsCount() > 0;
         return !contestHasProposals;
     }
 
@@ -66,12 +64,8 @@ public final class ContestScheduleUtil {
     public static Map<Long, ContestPhase> groupContestPhasesByPhaseTypeId(
             List<ContestPhase> phases) {
         try {
-            return GroupingUtil.groupByUnique(phases, new Function<ContestPhase, Long>() {
-                @Override
-                public Long apply(ContestPhase contestPhase) {
-                    return contestPhase.getContestPhaseType();
-                }
-            });
+            return GroupingUtil.groupByUnique(phases,
+                    contestPhase -> contestPhase.getContestPhaseType());
         } catch (DuplicateElementException e) {
             throw new IllegalArgumentException(
                     "There should only be one phase of each type per contest: " + e

@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 
+import org.xcolab.util.http.caching.CacheCustomization;
 import org.xcolab.util.http.caching.CacheDuration;
 import org.xcolab.util.http.caching.CacheKey;
 import org.xcolab.util.http.caching.CacheName;
@@ -22,18 +23,26 @@ import org.xcolab.util.http.caching.provider.CacheProvider;
 import org.xcolab.util.http.caching.provider.ehcache3.statistics.CacheStatisticProvider;
 import org.xcolab.util.http.caching.provider.ehcache3.statistics.CacheStatisticProvider.CacheEvent;
 
+import java.util.Map;
+
 import static org.ehcache.config.builders.CacheConfigurationBuilder.newCacheConfigurationBuilder;
 import static org.ehcache.config.builders.CacheManagerBuilder.newCacheManagerBuilder;
 
-public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
+public class CacheProviderEhcache3Impl implements CacheProvider, DisposableBean {
 
-    private static final Logger log = LoggerFactory.getLogger(CacheProviderEhcacheImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(CacheProviderEhcache3Impl.class);
 
-    private final CacheManager cacheManager;
+    private CacheManager cacheManager;
 
     private final CacheStatisticProvider cacheStatisticProvider = new CacheStatisticProvider();
+    private Map<CacheName, CacheCustomization> customizations;
 
-    public CacheProviderEhcacheImpl() {
+    public CacheProviderEhcache3Impl() {
+    }
+
+    @Override
+    public void init(Map<CacheName, CacheCustomization> customizations) {
+        this.customizations = customizations;
         CacheManager newCacheManager;
         try {
             CacheManagerBuilder<? extends CacheManager> cacheManagerBuilder = newCacheManagerBuilder();
@@ -56,12 +65,15 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
                 CacheManagerBuilder<? extends CacheManager> cacheManagerBuilder) {
         for (CacheName cacheName : CacheName.values()) {
             if (cacheName != CacheName.NONE) {
-                if (cacheName.getDuration() == CacheDuration.RUNTIME) {
-                    cacheManagerBuilder = cacheManagerBuilder.withCache(cacheName.name(),
-                            getConfigBuilder(cacheName));
-                } else {
-                    cacheManagerBuilder =
-                            cacheManagerBuilder.withCache(cacheName.name(), getTTLConfig(cacheName));
+                final CacheCustomization cacheCustomization = customizations.get(cacheName);
+                if (cacheCustomization == null || cacheCustomization.isEnabled() ) {
+                    if (cacheName.getDuration() == CacheDuration.RUNTIME) {
+                        cacheManagerBuilder = cacheManagerBuilder.withCache(cacheName.name(),
+                                getConfigBuilder(cacheName));
+                    } else {
+                        cacheManagerBuilder =
+                                cacheManagerBuilder.withCache(cacheName.name(), getTTLConfig(cacheName));
+                    }
                 }
             }
         }
@@ -69,16 +81,29 @@ public class CacheProviderEhcacheImpl implements CacheProvider, DisposableBean {
     }
 
     private CacheConfiguration<String, Object> getTTLConfig(CacheName cacheName) {
+        final CacheCustomization cacheCustomization = customizations.get(cacheName);
+        CacheDuration cacheDuration;
+        if (cacheCustomization != null && cacheCustomization.getTtl() != null) {
+            cacheDuration = cacheCustomization.getTtl();
+        } else {
+            cacheDuration = cacheName.getDuration();
+        }
         return getConfigBuilder(cacheName)
-                .withExpiry(Expirations.timeToLiveExpiration(cacheName.getDuration().getDuration()))
+                .withExpiry(Expirations.timeToLiveExpiration(cacheDuration.getDuration()))
                 .build();
     }
 
     private CacheConfigurationBuilder<String, Object> getConfigBuilder(
             CacheName cacheName) {
+        final CacheCustomization cacheCustomization = customizations.get(cacheName);
+        final long numberOfEntries;
+        if (cacheCustomization != null && cacheCustomization.getSize() > 0) {
+            numberOfEntries = cacheCustomization.getSize();
+        } else {
+            numberOfEntries = cacheName.getNumberOfEntries();
+        }
         return newCacheConfigurationBuilder(String.class, Object.class,
-                ResourcePoolsBuilder
-                        .heap(cacheName.getNumberOfEntries())
+                ResourcePoolsBuilder.heap(numberOfEntries)
         );
     }
 

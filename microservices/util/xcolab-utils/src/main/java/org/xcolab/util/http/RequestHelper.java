@@ -11,11 +11,10 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
-import org.xcolab.util.functions.Supplier;
 import org.xcolab.util.http.caching.CacheKey;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.caching.provider.CacheProvider;
 import org.xcolab.util.http.caching.provider.CacheProviderNoOpImpl;
-import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 import org.xcolab.util.http.interceptors.HeaderRequestInterceptor;
@@ -24,13 +23,13 @@ import org.xcolab.util.http.interceptors.UriAwareResponseInterceptor;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class RequestHelper {
 
     private final RestTemplate restTemplate;
 
     private CacheProvider cacheProvider = new CacheProviderNoOpImpl();
-    private boolean cacheActive;
 
     public RequestHelper(ResponseErrorHandler errorHandler) {
         restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
@@ -49,13 +48,10 @@ public class RequestHelper {
     public <T, R> List<R> getList(final UriBuilder uriBuilder,
             final ParameterizedTypeReference<List<R>> typeReference,
             final CacheKey<T, List<R>> cacheKey, CacheName cacheName) {
-        return getCached(cacheName, cacheKey, new Supplier<List<R>>() {
-            @Override
-            public List<R> get() {
-                ResponseEntity<List<R>> response = restTemplate.exchange(uriBuilder.buildString(),
-                        HttpMethod.GET, null, typeReference);
-                return response.getBody();
-            }
+        return getCached(cacheName, cacheKey, () -> {
+            ResponseEntity<List<R>> response = restTemplate.exchange(uriBuilder.buildString(),
+                    HttpMethod.GET, null, typeReference);
+            return response.getBody();
         });
     }
 
@@ -80,12 +76,8 @@ public class RequestHelper {
 
     public <T, R> R getUnchecked(final UriBuilder uriBuilder, final Class<R> returnType,
             CacheKey<T, R> cacheKey, CacheName cacheName) {
-        return getCached(cacheName, cacheKey, new Supplier<R>() {
-            @Override
-            public R get() {
-                return restTemplate.getForObject(uriBuilder.buildUri(), returnType);
-            }
-        });
+        return getCached(cacheName, cacheKey,
+                () -> restTemplate.getForObject(uriBuilder.buildUri(), returnType));
     }
 
     public int getCount(UriBuilder uriBuilder) {
@@ -94,24 +86,21 @@ public class RequestHelper {
 
     public int getCount(final UriBuilder uriBuilder,
             final CacheKey<?, Integer> cacheKey, CacheName cacheName) {
-        return getCached(cacheName, cacheKey, new Supplier<Integer>() {
-            @Override
-            public Integer get() {
-                final HttpHeaders httpHeaders = restTemplate.headForHeaders(uriBuilder.buildString());
-                final List<String> countHeaders = httpHeaders.get("X-Total-Count");
-                if (countHeaders.isEmpty()) {
-                    return 0;
-                }
-
-                return Integer.valueOf(countHeaders.get(0));
+        return getCached(cacheName, cacheKey, () -> {
+            final HttpHeaders httpHeaders = restTemplate.headForHeaders(uriBuilder.buildString());
+            final List<String> countHeaders = httpHeaders.get("X-Total-Count");
+            if (countHeaders.isEmpty()) {
+                return 0;
             }
+
+            return Integer.valueOf(countHeaders.get(0));
         });
     }
 
     private <T> T getCached(CacheName cacheName, CacheKey<?, T> cacheKey,
             Supplier<T> supplier) {
         T ret;
-        final boolean cacheActive = isCacheActive() && cacheProvider.isActive()
+        final boolean cacheActive = cacheProvider.isActive()
                 && cacheKey != null && cacheName != CacheName.NONE;
         if (cacheActive) {
             ret = cacheProvider.get(cacheKey, cacheName);
@@ -136,7 +125,7 @@ public class RequestHelper {
 
     public <T> boolean put(UriBuilder uriBuilder, T entity, CacheKey<T, T> cacheKey, CacheName cacheName) {
 
-        final boolean cacheActive = isCacheActive() && cacheProvider.isActive() && cacheKey != null;
+        final boolean cacheActive = cacheProvider.isActive() && cacheKey != null;
         if (cacheActive) {
             cacheProvider.replace(cacheKey, cacheName, entity);
         }
@@ -154,7 +143,7 @@ public class RequestHelper {
 
     public <T> boolean delete(UriBuilder uriBuilder, CacheKey<T, T> cacheKey, CacheName cacheName) {
         restTemplate.exchange(uriBuilder.buildString(), HttpMethod.DELETE, null, Void.class);
-        final boolean cacheActive = isCacheActive() && cacheProvider.isActive() && cacheKey != null;
+        final boolean cacheActive = cacheProvider.isActive() && cacheKey != null;
         if (cacheActive) {
             cacheProvider.delete(cacheKey, cacheName);
         }
@@ -180,13 +169,5 @@ public class RequestHelper {
 
     public void setCacheProvider(CacheProvider cacheProvider) {
         this.cacheProvider = cacheProvider;
-    }
-
-    public boolean isCacheActive() {
-        return cacheActive;
-    }
-
-    public void setCacheActive(boolean cacheActive) {
-        this.cacheActive = cacheActive;
     }
 }
