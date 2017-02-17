@@ -1,6 +1,10 @@
 package org.xcolab.client.proposals.pojo.attributes;
 
-class AbstractProposalAttribute {
+import java.io.Serializable;
+
+class AbstractProposalAttribute implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long id_;
     private Long proposalid;

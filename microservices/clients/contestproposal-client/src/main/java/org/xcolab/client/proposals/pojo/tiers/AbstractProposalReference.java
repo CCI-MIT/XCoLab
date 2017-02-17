@@ -1,6 +1,10 @@
 package org.xcolab.client.proposals.pojo.tiers;
 
-class AbstractProposalReference {
+import java.io.Serializable;
+
+class AbstractProposalReference implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long proposalid;
     private Long subproposalid;

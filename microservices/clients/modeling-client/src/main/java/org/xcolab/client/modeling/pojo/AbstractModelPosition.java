@@ -1,6 +1,10 @@
 package org.xcolab.client.modeling.pojo;
 
-public abstract class AbstractModelPosition {
+import java.io.Serializable;
+
+public abstract class AbstractModelPosition implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     protected Long id_;
     protected Long positionid;

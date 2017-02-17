@@ -1,6 +1,10 @@
 package org.xcolab.client.contest.pojo.ontology;
 
-abstract class AbstractFocusAreaOntologyTerm {
+import java.io.Serializable;
+
+abstract class AbstractFocusAreaOntologyTerm implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long focusareaid;
     private Long ontologytermid;

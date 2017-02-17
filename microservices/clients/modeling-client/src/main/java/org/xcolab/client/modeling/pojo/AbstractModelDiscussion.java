@@ -1,6 +1,10 @@
 package org.xcolab.client.modeling.pojo;
 
-public abstract class AbstractModelDiscussion {
+import java.io.Serializable;
+
+public abstract class AbstractModelDiscussion implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long modeldiscussionid;
     private Long modelid;

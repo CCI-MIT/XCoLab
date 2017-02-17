@@ -1,6 +1,10 @@
 package org.xcolab.client.contest.pojo.impact;
 
-abstract class AbstractImpactDefaultSeriesData {
+import java.io.Serializable;
+
+abstract class AbstractImpactDefaultSeriesData implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long seriesid;
     private Integer year;

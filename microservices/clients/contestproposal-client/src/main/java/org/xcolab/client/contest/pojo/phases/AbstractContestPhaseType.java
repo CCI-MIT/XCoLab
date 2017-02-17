@@ -1,6 +1,10 @@
 package org.xcolab.client.contest.pojo.phases;
 
-abstract class AbstractContestPhaseType {
+import java.io.Serializable;
+
+abstract class AbstractContestPhaseType implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long id_;
     private String name;

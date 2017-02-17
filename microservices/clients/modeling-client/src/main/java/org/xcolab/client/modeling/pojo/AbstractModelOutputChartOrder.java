@@ -1,6 +1,10 @@
 package org.xcolab.client.modeling.pojo;
 
-public abstract class AbstractModelOutputChartOrder {
+import java.io.Serializable;
+
+public abstract class AbstractModelOutputChartOrder implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long modeloutputchartorderpk;
     private Long modelid;

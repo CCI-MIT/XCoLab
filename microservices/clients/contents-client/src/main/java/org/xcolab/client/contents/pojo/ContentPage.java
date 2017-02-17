@@ -7,12 +7,15 @@ import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class ContentPage {
+public class ContentPage implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public static final TypeProvider<ContentPage> TYPES = new TypeProvider<>(ContentPage.class,
                     new ParameterizedTypeReference<List<ContentPage>>() {});

@@ -1,6 +1,10 @@
 package org.xcolab.client.proposals.pojo.phases;
 
-class AbstractProposal2Phase {
+import java.io.Serializable;
+
+class AbstractProposal2Phase implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long proposalid;
     private Long contestphaseid;

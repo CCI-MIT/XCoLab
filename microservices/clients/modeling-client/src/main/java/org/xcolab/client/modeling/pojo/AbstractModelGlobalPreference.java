@@ -1,6 +1,10 @@
 package org.xcolab.client.modeling.pojo;
 
-public abstract class AbstractModelGlobalPreference {
+import java.io.Serializable;
+
+public abstract class AbstractModelGlobalPreference implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     protected Long modelglobalpreferencepk;
     protected Long modelid;

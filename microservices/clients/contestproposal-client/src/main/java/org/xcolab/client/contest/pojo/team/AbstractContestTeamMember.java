@@ -1,6 +1,10 @@
 package org.xcolab.client.contest.pojo.team;
 
-public class AbstractContestTeamMember {
+import java.io.Serializable;
+
+public class AbstractContestTeamMember implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long id_;
     private Long contestid;

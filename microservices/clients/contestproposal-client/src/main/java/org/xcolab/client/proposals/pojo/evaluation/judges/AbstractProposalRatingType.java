@@ -1,6 +1,10 @@
 package org.xcolab.client.proposals.pojo.evaluation.judges;
 
-class AbstractProposalRatingType {
+import java.io.Serializable;
+
+class AbstractProposalRatingType implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     private Long id_;
     private String label;
     private String description;

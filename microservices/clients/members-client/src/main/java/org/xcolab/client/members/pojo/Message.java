@@ -15,10 +15,10 @@ import java.util.List;
 @JsonInclude(Include.NON_NULL)
 public class Message implements Serializable {
 
+    private static final long serialVersionUID = 1208926668;
+
     public static final TypeProvider<Message> TYPES =
             new TypeProvider<>(Message.class, new ParameterizedTypeReference<List<Message>>() {});
-
-    private static final long serialVersionUID = 1208926668;
 
     private Long messageId;
     private Long fromId;

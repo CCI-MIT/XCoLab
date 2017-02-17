@@ -11,12 +11,13 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Role_ implements Serializable {
+
+	private static final long serialVersionUID = -416641117;
+
 	public static final TypeProvider<Role_> TYPES =
 			new TypeProvider<>(Role_.class,
 					new ParameterizedTypeReference<List<Role_>>() {
 					});
-
-	private static final long serialVersionUID = -416641117;
 
 	private Long      roleid;
 	private Long      companyid;

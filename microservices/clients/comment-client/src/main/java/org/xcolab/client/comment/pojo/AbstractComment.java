@@ -1,8 +1,11 @@
 package org.xcolab.client.comment.pojo;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-abstract class AbstractComment {
+abstract class AbstractComment implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long commentId;
     private Long threadId;

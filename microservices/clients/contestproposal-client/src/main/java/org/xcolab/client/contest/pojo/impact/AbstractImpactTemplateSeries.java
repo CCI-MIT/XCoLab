@@ -1,6 +1,10 @@
 package org.xcolab.client.contest.pojo.impact;
 
-abstract class AbstractImpactTemplateSeries {
+import java.io.Serializable;
+
+abstract class AbstractImpactTemplateSeries implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long seriesid;
     private Long iterationid;

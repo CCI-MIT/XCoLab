@@ -10,10 +10,10 @@ import java.util.List;
 
 public class AnalyticsUserEvent implements Serializable {
 
+    private static final long serialVersionUID = 899448763;
+
     public static final TypeProvider<AnalyticsUserEvent> TYPES = new TypeProvider<>(
             AnalyticsUserEvent.class, new ParameterizedTypeReference<List<AnalyticsUserEvent>>() {});
-
-    private static final long serialVersionUID = 899448763;
 
     private Long userId;
     private String idString;

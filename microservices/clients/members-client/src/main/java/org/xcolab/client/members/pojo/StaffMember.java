@@ -11,12 +11,12 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StaffMember implements Serializable {
 
+    private static final long serialVersionUID = 533221781;
+
     public static final TypeProvider<StaffMember> TYPES =
             new TypeProvider<>(StaffMember.class,
                     new ParameterizedTypeReference<List<StaffMember>>() {
                     });
-
-    private static final long serialVersionUID = 533221781;
 
     private Long id_;
     private Long userId;

@@ -4,7 +4,11 @@
 package org.xcolab.client.contest.pojo;
 
 
-public abstract class AbstractContestCollectionCard {
+import java.io.Serializable;
+
+public abstract class AbstractContestCollectionCard implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long    id_;
     private Long    parent;

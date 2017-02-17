@@ -1,6 +1,10 @@
 package org.xcolab.client.modeling.pojo;
 
-public abstract class AbstractModelInputItem {
+import java.io.Serializable;
+
+public abstract class AbstractModelInputItem implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long modelinputitempk;
     private Long modelid;

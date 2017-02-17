@@ -9,12 +9,11 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class Report implements Serializable {
-    public static final TypeProvider<Report> TYPES =
-            new TypeProvider<>(Report.class,
-                    new ParameterizedTypeReference<List<Report>>() {
-                    });
 
     private static final long serialVersionUID = -2000370137;
+
+    public static final TypeProvider<Report> TYPES = new TypeProvider<>(Report.class,
+                    new ParameterizedTypeReference<List<Report>>() {});
 
     private Long reportId;
     private Long reporterMemberId;

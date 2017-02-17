@@ -1,6 +1,10 @@
 package org.xcolab.client.contest.pojo.phases;
 
-abstract class AbstractContestPhaseRibbonType {
+import java.io.Serializable;
+
+abstract class AbstractContestPhaseRibbonType implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long id_;
     private Integer ribbon;

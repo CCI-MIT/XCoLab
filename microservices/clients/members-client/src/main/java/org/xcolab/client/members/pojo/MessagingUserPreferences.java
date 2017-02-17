@@ -11,12 +11,12 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MessagingUserPreferences implements Serializable {
 
+    private static final long serialVersionUID = 1819303241;
+
     public static final TypeProvider<MessagingUserPreferences> TYPES =
             new TypeProvider<>(MessagingUserPreferences.class,
                     new ParameterizedTypeReference<List<MessagingUserPreferences>>() {
                     });
-
-    private static final long serialVersionUID = 1819303241;
 
     private Long messagingPreferencesId;
     private long userId;

@@ -12,12 +12,13 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ContentArticleVersion implements Serializable {
+
+    private static final long serialVersionUID = -110947002;
+
     public static final TypeProvider<ContentArticleVersion> TYPES =
             new TypeProvider<>(ContentArticleVersion.class,
                     new ParameterizedTypeReference<List<ContentArticleVersion>>() {
                     });
-
-    private static final long serialVersionUID = -110947002;
 
     private Long contentArticleVersionId;
     private Long contentArticleId;

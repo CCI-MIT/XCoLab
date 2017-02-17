@@ -1,6 +1,10 @@
 package org.xcolab.client.contest.pojo.templates;
 
-abstract class AbstractPlanTemplateSection {
+import java.io.Serializable;
+
+abstract class AbstractPlanTemplateSection implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long plantemplateid;
     private Long plansectionid;
