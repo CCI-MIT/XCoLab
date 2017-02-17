@@ -66,6 +66,9 @@ public class CacheProviderEhcache3Impl implements CacheProvider, DisposableBean 
         for (CacheName cacheName : CacheName.values()) {
             if (cacheName != CacheName.NONE) {
                 final CacheCustomization cacheCustomization = customizations.get(cacheName);
+                if (cacheCustomization != null && cacheCustomization.getDiskStorage().isEnabled()) {
+                    log.warn("Disk storage is enabled but not supported by this implementation");
+                }
                 if (cacheCustomization == null || cacheCustomization.isEnabled() ) {
                     if (cacheName.getDuration() == CacheDuration.RUNTIME) {
                         cacheManagerBuilder = cacheManagerBuilder.withCache(cacheName.name(),
@@ -83,8 +86,8 @@ public class CacheProviderEhcache3Impl implements CacheProvider, DisposableBean 
     private CacheConfiguration<String, Object> getTTLConfig(CacheName cacheName) {
         final CacheCustomization cacheCustomization = customizations.get(cacheName);
         CacheDuration cacheDuration;
-        if (cacheCustomization != null && cacheCustomization.getTtl() != null) {
-            cacheDuration = cacheCustomization.getTtl();
+        if (cacheCustomization != null && cacheCustomization.getDuration() != null) {
+            cacheDuration = cacheCustomization.getDuration();
         } else {
             cacheDuration = cacheName.getDuration();
         }
@@ -97,8 +100,8 @@ public class CacheProviderEhcache3Impl implements CacheProvider, DisposableBean 
             CacheName cacheName) {
         final CacheCustomization cacheCustomization = customizations.get(cacheName);
         final long numberOfEntries;
-        if (cacheCustomization != null && cacheCustomization.getSize() > 0) {
-            numberOfEntries = cacheCustomization.getSize();
+        if (cacheCustomization != null && cacheCustomization.getEntries() > 0) {
+            numberOfEntries = cacheCustomization.getEntries();
         } else {
             numberOfEntries = cacheName.getNumberOfEntries();
         }

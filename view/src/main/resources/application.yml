@@ -17,7 +17,7 @@ management:
 
 cache:
   enabled: true
-  provider: org.xcolab.util.http.caching.provider.ehcache3.CacheProviderEhcache3Impl
+  provider: org.xcolab.util.http.caching.provider.ehcache2.CacheProviderEhcache2Impl
 
 spring:
   mvc:

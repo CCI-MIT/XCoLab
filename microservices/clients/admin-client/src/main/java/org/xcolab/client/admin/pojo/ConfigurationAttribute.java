@@ -5,9 +5,12 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.xcolab.util.attributes.AbstractAttribute;
 import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ConfigurationAttribute extends AbstractAttribute {
+public class ConfigurationAttribute extends AbstractAttribute implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public static final TypeProvider<ConfigurationAttribute> TYPES =
             new TypeProvider<>(ConfigurationAttribute.class,

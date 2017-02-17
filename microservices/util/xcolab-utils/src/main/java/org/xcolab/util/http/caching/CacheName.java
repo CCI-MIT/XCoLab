@@ -2,32 +2,46 @@ package org.xcolab.util.http.caching;
 
 public enum CacheName {
     NONE(0, null),
-    MISC_REQUEST(750L, CacheDuration.REQUEST),
-    MISC_SHORT(100L, CacheDuration.SHORT),
-    MISC_MEDIUM(200L, CacheDuration.MEDIUM),
-    MISC_LONG(100L, CacheDuration.LONG),
-    MISC_RUNTIME(50L, CacheDuration.RUNTIME),
+    MISC_REQUEST(750, CacheDuration.REQUEST),
+    MISC_SHORT(100, CacheDuration.SHORT),
+    MISC_MEDIUM(200, CacheDuration.MEDIUM),
+    MISC_LONG(100, CacheDuration.LONG),
+    MISC_RUNTIME(50, CacheDuration.RUNTIME),
 
-    CONTEST_DETAILS(100L, CacheDuration.DAILY),
-    CONTEST_LIST(20L, CacheDuration.DAILY),
-    CONTEST_ONTOLOGY(50L, CacheDuration.DAILY),
-    CONFIGURATION(75L, CacheDuration.DAILY),
-    CONTENT(50L, CacheDuration.DAILY)
+    CONTEST_DETAILS(100, CacheDuration.DAILY),
+    CONTEST_LIST(20, CacheDuration.DAILY),
+    CONTEST_ONTOLOGY(50, CacheDuration.DAILY),
+    CONFIGURATION(75, CacheDuration.DAILY),
+    CONTENT(50, CacheDuration.DAILY)
     ;
 
-    private final long numberOfEntries;
+    private final int numberOfEntries;
     private final CacheDuration duration;
 
-    CacheName(long numberOfEntries, CacheDuration duration) {
+    CacheName(int numberOfEntries, CacheDuration duration) {
         this.numberOfEntries = numberOfEntries;
         this.duration = duration;
     }
 
-    public long getNumberOfEntries() {
+    public int getNumberOfEntries() {
+        return numberOfEntries;
+    }
+
+    public int getNumberOfEntries(CacheCustomization cacheCustomization) {
+        if (cacheCustomization != null && cacheCustomization.getEntries() > 0) {
+            return cacheCustomization.getEntries();
+        }
         return numberOfEntries;
     }
 
     public CacheDuration getDuration() {
+        return duration;
+    }
+
+    public CacheDuration getDuration(CacheCustomization cacheCustomization) {
+        if (cacheCustomization != null && cacheCustomization.getDuration() != null) {
+            return cacheCustomization.getDuration();
+        }
         return duration;
     }
 }
