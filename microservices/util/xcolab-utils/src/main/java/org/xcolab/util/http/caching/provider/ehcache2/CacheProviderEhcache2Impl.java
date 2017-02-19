@@ -48,7 +48,7 @@ public class CacheProviderEhcache2Impl implements CacheProvider {
 
         if (cacheName.getDuration() != CacheDuration.RUNTIME) {
             cacheConfiguration = cacheConfiguration
-                    .timeToLiveSeconds(cacheName.getDuration(cacheCustomization).getDuration().getLength());
+                    .timeToLiveSeconds(cacheName.getDuration(cacheCustomization).toSeconds());
         }
         if (cacheCustomization != null) {
             final DiskStorage diskStorage = cacheCustomization.getDiskStorage();

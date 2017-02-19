@@ -3,7 +3,7 @@ package org.xcolab.util.http.caching;
 public enum CacheName {
     NONE(0, null),
     MISC_REQUEST(750, CacheDuration.REQUEST),
-    MISC_SHORT(100, CacheDuration.SHORT),
+    MISC_SHORT(300, CacheDuration.SHORT),
     MISC_MEDIUM(200, CacheDuration.MEDIUM),
     MISC_LONG(100, CacheDuration.LONG),
     MISC_RUNTIME(50, CacheDuration.RUNTIME),
@@ -12,6 +12,9 @@ public enum CacheName {
     CONTEST_LIST(20, CacheDuration.DAILY),
     CONTEST_ONTOLOGY(50, CacheDuration.DAILY),
     CONFIGURATION(75, CacheDuration.DAILY),
+    MEMBER_RATING(100, CacheDuration.SHORT),
+    MEMBER(100, CacheDuration.SHORT),
+    ROLES(100, CacheDuration.MEDIUM),
     CONTENT(50, CacheDuration.DAILY)
     ;
 

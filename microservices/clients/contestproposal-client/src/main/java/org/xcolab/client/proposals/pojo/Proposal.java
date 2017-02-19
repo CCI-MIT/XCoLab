@@ -45,7 +45,6 @@ import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.helpers.ProposalContestPhaseAttributeHelper;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
-import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
@@ -58,6 +57,7 @@ import org.xcolab.util.enums.modeling.ModelRegions;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.util.enums.promotion.GenericJudgingStatus;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestService;
 
 import java.io.IOException;
@@ -68,6 +68,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Proposal extends AbstractProposal {
 
@@ -105,6 +107,7 @@ public class Proposal extends AbstractProposal {
     protected ProposalRatings proposalRatings;
     private ProposalRibbon ribbonWrapper;
     private List<MembershipRequest> membershipRequests;
+    private List<Member> supporters;
 
     public Proposal(Proposal proposal, ContestPhase contestPhase) {
         this(proposal, proposal.getCurrentVersion(), null, contestPhase, null);
@@ -510,13 +513,11 @@ public class Proposal extends AbstractProposal {
     }
 
     public List<Member> getSupporters() {
-        List<Member> supporters = new ArrayList<>();
-        for (ProposalSupporter ps : proposalMemberRatingClient.getProposalSupporters(this.getProposalId())) {
-            try {
-                supporters.add(MembersClient.getMember(ps.getUserId()));
-            } catch (MemberNotFoundException ignored) {
-
-            }
+        if (supporters == null) {
+            supporters = proposalMemberRatingClient.getProposalSupporters(getProposalId()).stream()
+                    .map(supporter -> MembersClient.getMemberOrNull(supporter.getUserId()))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
         }
         return supporters;
     }
@@ -722,10 +723,19 @@ public class Proposal extends AbstractProposal {
     }
 
     public long getVotesCount() {
+        return getVotesCountInternal(CacheName.NONE);
+    }
+
+    public long getVotesCountFromCache() {
+        return getVotesCountInternal(CacheName.MEMBER_RATING);
+    }
+
+    private long getVotesCountInternal(CacheName cacheName) {
         if (this.getProposalId() > 0) {
 
             long votingPhasePK = contest.getVotingPhasePK();
-            return proposalMemberRatingClient.countProposalVotesInContestPhaseProposalId(this.getProposalId(), votingPhasePK);
+            return proposalMemberRatingClient.countProposalVotesInContestPhaseProposalId(
+                    votingPhasePK, this.getProposalId(), cacheName);
         }
         return 0;
     }

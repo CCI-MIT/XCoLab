@@ -12,6 +12,7 @@ public class CacheKey<T, R> {
     private final Class<T> elementType;
     private final Class<R> returnType;
     private final Map<String, String> parameters;
+    private String stringKey;
 
     CacheKey(Class<T> elementType, Map<String, String> parameters) {
         Assert.notNull(elementType, "Element type may not be null");
@@ -19,6 +20,7 @@ public class CacheKey<T, R> {
         this.elementType = elementType;
         returnType = null;
         this.parameters = parameters;
+        initStringKey();
     }
 
     private CacheKey(Class<T> elementType, Class<R> returnType, Map<String, String> parameters) {
@@ -27,13 +29,10 @@ public class CacheKey<T, R> {
         this.elementType = elementType;
         this.returnType = returnType;
         this.parameters = parameters;
+        initStringKey();
     }
 
-    public boolean isPresent() {
-        return true;
-    }
-
-    public String stringKey() {
+    private void initStringKey() {
         StringBuilder sb = new StringBuilder(elementType.getSimpleName());
         for (Entry<String, String> parameter : parameters.entrySet()) {
             sb.append("_").append(parameter.getKey())
@@ -42,7 +41,15 @@ public class CacheKey<T, R> {
         if (returnType != null) {
             sb.append("_as").append(returnType.getSimpleName());
         }
-        return sb.toString();
+        stringKey = sb.toString();
+    }
+
+    public boolean isPresent() {
+        return true;
+    }
+
+    public String stringKey() {
+        return stringKey;
     }
 
     public Class<T> getElementType() {

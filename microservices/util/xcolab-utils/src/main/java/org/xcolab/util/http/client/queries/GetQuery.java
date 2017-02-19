@@ -44,6 +44,15 @@ public class GetQuery<ElementT, IdT> implements CacheableQuery<ElementT, Element
         }
     }
 
+    public void deleteFromCache() {
+        if (cacheName != null) {
+            if (cacheKey == null) {
+                cacheKey = CacheKeys.of(entityType, id);
+            }
+            ServiceRequestUtils.deleteFromCache(cacheKey, cacheName);
+        }
+    }
+
     @Override
     public GetQuery<ElementT, IdT> withCache(CacheKey<ElementT, ElementT> cacheKey, CacheName cacheName) {
         this.cacheKey = cacheKey;

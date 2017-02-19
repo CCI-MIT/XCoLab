@@ -90,6 +90,10 @@ public final class ServiceRequestUtils {
         return requestHelper.delete(uriBuilder);
     }
 
+    public static void deleteFromCache(CacheKey<?, ?> cacheKey, CacheName cacheName) {
+        requestHelper.deleteFromCache(cacheKey, cacheName);
+    }
+
     public static <T> boolean delete(UriBuilder uriBuilder, CacheKey<T, T> cacheKey, CacheName cacheName) {
         return requestHelper.delete(uriBuilder, cacheKey, cacheName);
     }

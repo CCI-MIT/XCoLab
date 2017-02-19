@@ -19,7 +19,7 @@
     </c:if>
 
     <c:forEach var="proposal" items="${proposals }" varStatus="status">
-        <!--@elvariable id="proposal" type="org.xcolab.portlets.proposals.wrappers.ProposalWrapper"-->
+        <!--@elvariable id="proposal" type="org.xcolab.client.proposals.pojo.Proposal"-->
 
         <c:if test="${proposalsPermissions.canJudgeActions and not proposalsPermissions.canFellowActions}"><!-- Judges -->
             <c:choose>
@@ -65,7 +65,7 @@
                 <td class="c-Table__cell b-layout__center votes no-border">
                     <div class="highlight">
                         <img src="${_themeImageFolder}/icon-proposal-vote-small.png" />
-                        <collab:proposalLink proposal="${proposal}" text="${proposal.votesCount}" />
+                        <collab:proposalLink proposal="${proposal}" text="${proposal.votesCountFromCache}" />
                     </div>
                 </td>
             </c:if>

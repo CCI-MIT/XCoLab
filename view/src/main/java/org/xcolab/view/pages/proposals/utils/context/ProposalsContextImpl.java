@@ -224,7 +224,7 @@ public class ProposalsContextImpl implements ProposalsContext {
                     request.setAttribute(PROPOSAL_WRAPPED_ATTRIBUTE, proposalWrapper);
                 }
             }
-            if (request.getAttribute(PERMISSIONS_ATTRIBUTE)==null) {
+            if (request.getAttribute(PERMISSIONS_ATTRIBUTE) == null) {
                 final ProposalsPermissions proposalsPermissions = new ProposalsPermissions(request,
                         proposal, contestPhase);
                 request.setAttribute(PERMISSIONS_ATTRIBUTE, proposalsPermissions);

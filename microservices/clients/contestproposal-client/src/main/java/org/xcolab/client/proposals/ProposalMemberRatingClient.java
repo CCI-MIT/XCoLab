@@ -40,17 +40,13 @@ public final class ProposalMemberRatingClient {
     }
 
     public static ProposalMemberRatingClient fromService(RestService proposalService) {
-        ProposalMemberRatingClient instance = instances.computeIfAbsent(proposalService,
+        return instances.computeIfAbsent(proposalService,
                 k -> new ProposalMemberRatingClient(proposalService));
-        return instance;
     }
 
     public List<ProposalSupporter> getProposalSupporters(Long proposalId) {
         return DtoUtil.toPojos(proposalSupporterResource.list()
-                .withCache(CacheKeys.withClass(ProposalSupporterDto.class)
-                                .withParameter("proposalId", proposalId)
-                                .asList(),
-                        CacheName.MISC_MEDIUM)
+                .withCache(CacheName.MEMBER_RATING)
                 .optionalQueryParam("proposalId", proposalId)
                 .execute(), proposalService);
     }
@@ -62,8 +58,11 @@ public final class ProposalMemberRatingClient {
     }
 
     public Integer getProposalSupportersCount(Long proposalId) {
-        return proposalSupporterResource.service("count", Integer.class)
+        return proposalSupporterResource.<ProposalSupporterDto, Integer>service("count", Integer.class)
                 .optionalQueryParam("proposalId", proposalId)
+                .withCache(CacheKeys.withClass(ProposalSupporterDto.class)
+                        .withParameter("proposalId", proposalId)
+                        .asCount(), CacheName.MISC_REQUEST)
                 .get();
     }
 
@@ -122,18 +121,22 @@ public final class ProposalMemberRatingClient {
                     .optionalQueryParam("contestPhaseId", contestPhaseId)
                     .withCache(CacheKeys.withClass(Proposal.class)
                             .withParameter("contestPhaseId", contestPhaseId)
-                            .asCount(), CacheName.MISC_REQUEST)
+                            .asCount(), CacheName.MEMBER_RATING)
                     .getChecked();
         } catch (EntityNotFoundException e) {
             return 0;
         }
     }
 
-    public Integer countProposalVotesInContestPhaseProposalId(Long proposalId,
-            Long contestPhaseId) {
-        return proposalVoteResource.service("count", Integer.class)
-                .optionalQueryParam("contestPhaseId", contestPhaseId)
-                .optionalQueryParam("proposalId", proposalId)
+    public Integer countProposalVotesInContestPhaseProposalId(long contestPhaseId, long proposalId,
+            CacheName cacheName) {
+        return proposalVoteResource.<ProposalVoteDto, Integer>service("count", Integer.class)
+                .queryParam("contestPhaseId", contestPhaseId)
+                .queryParam("proposalId", proposalId)
+                .withCache(CacheKeys.withClass(ProposalVoteDto.class)
+                        .withParameter("contestPhaseId", contestPhaseId)
+                        .withParameter("proposalId", proposalId)
+                        .asCount(), cacheName)
                 .get();
     }
 
@@ -193,7 +196,7 @@ public final class ProposalMemberRatingClient {
                     .optionalQueryParam("userId", userId)
                     .getChecked()
                     .toPojo(proposalService);
-        }catch (EntityNotFoundException ig){
+        } catch (EntityNotFoundException ig) {
             return null;
         }
     }

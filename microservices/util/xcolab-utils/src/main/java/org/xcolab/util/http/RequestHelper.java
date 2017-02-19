@@ -150,6 +150,12 @@ public class RequestHelper {
         return true;
     }
 
+    public void deleteFromCache(CacheKey<?, ?> cacheKey, CacheName cacheName) {
+        final boolean cacheActive = cacheProvider.isActive() && cacheKey != null;
+        if (cacheActive) {
+            cacheProvider.delete(cacheKey, cacheName);
+        }
+    }
 
     public <T> T post(UriBuilder uriBuilder, Object entity, Class<T> returnType) {
         return restTemplate.postForObject(uriBuilder.buildString(), entity, returnType);

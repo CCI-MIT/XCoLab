@@ -6,7 +6,6 @@ import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRoleDto;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
@@ -46,19 +45,19 @@ public class ContestTeamMemberClient {
                 contestTeamMemberResource.create(new ContestTeamMemberDto(contestTeamMember))
                         .execute().toPojo(contestService);
         //TODO: fine-grained cache removal
-        ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
+        ServiceRequestUtils.clearCache(CacheName.ROLES);
         return result;
     }
 
     public void deleteContestTeamMember(Long contestTeamMemberId) {
         contestTeamMemberResource.delete(contestTeamMemberId).execute();
         //TODO: fine-grained cache removal
-        ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
+        ServiceRequestUtils.clearCache(CacheName.ROLES);
     }
 
     public ContestTeamMemberRole getContestTeamMemberRole(long id) {
         return contestTeamMemberRoleResource.get(id)
-                .withCache(CacheKeys.of(ContestTeamMemberRoleDto.class, id), CacheName.MISC_LONG)
+                .withCache(CacheName.ROLES)
                 .execute().toPojo(contestService);
     }
 
