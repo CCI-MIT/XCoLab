@@ -4,6 +4,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -13,30 +14,28 @@ public class Badge implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final int badgeType; // 1,2,3
+    private final Integer badgeType; // 1,2,3
     private final String badgeTitle;    // "Winner", "Finalist", "Semi-Finalist"
     private final String badgeText; // "Popular Choice", "Judges Choice", etc
     private final Contest contest;
     private final Proposal proposal;
     private final String planTitle;
+    private final Long ribbonId;
     private int year = 2013;
     private final boolean hideRibbon;
 
 
-    public Badge(int ribbonType, String ribbonText, Proposal proposal, String planTitle, Contest contest) {
+    public Badge(Long ribbonId, Integer ribbonType, String ribbonText, Proposal proposal, String planTitle, Contest contest) {
+        this.ribbonId = ribbonId;
         this.badgeType = ribbonType;
         this.planTitle = planTitle;
         this.proposal = proposal;
         this.badgeText = ribbonText;
         this.contest = contest;
 
-        if (ribbonText.equalsIgnoreCase("Finalist") || ribbonText.equalsIgnoreCase("Judges' Special Commendation")) {
-            this.badgeTitle = "Finalist";
-        } else if (ribbonText.equalsIgnoreCase("Semi-Finalist")) {
-            this.badgeTitle = "Semi-Finalist";
-        } else {
-            this.badgeTitle = "Winner";
-        }
+
+        this.badgeTitle = ProposalRibbon.getRibbonTitle(ribbonId, ribbonText);
+
 
         // Associate the year and get hideRibbon property from contest
         hideRibbon = contest.getHideRibbons();
@@ -58,7 +57,7 @@ public class Badge implements Serializable {
         return badgeText;
     }
 
-    public int getBadgeType() {
+    public Integer getBadgeType() {
         return badgeType;
     }
 

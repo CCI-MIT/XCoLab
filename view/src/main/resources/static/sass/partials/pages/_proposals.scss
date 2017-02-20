@@ -173,7 +173,9 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   margin-bottom: 13px;
   color: $t-Color__grey--darkest;
 }
-
+.prop-left img {
+  max-width: 650px;
+}
 .prop-left p {
   color: $t-Color__grey--dark;
 }

@@ -31,7 +31,7 @@ public class MetricsConfig {
                 environment.getProperty(LIBRATO_ENABLED_PROPERTY, Boolean.class, false);
         libratoEmail = environment.getProperty(LIBRATO_EMAIL_PROPERTY);
         libratoApiToken = environment.getProperty(LIBRATO_API_TOKEN_PROPERTY);
-        if (libratoEnabled && (StringUtils.isBlank(libratoEmail)) || StringUtils.isBlank(libratoApiToken)) {
+        if (libratoEnabled && ((StringUtils.isBlank(libratoEmail)) || StringUtils.isBlank(libratoApiToken))) {
             throw new IllegalStateException("Librato configuration is invalid");
         }
     }
