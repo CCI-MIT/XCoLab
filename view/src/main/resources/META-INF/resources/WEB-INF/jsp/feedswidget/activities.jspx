@@ -7,11 +7,13 @@
 <c:if test="${not empty communityTopContentArticleId}">
 	<xcolab:layout>
 		<collab:content articleId="${communityTopContentArticleId}" />
-		<div class="pro" id="bread"><a href="/community">Community</a>
-			<div class="memberActivitiesContainer" style="display: inline;"><img alt="" height="8" src="images/arrow.gif" width="8" /> <a href="/community">Community</a> <img alt="" height="8" src="/images/arrow.gif" width="8" /> <a href="/activities">All activities</a></div>
-		</div>
+		<div id="content">
+			<div class="pro" id="bread"><a href="/community">Community</a>
+				<div class="memberActivitiesContainer" style="display: inline;"><img alt="" height="8" src="images/arrow.gif" width="8" /> <a href="/community">Community</a> <img alt="" height="8" src="/images/arrow.gif" width="8" /> <a href="/activities">All activities</a></div>
+			</div>
 
-		<jsp:directive.include file="activities_common.jspx" />
+			<jsp:directive.include file="activities_common.jspx" />
+		</div>
 	</xcolab:layout>
 </c:if>
 <c:if test="${empty communityTopContentArticleId}">

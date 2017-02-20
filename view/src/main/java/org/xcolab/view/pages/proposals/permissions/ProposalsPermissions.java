@@ -214,7 +214,7 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanSeeAdvancingTab() {
-        return getCanFellowActions() || getCanJudgeActions() || getCanAdminAll()
+        return getCanFellowActions()  || getCanAdminAll()
                 || getCanContestManagerActions();
     }
 
