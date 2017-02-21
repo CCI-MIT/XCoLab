@@ -1,8 +1,11 @@
 package org.xcolab.client.proposals.pojo;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-class AbstractProposal {
+class AbstractProposal implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long proposalid;
     private Timestamp createdate;

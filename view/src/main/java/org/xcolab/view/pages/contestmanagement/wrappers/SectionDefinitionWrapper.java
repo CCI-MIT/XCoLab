@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.apache.commons.collections.CollectionUtils;
+
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

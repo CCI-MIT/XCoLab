@@ -10,13 +10,14 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ContentFolder implements Serializable {
+
+    private static final long serialVersionUID = 111562325;
+
     public static final TypeProvider<ContentFolder> TYPES =
             new TypeProvider<>(ContentFolder.class,
                     new ParameterizedTypeReference<List<ContentFolder>>() {
                     });
-
     public static final long RESOURCE_FOLDER_ID = 4L;
-    private static final long serialVersionUID = 111562325;
 
     private Long contentFolderId;
     private String contentFolderName;

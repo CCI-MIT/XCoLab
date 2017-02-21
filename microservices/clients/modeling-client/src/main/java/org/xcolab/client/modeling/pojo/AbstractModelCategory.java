@@ -1,6 +1,10 @@
 package org.xcolab.client.modeling.pojo;
 
-public abstract class AbstractModelCategory {
+import java.io.Serializable;
+
+public abstract class AbstractModelCategory implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long modelcategorypk;
     private String modelcategoryname;

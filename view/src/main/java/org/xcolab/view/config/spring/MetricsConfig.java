@@ -16,7 +16,7 @@ import org.xcolab.util.metrics.MetricsUtil;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-public class MetricsConfiguration {
+public class MetricsConfig {
 
     private static final String LIBRATO_ENABLED_PROPERTY = "metrics.reporting.librato.enabled";
     private static final String LIBRATO_EMAIL_PROPERTY = "metrics.reporting.librato.email";
@@ -26,12 +26,12 @@ public class MetricsConfiguration {
     private final String libratoApiToken;
 
     @Autowired
-    public MetricsConfiguration(Environment environment) {
+    public MetricsConfig(Environment environment) {
         boolean libratoEnabled =
                 environment.getProperty(LIBRATO_ENABLED_PROPERTY, Boolean.class, false);
         libratoEmail = environment.getProperty(LIBRATO_EMAIL_PROPERTY);
         libratoApiToken = environment.getProperty(LIBRATO_API_TOKEN_PROPERTY);
-        if (libratoEnabled && (StringUtils.isBlank(libratoEmail) || StringUtils.isBlank(libratoApiToken))) {
+        if (libratoEnabled && ((StringUtils.isBlank(libratoEmail)) || StringUtils.isBlank(libratoApiToken))) {
             throw new IllegalStateException("Librato configuration is invalid");
         }
     }

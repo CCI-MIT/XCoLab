@@ -1,7 +1,10 @@
 package org.xcolab.client.proposals.pojo.group;
 
-public class AbstractGroup_ {
-    private static final long serialVersionUID = 850568838;
+import java.io.Serializable;
+
+public class AbstractGroup_ implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long    groupid;
     private Long    companyid;

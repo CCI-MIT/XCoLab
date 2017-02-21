@@ -34,10 +34,22 @@ public class GetQuery<ElementT, IdT> implements CacheableQuery<ElementT, Element
     }
 
     public ElementT executeChecked() throws EntityNotFoundException {
-        if (cacheKey == null) {
+        if (cacheName == null) {
             return ServiceRequestUtils.get(uriBuilder, entityType);
         } else {
+            if (cacheKey == null) {
+                cacheKey = CacheKeys.of(entityType, id);
+            }
             return ServiceRequestUtils.get(uriBuilder, entityType, cacheKey, cacheName);
+        }
+    }
+
+    public void deleteFromCache() {
+        if (cacheName != null) {
+            if (cacheKey == null) {
+                cacheKey = CacheKeys.of(entityType, id);
+            }
+            ServiceRequestUtils.deleteFromCache(cacheKey, cacheName);
         }
     }
 

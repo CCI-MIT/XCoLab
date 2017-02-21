@@ -35,7 +35,6 @@
         <rewrite.version>3.4.1.Final</rewrite.version>
 
         <!-- Service communication -->
-        <ehcache.version>3.2.0</ehcache.version>
         <httpclient.version>4.5.2</httpclient.version>
         <jackson-databind.version>2.8.6</jackson-databind.version>
 

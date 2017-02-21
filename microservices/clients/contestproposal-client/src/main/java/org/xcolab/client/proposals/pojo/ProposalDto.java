@@ -16,6 +16,8 @@ import java.util.List;
 public class ProposalDto extends AbstractProposal
         implements DataTransferObject<Proposal> {
 
+    private static final long serialVersionUID = 1;
+
     public static final TypeProvider<ProposalDto> TYPES =
             new TypeProvider<>(ProposalDto.class,
                     new ParameterizedTypeReference<List<ProposalDto>>() {

@@ -189,6 +189,22 @@
                     contestId: ${proposal.contest.contestPK}
             }
         </script>
+        <script>
+            jQuery(function() {
+
+
+                $(".prop-left img").each(function(index, value){
+                    $(value).attr("style","");
+                    $(value).css('cursor', 'pointer');
+                });
+
+                $('.prop-left img').click(function () {
+                    var viewer = ImageViewer();
+                    var imgSrc = this.src, highResolutionImage = $(this).attr('src');
+                    viewer.show(imgSrc, highResolutionImage);
+                });
+            });
+        </script>
         <!--<script type="text/javascript">-->
             <!--jQuery(function() {-->
                 <!--enableDirtyCheck();-->

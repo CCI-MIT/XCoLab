@@ -34,7 +34,8 @@
         <junit.version>4.12</junit.version>
 
         <!-- Service communication -->
-        <ehcache.version>3.2.0</ehcache.version>
+        <ehcache3.version>3.2.0</ehcache3.version>
+        <ehcache2.version>2.10.3</ehcache2.version>
         <httpclient.version>4.5.2</httpclient.version>
         <jackson-databind.version>2.8.6</jackson-databind.version>
 
@@ -190,7 +191,12 @@
             <dependency>
                 <groupId>org.ehcache</groupId>
                 <artifactId>ehcache</artifactId>
-                <version>${ehcache.version}</version>
+                <version>${ehcache3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sf.ehcache</groupId>
+                <artifactId>ehcache</artifactId>
+                <version>${ehcache2.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
@@ -214,6 +220,12 @@
                 <artifactId>metrics-httpclient</artifactId>
                 <version>${metrics.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.dropwizard.metrics</groupId>
+                <artifactId>metrics-ehcache</artifactId>
+                <version>${metrics.version}</version>
+            </dependency>
+
 
             <!-- Misc dependencies-->
             <dependency>

@@ -10,15 +10,18 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class Member {
+public class Member implements Serializable {
+
+    private static final long serialVersionUID = 1;
 
     @JsonIgnore
-    public static final String USER_PROFILE_PATH = "/web/guest/member/-/member/userId/";
+    private static final String USER_PROFILE_PATH = "/members/profile";
 
     public static final TypeProvider<Member> TYPES =
             new TypeProvider<>(Member.class,

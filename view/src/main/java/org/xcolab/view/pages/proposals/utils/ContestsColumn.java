@@ -1,95 +1,47 @@
 package org.xcolab.view.pages.proposals.utils;
 
+import org.xcolab.client.contest.pojo.AbstractContest;
 import org.xcolab.client.contest.pojo.Contest;
 
 import java.util.Comparator;
 
 public enum ContestsColumn {
-    CONTEST_NAME (new Comparator<Contest>() {
-
-        @Override
-        public int compare(Contest o1, Contest o2) {
-            return o1.getContestShortName().toLowerCase().compareTo(o2.getContestShortName().toLowerCase());
-        }
+    CONTEST_NAME (Comparator.comparing(o -> o.getContestShortName().toLowerCase())),
+    PROPOSALS_COUNT((o1, o2) -> (int) (o1.getProposalsCount() - o2.getProposalsCount())),
+    COMMENTS_COUNT((o1, o2) -> (int) (o1.getCommentsCount() - o2.getCommentsCount())),
+    VOTES_COUNT((o1, o2) -> (int) (o1.getVotesCount() - o2.getVotesCount())),
+    WHAT((o1, o2) -> {
+        String s1 = o1.getWhatName();
+        String s2 = o2.getWhatName();
+        return compareContestsByStringValues(o1, s1, o2, s2);
     }),
-    PROPOSALS_COUNT(new Comparator<Contest>() {
-
-        @Override
-        public int compare(Contest o1, Contest o2) {
-            return (int) (o1.getProposalsCount() - o2.getProposalsCount());
-        }
+    WHERE((o1, o2) -> {
+        String s1 = o1.getWhereName();
+        String s2 = o2.getWhereName();
+        return compareContestsByStringValues(o1, s1, o2, s2);
     }),
-    COMMENTS_COUNT(new Comparator<Contest>() {
-
-        @Override
-        public int compare(Contest o1, Contest o2) {
-            return (int) (o1.getCommentsCount() - o2.getCommentsCount());
-        }
+    WHO((o1, o2) -> {
+        String s1 = o1.getWhoName();
+        String s2 = o2.getWhoName();
+        return compareContestsByStringValues(o1, s1, o2, s2);
     }),
-    VOTES_COUNT(new Comparator<Contest>() {
-
-        @Override
-        public int compare(Contest o1, Contest o2) {
-            return (int) (o1.getVotesCount() - o2.getVotesCount());
-        }
-    }),
-    WHAT(new Comparator<Contest>() {
-
-        @Override
-        public int compare(Contest o1, Contest o2) {
-            String s1 = o1.getWhatName();
-            String s2 = o2.getWhatName();
-            return compareContestsByStringValues(o1, s1, o2, s2);
-        }
-    }),
-    WHERE(new Comparator<Contest>() {
-
-        @Override
-        public int compare(Contest o1, Contest o2) {
-            String s1 = o1.getWhereName();
-            String s2 = o2.getWhereName();
-            return compareContestsByStringValues(o1, s1, o2, s2);
-        }
-    }),
-    WHO(new Comparator<Contest>() {
-
-        @Override
-        public int compare(Contest o1, Contest o2) {
-            String s1 = o1.getWhoName();
-            String s2 = o2.getWhoName();
-            return compareContestsByStringValues(o1, s1, o2, s2);
-        }
-    }),
-    HOW(new Comparator<Contest>() {
-
-        @Override
-        public int compare(Contest o1, Contest o2) {
-            String s1 = o1.getHowName();
-            String s2 = o2.getHowName();
-            return compareContestsByStringValues(o1, s1, o2, s2);
-        }
+    HOW((o1, o2) -> {
+        String s1 = o1.getHowName();
+        String s2 = o2.getHowName();
+        return compareContestsByStringValues(o1, s1, o2, s2);
     }),
 
-    REFERENCE_DATE (new Comparator<Contest>() {
-        @Override
-        public int compare(Contest o1, Contest o2) {
-            if(o2.getLastPhase() != null && o1.getLastPhase() != null) {
-                return o2.getLastPhase().getPhaseReferenceDate().compareTo(o1.getLastPhase().getPhaseReferenceDate());
-            }
-            if(o2.getLastPhase() == null){
-                return 1;
-            }
-            return 0;
+    REFERENCE_DATE ((o1, o2) -> {
+        if(o2.getLastPhase() != null && o1.getLastPhase() != null) {
+            return o2.getLastPhase().getPhaseReferenceDate().compareTo(o1.getLastPhase().getPhaseReferenceDate());
         }
+        if(o2.getLastPhase() == null){
+            return 1;
+        }
+        return 0;
     }),
 
-    DEFAULT(new Comparator<Contest>() {
-
-        @Override
-        public int compare(Contest o1, Contest o2) {
-            return o1.getWeight() - o2.getWeight();
-        }
-    });
+    DEFAULT(Comparator.comparingInt(AbstractContest::getWeight));
     
     private final Comparator<Contest> columnComparator;
 

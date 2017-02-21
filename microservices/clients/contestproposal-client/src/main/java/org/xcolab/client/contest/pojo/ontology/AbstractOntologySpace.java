@@ -1,6 +1,10 @@
 package org.xcolab.client.contest.pojo.ontology;
 
-abstract class AbstractOntologySpace {
+import java.io.Serializable;
+
+abstract class AbstractOntologySpace implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long id_;
     private String name;

@@ -17,12 +17,13 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
 public class ContentArticle implements Serializable {
+
+    private static final long serialVersionUID = -2076774009;
+
     public static final TypeProvider<ContentArticle> TYPES =
             new TypeProvider<>(ContentArticle.class,
                     new ParameterizedTypeReference<List<ContentArticle>>() {
                     });
-
-    private static final long serialVersionUID = -2076774009;
 
     private Long contentArticleId;
     private Long authorId;

@@ -1,6 +1,10 @@
 package org.xcolab.client.proposals.pojo.points;
 
-class AbstractPointType {
+import java.io.Serializable;
+
+class AbstractPointType implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long id_;
     private Long parentpointtypeid;

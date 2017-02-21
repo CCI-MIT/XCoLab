@@ -29,6 +29,11 @@
             <artifactId>emails-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.xcolab</groupId>
+            <artifactId>entity-utils</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 

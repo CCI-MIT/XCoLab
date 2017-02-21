@@ -1,8 +1,11 @@
 package org.xcolab.client.proposals.pojo.team;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-class AbstractMembershipRequest {
+class AbstractMembershipRequest implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long membershiprequestid;
     private Long companyid;

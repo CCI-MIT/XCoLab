@@ -1,8 +1,12 @@
 package org.xcolab.client.emails.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Email {
+public class Email implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     private String from;
 
     private List<String> to;

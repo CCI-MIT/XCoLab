@@ -6,11 +6,14 @@ import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SearchPojo {
+public class SearchPojo implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public static final TypeProvider<SearchPojo> TYPES =
             new TypeProvider<>(SearchPojo.class,

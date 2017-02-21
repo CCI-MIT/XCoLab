@@ -477,8 +477,12 @@ public class ContestClient {
     }
 
     public ContestPhase getActivePhase(Long contestId) {
-        return contestResource.service(contestId, "activePhase", ContestPhaseDto.class)
-                .get().toPojo(contestService);
+        return contestResource.<ContestPhaseDto, ContestPhaseDto>service(contestId, "activePhase", ContestPhaseDto.class)
+                .withCache(CacheKeys.withClass(ContestPhaseDto.class)
+                        .withParameter("contestId", contestId)
+                        .withParameter("active", true).build(), CacheName.MISC_REQUEST)
+                .get()
+                .toPojo(contestService);
     }
 
     public ContestPhaseType getContestPhaseType(Long contestPhaseTypeId) {

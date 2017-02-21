@@ -15,12 +15,13 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
 public class Member implements Serializable {
+
+    private static final long serialVersionUID = 343994517;
+
     public static final TypeProvider<Member> TYPES =
             new TypeProvider<>(Member.class,
                     new ParameterizedTypeReference<List<Member>>() {
                     });
-
-    private static final long serialVersionUID = 343994517;
 
     private Long id_;
     private String screenName;

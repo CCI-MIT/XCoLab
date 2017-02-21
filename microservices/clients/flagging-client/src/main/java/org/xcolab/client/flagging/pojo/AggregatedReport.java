@@ -4,14 +4,16 @@ import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class AggregatedReport {
-    public static final TypeProvider<AggregatedReport> TYPES =
-            new TypeProvider<>(AggregatedReport.class,
-                    new ParameterizedTypeReference<List<AggregatedReport>>() {
-                    });
+public class AggregatedReport implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    public static final TypeProvider<AggregatedReport> TYPES = new TypeProvider<>(
+            AggregatedReport.class, new ParameterizedTypeReference<List<AggregatedReport>>() {});
 
     private Long firstReportId;
     private Long reporterMemberId;

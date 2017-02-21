@@ -10,10 +10,10 @@ import java.util.List;
 
 public class LoginLog implements Serializable {
 
+    private static final long serialVersionUID = -1357748274;
+
     public static final TypeProvider<LoginLog> TYPES =
             new TypeProvider<>(LoginLog.class, new ParameterizedTypeReference<List<LoginLog>>() {});
-
-    private static final long serialVersionUID = -1357748274;
 
     private Long pk;
     private Long userId;

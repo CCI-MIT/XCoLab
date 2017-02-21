@@ -2,9 +2,12 @@ package org.xcolab.client.contest.pojo.phases;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-abstract class AbstractContestPhase {
+abstract class AbstractContestPhase implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long contestphasepk;
     private Long contestpk;

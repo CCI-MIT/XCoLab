@@ -1,6 +1,14 @@
-package org.xcolab.util.http.caching;
+package org.xcolab.util.http.caching.provider;
+
+import org.xcolab.util.http.caching.CacheCustomization;
+import org.xcolab.util.http.caching.CacheKey;
+import org.xcolab.util.http.caching.CacheName;
+
+import java.util.Map;
 
 public interface CacheProvider {
+
+    void init(Map<CacheName, CacheCustomization> customizations);
 
     <T> T get(CacheKey<?, T> key, CacheName cacheName);
 

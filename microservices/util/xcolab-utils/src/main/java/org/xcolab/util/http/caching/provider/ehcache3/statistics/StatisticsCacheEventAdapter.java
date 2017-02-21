@@ -1,4 +1,4 @@
-package org.xcolab.util.http.caching.statistics;
+package org.xcolab.util.http.caching.provider.ehcache3.statistics;
 
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.Meter;
@@ -37,6 +37,11 @@ public class StatisticsCacheEventAdapter extends CacheEventAdapter<String, Objec
     protected void onCreation(String key, Object newValue) {
         getCreationMeter().mark();
         getSizeCounter().inc();
+    }
+
+    @Override
+    protected void onRemoval(String key, Object removedValue) {
+        getSizeCounter().dec();
     }
 
     private Meter getEvictionMeter() {

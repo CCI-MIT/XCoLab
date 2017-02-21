@@ -1,8 +1,11 @@
 package org.xcolab.client.proposals.pojo.phases;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-class AbstractProposalMoveHistory {
+class AbstractProposalMoveHistory implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long id_;
     private Long sourceproposalid;

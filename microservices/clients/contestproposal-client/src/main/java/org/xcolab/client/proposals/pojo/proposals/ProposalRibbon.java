@@ -90,20 +90,23 @@ public class ProposalRibbon {
     }
 
     public String getRibbonTitle() {
-        if (contestPhaseRibbonType != null) {
-            if (getRibbonText().equalsIgnoreCase("Finalist") || getRibbonText().equalsIgnoreCase("Judges' Special Commendation")){
+        return getRibbonTitle(contestPhaseRibbonType.getId_(), getRibbonText());
+    }
+    public static String getRibbonTitle(Long contestPhaseRibbonTypeId, String ribbonText){
+        if (contestPhaseRibbonTypeId != null) {
+            if (ribbonText.equalsIgnoreCase("Finalist") || ribbonText.equalsIgnoreCase("Judges' Special Commendation")){
                 return "Finalist";
-            } else if (getRibbonText().equalsIgnoreCase("Semi-Finalist")) {
+            } else if (ribbonText.equalsIgnoreCase("Semi-Finalist")) {
                 return "Semi-Finalist";
             } else {
-                if(contestPhaseRibbonType.getId_()== 14 ||contestPhaseRibbonType.getId_()== 11 || contestPhaseRibbonType.getId_()== 12) {
+                if(contestPhaseRibbonTypeId== 14 ||contestPhaseRibbonTypeId== 11 || contestPhaseRibbonTypeId== 12) {
                     return "Finalist";
                 }else{
                     return "Winner";
                 }
             }
         }
-       // _log.error(String.format("Could not get ribbon title: ContestPhaseRibbonType was null for proposal %d", proposalWrapper.getProposalId()));
+        // _log.error(String.format("Could not get ribbon title: ContestPhaseRibbonType was null for proposal %d", proposalWrapper.getProposalId()));
         return "";
     }
 }

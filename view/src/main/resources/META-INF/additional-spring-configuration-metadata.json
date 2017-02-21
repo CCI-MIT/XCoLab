@@ -1,4 +1,10 @@
 {
+  "groups": [
+    {
+      "name": "cache",
+      "type": "org.xcolab.view.config.spring.CacheProperties"
+    }
+  ],
   "properties": [
     {
       "name": "tomcat.ajp.enabled",

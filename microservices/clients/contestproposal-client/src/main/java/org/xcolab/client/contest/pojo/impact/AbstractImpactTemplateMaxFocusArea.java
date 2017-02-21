@@ -1,6 +1,10 @@
 package org.xcolab.client.contest.pojo.impact;
 
-abstract class AbstractImpactTemplateMaxFocusArea {
+import java.io.Serializable;
+
+abstract class AbstractImpactTemplateMaxFocusArea implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long focusarealistid;
     private Long focusareaid;

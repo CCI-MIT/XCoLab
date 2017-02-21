@@ -27,6 +27,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
+import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.entity.utils.judging.ProposalJudgingCommentHelper;
 import org.xcolab.entity.utils.judging.ProposalReview;
 import org.xcolab.entity.utils.judging.ProposalReviewCsvExporter;
@@ -36,6 +37,7 @@ import org.xcolab.entity.utils.portlet.session.SessionMessages;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.FellowProposalScreeningBean;
@@ -478,7 +480,7 @@ public class JudgeProposalActionController {
                     existingRating.setRatingValueId(newRatingValueId);
                     //convention: save comment and shouldAdvance in first type
                     if (!commentAndAdvanceAdded) {
-                        existingRating.setComment_(ratingBean.getComment());
+                        existingRating.setComment_( HtmlUtil.cleanAll(ratingBean.getComment()));
                         existingRating.setCommentEnabled(true);
                         existingRating.setOtherDataString(shouldAdvance != null
                                 ? shouldAdvance.toString() : "");
@@ -503,7 +505,7 @@ public class JudgeProposalActionController {
                     proposalRating.setContestPhaseId(contestPhaseId);
                     proposalRating.setUserId(currentUserId);
                     proposalRating.setRatingValueId(newRatingValueId);
-                    proposalRating.setComment_(comment);
+                    proposalRating.setComment_(HtmlUtil.cleanAll(comment));
                     proposalRating.setOtherDataString(shouldAdvanceString);
                     if (StringUtils.isNotEmpty(comment)) {
                         proposalRating.setCommentEnabled(true);

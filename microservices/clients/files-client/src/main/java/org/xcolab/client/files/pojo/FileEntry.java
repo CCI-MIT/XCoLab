@@ -13,12 +13,12 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FileEntry implements Serializable {
 
+    private static final long serialVersionUID = -863924807;
+
     public static final TypeProvider<FileEntry> TYPES =
             new TypeProvider<>(FileEntry.class,
                     new ParameterizedTypeReference<List<FileEntry>>() {
                     });
-
-    private static final long serialVersionUID = -863924807;
 
     private Long fileentryid;
     private Timestamp createdate;

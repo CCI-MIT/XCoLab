@@ -1,8 +1,11 @@
 package org.xcolab.client.proposals.pojo.points;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-class AbstractPointsDistributionConfiguration {
+class AbstractPointsDistributionConfiguration implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long id_;
     private Long proposalid;

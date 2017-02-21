@@ -1,6 +1,10 @@
 package org.xcolab.client.members.pojo;
 
-public class LoginBean {
+import java.io.Serializable;
+
+public class LoginBean implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String password;
     private String ipAddress;

@@ -1,9 +1,13 @@
 package org.xcolab.util.attributes;
 
+import java.io.Serializable;
+
 /**
  * A convenience skeleton implementation of the {@link Attribute} interface.
  */
-public abstract class AbstractAttribute implements Attribute {
+public abstract class AbstractAttribute implements Attribute, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String name;
     private long additionalId;

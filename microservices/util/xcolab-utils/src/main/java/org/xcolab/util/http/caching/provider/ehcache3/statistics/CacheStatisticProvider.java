@@ -1,4 +1,4 @@
-package org.xcolab.util.http.caching.statistics;
+package org.xcolab.util.http.caching.provider.ehcache3.statistics;
 
 import com.codahale.metrics.Meter;
 import org.ehcache.Cache;
@@ -28,7 +28,8 @@ public class CacheStatisticProvider {
             cache.getRuntimeConfiguration()
                     .registerCacheEventListener(new StatisticsCacheEventAdapter(cacheName),
                             EventOrdering.UNORDERED, EventFiring.ASYNCHRONOUS,
-                            EventType.EVICTED, EventType.EXPIRED, EventType.CREATED);
+                            EventType.EVICTED, EventType.EXPIRED, EventType.CREATED,
+                            EventType.REMOVED);
         }
     }
 

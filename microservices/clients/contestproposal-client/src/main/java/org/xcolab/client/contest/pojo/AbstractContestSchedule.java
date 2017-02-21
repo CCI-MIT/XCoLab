@@ -1,6 +1,10 @@
 package org.xcolab.client.contest.pojo;
 
-public abstract class AbstractContestSchedule {
+import java.io.Serializable;
+
+public abstract class AbstractContestSchedule implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long id_;
     private String name;

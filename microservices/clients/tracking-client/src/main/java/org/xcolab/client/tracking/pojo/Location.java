@@ -4,6 +4,7 @@ import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 
@@ -12,7 +13,9 @@ import java.util.Locale;
  * @author janusz
  *
  */
-public class Location {
+public class Location implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public static final TypeProvider<Location> TYPES = new TypeProvider<>(Location.class,
 			new ParameterizedTypeReference<List<Location>>() {});

@@ -1,6 +1,10 @@
 package org.xcolab.client.comment.pojo;
 
-abstract class AbstractCategoryGroup {
+import java.io.Serializable;
+
+abstract class AbstractCategoryGroup implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long groupId;
     private String description;

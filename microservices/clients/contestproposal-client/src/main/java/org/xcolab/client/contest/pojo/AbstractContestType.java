@@ -2,7 +2,11 @@ package org.xcolab.client.contest.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public abstract class AbstractContestType {
+import java.io.Serializable;
+
+public abstract class AbstractContestType implements Serializable{
+
+    private static final long serialVersionUID = 1L;
 
     private Long id_;
     private String contestName;

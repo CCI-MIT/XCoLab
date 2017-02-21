@@ -2,10 +2,13 @@ package org.xcolab.client.contest.pojo.ontology;
 
 import org.xcolab.util.http.client.RestService;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FocusArea extends AbstractFocusArea {
+public class FocusArea extends AbstractFocusArea implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private List<OntologyTerm> ontologyTerms = new ArrayList<>();
     private List<Long> ontologyTermsIds = new ArrayList<>();

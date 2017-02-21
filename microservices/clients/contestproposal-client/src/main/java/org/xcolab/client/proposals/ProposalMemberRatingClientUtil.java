@@ -3,6 +3,7 @@ package org.xcolab.client.proposals;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
@@ -61,9 +62,10 @@ public final class ProposalMemberRatingClientUtil {
 
     }
 
-    public static Integer countProposalVotesInContestPhaseProposalId(Long proposalId,
-            Long contestPhaseId) {
-        return client.countProposalVotesInContestPhaseProposalId(proposalId, contestPhaseId);
+    public static Integer countProposalVotesInContestPhaseProposalId(long contestPhaseId,
+            long proposalId, CacheName cacheName) {
+        return client.countProposalVotesInContestPhaseProposalId(contestPhaseId,
+                proposalId, cacheName);
     }
 
     public static Boolean hasUserVoted(Long proposalId, Long contestPhaseId, Long memberId) {
