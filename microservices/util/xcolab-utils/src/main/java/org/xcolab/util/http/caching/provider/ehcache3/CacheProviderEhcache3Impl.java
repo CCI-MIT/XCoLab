@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 
 import org.xcolab.util.http.caching.CacheCustomization;
+import org.xcolab.util.http.caching.CacheCustomization.DiskStorage;
 import org.xcolab.util.http.caching.CacheDuration;
 import org.xcolab.util.http.caching.CacheKey;
 import org.xcolab.util.http.caching.CacheName;
@@ -41,7 +42,7 @@ public class CacheProviderEhcache3Impl implements CacheProvider, DisposableBean 
     }
 
     @Override
-    public void init(Map<CacheName, CacheCustomization> customizations) {
+    public void init(Map<CacheName, CacheCustomization> customizations, DiskStorage diskStorage) {
         this.customizations = customizations;
         CacheManager newCacheManager;
         try {

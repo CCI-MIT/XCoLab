@@ -18,6 +18,9 @@ management:
 cache:
   enabled: true
   provider: org.xcolab.util.http.caching.provider.ehcache2.CacheProviderEhcache2Impl
+  disk-storage:
+    enabled: true
+    max-megabytes: 1000
 
 spring:
   mvc:
