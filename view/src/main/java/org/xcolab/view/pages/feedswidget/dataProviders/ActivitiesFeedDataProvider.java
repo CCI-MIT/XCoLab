@@ -6,7 +6,9 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.entity.utils.ActivityUtil;
 import org.xcolab.view.pages.feedswidget.FeedTypeDataProvider;
 import org.xcolab.view.pages.feedswidget.FeedsPreferences;
@@ -15,6 +17,7 @@ import org.xcolab.view.util.pagination.SortFilterPage;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,17 +51,37 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
             } catch (Throwable ignored) {
             }
         }
+        List <Member> staffList;
+        List <Member> adminList;
+        HashMap<Long, Long> idsToExclude = new HashMap<>();
+        if(feedsPreferences.getRemoveAdmin()){//STAFF
+            final MemberCategory memberCategory = MembersClient.getMemberCategory(MemberRole.ADMINISTRATOR.getRoleId());
+            adminList = MembersClient.listMembers(memberCategory.getCategoryName(),null,null, null, true, 0, Integer.MAX_VALUE);
+            if(adminList!= null &&! adminList.isEmpty()) {
+                for (Member m : adminList){
+                    idsToExclude.put(m.getId_(),m.getUserId());
+                }
+            }
+        }
+
+        final MemberCategory memberCategory = MembersClient.getMemberCategory(MemberRole.STAFF.getRoleId());
+        staffList = MembersClient.listMembers(memberCategory.getCategoryName(),null,null, null, true, 0, Integer.MAX_VALUE);
+        if(staffList!= null &&! staffList.isEmpty()) {
+            for (Member m : staffList){
+                idsToExclude.put(m.getId_(),m.getUserId());
+            }
+        }
 
         List<ActivityEntry> windowedActivities;
         int startRetrievalAt = sortFilterPage.getPage() * pageSize;
         int endRetrievalAt = (sortFilterPage.getPage() + 1) * pageSize;
         if (filterUserId == 0) {
             windowedActivities = ActivitiesClientUtil
-                    .getActivityEntries(startRetrievalAt, endRetrievalAt, null, null);
+                    .getActivityEntries(startRetrievalAt, endRetrievalAt, null, new ArrayList<>(idsToExclude.keySet()));
 
         } else {
             windowedActivities = ActivitiesClientUtil
-                    .getActivityEntries(startRetrievalAt, endRetrievalAt, filterUserId, null);
+                    .getActivityEntries(startRetrievalAt, endRetrievalAt, filterUserId, new ArrayList<>(idsToExclude.keySet()));
         }
 
         int lastDaysBetween = -1;
@@ -70,12 +93,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
             if (SocialActivityWrapper.isEmpty(activity, request)) {
                 continue;
             }
-            if (!feedsPreferences.getRemoveAdmin() && PermissionsClient.canAdminAll(activity.getMemberId())) {
-                continue;
-            }
-            if (PermissionsClient.canStaff(activity.getMemberId())) {
-                continue;
-            }
+
             if (i >= feedsPreferences.getFeedSize()) {
                 break;
             }
