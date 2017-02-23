@@ -40,8 +40,9 @@ public class BadgeBean implements Serializable {
             try {
                 ContestPhaseRibbonType ribbon = getRibbonType(p);
                 Integer proposalRibbon = (ribbon == null) ? -1 : ribbon.getRibbon();
-                Long ribbonId = ribbon.getId_();
+
                 if (proposalRibbon > 0) {
+                    Long ribbonId = ribbon.getId_();
                     String badgeText = ribbon.getHoverText();
                     Contest contest = ProposalClientUtil.getCurrentContestForProposal(p.getProposalId());
                     String proposalTitle = ProposalAttributeClientUtil
