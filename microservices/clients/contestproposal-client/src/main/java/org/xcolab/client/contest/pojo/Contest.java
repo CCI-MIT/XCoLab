@@ -12,8 +12,8 @@ import org.xcolab.client.contest.ContestTeamMemberClient;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.enums.ContestRole;
 import org.xcolab.client.contest.enums.ContestStatus;
-import org.xcolab.client.contest.helper.Tuple;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -39,8 +39,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeMap;
 
 public class Contest extends AbstractContest {
 
@@ -70,7 +72,7 @@ public class Contest extends AbstractContest {
 
     protected List<ContestPhase> phases;
     protected ContestType contestType;
-    protected List<ContestTeamMemberRole> contestTeamMembersByRole;
+    protected Map<ContestTeamMemberRole, List<Member>> contestTeamMembersByRole;
 
     protected ContestPhase activePhase;
 
@@ -335,55 +337,38 @@ public class Contest extends AbstractContest {
         return phases;
     }
 
-    public List<ContestTeamMemberRole> getContestTeamMembersByRole() {
-
+    public Map<ContestTeamMemberRole, List<Member>> getContestTeamMembersByRole() {
         if (contestTeamMembersByRole == null) {
-            Map<Tuple<String, Integer>, List<Member>> teamRoleUsersMap = new HashMap<>();
-            for (ContestTeamMember teamMember : contestTeamMemberClient
-
-                    .getTeamMembers(this.getContestPK())) {
+            contestTeamMembersByRole = new TreeMap<>();
+            final List<ContestTeamMember> teamMembers =
+                    contestTeamMemberClient.getTeamMembers(this.getContestPK());
+            for (ContestTeamMember teamMember : teamMembers) {
                 try {
                     ContestTeamMemberRole role = contestTeamMemberClient
                             .getContestTeamMemberRole(teamMember.getRoleId());
-                    List<Member> roleUsers = teamRoleUsersMap
-                            .get(new Tuple<>(role.getRole(), role.getSort()));
-                    if (roleUsers == null) {
-                        roleUsers = new ArrayList<>();
-                        teamRoleUsersMap
-                                .put(new Tuple<>(role.getRole(), role.getSort()), roleUsers);
-                    }
+                    List<Member> roleUsers = contestTeamMembersByRole
+                            .computeIfAbsent(role, k -> new ArrayList<>());
                     roleUsers.add(MembersClient.getMember(teamMember.getUserId()));
                 } catch (MemberNotFoundException e) {
                     //_log.warn("Contest team member " + teamMember.getUserId() + " does not have an account");
                 }
             }
-            contestTeamMembersByRole = new ArrayList<>(teamRoleUsersMap.size());
-            for (Map.Entry<Tuple<String, Integer>, List<Member>> entry : teamRoleUsersMap.entrySet()) {
-                final Tuple<String, Integer> role = entry.getKey();
-                contestTeamMembersByRole.add(new ContestTeamMemberRole(role.getLeft(), entry.getValue(), role.getRight()));
-            }
-            Collections.sort(contestTeamMembersByRole);
-
         }
         return contestTeamMembersByRole;
     }
 
-    public boolean getHasUserRoleInContest(long memberId, String role) {
-
-        for (ContestTeamMemberRole c : getContestTeamMembersByRole()) {
-            if (c.getRoleName().equalsIgnoreCase(role)) {
-                for (Member user : c.getUsers()) {
-                    if (user.getUserId() == memberId) {
-                        return true;
-                    }
-                }
+    public boolean getHasUserRoleInContest(long memberId, long roleId) {
+        for (Entry<ContestTeamMemberRole, List<Member>> entry
+                : getContestTeamMembersByRole().entrySet()) {
+            final ContestTeamMemberRole role = entry.getKey();
+            final List<Member> members = entry.getValue();
+            if (role.getId_() == roleId) {
+                return members.stream()
+                        .anyMatch(p -> p.getId_() == memberId);
             }
         }
-
         return false;
     }
-
-
 
     public ContestPhase getActivePhase() {
         if (activePhase == null) {
@@ -391,56 +376,32 @@ public class Contest extends AbstractContest {
             if (phase == null) {
                 return null;
             }
-            activePhase =phase;
+            activePhase = phase;
         }
         return activePhase;
     }
+
     public List<Member> getContestImpactAssessmentFellows() {
-        List<Member> iaf = null;
-        for (ContestTeamMemberRole c : getContestTeamMembersByRole()) {
-            if (c.getRoleName().equalsIgnoreCase("IAF")) {
-                iaf = c.getUsers();
-            }
-        }
-        if (iaf == null) {
-            return Collections.emptyList();
-        }
-        return iaf;
+        return getMembersWithRole(ContestRole.IAF);
     }
+
     public List<Member> getContestJudges() {
-        List<Member> judges = null;
-        for (ContestTeamMemberRole c : getContestTeamMembersByRole()) {
-            if (c.getRoleName().equalsIgnoreCase("Judge")) {
-                judges = c.getUsers();
-            }
-        }
-        if (judges == null) {
-            return Collections.emptyList();
-        }
-        return judges;
+        return getMembersWithRole(ContestRole.JUDGE);
     }
 
     public List<Member> getContestFellows() {
-        List<Member> fellows = null;
-        for (ContestTeamMemberRole c : getContestTeamMembersByRole()) {
-            if (c.getRoleName().equalsIgnoreCase("Fellow")) {
-                fellows = c.getUsers();
-            }
-        }
-        return fellows;
+        return getMembersWithRole(ContestRole.FELLOW);
     }
 
     public List<Member> getContestAdvisors() {
-        List<Member> advisors = null;
-        for (ContestTeamMemberRole c : getContestTeamMembersByRole()) {
-            if (c.getRoleName().equalsIgnoreCase("Advisor")||c.getRoleName().equalsIgnoreCase("Curator")||c.getRoleName().equalsIgnoreCase("Challenge leader")) {
-                advisors = c.getUsers();
-            }
-        }
-        if (advisors == null) {
-            return Collections.emptyList();
-        }
-        return advisors;
+        return getMembersWithRole(ContestRole.ADVISOR);
+    }
+
+    private List<Member> getMembersWithRole(ContestRole contestRole) {
+        return getContestTeamMembersByRole().entrySet().stream()
+                .filter(e -> e.getKey().getContestRole() == contestRole)
+                .map(Entry::getValue)
+                .findAny().orElse(Collections.emptyList());
     }
 
     public long getTotalProposalsCount() {
