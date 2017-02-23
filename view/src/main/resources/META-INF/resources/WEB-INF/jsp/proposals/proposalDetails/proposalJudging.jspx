@@ -7,7 +7,7 @@
     <c:set var="saveJudgingFeedbackURL" value="${proposal.proposalUrl}/tab/ADVANCING/saveJudgingFeedback?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId}"/>
 
 
-    <form:form id="fellowRatingForm" action="${saveJudgingFeedbackURL}" method="post" commandName="judgeProposalBean">
+    <form:form id="fellowRatingForm" action="${saveJudgingFeedbackURL}" method="post" commandName="judgeProposalFeedbackBean">
         <form:hidden path="contestPhaseId" />
         <form:hidden path="screeningUserId" id="judgeUserId"/>
 
@@ -15,7 +15,7 @@
             <i style="float: right;">Transfer rating/comment for selected judge:</i>
         </c:if>
 
-        <h3><c:if test="${proposalsPermissions.canJudgeActions}">Judge </c:if>Rating</h3>
+        <h3 id="rating"><c:if test="${proposalsPermissions.canJudgeActions}">Judge </c:if>Rating</h3>
         <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}">
             <select id="judges-select">
                 <c:forEach var="judge" items="${proposal.selectedJudgeUsers}">
@@ -43,16 +43,21 @@
         <br/>
         <form:errors cssClass="c-Alert c-Alert__error" />
 
-        <proposalsPortlet:proposalRating ratingTypes="${judgeProposalBean.ratingTypes}" ratingValuesPath="ratingValues" />
+        <div class="form-errors">
+            <form:errors path="ratingValues" cssClass="c-Alert c-Alert__error"/>
+        </div>
+        <proposalsPortlet:proposalRating ratingTypes="${judgeProposalFeedbackBean.ratingTypes}" ratingValuesPath="ratingValues" />
 
         <c:if test="${proposalsPermissions.canJudgeActions}">
             <h3>Would you like to see this proposal advance to the next round?</h3>
+            <div class="form-errors">
+                <form:errors path="shouldAdvanceProposal" cssClass="c-Alert c-Alert__error"/>
+            </div>
             <form:select path="shouldAdvanceProposal">
                 <form:option value="" label="--- select one ---" />
                 <form:option value="true" label="Yes" />
                 <form:option value="false" label="No" />
             </form:select>
-
         </c:if>
 
         <h3 style="margin-top: 10px;">${proposalsPermissions.canJudgeActions ? 'Judge' : ''} Feedback</h3>
@@ -69,7 +74,7 @@
     </form:form>
     <div id="judge-evaluation-criteria">
         <h3 style="display: inline-block">Evaluation Criteria</h3>
-        <proposalsPortlet:ratingCriteriaText ratingTypes="${judgeProposalBean.ratingTypes}"/>
+        <proposalsPortlet:ratingCriteriaText ratingTypes="${judgeProposalFeedbackBean.ratingTypes}"/>
     </div>
 
     <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}">

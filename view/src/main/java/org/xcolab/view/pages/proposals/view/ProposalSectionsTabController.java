@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -41,6 +42,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Controller
 public class ProposalSectionsTabController extends BaseProposalTabController {
@@ -98,7 +100,9 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             @PathVariable Long proposalId,
             @PathVariable String contestUrlName,
             @PathVariable Long contestYear,
-            Model model, HttpServletRequest request) {
+            Model model, HttpServletRequest request,
+            @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
+            BindingResult bindingResult) {
         return showProposalDetailsPage(proposalId,contestYear,contestUrlName,null,false,false,null,null,false,model,request);
     }
 
@@ -260,14 +264,19 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
     }
 
     private void setJudgeProposalBean(Model model, HttpServletRequest request) {
-        Proposal proposalWrapper = proposalsContext.getProposalWrapped(request);
-        ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(
-                proposalWrapper, proposalsContext.getMember(request));
-        JudgeProposalFeedbackBean judgeProposalBean = new JudgeProposalFeedbackBean(proposalJudgeWrapper);
-        long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
-        judgeProposalBean.setContestPhaseId(contestPhaseId);
+        final JudgeProposalFeedbackBean judgeProposalFeedbackBean =
+                (JudgeProposalFeedbackBean) model.asMap().get("judgeProposalFeedbackBean");
+        if (judgeProposalFeedbackBean.getContestPhaseId() == null) {
+            Proposal proposalWrapper = proposalsContext.getProposalWrapped(request);
+            ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(
+                    proposalWrapper, proposalsContext.getMember(request));
+            JudgeProposalFeedbackBean judgeProposalBean =
+                    new JudgeProposalFeedbackBean(proposalJudgeWrapper);
+            long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
+            judgeProposalBean.setContestPhaseId(contestPhaseId);
 
-        model.addAttribute("judgeProposalBean", judgeProposalBean);
+            model.addAttribute("judgeProposalFeedbackBean", judgeProposalBean);
+        }
     }
 
     private void setVotingDeadline(Model model, Contest baseContest, HttpServletRequest request) {

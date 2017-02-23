@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
@@ -19,7 +18,6 @@ import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
 import org.xcolab.entity.utils.enums.ColabConstants;
 import org.xcolab.entity.utils.judging.ProposalJudgingCommentHelper;
-
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.exceptions.InternalException;
@@ -69,7 +67,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         model.addAttribute("showEvaluation", showEvaluationRatings);
 
         if (showPublicRatingForm) {
-            model.addAttribute("judgeProposalBean", getProposalRatingBean(request));
+            model.addAttribute("judgeProposalFeedbackBean", getProposalRatingBean(request));
         }
 
         if (showEvaluationRatings) {

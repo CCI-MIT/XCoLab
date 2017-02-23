@@ -5,6 +5,8 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
+
 import org.xcolab.model.tables.pojos.ProposalRatingType;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
 
@@ -14,9 +16,15 @@ import static org.xcolab.model.Tables.PROPOSAL_RATING_TYPE;
 
 @Repository
 public class ProposalRatingTypeDaoImpl implements ProposalRatingTypeDao {
-    @Autowired
-    private DSLContext dslContext;
+    private final DSLContext dslContext;
 
+    @Autowired
+    public ProposalRatingTypeDaoImpl(DSLContext dslContext) {
+        Assert.notNull(dslContext);
+        this.dslContext = dslContext;
+    }
+
+    @Override
     public ProposalRatingType get(Long id_) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(PROPOSAL_RATING_TYPE)
@@ -30,13 +38,17 @@ public class ProposalRatingTypeDaoImpl implements ProposalRatingTypeDao {
 
     }
     @Override
-    public List<ProposalRatingType> findByGiven(Integer judgeType) {
+    public List<ProposalRatingType> findByGiven(Integer judgeType, Boolean active) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_RATING_TYPE).getQuery();
 
         if (judgeType != null) {
             query.addConditions(PROPOSAL_RATING_TYPE.JUDGE_TYPE.eq(judgeType));
         }
+        if (active != null) {
+            query.addConditions(PROPOSAL_RATING_TYPE.IS_ACTIVE.eq(active));
+        }
+
         return query.fetchInto(ProposalRatingType.class);
     }
 }
