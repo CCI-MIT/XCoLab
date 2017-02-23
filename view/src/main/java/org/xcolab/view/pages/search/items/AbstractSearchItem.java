@@ -8,6 +8,7 @@ public abstract class AbstractSearchItem {
     private static final String HTML_CLEAN_UP_REGEXP = "<[^>]*>";
 
     public final static int MAX_CONTENT_LENGTH = 255;
+    public final static int B_TAG_LENGHT = 8;
 
     public abstract String getPrintName();
 
@@ -16,8 +17,25 @@ public abstract class AbstractSearchItem {
     public abstract String getTitle();
 
     public abstract String getLinkUrl();
-
     public abstract String getContent();
+    public String getContent(String contentz, String searchQuery){
+        String content = highlight(contentz,searchQuery);
+        int maxContentLenght = Math.min(content.length(), MAX_CONTENT_LENGTH);
+        int tolerance = maxContentLenght;
+        if(content.length() > MAX_CONTENT_LENGTH +B_TAG_LENGHT){
+            tolerance = maxContentLenght +B_TAG_LENGHT;
+        }
+        String finalString = content.substring(maxContentLenght-B_TAG_LENGHT,tolerance);
+        if(finalString.contains("b>")){
+            if(finalString.contains("<b>")){
+                return content.substring(0,tolerance - B_TAG_LENGHT)+ " ...";
+            }else{
+                return content.substring(0,tolerance)+ " ...";
+            }
+
+        }
+        return content.substring(0, maxContentLenght) + " ...";
+    };
 
     public static String html2text(String html) {
         if(html == null) {
@@ -37,7 +55,7 @@ public abstract class AbstractSearchItem {
                 content = content.replace(token, "<b>"+token+"</b>");
             }
         }
-        content = content.replace(queryToHighlight, "<b>"+queryToHighlight+"</b>");
+        //content = content.replace(queryToHighlight, "<b>"+queryToHighlight+"</b>");
 
         return content;
     }

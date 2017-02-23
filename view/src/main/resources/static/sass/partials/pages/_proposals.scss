@@ -131,6 +131,12 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   color: white;
   @include border-radius(3px);
 }
+.edit-prop-butts a:hover {
+  color: white;
+}
+.edit-prop-butts a:visited {
+  color: white;
+}
 
 .edit-prop-butts span {
   background: $t-Color__grey--light;

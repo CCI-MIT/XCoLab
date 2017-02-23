@@ -105,7 +105,7 @@ public class ContestTeamMemberClient {
     public List<ContestTeamMember> getTeamMembers(Long contestId) {
         return DtoUtil.toPojos(contestTeamMemberResource.list()
                 .optionalQueryParam("contestId", contestId)
-                .withCache(CacheName.CONTEST_DETAILS)
+                //.withCache(CacheName.CONTEST_DETAILS) should be evicted if changes are made otherwise it wont show up
                 .execute(), contestService);
     }
 }

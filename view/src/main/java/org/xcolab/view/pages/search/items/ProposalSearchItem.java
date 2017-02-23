@@ -68,10 +68,11 @@ public class ProposalSearchItem extends AbstractSearchItem {
 
     }
 
+
     @Override
     public String getContent() {
-        String content = highlight(proposalAttribute.getStringValue(),searchQuery);
-        return content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)) + " ...";
+
+        return getContent(proposalAttribute.getStringValue(),searchQuery);
 
     }
 

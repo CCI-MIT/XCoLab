@@ -38,10 +38,10 @@ public class UserSearchItem extends AbstractSearchItem {
         return "/web/guest/member/-/member/userId/" + member.getId_();
     }
 
+
     @Override
     public String getContent() {
-        String content = highlight(member.getFirstName() + " " + member.getLastName() + " " + member.getShortBio(),searchQuery);
-        return content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)) + " ...";
+        return getContent(member.getFirstName() + " " + member.getLastName() + " " + member.getShortBio(),searchQuery);
     }
 
 

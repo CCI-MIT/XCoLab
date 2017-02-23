@@ -39,10 +39,10 @@ public class ContestSearchItem extends AbstractSearchItem {
             return contest.getContestLinkUrl();
     }
 
+
     @Override
     public String getContent() {
-        String content = highlight(contest.getContestDescription(),searchQuery);
-        return content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)) + " ...";
+        return super.getContent(contest.getContestDescription(), searchQuery);
     }
 
 }

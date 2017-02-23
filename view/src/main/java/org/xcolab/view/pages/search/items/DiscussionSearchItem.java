@@ -49,8 +49,7 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     @Override
     public String getContent() {
-        String content = highlight(this.comment.getContent(), searchQuery);
-        return content.substring(0, Math.min(content.length(), MAX_CONTENT_LENGTH)) + " ...";
+        return getContent(this.comment.getContent(), searchQuery);
     }
 
     @Override
