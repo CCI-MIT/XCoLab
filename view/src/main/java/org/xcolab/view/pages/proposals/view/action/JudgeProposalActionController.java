@@ -33,8 +33,6 @@ import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.entity.utils.judging.ProposalJudgingCommentHelper;
 import org.xcolab.entity.utils.judging.ProposalReview;
 import org.xcolab.entity.utils.judging.ProposalReviewCsvExporter;
-import org.xcolab.entity.utils.portlet.session.SessionErrors;
-import org.xcolab.entity.utils.portlet.session.SessionMessages;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.exceptions.InternalException;
@@ -370,18 +368,10 @@ public class JudgeProposalActionController {
 
     @PostMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/SCREENING/saveScreening",
             "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/SCREENING/saveScreening"})
-    public void saveScreening(HttpServletRequest request, Model model,
-            HttpServletResponse response,
-            @ModelAttribute FellowProposalScreeningBean fellowProposalScreeningBean,
-            BindingResult result)
+    public void saveScreening(HttpServletRequest request, HttpServletResponse response, Model model,
+            @ModelAttribute FellowProposalScreeningBean fellowProposalScreeningBean)
             throws ProposalsAuthorizationException, IOException {
         try {
-            //TODO: should we be validating the FellowProposalScreeningBean?
-            if (result.hasErrors()) {
-                SessionErrors.clear(request);
-                SessionMessages.clear(request);
-                return;
-            }
 
             long proposalId = proposalsContext.getProposal(request).getProposalId();
             long contestPhaseId = fellowProposalScreeningBean.getContestPhaseId();
