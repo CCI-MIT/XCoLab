@@ -192,8 +192,8 @@ public class ContestOverviewWrapper {
             invokeSetModelSettingsMethod(massActionMethod, request);
         } else {
             Boolean executeSetAction = (selectedMassAction > 0);
-            Boolean actionConfirmed = false;
-            massActionMethod.invoke(null, selectedContestIds, actionConfirmed, request);
+            //Boolean actionConfirmed = false;
+            massActionMethod.invoke(null, selectedContestIds, executeSetAction, request);
         }
     }
 
