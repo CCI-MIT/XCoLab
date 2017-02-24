@@ -121,35 +121,35 @@
                 </c:if>
 
                 <div class="p-ContestProposals__header__team">
-                    <c:if test="${not empty contest.contestTeamMembersByRole }">
-                        <c:forEach var="teamRole" items="${contest.contestTeamMembersByRole }">
-                            <div class="b-Spacing">
-                                <c:choose>
-                                    <c:when test="${fn:length(teamRole.users) eq 1}">
-                                        <div class="p-ContestProposals__header__team__roleName">
-                                            ${teamRole.roleName}
-                                        </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="p-ContestProposals__header__team__roleName">
-                                            ${teamRole.roleName}s
-                                        </div>
-                                    </c:otherwise>
-                                </c:choose>
-                                <c:forEach var="teamRoleUser" items="${teamRole.users }" varStatus="status">
-                                    <div class="p-ContestProposals__header__team__member">
-                                        <proposalsPortlet:userPortrait
-                                                screenName="${teamRoleUser.screenName }"
-                                                portraitId="${teamRoleUser.portraitId}" width="30"
-                                                userId="${teamRoleUser.userId}"
-                                                height="30"/>
-                                        <proposalsPortlet:userLinkSimple userId="${teamRoleUser.userId}"
-                                                                         text="${teamRoleUser.fullName}"/>
+                    <c:forEach var="teamRoleEntry" items="${contest.contestTeamMembersByRole.entrySet() }">
+                        <c:set var="teamRole" value="${teamRoleEntry.key}" />
+                        <c:set var="teamRoleMembers" value="${teamRoleEntry.value}" />
+                        <div class="b-Spacing">
+                            <c:choose>
+                                <c:when test="${fn:length(teamRoleMembers) eq 1}">
+                                    <div class="p-ContestProposals__header__team__roleName">
+                                        ${teamRole.role}
                                     </div>
-                                </c:forEach>
-                            </div>
-                        </c:forEach>
-                    </c:if>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="p-ContestProposals__header__team__roleName">
+                                        ${teamRole.role}s
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+                            <c:forEach var="teamRoleMember" items="${teamRoleMembers}" varStatus="status">
+                                <div class="p-ContestProposals__header__team__member">
+                                    <proposalsPortlet:userPortrait
+                                            screenName="${teamRoleMember.screenName}"
+                                            portraitId="${teamRoleMember.portraitId}" width="30"
+                                            userId="${teamRoleMember.userId}"
+                                            height="30"/>
+                                    <proposalsPortlet:userLinkSimple userId="${teamRoleMember.userId}"
+                                                                     text="${teamRoleMember.fullName}"/>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </c:forEach>
                 </div>
                 <div class="p-ContestProposals__header__buttons">
                     <c:if test="${showAdminLink}">

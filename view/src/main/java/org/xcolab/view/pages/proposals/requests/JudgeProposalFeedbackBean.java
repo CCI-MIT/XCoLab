@@ -1,7 +1,6 @@
 package org.xcolab.view.pages.proposals.requests;
 
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
-import org.xcolab.view.pages.proposals.requests.RatingBean;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
 
 public class JudgeProposalFeedbackBean extends RatingBean {
@@ -11,5 +10,6 @@ public class JudgeProposalFeedbackBean extends RatingBean {
     }
 
     public JudgeProposalFeedbackBean() {
+        super(ProposalJudgeRatingClientUtil.getRatingTypesForJudges());
     }
 }

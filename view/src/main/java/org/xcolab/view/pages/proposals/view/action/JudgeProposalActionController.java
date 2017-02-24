@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -27,17 +29,15 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
-import org.xcolab.entity.utils.LinkUtils;
+import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.entity.utils.judging.ProposalJudgingCommentHelper;
 import org.xcolab.entity.utils.judging.ProposalReview;
 import org.xcolab.entity.utils.judging.ProposalReviewCsvExporter;
-import org.xcolab.entity.utils.portlet.session.SessionErrors;
-import org.xcolab.entity.utils.portlet.session.SessionMessages;
-
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.FellowProposalScreeningBean;
@@ -64,12 +64,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
-//-- @RequestMapping("view")
 public class JudgeProposalActionController {
 
-    @Autowired
-    private ProposalsContext proposalsContext;
+    private final ProposalsContext proposalsContext;
 
+    @Autowired
+    public JudgeProposalActionController(ProposalsContext proposalsContext) {
+        Assert.notNull(proposalsContext);
+        this.proposalsContext = proposalsContext;
+    }
 
     @PostMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/ADVANCING/saveAdvanceDetails",
             "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ADVANCING/saveAdvanceDetails"})
@@ -155,8 +158,6 @@ public class JudgeProposalActionController {
         }
     }
 
-    //-- @ResourceMapping("getJudgingCsv")
-
     @GetMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/ADVANCING/getJudgingCsv",
             "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ADVANCING/getJudgingCsv"})
     public void getJudgingCsv(HttpServletRequest request, HttpServletResponse response) {
@@ -234,9 +235,8 @@ public class JudgeProposalActionController {
                     for (ProposalRating rating : ratings) {
                         org.xcolab.entity.utils.judging.ProposalRatingWrapper wrapper =
                                 new org.xcolab.entity.utils.judging.ProposalRatingWrapper(rating);
-                        if (ratingsPerType.get(wrapper.getRatingType()) == null) {
-                            ratingsPerType.put(wrapper.getRatingType(), new ArrayList<Long>());
-                        }
+                        ratingsPerType.computeIfAbsent(wrapper.getRatingType(),
+                                k -> new ArrayList<>());
                         ratingsPerType.get(wrapper.getRatingType())
                                 .add(wrapper.getRatingValue().getValue());
 
@@ -267,7 +267,7 @@ public class JudgeProposalActionController {
                     }
 
                     if ((proposalToProposalReviewsMap.get(proposal) == null)) {
-                        proposalToProposalReviewsMap.put(proposal, new ArrayList<ProposalReview>());
+                        proposalToProposalReviewsMap.put(proposal, new ArrayList<>());
                     }
 
                     proposalToProposalReviewsMap.get(proposal).add(proposalReview);
@@ -311,7 +311,7 @@ public class JudgeProposalActionController {
                 for(Long memberId : members){
                     selectedJudges.add(MembersClient.getMember(memberId));
                 }
-            }catch (MemberNotFoundException ignored){
+            } catch (MemberNotFoundException ignored) {
 
             }
         }
@@ -319,32 +319,34 @@ public class JudgeProposalActionController {
         return selectedJudges;
     }
 
-    //-- @RequestMapping(params = {"action=saveJudgingFeedback"})
     @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ADVANCING/saveJudgingFeedback")
-    public void saveJudgingFeedback(HttpServletRequest request, Model model, HttpServletResponse response,
-            @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean, BindingResult result)
+    public String saveJudgingFeedback(HttpServletRequest request, HttpServletResponse response,
+            Model model, @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
+            BindingResult result, RedirectAttributes redirectAttributes, Member member)
             throws IOException {
-
-        if (result.hasErrors()) {
-            //TODO: redirect to error page
-            return;
-        }
 
         final Contest contest = proposalsContext.getContest(request);
         Proposal proposal = proposalsContext.getProposalWrapped(request);
         ContestPhase contestPhase = ContestClientUtil.getContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
-        Member member = proposalsContext.getMember(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
         Boolean isPublicRating = permissions.getCanPublicRating();
 
-        if (judgeProposalFeedbackBean.getScreeningUserId() != null) {
+        if (judgeProposalFeedbackBean.getScreeningUserId() != null && permissions.getCanAdminAll()) {
             member = MembersClient.getMemberUnchecked(judgeProposalFeedbackBean.getScreeningUserId());
         }
 
         // Security handling
         if (!(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(member) || isPublicRating)) {
-            //TODO: redirect to error page
-            return;
+            return ErrorText.ACCESS_DENIED.flashAndReturnRedirect(request);
+        }
+
+        final String redirectUrl = proposal.getWrapped().getProposalLinkUrl(contest,
+                contestPhase.getContestPhasePK());
+
+        if (result.hasErrors()) {
+            AlertMessage.danger("Your rating was NOT saved! Please check the form for errors.").flash(request);
+            redirectAttributes.addFlashAttribute("judgeProposalFeedbackBean", judgeProposalFeedbackBean);
+            return "redirect:" + redirectUrl + "#rating";
         }
 
         if (permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(member)) {
@@ -360,24 +362,16 @@ public class JudgeProposalActionController {
         this.saveRatings(existingRatings, judgeProposalFeedbackBean, proposal.getProposalId(),
                 contestPhase.getContestPhasePK(), member.getUserId(), isPublicRating);
 
-        response.sendRedirect(proposal.getWrapped().getProposalLinkUrl(contest,
-                contestPhase.getContestPhasePK()));
+        AlertMessage.success("Rating saved successfully.").flash(request);
+        return "redirect:" + redirectUrl;
     }
 
-    //-- @RequestMapping(params = {"action=saveScreening"})
     @PostMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/SCREENING/saveScreening",
             "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/SCREENING/saveScreening"})
-    public void saveScreening(HttpServletRequest request, Model model,
-            HttpServletResponse response,
-            @ModelAttribute("fellowProposalScreeningBean") @Valid FellowProposalScreeningBean fellowProposalScreeningBean,
-            BindingResult result)
+    public void saveScreening(HttpServletRequest request, HttpServletResponse response, Model model,
+            @ModelAttribute FellowProposalScreeningBean fellowProposalScreeningBean)
             throws ProposalsAuthorizationException, IOException {
         try {
-            if (result.hasErrors()) {
-                SessionErrors.clear(request);
-                SessionMessages.clear(request);
-                return;
-            }
 
             long proposalId = proposalsContext.getProposal(request).getProposalId();
             long contestPhaseId = fellowProposalScreeningBean.getContestPhaseId();
