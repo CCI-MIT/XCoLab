@@ -30,3 +30,4 @@ deploy:
   script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/deploy travis@cognosis.mit.edu:deploy
   on:
     branch: homolog
+

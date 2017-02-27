@@ -74,8 +74,10 @@ public class ProposalRatingController {
     }
 
     @RequestMapping(value = "/proposalRatingTypes")
-    public List<ProposalRatingType> getProposalRatingTypes(@RequestParam("judgeType") Integer judgeType) throws NotFoundException {
-        return proposalRatingTypeDao.findByGiven(judgeType);
+    public List<ProposalRatingType> getProposalRatingTypes(@RequestParam Integer judgeType,
+            @RequestParam(required = false) Boolean active)
+            throws NotFoundException {
+        return proposalRatingTypeDao.findByGiven(judgeType, active);
     }
 
 

@@ -72,6 +72,16 @@ public class CacheCustomization {
          */
         private int maxMegabytes = 1;
 
+        /**
+         * Path to store disk persistence file.
+         *
+         * Can use one of the following system properties:
+         * user.home, user.dir, java.io.tmpdir
+         *
+         * Note: cannot be configured for individual caches
+         */
+        private String path = "java.io.tmpdir";
+
         public boolean isEnabled() {
             return enabled;
         }
@@ -86,6 +96,14 @@ public class CacheCustomization {
 
         public void setMaxMegabytes(int maxMegabytes) {
             this.maxMegabytes = maxMegabytes;
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        public void setPath(String path) {
+            this.path = path;
         }
     }
 }

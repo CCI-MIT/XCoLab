@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<configuration scan="false">
-
-    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
+<configuration debug="false" scan="false">
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <layout class="ch.qos.logback.classic.PatternLayout">
+        <encoder>
             <pattern>
                 %d{HH:mm:ss.SSS} [%thread] %-5level %logger{32} - %msg%n
             </pattern>
-        </layout>
+        </encoder>
     </appender>
 
-    <logger name="org.springframework.web" level="INFO"/>
+    <logger name="org.xcolab.util.http.caching.provider" level="INFO"/>
+    <logger name="org.springframework" level="INFO" />
+    <logger name="org.springframework.web" level="WARN" />
+    <logger name="org.springframework.boot.actuate" level="WARN" />
 
     <root>
         <level value="WARN"/>

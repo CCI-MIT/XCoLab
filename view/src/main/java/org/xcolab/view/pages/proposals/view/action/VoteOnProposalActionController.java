@@ -77,7 +77,7 @@ public class VoteOnProposalActionController {
 
                 proposalMemberRatingClient.addProposalVote(proposalId, contestPhaseId, memberId);
                 String portalUrl = ConfigurationAttributeKey.COLAB_URL.get();
-                final boolean voteIsValid = validateVote(member, proposal, contest,portalUrl);
+                final boolean voteIsValid = validateVote(member, proposal, contest,portalUrl, request);
                 if (voteIsValid) {
                     try {
                         Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
@@ -110,9 +110,9 @@ public class VoteOnProposalActionController {
     }
 
     private boolean validateVote(Member member, Proposal proposal, Contest contest,
-            String baseUrl) {
+            String baseUrl, HttpServletRequest request) {
 
-        List<Member> usersWithSharedIP = MembersClient.findMembersByIp(member.getLoginIP());
+        List<Member> usersWithSharedIP = MembersClient.findMembersByIp(request.getRemoteAddr());
         usersWithSharedIP.remove(member);
         if (!usersWithSharedIP.isEmpty()) {
             final ProposalVote vote = proposalMemberRatingClient

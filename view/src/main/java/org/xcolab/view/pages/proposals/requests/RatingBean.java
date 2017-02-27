@@ -1,24 +1,33 @@
 package org.xcolab.view.pages.proposals.requests;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.view.pages.proposals.wrappers.ProposalRatingTypeWrapper;
+import org.xcolab.view.util.validation.NoBlankValues;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.constraints.NotNull;
+
 public class RatingBean {
 
     private List<ProposalRatingTypeWrapper> ratingTypes;
+
+    @NoBlankValues(message = "Please complete all ratings.")
     private Map<Long, String> ratingValues;
 
     private Long contestPhaseId;
 
+    @NotBlank(message = "Please provide feedback in the text field.")
     private String comment;
 
+    @NotNull(message = "Please select an advancing decision.")
     private Boolean shouldAdvanceProposal;
 
     private Long screeningUserId;
@@ -33,13 +42,19 @@ public class RatingBean {
             ratingTypes.add(new ProposalRatingTypeWrapper(type));
         }
 
-        //get the existing ratings from the wrapper
-        for (ProposalRating ratingWrapper : wrapper.getRatings()) {
-            ratingValues.put(ratingWrapper.getRatingTypeId(),
-                    String.valueOf(ratingWrapper.unwrap().getRatingValueId()));
+        if (wrapper != null) {
+            //get the existing ratings from the wrapper
+            for (ProposalRating ratingWrapper : wrapper.getRatings()) {
+                ratingValues.put(ratingWrapper.getRatingTypeId(),
+                        String.valueOf(ratingWrapper.unwrap().getRatingValueId()));
+            }
+            comment = wrapper.getRatingComment();
+            shouldAdvanceProposal = wrapper.getRatingShouldAdvance();
         }
-        comment = wrapper.getRatingComment();
-        shouldAdvanceProposal = wrapper.getRatingShouldAdvance();
+    }
+
+    public RatingBean(List<ProposalRatingType> presetRatingTypes) {
+        this(null, presetRatingTypes);
     }
 
     public RatingBean() {

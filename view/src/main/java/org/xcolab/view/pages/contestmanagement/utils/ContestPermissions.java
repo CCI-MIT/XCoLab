@@ -35,7 +35,7 @@ public class ContestPermissions implements TabPermissions {
     @Override
     public boolean getCanRole(MemberRole role) {
         return isLoggedIn && contestWrapper
-                .getHasUserRoleInContest(memberId, role.getPrintName());
+                .getHasUserRoleInContest(memberId, role.getRoleId());
     }
 
     @Override

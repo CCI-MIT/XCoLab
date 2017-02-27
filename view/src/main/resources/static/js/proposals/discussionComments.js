@@ -130,8 +130,10 @@ function handleFilteredContent(textInput, source, uuidField, callback){
     $.post("/profanityfiltering/" ,parameters , function (doc, suc, response) {
         var responseData = JSON.parse(response.responseText);
 
-        if (responseData.valid == "false") {
+        if (responseData.valid == false) {
+            $("#disallowed_words").html(responseData.offensiveTerm)
             $("#processedFailed").show();
+            
             $("#loading_filtering_image").hide();
         } else {
             var uuid = responseData.uuid;

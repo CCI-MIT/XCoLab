@@ -98,7 +98,7 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
         if (userId != null) {
             query.addConditions(PROPOSAL_VOTE.USER_ID.eq(userId));
         }
-        query.addConditions(PROPOSAL_VOTE.IS_VALID.eq(true));
+        //query.addConditions(PROPOSAL_VOTE.IS_VALID.eq(true));
         return query.fetchOne().into(Integer.class);
     }
 

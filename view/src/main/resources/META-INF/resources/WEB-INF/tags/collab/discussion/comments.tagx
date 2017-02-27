@@ -53,7 +53,7 @@
 			<div id="modal_filtering_prof" style="display:none;">
 				<p style="font-size: large;font-weight: 600;">Preparing for submission...</p>
 				<div id="loading_filtering_image" style="text-align: left"><img border="0" src="/images/loader.gif"/></div>
-				<div id="processedFailed" style="display:none;margin-top: 8px;">Your entry contains disallowed words. Please remove offensive words before saving again <a href="#" rel="modal:close">Close</a></div>
+				<div id="processedFailed" style="display:none;margin-top: 8px;">Your entry contains disallowed words : <b id = "disallowed_words"><!-- --></b>. Please remove offensive words before saving again <a href="#" rel="modal:close">Close</a></div>
 			</div>
 		</c:if>
 

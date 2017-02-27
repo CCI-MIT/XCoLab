@@ -26,7 +26,7 @@ public class CacheConfig {
                     | NoSuchMethodException | InvocationTargetException e) {
                 throw new InternalException(e);
             }
-            cacheProvider.init(cacheProperties.getCaches());
+            cacheProvider.init(cacheProperties.getCaches(), cacheProperties.getDiskStorage());
         } else {
             cacheProvider = new CacheProviderNoOpImpl();
         }

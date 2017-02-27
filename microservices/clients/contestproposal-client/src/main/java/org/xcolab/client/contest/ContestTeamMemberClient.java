@@ -45,19 +45,19 @@ public class ContestTeamMemberClient {
                 contestTeamMemberResource.create(new ContestTeamMemberDto(contestTeamMember))
                         .execute().toPojo(contestService);
         //TODO: fine-grained cache removal
-        ServiceRequestUtils.clearCache(CacheName.ROLES);
+        ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
         return result;
     }
 
     public void deleteContestTeamMember(Long contestTeamMemberId) {
         contestTeamMemberResource.delete(contestTeamMemberId).execute();
         //TODO: fine-grained cache removal
-        ServiceRequestUtils.clearCache(CacheName.ROLES);
+        ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
     }
 
     public ContestTeamMemberRole getContestTeamMemberRole(long id) {
         return contestTeamMemberRoleResource.get(id)
-                .withCache(CacheName.ROLES)
+                .withCache(CacheName.CONTEST_DETAILS)
                 .execute().toPojo(contestService);
     }
 
@@ -105,7 +105,7 @@ public class ContestTeamMemberClient {
     public List<ContestTeamMember> getTeamMembers(Long contestId) {
         return DtoUtil.toPojos(contestTeamMemberResource.list()
                 .optionalQueryParam("contestId", contestId)
-                //.withCache(CacheName.CONTEST_DETAILS) should be evicted if changes are made otherwise it wont show up
+                .withCache(CacheName.CONTEST_DETAILS)
                 .execute(), contestService);
     }
 }

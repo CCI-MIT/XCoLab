@@ -157,7 +157,7 @@ public final class MembersClient {
         return memberRoleResource.resolveParent(memberResource.id(memberId))
                 .list()
                 .queryParam("contestId", contestId)
-                .withCache(CacheName.ROLES)
+                .withCache(CacheName.CONTEST_DETAILS)
                 .execute();
     }
 

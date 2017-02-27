@@ -36,12 +36,8 @@ public final class ProposalJudgeRatingClient {
     }
 
     public static ProposalJudgeRatingClient fromService(RestService proposalService) {
-        ProposalJudgeRatingClient instance = instances.get(proposalService);
-        if (instance == null) {
-            instance = new ProposalJudgeRatingClient(proposalService);
-            instances.put(proposalService, instance);
-        }
-        return instance;
+        return instances.computeIfAbsent(proposalService,
+                k -> new ProposalJudgeRatingClient(proposalService));
     }
 
     public List<ProposalRating> getProposalRatingsByProposalUserContestPhase(Long proposalId,
@@ -72,7 +68,10 @@ public final class ProposalJudgeRatingClient {
     }
 
     private List<ProposalRatingType> getRatingTypesForJudgeType(int judgeType) {
-        return DtoUtil.toPojos(proposalRatingTypeResource.list().queryParam("judgeType",judgeType).execute(),proposalService);
+        return DtoUtil.toPojos(proposalRatingTypeResource.list()
+                .queryParam("judgeType", judgeType)
+                .queryParam("active", true)
+                .execute(),proposalService);
     }
 
     protected List<ProposalRating> getRatingsForProposal(long proposalId, long contestPhaseId,

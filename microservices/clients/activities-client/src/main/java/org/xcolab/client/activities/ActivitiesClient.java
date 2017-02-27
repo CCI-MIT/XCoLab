@@ -5,6 +5,7 @@ import org.xcolab.client.activities.exceptions.ActivitySubscriptionNotFoundExcep
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 
+import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
@@ -68,7 +69,7 @@ public final class ActivitiesClient {
                 .optionalQueryParam("startRecord", startRecord)
                 .optionalQueryParam("limitRecord", limitRecord)
                 .optionalQueryParam("memberId", memberId)
-                .optionalQueryParam("folderId", memberIdsToExclude)
+                .optionalQueryParam("memberIdsToExclude", IdListUtil.getStringFromIds(memberIdsToExclude))
                 .execute();
     }
 

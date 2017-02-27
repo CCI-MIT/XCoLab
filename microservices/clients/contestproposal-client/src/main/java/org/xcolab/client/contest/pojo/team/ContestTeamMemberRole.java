@@ -1,15 +1,10 @@
 package org.xcolab.client.contest.pojo.team;
 
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.contest.enums.ContestRole;
 import org.xcolab.util.http.client.RestService;
 
-import java.util.List;
-
-public class ContestTeamMemberRole extends AbstractContestTeamMemberRole implements Comparable<ContestTeamMemberRole>{
-
-    private String roleName;
-    private List<Member> users;
-
+public class ContestTeamMemberRole extends AbstractContestTeamMemberRole
+        implements Comparable<ContestTeamMemberRole> {
 
     public ContestTeamMemberRole() {}
 
@@ -25,34 +20,14 @@ public class ContestTeamMemberRole extends AbstractContestTeamMemberRole impleme
             RestService restService) {
         super(abstractContestTeamMemberRole);
     }
-    public ContestTeamMemberRole(String roleName, List<Member> users, int sort) {
-        super();
-        this.roleName = roleName;
-        this.users = users;
-        this.setSort(sort);
+
+    public ContestRole getContestRole() {
+        return ContestRole.fromRoleId(getId_());
     }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    public List<Member> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<Member> users) {
-        this.users = users;
-    }
-
-
 
     @Override
-    public int compareTo(ContestTeamMemberRole bctrw) {
-        return this.getSort() - bctrw.getSort();
+    public int compareTo(ContestTeamMemberRole other) {
+        return this.getSort() - other.getSort();
     }
 
 }
