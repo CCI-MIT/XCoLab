@@ -5,7 +5,7 @@ set -e
 echo "#####################################################################################"
 echo "Deploying parent dependencies"
 echo "#####################################################################################"
-LOG=""
+LOG="-q -B -Dsurefire.printSummary=false"
 #LOG="-q -B -Dsurefire.printSummary=false"
 # USE LOG = "" if you want verbose mode
 mvn install -N $LOG
