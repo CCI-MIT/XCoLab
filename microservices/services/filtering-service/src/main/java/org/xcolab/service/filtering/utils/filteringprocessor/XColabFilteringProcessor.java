@@ -44,13 +44,14 @@ public class XColabFilteringProcessor extends EntryFilteringProcessor{
         String[] tokensInUserContent = memberInput.split("[\\p{Punct}\\s]+");
         for(String token : tokensInUserContent){
             if( profanitiesWordMap.containsKey(token)){
-                return setFailedFiltering(memberContentEntry, memberInput);
+                return setFailedFiltering(memberContentEntry, token);
             }
         }
         Iterator<String> it =  profanitiesPhraseMap.keySet().iterator();
         while(it.hasNext()){
-            if(memberInput.contains(it.next())){
-                return setFailedFiltering(memberContentEntry, memberInput);
+            String profItem = it.next();
+            if(memberInput.contains(profItem)){
+                return setFailedFiltering(memberContentEntry, profItem);
             }
         }
         return setSuccessFiltering(memberContentEntry);

@@ -115,7 +115,7 @@ $p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.pn
 }
 
 .p-ContestProposals__header__team__roleName { //.contestTeamRole .contestTeamRoleName
-  display: inline-block;
+  display: block;
   padding-top: $p-ContestProposals__header__team__roleName__paddingTop;
   width: 85px;
 }
@@ -124,7 +124,9 @@ $p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.pn
   display: $p-ContestProposals__header__team__member__display;
   white-space: nowrap;
   padding-right: 10px;
-
+  max-width: 176px;
+  min-width: 176px;
+  margin-top: 4px;
   img {
     margin-right: 5px;
   }

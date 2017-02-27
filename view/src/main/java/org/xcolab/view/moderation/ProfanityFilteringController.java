@@ -35,16 +35,18 @@ public class ProfanityFilteringController {
         filteredEntry = FilteringClient.createFilteredEntry(filteredEntry);
 
         final boolean isValid = filteredEntry.getStatus().equals(FilteringStatus.APPROVED.getId());
-        return new ResponseJson(isValid, filteredEntry.getUuid());
+        return new ResponseJson(isValid, filteredEntry.getUuid(), filteredEntry.getResponseFullText());
     }
 
     private static class ResponseJson {
         private final boolean valid;
         private final String uuid;
+        private final String offensiveTerm;
 
-        private ResponseJson(boolean valid, String uuid) {
+        private ResponseJson(boolean valid, String uuid, String offensiveTerm) {
             this.valid = valid;
             this.uuid = uuid;
+            this.offensiveTerm = offensiveTerm;
         }
 
         public boolean isValid() {
@@ -54,5 +56,7 @@ public class ProfanityFilteringController {
         public String getUuid() {
             return uuid;
         }
+
+        public String getOffensiveTerm() {return offensiveTerm;}
     }
 }
