@@ -16,14 +16,12 @@ import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContextHelper.InvalidAccessException;
 import org.xcolab.view.pages.proposals.wrappers.ProposalsPreferencesWrapper;
 
-import java.util.HashMap;
-
 import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class ProposalsContextImpl implements ProposalsContext {
 
-    private static final String PROPOSALS_ATTRIBUTE_PREFIX = "_proposalsProtlet_";
+    private static final String PROPOSALS_ATTRIBUTE_PREFIX = "_proposalsContext_";
     private static final String CONTEXT_INITIALIZED_ATTRIBUTE =
             PROPOSALS_ATTRIBUTE_PREFIX + "contextInitialized";
     private static final String PERMISSIONS_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "permissions";
@@ -33,7 +31,6 @@ public class ProposalsContextImpl implements ProposalsContext {
     private static final String PROPOSAL_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "proposals";
     private static final String CONTEST_PHASE_ATTRIBUTE =
             PROPOSALS_ATTRIBUTE_PREFIX + "contestPhase";
-    private static final String USER_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "user";
     private static final String MEMBER_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "member";
     private static final String PROPOSALS_PREFERENCES_ATTRIBUTE =
             PROPOSALS_ATTRIBUTE_PREFIX + "preferences";
@@ -52,14 +49,7 @@ public class ProposalsContextImpl implements ProposalsContext {
             PROPOSALS_ATTRIBUTE_PREFIX + "clients";
     public static final String PROPOSAL_CONTEST_HELPER = "ProposalContextHelper";
 
-    private static final HashMap<String,String> pathVariables = new HashMap<>();
-
-
     public ProposalsContextImpl() {
-    }
-
-    public void addPathVariable(String nameIdentifier, String value){
-        this.pathVariables.put(nameIdentifier,value);
     }
 
     /* (non-Javadoc)
@@ -179,7 +169,7 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
 
     private void init(HttpServletRequest request) {
-        ProposalContextHelper contextHelper = new ProposalContextHelper(request, pathVariables);
+        ProposalContextHelper contextHelper = new ProposalContextHelper(request);
 
         final Member member = contextHelper.getMember();
 

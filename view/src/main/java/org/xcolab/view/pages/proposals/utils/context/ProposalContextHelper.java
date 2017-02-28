@@ -16,12 +16,9 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.entity.utils.portlet.RequestParamUtil;
-
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
-
-import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,28 +39,29 @@ public class ProposalContextHelper {
     private final int givenVersion;
     private final long givenProposalId;
     private final HttpServletRequest request;
-    private final HashMap<String,String> pathParameters;
     private final Contest contest;
     private final ClientHelper clientHelper;
 
-    public ProposalContextHelper(HttpServletRequest request,HashMap<String,String>  pathParameters) {
+    public ProposalContextHelper(HttpServletRequest request) {
         this.request = request;
-        this.pathParameters = pathParameters;
-        final long proposalIdParam = RequestParamUtil.getLong(request, PROPOSAL_ID_PARAM,pathParameters);
+        final long proposalIdParam =
+                RequestParamUtil.getLong(request, PROPOSAL_ID_PARAM);
         givenProposalId = (proposalIdParam == 0)
-                ? RequestParamUtil.getLong(request, PLAN_ID_PARAM,pathParameters) : proposalIdParam;
-        givenContestUrlName = RequestParamUtil.getString(request, CONTEST_URL_NAME_PARAM,pathParameters);
-        givenContestYear = RequestParamUtil.getLong(request, CONTEST_YEAR_PARAM,pathParameters);
-        givenContestId = RequestParamUtil.getLong(request, CONTEST_ID_PARAM,pathParameters);
-        givenPhaseId = RequestParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM,pathParameters);
-        givenVersion = RequestParamUtil.getInteger(request, VERSION_PARAM,pathParameters);
+                ? RequestParamUtil.getLong(request, PLAN_ID_PARAM)
+                : proposalIdParam;
+        givenContestUrlName =
+                RequestParamUtil.getString(request, CONTEST_URL_NAME_PARAM);
+        givenContestYear = RequestParamUtil.getLong(request, CONTEST_YEAR_PARAM);
+        givenContestId = RequestParamUtil.getLong(request, CONTEST_ID_PARAM);
+        givenPhaseId = RequestParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
+        givenVersion = RequestParamUtil.getInteger(request, VERSION_PARAM);
 
         Contest transientContest = fetchContest();
 
         clientHelper = new ClientHelper(transientContest);
         if (transientContest != null) {
             contest = setupContestFromTheRightClient(transientContest.getContestPK());
-        }else{
+        } else {
             contest = null;
         }
     }
@@ -78,10 +76,6 @@ public class ProposalContextHelper {
         return localContest;
     }
 
-    public Member getMember() {
-        return MemberAuthUtil.getMemberOrNull(request);
-    }
-
     private Contest fetchContest() {
         Contest localContest = null;
         if (StringUtils.isNotBlank(givenContestUrlName) && givenContestYear > 0) {
@@ -94,6 +88,10 @@ public class ProposalContextHelper {
             }
         }
         return localContest;
+    }
+
+    public Member getMember() {
+        return MemberAuthUtil.getMemberOrNull(request);
     }
 
     public Contest getContest() throws InvalidAccessException {

@@ -1,40 +1,32 @@
 package org.xcolab.entity.utils.portlet;
 
-import java.util.HashMap;
+import org.springframework.web.servlet.HandlerMapping;
+
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class RequestParamUtil {
 
-    public static Long getLong(HttpServletRequest request, String paramName, HashMap<String,String> pathParams) {
-        return getLong(request, paramName, pathParams ,0L);
-    }
-
-    public static Long getLong(HttpServletRequest request, String paramName) {
-        return getLong(request, paramName, null ,0L);
-    }
-
-    public static Long getLong(HttpServletRequest request, String paramName,
-            HashMap<String, String> pathParameters, Long defaultValue) {
-        String value = (request.getAttribute(paramName)!=null)?((String)request.getAttribute(paramName)):(request.getParameter(paramName));
+    public static Long getLong(HttpServletRequest request, String paramName, Long defaultValue) {
+        String value = getString(request, paramName);
         if (value != null) {
             try {
                 return Long.parseLong(value);
             } catch (NumberFormatException e) {
-            }
-        }
-        if (pathParameters != null && pathParameters.get(paramName) != null) {
-            try {
-                return Long.parseLong(pathParameters.get(paramName));
-            } catch (NumberFormatException e) {
+                return defaultValue;
             }
         }
         return defaultValue;
     }
 
+    public static Long getLong(HttpServletRequest request, String paramName) {
+        return getLong(request, paramName, 0L);
+    }
+
     public static Boolean getBoolean(HttpServletRequest request, String paramName) {
 
-        String value = (request.getAttribute(paramName)!=null)?((String)request.getAttribute(paramName)):(request.getParameter(paramName));
+        String value = getString(request, paramName);
         if (value != null) {
             return Boolean.valueOf(value);
         }
@@ -42,49 +34,38 @@ public class RequestParamUtil {
     }
 
     public static String getString(HttpServletRequest request, String paramName,
-            HashMap<String, String> pathParams,
             String defaultValue) {
+        //noinspection unchecked
+        Map<String, String> pathVariables = (Map) request
+                .getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 
-        String value = (request.getAttribute(paramName)!=null)?((String)request.getAttribute(paramName)):(request.getParameter(paramName));
-        if (value != null) {
-            return value;
+        if (pathVariables != null && pathVariables.get(paramName) != null) {
+            return pathVariables.get(paramName);
         }
-        if (pathParams != null && pathParams.get(paramName)!=null ) {
-            return pathParams.get(paramName);
+        if (request.getParameter(paramName) != null) {
+            return request.getParameter(paramName);
         }
         return defaultValue;
+    }
 
-    }
-    public static String getString(HttpServletRequest request, String paramName,HashMap<String, String> pathParams ) {
-        return getString(request, paramName,pathParams, null);
-    }
     public static String getString(HttpServletRequest request, String paramName) {
-        return getString(request, paramName,null, null);
+        return getString(request, paramName, null);
     }
 
-    public static Integer getInteger(HttpServletRequest request, String paramName, HashMap<String, String> pathParams,
+    public static Integer getInteger(HttpServletRequest request, String paramName) {
+        return getInteger(request, paramName, 0);
+    }
+
+    public static Integer getInteger(HttpServletRequest request, String paramName,
             Integer defaultValue) {
-        String value = (request.getAttribute(paramName)!=null)?((String)request.getAttribute(paramName)):(request.getParameter(paramName));
+        String value = getString(request, paramName);
         if (value != null) {
             try {
                 return Integer.parseInt(value);
             } catch (NumberFormatException e) {
-            }
-        }
-
-        if (pathParams != null && pathParams.get(paramName)!= null) {
-            try {
-                return Integer.parseInt(pathParams.get(paramName));
-            } catch (NumberFormatException e) {
+                return defaultValue;
             }
         }
         return defaultValue;
-    }
-
-    public static Integer getInteger(HttpServletRequest request, String paramName) {
-        return getInteger(request, paramName,null, 0);
-    }
-    public static Integer getInteger(HttpServletRequest request, String paramName, HashMap<String, String> pathParams) {
-        return getInteger(request, paramName,pathParams, 0);
     }
 }

@@ -10,14 +10,9 @@ import org.xcolab.view.pages.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.wrappers.ProposalsPreferencesWrapper;
 
-import java.util.HashMap;
-
 import javax.servlet.http.HttpServletRequest;
 
 public interface ProposalsContext {
-
-
-    void addPathVariable(String variableName, String variableValue);
 
     Contest getContest(HttpServletRequest request);
 
