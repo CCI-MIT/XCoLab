@@ -4,15 +4,16 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           version="2.0">
 
+    <!--@elvariable id="currentCategory" type="org.xcolab.client.comment.pojo.Category"-->
+    <!--@elvariable id="categories" type="java.util.List<org.xcolab.client.comment.pojo.Category>"-->
+    <!--@elvariable id="threads" type="java.util.List<org.xcolab.client.comment.pojo.CommentThread>"-->
+    <!--@elvariable id="sortAscending" type="java.lang.Boolean"-->
+    <!--@elvariable id="sortColumn" type="java.lang.String"-->
+    <!--@elvariable id="isSubscribed" type="java.lang.Boolean"-->
+
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-    <xcolab:layout>
+    <xcolab:layout title="${currentCategory.name}">
         <xcolab:script src="${_libJsFolder}/proposals/discussionComments.js"/>
-        <!--@elvariable id="currentCategory" type="org.xcolab.client.comment.pojo.Category"-->
-        <!--@elvariable id="categories" type="java.util.List<org.xcolab.client.comment.pojo.Category>"-->
-        <!--@elvariable id="threads" type="java.util.List<org.xcolab.client.comment.pojo.CommentThread>"-->
-        <!--@elvariable id="sortAscending" type="java.lang.Boolean"-->
-        <!--@elvariable id="sortColumn" type="java.lang.String"-->
-        <!--@elvariable id="isSubscribed" type="java.lang.Boolean"-->
 
         <script type="text/javascript">
             var hash = window.location.hash;

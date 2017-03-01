@@ -6,7 +6,7 @@
 	version="2.0">
 
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-	<xcolab:layout>
+	<xcolab:layout title="${contest.contestShortName} - Discussion">
 		<!--@elvariable id="discussionId" type="java.lang.Long"-->
 
 		<jsp:directive.include file="./init_contest.jspx" />

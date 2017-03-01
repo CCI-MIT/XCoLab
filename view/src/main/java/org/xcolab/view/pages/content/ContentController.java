@@ -27,6 +27,8 @@ public class ContentController {
 
         try {
             final ContentPage contentPage = ContentsClient.getContentPage(pageTitle);
+            model.addAttribute("contentPage", contentPage);
+
             final ContentArticle contentArticle = ContentsClient
                     .getContentArticle(contentPage.getContentArticleId());
 

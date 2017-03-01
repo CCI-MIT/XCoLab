@@ -5,13 +5,13 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-<xcolab:layout>
+
+<!--@elvariable id="permissions" type="org.xcolab.view.pages.profile.utils.UserProfilePermissions"-->
+<!--@elvariable id="userBean" type="org.xcolab.view.pages.profile.beans.UserBean"-->
+<!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
+<xcolab:layout title="${currentUserProfile.realName}'s Profile">
 
     <jsp:directive.include file="./init.jspx" />
-
-	<!--@elvariable id="permissions" type="org.xcolab.portlets.userprofile.utils.UserProfilePermissions"-->
-	<!--@elvariable id="userBean" type="org.xcolab.portlets.userprofile.beans.UserBean"-->
-    <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
 
 	<c:if test="${updateSuccess}">
 		<script type="text/javascript" >

@@ -7,7 +7,7 @@
           xmlns:pagination ="urn:jsptagdir:/WEB-INF/tags"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-<xcolab:layout>
+<xcolab:layout title="Subscriptions">
 
     <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
     <jsp:directive.include file="./init.jspx" />

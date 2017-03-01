@@ -3,7 +3,7 @@
 	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
 	version="2.0">
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-	<xcolab:layout>
+	<xcolab:layout title="Contests">
 		<!--@elvariable id="viewType" type="java.lang.String"-->
 		<!--@elvariable id="showCollectionCards" type="java.lang.Boolean"-->
 		<xcolab:script src="${_themeJsFolder}/proposals/proposals.js" />

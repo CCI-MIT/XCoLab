@@ -1,8 +1,10 @@
 package org.xcolab.client.contents.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.util.http.client.types.TypeProvider;
@@ -85,6 +87,11 @@ public class ContentPage implements Serializable {
 
     public void setModifiedDate(Timestamp modifiedDate) {
         this.modifiedDate = modifiedDate;
+    }
+
+    @JsonIgnore
+    public String getFormattedTitle() {
+        return WordUtils.capitalize(title.replace('-', ' '));
     }
 
     @Override
