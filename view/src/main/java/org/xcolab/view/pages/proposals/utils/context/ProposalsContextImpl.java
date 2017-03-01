@@ -3,6 +3,7 @@ package org.xcolab.view.pages.proposals.utils.context;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -187,8 +188,11 @@ public class ProposalsContextImpl implements ProposalsContext {
             ContestPhase contestPhase = null;
             Proposal2Phase proposal2Phase = null;
 
+            final ClientHelper clientHelper = contextHelper.getClientHelper();
+            final ContestClient contestClient = clientHelper.getContestClient();
+
             if (contest != null) {
-                contestType = contextHelper.getClientHelper().getContestClient().getContestType(contest.getContestTypeId());
+                contestType = contestClient.getContestType(contest.getContestTypeId());
                 contestPhase = contextHelper.getContestPhase(contest, proposal);
                 if (proposal != null) {
                     proposal2Phase = contextHelper.getProposal2Phase(contestPhase);
@@ -238,7 +242,7 @@ public class ProposalsContextImpl implements ProposalsContext {
             if (phaseId > 0) {
                 request.setAttribute(REQUEST_PHASE_ID_ATTRIBUTE, phaseId);
             }
-            request.setAttribute(CLIENTS_ATTRIBUTE, contextHelper.getClientHelper());
+            request.setAttribute(CLIENTS_ATTRIBUTE, clientHelper);
 
             request.setAttribute(CONTEXT_INITIALIZED_ATTRIBUTE, true);
         } catch (InvalidAccessException e) {

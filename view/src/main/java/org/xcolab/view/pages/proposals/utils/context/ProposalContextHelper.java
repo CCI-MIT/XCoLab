@@ -133,8 +133,7 @@ public class ProposalContextHelper {
     public Proposal2Phase getProposal2Phase(ContestPhase contestPhase) {
         final ProposalPhaseClient proposalPhaseClient = clientHelper.getProposalPhaseClient();
         try {
-            return proposalPhaseClient
-                    .getProposal2PhaseByProposalIdContestPhaseId(givenProposalId,
+            return proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(givenProposalId,
                             contestPhase.getContestPhasePK());
         } catch (Proposal2PhaseNotFoundException e) {
             return null;

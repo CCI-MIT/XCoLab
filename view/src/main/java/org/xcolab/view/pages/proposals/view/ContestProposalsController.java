@@ -90,7 +90,7 @@ public class ContestProposalsController extends BaseProposalsController {
                 break;
             default:
                 activeProposals = proposalClient.getActiveProposalsInContestPhase(
-                        contestPhase.getContestPhasePK(), CacheName.MISC_LONG);
+                        contestPhase.getContestPhasePK(), CacheName.PROPOSAL_LIST_CLOSED);
         }
 
         List<Proposal> proposals = new ArrayList<>();

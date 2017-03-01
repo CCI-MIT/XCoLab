@@ -6,6 +6,7 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalMoveClient;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
@@ -14,7 +15,10 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
+import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,11 +33,14 @@ public final class ProposalMoveUtil {
             Proposal proposal, ContestPhase contestPhase, Contest targetContest,
             long memberId, HttpServletRequest request) {
         try {
-            final Contest fromContest = ProposalsContextUtil.getClients(request).getProposalClient().getCurrentContestForProposal(proposal.getProposalId());
+            final ClientHelper clients = ProposalsContextUtil.getClients(request);
+            final ProposalClient proposalClient = clients.getProposalClient();
+            final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
+            final ProposalMoveClient proposalMoveClient = clients.getProposalMoveClient();
+
+            final Contest fromContest = proposalClient.getCurrentContestForProposal(proposal.getProposalId());
             ContestPhase targetPhase = ContestClientUtil.getActivePhase(targetContest.getContestPK());
 
-            final ProposalPhaseClient proposalPhaseClient =
-                    ProposalsContextUtil.getClients(request).getProposalPhaseClient();
             try {
                 if (proposalPhaseClient.getProposal2PhaseByProposalIdContestPhaseId(proposal.getProposalId(),
                         targetPhase.getContestPhasePK()) != null) {
@@ -43,8 +50,6 @@ public final class ProposalMoveUtil {
                 //proposal is not in the target phase -> that's what we want
             }
 
-            final ProposalMoveClient proposalMoveClient =
-                    ProposalsContextUtil.getClients(request).getProposalMoveClient();
             switch (updateProposalSectionsBean.getMoveType()) {
                 case MOVE_PERMANENTLY:
                     proposalMoveClient.createProposalMoveHistory(proposal.getProposalId(),
@@ -107,6 +112,8 @@ public final class ProposalMoveUtil {
                     .setProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase
                                     .getContestPhasePK(),
                             ProposalContestPhaseAttributeKeys.VISIBLE, 0L, 1L, "");
+            ServiceRequestUtils.clearCache(CacheName.PROPOSAL_LIST_CLOSED);
+            ServiceRequestUtils.clearCache(CacheName.PROPOSAL_PHASE);
         } catch (ContestNotFoundException ignored) {
 
         }
