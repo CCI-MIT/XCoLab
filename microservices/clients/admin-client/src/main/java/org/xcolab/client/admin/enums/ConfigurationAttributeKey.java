@@ -104,6 +104,19 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newStringAttribute("MY_EMMA_PRIVATE_API_KEY")
                     .build();
 
+    //Messaging settings
+    public static final AttributeGetter<Boolean> MESSAGING_EMAIL_ON_RECEIPT_DEFAULT =
+            ConfigurationAttributes.newBooleanAttribute("MESSAGING_EMAIL_ON_RECEIPT_DEFAULT")
+                    .defaultValue(true)
+                    .build();
+    public static final AttributeGetter<Boolean> MESSAGING_EMAIL_ON_ACTIVITY_DEFAULT =
+            ConfigurationAttributes.newBooleanAttribute("MESSAGING_EMAIL_ON_ACTIVITY_DEFAULT")
+                    .defaultValue(true)
+                    .build();
+    public static final AttributeGetter<Boolean> MESSAGING_DAILY_DIGEST_DEFAULT =
+            ConfigurationAttributes.newBooleanAttribute("MESSAGING_DAILY_DIGEST_DEFAULT")
+                    .defaultValue(true)
+                    .build();
 
     //Image upload help messages
     public static final AttributeGetter<String> IMAGE_UPLOAD_EXTERNAL_SERVICE_URL =
