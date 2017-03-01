@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.members.MembersClient;
@@ -244,6 +245,17 @@ public class Member implements Serializable {
     @JsonIgnore
     public List<Role_> getRoles() {
         return MembersClient.getMemberRoles(this.getId_());
+    }
+
+    @JsonIgnore
+    public boolean isVerifiedAccount() {
+        return hasLinkedSocialAccount();
+    }
+
+    @JsonIgnore
+    public boolean hasLinkedSocialAccount() {
+        return facebookId != null || StringUtils.isNotEmpty(googleId)
+                || StringUtils.isNotEmpty(openId);
     }
 
     public String getHashedPassword() {
