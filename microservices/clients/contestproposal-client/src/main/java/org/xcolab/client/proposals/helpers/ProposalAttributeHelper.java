@@ -6,7 +6,6 @@ import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.util.GroupingUtil;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,14 +105,5 @@ public class ProposalAttributeHelper {
             }
         }
         return newestAttributeSeen;
-    }
-
-    public Collection<ProposalAttribute> getAttributesByName(String attributeName) {
-        init();
-        final Map<Long, ProposalAttribute> attributesByAdditionalId = attributesByNameAndAdditionalId.get(attributeName);
-        if (attributesByAdditionalId != null) {
-            return attributesByAdditionalId.values();
-        }
-        return Collections.emptyList();
     }
 }

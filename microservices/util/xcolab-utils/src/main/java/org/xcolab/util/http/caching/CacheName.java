@@ -12,6 +12,7 @@ public enum CacheName {
     CONTEST_LIST(20, CacheDuration.DAILY),
     CONTEST_ONTOLOGY(50, CacheDuration.DAILY),
     PROPOSAL_PHASE(30, CacheDuration.MEDIUM),
+    PROPOSAL_DETAILS(100, CacheDuration.MEDIUM),
     PROPOSAL_LIST_CLOSED(20, CacheDuration.LONG),
     CONFIGURATION(75, CacheDuration.DAILY),
     MEMBER_RATING(100, CacheDuration.SHORT),

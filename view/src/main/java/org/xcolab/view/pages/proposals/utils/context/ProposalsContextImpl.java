@@ -11,6 +11,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
@@ -224,7 +225,8 @@ public class ProposalsContextImpl implements ProposalsContext {
                 request.setAttribute(PERMISSIONS_ATTRIBUTE, proposalsPermissions);
 
                 request.setAttribute(DISPLAY_PERMISSIONS_ATTRIBUTE, new ProposalsDisplayPermissions(
-                        proposalsPermissions, proposal, contestPhase, request));
+                        proposalsPermissions, proposal, contestPhase, clientHelper,
+                        MemberAuthUtil.getMemberId(request)));
             }
 
             request.setAttribute(PROPOSAL_ATTRIBUTE, proposal);
