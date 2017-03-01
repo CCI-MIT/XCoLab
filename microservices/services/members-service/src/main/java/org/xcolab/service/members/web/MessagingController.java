@@ -1,7 +1,10 @@
 package org.xcolab.service.members.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -109,19 +112,19 @@ public class MessagingController {
         return success;
     }
 
-    @RequestMapping(value = "/members/{memberId}/messagingPreferences", method = RequestMethod.GET)
+    @GetMapping("/members/{memberId}/messagingPreferences")
     public MessagingUserPreferences getMessagingPreferences(@PathVariable long memberId) {
         return messagingUserPreferencesService.getByMemberId(memberId);
     }
 
-    @RequestMapping(value = "/members/{memberId}/messagingPreferences/{messagingPreferencesId}", method = RequestMethod.PUT)
+    @PutMapping("/members/{memberId}/messagingPreferences/{messagingPreferencesId}")
     public boolean updateMessagingPreferences(@PathVariable long memberId,
             @PathVariable long messagingPreferencesId,
             @RequestBody MessagingUserPreferences messagingUserPreferences) {
         return messagingUserPreferencesDao.update(messagingUserPreferences);
     }
 
-    @RequestMapping(value = "/members/{memberId}/messagingPreferences", method = RequestMethod.POST)
+    @PostMapping("/members/{memberId}/messagingPreferences")
     public MessagingUserPreferences createMessagingPreferences(@PathVariable long memberId,
             @RequestBody MessagingUserPreferences messagingUserPreferences) {
         return messagingUserPreferencesDao.create(messagingUserPreferences)
