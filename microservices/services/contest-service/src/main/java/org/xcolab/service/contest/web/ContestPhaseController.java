@@ -61,10 +61,10 @@ public class ContestPhaseController {
 
 
 
-    @GetMapping(value = "/contestPhases/{contestPhaseId}")
-    public ContestPhase getContestPhase(@PathVariable long contestPhaseId)
+    @GetMapping(value = "/contestPhases/{phaseId}")
+    public ContestPhase getContestPhase(@PathVariable long phaseId)
             throws NotFoundException {
-        return contestPhaseDao.get(contestPhaseId).orElseThrow(NotFoundException::new);
+        return contestPhaseDao.get(phaseId).orElseThrow(NotFoundException::new);
     }
 
     @PostMapping(value = "/contestPhases")

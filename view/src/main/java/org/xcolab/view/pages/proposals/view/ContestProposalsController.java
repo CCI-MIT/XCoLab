@@ -43,15 +43,15 @@ public class ContestProposalsController extends BaseProposalsController {
         this.proposalsContext = proposalsContext;
     }
 
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{contestPhaseId}")
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}")
     public String showContestProposalsWithContestPhaseId(HttpServletRequest request, HttpServletResponse response,
             @PathVariable String contestYear,
             @PathVariable String contestUrlName,
-            @PathVariable String contestPhaseId,
+            @PathVariable String phaseId,
             final SortFilterPage sortFilterPage, Model model, Member loggedInMember) {
         setBasePageAttributes(request, model);
         return showContestProposalsPage(request, response, contestYear, contestUrlName,
-                contestPhaseId, sortFilterPage, model, loggedInMember);
+                phaseId, sortFilterPage, model, loggedInMember);
     }
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}")
