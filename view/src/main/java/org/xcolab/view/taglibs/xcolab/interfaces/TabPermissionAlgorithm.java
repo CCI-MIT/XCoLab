@@ -1,6 +1,8 @@
 package org.xcolab.view.taglibs.xcolab.interfaces;
 
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.entity.utils.enums.MemberRole;
+import org.xcolab.view.auth.MemberAuthUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -58,21 +60,42 @@ public interface TabPermissionAlgorithm {
         }
     };
 
-    TabPermissionAlgorithm
-            contestCreationViewAndEdit = new TabPermissionAlgorithm() {
+    TabPermissionAlgorithm contestCreationViewAndEdit = new TabPermissionAlgorithm() {
 
         @Override
         public boolean canView(TabPermissions permissions, TabContext context, HttpServletRequest request) {
-            return permissions.getCanRole(MemberRole.CONTEST_MANAGER) || permissions.getCanRole(MemberRole.FELLOW) || permissions.getCanRole(MemberRole.ADVISOR) || permissions.getCanStaff() || permissions.getCanAdmin();
+            return permissions.getCanRole(MemberRole.CONTEST_MANAGER) || permissions.getCanRole(MemberRole.FELLOW) || permissions.getCanAdmin();
         }
         @Override
         public boolean canEdit(TabPermissions permissions, TabContext context, HttpServletRequest request) {
-            return permissions.getCanRole(MemberRole.CONTEST_MANAGER) || permissions.getCanRole(MemberRole.FELLOW) || permissions.getCanRole(MemberRole.ADVISOR) || permissions.getCanStaff() || permissions.getCanAdmin();
+            return canView(permissions, context, request);
         }
 
         @Override
         public boolean getCanAddComment(TabPermissions permissions, TabContext context, HttpServletRequest request) {
-            return permissions.getCanRole(MemberRole.CONTEST_MANAGER) || permissions.getCanRole(MemberRole.FELLOW) || permissions.getCanRole(MemberRole.ADVISOR) || permissions.getCanStaff() || permissions.getCanAdmin();
+            return canView(permissions, context, request);
+        }
+    };
+
+    TabPermissionAlgorithm contestDetailsViewAndEdit = new TabPermissionAlgorithm() {
+        @Override
+        public boolean canView(TabPermissions permissions, TabContext context,
+                HttpServletRequest request) {
+            final Contest contest = context.getContest(request);
+            final long memberId = MemberAuthUtil.getMemberId(request);
+            return permissions.getCanAdmin() || contest.getCanFellow(memberId);
+        }
+
+        @Override
+        public boolean canEdit(TabPermissions permissions, TabContext context,
+                HttpServletRequest request) {
+            return canView(permissions, context, request);
+        }
+
+        @Override
+        public boolean getCanAddComment(TabPermissions permissions, TabContext context,
+                HttpServletRequest request) {
+            return canView(permissions, context, request);
         }
     };
 

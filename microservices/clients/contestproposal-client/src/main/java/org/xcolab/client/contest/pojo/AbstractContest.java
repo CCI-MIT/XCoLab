@@ -1,11 +1,8 @@
 package org.xcolab.client.contest.pojo;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 
-public abstract class AbstractContest implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public abstract class AbstractContest {
 
     private Long      contestpk;
     private Long      contesttypeid;

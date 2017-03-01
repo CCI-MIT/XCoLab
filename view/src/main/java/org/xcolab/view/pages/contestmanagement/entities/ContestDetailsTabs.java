@@ -10,19 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 
 public enum ContestDetailsTabs implements TabEnum {
     DESCRIPTION("Homepage", "description",
-            TabPermissionAlgorithm.contestCreationViewAndEdit,
+            TabPermissionAlgorithm.contestDetailsViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
     RESOURCES("Resources Page", "resources",
-            TabPermissionAlgorithm.contestCreationViewAndEdit,
+            TabPermissionAlgorithm.contestDetailsViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
     TEAM("Team", "team",
-            TabPermissionAlgorithm.contestCreationViewAndEdit,
+            TabPermissionAlgorithm.contestDetailsViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
     ONTOLOGY("Ontology", "ontology",
-            TabPermissionAlgorithm.contestCreationViewAndEdit,
+            TabPermissionAlgorithm.contestDetailsViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
     ADMIN("Admin", "admin",
-            TabPermissionAlgorithm.contestCreationViewAndEdit,
+            TabPermissionAlgorithm.adminOnlyViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero);
 
     private final String displayName;

@@ -152,7 +152,7 @@
                     </c:forEach>
                 </div>
                 <div class="p-ContestProposals__header__buttons">
-                    <c:if test="${showAdminLink}">
+                    <c:if test="${showEditLink}">
                         <div class="p-ContestProposals__header__detailButton">
                             <a href="/admin/contest/details/contestId/${contest.contestPK}">Edit Contest</a>
                         </div>

@@ -114,7 +114,6 @@ public class ContestProposalsController extends BaseProposalsController {
             }
         }
 
-
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("showCountdown",
                 ConfigurationAttributeKey.SHOW_CONTEST_COUNTDOWN.get());
@@ -122,11 +121,12 @@ public class ContestProposalsController extends BaseProposalsController {
         model.addAttribute("defaultTimeZoneId", ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.get());
         model.addAttribute("contestCompleted", proposalsContext.getContestWrapped(request).isContestCompleted(proposalsContext.getContestPhaseWrapped(request)));
         model.addAttribute("showShareButtons", ConfigurationAttributeKey.SHOW_SHARE_BUTTONS.get());
-        boolean showAdminLink = false;
+        boolean showEditLink = false;
         if (loggedInMember != null) {
-            showAdminLink = PermissionsClient.canAdminAll(loggedInMember.getUserId());
+            showEditLink = PermissionsClient.canAdminAll(loggedInMember.getUserId())
+                    || contest.getCanFellow(loggedInMember.getUserId());
         }
-        model.addAttribute("showAdminLink", showAdminLink);
+        model.addAttribute("showEditLink", showEditLink);
 
         setSeoTexts(request, contest.getContestShortName(), null, contest.getContestDescription());
 

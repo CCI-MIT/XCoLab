@@ -22,6 +22,7 @@ import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
@@ -46,11 +47,13 @@ import java.util.TreeMap;
 
 public class Contest extends AbstractContest {
 
+    private static final long serialVersionUID = 1L;
+
     private final ContestClient contestClient;
     private final ContestTeamMemberClient contestTeamMemberClient;
     private final OntologyClient ontologyClient;
-    private CommentClient commentClient;
-    private ThreadClient threadClient;
+    private final CommentClient commentClient;
+    private final ThreadClient threadClient;
 
     private final static Map<Long, FocusArea> faCache = new HashMap<>();
     private final Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<>();
@@ -368,6 +371,10 @@ public class Contest extends AbstractContest {
             }
         }
         return false;
+    }
+
+    public boolean getCanFellow(long memberId) {
+        return getHasUserRoleInContest(memberId, MemberRole.FELLOW.getRoleId());
     }
 
     public ContestPhase getActivePhase() {
