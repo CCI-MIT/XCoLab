@@ -16,6 +16,7 @@ import org.xcolab.service.proposal.service.proposal.ProposalService;
 import org.xcolab.util.GroupingUtil;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -54,8 +55,8 @@ public class PointsDistributionConfigurationService {
     public void verifyDistributionConfigurationsForProposalId(long proposalId) {
         Map<Long, List<PointsDistributionConfiguration>> pdcsByPointTypeId = new HashMap<>();
         for (PointsDistributionConfiguration pdc : pointsDistributionConfigurationDao.findByGiven(proposalId, null)) {
-            List<PointsDistributionConfiguration> pdcs = GroupingUtil
-                    .getInnerListOrCreate(pdc.getPointTypeId(), pdcsByPointTypeId);
+            List<PointsDistributionConfiguration> pdcs = pdcsByPointTypeId
+                    .computeIfAbsent(pdc.getPointTypeId(), k -> new ArrayList<>());
             pdcs.add(pdc);
         }
 

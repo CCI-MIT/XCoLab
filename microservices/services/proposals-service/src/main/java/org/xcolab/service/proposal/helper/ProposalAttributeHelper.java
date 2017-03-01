@@ -37,9 +37,8 @@ public class ProposalAttributeHelper {
             if (attributesByNameAndAdditionalId == null) {
                 attributesByNameAndAdditionalId = new HashMap<>();
                 for (ProposalAttribute attribute : attributes) {
-                    Map<Long, ProposalAttribute> currentAttributes = GroupingUtil
-                            .getInnerMapOrCreate(
-                                    attribute.getName(), attributesByNameAndAdditionalId);
+                    Map<Long, ProposalAttribute> currentAttributes = attributesByNameAndAdditionalId
+                            .computeIfAbsent(attribute.getName(), k-> new HashMap<>());
 
                     ProposalAttribute currentAttribute = currentAttributes
                             .get(attribute.getAdditionalId());
