@@ -20,10 +20,11 @@ public enum CoLabService {
 
     private final String serviceName;
 
-    CoLabService(String serviceNamez){
-        serviceName = serviceNamez;
+    CoLabService(String serviceName) {
+        this.serviceName = serviceName;
     }
-    public String getServiceName(){
+
+    public String getServiceName() {
         return serviceName;
     }
 }
