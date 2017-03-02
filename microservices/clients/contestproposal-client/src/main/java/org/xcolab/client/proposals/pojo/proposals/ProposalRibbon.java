@@ -1,5 +1,7 @@
 package org.xcolab.client.proposals.pojo.proposals;
 
+import org.springframework.util.Assert;
+
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
@@ -12,54 +14,40 @@ import org.xcolab.util.http.client.RestService;
 
 public class ProposalRibbon {
 
-    private ContestPhaseRibbonType contestPhaseRibbonType;
-    private final Proposal proposalWrapper;
+    private final ContestPhaseRibbonType contestPhaseRibbonType;
 
-    private final RestService proposalRestService;
-
-    public ProposalRibbon(Proposal proposalWrapper, RestService restService) {
-        this.proposalWrapper = proposalWrapper;
-        this.proposalRestService = restService;
-        contestPhaseRibbonType = getContestPhaseRibbonType();
-
+    public ProposalRibbon(Proposal proposal, RestService proposalService) {
+        Assert.notNull(proposal);
+        Assert.notNull(proposalService);
+        this.contestPhaseRibbonType = fetchRibbonType(proposal, proposalService);
     }
 
-    private ContestPhaseRibbonType getContestPhaseRibbonType() {
-        if (contestPhaseRibbonType == null) {
-            ProposalContestPhaseAttribute ribbonAttribute;
-            final Long proposalId = proposalWrapper.getProposalId();
-            if(proposalId == null || proposalId == 0 ){
-                return null;
-            }
-            ContestPhase contestPhase = null;
-
-
-            RestService contestService =  proposalRestService.withServiceName(CoLabService.CONTEST.getServiceName());
-            contestPhase = ContestClient.fromService(contestService).getContestPhase(proposalWrapper.getContestPhase().getContestPhasePK());
-
-            if (contestPhase == null) {
-                //_log.info(String.format("Could not retrieve ribbon type. Wrapper for proposal %d in Contest %d has no contestPhase.",
-                //        proposalId, proposalWrapper.getContestPK()));
-                return null;
-            }
-
-                ribbonAttribute = ProposalPhaseClient.fromService(proposalRestService)
-                        .getProposalContestPhaseAttribute(
-                                proposalId,
-                                contestPhase.getContestPhasePK(),
-                                ProposalContestPhaseAttributeKeys.RIBBON
-                        );
-                if (ribbonAttribute != null) {
-                    long typeId = ribbonAttribute.getNumericValue();
-                    if (typeId >= 0) {
-                        contestPhaseRibbonType = ContestClient.fromService(contestService).getContestPhaseRibbonType(typeId);
-                    }
-                } else {
-                    //_log.warn(String.format("Could not retrieve ribbon type for proposal %d", proposalId));
-                }
-
+    private ContestPhaseRibbonType fetchRibbonType(Proposal proposal, RestService proposalService) {
+        final Long proposalId = proposal.getProposalId();
+        if (proposalId == null || proposalId == 0) {
+            return null;
         }
-        return contestPhaseRibbonType;
+
+        final RestService contestService =
+                proposalService.withServiceName(CoLabService.CONTEST.getServiceName());
+        final ContestClient contestClient = ContestClient.fromService(contestService);
+        final ProposalPhaseClient proposalPhaseClient =
+                ProposalPhaseClient.fromService(proposalService);
+
+        ContestPhase contestPhase = contestClient
+                .getContestPhase(proposal.getContestPhase().getContestPhasePK());
+
+        ProposalContestPhaseAttribute ribbonAttribute =
+                proposalPhaseClient.getProposalContestPhaseAttribute(
+                        proposalId, contestPhase.getContestPhasePK(),
+                        ProposalContestPhaseAttributeKeys.RIBBON);
+        if (ribbonAttribute != null) {
+            long typeId = ribbonAttribute.getNumericValue();
+            if (typeId >= 0) {
+                return contestClient.getContestPhaseRibbonType(typeId);
+            }
+        }
+        return null;
     }
 
     public int getRibbon() {
@@ -68,18 +56,12 @@ public class ProposalRibbon {
         }
         return 0;
     }
+
     public long getRibbonId() {
         if (contestPhaseRibbonType != null) {
             return contestPhaseRibbonType.getId_();
         }
         return 0L;
-    }
-
-    public String getRibbonText() {
-        if (contestPhaseRibbonType != null) {
-            return contestPhaseRibbonType.getHoverText();
-        }
-        return "";
     }
 
     public int getSortOrder() {
@@ -90,23 +72,16 @@ public class ProposalRibbon {
     }
 
     public String getRibbonTitle() {
-        return getRibbonTitle(contestPhaseRibbonType.getId_(), getRibbonText());
-    }
-    public static String getRibbonTitle(Long contestPhaseRibbonTypeId, String ribbonText){
-        if (contestPhaseRibbonTypeId != null) {
-            if (ribbonText.equalsIgnoreCase("Finalist") || ribbonText.equalsIgnoreCase("Judges' Special Commendation")){
-                return "Finalist";
-            } else if (ribbonText.equalsIgnoreCase("Semi-Finalist")) {
-                return "Semi-Finalist";
-            } else {
-                if(contestPhaseRibbonTypeId== 14 ||contestPhaseRibbonTypeId== 11 || contestPhaseRibbonTypeId== 12) {
-                    return "Finalist";
-                }else{
-                    return "Winner";
-                }
-            }
+        if (contestPhaseRibbonType != null) {
+            return contestPhaseRibbonType.getTitle();
         }
-        // _log.error(String.format("Could not get ribbon title: ContestPhaseRibbonType was null for proposal %d", proposalWrapper.getProposalId()));
+        return "";
+    }
+
+    public String getRibbonText() {
+        if (contestPhaseRibbonType != null && contestPhaseRibbonType.getShowText()) {
+            return contestPhaseRibbonType.getHoverText();
+        }
         return "";
     }
 }

@@ -22,7 +22,7 @@ public class Member implements Serializable {
     private static final long serialVersionUID = 1;
 
     @JsonIgnore
-    private static final String USER_PROFILE_PATH = "/members/profile";
+    private static final String USER_PROFILE_PATH = "/members/profile/";
 
     public static final TypeProvider<Member> TYPES =
             new TypeProvider<>(Member.class,

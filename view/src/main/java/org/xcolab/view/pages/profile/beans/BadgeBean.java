@@ -38,17 +38,14 @@ public class BadgeBean implements Serializable {
     private void fetchBadges() {
         for(Proposal p : ProposalClientUtil.getMemberProposals(userId)) {
             try {
-                ContestPhaseRibbonType ribbon = getRibbonType(p);
-                Integer proposalRibbon = (ribbon == null) ? -1 : ribbon.getRibbon();
+                final ContestPhaseRibbonType ribbonType = getRibbonType(p);
 
-                if (proposalRibbon > 0) {
-                    Long ribbonId = ribbon.getId_();
-                    String badgeText = ribbon.getHoverText();
+                if (ribbonType != null  && ribbonType.getRibbon() > 0) {
                     Contest contest = ProposalClientUtil.getCurrentContestForProposal(p.getProposalId());
                     String proposalTitle = ProposalAttributeClientUtil
                             .getProposalAttribute(p.getProposalId(), ProposalAttributeKeys.NAME, 0L)
                             .getStringValue();
-                    badges.add(new Badge(ribbonId, proposalRibbon, badgeText, p, proposalTitle, contest));
+                    badges.add(new Badge(ribbonType, p, proposalTitle, contest));
                 }
             } catch (ContestNotFoundException e) {
                 _log.warn("Could not add badge to user profile view for userId: {} and proposalId: {}",

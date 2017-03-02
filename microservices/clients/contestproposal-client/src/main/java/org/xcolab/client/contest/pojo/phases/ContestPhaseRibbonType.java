@@ -10,11 +10,6 @@ public class ContestPhaseRibbonType extends AbstractContestPhaseRibbonType {
         super(value);
     }
 
-    public ContestPhaseRibbonType(Long id_, Integer ribbon, String hovertext, String description,
-            Boolean copyonpromote, Integer sortorder) {
-        super(id_, ribbon, hovertext, description, copyonpromote, sortorder);
-    }
-
     public ContestPhaseRibbonType(AbstractContestPhaseRibbonType abstractContestPhaseRibbonType,
             RestService restService) {
         super(abstractContestPhaseRibbonType);

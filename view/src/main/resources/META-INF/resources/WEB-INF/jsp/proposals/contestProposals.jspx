@@ -24,7 +24,7 @@
             <div class="c-Headline__fold">
                 <c:if test="${contest.hideRibbons and contestCompleted}">
                     <div class="fold-message">
-                        <h3>We’re tallying the votes… winners will be announced soon!</h3>
+                        <h3>We’re tallying the votes… stay tuned for the results!</h3>
                     </div>
                 </c:if>
             </div>
