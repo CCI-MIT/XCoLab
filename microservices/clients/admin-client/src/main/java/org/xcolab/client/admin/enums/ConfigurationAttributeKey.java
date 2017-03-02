@@ -5,6 +5,7 @@ import org.xcolab.util.enums.theme.ColabTheme;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public final class ConfigurationAttributeKey {
 
@@ -117,6 +118,19 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("MESSAGING_DAILY_DIGEST_DEFAULT")
                     .defaultValue(true)
                     .build();
+
+    //Voting configuration
+
+    /**
+     * Comma-separated list of regex patterns for emails that don't require manual verification.
+     *
+     * Example: @example\.com$,@[.a-zA-Z0-9-]+\.example.com$
+     */
+    public static final AttributeGetter<List<Pattern>> VOTING_EMAIL_VERIFICATION_WHITELIST =
+            ConfigurationAttributes.newListAttribute("VOTING_EMAIL_VERIFICATION_WHITELIST",
+                    Pattern::compile)
+            .defaultValue(Collections.emptyList())
+            .build();
 
     //Image upload help messages
     public static final AttributeGetter<String> IMAGE_UPLOAD_EXTERNAL_SERVICE_URL =
