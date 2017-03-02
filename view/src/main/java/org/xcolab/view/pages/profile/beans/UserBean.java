@@ -27,15 +27,15 @@ public class UserBean implements Serializable {
     private String screenName;
 
     @NotBlank(groups = {UserBean.EmailChanged.class})
-    @Email(regexp = EMAIL_REGEX, groups = {UserBean.EmailChanged.class},message = "please write a valid email")
+    @Email(regexp = EMAIL_REGEX, groups = {UserBean.EmailChanged.class},message = "Please write a valid email!")
     private String emailStored;
 
     @NotBlank(groups = {UserBean.EmailChanged.class})
-    @Email(regexp = EMAIL_REGEX, groups = {UserBean.EmailChanged.class},message = "please write a valid email")
+    @Email(regexp = EMAIL_REGEX, groups = {UserBean.EmailChanged.class},message = "Please write a valid email!")
     private String email;
 
     @NotBlank(groups = {UserBean.EmailChanged.class})
-    @Email(regexp = EMAIL_REGEX, groups = {UserBean.EmailChanged.class},message = "please write a valid email")
+    @Email(regexp = EMAIL_REGEX, groups = {UserBean.EmailChanged.class},message = "Please write a valid email!")
     private String retypeEmail;
 
     @NotBlank
