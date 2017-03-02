@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -23,7 +24,9 @@ import org.xcolab.entity.utils.analytics.AnalyticsUtil;
 import org.xcolab.entity.utils.email.notifications.proposal.ProposalVoteNotification;
 import org.xcolab.entity.utils.email.notifications.proposal.ProposalVoteValidityConfirmation;
 import org.xcolab.util.exceptions.DatabaseAccessException;
+import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
+import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 
@@ -32,33 +35,38 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-
 public class VoteOnProposalActionController {
 
-    @Autowired
-    private ProposalsContext proposalsContext;
+    private final ProposalsContext proposalsContext;
 
     private final static String VOTE_ANALYTICS_KEY = "VOTE_CONTEST_ENTRIES";
     private final static String VOTE_ANALYTICS_CATEGORY = "User";
     private final static String VOTE_ANALYTICS_ACTION = "Vote contest entry";
     private final static String VOTE_ANALYTICS_LABEL = "";
 
-    private  ProposalMemberRatingClient proposalMemberRatingClient;
-
+    @Autowired
+    public VoteOnProposalActionController(ProposalsContext proposalsContext) {
+        Assert.notNull(proposalsContext);
+        this.proposalsContext = proposalsContext;
+    }
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/voteOnProposalAction")
     public void handleAction(HttpServletRequest request, Model model, HttpServletResponse response)
             throws ProposalsAuthorizationException, IOException {
-        boolean hasVoted = false;
         final Proposal proposal = proposalsContext.getProposal(request);
         final Contest contest = proposalsContext.getContest(request);
         final Member member = proposalsContext.getMember(request);
-        proposalMemberRatingClient = proposalsContext.getClients(request).getProposalMemberRatingClient();
+        final ClientHelper clients = proposalsContext.getClients(request);
+        ProposalMemberRatingClient proposalMemberRatingClient = clients
+                .getProposalMemberRatingClient();
+
+        boolean hasVoted = false;
         if (proposalsContext.getPermissions(request).getCanVote()) {
             long proposalId = proposal.getProposalId();
             long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
@@ -71,7 +79,6 @@ public class VoteOnProposalActionController {
                     // User has voted for a different proposal. Vote will be retracted and converted to a vote of this proposal.
                     proposalMemberRatingClient.deleteProposalVote(contestPhaseId, memberId);
                 }
-
 
                 proposalMemberRatingClient.addProposalVote(proposalId, contestPhaseId, memberId);
                 String portalUrl = ConfigurationAttributeKey.COLAB_URL.get();
@@ -94,7 +101,7 @@ public class VoteOnProposalActionController {
                         1);
             }
         } else {
-            if (member == null || member.getUserId() == 10115) {
+            if (member == null) {
                 /* User is not logged in - don't count vote and let user log in*/
                 request.setAttribute("promptLoginWindow", "true");
                 return;
@@ -109,15 +116,22 @@ public class VoteOnProposalActionController {
 
     private boolean validateVote(Member member, Proposal proposal, Contest contest,
             String baseUrl, HttpServletRequest request) {
-        if (member.isVerifiedAccount()){
+        if (member.isVerifiedAccount() || isEmailWhitelisted(member.getEmailAddress())){
             return true;
         }
+
+        final ClientHelper clients = proposalsContext.getClients(request);
+        ProposalMemberRatingClient proposalMemberRatingClient = clients
+                .getProposalMemberRatingClient();
 
         List<Member> usersWithSharedIP = MembersClient.findMembersByIp(request.getRemoteAddr());
         usersWithSharedIP.remove(member);
         if (!usersWithSharedIP.isEmpty()) {
             final ProposalVote vote = proposalMemberRatingClient
                     .getProposalVoteByProposalIdUserId(proposal.getProposalId(), member.getUserId());
+            if (vote == null) {
+                throw new InternalException("Could not retrieve vote");
+            }
             int recentVotesFromSharedIP = 0;
             for (Member otherUser : usersWithSharedIP) {
                     final ProposalVote otherVote = proposalMemberRatingClient
@@ -145,13 +159,19 @@ public class VoteOnProposalActionController {
         return true;
     }
 
+    private boolean isEmailWhitelisted(String email) {
+        final List<Pattern> emailWhitelist =
+                ConfigurationAttributeKey.VOTING_EMAIL_VERIFICATION_WHITELIST.get();
+        return emailWhitelist.stream()
+                .anyMatch(pattern -> pattern.matcher(email).find());
+    }
+
     private void sendConfirmationMail(ProposalVote vote, Proposal proposal, Contest contest, Member member, String baseUrl) {
         String confirmationToken = UUID.randomUUID().toString();
         vote.setConfirmationToken(confirmationToken);
         vote.setConfirmationEmailSendDate(new Timestamp(new Date().getTime()));
             new ProposalVoteValidityConfirmation(proposal, contest, member, baseUrl,
                     confirmationToken).sendEmailNotification();
-
     }
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/confirmVote/{proposalId}/{userId}/{confirmationToken}")
