@@ -170,6 +170,18 @@ public class ContestDaoImpl implements ContestDao {
         return record.into(Contest.class);
     }
 
+
+    public Contest getByThreadId(Long threadId) throws NotFoundException {
+        final Record record = dslContext.select()
+                .from(CONTEST)
+                .where(CONTEST.DISCUSSION_GROUP_ID.eq(threadId))
+                .fetchOne();
+        if (record == null) {
+            throw new NotFoundException("Contest with thread id " + threadId + " was not found");
+        }
+        return record.into(Contest.class);
+    }
+
     public List<Contest> findByGiven(String contestName, List<Long> focusAreaOntologyTermsIds, List<Long> contestTypeIds) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST).getQuery();

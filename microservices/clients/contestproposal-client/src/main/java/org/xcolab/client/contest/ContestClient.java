@@ -264,6 +264,15 @@ public class ContestClient {
                 .getList(), contestService);
     }
 
+
+    public Contest getContestByThreadId(Long threadId) {
+        return contestResource
+                .service("getContestByThreadId", ContestDto.class)
+                .queryParam("threadId", threadId)
+                .execute().toPojo(contestService);
+    }
+
+
     public int getNumberOfAllContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
         return contestResource.service("getNumberOfAllContestsInCollectionCard", Integer.class)
                 .queryParam("collectionCardId", collectionCardId)

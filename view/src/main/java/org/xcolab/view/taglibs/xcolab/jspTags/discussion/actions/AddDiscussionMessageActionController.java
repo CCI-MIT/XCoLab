@@ -133,7 +133,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                             .getProposalIdForThread(commentThread.getThreadId());
                     if (proposalIdForThread != null && proposalIdForThread != 0L) {
 
-
+                        //proposal
                         ActivityEntryHelper.createActivityEntry(activityClient, memberId,
                                 commentThread.getThreadId(),
                                 comment.getCommentId() + "",
@@ -147,6 +147,14 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                         } catch (ContestNotFoundException ignored) {
 
                         }
+                    } else {
+                        //contest
+                        ActivityEntryHelper.createActivityEntry(activityClient, memberId,
+                                commentThread.getThreadId(),
+                                comment.getCommentId() + "",
+                                ActivityProvidersType.DiscussionAddContestCommentActivityEntry
+                                        .getType());
+
                     }
                 } else {
                     ActivityEntryHelper.createActivityEntry(activityClient, memberId,
