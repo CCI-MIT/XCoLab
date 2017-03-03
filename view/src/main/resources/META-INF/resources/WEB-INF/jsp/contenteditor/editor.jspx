@@ -46,6 +46,7 @@
 
         <c:if test="${not empty param.articleId}">
         <script>
+
             <![CDATA[
             jQuery(document).ready(function () {
 
@@ -81,7 +82,21 @@
                     }
                 }
 
+
+                CKEDITOR.plugins.addExternal( 'justify', '${_libJsFolder}/newckeditorplugins/justify/plugin.js' );
+                //CKEDITOR.plugins.addExternal( 'floatpanel', '${_libJsFolder}/newckeditorplugins/floatpanel/plugin.js' );
+                //CKEDITOR.plugins.addExternal( 'panelbutton', '${_libJsFolder}/newckeditorplugins/panelbutton/plugin.js' );
+                CKEDITOR.plugins.addExternal( 'colorbutton', '${_libJsFolder}/newckeditorplugins/colorbutton/plugin.js' );
+                CKEDITOR.plugins.addExternal( 'uploadimage', '${_libJsFolder}/newckeditorplugins/uploadimage/plugin.js' );
+
                 CKEDITOR.config.allowedContent = true;
+                //CKEDITOR.config.extraPlugins = ['justify'];
+//'colorbutton'
+//                CKEDITOR.config.toolbarGroups = [
+//                    { name: 'align'}
+//                ];
+
+
 
                 var $treeView = $('#tree-view');
                 $treeView.tree({
@@ -179,7 +194,7 @@
                             }
                         });
 
-                ckEditor = CKEDITOR.replace('articleVersionContent');
+                ckEditor = CKEDITOR.replace('articleVersionContent', { customConfig: '${_libJsFolder}/newckeditorplugins/config.js'});
                 //CKEDITOR.instances['articleVersionContent'].setReadOnly(true);
 
                 $("#infoBox").hide();
