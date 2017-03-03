@@ -12,6 +12,8 @@ import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
+import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
@@ -49,9 +51,9 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
     @Override
     public void setActivityEntry(ActivityEntry activityEntry) {
         this.activityEntry = activityEntry;
-        if (!this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_PROPOSAL_COMMENT.getSecondaryTypeId())) {
+        if (this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_ADDED_COMMENT.getSecondaryTypeId())) {
 
-            try {
+            try {//DISCUSSION_ADDED_COMMENT
                 category = CategoryClientUtil.getCategory(activityEntry.getClassPrimaryKey());
                 comment = CommentClientUtil
                         .getComment(Long.parseLong(activityEntry.getExtraData()));
@@ -60,25 +62,49 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
             } catch (CategoryNotFoundException | ThreadNotFoundException | CommentNotFoundException e) {
                 //_log.warn("Could not initialize discussion from " + activityEntry);
             }
-        } else {
+            return;
+        }
+        if(this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_CONTEST_COMMENT.getSecondaryTypeId())){
             try {
                 thread = ThreadClientUtil.getThread(activityEntry.getClassPrimaryKey());
-                final Long proposalId = ThreadClientUtil.getProposalIdForThread(thread.getThreadId());
+                contest = ContestClientUtil.getContestByThreadId(thread.getThreadId());
+            } catch (ProposalNotFoundException | ContestNotFoundException |
+                    ThreadNotFoundException ignored) {
+
+            }
+            return;
+        }
+        if(this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_PROPOSAL_COMMENT.getSecondaryTypeId())){
+            try {//proposal comment
+                thread = ThreadClientUtil.getThread(activityEntry.getClassPrimaryKey());
+                final Long proposalId =
+                        ThreadClientUtil.getProposalIdForThread(thread.getThreadId());
 
                 if (proposalId != null) {
 
                     proposal = ProposalClientUtil.getProposal(proposalId);
-                    contest = ProposalClientUtil.getCurrentContestForProposal(proposal.getProposalId());
+                    contest = ProposalClientUtil
+                            .getCurrentContestForProposal(proposal.getProposalId());
 
 
                     proposalName = ProposalAttributeClientUtil
-                            .getProposalAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME,null).getStringValue();
+                            .getProposalAttribute(proposal.getProposalId(),
+                                    ProposalAttributeKeys.NAME, null).getStringValue();
                 }
             } catch (ProposalNotFoundException | ContestNotFoundException | ThreadNotFoundException ignored) {
 
-            }
 
+            }
+            return;
         }
+    }
+
+    protected String getContestLink() {
+        String url = "";
+        if (contest!= null) {
+            url = "<a href='" +contest.getContestUrl()+ "/discussion" + "'>" +  contest.getContestShortName()+ "</a>";
+        }
+        return url;
     }
 
     protected String getProposalLink() {
@@ -123,7 +149,8 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
         DISCUSSION_CATEGORY_ADDED(2L),
         DISCUSSION_ADDED(3L),
         DISCUSSION_FORUM_COMMENT(4L),
-        DISCUSSION_ADDED_COMMENT(5L);
+        DISCUSSION_ADDED_COMMENT(5L),
+        DISCUSSION_CONTEST_COMMENT(6L);
 
         private final Long secondaryTypeId;
         DiscussionActivitySubType(Long type) {

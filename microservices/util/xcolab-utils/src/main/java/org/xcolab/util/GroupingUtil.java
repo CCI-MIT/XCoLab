@@ -1,7 +1,6 @@
 package org.xcolab.util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,13 +48,4 @@ public final class GroupingUtil {
         }
     }
 
-    public static <SearchKey, MapKey, MapVal> Map<MapKey, MapVal> getInnerMapOrCreate(
-            SearchKey searchKey, Map<SearchKey, Map<MapKey, MapVal>> searchMap) {
-        return searchMap.computeIfAbsent(searchKey, k -> new HashMap<>());
-    }
-
-    public static <SearchKey, ListVal> List<ListVal> getInnerListOrCreate(
-            SearchKey searchKey, Map<SearchKey, List<ListVal>> searchMap) {
-        return searchMap.computeIfAbsent(searchKey, k -> new ArrayList<>());
-    }
 }

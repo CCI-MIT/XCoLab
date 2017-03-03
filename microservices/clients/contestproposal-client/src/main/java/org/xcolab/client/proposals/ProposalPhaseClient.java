@@ -9,7 +9,6 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2PhaseDto;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttributeDto;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
@@ -47,12 +46,8 @@ public final class ProposalPhaseClient {
     }
 
     public static ProposalPhaseClient fromService(RestService proposalService) {
-        ProposalPhaseClient instance = instances.get(proposalService);
-        if (instance == null) {
-            instance = new ProposalPhaseClient(proposalService);
-            instances.put(proposalService, instance);
-        }
-        return instance;
+        return instances
+                .computeIfAbsent(proposalService, k -> new ProposalPhaseClient(proposalService));
     }
 
     public Proposal2Phase getProposal2PhaseByProposalIdContestPhaseId(Long proposalId,
@@ -60,10 +55,7 @@ public final class ProposalPhaseClient {
         final Proposal2PhaseDto dto = proposal2PhaseResource.list()
                 .queryParam("proposalId", proposalId)
                 .queryParam("contestPhaseId", contestPhaseId)
-                .withCache(CacheKeys.withClass(Proposal2PhaseDto.class)
-                                .withParameter("proposalId", proposalId)
-                                .withParameter("contestPhaseId", contestPhaseId).asList(),
-                        CacheName.MISC_MEDIUM)
+                .withCache(CacheName.PROPOSAL_PHASE)
                 .executeWithResult()
                 .getOneIfExists();
         if (dto == null) {
@@ -80,9 +72,11 @@ public final class ProposalPhaseClient {
 
     public Proposal2Phase getProposal2PhaseByProposalIdVersion(long proposalId, int version) {
          return proposal2PhaseResource.list()
-                .queryParam("proposalId", proposalId)
-                .queryParam("version", version)
-                .executeWithResult().get().get(0).toPojo(proposalService);
+                 .queryParam("proposalId", proposalId)
+                 .queryParam("version", version)
+                 .withCache(CacheName.PROPOSAL_PHASE)
+                 .executeWithResult()
+                 .getFirst().toPojo(proposalService);
     }
 
     public List<Proposal2Phase> getProposal2PhaseByContestPhaseId(Long contestPhaseId) {

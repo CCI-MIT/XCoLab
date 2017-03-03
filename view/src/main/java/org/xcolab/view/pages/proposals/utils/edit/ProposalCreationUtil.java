@@ -52,6 +52,7 @@ public final class ProposalCreationUtil {
             Proposal proposalWrapper = new Proposal(newProposal, 0, contest, contestPhase, newProposal2Phase);
 
             final long baseProposalId = updateProposalSectionsBean.getBaseProposalId();
+
             if (baseProposalId > 0) {
                 final ProposalAttributeClient proposalAttributeClient =
                         clientHelper.getProposalAttributeClient();

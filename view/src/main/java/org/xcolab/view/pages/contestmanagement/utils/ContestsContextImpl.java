@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.entity.utils.portlet.RequestParamUtil;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabContext;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabPermissions;
@@ -19,11 +20,9 @@ public class ContestsContextImpl implements TabContext {
             CONTEXT_ATTRIBUTE_PREFIX + "contextInitialized";
     private static final String PERMISSIONS_ATTRIBUTE = CONTEXT_ATTRIBUTE_PREFIX + "permissions";
     private static final String CONTEST_ATTRIBUTE = CONTEXT_ATTRIBUTE_PREFIX + "contest";
-    private static final String USER_ATTRIBUTE = CONTEXT_ATTRIBUTE_PREFIX + "user";
     private static final String CONTEST_WRAPPED_ATTRIBUTE =
             CONTEXT_ATTRIBUTE_PREFIX + "contestWrapped";
     private static final String CONTEST_ID_PARAM = "contestId";
-    private static final String CONTEST_MANAGEMENT_PARAM = "manager";
 
     public ContestsContextImpl() {
     }
@@ -48,11 +47,8 @@ public class ContestsContextImpl implements TabContext {
     }
 
     private void init(HttpServletRequest request) {
-        final Boolean mangerView = Boolean.valueOf(request.getParameter(CONTEST_MANAGEMENT_PARAM));
-        if (request.getParameter(CONTEST_ID_PARAM) == null) {
-            request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestManagementPermissions(request));
-        } else {
-            final Long contestId = Long.valueOf(request.getParameter(CONTEST_ID_PARAM));
+        final Long contestId = RequestParamUtil.getLong(request, CONTEST_ID_PARAM);
+        if (contestId > 0) {
             Contest contest;
             try {
                 contest = ContestClientUtil.getContest(contestId);
@@ -66,6 +62,8 @@ public class ContestsContextImpl implements TabContext {
                 request.setAttribute(PERMISSIONS_ATTRIBUTE,
                         new ContestPermissions(request, contest));
             }
+        } else {
+            request.setAttribute(PERMISSIONS_ATTRIBUTE, new ContestManagementPermissions(request));
         }
 
         request.setAttribute(CONTEXT_INITIALIZED_ATTRIBUTE, true);

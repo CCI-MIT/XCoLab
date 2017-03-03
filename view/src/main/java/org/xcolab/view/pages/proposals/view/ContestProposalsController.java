@@ -43,15 +43,15 @@ public class ContestProposalsController extends BaseProposalsController {
         this.proposalsContext = proposalsContext;
     }
 
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{contestPhaseId}")
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}")
     public String showContestProposalsWithContestPhaseId(HttpServletRequest request, HttpServletResponse response,
             @PathVariable String contestYear,
             @PathVariable String contestUrlName,
-            @PathVariable String contestPhaseId,
+            @PathVariable String phaseId,
             final SortFilterPage sortFilterPage, Model model, Member loggedInMember) {
         setBasePageAttributes(request, model);
         return showContestProposalsPage(request, response, contestYear, contestUrlName,
-                contestPhaseId, sortFilterPage, model, loggedInMember);
+                phaseId, sortFilterPage, model, loggedInMember);
     }
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}")
@@ -90,7 +90,7 @@ public class ContestProposalsController extends BaseProposalsController {
                 break;
             default:
                 activeProposals = proposalClient.getActiveProposalsInContestPhase(
-                        contestPhase.getContestPhasePK(), CacheName.MISC_LONG);
+                        contestPhase.getContestPhasePK(), CacheName.PROPOSAL_LIST_CLOSED);
         }
 
         List<Proposal> proposals = new ArrayList<>();
@@ -114,7 +114,6 @@ public class ContestProposalsController extends BaseProposalsController {
             }
         }
 
-
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("showCountdown",
                 ConfigurationAttributeKey.SHOW_CONTEST_COUNTDOWN.get());
@@ -122,11 +121,12 @@ public class ContestProposalsController extends BaseProposalsController {
         model.addAttribute("defaultTimeZoneId", ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.get());
         model.addAttribute("contestCompleted", proposalsContext.getContestWrapped(request).isContestCompleted(proposalsContext.getContestPhaseWrapped(request)));
         model.addAttribute("showShareButtons", ConfigurationAttributeKey.SHOW_SHARE_BUTTONS.get());
-        boolean showAdminLink = false;
+        boolean showEditLink = false;
         if (loggedInMember != null) {
-            showAdminLink = PermissionsClient.canAdminAll(loggedInMember.getUserId());
+            showEditLink = PermissionsClient.canAdminAll(loggedInMember.getUserId())
+                    || contest.getCanFellow(loggedInMember.getUserId());
         }
-        model.addAttribute("showAdminLink", showAdminLink);
+        model.addAttribute("showEditLink", showEditLink);
 
         setSeoTexts(request, contest.getContestShortName(), null, contest.getContestDescription());
 

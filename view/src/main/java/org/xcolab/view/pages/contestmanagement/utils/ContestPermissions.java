@@ -6,9 +6,11 @@ import org.xcolab.entity.utils.enums.MemberRole;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabPermissions;
 
+import java.io.Serializable;
+
 import javax.servlet.http.HttpServletRequest;
 
-public class ContestPermissions implements TabPermissions {
+public class ContestPermissions implements TabPermissions, Serializable {
 
     private final Contest contestWrapper;
 
@@ -28,11 +30,6 @@ public class ContestPermissions implements TabPermissions {
     }
 
     @Override
-    public boolean getCanStaff() {
-        return isLoggedIn && PermissionsClient.canStaff(memberId);
-    }
-
-    @Override
     public boolean getCanRole(MemberRole role) {
         return isLoggedIn && contestWrapper
                 .getHasUserRoleInContest(memberId, role.getRoleId());
@@ -47,11 +44,6 @@ public class ContestPermissions implements TabPermissions {
     public boolean getCanCreate() {
         // TODO check who needs this
         return isLoggedIn;
-    }
-
-    @Override
-    public boolean getIsOwner() {
-        return isLoggedIn && contestWrapper.getAuthorId() == memberId;
     }
 
     public boolean getCanEdit() {

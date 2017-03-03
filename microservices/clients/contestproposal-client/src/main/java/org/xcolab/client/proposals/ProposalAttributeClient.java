@@ -123,21 +123,16 @@ public final class ProposalAttributeClient {
 
     public List<ProposalAttribute> getAllProposalAttributes(Long proposalId) {
         return DtoUtil.toPojos(proposalAttributeResource.list()
-                .withCache(CacheKeys.withClass(ProposalAttributeDto.class)
-                                .withParameter("proposalId", proposalId).asList(),
-                        CacheName.MISC_REQUEST)
                 .optionalQueryParam("proposalId", proposalId)
+                .withCache(CacheName.MISC_REQUEST)
                 .execute(), proposalService);
     }
 
     public List<ProposalAttribute> getAllProposalAttributes(Long proposalId, Integer version) {
         return DtoUtil.toPojos(proposalAttributeResource.list()
-                .withCache(CacheKeys.withClass(ProposalAttributeDto.class)
-                                .withParameter("proposalId", proposalId)
-                                .withParameter("version", version).asList(),
-                        CacheName.MISC_MEDIUM)
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("version", version)
+                .withCache(CacheName.PROPOSAL_DETAILS)
                 .execute(), proposalService);
     }
 

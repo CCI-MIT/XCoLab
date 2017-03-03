@@ -3,14 +3,13 @@ package org.xcolab.client.proposals.helpers;
 import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
-import org.xcolab.util.GroupingUtil;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//TODO: this is duplicated in the service
 public class ProposalAttributeHelper {
     private final Proposal proposal;
     private final int version;
@@ -35,9 +34,8 @@ public class ProposalAttributeHelper {
                     .getAllProposalAttributes(proposal.getProposalId(), version);
             attributesByNameAndAdditionalId = new HashMap<>();
             for (ProposalAttribute attribute : attributes) {
-                Map<Long, ProposalAttribute> currentAttributes = GroupingUtil
-                        .getInnerMapOrCreate(
-                                attribute.getName(), attributesByNameAndAdditionalId);
+                Map<Long, ProposalAttribute> currentAttributes = attributesByNameAndAdditionalId
+                        .computeIfAbsent(attribute.getName(), k-> new HashMap<>());
 
                 ProposalAttribute currentAttribute = currentAttributes
                         .get(attribute.getAdditionalId());
@@ -106,14 +104,5 @@ public class ProposalAttributeHelper {
             }
         }
         return newestAttributeSeen;
-    }
-
-    public Collection<ProposalAttribute> getAttributesByName(String attributeName) {
-        init();
-        final Map<Long, ProposalAttribute> attributesByAdditionalId = attributesByNameAndAdditionalId.get(attributeName);
-        if (attributesByAdditionalId != null) {
-            return attributesByAdditionalId.values();
-        }
-        return Collections.emptyList();
     }
 }

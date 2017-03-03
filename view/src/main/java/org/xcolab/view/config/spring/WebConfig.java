@@ -23,7 +23,7 @@ import org.xcolab.view.config.ConfigurationService;
 import org.xcolab.view.config.rewrite.RewriteInitializer;
 import org.xcolab.view.config.tomcat.AjpConnector;
 import org.xcolab.view.config.tomcat.ForwardedHostValve;
-import org.xcolab.view.pages.proposals.view.interceptors.PopulateContextInterceptor;
+import org.xcolab.view.pages.proposals.view.interceptors.PopulateProposalModelInterceptor;
 import org.xcolab.view.pages.proposals.view.interceptors.ValidateTabPermissionsInterceptor;
 import org.xcolab.view.theme.ThemeResourceResolver;
 import org.xcolab.view.theme.ThemeVariableInterceptor;
@@ -36,14 +36,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     private static final Logger log = LoggerFactory.getLogger(WebConfig.class);
 
     private final ThemeVariableInterceptor themeVariableInterceptor;
-    private final PopulateContextInterceptor populateContextInterceptor;
+    private final PopulateProposalModelInterceptor populateContextInterceptor;
     private final ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor;
 
     private final ConfigurationService configurationService;
 
     @Autowired
     public WebConfig(ThemeVariableInterceptor themeVariableInterceptor,
-            PopulateContextInterceptor populateContextInterceptor,
+            PopulateProposalModelInterceptor populateContextInterceptor,
             ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor,
             ConfigurationService configurationService) {
         Assert.notNull(configurationService, "ConfigurationService bean is required");

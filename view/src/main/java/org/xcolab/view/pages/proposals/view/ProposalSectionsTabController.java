@@ -266,7 +266,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
     private void setJudgeProposalBean(Model model, HttpServletRequest request) {
         final JudgeProposalFeedbackBean judgeProposalFeedbackBean =
                 (JudgeProposalFeedbackBean) model.asMap().get("judgeProposalFeedbackBean");
-        if (judgeProposalFeedbackBean.getContestPhaseId() == null) {
+        if (judgeProposalFeedbackBean == null || judgeProposalFeedbackBean.getContestPhaseId() == null) {
             Proposal proposalWrapper = proposalsContext.getProposalWrapped(request);
             ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(
                     proposalWrapper, proposalsContext.getMember(request));

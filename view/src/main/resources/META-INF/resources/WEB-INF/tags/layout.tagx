@@ -65,7 +65,7 @@
     <meta content="${_metaPageDescription}" lang="en-US" name="description" />
     <meta content="${_metaPageKeywords}" lang="en-US" name="keywords" />
 
-    <title>${title} ${(not empty title) ? '|' : ''} ${_colabName}</title>
+    <title>${title}${(not empty title) ? ' - ' : ''}${_colabName}</title>
 
     <script type="text/javascript">
         var _isLoggedIn = '${_isLoggedIn}' == 'true';

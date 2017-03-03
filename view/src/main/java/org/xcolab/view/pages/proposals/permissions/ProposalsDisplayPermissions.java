@@ -5,11 +5,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.util.enums.activity.ActivityEntryType;
-import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Helper class to decide whether a certain user should see things in the UI
@@ -22,13 +18,13 @@ public class ProposalsDisplayPermissions {
     private final ContestPhase contestPhase;
     private final long memberId;
 
-    public ProposalsDisplayPermissions(ProposalsPermissions proposalsPermissions,
-            Proposal proposal, ContestPhase contestPhase, HttpServletRequest request) {
+    public ProposalsDisplayPermissions(ProposalsPermissions proposalsPermissions, Proposal proposal,
+            ContestPhase contestPhase, ClientHelper clientHelper, long memberId) {
         this.proposalsPermissions = proposalsPermissions;
         this.proposal = proposal;
         this.contestPhase = contestPhase;
-        memberId = MemberAuthUtil.getMemberId(request);
-        this.clientHelper = ProposalsContextUtil.getClients(request);
+        this.memberId = memberId;
+        this.clientHelper = clientHelper;
     }
 
     public boolean getCanSeeRequestMembershipButton() {

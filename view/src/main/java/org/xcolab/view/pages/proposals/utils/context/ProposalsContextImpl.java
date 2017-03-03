@@ -3,6 +3,7 @@ package org.xcolab.view.pages.proposals.utils.context;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -10,20 +11,19 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContextHelper.InvalidAccessException;
 import org.xcolab.view.pages.proposals.wrappers.ProposalsPreferencesWrapper;
 
-import java.util.HashMap;
-
 import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class ProposalsContextImpl implements ProposalsContext {
 
-    private static final String PROPOSALS_ATTRIBUTE_PREFIX = "_proposalsProtlet_";
+    private static final String PROPOSALS_ATTRIBUTE_PREFIX = "_proposalsContext_";
     private static final String CONTEXT_INITIALIZED_ATTRIBUTE =
             PROPOSALS_ATTRIBUTE_PREFIX + "contextInitialized";
     private static final String PERMISSIONS_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "permissions";
@@ -33,7 +33,6 @@ public class ProposalsContextImpl implements ProposalsContext {
     private static final String PROPOSAL_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "proposals";
     private static final String CONTEST_PHASE_ATTRIBUTE =
             PROPOSALS_ATTRIBUTE_PREFIX + "contestPhase";
-    private static final String USER_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "user";
     private static final String MEMBER_ATTRIBUTE = PROPOSALS_ATTRIBUTE_PREFIX + "member";
     private static final String PROPOSALS_PREFERENCES_ATTRIBUTE =
             PROPOSALS_ATTRIBUTE_PREFIX + "preferences";
@@ -52,14 +51,7 @@ public class ProposalsContextImpl implements ProposalsContext {
             PROPOSALS_ATTRIBUTE_PREFIX + "clients";
     public static final String PROPOSAL_CONTEST_HELPER = "ProposalContextHelper";
 
-    private static final HashMap<String,String> pathVariables = new HashMap<>();
-
-
     public ProposalsContextImpl() {
-    }
-
-    public void addPathVariable(String nameIdentifier, String value){
-        this.pathVariables.put(nameIdentifier,value);
     }
 
     /* (non-Javadoc)
@@ -179,7 +171,7 @@ public class ProposalsContextImpl implements ProposalsContext {
     }
 
     private void init(HttpServletRequest request) {
-        ProposalContextHelper contextHelper = new ProposalContextHelper(request, pathVariables);
+        ProposalContextHelper contextHelper = new ProposalContextHelper(request);
 
         final Member member = contextHelper.getMember();
 
@@ -197,8 +189,11 @@ public class ProposalsContextImpl implements ProposalsContext {
             ContestPhase contestPhase = null;
             Proposal2Phase proposal2Phase = null;
 
+            final ClientHelper clientHelper = contextHelper.getClientHelper();
+            final ContestClient contestClient = clientHelper.getContestClient();
+
             if (contest != null) {
-                contestType = contextHelper.getClientHelper().getContestClient().getContestType(contest.getContestTypeId());
+                contestType = contestClient.getContestType(contest.getContestTypeId());
                 contestPhase = contextHelper.getContestPhase(contest, proposal);
                 if (proposal != null) {
                     proposal2Phase = contextHelper.getProposal2Phase(contestPhase);
@@ -230,7 +225,8 @@ public class ProposalsContextImpl implements ProposalsContext {
                 request.setAttribute(PERMISSIONS_ATTRIBUTE, proposalsPermissions);
 
                 request.setAttribute(DISPLAY_PERMISSIONS_ATTRIBUTE, new ProposalsDisplayPermissions(
-                        proposalsPermissions, proposal, contestPhase, request));
+                        proposalsPermissions, proposal, contestPhase, clientHelper,
+                        MemberAuthUtil.getMemberId(request)));
             }
 
             request.setAttribute(PROPOSAL_ATTRIBUTE, proposal);
@@ -248,7 +244,7 @@ public class ProposalsContextImpl implements ProposalsContext {
             if (phaseId > 0) {
                 request.setAttribute(REQUEST_PHASE_ID_ATTRIBUTE, phaseId);
             }
-            request.setAttribute(CLIENTS_ATTRIBUTE, contextHelper.getClientHelper());
+            request.setAttribute(CLIENTS_ATTRIBUTE, clientHelper);
 
             request.setAttribute(CONTEXT_INITIALIZED_ATTRIBUTE, true);
         } catch (InvalidAccessException e) {

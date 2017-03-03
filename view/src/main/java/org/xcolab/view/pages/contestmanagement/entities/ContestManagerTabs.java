@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.contestmanagement.entities;
 
-
 import org.xcolab.view.taglibs.xcolab.interfaces.TabActivityCountAlgorithm;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabContext;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;

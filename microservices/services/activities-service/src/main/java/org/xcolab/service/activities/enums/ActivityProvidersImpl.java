@@ -2,6 +2,8 @@ package org.xcolab.service.activities.enums;
 
 
 import org.xcolab.service.activities.activityEntry.discussion.DiscussionAddCommentActivityEntry;
+import org.xcolab.service.activities.activityEntry.discussion
+        .DiscussionAddContestCommentActivityEntry;
 import org.xcolab.service.activities.activityEntry.discussion.DiscussionAddProposalCommentActivityEntry;
 import org.xcolab.service.activities.activityEntry.discussion.DiscussionAddedActivityEntry;
 import org.xcolab.service.activities.activityEntry.member.MemberJoinedActivityEntry;
@@ -21,7 +23,7 @@ public enum ActivityProvidersImpl {
     DiscussionAddCommentActivityEntry(1, new DiscussionAddCommentActivityEntry()),
     DiscussionAddedActivityEntry(2, new DiscussionAddedActivityEntry()),
     DiscussionAddProposalCommentActivityEntry(3, new DiscussionAddProposalCommentActivityEntry()),
-
+    DiscussionAddContestCommentActivityEntry(15, new DiscussionAddContestCommentActivityEntry()),
     MemberJoinedActivityEntry(4, new MemberJoinedActivityEntry()),
 
     ProposalAttributeRemoveActivityEntry(5, new ProposalAttributeRemoveActivityEntry()),
@@ -34,6 +36,7 @@ public enum ActivityProvidersImpl {
     ProposalVoteActivityEntry(12, new ProposalVoteActivityEntry()),
     ProposalVoteRetractActivityEntry(13, new ProposalVoteRetractActivityEntry()),
     ProposalVoteSwitchActivityEntry(14, new ProposalVoteSwitchActivityEntry());
+
 
 
 

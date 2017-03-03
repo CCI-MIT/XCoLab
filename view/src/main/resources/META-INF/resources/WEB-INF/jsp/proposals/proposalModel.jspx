@@ -4,7 +4,7 @@
 	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
 	version="2.0">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-<xcolab:layout>
+<xcolab:layout  title="${proposal.name} - Model">
 
 	<jsp:directive.include file="./init_proposal_tab.jspx" />
 
