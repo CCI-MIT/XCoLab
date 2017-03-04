@@ -200,20 +200,17 @@ public class ContestPhase extends AbstractContestPhase {
 
     public Boolean getProposalVisibility(long proposalId) {
         ProposalPhaseClient proposalPhaseClient;
-        if(restService!=null) {
-            RestService proposalService = restService.withServiceName(CoLabService.PROPOSAL.getServiceName());
+        if (restService != null) {
+            RestService proposalService =
+                    restService.withServiceName(CoLabService.PROPOSAL.getServiceName());
             proposalPhaseClient = ProposalPhaseClient.fromService(proposalService);
-        }else{
+        } else {
             proposalPhaseClient = ProposalPhaseClientUtil.getClient();
         }
-        ProposalContestPhaseAttribute attr =  proposalPhaseClient
+        ProposalContestPhaseAttribute attr = proposalPhaseClient
                 .getProposalContestPhaseAttribute(proposalId, this.getContestPhasePK(),
                         ProposalContestPhaseAttributeKeys.VISIBLE);
-        if(attr!= null) {
-            return attr.getNumericValue() == 1;
-        }else{
-            return true;
-        }
+        return attr == null || attr.getNumericValue() == 1;
 
     }
 
@@ -221,7 +218,7 @@ public class ContestPhase extends AbstractContestPhase {
         RestService proposalService = restService.withServiceName(CoLabService.PROPOSAL.getServiceName());
         ProposalPhaseClient.fromService(proposalService)
                 .setProposalContestPhaseAttribute(proposalId, this.getContestPhasePK(),
-                        ProposalContestPhaseAttributeKeys.VISIBLE, 0l, visible ? 1l : 0l, "");
+                        ProposalContestPhaseAttributeKeys.VISIBLE, 0L, visible ? 1L : 0L, "");
         return true;
     }
 
@@ -235,6 +232,9 @@ public class ContestPhase extends AbstractContestPhase {
         return descriptionOverride;
     }
 
+    public boolean isCompleted() {
+        return getStatus() == ContestStatus.COMPLETED;
+    }
 
     public ContestPhase getWrapped() {
         return this;

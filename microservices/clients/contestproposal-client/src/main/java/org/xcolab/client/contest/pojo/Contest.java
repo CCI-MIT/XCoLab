@@ -32,6 +32,7 @@ import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,11 +41,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class Contest extends AbstractContest {
+public class Contest extends AbstractContest implements Serializable {
 
     private final ContestClient contestClient;
     private final ContestTeamMemberClient contestTeamMemberClient;
@@ -473,7 +473,7 @@ public class Contest extends AbstractContest {
         if (this.getCreated() != null) {
             return this.getCreated().getTime();
         }
-        else if (this.getUpdated() != null) {
+        if (this.getUpdated() != null) {
             return this.getUpdated().getTime();
         }
         return 0;
@@ -537,12 +537,7 @@ public class Contest extends AbstractContest {
     public List<Contest> getSubContests() {
         List <Contest> subContests = contestClient
                 .getSubContestsByOntologySpaceId(this.getContestPK(), ONTOLOGY_SPACE_ID_WHERE);
-        Collections.sort(subContests, new Comparator<Contest>() {
-            @Override
-            public int compare(Contest c1, Contest c2) {
-                return c1.getWeight() - c2.getWeight();
-            }
-        });
+        subContests.sort(Comparator.comparingInt(AbstractContest::getWeight));
         return subContests;
     }
 
@@ -557,9 +552,9 @@ public class Contest extends AbstractContest {
 
         List<Contest> contests = contestClient
                 .findContestsTierLevelAndOntologyTermIds(CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS, focusAreaOntologyTermIds);
-        if(!contests.isEmpty()) {
+        if (!contests.isEmpty()) {
             return contests.get(0);
-        }else{
+        } else {
             return null;
         }
     }
@@ -574,20 +569,6 @@ public class Contest extends AbstractContest {
             }
         }
         return lastVotingPhase != null ? lastVotingPhase.getContestPhasePK() : 0;
-    }
-
-    public boolean isContestCompleted(ContestPhase contestPhase) {
-        ContestPhaseType type;
-        ContestPhase activePhase;
-        try {
-            activePhase = contestClient.getActivePhase(this.getContestPK());
-            type = activePhase.getContestPhaseTypeObject();
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
-        return !(type == null || !Objects.equals(
-                contestPhase.getContestPhasePK(), activePhase.getContestPhasePK())
-        ) && "COMPLETED".equals(type.getStatus());
     }
 
     public List<ContestPhase> getVisiblePhases() {
