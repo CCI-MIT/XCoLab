@@ -13,7 +13,7 @@
         <div class="prop-right" style="margin-top: 45px;">
             <c:if test="${proposal.proposalId > 0}">
             <div class="c-Box boxColor--dark hasShadow hasBorder">
-                <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
+                <c:if test="${contestPhase.canVote or (contestPhase.completed and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
                     <div class="votebox-top clearfix">
                         <div class="vote">
                             <img src="${_themeImageFolder}/icon-proposal-vote.png" width="22" height="18" alt="Vote" />
