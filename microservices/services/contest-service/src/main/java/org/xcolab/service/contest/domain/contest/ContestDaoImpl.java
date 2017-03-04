@@ -91,6 +91,7 @@ public class ContestDaoImpl implements ContestDao {
 
     }
 
+    @Override
     public boolean update(Contest contest) {
         return dslContext.update(CONTEST)
                 .set(CONTEST.CONTEST_PK, contest.getContestPK())
@@ -170,6 +171,7 @@ public class ContestDaoImpl implements ContestDao {
         return record.into(Contest.class);
     }
 
+    @Override
     public List<Contest> findByGiven(String contestName, List<Long> focusAreaOntologyTermsIds, List<Long> contestTypeIds) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST).getQuery();

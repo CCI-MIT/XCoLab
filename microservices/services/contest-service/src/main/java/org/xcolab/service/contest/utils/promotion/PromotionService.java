@@ -1,6 +1,5 @@
 package org.xcolab.service.contest.utils.promotion;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.model.tables.pojos.ContestPhaseType;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
-import org.xcolab.service.contest.domain.contestphaseribbontype.ContestPhaseRibbonTypeDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
@@ -30,73 +28,77 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
-
 /**
- * Created by johannes on 9/9/15.
- *
  * Helper class to automatically promote proposals to the next phase.
  */
 @Service
-public class AutoPromoteHelper {
+public class PromotionService {
 
-    private static final Logger _log = LoggerFactory.getLogger(AutoPromoteHelper.class);
+    private static final Logger _log = LoggerFactory.getLogger(PromotionService.class);
 
-    public static final String STATUS_OPEN_FOR_SUBMISSION = "OPEN_FOR_SUBMISSION";
-    public static final String STATUS_CLOSED = "CLOSED";
-    public static final long SEMIFINALIST_RIBBON_ID = 3L;
-    public static final long FINALIST_RIBBON_ID = 1L;
-
-
+    private static final String STATUS_OPEN_FOR_SUBMISSION = "OPEN_FOR_SUBMISSION";
+    private static final String STATUS_CLOSED = "CLOSED";
+    private static final long SEMIFINALIST_RIBBON_ID = 3L;
+    private static final long FINALIST_RIBBON_ID = 1L;
 
     private Date now;
 
     private final ContestPhaseDao contestPhaseDao;
-    private final ContestPhaseRibbonTypeDao contestPhaseRibbonTypeDao;
     private final ContestDao contestDao;
     private final ContestPhaseTypeDao contestPhaseTypeDao;
-
     private final ContestPhaseService contestPhaseService;
     private final ContestService contestService;
 
     @Autowired
-    public AutoPromoteHelper( ContestPhaseDao contestPhaseDao, ContestDao contestDao, ContestPhaseRibbonTypeDao contestPhaseRibbonTypeDao, ContestPhaseService contestPhaseService, ContestPhaseTypeDao contestPhaseTypeDao, ContestService contestService) {
+    public PromotionService( ContestPhaseDao contestPhaseDao, ContestDao contestDao,
+            ContestPhaseService contestPhaseService, ContestPhaseTypeDao contestPhaseTypeDao,
+            ContestService contestService) {
 
         this.contestPhaseDao = contestPhaseDao;
         this.contestDao = contestDao;
-        this.contestPhaseRibbonTypeDao = contestPhaseRibbonTypeDao;
         this.contestPhaseTypeDao = contestPhaseTypeDao;
         this.contestPhaseService = contestPhaseService;
         this.contestService = contestService;
     }
 
-    public void doBasicPromotion() {
-            for (ContestPhase phase : contestPhaseDao.findByPhaseAutopromote(
-                    ContestPhasePromoteType.PROMOTE.getValue())) {
-            PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase, contestDao);
+    public synchronized void doPromotion(Date now) {
+        setNow(now);
+        doBasicPromotion();
+        doJudgingBasedPromotion();
+        distributeRibbons();
+    }
+
+    private void doBasicPromotion() {
+        final List<ContestPhase> phasesToPromote =
+                contestPhaseDao.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE.getValue());
+        for (ContestPhase phase : phasesToPromote) {
+            PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase);
             if (phasePromotionHelper.isPhaseContestScheduleTemplatePhase()) {
                 continue;
             }
 
-            if (phasePromotionHelper.isPhaseContestHasNoValidContest()) {
+            if (hasValidContest(phase)) {
                 continue;
             }
 
-            if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !contestPhaseDao.isPhaseActive(phase)) {
+            final boolean hasPhaseEnded = phase.getPhaseEndDate() != null
+                    && phase.getPhaseEndDate().before(now);
+            if (hasPhaseEnded && !contestPhaseDao.isPhaseActive(phase)) {
                 // we have a candidate for promotion, find next phase
                 try {
-                    _log.info("promoting phase " + phase.getContestPhasePK());
+                    _log.info("promoting phase {}", phase.getContestPhasePK());
                     Contest contest = contestDao.get(phase.getContestPK());
-                    _log.info("promoting contest " + contest.getContestPK());
+                    _log.info("promoting contest {}", contest.getContestPK());
                     ContestPhase nextPhase = contestPhaseService.getNextContestPhase(phase);
                     for (Proposal p : ProposalClientUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
-                        //skip already promoted proposal
-                        if (phasePromotionHelper.hasProposalAlreadyBeenPromoted(p)) {
+                        if (phasePromotionHelper.isProposalPromoted(p)) {
                             continue;
                         }
 
-                        if (!phasePromotionHelper.proposalIsVisible(p)) {
+                        if (!phasePromotionHelper.isProposalVisible(p)) {
                             continue;
                         }
 
@@ -116,33 +118,36 @@ public class AutoPromoteHelper {
                     // Add contest year suffix, if contest has been completed
                     contestService.addContestYearSuffixToContest(contest, true);
 
-                    _log.info("done promoting phase " + phase.getContestPhasePK());
+                    _log.info("done promoting phase {}", phase.getContestPhasePK());
                 } catch (NotFoundException e) {
-                    _log.error("Exception thrown when doing autopromotion for phase " + phase.getContestPhasePK(), e);
+                    _log.error("Exception thrown when doing autopromotion for phase {}",
+                            phase.getContestPhasePK(), e);
                 }
             }
         }
     }
 
-    public void doJudgingBasedPromotion() {
-        for (ContestPhase phase : contestPhaseDao.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE_JUDGED.getValue())) {
-            PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase, contestDao);
+    private void doJudgingBasedPromotion() {
+        final List<ContestPhase> phasesToPromote = contestPhaseDao
+                .findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE_JUDGED.getValue());
+        for (ContestPhase phase : phasesToPromote) {
+            PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase);
             if (phasePromotionHelper.isPhaseContestScheduleTemplatePhase()) {
                 continue;
             }
 
-            if (phasePromotionHelper.isPhaseContestHasNoValidContest()) {
+            if (hasValidContest(phase)) {
                 continue;
             }
 
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !contestPhaseDao.isPhaseActive(phase)) {
-                _log.info("promoting phase " + phase.getContestPhasePK() + " (judging)");
+                _log.info("promoting phase {} (judging)", phase.getContestPhasePK());
 
                 try {
                     // Only do the promotion if all proposals have been successfully reviewed
-                    if (phasePromotionHelper.allProposalsReviewed()) {
+                    if (phasePromotionHelper.isAllProposalsReviewed()) {
                         Contest contest = contestDao.get(phase.getContestPK());
-                        _log.info("promoting contest " + contest.getContestPK() + " (judging) ");
+                        _log.info("promoting contest {} (judging) ", contest.getContestPK());
                         ContestPhase nextPhase = contestPhaseService.getNextContestPhase(phase);
                         for (Proposal p : ProposalClientUtil.getProposalsInContestPhase(phase.getContestPhasePK())) {
                             try {
@@ -155,14 +160,14 @@ public class AutoPromoteHelper {
                                 // no such proposal2phase, we can safely add association
                             }
                             //skip already promoted proposal
-                            if (phasePromotionHelper.hasProposalAlreadyBeenPromoted(p)) {
-                                _log.trace("Proposal already promoted " + p.getProposalId());
+                            if (phasePromotionHelper.isProposalPromoted(p)) {
+                                _log.trace("Proposal already promoted {}", p.getProposalId());
                                 continue;
                             }
 
                             // Decide about the promotion
                             if (phasePromotionHelper.didJudgeDecideToPromote(p)) {
-                                _log.info("Promote proposal " + p.getProposalId());
+                                _log.info("Promote proposal {}", p.getProposalId());
                                 ProposalPhaseClientUtil.promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
                             }
 
@@ -170,7 +175,7 @@ public class AutoPromoteHelper {
                             // proposalLocalService.contestPhasePromotionCommentNotifyProposalContributors(p, phase);
 
                             // Add this check for extra security to prevent proposal authors from being spammed (see COLAB-500)
-                            if (phasePromotionHelper.hasProposalAlreadyBeenReviewed(p)) {
+                            if (phasePromotionHelper.isProposalReviewed(p)) {
                                 //TODO: Migrate logic to send email.
                                 //ProposalLocalServiceUtil.contestPhasePromotionEmailNotifyProposalContributors(p, phase, null);
                                 PhasePromotionHelper.createProposalContestPhasePromotionDoneAttribute(p.getProposalId(), phase.getContestPhasePK());
@@ -180,7 +185,7 @@ public class AutoPromoteHelper {
 
                         // if transition is to voting phase
                         if (contestPhaseService.getContestStatus(nextPhase).isCanVote()) {
-                            contestPhaseService.transferSupportsToVote(contest); //TODO enable me again
+                            contestPhaseService.transferSupportsToVote(contest);
                         }
                         phase.setContestPhaseAutopromote("PROMOTE_DONE");
                         contestPhaseDao.update(phase);
@@ -188,9 +193,12 @@ public class AutoPromoteHelper {
                         // Add contest year suffix, if contest has been completed
                         contestService.addContestYearSuffixToContest(contest, true);
 
-                        _log.info("done promoting phase " + phase.getContestPhasePK());
+                        _log.info("done promoting phase {}", phase.getContestPhasePK());
                     } else {
-                        _log.warn("Judge promoting failed for ContestPhase with ID " + phase.getContestPhasePK() + " - not all proposals have been reviewed");
+                        _log.warn(
+                                "Judge promoting failed for ContestPhase with ID {} - not all "
+                                        + "proposals have been reviewed",
+                                phase.getContestPhasePK());
                     }
                 } catch (NotFoundException ignored) {
 
@@ -199,22 +207,24 @@ public class AutoPromoteHelper {
         }
     }
 
-    public void distributeRibbons() {
-        for (ContestPhase phase : contestPhaseDao.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE_RIBBONIZE.getValue())) {
-            PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase, contestDao);
+    private void distributeRibbons() {
+        final List<ContestPhase> phasesToPromote = contestPhaseDao
+                .findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE_RIBBONIZE.getValue());
+        for (ContestPhase phase : phasesToPromote) {
+            PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase);
             if (phasePromotionHelper.isPhaseContestScheduleTemplatePhase()) {
                 continue;
             }
 
-            if (phasePromotionHelper.isPhaseContestHasNoValidContest()) {
+            if (hasValidContest(phase)) {
                 continue;
             }
 
             if (phase.getPhaseEndDate() != null && phase.getPhaseEndDate().before(now) && !contestPhaseDao.isPhaseActive(phase)) {
-                _log.info("promoting phase " + phase.getContestPhasePK() + " (ribbonize)");
+                _log.info("promoting phase {} (ribbonize)", phase.getContestPhasePK());
 
                 try {
-                    _log.info("promoting phase " + phase.getContestPhasePK());
+                    _log.info("promoting phase {}", phase.getContestPhasePK());
                     Contest contest = contestDao.get(phase.getContestPK());
                     ContestPhase nextPhase = contestPhaseService.getNextContestPhase(phase);
 
@@ -224,14 +234,19 @@ public class AutoPromoteHelper {
                     Set<ContestPhase> proposalCreationPhases = new HashSet<>();
 
                     for (ContestPhase cp : contestPhases) {
-                        ContestPhaseType phaseType = contestPhaseTypeDao.get(cp.getContestPhaseType()).get();
+                        final Optional<ContestPhaseType> phaseType =
+                                contestPhaseTypeDao.get(cp.getContestPhaseType());
 
-                        if (phaseType.getStatus().equals(STATUS_OPEN_FOR_SUBMISSION)) {
-                            proposalCreationPhases.add(cp);
-                        } else if (phaseType.getStatus().equals(STATUS_CLOSED)) {
-                            if (finalistSelection == null || cp.getPhaseEndDate().after(finalistSelection.getPhaseEndDate())) {
-                                semifinalistSelection = finalistSelection;
-                                finalistSelection = cp;
+                        if (phaseType.isPresent()) {
+                            final String status = phaseType.get().getStatus();
+                            if (status.equals(STATUS_OPEN_FOR_SUBMISSION)) {
+                                proposalCreationPhases.add(cp);
+                            } else if (status.equals(STATUS_CLOSED)) {
+                                if (finalistSelection == null || cp.getPhaseEndDate()
+                                        .after(finalistSelection.getPhaseEndDate())) {
+                                    semifinalistSelection = finalistSelection;
+                                    finalistSelection = cp;
+                                }
                             }
                         }
                     }
@@ -243,7 +258,7 @@ public class AutoPromoteHelper {
                             addAllVisibleProposalsToCollection(proposalsInContestPhase, allProposals, creationPhase);
                         }
                     } else {
-                        _log.error(String.format("Can't distribute ribbons: No proposal creation phase found in contest %d", phase.getContestPK()));
+                        _log.error("Can't distribute ribbons: No proposal creation phase found in contest {}", phase.getContestPK());
                     }
 
                     List<Proposal> finalists = null;
@@ -261,10 +276,10 @@ public class AutoPromoteHelper {
                             //make sure all semifinalists are in the set
                             addAllVisibleProposalsToCollection(semifinalists, allProposals, semifinalsPhase);
                         } else {
-                            _log.warn(String.format("No semifinalist phase found in contest %d", phase.getContestPK()));
+                            _log.warn("No semifinalist phase found in contest {}", phase.getContestPK());
                         }
                     } else {
-                        _log.error(String.format("Can't distribute ribbons: No finalist phase found in contest %d", phase.getContestPK()));
+                        _log.error("Can't distribute ribbons: No finalist phase found in contest {}", phase.getContestPK());
                     }
 
                     associateProposalsWithCompletedPhase(allProposals, phase, nextPhase);
@@ -288,25 +303,38 @@ public class AutoPromoteHelper {
                     // Add contest year suffix, if contest has been completed
                     contestService.addContestYearSuffixToContest(contest, true);
 
-                    _log.info("done promoting phase " + phase.getContestPhasePK());
+                    _log.info("done promoting phase {}", phase.getContestPhasePK());
                 } catch (NotFoundException e) {
-                    _log.error("Exception thrown when doing auto promotion for phase " + phase.getContestPhasePK(), e);
+                    _log.error("Exception thrown when doing auto promotion for phase {}",
+                            phase.getContestPhasePK(), e);
                 }
             }
         }
     }
 
-    private void addAllVisibleProposalsToCollection(Collection<Proposal> sourceCollection, Collection<Proposal> toCollection, ContestPhase inPhase) {
-        PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(inPhase, contestDao);
+    public boolean hasValidContest(ContestPhase phase) {
+        try {
+            contestDao.get(phase.getContestPK());
+        } catch(NotFoundException e){
+            _log.warn("promoting phase failed due to invalid contest ", e);
+            return true;
+        }
+        return false;
+    }
+
+    private void addAllVisibleProposalsToCollection(Collection<Proposal> sourceCollection,
+            Collection<Proposal> toCollection, ContestPhase inPhase) {
+        PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(inPhase);
         for (Proposal p : sourceCollection) {
-            if (!phasePromotionHelper.proposalIsVisible(p)) {
+            if (!phasePromotionHelper.isProposalVisible(p)) {
                 continue;
             }
             toCollection.add(p);
         }
     }
 
-    private void associateProposalsWithCompletedPhase(Set<Proposal> proposals, ContestPhase previousPhase, ContestPhase completedPhase)
+    private void associateProposalsWithCompletedPhase(Set<Proposal> proposals,
+            ContestPhase previousPhase, ContestPhase completedPhase)
             throws NotFoundException {
 
         for (Proposal proposal : proposals) {
@@ -314,18 +342,17 @@ public class AutoPromoteHelper {
             final long proposalId = proposal.getProposalId();
             Integer currentProposalVersion = ProposalClientUtil.countProposalVersions(proposalId);
             if (currentProposalVersion <= 0) {
-                _log.error(String.format("Proposal %d not found: version was %d", proposalId, currentProposalVersion));
+                _log.error("Proposal {} not found: version was {}", proposalId, currentProposalVersion);
                 throw new NotFoundException("Proposal not found");
             }
 
-            final int currentProposalVersionNumber = currentProposalVersion.intValue();
             try {
                 //make sure that proposals in the phase directly before have final versions
                 Proposal2Phase oldP2p = ProposalPhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(proposalId, previousPhase.getContestPhasePK());
 
                 if (oldP2p != null) {
                     if (oldP2p.getVersionTo() < 0) {
-                        oldP2p.setVersionTo(currentProposalVersionNumber);
+                        oldP2p.setVersionTo(currentProposalVersion);
                         ProposalPhaseClientUtil.updateProposal2Phase(oldP2p);
                     }
                 }
@@ -338,20 +365,20 @@ public class AutoPromoteHelper {
                 //This is a workaround for a bug that caused two new p2p's to be created
                 p2p = ProposalPhaseClientUtil.getProposal2PhaseByProposalIdContestPhaseId(proposalId, completedPhasePK);
                 //If this succeeds, we want to log the error to help diagnose the problem
-                _log.error(String.format("P2p found while associating proposal %d with phase %d.", proposalId, completedPhasePK));
+                _log.error("P2p found while associating proposal {} with phase {}.", proposalId, completedPhasePK);
                 new EmailToAdminDispatcher("Duplicate primary key for P2p in auto promotion",
                         String.format("Unexpectedly found p2p. Setting versionFrom = %d and versionTo = %d: %s",
-                                currentProposalVersionNumber, currentProposalVersionNumber, p2p)).sendMessage();
+                                currentProposalVersion, currentProposalVersion, p2p)).sendMessage();
             } catch (Proposal2PhaseNotFoundException e) {
                 p2p = new Proposal2Phase();
                 p2p.setProposalId(proposalId);
                 p2p.setContestPhaseId(completedPhasePK);
                 ProposalPhaseClientUtil.createProposal2Phase(p2p);
-                _log.debug(String.format("Created new p2p: %s", p2p));
+                _log.debug("Created new p2p: {}", p2p);
             }
 
-            p2p.setVersionFrom(currentProposalVersionNumber);
-            p2p.setVersionTo(currentProposalVersionNumber);
+            p2p.setVersionFrom(currentProposalVersion);
+            p2p.setVersionTo(currentProposalVersion);
             ProposalPhaseClientUtil.updateProposal2Phase(p2p);
         }
     }
@@ -365,17 +392,16 @@ public class AutoPromoteHelper {
 
                     if (ContestClientUtil.getContestPhaseRibbonType(ribbonId) != null) {
                         ProposalPhaseClientUtil.setProposalContestPhaseAttribute(proposal.getProposalId(), phasePK,
-                                ProposalContestPhaseAttributeKeys.RIBBON, 0l, ribbonId, "");
+                                ProposalContestPhaseAttributeKeys.RIBBON, 0L, ribbonId, "");
                     } else {
 
                         ProposalPhaseClientUtil.deleteProposalContestPhaseAttribute(proposal.getProposalId(), phasePK,
                                 ProposalContestPhaseAttributeKeys.RIBBON);
                     }
                 } else {
-                    _log.error(String.format(
-                            "Skipping ribbon (id = %d) assignment for proposal %d: this proposal already has a ribbon assigned",
-                            ribbonId, proposal.getProposalId()
-                    ));
+                    _log.error("Skipping ribbon (id = {}) assignment for proposal {}: "
+                                    + "this proposal already has a ribbon assigned",
+                            ribbonId, proposal.getProposalId());
                 }
             }
         }
