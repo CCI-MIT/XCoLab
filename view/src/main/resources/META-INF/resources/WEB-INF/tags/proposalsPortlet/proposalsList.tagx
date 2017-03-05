@@ -40,9 +40,8 @@
             <td class="c-Table__cell propname-authors no-border">
                 <c:if test="${proposal.ribbonWrapper.ribbon != null and proposal.ribbonWrapper.ribbon > 0 and (not contest.hideRibbons or proposalsPermissions.canAdminAll)}">
                     <div class="ribbonPlaceholder">
-                        <span class="js-Tooltip" tile="${proposal.ribbonWrapper.ribbonText}">
-                            <img src="${_themeImageFolder}/icon-prize${proposal.ribbonWrapper.ribbon}.png" />
-                        </span>
+                        <img src="${_themeImageFolder}/icon-prize${proposal.ribbonWrapper.ribbon}.png"
+                             class="js-Tooltip" title="${proposal.ribbonWrapper.ribbonText}" />
                     </div>
                 </c:if>
                 <h4>
