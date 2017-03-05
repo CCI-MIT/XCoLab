@@ -39,7 +39,6 @@ public class StaffMemberWrapper implements Serializable {
         }
     }
 
-
     private static String nl2br(String string) {
         if (string != null) {
             //allow line breaks in the string and render them as html
@@ -68,25 +67,11 @@ public class StaffMemberWrapper implements Serializable {
     public String getPhotoUrl() {
         if (this.staffMember.getPhotoUrl() != null && !this.staffMember.getPhotoUrl().isEmpty()) {
             return this.staffMember.getPhotoUrl();
-            //if the photoUrl is not directly set, use the one from the climate colab profile
-        } else {
-            if (colabMember != null && colabMember.getPortraitId() != 0) {
-
-                return "/image/user_"
-                        + "male_portrait?img_id="
-                        + colabMember.getPortraitId();
-            } else {
-                return null;
-            }
         }
-    }
-
-    public Long getPhotoId() {
-        if(this.colabMember != null ){
-            return this.colabMember.getPortraitFileEntryId();
-        } else {
-            return null;
+        if (colabMember != null && colabMember.getPortraitId() != 0) {
+            return "/image?defaultImage=MEMBER&img_id=" + colabMember.getPortraitId();
         }
+        return "/image?defaultImage=MEMBER";
     }
 
     public String getUrl() {

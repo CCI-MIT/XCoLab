@@ -19,51 +19,64 @@
         <h2>${widgetTitle}</h2>
     </c:if>
 
-    <ul class="${displayPhoto ? 'staffmembers-photos' : 'staffmembers-list'}">
-        <c:forEach items="${staffMembers}" var="staffMember" varStatus="status">
-            <c:choose>
-                <c:when test="${(status.index % columnAmount) == 0 and status.index > 0}">
-                    <c:set var="liClass" value="clear-row"/>
-                </c:when>
-                <c:otherwise>
-                    <c:set var="liClass" value=""/>
-                </c:otherwise>
-            </c:choose>
-
-            <li class="${liClass}">
-                <div class="descriptionContainer">
+    <c:choose>
+        <c:when test="${displayPhoto}">
+            <ul class="staffmembers-photos">
+                <c:forEach items="${staffMembers}" var="staffMember" varStatus="status">
                     <c:choose>
-                        <c:when test="${displayUrl and not empty staffMember.url}">
-                            <a href="${staffMember.url}">
-                                ${staffMember.name}
-                            </a>
+                        <c:when test="${(status.index % columnAmount) == 0 and status.index > 0}">
+                            <c:set var="liClass" value="clear-row"/>
                         </c:when>
                         <c:otherwise>
-                            ${staffMember.name}
+                            <c:set var="liClass" value=""/>
                         </c:otherwise>
                     </c:choose>
-                    <br/>
-                    <c:if test="${not empty staffMember.role}">
-                        <strong class="staffmembers-role">${staffMember.role}</strong><br/>
-                    </c:if>
-                    <c:if test="${not empty staffMember.organization}">
-                        <span class="staffmembers-organization">${staffMember.organization}</span><br/>
-                    </c:if>
-                </div>
-                <c:choose>
-                    <c:when test="${displayPhoto and not empty staffMember.photoUrl}">
+
+                    <li class="${liClass}">
+                        <div class="descriptionContainer">
+                            <c:choose>
+                                <c:when test="${displayUrl and not empty staffMember.url}">
+                                    <a href="${staffMember.url}">
+                                        ${staffMember.name}
+                                    </a>
+                                </c:when>
+                                <c:otherwise>
+                                    ${staffMember.name}
+                                </c:otherwise>
+                            </c:choose>
+                            <br/>
+                            <c:if test="${not empty staffMember.role}">
+                                <strong class="staffmembers-role">${staffMember.role}</strong><br/>
+                            </c:if>
+                            <c:if test="${not empty staffMember.organization}">
+                                <span class="staffmembers-organization">${staffMember.organization}</span><br/>
+                            </c:if>
+                        </div>
                         <img src="${staffMember.photoUrl}"/>
-                    </c:when>
-                    <c:when test="${displayPhoto and not empty staffMember.photoId}">
-                        <img src="/image/user_male_portrait?img_id=${staffMember.photoId}"/>
-                    </c:when>
-                    <c:when test="${displayPhoto and empty staffMember.photoUrl}">
-                        <img src="/image/user_male_portrait" />
-                    </c:when>
-                </c:choose>
-            </li>
-        </c:forEach>
-    </ul>
+                    </li>
+                </c:forEach>
+            </ul>
+        </c:when>
+        <c:otherwise>
+            <ul class="staffmembers-list">
+                <c:forEach items="${staffMembers}" var="staffMember">
+                    <li>
+                        <c:choose>
+                            <c:when test="${displayUrl and not empty staffMember.url}">
+                                <a href="${staffMember.url}">
+                                    ${staffMember.name}
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                ${staffMember.name}
+                            </c:otherwise>
+                        </c:choose>
+                    </li>
+                </c:forEach>
+            </ul>
+        </c:otherwise>
+    </c:choose>
+
     <div class="clear"></div>
 
 </jsp:root>

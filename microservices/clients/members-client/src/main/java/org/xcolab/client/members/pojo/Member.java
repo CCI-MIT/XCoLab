@@ -228,8 +228,7 @@ public class Member implements Serializable {
 
     @JsonIgnore
     public long getPortraitId() {
-        //TODO: add image id from fileupload service
-        return 0;
+        return getPortraitFileEntryId();
     }
 
     @JsonIgnore
