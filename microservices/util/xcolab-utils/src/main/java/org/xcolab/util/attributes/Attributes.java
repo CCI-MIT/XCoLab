@@ -4,6 +4,7 @@ import org.xcolab.util.attributes.basic.BooleanAttribute;
 import org.xcolab.util.attributes.basic.DoubleAttribute;
 import org.xcolab.util.attributes.basic.EnumAttribute;
 import org.xcolab.util.attributes.basic.IdListAttribute;
+import org.xcolab.util.attributes.basic.JsonAttribute;
 import org.xcolab.util.attributes.basic.ListAttribute;
 import org.xcolab.util.attributes.basic.LongAttribute;
 import org.xcolab.util.attributes.basic.StringAttribute;
@@ -53,5 +54,10 @@ public final class Attributes {
     public static <T extends Enum<T>> AttributeGetterBuilder<T> newEnumAttribute(
             AttributeProvider<?> attributeProvider, Class<T> enumType) {
         return new AttributeGetterBuilder<>(new EnumAttribute<>(attributeProvider, enumType));
+    }
+
+    public static <T> AttributeGetterBuilder<T> newJsonAttribute(
+            AttributeProvider<?> attributeProvider, Class<T> entityType) {
+        return new AttributeGetterBuilder<>(new JsonAttribute<T>(attributeProvider, entityType));
     }
 }

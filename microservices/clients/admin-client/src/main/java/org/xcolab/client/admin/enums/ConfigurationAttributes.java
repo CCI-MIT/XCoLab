@@ -42,4 +42,8 @@ final class ConfigurationAttributes {
             String name, Class<T> enumType) {
         return Attributes.newEnumAttribute(new ConfigurationAttributeProvider(name), enumType);
     }
+
+    public static <T> AttributeGetterBuilder<T> newJsonAttribute(String name, Class<T> entityType) {
+        return Attributes.newJsonAttribute(new ConfigurationAttributeProvider(name), entityType);
+    }
 }
