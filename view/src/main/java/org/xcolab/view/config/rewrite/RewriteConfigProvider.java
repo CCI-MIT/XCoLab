@@ -38,7 +38,8 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
 
         configurationBuilder
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/feedback")))
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/feedback"))
+                                                .or(Path.matches("/page/feedback")))
                     .perform(Redirect.permanent("/feedback"));
         return configurationBuilder;
     }
@@ -349,10 +350,7 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .perform(Redirect.permanent("/page/sponsors"))
                 .addRule()
                     .when(Direction.isInbound().and(Path.matches("/web/guest/people")))
-                    .perform(Redirect.permanent("/page/people"))
-                .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/feedback")))
-                    .perform(Redirect.permanent("/page/contact"));
+                    .perform(Redirect.permanent("/page/people"));
     }
 
     private void redirectContentPagesCrowdsensor(ConfigurationBuilder configurationBuilder) {
@@ -377,10 +375,7 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .perform(Redirect.permanent("/page/sponsors"))
                 .addRule()
                     .when(Direction.isInbound().and(Path.matches("/web/guest/people")))
-                    .perform(Redirect.permanent("/page/people"))
-                .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/feedback")))
-                    .perform(Redirect.permanent("/page/contact"));
+                    .perform(Redirect.permanent("/page/people"));
 
         // news
         configurationBuilder
@@ -411,10 +406,7 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .perform(Redirect.permanent("/page/participants"))
                 .addRule()
                     .when(Direction.isInbound().and(Path.matches("/web/guest/materials")))
-                    .perform(Redirect.permanent("/page/materials"))
-                .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/feedback")))
-                    .perform(Redirect.permanent("/page/contact"));
+                    .perform(Redirect.permanent("/page/materials"));
 
         configurationBuilder
                 .addRule()

@@ -21,7 +21,7 @@ public class ContactPreferencesController {
 	
     @GetMapping("/feedback/editPreferences")
     public String showFeed(HttpServletRequest request, HttpServletResponse response, Model model) {
-    	model.addAttribute("contactPreferences", new ContactPreferences(request));
+    	model.addAttribute("contactPreferences", new ContactPreferences());
 
         long memberId = MemberAuthUtil.getMemberId(request);
         if (!PermissionsClient.canAdminAll(memberId)) {
@@ -33,8 +33,10 @@ public class ContactPreferencesController {
 	
 
     @PostMapping("/feedback/savePreferences")
-    public String savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, ContactPreferences preferences) throws  IOException {;
-        preferences.submit();
+    public String savePreferences(HttpServletRequest request, HttpServletResponse response,
+            Model model, ContactPreferences preferences)
+            throws  IOException {
+        preferences.save();
         AlertMessage.success("Feedback page preferences has been saved.").flash(request);
         return "feedback/editPreferences";
 	}

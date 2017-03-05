@@ -26,12 +26,11 @@ public class ReCaptchaUtils {
             con.setRequestProperty("User-Agent", USER_AGENT);
             con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 
-            String postParams = "secret=" + secret + "&response="
-                    + gRecaptchaResponse;
-
             // Send post request
             con.setDoOutput(true);
             DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            String postParams = "secret=" + secret + "&response="
+                    + gRecaptchaResponse;
             wr.writeBytes(postParams);
             wr.flush();
             wr.close();
@@ -40,7 +39,7 @@ public class ReCaptchaUtils {
             BufferedReader in = new BufferedReader(new InputStreamReader(
                     con.getInputStream()));
             String inputLine;
-            StringBuffer response = new StringBuffer();
+            StringBuilder response = new StringBuilder();
 
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
