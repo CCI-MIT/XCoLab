@@ -1,14 +1,14 @@
 package org.xcolab.view.pages.proposals.view.action;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
@@ -19,13 +19,14 @@ import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.loginregister.SharedColabUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
+import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.edit.ProposalCreationUtil;
 import org.xcolab.view.pages.proposals.utils.edit.ProposalMoveUtil;
@@ -47,35 +48,33 @@ public class AddUpdateProposalDetailsActionController {
         this.proposalsContext = proposalsContext;
     }
 
-    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/updateProposalDetails")
-    public void show(HttpServletRequest request, HttpServletResponse response, Model model,
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}")
+    public String show(HttpServletRequest request, HttpServletResponse response, Model model,
             @PathVariable String contestYear, @PathVariable String contestUrlName,
             @PathVariable String proposalUrlString, @PathVariable String proposalId,
             @Valid UpdateProposalDetailsBean updateProposalSectionsBean, BindingResult result)
             throws ProposalsAuthorizationException, IOException {
 
         long memberId = MemberAuthUtil.getMemberId(request);
-        final Proposal proposal = proposalsContext.getProposal(request);
+        Proposal proposal = proposalsContext.getProposal(request);
         final ProposalsPermissions permissions = proposalsContext.getPermissions(request);
         if (proposal != null && !permissions.getCanEdit()) {
-            ErrorText.ACCESS_DENIED.flashAndRedirect(request, response);
-            return;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
         final Contest contest = proposalsContext.getContest(request);
         if (proposal == null && !permissions.getCanCreate()) {
-            ErrorText.ACCESS_DENIED.flashAndRedirect(request, response);
-            return;
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
+        final ClientHelper clients = proposalsContext.getClients(request);
         if (result.hasErrors()) {
-            //--     response.setRenderParameter("error", "true");
-            //-- response.setRenderParameter("action", "updateProposalDetails");
-            //-- response.setRenderParameter("edit", "true");
-            //-- request.setAttribute("ACTION_ERROR", true);
-            //return reportError(request,model,updateProposalSectionsBean,result);
-            response.sendRedirect(request.getRequestURL()+ "_error");
-            return;
+            AlertMessage.warning(
+                    "Please make sure you have entered a title and check the character limits.")
+                    .flash(request);
+            final String redirectUrl = request.getHeader(HttpHeaders.REFERER);
+            return "redirect:" + redirectUrl;
         }
+
         Proposal proposalWrapper;
         boolean createNew = false;
         final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
@@ -96,22 +95,24 @@ public class AddUpdateProposalDetailsActionController {
                 updateProposalSectionsBean, request, proposalWrapper, p2p, memberId);
         proposalUpdateHelper.updateProposal();
 
+        final ActivitiesClient activitiesClient = clients.getActivitiesClient();
         if (createNew) {
             ProposalCreationUtil.sendAuthorNotification(ConfigurationAttributeKey.COLAB_URL.get(),
                     proposalWrapper, contestPhase, request);
 
-            ActivityEntryHelper.createActivityEntry(proposalsContext.getClients(request).getActivitiesClient(), memberId, proposalWrapper.getProposalId(), null,
+            ActivityEntryHelper.createActivityEntry(activitiesClient, memberId, proposalWrapper.getProposalId(), null,
                     ActivityProvidersType.ProposalCreatedActivityEntry.getType());
 
         } else {
-            ActivityEntryHelper.createActivityEntry(proposalsContext.getClients(request).getActivitiesClient(), memberId, proposalWrapper.getProposalId(), null,
+            ActivityEntryHelper.createActivityEntry(activitiesClient, memberId, proposalWrapper.getProposalId(), null,
                     ActivityProvidersType.ProposalAttributeUpdateActivityEntry.getType());
         }
         SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), memberId);
         
         if (ConfigurationAttributeKey.FILTER_PROFANITY.get()) {
             try {
-                FilteredEntry filteredEntry = FilteringClient.getFilteredEntryByUuid(updateProposalSectionsBean.getUuid());
+                FilteredEntry filteredEntry = FilteringClient
+                        .getFilteredEntryByUuid(updateProposalSectionsBean.getUuid());
                 filteredEntry.setSourceId(proposalWrapper.getProposalId());
                 filteredEntry.setAuthorId(memberId);
                 FilteringClient.updateFilteredEntry(filteredEntry);
@@ -120,33 +121,6 @@ public class AddUpdateProposalDetailsActionController {
         }
 
         proposalsContext.invalidateContext(request);
-        response.sendRedirect(proposalWrapper.getProposalUrl());
-        return;
-    }
-
-
-    @RequestMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/updateProposalDetails_error")
-    public String reportError(HttpServletRequest request, Model model,
-            @ModelAttribute @Valid UpdateProposalDetailsBean updateProposalSectionsBean,
-            BindingResult result) {
-
-        Proposal proposal = proposalsContext.getProposalWrapped(request);
-        if (proposal == null) {
-            final Contest contest = proposalsContext.getContest(request);
-            final RestService proposalService =
-                    proposalsContext.getClients(request).getProposalService();
-            proposal = new Proposal(new Proposal(proposalService), 0, contest,
-                    proposalsContext.getContestPhase(request), null);
-            proposal.setAuthorId(proposalsContext.getMember(request).getUserId());
-            model.addAttribute("proposal", proposal);
-        }
-        model.addAttribute("mustFilterContent",ConfigurationAttributeKey.FILTER_PROFANITY.get());
-        model.addAttribute("updateProposalSectionsBean", updateProposalSectionsBean);
-
-        request.setAttribute("imageUploadServiceUrl",
-                ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.get());
-        request.setAttribute("imageUploadHelpText",
-                ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.get());
-        return "proposals/proposalDetails_edit";
+        return "redirect:" + proposalWrapper.getProposalUrl();
     }
 }

@@ -9,7 +9,7 @@
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout  title="${proposal.name} - Edit">
     <!--@elvariable id="isMove" type="java.lang.Boolean"-->
-    <!--@elvariable id="hasNotMappedSections" type="java.lang.Boolean"-->
+    <!--@elvariable id="hasUnmappedSections" type="java.lang.Boolean"-->
 
     <jsp:directive.include file="./init_proposal.jspx"/>
 
@@ -47,14 +47,7 @@
     </c:if>
 
     <div class="prop-left">
-        <c:choose>
-            <c:when test="${proposal.proposalId > 0 }">
-                <c:set var="updateProposalSectionsURL" value="${proposal.proposalUrl}/updateProposalDetails?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
-            </c:when>
-            <c:otherwise>
-                <c:set var="updateProposalSectionsURL"  value="${proposal.proposalUrl}/updateProposalDetails?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }"/>
-            </c:otherwise>
-        </c:choose>
+        <c:set var="updateProposalSectionsURL"  value="${proposal.proposalUrl}"/>
 
         <div class="c-Headline addprop">
             <c:choose>
@@ -194,7 +187,7 @@
             <c:forEach var="section" items="${proposal.sections }">
                 <c:if test="${not section.locked }">
                     <div class="addpropbox q3 ${section.type}" data-section-id="${section.sectionDefinitionId }">
-                        <proposalsPortlet:proposalSectionEdit section="${section }" showCopySectionContentButton="${hasNotMappedSections and not empty baseProposal }"/>
+                        <proposalsPortlet:proposalSectionEdit section="${section }" showCopySectionContentButton="${hasUnmappedSections and not empty baseProposal }"/>
                     </div>
                 </c:if>
             </c:forEach>

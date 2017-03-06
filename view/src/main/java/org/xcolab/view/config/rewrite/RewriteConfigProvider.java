@@ -89,16 +89,20 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
     private void redirectLegacyUserProfile(ConfigurationBuilder configurationBuilder) {
         configurationBuilder
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/member/-/member/userId/{memberId}")))
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/member/-/member/userId/{memberId}")))
                     .perform(Redirect.permanent("/members/profile/{memberId}"))
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/member/-/member/userId/{memberId}/page/edit")))
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/member/-/member/userId/{memberId}/page/edit")))
                     .perform(Redirect.permanent("/members/profile/{memberId}/edit"))
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/member/-/member/userId/{memberId}/page/subscriptions")))
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/member/-/member/userId/{memberId}/page/subscriptions")))
                     .perform((Redirect.permanent("/members/profile/{memberId}/subscriptions")))
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/member/-/member/userId/{memberId}/page/subscriptionsManage")))
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/member/-/member/userId/{memberId}/page/subscriptionsManage")))
                     .perform((Redirect.permanent("/members/profile/{memberId}/subscriptions/manage")));
     }
 
@@ -111,7 +115,8 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .when(Direction.isInbound().and(Path.matches("/web/guest/messaging")))
                     .perform(Redirect.permanent("/messaging"))
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/messaging/-/messaging/message/{messageId}")))
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/messaging/-/messaging/message/{messageId}")))
                     .perform(Redirect.permanent("/messaging/message/{messageId}"));
     }
 
@@ -121,10 +126,12 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .when(Direction.isInbound().and(Path.matches("/web/guest/discussion")))
                     .perform(Redirect.permanent("/discussion"))
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/discussion/-/discussion/thread/{threadId}")))
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/discussion/-/discussion/thread/{threadId}")))
                     .perform(Redirect.permanent("/discussion/thread/{threadId}"))
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/discussion/-/discussion/category/{categoryId}")))
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/discussion/-/discussion/category/{categoryId}")))
                     .perform(Redirect.permanent("/discussion/category/{categoryId}"));
     }
 
@@ -164,20 +171,20 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .perform(Forward.to("/contests/legacy/contest/{contestId}"))
                     .where("portletName").matches("(plans|dialogues|challenges|trends)")
                 .addRule()
-                    .when(Direction.isInbound()
-                            .and(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phase/{phaseId}")))
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phase/{phaseId}")))
                     .perform(Forward.to("/contests/legacy/contest/{contestId}?phaseId={phaseId}"))
                     .where("portletName").matches("(plans|dialogues|challenges|trends)")
                 .addRule()
-                    .when(Direction.isInbound()
-                            .and(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/planId/{proposalId}")
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/planId/{proposalId}")
                                 .or(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/planId/{proposalId}/{path}"))))
                     .perform(Forward.to("/contests/legacy/contest/{contestId}/proposal/{proposalId}"))
                     .where("portletName").matches("(plans|dialogues|challenges|trends)")
                     .where("path").matches(".*")
                 .addRule()
-                    .when(Direction.isInbound()
-                            .and(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phaseId/{phaseId}/planId/{proposalId}")
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phaseId/{phaseId}/planId/{proposalId}")
                                 .or(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phaseId/{phaseId}/planId/{proposalId}/{path}"))))
                     .perform(Forward.to("/contests/legacy/contest/{contestId}/proposal/{proposalId}?phaseId={phaseId}"))
                     .where("portletName").matches("(plans|dialogues|challenges|trends)")
