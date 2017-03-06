@@ -18,8 +18,11 @@ public class ProposalRibbon {
 
     public ProposalRibbon(Proposal proposal, RestService proposalService) {
         Assert.notNull(proposal);
-        Assert.notNull(proposalService);
-        this.contestPhaseRibbonType = fetchRibbonType(proposal, proposalService);
+        if (proposalService != null) {
+            this.contestPhaseRibbonType = fetchRibbonType(proposal, proposalService);
+        } else {
+            this.contestPhaseRibbonType = null;
+        }
     }
 
     private ContestPhaseRibbonType fetchRibbonType(Proposal proposal, RestService proposalService) {
