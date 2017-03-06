@@ -23,8 +23,8 @@ import org.xcolab.view.config.ConfigurationService;
 import org.xcolab.view.config.rewrite.RewriteInitializer;
 import org.xcolab.view.config.tomcat.AjpConnector;
 import org.xcolab.view.config.tomcat.ForwardedHostValve;
-import org.xcolab.view.pages.proposals.view.interceptors.PopulateProposalModelInterceptor;
-import org.xcolab.view.pages.proposals.view.interceptors.ValidateTabPermissionsInterceptor;
+import org.xcolab.view.pages.proposals.interceptors.PopulateProposalModelInterceptor;
+import org.xcolab.view.pages.proposals.interceptors.ValidateTabPermissionsInterceptor;
 import org.xcolab.view.theme.ThemeResourceResolver;
 import org.xcolab.view.theme.ThemeVariableInterceptor;
 

@@ -13,14 +13,14 @@ import java.util.Map;
 public class UpdateProposalDetailsBean {
     private Map<Long, String> sectionsContent = new HashMap<>();
 
-    @Length(max = 140, message = "the pitch is limited to 140 characters")
+    @Length(max = 140, message = "The pitch is limited to 140 characters.")
     private String pitch;
 
-    @NotBlank(message = "please enter a title")
-    @Length(max = 80, message = "the title is limited to 80 characters")
+    @NotBlank(message = "Please enter a title.")
+    @Length(max = 80, message = "The title is limited to 80 characters.")
     private String name;
 
-    @Length(max = 20, message = "the team name is limited to 20 characters")
+    @Length(max = 20, message = "The team name is limited to 20 characters.")
     private String team;
     private long imageId;
     private long baseProposalId;

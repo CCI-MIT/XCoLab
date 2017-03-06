@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view;
+package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
@@ -40,6 +41,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalEvaluationTabController extends BaseProposalTabController {
     private final static Logger _log = LoggerFactory.getLogger(ProposalEvaluationTabController.class);
     private static final Long AVERAGE_RESULT_ROUND_FACTOR = 10L;
@@ -52,11 +54,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         this.proposalsContext = proposalsContext;
     }
 
-
-    @GetMapping({
-            "/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/EVALUATION"
-            ,"/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/EVALUATION"
-    })
+    @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=EVALUATION")
     public String showEvaluation(HttpServletRequest request, Model model) {
 
         boolean isFellowScreeningActive = proposalsContext.getContestPhase(request).getFellowScreeningActive();

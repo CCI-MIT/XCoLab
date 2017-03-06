@@ -1,10 +1,12 @@
-package org.xcolab.view.pages.proposals.view;
+package org.xcolab.view.pages.proposals.view.proposal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
@@ -18,11 +20,13 @@ import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.entity.utils.analytics.AnalyticsUtil;
+import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
-import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
+import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
@@ -31,6 +35,7 @@ import org.xcolab.view.pages.proposals.utils.edit.ProposalUpdateHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
@@ -46,25 +51,22 @@ public class CreateProposalController extends BaseProposalsController {
     @GetMapping("createProposal/basedOn/{baseProposalId}/{baseProposalVersion}/{baseContestId}")
     public String createProposalsBasedOn(HttpServletRequest request, HttpServletResponse response,
             Model model, Member loggedInMember, @PathVariable Long baseProposalId,
-            @PathVariable Integer baseProposalVersion, @PathVariable Long baseContestId)
-            throws ProposalsAuthorizationException {
+            @PathVariable Integer baseProposalVersion, @PathVariable Long baseContestId) {
 
-        return doCreateProposal(request, response, model, loggedInMember, baseProposalId,
+        return showCreateProposal(request, response, model, loggedInMember, baseProposalId,
                 baseProposalVersion, baseContestId);
     }
 
     @GetMapping("createProposal")
-    public String createProposals(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member loggedInMember)
-            throws ProposalsAuthorizationException {
+    public String showCreateProposal(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member loggedInMember) {
 
-        return doCreateProposal(request, response, model, loggedInMember, null, -1, null);
+        return showCreateProposal(request, response, model, loggedInMember, null, -1, null);
     }
 
-    private String doCreateProposal(HttpServletRequest request, HttpServletResponse response,
+    private String showCreateProposal(HttpServletRequest request, HttpServletResponse response,
             Model model, Member loggedInMember, Long baseProposalId,
-            int baseProposalVersion, Long baseContestId)
-            throws ProposalsAuthorizationException {
+            int baseProposalVersion, Long baseContestId) {
 
         if (!proposalsContext.getPermissions(request).getCanCreate()) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
@@ -107,13 +109,20 @@ public class CreateProposalController extends BaseProposalsController {
 
                 model.addAttribute("baseContest", baseContest);
 
-                model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalWrapped, baseProposalWrapper));
+                if (!model.containsAttribute("updateProposalDetailsBean")) {
+                    UpdateProposalDetailsBean updateProposalDetailsBean =
+                            new UpdateProposalDetailsBean(proposalWrapped, baseProposalWrapper);
+                    model.addAttribute("updateProposalDetailsBean", updateProposalDetailsBean);
+                }
             } catch (ContestNotFoundException | ProposalNotFoundException ignored) {
                 
             }
-        } else {
-        	model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(proposalWrapped));
+        } else if (!model.containsAttribute("updateProposalDetailsBean")) {
+            UpdateProposalDetailsBean updateProposalDetailsBean =
+                    new UpdateProposalDetailsBean(proposalWrapped);
+            model.addAttribute("updateProposalDetailsBean", updateProposalDetailsBean);
         }
+
         model.addAttribute("mustFilterContent",ConfigurationAttributeKey.FILTER_PROFANITY.get());
         model.addAttribute("proposal", proposalWrapped);
 
@@ -124,7 +133,7 @@ public class CreateProposalController extends BaseProposalsController {
 
         AnalyticsUtil.publishEvent(request, memberId, ProposalUpdateHelper.PROPOSAL_ANALYTICS_KEY + 1,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_CATEGORY,
-                ProposalUpdateHelper.PROPOSAL_ANALYTICS_ACTION ,
+                ProposalUpdateHelper.PROPOSAL_ANALYTICS_ACTION,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_LABEL,
     			1);
 
@@ -132,5 +141,28 @@ public class CreateProposalController extends BaseProposalsController {
                 ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.get());
         request.setAttribute("imageUploadHelpText", ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.get());
         return "proposals/proposalDetails_edit";
+    }
+
+    @PostMapping("createProposal")
+    public String createProposal(HttpServletRequest request, HttpServletResponse response,
+            Model model, @PathVariable String contestYear, @PathVariable String contestUrlName,
+            @Valid UpdateProposalDetailsBean updateProposalDetailsBean, BindingResult result) {
+
+        Proposal proposal = proposalsContext.getProposal(request);
+        final ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        if (!permissions.getCanCreate()) {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
+
+        if (result.hasErrors()) {
+            AlertMessage.danger(
+                    "Proposal NOT created. Please fix the errors before saving.")
+                    .flash(request);
+            final Member memberOrNull = MemberAuthUtil.getMemberOrNull(request);
+            return showCreateProposal(request, response, model, memberOrNull);
+        }
+
+        return AddUpdateProposalControllerUtil
+                .createOrUpdateProposal(request, updateProposalDetailsBean, proposal, proposalsContext);
     }
 }

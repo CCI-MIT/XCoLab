@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view;
+package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClientUtil;
@@ -25,6 +26,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalModelTabController extends BaseProposalTabController {
 
     private final ProposalsContext proposalsContext;
@@ -34,8 +36,9 @@ public class ProposalModelTabController extends BaseProposalTabController {
         this.proposalsContext = proposalsContext;
     }
 
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ACTIONSIMPACTS")
-    public String show(Model model, @RequestParam(required = false) boolean edit, HttpServletRequest request) {
+    @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ACTIONSIMPACTS")
+    public String show(Model model, HttpServletRequest request,
+            @RequestParam(required = false) boolean edit) {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.ACTIONSIMPACTS);
         

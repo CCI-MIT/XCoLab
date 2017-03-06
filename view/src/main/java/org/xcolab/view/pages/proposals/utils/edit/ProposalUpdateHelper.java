@@ -17,7 +17,6 @@ import org.xcolab.view.pages.proposals.utils.context.ProposalsContextImpl;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 public class ProposalUpdateHelper {
 
@@ -32,10 +31,9 @@ public class ProposalUpdateHelper {
     private final Proposal2Phase p2p;
     private final long memberId;
 
-
     private final ProposalsContext proposalsContext = new ProposalsContextImpl();
 
-    public ProposalUpdateHelper(@Valid UpdateProposalDetailsBean updateProposalSectionsBean,
+    public ProposalUpdateHelper(UpdateProposalDetailsBean updateProposalSectionsBean,
             HttpServletRequest request, Proposal proposalWrapper, Proposal2Phase p2p, long memberId) {
         this.updateProposalSectionsBean = updateProposalSectionsBean;
         this.request = request;

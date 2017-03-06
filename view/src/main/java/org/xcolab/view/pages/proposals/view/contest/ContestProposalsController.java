@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view;
+package org.xcolab.view.pages.proposals.view.contest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.PermissionsClient;
@@ -20,12 +21,15 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.entity.utils.enums.MemberRole;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.pages.proposals.exceptions.ProposalIdOrContestIdInvalidException;
+import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
+import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.view.pages.proposals.wrappers.ProposalsSortFilterBean;
 import org.xcolab.view.util.pagination.SortFilterPage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,8 +54,8 @@ public class ContestProposalsController extends BaseProposalsController {
             @PathVariable String phaseId,
             final SortFilterPage sortFilterPage, Model model, Member loggedInMember) {
         setBasePageAttributes(request, model);
-        return showContestProposalsPage(request, response, contestYear, contestUrlName,
-                phaseId, sortFilterPage, model, loggedInMember);
+        return showContestProposalsPage(request, response, model,
+                sortFilterPage, loggedInMember);
     }
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}")
@@ -60,15 +64,13 @@ public class ContestProposalsController extends BaseProposalsController {
             @PathVariable String contestUrlName,
             final SortFilterPage sortFilterPage, Model model, Member loggedInMember) {
         setBasePageAttributes(request, model);
-        return showContestProposalsPage(request, response, contestYear, contestUrlName,
-                null, sortFilterPage, model, loggedInMember);
+        return showContestProposalsPage(request, response, model,
+                sortFilterPage, loggedInMember);
     }
 
-    private String showContestProposalsPage(HttpServletRequest request, HttpServletResponse response,
-            String contestYear,
-            String contestUrlName,
-            String phaseId,
-            final SortFilterPage sortFilterPage, Model model, Member loggedInMember) {
+    private String showContestProposalsPage(HttpServletRequest request,
+            HttpServletResponse response, Model model,
+            final SortFilterPage sortFilterPage, Member loggedInMember) {
 
 
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
@@ -131,6 +133,27 @@ public class ContestProposalsController extends BaseProposalsController {
 
         setBasePageAttributes(request, model);
         return "/proposals/contestProposals";
+    }
+
+    @GetMapping("/contests/subscribeContest")
+    public void handleAction(HttpServletRequest request, Model model, HttpServletResponse response)
+            throws ProposalsAuthorizationException, IOException {
+
+        if (proposalsContext.getPermissions(request).getCanSubscribeContest()) {
+            long contestId = proposalsContext.getContest(request).getContestPK();
+            long memberId = proposalsContext.getMember(request).getUserId();
+            if (ContestClientUtil.isMemberSubscribedToContest(contestId, memberId)) {
+                ContestClientUtil.unsubscribeMemberFromContest(contestId, memberId);
+            }
+            else {
+                ContestClientUtil.subscribeMemberToContest(contestId, memberId);
+
+            }
+            response.sendRedirect(proposalsContext.getContest(request).getContestLinkUrl());
+        }
+        else {
+            throw new ProposalsAuthorizationException("User isn't allowed to subscribe contest");
+        }
     }
 }
 

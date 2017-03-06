@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view;
+package org.xcolab.view.pages.proposals.view.contest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,6 +12,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
+import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
 
 import java.io.IOException;
 import java.net.URLDecoder;

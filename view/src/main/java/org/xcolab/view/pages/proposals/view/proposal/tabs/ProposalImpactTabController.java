@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view;
+package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
 import edu.mit.cci.roma.client.comm.ModelNotFoundException;
 import edu.mit.cci.roma.client.comm.ScenarioNotFoundException;
@@ -37,7 +37,6 @@ import org.xcolab.view.pages.proposals.wrappers.ProposalTab;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -47,6 +46,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalImpactTabController extends BaseProposalTabController {
 
     private final static Logger _log = LoggerFactory.getLogger(ProposalImpactTabController.class);
@@ -54,66 +54,17 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     @Autowired
     private ProposalsContext proposalsContext;
 
-    private Contest contest;
-    private Proposal proposalWrapper;
-
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/IMPACT/edit")
-    public String showProposalDetailsEdit(
-            @PathVariable Long proposalId,
-            @PathVariable String contestUrlName,
-            @PathVariable Long contestYear,
-            Model model, HttpServletRequest request) throws IOException, ScenarioNotFoundException, ModelNotFoundException  {
-        return showImpactTab(
-                proposalId,
-                contestUrlName,
-                contestYear,
-                null,
-                request, model, true);
-    }
-
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/IMPACT")
-    public String showProposalDetails(
-                @PathVariable Long proposalId,
-                @PathVariable String contestUrlName,
-                @PathVariable Long contestYear,
-                Model model, HttpServletRequest request) throws IOException, ScenarioNotFoundException, ModelNotFoundException  {
-        return showImpactTab(
-                proposalId,
-                contestUrlName,
-                contestYear,
-                null,
-                request, model, false);
-    }
-    @GetMapping(
-            "/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/IMPACT")
-    public String showProposalDetails(
-            @PathVariable Long proposalId,
-            @PathVariable String contestUrlName,
-            @PathVariable Long contestYear,
-            @PathVariable Long phaseId,
-            Model model, HttpServletRequest request) throws IOException, ScenarioNotFoundException, ModelNotFoundException  {
-        return showImpactTab(
-                proposalId,
-                contestUrlName,
-                contestYear,
-                phaseId,
-                 request, model, false);
-    }
-    private String showImpactTab(
-             Long proposalId,
-             String contestUrlName,
-             Long contestYear,
-            Long phaseId,
-            HttpServletRequest request, Model model, boolean edit)
+    @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=IMPACT")
+    public String showProposalDetails(HttpServletRequest request, Model model,
+            @PathVariable Long proposalId, @PathVariable String contestUrlName,
+            @PathVariable Long contestYear, @RequestParam(defaultValue = "false") boolean edit)
             throws IOException, ScenarioNotFoundException, ModelNotFoundException  {
 
-
-        contest = proposalsContext.getContest(request);
-        proposalWrapper = proposalsContext.getProposalWrapped(request);
+        Contest contest = proposalsContext.getContest(request);
+        Proposal proposalWrapper = proposalsContext.getProposalWrapped(request);
         setCommonModelAndPageAttributes(request, model, ProposalTab.IMPACT);
 
         boolean userAllowedToEdit = false;
-
 
         if (edit) {
             userAllowedToEdit = canEditImpactTab(request);
@@ -152,7 +103,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         boolean tabUsesModeling = (isRegionalContest(contest) || isGlobalContest(contest));
         if (tabUsesModeling){
             model.addAttribute("availableModels", ContestClientUtil.getModelIdsAndNames(contest.getContestPK()));
-            model.addAttribute("modelId", getModelIdIfProposalHasScenarioIdOrContestDefaultModelId());
+            model.addAttribute("modelId", getModelIdIfProposalHasScenarioIdOrContestDefaultModelId(
+                    proposalWrapper));
             model.addAttribute("scenarioId", proposalWrapper.getScenarioId());
         }
 
@@ -171,7 +123,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             model.addAttribute("impactSerieses", getImpactTabBasicProposal(proposalWrapper.getWrapped(),
 
 
-                    request));
+                    request, contest));
         }
         model.addAttribute("showSubProposalListing", showSubProposalListing);
         model.addAttribute("showDataTable", showDataTable);
@@ -180,7 +132,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         if (contestTier != null) {
             switch (contestTier) {
                 case BASIC:
-                    return showImpactTabBasic(request, model);
+                    return showImpactTabBasic(request, model, contest, proposalWrapper);
                 case REGION_SECTOR:
                     //return showImpactTabRegionSector();
                     return "proposalImpactError";
@@ -188,7 +140,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                     return showImpactTabRegionAggregate();
                 case GLOBAL:
                     if(userAllowedToEdit) {
-                        return showImpactTabEditGlobal(request, model);
+                        return showImpactTabEditGlobal(request, model, proposalWrapper);
                     } else {
                         return showImpactTabGlobal();
                     }
@@ -199,7 +151,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return "/proposals/proposalImpactError";
     }
 
-    private Long getModelIdIfProposalHasScenarioIdOrContestDefaultModelId() {
+    private Long getModelIdIfProposalHasScenarioIdOrContestDefaultModelId(Proposal proposalWrapper) {
         Long modelId = proposalWrapper.getModelId();
         boolean scenarioIdValid =
                proposalWrapper.getScenarioId() != null && proposalWrapper.getScenarioId() > 0;
@@ -237,7 +189,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return "/proposals/integratedProposalImpact";
     }
 
-    private String showImpactTabEditGlobal(HttpServletRequest request, Model model)
+    private String showImpactTabEditGlobal(HttpServletRequest request, Model model,
+            Proposal proposalWrapper)
             throws IOException, ScenarioNotFoundException, ModelNotFoundException {
 
         List<Proposal> subProposals =
@@ -299,7 +252,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         return getConsolidateOptionsOnGlobalLevel();
     }
 
-    private String showImpactTabBasic(HttpServletRequest request, Model model) {
+    private String showImpactTabBasic(HttpServletRequest request, Model model, Contest contest,
+            Proposal proposalWrapper) {
 
         List<ImpactIteration> impactIterations = ImpactClientUtil.getContestImpactIterations(contest);
         model.addAttribute("impactIterations", impactIterations);
@@ -317,18 +271,16 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     }
 
     private List<ProposalImpactSeries> getImpactTabBasicProposal(Proposal proposalParent,
-            HttpServletRequest request) {
+            HttpServletRequest request, Contest contest) {
         Set<Proposal> referencedSubProposals =
                 IntegratedProposalImpactSeries.getSubProposalsOnContestTier(proposalParent,
                         ContestTier.BASIC.getTierType(), request);
         try {
-            Contest contest = ContestClientUtil.getContest(this.contest.getContestPK());
-
             List<OntologyTerm> ontologyTermList = contest.getWhere();
             List<ProposalImpactSeries> proposalImpactSerieses = new ArrayList<>();
             for (Proposal proposal : referencedSubProposals) {
                 ProposalImpactSeriesList proposalImpactSeriesList = new ProposalImpactSeriesList(
-                        this.contest, proposal);
+                        contest, proposal);
                 for (ProposalImpactSeries proposalImpactSeries : proposalImpactSeriesList.getImpactSerieses()) {
                     if (proposalImpactSeries.getWhereTerm().equals(ontologyTermList.get(0))) {
                         proposalImpactSerieses.add(proposalImpactSeries);
@@ -345,15 +297,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
     private List<OntologyTerm> sortByName(Collection<OntologyTerm> collection) {
         List<OntologyTerm> list = new ArrayList<>(collection);
-        Collections.sort(list, new Comparator<OntologyTerm>() {
-
-            @Override
-            public int compare(OntologyTerm o1, OntologyTerm o2) {
-                return o1.getName().compareTo(o2.getName());
-            }
-
-        });
-
+        list.sort(Comparator.comparing(o -> o.getName()));
         return list;
     }
 

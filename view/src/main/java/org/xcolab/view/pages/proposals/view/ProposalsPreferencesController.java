@@ -34,8 +34,6 @@ import org.xcolab.view.pages.proposals.wrappers.ProposalsPreferencesWrapper;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +42,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-
 public class ProposalsPreferencesController {
 
     private static final Logger _log = LoggerFactory.getLogger(ProposalsPreferencesController.class);
@@ -60,12 +57,8 @@ public class ProposalsPreferencesController {
         List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(c.getContestPK());
 
         //sort the phases by startdate
-        Collections.sort(contestPhases, new Comparator<ContestPhase>() {
-            @Override
-            public int compare(ContestPhase cp1, ContestPhase cp2) {
-                return sortModifier * cp1.getPhaseStartDate().compareTo(cp2.getPhaseStartDate());
-            }
-        });
+        contestPhases.sort((cp1, cp2) ->
+                sortModifier * cp1.getPhaseStartDate().compareTo(cp2.getPhaseStartDate()));
 
         return contestPhases;
     }

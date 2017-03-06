@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view;
+package org.xcolab.view.pages.proposals.view.contest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +19,7 @@ import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.view.pages.proposals.utils.ContestsColumn;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
+import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
 import org.xcolab.view.pages.proposals.wrappers.CollectionCardFilterBean;
 import org.xcolab.view.pages.proposals.wrappers.CollectionCardWrapper;
 import org.xcolab.view.pages.proposals.wrappers.ContestsSortFilterBean;

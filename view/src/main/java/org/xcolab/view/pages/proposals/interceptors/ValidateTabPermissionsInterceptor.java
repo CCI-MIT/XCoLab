@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view.interceptors;
+package org.xcolab.view.pages.proposals.interceptors;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;

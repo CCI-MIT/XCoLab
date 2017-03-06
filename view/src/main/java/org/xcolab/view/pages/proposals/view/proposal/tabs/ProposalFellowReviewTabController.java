@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view;
+package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,13 +15,14 @@ import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-//-- @RequestMapping("view")
+@RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalFellowReviewTabController extends BaseProposalTabController {
 
     @Autowired
     private ProposalsContext proposalsContext;
 
-    //-- @RequestMapping(params = {"pageToDisplay=proposalDetails_FELLOW_REVIEW"})
+    //TODO: check if we want to reactivate this
+//    @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=FELLOW_REVIEW")
     public String showFellowReview(HttpServletRequest request, Model model) {
 
         final Proposal proposal = proposalsContext.getProposalWrapped(request);
