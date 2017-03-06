@@ -8,6 +8,7 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -26,17 +27,22 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
 import org.xcolab.entity.utils.EntityGroupingUtil;
 import org.xcolab.entity.utils.enums.ContestPhaseTypeValue;
+import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.enums.proposal.MoveType;
+import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
+import org.xcolab.view.pages.proposals.view.proposal.AddUpdateProposalControllerUtil;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.view.pages.proposals.wrappers.ProposalTab;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -67,13 +73,18 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
     public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,
             Model model, @PathVariable Long contestYear,
             @PathVariable String contestUrlName, @PathVariable Long proposalId,
-            @RequestParam(required = false, defaultValue = "false") boolean voted,
-            @RequestParam(required = false, defaultValue = "false") boolean edit,
+            @RequestParam(defaultValue = "false") boolean voted,
+            @RequestParam(defaultValue = "false") boolean edit,
             @RequestParam(required = false) Integer version,
             @RequestParam(required = false) Long moveFromContestPhaseId,
             @RequestParam(required = false) String moveType,
             @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
             BindingResult bindingResult) {
+        return showProposalDetails(request, model, voted, edit, moveFromContestPhaseId, moveType);
+    }
+
+    private String showProposalDetails(HttpServletRequest request, Model model,
+            boolean voted, boolean edit, Long moveFromContestPhaseId, String moveType) {
         setCommonModelAndPageAttributes(request, model, ProposalTab.DESCRIPTION);
 
         boolean editValidated = false;
@@ -111,14 +122,17 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             updateProposalDetailsBean.setMoveFromContestPhaseId(moveFromContestPhaseId);
             updateProposalDetailsBean.setMoveToContestId(baseContestPhase.getContestPhasePK());
 
-            model.addAttribute("updateProposalSectionsBean", updateProposalDetailsBean);
             model.addAttribute("hasUnmappedSections",
                     hasUnmappedSections(proposalWrapped, baseProposalWrapped));
             model.addAttribute("baseProposal", baseProposalWrapped);
             model.addAttribute("baseContest", baseContest);
             model.addAttribute("isMove", true);
-        } else {
-            model.addAttribute("updateProposalSectionsBean", new UpdateProposalDetailsBean(
+
+            if (!model.containsAttribute("updateProposalDetailsBean")) {
+                model.addAttribute("updateProposalDetailsBean", updateProposalDetailsBean);
+            }
+        } else if (!model.containsAttribute("updateProposalDetailsBean")) {
+            model.addAttribute("updateProposalDetailsBean", new UpdateProposalDetailsBean(
                     proposalWrapped));
         }
 
@@ -251,5 +265,29 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         }
 
         return null;
+    }
+
+    @PostMapping("c/{proposalUrlString}/{proposalId}")
+    public String updateProposal(HttpServletRequest request, HttpServletResponse response, Model model,
+            @PathVariable String contestYear, @PathVariable String contestUrlName,
+            @PathVariable String proposalUrlString, @PathVariable String proposalId,
+            @Valid UpdateProposalDetailsBean updateProposalDetailsBean, BindingResult result)
+            throws ProposalsAuthorizationException, IOException {
+
+        Proposal proposal = proposalsContext.getProposal(request);
+        final ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        if (proposal != null && !permissions.getCanEdit()) {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
+
+        if (result.hasErrors()) {
+            AlertMessage.danger(
+                    "Changes NOT saved. Please fix the errors before saving.")
+                    .flash(request);
+            return showProposalDetails(request, model, false, true, null, null);
+        }
+
+        return AddUpdateProposalControllerUtil
+                .createOrUpdateProposal(request, updateProposalDetailsBean, proposal, proposalsContext);
     }
 }

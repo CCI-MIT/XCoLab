@@ -25,7 +25,6 @@
     <jsp:directive.include file="./proposalDetails/header.jspx" />
 
     <!--ProposalSectionsTabController-->
-    <jsp:useBean id="updateProposalSectionsBean" scope="request" type="org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean"/>
     <c:if test="${isMove}">
         <jsp:useBean id="baseProposal" scope="request" type="org.xcolab.client.proposals.pojo.Proposal"/>
         <jsp:useBean id="baseContest" scope="request" type="org.xcolab.client.contest.pojo.Contest"/>
@@ -47,7 +46,8 @@
     </c:if>
 
     <div class="prop-left">
-        <c:set var="updateProposalSectionsURL"  value="${proposal.proposalUrl}"/>
+        <c:set var="updateProposalSectionsURL"
+               value="${proposal.proposalId > 0 ? proposal.proposalUrl : contest.newProposalLinkUrl}"/>
 
         <div class="c-Headline addprop">
             <c:choose>
@@ -85,7 +85,9 @@
         </form>
 
 
-        <form:form action="${updateProposalSectionsURL }" commandName="updateProposalSectionsBean" modelAttribute="updateProposalSectionsBean"  cssClass="addpropform ${contestType.showProposalSummary ? '' : 'full-wdith'}" id="editForm">
+        <form:form action="${updateProposalSectionsURL }" commandName="updateProposalDetailsBean"
+                   id="editForm"
+                   cssClass="addpropform ${contestType.showProposalSummary ? '' : 'full-wdith'}" >
             <form:hidden path="baseProposalId" />
             <form:hidden path="baseProposalContestId" />
             <form:hidden path="isMove" />

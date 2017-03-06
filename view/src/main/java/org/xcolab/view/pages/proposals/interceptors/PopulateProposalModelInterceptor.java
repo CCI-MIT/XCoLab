@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view.interceptors;
+package org.xcolab.view.pages.proposals.interceptors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
