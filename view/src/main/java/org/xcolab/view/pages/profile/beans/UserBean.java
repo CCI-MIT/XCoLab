@@ -58,7 +58,7 @@ public class UserBean implements Serializable {
 
     private String shortBio;
 
-    @NotBlank(message = "please select your country from the list")
+    @NotBlank(message = "Please select a country from the list above.")
     private String countryCode;
 
     private long userId;
