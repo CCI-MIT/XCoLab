@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view;
+package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,14 +31,13 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalJudgesTabController extends BaseProposalTabController {
+
     @Autowired
     private ProposalsContext proposalsContext;
 
-    //-- @RequestMapping(params = {"pageToDisplay=proposalDetails_ADVANCING"})
-    @GetMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/ADVANCING",
-            "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ADVANCING"})
-
+    @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ADVANCING")
     public String showJudgesPanel(HttpServletRequest request, Model model)
             throws ProposalsAuthorizationException {
 

@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view;
+package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -47,6 +48,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
@@ -61,80 +63,17 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
         this.proposalsContext = proposalsContext;
     }
 
-    @GetMapping("c/{proposalUrlString}/{proposalId}/edit")
-    public String showProposalDetailsEdit(
-            @PathVariable Long proposalId,
-            @PathVariable String contestUrlName,
-            @PathVariable Long contestYear,
-            Model model, HttpServletRequest request) {
-        return showProposalDetailsPage(request, model, true, false, null, null, false);
-    }
-
-    @GetMapping("phase/{phaseId}/{proposalUrlString}/{proposalId}/edit")
-    public String showProposalDetailsPhaseEdit(
-            @PathVariable Long proposalId,
-            @PathVariable String contestUrlName,
-            @PathVariable Long contestYear,
-            @PathVariable Long phaseId,
-            Model model, HttpServletRequest request) {
-        return showProposalDetailsPage(request, model, true,
-                false, null, null, false);
-    }
-
-    @GetMapping("c/{proposalUrlString}/{proposalId}/version/{version}")
-    public String showProposalDetailsVersion(
-            @PathVariable Long proposalId,
-            @PathVariable String contestUrlName,
-            @PathVariable Long contestYear,
-            Model model, HttpServletRequest request) {
-        return showProposalDetailsPage(request, model, false, false, null, null, false);
-    }
-
     @GetMapping("c/{proposalUrlString}/{proposalId}")
-    public String showProposalDetails(
-            @PathVariable Long proposalId,
-            @PathVariable String contestUrlName,
-            @PathVariable Long contestYear,
-            Model model, HttpServletRequest request,
+    public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,
+            Model model, @PathVariable Long contestYear,
+            @PathVariable String contestUrlName, @PathVariable Long proposalId,
+            @RequestParam(required = false, defaultValue = "false") boolean voted,
+            @RequestParam(required = false, defaultValue = "false") boolean edit,
+            @RequestParam(required = false) Integer version,
+            @RequestParam(required = false) Long moveFromContestPhaseId,
+            @RequestParam(required = false) String moveType,
             @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
             BindingResult bindingResult) {
-        return showProposalDetailsPage(request, model, false, false, null, null, false);
-    }
-
-    @GetMapping("c/{proposalUrlString}/{proposalId}/voted")
-    public String showProposalDetailsVote(
-            @PathVariable Long proposalId,
-            @PathVariable String contestUrlName,
-            @PathVariable Long contestYear,
-            Model model, HttpServletRequest request) {
-        return showProposalDetailsPage(request, model, false, false, null, null, true);
-    }
-
-    @GetMapping("phase/{phaseId}/{proposalUrlString}/{proposalId}")
-    public String showProposalDetailsPhase(
-            @PathVariable Long proposalId,
-            @PathVariable String contestUrlName,
-            @PathVariable Long contestYear,
-            @PathVariable Long phaseId,
-            Model model, HttpServletRequest request) {
-        return showProposalDetailsPage(request, model, false, false, null, null, false);
-    }
-
-    @GetMapping("c/{proposalUrlString}/{proposalId}/moveFromContestPhaseId/{moveFromContestPhaseId}/move/{moveType}")
-    public String showProposalDetailsMove(
-            @PathVariable Long proposalId,
-            @PathVariable String contestUrlName,
-            @PathVariable Long contestYear,
-            @PathVariable Long moveFromContestPhaseId,
-            @PathVariable String moveType,
-            Model model, HttpServletRequest request) {
-        return showProposalDetailsPage(request, model, false, true, moveType,
-                moveFromContestPhaseId, false);
-    }
-
-    private String showProposalDetailsPage(HttpServletRequest request, Model model, boolean edit,
-            boolean isMove, String moveType, Long moveFromContestPhaseId, boolean voted) {
-
         setCommonModelAndPageAttributes(request, model, ProposalTab.DESCRIPTION);
 
         boolean editValidated = false;
@@ -158,6 +97,7 @@ public class ProposalSectionsTabController extends BaseProposalTabController {
             setVotingDeadline(request, model, baseContest);
         }
 
+        final boolean isMove = moveFromContestPhaseId != null && moveType != null;
         if (isMove) {
             // get base proposal from base contest
             ContestPhase baseContestPhase =

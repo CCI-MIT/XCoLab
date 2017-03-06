@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view;
+package org.xcolab.view.pages.proposals.view.contest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +22,7 @@ import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.pages.proposals.exceptions.ProposalIdOrContestIdInvalidException;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
+import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.view.pages.proposals.wrappers.ProposalsSortFilterBean;
 import org.xcolab.view.util.pagination.SortFilterPage;

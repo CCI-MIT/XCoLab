@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view;
+package org.xcolab.view.pages.proposals.view.proposal.json;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -10,9 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.pojo.Proposal;

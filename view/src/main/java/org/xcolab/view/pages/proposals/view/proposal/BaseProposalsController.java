@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view;
+package org.xcolab.view.pages.proposals.view.proposal;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

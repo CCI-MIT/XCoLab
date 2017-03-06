@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view;
+package org.xcolab.view.pages.proposals.view.proposal.json;
 
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;

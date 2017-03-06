@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view;
+package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,14 +13,13 @@ import org.xcolab.view.pages.proposals.wrappers.ProposalTab;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalAdminTabController extends BaseProposalTabController {
 
     @Autowired
     private ProposalsContext context;
 
-
-    @GetMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/ADMIN",
-                 "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ADMIN"})
+    @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ADMIN")
     public String showProposalDetails(Model model, HttpServletRequest request) {
 
         ContestClient contestClient = context.getClients(request).getContestClient();

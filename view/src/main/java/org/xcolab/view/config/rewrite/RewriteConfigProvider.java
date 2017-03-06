@@ -27,6 +27,10 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
     @Override
     public Configuration getConfiguration(ServletContext servletContext) {
         final ConfigurationBuilder configurationBuilder = ConfigurationBuilder.begin();
+
+        configureProposalUrls(configurationBuilder);
+
+        redirectLegacyContentPages(configurationBuilder);
         redirectLegacyThemeImages(configurationBuilder);
         redirectLegacyRegistration(configurationBuilder);
         redirectLegacyWikiPages(configurationBuilder);
@@ -34,7 +38,6 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
         redirectLegacyProposals(configurationBuilder);
         redirectLegacyMembers(configurationBuilder);
         redirectLegacyDiscussions(configurationBuilder);
-        redirectContentPages(configurationBuilder);
 
         configurationBuilder
                 .addRule()
@@ -42,6 +45,51 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                                                 .or(Path.matches("/page/feedback")))
                     .perform(Redirect.permanent("/feedback"));
         return configurationBuilder;
+    }
+
+    private void configureProposalUrls(ConfigurationBuilder configurationBuilder) {
+        configurationBuilder
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/challenges{path}")
+                            .or(Path.matches("/events{path}"))
+                            .or(Path.matches("/trends{path}"))
+                            .or(Path.matches("/dialogues{path}"))
+                    ))
+                    .perform(Forward.to("/contests{path}"))
+                    .where("path").matches(".*")
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/contests/{year}/{urlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/{tab}")))
+                    .perform(Forward.to("/contests/{year}/{urlName}/c/{proposalUrlString}/{proposalId}?phaseId={phaseId}&tab={tab}"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/contests/{year}/{urlName}/c/{proposalUrlString}/{proposalId}/tab/{tab}")))
+                    .perform(Forward.to("/contests/{year}/{urlName}/c/{proposalUrlString}/{proposalId}?tab={tab}"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/contests/{year}/{urlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}")))
+                    .perform(Forward.to("/contests/{year}/{urlName}/c/{proposalUrlString}/{proposalId}?phaseId={phaseId}"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/contests/{year}/{urlName}/c/{proposalUrlString}/{proposalId}/version/{version}")
+                    ))
+                    .perform(Forward.to("/contests/{year}/{urlName}/c/{proposalUrlString}/{proposalId}?version={version}"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/contests/{year}/{urlName}/c/{proposalUrlString}/{proposalId}/edit")
+                    ))
+                    .perform(Forward.to("/contests/{year}/{urlName}/c/{proposalUrlString}/{proposalId}?edit=true"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/contests/{year}/{urlName}/c/{proposalUrlString}/{proposalId}/voted")
+                    ))
+                    .perform(Forward.to("/contests/{year}/{urlName}/c/{proposalUrlString}/{proposalId}?voted=true"))
+                .addRule()
+                    .when(Direction.isInbound().and(
+                            Path.matches("/contests/{year}/{urlName}/c/{proposalUrlString}/{proposalId}/moveFromContestPhaseId/{moveFromContestPhaseId}/move/{moveType}")
+                    ))
+                    .perform(Forward.to("/contests/{year}/{urlName}/c/{proposalUrlString}/{proposalId}?moveFromContestPhaseId={moveFromContestPhaseId}&moveType={moveType}"));
+
     }
 
     private void redirectLegacyThemeImages(ConfigurationBuilder configurationBuilder) {
@@ -140,14 +188,6 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                 .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
         configurationBuilder
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/challenges{path}")
-                            .or(Path.matches("/events{path}"))
-                            .or(Path.matches("/trends{path}"))
-                            .or(Path.matches("/dialogues{path}"))
-                    ))
-                    .perform(Forward.to("/contests{path}"))
-                    .where("path").matches(".*")
-                .addRule()
                     .when(Direction.isInbound()
                             .and(Path.matches("/web/guest/{portletName}")))
                     .perform(Redirect.permanent(defaultContestType.getPortletUrl()))
@@ -191,7 +231,7 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
                     .where("path").matches(".*");
     }
 
-    private void redirectContentPages(ConfigurationBuilder configurationBuilder) {
+    private void redirectLegacyContentPages(ConfigurationBuilder configurationBuilder) {
         switch (ConfigurationAttributeKey.COLAB_NAME.get()) {
             case "Climate CoLab":
                 redirectContentPagesClimateCoLab(configurationBuilder);

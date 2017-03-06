@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view;
+package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +26,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalPointsTabController extends BaseProposalTabController {
 
     private final ProposalsContext proposalsContext;
@@ -35,9 +36,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         this.proposalsContext = proposalsContext;
     }
 
-
-    @GetMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/POINTS",
-                "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/POINTS"})
+    @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=POINTS")
     public String showProposalDetails(Model model, HttpServletRequest request) {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.POINTS);

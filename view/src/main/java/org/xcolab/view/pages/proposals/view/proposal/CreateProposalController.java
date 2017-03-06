@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.view;
+package org.xcolab.view.pages.proposals.view.proposal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -138,7 +138,7 @@ public class CreateProposalController extends BaseProposalsController {
 
         AnalyticsUtil.publishEvent(request, memberId, ProposalUpdateHelper.PROPOSAL_ANALYTICS_KEY + 1,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_CATEGORY,
-                ProposalUpdateHelper.PROPOSAL_ANALYTICS_ACTION ,
+                ProposalUpdateHelper.PROPOSAL_ANALYTICS_ACTION,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_LABEL,
     			1);
 
