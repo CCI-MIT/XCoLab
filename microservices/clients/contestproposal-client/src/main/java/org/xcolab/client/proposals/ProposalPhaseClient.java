@@ -115,7 +115,7 @@ public final class ProposalPhaseClient {
                 .queryParam("proposalId", proposalId)
                 .queryParam("activePhaseForContest", activePhaseForContest)
                 .queryParam("currentProposalContestPhase", currentProposalContestPhase)
-                .get();
+                .post();
     }
 
     public List<ProposalContestPhaseAttribute> getAllProposalContestPhaseProposalAttributes(

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.members.MembersClient;
@@ -178,9 +177,9 @@ public class ContestPhaseService {
         try {
             Proposal p = ProposalClientUtil.getProposal(proposalId);
             ContestPhase nextPhase = getNextContestPhase(phase);
-            PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase, contestDao);
+            PhasePromotionHelper phasePromotionHelper = new PhasePromotionHelper(phase);
             //skip already promoted proposal
-            if (phasePromotionHelper.hasProposalAlreadyBeenPromoted(p)) {
+            if (phasePromotionHelper.isProposalPromoted(p)) {
                 return;
             }
 

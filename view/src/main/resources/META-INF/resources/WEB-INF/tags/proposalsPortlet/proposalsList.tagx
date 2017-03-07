@@ -6,9 +6,9 @@
           xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
 
 
-    <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
+    <!--@elvariable id="proposalsPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsPermissions"-->
     <!--@elvariable id="contest" type="org.xcolab.client.contest.pojo.Contest"-->
-    <!--@elvariable id="contestPhase" type="org.xcolab.wrappers.BaseContestPhaseWrapper"-->
+    <!--@elvariable id="contestPhase" type="org.xcolab.client.contest.pojo.phases.ContestPhase"-->
     <!--@elvariable id="contestType" type="org.xcolab.client.contest.pojo.ContestType"-->
 
     <jsp:directive.attribute name="proposals" type="java.util.Collection" required="true" rtexprvalue="true" description="proposals" />
@@ -35,14 +35,13 @@
             </c:choose>
         </c:if>
         <tr class="c-Table__row ${proposal.featured and (not contest.hideRibbons or proposalsPermissions.canAdminAll) ? 'featured' : ''}
-                    ${contest.isContestCompleted(contestPhase) ? 'completed' : ''}
+                    ${contestPhase.completed ? 'completed' : ''}
                     ${additionalCSSClasses}">
             <td class="c-Table__cell propname-authors no-border">
                 <c:if test="${proposal.ribbonWrapper.ribbon != null and proposal.ribbonWrapper.ribbon > 0 and (not contest.hideRibbons or proposalsPermissions.canAdminAll)}">
                     <div class="ribbonPlaceholder">
-                        <span class="js-Tooltip" tile="${proposal.ribbonWrapper.ribbonText}">
-                            <img src="${_themeImageFolder}/icon-prize${proposal.ribbonWrapper.ribbon}.png" />
-                        </span>
+                        <img src="${_themeImageFolder}/icon-prize${proposal.ribbonWrapper.ribbon}.png"
+                             class="js-Tooltip" title="${proposal.ribbonWrapper.ribbonText}" />
                     </div>
                 </c:if>
                 <h4>
@@ -61,7 +60,7 @@
                     </c:choose>
                 </h4>
             </td>
-            <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
+            <c:if test="${contestPhase.canVote or (contestPhase.completed and (not contest.hideRibbons or proposalsPermissions.canAdminAll))}">
                 <td class="c-Table__cell b-layout__center votes no-border">
                     <div class="highlight">
                         <img src="${_themeImageFolder}/icon-proposal-vote-small.png" />
@@ -83,7 +82,7 @@
                     <collab:proposalLink proposal="${proposal}" text="${proposal.commentsCount}" tab="COMMENTS" />
                 </div>
             </td>
-            <c:if test="${not contest.isContestCompleted(contestPhase) }">
+            <c:if test="${not contestPhase.completed}">
                 <td class="c-Table__cell b-layout__center modified no-border">
                     <fmt:formatDate value="${proposal.lastModifiedDateForContestPhase}" type="date" dateStyle="short" timeZone="America/New_York" />
                 </td>
@@ -98,7 +97,7 @@
                     </c:choose>
                 </td>
             </c:if>
-            <c:if test="${not contest.isContestCompleted(contestPhase) and (proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions)}">
+            <c:if test="${not contestPhase.completed and (proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions)}">
                 <td class="c-Table__cell b-layout__center advancing-status no-border">
                     <c:if test="${proposalsPermissions.canFellowActions}">
                         <span class="js-Tooltip" data-tooltip-content="#js-Tooltip__content__fellow${proposal.proposalId}">
@@ -154,7 +153,7 @@
             </c:if>
         </tr>
         <tr class="c-Table__row ${proposal.featured and (not contest.hideRibbons or proposalsPermissions.canAdminAll) ? 'featured' : ''}
-                    ${contest.isContestCompleted(contestPhase) ? 'completed' : ''}
+                    ${contestPhase.completed ? 'completed' : ''}
                     ${additionalCSSClasses}">
             <td class="c-Table__cell" colspan="10">
                 ${proposal.pitch}

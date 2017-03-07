@@ -276,7 +276,7 @@
                         <div class="c-Header__login__with__del"><!-- --></div>
                         <div class="clearfix"><!-- --></div>
                         <form id="signInFormPopup" method="post" action="/login" style="margin-top: 10px;">
-                            <input name="username" type="text" class="c-Header__login__username" placeholder="username"  />
+                            <input name="username" type="text" class="c-Header__login__username" placeholder="username or email address"  />
                             <input name="password" type="password" class="c-Header__login__password" placeholder="password" />
                             <input name="redirect" type="hidden" />
                             <span><em><a href="javascript:;" class="c-Header__login__forgot" onclick="showForgotPasswordPopup()">Forgot your password?</a></em></span> <input name="submit" type="submit" class="c-Header__login__submit" value="LOGIN" id="loginPopupTopSubmit"/>
