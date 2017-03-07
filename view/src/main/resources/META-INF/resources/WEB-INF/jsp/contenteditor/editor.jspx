@@ -28,6 +28,28 @@
             #saveArticle{cursor:pointer}
             #articleURL{overflow:hidden}
             #anchorArticleURL{display: block; width:0; white-space: nowrap;}
+
+            #articleVersions span:hover {
+                text-decoration:none;
+                cursor:pointer;
+            }
+            #articleVersions span {
+                cursor:pointer;
+                color:blue;
+                text-decoration:underline;
+            }
+
+            #tree-view small:hover {
+                text-decoration:none;
+                cursor:pointer;
+            }
+            #tree-view small {
+                cursor:pointer;
+                color:blue;
+                text-decoration:underline;
+            }
+
+
         </style>
         <xcolab:stylesheet href="${_libCssFolder}/jquery.loadmask.spin.css" />
 
@@ -35,6 +57,8 @@
 
 
         <c:set  var="getArticleVersionURL" value="/content-editor/contentEditorGetLatestArticleVersion"/>
+
+        <c:set  var="getArticleVersionIdURL" value="/content-editor/contentEditorGetArticleVersion"/>
 
         <c:set  var="saveArticleVersionURL" value="/content-editor/saveContentArticleVersion"/>
 
@@ -84,18 +108,11 @@
 
 
                 CKEDITOR.plugins.addExternal( 'justify', '${_libJsFolder}/newckeditorplugins/justify/plugin.js' );
-                //CKEDITOR.plugins.addExternal( 'floatpanel', '${_libJsFolder}/newckeditorplugins/floatpanel/plugin.js' );
-                //CKEDITOR.plugins.addExternal( 'panelbutton', '${_libJsFolder}/newckeditorplugins/panelbutton/plugin.js' );
+
                 CKEDITOR.plugins.addExternal( 'colorbutton', '${_libJsFolder}/newckeditorplugins/colorbutton/plugin.js' );
                 CKEDITOR.plugins.addExternal( 'uploadimage', '${_libJsFolder}/newckeditorplugins/uploadimage/plugin.js' );
 
                 CKEDITOR.config.allowedContent = true;
-                //CKEDITOR.config.extraPlugins = ['justify'];
-//'colorbutton'
-//                CKEDITOR.config.toolbarGroups = [
-//                    { name: 'align'}
-//                ];
-
 
 
                 var $treeView = $('#tree-view');
@@ -112,10 +129,10 @@
                          // The link has an url '#node-[id]' and a data property 'node-id'.
                          if(node.kind == "folder")
                          $li.find('.jqtree-element').append(
-                                 '&nbsp;&nbsp;<a href="#node-'+ node.id +'" class="addArticle" data-node-id="'+
-                                 node.id +'">+ article</a>'+
-                                 '&nbsp;&nbsp;<a href="#node-'+ node.id +'" class="addFolder" data-node-id="'+
-                                 node.id +'">+ folder</a>'
+                                 '&nbsp;&nbsp;<small href="#node-'+ node.id +'" class="addArticle" data-node-id="'+
+                                 node.id +'">+ article</small>'+
+                                 '&nbsp;&nbsp;<small href="#node-'+ node.id +'" class="addFolder" data-node-id="'+
+                                 node.id +'">+ folder</small>'
                          );//<small>
                      },
                      onCanMoveTo: function(moved_node, target_node, position) {
@@ -223,9 +240,13 @@
                 $("#article-view").unmask();
                 $('#contentArticleId').attr("value", "");
                 $("#folderName").html("Parent folder: " +folderName);
+                $("#createdAtDate").html("");
                 $('#contentArticleFolderId').attr("value",folderId);
                 $('#contentArticleTitle').attr("value","");
                 CKEDITOR.instances['articleVersionContent'].setData("");
+                $("#articleId").html("");
+                $("#articleVersions").html("");
+
                 $('#contentArticleFolderId').focus();
             }
             function updateArticleURL(folderName, articleTitle) {
@@ -236,36 +257,75 @@
                     $("#articleURL").html("");
                 }
             }
+            function pad(n, width, z) {
+                z = z || '0';
+                n = n + '';
+                return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+            }
             function loadArticleVersionContent(id, folderName){
                 id = id - THRESHOLD_TO_AVOID_NODE_COLISION;
+
+                $("#folderName").html("Parent folder: " +folderName);
 
                 var url = getArticleVersionURL;
 
                 var parameters={articleId : id};
 
-                $.get(url ,parameters , function (response) {
-                    var responseData = JSON.parse(response);
-                    var data = responseData;
-                    var textarea = $('#articleVersionContent');
-                    $("#folderName").html("Parent folder: " +folderName);
-                    //textarea.html(data.content);
-                    CKEDITOR.instances['articleVersionContent'].setData(data.content);
+                $.get(url ,parameters ,loadContentArticleResponse);
 
-                    var input = $('#contentArticleId');
-                    input.attr("value",id);
+            }
+            $(".oldArticleVersion").on('click',function (ref){
 
-                    $('#contentArticleFolderId').attr("value",data.folderId);
+                loadArticleVersionContentId($(ref).attr("data-attribute"))
+            });
 
-                    var input1 = $('#contentArticleTitle');
-                    input1.attr("value",data.title);
+            function loadArticleVersionContentId(id){
 
-                    updateArticleURL(folderName, data.title.replace(/ /g,"+"));
-                    $("#articleId").html('Article ID: <a href="?articleId=' + id + '">' + id + '</a>');
+                var url = getArticleVersionIdURL;
 
-                    ckEditor.setReadOnly(false);
-                    $("#article-view").unmask()
+                var parameters={articleVersionId : id};
 
-                });
+                $.get(url ,parameters ,loadContentArticleResponse);
+
+            }
+            function formatDate(ctd){
+                var dateObject = new Date(ctd); //read in as Date object
+                var timeZoneIdentifier = String(String(dateObject).split("(")[1]).split(")")[0];  //get the timezone abbreviation
+                return(dateObject.getMonth()+1)+"/"+dateObject.getDate()+"/"+dateObject.getFullYear()+" "+pad(dateObject.getHours(),2)+":"+pad(dateObject.getMinutes(),2)+" "+timeZoneIdentifier;
+
+            }
+
+            function loadContentArticleResponse(response) {
+                var responseData = JSON.parse(response);
+                var data = responseData;
+                var id = data.articleId;
+                var textarea = $('#articleVersionContent');
+
+                //textarea.html(data.content);
+                CKEDITOR.instances['articleVersionContent'].setData(data.content);
+
+                var input = $('#contentArticleId');
+                input.attr("value",id);
+
+                $('#contentArticleFolderId').attr("value",data.folderId);
+                var input1 = $('#contentArticleTitle');
+                input1.attr("value", data.title);
+
+                var div = $('#articleVersions');
+                $("#createdAtDate").html("Created at: " + formatDate(data.createdDate));
+
+                for(var i = 0 ; i <  data.versions.length; i++) {
+                    var version =  data.versions[i];
+                    var adjustedDateString = formatDate(version.createdDate);
+                    div.append("<span class='oldArticleVersion' data-attribute='"+version.contentArticleVersionId+"'> Created at: "+adjustedDateString+"</span><br/>")
+
+                }
+
+                updateArticleURL(folderName, data.title.replace(/ /g,"+"));
+                $("#articleId").html('Article ID: <a href="?articleId=' + id + '">' + id + '</a><br/>');
+
+                ckEditor.setReadOnly(false);
+                $("#article-view").unmask()
 
             }
             function saveArticle(){
@@ -294,6 +354,10 @@
                     $infoBox.delay(5000).fadeOut('slow');
                     $("#article-view").unmask();
                     $('#tree-view').tree('reload');
+                    var folderName = $("#folderName").html().replace("Parent folder: ");
+                    var id = articleId + THRESHOLD_TO_AVOID_NODE_COLISION;
+                    loadArticleVersionContent(id, folderName);
+
 
                 });
             }
@@ -340,36 +404,84 @@
             }
             ]]>
         </script>
+        <!--<div class="contentEditor">-->
+            <!--<div class="contentBody">-->
+                <!--<h2>Content Editor</h2>-->
+                <!--<div id="infoBox">&lt;!&ndash; &ndash;&gt;</div>-->
+                <!--<div  id="innerContent" class="addpropbox">-->
+                    <!--<div class="colFloatLef">-->
+                        <!--<h3>Content Folders</h3>-->
+                        <!--<div class="treeContainer">-->
+                            <!--<div id="tree-view" data-url="${contentEditorListFolderURL}" >&lt;!&ndash; &ndash;&gt;</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="colFloatLef" >-->
+                        <!--<div id="article-view">-->
+                            <!--<h3>Content article</h3>-->
+                            <!--<div>-->
+                                <!--<input type="hidden" id="contentArticleId"/>-->
+                                <!--<input type="hidden" id="contentArticleFolderId"/>-->
+                                <!--Article title: <input type="text" id="contentArticleTitle"  maxcharacters="300"  />-->
+                            <!--</div>-->
+                            <!--<div id="folderName">Parent folder: &lt;!&ndash; &ndash;&gt;</div>-->
+                            <!--<br/>-->
+                            <!--<div id="articleURL">&lt;!&ndash; Article URL:  &ndash;&gt;</div>-->
+                            <!--<div>-->
+                                <!--<textarea id="articleVersionContent" name="articleVersionContent" rows = "10" cols="80">&lt;!&ndash; &ndash;&gt;</textarea>-->
+                            <!--</div>-->
+                            <!--<div id="articleId">&lt;!&ndash; Article ID: &ndash;&gt;</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div> <div class="floatRight outerVerticalCenter" id="saveArticle" ><a  class="c-Button__primary" href="#">Save</a></div></div>-->
+            <!--</div>-->
+        <!--</div>-->
+
         <div class="contentEditor">
             <div class="contentBody">
-                <h2>Content Editor</h2>
+                <ul class="c-TabBar clearfix">
+
+                    <li class="c-TabBar__tab--first active"><a>Content Editor</a></li>
+                    <li class="c-TabBar__tab"><a href="/content-editor/pageEditor">Page Editor</a></li>
+                    <li class="c-TabBar__tab "><a href="/content-editor/wikiEditor">Wiki editor</a></li>
+                    <li class="c-TabBar__tab "><a href="/content-editor/resourcePagesEditor">Resource pages</a></li>
+                </ul>
+
                 <div id="infoBox"><!-- --></div>
                 <div  id="innerContent" class="addpropbox">
                     <div class="colFloatLef">
-                        <h3>Content Folders</h3>
+                        <h3>Ontology areas and terms</h3>
                         <div class="treeContainer">
                             <div id="tree-view" data-url="${contentEditorListFolderURL}" ><!-- --></div>
                         </div>
                     </div>
-                    <div class="colFloatLef" >
+                    <div class="colFloatLef" style="width: 620px;margin-left: 15px;">
                         <div id="article-view">
-                            <h3>Content article</h3>
-                            <div>
-                                <input type="hidden" id="contentArticleId"/>
-                                <input type="hidden" id="contentArticleFolderId"/>
-                                Article title: <input type="text" id="contentArticleTitle"  maxcharacters="300"  />
-                            </div>
-                            <div id="folderName">Parent folder: <!-- --></div>
-                            <br/>
-                            <div id="articleURL"><!-- Article URL:  --></div>
-                            <div>
+                            <h3>Content editor</h3>
+
+                                <div>
+                                    <!-- FORM FIELDS -->
+                                    <input type="hidden" id="contentArticleId"/>
+                                    <input type="hidden" id="contentArticleFolderId"/>
+                                    Article title: <input type="text" id="contentArticleTitle"  maxcharacters="300"  />
+                                </div>
+                                <div id="folderName">Parent folder: <!-- --></div>
+                                <div id="createdAtDate"><!-- --></div>
+                                <br/>
+                                <!--<div id="articleURL">&lt;!&ndash; Article URL:  &ndash;&gt;</div>-->
+                                <div>
                                 <textarea id="articleVersionContent" name="articleVersionContent" rows = "10" cols="80"><!-- --></textarea>
+                                </div>
+                                <div id="articleId"><!-- Article ID: --></div>
+                                <div id="">Previous versions:</div>
+                                <div id="articleVersions" style="max-height: 80px;overflow-y: scroll;"><!-- Article versions: --></div>
+
                             </div>
-                            <div id="articleId"><!-- Article ID: --></div>
-                        </div>
+                            <br/>
+                            <div class="floatRight outerVerticalCenter" id="deleteOntologyTerm" ><a  class="c-Button__primary" href="#">Delete</a></div>
+                            <div> <div class="floatRight outerVerticalCenter" id="saveArticle" ><a  class="c-Button__primary" href="#">Save</a></div></div>
                     </div>
                 </div>
-                <div> <div class="floatRight outerVerticalCenter" id="saveArticle" ><a  class="c-Button__primary" href="#">Save</a></div></div>
             </div>
         </div>
     </xcolab:layout>

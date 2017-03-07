@@ -17,6 +17,7 @@ import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -69,17 +70,50 @@ public class ContentEditorController {
     public void contentEditorGetLatestArticleVersion(HttpServletRequest request, HttpServletResponse response,
                                                      @RequestParam(required = false) Long articleId)
             throws IOException, ContentNotFoundException {
-        JSONObject articleVersion = new JSONObject();
 
         ContentArticleVersion contentArticleVersion = ContentsClient.getLatestContentArticleVersion(articleId);
+
+        JSONObject articleVersion = getContentArticleVersion(articleId, contentArticleVersion);
+
+        response.getOutputStream().write(articleVersion.toString().getBytes());
+    }
+
+    @GetMapping("/content-editor/contentEditorGetArticleVersion")
+    public void contentEditorGetArticleVersion(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam(required = false) Long articleVersionId)
+            throws IOException, ContentNotFoundException {
+
+        ContentArticleVersion contentArticleVersion = ContentsClient.getContentArticleVersion(articleVersionId);
+
+        JSONObject articleVersion = getContentArticleVersion(contentArticleVersion.getContentArticleId(), contentArticleVersion);
+
+        response.getOutputStream().write(articleVersion.toString().getBytes());
+    }
+
+    private JSONObject getContentArticleVersion(@RequestParam(required = false) Long articleId,
+            ContentArticleVersion contentArticleVersion) {
+
+        JSONArray versions = new JSONArray();
+        List<ContentArticleVersion> cavs = ContentsClient
+                .getContentArticleVersions(0,Integer.MAX_VALUE,null,articleId,null,null);
+        Collections.reverse(cavs);
+        JSONObject articleVersion;
+        for(ContentArticleVersion cav: cavs){
+            articleVersion = new JSONObject();
+            articleVersion.put("createdDate",cav.getCreateDate());
+            articleVersion.put("contentArticleVersionId", cav.getContentArticleVersionId());
+            versions.put(articleVersion);
+        }
+        articleVersion = new JSONObject();
         if (contentArticleVersion != null) {
             articleVersion.put("title", contentArticleVersion.getTitle());
             articleVersion.put("folderId", contentArticleVersion.getFolderId());
             articleVersion.put("articleId", contentArticleVersion.getContentArticleId());
             articleVersion.put("content", contentArticleVersion.getContent());
+            articleVersion.put("createdDate",contentArticleVersion.getCreateDate());
+            articleVersion.put("versions",versions);
         }
-
-        response.getOutputStream().write(articleVersion.toString().getBytes());
+        return articleVersion;
     }
 
 
