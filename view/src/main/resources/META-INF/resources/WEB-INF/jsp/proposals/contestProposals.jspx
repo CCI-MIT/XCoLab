@@ -22,9 +22,9 @@
             <jsp:directive.include file="./contestProposals/header_contest_details.jspx"/>
 
             <div class="c-Headline__fold">
-                <c:if test="${contest.hideRibbons and contestCompleted}">
+                <c:if test="${contest.hideRibbons and contestPhase.completed}">
                     <div class="fold-message">
-                        <h3>We’re tallying the votes… winners will be announced soon!</h3>
+                        <h3>We’re tallying the votes… stay tuned for the results!</h3>
                     </div>
                 </c:if>
             </div>
@@ -92,7 +92,7 @@
                                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="AUTHOR" />
                             </span>
                         </th>
-                        <c:if test="${contestPhase.canVote or (contest.isContestCompleted(contestPhase) and not contest.hideRibbons)}">
+                        <c:if test="${contestPhase.canVote or (contestPhase.completed and not contest.hideRibbons)}">
                             <th class="c-Table__cell--title b-layout__center votes js-Tooltip" title="click to sort by number of votes">
                                 <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=VOTES&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'VOTES' ? not sortFilterPage.sortAscending : true }" />
                                 <a href="${sortURL }">
@@ -117,7 +117,7 @@
                             </a>
                             <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="COMMENTS" />
                         </th>
-                        <c:if test="${not contest.isContestCompleted(contestPhase)}">
+                        <c:if test="${not contestPhase.completed}">
                             <th class="c-Table__cell--title b-layout__center modified">
 
                                 <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=MODIFIED&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'MODIFIED' ? not sortFilterPage.sortAscending : true }" />

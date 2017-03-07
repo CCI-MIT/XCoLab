@@ -1,7 +1,9 @@
 package org.xcolab.service.proposal.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,16 +57,16 @@ public class Proposal2PhaseController {
     }
 
 
-    @RequestMapping(value = "/proposal2Phases/promoteProposal", method = RequestMethod.GET)
+    @PostMapping("/proposal2Phases/promoteProposal")
     public boolean promoteProposal(@RequestParam Long proposalId,
-                                        @RequestParam Long activePhaseForContest,
-                                        @RequestParam Long currentProposalContestPhase) throws NotFoundException {
-
-         proposal2PhaseService.promoteProposal(proposalId,activePhaseForContest, currentProposalContestPhase);
+            @RequestParam Long activePhaseForContest,
+            @RequestParam Long currentProposalContestPhase)
+            throws NotFoundException {
+        proposal2PhaseService.promoteProposal(proposalId,activePhaseForContest, currentProposalContestPhase);
         return true;
     }
 
-    @RequestMapping(value = "/proposal2Phases", method = {RequestMethod.GET})
+    @GetMapping(value = "/proposal2Phases")
     public List<Proposal2Phase>  getProposal2Phases(
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Long contestPhaseId,

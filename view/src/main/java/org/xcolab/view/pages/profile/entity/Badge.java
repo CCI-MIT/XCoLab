@@ -3,8 +3,8 @@ package org.xcolab.view.pages.profile.entity;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -14,35 +14,28 @@ public class Badge implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Integer badgeType; // 1,2,3
-    private final String badgeTitle;    // "Winner", "Finalist", "Semi-Finalist"
-    private final String badgeText; // "Popular Choice", "Judges Choice", etc
+    private final ContestPhaseRibbonType ribbonType;
     private final Contest contest;
     private final Proposal proposal;
     private final String planTitle;
-    private final Long ribbonId;
-    private int year = 2013;
     private final boolean hideRibbon;
+    private int year = 2013;
 
 
-    public Badge(Long ribbonId, Integer ribbonType, String ribbonText, Proposal proposal, String planTitle, Contest contest) {
-        this.ribbonId = ribbonId;
-        this.badgeType = ribbonType;
+    public Badge(ContestPhaseRibbonType ribbonType, Proposal proposal, String planTitle,
+            Contest contest) {
+        this.ribbonType = ribbonType;
         this.planTitle = planTitle;
         this.proposal = proposal;
-        this.badgeText = ribbonText;
         this.contest = contest;
-
-
-        this.badgeTitle = ProposalRibbon.getRibbonTitle(ribbonId, ribbonText);
-
 
         // Associate the year and get hideRibbon property from contest
         hideRibbon = contest.getHideRibbons();
 
         ContestPhase lastPhase = ContestClientUtil.getActivePhase(contest.getContestPK());
         Date referenceDate =
-                lastPhase.getPhaseEndDate() == null ? lastPhase.getPhaseStartDate() : lastPhase.getPhaseEndDate();
+                lastPhase.getPhaseEndDate() == null ? lastPhase.getPhaseStartDate()
+                        : lastPhase.getPhaseEndDate();
         Calendar cal = Calendar.getInstance();
         cal.setTime(referenceDate);
 
@@ -50,15 +43,15 @@ public class Badge implements Serializable {
     }
 
     public String getBadgeTitle() {
-        return badgeTitle;
+        return ribbonType.getTitle();
     }
 
     public String getBadgeText() {
-        return badgeText;
+        return ribbonType.getHoverText();
     }
 
     public Integer getBadgeType() {
-        return badgeType;
+        return ribbonType.getRibbon();
     }
 
     public int getBadgeYear() {
@@ -88,7 +81,7 @@ public class Badge implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("BadgeType: %d ,BadgeTitle: %s, BadgeText: %s, Year: %d",
-                badgeType, badgeTitle, badgeText, year);
+        return String.format("Badge[type=%d, proposal=%d]",
+                ribbonType.getId_(), proposal.getProposalId());
     }
 }

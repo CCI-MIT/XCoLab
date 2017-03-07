@@ -4,6 +4,7 @@ import org.xcolab.util.attributes.AttributeGetterBuilder;
 import org.xcolab.util.attributes.Attributes;
 
 import java.util.List;
+import java.util.function.Function;
 
 final class ConfigurationAttributes {
 
@@ -31,8 +32,18 @@ final class ConfigurationAttributes {
         return Attributes.newIdListAttribute(new ConfigurationAttributeProvider(name));
     }
 
+    public static <T> AttributeGetterBuilder<List<T>> newListAttribute(String name,
+            Function<String, T> conversionFunction) {
+        return Attributes.newListAttribute(
+                new ConfigurationAttributeProvider(name), conversionFunction);
+    }
+
     public static <T extends Enum<T>> AttributeGetterBuilder<T> newEnumAttribute(
             String name, Class<T> enumType) {
         return Attributes.newEnumAttribute(new ConfigurationAttributeProvider(name), enumType);
+    }
+
+    public static <T> AttributeGetterBuilder<T> newJsonAttribute(String name, Class<T> entityType) {
+        return Attributes.newJsonAttribute(new ConfigurationAttributeProvider(name), entityType);
     }
 }

@@ -19,34 +19,37 @@ import org.xcolab.service.contest.domain.contestphaseribbontype.ContestPhaseRibb
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contestphase.ContestPhaseService;
-import org.xcolab.service.contest.utils.promotion.AutoPromoteHelper;
+import org.xcolab.service.contest.utils.promotion.PromotionService;
 
 import java.util.Date;
 import java.util.List;
 
 @RestController
 public class ContestPhaseController {
-    @Autowired
-    private ContestPhaseRibbonTypeDao contestPhaseRibbonTypeDao;
+
+    private final ContestPhaseRibbonTypeDao contestPhaseRibbonTypeDao;
+    private final ContestPhaseDao contestPhaseDao;
+    private final ContestPhaseTypeDao contestPhaseTypeDao;
+    private final PromotionService promotionService;
+    private final ContestPhaseService contestPhaseService;
 
     @Autowired
-    private ContestPhaseDao contestPhaseDao;
-
-    @Autowired
-    private ContestPhaseTypeDao contestPhaseTypeDao;
-
-    @Autowired
-    private AutoPromoteHelper autoPromoteHelper;
-
-
-    @Autowired
-    private ContestPhaseService contestPhaseService;
+    public ContestPhaseController(ContestPhaseRibbonTypeDao contestPhaseRibbonTypeDao,
+            ContestPhaseDao contestPhaseDao, ContestPhaseTypeDao contestPhaseTypeDao,
+            PromotionService promotionService, ContestPhaseService contestPhaseService) {
+        this.contestPhaseRibbonTypeDao = contestPhaseRibbonTypeDao;
+        this.contestPhaseDao = contestPhaseDao;
+        this.contestPhaseTypeDao = contestPhaseTypeDao;
+        this.promotionService = promotionService;
+        this.contestPhaseService = contestPhaseService;
+    }
 
     @RequestMapping(value = "/contestPhases", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ContestPhase> getContestPhases(@RequestParam(required = false) Long contestPK,
-                                               @RequestParam(required = false) Long contestScheduleId) {
+            @RequestParam(required = false) Long contestScheduleId) {
         return contestPhaseDao.findByGiven(contestPK, contestScheduleId);
     }
+
     @GetMapping(value = "/contestPhaseRibbonTypes/{contestPhaseRibbonTypeId}")
     public ContestPhaseRibbonType getContestPhaseRibbonType(@PathVariable long contestPhaseRibbonTypeId)
             throws NotFoundException {
@@ -58,8 +61,6 @@ public class ContestPhaseController {
     public List<ContestPhaseRibbonType> getContestPhaseRibbonTypes() {
         return contestPhaseRibbonTypeDao.findByGiven();
     }
-
-
 
     @GetMapping(value = "/contestPhases/{phaseId}")
     public ContestPhase getContestPhase(@PathVariable long phaseId)
@@ -74,7 +75,7 @@ public class ContestPhaseController {
 
     @PutMapping(value = "/contestPhases/{contestPhasePK}")
     public boolean updateContestPhase(@PathVariable long contestPhasePK,
-                                      @RequestBody ContestPhase contestPhase) throws NotFoundException {
+            @RequestBody ContestPhase contestPhase) throws NotFoundException {
 
         if (contestPhaseDao.exists(contestPhasePK)) {
             return contestPhaseDao.update(contestPhase);
@@ -82,7 +83,6 @@ public class ContestPhaseController {
             throw new NotFoundException("No ContestPhase with id " + contestPhasePK);
         }
     }
-
 
     @DeleteMapping(value = "/contestPhases/{contestPhasePK}")
     public Boolean deleteContestPhase(@PathVariable("contestPhasePK") Long contestPhasePK)
@@ -95,7 +95,7 @@ public class ContestPhaseController {
     }
 
     @PutMapping(value = "/contestPhases/{contestPhasePK}/forcePromotionOfProposalInContestPhaseId")
-    public boolean forcePropomotionOfProposalInContestPhaseId(@PathVariable long contestPhasePK,
+    public boolean forcePromotionOfProposalInContestPhaseId(@PathVariable long contestPhasePK,
                                       @RequestParam Long proposalId) throws NotFoundException {
 
         if (contestPhaseDao.exists(contestPhasePK)) {
@@ -106,20 +106,14 @@ public class ContestPhaseController {
         }
     }
 
-
-
-    @GetMapping(value = "/contestPhases/autoPromoteProposals")
+    @GetMapping("/contestPhases/autoPromoteProposals")
     public Boolean autoPromoteProposals(){
         Date now = new Date();
-        autoPromoteHelper.setNow(now);
-        autoPromoteHelper.doBasicPromotion();
-        autoPromoteHelper.doJudgingBasedPromotion();
-        autoPromoteHelper.distributeRibbons();
-
+        promotionService.doPromotion(now);
         return true;
     }
 
-    @GetMapping(value = "/contestPhaseTypes/{contestPhaseTypeId}")
+    @GetMapping("/contestPhaseTypes/{contestPhaseTypeId}")
     public ContestPhaseType getContestPhaseType(@PathVariable long contestPhaseTypeId)
             throws NotFoundException {
         return contestPhaseTypeDao.get(contestPhaseTypeId)

@@ -91,6 +91,7 @@ public class ContestDaoImpl implements ContestDao {
 
     }
 
+    @Override
     public boolean update(Contest contest) {
         return dslContext.update(CONTEST)
                 .set(CONTEST.CONTEST_PK, contest.getContestPK())

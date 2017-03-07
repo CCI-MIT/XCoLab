@@ -13,12 +13,12 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
-public class ContestPhaseRibbonTypeDto extends AbstractContestPhaseRibbonType implements DataTransferObject<ContestPhaseRibbonType> {
+public class ContestPhaseRibbonTypeDto extends AbstractContestPhaseRibbonType
+        implements DataTransferObject<ContestPhaseRibbonType> {
 
-    public static final TypeProvider<ContestPhaseRibbonTypeDto> TYPES =
-            new TypeProvider<>(ContestPhaseRibbonTypeDto.class,
-                    new ParameterizedTypeReference<List<ContestPhaseRibbonTypeDto>>() {
-                    });
+    public static final TypeProvider<ContestPhaseRibbonTypeDto> TYPES = new TypeProvider<>(
+            ContestPhaseRibbonTypeDto.class,
+            new ParameterizedTypeReference<List<ContestPhaseRibbonTypeDto>>() {});
 
     public ContestPhaseRibbonTypeDto() {}
 

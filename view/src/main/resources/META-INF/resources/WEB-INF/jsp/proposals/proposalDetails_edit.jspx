@@ -9,7 +9,7 @@
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout  title="${proposal.name} - Edit">
     <!--@elvariable id="isMove" type="java.lang.Boolean"-->
-    <!--@elvariable id="hasNotMappedSections" type="java.lang.Boolean"-->
+    <!--@elvariable id="hasUnmappedSections" type="java.lang.Boolean"-->
 
     <jsp:directive.include file="./init_proposal.jspx"/>
 
@@ -25,7 +25,6 @@
     <jsp:directive.include file="./proposalDetails/header.jspx" />
 
     <!--ProposalSectionsTabController-->
-    <jsp:useBean id="updateProposalSectionsBean" scope="request" type="org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean"/>
     <c:if test="${isMove}">
         <jsp:useBean id="baseProposal" scope="request" type="org.xcolab.client.proposals.pojo.Proposal"/>
         <jsp:useBean id="baseContest" scope="request" type="org.xcolab.client.contest.pojo.Contest"/>
@@ -47,14 +46,8 @@
     </c:if>
 
     <div class="prop-left">
-        <c:choose>
-            <c:when test="${proposal.proposalId > 0 }">
-                <c:set var="updateProposalSectionsURL" value="${proposal.proposalUrl}/updateProposalDetails?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
-            </c:when>
-            <c:otherwise>
-                <c:set var="updateProposalSectionsURL"  value="${proposal.proposalUrl}/updateProposalDetails?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }"/>
-            </c:otherwise>
-        </c:choose>
+        <c:set var="updateProposalSectionsURL"
+               value="${proposal.proposalId > 0 ? proposal.proposalUrl : contest.newProposalLinkUrl}"/>
 
         <div class="c-Headline addprop">
             <c:choose>
@@ -92,7 +85,9 @@
         </form>
 
 
-        <form:form action="${updateProposalSectionsURL }" commandName="updateProposalSectionsBean" modelAttribute="updateProposalSectionsBean"  cssClass="addpropform ${contestType.showProposalSummary ? '' : 'full-wdith'}" id="editForm">
+        <form:form action="${updateProposalSectionsURL }" commandName="updateProposalDetailsBean"
+                   id="editForm"
+                   cssClass="addpropform ${contestType.showProposalSummary ? '' : 'full-wdith'}" >
             <form:hidden path="baseProposalId" />
             <form:hidden path="baseProposalContestId" />
             <form:hidden path="isMove" />
@@ -194,7 +189,7 @@
             <c:forEach var="section" items="${proposal.sections }">
                 <c:if test="${not section.locked }">
                     <div class="addpropbox q3 ${section.type}" data-section-id="${section.sectionDefinitionId }">
-                        <proposalsPortlet:proposalSectionEdit section="${section }" showCopySectionContentButton="${hasNotMappedSections and not empty baseProposal }"/>
+                        <proposalsPortlet:proposalSectionEdit section="${section }" showCopySectionContentButton="${hasUnmappedSections and not empty baseProposal }"/>
                     </div>
                 </c:if>
             </c:forEach>

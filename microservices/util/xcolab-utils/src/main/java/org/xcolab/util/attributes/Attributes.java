@@ -4,10 +4,13 @@ import org.xcolab.util.attributes.basic.BooleanAttribute;
 import org.xcolab.util.attributes.basic.DoubleAttribute;
 import org.xcolab.util.attributes.basic.EnumAttribute;
 import org.xcolab.util.attributes.basic.IdListAttribute;
+import org.xcolab.util.attributes.basic.JsonAttribute;
+import org.xcolab.util.attributes.basic.ListAttribute;
 import org.xcolab.util.attributes.basic.LongAttribute;
 import org.xcolab.util.attributes.basic.StringAttribute;
 
 import java.util.List;
+import java.util.function.Function;
 
 /**
  * This class contains static factory methods to build {@link AttributeGetter}s of various types.
@@ -42,8 +45,19 @@ public final class Attributes {
         return new AttributeGetterBuilder<>(new IdListAttribute(attributeProvider));
     }
 
+    public static <T> AttributeGetterBuilder<List<T>> newListAttribute(
+            AttributeProvider<?> attributeProvider, Function<String, T> conversionFunction) {
+        return new AttributeGetterBuilder<>(
+                new ListAttribute<>(attributeProvider, conversionFunction));
+    }
+
     public static <T extends Enum<T>> AttributeGetterBuilder<T> newEnumAttribute(
             AttributeProvider<?> attributeProvider, Class<T> enumType) {
         return new AttributeGetterBuilder<>(new EnumAttribute<>(attributeProvider, enumType));
+    }
+
+    public static <T> AttributeGetterBuilder<T> newJsonAttribute(
+            AttributeProvider<?> attributeProvider, Class<T> entityType) {
+        return new AttributeGetterBuilder<>(new JsonAttribute<T>(attributeProvider, entityType));
     }
 }

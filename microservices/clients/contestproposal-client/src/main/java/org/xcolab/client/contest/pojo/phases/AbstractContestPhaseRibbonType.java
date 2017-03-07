@@ -8,7 +8,9 @@ abstract class AbstractContestPhaseRibbonType implements Serializable {
 
     private Long id_;
     private Integer ribbon;
+    private String title;
     private String hovertext;
+    private Boolean showText;
     private String description;
     private Boolean copyonpromote;
     private Integer sortorder;
@@ -18,20 +20,12 @@ abstract class AbstractContestPhaseRibbonType implements Serializable {
     public AbstractContestPhaseRibbonType(AbstractContestPhaseRibbonType value) {
         this.id_ = value.id_;
         this.ribbon = value.ribbon;
+        this.title = value.title;
         this.hovertext = value.hovertext;
+        this.showText = value.showText;
         this.description = value.description;
         this.copyonpromote = value.copyonpromote;
         this.sortorder = value.sortorder;
-    }
-
-    public AbstractContestPhaseRibbonType(Long id_, Integer ribbon, String hovertext,
-            String description, Boolean copyonpromote, Integer sortorder) {
-        this.id_ = id_;
-        this.ribbon = ribbon;
-        this.hovertext = hovertext;
-        this.description = description;
-        this.copyonpromote = copyonpromote;
-        this.sortorder = sortorder;
     }
 
     public Long getId_() {
@@ -80,6 +74,22 @@ abstract class AbstractContestPhaseRibbonType implements Serializable {
 
     public void setSortOrder(Integer sortorder) {
         this.sortorder = sortorder;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Boolean getShowText() {
+        return showText;
+    }
+
+    public void setShowText(Boolean showText) {
+        this.showText = showText;
     }
 
     @Override
