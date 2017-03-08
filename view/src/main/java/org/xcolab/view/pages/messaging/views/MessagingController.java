@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -34,24 +35,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-
+@RequestMapping("/messaging")
 public class MessagingController {
 
     @ModelAttribute("communityTopContentArticleId")
-            public Long getCommunityTopContentArticleId(){
+    public Long getCommunityTopContentArticleId() {
         return ConfigurationAttributeKey.MEMBERS_CONTENT_ARTICLE_ID.get();
     }
 
-    @GetMapping({"/messaging","/web/guest/messaging"})
+    @GetMapping("")
     public String showMessagesDefault(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam(required = false) Integer pageNumber, Member loggedInMember) {
-        if (pageNumber == null ) {
+        if (pageNumber == null) {
             pageNumber = 1;
         }
         return showMessages(request, response, model, "INBOX" , pageNumber, loggedInMember);
 
     }
-    @GetMapping("/messaging/mailbox/{mailboxType}")
+    @GetMapping("mailbox/{mailboxType}")
     public String showMessagesBoxType(HttpServletRequest request, HttpServletResponse response, Model model,
             @PathVariable String mailboxType,
             @RequestParam(required = false) Integer pageNumber, Member loggedInMember) {
@@ -77,7 +78,7 @@ public class MessagingController {
         return "/messaging/messages";
     }
 
-    @GetMapping("/messaging/compose")
+    @GetMapping("compose")
     public String composeMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam(required = false) Integer messageId, Member loggedInMember) {
 
@@ -90,13 +91,14 @@ public class MessagingController {
     }
 
 
-    @GetMapping("/messaging/message/{messageId}")
+    @GetMapping("message/{messageId}")
     public String showMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @PathVariable  Integer messageId, Member loggedInMember)
             throws MessageNotFoundException {
 
         final MessageBean messageBean = new MessageBean(MessagingClient.getMessage(messageId));
-        final MessagingPermissions messagingPermissions = new MessagingPermissions(request, messageBean);
+        final MessagingPermissions messagingPermissions =
+                new MessagingPermissions(loggedInMember, messageBean);
 
         if (!messagingPermissions.getCanViewMessage()) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
@@ -115,7 +117,7 @@ public class MessagingController {
     }
 
 
-    @PostMapping("/messaging/archiveMessages")
+    @PostMapping("archiveMessages")
     public String archiveMessages(HttpServletRequest request, HttpServletResponse response, Model model,
             @ModelAttribute("messagingBean") MessagingBean messagingBean, Member loggedInMember)
             throws MessageNotFoundException, IOException {
@@ -137,7 +139,7 @@ public class MessagingController {
         return showMessages(request, response, model, "INBOX", 1, loggedInMember);
     }
 
-    @PostMapping("/messaging/sendMessage")
+    @PostMapping("sendMessage")
     public String sendMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam String userIdsRecipients, @RequestParam String messageSubject,
             @RequestParam String messageContent, Member loggedInMember)
@@ -147,7 +149,7 @@ public class MessagingController {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
-        final MessagingPermissions messagingPermissions = new MessagingPermissions(request);
+        final MessagingPermissions messagingPermissions = new MessagingPermissions(loggedInMember);
 
         if (messagingPermissions.getCanSendMessage()) {
             List<Long> recipientIds = IdListUtil.getIdsFromString(userIdsRecipients);
