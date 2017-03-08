@@ -1,7 +1,5 @@
 package org.xcolab.view.pages.proposals.view.action;
 
-import org.apache.commons.lang3.StringUtils;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,11 +7,8 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
@@ -22,20 +17,16 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.entity.utils.analytics.AnalyticsUtil;
 import org.xcolab.entity.utils.email.notifications.proposal.ProposalVoteNotification;
-import org.xcolab.entity.utils.email.notifications.proposal.ProposalVoteValidityConfirmation;
+import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.util.exceptions.DatabaseAccessException;
-import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
+import org.xcolab.view.pages.proposals.utils.voting.VoteValidator;
+import org.xcolab.view.pages.proposals.utils.voting.VoteValidator.ValidationResult;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -81,12 +72,17 @@ public class VoteOnProposalActionController {
                 }
 
                 proposalMemberRatingClient.addProposalVote(proposalId, contestPhaseId, memberId);
-                String portalUrl = ConfigurationAttributeKey.COLAB_URL.get();
-                final boolean voteIsValid = validateVote(member, proposal, contest,portalUrl, request);
-                if (voteIsValid) {
+                VoteValidator voteValidator = new VoteValidator(member, proposal, contest,
+                        request.getRemoteAddr(), clients.getProposalMemberRatingClient());
+                final ValidationResult validationResult = voteValidator.validate();
+                if (validationResult == ValidationResult.INVALID_BLACKLISTED) {
+                    AlertMessage.danger("Your vote was NOT counted because it violates our email policy. "
+                            + "Please refer to the Voting Rules for additional information.")
+                            .flash(request);
+                } else {
                     try {
-                        Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());
-                        new ProposalVoteNotification(proposal, contestMicro, member, portalUrl).sendMessage();
+                        new ProposalVoteNotification(proposal, contest, member)
+                                .sendMessage();
                     } catch (ContestNotFoundException ignored) {
 
                     }
@@ -112,66 +108,6 @@ public class VoteOnProposalActionController {
         // Redirect to prevent page-refreshing from influencing the vote
         final String arguments = hasVoted ? "/voted" : "";
         response.sendRedirect(proposal.getProposalLinkUrl(contest) + arguments);
-    }
-
-    private boolean validateVote(Member member, Proposal proposal, Contest contest,
-            String baseUrl, HttpServletRequest request) {
-        if (member.isVerifiedAccount() || isEmailWhitelisted(member.getEmailAddress())){
-            return true;
-        }
-
-        final ClientHelper clients = proposalsContext.getClients(request);
-        ProposalMemberRatingClient proposalMemberRatingClient = clients
-                .getProposalMemberRatingClient();
-
-        List<Member> usersWithSharedIP = MembersClient.findMembersByIp(request.getRemoteAddr());
-        usersWithSharedIP.remove(member);
-        if (!usersWithSharedIP.isEmpty()) {
-            final ProposalVote vote = proposalMemberRatingClient
-                    .getProposalVoteByProposalIdUserId(proposal.getProposalId(), member.getUserId());
-            if (vote == null) {
-                throw new InternalException("Could not retrieve vote");
-            }
-            int recentVotesFromSharedIP = 0;
-            for (Member otherUser : usersWithSharedIP) {
-                    final ProposalVote otherVote = proposalMemberRatingClient
-                            .getProposalVoteByProposalIdUserId(proposal.getProposalId(), otherUser.getUserId());
-                    //check if vote is less than 12 hours old
-                if(otherVote!=null&&otherUser.getId_() != member.getId_() ) {
-                    if (new DateTime(otherVote.getCreateDate()).plusHours(12).isAfterNow()) {
-                        recentVotesFromSharedIP++;
-                    }
-                    if (StringUtils.getLevenshteinDistance(member.getFirstName(), otherUser.getFirstName()) < 3
-                            && StringUtils.getLevenshteinDistance(member.getLastName(), otherUser.getLastName()) < 3) {
-                        vote.setIsValid(false);
-                        break;
-                    }
-                }
-
-            }
-            if (vote.getIsValid() && recentVotesFromSharedIP > 7) {
-                vote.setIsValid(false);
-                sendConfirmationMail(vote, proposal, contest, member, baseUrl);
-            }
-            proposalMemberRatingClient.updateProposalVote(vote);
-            return vote.getIsValid();
-        }
-        return true;
-    }
-
-    private boolean isEmailWhitelisted(String email) {
-        final List<Pattern> emailWhitelist =
-                ConfigurationAttributeKey.VOTING_EMAIL_VERIFICATION_WHITELIST.get();
-        return emailWhitelist.stream()
-                .anyMatch(pattern -> pattern.matcher(email).find());
-    }
-
-    private void sendConfirmationMail(ProposalVote vote, Proposal proposal, Contest contest, Member member, String baseUrl) {
-        String confirmationToken = UUID.randomUUID().toString();
-        vote.setConfirmationToken(confirmationToken);
-        vote.setConfirmationEmailSendDate(new Timestamp(new Date().getTime()));
-            new ProposalVoteValidityConfirmation(proposal, contest, member, baseUrl,
-                    confirmationToken).sendEmailNotification();
     }
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/confirmVote/{proposalId}/{userId}/{confirmationToken}")
