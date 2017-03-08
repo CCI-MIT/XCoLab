@@ -18,7 +18,7 @@ public class MessageConstants {
     public static final String EMAIL_MESSAGE_VAR_URL = "$URL";
     public static final String EMAIL_MESSAGE_VAR_PROFILE_URL = "$PROFILE_URL";
 
-    public static final String EMAIL_MESSAGE_URL_TEMPLATE = "/web/guest/messaging/-/messaging/message/";
+    public static final String EMAIL_MESSAGE_URL_TEMPLATE = "/messaging/message/";
 
 
     public static final String EMAIL_MESSAGE_VAR_SUBJECT = "$SUBJECT" ;
