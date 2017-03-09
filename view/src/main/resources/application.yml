@@ -6,6 +6,7 @@ server:
     include-stacktrace: always
   session:
     persistent: true
+    timeout: 7200
 
 tomcat:
   ajp:
