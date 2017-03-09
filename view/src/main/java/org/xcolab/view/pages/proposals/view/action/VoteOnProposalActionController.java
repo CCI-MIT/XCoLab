@@ -17,7 +17,6 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
 import org.xcolab.entity.utils.analytics.AnalyticsUtil;
 import org.xcolab.entity.utils.email.notifications.proposal.ProposalVoteNotification;
-import org.xcolab.entity.utils.flash.AlertMessage;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
@@ -76,9 +75,10 @@ public class VoteOnProposalActionController {
                         request.getRemoteAddr(), clients.getProposalMemberRatingClient());
                 final ValidationResult validationResult = voteValidator.validate();
                 if (validationResult == ValidationResult.INVALID_BLACKLISTED) {
-                    AlertMessage.danger("Your vote was NOT counted because it violates our email policy. "
-                            + "Please refer to the Voting Rules for additional information.")
-                            .flash(request);
+                    //TODO: decide if we want to inform users of this
+//                    AlertMessage.danger("Your vote was NOT counted because it violates our email policy. "
+//                            + "Please refer to the Voting Rules for additional information.")
+//                            .flash(request);
                 } else {
                     try {
                         new ProposalVoteNotification(proposal, contest, member)
