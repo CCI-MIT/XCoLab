@@ -97,7 +97,9 @@ public class ActivitySubscriptionEmailHelper {
 
         synchronized (lastEmailNotification) {
             List<ActivityEntry> res = getActivitiesAfter(lastEmailNotification);
-            _log.info("Sending instant notifications for {} activities", res.size());
+            if (!res.isEmpty()) {
+                _log.info("Sending instant notifications for {} activities", res.size());
+            }
             for (ActivityEntry activity : res) {
                 try {
                     sendInstantNotifications(activity);
