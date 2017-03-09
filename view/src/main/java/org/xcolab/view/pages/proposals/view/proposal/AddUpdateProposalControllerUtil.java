@@ -60,7 +60,7 @@ public final class AddUpdateProposalControllerUtil {
             ProposalCreationUtil.sendAuthorNotification(ConfigurationAttributeKey.COLAB_URL.get(),
                     proposalWrapper, contestPhase, request);
 
-            ActivityEntryHelper.createActivityEntry(activitiesClient, memberId, proposalWrapper.getProposalId(), null,
+            ActivityEntryHelper.createActivityEntry(activitiesClient, memberId, contest.getContestPK() , proposalWrapper.getProposalId().toString(),
                     ActivityProvidersType.ProposalCreatedActivityEntry.getType());
 
         } else {

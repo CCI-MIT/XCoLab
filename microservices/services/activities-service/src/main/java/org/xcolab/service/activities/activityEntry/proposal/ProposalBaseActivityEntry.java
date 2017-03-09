@@ -41,7 +41,20 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
         this.activityEntry = activityEntry;
 
         try {
-            rawProposal = ProposalClientUtil.getProposal(this.activityEntry.getClassPrimaryKey());
+            if(this.getSecondaryType().equals(ProposalActivitySubType.PROPOSAL_CREATED.getSecondaryTypeId())){
+                try {
+                    Long proposalId = new Long(this.activityEntry.getExtraData());
+                    rawProposal =
+                            ProposalClientUtil.getProposal(proposalId);
+                }catch (NumberFormatException e){
+                    //legacy support
+                    rawProposal =
+                            ProposalClientUtil.getProposal(this.activityEntry.getClassPrimaryKey());
+                }
+            }else {
+                rawProposal =
+                        ProposalClientUtil.getProposal(this.activityEntry.getClassPrimaryKey());
+            }
 
             contest = ProposalClientUtil.getCurrentContestForProposal(rawProposal.getProposalId());
 
@@ -57,7 +70,11 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
     }
     @Override
     public Long getPrimaryType() {
-        return ActivityEntryType.PROPOSAL.getPrimaryTypeId();
+        if(this.getSecondaryType().equals(ProposalActivitySubType.PROPOSAL_CREATED.getSecondaryTypeId())){
+            return ActivityEntryType.CONTEST.getPrimaryTypeId();
+        }else {
+            return ActivityEntryType.PROPOSAL.getPrimaryTypeId();
+        }
     }
 
 
