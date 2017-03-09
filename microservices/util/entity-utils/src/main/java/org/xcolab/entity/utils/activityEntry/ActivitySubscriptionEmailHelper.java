@@ -25,7 +25,6 @@ import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.html.HtmlUtil;
 
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,7 +44,7 @@ public class ActivitySubscriptionEmailHelper {
     private static Date lastEmailNotification = new Date();
 
     // 1 am
-    private final static int DAILY_DIGEST_TRIGGER_HOUR = 23;
+    private final static int DAILY_DIGEST_TRIGGER_HOUR = 1;
 
     private final static Logger _log = LoggerFactory.getLogger(ActivitySubscriptionEmailHelper.class);
 
@@ -87,17 +86,20 @@ public class ActivitySubscriptionEmailHelper {
 
         //to ease debug please leave it here
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            lastEmailNotification = sdf.parse("2017-03-01 00:00:00");
-            lastDailyEmailNotification = sdf.parse("2017-03-01 00:00:00");
-        } catch (ParseException e) {
-            lastEmailNotification = new Date();
-        }
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        try {
+//            lastEmailNotification = sdf.parse("2017-03-01 00:00:00");
+//            lastDailyEmailNotification = sdf.parse("2017-03-01 00:00:00");
+//        } catch (ParseException e) {
+//            lastEmailNotification = new Date();
+//        }
 
 
         synchronized (lastEmailNotification) {
             List<ActivityEntry> res = getActivitiesAfter(lastEmailNotification);
+            if (!res.isEmpty()) {
+                _log.info("Sending instant notifications for {} activities", res.size());
+            }
             for (ActivityEntry activity : res) {
                 try {
                     sendInstantNotifications(activity);
@@ -275,6 +277,7 @@ public class ActivitySubscriptionEmailHelper {
                     .getMessagingPreferencesForMember(recipient.getUserId());
             if (messagingPreferences.getEmailOnActivity()
                     && !messagingPreferences.getEmailActivityDailyDigest()) {
+                _log.info("Sending activity notification to member {}.", recipient.getId_());
 
                 //TODO: fix this because this was only done so the code would compile
                 String unsubscribeFooter = getUnsubscribeIndividualSubscriptionFooter(
@@ -282,7 +285,6 @@ public class ActivitySubscriptionEmailHelper {
                         NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId())));
                 sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter, ConfigurationAttributeKey.COLAB_URL.get());
             }
-
         }
     }
 
