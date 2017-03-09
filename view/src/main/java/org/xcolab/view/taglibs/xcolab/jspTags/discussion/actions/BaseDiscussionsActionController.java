@@ -78,7 +78,7 @@ public abstract class BaseDiscussionsActionController {
                 referrer = referrer.substring(0, splitIndex) + "?" + URLEncodedUtils
                         .format(targetPairs, "UTF-8");
             } catch (URISyntaxException e) {
-                _log.warn("couldn't parse referrer URL: " + referrer, e);
+                _log.warn("couldn't parse referrer URL: {}", referrer, e);
             }
         }
 
