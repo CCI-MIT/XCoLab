@@ -25,7 +25,6 @@ import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.html.HtmlUtil;
 
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -98,6 +97,7 @@ public class ActivitySubscriptionEmailHelper {
 
         synchronized (lastEmailNotification) {
             List<ActivityEntry> res = getActivitiesAfter(lastEmailNotification);
+            _log.info("Sending instant notifications for {} activities", res.size());
             for (ActivityEntry activity : res) {
                 try {
                     sendInstantNotifications(activity);
@@ -275,6 +275,7 @@ public class ActivitySubscriptionEmailHelper {
                     .getMessagingPreferencesForMember(recipient.getUserId());
             if (messagingPreferences.getEmailOnActivity()
                     && !messagingPreferences.getEmailActivityDailyDigest()) {
+                _log.info("Sending activity notification to member {}.", recipient.getId_());
 
                 //TODO: fix this because this was only done so the code would compile
                 String unsubscribeFooter = getUnsubscribeIndividualSubscriptionFooter(
@@ -282,7 +283,6 @@ public class ActivitySubscriptionEmailHelper {
                         NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId())));
                 sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter, ConfigurationAttributeKey.COLAB_URL.get());
             }
-
         }
     }
 

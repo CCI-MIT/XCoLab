@@ -1,5 +1,6 @@
 package org.xcolab.view.activities;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -14,9 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 public class ActivitySubscriptionEmailFilter {
 
     @RequestMapping("/emails/sendNotifications")
-    public void sendEmailNotifications(HttpServletRequest request, HttpServletResponse response)
+    public ResponseEntity<String> sendEmailNotifications(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         ActivitySubscriptionEmailHelper.sendEmailNotifications();
-        response.setStatus(204);
+        return ResponseEntity.ok("Emails sent.");
     }
 }
