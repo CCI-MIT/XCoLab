@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-public class ContentEditorController {  
-    private static final Integer THRESHOLD_TO_AVOID_NODE_COLLISION = 1000;
+public class ContentEditorController extends BaseContentEditor{
+
 
     @GetMapping("/content-editor")
     public String handleRenderRequest(HttpServletRequest request, HttpServletRequest response, Model model) {
@@ -174,30 +174,5 @@ public class ContentEditorController {
         defaultOperationReturnMessage(true, "Article version created successfully", response);
     }
 
-    private void defaultOperationReturnMessage(boolean success, String message, HttpServletResponse response) throws IOException {
-        JSONObject articleVersion = new JSONObject();
-        JSONObject folderNode = new JSONObject();
-        folderNode.put("success", success);
-        folderNode.put("msg", message);
-        response.getOutputStream().write(articleVersion.toString().getBytes());
-    }
 
-    private JSONObject treeNode(String label, String id, String kind, boolean loadOnDemand) {
-        JSONObject folderNode = new JSONObject();
-        folderNode.put("label", label);
-        folderNode.put("id", id);
-        folderNode.put("kind", kind);
-        if (loadOnDemand) {
-            folderNode.put("load_on_demand", loadOnDemand + "");
-        }
-        return folderNode;
-    }
-
-    private JSONObject articleNode(String label, Long id) {
-        return treeNode(label, (THRESHOLD_TO_AVOID_NODE_COLLISION +id) + "", "article", false);
-    }
-
-    private JSONObject folderNode(String label, String id) {
-        return treeNode(label, id, "folder", true);
-    }
 }

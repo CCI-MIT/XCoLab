@@ -69,21 +69,21 @@
         <c:set  var="createArticleFolderURL" value="/content-editor/createArticleFolder"/>
 
         <c:if test="${not empty param.articleId}">
-        <script>
+            <script>
 
-            <![CDATA[
-            jQuery(document).ready(function () {
+                <![CDATA[
+                jQuery(document).ready(function () {
 
-                loadArticleVersionContent(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.articleId}, "");
+                    loadArticleVersionContent(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.articleId}, "");
 
-                window.setTimeout(function(){
-                    $("#article-view").unmask()
-                }, 2000);
+                    window.setTimeout(function(){
+                        $("#article-view").unmask()
+                    }, 2000);
 
-            });
+                });
 
-            ]]>
-        </script>
+                ]]>
+            </script>
         </c:if>
         <script>
             <![CDATA[
@@ -117,39 +117,39 @@
 
                 var $treeView = $('#tree-view');
                 $treeView.tree({
-                     //data:data,
-                     saveState: true,
-                     onCanSelectNode: function(node) {
-                         //if(node.kind == "folder") return false;
-                            return true;
+                    //data:data,
+                    saveState: true,
+                    onCanSelectNode: function(node) {
+                        //if(node.kind == "folder") return false;
+                        return true;
 
-                     },
-                     onCreateLi: function(node, $li) {
-                         // Append a link to the jqtree-element div.
-                         // The link has an url '#node-[id]' and a data property 'node-id'.
-                         if(node.kind == "folder")
-                         $li.find('.jqtree-element').append(
-                                 '&nbsp;&nbsp;<small href="#node-'+ node.id +'" class="addArticle" data-node-id="'+
-                                 node.id +'">+ article</small>'+
-                                 '&nbsp;&nbsp;<small href="#node-'+ node.id +'" class="addFolder" data-node-id="'+
-                                 node.id +'">+ folder</small>'
-                         );//<small>
-                     },
-                     onCanMoveTo: function(moved_node, target_node, position) {
-                         console.log("target_node "+ target_node.id +" - "+target_node.kind)
-                         return target_node.kind == "folder";
-                     },
-                     onCanMove: function(node) {
-                         if (! node.parent.parent) {
-                             // Example: Cannot move root node
+                    },
+                    onCreateLi: function(node, $li) {
+                        // Append a link to the jqtree-element div.
+                        // The link has an url '#node-[id]' and a data property 'node-id'.
+                        if(node.kind == "folder")
+                            $li.find('.jqtree-element').append(
+                                    '&nbsp;&nbsp;<small href="#node-'+ node.id +'" class="addArticle" data-node-id="'+
+                                    node.id +'">+ article</small>'+
+                                    '&nbsp;&nbsp;<small href="#node-'+ node.id +'" class="addFolder" data-node-id="'+
+                                    node.id +'">+ folder</small>'
+                            );//<small>
+                    },
+                    onCanMoveTo: function(moved_node, target_node, position) {
+                        console.log("target_node "+ target_node.id +" - "+target_node.kind)
+                        return target_node.kind == "folder";
+                    },
+                    onCanMove: function(node) {
+                        if (! node.parent.parent) {
+                            // Example: Cannot move root node
 
-                             return false;
-                         }
-                         else {
-                             return node.kind != "folder";
-                         }
-                     },
-                     dragAndDrop: true});
+                            return false;
+                        }
+                        else {
+                            return node.kind != "folder";
+                        }
+                    },
+                    dragAndDrop: true});
 
                 $treeView.on(
                         'click', '.addArticle',
@@ -196,8 +196,8 @@
                                 loadArticleVersionContent(node.id, node.parent.name);
                             }else{
                                 /*
-                                event.preventDefault();
-                                return false;*/
+                                 event.preventDefault();
+                                 return false;*/
                             }
                         }
                 );
@@ -218,7 +218,7 @@
 
                 $("#saveArticle").click(function(){
 
-                        saveArticle();
+                    saveArticle();
                 });
                 var $contentArticleTitle = $('#contentArticleTitle');
                 $contentArticleTitle.bind('input', function() {
@@ -343,7 +343,7 @@
                 var folderId =$('#contentArticleFolderId').val();
                 var content = ckEditor.getData();
                 var parameters={articleId : articleId, title: title, folderId: folderId
-                ,content: content};
+                    ,content: content};
 
                 $.post(url ,parameters , function (response) {
                     var responseData = JSON.parse(response);
@@ -362,23 +362,23 @@
                 });
             }
             function moveArticle(articleId, folderId, folderName){
-                    var articleIdNoThreshold = articleId - THRESHOLD_TO_AVOID_NODE_COLISION;
-                    $(".treeContainer").mask();
-                    var url = moveArticleVersionURL;
+                var articleIdNoThreshold = articleId - THRESHOLD_TO_AVOID_NODE_COLISION;
+                $(".treeContainer").mask();
+                var url = moveArticleVersionURL;
 
-                    var parameters={articleId : articleIdNoThreshold, folderId: folderId };
+                var parameters={articleId : articleIdNoThreshold, folderId: folderId };
 
-                    $.post(url ,parameters , function (response) {
-                        var responseData = JSON.parse(response);
-                        var data = responseData;
-                        var $infoBox = $("#infoBox");
-                        $infoBox.html("Article moved successfully!");
-                        $infoBox.show();
-                        $infoBox.delay(5000).fadeOut('slow');
-                        $('#tree-view').tree('reload');
-                        $(".treeContainer").unmask();
-                        loadArticleVersionContent(articleId, folderName);
-                    });
+                $.post(url ,parameters , function (response) {
+                    var responseData = JSON.parse(response);
+                    var data = responseData;
+                    var $infoBox = $("#infoBox");
+                    $infoBox.html("Article moved successfully!");
+                    $infoBox.show();
+                    $infoBox.delay(5000).fadeOut('slow');
+                    $('#tree-view').tree('reload');
+                    $(".treeContainer").unmask();
+                    loadArticleVersionContent(articleId, folderName);
+                });
 
             }
 
@@ -426,27 +426,27 @@
                         <div id="article-view">
                             <h3>Content editor</h3>
 
-                                <div>
-                                    <!-- FORM FIELDS -->
-                                    <input type="hidden" id="contentArticleId"/>
-                                    <input type="hidden" id="contentArticleFolderId"/>
-                                    Article title: <input type="text" id="contentArticleTitle"  maxcharacters="300"  />
-                                </div>
-                                <div id="folderName">Parent folder: <!-- --></div>
-                                <div id="createdAtDate"><!-- --></div>
-                                <br/>
-                                <!--<div id="articleURL">&lt;!&ndash; Article URL:  &ndash;&gt;</div>-->
-                                <div>
-                                <textarea id="articleVersionContent" name="articleVersionContent" rows = "10" cols="80"><!-- --></textarea>
-                                </div>
-                                <div id="articleId"><!-- Article ID: --></div>
-                                <div id="">Previous versions:</div>
-                                <div id="articleVersions" style="max-height: 80px;overflow-y: scroll;"><!-- Article versions: --></div>
-
+                            <div>
+                                <!-- FORM FIELDS -->
+                                <input type="hidden" id="contentArticleId"/>
+                                <input type="hidden" id="contentArticleFolderId"/>
+                                Article title: <input type="text" id="contentArticleTitle"  maxcharacters="300"  />
                             </div>
+                            <div id="folderName">Parent folder: <!-- --></div>
+                            <div id="createdAtDate"><!-- --></div>
                             <br/>
-                            <div class="floatRight outerVerticalCenter" id="deleteOntologyTerm" ><a  class="c-Button__primary" href="#">Delete</a></div>
-                            <div> <div class="floatRight outerVerticalCenter" id="saveArticle" ><a  class="c-Button__primary" href="#">Save</a></div></div>
+                            <!--<div id="articleURL">&lt;!&ndash; Article URL:  &ndash;&gt;</div>-->
+                            <div>
+                                <textarea id="articleVersionContent" name="articleVersionContent" rows = "10" cols="80"><!-- --></textarea>
+                            </div>
+                            <div id="articleId"><!-- Article ID: --></div>
+                            <div id="">Previous versions:</div>
+                            <div id="articleVersions" style="max-height: 80px;overflow-y: scroll;"><!-- Article versions: --></div>
+
+                        </div>
+                        <br/>
+                        <div class="floatRight outerVerticalCenter" id="deleteOntologyTerm" ><a  class="c-Button__primary" href="#">Delete</a></div>
+                        <div> <div class="floatRight outerVerticalCenter" id="saveArticle" ><a  class="c-Button__primary" href="#">Save</a></div></div>
                     </div>
                 </div>
             </div>
