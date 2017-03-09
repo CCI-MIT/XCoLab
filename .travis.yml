@@ -4,6 +4,7 @@ sudo: false
 branches:
   only:
   - homolog
+  - master
 services:
 - mysql
 cache:
@@ -30,4 +31,9 @@ deploy:
   script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/deploy travis@cognosis.mit.edu:deploy
   on:
     branch: homolog
+- provider: script
+  skip_cleanup: true
+  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/deploy travis@cognosis.mit.edu:master
+  on:
+    branch: master
 
