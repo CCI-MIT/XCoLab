@@ -147,6 +147,7 @@ public class ContestClient {
                 contestResource.create(new ContestDto(contest)).execute().toPojo(contestService);
         //TODO: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_LIST);
+        ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
         return result;
     }
 
