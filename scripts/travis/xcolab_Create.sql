@@ -306,6 +306,7 @@ CREATE TABLE `members_Member` (
   `id_` bigint(20) NOT NULL,
   `screenName` varchar(42) DEFAULT NULL,
   `emailAddress` varchar(75) DEFAULT NULL,
+  `isEmailConfirmed` tinyint(4) NOT NULL DEFAULT '0',
   `firstName` varchar(75) DEFAULT NULL,
   `lastName` varchar(75) DEFAULT NULL,
   `hashedPassword` varchar(75) DEFAULT NULL,
