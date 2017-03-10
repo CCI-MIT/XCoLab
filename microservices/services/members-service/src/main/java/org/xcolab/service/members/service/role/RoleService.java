@@ -41,4 +41,8 @@ public class RoleService {
     public boolean memberHasRole(Long memberId, Long roleId){
         return this.roleDao.memberHasRole(memberId,roleId);
     }
+
+    public boolean isAdmin(long memberId) {
+        return roleDao.memberHasRole(memberId, 10118L);
+    }
 }

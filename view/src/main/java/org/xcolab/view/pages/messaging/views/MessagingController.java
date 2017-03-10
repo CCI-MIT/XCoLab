@@ -78,19 +78,6 @@ public class MessagingController {
         return "/messaging/messages";
     }
 
-    @GetMapping("compose")
-    public String composeMessage(HttpServletRequest request, HttpServletResponse response, Model model,
-            @RequestParam(required = false) Integer messageId, Member loggedInMember) {
-
-        if (loggedInMember == null) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
-        }
-        model.addAttribute("sendMessageBean", new SendMessageBean(loggedInMember.getId_()));
-        model.addAttribute("_activePageLink", "community");
-        return "/messaging/composeMessage";
-    }
-
-
     @GetMapping("message/{messageId}")
     public String showMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @PathVariable  Integer messageId, Member loggedInMember)
@@ -163,6 +150,9 @@ public class MessagingController {
                 AlertMessage.danger("You have exceeded your daily message limit. "
                         + "Please try again later and send fewer messages.").flash(request);
             }
+        } else {
+            AlertMessage.danger("Sorry, you are not allowed to send any more messages today.")
+                    .flash(request);
         }
 
         String refererHeader = request.getHeader(HttpHeaders.REFERER);

@@ -17,10 +17,9 @@ import org.xcolab.service.members.exceptions.MessageRecipientException;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -48,21 +47,29 @@ public class MessagingService {
         if (checkLimit) {
             Long fromId = message.getFromId();
             synchronized (messageLimitManager.getMutex(fromId)) {
-                // Send a validation problem mail to patrick if the daily limit is reached for a user
+
                 if (!messageLimitManager.canSendMessages(recipientIds.size(), fromId)) {
                     log.warn("User exceeded validation limit {}", fromId);
 
-                    // Only send the email once in 24h!
-                    if (messageLimitManager.shouldSendValidationErrorMessage(fromId)) {
-                        Message validationErrorMessage = new Message();
-                        validationErrorMessage.setSubject("VALIDATION PROBLEM  " + message.getSubject());
-                        validationErrorMessage.setContent("VALIDATION PROBLEM  " + message.getContent());
-                        validationErrorMessage.setFromId(fromId);
-                        validationErrorMessage.setCreateDate(Timestamp.from(Instant.now()));
-                        validationErrorMessage.setRepliesTo(message.getRepliesTo());
-                        recipientIds.clear();
-                        recipientIds.add(1011659L); //patrick
-                        sendMessage(validationErrorMessage, recipientIds);
+                    if (!messageLimitManager.wasReportedRecently(fromId)) {
+                        final List<String> reportRecipients =
+                                ConfigurationAttributeKey.MESSAGING_SPAM_ALERT_EMAILS.get();
+                        if (!reportRecipients.isEmpty()) {
+                            Member from = memberDao.getMember(fromId)
+                                    .orElseThrow(() -> new InternalException(
+                                            "Sender does not exist: " + fromId));
+                            final String subject = String.format("[%s] Member %s exceeded message limit",
+                                    ConfigurationAttributeKey.COLAB_NAME.get(), from.getScreenName());
+                            final String content = String.format(
+                                    "Member %s tried to send the message \"%s\" to %d members "
+                                            + "but has exceeded the daily limit of %d messages.",
+                                    from.getScreenName(), message.getSubject(), recipientIds.size(),
+                                    messageLimitManager.getMessageLimit(fromId));
+
+                            final String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
+                            EmailClient.sendEmail(fromEmail, reportRecipients,
+                                    subject, content, false, fromEmail);
+                        }
                     }
                     throw new MessageLimitExceededException(fromId);
                 }

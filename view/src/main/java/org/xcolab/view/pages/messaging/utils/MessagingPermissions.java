@@ -23,7 +23,7 @@ public class MessagingPermissions {
 
     public boolean getCanSendMessage() {
         return getCanAdminAll()
-                || (isLoggedIn &&  MessagingClient.canMemberSendMessage(loggedInMember.getId_(), 1));
+                || (isLoggedIn && MessagingClient.canMemberSendMessage(loggedInMember.getId_(), 1));
     }
 
     public boolean getCanViewMessage() {

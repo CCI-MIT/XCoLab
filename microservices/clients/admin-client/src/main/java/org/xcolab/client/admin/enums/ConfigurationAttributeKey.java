@@ -118,6 +118,10 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("MESSAGING_DAILY_DIGEST_DEFAULT")
                     .defaultValue(true)
                     .build();
+    public static final AttributeGetter<List<String>> MESSAGING_SPAM_ALERT_EMAILS =
+            ConfigurationAttributes.newListAttribute("MESSAGING_SPAM_ALERT_EMAILS", s -> s)
+            .defaultValue(Collections.emptyList())
+            .build();
 
     //Voting configuration
 
