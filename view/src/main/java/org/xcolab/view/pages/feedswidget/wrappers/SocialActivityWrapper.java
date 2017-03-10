@@ -5,9 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.entity.utils.activityEntry.DiscussionActivitySubType;
-import org.xcolab.entity.utils.activityEntry.MemberSubActivityType;
-import org.xcolab.entity.utils.activityEntry.ProposalActivitySubType;
+import org.xcolab.view.util.entity.activityEntry.DiscussionActivitySubType;
+import org.xcolab.view.util.entity.activityEntry.MemberSubActivityType;
+import org.xcolab.view.util.entity.activityEntry.ProposalActivitySubType;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.io.Serializable;

@@ -8,7 +8,7 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.entity.utils.LinkUtils;
-import org.xcolab.entity.utils.analytics.AnalyticsUtil;
+import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;

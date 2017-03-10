@@ -5,15 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.xcolab.microservices</groupId>
+        <groupId>org.xcolab</groupId>
         <artifactId>xcolab-microservices</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>org.xcolab.microservices.services</groupId>
-    <artifactId>services-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>microservice-services</artifactId>
     <packaging>pom</packaging>
 
     <modules>
@@ -50,12 +47,12 @@
         <dependency>
             <groupId>org.xcolab</groupId>
             <artifactId>service-utils</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.xcolab</groupId>
             <artifactId>xcolab-utils</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- spring dependencies -->

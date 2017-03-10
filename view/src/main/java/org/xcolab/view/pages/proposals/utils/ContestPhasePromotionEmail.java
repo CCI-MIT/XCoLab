@@ -9,7 +9,7 @@ import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.entity.utils.judging.ProposalJudgingCommentHelper;
+import org.xcolab.view.util.entity.judging.ProposalJudgingCommentHelper;
 
 import java.util.ArrayList;
 import java.util.List;

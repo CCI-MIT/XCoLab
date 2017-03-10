@@ -9,7 +9,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.modeling.roma.RomaClient;
 import org.xcolab.client.modeling.roma.RomaClient.RomaClientNotConnectedException;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
-import org.xcolab.entity.utils.enums.ModelRegions;
+import org.xcolab.view.util.entity.enums.ModelRegions;
 import org.xcolab.view.pages.contestmanagement.entities.LabelStringValue;
 import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
 

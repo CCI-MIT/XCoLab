@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.entity.utils.email.EmailToAdminDispatcher;
+import org.xcolab.view.util.entity.email.EmailToAdminDispatcher;
 import org.xcolab.view.auth.MemberAuthUtil;
 
 import java.io.IOException;

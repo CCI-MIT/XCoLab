@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.entity.utils.activityEntry.ActivitySubscriptionEmailHelper;
+import org.xcolab.view.util.entity.activityEntry.ActivitySubscriptionEmailHelper;
 
 import java.io.IOException;
 

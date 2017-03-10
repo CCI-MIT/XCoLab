@@ -16,7 +16,7 @@ import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.proposals.pojo.points.PointType;
-import org.xcolab.entity.utils.enums.OntologySpaceEnum;
+import org.xcolab.view.util.entity.enums.OntologySpaceEnum;
 import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.view.pages.contestmanagement.entities.LabelStringValue;
 import org.xcolab.view.pages.contestmanagement.entities.LabelValue;

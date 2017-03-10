@@ -55,8 +55,8 @@
     <!--@elvariable id="_requestUri" type="java.lang.String"-->
     <!--@elvariable id="_isHomePage" type="java.lang.Boolean"-->
 
-    <!--@elvariable id="__alertMessage" type="org.xcolab.entity.utils.flash.AlertMessage"-->
-    <!--@elvariable id="__analyticsAttribute" type="org.xcolab.entity.utils.flash.AnalyticsAttribute"-->
+    <!--@elvariable id="__alertMessage" type="org.xcolab.view.util.entity.flash.AlertMessage"-->
+    <!--@elvariable id="__analyticsAttribute" type="org.xcolab.view.util.entity.flash.AnalyticsAttribute"-->
 
 <![CDATA[<!DOCTYPE html>]]>
 <html>

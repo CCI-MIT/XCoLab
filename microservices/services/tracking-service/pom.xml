@@ -3,26 +3,24 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>tracking-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<parent>
+		<groupId>org.xcolab</groupId>
+		<artifactId>microservice-services</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
 
+	<artifactId>tracking-service</artifactId>
 	<name>tracking-service</name>
 	<description>The tracking service for XColab platform</description>
+	<packaging>war</packaging>
 
-	<parent>
-		<groupId>org.xcolab.microservices.services</groupId>
-		<artifactId>services-parent</artifactId>
-		<version>1.0-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
 
 	<dependencies>
 
         <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
+            <groupId>org.xcolab</groupId>
             <artifactId>admin-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
     </dependencies>

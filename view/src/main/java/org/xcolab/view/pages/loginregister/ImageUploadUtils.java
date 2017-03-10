@@ -7,7 +7,7 @@ import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.entity.utils.upload.FileUploadUtil;
+import org.xcolab.view.util.entity.upload.FileUploadUtil;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

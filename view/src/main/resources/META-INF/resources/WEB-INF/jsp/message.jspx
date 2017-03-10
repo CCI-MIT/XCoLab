@@ -4,7 +4,7 @@
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
-    <!--@elvariable id="__infoMessage" type="org.xcolab.entity.utils.flash.InfoMessage"-->
+    <!--@elvariable id="__infoMessage" type="org.xcolab.view.util.entity.flash.InfoMessage"-->
 
     <h2>
         ${not empty __infoMessage ? __infoMessage.title : 'Message'}

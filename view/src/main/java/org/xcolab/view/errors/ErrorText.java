@@ -1,6 +1,6 @@
 package org.xcolab.view.errors;
 
-import org.xcolab.entity.utils.flash.ErrorMessage;
+import org.xcolab.view.util.entity.flash.ErrorMessage;
 
 import java.io.IOException;
 

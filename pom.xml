@@ -3,17 +3,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>org.xcolab</groupId>
 	<artifactId>xcolab-parent</artifactId>
-	<packaging>pom</packaging>
-	<name>xcolab-parent POM</name>
 	<version>1.0-SNAPSHOT</version>
 
+	<name>XCoLab Parent</name>
+	<packaging>pom</packaging>
+
 	<properties>
-        <liferay.version>6.2.3</liferay.version>
-        <liferay.maven.plugin.version>6.2.2</liferay.maven.plugin.version>
 		<spring.version>4.3.2.RELEASE</spring.version>
 	</properties>
+
+	<modules>
+		<module>microservices</module>
+		<module>view</module>
+	</modules>
 
 	<repositories>
         <repository>
@@ -23,35 +28,6 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-		<repository>
-			<id>XCoLab-repo</id>
-			<url>https://raw.github.com/CCI-MIT/XCoLab/mvn-repo/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>ibiblio</id>
-			<url>http://mirrors.ibiblio.org/maven2/</url>
-		</repository>
-
-		<repository>
-			<id>Faces-bridge</id>
-			<name>FacesBridge</name>
-			<url>http://oss.sonatype.org/content/repositories/snapshots/</url>
-			<snapshots><enabled>true</enabled></snapshots>
-		</repository>
-
-		<repository>
-			<id>maven2-repository.dev.java.net</id>
-			<name>Java.net Repository for Maven</name>
-			<url>http://download.java.net/maven/2/</url>
-		</repository>
-		<repository>
-			<id>maven2-repository.jboss.org</id>
-			<name>JBoss Maven Repository</name>
-			<url>http://repository.jboss.org/nexus/content/groups/public-jboss</url>
-		</repository>
 	</repositories>
 	<build>
 		<plugins>
@@ -59,8 +35,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<encoding>UTF-8</encoding>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -71,8 +47,4 @@
 			</plugin>
 		</plugins>
 	</build>
-	<modules>
-		<module>microservices</module>
-		<module>view</module>
-	</modules>
 </project>

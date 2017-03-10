@@ -13,7 +13,7 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.entity.utils.email.notifications.proposal.ProposalCreationNotification;
+import org.xcolab.entity.utils.notifications.proposal.ProposalCreationNotification;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
