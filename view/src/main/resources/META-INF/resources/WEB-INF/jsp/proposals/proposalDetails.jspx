@@ -55,7 +55,7 @@
                                             This ${contestType.proposalName} was moved here from <collab:contestLink contest="${targetMoveHistory.sourceContest}"/>
                                         </c:when>
                                         <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'COPY'}">
-                                            This ${contestType.proposalName} was reopen here from <collab:contestLink contest="${targetMoveHistory.sourceContest}"/>
+                                            This ${contestType.proposalName} was reopened here from <collab:contestLink contest="${targetMoveHistory.sourceContest}"/>
                                         </c:when>
                                         <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'FORK'}">
                                             This ${contestType.proposalName} was forked from <collab:proposalLink proposal="${targetMoveHistory.sourceProposal}"/>
