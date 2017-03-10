@@ -15,10 +15,10 @@ import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.view.util.entity.portlet.RequestParamUtil;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
+import org.xcolab.view.util.entity.portlet.RequestParamUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
