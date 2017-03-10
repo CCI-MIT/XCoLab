@@ -153,6 +153,8 @@
                      The configuration format is the same as for the standalone code generator -->
                 <configuration>
 
+                    <logging>WARN</logging>
+
                     <!-- JDBC connection parameters -->
                     <jdbc>
                         <driver>${db.driver}</driver>
