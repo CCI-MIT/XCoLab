@@ -93,7 +93,7 @@ public class PageEditorController extends BaseContentEditor {
             contentPage.setMenuArticleId(menuArticleId);
         }
 
-        if (pageId != 0) {
+        if (pageId == 0) {
             ContentsClient.createContentPage(contentPage);
         } else {
             ContentsClient.updateContentPage(contentPage);

@@ -162,9 +162,9 @@
                         alert("Please select the main article!")
                         return;
                     }
-                    params = "?mainContentArticleId=" + mainContentArticleId;
+                    params += "?mainContentArticleId=" + mainContentArticleId;
                     var menuArticleId = $('#leftMenu').val();
-                    params = "&menuArticleId=" + menuArticleId;
+                    params += "&menuArticleId=" + menuArticleId;
 
                     var win = window.open(previewContentPageURL + params, '_blank');
                     win.focus();
@@ -178,6 +178,7 @@
                     $('#leftMenu').val(0);
 
                     $("#createdAtDate").html("Created at: - ");
+                    $("#article-view").unmask()
                     $('#pageTitle').focus();
 
                 });
@@ -225,10 +226,9 @@
                     var menuArticleId = data.menuArticleId;
                     var pageTitle = data.pageTitle;
 
-                    var input = $('#pageId');
-                    input.attr("value", id);
+                    var input = $('#pageId').val(id);
 
-                    $('#pageTitle').attr("value", pageTitle);
+                    $('#pageTitle').val(pageTitle);
 
                     $('#mainContent').val(mainContentArticleId);
 
@@ -296,17 +296,18 @@
                 <ul class="c-TabBar clearfix">
 
                     <li class="c-TabBar__tab--first"><a href="/content-editor/">Content Editor</a></li>
-                    <li class="c-TabBar__tab"><a href="/content-editor/pageEditor">Page Editor</a></li>
-                    <li class="c-TabBar__tab active"><a href="/content-editor/resourcePagesEditor">Resource pages</a></li>
+                    <li class="c-TabBar__tab active"><a href="/content-editor/pageEditor">Page Editor</a></li>
+                    <li class="c-TabBar__tab"><a href="/content-editor/resourcePagesEditor">Resource pages</a></li>
                 </ul>
 
                 <div id="infoBox"><!-- --></div>
                 <div  id="innerContent" class="addpropbox">
                     <div class="colFloatLef">
-                        <h3>Resource pages for contests</h3>
                         <div>
-                            <div class="floatRight outerVerticalCenter" id="newContentPage" ><a  class="c-Button__primary" href="#">New</a></div>
+                            <div class="outerVerticalCenter" id="newContentPage" ><a  class="c-Button__primary" href="#">New</a></div>
                         </div>
+                        <br/>
+                        <h3>Content pages</h3>
                         <div class="treeContainer">
                             <div id="tree-view" data-url="${contentEditorListFolderURL}" ><!-- --></div>
                         </div>
