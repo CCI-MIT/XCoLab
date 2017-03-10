@@ -183,6 +183,18 @@ public final class ContentsClient {
         return result;
     }
 
+    public static ContentPage createContentPage(ContentPage contentPage) {
+        final ContentPage result = contentPageResource.create(contentPage)
+                .execute();
+        return result;
+    }
+
+    public static Boolean updateContentPage(ContentPage contentPage) {
+        final Boolean result = contentPageResource.update(contentPage, contentPage.getPageId())
+                .execute();
+        return result;
+    }
+
     public static List<ContentArticleVersion> getChildArticleVersions(long folderId) {
         return contentFolderResource
                 .nestedResource(folderId, "contentArticleVersions", ContentArticleVersion.TYPES)

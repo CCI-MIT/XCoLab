@@ -60,11 +60,12 @@
 
 
 
-        <c:set  var="saveArticleVersionURL" value="/content-editor/saveContentArticleVersion"/>
+
+        <c:set  var="saveContentPageURL" value="/content-editor/saveContentPage"/>
 
 
 
-        <c:set  var="moveArticleVersionURL" value="/content-editor/moveArticleVersion"/>
+        <c:set  var="previewContentPageURL" value="/content-editor/previewContentPage"/>
 
         <c:set  var="createArticleFolderURL" value="/content-editor/createArticleFolder"/>
 
@@ -74,7 +75,7 @@
                 <![CDATA[
                 jQuery(document).ready(function () {
 
-                    loadArticleVersionContent(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.articleId}, "");
+                    loadPageContent(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.pageId});
 
                     window.setTimeout(function(){
                         $("#article-view").unmask()
@@ -89,36 +90,38 @@
             <![CDATA[
 
             var getContentPageURL = '${getContentPageURL}';
-            var saveArticleVersionURL = '${saveArticleVersionURL}';
+            var saveContentPageURL = '${saveContentPageURL}';
             var moveArticleVersionURL = '${moveArticleVersionURL}';
             var createArticleFolderURL = '${createArticleFolderURL}';
+            var previewContentPageURL = '${previewContentPageURL}'
             var ckEditor = null;
             var THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
             jQuery(document).ready(function () {
 
-                $("#article-view").mask({'label':"Please click on an Page or create a new one clicking in the create page button!", spinner:false});
-
-
+                $("#article-view").mask({
+                    'label': "Please click on an Page or create a new one clicking in the create page button!",
+                    spinner: false
+                });
 
                 var $treeView = $('#tree-view');
                 $treeView.tree({
                     //data:data,
                     saveState: true,
-                    onCanSelectNode: function(node) {
+                    onCanSelectNode: function (node) {
                         //if(node.kind == "folder") return false;
                         return true;
 
                     },
-                    onCreateLi: function(node, $li) {
+                    onCreateLi: function (node, $li) {
                         // Append a link to the jqtree-element div.
                         // The link has an url '#node-[id]' and a data property 'node-id'.
 
                     },
-                    onCanMoveTo: function(moved_node, target_node, position) {
+                    onCanMoveTo: function (moved_node, target_node, position) {
                         return target_node.kind == "folder";
                     },
-                    onCanMove: function(node) {
-                        if (! node.parent.parent) {
+                    onCanMove: function (node) {
+                        if (!node.parent.parent) {
                             // Example: Cannot move root node
 
                             return false;
@@ -127,18 +130,18 @@
                             return node.kind != "folder";
                         }
                     },
-                    dragAndDrop: true});
-
+                    dragAndDrop: true
+                });
 
                 $treeView.bind(
                         'tree.click',
-                        function(event) {
+                        function (event) {
                             var node = event.node;
-                            if(node.kind == "article"){
+                            if (node.kind == "article") {
                                 $("#article-view").unmask();
                                 $("#article-view").mask();
-                                loadArticleVersionContent(node.id, node.parent.name);
-                            }else{
+                                loadPageContentFromTree(node.id);
+                            } else {
                                 /*
                                  event.preventDefault();
                                  return false;*/
@@ -146,181 +149,146 @@
                         }
                 );
 
-
-
-
                 $("#infoBox").hide();
 
-                $("#saveArticle").click(function(){
+                $("#saveContentPage").click(function () {
 
-                    saveArticle();
+                    saveContentPage();
                 });
-                var $contentArticleTitle = $('#contentArticleTitle');
-                $contentArticleTitle.bind('input', function() {
-                    if ($("#folderName").html().indexOf("Wiki") !== -1) {
-                        updateArticleURL("Wiki", $contentArticleTitle.val().replace(/ /g,"+"));
-                        $contentArticleTitle.attr("value", $contentArticleTitle.val());
-                        $("#article-view").unmask()
+                $("#previewContentPage").click(function () {
+                    var mainContentArticleId = $('#mainContent').val();
+                    var params = "";
+                    if (mainContentArticleId == 0) {
+                        alert("Please select the main article!")
+                        return;
                     }
+                    params = "?mainContentArticleId=" + mainContentArticleId;
+                    var menuArticleId = $('#leftMenu').val();
+                    params = "&menuArticleId=" + menuArticleId;
+
+                    var win = window.open(previewContentPageURL + params, '_blank');
+                    win.focus();
                 });
+
+                $("#newContentPage").click(function () {
+
+                    $('#pageId').val(0);
+                    $('#pageTitle').val("");
+                    $('#mainContent').val(0);
+                    $('#leftMenu').val(0);
+
+                    $("#createdAtDate").html("Created at: - ");
+                    $('#pageTitle').focus();
+
+                });
+
+                function pad(n, width, z) {
+                    z = z || '0';
+                    n = n + '';
+                    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+                }
+
+                $(".oldArticleVersion").on('click', function (ref) {
+
+                    loadPageContent($(ref).attr("data-attribute"))
+                });
+
+                function loadPageContentFromTree(id) {
+                    id = id - THRESHOLD_TO_AVOID_NODE_COLISION;
+                    loadPageContent(id)
+                }
+
+                function loadPageContent(id) {
+
+                    var url = getContentPageURL;
+
+                    var parameters = {pageId: id};
+
+                    $.get(url, parameters, loadPageContentResponse);
+
+                }
+
+                function formatDate(ctd) {
+                    var dateObject = new Date(ctd); //read in as Date object
+                    var timeZoneIdentifier = String(String(dateObject).split("(")[1]).split(")")[0];  //get the timezone abbreviation
+                    return (dateObject.getMonth() + 1) + "/" + dateObject.getDate() + "/"
+                            + dateObject.getFullYear() + " " + pad(dateObject.getHours(), 2) + ":"
+                            + pad(dateObject.getMinutes(), 2) + " " + timeZoneIdentifier;
+
+                }
+
+                function loadPageContentResponse(response) {
+                    var responseData = JSON.parse(response);
+                    var data = responseData;
+                    var id = data.pageId;
+                    var mainContentArticleId = data.contentArticleId;
+                    var menuArticleId = data.menuArticleId;
+                    var pageTitle = data.pageTitle;
+
+                    var input = $('#pageId');
+                    input.attr("value", id);
+
+                    $('#pageTitle').attr("value", pageTitle);
+
+                    $('#mainContent').val(mainContentArticleId);
+
+                    if (menuArticleId != 0) {
+                        $('#leftMenu').val(menuArticleId);
+                    }
+
+                    $("#createdAtDate").html("Created at: " + formatDate(data.createdDate));
+
+                    $("#article-view").unmask()
+
+                }
+
+                function saveContentPage() {
+
+                    if ($('#pageTitle').val() == "") {
+                        alert("Title field is mandatory!");
+                        //validate empty spaces and other url forbidden terms
+                        return false;
+                    }
+                    $("#article-view").mask();
+
+                    var pageId = $('#pageId').val();
+
+                    var pageTitle = $('#pageTitle').val();
+
+                    var mainContentArticleId = $('#mainContent').val();
+
+                    var menuArticleId = $('#leftMenu').val();
+
+                    var url = saveContentPageURL;
+
+                    var parameters = {
+                        pageId: pageId,
+                        pageTitle: pageTitle,
+                        mainContentArticleId: mainContentArticleId
+                        ,
+                        menuArticleId: menuArticleId
+                    };
+
+                    $.post(url, parameters, function (response) {
+                        var responseData = JSON.parse(response);
+                        var data = responseData;
+                        var $infoBox = $("#infoBox");
+                        $infoBox.html("Article updated successfully!");
+                        $infoBox.show();
+                        $infoBox.delay(5000).fadeOut('slow');
+                        $("#article-view").unmask();
+                        $('#tree-view').tree('reload');
+                        var folderName = $("#folderName").html().replace("Parent folder: ");
+                        var id = articleId + THRESHOLD_TO_AVOID_NODE_COLISION;
+                        loadPageContent(id, folderName);
+
+                    });
+                }
+
             });
-            function addVersionEntry(dateOfEdit, versionId){
-                var cell = $('<li>');
-                cell.attr("id","articleVersionId_"+versionId);
-                cell.attr("class","articleVersionClass");
-                cell.html(dateOfEdit);
-                return cell;
-            }
-
-            function updateArticleURL(folderName, articleTitle) {
-                if(folderName == "Wiki") {
-                    $("#articleURL").html("Article URL: <a id='anchorArticleURL' href='/web/guest/wiki/-/wiki/page/" + articleTitle +
-                            "'>~/web/guest/wiki/-/wiki/page/" + articleTitle + "</a>");
-                } else {
-                    $("#articleURL").html("");
-                }
-            }
-            function pad(n, width, z) {
-                z = z || '0';
-                n = n + '';
-                return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-            }
-            function loadArticleVersionContent(id, folderName){
-                id = id - THRESHOLD_TO_AVOID_NODE_COLISION;
-
-                $("#folderName").html("Parent folder: " +folderName);
-
-                var url = getArticleVersionURL;
-
-                var parameters={articleId : id};
-
-                $.get(url ,parameters ,loadContentArticleResponse);
-
-            }
-            $(".oldArticleVersion").on('click',function (ref){
-
-                loadPageContent($(ref).attr("data-attribute"))
-            });
-
-            function loadPageContent(id){
-
-                var url = getContentPageURL;
-
-                var parameters={pageId : id};
-
-                $.get(url ,parameters ,loadPageContentResponse);
-
-            }
-            function formatDate(ctd){
-                var dateObject = new Date(ctd); //read in as Date object
-                var timeZoneIdentifier = String(String(dateObject).split("(")[1]).split(")")[0];  //get the timezone abbreviation
-                return(dateObject.getMonth()+1)+"/"+dateObject.getDate()+"/"+dateObject.getFullYear()+" "+pad(dateObject.getHours(),2)+":"+pad(dateObject.getMinutes(),2)+" "+timeZoneIdentifier;
-
-            }
-
-            function loadPageContentResponse(response) {
-                var responseData = JSON.parse(response);
-                var data = responseData;
-                var id = data.articleId;
-
-                var input = $('#contentArticleId');
-                input.attr("value",id);
-
-                $('#contentArticleFolderId').attr("value",data.folderId);
-                var input1 = $('#contentArticleTitle');
-                input1.attr("value", data.title);
-
-                var div = $('#articleVersions');
-                $("#createdAtDate").html("Created at: " + formatDate(data.createdDate));
-
-                for(var i = 0 ; i <  data.versions.length; i++) {
-                    var version =  data.versions[i];
-                    var adjustedDateString = formatDate(version.createdDate);
-                    div.append("<span class='oldArticleVersion' data-attribute='"+version.contentArticleVersionId+"'> Created at: "+adjustedDateString+"</span><br/>")
-
-                }
-
-                updateArticleURL(folderName, data.title.replace(/ /g,"+"));
-                $("#articleId").html('Article ID: <a href="?articleId=' + id + '">' + id + '</a><br/>');
-
-                ckEditor.setReadOnly(false);
-                $("#article-view").unmask()
-
-            }
-            function saveArticle(){
-
-                if($('#contentArticleTitle').val() == ""){
-                    alert("Title field is mandatory!");
-                    return false;
-                }
-                $("#article-view").mask();
-                var url = saveArticleVersionURL;
 
 
-                var articleId = $('#contentArticleId').val();
-                var title = $('#contentArticleTitle').val();
-                var folderId =$('#contentArticleFolderId').val();
-                var content = ckEditor.getData();
-                var parameters={articleId : articleId, title: title, folderId: folderId
-                    ,content: content};
 
-                $.post(url ,parameters , function (response) {
-                    var responseData = JSON.parse(response);
-                    var data = responseData;
-                    var $infoBox = $("#infoBox");
-                    $infoBox.html("Article updated successfully!");
-                    $infoBox.show();
-                    $infoBox.delay(5000).fadeOut('slow');
-                    $("#article-view").unmask();
-                    $('#tree-view').tree('reload');
-                    var folderName = $("#folderName").html().replace("Parent folder: ");
-                    var id = articleId + THRESHOLD_TO_AVOID_NODE_COLISION;
-                    loadArticleVersionContent(id, folderName);
-
-
-                });
-            }
-            function moveArticle(articleId, folderId, folderName){
-                var articleIdNoThreshold = articleId - THRESHOLD_TO_AVOID_NODE_COLISION;
-                $(".treeContainer").mask();
-                var url = moveArticleVersionURL;
-
-                var parameters={articleId : articleIdNoThreshold, folderId: folderId };
-
-                $.post(url ,parameters , function (response) {
-                    var responseData = JSON.parse(response);
-                    var data = responseData;
-                    var $infoBox = $("#infoBox");
-                    $infoBox.html("Article moved successfully!");
-                    $infoBox.show();
-                    $infoBox.delay(5000).fadeOut('slow');
-                    $('#tree-view').tree('reload');
-                    $(".treeContainer").unmask();
-                    loadArticleVersionContent(articleId, folderName);
-                });
-
-            }
-
-            function createFolder( parentFolderId, folderName){
-
-                $(".treeContainer").mask();
-                var url = createArticleFolderURL;
-
-                var parameters={parentFolderId : parentFolderId, folderName: folderName };
-
-                $.post(url ,parameters , function (response) {
-                    var responseData = JSON.parse(response);
-                    var data = responseData;
-                    var $infoBox = $("#infoBox");
-                    $infoBox.html("Folder created successfully!");
-                    $infoBox.show();
-                    $infoBox.delay(5000).fadeOut('slow');
-                    $('#tree-view').tree('reload');
-                    $(".treeContainer").unmask()
-
-                });
-
-            }
             ]]>
         </script>
         <div class="contentEditor">
@@ -336,33 +304,37 @@
                 <div  id="innerContent" class="addpropbox">
                     <div class="colFloatLef">
                         <h3>Resource pages for contests</h3>
+                        <div>
+                            <div class="floatRight outerVerticalCenter" id="newContentPage" ><a  class="c-Button__primary" href="#">New</a></div>
+                        </div>
                         <div class="treeContainer">
                             <div id="tree-view" data-url="${contentEditorListFolderURL}" ><!-- --></div>
                         </div>
                     </div>
                     <div class="colFloatLef" style="width: 620px;margin-left: 15px;">
                         <div id="article-view">
-                            <h3>Content editor</h3>
+                            <h3>Page editor</h3>
 
                             <div>
                                 <!-- FORM FIELDS -->
                                 <input type="hidden" id="pageId"/>
-                                Page title: <input type="text" id="contentArticleTitle"  maxcharacters="300"  />
+                                Page title: <input type="text" id="pageTitle"  maxcharacters="300"  />
                             </div>
+                            <div id="createdAtDate"><!-- --></div>
                             <div id="leftMenuContainer">Left menu:
-                                <select id="leftMenu"  style="width: 400px;">>
-                                        <option value="-1">None</option>
-                                    <c:forEach var="article" items="${allArticles.entrySet() }">
-                                        <option value="${allArticles.get(article)}">${article}</option>
+                                <select id="leftMenu"  style="width: 527px;">>
+                                        <option value="0">None</option>
+                                    <c:forEach var="article" items="${allArticles}">
+                                        <option value="${article.value}">${article.key}</option>
                                     </c:forEach>
                                 </select>
                             </div>
-                            <div id="createdAtDate"><!-- --></div>
+
                             <div id="mainContentContainer">Main content:
-                                <select id="mainContent" style="width: 400px;">
-                                        <option value="-1">Select an article</option>
-                                    <c:forEach var="article" items="${allArticles.entrySet() }">
-                                        <option value="${allArticles.get(article)}">${article}</option>
+                                <select id="mainContent" style="width: 508px;">
+                                        <option value="0">Select an article</option>
+                                    <c:forEach var="article" items="${allArticles}">
+                                        <option value="${article.value}">${article.key}</option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -372,8 +344,8 @@
 
                         </div>
                         <br/>
-                        <div class="floatRight outerVerticalCenter" id="deleteOntologyTerm" ><a  class="c-Button__primary" href="#">Delete</a></div>
-                        <div> <div class="floatRight outerVerticalCenter" id="saveArticle" ><a  class="c-Button__primary" href="#">Save</a></div></div>
+                        <div class="floatRight outerVerticalCenter" id="previewContentPage" ><a  class="c-Button__primary" href="#">Preview</a></div>
+                        <div class="floatRight outerVerticalCenter" id="saveContentPage" ><a  class="c-Button__primary" href="#">Save</a></div>
                     </div>
                 </div>
             </div>
