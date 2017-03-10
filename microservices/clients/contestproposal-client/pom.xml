@@ -23,7 +23,6 @@
         <dependency>
             <groupId>edu.mit.cci.roma</groupId>
             <artifactId>client</artifactId>
-            <version>1.4-SNAPSHOT</version>
         </dependency>
 
         <dependency>
