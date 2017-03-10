@@ -9,7 +9,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.exceptions.PasswordLoginException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
-import org.xcolab.entity.utils.email.notifications.member.MemberRegistrationNotification;
+import org.xcolab.entity.utils.notifications.member.MemberRegistrationNotification;
 import org.xcolab.view.auth.AuthenticationContext;
 
 import javax.servlet.http.HttpServletRequest;

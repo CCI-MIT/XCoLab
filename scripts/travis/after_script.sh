@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "Copying view binary"
 cp $TRAVIS_BUILD_DIR/view/target/xcolab-view-1.0-SNAPSHOT.jar $TRAVIS_BUILD_DIR/deploy/view
 echo "Copying services binary"

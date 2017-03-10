@@ -123,6 +123,8 @@ public class MessagingService {
                 MessageConstants.EMAIL_MESSAGE_TEMPLATE.replace(
                         MessageConstants.EMAIL_MESSAGE_VAR_USER, from.getScreenName())
                         .replace(MessageConstants.EMAIL_MESSAGE_VAR_URL, createMessageURL(m))
+                        .replace(MessageConstants.EMAIL_MESSAGE_VAR_PROFILE_URL,
+                                createProfileEditUrl(recipient))
                         .replace(MessageConstants.EMAIL_MESSAGE_VAR_SUBJECT, m.getSubject())
                         .replace(MessageConstants.EMAIL_MESSAGE_VAR_MESSAGE,
                                 m.getContent()));
@@ -135,6 +137,11 @@ public class MessagingService {
     private static String createMessageURL(Message m) {
         String home = ConfigurationAttributeKey.COLAB_URL.get();
         return home + MessageConstants.EMAIL_MESSAGE_URL_TEMPLATE + m.getMessageId();
+    }
+
+    private static String createProfileEditUrl(Member member) {
+        String home = ConfigurationAttributeKey.COLAB_URL.get();
+        return home + "/members/profile/" + member.getId_() + "/edit";
     }
 
 }

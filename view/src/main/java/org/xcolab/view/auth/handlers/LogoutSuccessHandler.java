@@ -3,7 +3,7 @@ package org.xcolab.view.auth.handlers;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 
-import org.xcolab.entity.utils.flash.AlertMessage;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 

@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.pojo.FileEntry;
-import org.xcolab.entity.utils.upload.FileUploadUtil;
+import org.xcolab.view.util.entity.upload.FileUploadUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

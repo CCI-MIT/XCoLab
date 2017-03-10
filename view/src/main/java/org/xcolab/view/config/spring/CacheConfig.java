@@ -3,6 +3,7 @@ package org.xcolab.view.config.spring;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.Assert;
 
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.ServiceRequestUtils;
@@ -20,6 +21,7 @@ public class CacheConfig {
         CacheProvider cacheProvider;
         if (cacheProperties.isEnabled()) {
             final Class<? extends CacheProvider> provider = cacheProperties.getProvider();
+            Assert.notNull(provider, "No CacheProvider configured.");
             try {
                 cacheProvider = provider.getConstructor().newInstance();
             } catch (InstantiationException | IllegalAccessException

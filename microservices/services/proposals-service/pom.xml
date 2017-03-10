@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <dependencies>
-        <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
-            <artifactId>members-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
-            <artifactId>comment-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
-            <artifactId>contestproposal-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
 
     <parent>
-        <groupId>org.xcolab.microservices.services</groupId>
-        <artifactId>services-parent</artifactId>
+        <groupId>org.xcolab</groupId>
+        <artifactId>microservice-services</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>proposals-service</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
     <name>proposals-service</name>
+    <packaging>war</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.xcolab</groupId>
+            <artifactId>members-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xcolab</groupId>
+            <artifactId>comment-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xcolab</groupId>
+            <artifactId>contestproposal-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
 
     <build>
         <plugins>

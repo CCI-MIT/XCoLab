@@ -10,7 +10,7 @@ import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.entity.utils.enums.ContestPhaseTypeValue;
+import org.xcolab.view.util.entity.enums.ContestPhaseTypeValue;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCreatorUtil;

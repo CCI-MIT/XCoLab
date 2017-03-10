@@ -13,7 +13,7 @@ import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
-import org.xcolab.entity.utils.enums.OntologySpaceEnum;
+import org.xcolab.view.util.entity.enums.OntologySpaceEnum;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;

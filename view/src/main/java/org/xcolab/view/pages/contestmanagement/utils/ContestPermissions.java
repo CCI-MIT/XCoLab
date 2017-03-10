@@ -2,7 +2,7 @@ package org.xcolab.view.pages.contestmanagement.utils;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.entity.utils.enums.MemberRole;
+import org.xcolab.view.util.entity.enums.MemberRole;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabPermissions;
 

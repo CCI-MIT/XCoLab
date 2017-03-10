@@ -129,8 +129,18 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<List<Pattern>> VOTING_EMAIL_VERIFICATION_WHITELIST =
             ConfigurationAttributes.newListAttribute("VOTING_EMAIL_VERIFICATION_WHITELIST",
                     Pattern::compile)
-            .defaultValue(Collections.emptyList())
-            .build();
+                    .defaultValue(Collections.emptyList())
+                    .build();
+    /**
+     * Comma-separated list of regex patterns for emails that are immediately invalidated.
+     *
+     * Example: @example\.com$,@[.a-zA-Z0-9-]+\.example.com$
+     */
+    public static final AttributeGetter<List<Pattern>> VOTING_EMAIL_VERIFICATION_BLACKLIST =
+            ConfigurationAttributes.newListAttribute("VOTING_EMAIL_VERIFICATION_BLACKLIST",
+                    Pattern::compile)
+                    .defaultValue(Collections.emptyList())
+                    .build();
 
     //Image upload help messages
     public static final AttributeGetter<String> IMAGE_UPLOAD_EXTERNAL_SERVICE_URL =

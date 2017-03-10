@@ -16,7 +16,7 @@ import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.entity.utils.flash.AlertMessage;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;

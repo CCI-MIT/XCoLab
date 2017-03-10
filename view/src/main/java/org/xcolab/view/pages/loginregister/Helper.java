@@ -3,7 +3,7 @@ package org.xcolab.view.pages.loginregister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.entity.utils.portlet.session.SessionErrors;
+import org.xcolab.view.util.entity.portlet.session.SessionErrors;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

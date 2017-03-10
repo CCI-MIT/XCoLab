@@ -4,16 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.xcolab</groupId>
-    <artifactId>entity-utils</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
     <parent>
-        <groupId>org.xcolab.microservices</groupId>
+        <groupId>org.xcolab</groupId>
         <artifactId>util-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
+
+    <artifactId>entity-utils</artifactId>
+    <packaging>jar</packaging>
 
     <properties>
         <java.version>1.8</java.version>
@@ -35,13 +33,6 @@
     <dependencies>
 
         <dependency>
-            <groupId>javax.portlet</groupId>
-            <artifactId>portlet-api</artifactId>
-            <version>2.0</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
@@ -51,7 +42,6 @@
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
             <version>1.4</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -77,12 +67,17 @@
         <dependency>
             <groupId>org.xcolab.microservices.clients</groupId>
             <artifactId>contestproposal-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.xcolab.microservices.clients</groupId>
             <artifactId>emails-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xcolab.microservices.clients</groupId>
+            <artifactId>admin-client</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

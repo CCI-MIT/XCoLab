@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.entity.utils.flash.InfoMessage;
+import org.xcolab.view.util.entity.flash.InfoMessage;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCreatorUtil;

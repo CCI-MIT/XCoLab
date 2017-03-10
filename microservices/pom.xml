@@ -4,10 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.xcolab.microservices</groupId>
+    <parent>
+        <groupId>org.xcolab</groupId>
+        <artifactId>xcolab-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
     <artifactId>xcolab-microservices</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+    <name>XCoLab Microservices Parent</name>
 
     <modules>
         <module>services</module>
@@ -62,26 +67,6 @@
         </plugins>
         <pluginManagement>
             <plugins>
-                <plugin>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.6.0</version>
-                </plugin>
-
-                <plugin>
-                    <artifactId>maven-war-plugin</artifactId>
-                    <version>3.0.0</version>
-                </plugin>
-
-                <plugin>
-                    <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.0.2</version>
-                </plugin>
-
-                <plugin>
-                    <artifactId>properties-maven-plugin</artifactId>
-                    <version>1.0.0</version>
-                </plugin>
-
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>

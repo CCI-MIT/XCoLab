@@ -13,10 +13,10 @@ import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.entity.utils.flash.AlertMessage;
-import org.xcolab.entity.utils.email.notifications.member.MemberForgotPasswordNotification;
-import org.xcolab.entity.utils.portlet.session.SessionErrors;
-import org.xcolab.entity.utils.portlet.session.SessionMessages;
+import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.entity.utils.notifications.member.MemberForgotPasswordNotification;
+import org.xcolab.view.util.entity.portlet.session.SessionErrors;
+import org.xcolab.view.util.entity.portlet.session.SessionMessages;
 
 import java.io.IOException;
 import java.util.HashMap;
