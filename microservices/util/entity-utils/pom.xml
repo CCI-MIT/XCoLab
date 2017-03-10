@@ -65,17 +65,17 @@
             <artifactId>json</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
+            <groupId>org.xcolab</groupId>
             <artifactId>contestproposal-client</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
+            <groupId>org.xcolab</groupId>
             <artifactId>emails-client</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
+            <groupId>org.xcolab</groupId>
             <artifactId>admin-client</artifactId>
             <version>${project.version}</version>
         </dependency>
