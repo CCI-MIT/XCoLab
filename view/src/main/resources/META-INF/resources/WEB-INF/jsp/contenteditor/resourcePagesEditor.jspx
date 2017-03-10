@@ -53,7 +53,7 @@
         </style>
         <xcolab:stylesheet href="${_libCssFolder}/jquery.loadmask.spin.css" />
 
-        <c:set var="contentEditorListFolderURL" value="/content-editor/contentEditorListFolder"/>
+        <c:set var="contentEditorListFolderURL" value="/content-editor/resourcePagesListFolder"/>
 
 
         <c:set  var="getArticleVersionURL" value="/content-editor/contentEditorGetLatestArticleVersion"/>
@@ -127,16 +127,9 @@
                     onCreateLi: function(node, $li) {
                         // Append a link to the jqtree-element div.
                         // The link has an url '#node-[id]' and a data property 'node-id'.
-                        if(node.kind == "folder")
-                            $li.find('.jqtree-element').append(
-                                    '&nbsp;&nbsp;<small href="#node-'+ node.id +'" class="addArticle" data-node-id="'+
-                                    node.id +'">+ article</small>'+
-                                    '&nbsp;&nbsp;<small href="#node-'+ node.id +'" class="addFolder" data-node-id="'+
-                                    node.id +'">+ folder</small>'
-                            );//<small>
+
                     },
                     onCanMoveTo: function(moved_node, target_node, position) {
-                        console.log("target_node "+ target_node.id +" - "+target_node.kind)
                         return target_node.kind == "folder";
                     },
                     onCanMove: function(node) {
@@ -151,41 +144,7 @@
                     },
                     dragAndDrop: true});
 
-                $treeView.on(
-                        'click', '.addArticle',
-                        function(e) {
-                            // Get the id from the 'node-id' data property
-                            var node_id = $(e.target).data('node-id');
 
-                            // Get the node from the tree
-                            var node = $('#tree-view').tree('getNodeById', node_id);
-
-                            if (node) {
-                                updateArticleURL(node.name, "");
-                                //$('#tree-view').tree('selectNode', node);
-                                newArticleAtFolderId(node.id, node.name);
-                            }
-                        }
-                );
-
-                $treeView.on(
-                        'click', '.addFolder',
-                        function(e) {
-                            // Get the id from the 'node-id' data property
-                            var node_id = $(e.target).data('node-id');
-
-                            // Get the node from the tree
-                            var node = $treeView.tree('getNodeById', node_id);
-
-                            if (node) {
-                                $('#tree-view').tree('selectNode', node);
-                                var folderName = prompt("Create new folder under "+node.name+"\nPlease enter the new folder`s name: ", "");
-                                if(folderName != null)
-                                    createFolder(node.id,folderName )
-
-                            }
-                        }
-                );
                 $treeView.bind(
                         'tree.click',
                         function(event) {
@@ -201,15 +160,7 @@
                             }
                         }
                 );
-                $treeView.bind(
-                        'tree.move',
-                        function(event) {
-                            event.preventDefault();
-                            if (confirm('Would you like to move the article to folder: '+event.move_info.target_node.name+'?')) {
-                                event.move_info.do_move();
-                                moveArticle(event.move_info.moved_node.id, event.move_info.target_node.id,event.move_info.target_node.name);
-                            }
-                        });
+
 
                 ckEditor = CKEDITOR.replace('articleVersionContent', { customConfig: '${_libJsFolder}/newckeditorplugins/config.js'});
                 //CKEDITOR.instances['articleVersionContent'].setReadOnly(true);
@@ -236,19 +187,7 @@
                 cell.html(dateOfEdit);
                 return cell;
             }
-            function newArticleAtFolderId(folderId, folderName){
-                $("#article-view").unmask();
-                $('#contentArticleId').attr("value", "");
-                $("#folderName").html("Parent folder: " +folderName);
-                $("#createdAtDate").html("");
-                $('#contentArticleFolderId').attr("value",folderId);
-                $('#contentArticleTitle').attr("value","");
-                CKEDITOR.instances['articleVersionContent'].setData("");
-                $("#articleId").html("");
-                $("#articleVersions").html("");
 
-                $('#contentArticleFolderId').focus();
-            }
             function updateArticleURL(folderName, articleTitle) {
                 if(folderName == "Wiki") {
                     $("#articleURL").html("Article URL: <a id='anchorArticleURL' href='/web/guest/wiki/-/wiki/page/" + articleTitle +
@@ -408,16 +347,15 @@
             <div class="contentBody">
                 <ul class="c-TabBar clearfix">
 
-                    <li class="c-TabBar__tab--first active"><a>Content Editor</a></li>
+                    <li class="c-TabBar__tab--first"><a href="/content-editor/">Content Editor</a></li>
                     <li class="c-TabBar__tab"><a href="/content-editor/pageEditor">Page Editor</a></li>
-                    <li class="c-TabBar__tab "><a href="/content-editor/wikiEditor">Wiki editor</a></li>
-                    <li class="c-TabBar__tab "><a href="/content-editor/resourcePagesEditor">Resource pages</a></li>
+                    <li class="c-TabBar__tab active"><a href="/content-editor/resourcePagesEditor">Resource pages</a></li>
                 </ul>
 
                 <div id="infoBox"><!-- --></div>
                 <div  id="innerContent" class="addpropbox">
                     <div class="colFloatLef">
-                        <h3>Ontology areas and terms</h3>
+                        <h3>Resource pages for contests</h3>
                         <div class="treeContainer">
                             <div id="tree-view" data-url="${contentEditorListFolderURL}" ><!-- --></div>
                         </div>

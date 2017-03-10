@@ -20,7 +20,8 @@ public class BaseContentEditor {
 
     protected JSONObject treeNode(String label, String id, String kind, boolean loadOnDemand) {
         JSONObject folderNode = new JSONObject();
-        folderNode.put("label", label);
+        folderNode.put("label", substringIfNeeded(label));
+        folderNode.put("originalLabel", label);
         folderNode.put("id", id);
         folderNode.put("kind", kind);
         if (loadOnDemand) {
@@ -35,5 +36,15 @@ public class BaseContentEditor {
 
     protected JSONObject folderNode(String label, String id) {
         return treeNode(label, id, "folder", true);
+    }
+
+    private static final Integer SIZE_THRESHOLD = 40;
+
+    protected static String substringIfNeeded(String st) {
+        if (st.length() > SIZE_THRESHOLD) {
+            return st.substring(0, SIZE_THRESHOLD) + "...";
+        } else {
+            return st;
+        }
     }
 }

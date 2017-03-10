@@ -202,4 +202,22 @@ public final class ContentsClient {
         }
         return page;
     }
+
+    public static ContentPage getContentPage(Long pageId) {
+        final ContentPage page = contentPageResource.get(pageId).execute();
+        if (page == null) {
+            throw new ContentNotFoundException("Content page does not exist: " + pageId);
+        }
+        return page;
+    }
+
+    public static List<ContentPage> getContentPages(String title) {
+        final List<ContentPage> page = contentPageResource.list()
+                .queryParam("title", title)
+                .execute();
+        if (page == null) {
+            throw new ContentNotFoundException("Content page does not exist: " + title);
+        }
+        return page;
+    }
 }

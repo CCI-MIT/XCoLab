@@ -408,16 +408,15 @@
             <div class="contentBody">
                 <ul class="c-TabBar clearfix">
 
-                    <li class="c-TabBar__tab--first active"><a>Content Editor</a></li>
+                    <li class="c-TabBar__tab--first active"><a href="/content-editor/">Content Editor</a></li>
                     <li class="c-TabBar__tab"><a href="/content-editor/pageEditor">Page Editor</a></li>
-                    <li class="c-TabBar__tab "><a href="/content-editor/wikiEditor">Wiki editor</a></li>
                     <li class="c-TabBar__tab "><a href="/content-editor/resourcePagesEditor">Resource pages</a></li>
                 </ul>
 
                 <div id="infoBox"><!-- --></div>
                 <div  id="innerContent" class="addpropbox">
                     <div class="colFloatLef">
-                        <h3>Ontology areas and terms</h3>
+                        <h3>Content articles</h3>
                         <div class="treeContainer">
                             <div id="tree-view" data-url="${contentEditorListFolderURL}" ><!-- --></div>
                         </div>

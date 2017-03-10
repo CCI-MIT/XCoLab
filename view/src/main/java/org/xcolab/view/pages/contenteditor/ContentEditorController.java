@@ -51,7 +51,10 @@ public class ContentEditorController extends BaseContentEditor{
 
         if (contentFolders != null) {
             for (ContentFolder cf : contentFolders) {
-                responseArray.put(folderNode(cf.getContentFolderName(), cf.getContentFolderId().toString()));
+                if(cf.getContentFolderId().longValue() != ContentFolder.RESOURCE_FOLDER_ID) {
+                    responseArray.put(folderNode(cf.getContentFolderName(),
+                            cf.getContentFolderId().toString()));
+                }
             }
         }
         List<ContentArticleVersion> contentArticles = ContentsClient.getChildArticleVersions(folderId);
