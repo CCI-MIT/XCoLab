@@ -11,8 +11,8 @@ import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.entity.utils.NotificationUnregisterUtils;
-import org.xcolab.entity.utils.flash.ErrorMessage;
+import org.xcolab.view.util.entity.NotificationUnregisterUtils;
+import org.xcolab.view.util.entity.flash.ErrorMessage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +26,8 @@ public class UnsubscribeController {
             "button underneath “Subscribed Activity” on the right-hand side.";
 
 
-    @GetMapping("/notifications/unsubscribe/member/{memberId}/subscription/{subscriptionId}/token/{token}/type/{typeId}")
+    @GetMapping("/org/xcolab/entity/utils/notifications/unsubscribe/member/{memberId"
+            + "}/subscription/{subscriptionId}/token/{token}/type/{typeId}")
 	public String unsubscribe(HttpServletRequest request, HttpServletResponse response, Model model,
             @PathVariable long memberId, @PathVariable long subscriptionId,
             @PathVariable String token, @PathVariable long typeId) {

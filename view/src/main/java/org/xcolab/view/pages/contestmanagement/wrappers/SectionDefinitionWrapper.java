@@ -15,7 +15,7 @@ import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
 import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
-import org.xcolab.entity.utils.enums.OntologySpaceEnum;
+import org.xcolab.view.util.entity.enums.OntologySpaceEnum;
 import org.xcolab.util.IdListUtil;
 
 import java.io.Serializable;

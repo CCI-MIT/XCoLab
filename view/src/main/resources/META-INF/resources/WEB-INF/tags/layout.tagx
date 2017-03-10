@@ -55,8 +55,8 @@
     <!--@elvariable id="_requestUri" type="java.lang.String"-->
     <!--@elvariable id="_isHomePage" type="java.lang.Boolean"-->
 
-    <!--@elvariable id="__alertMessage" type="org.xcolab.entity.utils.flash.AlertMessage"-->
-    <!--@elvariable id="__analyticsAttribute" type="org.xcolab.entity.utils.flash.AnalyticsAttribute"-->
+    <!--@elvariable id="__alertMessage" type="org.xcolab.view.util.entity.flash.AlertMessage"-->
+    <!--@elvariable id="__analyticsAttribute" type="org.xcolab.view.util.entity.flash.AnalyticsAttribute"-->
 
 <![CDATA[<!DOCTYPE html>]]>
 <html>
@@ -278,6 +278,8 @@
                         <form id="signInFormPopup" method="post" action="/login" style="margin-top: 10px;">
                             <input name="username" type="text" class="c-Header__login__username" placeholder="username or email address"  />
                             <input name="password" type="password" class="c-Header__login__password" placeholder="password" />
+                            <label for="header__remember-me">Remember Me:</label> &#160;
+                            <input id="header__remember-me" type="checkbox" name="remember-me" checked="true" /> <br/>
                             <input name="redirect" type="hidden" />
                             <span><em><a href="javascript:;" class="c-Header__login__forgot" onclick="showForgotPasswordPopup()">Forgot your password?</a></em></span> <input name="submit" type="submit" class="c-Header__login__submit" value="LOGIN" id="loginPopupTopSubmit"/>
                         </form>
@@ -417,12 +419,20 @@
             <div class="clearfix"><!-- --></div>
             <div class="login_popup_box">
                 <form id="signInForm_form" method="post" action="/login" onsubmit="addRedirectBeforeSubmit('signInFormPopup'); return true;" >
-                    <input type="hidden" name="isLoggingIn" value="true" />
-                    <label>Username:</label>
-                    <input name="username" type="text" class="c-Header__login__username" onkeypress="return submitenter(this,event)" style="float: right;"/>
-                    <div class="clearfix"><!-- --></div>
-                    <label>Password:</label> &#160;
-                    <input name="password" type="password" class="c-Header__login__password" onkeypress="return submitenter(this,event)" style="float: right;"/>
+                    <div>
+                        <label for="username">Username:</label>
+                        <input id="username" name="username" type="text" class="c-Header__login__username"
+                               onkeypress="return submitenter(this,event)" style="float: right;" />
+                        <div class="clearfix"><!-- --></div>
+                        <label for="password">Password:</label> &#160;
+                        <input id="password" name="password" type="password" class="c-Header__login__password"
+                               onkeypress="return submitenter(this,event)" style="float: right;" />
+                        <div class="clearfix"><!-- --></div>
+                    </div>
+                    <div>
+                        <label for="remember-me">Remember Me:</label> &#160;
+                        <input type="checkbox" id="remember-me" name="remember-me" checked="true" />
+                    </div>
                     <input name="redirect" type="hidden" />
                     <div class="btns">
                         <div style="float: left;">

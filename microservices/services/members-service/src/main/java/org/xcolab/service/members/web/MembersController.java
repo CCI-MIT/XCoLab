@@ -83,7 +83,6 @@ public class MembersController {
     }
 
     @GetMapping("findByScreenName")
-
     public Member getMemberByScreenNameNoRole(@RequestParam String screenName) throws NotFoundException {
         if (screenName == null) {
             throw new NotFoundException("No message id given");

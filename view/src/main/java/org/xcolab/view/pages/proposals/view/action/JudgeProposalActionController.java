@@ -29,10 +29,10 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
-import org.xcolab.entity.utils.flash.AlertMessage;
-import org.xcolab.entity.utils.judging.ProposalJudgingCommentHelper;
-import org.xcolab.entity.utils.judging.ProposalReview;
-import org.xcolab.entity.utils.judging.ProposalReviewCsvExporter;
+import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.view.util.entity.judging.ProposalJudgingCommentHelper;
+import org.xcolab.view.util.entity.judging.ProposalReview;
+import org.xcolab.view.util.entity.judging.ProposalReviewCsvExporter;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.exceptions.InternalException;
@@ -233,8 +233,8 @@ public class JudgeProposalActionController {
                     Map<ProposalRatingType, List<Long>> ratingsPerType = new HashMap<>();
 
                     for (ProposalRating rating : ratings) {
-                        org.xcolab.entity.utils.judging.ProposalRatingWrapper wrapper =
-                                new org.xcolab.entity.utils.judging.ProposalRatingWrapper(rating);
+                        org.xcolab.view.util.entity.judging.ProposalRatingWrapper wrapper =
+                                new org.xcolab.view.util.entity.judging.ProposalRatingWrapper(rating);
                         ratingsPerType.computeIfAbsent(wrapper.getRatingType(),
                                 k -> new ArrayList<>());
                         ratingsPerType.get(wrapper.getRatingType())

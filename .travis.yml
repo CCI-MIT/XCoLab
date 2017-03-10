@@ -1,9 +1,6 @@
 language: java
 jdk: oraclejdk8
 sudo: false
-branches:
-  only:
-  - homolog
 services:
 - mysql
 cache:
@@ -15,14 +12,14 @@ before_install:
 - chmod 600 deploy_rsa
 - ssh-add deploy_rsa
 - mysql -e 'CREATE DATABASE IF NOT EXISTS xcolab;'
-- sh $TRAVIS_BUILD_DIR/scripts/travis/before_script.sh
+- $TRAVIS_BUILD_DIR/scripts/travis/before_script.sh
 addons:
   ssh_known_hosts: cognosis.mit.edu
 install: true
 script:
-- sh $TRAVIS_BUILD_DIR/scripts/travis/deploy.sh
+- $TRAVIS_BUILD_DIR/scripts/travis/deploy.sh
 after_success:
-- sh $TRAVIS_BUILD_DIR/scripts/travis/after_script.sh
+- $TRAVIS_BUILD_DIR/scripts/travis/after_script.sh
 - ls $TRAVIS_BUILD_DIR/deploy/
 deploy:
 - provider: script
@@ -30,4 +27,9 @@ deploy:
   script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/deploy travis@cognosis.mit.edu:deploy
   on:
     branch: homolog
+- provider: script
+  skip_cleanup: true
+  script: rsync -r --delete-after --quiet $TRAVIS_BUILD_DIR/deploy travis@cognosis.mit.edu:master
+  on:
+    branch: master
 

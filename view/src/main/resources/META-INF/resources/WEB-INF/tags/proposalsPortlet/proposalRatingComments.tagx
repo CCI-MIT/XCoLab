@@ -16,7 +16,7 @@
     <div class="c-Comment__list">
         <c:forEach var="wrapper" items="${proposalRatingsWrappers}" varStatus="status">
             <discussions:getRoleName userId="${wrapper.author.userId}" proposalId="${proposalId}">
-                <!--@elvariable id="role" type="org.xcolab.entity.utils.enums.MemberRole"-->
+                <!--@elvariable id="role" type="org.xcolab.view.util.entity.enums.MemberRole"-->
                 <div class="comment">
                     <div class="c-Comment__commentor">
                         <proposalsPortlet:userPortrait  screenName="${wrapper.author.screenName}" portraitId="${wrapper.author.portraitId}" userId="${wrapper.author.userId}" width="59" height="59" />

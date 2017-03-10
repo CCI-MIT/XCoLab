@@ -17,7 +17,9 @@ public enum ActivityProvidersType {
     ProposalSupporterRemovedActivityEntry(11),
     ProposalVoteActivityEntry(12),
     ProposalVoteRetractActivityEntry(13),
-    ProposalVoteSwitchActivityEntry(14);
+    ProposalVoteSwitchActivityEntry(14),
+
+    DiscussionAddContestCommentActivityEntry(15);
 
 
 

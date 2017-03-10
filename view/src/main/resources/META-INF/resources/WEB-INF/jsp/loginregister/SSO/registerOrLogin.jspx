@@ -7,7 +7,7 @@
     <!--@elvariable id="_colabName" type="java.lang.String"-->
     <!--@elvariable id="_colabShortName" type="java.lang.String"-->
 
-    <!--@elvariable id="__errorMessage" type="org.xcolab.entity.utils.flash.ErrorMessage"-->
+    <!--@elvariable id="__errorMessage" type="org.xcolab.view.util.entity.flash.ErrorMessage"-->
 
     <h1 style="padding-left: 20px;">
     Welcome to the ${_colabName}!</h1>

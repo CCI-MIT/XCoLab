@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -18,7 +19,7 @@ import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.entity.utils.flash.AlertMessage;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.errors.ErrorText;
@@ -34,24 +35,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-
+@RequestMapping("/messaging")
 public class MessagingController {
 
     @ModelAttribute("communityTopContentArticleId")
-            public Long getCommunityTopContentArticleId(){
+    public Long getCommunityTopContentArticleId() {
         return ConfigurationAttributeKey.MEMBERS_CONTENT_ARTICLE_ID.get();
     }
 
-    @GetMapping({"/messaging","/web/guest/messaging"})
+    @GetMapping("")
     public String showMessagesDefault(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam(required = false) Integer pageNumber, Member loggedInMember) {
-        if (pageNumber == null ) {
+        if (pageNumber == null) {
             pageNumber = 1;
         }
         return showMessages(request, response, model, "INBOX" , pageNumber, loggedInMember);
 
     }
-    @GetMapping("/messaging/mailbox/{mailboxType}")
+    @GetMapping("mailbox/{mailboxType}")
     public String showMessagesBoxType(HttpServletRequest request, HttpServletResponse response, Model model,
             @PathVariable String mailboxType,
             @RequestParam(required = false) Integer pageNumber, Member loggedInMember) {
@@ -77,7 +78,7 @@ public class MessagingController {
         return "/messaging/messages";
     }
 
-    @GetMapping("/messaging/compose")
+    @GetMapping("compose")
     public String composeMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam(required = false) Integer messageId, Member loggedInMember) {
 
@@ -90,13 +91,14 @@ public class MessagingController {
     }
 
 
-    @GetMapping("/messaging/message/{messageId}")
+    @GetMapping("message/{messageId}")
     public String showMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @PathVariable  Integer messageId, Member loggedInMember)
             throws MessageNotFoundException {
 
         final MessageBean messageBean = new MessageBean(MessagingClient.getMessage(messageId));
-        final MessagingPermissions messagingPermissions = new MessagingPermissions(request, messageBean);
+        final MessagingPermissions messagingPermissions =
+                new MessagingPermissions(loggedInMember, messageBean);
 
         if (!messagingPermissions.getCanViewMessage()) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
@@ -115,7 +117,7 @@ public class MessagingController {
     }
 
 
-    @PostMapping("/messaging/archiveMessages")
+    @PostMapping("archiveMessages")
     public String archiveMessages(HttpServletRequest request, HttpServletResponse response, Model model,
             @ModelAttribute("messagingBean") MessagingBean messagingBean, Member loggedInMember)
             throws MessageNotFoundException, IOException {
@@ -137,27 +139,32 @@ public class MessagingController {
         return showMessages(request, response, model, "INBOX", 1, loggedInMember);
     }
 
-    @PostMapping("/messaging/sendMessage")
+    @PostMapping("sendMessage")
     public String sendMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam String userIdsRecipients, @RequestParam String messageSubject,
             @RequestParam String messageContent, Member loggedInMember)
-            throws MessageLimitExceededException, IOException {
+            throws IOException {
 
         if (loggedInMember == null ) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
-        final MessagingPermissions messagingPermissions = new MessagingPermissions(request);
+        final MessagingPermissions messagingPermissions = new MessagingPermissions(loggedInMember);
 
         if (messagingPermissions.getCanSendMessage()) {
             List<Long> recipientIds = IdListUtil.getIdsFromString(userIdsRecipients);
-
-            MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(messageSubject),
-                    HtmlUtil.cleanSome(messageContent, ConfigurationAttributeKey.COLAB_URL.get()),
-                    loggedInMember.getUserId(), recipientIds);
+            try {
+                MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(messageSubject),
+                        HtmlUtil.cleanSome(messageContent,
+                                ConfigurationAttributeKey.COLAB_URL.get()),
+                        loggedInMember.getUserId(), recipientIds);
+                AlertMessage.success("The message has been sent!").flash(request);
+            } catch (MessageLimitExceededException e) {
+                AlertMessage.danger("You have exceeded your daily message limit. "
+                        + "Please try again later and send fewer messages.").flash(request);
+            }
         }
 
-        AlertMessage.success("The message has been sent!").flash(request);
         String refererHeader = request.getHeader(HttpHeaders.REFERER);
 
         if (StringUtils.isNotBlank(refererHeader)) {

@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.profile.utils;
 
-import org.xcolab.entity.utils.portlet.session.SessionErrors;
+import org.xcolab.view.util.entity.portlet.session.SessionErrors;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

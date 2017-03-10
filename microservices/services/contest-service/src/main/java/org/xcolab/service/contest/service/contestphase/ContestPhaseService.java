@@ -1,6 +1,5 @@
 package org.xcolab.service.contest.service.contestphase;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,8 @@ import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
-import org.xcolab.entity.utils.email.notifications.contest.ContestVoteQuestionNotification;
-import org.xcolab.entity.utils.email.notifications.proposal.ContestVoteNotification;
+import org.xcolab.entity.utils.notifications.contest.ContestVoteQuestionNotification;
+import org.xcolab.entity.utils.notifications.proposal.ContestVoteNotification;
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.service.contest.domain.contest.ContestDao;
@@ -134,7 +133,7 @@ public class ContestPhaseService {
                     try {
                         org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());//THIS LOOKS UGLY as HELL
                         new ContestVoteQuestionNotification(member, contestMicro, proposals,ConfigurationAttributeKey.COLAB_URL.get() ).sendMessage();
-                    }catch (ContestNotFoundException ignored){
+                    } catch (ContestNotFoundException ignored) {
 
                     }
                 }

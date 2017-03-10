@@ -78,10 +78,10 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
         if (isEvaluationTabActive) {
             boolean isIdsInitialized = proposalId != null && contestPhaseId != null;
             if (isIdsInitialized) {
-                if(isLoggedIn) {
+                if (isLoggedIn) {
                     canSeeAddCommentButton =
                             isAllowedToAddCommentsToProposalEvaluationInContestPhase();
-                }else{
+                } else {
                     return false;
                 }
             }
@@ -93,16 +93,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     @Override
     public boolean getCanAdminMessage(Comment comment) {
-        if (comment.getAuthorId() == memberId && proposalId != null) {
-            try {
-                Proposal proposal = ProposalsContextUtil.getClients(request).getProposalClient().getProposal(proposalId);
-
-
-                return proposal.isUserAmongFellows(memberId) || getCanAdminAll();
-            } catch (ProposalNotFoundException ignored) {
-            }
-        }
-        return comment.getAuthorId() == memberId || getCanAdminAll();
+        return getCanAdminAll();
     }
 
     private boolean isAllowedToAddCommentsToProposalEvaluationInContestPhase() {

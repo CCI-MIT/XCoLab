@@ -5,16 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.4.2.RELEASE</version>
+        <groupId>org.xcolab</groupId>
+        <artifactId>xcolab-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>org.xcolab.view</groupId>
     <artifactId>xcolab-view</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
-    <name>xcolab-view</name>
+    <name>XCoLab View</name>
     <description>Main view application for the XCoLab</description>
     <packaging>jar</packaging>
 
@@ -48,44 +45,46 @@
         <google-api.version>1.22.0</google-api.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <dependencies>
         <!-- Spring boot dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>${spring-boot.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
-            <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-            <version>${spring-boot.version}</version>
         </dependency>
 
         <!-- JSP dependencies -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
-            <!-- defined by spring -->
-            <!--suppress MavenModelInspection -->
-            <version>${tomcat.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
-            <!-- defined by spring -->
-            <!--suppress MavenModelInspection -->
-            <version>${jstl.version}</version>
         </dependency>
 
         <!-- Core dependencies -->
@@ -137,56 +136,56 @@
 
         <!-- XCoLab micro service dependencies -->
         <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
+            <groupId>org.xcolab</groupId>
             <artifactId>admin-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
+            <groupId>org.xcolab</groupId>
             <artifactId>members-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
+            <groupId>org.xcolab</groupId>
             <artifactId>contestproposal-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.xcolab</groupId>
             <artifactId>entity-utils</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
+            <groupId>org.xcolab</groupId>
             <artifactId>sharedcolab-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
+            <groupId>org.xcolab</groupId>
             <artifactId>files-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
+            <groupId>org.xcolab</groupId>
             <artifactId>ballons-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
+            <groupId>org.xcolab</groupId>
             <artifactId>tracking-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
+            <groupId>org.xcolab</groupId>
             <artifactId>contents-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
+            <groupId>org.xcolab</groupId>
             <artifactId>emails-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.http-client</groupId>
@@ -204,19 +203,19 @@
             <version>${google-api.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
+            <groupId>org.xcolab</groupId>
             <artifactId>filtering-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
+            <groupId>org.xcolab</groupId>
             <artifactId>flagging-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
 		<dependency>
-            <groupId>org.xcolab.microservices.clients</groupId>
+            <groupId>org.xcolab</groupId>
             <artifactId>search-client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.opencsv</groupId>
@@ -286,6 +285,13 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>

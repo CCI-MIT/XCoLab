@@ -16,14 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
-import org.xcolab.client.contents.pojo.ContentArticle;
-import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.client.emails.EmailClient;
-import org.xcolab.entity.utils.ReCaptchaUtils;
-import org.xcolab.entity.utils.flash.AlertMessage;
-import org.xcolab.entity.utils.portlet.session.SessionErrors;
-import org.xcolab.entity.utils.portlet.session.SessionMessages;
+import org.xcolab.view.util.entity.ReCaptchaUtils;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.view.errors.ErrorText;
 
 import java.io.IOException;

@@ -1,6 +1,10 @@
 package org.xcolab.view.config.spring;
 
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,16 +26,30 @@ import org.xcolab.view.auth.handlers.LogoutSuccessHandler;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.auth.login.spring.MemberPasswordEncoder;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableConfigurationProperties(XCoLabProperties.class)
 @SuppressWarnings("ProhibitedExceptionDeclared")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final Logger _log = LoggerFactory.getLogger(WebSecurityConfig.class);
+
+    private final XCoLabProperties properties;
+
+    @Autowired
+    public WebSecurityConfig(XCoLabProperties properties) {
+        this.properties = properties;
+    }
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        generateSecretIfNecessary();
+
         httpSecurity
                 .authorizeRequests()
                     .antMatchers("/admin/management/**").hasRole("ADMIN")
@@ -43,6 +61,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .successHandler(new AuthenticationSuccessHandler(new AuthenticationContext()))
                     .failureHandler(new AuthenticationFailureHandler())
                     .and()
+                .rememberMe()
+                    .key(properties.getSecret())
+                    .tokenValiditySeconds(properties.getRememberMe().getTokenValiditySeconds())
+                    .and()
                 .logout()
                     .permitAll()
                     .logoutSuccessHandler(new LogoutSuccessHandler())
@@ -53,7 +75,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         new NegatedRequestMatcher(
                                 new OrRequestMatcher(getWhiteList())),
                                 new XFrameOptionsHeaderWriter(XFrameOptionsMode.SAMEORIGIN)));
+    }
 
+    private void generateSecretIfNecessary() {
+        // Make sure we have a secret key even when not configured
+        if (StringUtils.isBlank(properties.getSecret())) {
+            _log.warn("No application secret configured - generating one-time secret.");
+            SecureRandom random = new SecureRandom();
+            String secret = new BigInteger(130, random).toString(32);
+            _log.warn("Generated secret key: {}", secret);
+            properties.setSecret(secret);
+        }
     }
 
     @Autowired

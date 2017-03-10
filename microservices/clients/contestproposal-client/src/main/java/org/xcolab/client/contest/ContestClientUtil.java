@@ -73,6 +73,10 @@ public final class ContestClientUtil {
         return contestClient.isContestShared(contestId);
     }
 
+    public static Contest getContestByThreadId(Long threadId){
+        return contestClient.getContestByThreadId(threadId);
+    }
+
     public static List<Contest> findContestsByActiveFeatured(
             Boolean active, Boolean featured) {
         return contestClient.findContestsByActiveFeatured(active, featured);

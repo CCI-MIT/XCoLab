@@ -618,8 +618,10 @@ public class Contest extends AbstractContest implements Serializable {
         return discussionGroupId;
     }
 
-    public boolean getIsSharedContestInForeignColab(){
-        return this.getIsSharedContest() && !ConfigurationAttributeKey.COLAB_NAME.get().equals(this.getSharedOrigin());
+    public boolean getIsSharedContestInForeignColab() {
+        final String colabName = ConfigurationAttributeKey.COLAB_NAME.get();
+        return getIsSharedContest() != null && getIsSharedContest()
+                && !colabName.equals(getSharedOrigin());
     }
     /**
      * Determine if judges are done with proposal

@@ -225,7 +225,9 @@ CREATE TABLE `xcolab_ContestPhase` (
 CREATE TABLE `xcolab_ContestPhaseRibbonType` (
   `id_` bigint(20) NOT NULL,
   `ribbon` int(11) DEFAULT NULL,
+  `title` varchar(50) NOT NULL,
   `hoverText` varchar(75) DEFAULT NULL,
+  `showText` tinyint(4) NOT NULL,
   `description` varchar(75) DEFAULT NULL,
   `copyOnPromote` tinyint(4) DEFAULT NULL,
   `sortOrder` int(11) DEFAULT NULL,
@@ -304,6 +306,7 @@ CREATE TABLE `members_Member` (
   `id_` bigint(20) NOT NULL,
   `screenName` varchar(42) DEFAULT NULL,
   `emailAddress` varchar(75) DEFAULT NULL,
+  `isEmailConfirmed` tinyint(4) NOT NULL DEFAULT '0',
   `firstName` varchar(75) DEFAULT NULL,
   `lastName` varchar(75) DEFAULT NULL,
   `hashedPassword` varchar(75) DEFAULT NULL,

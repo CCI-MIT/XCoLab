@@ -5,32 +5,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.xcolab.microservices.clients</groupId>
-        <artifactId>clients-parent</artifactId>
+        <groupId>org.xcolab</groupId>
+        <artifactId>microservice-clients</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>modeling-client</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <repositories>
-        <repository>
-            <id>ROMA-repo</id>
-            <url>https://raw.github.com/CCI-MIT/ROMA/mvn-repo/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
     <dependencies>
 
-        <!-- TODO: check dependency-->
         <dependency>
             <groupId>edu.mit.cci.roma</groupId>
             <artifactId>client</artifactId>
             <version>1.4-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- JSON API -->
@@ -48,7 +36,7 @@
         <dependency>
             <groupId>org.xcolab</groupId>
             <artifactId>xcolab-utils</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

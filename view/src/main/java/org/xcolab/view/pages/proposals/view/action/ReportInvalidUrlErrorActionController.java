@@ -2,11 +2,10 @@ package org.xcolab.view.pages.proposals.view.action;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.entity.utils.email.EmailToAdminDispatcher;
+import org.xcolab.view.util.entity.email.EmailToAdminDispatcher;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.taglibs.xcolab.wrapper.SimpleExceptionErrorReportWrapper;
 

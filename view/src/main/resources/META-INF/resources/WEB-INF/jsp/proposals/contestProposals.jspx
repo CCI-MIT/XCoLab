@@ -25,6 +25,9 @@
                 <c:if test="${contest.hideRibbons and contestPhase.completed}">
                     <div class="fold-message">
                         <h3>We’re tallying the votes… stay tuned for the results!</h3>
+                        <c:if test="${_isAdmin}">
+                            <h4>Admin info: Ribbons are hidden for non-admin accounts.</h4>
+                        </c:if>
                     </div>
                 </c:if>
             </div>

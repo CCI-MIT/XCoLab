@@ -32,6 +32,7 @@ public class Member implements Serializable {
     private long id_;
     private String screenName;
     private String emailAddress;
+    private boolean isEmailConfirmed;
     private Timestamp createDate;
     private Timestamp modifiedDate;
     private Timestamp passwordModifiedDate;
@@ -248,7 +249,7 @@ public class Member implements Serializable {
 
     @JsonIgnore
     public boolean isVerifiedAccount() {
-        return hasLinkedSocialAccount();
+        return hasLinkedSocialAccount() || isEmailConfirmed;
     }
 
     @JsonIgnore
@@ -340,5 +341,13 @@ public class Member implements Serializable {
     @Override
     public int hashCode() {
         return (int) (this.getId_() ^ this.getId_() >>> 32);
+    }
+
+    public boolean getIsEmailConfirmed() {
+        return isEmailConfirmed;
+    }
+
+    public void setIsEmailConfirmed(boolean emailConfirmed) {
+        isEmailConfirmed = emailConfirmed;
     }
 }

@@ -190,6 +190,12 @@ public class ContestController {
         }
     }
 
+    @RequestMapping(value = "/contests/getContestByThreadId", method = RequestMethod.GET)
+    public Contest getContestByThreadId(
+            @RequestParam(required = false) Long threadId) throws NotFoundException {
+        return contestDao.getByThreadId(threadId);
+    }
+
     @RequestMapping(value = "/contestDiscussions", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ContestDiscussion> getContestDiscussions(
             @RequestParam(required = false) Integer startRecord,
@@ -240,14 +246,14 @@ public class ContestController {
 
     }
 
-    @GetMapping("/contests/{contestId}")
-    public Contest getContest(@PathVariable long contestId) throws NotFoundException {
-        return contestDao.get(contestId);
-    }
-
     @GetMapping("/contests/{contestId}/isShared")
     public boolean isContestShared(@PathVariable long contestId) {
         return contestDao.isShared(contestId);
+    }
+
+    @GetMapping("/contests/{contestId}")
+    public Contest getContest(@PathVariable long contestId) throws NotFoundException {
+        return contestDao.get(contestId);
     }
 
     @GetMapping("/contests/{contestId}/visiblePhases")
