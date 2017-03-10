@@ -253,6 +253,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.MODIFIED_DATE, DSL.currentTimestamp())
                 .set(MEMBER.SCREEN_NAME, member.getScreenName())
                 .set(MEMBER.EMAIL_ADDRESS, member.getEmailAddress())
+                .set(MEMBER.IS_EMAIL_CONFIRMED, member.getIsEmailConfirmed())
                 .set(MEMBER.OPEN_ID, member.getOpenId())
                 .set(MEMBER.FIRST_NAME, member.getFirstName())
                 .set(MEMBER.LAST_NAME, member.getLastName())

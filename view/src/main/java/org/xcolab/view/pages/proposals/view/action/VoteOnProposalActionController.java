@@ -1,21 +1,23 @@
 package org.xcolab.view.pages.proposals.view.action;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
-import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
-import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
 import org.xcolab.entity.utils.notifications.proposal.ProposalVoteNotification;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
@@ -24,6 +26,7 @@ import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.view.pages.proposals.utils.voting.VoteValidator;
 import org.xcolab.view.pages.proposals.utils.voting.VoteValidator.ValidationResult;
+import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
 
 import java.io.IOException;
 
@@ -31,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
+@RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class VoteOnProposalActionController {
 
     private final ProposalsContext proposalsContext;
@@ -46,7 +50,7 @@ public class VoteOnProposalActionController {
         this.proposalsContext = proposalsContext;
     }
 
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/voteOnProposalAction")
+    @GetMapping("c/{proposalUrlString}/{proposalId}/voteOnProposalAction")
     public void handleAction(HttpServletRequest request, Model model, HttpServletResponse response)
             throws ProposalsAuthorizationException, IOException {
         final Proposal proposal = proposalsContext.getProposal(request);
@@ -110,20 +114,28 @@ public class VoteOnProposalActionController {
         response.sendRedirect(proposal.getProposalLinkUrl(contest) + arguments);
     }
 
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/confirmVote/{proposalId}/{userId}/{confirmationToken}")
+    @GetMapping("c/{proposalUrlString}/{proposalId}/confirmVote/{proposalId}/{userId}/{confirmationToken}")
     public String confirmVote(HttpServletRequest request, HttpServletResponse response, Model model,
             @PathVariable long proposalId, @PathVariable long userId,
             @PathVariable String confirmationToken) {
         boolean success = false;
         try {
-            ProposalVote vote = ProposalMemberRatingClientUtil
+            final ClientHelper clients = ProposalsContextUtil.getClients(request);
+            final ProposalClient proposalClient = clients.getProposalClient();
+            final ProposalMemberRatingClient proposalMemberRatingClient =
+                    clients.getProposalMemberRatingClient();
+
+            ProposalVote vote = proposalMemberRatingClient
                     .getProposalVoteByProposalIdUserId(proposalId, userId);
-            if (vote != null && !vote.getConfirmationToken().isEmpty()
-                    && vote.getConfirmationToken().equalsIgnoreCase(confirmationToken)) {
+            if (vote != null && isValidToken(confirmationToken, vote)) {
+                final Member member = MembersClient.getMemberUnchecked(vote.getUserId());
+                member.setIsEmailConfirmed(true);
+                MembersClient.updateMember(member);
+
                 vote.setIsValid(true);
-                ProposalMemberRatingClientUtil.updateProposalVote(vote);
-                Proposal proposal = new Proposal(
-                        ProposalsContextUtil.getClients(request).getProposalClient().getProposal(proposalId));
+                proposalMemberRatingClient.updateProposalVote(vote);
+
+                Proposal proposal = new Proposal(proposalClient.getProposal(proposalId));
                 model.addAttribute("proposal", proposal);
                 success = true;
             } else {
@@ -134,5 +146,10 @@ public class VoteOnProposalActionController {
         }
         model.addAttribute("success", success);
         return "proposals/confirmVote";
+    }
+
+    private boolean isValidToken(@PathVariable String confirmationToken, ProposalVote vote) {
+        return StringUtils.isNotEmpty(vote.getConfirmationToken())
+                && vote.getConfirmationToken().equalsIgnoreCase(confirmationToken);
     }
 }
