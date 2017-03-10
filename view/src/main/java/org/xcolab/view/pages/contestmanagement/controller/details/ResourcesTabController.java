@@ -1,25 +1,21 @@
 package org.xcolab.view.pages.contestmanagement.controller.details;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.ContestResourcesBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
@@ -34,14 +30,7 @@ public class ResourcesTabController extends AbstractTabController {
     private static final ContestDetailsTabs tab = ContestDetailsTabs.RESOURCES;
     private static final String TAB_VIEW = "contestmanagement/details/resourcesTab";
 
-    @Autowired
-    private Validator validator;
     private WikiPageWrapper wikiPageWrapper;
-
-    @InitBinder("contestResourcesBean")
-    public void initBinder(WebDataBinder binder) {
-        binder.setValidator(validator);
-    }
 
     @ModelAttribute("currentTabWrapped")
     @Override

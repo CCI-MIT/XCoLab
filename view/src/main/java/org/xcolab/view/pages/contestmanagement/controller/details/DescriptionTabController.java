@@ -2,14 +2,10 @@ package org.xcolab.view.pages.contestmanagement.controller.details;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +19,6 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.entity.utils.notifications.contest.ContestCreationNotification;
-import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.ContestDescriptionBean;
@@ -32,6 +27,7 @@ import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleUtil;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,14 +45,6 @@ public class DescriptionTabController extends AbstractTabController {
             LoggerFactory.getLogger(DescriptionTabController.class);
     static final private ContestDetailsTabs tab = ContestDetailsTabs.DESCRIPTION;
     static final private String TAB_VIEW = "contestmanagement/details/descriptionTab";
-
-    @Autowired
-    private Validator validator;
-
-    @InitBinder("contestDescriptionBean")
-    public void initBinder(WebDataBinder binder) {
-        binder.setValidator(validator);
-    }
 
     @ModelAttribute("proposalTemplateSelectionItems")
     public List<LabelValue> populateProposalTemplateSelectionItems() {

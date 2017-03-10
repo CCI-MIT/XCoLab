@@ -1,14 +1,10 @@
 package org.xcolab.view.pages.feedback;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,9 +14,9 @@ import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.client.emails.EmailClient;
+import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.util.entity.ReCaptchaUtils;
 import org.xcolab.view.util.entity.flash.AlertMessage;
-import org.xcolab.view.errors.ErrorText;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,15 +32,7 @@ public class ContactController {
 
     private static final String CONTACT_VIEW_NAME = "/feedback/contactForm";
 
-    @Autowired
-    private Validator validator;
-
     public ContactController() {
-    }
-
-    @InitBinder("contactBean")
-    public void initBinder(WebDataBinder binder) {
-        binder.setValidator(validator);
     }
 
     @GetMapping("/feedback")

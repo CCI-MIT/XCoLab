@@ -1,13 +1,9 @@
 package org.xcolab.view.pages.contestmanagement.controller.details;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Validator;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,14 +41,6 @@ public class AdminTabController extends AbstractTabController {
 
     static final private ContestDetailsTabs tab = ContestDetailsTabs.ADMIN;
     static final private String TAB_VIEW = "contestmanagement/details/adminTab";
-
-    @Autowired
-    private Validator validator;
-
-    @InitBinder("contestAdminBean")
-    public void initBinder(WebDataBinder binder) {
-        binder.setValidator(validator);
-    }
 
     @ModelAttribute("contestLevelSelectionItems")
     public List<LabelValue> populateContestLevelSelectionItems() {
