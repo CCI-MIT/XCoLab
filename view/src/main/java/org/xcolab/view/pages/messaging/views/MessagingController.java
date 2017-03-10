@@ -143,7 +143,7 @@ public class MessagingController {
     public String sendMessage(HttpServletRequest request, HttpServletResponse response, Model model,
             @RequestParam String userIdsRecipients, @RequestParam String messageSubject,
             @RequestParam String messageContent, Member loggedInMember)
-            throws MessageLimitExceededException, IOException {
+            throws IOException {
 
         if (loggedInMember == null ) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
@@ -153,13 +153,18 @@ public class MessagingController {
 
         if (messagingPermissions.getCanSendMessage()) {
             List<Long> recipientIds = IdListUtil.getIdsFromString(userIdsRecipients);
-
-            MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(messageSubject),
-                    HtmlUtil.cleanSome(messageContent, ConfigurationAttributeKey.COLAB_URL.get()),
-                    loggedInMember.getUserId(), recipientIds);
+            try {
+                MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(messageSubject),
+                        HtmlUtil.cleanSome(messageContent,
+                                ConfigurationAttributeKey.COLAB_URL.get()),
+                        loggedInMember.getUserId(), recipientIds);
+                AlertMessage.success("The message has been sent!").flash(request);
+            } catch (MessageLimitExceededException e) {
+                AlertMessage.danger("You have exceeded your daily message limit. "
+                        + "Please try again later and send fewer messages.").flash(request);
+            }
         }
 
-        AlertMessage.success("The message has been sent!").flash(request);
         String refererHeader = request.getHeader(HttpHeaders.REFERER);
 
         if (StringUtils.isNotBlank(refererHeader)) {
