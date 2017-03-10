@@ -83,7 +83,7 @@
                             <goal>repackage</goal>
                         </goals>
                         <configuration>
-                            <finalName>${name}</finalName>
+                            <finalName>${project.name}</finalName>
                         </configuration>
                     </execution>
                 </executions>
