@@ -56,7 +56,7 @@
         <metrics-librato.version>5.0.5</metrics-librato.version>
 
         <javax-mail.version>1.4</javax-mail.version>
-        <roma-client.version>1.4-SNAPSHOT</roma-client.version>
+        <roma-client.version>1.4</roma-client.version>
         <javax.json-api.version>1.0</javax.json-api.version>
         <javax.json.version>1.0.4</javax.json.version>
     </properties>
