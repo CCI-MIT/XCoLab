@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<configuration scan="true" scanPeriod="3 seconds">
+<configuration scan="false">
 
-    <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
-
-    <appender name="STDOUT"
-              class="ch.qos.logback.core.ConsoleAppender">
-        <layout class="ch.qos.logback.classic.PatternLayout">
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
             <pattern>
                 %d{HH:mm:ss.SSS} [%thread] %-5level %logger{32} - %msg%n
             </pattern>
-        </layout>
+        </encoder>
     </appender>
 
-    <logger name="com.zaxxer.hikari" level="WARN" />
-    <logger name="org.jooq" level="WARN" />
+    <logger name="com.zaxxer.hikari" level="INFO" />
+    <logger name="org.springframework" level="INFO" />
+    <logger name="org.springframework.web" level="WARN" />
+    <logger name="org.springframework.boot.actuate" level="WARN" />
 
     <root>
-        <level value="ERROR"/>
+        <level value="WARN"/>
         <appender-ref ref="STDOUT"/>
     </root>
 
