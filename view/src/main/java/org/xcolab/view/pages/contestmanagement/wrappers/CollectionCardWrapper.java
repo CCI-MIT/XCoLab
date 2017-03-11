@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
@@ -80,7 +80,7 @@ public class CollectionCardWrapper {
 
         ontologyTerms.put(1L - 1, REFERENCE_NULL_IDENTIFIER);
         for (OntologyTerm term : OntologyClientUtil.getAllOntologyTerms()) {
-            ontologyTerms.put(term.getId(), StringEscapeUtils.escapeJavaScript(term.getName()));
+            ontologyTerms.put(term.getId(), StringEscapeUtils.escapeEcmaScript(term.getName()));
         }
         return ontologyTerms;
     }
@@ -89,7 +89,7 @@ public class CollectionCardWrapper {
         Map<Long, String> cards = new HashMap<>();
         cards.put(1L - 1, REFERENCE_NULL_IDENTIFIER);
         for (ContestCollectionCard card : ContestClientUtil.getAllContestCollectionCards()) {
-            cards.put(card.getId_(), StringEscapeUtils.escapeJavaScript(card.getShort_name()));
+            cards.put(card.getId_(), StringEscapeUtils.escapeEcmaScript(card.getShort_name()));
         }
         return cards;
     }
@@ -104,7 +104,7 @@ public class CollectionCardWrapper {
     }
 
     public String getDescription() {
-        return StringEscapeUtils.escapeJavaScript(contestCollectionCard.getDescription());
+        return StringEscapeUtils.escapeEcmaScript(contestCollectionCard.getDescription());
     }
 
     public void setDescription(String description) {
@@ -112,7 +112,7 @@ public class CollectionCardWrapper {
     }
 
     public String getShortName() {
-        return StringEscapeUtils.escapeJavaScript(contestCollectionCard.getShort_name());
+        return StringEscapeUtils.escapeEcmaScript(contestCollectionCard.getShort_name());
     }
 
     public void setShortName(String shortName) {
@@ -121,7 +121,7 @@ public class CollectionCardWrapper {
 
     public String getOntologyTermToLoad() {
         if (contestCollectionCard.getOntology_term_to_load() != null) {
-            return StringEscapeUtils.escapeJavaScript(OntologyClientUtil
+            return StringEscapeUtils.escapeEcmaScript(OntologyClientUtil
                     .getOntologyTerm(contestCollectionCard.getOntology_term_to_load()).getName());
         }
         return "";
@@ -138,7 +138,7 @@ public class CollectionCardWrapper {
 
     public String getBigOntologyTerm() {
         if (contestCollectionCard.getBig_ontology_term() != null) {
-            return StringEscapeUtils.escapeJavaScript(
+            return StringEscapeUtils.escapeEcmaScript(
                     OntologyClientUtil.getOntologyTerm(contestCollectionCard.getBig_ontology_term())
                             .getName());
         }
@@ -156,7 +156,7 @@ public class CollectionCardWrapper {
 
     public String getSmallOntologyTerm() {
         if (contestCollectionCard.getSmall_ontology_term() != null) {
-            return StringEscapeUtils.escapeJavaScript(OntologyClientUtil
+            return StringEscapeUtils.escapeEcmaScript(OntologyClientUtil
                     .getOntologyTerm(contestCollectionCard.getSmall_ontology_term()).getName());
         }
         return "";

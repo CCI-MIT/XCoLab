@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.proposals.view.proposal.json;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.json.JSONArray;

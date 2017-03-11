@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.proposals.utils.edit;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
