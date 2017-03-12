@@ -18,7 +18,7 @@
         <module>admin-service</module>
         <module>balloons-service</module>
         <module>comment-service</module>
-        <module>contents-service</module>
+        <module>content-service</module>
         <module>contest-service</module>
         <module>emails-service</module>
         <module>files-service</module>

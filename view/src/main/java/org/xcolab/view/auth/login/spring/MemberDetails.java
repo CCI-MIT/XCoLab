@@ -5,7 +5,6 @@ import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
-import sun.plugin.dom.exception.InvalidStateException;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
@@ -39,7 +38,7 @@ public class MemberDetails implements UserDetails {
             try {
                 member = MembersClient.getMember(memberId);
             } catch (MemberNotFoundException e) {
-                throw new InvalidStateException("Member with id " + memberId + " does not exist");
+                throw new IllegalStateException("Member with id " + memberId + " does not exist");
             }
             init(member);
         }
