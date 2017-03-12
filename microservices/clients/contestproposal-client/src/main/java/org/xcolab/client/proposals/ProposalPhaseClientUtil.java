@@ -4,13 +4,15 @@ import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
 
 public final class ProposalPhaseClientUtil {
 
-    private static final RestService proposalService = new RestService(CoLabService.PROPOSAL);
+    private static final RestService proposalService = new RestService(CoLabService.PROPOSAL,
+            ServiceRequestUtils.getNamespace());
 
     private static final ProposalPhaseClient client =
             ProposalPhaseClient.fromService(proposalService);

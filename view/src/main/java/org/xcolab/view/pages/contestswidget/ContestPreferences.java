@@ -93,8 +93,8 @@ public class ContestPreferences {
             ContestClient contestClient;
             if (c.getIsSharedContestInForeignColab()) {
                     RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
-                            ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
-                            ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
+                    );
                     contestClient = ContestClient.fromService(contestService);
                     activeOrLastPhase = contestClient.getActivePhase(c.getContestPK());
                 } else {

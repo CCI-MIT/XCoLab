@@ -5,6 +5,7 @@ import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.client.files.providers.FileSystemPersistenceProvider;
 import org.xcolab.client.files.providers.PersistenceProvider;
 import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
@@ -14,7 +15,8 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 public final class FilesClient {
 
-    private static final RestService fileService = new RestService(CoLabService.FILE);
+    private static final RestService fileService = new RestService(CoLabService.FILE,
+            ServiceRequestUtils.getNamespace());
     private static final RestResource<FileEntry, Long> fileEntryResource = new RestResource1<>(fileService,
             "fileEntries", FileEntry.TYPES);
 

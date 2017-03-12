@@ -17,7 +17,8 @@ import java.util.List;
 
 public final class ContentsClient {
 
-    private static final RestService contentService = new RestService(CoLabService.CONTENT);
+    private static final RestService contentService = new RestService(CoLabService.CONTENT,
+            ServiceRequestUtils.getNamespace());
 
     private static final RestResource<ContentArticle, Long> contentArticleResource =
             new RestResource1<>(contentService, "contentArticles", ContentArticle.TYPES);

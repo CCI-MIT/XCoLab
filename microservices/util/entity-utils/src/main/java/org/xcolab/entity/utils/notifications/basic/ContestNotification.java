@@ -65,8 +65,7 @@ public class ContestNotification extends EmailNotification {
         final EmailTemplateClient emailTemplateClient;
         if(contest.getIsSharedContestInForeignColab()){
             RestService adminService = new RefreshingRestService(CoLabService.ADMIN,
-                    ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
-                    ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                    ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
 
             emailTemplateClient = EmailTemplateClient.fromService(adminService);
         }else{
@@ -85,8 +84,7 @@ public class ContestNotification extends EmailNotification {
         ContestClient contestClient;
         if(contest.getIsSharedContestInForeignColab()) {
             RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
-                    ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
-                    ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                    ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
             contestClient = ContestClient.fromService(contestService);
         }else{
             contestClient = ContestClientUtil.getClient();

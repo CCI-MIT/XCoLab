@@ -1,5 +1,5 @@
 spring:
   application:
-    name: search-service
+    name: ${xcolab.namespace:xcolab}-search-service
   jmx:
     default-domain: ${spring.application.name}

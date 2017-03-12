@@ -6,13 +6,15 @@ import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
 
 public final class CategoryClientUtil {
 
-    private static final RestService commentService = new RestService(CoLabService.COMMENT);
+    private static final RestService commentService = new RestService(CoLabService.COMMENT,
+            ServiceRequestUtils.getNamespace());
 
     private static final CategoryClient categoryClient = new CategoryClient(commentService);
 

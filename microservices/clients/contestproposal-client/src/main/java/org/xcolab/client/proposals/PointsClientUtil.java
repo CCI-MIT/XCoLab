@@ -3,12 +3,14 @@ package org.xcolab.client.proposals;
 import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
 import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
 
 public final class PointsClientUtil {
-    private static final RestService proposalService = new RestService(CoLabService.PROPOSAL);
+    private static final RestService proposalService = new RestService(CoLabService.PROPOSAL,
+            ServiceRequestUtils.getNamespace());
 
     private static final PointsClient client
             = PointsClient.fromService(proposalService);

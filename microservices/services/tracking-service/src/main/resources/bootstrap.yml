@@ -1,5 +1,5 @@
 spring:
   application:
-    name: tracking-service
+    name: ${xcolab.namespace:xcolab}-tracking-service
   jmx:
     default-domain: ${spring.application.name}

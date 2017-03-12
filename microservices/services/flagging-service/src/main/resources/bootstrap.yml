@@ -1,5 +1,5 @@
 spring:
   application:
-    name: flagging-service
+    name: ${xcolab.namespace:xcolab}-flagging-service
   jmx:
     default-domain: ${spring.application.name}

@@ -11,6 +11,14 @@ public class XCoLabProperties {
     private String secret;
 
     /**
+     * Namespace for service discovery.
+     *
+     * Customize this property when using several instances on the same Eureka server (e.g. for
+     * contest mirroring).
+     */
+    private String namespace = "xcolab";
+
+    /**
      * Remember me configuration.
      */
     private final RememberMe rememberMe = new RememberMe();
@@ -25,6 +33,14 @@ public class XCoLabProperties {
 
     public RememberMe getRememberMe() {
         return rememberMe;
+    }
+
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
     }
 
     public static class RememberMe {

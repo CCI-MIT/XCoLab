@@ -16,6 +16,7 @@ import java.util.List;
 public final class ServiceRequestUtils {
 
     private static final RequestHelper requestHelper;
+    private static String namespace;
     private static boolean isInitialized;
 
     static {
@@ -29,8 +30,9 @@ public final class ServiceRequestUtils {
         requestHelper.setCacheProvider(cacheProvider);
     }
 
-    public static void initialize(RestTemplate restTemplate) {
+    public static void initialize(RestTemplate restTemplate, String namespace) {
         requestHelper.setRestTemplate(restTemplate);
+        ServiceRequestUtils.namespace = namespace;
         isInitialized = true;
     }
 
@@ -141,5 +143,9 @@ public final class ServiceRequestUtils {
     public static void clearCache(CacheName cacheName) {
         checkInitialized();
         requestHelper.clearCache(cacheName);
+    }
+
+    public static String getNamespace() {
+        return namespace;
     }
 }

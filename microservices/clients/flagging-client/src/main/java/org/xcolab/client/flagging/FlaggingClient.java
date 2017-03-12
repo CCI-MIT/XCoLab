@@ -9,6 +9,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.util.enums.flagging.TargetType;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
@@ -20,7 +21,8 @@ import java.util.List;
 
 public final class FlaggingClient {
 
-    private static final RestService flaggingService = new RestService(CoLabService.FLAG);
+    private static final RestService flaggingService = new RestService(CoLabService.FLAG,
+            ServiceRequestUtils.getNamespace());
     private static final RestResource<Report, Long> reportResource = new RestResource1<>(flaggingService,
             "reports", Report.TYPES);
     private static final RestResource<AggregatedReport, Long> aggregatedReportResource = new RestResource1<>(

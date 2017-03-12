@@ -11,14 +11,16 @@ import org.xcolab.util.http.ServiceRequestUtils;
 public class EurekaClientInitializer implements CommandLineRunner {
 
     private final RestTemplate restTemplate;
+    private final XCoLabProperties properties;
 
     @Autowired
-    public EurekaClientInitializer(RestTemplate restTemplate) {
+    public EurekaClientInitializer(RestTemplate restTemplate, XCoLabProperties properties) {
         this.restTemplate = restTemplate;
+        this.properties = properties;
     }
 
     @Override
     public void run(String... strings) {
-        ServiceRequestUtils.initialize(restTemplate);
+        ServiceRequestUtils.initialize(restTemplate, properties.getNamespace());
     }
 }

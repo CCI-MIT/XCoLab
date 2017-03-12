@@ -1,5 +1,5 @@
 spring:
   application:
-    name: members-service
+    name: ${xcolab.namespace:xcolab}-members-service
   jmx:
     default-domain: ${spring.application.name}

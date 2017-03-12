@@ -55,8 +55,8 @@ public class ContestOverviewWrapper {
             if (contest.getIsSharedContestInForeignColab()) {
                 try {
                     RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
-                            ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
-                            ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
+                    );
 
                     Contest foreignContest = ContestClient.fromService(contestService)
                             .getContest(contest.getContestPK());

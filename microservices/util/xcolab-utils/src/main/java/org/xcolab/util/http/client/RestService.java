@@ -8,19 +8,22 @@ import org.xcolab.util.http.client.interfaces.HttpEndpoint;
 
 public class RestService implements HttpEndpoint {
 
-    private static final String SCHEMA = "HTTP://";
+    private static final String SCHEMA = "http://";
 
     private final String serviceName;
     private final UriProvider uriProvider;
+    private final String namespace;
 
-    public RestService(CoLabService serviceName) {
-        this(serviceName.getServiceName());
+    public RestService(CoLabService serviceName, String namespace) {
+        this(serviceName.getServiceName(), namespace);
     }
 
-    public RestService(String serviceName) {
+    public RestService(String serviceName, String namespace) {
         Assert.notNull(serviceName, "Service name is required");
+        Assert.notNull(serviceName, "Namespace is required");
+        this.namespace = namespace;
         this.serviceName = serviceName;
-        uriProvider = getBaseUrl(null, null);
+        this.uriProvider = getBaseUrl(namespace);
     }
 
     /**
@@ -32,7 +35,7 @@ public class RestService implements HttpEndpoint {
      * @return a copy of this instance with a different service name
      */
     public RestService withServiceName(String serviceName) {
-        return new RestService(serviceName);
+        return new RestService(serviceName, namespace);
     }
 
     @Override
@@ -40,8 +43,8 @@ public class RestService implements HttpEndpoint {
         return uriProvider;
     }
 
-    public UriProvider getBaseUrl(String hostName, String port) {
-        return new UriProvider(SCHEMA + serviceName);
+    public UriProvider getBaseUrl(String namespace) {
+        return new UriProvider(SCHEMA + namespace + "-" + serviceName);
     }
 
     @Override

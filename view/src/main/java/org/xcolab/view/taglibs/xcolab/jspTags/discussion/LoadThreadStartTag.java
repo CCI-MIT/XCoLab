@@ -18,7 +18,6 @@ import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.pojo.ReportTarget;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.flagging.TargetType;
-import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
@@ -49,8 +48,8 @@ public class LoadThreadStartTag extends BodyTagSupport {
             CategoryClient categoryClient;
             if (sharedColabId != null && sharedColabId > 0) {
                     RestService contestService = new RefreshingRestService(CoLabService.COMMENT,
-                            ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
-                            ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
+                    );
 
                     threadClient = ThreadClient.fromService(contestService);
                     categoryClient = CategoryClient.fromService(contestService);

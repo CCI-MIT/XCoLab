@@ -1,5 +1,5 @@
 spring:
   application:
-    name: content-service
+    name: ${xcolab.namespace:xcolab}-content-service
   jmx:
     default-domain: ${spring.application.name}
