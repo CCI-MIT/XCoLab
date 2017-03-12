@@ -100,7 +100,7 @@ public class PageEditorController extends BaseContentEditor {
         }
 
 
-        defaultOperationReturnMessage(true, "Article version created successfully", response);
+        defaultOperationReturnMessage(true, "Content page created successfully", response);
     }
 
     private Map<String, String> getArticles(Long folderId, String path,
