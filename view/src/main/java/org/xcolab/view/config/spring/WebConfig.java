@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.Assert;
+import org.springframework.validation.SmartValidator;
+import org.springframework.validation.beanvalidation.CustomValidatorBean;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -80,6 +82,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public RestTemplate restTemplate() {
         return new RestTemplate(new HttpComponentsClientHttpRequestFactory());
     }
+    @Bean
+    public SmartValidator validator() {
+        //TODO: remove when upgrading to Spring boot 1.5.x
+        return new CustomValidatorBean();
+    }
+
     @Bean
     public RewriteInitializer rewriteInitializer() {
         return new RewriteInitializer();
