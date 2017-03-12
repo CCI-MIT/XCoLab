@@ -5,16 +5,13 @@ import org.springframework.security.core.SpringSecurityCoreVersion;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.Assert;
+import sun.plugin.dom.exception.InvalidStateException;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 
-import java.io.IOException;
-import java.io.InvalidObjectException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,31 +24,47 @@ public class MemberDetails implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
+    private final long memberId;
     transient private Member member;
     transient private Set<GrantedAuthority> authorities;
 
     public MemberDetails(Member member) {
+        Assert.notNull(member, "Member cannot be null");
+        memberId = member.getId_();
         init(member);
     }
 
+    private void init() {
+        if (member == null) {
+            try {
+                member = MembersClient.getMember(memberId);
+            } catch (MemberNotFoundException e) {
+                throw new InvalidStateException("Member with id " + memberId + " does not exist");
+            }
+            init(member);
+        }
+    }
+
     private void init(Member member) {
-        Assert.notNull(member, "Member cannot be null");
         this.member = member;
         authorities = Collections.unmodifiableSet(getAuthoritiesForMember(member.getId_()));
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        init();
         return authorities;
     }
 
     @Override
     public String getPassword() {
+        init();
         return member.getHashedPassword();
     }
 
     @Override
     public String getUsername() {
+        init();
         return member.getScreenName();
     }
 
@@ -62,6 +75,7 @@ public class MemberDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
+        init();
         return member.isActive();
     }
 
@@ -113,25 +127,8 @@ public class MemberDetails implements UserDetails {
     }
 
     public Member getMember() {
+        init();
         return new Member(member);
-    }
-
-    private void writeObject(ObjectOutputStream oos)
-            throws IOException {
-        oos.defaultWriteObject();
-        oos.writeLong(member.getId_());
-    }
-
-    private void readObject(ObjectInputStream ois)
-            throws ClassNotFoundException, IOException {
-        ois.defaultReadObject();
-        final long memberId = ois.readLong();
-        try {
-            member = MembersClient.getMember(memberId);
-        } catch (MemberNotFoundException e) {
-            throw new InvalidObjectException("Member with id " + memberId + " does not exist");
-        }
-        init(member);
     }
 
     @Override
@@ -145,11 +142,11 @@ public class MemberDetails implements UserDetails {
 
         MemberDetails that = (MemberDetails) o;
 
-        return member.getId_() == that.member.getId_();
+        return memberId == that.memberId;
     }
 
     @Override
     public int hashCode() {
-        return (int) (member.getId_() ^ member.getId_() >>> 32);
+        return (int) (memberId ^ memberId >>> 32);
     }
 }

@@ -13,7 +13,7 @@
     <artifactId>admin-service</artifactId>
     <name>admin-service</name>
     <description>The admin service for XColab platform</description>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <dependencies>
 
@@ -59,29 +59,6 @@
                             <includes>xcolab_ContestEmailTemplate|xcolab_ConfigurationAttribute</includes>
                         </database>
                     </generator>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <outputDirectory>${liferay.auto.deploy.dir}/../apache-tomcat-8.0.33/webapps</outputDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                        <configuration>
-                            <finalName>${project.name}</finalName>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
         </plugins>
