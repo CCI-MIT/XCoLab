@@ -50,4 +50,4 @@ if [[ "$_mysql" ]]; then
 fi
 
 # Build binaries
-mvn package
+mvn package -T 1C
