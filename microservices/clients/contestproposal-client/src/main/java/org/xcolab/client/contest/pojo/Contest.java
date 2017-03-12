@@ -142,6 +142,7 @@ public class Contest extends AbstractContest implements Serializable {
                 link += contestClient.getContestType(this.getContestTypeId())
                         .getFriendlyUrlStringContests();
             }else{
+                System.out.println(" > ContestID("+this.getContestPK()+")");
                 System.out.println(" > Contest: " + this.toString() + " - ");
             }
         }
