@@ -5,9 +5,9 @@ set -e
 cd $TRAVIS_BUILD_DIR/
 
 if [ $TRAVIS_BRANCH == 'homolog' ] || [ $TRAVIS_BRANCH == 'master' ]; then
-   mvn package -B -T 1C
+   mvn package -B -T 4
 else
-   mvn test -B -T 1C
+   mvn test -B -T 4
 fi
 
 cd $TRAVIS_BUILD_DIR/
