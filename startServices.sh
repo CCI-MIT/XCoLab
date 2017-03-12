@@ -8,7 +8,7 @@ function startService {
     if [ -d "${service}" ]; then
         cd ${service}/target
         if [ -f ${service}.pid ]; then
-            echo "[ERROR] ${service} is already running (${service}.pid file exists)."
+            echo "[WARN] ${service} is already running (${service}.pid file exists)."
         else
             echo "[INFO] Starting ${service}"
             rm ${service}.out > /dev/null 2>&1

@@ -10,7 +10,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>contents-service</artifactId>
+    <artifactId>content-service</artifactId>
     <name>content-service</name>
     <packaging>jar</packaging>
 
