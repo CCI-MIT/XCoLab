@@ -10,6 +10,8 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
+import org.springframework.validation.SmartValidator;
+import org.springframework.validation.beanvalidation.CustomValidatorBean;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -70,6 +72,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(new ResourceUrlEncodingFilter());
         return registrationBean;
+    }
+
+    @Bean
+    public SmartValidator validator() {
+        //TODO: remove when upgrading to Spring boot 1.5.x
+        return new CustomValidatorBean();
     }
 
     @Bean
