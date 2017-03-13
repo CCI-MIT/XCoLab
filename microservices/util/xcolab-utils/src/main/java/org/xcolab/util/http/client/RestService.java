@@ -61,6 +61,7 @@ public class RestService implements HttpEndpoint {
             return false;
         }
         final RestService other = (RestService) obj;
-        return serviceName.equals(other.serviceName);
+        return serviceName.equals(other.serviceName)
+                && namespace.equals(other.namespace);
     }
 }

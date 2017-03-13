@@ -146,6 +146,11 @@ public final class ServiceRequestUtils {
     }
 
     public static String getNamespace() {
+        checkInitialized();
         return namespace;
+    }
+
+    public static boolean isInitialized() {
+        return isInitialized;
     }
 }

@@ -15,7 +15,7 @@ public class RefreshingRestService extends RestService {
 
     public RefreshingRestService(String serviceName,
             AttributeGetter<String> namespaceAttributeGetter) {
-        super(serviceName, namespaceAttributeGetter.get());
+        super(serviceName, "placeholder-namespace");
         this.namespaceAttributeGetter = namespaceAttributeGetter;
     }
 

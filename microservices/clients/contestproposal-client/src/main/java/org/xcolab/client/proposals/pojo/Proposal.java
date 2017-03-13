@@ -193,13 +193,14 @@ public class Proposal extends AbstractProposal {
 
         if (proposal.getRestService() != null) {
             this.restService = proposal.getRestService();
-            RestService contestservice =  restService.withServiceName("contest-service");
-            planTemplateClient = PlanTemplateClient.fromService(contestservice);
-            contestClient = ContestClient.fromService(contestservice);
+            RestService contestService =  restService.withServiceName(
+                    CoLabService.CONTEST.getServiceName());
+            planTemplateClient = PlanTemplateClient.fromService(contestService);
+            contestClient = ContestClient.fromService(contestService);
             proposalClient = ProposalClient.fromService(restService);;
             proposalAttributeClient = ProposalAttributeClient.fromService(restService);
             proposalPhaseClient = ProposalPhaseClient.fromService(restService);
-            contestTeamMemberClient =  ContestTeamMemberClient.fromService(contestservice);
+            contestTeamMemberClient =  ContestTeamMemberClient.fromService(contestService);
 
             RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
             commentClient = CommentClient.fromService(commentService);
