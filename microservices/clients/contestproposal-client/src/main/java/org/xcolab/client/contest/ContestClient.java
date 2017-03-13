@@ -93,7 +93,7 @@ public class ContestClient {
     public Contest getContest(long contestId) {
         try {
             return contestResource.get(contestId)
-                    .withCache(CacheName.CONTEST_DETAILS)
+                    //.withCache(CacheName.CONTEST_DETAILS)
                     .executeChecked().toPojo(contestService);
         } catch (EntityNotFoundException e) {
             throw new ContestNotFoundException(contestId);
