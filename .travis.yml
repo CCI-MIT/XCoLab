@@ -40,8 +40,3 @@ deploy:
   script: rsync -r --delete-after --quiet binaries travis@cognosis.mit.edu:master
   on:
     branch: master
-- provider: script
-  skip_cleanup: true
-  script: rsync -r --delete-after --quiet binaries travis@cognosis.mit.edu:services
-  on:
-    branch: COLAB-1808-embedded-services

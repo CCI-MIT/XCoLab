@@ -5,7 +5,5 @@
 if [ $TRAVIS_BRANCH == 'homolog' ] || [ $TRAVIS_BRANCH == 'master' ]; then
     export BUILD_TYPE=deploy
 else
-#    export BUILD_TYPE=test
-    #testing deploy step with new environment
-    export BUILD_TYPE=deploy
+    export BUILD_TYPE=test
 fi
