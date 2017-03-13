@@ -25,6 +25,7 @@ if [ $# -gt 0 ]; then
 else
     for service in *-service; do
         startService ${service}
+        sleep 5
     done
 fi
 
