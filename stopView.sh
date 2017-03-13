@@ -1,16 +1,15 @@
 #!/bin/bash
 
+BINARY_DIR=binaries/view
 VIEW=xcolab-view
 
 echo "#####################################################################################"
 echo "[INFO] Stopping view..."
 
-cd view/target
 echo "[INFO] Sending kill signal to ${VIEW}"
-PIDFile="${VIEW}.pid"
-kill $(<"${PIDFile}")
-rm ${VIEW}.pid
-cd ../..
+PID_FILE="${BINARY_DIR}/${VIEW}.pid"
+kill $(<"${PID_FILE}")
+rm ${PID_FILE}.pid
 
 echo "[INFO] Done."
 echo "#####################################################################################"

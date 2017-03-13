@@ -3,22 +3,26 @@
 echo "#####################################################################################"
 echo "[INFO] Starting service(s)..."
 
+SERVICE_DIR=../../binaries/services
+
+cd microservices/services
+mkdir -p ${SERVICE_DIR}
+
 function startService {
     service=$1
     if [ -d "${service}" ]; then
-        cd ${service}/target
-        if [ -f ${service}.pid ]; then
+        PID_FILE=${SERVICE_DIR}/${service}.pid
+        if [ -f ${PID_FILE} ]; then
             echo "[WARN] ${service} is already running (${service}.pid file exists)."
         else
             echo "[INFO] Starting ${service}"
-            rm ${service}.out > /dev/null 2>&1
-            exec java -Xmx1G -Xms256M -jar ${service}-1.0-SNAPSHOT.jar > ${service}.out  & echo $! > ${service}.pid
+            cp ${service}/target/${service}-1.0-SNAPSHOT.jar ${SERVICE_DIR}/
+            OUT_FILE=${SERVICE_DIR}/${service}.out
+            rm ${OUT_FILE} > /dev/null 2>&1
+            exec java -Xmx1G -Xms256M -jar ${SERVICE_DIR}/${service}-1.0-SNAPSHOT.jar > ${OUT_FILE} & echo $! > ${PID_FILE}
         fi
-        cd ../..
     fi
 }
-
-cd microservices/services
 
 if [ $# -gt 0 ]; then
     startService $1

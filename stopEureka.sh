@@ -1,16 +1,15 @@
 #!/bin/bash
 
+BINARY_DIR=binaries/cloud
 EUREKA=eureka-server
 
 echo "#####################################################################################"
 echo "[INFO] Starting Eureka server..."
 
-cd microservices/cloud/eureka-server/target
 echo "[INFO] Sending kill signal to ${EUREKA}"
-PIDFile="${EUREKA}.pid"
-kill $(<"${PIDFile}")
-rm ${EUREKA}.pid
-cd ../../../..
+PID_FILE="${BINARY_DIR}/${EUREKA}.pid"
+kill $(<"${PID_FILE}")
+rm ${PID_FILE}
 
 echo "[INFO] Done."
 echo "#####################################################################################"

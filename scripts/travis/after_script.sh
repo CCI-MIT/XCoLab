@@ -2,10 +2,9 @@
 
 if [ $BUILD_TYPE == 'deploy' ]; then
     echo "Creating binary directories"
-    mkdir binaries
-    mkdir binaries/view
-    mkdir binaries/cloud
-    mkdir binaries/services
+    mkdir -p binaries/view
+    mkdir -p binaries/cloud
+    mkdir -p binaries/services
 
     echo "Moving view binary"
     mv view/target/xcolab-view-1.0-SNAPSHOT.jar binaries/view/
