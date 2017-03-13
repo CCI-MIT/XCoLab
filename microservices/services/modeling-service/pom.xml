@@ -38,7 +38,6 @@
 						<configuration>
 							<files>
 								<file>${user.home}/.xcolab.application.properties</file>
-								<file>${user.home}/.xcolab.deploy.properties</file>
 							</files>
 						</configuration>
 					</execution>
