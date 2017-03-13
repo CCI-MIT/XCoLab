@@ -1,4 +1,4 @@
-package org.xcolab.view.config.spring;
+package org.xcolab.util.autoconfigure;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
