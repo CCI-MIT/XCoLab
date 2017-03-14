@@ -25,7 +25,6 @@ import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.html.HtmlUtil;
 
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -87,13 +86,13 @@ public class ActivitySubscriptionEmailHelper {
 
         //to ease debug please leave it here
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            lastEmailNotification = sdf.parse("2017-03-09 00:00:00");
-            lastDailyEmailNotification = sdf.parse("2017-03-09 00:00:00");
-        } catch (ParseException e) {
-            lastEmailNotification = new Date();
-        }
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        try {
+//            lastEmailNotification = sdf.parse("2017-03-09 00:00:00");
+//            lastDailyEmailNotification = sdf.parse("2017-03-09 00:00:00");
+//        } catch (ParseException e) {
+//            lastEmailNotification = new Date();
+//        }
 
 
         synchronized (lastEmailNotification) {
