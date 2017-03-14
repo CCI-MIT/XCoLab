@@ -107,7 +107,7 @@ public class Contest extends AbstractContest implements Serializable {
             contestClient = ContestClient.fromService(restService);
             contestTeamMemberClient = ContestTeamMemberClient.fromService(restService);
             ontologyClient = OntologyClient.fromService(restService);
-            RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
+            RestService commentService = restService.withServiceName(CoLabService.COMMENT.getServiceName());
             commentClient = CommentClient.fromService(commentService);
             threadClient = ThreadClient.fromService(commentService);
         } else {

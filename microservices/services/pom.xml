@@ -18,7 +18,7 @@
         <module>admin-service</module>
         <module>balloons-service</module>
         <module>comment-service</module>
-        <module>contents-service</module>
+        <module>content-service</module>
         <module>contest-service</module>
         <module>emails-service</module>
         <module>files-service</module>
@@ -94,6 +94,17 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

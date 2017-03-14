@@ -1,5 +1,5 @@
 spring:
   application:
-    name: filtering-service
+    name: ${xcolab.namespace:xcolab}-filtering-service
   jmx:
     default-domain: ${spring.application.name}

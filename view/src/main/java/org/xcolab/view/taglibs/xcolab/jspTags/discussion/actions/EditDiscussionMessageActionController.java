@@ -51,8 +51,8 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
             }
             if (contest != null && contest.getIsSharedContestInForeignColab()) {
                 RestService commentsService = new RefreshingRestService(CoLabService.COMMENT,
-                        ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
-                        ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                        ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
+                );
 
                 commentClient = CommentClient.fromService(commentsService);
             } else {

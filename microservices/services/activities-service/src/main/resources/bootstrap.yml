@@ -1,5 +1,5 @@
 spring:
   application:
-    name: activities-service
+    name: ${xcolab.namespace:xcolab}-activities-service
   jmx:
     default-domain: ${spring.application.name}

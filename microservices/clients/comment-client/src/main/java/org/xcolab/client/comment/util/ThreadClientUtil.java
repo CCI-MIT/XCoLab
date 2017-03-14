@@ -4,6 +4,7 @@ import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.Date;
@@ -11,7 +12,8 @@ import java.util.List;
 
 public final class ThreadClientUtil {
 
-    private static final RestService commentService = new RestService(CoLabService.COMMENT);
+    private static final RestService commentService = new RestService(CoLabService.COMMENT,
+            ServiceRequestUtils.getNamespace());
 
     private static final ThreadClient threadClient = new ThreadClient(commentService);
 

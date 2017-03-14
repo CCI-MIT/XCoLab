@@ -41,8 +41,8 @@ public class ProposalNotification extends ContestNotification {
         final EmailTemplateClient emailTemplateClient;
         if(contest.getIsSharedContestInForeignColab()){
             RestService adminService = new RefreshingRestService(CoLabService.ADMIN,
-                    ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
-                    ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                    ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
+            );
 
             emailTemplateClient = EmailTemplateClient.fromService(adminService);
         }else{

@@ -1,5 +1,5 @@
 spring:
   application:
-    name: modeling-service
+    name: ${xcolab.namespace:xcolab}-modeling-service
   jmx:
     default-domain: ${spring.application.name}

@@ -19,6 +19,7 @@ import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
+import org.xcolab.util.autoconfigure.XCoLabProperties;
 import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.auth.handlers.AuthenticationFailureHandler;
 import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;

@@ -12,7 +12,7 @@
 
     <artifactId>filtering-service</artifactId>
     <name>filtering-service</name>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -35,7 +35,6 @@
                         <configuration>
                             <files>
                                 <file>${user.home}/.xcolab.application.properties</file>
-                                <file>${user.home}/.xcolab.deploy.properties</file>
                             </files>
                         </configuration>
                     </execution>
@@ -65,25 +64,13 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <outputDirectory>${liferay.auto.deploy.dir}/../apache-tomcat-8.0.33/webapps</outputDirectory>
-                </configuration>
                 <executions>
                     <execution>
                         <goals>
                             <goal>repackage</goal>
                         </goals>
-                        <configuration>
-                            <finalName>${project.name}</finalName>
-                        </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-war-plugin</artifactId>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
             </plugin>
         </plugins>
     </build>

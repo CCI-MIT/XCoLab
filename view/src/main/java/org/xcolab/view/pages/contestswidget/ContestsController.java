@@ -48,8 +48,8 @@ public class ContestsController {
                 if (!contest.getContestPrivate()) {
                     if(contest.getIsSharedContestInForeignColab()){
                         RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
-                                ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
-                                ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                                ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
+                        );
                         Contest foreignContest = ContestClient.fromService(contestService).getContest(contest.getContestPK());
                         foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
                         contestWrappers.add(foreignContest);
@@ -68,8 +68,8 @@ public class ContestsController {
                     Contest c = ContestClientUtil.getContest(contestId);
                     if(c.getIsSharedContestInForeignColab()){
                         RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
-                                ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
-                                ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                                ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
+                        );
                         Contest foreignContest = ContestClient.fromService(contestService).getContest(contestId);
                         foreignContest.setUpForeignContestVisualConfigsFromLocal(c);
                         contestWrappers.add(foreignContest);
@@ -77,7 +77,7 @@ public class ContestsController {
                         contestWrappers.add(c);
                     }
                 } catch (ContestNotFoundException e) {
-                    _log.error("Could not find contest " + contestId);
+                    _log.error("Could not find contest {}", contestId);
                 }
             }
         }

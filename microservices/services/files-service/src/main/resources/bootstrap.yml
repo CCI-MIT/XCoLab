@@ -1,5 +1,5 @@
 spring:
   application:
-    name: files-service
+    name: ${xcolab.namespace:xcolab}-files-service
   jmx:
     default-domain: ${spring.application.name}

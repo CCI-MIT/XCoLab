@@ -3,6 +3,7 @@ package org.xcolab.client.filtering;
 import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
@@ -12,7 +13,8 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 public final class FilteringClient {
 
-    private static final RestService filteringService = new RestService(CoLabService.FILTER);
+    private static final RestService filteringService = new RestService(CoLabService.FILTER,
+            ServiceRequestUtils.getNamespace());
     private static final RestResource<FilteredEntry, String> filteredEntryResource = new RestResource1<>(
             filteringService, "filteredEntries", FilteredEntry.TYPES);
 

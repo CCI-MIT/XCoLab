@@ -6,36 +6,33 @@ import org.xcolab.util.http.UriProvider;
 
 public class RefreshingRestService extends RestService {
 
-    private final AttributeGetter<String> hostNameAttribute;
-    private final AttributeGetter<String> portAttribute;
+    private final AttributeGetter<String> namespaceAttributeGetter;
 
     public RefreshingRestService(CoLabService serviceName,
-            AttributeGetter<String> hostNameAttribute, AttributeGetter<String> portAttribute) {
-        this(serviceName.getServiceName(),hostNameAttribute,portAttribute);
+            AttributeGetter<String> namespaceAttributeGetter) {
+        this(serviceName.getServiceName(), namespaceAttributeGetter);
     }
 
     public RefreshingRestService(String serviceName,
-            AttributeGetter<String> hostNameAttribute, AttributeGetter<String> portAttribute) {
-        super(serviceName);
-        this.hostNameAttribute = hostNameAttribute;
-        this.portAttribute = portAttribute;
+            AttributeGetter<String> namespaceAttributeGetter) {
+        super(serviceName, "placeholder-namespace");
+        this.namespaceAttributeGetter = namespaceAttributeGetter;
     }
 
     @Override
     public UriProvider getBaseUrl() {
-        return getBaseUrl(hostNameAttribute.get(), portAttribute.get());
+        return getBaseUrl(namespaceAttributeGetter.get());
     }
 
     @Override
     public RestService withServiceName(String serviceName) {
-        return new RefreshingRestService(serviceName, hostNameAttribute, portAttribute);
+        return new RefreshingRestService(serviceName, namespaceAttributeGetter);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + hostNameAttribute.hashCode();
-        result = 31 * result + portAttribute.hashCode();
+        result = 31 * result + namespaceAttributeGetter.hashCode();
         return result;
     }
 
@@ -50,7 +47,6 @@ public class RefreshingRestService extends RestService {
         RefreshingRestService other = (RefreshingRestService) obj;
 
         return super.equals(obj)
-                && hostNameAttribute.equals(other.hostNameAttribute)
-                && portAttribute.equals(other.portAttribute);
+                && namespaceAttributeGetter.equals(other.namespaceAttributeGetter);
     }
 }

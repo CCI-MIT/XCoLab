@@ -1,5 +1,5 @@
 spring:
   application:
-    name: contest-service
+    name: ${xcolab.namespace:xcolab}-contest-service
   jmx:
     default-domain: ${spring.application.name}

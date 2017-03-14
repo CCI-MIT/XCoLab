@@ -4,13 +4,15 @@ import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
 
 public final class CommentClientUtil {
 
-    private static final RestService commentService = new RestService(CoLabService.COMMENT);
+    private static final RestService commentService = new RestService(CoLabService.COMMENT,
+            ServiceRequestUtils.getNamespace());
 
     private static final CommentClient commentClient = new CommentClient(commentService);
 

@@ -3,25 +3,27 @@ package org.xcolab.util.http.client;
 import org.springframework.util.Assert;
 
 import org.xcolab.util.clients.CoLabService;
-import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.UriProvider;
 import org.xcolab.util.http.client.interfaces.HttpEndpoint;
 
 public class RestService implements HttpEndpoint {
 
-    private static final String SCHEMA = "HTTP://";
-    private static final String DEFAULT_HOST_NAME = "localhost";
-    private static final String DEFAULT_PORT = ServiceRequestUtils.getServicesPort();
+    private static final String SCHEMA = "http://";
 
     private final String serviceName;
     private final UriProvider uriProvider;
-    public RestService(CoLabService serviceName) {
-        this(serviceName.getServiceName());
+    private final String namespace;
+
+    public RestService(CoLabService serviceName, String namespace) {
+        this(serviceName.getServiceName(), namespace);
     }
-    public RestService(String serviceName) {
+
+    public RestService(String serviceName, String namespace) {
         Assert.notNull(serviceName, "Service name is required");
+        Assert.notNull(serviceName, "Namespace is required");
+        this.namespace = namespace;
         this.serviceName = serviceName;
-        uriProvider = getBaseUrl(DEFAULT_HOST_NAME, DEFAULT_PORT);
+        this.uriProvider = getBaseUrl(namespace);
     }
 
     /**
@@ -33,7 +35,7 @@ public class RestService implements HttpEndpoint {
      * @return a copy of this instance with a different service name
      */
     public RestService withServiceName(String serviceName) {
-        return new RestService(serviceName);
+        return new RestService(serviceName, namespace);
     }
 
     @Override
@@ -41,8 +43,8 @@ public class RestService implements HttpEndpoint {
         return uriProvider;
     }
 
-    public UriProvider getBaseUrl(String hostName, String port) {
-        return new UriProvider(SCHEMA + hostName + ":" + port + "/" + serviceName);
+    public UriProvider getBaseUrl(String namespace) {
+        return new UriProvider(SCHEMA + namespace + "-" + serviceName);
     }
 
     @Override
@@ -59,6 +61,7 @@ public class RestService implements HttpEndpoint {
             return false;
         }
         final RestService other = (RestService) obj;
-        return serviceName.equals(other.serviceName);
+        return serviceName.equals(other.serviceName)
+                && namespace.equals(other.namespace);
     }
 }

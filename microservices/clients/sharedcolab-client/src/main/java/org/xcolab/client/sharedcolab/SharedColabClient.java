@@ -17,12 +17,12 @@ import java.util.List;
 public class SharedColabClient {
 
     private static final RestService sharedColabService = new RefreshingRestService(CoLabService.SHARED,
-            ConfigurationAttributeKey.SHARED_COLAB_LOCATION,
-            ConfigurationAttributeKey.SHARED_COLAB_PORT);
+            ConfigurationAttributeKey.SHARED_COLAB_LOCATION
+    );
 
     private static final RestService partnerMemberService = new RefreshingRestService(CoLabService.MEMBER,
-            ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
-            ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
+    );
 
     private static final RestResource<Member, Long> partnerMemberResource = new RestResource1<>(
             partnerMemberService, "members", Member.TYPES);
