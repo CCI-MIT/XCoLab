@@ -234,21 +234,23 @@
                     }
                 });
                 $("#archiveContentArticle").click(function () {
-                   var url = archiveContentArticleURL;
+                    if (confirm('Are you sure you want to archive this article? This action can\'t be undone!')) {
+                        var url = archiveContentArticleURL;
 
 
-                    var id = $('#contentArticleId').val();
-                    var parameters={articleId : id};
-                    $.post(url ,parameters , function (response) {
+                        var id = $('#contentArticleId').val();
+                        var parameters={articleId : id};
+                        $.post(url ,parameters , function (response) {
 
 
-                        noty({text: 'Article archived successfully!', type: 'success'});
+                            noty({text: 'Article archived successfully!', type: 'success'});
 
-                        $("#article-view").mask();
-                        $('#tree-view').tree('reload');
-                        newArticleAtFolderId("","");
+                            $("#article-view").mask();
+                            $('#tree-view').tree('reload');
+                            newArticleAtFolderId("","");
 
-                    });
+                        });
+                    }
 
                 });
                 $("#previewContentArticle").click(function () {
