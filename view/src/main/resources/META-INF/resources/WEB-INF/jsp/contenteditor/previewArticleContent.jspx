@@ -1,0 +1,13 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          version="2.0">
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <xcolab:layout>
+        <h1>This is a temporary content preview page, do not share this url!</h1>
+        <p>The content is restricted to the horizontal lines</p>
+        <hr/>
+        ${content}
+        <hr/>
+    </xcolab:layout>
+</jsp:root>

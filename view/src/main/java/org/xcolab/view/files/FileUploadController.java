@@ -40,6 +40,15 @@ public class FileUploadController {
     public ImageResponse singleFileUpload(@RequestParam("file") MultipartFile file,
             HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) Boolean resize) {
+
+            if(request.getParameter("resize") ==null){
+                resize = false;
+            }
+        return uploadImageResponse(file, request, resize);
+    }
+
+    private ImageResponse uploadImageResponse(MultipartFile file,
+            HttpServletRequest request,  Boolean resize) {
         try {
             String path = request.getSession().getServletContext().getRealPath("/");
 
@@ -47,7 +56,7 @@ public class FileUploadController {
 
             byte[] bytes = file.getBytes();
 
-            if (request.getParameter("resize") != null) {
+            if (resize!= null) {
                 bytes = FileUploadUtil
                         .resizeAndCropImage(ImageIO.read(new ByteArrayInputStream(bytes)),
                                 IMAGE_CROP_WIDTH_PIXELS, IMAGE_CROP_HEIGHT_PIXELS);
@@ -66,6 +75,25 @@ public class FileUploadController {
             return new ImageResponse(imageIdString, fileEntry.getLinkUrl(), true, "");
         } catch (IOException e) {
             return new ImageResponse(null, null, false, e.getMessage());
+        }
+    }
+
+    @PostMapping("/images/uploadCkEditor")
+    public void singleCKEditorUpload(@RequestParam("upload") MultipartFile file,
+            HttpServletRequest request, HttpServletResponse response,
+            @RequestParam("CKEditorFuncNum") String ckEditorFuncNum,
+            @RequestParam(required = false) Boolean resize) {
+
+        if(request.getParameter("resize") ==null){
+            resize = false;
+        }
+        ImageResponse ir = uploadImageResponse(file, request, resize);
+        try {
+
+            response.getOutputStream()
+                    .write(("<script>window.parent.CKEDITOR.tools.callFunction(" + ckEditorFuncNum + ", \"" + ir.getImageUrl() + "\");</script>").getBytes());;
+        }catch (IOException ignored){
+
         }
     }
 

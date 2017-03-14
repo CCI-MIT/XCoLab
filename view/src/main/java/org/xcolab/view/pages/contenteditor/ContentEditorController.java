@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
+import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
 import org.xcolab.client.members.PermissionsClient;
@@ -17,14 +18,15 @@ import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-public class ContentEditorController {  
-    private static final Integer THRESHOLD_TO_AVOID_NODE_COLLISION = 1000;
+public class ContentEditorController extends BaseContentEditor{
+
 
     @GetMapping("/content-editor")
     public String handleRenderRequest(HttpServletRequest request, HttpServletRequest response, Model model) {
@@ -50,13 +52,19 @@ public class ContentEditorController {
 
         if (contentFolders != null) {
             for (ContentFolder cf : contentFolders) {
-                responseArray.put(folderNode(cf.getContentFolderName(), cf.getContentFolderId().toString()));
+                if(cf.getContentFolderId().longValue() != ContentFolder.RESOURCE_FOLDER_ID) {
+                    responseArray.put(folderNode(cf.getContentFolderName(),
+                            cf.getContentFolderId().toString()));
+                }
             }
         }
         List<ContentArticleVersion> contentArticles = ContentsClient.getChildArticleVersions(folderId);
         if (contentArticles != null) {
             for (ContentArticleVersion ca : contentArticles) {
-                responseArray.put(articleNode(ca.getTitle(), ca.getContentArticleId()));
+                ContentArticle contentArticle = ContentsClient.getContentArticle(ca.getContentArticleId());
+                if(contentArticle.getVisible()) {
+                    responseArray.put(articleNode(ca.getTitle(), ca.getContentArticleId()));
+                }
             }
         }
 
@@ -69,19 +77,60 @@ public class ContentEditorController {
     public void contentEditorGetLatestArticleVersion(HttpServletRequest request, HttpServletResponse response,
                                                      @RequestParam(required = false) Long articleId)
             throws IOException, ContentNotFoundException {
-        JSONObject articleVersion = new JSONObject();
 
         ContentArticleVersion contentArticleVersion = ContentsClient.getLatestContentArticleVersion(articleId);
+
+        JSONObject articleVersion = getContentArticleVersion(articleId, contentArticleVersion);
+
+        response.getOutputStream().write(articleVersion.toString().getBytes());
+    }
+
+    @GetMapping("/content-editor/contentEditorGetArticleVersion")
+    public void contentEditorGetArticleVersion(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam(required = false) Long articleVersionId)
+            throws IOException, ContentNotFoundException {
+
+        ContentArticleVersion contentArticleVersion = ContentsClient.getContentArticleVersion(articleVersionId);
+
+        JSONObject articleVersion = getContentArticleVersion(contentArticleVersion.getContentArticleId(), contentArticleVersion);
+
+        response.getOutputStream().write(articleVersion.toString().getBytes());
+    }
+
+    private JSONObject getContentArticleVersion(@RequestParam(required = false) Long articleId,
+            ContentArticleVersion contentArticleVersion) {
+
+        JSONArray versions = new JSONArray();
+        List<ContentArticleVersion> cavs = ContentsClient
+                .getContentArticleVersions(0,Integer.MAX_VALUE,null,articleId,null,null);
+
+        JSONObject articleVersion;
+        for(ContentArticleVersion cav: cavs){
+            articleVersion = new JSONObject();
+            articleVersion.put("createdDate",cav.getCreateDate());
+            articleVersion.put("contentArticleVersionId", cav.getContentArticleVersionId());
+            versions.put(articleVersion);
+        }
+        articleVersion = new JSONObject();
         if (contentArticleVersion != null) {
             articleVersion.put("title", contentArticleVersion.getTitle());
             articleVersion.put("folderId", contentArticleVersion.getFolderId());
             articleVersion.put("articleId", contentArticleVersion.getContentArticleId());
             articleVersion.put("content", contentArticleVersion.getContent());
+            articleVersion.put("createdDate",contentArticleVersion.getCreateDate());
+            articleVersion.put("versions",versions);
         }
-
-        response.getOutputStream().write(articleVersion.toString().getBytes());
+        return articleVersion;
     }
 
+    @PostMapping("/content-editor/archiveContentArticle")
+    public void archiveContentArticle(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam(required = false) Long articleId) throws IOException{
+        ContentArticle ca = ContentsClient.getContentArticle(articleId);
+        ca.setVisible(false);
+        ContentsClient.updateContentArticle(ca);
+        defaultOperationReturnMessage(true, "Article archived successfully","", response);
+    }
 
     @PostMapping("/content-editor/createArticleFolder")
     public void createArticleFolder(HttpServletRequest request, HttpServletResponse response,
@@ -93,7 +142,7 @@ public class ContentEditorController {
 
         ContentsClient.createContentFolder(contentFolder);
 
-        defaultOperationReturnMessage(true, "Folder created successfully", response);
+        defaultOperationReturnMessage(true, "Folder created successfully","", response);
     }
 
     @PostMapping("/content-editor/moveArticleVersion")
@@ -113,10 +162,26 @@ public class ContentEditorController {
         newContentArticleVersion.setFolderId(folderId);
         ContentsClient.createContentArticleVersion(newContentArticleVersion);
 
-        defaultOperationReturnMessage(true, "Article moved successfully", response);
+        defaultOperationReturnMessage(true, "Article moved successfully","", response);
     }
 
 
+
+
+    @PostMapping("/content-editor/previewArticle")
+    public String previewArticle(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam(required = false) String content, Model model
+    ) throws IOException {
+        long memberId = MemberAuthUtil.getMemberId(request);
+        if (PermissionsClient.canAdminAll(memberId)) {
+
+            model.addAttribute("content", content);
+            return "contenteditor/previewArticleContent";
+        } else {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
+
+    }
     @PostMapping("/content-editor/saveContentArticleVersion")
     public void saveContentArticleVersion(HttpServletRequest request, HttpServletResponse response,
                                           @RequestParam(required = false) Long articleId,
@@ -134,36 +199,11 @@ public class ContentEditorController {
         contentArticleVersion.setFolderId((folderId));
         contentArticleVersion.setTitle(title);
         contentArticleVersion.setContent(content);
-        ContentsClient.createContentArticleVersion(contentArticleVersion);
+        contentArticleVersion =ContentsClient.createContentArticleVersion(contentArticleVersion);
 
 
-        defaultOperationReturnMessage(true, "Article version created successfully", response);
+        defaultOperationReturnMessage(true, "Article version created successfully", contentArticleVersion.getContentArticleId().toString(), response);
     }
 
-    private void defaultOperationReturnMessage(boolean success, String message, HttpServletResponse response) throws IOException {
-        JSONObject articleVersion = new JSONObject();
-        JSONObject folderNode = new JSONObject();
-        folderNode.put("success", success);
-        folderNode.put("msg", message);
-        response.getOutputStream().write(articleVersion.toString().getBytes());
-    }
 
-    private JSONObject treeNode(String label, String id, String kind, boolean loadOnDemand) {
-        JSONObject folderNode = new JSONObject();
-        folderNode.put("label", label);
-        folderNode.put("id", id);
-        folderNode.put("kind", kind);
-        if (loadOnDemand) {
-            folderNode.put("load_on_demand", loadOnDemand + "");
-        }
-        return folderNode;
-    }
-
-    private JSONObject articleNode(String label, Long id) {
-        return treeNode(label, (THRESHOLD_TO_AVOID_NODE_COLLISION +id) + "", "article", false);
-    }
-
-    private JSONObject folderNode(String label, String id) {
-        return treeNode(label, id, "folder", true);
-    }
 }

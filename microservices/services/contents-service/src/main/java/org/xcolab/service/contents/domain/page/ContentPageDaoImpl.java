@@ -43,7 +43,7 @@ public class ContentPageDaoImpl implements ContentPageDao {
                 .from(CONTENT_PAGE)
                 .getQuery();
 
-        if (title != null) {
+        if (title != null && !title.isEmpty()) {
             query.addConditions(CONTENT_PAGE.TITLE.eq(title));
         }
 
