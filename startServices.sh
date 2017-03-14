@@ -11,15 +11,18 @@ mkdir -p ${SERVICE_DIR}
 function startService {
     service=$1
     if [ -d "${service}" ]; then
-        PID_FILE=${SERVICE_DIR}/${service}.pid
-        if [ -f ${PID_FILE} ]; then
+        PID_FILE="${service}.pid"
+        if [ -f ${SERVICE_DIR}/${PID_FILE} ]; then
             echo "[WARN] ${service} is already running (${service}.pid file exists)."
         else
             echo "[INFO] Starting ${service}"
             cp ${service}/target/${service}-1.0-SNAPSHOT.jar ${SERVICE_DIR}/
-            OUT_FILE=${SERVICE_DIR}/${service}.out
+            SAVED_DIR=`pwd`
+            cd ${SERVICE_DIR}
+            OUT_FILE=${service}.out
             rm ${OUT_FILE} > /dev/null 2>&1
-            exec java -Xmx1G -Xms256M -jar ${SERVICE_DIR}/${service}-1.0-SNAPSHOT.jar > ${OUT_FILE} & echo $! > ${PID_FILE}
+            exec java -Xmx1G -Xms256M -jar ${service}-1.0-SNAPSHOT.jar > ${OUT_FILE} & echo $! > ${PID_FILE}
+            cd ${SAVED_DIR}
         fi
     fi
 }
