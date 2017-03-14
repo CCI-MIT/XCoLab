@@ -14,6 +14,17 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <!-- TODO: temporary fix for old roma clients -->
+    <repositories>
+        <repository>
+            <id>ROMA-repo</id>
+            <url>https://raw.github.com/CCI-MIT/ROMA/mvn-repo/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.xcolab</groupId>

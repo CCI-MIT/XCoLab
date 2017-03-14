@@ -48,6 +48,17 @@
         <google-api.version>1.22.0</google-api.version>
     </properties>
 
+    <!-- TODO: temporary fix for old roma clients -->
+    <repositories>
+        <repository>
+            <id>ROMA-repo</id>
+            <url>https://raw.github.com/CCI-MIT/ROMA/mvn-repo/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- Spring boot dependencies -->
         <dependency>
