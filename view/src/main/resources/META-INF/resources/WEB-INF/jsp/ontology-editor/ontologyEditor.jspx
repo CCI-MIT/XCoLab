@@ -137,10 +137,6 @@
                     }
             );
 
-
-
-
-
             $("#infoBox").hide();
 
             $("#saveOntologyTerm").click(function(){

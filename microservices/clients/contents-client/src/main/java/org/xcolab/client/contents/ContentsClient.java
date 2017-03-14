@@ -78,6 +78,7 @@ public final class ContentsClient {
                 .optionalQueryParam("folderId", folderId)
                 .optionalQueryParam("contentArticleVersion", contentArticleVersion)
                 .optionalQueryParam("title", title)
+                .optionalQueryParam("sort","-contentArticleVersion")
                 .withCache(CacheName.CONTENT)
                 .execute();
     }
@@ -183,6 +184,18 @@ public final class ContentsClient {
         return result;
     }
 
+    public static ContentPage createContentPage(ContentPage contentPage) {
+        final ContentPage result = contentPageResource.create(contentPage)
+                .execute();
+        return result;
+    }
+
+    public static Boolean updateContentPage(ContentPage contentPage) {
+        final Boolean result = contentPageResource.update(contentPage, contentPage.getPageId())
+                .execute();
+        return result;
+    }
+
     public static List<ContentArticleVersion> getChildArticleVersions(long folderId) {
         return contentFolderResource
                 .nestedResource(folderId, "contentArticleVersions", ContentArticleVersion.TYPES)
@@ -197,6 +210,24 @@ public final class ContentsClient {
                 .withCache(CacheName.CONTENT)
                 .executeWithResult()
                 .getOneIfExists();
+        if (page == null) {
+            throw new ContentNotFoundException("Content page does not exist: " + title);
+        }
+        return page;
+    }
+
+    public static ContentPage getContentPage(Long pageId) {
+        final ContentPage page = contentPageResource.get(pageId).execute();
+        if (page == null) {
+            throw new ContentNotFoundException("Content page does not exist: " + pageId);
+        }
+        return page;
+    }
+
+    public static List<ContentPage> getContentPages(String title) {
+        final List<ContentPage> page = contentPageResource.list()
+                .queryParam("title", title)
+                .execute();
         if (page == null) {
             throw new ContentNotFoundException("Content page does not exist: " + title);
         }

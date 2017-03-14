@@ -354,6 +354,15 @@ public class ContestClient {
                 .execute(), contestService);
     }
 
+    public List<Contest> getAllContestsInYear(Integer contestYear) {
+        return DtoUtil.toPojos(contestResource.list()
+                .addRange(0, Integer.MAX_VALUE)
+                .queryParam("contestYear",contestYear)
+                .queryParam("sort", "createDate")
+                .withCache(CacheName.CONTEST_LIST)
+                .execute(), contestService);
+    }
+
     public Map<Long, String> getModelIdsAndNames(long contestPK) {
         try {
             List<Long> modelIds = getModelIds(contestPK);

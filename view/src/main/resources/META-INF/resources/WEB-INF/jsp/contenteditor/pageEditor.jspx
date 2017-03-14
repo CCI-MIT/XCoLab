@@ -1,0 +1,367 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          version="2.0" xmlns:form="http://www.springframework.org/tags/form">
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <xcolab:layout>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.3/js.cookie.js"><!-- --></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqtree/1.3.6/tree.jquery.min.js"><!-- --></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/ckeditor.js"><!-- --></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"><!-- --></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"><!-- --></script>
+        <xcolab:script src="${_libJsFolder}/jquery.loadmask.spin.js" />
+
+
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"><!-- --></link>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqtree/1.3.6/jqtree.min.css"><!-- --></link>
+        <!-- link rel="stylesheet" href="${pageContext.request.contextPath}/js/ckeditor/contents.css"></link -->
+        <style>
+
+            .contentEditor input {border: 1px solid #DDD; color: #8d8d8d;  font-weight: 200;  margin-bottom: 7px; height: 30px;  font-size: large;  width: 530px;}
+            .contentBody {margin: auto; width: 1022px;  height: 742px;}
+            .treeContainer {height: 542px; overflow-y: scroll;}
+            #infoBox {padding: 8px 35px 8px 14px;margin-bottom: 20px;}
+            #innerContent{height: 610px}
+            .colFloatLef{float:left}
+            #tree-view{width:350px}
+            #saveArticle{cursor:pointer}
+            #articleURL{overflow:hidden}
+            #anchorArticleURL{display: block; width:0; white-space: nowrap;}
+
+            #articleVersions span:hover {
+                text-decoration:none;
+                cursor:pointer;
+            }
+            #articleVersions span {
+                cursor:pointer;
+                color:blue;
+                text-decoration:underline;
+            }
+
+            #tree-view small:hover {
+                text-decoration:none;
+                cursor:pointer;
+            }
+            #tree-view small {
+                cursor:pointer;
+                color:blue;
+                text-decoration:underline;
+            }
+
+
+        </style>
+        <xcolab:stylesheet href="${_libCssFolder}/jquery.loadmask.spin.css" />
+
+        <c:set var="contentEditorListFolderURL" value="/content-editor/pageEditorListFolder"/>
+
+
+        <c:set  var="getContentPageURL" value="/content-editor/pageEditorGetPage"/>
+
+
+        <c:set  var="saveContentPageURL" value="/content-editor/saveContentPage"/>
+
+
+
+        <c:set  var="previewContentPageURL" value="/content-editor/previewContentPage"/>
+
+        <c:set  var="createArticleFolderURL" value="/content-editor/createArticleFolder"/>
+
+        <c:if test="${not empty param.articleId}">
+            <script>
+
+                <![CDATA[
+                jQuery(document).ready(function () {
+
+                    loadPageContent(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.pageId});
+
+                    window.setTimeout(function(){
+                        $("#article-view").unmask()
+                    }, 2000);
+
+                });
+
+                ]]>
+            </script>
+        </c:if>
+        <script>
+            <![CDATA[
+
+            var getContentPageURL = '${getContentPageURL}';
+            var saveContentPageURL = '${saveContentPageURL}';
+            var moveArticleVersionURL = '${moveArticleVersionURL}';
+            var createArticleFolderURL = '${createArticleFolderURL}';
+            var previewContentPageURL = '${previewContentPageURL}'
+            var ckEditor = null;
+            var THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
+
+            function validateTitleStr(title){
+
+                var re = new RegExp("^([a-zA-Z0-9_-]+)$");
+                return re.test(title);
+
+            }
+            jQuery(document).ready(function () {
+
+                $("#article-view").mask({
+                    'label': "Please click on an Page or create a new one clicking in the create page button!",
+                    spinner: false
+                });
+
+                var $treeView = $('#tree-view');
+                $treeView.tree({
+                    //data:data,
+                    saveState: true,
+                    onCanSelectNode: function (node) {
+                        //if(node.kind == "folder") return false;
+                        return true;
+
+                    },
+                    onCreateLi: function (node, $li) {
+                        // Append a link to the jqtree-element div.
+                        // The link has an url '#node-[id]' and a data property 'node-id'.
+
+                    },
+                    onCanMoveTo: function (moved_node, target_node, position) {
+                        return target_node.kind == "folder";
+                    },
+                    onCanMove: function (node) {
+                        if (!node.parent.parent) {
+                            // Example: Cannot move root node
+
+                            return false;
+                        }
+                        else {
+                            return node.kind != "folder";
+                        }
+                    },
+                    dragAndDrop: true
+                });
+
+                $treeView.bind(
+                        'tree.click',
+                        function (event) {
+                            var node = event.node;
+                            if (node.kind == "article") {
+                                $("#article-view").unmask();
+                                $("#article-view").mask();
+                                loadPageContentFromTree(node.id);
+                            } else {
+                                /*
+                                 event.preventDefault();
+                                 return false;*/
+                            }
+                        }
+                );
+
+                $("#infoBox").hide();
+
+                $("#saveContentPage").click(function () {
+
+                    saveContentPage();
+                });
+                $("#previewContentPage").click(function () {
+                    var mainContentArticleId = $('#mainContent').val();
+                    var params = "";
+                    if (mainContentArticleId == 0) {
+                        noty({text: 'Please select the main content article!', type: 'error'});
+                        return;
+                    }
+                    params += "?mainContentArticleId=" + mainContentArticleId;
+                    var menuArticleId = $('#leftMenu').val();
+                    params += "&menuArticleId=" + menuArticleId;
+
+                    var win = window.open(previewContentPageURL + params, '_blank');
+                    win.focus();
+                });
+
+                $("#newContentPage").click(function () {
+
+                    $('#pageId').val(0);
+                    $('#pageTitle').val("");
+                    $('#mainContent').val(0);
+                    $('#leftMenu').val(0);
+
+                    $("#createdAtDate").html("Created at: - ");
+                    $("#article-view").unmask()
+                    $('#pageTitle').focus();
+
+                });
+
+                function pad(n, width, z) {
+                    z = z || '0';
+                    n = n + '';
+                    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+                }
+
+                $(".oldArticleVersion").on('click', function (ref) {
+
+                    loadPageContent($(ref).attr("data-attribute"))
+                });
+
+                function loadPageContentFromTree(id) {
+                    id = id - THRESHOLD_TO_AVOID_NODE_COLISION;
+                    loadPageContent(id)
+                }
+
+                function loadPageContent(id) {
+
+                    var url = getContentPageURL;
+
+                    var parameters = {pageId: id};
+
+                    $.get(url, parameters, loadPageContentResponse);
+
+                }
+
+                function formatDate(ctd) {
+                    var dateObject = new Date(ctd); //read in as Date object
+                    var timeZoneIdentifier = String(String(dateObject).split("(")[1]).split(")")[0];  //get the timezone abbreviation
+                    return (dateObject.getMonth() + 1) + "/" + dateObject.getDate() + "/"
+                            + dateObject.getFullYear() + " " + pad(dateObject.getHours(), 2) + ":"
+                            + pad(dateObject.getMinutes(), 2) + " " + timeZoneIdentifier;
+
+                }
+
+                function loadPageContentResponse(response) {
+                    var responseData = JSON.parse(response);
+                    var data = responseData;
+                    var id = data.pageId;
+                    var mainContentArticleId = data.contentArticleId;
+                    var menuArticleId = data.menuArticleId;
+                    var pageTitle = data.pageTitle;
+
+                    var input = $('#pageId').val(id);
+
+                    $('#pageTitle').val(pageTitle);
+
+                    $('#mainContent').val(mainContentArticleId);
+
+                    if (menuArticleId != 0) {
+                        $('#leftMenu').val(menuArticleId);
+                    }
+
+                    $("#createdAtDate").html("Created at: " + formatDate(data.createdDate));
+
+                    $("#article-view").unmask()
+
+                }
+
+                function saveContentPage() {
+
+                    var pageTitle = $('#pageTitle').val();
+
+                    if (pageTitle == "") {
+
+                        noty({text: 'Title field is mandatory!', type: 'error'});
+                        return false;
+                    }
+                    if(!validateTitleStr(pageTitle)){
+                        noty({text: 'The title is invalid, it must contain only alphanumeric characters - or _. This title will be used to compose a url at /page/title!', type: 'error'});
+                        return false;
+                    }
+                    $("#article-view").mask();
+
+                    var pageId = $('#pageId').val();
+
+
+
+                    var mainContentArticleId = $('#mainContent').val();
+                    if(mainContentArticleId == 0){
+                        noty({text: 'Please select the main content article!', type: 'error'});
+                        return;
+                    }
+
+                    var menuArticleId = $('#leftMenu').val();
+
+                    var url = saveContentPageURL;
+
+                    var parameters = {
+                        pageId: pageId,
+                        pageTitle: pageTitle,
+                        mainContentArticleId: mainContentArticleId
+                        ,
+                        menuArticleId: menuArticleId
+                    };
+
+                    $.post(url, parameters, function (response) {
+                        var responseData = JSON.parse(response);
+                        var data = responseData;
+                        noty({text: 'Page saved successfully', type: 'success'});
+
+                        $("#article-view").unmask();
+                        $('#tree-view').tree('reload');
+                        var id = articleId + THRESHOLD_TO_AVOID_NODE_COLISION;
+                        loadPageContent(id, folderName);
+
+                    });
+                }
+
+            });
+
+
+
+            ]]>
+        </script>
+        <div class="contentEditor">
+            <div class="contentBody">
+                <ul class="c-TabBar clearfix">
+
+                    <li class="c-TabBar__tab--first"><a href="/content-editor/">Content Editor</a></li>
+                    <li class="c-TabBar__tab active"><a href="/content-editor/pageEditor">Page Editor</a></li>
+                    <li class="c-TabBar__tab"><a href="/content-editor/resourcePagesEditor">Resource pages</a></li>
+                </ul>
+
+                <div id="infoBox"><!-- --></div>
+                <div  id="innerContent" class="addpropbox">
+                    <div class="colFloatLef">
+                        <div>
+                            <div class="outerVerticalCenter" id="newContentPage" ><a  class="c-Button__primary" href="#">New</a></div>
+                        </div>
+                        <br/>
+                        <h3>Content pages</h3>
+                        <div class="treeContainer">
+                            <div id="tree-view" data-url="${contentEditorListFolderURL}" ><!-- --></div>
+                        </div>
+                    </div>
+                    <div class="colFloatLef" style="width: 620px;margin-left: 15px;">
+                        <div id="article-view">
+                            <h3>Page editor</h3>
+
+                            <div>
+                                <!-- FORM FIELDS -->
+                                <input type="hidden" id="pageId"/>
+                                Page title: <input type="text" id="pageTitle"  maxcharacters="300"  />
+                            </div>
+                            <div id="createdAtDate"><!-- --></div>
+                            <div id="leftMenuContainer">Left menu:
+                                <select id="leftMenu"  style="width: 527px;">>
+                                        <option value="0">None</option>
+                                    <c:forEach var="article" items="${allArticles}">
+                                        <option value="${article.value}">${article.key}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+
+                            <div id="mainContentContainer">Main content:
+                                <select id="mainContent" style="width: 508px;">
+                                        <option value="0">Select an article</option>
+                                    <c:forEach var="article" items="${allArticles}">
+                                        <option value="${article.value}">${article.key}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <br/>
+
+
+
+                        </div>
+                        <br/>
+                        <div class="floatRight outerVerticalCenter" id="previewContentPage" ><a  class="c-Button__primary" href="#">Preview</a></div>
+                        <div class="floatRight outerVerticalCenter" id="saveContentPage" ><a  class="c-Button__primary" href="#">Save</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </xcolab:layout>
+</jsp:root>
