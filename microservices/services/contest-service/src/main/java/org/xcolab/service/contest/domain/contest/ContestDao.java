@@ -19,6 +19,6 @@ public interface ContestDao {
     Integer countByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId, Long contestTypeId, Boolean contestPrivate);
     boolean isShared(long contestId);
     boolean existsWithScheduleId(long contestScheduleId);
-
+    Contest getByResourceId(Long resourceId) throws NotFoundException;
     boolean delete(long contestPK);
 }

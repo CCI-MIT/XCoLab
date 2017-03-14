@@ -273,6 +273,13 @@ public class ContestClient {
                 .execute().toPojo(contestService);
     }
 
+    public Contest getContestByResourceArticleId(Long resourceArticleId) {
+        return contestResource
+                .service("getContestByResourceArticleId", ContestDto.class)
+                .queryParam("resourceArticleId", resourceArticleId)
+                .execute().toPojo(contestService);
+    }
+
 
     public int getNumberOfAllContestsInCollectionCard(Long collectionCardId, String viewType, boolean onlyFeatured) {
         return contestResource.service("getNumberOfAllContestsInCollectionCard", Integer.class)
@@ -358,7 +365,7 @@ public class ContestClient {
         return DtoUtil.toPojos(contestResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .queryParam("contestYear",contestYear)
-                .queryParam("sort", "createDate")
+                .queryParam("sort", "ContestShortName")
                 .withCache(CacheName.CONTEST_LIST)
                 .execute(), contestService);
     }

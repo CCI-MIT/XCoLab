@@ -75,6 +75,9 @@ public final class ContestClientUtil {
         return contestClient.isContestShared(contestId);
     }
 
+    public static Contest getContestByResourceArticleId(Long resourceArticleId) {
+        return contestClient.getContestByResourceArticleId(resourceArticleId);
+    }
     public static Contest getContestByThreadId(Long threadId){
         return contestClient.getContestByThreadId(threadId);
     }
