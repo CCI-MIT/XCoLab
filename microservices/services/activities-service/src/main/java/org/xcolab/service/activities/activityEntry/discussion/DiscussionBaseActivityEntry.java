@@ -51,7 +51,8 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
     @Override
     public void setActivityEntry(ActivityEntry activityEntry) {
         this.activityEntry = activityEntry;
-        if (this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_ADDED_COMMENT.getSecondaryTypeId())) {
+        if (this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_ADDED_COMMENT.getSecondaryTypeId())||
+                this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_ADDED.getSecondaryTypeId())) {
 
             try {//DISCUSSION_ADDED_COMMENT
                 category = CategoryClientUtil.getCategory(activityEntry.getClassPrimaryKey());

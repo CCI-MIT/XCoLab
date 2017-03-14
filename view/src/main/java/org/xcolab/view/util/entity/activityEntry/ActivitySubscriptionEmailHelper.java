@@ -88,8 +88,8 @@ public class ActivitySubscriptionEmailHelper {
 
 //        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //        try {
-//            lastEmailNotification = sdf.parse("2017-03-01 00:00:00");
-//            lastDailyEmailNotification = sdf.parse("2017-03-01 00:00:00");
+//            lastEmailNotification = sdf.parse("2017-03-09 00:00:00");
+//            lastDailyEmailNotification = sdf.parse("2017-03-09 00:00:00");
 //        } catch (ParseException e) {
 //            lastEmailNotification = new Date();
 //        }
