@@ -7,17 +7,10 @@ import org.ocpsoft.rewrite.servlet.config.Forward;
 import org.ocpsoft.rewrite.servlet.config.HttpConfigurationProvider;
 import org.ocpsoft.rewrite.servlet.config.Path;
 import org.ocpsoft.rewrite.servlet.config.Redirect;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestType;
 
 import javax.servlet.ServletContext;
 
 public class RewriteConfigProvider extends HttpConfigurationProvider {
-    private static final Logger log = LoggerFactory.getLogger(RewriteConfigProvider.class);
 
     @Override
     public int priority() {
@@ -184,24 +177,21 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
     }
 
     private void redirectLegacyProposals(ConfigurationBuilder configurationBuilder) {
-        final ContestType defaultContestType = ContestClientUtil
-                .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
         configurationBuilder
                 .addRule()
                     .when(Direction.isInbound()
                             .and(Path.matches("/web/guest/{portletName}")))
-                    .perform(Redirect.permanent(defaultContestType.getPortletUrl()))
+                    .perform(Forward.to("/contests"))
                 .where("portletName").matches("(plans|dialogues|challenges|trends)")
                 .addRule()
                     .when(Direction.isInbound()
                             .and(Path.matches("/web/guest/plans/-/plans/contestsType/prior")))
-                    .perform(Redirect.permanent(defaultContestType.getPortletUrl()
-                            + "?viewType=GRID&filter=&showActiveContests=false"))
+                .perform(Forward.to("/contests?viewType=GRID&filter=&showActiveContests=false"))
                 .addRule()
                     .when(Direction.isInbound()
                             .and(Path.matches("/web/guest/plans/-/plans/contestsType/all")))
-                    .perform(Redirect.permanent(defaultContestType.getPortletUrl()
-                            + "?viewType=GRID&filter=&showActiveContests=false&showAllContests=true"));
+                    .perform(Forward.to("/contests?viewType=GRID&filter="
+                            + "&showActiveContests=false&showAllContests=true"));
 
         // legacy urls
         configurationBuilder
@@ -232,23 +222,10 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
     }
 
     private void redirectLegacyContentPages(ConfigurationBuilder configurationBuilder) {
-        switch (ConfigurationAttributeKey.COLAB_NAME.get()) {
-            case "Climate CoLab":
-                redirectContentPagesClimateCoLab(configurationBuilder);
-                break;
-            case "Solve CoLab":
-                redirectContentPagesSolveCoLab(configurationBuilder);
-                break;
-            case "Crowdsensor":
-                redirectContentPagesCrowdsensor(configurationBuilder);
-                break;
-            case "Resilience Dialogues":
-                redirectContentPagesResilienceDialogues(configurationBuilder);
-                break;
-            default:
-                log.warn("No Content Pages loaded for {}",
-                        ConfigurationAttributeKey.COLAB_NAME.get());
-        }
+        redirectContentPagesClimateCoLab(configurationBuilder);
+        redirectContentPagesSolveCoLab(configurationBuilder);
+        redirectContentPagesCrowdsensor(configurationBuilder);
+        redirectContentPagesResilienceDialogues(configurationBuilder);
     }
 
     private void redirectContentPagesClimateCoLab(ConfigurationBuilder configurationBuilder) {
@@ -377,74 +354,25 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
     private void redirectContentPagesSolveCoLab(ConfigurationBuilder configurationBuilder) {
         configurationBuilder
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/about")))
-                    .perform(Redirect.permanent("/page/about"))
-                .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/crowdsourcing")))
-                    .perform(Redirect.permanent("/page/crowdsourcing"))
-                .addRule()
                     .when(Direction.isInbound().and(Path.matches("/web/guest/why-these-challenges")))
-                    .perform(Redirect.permanent("/page/why-these-challenges"))
-                .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/get-involved")))
-                    .perform(Redirect.permanent("/page/get-involved"))
-                .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/faqs")))
-                    .perform(Redirect.permanent("/page/faqs"))
-                .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/sponsors")
-                                                .or(Path.matches("/sponsors"))))
-                    .perform(Redirect.permanent("/page/sponsors"))
-                .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/people")))
-                    .perform(Redirect.permanent("/page/people"));
+                    .perform(Redirect.permanent("/page/why-these-challenges"));
     }
 
     private void redirectContentPagesCrowdsensor(ConfigurationBuilder configurationBuilder) {
         configurationBuilder
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/about")))
-                    .perform(Redirect.permanent("/page/about"))
-                .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/crowdsourcing")))
-                    .perform(Redirect.permanent("/page/crowdsourcing"))
-                .addRule()
                     .when(Direction.isInbound().and(Path.matches("/web/guest/smart-nation")))
                     .perform(Redirect.permanent("/page/smart-nation"))
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/get-involved")))
-                    .perform(Redirect.permanent("/page/get-involved"))
-                .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/faqs")))
-                    .perform(Redirect.permanent("/page/faqs"))
-                .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/sponsors")))
-                    .perform(Redirect.permanent("/page/sponsors"))
-                .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/people")))
-                    .perform(Redirect.permanent("/page/people"));
-
-        // news
-        configurationBuilder
-                .addRule()
                     .when(Direction.isInbound().and(Path.matches("/community/-/blogs/{articleTitle}")))
-                    .perform(Redirect.permanent("/page/news-{articleTitle}"));
+                    .perform(Forward.to("/page/news-{articleTitle}"));
     }
 
     private void redirectContentPagesResilienceDialogues(ConfigurationBuilder configurationBuilder) {
         configurationBuilder
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/about")))
-                    .perform(Redirect.permanent("/page/about"))
-                .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/crowdsourcing")))
-                    .perform(Redirect.permanent("/page/crowdsourcing"))
-                .addRule()
                     .when(Direction.isInbound().and(Path.matches("/web/guest/community")))
                     .perform(Redirect.permanent("/page/community"))
-                .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/web/guest/get-involved")))
-                    .perform(Redirect.permanent("/page/get-involved"))
                 .addRule()
                     .when(Direction.isInbound().and(Path.matches("/web/guest/partners")))
                     .perform(Redirect.permanent("/page/partners"))

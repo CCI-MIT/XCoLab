@@ -7,13 +7,15 @@ import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
 import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RestService;
 
 import java.util.List;
 
 public final class OntologyClientUtil {
 
-    private static final RestService contestService = new RestService(CoLabService.CONTEST);
+    private static final RestService contestService = new RestService(CoLabService.CONTEST,
+            ServiceRequestUtils.getNamespace());
 
     private static final OntologyClient client = OntologyClient.fromService(contestService);
 

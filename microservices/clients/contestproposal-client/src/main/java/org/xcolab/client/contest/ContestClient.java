@@ -93,7 +93,7 @@ public class ContestClient {
     public Contest getContest(long contestId) {
         try {
             return contestResource.get(contestId)
-                    .withCache(CacheName.CONTEST_DETAILS)
+                    //.withCache(CacheName.CONTEST_DETAILS)
                     .executeChecked().toPojo(contestService);
         } catch (EntityNotFoundException e) {
             throw new ContestNotFoundException(contestId);
@@ -147,6 +147,7 @@ public class ContestClient {
                 contestResource.create(new ContestDto(contest)).execute().toPojo(contestService);
         //TODO: fine-grained cache removal
         ServiceRequestUtils.clearCache(CacheName.CONTEST_LIST);
+        ServiceRequestUtils.clearCache(CacheName.CONTEST_DETAILS);
         return result;
     }
 

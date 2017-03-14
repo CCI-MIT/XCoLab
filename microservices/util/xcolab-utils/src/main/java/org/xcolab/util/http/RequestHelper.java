@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.ResponseErrorHandler;
@@ -21,23 +22,38 @@ import org.xcolab.util.http.interceptors.HeaderRequestInterceptor;
 import org.xcolab.util.http.interceptors.UriAwareResponseInterceptor;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
 public class RequestHelper {
 
-    private final RestTemplate restTemplate;
+    private final ResponseErrorHandler errorHandler;
+    private RestTemplate restTemplate;
 
     private CacheProvider cacheProvider = new CacheProviderNoOpImpl();
 
     public RequestHelper(ResponseErrorHandler errorHandler) {
+        this.errorHandler = errorHandler;
         restTemplate = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+        configureRestTemplate();
+    }
+
+    public void setRestTemplate(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+        configureRestTemplate();
+    }
+
+    private void configureRestTemplate() {
         restTemplate.getMessageConverters()
                 .add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
         restTemplate.setErrorHandler(errorHandler);
-        restTemplate.setInterceptors(Arrays.asList(new UriAwareResponseInterceptor(),
-                new HeaderRequestInterceptor(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)));
+        final List<ClientHttpRequestInterceptor> interceptors =
+                new ArrayList<>(restTemplate.getInterceptors());
+        interceptors.add(new UriAwareResponseInterceptor());
+        interceptors.add(new HeaderRequestInterceptor(HttpHeaders.ACCEPT,
+                MediaType.APPLICATION_JSON_VALUE));
+        restTemplate.setInterceptors(interceptors);
     }
 
     public <R> List<R> getList(UriBuilder uriBuilder,

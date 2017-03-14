@@ -79,19 +79,19 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                 Contest contest = ContestClientUtil.getContest(contestIdLong);
                 if (contest.getIsSharedContestInForeignColab()) {
                     RestService activitiesService = new RefreshingRestService(CoLabService.ACTIVITY,
-                            ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
-                            ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
+                    );
 
                     activityClient = ActivitiesClient.fromService(activitiesService);
                     RestService commentsService = new RefreshingRestService(CoLabService.COMMENT,
-                            ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
-                            ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
+                    );
 
                     commentClient = CommentClient.fromService(commentsService);
                     threadClient = ThreadClient.fromService(commentsService);
                     RestService proposalsService = new RefreshingRestService(CoLabService.PROPOSAL,
-                            ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
-                            ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
+                    );
 
                     proposalClient = ProposalClient.fromService(proposalsService);
                 } else {

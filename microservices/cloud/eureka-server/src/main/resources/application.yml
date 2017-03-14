@@ -1,0 +1,19 @@
+server:
+  port: 8761
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    server:
+      waitTimeInMsWhenSyncEmpty: 0
+
+
+logging:
+  level:
+    ROOT: WARN
+    org.springframework: INFO
+    org.springframework.jmx: WARN
+    org.springframework.web: WARN
+    org.springframework.boot.web: WARN
+    org.springframework.boot.actuate: WARN

@@ -167,14 +167,11 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> PARTNER_COLAB_NAME =
             ConfigurationAttributes.newStringAttribute("PARTNER_COLAB_NAME")
                     .build();
-    public static final AttributeGetter<String> PARTNER_COLAB_LOCATION =
-            ConfigurationAttributes.newStringAttribute("PARTNER_COLAB_LOCATION")
+    public static final AttributeGetter<String> PARTNER_COLAB_NAMESPACE =
+            ConfigurationAttributes.newStringAttribute("PARTNER_COLAB_NAMESPACE")
                     .build();
     public static final AttributeGetter<String> PARTNER_COLAB_ADDRESS =
             ConfigurationAttributes.newStringAttribute("PARTNER_COLAB_ADDRESS")
-                    .build();
-    public static final AttributeGetter<String> PARTNER_COLAB_PORT =
-            ConfigurationAttributes.newStringAttribute("PARTNER_COLAB_PORT")
                     .build();
 
 

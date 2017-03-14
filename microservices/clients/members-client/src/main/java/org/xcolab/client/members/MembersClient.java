@@ -32,7 +32,8 @@ import java.util.List;
 
 public final class MembersClient {
 
-    private static final RestService memberService = new RestService(CoLabService.MEMBER);
+    private static final RestService memberService = new RestService(CoLabService.MEMBER,
+            ServiceRequestUtils.getNamespace());
 
     private static final RestResource1<Member, Long> memberResource = new RestResource1<>(memberService,
             "members", Member.TYPES);

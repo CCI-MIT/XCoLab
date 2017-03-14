@@ -2,7 +2,6 @@ package org.xcolab.view.taglibs.xcolab.jspTags.discussion.actions;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
@@ -48,8 +47,8 @@ public class DeleteDiscussionMessageFlagActionController extends BaseDiscussions
             }
             if (contest != null && contest.getIsSharedContestInForeignColab()) {
                 RestService commentsService = new RefreshingRestService(CoLabService.COMMENT,
-                        ConfigurationAttributeKey.PARTNER_COLAB_LOCATION,
-                        ConfigurationAttributeKey.PARTNER_COLAB_PORT);
+                        ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
+                );
 
                 commentClient = CommentClient.fromService(commentsService);
             } else {

@@ -1,8 +1,19 @@
 #!/bin/bash
 
-echo "Copying view binary"
-cp $TRAVIS_BUILD_DIR/view/target/xcolab-view-1.0-SNAPSHOT.jar $TRAVIS_BUILD_DIR/deploy/view
-echo "Copying services binary"
-mv $TRAVIS_BUILD_DIR/deploy/apache-tomcat-8.0.33/webapps/*.war $TRAVIS_BUILD_DIR/deploy/webapps/
-echo "Deleting apache-tomcat-8 temp dir"
-rm -r $TRAVIS_BUILD_DIR/deploy/apache-tomcat-8.0.33/
+if [ $BUILD_TYPE == 'deploy' ]; then
+    echo "Creating binary directories"
+    mkdir -p binaries/view
+    mkdir -p binaries/cloud
+    mkdir -p binaries/services
+
+    echo "Moving view binary"
+    mv view/target/xcolab-view-1.0-SNAPSHOT.jar binaries/view/
+
+    echo "Moving eureka binary"
+    mv microservices/cloud/eureka-server/target/eureka-server-1.0-SNAPSHOT.jar binaries/cloud/
+
+    echo "Moving service binaries"
+    mv microservices/services/*-service/target/*-1.0-SNAPSHOT.jar binaries/services/
+else
+    echo "Skipping deployment"
+fi

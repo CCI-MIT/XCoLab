@@ -24,6 +24,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.modeling.models.ui.ModelInputGroupDisplayItem;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.proposals.ProposalPhaseClient;
@@ -32,6 +33,8 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
+
+
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -54,6 +57,7 @@ public class Contest extends AbstractContest implements Serializable {
     private final OntologyClient ontologyClient;
     private final CommentClient commentClient;
     private final ThreadClient threadClient;
+
 
     private final static Map<Long, FocusArea> faCache = new HashMap<>();
     private final Map<String, List<OntologyTerm>> ontologySpaceCache = new HashMap<>();
@@ -103,7 +107,7 @@ public class Contest extends AbstractContest implements Serializable {
             contestClient = ContestClient.fromService(restService);
             contestTeamMemberClient = ContestTeamMemberClient.fromService(restService);
             ontologyClient = OntologyClient.fromService(restService);
-            RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
+            RestService commentService = restService.withServiceName(CoLabService.COMMENT.getServiceName());
             commentClient = CommentClient.fromService(commentService);
             threadClient = ThreadClient.fromService(commentService);
         } else {
@@ -133,8 +137,14 @@ public class Contest extends AbstractContest implements Serializable {
             link += ContestClientUtil.getClient().getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get())
                     .getFriendlyUrlStringContests();
         } else {
-            link += contestClient.getContestType(this.getContestTypeId())
-                    .getFriendlyUrlStringContests();
+
+            if(this.getContestTypeId()!=null) {
+                link += contestClient.getContestType(this.getContestTypeId())
+                        .getFriendlyUrlStringContests();
+            }else{
+                System.out.println(" > ContestID("+this.getContestPK()+")");
+                System.out.println(" > Contest: " + this.toString() + " - ");
+            }
         }
 
         link += "/%d/%s";
