@@ -78,6 +78,7 @@ public final class ContentsClient {
                 .optionalQueryParam("folderId", folderId)
                 .optionalQueryParam("contentArticleVersion", contentArticleVersion)
                 .optionalQueryParam("title", title)
+                .optionalQueryParam("sort","-contentArticleVersion")
                 .withCache(CacheName.CONTENT)
                 .execute();
     }

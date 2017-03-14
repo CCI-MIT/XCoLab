@@ -62,9 +62,7 @@
 
         <c:set  var="saveArticleVersionURL" value="/content-editor/saveContentArticleVersion"/>
 
-
-
-        <c:set  var="moveArticleVersionURL" value="/content-editor/moveArticleVersion"/>
+        <c:set  var="getArticleVersionIdURL" value="/content-editor/contentEditorGetArticleVersion"/>
 
         <c:set  var="createArticleFolderURL" value="/content-editor/createArticleFolder"/>
 
@@ -90,7 +88,7 @@
 
             var getArticleVersionURL = '${getArticleVersionURL}';
             var saveArticleVersionURL = '${saveArticleVersionURL}';
-            var moveArticleVersionURL = '${moveArticleVersionURL}';
+            var getArticleVersionIdURL = '${getArticleVersionIdURL}';
             var createArticleFolderURL = '${createArticleFolderURL}';
             var ckEditor = null;
             var THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
@@ -179,6 +177,12 @@
                         $("#article-view").unmask()
                     }
                 });
+
+                $("#previewContentArticle").click(function () {
+                    var content = ckEditor.getData();
+                    $("#htmlContent").val(content);
+                    $("#previewArticleForm").submit();
+                });
             });
             function addVersionEntry(dateOfEdit, versionId){
                 var cell = $('<li>');
@@ -213,10 +217,7 @@
                 $.get(url ,parameters ,loadContentArticleResponse);
 
             }
-            $(".oldArticleVersion").on('click',function (ref){
 
-                loadArticleVersionContentId($(ref).attr("data-attribute"))
-            });
 
             function loadArticleVersionContentId(id){
 
@@ -253,13 +254,18 @@
                 var div = $('#articleVersions');
                 $("#createdAtDate").html("Created at: " + formatDate(data.createdDate));
 
+                $('#articleVersions').empty();
+
                 for(var i = 0 ; i <  data.versions.length; i++) {
                     var version =  data.versions[i];
                     var adjustedDateString = formatDate(version.createdDate);
                     div.append("<span class='oldArticleVersion' data-attribute='"+version.contentArticleVersionId+"'> Created at: "+adjustedDateString+"</span><br/>")
 
                 }
+                $(".oldArticleVersion").on('click',function (ref){
 
+                    loadArticleVersionContentId($( this ).attr("data-attribute"))
+                });
                 updateArticleURL(folderName, data.title.replace(/ /g,"+"));
                 $("#articleId").html('Article ID: <a href="?articleId=' + id + '">' + id + '</a><br/>');
 
@@ -270,7 +276,7 @@
             function saveArticle(){
 
                 if($('#contentArticleTitle').val() == ""){
-                    alert("Title field is mandatory!");
+                    noty({text: 'Title field is mandatory!', type: 'error'});
                     return false;
                 }
                 $("#article-view").mask();
@@ -288,59 +294,20 @@
                     var responseData = JSON.parse(response);
                     var data = responseData;
                     var $infoBox = $("#infoBox");
-                    $infoBox.html("Article updated successfully!");
-                    $infoBox.show();
-                    $infoBox.delay(5000).fadeOut('slow');
+                    noty({text: 'Article updated successfully!', type: 'success'});
+
                     $("#article-view").unmask();
                     $('#tree-view').tree('reload');
-                    var folderName = $("#folderName").html().replace("Parent folder: ");
-                    var id = articleId + THRESHOLD_TO_AVOID_NODE_COLISION;
+                    var folderName = $("#folderName").html().replace("Parent folder: ","");
+                    var id = (parseInt(data.articleVersionId) + parseInt(THRESHOLD_TO_AVOID_NODE_COLISION));
                     loadArticleVersionContent(id, folderName);
 
 
                 });
             }
-            function moveArticle(articleId, folderId, folderName){
-                var articleIdNoThreshold = articleId - THRESHOLD_TO_AVOID_NODE_COLISION;
-                $(".treeContainer").mask();
-                var url = moveArticleVersionURL;
 
-                var parameters={articleId : articleIdNoThreshold, folderId: folderId };
 
-                $.post(url ,parameters , function (response) {
-                    var responseData = JSON.parse(response);
-                    var data = responseData;
-                    var $infoBox = $("#infoBox");
-                    $infoBox.html("Article moved successfully!");
-                    $infoBox.show();
-                    $infoBox.delay(5000).fadeOut('slow');
-                    $('#tree-view').tree('reload');
-                    $(".treeContainer").unmask();
-                    loadArticleVersionContent(articleId, folderName);
-                });
 
-            }
-
-            function createFolder( parentFolderId, folderName){
-
-                $(".treeContainer").mask();
-                var url = createArticleFolderURL;
-
-                var parameters={parentFolderId : parentFolderId, folderName: folderName };
-
-                $.post(url ,parameters , function (response) {
-                    var responseData = JSON.parse(response);
-                    var data = responseData;
-                    var $infoBox = $("#infoBox");
-                    $infoBox.html("Folder created successfully!");
-                    $infoBox.show();
-                    $infoBox.delay(5000).fadeOut('slow');
-                    $('#tree-view').tree('reload');
-                    $(".treeContainer").unmask()
-
-                });
-
-            }
             ]]>
         </script>
         <div class="contentEditor">
@@ -383,11 +350,15 @@
 
                         </div>
                         <br/>
+                        <div class="floatLeft outerVerticalCenter" id="previewContentArticle" ><a  class="c-Button__primary" href="#">Preview</a></div>
                         <div class="floatRight outerVerticalCenter" id="deleteOntologyTerm" ><a  class="c-Button__primary" href="#">Delete</a></div>
                         <div> <div class="floatRight outerVerticalCenter" id="saveArticle" ><a  class="c-Button__primary" href="#">Save</a></div></div>
                     </div>
                 </div>
             </div>
+            <form target="_blank" action="${previewArticleURL}" method="post" id="previewArticleForm">
+                <input type="hidden" id="htmlContent" name="content" />
+            </form>
         </div>
     </xcolab:layout>
 </jsp:root>

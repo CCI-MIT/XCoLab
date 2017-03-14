@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
+import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
 import org.xcolab.client.members.PermissionsClient;
@@ -60,7 +61,10 @@ public class ContentEditorController extends BaseContentEditor{
         List<ContentArticleVersion> contentArticles = ContentsClient.getChildArticleVersions(folderId);
         if (contentArticles != null) {
             for (ContentArticleVersion ca : contentArticles) {
-                responseArray.put(articleNode(ca.getTitle(), ca.getContentArticleId()));
+                ContentArticle contentArticle = ContentsClient.getContentArticle(ca.getContentArticleId());
+                if(contentArticle.getVisible()) {
+                    responseArray.put(articleNode(ca.getTitle(), ca.getContentArticleId()));
+                }
             }
         }
 
@@ -99,7 +103,7 @@ public class ContentEditorController extends BaseContentEditor{
         JSONArray versions = new JSONArray();
         List<ContentArticleVersion> cavs = ContentsClient
                 .getContentArticleVersions(0,Integer.MAX_VALUE,null,articleId,null,null);
-        Collections.reverse(cavs);
+
         JSONObject articleVersion;
         for(ContentArticleVersion cav: cavs){
             articleVersion = new JSONObject();
@@ -119,6 +123,14 @@ public class ContentEditorController extends BaseContentEditor{
         return articleVersion;
     }
 
+    @PostMapping("/content-editor/archiveContentArticle")
+    public void archiveContentArticle(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam(required = false) Long articleId) throws IOException{
+        ContentArticle ca = ContentsClient.getContentArticle(articleId);
+        ca.setVisible(false);
+        ContentsClient.updateContentArticle(ca);
+        defaultOperationReturnMessage(true, "Article archived successfully","", response);
+    }
 
     @PostMapping("/content-editor/createArticleFolder")
     public void createArticleFolder(HttpServletRequest request, HttpServletResponse response,
@@ -130,7 +142,7 @@ public class ContentEditorController extends BaseContentEditor{
 
         ContentsClient.createContentFolder(contentFolder);
 
-        defaultOperationReturnMessage(true, "Folder created successfully", response);
+        defaultOperationReturnMessage(true, "Folder created successfully","", response);
     }
 
     @PostMapping("/content-editor/moveArticleVersion")
@@ -150,10 +162,26 @@ public class ContentEditorController extends BaseContentEditor{
         newContentArticleVersion.setFolderId(folderId);
         ContentsClient.createContentArticleVersion(newContentArticleVersion);
 
-        defaultOperationReturnMessage(true, "Article moved successfully", response);
+        defaultOperationReturnMessage(true, "Article moved successfully","", response);
     }
 
 
+
+
+    @PostMapping("/content-editor/previewArticle")
+    public String previewArticle(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam(required = false) String content, Model model
+    ) throws IOException {
+        long memberId = MemberAuthUtil.getMemberId(request);
+        if (PermissionsClient.canAdminAll(memberId)) {
+
+            model.addAttribute("content", content);
+            return "contenteditor/previewArticleContent";
+        } else {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
+
+    }
     @PostMapping("/content-editor/saveContentArticleVersion")
     public void saveContentArticleVersion(HttpServletRequest request, HttpServletResponse response,
                                           @RequestParam(required = false) Long articleId,
@@ -171,10 +199,10 @@ public class ContentEditorController extends BaseContentEditor{
         contentArticleVersion.setFolderId((folderId));
         contentArticleVersion.setTitle(title);
         contentArticleVersion.setContent(content);
-        ContentsClient.createContentArticleVersion(contentArticleVersion);
+        contentArticleVersion =ContentsClient.createContentArticleVersion(contentArticleVersion);
 
 
-        defaultOperationReturnMessage(true, "Article version created successfully", response);
+        defaultOperationReturnMessage(true, "Article version created successfully", contentArticleVersion.getContentArticleId().toString(), response);
     }
 
 

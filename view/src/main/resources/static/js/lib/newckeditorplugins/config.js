@@ -3,12 +3,12 @@ CKEDITOR.editorConfig = function( config ) {
     config.language = 'en';
 
     //config.extraPlugins = 'justify,panelbutton,floatpanel,colorbutton,uploadwidget,uploadimage';
-    config.extraPlugins = 'justify,colorbutton,uploadimage';
+    config.extraPlugins = 'justify,colorbutton,uploadimage,copyformatting';
     config.uploadUrl = '/images/uploadCkEditor';
     config.filebrowserImageUploadUrl = '/images/uploadCkEditor';
     config.toolbar = 'custom';
     config.toolbar_custom = [
-        { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+        { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ,'-','CopyFormatting'] },
         { name: 'editing', groups: [ 'find', 'selection', 'spellchecker' ], items: [ 'Scayt' ] },
         { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
         { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar' ] },
