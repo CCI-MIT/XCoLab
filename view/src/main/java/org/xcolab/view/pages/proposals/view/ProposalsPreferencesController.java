@@ -31,6 +31,7 @@ import org.xcolab.view.pages.proposals.utils.ContestPhasePromotionEmail;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.view.pages.proposals.wrappers.ProposalsPreferencesWrapper;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class ProposalsPreferencesController {
 
     @GetMapping("/proposals/editPreferences")
     public String showPreferences(HttpServletRequest request, HttpServletResponse response, Model model) {
-        model.addAttribute("prefs", new ProposalsPreferencesWrapper(request));
+        model.addAttribute("preferences", new ProposalsPreferencesWrapper(request));
 
         long memberId = MemberAuthUtil.getMemberId(request);
         if (!PermissionsClient.canAdminAll(memberId)) {
@@ -121,7 +122,7 @@ public class ProposalsPreferencesController {
 
 
     @PostMapping("/proposals/savePreferences")
-    public String savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, ProposalsPreferencesWrapper preferences)
+    public void savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, ProposalsPreferencesWrapper preferences)
             throws IOException {
         //save terms
         preferences.store();
@@ -135,14 +136,16 @@ public class ProposalsPreferencesController {
         //moving parameters are set
         String message = moveProposals(EntityIdListUtil.PROPOSALS.fromIdList(proposalIdsToBeMoved), moveFromContestId, moveToContestPhaseId, ribbonId, false,
                 request);
-        model.addAttribute("message", message);
 
-        return "proposals/editPreferences";
+
+        AlertMessage.success(message).flash(request);
+
+        response.sendRedirect("/proposals/editPreferences");
     }
 
     //-- @RequestMapping(params = "action=checkForMissingTeamMembers")
     @PostMapping("/proposals/checkForMissingTeamMembers")
-    public String checkForMissingTeamMembers(HttpServletRequest request, HttpServletResponse response, Model model)
+    public void checkForMissingTeamMembers(HttpServletRequest request, HttpServletResponse response, Model model)
             throws  IOException {
         List<Contest> activeContests = ContestClientUtil.getContestsByActivePrivate(true, false);
         StringBuilder message = new StringBuilder();
@@ -191,14 +194,17 @@ public class ProposalsPreferencesController {
                 }
             }
 
-            model.addAttribute("message", message.toString());
+
+            AlertMessage.success(message.toString()).flash(request);
         }
-        return "proposals/editPreferences";
+
+
+        response.sendRedirect("/proposals/editPreferences");
     }
 
 
     @PostMapping("/proposals/runRibbonDistribution")
-    public String runRibbonDistribution(HttpServletRequest request, HttpServletResponse response, Model model)
+    public void runRibbonDistribution(HttpServletRequest request, HttpServletResponse response, Model model)
             throws  IOException {
         List<Contest> activeContests = ContestClientUtil.getContestsByActivePrivate(true, false);
         StringBuilder message = new StringBuilder();
@@ -260,8 +266,9 @@ public class ProposalsPreferencesController {
         }
 
         //moving parameters are set
-        model.addAttribute("message", message.toString());
-        return "proposals/editPreferences";
+        //model.addAttribute("message", message.toString());
+        AlertMessage.success(message.toString()).flash(request);
+        response.sendRedirect("/proposals/editPreferences");
     }
 
     private String moveProposals(List<Proposal> proposalsToBeMoved, Long moveFromContestId,
