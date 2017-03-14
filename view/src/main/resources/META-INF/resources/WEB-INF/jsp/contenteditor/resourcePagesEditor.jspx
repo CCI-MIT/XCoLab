@@ -56,7 +56,7 @@
         <c:set var="contentEditorListFolderURL" value="/content-editor/resourcePagesListFolder"/>
 
 
-        <c:set  var="getArticleVersionURL" value="/content-editor/contentEditorGetLatestArticleVersion"/>
+        <c:set  var="getArticleVersionURL" value="/content-editor/contentEditorGetLatestResourceArticleVersion"/>
 
         <c:set  var="getArticleVersionIdURL" value="/content-editor/contentEditorGetArticleVersion"/>
 
@@ -239,7 +239,16 @@
                 var responseData = JSON.parse(response);
                 var data = responseData;
                 var id = data.articleId;
+
+
                 var textarea = $('#articleVersionContent');
+
+                var contestURL =  data.contestURL;
+                var contestArticleURL =  data.contestArticleURL;
+
+                $("#contestURL").html("<a target=\"_blank\" href=\""+contestURL+"\" >Contest</a>");
+                $("#contestArticleURL").html("<a target=\"_blank\" href=\""+contestArticleURL+"\" >Resource page link</a>");
+
 
                 //textarea.html(data.content);
                 CKEDITOR.instances['articleVersionContent'].setData(data.content);
@@ -339,6 +348,8 @@
                             </div>
                             <div id="folderName">Parent folder: <!-- --></div>
                             <div id="createdAtDate"><!-- --></div>
+                            <div id="contestURL"><!-- --></div>
+                            <div id="contestArticleURL"><!-- --></div>
                             <br/>
                             <!--<div id="articleURL">&lt;!&ndash; Article URL:  &ndash;&gt;</div>-->
                             <div>

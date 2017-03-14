@@ -196,6 +196,12 @@ public class ContestController {
         return contestDao.getByThreadId(threadId);
     }
 
+    @RequestMapping(value = "/contests/getContestByResourceArticleId", method = RequestMethod.GET)
+    public Contest getContestByResourceArticleId(
+            @RequestParam(required = false) Long resourceArticleId) throws NotFoundException {
+        return contestDao.getByResourceId(resourceArticleId);
+    }
+
     @RequestMapping(value = "/contestDiscussions", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ContestDiscussion> getContestDiscussions(
             @RequestParam(required = false) Integer startRecord,

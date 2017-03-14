@@ -183,6 +183,17 @@ public class ContestDaoImpl implements ContestDao {
         return record.into(Contest.class);
     }
 
+    public Contest getByResourceId(Long resourceId) throws NotFoundException {
+        final Record record = dslContext.select()
+                .from(CONTEST)
+                .where(CONTEST.RESOURCE_ARTICLE_ID.eq(resourceId))
+                .fetchOne();
+        if (record == null) {
+            throw new NotFoundException("Contest with resource id " + resourceId + " was not found");
+        }
+        return record.into(Contest.class);
+    }
+
     public List<Contest> findByGiven(String contestName, List<Long> focusAreaOntologyTermsIds, List<Long> contestTypeIds) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST).getQuery();
@@ -248,6 +259,10 @@ public class ContestDaoImpl implements ContestDao {
                 case "createDate":
                     query.addOrderBy(sortColumn.isAscending()
                             ? CONTEST.CREATED.asc() : CONTEST.CREATED.desc());
+                    break;
+                case "ContestShortName":
+                    query.addOrderBy(sortColumn.isAscending()
+                            ? CONTEST.CONTEST_SHORT_NAME.asc() : CONTEST.CONTEST_SHORT_NAME.desc());
                     break;
                 case "weight":
                     query.addOrderBy(sortColumn.isAscending()
