@@ -44,7 +44,7 @@ public class ActivitySubscriptionEmailHelper {
     private static Date lastEmailNotification = new Date();
 
     // 1 am
-    private final static int DAILY_DIGEST_TRIGGER_HOUR = 10;
+    private final static int DAILY_DIGEST_TRIGGER_HOUR = 1;
 
     private final static Logger _log = LoggerFactory.getLogger(ActivitySubscriptionEmailHelper.class);
 
