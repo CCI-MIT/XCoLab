@@ -148,7 +148,7 @@ public class AdminTabController extends AbstractTabController {
         subject = TemplateReplacementUtil.replaceContestTypeStrings(subject, contestType);
         body = TemplateReplacementUtil.replaceContestTypeStrings(body, contestType);
 
-        EmailClient.sendEmail(fromEmail.getAddress(), addressTo, subject, body, true, null);
+        EmailClient.sendEmail(fromEmail.getAddress(), addressTo, subject, body, true, null,contestId);
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json");
         response.getWriter().write(mapper.writeValueAsString(true));

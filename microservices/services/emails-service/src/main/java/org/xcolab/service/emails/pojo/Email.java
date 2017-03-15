@@ -15,6 +15,9 @@ public class Email {
 
     private String replyTo;
 
+    private Long referenceId;
+
+
     public String getReplyTo() {
         return replyTo;
     }
@@ -61,6 +64,14 @@ public class Email {
 
     public void setHtml(boolean html) {
         isHtml = html;
+    }
+
+    public Long getReferenceId() {
+        return referenceId;
+    }
+
+    public void setReferenceId(Long referenceId) {
+        this.referenceId = referenceId;
     }
 }
 

@@ -211,12 +211,13 @@ public abstract class EmailNotification {
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
             InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
 
-            EmailClient.sendEmail(fromEmail.getAddress(), toEmail.getAddress(), subject,body, true, fromEmail.getAddress());
+            EmailClient.sendEmail(fromEmail.getAddress(), toEmail.getAddress(), subject,body, true, fromEmail.getAddress(),getReferenceId());
         } catch (UnsupportedEncodingException e) {
             _log.error("Could not send message", e);
         }
     }
 
+    protected abstract Long getReferenceId();
     protected abstract Member getRecipient();
 
     public void sendMessage() {

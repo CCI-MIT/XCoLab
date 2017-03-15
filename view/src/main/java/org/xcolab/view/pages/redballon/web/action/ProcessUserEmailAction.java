@@ -108,7 +108,7 @@ public class ProcessUserEmailAction {
             List<String> addressTo = new ArrayList<>();
             Collections.addAll(addressTo, recipients);
 
-            EmailClient.sendEmail(FROM_ADDRESS, addressTo, messageSubject, messageBody, true, FROM_ADDRESS);
+            EmailClient.sendEmail(FROM_ADDRESS, addressTo, messageSubject, messageBody, true, FROM_ADDRESS,but.getBalloonTextId());
 
             session.setAttribute(EMAIL_SENT, true);
 

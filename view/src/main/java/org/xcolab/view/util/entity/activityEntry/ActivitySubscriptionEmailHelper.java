@@ -136,7 +136,7 @@ public class ActivitySubscriptionEmailHelper {
                 String body = getDigestMessageBody(userDigestActivities);
                 String unsubscribeFooter = getUnsubscribeDailyDigestFooter(NotificationUnregisterUtils.getActivityUnregisterLink(recipient));
 
-                sendEmailMessage(recipient, subject, body, unsubscribeFooter, ConfigurationAttributeKey.COLAB_URL.get());
+                sendEmailMessage(recipient, subject, body, unsubscribeFooter, ConfigurationAttributeKey.COLAB_URL.get(),recipient.getId_());
             } catch (MemberNotFoundException ignored) {
                 _log.error("sendDailyDigestNotifications: MemberNotFound : {}",
                         ignored.getMessage());
@@ -283,7 +283,7 @@ public class ActivitySubscriptionEmailHelper {
                 String unsubscribeFooter = getUnsubscribeIndividualSubscriptionFooter(
                         ConfigurationAttributeKey.COLAB_URL.get(),
                         NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId())));
-                sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter, ConfigurationAttributeKey.COLAB_URL.get());
+                sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter, ConfigurationAttributeKey.COLAB_URL.get(),activity.getActivityEntryId());
             }
         }
     }
@@ -292,7 +292,7 @@ public class ActivitySubscriptionEmailHelper {
         return activityEntryTitle.replaceAll("\\<[^>]*>","");
     }
 
-    private static void sendEmailMessage(Member recipient, String subject, String body, String unregisterFooter, String portalBaseUrl) {
+    private static void sendEmailMessage(Member recipient, String subject, String body, String unregisterFooter, String portalBaseUrl, Long referenceId) {
         try {
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
             InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
@@ -310,7 +310,7 @@ public class ActivitySubscriptionEmailHelper {
 
 
             EmailClient.sendEmail(fromEmail.getAddress(),toEmail.getAddress(), TemplateReplacementUtil.replacePlatformConstants(subject),
-                    TemplateReplacementUtil.replacePlatformConstants(message), true, fromEmail.getAddress());
+                    TemplateReplacementUtil.replacePlatformConstants(message), true, fromEmail.getAddress(),referenceId);
 
         } catch ( UnsupportedEncodingException e) {
             _log.error("Can't send email notifications to users");

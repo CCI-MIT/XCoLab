@@ -42,6 +42,10 @@ public class MemberNotification extends EmailNotification {
         return templateWrapper;
     }
 
+    protected Long getReferenceId(){
+        return this.recipient.getId_();
+    }
+
     protected class MemberNotificationTemplate extends EmailNotificationTemplate {
 
         public MemberNotificationTemplate(ContestEmailTemplate template, String proposalName, String contestName) {

@@ -7,64 +7,75 @@ public class Email implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private String from;
+        private String from;
 
-    private List<String> to;
+        private List<String> to;
 
-    private String subject;
+        private String subject;
 
-    private String emailBody;
+        private String emailBody;
 
-    private boolean isHtml;
+        private boolean isHtml;
 
-    private String replyTo;
+        private String replyTo;
 
-    public String getReplyTo() {
-        return replyTo;
-    }
+        private Long referenceId;
 
-    public void setReplyTo(String replyTo) {
-        this.replyTo = replyTo;
-    }
 
-    public String getFrom() {
-        return from;
-    }
+        public String getReplyTo() {
+            return replyTo;
+        }
 
-    public void setFrom(String from) {
-        this.from = from;
-    }
+        public void setReplyTo(String replyTo) {
+            this.replyTo = replyTo;
+        }
 
-    public List<String> getTo() {
-        return to;
-    }
+        public String getFrom() {
+            return from;
+        }
 
-    public void setTo(List<String> to) {
-        this.to = to;
-    }
+        public void setFrom(String from) {
+            this.from = from;
+        }
 
-    public String getSubject() {
-        return subject;
-    }
+        public List<String> getTo() {
+            return to;
+        }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
+        public void setTo(List<String> to) {
+            this.to = to;
+        }
 
-    public String getEmailBody() {
-        return emailBody;
-    }
+        public String getSubject() {
+            return subject;
+        }
 
-    public void setEmailBody(String emailBody) {
-        this.emailBody = emailBody;
-    }
+        public void setSubject(String subject) {
+            this.subject = subject;
+        }
 
-    public boolean isHtml() {
-        return isHtml;
-    }
+        public String getEmailBody() {
+            return emailBody;
+        }
 
-    public void setHtml(boolean html) {
-        isHtml = html;
-    }
+        public void setEmailBody(String emailBody) {
+            this.emailBody = emailBody;
+        }
+
+        public boolean isHtml() {
+            return isHtml;
+        }
+
+        public void setHtml(boolean html) {
+            isHtml = html;
+        }
+
+        public Long getReferenceId() {
+            return referenceId;
+        }
+
+        public void setReferenceId(Long referenceId) {
+            this.referenceId = referenceId;
+        }
 }
 

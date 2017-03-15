@@ -89,7 +89,7 @@ public class ContactController {
         String fromAddress = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
 
         EmailClient.sendEmail(fromAddress, addressTo , messageSubject,
-                messageBody, false, contactBean.getEmail());
+                messageBody, false, contactBean.getEmail(), null);
 
         AlertMessage.success("Message sent!").flash(request);
         return showContact(request, model);

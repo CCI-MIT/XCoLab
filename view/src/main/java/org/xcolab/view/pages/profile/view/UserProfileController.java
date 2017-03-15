@@ -362,7 +362,7 @@ public class UserProfileController {
         InternetAddress addressFrom = TemplateReplacementUtil.getAdminFromEmailAddress();
 
         EmailClient.sendEmail(addressFrom.getAddress(), user.getEmailAddress(), messageSubject,
-                messageBody, false, addressFrom.getAddress());
+                messageBody, false, addressFrom.getAddress(),user.getId_());
     }
 
     @PostMapping("{memberId}/delete")

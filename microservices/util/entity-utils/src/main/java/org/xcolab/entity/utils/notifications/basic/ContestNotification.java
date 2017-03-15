@@ -80,6 +80,10 @@ public class ContestNotification extends EmailNotification {
         return templateWrapper;
     }
 
+    @Override
+    protected Long getReferenceId(){
+        return this.contest.getContestPK();
+    }
     private Date getActivePhaseDeadline() {
         ContestClient contestClient;
         if(contest.getIsSharedContestInForeignColab()) {
