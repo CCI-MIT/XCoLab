@@ -5,6 +5,7 @@ import org.xcolab.client.sharedcolab.exceptions.MemberNotFoundException;
 import org.xcolab.client.sharedcolab.pojo.Member;
 import org.xcolab.client.sharedcolab.pojo.SharedContest;
 import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
@@ -16,9 +17,14 @@ import java.util.List;
 
 public class SharedColabClient {
 
-    private static final RestService sharedColabService = new RefreshingRestService(CoLabService.SHARED,
-            ConfigurationAttributeKey.SHARED_COLAB_LOCATION
-    );
+    private static final RestService sharedColabService;
+
+    static {
+        sharedColabService = new RefreshingRestService(CoLabService.SHARED,
+                ConfigurationAttributeKey.SHARED_COLAB_NAMESPACE
+                        .withDefaultValue(ServiceRequestUtils.getNamespace())
+        );
+    }
 
     private static final RestService partnerMemberService = new RefreshingRestService(CoLabService.MEMBER,
             ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE

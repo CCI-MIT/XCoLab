@@ -26,12 +26,8 @@ public class CachedAttribute<T> implements AttributeGetter<T> {
 
     @Override
     public T get(long additionalId) {
-        T value = cachedValuesByAdditionalId.get(additionalId);
-        if (value == null) {
-            value = wrappedAttributeGetter.get(additionalId);
-            cachedValuesByAdditionalId.put(additionalId, value);
-        }
-        return value;
+        return cachedValuesByAdditionalId
+                .computeIfAbsent(additionalId, k -> wrappedAttributeGetter.get(additionalId));
     }
 
     @Override

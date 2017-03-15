@@ -1,12 +1,12 @@
 package org.xcolab.service.sharedcolab.web;
 
 import com.sun.jersey.api.NotFoundException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,20 +62,20 @@ public class SharedColabController {
     }
 
     private void checkSharedCoLabServiceActive() {
-        if (!ConfigurationAttributeKey.SHARED_COLAB_LOCATION.get().equals("localhost")) {
+        if (ConfigurationAttributeKey.SHARED_COLAB_NAMESPACE.isPresent()) {
             throw new SharedColabInactiveException(
-                    String.format("sharedcolab-service at localhost is inactive - use %s:%s",
-                            ConfigurationAttributeKey.SHARED_COLAB_LOCATION.get(),
-                            ConfigurationAttributeKey.SHARED_COLAB_PORT.get()));
+                    String.format("sharedcolab-service at this namespace is inactive - use namespace %s."
+                            + "If you are using this namespace locally, delete the optional "
+                                    + "SHARED_COLAB_NAMESPACE attribute.",
+                            ConfigurationAttributeKey.SHARED_COLAB_NAMESPACE.get()));
         }
     }
-
 
     @RequestMapping(value = "/contests/retrieveSharedId", method = RequestMethod.POST)
     public Long retrieveSharedIdForContests(@RequestParam("sharedContestName") String sharedContestName,
             @RequestParam("colabOrigin") String colabOrigin) throws NotFoundException {
         checkSharedCoLabServiceActive();
-        if (sharedContestName == null || sharedContestName == "") {
+        if (StringUtils.isEmpty(sharedContestName)) {
             throw new NotFoundException("No sharedContestName given");
         } else {
             SharedContest sc = new SharedContest();
