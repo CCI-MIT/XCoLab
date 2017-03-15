@@ -158,12 +158,9 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<Boolean> IS_SHARED_COLAB =
             ConfigurationAttributes.newBooleanAttribute("IS_SHARED_COLAB")
                     .defaultValue(false).build();
-    public static final AttributeGetter<String> SHARED_COLAB_PORT =
-            ConfigurationAttributes.newStringAttribute("SHARED_COLAB_PORT")
-                    .defaultValue("8080").build();
-    public static final AttributeGetter<String> SHARED_COLAB_LOCATION =
-            ConfigurationAttributes.newStringAttribute("SHARED_COLAB_LOCATION")
-                    .defaultValue("localhost").build();
+    public static final AttributeGetter<String> SHARED_COLAB_NAMESPACE =
+            ConfigurationAttributes.newStringAttribute("SHARED_COLAB_NAMESPACE")
+                    .build();
     public static final AttributeGetter<String> PARTNER_COLAB_NAME =
             ConfigurationAttributes.newStringAttribute("PARTNER_COLAB_NAME")
                     .build();
