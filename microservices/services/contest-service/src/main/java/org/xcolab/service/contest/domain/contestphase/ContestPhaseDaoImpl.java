@@ -98,17 +98,24 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
         return query.fetchInto(ContestPhase.class);
     }
     @Override
-    public List<ContestPhase> findByGiven(Long contestPK, Long contestScheduleId) {
+    public List<ContestPhase> findByGiven(Long contestPK, Long contestScheduleId,
+            Long contestPhaseTypeId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST_PHASE).getQuery();
 
         if (contestPK != null) {
             query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(contestPK));
         }
+
         if (contestScheduleId != null) {
             query.addConditions(CONTEST_PHASE.CONTEST_SCHEDULE_ID.eq(contestScheduleId));
             query.addConditions(CONTEST_PHASE.CONTEST_PK.eq(0L));
         }
+
+        if (contestPhaseTypeId != null) {
+            query.addConditions(CONTEST_PHASE.CONTEST_PHASE_TYPE.eq(contestPhaseTypeId));
+        }
+
         query.addOrderBy(CONTEST_PHASE.PHASE_START_DATE.asc());
         return query.fetchInto(ContestPhase.class);
     }

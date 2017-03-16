@@ -176,6 +176,9 @@ public class MembersController {
 
         if (membersPermissions.getCanDownloadMemberList()) {
             MemberListCsvConverter csvConverter = new MemberListCsvConverter();
+            List<Member> memberList = MembersClient.listMembers(null, null, null,
+                            null, true, 0, Integer.MAX_VALUE);
+            csvConverter.addMembers(memberList);
             csvConverter.initiateDownload("membersList", response);
         }
     }
