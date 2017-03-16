@@ -46,8 +46,9 @@ public class ContestPhaseController {
 
     @RequestMapping(value = "/contestPhases", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ContestPhase> getContestPhases(@RequestParam(required = false) Long contestPK,
-            @RequestParam(required = false) Long contestScheduleId) {
-        return contestPhaseDao.findByGiven(contestPK, contestScheduleId);
+            @RequestParam(required = false) Long contestScheduleId,
+            @RequestParam(required = false) Long contestPhaseTypeId) {
+        return contestPhaseDao.findByGiven(contestPK, contestScheduleId, contestPhaseTypeId);
     }
 
     @GetMapping(value = "/contestPhaseRibbonTypes/{contestPhaseRibbonTypeId}")

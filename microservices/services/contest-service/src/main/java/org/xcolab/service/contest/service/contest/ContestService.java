@@ -54,7 +54,7 @@ public class ContestService {
     }
 
     public List<ContestPhase> getAllContestPhases(Long contestId) {
-        return this.contestPhaseDao.findByGiven(contestId, null);
+        return this.contestPhaseDao.findByGiven(contestId, null, null);
     }
 
     public ContestPhase getActiveOrLastPhase(Long contestId) {

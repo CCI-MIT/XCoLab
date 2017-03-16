@@ -16,22 +16,41 @@
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
 
-    <div class="explanation">
+    <div class="cmsDetailsBox">
         <br/>
         <h1>Admin panel</h1>
         <br />
-        <h2>Editors</h2>
-        <br/>
         <div class="addpropbox">
+            <h2>Editors</h2>
             <b>Click on the links below</b> to open the editors:<br/>
             <a href="/ontology-editor">Ontology editor</a><br/>
             <a href="/content-editor">Content editor</a>
         </div>
         <br/>
         <br/>
-        <h2>Server administration</h2>
         <div class="addpropbox">
-            <a href="/admin/caching">Caching</a>
+            <h2>Voting</h2>
+            <form:form action="/admin/contest/manager/tab/ADMIN/votingReport" commandName="votingReportBean"
+                       id="votingReportForm" method="get">
+                <label for="votingPhaseIds">Please select the voting phase(s)
+                    you wish to include in the voting report:</label> <br/>
+                <form:select path="votingPhaseIds" id="votingPhaseIds"
+                             class="multi" multiple="multiple" cssStyle="width: 100%;">
+                    <form:option value="" label="--- Please select ---"/>
+                    <form:options items="${votingPhaseSelectionItems}" itemValue="value"
+                                  itemLabel="lable"/>
+                </form:select>
+                <br />
+                <button type="submit" class="c-Button__primary">Generate report</button>
+            </form:form>
+        </div>
+        <br/>
+        <br/>
+        <div class="addpropbox">
+            <h2>Server administration</h2>
+            <form action="/admin/caching/clear" method="post">
+                <button type="submit" class="c-Button__primary">Clear cache</button>
+            </form>
         </div>
     </div>
 

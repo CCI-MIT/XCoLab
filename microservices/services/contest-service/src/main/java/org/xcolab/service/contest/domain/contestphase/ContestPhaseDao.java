@@ -15,7 +15,7 @@ public interface ContestPhaseDao {
 
     boolean delete(Long contestPhasePK);
 
-    List<ContestPhase> findByGiven(Long contestPK, Long contestScheduleId);
+    List<ContestPhase> findByGiven(Long contestPK, Long contestScheduleId, Long contestPhaseTypeId);
 
     List<ContestPhase> findByPhaseAutopromote(String contestPhaseAutoPromote);
 

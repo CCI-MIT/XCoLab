@@ -254,6 +254,15 @@ public final class ContestClientUtil {
         return contestClient.getTemplatePhasesForContestScheduleId(contestScheduleId);
     }
 
+    public static List<ContestPhase> getContestPhasesByType(long contestPhaseTypeId) {
+        return contestClient.getContestPhasesByType(contestPhaseTypeId);
+    }
+
+    public static String getContestNames(List<Long> contestTypeIds, String plurality,
+            String conjunction) {
+        return contestClient.getContestNames(contestTypeIds, plurality, conjunction);
+    }
+
     public static ContestPhase getContestPhase(Long contestPhaseId) {
         return contestClient.getContestPhase(contestPhaseId);
     }

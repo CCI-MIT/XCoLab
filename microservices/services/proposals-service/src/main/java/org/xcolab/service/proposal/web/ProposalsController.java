@@ -12,13 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
-import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalContestPhaseAttribute;
 import org.xcolab.model.tables.pojos.ProposalVersion;
 import org.xcolab.model.tables.pojos.ProposalVote;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
-import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
 import org.xcolab.service.proposal.domain.proposalcontestphaseattribute.ProposalContestPhaseAttributeDao;
 import org.xcolab.service.proposal.domain.proposalversion.ProposalVersionDao;
 import org.xcolab.service.proposal.domain.proposalvote.ProposalVoteDao;
@@ -245,9 +243,18 @@ public class ProposalsController {
         }
     }
 
+    @GetMapping("/proposalVotes")
+    public List<ProposalVote> getProposalVotes(
+            @RequestParam(required = false) Long contestPhaseId,
+            @RequestParam(required = false) Long proposalId,
+            @RequestParam(required = false) Long userId
+    ) {
+        return proposalVoteDao.findByGiven(proposalId, contestPhaseId, userId);
+    }
+
 
     @RequestMapping(value = "/proposalVotes/count", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public Integer getProposalVotes(
+    public Integer countProposalVotes(
             @RequestParam(required = false) Long contestPhaseId,
             @RequestParam(required = false) Long proposalId,
             @RequestParam(required = false) Long userId

@@ -560,6 +560,12 @@ public class ContestClient {
                 .execute(), contestService);
     }
 
+    public List<ContestPhase> getContestPhasesByType(long contestPhaseTypeId) {
+        return DtoUtil.toPojos(contestPhasesResource.list()
+                .queryParam("contestPhaseTypeId", contestPhaseTypeId)
+                .execute(), contestService);
+    }
+
     public ContestPhase getContestPhase(Long contestPhaseId) {
         return contestPhasesResource.get(contestPhaseId)
                 .execute().toPojo(contestService);
