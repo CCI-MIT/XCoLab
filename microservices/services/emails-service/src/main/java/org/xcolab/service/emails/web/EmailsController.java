@@ -55,6 +55,7 @@ public class EmailsController {
             ce.setEmailBodyHash(hashEmail(email.getEmailBody()));
             ce.setReferenceId(email.getReferenceId());
             ce.setEmailTo(recipient);
+            ce.setEmailFrom(email.getFrom());
             ce.setEmailSubject(email.getSubject());
             ce.setSent(sentStatus);
             colabEmailDao.create(ce);
