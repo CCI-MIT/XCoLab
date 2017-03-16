@@ -88,13 +88,15 @@ public class ProposalContextHelper {
 
     private Contest fetchContest() {
         Contest localContest = null;
-        if (StringUtils.isNotBlank(givenContestUrlName) && givenContestYear > 0) {
-            localContest = ContestClientUtil.getContest(givenContestUrlName, givenContestYear);
-        } else if (givenContestId > 0) {
-            try {
+        try {
+            if (StringUtils.isNotBlank(givenContestUrlName) && givenContestYear > 0) {
+                localContest = ContestClientUtil
+                        .getContest(givenContestUrlName, givenContestYear);
+            } else if (givenContestId > 0) {
                 localContest = ContestClientUtil.getContest(givenContestId);
-            } catch (ContestNotFoundException ignored) {
             }
+        } catch (ContestNotFoundException e) {
+            log.debug("Contest not found: {}", e.getMessage());
         }
         return localContest;
     }
