@@ -212,7 +212,7 @@ public class ContestClient {
         if (list != null && !list.isEmpty()) {
             return list.get(0).toPojo(contestService);
         }
-        return null;
+        throw new ContestNotFoundException(contestUrlName, contestYear);
     }
 
     public boolean isContestShared(long contestId) {

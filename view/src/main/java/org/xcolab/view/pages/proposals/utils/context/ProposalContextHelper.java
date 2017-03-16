@@ -60,12 +60,14 @@ public class ProposalContextHelper {
         givenPhaseId = RequestParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
         givenVersion = RequestParamUtil.getInteger(request, VERSION_PARAM);
 
-        Contest transientContest = fetchContest();
-
-        clientHelper = new ClientHelper(transientContest);
-        if (transientContest != null) {
-            contest = setupContestFromTheRightClient(transientContest.getContestPK());
+        Contest localContest = fetchContest();
+        log.trace("Fetched local contest: {}", localContest);
+        clientHelper = new ClientHelper(localContest);
+        if (localContest != null) {
+            contest = setupContestFromTheRightClient(localContest.getContestPK());
         } else {
+            log.trace("Local contest is null: contestUrlName={}, contestYear={}, contestId={}",
+                    givenContestUrlName, givenContestYear, givenContestId);
             contest = null;
         }
     }
@@ -78,7 +80,8 @@ public class ProposalContextHelper {
         try {
             return contestClient.getContest(contestId);
         } catch (ContestNotFoundException ignored) {
-            log.debug("Contest {} found in client {}", contestId, contestClient);
+            log.warn("Mirroring problem: Contest {} not found in client {}",
+                    contestId, contestClient);
             return null;
         }
     }

@@ -67,6 +67,7 @@ public class RestService implements HttpEndpoint {
 
     @Override
     public String toString() {
-        return "RestService[" + namespace + "-" +  serviceName +"]";
+        final String className = getClass().getSimpleName();
+        return className + "[" + getBaseUrl() +"]";
     }
 }
