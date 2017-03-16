@@ -87,7 +87,7 @@ public class ContestClient {
     }
 
     public static ContestClient fromService(RestService contestService) {
-        return instances.computeIfAbsent(contestService, k -> new ContestClient(contestService));
+        return instances.computeIfAbsent(contestService, ContestClient::new);
     }
 
     public Contest getContest(long contestId) {
@@ -709,5 +709,10 @@ public class ContestClient {
     public ContestCollectionCard getContestCollectionCard(long id) {
         return contestCollectionCardRestResource.get(id)
                 .execute().toPojo(contestService);
+    }
+
+    @Override
+    public String toString() {
+        return "ContestClient[" + contestService + "]";
     }
 }
