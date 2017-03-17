@@ -84,15 +84,16 @@ public class ActivitySubscriptionEmailHelper {
 
     public static void sendEmailNotifications() {
 
-
-        //to ease debug please leave it here
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            lastEmailNotification = sdf.parse("2017-03-01 00:00:00");
-            lastDailyEmailNotification = sdf.parse("2017-03-01 00:00:00");
-        } catch (ParseException e) {
-            lastEmailNotification = new Date();
+        // INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('DAILY_DIGEST_LAST_EMAIL_NOTIFICATION', '0', '0', '2017-01-03 00:00:00', '0');
+        String DAILY_DIGEST_LAST_EMAIL_NOTIFICATION = ConfigurationAttributeKey.DAILY_DIGEST_LAST_EMAIL_NOTIFICATION.get();
+        if(!DAILY_DIGEST_LAST_EMAIL_NOTIFICATION.isEmpty()) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                lastEmailNotification = sdf.parse(DAILY_DIGEST_LAST_EMAIL_NOTIFICATION);
+                lastDailyEmailNotification = sdf.parse(DAILY_DIGEST_LAST_EMAIL_NOTIFICATION);
+            } catch (ParseException e) {
+                lastEmailNotification = new Date();
+            }
         }
 
 

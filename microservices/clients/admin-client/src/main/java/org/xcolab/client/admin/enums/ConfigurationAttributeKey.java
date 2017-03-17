@@ -127,6 +127,12 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newLongAttribute("DAILY_DIGEST_TRIGGER_HOUR")
                     .defaultValue(1l)
                     .build();
+
+    //lastEmailNotification
+    public static final AttributeGetter<String> DAILY_DIGEST_LAST_EMAIL_NOTIFICATION =
+            ConfigurationAttributes.newStringAttribute("DAILY_DIGEST_LAST_EMAIL_NOTIFICATION")
+                    .defaultValue("")
+                    .build();
     //Voting configuration
 
     /**
