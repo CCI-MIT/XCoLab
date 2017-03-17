@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,8 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalVote;
+import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.view.util.CsvConverter;
 
 import java.util.ArrayList;
@@ -26,7 +29,7 @@ public class VoteCsvConverter extends CsvConverter {
 
     private static final Logger log = LoggerFactory.getLogger(VoteCsvConverter.class);
 
-    private static final int NUM_COLUMNS = 16;
+    private static final int NUM_COLUMNS = 19;
     private static final List<String> COLUMN_NAMES = Arrays.asList(
             "Proposal id",
             "Contest name",
@@ -36,7 +39,10 @@ public class VoteCsvConverter extends CsvConverter {
             "screenName",
             "firstName",
             "lastName",
-            "loginIp",
+            "Login Ip",
+            "Country of login",
+            "Region of login ",
+            "City of login (inaccurate)",
             "Registration date",
             "Social media login",
             "Email address",
@@ -64,28 +70,16 @@ public class VoteCsvConverter extends CsvConverter {
             Contest contest = contests.computeIfAbsent(contestPhase.getContestPK(),
                     ContestClientUtil::getContest);
 
-            Member member;
-            try {
-                member = MembersClient.getMember(vote.getUserId());
-            } catch (MemberNotFoundException e) {
-                log.warn("Member {} not found when generating report", vote.getUserId());
-                member = null;
-            }
-            Proposal proposal;
-            try {
-                proposal = proposals.computeIfAbsent(vote.getProposalId(),
-                        ProposalClientUtil::getProposal);
-            } catch (ProposalNotFoundException e) {
-                log.warn("Proposal {} not found when generating report", vote.getProposalId());
-                proposal = null;
-            }
+            Member member = getMemberOrNull(vote);
+            Proposal proposal = getProposalOrNull(proposals, vote);
 
             List<String> row = new ArrayList<>();
             addValue(row, vote.getProposalId());
             addValue(row, contest.getContestShortName());
             if (proposal != null) {
-                addValue(row,
-                        colabUrl + proposal.getProposalLinkUrl(contest, vote.getContestPhaseId()));
+                final String proposalUrl =
+                        colabUrl + proposal.getProposalLinkUrl(contest, vote.getContestPhaseId());
+                addValue(row, proposalUrl);
                 addValue(row, proposal.getName());
             } else {
                 addValue(row, "Proposal not found");
@@ -96,6 +90,20 @@ public class VoteCsvConverter extends CsvConverter {
             addValue(row, member != null ? member.getFirstName() : "Member not found");
             addValue(row, member != null ? member.getLastName() : "Member not found");
             addValue(row, member != null ? member.getLoginIP() : "Member not found");
+
+            Location loginLocation = null;
+            if (member != null && StringUtils.isNotEmpty(member.getLoginIP())) {
+                loginLocation = TrackingClient.getLocationForIp(member.getLoginIP());
+            }
+            if (loginLocation != null) {
+                addValue(row, loginLocation.getCountryNameInEnglish());
+                addValue(row, loginLocation.getRegion());
+                addValue(row, loginLocation.getCity());
+            } else {
+                addValue(row, "unknown");
+                addValue(row, "unknown");
+                addValue(row, "unknown");
+            }
             addValue(row, member != null ? member.getCreateDate() : "Member not found");
             addValue(row, member != null ? member.hasLinkedSocialAccount() : "Member not found");
             addValue(row, member != null ? member.getEmailAddress() : "Member not found");
@@ -105,6 +113,25 @@ public class VoteCsvConverter extends CsvConverter {
             addValue(row, vote.getIsValid());
             addValue(row, vote.getConfirmationEmailSendDate());
             addRow(row);
+        }
+    }
+
+    private Proposal getProposalOrNull(Map<Long, Proposal> proposals, ProposalVote vote) {
+        try {
+            return proposals.computeIfAbsent(vote.getProposalId(),
+                    ProposalClientUtil::getProposal);
+        } catch (ProposalNotFoundException e) {
+            log.warn("Proposal {} not found when generating report", vote.getProposalId());
+            return null;
+        }
+    }
+
+    private Member getMemberOrNull(ProposalVote vote) {
+        try {
+            return MembersClient.getMember(vote.getUserId());
+        } catch (MemberNotFoundException e) {
+            log.warn("Member {} not found when generating report", vote.getUserId());
+            return null;
         }
     }
 
