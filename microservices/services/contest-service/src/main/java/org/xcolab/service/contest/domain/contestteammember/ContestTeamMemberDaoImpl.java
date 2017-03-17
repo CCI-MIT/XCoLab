@@ -14,6 +14,7 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 import java.util.List;
 import java.util.Optional;
 
+import static org.xcolab.model.Tables.CONTEST;
 import static org.xcolab.model.Tables.CONTEST_TEAM_MEMBER;
 
 @Repository
@@ -97,6 +98,19 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
         if (contestId != null) {
             query.addConditions(CONTEST_TEAM_MEMBER.CONTEST_ID.eq(contestId));
         }
+        return query.fetchInto(ContestTeamMember.class);
+    }
+
+    @Override
+    public List<ContestTeamMember> findContestYear(Long contestId, Long contestYear) {
+        final SelectQuery<Record> query = dslContext.select()
+                .from(CONTEST_TEAM_MEMBER).getQuery();
+        query.addJoin(CONTEST,CONTEST.CONTEST_PK.eq(CONTEST_TEAM_MEMBER.CONTEST_ID));
+
+        query.addConditions(CONTEST.CONTEST_YEAR.eq(contestYear));
+
+        query.addConditions(CONTEST_TEAM_MEMBER.CONTEST_ID.eq(contestId));
+
         return query.fetchInto(ContestTeamMember.class);
     }
 

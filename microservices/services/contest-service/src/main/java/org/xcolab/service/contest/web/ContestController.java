@@ -120,6 +120,12 @@ public class ContestController {
         return contestService.getContestsMatchingOntologyTerms(focusAreaOntologyTerms);
     }
 
+    @RequestMapping(value = "/contestyears", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<Long> getContestYears(){
+        return contestDao.getContestYears();
+    }
+
+
     @RequestMapping(value = "/contests/getContestsByOntologyTerm", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Contest> getContestsByOntologyTerm(
             @RequestParam(required = false) Long focusAreaOntologyTerm, @RequestParam(required = false) Boolean getActive, @RequestParam(required = false) Boolean onlyPrivate){

@@ -228,6 +228,9 @@ public final class ContestClientUtil {
     public static boolean updateContestPhase(ContestPhase contestPhase) {
         return contestClient.updateContestPhase(contestPhase);
     }
+    public static List<Long> getContestYears() {
+        return contestClient.getContestYears();
+    }
 
     public static ContestPhase createContestPhase(
             ContestPhase contestPhase) {

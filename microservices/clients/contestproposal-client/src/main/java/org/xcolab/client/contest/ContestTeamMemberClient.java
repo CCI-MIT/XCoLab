@@ -108,4 +108,14 @@ public class ContestTeamMemberClient {
                 .withCache(CacheName.CONTEST_DETAILS)
                 .execute(), contestService);
     }
+    public List<ContestTeamMember> getTeamMembers(Long categoryId, Long contestYear) {
+        return DtoUtil.toPojos(contestTeamMemberResource.service("getByContestYear",ContestTeamMemberDto.TYPES.getTypeReference())
+                .optionalQueryParam("categoryId", categoryId)
+                .optionalQueryParam("contestYear", contestYear)
+                .getList(), contestService);
+    }
+
+
+
+
 }

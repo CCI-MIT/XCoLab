@@ -54,6 +54,9 @@ public final class ContestTeamMemberClientUtil {
             Long contestId) {
         return client.getTeamMembers(contestId);
     }
+    public static List<ContestTeamMember> getTeamMembers(Long categoryId, Long contestYear) {
+        return client.getTeamMembers(categoryId, contestYear);
+    }
 
     public static List<Long> getJudgesForContest(Long contestId) {
         return client.getJudgesForContest(contestId);

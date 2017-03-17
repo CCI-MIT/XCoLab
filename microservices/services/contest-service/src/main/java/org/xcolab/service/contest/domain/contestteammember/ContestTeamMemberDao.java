@@ -20,4 +20,6 @@ public interface ContestTeamMemberDao {
     List<ContestTeamMember> findByGiven(Long contestId);
 
     ContestTeamMember findOneBy(Long memberId, Long contestId, Long roleId);
+
+    List<ContestTeamMember> findContestYear(Long contestId, Long contestYear);
 }

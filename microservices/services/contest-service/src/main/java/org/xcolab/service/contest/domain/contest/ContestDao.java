@@ -13,12 +13,28 @@ public interface ContestDao {
     boolean update(Contest contest);
 
     Contest get(Long contestId) throws NotFoundException;
+
     Contest getByThreadId(Long threadId) throws NotFoundException;
-    List<Contest> findByGiven(PaginationHelper paginationHelper, String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId, Long contestTypeId, Boolean contestPrivate);
-    List<Contest> findByGiven(String contestName, List<Long> focusAreaOntologyTermsIds, List<Long> contestTierIds);
-    Integer countByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId, Long contestTypeId, Boolean contestPrivate);
+
+    List<Contest> findByGiven(PaginationHelper paginationHelper, String contestUrlName,
+            Long contestYear, Boolean active, Boolean featured, Long contestTier,
+            List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId,
+            Long contestTypeId, Boolean contestPrivate);
+
+    List<Contest> findByGiven(String contestName, List<Long> focusAreaOntologyTermsIds,
+            List<Long> contestTierIds);
+
+    Integer countByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured,
+            Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId,
+            Long planTemplateId, Long contestTypeId, Boolean contestPrivate);
+
     boolean isShared(long contestId);
+
     boolean existsWithScheduleId(long contestScheduleId);
+
     Contest getByResourceId(Long resourceId) throws NotFoundException;
+
     boolean delete(long contestPK);
+
+    List<Long> getContestYears();
 }

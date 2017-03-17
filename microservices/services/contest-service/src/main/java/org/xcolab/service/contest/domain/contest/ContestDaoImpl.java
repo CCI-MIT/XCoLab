@@ -321,6 +321,15 @@ public class ContestDaoImpl implements ContestDao {
         return query.fetchOne(0, Integer.class);
     }
 
+    public List<Long> getContestYears() {
+        //select ContestYear from xcolab_Contest group by ContestYear order by ContestYear desc;
+        final SelectQuery<Record1<Long>> query = dslContext.select(CONTEST.CONTEST_YEAR)
+                .from(CONTEST).getQuery();
+            query.addGroupBy(CONTEST.CONTEST_YEAR);
+            query.addOrderBy(CONTEST.CONTEST_YEAR.desc());
+        return query.fetchInto(Long.class);
+    }
+
     @Override
     public boolean existsWithScheduleId(long contestScheduleId) {
         return dslContext.fetchExists(DSL.select()
