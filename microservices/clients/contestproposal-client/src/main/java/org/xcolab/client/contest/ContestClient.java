@@ -453,13 +453,14 @@ public class ContestClient {
     public boolean updateContestSchedule(ContestSchedule contestSchedule) {
         return contestScheduleResource
                 .update(new ContestScheduleDto(contestSchedule), contestSchedule.getId_())
+                .cacheName(CacheName.MISC_REQUEST)
                 .execute();
     }
 
     public ContestSchedule getContestSchedule(long id) {
         try {
             return contestScheduleResource.get(id)
-                    .withCache(CacheKeys.of(ContestScheduleDto.class, id), CacheName.MISC_REQUEST)
+                    .withCache(CacheName.MISC_REQUEST)
                     .execute().toPojo(contestService);
         } catch (UncheckedEntityNotFoundException e) {
             throw new ContestScheduleNotFoundException(id);

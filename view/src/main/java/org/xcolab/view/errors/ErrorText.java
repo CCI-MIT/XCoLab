@@ -22,6 +22,7 @@ public enum ErrorText {
             + "        If you tried changing a contest's schedule, make sure no proposals have "
             + "been submitted to that contest.")
             .withTitle("Illegal schedule change"))
+
     ;
 
 

@@ -19,20 +19,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.full.min.js"><!-- --></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.min.css" />
 
-    <c:set var="changeElementURL" value="/admin/contest/manager/tab/SCHEDULES?elementId=" />
-    <c:set var="createContestScheduleURL" value="/admin/contest/manager/tab/SCHEDULES/create" />
-    <c:set var="updateContestScheduleURL" value="/admin/contest/manager/tab/SCHEDULES/update" />
-    <c:set var="deleteContestScheduleURL"
-           value="/admin/contest/manager/tab/SCHEDULES/delete/${contestScheduleWrapper.scheduleId}" />
+    <c:set var="changeElementUrl" value="/admin/contest/manager/tab/SCHEDULES?elementId=" />
+    <c:set var="updateContestScheduleUrl" value="/admin/contest/manager/tab/SCHEDULES" />
 
-
-    <form action="${deleteContestScheduleURL}" id="deleteScheduleForm" method="post" style="visibility: hidden;">
-        <!-- -->
+    <form action="${updateContestScheduleUrl}?elementId=${contestScheduleWrapper.scheduleId}"
+          id="deleteScheduleForm" method="post" style="visibility: hidden;">
+        <input type="hidden" name="action" value="DELETE"/>
     </form>
 
-    <form action="${createContestScheduleURL}" id="createScheduleForm" method="post" style="visibility: hidden;">
-
-        <!-- -->
+    <form action="${updateContestScheduleUrl}" id="createScheduleForm" method="post" style="visibility: hidden;">
+        <input type="hidden" name="action" value="CREATE"/>
     </form>
 
     <div class="cmsDetailsBox">
@@ -51,7 +47,7 @@
             <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
         </div>
 
-        <form:form action="${changeContestScheduleURL }" commandName="elementSelectIdWrapper" id="selectForm"
+        <form:form action="${changeElementUrl}" commandName="elementSelectIdWrapper" id="selectForm"
                    method="post">
 
             <div class="addpropbox">
@@ -70,10 +66,10 @@
             </div>
         </form:form>
         <c:if test="${scheduleId >= 0}">
-            <form:form action="${updateContestScheduleURL }" commandName="contestScheduleWrapper" id="editForm"
-                       method="post">
+            <form:form action="${updateContestScheduleUrl}?elementId=${contestScheduleWrapper.scheduleId}"
+                       commandName="contestScheduleWrapper" id="editForm" method="post">
+                <input type="hidden" name="action" value="UPDATE" />
                 <form:hidden path="scheduleId"/>
-
                 <form:hidden path="createNew" id="createNewFlag"/>
 
                 <div class="addpropbox">
@@ -264,20 +260,20 @@
         <![CDATA[
 
         jQuery(function () {
-            initDateTimePicker();
             bindDeleteClickEvents(deleteContestPhase);
             bindContestScheduleSelectChange();
             bindCheckBoxClick();
-            bindTemplateSelectChange();
+            bindElementSelectChange();
+            initDateTimePicker();
         });
 
-        function bindTemplateSelectChange() {
+        function bindElementSelectChange() {
 
             var dropDownElement = document.getElementById("changeContestScheduleSelect");
 
             dropDownElement.addEventListener("change", function (ev) {
                 var templateName = ev.target.value;
-                window.location = "${changeElementURL}" + templateName;
+                window.location = "${changeElementUrl}" + templateName;
             })
         }
 

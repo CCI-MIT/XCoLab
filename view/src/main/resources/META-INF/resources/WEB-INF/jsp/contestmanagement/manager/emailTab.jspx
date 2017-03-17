@@ -11,7 +11,7 @@
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
 
-    <c:set var="changeElementURL" value="/admin/contest/manager/tab/EMAIL_TEMPLATES?elementId=" />
+    <c:set var="changeElementUrl" value="/admin/contest/manager/tab/EMAIL_TEMPLATES?elementId=" />
     <c:set var="createEmailTemplateUrl" value="/admin/contest/manager/tab/EMAIL_TEMPLATES/create" />
     <c:set var="updateEmailTemplateUrl" value="/admin/contest/manager/tab/EMAIL_TEMPLATES/update" />
     <c:set var="deleteEmailTemplateUrl" value="/admin/contest/manager/tab/EMAIL_TEMPLATES/delete/${emailTemplateWrapper.type}" />
