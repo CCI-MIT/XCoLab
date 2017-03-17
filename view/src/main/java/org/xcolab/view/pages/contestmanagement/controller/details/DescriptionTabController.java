@@ -11,15 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.entity.utils.notifications.contest.ContestCreationNotification;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.ContestDescriptionBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
@@ -90,60 +84,45 @@ public class DescriptionTabController extends AbstractTabController {
     }
 
     @GetMapping(value = {"", "tab/DESCRIPTION"})
-    public String showDescriptionTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model) {
+    public String showDescriptionTab(HttpServletRequest request, HttpServletResponse response,
+            Model model) {
 
         if (!tabWrapper.getCanView()) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
         setPageAttributes(request, model, tab);
-        Contest contest = getContest();
-        model.addAttribute("contestDescriptionBean", new ContestDescriptionBean(contest));
+        if (!model.containsAttribute("contestDescriptionBean")) {
+            Contest contest = getContest();
+            model.addAttribute("contestDescriptionBean", new ContestDescriptionBean(contest));
+        }
         return TAB_VIEW;
     }
 
-    @PostMapping("tab/DESCRIPTION/update")
-    public String updateDescriptionTabController(HttpServletRequest request, Model model,
-            HttpServletResponse response, @PathVariable long contestId,
-            @Valid ContestDescriptionBean updatedContestDescriptionBean,
-            BindingResult result) {
-
-        boolean createNew = getCreateNewContestParameterFromRequest(request);
+    @PostMapping("tab/DESCRIPTION")
+    public String updateDescription(HttpServletRequest request, HttpServletResponse response,
+            Model model, @PathVariable long contestId,
+            @Valid ContestDescriptionBean contestDescriptionBean, BindingResult result) {
 
         if (!tabWrapper.getCanEdit()) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
         if (result.hasErrors()) {
-            AlertMessage.danger("Error while updating").flash(request);
-            return "redirect:" + tab.getTabUrl(contestId);
+            AlertMessage.danger("Error while updating.").flash(request);
+            return showDescriptionTab(request, response, model);
         }
 
-        if (ContestScheduleUtil
-                .canUpdateContestToSchedule(getContest(),
-                        updatedContestDescriptionBean.getScheduleTemplateId())) {
-            result.reject("scheduleTemplateId", "This contest already has proposals. "
-                    + "Please select a schedule with matching phases or contact a developer.");
-        }
-
-        // TODO check Input
-        updatedContestDescriptionBean.persist(getContest());
-        if (createNew) {
-            try {
-                Contest contest = ContestClientUtil
-                        .getContest(updatedContestDescriptionBean.getContestPK());
-                sendEmailNotificationToAuthor(contest);
-            } catch (ContestNotFoundException | MemberNotFoundException e) {
-                throw new DatabaseAccessException(e);
+        final Long newScheduleId = contestDescriptionBean.getScheduleTemplateId();
+        final Contest contest = getContest();
+        if (contest.getContestScheduleId().longValue() != newScheduleId) {
+            if (!ContestScheduleUtil.canUpdateContestToSchedule(contest, newScheduleId)) {
+                result.reject("scheduleTemplateId", "This contest already has proposals. "
+                        + "Please select a schedule with matching phases or contact a developer.");
+                return showDescriptionTab(request, response, model);
             }
         }
-        return "redirect:" + tab.getTabUrl(contestId);
 
-    }
-
-    private void sendEmailNotificationToAuthor(Contest contest)
-            throws MemberNotFoundException {
-        new ContestCreationNotification(contest, ConfigurationAttributeKey.COLAB_URL.get())
-                .sendMessage();
+        contestDescriptionBean.persist(contest);
+        return showDescriptionTab(request, response, model);
     }
 }

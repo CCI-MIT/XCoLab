@@ -165,33 +165,4 @@ public final class ContestScheduleLifecycleUtil {
         return newContestSchedule;
     }
 
-    //TODO: if we want to support changing the schedule of an active contest,
-    // we will have to support similar methods to change (rather than delete) proposal2phases and
-    // ratings
-    //    public static void deleteProposal2PhasesWithContestPhaseId(Long contestPhaseId) {
-    //        try {
-    //            List<Proposal2Phase> proposal2Phases = Proposal2PhaseLocalServiceUtil
-    //                    .getByContestPhaseId(contestPhaseId);
-    //
-    //            for (Proposal2Phase proposal2Phase : proposal2Phases) {
-    //                Proposal2PhaseLocalServiceUtil.deleteProposal2Phase(proposal2Phase);
-    //            }
-    //        } catch (SystemException e) {
-    //            throw new DatabaseAccessException(e);
-    //        }
-    //    }
-    //
-    //    public static void deleteProposalRatingsWithContestPhaseId(Long contestPhaseId) {
-    //        try {
-    //            List<ProposalRating> proposalRatings = new ArrayList<>(); //
-    // ProposalRatingLocalServiceUtil.getRatingsForContestPhase(contestPhaseId);
-    //
-    //            for (ProposalRating proposalRating : proposalRatings) {
-    //                ProposalRatingLocalServiceUtil.deleteProposalRating(proposalRating);
-    //            }
-    //        } catch (SystemException e) {
-    //            throw new DatabaseAccessException(e);
-    //        }
-    //    }
-
 }
