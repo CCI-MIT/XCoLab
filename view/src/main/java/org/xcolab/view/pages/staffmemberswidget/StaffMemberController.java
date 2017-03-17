@@ -6,7 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.StaffMemberClient;
+import org.xcolab.client.members.legacy.enums.CategoryRole;
+import org.xcolab.client.members.legacy.enums.CategoryRole.NoSuchCategoryRoleException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.StaffMember;
 
 import java.util.ArrayList;
@@ -41,7 +45,50 @@ public class StaffMemberController {
         model.addAttribute("columnAmount", columnAmount);
         model.addAttribute("displayPhoto", displayPhoto);
         model.addAttribute("displayUrl", displayUrl);
+        try {
+            CategoryRole categoryRole = CategoryRole.fromCategoryId(categoryId);
 
+            if(categoryRole.getRole() == null){
+                List<StaffMemberWrapper> staffMembers = getStaffMembers(categoryId);
+            } else {
+               //get from database
+                List<Member> allMembersWithRole = MembersClient.listMembers(categoryRole.name(), null,
+                        null, null, true,
+                        0, Integer.MAX_VALUE);
+                List<StaffMemberWrapper> staffMembersOverrides = getStaffMembers(categoryId);
+                for(Member member: allMembersWithRole) {
+                    boolean alreadyInStaffMembers = false;
+                    for(StaffMemberWrapper smw: staffMembersOverrides){
+                        if(member.getId_() == smw.getMember().getId_()){
+                            alreadyInStaffMembers = true;
+                        }
+                    }
+                    if(!alreadyInStaffMembers){
+                        staffMembersOverrides.add(getNewStaffMember(member,categoryRole));
+                    }
+                }
+
+            }
+
+            List<StaffMemberWrapper> staffMembers = getStaffMembers(categoryId);
+
+            model.addAttribute("staffMembers", staffMembers);
+        }catch (NoSuchCategoryRoleException e){
+
+        }
+
+        return "staffmemberswidget/staffmembers";
+    }
+    private StaffMemberWrapper getNewStaffMember(Member member, CategoryRole categoryRole){
+        StaffMember sm = new StaffMember();
+        sm.setUserId(member.getId_());
+        sm.setCategoryId(categoryRole.getCategoryId());
+        sm.setPhotoUrl("image/user_male_portrait?img_id="+member.getId_());
+        sm.setFirstNames(member.getFirstName() + " " + member.getLastName());
+        return new StaffMemberWrapper(sm);
+    }
+
+    private List<StaffMemberWrapper> getStaffMembers(@RequestParam long categoryId) {
         List<StaffMember> results = StaffMemberClient.getStaffMembersByCategoryId(categoryId);
 
         List<StaffMemberWrapper> staffMembers = new ArrayList<>();
@@ -51,9 +98,6 @@ public class StaffMemberController {
         }
 
         staffMembers.sort(Comparator.comparing(StaffMemberWrapper::getSort));
-
-        model.addAttribute("staffMembers", staffMembers);
-
-        return "staffmemberswidget/staffmembers";
+        return staffMembers;
     }
 }

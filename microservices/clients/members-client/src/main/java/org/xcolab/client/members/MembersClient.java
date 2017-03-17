@@ -251,6 +251,7 @@ public final class MembersClient {
                     .queryParam("ip", ip).getList();
     }
 
+
     public static List<Member> findByScreenNameOrName(String ip) {
         return memberResource.service("findByScreenNameOrName",
                 Member.TYPES.getTypeReference())
