@@ -45,7 +45,7 @@ public class ActivitySubscriptionEmailHelper {
     private static Date lastEmailNotification = new Date();
 
     // 1 am
-    private final static int DAILY_DIGEST_TRIGGER_HOUR = 1;
+    private final static Long DAILY_DIGEST_TRIGGER_HOUR = ConfigurationAttributeKey.DAILY_DIGEST_TRIGGER_HOUR.get();
 
     private final static Logger _log = LoggerFactory.getLogger(ActivitySubscriptionEmailHelper.class);
 
@@ -89,8 +89,8 @@ public class ActivitySubscriptionEmailHelper {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            lastEmailNotification = sdf.parse("2017-03-09 00:00:00");
-            lastDailyEmailNotification = sdf.parse("2017-03-09 00:00:00");
+            lastEmailNotification = sdf.parse("2017-03-01 00:00:00");
+            lastDailyEmailNotification = sdf.parse("2017-03-01 00:00:00");
         } catch (ParseException e) {
             lastEmailNotification = new Date();
         }
@@ -346,7 +346,7 @@ public class ActivitySubscriptionEmailHelper {
 
     private static Date getLastDailyEmailNotificationDate() {
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, DAILY_DIGEST_TRIGGER_HOUR);
+        cal.set(Calendar.HOUR_OF_DAY, (DAILY_DIGEST_TRIGGER_HOUR).intValue());
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);

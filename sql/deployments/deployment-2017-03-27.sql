@@ -12,3 +12,7 @@ CREATE TABLE IF NOT EXISTS `xcolab_ColabEmail` (
   PRIMARY KEY (`colabEmailId`),
   INDEX `index2` (`emailSubject` ASC, `emailTo` ASC, `dateSent` ASC, `emailBodyHash` ASC))
 ENGINE = InnoDB;
+
+
+
+INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('DAILY_DIGEST_TRIGGER_HOUR', '0', '1', ' ', '1');
