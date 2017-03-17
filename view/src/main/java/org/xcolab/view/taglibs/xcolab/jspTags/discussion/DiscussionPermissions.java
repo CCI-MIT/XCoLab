@@ -7,11 +7,15 @@ import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.view.auth.MemberAuthUtil;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
 import javax.servlet.http.HttpServletRequest;
 
 public class DiscussionPermissions {
 
     public static final String REQUEST_ATTRIBUTE_NAME = "DISCUSSION_PERMISSIONS";
+    public static final int EDIT_GRACE_PERIOD_IN_MINUTES = 15;
 
     protected final long memberId;
     protected boolean isLoggedIn;
@@ -49,7 +53,23 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanAdminMessage(Comment comment) {
-        return getCanAdminAll(); // || message.getAuthorId() == currentUser.getUserId()
+        return getCanAdminAll()
+                || (isAuthor(comment) && isRecent(comment, EDIT_GRACE_PERIOD_IN_MINUTES + 5));
+    }
+
+    public boolean getCanViewAdminMessage(Comment comment) {
+        return getCanAdminAll()
+                || (isAuthor(comment) && isRecent(comment, EDIT_GRACE_PERIOD_IN_MINUTES));
+    }
+
+    private boolean isAuthor(Comment comment) {
+        return comment.getAuthorId() == memberId;
+    }
+
+    private boolean isRecent(Comment comment, int recencyInMinutes) {
+        Instant now = Instant.now();
+        return comment.getCreateDate().toInstant()
+                .plus(recencyInMinutes, ChronoUnit.MINUTES).isAfter(now);
     }
 
     public boolean getCanCreateCategory() {
