@@ -1,19 +1,16 @@
 package org.xcolab.view.taglibs.xcolab.jspTags.discussion.actions;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.entity.utils.LinkUtils;
-import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
-
-
+import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
+        .DiscussionAuthorizationException;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
@@ -22,19 +19,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-public class EditDiscussionMessageActionController extends BaseDiscussionsActionController {
+public class DeleteDiscussionMessageActionController extends BaseDiscussionsActionController {
 
-    @PostMapping("/discussions/editComment")
-    public void handleAction(HttpServletRequest request, HttpServletResponse response,
+    @GetMapping("/discussions/deleteDiscussionMessageFlag")
+    public void deleteMessage(
+            HttpServletRequest request, HttpServletResponse response,
             @RequestParam long commentId,
-            @RequestParam("comment") String content,
             @RequestParam(value = "contestId", required = false) Long contestId)
-            throws IOException, DiscussionAuthorizationException, CommentNotFoundException {
+            throws IOException, DiscussionAuthorizationException {
 
         try {
-            checkPermissions(request, "User isn't allowed to edit message", commentId);
+            checkPermissions(request, "User isn't allowed to delete message", commentId);
         } catch (DiscussionAuthorizationException e) {
-            AlertMessage.danger("You are not allowed to edit this message.").flash(request);
+            AlertMessage.danger("You are not allowed to delete this message.").flash(request);
             redirectToReferrer(request, response);
             return;
         }
@@ -46,11 +43,7 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
             commentClient = CommentClientUtil.getClient();
         }
 
-        Comment comment = commentClient.getComment(commentId);
-
-        comment.setContent(HtmlUtil.cleanSome(content, LinkUtils.getBaseUri(request)));
-        commentClient.updateComment(comment);
-
+        commentClient.deleteComment(commentId);
         redirectToReferrer(request, response);
     }
 

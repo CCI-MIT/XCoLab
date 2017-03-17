@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.proposals.discussion;
 
-import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
@@ -89,11 +88,6 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
             canSeeAddCommentButton = true;
         }
         return canSeeAddCommentButton;
-    }
-
-    @Override
-    public boolean getCanAdminMessage(Comment comment) {
-        return getCanAdminAll();
     }
 
     private boolean isAllowedToAddCommentsToProposalEvaluationInContestPhase() {

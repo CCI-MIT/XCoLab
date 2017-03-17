@@ -152,21 +152,24 @@
 									</div>
 									<div class="c-Comment__actions">
 
-										<c:if test="${ empty sharedColabId} ">
+										<c:if test="${empty sharedColabId} ">
 											<c:if test="${discussionPermissions.getCanReportMessage(message) }">
 												<a style="margin-left: 10px;" href="javascript:;" onclick="reportComment(${message.commentId})">Report</a>
 											</c:if>
 										</c:if>
-										<c:if test="${discussionPermissions.getCanAdminMessage(message) }">
+										<c:if test="${discussionPermissions.getCanViewAdminMessage(message) }">
 											<c:set var="editCommentURL" value="/discussions/editComment?commentId=${message.commentId}&amp;proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
 
-											<a style="margin-left: 10px;" href="javascript:;" onclick="editComment(${message.commentId},'${editCommentURL}');">Edit</a>
+											<a style="margin-left: 10px;" href="javascript:;" onclick="editComment(${message.commentId},'${editCommentURL}');"
+												class="js-Tooltip" title="Comments can be edited by the author within 15 minutes of creation.">Edit</a>
 
-											<c:if test="${discussionPermissions.canAdminMessages}">
-												<c:set var="deleteMessageURL" value="/discussions/deleteDiscussionMessageFlag?commentId=${message.commentId }&amp;proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
+											<c:set var="deleteMessageURL" value="/discussions/deleteDiscussionMessageFlag?commentId=${message.commentId }&amp;proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
 
-												<a style="margin-left: 10px;" href="javascript:;" data-url="${deleteMessageURL }" onclick="if (confirm('Are you sure you want to delete this message?')) window.location = $(this).attr('data-url');">Delete message</a>
-											</c:if>
+											<a style="margin-left: 10px;" href="javascript:;" data-url="${deleteMessageURL }"
+											   class="js-Tooltip" title="Comments can be deleted by the author within 15 minutes of creation."
+											   onclick="if (confirm('Are you sure you want to delete this message?')) window.location = $(this).attr('data-url');">
+												Delete message
+											</a>
 										</c:if>
 									</div>
 								</td>
