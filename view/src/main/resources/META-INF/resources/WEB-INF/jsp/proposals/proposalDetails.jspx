@@ -194,7 +194,10 @@
 
 
                 $(".prop-left img").each(function(index, value){
-                    $(value).attr("style","");
+                    var width = $(value).css("width");
+                    if(width >= 650) {
+                        $(value).attr("style", "");
+                    }
                     $(value).css('cursor', 'pointer');
                 });
 
