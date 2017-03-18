@@ -89,7 +89,7 @@ public class ContestClient {
                 new RestResource1<>(this.contestService, "contestDiscussions", ContestDiscussionDto.TYPES);
 
         contestYearResource = new RestResource1<>(
-                contestService, "contestYears", new TypeProvider<>(Long.class,
+                contestService, "contestyears", new TypeProvider<>(Long.class,
                 new ParameterizedTypeReference<List<Long>>() {
                 })
         );

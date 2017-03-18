@@ -22,20 +22,54 @@
     <c:choose>
         <c:when test="${displayPhoto}">
             <c:forEach var="yearMap" items="${staffMembersMap}">
-                <h3>${yearMap.key}</h3>
-                <ul class="staffmembers-photos">
-                    <c:forEach items="${yearMap.value}" var="staffMember" varStatus="status">
-                        <c:choose>
-                            <c:when test="${(status.index % columnAmount) == 0 and status.index > 0}">
-                                <c:set var="liClass" value="clear-row"/>
-                            </c:when>
-                            <c:otherwise>
-                                <c:set var="liClass" value=""/>
-                            </c:otherwise>
-                        </c:choose>
+                <c:if test="${not yearMap.value.isEmpty()}">
+                    <h3>${yearMap.key}</h3>
+                    <ul class="staffmembers-photos">
+                        <c:forEach items="${yearMap.value}" var="staffMember" varStatus="status">
+                            <c:choose>
+                                <c:when test="${(status.index % columnAmount) == 0 and status.index > 0}">
+                                    <c:set var="liClass" value="clear-row"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:set var="liClass" value=""/>
+                                </c:otherwise>
+                            </c:choose>
 
-                        <li class="${liClass}">
-                            <div class="descriptionContainer">
+                            <li class="${liClass}">
+                                <div class="descriptionContainer">
+                                    <c:choose>
+                                        <c:when test="${displayUrl and not empty staffMember.url}">
+                                            <a href="${staffMember.url}">
+                                                ${staffMember.name}
+                                            </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${staffMember.name}
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <br/>
+                                    <c:if test="${not empty staffMember.role}">
+                                        <strong class="staffmembers-role">${staffMember.role}</strong><br/>
+                                    </c:if>
+                                    <c:if test="${not empty staffMember.organization}">
+                                        <span class="staffmembers-organization">${staffMember.organization}</span><br/>
+                                    </c:if>
+                                </div>
+                                <img src="${staffMember.photoUrl}"/>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </c:if>
+                <div class="clear"><!-- --></div>
+            </c:forEach>
+        </c:when>
+        <c:otherwise>
+            <c:forEach var="yearMap" items="${staffMembersMap}">
+                <c:if test="${not yearMap.value.isEmpty()}">
+                    <h3>${yearMap.key}</h3>
+                    <ul class="staffmembers-list">
+                        <c:forEach items="${yearMap.value}" var="staffMember">
+                            <li>
                                 <c:choose>
                                     <c:when test="${displayUrl and not empty staffMember.url}">
                                         <a href="${staffMember.url}">
@@ -46,43 +80,15 @@
                                         ${staffMember.name}
                                     </c:otherwise>
                                 </c:choose>
-                                <br/>
-                                <c:if test="${not empty staffMember.role}">
-                                    <strong class="staffmembers-role">${staffMember.role}</strong><br/>
-                                </c:if>
-                                <c:if test="${not empty staffMember.organization}">
-                                    <span class="staffmembers-organization">${staffMember.organization}</span><br/>
-                                </c:if>
-                            </div>
-                            <img src="${staffMember.photoUrl}"/>
-                        </li>
-                    </c:forEach>
-                </ul>
-            </c:forEach>
-        </c:when>
-        <c:otherwise>
-            <c:forEach var="yearMap" items="${staffMembersMap}">
-            <h3>${yearMap.key}</h3>
-                <ul class="staffmembers-list">
-                    <c:forEach items="${yearMap.value}" var="staffMember">
-                        <li>
-                            <c:choose>
-                                <c:when test="${displayUrl and not empty staffMember.url}">
-                                    <a href="${staffMember.url}">
-                                        ${staffMember.name}
-                                    </a>
-                                </c:when>
-                                <c:otherwise>
-                                    ${staffMember.name}
-                                </c:otherwise>
-                            </c:choose>
-                        </li>
-                    </c:forEach>
-                </ul>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </c:if>
+                <div class="clear"><!-- --></div>
             </c:forEach>
         </c:otherwise>
     </c:choose>
 
-    <div class="clear"></div>
+    <div class="clear"><!-- --></div>
 
 </jsp:root>

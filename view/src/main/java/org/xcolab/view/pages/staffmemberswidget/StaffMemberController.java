@@ -20,6 +20,7 @@ import org.xcolab.client.members.pojo.StaffMember;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,25 +68,31 @@ public class StaffMemberController {
                 if(categoryRole.getGroupByYear()){
                     Map<String,List<StaffMemberWrapper>>  membersPerYearInCategory = new LinkedHashMap<>();
                     List<Long> years = ContestClientUtil.getContestYears();
+                    Map<Long, String> oneEntryPerUser= new HashMap<>();
                     for(Long year: years){
                         List<StaffMemberWrapper> membersWithRolesInYear = new ArrayList<>();
-                        List<ContestTeamMember> contestTeamMembers =  ContestTeamMemberClientUtil.getTeamMembers(categoryRole.getCategoryId(),year);
+                        List<ContestTeamMember> contestTeamMembers =  ContestTeamMemberClientUtil.getTeamMembers(categoryRole.getRole().getRoleId(),year);
                         for(ContestTeamMember ctm : contestTeamMembers) {
                             boolean alreadyInStaffMembers = false;
                             for (StaffMemberWrapper smw : staffMembersOverrides) {
                                 if( smw.getMember()!= null) {
                                     if (ctm.getUserId() == smw.getMember().getId_()) {
                                         alreadyInStaffMembers = true;
-                                        membersWithRolesInYear.add(smw);
-                                        break;
+                                        if(oneEntryPerUser.get(ctm.getUserId())==null) {
+                                            oneEntryPerUser.put(ctm.getUserId(), "");
+                                            membersWithRolesInYear.add(smw);
+                                            break;
+                                        }
                                     }
                                 }
                             }
                             if(!alreadyInStaffMembers){
                                 try {
-                                    Member member = MembersClient.getMember(ctm.getUserId());
-                                    staffMembersOverrides
-                                            .add(getNewStaffMember(member, categoryRole));
+                                    if(oneEntryPerUser.get(ctm.getUserId())==null) {
+                                        Member member = MembersClient.getMember(ctm.getUserId());
+                                        staffMembersOverrides
+                                                .add(getNewStaffMember(member, categoryRole));
+                                    }
                                 }catch (MemberNotFoundException mnfe){
 
                                 }
@@ -136,7 +143,7 @@ public class StaffMemberController {
         StaffMember sm = new StaffMember();
         sm.setUserId(member.getId_());
         sm.setCategoryId(categoryRole.getCategoryId());
-        sm.setPhotoUrl("/image/user_male_portrait?img_id="+member.getId_());
+        sm.setPhotoUrl("/image/user_male_portrait?userId="+member.getId_()+"&screenName=carlosbpf&portraitId="+member.getPortraitId()+"");
         sm.setFirstNames(member.getFirstName());
         sm.setLastName(member.getLastName());
         sm.setSort(0);

@@ -21,5 +21,5 @@ public interface ContestTeamMemberDao {
 
     ContestTeamMember findOneBy(Long memberId, Long contestId, Long roleId);
 
-    List<ContestTeamMember> findContestYear(Long contestId, Long contestYear);
+    List<ContestTeamMember> findContestYear(Long categoryId, Long contestYear);
 }

@@ -66,10 +66,10 @@ public class ContestTeamMembersController {
 
     @RequestMapping(value = "/contestTeamMembers/getByContestYear", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ContestTeamMember> getByContestYear(
-            @RequestParam(required = false) Long contestId,
+            @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) Long contestYear
     ) {
-        return contestTeamMemberDao.findContestYear(contestId,contestYear);
+        return contestTeamMemberDao.findContestYear(categoryId,contestYear);
     }
 
     @DeleteMapping(value = "/contestTeamMembers/{id_}")
