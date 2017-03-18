@@ -13,7 +13,7 @@
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
 
-    <c:set var="updateContestDescriptionURL" value="/admin/contest/details/contestId/${contestWrapper.contestPK}/tab/DESCRIPTION/update" />
+    <c:set var="updateContestDescriptionURL" value="/admin/contest/details/contestId/${contestWrapper.contestPK}/tab/DESCRIPTION" />
 
     <xcolab:loadCkEditor />
 

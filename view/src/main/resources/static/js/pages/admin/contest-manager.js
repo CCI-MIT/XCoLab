@@ -6,7 +6,9 @@ function initializeDropDowns() {
         }
         eventsToBind = {
             change: function(event) {
-                markEditorDirty(jQuery(jQuery("input[type='text'], textarea")[0]));
+                if (typeof markEditorDirty == 'function') {
+                    markEditorDirty(jQuery(jQuery("input[type='text'], textarea")[0]));
+                }
             }
         };
         jQuery(this).bind(eventsToBind);

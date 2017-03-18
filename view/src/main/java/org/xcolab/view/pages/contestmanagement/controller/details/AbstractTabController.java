@@ -24,11 +24,6 @@ public abstract class AbstractTabController extends BaseTabController {
     private Contest contest;
     private Contest contestWrapper;
 
-    public static boolean getCreateNewContestParameterFromRequest(HttpServletRequest request) {
-        String createContestParameter = request.getParameter("createContest");
-        return Boolean.parseBoolean(createContestParameter);
-    }
-
     @ModelAttribute("tabs")
     @Override
     public List<TabWrapper> populateTabs(Model model, HttpServletRequest request) {

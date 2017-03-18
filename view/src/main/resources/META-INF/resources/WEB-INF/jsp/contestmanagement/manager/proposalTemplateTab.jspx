@@ -27,7 +27,7 @@
 
 	<c:set var="getSectionDefinition" value="/admin/contest/api/getSectionDefinition/" />
 
-	<c:set var="changeElementURL" value="/admin/contest/manager/tab/PROPOSAL_TEMPLATES?elementId=" />
+	<c:set var="changeElementUrl" value="/admin/contest/manager/tab/PROPOSAL_TEMPLATES?elementId=" />
 
 	<xcolab:loadCkEditor/>
 
@@ -43,7 +43,7 @@
 
 		<h3>Proposal template details</h3>
 
-		<form:form action="${changeElementURL }" commandName="elementSelectIdWrapper" id="selectForm" method="post">
+		<form:form action="${changeElementUrl }" commandName="elementSelectIdWrapper" id="selectForm" method="post">
 			<div class="addpropbox">
 				<strong class="inputTitleLeft">Selected template:</strong>
 				<div class="addpropInputContainer">

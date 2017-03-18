@@ -15,7 +15,7 @@
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
 
-    <c:set var="changeElementURL" value="/admin/contest/manager/tab/FLAGGING?elementId=" />
+    <c:set var="changeElementUrl" value="/admin/contest/manager/tab/FLAGGING?elementId=" />
     <c:set var="createReportTargetUrl" value="/admin/contest/manager/tab/FLAGGING/create" />
     <c:set var="updateReportTargetUrl" value="/admin/contest/manager/tab/FLAGGING/update" />
     <c:set var="deleteReportTargetUrl" value="/admin/contest/manager/tab/FLAGGING/delete/${reportTargetWrapper.reportTargetId}" />
