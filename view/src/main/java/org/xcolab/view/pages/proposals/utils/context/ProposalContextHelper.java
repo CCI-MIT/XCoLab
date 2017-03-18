@@ -1,6 +1,8 @@
 package org.xcolab.view.pages.proposals.utils.context;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -23,6 +25,8 @@ import org.xcolab.view.util.entity.portlet.RequestParamUtil;
 import javax.servlet.http.HttpServletRequest;
 
 public class ProposalContextHelper {
+
+    private static final Logger log = LoggerFactory.getLogger(ProposalContextHelper.class);
 
     private static final String PROPOSAL_ID_PARAM = "proposalId";
     private static final String PLAN_ID_PARAM = "planId";
@@ -56,36 +60,48 @@ public class ProposalContextHelper {
         givenPhaseId = RequestParamUtil.getLong(request, CONTEST_PHASE_ID_PARAM);
         givenVersion = RequestParamUtil.getInteger(request, VERSION_PARAM);
 
-        Contest transientContest = fetchContest();
-
-        clientHelper = new ClientHelper(transientContest);
-        if (transientContest != null) {
-            contest = setupContestFromTheRightClient(transientContest.getContestPK());
+        Contest localContest = fetchContest();
+        log.trace("Fetched local contest: {}", localContest);
+        clientHelper = new ClientHelper(localContest);
+        if (localContest != null) {
+            final Long contestPK = localContest.getContestPK();
+            if (contestPK != null) {
+                contest = setupContestFromTheRightClient(contestPK);
+            } else {
+                throw new IllegalStateException("Contest has contestPK=null: " + localContest);
+            }
         } else {
+            log.trace("Local contest is null: contestUrlName={}, contestYear={}, contestId={}",
+                    givenContestUrlName, givenContestYear, givenContestId);
             contest = null;
         }
     }
 
-    private Contest setupContestFromTheRightClient(Long contestId) {
-        Contest localContest = null;
-        try {
-            localContest = clientHelper.getContestClient().getContest(contestId);
-        } catch (ContestNotFoundException ignored) {
+    private Contest setupContestFromTheRightClient(long contestId) {
 
+        final ContestClient contestClient = clientHelper.getContestClient();
+        log.debug("Setting up contest {} from client {}", contestId, contestClient);
+
+        try {
+            return contestClient.getContest(contestId);
+        } catch (ContestNotFoundException ignored) {
+            log.warn("Mirroring problem: Contest {} not found in client {}",
+                    contestId, contestClient);
+            return null;
         }
-        return localContest;
     }
 
     private Contest fetchContest() {
         Contest localContest = null;
-        if (StringUtils.isNotBlank(givenContestUrlName) && givenContestYear > 0) {
-            localContest = ContestClientUtil
-                    .getContest(givenContestUrlName, givenContestYear);
-        } else if (givenContestId > 0) {
-            try {
+        try {
+            if (StringUtils.isNotBlank(givenContestUrlName) && givenContestYear > 0) {
+                localContest = ContestClientUtil
+                        .getContest(givenContestUrlName, givenContestYear);
+            } else if (givenContestId > 0) {
                 localContest = ContestClientUtil.getContest(givenContestId);
-            } catch (ContestNotFoundException ignored) {
             }
+        } catch (ContestNotFoundException e) {
+            log.debug("Contest not found: {}", e.getMessage());
         }
         return localContest;
     }
@@ -99,6 +115,8 @@ public class ProposalContextHelper {
             final boolean contestUserSupplied = StringUtils.isNotBlank(givenContestUrlName)
                     || givenContestId > 0;
             if (contestUserSupplied) {
+                log.debug("Invalid contest supplied: givenContestUrlName = {}, givenContestId = {}",
+                        givenContestUrlName, givenContestId);
                 throw new InvalidAccessException();
             }
         }
@@ -147,6 +165,7 @@ public class ProposalContextHelper {
             try {
                 proposal = proposalClient.getProposal(givenProposalId);
             } catch (ProposalNotFoundException e) {
+                log.debug("Invalid proposal supplied: givenProposalId = {}", givenProposalId);
                 throw new InvalidAccessException();
             }
         }

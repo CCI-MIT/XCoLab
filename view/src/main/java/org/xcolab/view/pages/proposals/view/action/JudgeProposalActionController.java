@@ -82,7 +82,7 @@ public class JudgeProposalActionController {
         Proposal proposal = proposalsContext.getProposal(request);
         final Contest contest = proposalsContext.getContest(request);
         long proposalId = proposal.getProposalId();
-        ContestPhase contestPhase = ContestClientUtil.getContestPhase(proposalAdvancingBean.getContestPhaseId());
+        ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         Member currentMember = proposalsContext.getMember(request);
         ProposalsPermissions permissions = proposalsContext.getPermissions(request);
 

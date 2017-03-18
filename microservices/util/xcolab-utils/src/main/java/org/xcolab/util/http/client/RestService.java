@@ -64,4 +64,10 @@ public class RestService implements HttpEndpoint {
         return serviceName.equals(other.serviceName)
                 && namespace.equals(other.namespace);
     }
+
+    @Override
+    public String toString() {
+        final String className = getClass().getSimpleName();
+        return className + "[" + getBaseUrl() +"]";
+    }
 }

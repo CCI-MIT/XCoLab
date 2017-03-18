@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-abstract class AbstractContestPhase implements Serializable {
+public abstract class AbstractContestPhase implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

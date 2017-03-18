@@ -52,7 +52,6 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         Proposal proposalWrapper = new Proposal(proposal, contestPhase);
         ProposalAdvancingBean bean = new ProposalAdvancingBean(proposalWrapper);
-        bean.setContestPhaseId(contestPhase.getContestPhasePK());
         model.addAttribute("proposalAdvancingBean", bean);
 
         setCommonAdvancingAttributes(request, bean, model);
@@ -73,7 +72,6 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         ContestPhase contestPhase = proposalsContext.getContestPhase(request);
         Proposal proposalWrapper = new Proposal(proposal, contestPhase);
         ProposalAdvancingBean bean = new ProposalAdvancingBean(proposalWrapper);
-        bean.setContestPhaseId(contestPhase.getContestPhasePK());
 
         setCommonAdvancingAttributes(request, bean, model);
         return "proposalAdvancing";
@@ -140,10 +138,8 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
         }
         return wrappers;
     }
-    
 
-    @GetMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/SCREENING",
-            "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/SCREENING"})
+    @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=SCREENING")
     public String showFellowsPanel(HttpServletRequest request, Model model) {
         setCommonModelAndPageAttributes(request, model, ProposalTab.SCREENING);
 

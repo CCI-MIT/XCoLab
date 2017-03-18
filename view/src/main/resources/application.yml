@@ -50,3 +50,5 @@ logging:
     org.springframework.web: WARN
     org.springframework.boot.web: WARN
     org.springframework.boot.actuate: WARN
+    org.springframework.context.annotation: WARN
+    org.springframework.beans.factory.annotation: WARN

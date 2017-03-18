@@ -9,3 +9,4 @@ ALTER TABLE members_Member
 
 -- Execute on Solve CoLab
 -- INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PARTNER_COLAB_NAMESPACE', 0, null, 'climate-colab', null);
+-- INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('SHARED_COLAB_NAMESPACE', 0, null, 'climate-colab', null);
