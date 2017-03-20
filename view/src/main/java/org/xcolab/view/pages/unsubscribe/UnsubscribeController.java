@@ -12,6 +12,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.util.entity.NotificationUnregisterUtils;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.view.util.entity.flash.ErrorMessage;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +27,7 @@ public class UnsubscribeController {
             "button underneath “Subscribed Activity” on the right-hand side.";
 
 
-    @GetMapping("/org/xcolab/entity/utils/notifications/unsubscribe/member/{memberId"
+    @GetMapping("/notifications/unsubscribe/member/{memberId"
             + "}/subscription/{subscriptionId}/token/{token}/type/{typeId}")
 	public String unsubscribe(HttpServletRequest request, HttpServletResponse response, Model model,
             @PathVariable long memberId, @PathVariable long subscriptionId,
@@ -79,6 +80,9 @@ public class UnsubscribeController {
             }
 	    }
 
+        if(!error) {
+            AlertMessage.success("You have successfully unsubscribed!").flash(request);
+        }
         model.addAttribute("responseTitle", UNSUBSCRIBE_TITLE);
         model.addAttribute("responseText", responseText);
 	    

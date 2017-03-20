@@ -6,6 +6,6 @@
 	<h2 style="margin-bottom: 10px;">
 	    ${responseTitle}
 	</h2>
-    ${responseText}
+    <p>${responseText}</p>
 </xcolab:layout>
 </jsp:root>
