@@ -15,7 +15,7 @@ import org.xcolab.view.util.entity.enums.ProposalUnversionedAttributeName;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
-import org.xcolab.view.pages.proposals.wrappers.ProposalTab;
+import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 
 import java.io.IOException;
 import java.util.List;
@@ -84,6 +84,6 @@ public class UpdateProposalScenarioActionController {
 
     private boolean canEditImpactTab(HttpServletRequest request) {
         return ProposalTab.IMPACT.getCanEdit(
-                proposalsContext.getPermissions(request), proposalsContext, request);
+                request);
     }
 }

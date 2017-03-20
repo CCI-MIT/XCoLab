@@ -6,7 +6,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.view.pages.proposals.wrappers.ProposalTab;
+import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 
 import javax.servlet.http.HttpServletRequest;

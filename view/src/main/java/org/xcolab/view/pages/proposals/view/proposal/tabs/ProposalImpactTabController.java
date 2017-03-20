@@ -32,7 +32,7 @@ import org.xcolab.view.pages.proposals.impact.ProposalImpactSeriesList;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactUtil;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.view.pages.proposals.wrappers.ProposalTab;
+import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -174,7 +174,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 || proposalsContext.getPermissions(request).getCanAdminAll();
     }
     private boolean canEditImpactTab(HttpServletRequest request) {
-        return ProposalTab.IMPACT.getCanEdit(proposalsContext.getPermissions(request), proposalsContext, request);
+        return ProposalTab.IMPACT.getCanEdit(request);
     }
 
     private String showImpactTabRegionSector() {

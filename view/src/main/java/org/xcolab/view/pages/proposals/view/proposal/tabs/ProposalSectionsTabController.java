@@ -40,7 +40,7 @@ import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.view.pages.proposals.view.proposal.AddUpdateProposalControllerUtil;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
-import org.xcolab.view.pages.proposals.wrappers.ProposalTab;
+import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 
 import java.io.IOException;
 import java.text.DateFormat;

@@ -15,12 +15,11 @@ import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
-import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.FellowProposalScreeningBean;
 import org.xcolab.view.pages.proposals.requests.ProposalAdvancingBean;
+import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.wrappers.ProposalFellowWrapper;
-import org.xcolab.view.pages.proposals.wrappers.ProposalTab;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,17 +33,21 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalJudgesTabController extends BaseProposalTabController {
 
+    private final ProposalsContext proposalsContext;
+
     @Autowired
-    private ProposalsContext proposalsContext;
+    public ProposalJudgesTabController(ProposalsContext proposalsContext) {
+        this.proposalsContext = proposalsContext;
+    }
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ADVANCING")
     public String showJudgesPanel(HttpServletRequest request, Model model)
             throws ProposalsAuthorizationException {
 
-        setCommonModelAndPageAttributes(request, model, ProposalTab.ADVANCING);
+        final ProposalTab tab = ProposalTab.ADVANCING;
+        setCommonModelAndPageAttributes(request, model, tab);
 
-        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-        if (!permissions.getCanSeeAdvancingTab()) {
+        if (!tab.getCanAccess(request)) {
             throw new ProposalsAuthorizationException(ACCESS_TAB_DENIED_MESSAGE);
         }
 
@@ -56,25 +59,6 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
 
         setCommonAdvancingAttributes(request, bean, model);
         return "proposals/proposalAdvancing";
-    }
-
-    //-- @RequestMapping(params = {"pageToDisplay=proposalDetails_ADVANCING", "error=true"})
-    public String showJudgesPanelError(HttpServletRequest request, Model model)
-            throws ProposalsAuthorizationException {
-        setCommonModelAndPageAttributes(request, model, ProposalTab.ADVANCING);
-
-        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-        if (!permissions.getCanSeeAdvancingTab()) {
-            throw new ProposalsAuthorizationException(ACCESS_TAB_DENIED_MESSAGE);
-        }
-
-        Proposal proposal = proposalsContext.getProposal(request);
-        ContestPhase contestPhase = proposalsContext.getContestPhase(request);
-        Proposal proposalWrapper = new Proposal(proposal, contestPhase);
-        ProposalAdvancingBean bean = new ProposalAdvancingBean(proposalWrapper);
-
-        setCommonAdvancingAttributes(request, bean, model);
-        return "proposalAdvancing";
     }
 
     private void setCommonAdvancingAttributes(HttpServletRequest request, ProposalAdvancingBean bean, Model model) {
@@ -121,17 +105,15 @@ public class ProposalJudgesTabController extends BaseProposalTabController {
 
 
     private static List<ProposalRatings> wrapProposalRatings(List<ProposalRating> ratings) {
-        List<ProposalRatings> wrappers = new ArrayList<>();
         Map<Long, List<ProposalRating>> ratingsByUserId = new HashMap<>();
 
         for (ProposalRating r : ratings) {
-                if (ratingsByUserId.get(r.getUserId()) == null) {
-                    ratingsByUserId.put(r.getUserId(), new ArrayList<ProposalRating>());
-                }
+            ratingsByUserId.computeIfAbsent(r.getUserId(), k -> new ArrayList<>());
                 ratingsByUserId.get(r.getUserId()).add(r);
             }
 
-            for (Map.Entry<Long, List<ProposalRating>> entry : ratingsByUserId.entrySet()) {
+        List<ProposalRatings> wrappers = new ArrayList<>();
+        for (Map.Entry<Long, List<ProposalRating>> entry : ratingsByUserId.entrySet()) {
                 List<ProposalRating> userRatings = entry.getValue();
                 ProposalRatings wrapper = new ProposalRatings(entry.getKey(), userRatings);
                 wrappers.add(wrapper);

@@ -504,8 +504,7 @@ public class ContestClient {
                 .execute(), contestService);
     }
 
-    public Integer getPointsAccessibleForActivePhaseOfContest(Contest contest) {
-        //check if the phase, the contest is currently in, allows for editing
+    public int getPointsAccessibleForActivePhaseOfContest(Contest contest) {
         ContestPhase activePhase = getActivePhase(contest.getContestPK());
         if (activePhase != null) {
             ContestPhaseType cpType = getContestPhaseType(activePhase.getContestPhaseType());
@@ -513,7 +512,7 @@ public class ContestClient {
                 return cpType.getPointsAccessible();
             }
         }
-        return null;
+        return 0;
     }
 
     public ContestPhase getActivePhase(Long contestId) {

@@ -15,7 +15,7 @@ import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
-import org.xcolab.view.pages.proposals.wrappers.ProposalTab;
+import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class ProposalModelTabController extends BaseProposalTabController {
     public String show(Model model, HttpServletRequest request,
             @RequestParam(required = false) boolean edit) {
 
-        setCommonModelAndPageAttributes(request, model, ProposalTab.ACTIONSIMPACTS);
+        setCommonModelAndPageAttributes(request, model, ProposalTab.ACTIONS_IMPACTS);
         
         if (edit) {
         	Map<Long, String> modelIdsWithNames =

@@ -5,7 +5,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import org.xcolab.view.errors.ErrorText;
-import org.xcolab.view.pages.proposals.wrappers.ProposalTabWrapper;
+import org.xcolab.view.pages.proposals.tabs.ProposalTabWrapper;
 
 import java.io.IOException;
 

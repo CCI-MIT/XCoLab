@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.wrappers;
+package org.xcolab.view.pages.proposals.tabs;
 
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
@@ -6,6 +6,7 @@ import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import javax.servlet.http.HttpServletRequest;
 
 public class ProposalTabWrapper {
+
     private ProposalTab tab;
     private String displayName;
     private final HttpServletRequest request;
@@ -50,10 +51,10 @@ public class ProposalTabWrapper {
     }
     
     public boolean getCanEdit() {
-        return tab.getCanEdit(permissions, context, request);
+        return tab.getCanEdit(request);
     }
     
     public boolean getCanAccess() {
-        return tab.getCanAccess(permissions, context, request);
+        return tab.getCanAccess(request);
     }
 }

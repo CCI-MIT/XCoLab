@@ -20,7 +20,7 @@ import org.xcolab.view.pages.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.view.pages.proposals.wrappers.ProposalTab;
+import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 
 import java.io.IOException;
 

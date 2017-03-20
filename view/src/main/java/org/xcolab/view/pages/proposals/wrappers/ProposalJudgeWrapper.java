@@ -69,9 +69,11 @@ public class ProposalJudgeWrapper extends Proposal {
         return JudgingSystemActions.JudgeReviewStatus.NOT_RESPONSIBLE;
     }
 
-    public boolean shouldShowJudgingTab() {
-        ProposalContestPhaseAttribute a = proposalContestPhaseAttributeHelper.getAttributeOrCreate(ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0);
-        JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) a.getNumericValue().intValue());
+    public boolean isPassedToJudges() {
+        ProposalContestPhaseAttribute a = proposalContestPhaseAttributeHelper
+                .getAttributeOrCreate(ProposalContestPhaseAttributeKeys.FELLOW_ACTION, 0);
+        JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt(
+                a.getNumericValue().intValue());
         return fellowAction == JudgingSystemActions.FellowAction.PASS_TO_JUDGES;
     }
 

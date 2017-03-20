@@ -13,8 +13,8 @@ import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
-import org.xcolab.view.pages.proposals.wrappers.ProposalTab;
-import org.xcolab.view.pages.proposals.wrappers.ProposalTabWrapper;
+import org.xcolab.view.pages.proposals.tabs.ProposalTab;
+import org.xcolab.view.pages.proposals.tabs.ProposalTabWrapper;
 
 import java.util.ArrayList;
 import java.util.List;

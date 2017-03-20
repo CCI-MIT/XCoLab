@@ -28,7 +28,7 @@ import org.xcolab.view.pages.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
-import org.xcolab.view.pages.proposals.wrappers.ProposalTab;
+import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 
 import java.util.ArrayList;

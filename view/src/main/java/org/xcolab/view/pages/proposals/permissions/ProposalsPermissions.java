@@ -23,8 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ProposalsPermissions {
 
-    private final long groupId;
-
     private final boolean planIsEditable;
 
     private final long memberId;
@@ -57,10 +55,8 @@ public class ProposalsPermissions {
 
         // set proper context group id
         if (proposal == null) {
-            groupId = 0L;
             planIsEditable = false;
         } else {
-            groupId = proposal.getGroupId();
             planIsEditable = contestStatus != null && contestStatus.isCanEdit()
                     && contestPhase.getPhaseActive();
 
@@ -211,11 +207,6 @@ public class ProposalsPermissions {
         MemberRole memberRole = roleChoiceAlgorithm.getHighestMemberRoleForUser(
                 MembersClient.getMemberUnchecked(memberId));
         return memberRole == MemberRole.IMPACT_ASSESSMENT_FELLOW;
-    }
-
-    public boolean getCanSeeAdvancingTab() {
-        return getCanFellowActions()  || getCanAdminAll()
-                || getCanContestManagerActions();
     }
 
     public boolean getCanPromoteProposalToNextPhase() {
