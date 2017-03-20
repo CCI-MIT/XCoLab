@@ -22,6 +22,9 @@ function editComment(messageId, url){
     var comment = jQuery('#' + 'message_' + messageId).html(); //extractText('message_' + messageId);
     var $message = $('#message_' + messageId);
     $message.empty();
+    if (!_isAdmin) {
+        $message.append('<div class="c-Alert__info__message">Please make sure you save your edit within 15 minutes of creating this comment.</div>');
+    }
     var formContent = '<form method="post" action="' + url + '">';
     formContent += '<textarea class="rte-editorPlaceholder" id="text_' + messageId + '" name="comment" style="width: 100%; height: 150px;"></textarea>';
     formContent += '<input name="messageId" type="hidden" value="' + messageId + '"/>';

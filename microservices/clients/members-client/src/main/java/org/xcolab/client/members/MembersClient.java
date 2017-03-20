@@ -189,6 +189,7 @@ public final class MembersClient {
     }
 
     public static List<MemberCategory> getVisibleMemberCategories() {
+
         return memberCategoryResource.list()
                 .queryParam("showInList", true)
                 .withCache(CacheName.ROLES)
@@ -220,6 +221,7 @@ public final class MembersClient {
     }
 
     private static Member getMemberInternal(long memberId) throws EntityNotFoundException {
+
         return memberResource.get(memberId)
                 .withCache(CacheName.MEMBER)
                 .executeChecked();
@@ -250,6 +252,7 @@ public final class MembersClient {
                     Member.TYPES.getTypeReference())
                     .queryParam("ip", ip).getList();
     }
+
 
     public static List<Member> findByScreenNameOrName(String ip) {
         return memberResource.service("findByScreenNameOrName",

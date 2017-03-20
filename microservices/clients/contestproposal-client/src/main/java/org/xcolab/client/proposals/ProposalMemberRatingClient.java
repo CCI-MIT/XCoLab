@@ -154,7 +154,9 @@ public final class ProposalMemberRatingClient {
                 .get();
     }
 
-
+    public List<ProposalVote> getProposalVotesInPhase(long contestPhaseId) {
+        return getProposalVotes(contestPhaseId, null, null);
+    }
 
     public List<ProposalVote> getProposalVotes(Long contestPhaseId, Long proposalId, Long userId) {
         return DtoUtil.toPojos(proposalVoteResource.list()

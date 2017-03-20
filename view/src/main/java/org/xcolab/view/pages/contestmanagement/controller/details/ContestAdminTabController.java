@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/admin/contest/details/contestId/{contestId}/tab/ADMIN")
-public class AdminTabController extends AbstractTabController {
+public class ContestAdminTabController extends AbstractTabController {
 
     static final private ContestDetailsTabs tab = ContestDetailsTabs.ADMIN;
     static final private String TAB_VIEW = "contestmanagement/details/adminTab";

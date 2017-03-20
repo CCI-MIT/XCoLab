@@ -228,6 +228,9 @@ public final class ContestClientUtil {
     public static boolean updateContestPhase(ContestPhase contestPhase) {
         return contestClient.updateContestPhase(contestPhase);
     }
+    public static List<Long> getContestYears() {
+        return contestClient.getContestYears();
+    }
 
     public static ContestPhase createContestPhase(
             ContestPhase contestPhase) {
@@ -252,6 +255,15 @@ public final class ContestClientUtil {
     public static List<ContestPhase> getTemplatePhasesForContestScheduleId(
             Long contestScheduleId) {
         return contestClient.getTemplatePhasesForContestScheduleId(contestScheduleId);
+    }
+
+    public static List<ContestPhase> getContestPhasesByType(long contestPhaseTypeId) {
+        return contestClient.getContestPhasesByType(contestPhaseTypeId);
+    }
+
+    public static String getContestNames(List<Long> contestTypeIds, String plurality,
+            String conjunction) {
+        return contestClient.getContestNames(contestTypeIds, plurality, conjunction);
     }
 
     public static ContestPhase getContestPhase(Long contestPhaseId) {

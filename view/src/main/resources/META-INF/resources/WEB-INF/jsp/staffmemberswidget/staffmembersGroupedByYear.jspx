@@ -1,0 +1,94 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          version="2.0">
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+
+    <!--@elvariable id="_isAdmin" type="java.lang.Boolean"-->
+
+    <!--@elvariable id="widgetTitle" type="java.lang.String"-->
+    <!--@elvariable id="displayPhoto" type="java.lang.Boolean"-->
+    <!--@elvariable id="displayUrl" type="java.lang.Boolean"-->
+    <!--@elvariable id="columnAmount" type="java.lang.Integer"-->
+    <!--@elvariable id="staffMembers" type="java.util.List<org.xcolab.view.pages.staffmemberswidget.StaffMemberWrapper>"-->
+
+    <c:if test="${_isAdmin}">
+        <a href="/staffmemberswidget/editPreferences" class="c-Button__admin">Edit preferences</a><br/>
+    </c:if>
+
+    <c:if test="${not empty widgetTitle}">
+        <h2>${widgetTitle}</h2>
+    </c:if>
+
+    <c:choose>
+        <c:when test="${displayPhoto}">
+            <c:forEach var="yearMap" items="${staffMembersMap}">
+                <c:if test="${not yearMap.value.isEmpty()}">
+                    <h3>${yearMap.key}</h3>
+                    <ul class="staffmembers-photos">
+                        <c:forEach items="${yearMap.value}" var="staffMember" varStatus="status">
+                            <c:choose>
+                                <c:when test="${(status.index % columnAmount) == 0 and status.index > 0}">
+                                    <c:set var="liClass" value="clear-row"/>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:set var="liClass" value=""/>
+                                </c:otherwise>
+                            </c:choose>
+
+                            <li class="${liClass}">
+                                <div class="descriptionContainer">
+                                    <c:choose>
+                                        <c:when test="${displayUrl and not empty staffMember.url}">
+                                            <a href="${staffMember.url}">
+                                                ${staffMember.name}
+                                            </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${staffMember.name}
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <br/>
+                                    <c:if test="${not empty staffMember.role}">
+                                        <strong class="staffmembers-role">${staffMember.role}</strong><br/>
+                                    </c:if>
+                                    <c:if test="${not empty staffMember.organization}">
+                                        <span class="staffmembers-organization">${staffMember.organization}</span><br/>
+                                    </c:if>
+                                </div>
+                                <img src="${staffMember.photoUrl}"/>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </c:if>
+                <div class="clear"><!-- --></div>
+            </c:forEach>
+        </c:when>
+        <c:otherwise>
+            <c:forEach var="yearMap" items="${staffMembersMap}">
+                <c:if test="${not yearMap.value.isEmpty()}">
+                    <h3>${yearMap.key}</h3>
+                    <ul class="staffmembers-list">
+                        <c:forEach items="${yearMap.value}" var="staffMember">
+                            <li>
+                                <c:choose>
+                                    <c:when test="${displayUrl and not empty staffMember.url}">
+                                        <a href="${staffMember.url}">
+                                            ${staffMember.name}
+                                        </a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${staffMember.name}
+                                    </c:otherwise>
+                                </c:choose>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </c:if>
+                <div class="clear"><!-- --></div>
+            </c:forEach>
+        </c:otherwise>
+    </c:choose>
+
+    <div class="clear"><!-- --></div>
+
+</jsp:root>

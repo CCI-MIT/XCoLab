@@ -6,7 +6,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
+import org.xcolab.client.comment.util.CommentClientUtil;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.http.client.RefreshingRestService;
+import org.xcolab.util.http.client.RestService;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
         .DiscussionAuthorizationException;
@@ -39,6 +48,29 @@ public abstract class BaseDiscussionsActionController {
         } catch (CommentNotFoundException e) {
             throw new DiscussionAuthorizationException(accessDeniedMessage);
         }
+    }
+
+    protected CommentClient getCommentClient(Long contestId) {
+        CommentClient commentClient;
+        if (contestId != null) {
+            Contest contest = null;
+            try {
+                contest = ContestClientUtil.getContest(contestId);
+            } catch (ContestNotFoundException ignored) {
+
+            }
+            if (contest != null && contest.getIsSharedContestInForeignColab()) {
+                RestService commentsService = new RefreshingRestService(CoLabService.COMMENT,
+                        ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
+
+                commentClient = CommentClient.fromService(commentsService);
+            } else {
+                commentClient = CommentClientUtil.getClient();
+            }
+        } else {
+            commentClient = CommentClientUtil.getClient();
+        }
+        return commentClient;
     }
 
     public void redirectToReferrer(HttpServletRequest request, HttpServletResponse response)

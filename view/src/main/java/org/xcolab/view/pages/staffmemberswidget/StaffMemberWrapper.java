@@ -48,6 +48,9 @@ public class StaffMemberWrapper implements Serializable {
         }
     }
 
+    public Member getMember(){
+        return this.colabMember;
+    }
     public String getName() {
         if (colabMember != null) {
             return colabMember.getFullName();

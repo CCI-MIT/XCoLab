@@ -5,7 +5,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
-import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
@@ -21,11 +19,11 @@ import org.xcolab.view.pages.contestmanagement.entities.LabelStringValue;
 import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleChangeHelper.IllegalScheduleChangeException;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
-import org.xcolab.view.pages.contestmanagement.wrappers.ContestScheduleWrapper;
+import org.xcolab.view.pages.contestmanagement.wrappers.ContestScheduleBean;
 import org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,8 +87,8 @@ public class SchedulesTabController extends AbstractTabController {
 
         Long scheduleId = elementId != null ? elementId : getFirstScheduleId();
         model.addAttribute("scheduleId", scheduleId);
-        if (scheduleId >= 0) {
-            model.addAttribute("contestScheduleWrapper", new ContestScheduleWrapper(scheduleId));
+        if (scheduleId >= 0 && !model.containsAttribute("contestScheduleWrapper")) {
+            model.addAttribute("contestScheduleWrapper", new ContestScheduleBean(scheduleId));
         }
         model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(scheduleId,
                 ContestScheduleLifecycleUtil.getAllScheduleTemplateSelectionItems()));
@@ -107,50 +105,63 @@ public class SchedulesTabController extends AbstractTabController {
         return -1L;
     }
 
-    @PostMapping("tab/SCHEDULES/create")
-    public String createNewScheduleTabController(HttpServletRequest request, Model model,
-            HttpServletResponse response)
-            throws IOException {
+    @PostMapping("tab/SCHEDULES")
+    public String performAction(HttpServletRequest request, HttpServletResponse response,
+            Model model, Action action, @RequestParam(required = false) Long elementId,
+            @ModelAttribute ContestScheduleBean contestScheduleBean, BindingResult result) {
 
         if (!tabWrapper.getCanEdit()) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
+
+        switch (action) {
+            case CREATE:
+                return createSchedule(request, response, model);
+            case UPDATE:
+                return updateSchedule(request, response, model, contestScheduleBean, result);
+            case DELETE:
+                if (elementId == null) {
+                    throw new IllegalArgumentException("Schedule id missing");
+                }
+                return deleteSchedule(request, response, model, elementId);
+            default:
+                throw new IllegalArgumentException("Known action");
+        }
+    }
+
+    private String createSchedule(HttpServletRequest request, HttpServletResponse response,
+            Model model) {
         ContestSchedule newContestSchedule = ContestScheduleLifecycleUtil.createNewSchedule();
-
         AlertMessage.CREATED.flash(request);
-        return "redirect:" + tab.getTabUrl(newContestSchedule.getId_());
+        return showScheduleTabController(request, response, model, newContestSchedule.getId_());
     }
 
-    @PostMapping("tab/SCHEDULES/delete/{scheduleId}")
-    public String deleteScheduleTabController(HttpServletRequest request, Model model,
-            @PathVariable Long scheduleId,
-            HttpServletResponse response) throws IOException {
-        if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
-        }
-        ContestScheduleLifecycleUtil.deleteContestSchedule(scheduleId);
-        AlertMessage.DELETED.flash(request);
-        return "redirect:" + tab.getTabUrl();
-    }
-
-    @PostMapping("tab/SCHEDULES/update")
-    public String updateScheduleTabController(HttpServletRequest request, Model model,
-            @ModelAttribute ContestScheduleWrapper updateContestScheduleWrapper,
-            BindingResult result, HttpServletResponse response) throws IOException {
-        if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
-        }
-
+    private String updateSchedule(HttpServletRequest request, HttpServletResponse response,
+            Model model, @ModelAttribute ContestScheduleBean contestScheduleBean,
+            BindingResult result) {
         if (result.hasErrors()) {
             AlertMessage.danger("Error saving your changes!").flash(request);
-            return "redirect:" + tab.getTabUrl(updateContestScheduleWrapper.getScheduleId());
+            return showScheduleTabController(request, response, model,
+                    contestScheduleBean.getScheduleId());
         }
         try {
-            updateContestScheduleWrapper.persist();
+            contestScheduleBean.persist();
             AlertMessage.CHANGES_SAVED.flash(request);
-            return "redirect:" + tab.getTabUrl(updateContestScheduleWrapper.getScheduleId());
+            return showScheduleTabController(request, response, model,
+                    contestScheduleBean.getScheduleId());
         } catch (IllegalScheduleChangeException e) {
             return ErrorText.ILLEGAL_SCHEDULE_CHANGE.flashAndReturnView(request);
         }
+    }
+
+    private String deleteSchedule(HttpServletRequest request, HttpServletResponse response,
+            Model model, Long scheduleId) {
+        ContestScheduleLifecycleUtil.deleteContestSchedule(scheduleId);
+        AlertMessage.DELETED.flash(request);
+        return showScheduleTabController(request, response, model, null);
+    }
+
+    enum Action {
+        CREATE, UPDATE, DELETE
     }
 }

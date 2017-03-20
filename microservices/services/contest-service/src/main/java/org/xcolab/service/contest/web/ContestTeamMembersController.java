@@ -64,6 +64,14 @@ public class ContestTeamMembersController {
         return contestTeamMemberDao.findByGiven(contestId);
     }
 
+    @RequestMapping(value = "/contestTeamMembers/getByContestYear", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<ContestTeamMember> getByContestYear(
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Long contestYear
+    ) {
+        return contestTeamMemberDao.findContestYear(categoryId,contestYear);
+    }
+
     @DeleteMapping(value = "/contestTeamMembers/{id_}")
     public boolean deleteContestTeamMember(@PathVariable long id_)
             throws NotFoundException {

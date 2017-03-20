@@ -15,19 +15,19 @@ import java.util.List;
 
 import static org.xcolab.view.pages.contestmanagement.beans.ContestPhaseBean.CREATE_CONTEST_PHASE_PK;
 
-public class ContestScheduleWrapper {
+public class ContestScheduleBean {
 
     private List<ContestPhaseBean> schedulePhases;
     private ContestSchedule contestSchedule;
     private List<Contest> contestsUsingSelectedSchedule;
     private Boolean createNew = false;
 
-    public ContestScheduleWrapper() {
+    public ContestScheduleBean() {
         schedulePhases = new ArrayList<>();
         contestsUsingSelectedSchedule = new ArrayList<>();
     }
 
-    public ContestScheduleWrapper(Long scheduleId) {
+    public ContestScheduleBean(Long scheduleId) {
         contestSchedule = loadContestSchedule(scheduleId);
         schedulePhases = loadContestPhases(scheduleId);
         contestsUsingSelectedSchedule = loadContestsUsingSchedule(scheduleId);

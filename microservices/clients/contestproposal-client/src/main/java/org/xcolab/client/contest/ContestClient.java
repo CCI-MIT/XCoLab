@@ -2,6 +2,7 @@ package org.xcolab.client.contest;
 
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -34,6 +35,7 @@ import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
@@ -63,6 +65,7 @@ public class ContestClient {
 
     private final RestResource1<ContestScheduleDto, Long> contestScheduleResource;
     private final RestResource1<ContestCollectionCardDto, Long> contestCollectionCardRestResource;
+    private final RestResource<Long, Long> contestYearResource;
 
     private ContestClient(RestService contestService) {
         this.contestService = contestService;
@@ -84,6 +87,12 @@ public class ContestClient {
                 new RestResource1<>(this.contestService, "contestCollectionCards", ContestCollectionCardDto.TYPES);
         contestDiscussionResource =
                 new RestResource1<>(this.contestService, "contestDiscussions", ContestDiscussionDto.TYPES);
+
+        contestYearResource = new RestResource1<>(
+                contestService, "contestyears", new TypeProvider<>(Long.class,
+                new ParameterizedTypeReference<List<Long>>() {
+                })
+        );
     }
 
     public static ContestClient fromService(RestService contestService) {
@@ -263,6 +272,10 @@ public class ContestClient {
                 .service("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
                 .queryParam("focusAreaOntologyTerms", ontologyTermIds.toArray())
                 .getList(), contestService);
+    }
+
+    public List<Long> getContestYears() {
+        return contestYearResource.list().execute();
     }
 
 
@@ -453,13 +466,14 @@ public class ContestClient {
     public boolean updateContestSchedule(ContestSchedule contestSchedule) {
         return contestScheduleResource
                 .update(new ContestScheduleDto(contestSchedule), contestSchedule.getId_())
+                .cacheName(CacheName.MISC_REQUEST)
                 .execute();
     }
 
     public ContestSchedule getContestSchedule(long id) {
         try {
             return contestScheduleResource.get(id)
-                    .withCache(CacheKeys.of(ContestScheduleDto.class, id), CacheName.MISC_REQUEST)
+                    .withCache(CacheName.MISC_REQUEST)
                     .execute().toPojo(contestService);
         } catch (UncheckedEntityNotFoundException e) {
             throw new ContestScheduleNotFoundException(id);
@@ -557,6 +571,12 @@ public class ContestClient {
         return DtoUtil.toPojos(contestPhasesResource.list()
                 .queryParam("contestPK", ContestPhase.SCHEDULE_TEMPLATE_PHASE_CONTEST_ID)
                 .queryParam("contestScheduleId", contestScheduleId)
+                .execute(), contestService);
+    }
+
+    public List<ContestPhase> getContestPhasesByType(long contestPhaseTypeId) {
+        return DtoUtil.toPojos(contestPhasesResource.list()
+                .queryParam("contestPhaseTypeId", contestPhaseTypeId)
                 .execute(), contestService);
     }
 
