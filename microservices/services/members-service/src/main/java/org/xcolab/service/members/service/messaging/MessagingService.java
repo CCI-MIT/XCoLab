@@ -68,7 +68,7 @@ public class MessagingService {
 
                             final String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
                             EmailClient.sendEmail(fromEmail, reportRecipients,
-                                    subject, content, false, fromEmail);
+                                    subject, content, false, fromEmail,message.getFromId());
                         }
                     }
                     throw new MessageLimitExceededException(fromId);
@@ -138,7 +138,7 @@ public class MessagingService {
 
         String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
         EmailClient.sendEmail(fromEmail, recipient.getEmailAddress(), subject, message, true,
-                fromEmail);
+                fromEmail,m.getMessageId());
     }
 
     private static String createMessageURL(Message m) {

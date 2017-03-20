@@ -137,7 +137,7 @@ public class ContestMassActionMethods {
         final String adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.get();
 
         EmailClient.sendEmail(adminEmail, adminEmail, emailSubject,
-                emailBody, true, null);
+                emailBody, true, null,null);
     }
 
     public static void sendMassMessage(List<Long> contestList, Object massMessageWrapperObject,

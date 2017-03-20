@@ -34,7 +34,7 @@ public class EmailToAdminDispatcher {
 
     public void sendMessage() {
         String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
-        EmailClient.sendEmail(fromEmail, getRecipientAddresses(), subject, body, true, fromEmail);
+        EmailClient.sendEmail(fromEmail, getRecipientAddresses(), subject, body, true, fromEmail,null);
     }
 
     private List<String> getRecipientAddresses() {

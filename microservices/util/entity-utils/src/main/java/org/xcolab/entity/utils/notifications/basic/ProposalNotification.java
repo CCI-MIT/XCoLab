@@ -56,6 +56,9 @@ public class ProposalNotification extends ContestNotification {
 
         return templateWrapper;
     }
+    protected Long getReferenceId(){
+        return this.proposal.getContestPK();
+    }
 
     protected class ProposalNotificationTemplate extends ContestNotificationTemplate {
 

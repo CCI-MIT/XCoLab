@@ -18,14 +18,14 @@ public final class EmailClient {
     private EmailClient() {
     }
 
-    public static void sendEmail(String from, String to, String subject, String emailBody, Boolean isHtml, String replyTo) {
+    public static void sendEmail(String from, String to, String subject, String emailBody, Boolean isHtml, String replyTo, Long referenceId) {
 
         List<String> toAdd = new ArrayList<>();
         toAdd.add(to);
-        sendEmail(from, toAdd, subject, emailBody, isHtml, replyTo);
+        sendEmail(from, toAdd, subject, emailBody, isHtml, replyTo,referenceId);
     }
 
-    public static void sendEmail(String from, List<String> to, String subject, String emailBody, Boolean isHtml, String replyTo) {
+    public static void sendEmail(String from, List<String> to, String subject, String emailBody, Boolean isHtml, String replyTo, Long referenceId) {
         Email email = new Email();
         email.setFrom(from);
         email.setTo(to);
@@ -33,6 +33,7 @@ public final class EmailClient {
         email.setEmailBody(emailBody);
         email.setHtml(isHtml);
         email.setReplyTo(((replyTo == null ? ("") : (replyTo))));
+        email.setReferenceId(referenceId);
 
         emailResource.service("send", String.class).post(email);
     }

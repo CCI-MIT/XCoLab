@@ -25,6 +25,7 @@ import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.html.HtmlUtil;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,7 +45,7 @@ public class ActivitySubscriptionEmailHelper {
     private static Date lastEmailNotification = new Date();
 
     // 1 am
-    private final static int DAILY_DIGEST_TRIGGER_HOUR = 1;
+    private final static Long DAILY_DIGEST_TRIGGER_HOUR = ConfigurationAttributeKey.DAILY_DIGEST_TRIGGER_HOUR.get();
 
     private final static Logger _log = LoggerFactory.getLogger(ActivitySubscriptionEmailHelper.class);
 
@@ -83,16 +84,17 @@ public class ActivitySubscriptionEmailHelper {
 
     public static void sendEmailNotifications() {
 
-
-        //to ease debug please leave it here
-
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        try {
-//            lastEmailNotification = sdf.parse("2017-03-09 00:00:00");
-//            lastDailyEmailNotification = sdf.parse("2017-03-09 00:00:00");
-//        } catch (ParseException e) {
-//            lastEmailNotification = new Date();
-//        }
+        // INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('DAILY_DIGEST_LAST_EMAIL_NOTIFICATION', '0', '0', '2017-01-03 00:00:00', '0');
+        String DAILY_DIGEST_LAST_EMAIL_NOTIFICATION = ConfigurationAttributeKey.DAILY_DIGEST_LAST_EMAIL_NOTIFICATION.get();
+        if(!DAILY_DIGEST_LAST_EMAIL_NOTIFICATION.isEmpty()) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                lastEmailNotification = sdf.parse(DAILY_DIGEST_LAST_EMAIL_NOTIFICATION);
+                lastDailyEmailNotification = sdf.parse(DAILY_DIGEST_LAST_EMAIL_NOTIFICATION);
+            } catch (ParseException e) {
+                lastEmailNotification = new Date();
+            }
+        }
 
 
         synchronized (lastEmailNotification) {
@@ -136,7 +138,7 @@ public class ActivitySubscriptionEmailHelper {
                 String body = getDigestMessageBody(userDigestActivities);
                 String unsubscribeFooter = getUnsubscribeDailyDigestFooter(NotificationUnregisterUtils.getActivityUnregisterLink(recipient));
 
-                sendEmailMessage(recipient, subject, body, unsubscribeFooter, ConfigurationAttributeKey.COLAB_URL.get());
+                sendEmailMessage(recipient, subject, body, unsubscribeFooter, ConfigurationAttributeKey.COLAB_URL.get(),recipient.getId_());
             } catch (MemberNotFoundException ignored) {
                 _log.error("sendDailyDigestNotifications: MemberNotFound : {}",
                         ignored.getMessage());
@@ -283,7 +285,7 @@ public class ActivitySubscriptionEmailHelper {
                 String unsubscribeFooter = getUnsubscribeIndividualSubscriptionFooter(
                         ConfigurationAttributeKey.COLAB_URL.get(),
                         NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId())));
-                sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter, ConfigurationAttributeKey.COLAB_URL.get());
+                sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter, ConfigurationAttributeKey.COLAB_URL.get(),activity.getActivityEntryId());
             }
         }
     }
@@ -292,7 +294,7 @@ public class ActivitySubscriptionEmailHelper {
         return activityEntryTitle.replaceAll("\\<[^>]*>","");
     }
 
-    private static void sendEmailMessage(Member recipient, String subject, String body, String unregisterFooter, String portalBaseUrl) {
+    private static void sendEmailMessage(Member recipient, String subject, String body, String unregisterFooter, String portalBaseUrl, Long referenceId) {
         try {
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
             InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
@@ -310,7 +312,7 @@ public class ActivitySubscriptionEmailHelper {
 
 
             EmailClient.sendEmail(fromEmail.getAddress(),toEmail.getAddress(), TemplateReplacementUtil.replacePlatformConstants(subject),
-                    TemplateReplacementUtil.replacePlatformConstants(message), true, fromEmail.getAddress());
+                    TemplateReplacementUtil.replacePlatformConstants(message), true, fromEmail.getAddress(),referenceId);
 
         } catch ( UnsupportedEncodingException e) {
             _log.error("Can't send email notifications to users");
@@ -345,7 +347,7 @@ public class ActivitySubscriptionEmailHelper {
 
     private static Date getLastDailyEmailNotificationDate() {
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, DAILY_DIGEST_TRIGGER_HOUR);
+        cal.set(Calendar.HOUR_OF_DAY, (DAILY_DIGEST_TRIGGER_HOUR).intValue());
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
