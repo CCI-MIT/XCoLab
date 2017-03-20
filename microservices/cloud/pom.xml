@@ -16,6 +16,7 @@
 
     <modules>
         <module>eureka-server</module>
+        <module>service-proxy</module>
     </modules>
 
 </project>
