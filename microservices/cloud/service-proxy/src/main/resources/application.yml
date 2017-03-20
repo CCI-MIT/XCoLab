@@ -1,0 +1,21 @@
+server:
+  port: 8765
+
+eureka:
+  client:
+    registerWithEureka: false
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
+
+zuul:
+  ribbonIsolationStrategy: THREAD
+  retryable: true
+
+logging:
+  level:
+    ROOT: WARN
+    org.springframework: INFO
+    org.springframework.jmx: WARN
+    org.springframework.web: WARN
+    org.springframework.boot.web: WARN
+    org.springframework.boot.actuate: WARN

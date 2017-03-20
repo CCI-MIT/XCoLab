@@ -9,8 +9,9 @@ if [ $BUILD_TYPE == 'deploy' ]; then
     echo "Moving view binary"
     mv view/target/xcolab-view-1.0-SNAPSHOT.jar binaries/view/
 
-    echo "Moving eureka binary"
+    echo "Moving cloud binaries"
     mv microservices/cloud/eureka-server/target/eureka-server-1.0-SNAPSHOT.jar binaries/cloud/
+    mv microservices/cloud/service-proxy/target/service-proxy-1.0-SNAPSHOT.jar binaries/cloud/
 
     echo "Moving service binaries"
     mv microservices/services/*-service/target/*-1.0-SNAPSHOT.jar binaries/services/

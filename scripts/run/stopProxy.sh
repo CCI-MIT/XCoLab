@@ -2,13 +2,13 @@
 
 source config.sh
 
-EUREKA=eureka-server
+SERVER=service-proxy
 
 echo "#####################################################################################"
-echo "[INFO] Stopping Eureka server..."
+echo "[INFO] Stopping proxy server..."
 
-echo "[INFO] Sending kill signal to ${EUREKA}"
-PID_FILE="${CLOUD_DEPLOY_DIR}/${EUREKA}.pid"
+echo "[INFO] Sending kill signal to ${SERVER}"
+PID_FILE="${CLOUD_DEPLOY_DIR}/${SERVER}.pid"
 kill $(<"${PID_FILE}")
 rm ${PID_FILE}
 
