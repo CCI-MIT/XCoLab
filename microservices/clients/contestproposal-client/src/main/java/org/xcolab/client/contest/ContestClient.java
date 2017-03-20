@@ -216,7 +216,7 @@ public class ContestClient {
         List<ContestDto> list = contestResource.list()
                 .queryParam("contestUrlName", contestUrlName)
                 .queryParam("contestYear", contestYear)
-                .withCache(CacheName.CONTEST_DETAILS)
+//                .withCache(CacheName.CONTEST_DETAILS)
                 .execute();
         if (list != null && !list.isEmpty()) {
             return list.get(0).toPojo(contestService);
