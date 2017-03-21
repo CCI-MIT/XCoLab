@@ -414,5 +414,9 @@
     </c:choose>
 
     <xcolab:loadCkEditor />
+
+    <c:if test="${isMove}">
+        <xcolab:script src="${_themeJsFolder}/proposals/copyProposalWidget.js"/>
+    </c:if>
 </xcolab:layout>
 </jsp:root>
