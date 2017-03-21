@@ -64,14 +64,17 @@ public class PromotionService {
         this.contestService = contestService;
     }
 
-    public synchronized void doPromotion(Date now) {
+    public synchronized int doPromotion(Date now) {
         setNow(now);
-        doBasicPromotion();
-        doJudgingBasedPromotion();
-        distributeRibbons();
+        int promotedProposals = 0;
+        promotedProposals += doBasicPromotion();
+        promotedProposals += doJudgingBasedPromotion();
+        promotedProposals += distributeRibbons();
+        return promotedProposals;
     }
 
-    private void doBasicPromotion() {
+    private int doBasicPromotion() {
+        int promotedProposals = 0;
         final List<ContestPhase> phasesToPromote =
                 contestPhaseDao.findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE.getValue());
         for (ContestPhase phase : phasesToPromote) {
@@ -103,6 +106,7 @@ public class PromotionService {
                         }
 
                         ProposalPhaseClientUtil.promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
+                        promotedProposals++;
                     }
 
                     // update phase for which promotion was done (mark it as
@@ -125,9 +129,11 @@ public class PromotionService {
                 }
             }
         }
+        return promotedProposals;
     }
 
-    private void doJudgingBasedPromotion() {
+    private int doJudgingBasedPromotion() {
+        int promotedProposals = 0;
         final List<ContestPhase> phasesToPromote = contestPhaseDao
                 .findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE_JUDGED.getValue());
         for (ContestPhase phase : phasesToPromote) {
@@ -169,6 +175,7 @@ public class PromotionService {
                             if (phasePromotionHelper.didJudgeDecideToPromote(p)) {
                                 _log.info("Promote proposal {}", p.getProposalId());
                                 ProposalPhaseClientUtil.promoteProposal(p.getProposalId(), nextPhase.getContestPhasePK(), phase.getContestPhasePK());
+                                promotedProposals++;
                             }
 
                             // Enable this line to post promotion comment to Evaluation tab comment section
@@ -205,9 +212,11 @@ public class PromotionService {
                 }
             }
         }
+        return promotedProposals;
     }
 
-    private void distributeRibbons() {
+    private int distributeRibbons() {
+        int promotedProposals = 0;
         final List<ContestPhase> phasesToPromote = contestPhaseDao
                 .findByPhaseAutopromote(ContestPhasePromoteType.PROMOTE_RIBBONIZE.getValue());
         for (ContestPhase phase : phasesToPromote) {
@@ -282,6 +291,7 @@ public class PromotionService {
                         _log.error("Can't distribute ribbons: No finalist phase found in contest {}", phase.getContestPK());
                     }
 
+                    promotedProposals += allProposals.size();
                     associateProposalsWithCompletedPhase(allProposals, phase, nextPhase);
                     if (semifinalists != null) {
                         assignRibbonsToProposals(SEMIFINALIST_RIBBON_ID, semifinalists, nextPhase.getContestPhasePK());
@@ -310,9 +320,10 @@ public class PromotionService {
                 }
             }
         }
+        return promotedProposals;
     }
 
-    public boolean hasValidContest(ContestPhase phase) {
+    private boolean hasValidContest(ContestPhase phase) {
         try {
             contestDao.get(phase.getContestPK());
         } catch(NotFoundException e){

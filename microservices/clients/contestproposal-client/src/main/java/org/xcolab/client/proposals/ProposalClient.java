@@ -184,7 +184,7 @@ public final class ProposalClient {
     }
 
     public List<Proposal> getActiveProposalsInContestPhase(Long contestPhaseId) {
-        return getActiveProposalsInContestPhase(contestPhaseId, CacheName.MISC_REQUEST);
+        return getActiveProposalsInContestPhase(contestPhaseId, CacheName.PROPOSAL_LIST);
     }
 
     public Proposal createProposal(long authorId, long contestPhaseId, boolean publishActivity) {

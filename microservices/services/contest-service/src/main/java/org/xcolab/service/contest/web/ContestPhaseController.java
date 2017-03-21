@@ -108,10 +108,9 @@ public class ContestPhaseController {
     }
 
     @GetMapping("/contestPhases/autoPromoteProposals")
-    public Boolean autoPromoteProposals(){
+    public Integer autoPromoteProposals(){
         Date now = new Date();
-        promotionService.doPromotion(now);
-        return true;
+        return promotionService.doPromotion(now);
     }
 
     @GetMapping("/contestPhaseTypes/{contestPhaseTypeId}")

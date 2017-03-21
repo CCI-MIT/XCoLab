@@ -351,8 +351,8 @@ public final class ContestClientUtil {
         return contestClient.deleteContestCollectionCard(id);
     }
 
-    public static void autoPromoteProposals() {
-        contestClient.autoPromoteProposals();
+    public static int autoPromoteProposals() {
+        return contestClient.autoPromoteProposals();
     }
 
     public static List<Contest> findContestsByName(String contestName, List<Long> ontologyTermIds, List<Long> contestTypeIds){

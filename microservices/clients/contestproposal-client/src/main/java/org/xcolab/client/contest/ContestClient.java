@@ -354,8 +354,8 @@ public class ContestClient {
 
     }
 
-    public void autoPromoteProposals() {
-        contestPhasesResource.service("autoPromoteProposals", Boolean.class).get();
+    public int autoPromoteProposals() {
+        return contestPhasesResource.service("autoPromoteProposals", Integer.class).get();
     }
 
     public void forcePromotionOfProposalInPhase(Long proposalId, Long contestPhaseId) {
