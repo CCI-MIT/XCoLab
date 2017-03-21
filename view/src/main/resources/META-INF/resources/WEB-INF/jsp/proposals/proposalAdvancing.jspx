@@ -92,12 +92,12 @@
                                                 <a id="submit-advancing-2" style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="#">
                                                     Save
                                                 </a>
-                                                <div id="advancement-freeze-button">
+                                                <!-- <div id="advancement-freeze-button">
                                                     <input type="submit" id="submit-freeze" name="isFreeze" style="display:none" value="true" />
                                                     <a id="submit-freeze-link" style="display:block; float:right; margin-top: 10px;" class="c-Button__primary" href="#">
                                                         Freeze
                                                     </a>
-                                                </div>
+                                                </div> -->
                                             </c:when>
                                             <c:otherwise>
                                                 <p class="submitStatus error">
@@ -200,11 +200,11 @@
                 var advanceDecisionIdx = document.getElementById("advanceDecision").selectedIndex;
                 if (advanceDecisionIdx > 0) {
                     $("#advancement-force-button").show();
-                    $("#advancement-freeze-button").show();
+                    <!-- $("#advancement-freeze-button").show();-->
                     $('#comment-container').slideDown();
                 } else {
                     $("#advancement-force-button").hide();
-                    $("#advancement-freeze-button").hide();
+                    <!-- $("#advancement-freeze-button").hide(); -->
                     $('#comment-container').slideUp();
                 }
             }
