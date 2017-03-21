@@ -23,7 +23,7 @@
             <form:errors cssClass="c-Alert c-Alert__error" />
 
             This page is shared by ${contestType.contestName} Fellows only. Advisors and Judges will not be able to view this page
-            <c:set var="saveScreeningURL" value="${proposal.proposalUrl}/tab/SCREENING/saveScreening?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
+            <c:set var="saveScreeningURL" value="${proposal.proposalUrl}/tab/SCREENING?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
 
             <div class="judging_left">
                 <form:form id="fellowRatingForm" action="${saveScreeningURL}" method="post"

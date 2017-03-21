@@ -22,7 +22,7 @@
             margin: 20px 0 10px 0 !important;
         }</style>
 
-        <c:set var="saveAdvanceDetailsURL" value="${proposal.proposalUrl}/tab/ADVANCING/saveAdvanceDetails?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
+        <c:set var="saveAdvanceDetailsURL" value="${proposal.proposalUrl}/tab/ADVANCING?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
 
         <c:set var="getJudgingCsvURL" value="${proposal.proposalUrl}/tab/ADVANCING/getJudgingCsv"/>
 

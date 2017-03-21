@@ -1,4 +1,4 @@
-package org.xcolab.view.util.entity.judging;
+package org.xcolab.view.pages.proposals.judging;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -35,13 +35,19 @@ public class ProposalJudgingCommentHelper {
     public String getScreeningComment() {
         //get fellow decision
         ProposalContestPhaseAttribute fellowActionAttribute = proposalPhaseClient.
-                getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
-        JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue().intValue());
+                getProposalContestPhaseAttribute(proposal.getProposalId(),
+                        contestPhase.getContestPhasePK(),
+                        ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
+        JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt(
+                fellowActionAttribute.getNumericValue().intValue());
 
         if (fellowAction != JudgingSystemActions.FellowAction.NO_DECISION &&
                 fellowAction != JudgingSystemActions.FellowAction.PASS_TO_JUDGES) {
             String fellowRejectionText = proposalPhaseClient.
-                    getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT).getStringValue();
+                    getProposalContestPhaseAttribute(proposal.getProposalId(),
+                            contestPhase.getContestPhasePK(),
+                            ProposalContestPhaseAttributeKeys.FELLOW_ACTION_COMMENT)
+                    .getStringValue();
 
             return fellowRejectionText;
         }
@@ -80,14 +86,7 @@ public class ProposalJudgingCommentHelper {
     }
 
     public void setAdvancingComment(String comment) {
-        ProposalContestPhaseAttribute advanceDecisionAttribute = getProposalContestPhaseAttributeCreateIfNotExists(ProposalContestPhaseAttributeKeys.JUDGE_DECISION);
-        JudgingSystemActions.AdvanceDecision advanceDecision = JudgingSystemActions.AdvanceDecision.fromInt((int) advanceDecisionAttribute.getNumericValue().intValue());
-
-        if (advanceDecision != JudgingSystemActions.AdvanceDecision.NO_DECISION) {
-
-            String advanceMessage = comment;
-            persistAttribute(ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW, advanceMessage);
-        }
+        persistAttribute(ProposalContestPhaseAttributeKeys.PROPOSAL_REVIEW, comment);
     }
 
     /**

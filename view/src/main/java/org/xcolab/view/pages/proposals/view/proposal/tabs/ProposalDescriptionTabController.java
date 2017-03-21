@@ -59,12 +59,12 @@ import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
-public class ProposalSectionsTabController extends BaseProposalTabController {
+public class ProposalDescriptionTabController extends BaseProposalTabController {
 
     private final ProposalsContext proposalsContext;
 
     @Autowired
-    public ProposalSectionsTabController(ProposalsContext proposalsContext) {
+    public ProposalDescriptionTabController(ProposalsContext proposalsContext) {
         Assert.notNull(proposalsContext, "ProposalsContext bean is required");
         this.proposalsContext = proposalsContext;
     }

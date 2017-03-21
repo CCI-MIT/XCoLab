@@ -1,4 +1,4 @@
-package org.xcolab.view.util.entity.judging;
+package org.xcolab.view.pages.proposals.judging;
 
 import org.apache.commons.lang3.StringUtils;
 

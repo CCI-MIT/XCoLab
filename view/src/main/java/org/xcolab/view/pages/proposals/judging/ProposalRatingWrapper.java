@@ -1,4 +1,4 @@
-package org.xcolab.view.util.entity.judging;
+package org.xcolab.view.pages.proposals.judging;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
