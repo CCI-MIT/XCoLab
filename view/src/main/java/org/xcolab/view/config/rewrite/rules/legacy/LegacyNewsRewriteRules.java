@@ -10,7 +10,7 @@ public class LegacyNewsRewriteRules implements RewriteRuleProvider {
     @Override
     public void configure(ConfigurationBuilder configurationBuilder) {
         BlogRewriteBuilder.of(configurationBuilder)
-                .fromLiferayUrlTitle("/community/-/blogs/2016-climate-colab-conference-in-review")
+                .fromLiferayUrlTitle("2016-climate-colab-conference-in-review")
                     .toPath("/2016/10/2016-crowds-climate-conference-in-review/")
                 .fromLiferayUrlTitle("itba-kiri-team-25-c-77-f-proposal")
                     .toPath("/2016/11/winners-spotlight-winning-25c-team-meets-with-argentinian-president/")
@@ -423,7 +423,19 @@ public class LegacyNewsRewriteRules implements RewriteRuleProvider {
                 .fromLiferayUrlTitle("1300-votes-and-winners-prediction-game")
                     .toPath("/2013/08/1300-votes-and-winners-prediction-game/")
                 .fromLiferayUrlTitle("-10-0-grand-prize-at-nov-2013-conference")
-                    .toPath("/2013/02/10000-grand-prize-at-nov-2013-conference/");
+                    .toPath("/2013/02/10000-grand-prize-at-nov-2013-conference/")
+
+                //crowdsensor rewrites
+                .fromLiferayUrlTitle("deadline-for-entries-extended-to-october-10")
+                    .toContentPage("news-deadline-for-entries-extended-to-october-10")
+                .fromLiferayUrlTitle("get-feedback-from-crowdsensor-s-judges")
+                    .toContentPage("news-get-feedback-from-crowdsensor-s-judges")
+                .fromLiferayUrlTitle("welcome-to-the-crowdsensor-")
+                    .toContentPage("news-welcome-to-the-crowdsensor-")
+                .fromLiferayUrlTitle("improve-your-chance-to-win-a-prize")
+                    .toContentPage("news-improve-your-chance-to-win-a-prize")
+                .fromLiferayUrlTitle("winners-announced")
+                    .toContentPage("news-winners-announced");
     }
 
     private static class BlogRewriteBuilder {
@@ -451,10 +463,20 @@ public class LegacyNewsRewriteRules implements RewriteRuleProvider {
             }
 
             public BlogRewriteBuilder toPath(String newUriPath) {
+                return to("http://news.climatecolab.com" + newUriPath);
+            }
+
+            public BlogRewriteBuilder toContentPage(String pageTitle) {
+                return to("/page/" + pageTitle);
+            }
+
+            public BlogRewriteBuilder to(String to) {
                 rewriteBuilder
                         .redirectFrom("/community/-/blogs/" + urlTitle)
                             .andFrom("/news/-/blogs/" + urlTitle)
-                            .to("http://news.climatecolab.com" + newUriPath);
+                            .andFrom("/web/guest/news/-/blogs/" + urlTitle)
+                            .andFrom("/web/guest/community/-/blogs/" + urlTitle)
+                        .to(to);
                 return BlogRewriteBuilder.this;
             }
         }

@@ -2,12 +2,11 @@ package org.xcolab.view.config.rewrite.rules.legacy;
 
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
 import org.ocpsoft.rewrite.config.Direction;
-import org.ocpsoft.rewrite.servlet.config.Forward;
 import org.ocpsoft.rewrite.servlet.config.Path;
 import org.ocpsoft.rewrite.servlet.config.Redirect;
 
-import org.xcolab.view.config.rewrite.rules.RewriteRuleProvider;
 import org.xcolab.view.config.rewrite.SimpleRewriteBuilder;
+import org.xcolab.view.config.rewrite.rules.RewriteRuleProvider;
 
 public class LegacyContentRewriteRules implements RewriteRuleProvider {
 
@@ -112,13 +111,9 @@ public class LegacyContentRewriteRules implements RewriteRuleProvider {
     }
 
     private void redirectContentPagesCrowdsensor(ConfigurationBuilder configurationBuilder) {
-        configurationBuilder
-                .addRule()
-                .when(Direction.isInbound().and(Path.matches("/web/guest/smart-nation")))
-                .perform(Redirect.permanent("/page/smart-nation"))
-                .addRule()
-                .when(Direction.isInbound().and(Path.matches("/community/-/blogs/{articleTitle}")))
-                .perform(Forward.to("/page/news-{articleTitle}"));
+        SimpleRewriteBuilder.of(configurationBuilder)
+                .redirectFrom("/web/guest/smart-nation")
+                    .to("/page/smart-nation");
     }
 
     private void redirectContentPagesResilienceDialogues(ConfigurationBuilder configurationBuilder) {
