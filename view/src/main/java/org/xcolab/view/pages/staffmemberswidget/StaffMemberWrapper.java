@@ -59,6 +59,14 @@ public class StaffMemberWrapper implements Serializable {
         }
     }
 
+    public String getLastName() {
+        if (this.staffMember.getLastName() != null &&! staffMember.getLastName().isEmpty()) {
+            return this.staffMember.getLastName();
+        } else {
+            return this.colabMember.getLastName();
+        }
+    }
+
     public Integer getSort() {
         if(this.staffMember.getSort() != null){
             return this.staffMember.getSort();

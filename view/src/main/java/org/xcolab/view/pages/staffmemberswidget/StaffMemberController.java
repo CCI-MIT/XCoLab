@@ -40,110 +40,116 @@ public class StaffMemberController {
             @RequestParam(required = false, defaultValue = "true") boolean displayUrl) {
 
         //TODO: turn this into widget-specific preferences
-//        StaffMembersPreferences preferences = new StaffMembersPreferences();
-//
-//        model.addAttribute("portletTitle", preferences.getPortletTitle());
-//        model.addAttribute("columnAmount", preferences.getColumnAmount());
-//        model.addAttribute("displayPhoto", preferences.isDisplayPhoto());
-//        model.addAttribute("displayUrl", preferences.isDisplayUrl());
-//
-//        final int categoryId = preferences.getCategoryId();
+        //        StaffMembersPreferences preferences = new StaffMembersPreferences();
+        //
+        //        model.addAttribute("portletTitle", preferences.getPortletTitle());
+        //        model.addAttribute("columnAmount", preferences.getColumnAmount());
+        //        model.addAttribute("displayPhoto", preferences.isDisplayPhoto());
+        //        model.addAttribute("displayUrl", preferences.isDisplayUrl());
+        //
+        //        final int categoryId = preferences.getCategoryId();
 
         model.addAttribute("widgetTitle", title);
         model.addAttribute("columnAmount", columnAmount);
         model.addAttribute("displayPhoto", displayPhoto);
         model.addAttribute("displayUrl", displayUrl);
-
+        CategoryRole categoryRole;
         try {
-            CategoryRole categoryRole = CategoryRole.fromCategoryId(categoryId);
+            categoryRole = CategoryRole.fromCategoryId(categoryId);
+        } catch (NoSuchCategoryRoleException e) {
+            categoryRole = null;
+        }
 
-            List<StaffMemberWrapper> staffMembersOverrides = getStaffMembers(categoryId);
+        List<StaffMemberWrapper> staffMembersOverrides = getStaffMembers(categoryId);
 
-            if(categoryRole.getRole() == null){
+        if (categoryRole == null || categoryRole.getRole() == null) {
 
-                staffMembersOverrides.sort(Comparator.comparing(StaffMemberWrapper::getSort));
+            staffMembersOverrides.sort(Comparator.comparing(StaffMemberWrapper::getSort));
+            model.addAttribute("staffMembers", staffMembersOverrides);
+            return "staffmemberswidget/staffmembers";
+        } else {
+            if (categoryRole.getGroupByYear()) {
+                Map<String, List<StaffMemberWrapper>> membersPerYearInCategory =
+                        new LinkedHashMap<>();
+                List<Long> years = ContestClientUtil.getContestYears();
+
+                for (Long year : years) {
+                    Map<Long, String> oneEntryPerYear = new HashMap<>();
+                    List<StaffMemberWrapper> membersWithRolesInYear = new ArrayList<>();
+                    List<ContestTeamMember> contestTeamMembers = ContestTeamMemberClientUtil
+                            .getTeamMembers(categoryRole.getRole().getRoleId(), year);
+                    for (ContestTeamMember ctm : contestTeamMembers) {
+                        boolean alreadyInStaffMembers = false;
+                        for (StaffMemberWrapper smw : staffMembersOverrides) {
+                            if (smw.getMember() != null) {
+                                if (ctm.getUserId() == smw.getMember().getId_()) {
+                                    alreadyInStaffMembers = true;
+                                    if (oneEntryPerYear.get(ctm.getUserId()) == null) {
+                                        oneEntryPerYear.put(ctm.getUserId(), "");
+                                        membersWithRolesInYear.add(smw);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        if (!alreadyInStaffMembers) {
+                            try {
+                                if (oneEntryPerYear.get(ctm.getUserId()) == null) {
+                                    Member member = MembersClient.getMember(ctm.getUserId());
+                                    oneEntryPerYear.put(ctm.getUserId(), "");
+                                    membersWithRolesInYear
+                                            .add(getNewStaffMember(member, categoryRole));
+                                }
+                            } catch (MemberNotFoundException mnfe) {
+
+                            }
+                        }
+                    }
+                    membersWithRolesInYear
+                            .sort(Comparator.comparing(StaffMemberWrapper::getLastName));
+                    membersPerYearInCategory.put(year.toString(), membersWithRolesInYear);
+                }
+                model.addAttribute("staffMembersMap", membersPerYearInCategory);
+                return "staffmemberswidget/staffmembersGroupedByYear";
+            } else {
+
+                List<Member> allMembersWithRole =
+                        MembersClient.listMembers(categoryRole.getRole().name(), null,
+                                null, null, true,
+                                0, Integer.MAX_VALUE);
+                staffMembersOverrides = getStaffMembers(categoryId);
+
+                for (Member member : allMembersWithRole) {
+                    boolean alreadyInStaffMembers = false;
+                    for (StaffMemberWrapper smw : staffMembersOverrides) {
+                        if (smw.getMember() != null) {
+                            if (member.getId_() == smw.getMember().getId_()) {
+                                alreadyInStaffMembers = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (!alreadyInStaffMembers) {
+                        staffMembersOverrides.add(getNewStaffMember(member, categoryRole));
+                    }
+                }
+                staffMembersOverrides
+                        .sort(Comparator.comparing(StaffMemberWrapper::getLastName));
                 model.addAttribute("staffMembers", staffMembersOverrides);
                 return "staffmemberswidget/staffmembers";
-            } else {
-                if(categoryRole.getGroupByYear()){
-                    Map<String,List<StaffMemberWrapper>>  membersPerYearInCategory = new LinkedHashMap<>();
-                    List<Long> years = ContestClientUtil.getContestYears();
-                    Map<Long, String> oneEntryPerUser= new HashMap<>();
-                    for(Long year: years){
-                        List<StaffMemberWrapper> membersWithRolesInYear = new ArrayList<>();
-                        List<ContestTeamMember> contestTeamMembers =  ContestTeamMemberClientUtil.getTeamMembers(categoryRole.getRole().getRoleId(),year);
-                        for(ContestTeamMember ctm : contestTeamMembers) {
-                            boolean alreadyInStaffMembers = false;
-                            for (StaffMemberWrapper smw : staffMembersOverrides) {
-                                if( smw.getMember()!= null) {
-                                    if (ctm.getUserId() == smw.getMember().getId_()) {
-                                        alreadyInStaffMembers = true;
-                                        if(oneEntryPerUser.get(ctm.getUserId())==null) {
-                                            oneEntryPerUser.put(ctm.getUserId(), "");
-                                            membersWithRolesInYear.add(smw);
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            if(!alreadyInStaffMembers){
-                                try {
-                                    if(oneEntryPerUser.get(ctm.getUserId())==null) {
-                                        Member member = MembersClient.getMember(ctm.getUserId());
-                                        staffMembersOverrides
-                                                .add(getNewStaffMember(member, categoryRole));
-                                    }
-                                }catch (MemberNotFoundException mnfe){
-
-                                }
-                            }
-                        }
-                        membersWithRolesInYear.sort(Comparator.comparing(StaffMemberWrapper::getSort));
-                        membersPerYearInCategory.put(year.toString(),membersWithRolesInYear);
-                    }
-                    model.addAttribute("staffMembersMap", membersPerYearInCategory);
-                    return "staffmemberswidget/staffmembersGroupedByYear";
-                }else{
-
-                    List<Member> allMembersWithRole = MembersClient.listMembers(categoryRole.name(), null,
-                            null, null, true,
-                            0, Integer.MAX_VALUE);
-                    staffMembersOverrides = getStaffMembers(categoryId);
-
-                    for(Member member: allMembersWithRole) {
-                        boolean alreadyInStaffMembers = false;
-                        for(StaffMemberWrapper smw: staffMembersOverrides){
-                            if( smw.getMember()!= null) {
-                                if (member.getId_() == smw.getMember().getId_()) {
-                                    alreadyInStaffMembers = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if(!alreadyInStaffMembers){
-                            staffMembersOverrides.add(getNewStaffMember(member,categoryRole));
-                        }
-                    }
-                    staffMembersOverrides.sort(Comparator.comparing(StaffMemberWrapper::getSort));
-                    model.addAttribute("staffMembers", staffMembersOverrides);
-                    return "staffmemberswidget/staffmembers";
-                }
-
             }
 
-
-
-        }catch (NoSuchCategoryRoleException e){
-
         }
-        return "staffmemberswidget/staffmembers";
+
 
     }
-    private StaffMemberWrapper getNewStaffMember(Member member, CategoryRole categoryRole){
+
+    private StaffMemberWrapper getNewStaffMember(Member member, CategoryRole categoryRole) {
         StaffMember sm = new StaffMember();
         sm.setUserId(member.getId_());
         sm.setCategoryId(categoryRole.getCategoryId());
-        sm.setPhotoUrl("/image/user_male_portrait?userId="+member.getId_()+"&screenName=carlosbpf&portraitId="+member.getPortraitId()+"");
+        sm.setPhotoUrl("/image/user_male_portrait?userId=" + member.getId_()
+                + "&screenName=carlosbpf&portraitId=" + member.getPortraitId() + "");
         sm.setFirstNames(member.getFirstName());
         sm.setLastName(member.getLastName());
         sm.setSort(0);

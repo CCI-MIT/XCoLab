@@ -8,10 +8,11 @@ public enum CategoryRole {
     IMPACT_FELLOW(15l,MemberRole.IMPACT_ASSESSMENT_FELLOW,true),
     EXPERT_ADVISORY(3l,null,false),
     EXPERT_COUNCIL(4l,null,false),
-    TEAM(5l,MemberRole.STAFF,false),
+    TEAM(5l,null,false),//MemberRole.STAFF has dummy entries, the staff table has all staff
     VENDORS(6l,null,false),
     ADVISORS_STAFF(7l,null,false),
-    ALUMI(8l,null,false);
+    ALUMNI(8l,null,false),
+    RESARCH_COLAB(17l,null,false);
 
     private Long categoryId;
     private MemberRole memberRole;
