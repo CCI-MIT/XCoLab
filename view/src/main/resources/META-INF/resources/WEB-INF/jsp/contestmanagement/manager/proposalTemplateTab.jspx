@@ -85,7 +85,7 @@
 								data-bind-id="${x.index}"
 								id="dropzone${x.index}"><span class="counter" style="float: left;">Position # ${x.index +1}</span><span style="float:right">To change order drag a section and drop it on any of these areas.</span></div>
 
-						<div class="addpropbox ${section.deletable ? 'blue deletable' : ''} ${section.type}"
+						<div class="addpropbox js-SectionParent ${section.deletable ? 'blue deletable' : ''} ${section.type}"
 							style="display: ${fn:length(contestProposalTemplateWrapper.sections)-1 eq x.index ? 'none' : ''}"
 							id="section${x.index}"
 							data-section-id="${x.index}"
@@ -110,7 +110,8 @@
 								</form:select>
 							</div>
 
-                            <div style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
+                            <div class="js-sectionTypeDependent" data-section-type="PROPOSAL"
+                                    style="display: none">
                                 <div class="levelVisible">
                                     <div>
                                         <strong>Contest Types allowed:</strong>
@@ -149,7 +150,8 @@
                                 </div>
 
                                 <div class="clearfix"><!-- --></div>
-                                <div class="ontology-select-container" style="${fn:containsIgnoreCase(section.type, 'PROPOSAL') ? '' : 'display: none;'}">
+                                <div class="js-sectionTypeDependent" data-section-type="PROPOSAL"
+                                        style="display: none">
                                     <form:hidden path="sections[${x.index}].focusAreaId" data-form-name="focusAreaId" />
                                     <div>
                                         <strong>WHAT Ontology term:</strong>
@@ -218,12 +220,18 @@
 								</div>
 							</div>
 
-                            <div style="${fn:containsIgnoreCase(section.type, 'DROPDOWN_MENU') ? '' : 'display: none;'}">
+                            <div class="js-sectionTypeDependent" data-section-type="DROPDOWN_MENU"
+                                    style="display: none">
                                 <strong>Dropdown options:</strong><br/>
                                 <form:input path="sections[${x.index}].allowedValues" data-form-name="allowedValues"/>
                             </div>
 
 						</div>
+                        <script>
+                            jQuery(function() {
+                                setSectionType(parseInt("${x.index}"), "${section.type}");
+                            });
+                        </script>
 					</c:forEach>
 
 					<div class="addSection" id="addSection" name="addSection">
@@ -275,9 +283,8 @@
 //			enableDirtyCheck();
 			bindDeleteClicks();
 			bindAddSectionClick();
-			bindMassActionSelectChange();
-			bindContestScheduleSelectChange();
-			bindSectionTypeSelectChange();
+			bindTypeSelectChange();
+			bindElementSelectChange();
 			bindOntologyDropdownChange()
 		});
 
@@ -294,34 +301,16 @@
 			addSectionButtonElement.addEventListener("click", function() {
 				var numberOfSections = getNumberOfSections();
 				addNewSection(initialNumberOfSections, numberOfSections + 1);
-
-				bindSectionTypeSelectChange();
 			});
 		}
 
-		function bindMassActionSelectChange(){
+		function bindTypeSelectChange(){
 			[].forEach.call(document.getElementsByTagName('select'), function(selectElement) {
 				var dataFormName = selectElement.getAttribute("data-form-name");
-				if (dataFormName == "type") {
+				if (dataFormName === "type") {
 					selectElement.addEventListener('change', selectTypeChangeCallback, false);
-				} else {
-					selectElement.addEventListener('change', function(event){
-						event.preventDefault();
-					}, false);
 				}
 			});
-		}
-
-		function bindSectionTypeSelectChange() {
-			var eventHandler = function() {
-				var sectionTypeId = $(this).val();
-				$(this).parents('.addpropbox').find('.ontology-select-container').toggle(sectionTypeId !== "");
-			};
-
-            var $typeSelectElement = jQuery('select.type-select');
-            $typeSelectElement.off('change');
-			$typeSelectElement.on('change', eventHandler);
-			eventHandler.call($typeSelectElement[0]);
 		}
 
 		function bindOntologyDropdownChange() {
@@ -507,39 +496,27 @@
 		}
 
 		function selectTypeChangeCallback(event){
-				event.preventDefault();
-				var selectedSectionDefinitionId = event.target.value;
-				try {
-					if (selectedSectionDefinitionId.indexOf("PROPOSAL") >= 0) {
-						event.target.parentNode.nextSibling.style.display = "";
-					} else {
-						event.target.parentNode.nextSibling.style.display = "none";
-					}
-				} catch(exception){
-					console.error(exception);
-				}
-				/*
-				getSectionDefinitionFromServer(selectedSectionDefinitionId).done(function(jsondata){
-					var sectionDefinitionContent = JSON.parse(jsondata);
-					var reloadSectionElement = event.target.parentNode.parentNode;
-					try{
-						[].forEach.call(reloadSectionElement.getElementsByTagName('input'), function(element) {
-							var dataFormName = element.getAttribute("data-form-name");
-							element.value = sectionDefinitionContent[dataFormName];
-						});
-
-						[].forEach.call(reloadSectionElement.getElementsByTagName('textarea'), function(element) {
-							var dataFormName = element.getAttribute("data-form-name");
-							element.value = sectionDefinitionContent[dataFormName];
-						});
-					}catch (e){
-						console.log(e);
-					}
-				});*/
+			event.preventDefault();
+            var newSectionType = event.target.value;
+            var sectionIndex = jQuery(event.target).closest('.js-SectionParent').data('section-id');
+            setSectionType(sectionIndex, newSectionType);
 		}
 
+		function setSectionType(sectionIndex, newSectionType) {
+            jQuery('#section' + sectionIndex + ' .js-sectionTypeDependent')
+                .each(function(i, element) {
+                    var $element = jQuery(element);
+                    var conditionalSectionTypeFragment = $element.data('section-type');
+                    console.log("Visible for " + conditionalSectionTypeFragment + ", is " + newSectionType);
+                    if (newSectionType.indexOf(conditionalSectionTypeFragment) >= 0) {
+                        $element.show();
+                    } else {
+                        $element.hide();
+                    }
+                });
+        }
 
-		function bindContestScheduleSelectChange(){
+		function bindElementSelectChange(){
 			var dropDownElement = document.getElementById("changeElementSelect");
 			dropDownElement.addEventListener("change", function(ev){
 				var selectedScheduleId = ev.target.value;
