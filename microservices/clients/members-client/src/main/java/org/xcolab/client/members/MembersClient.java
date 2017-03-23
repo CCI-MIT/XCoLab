@@ -5,7 +5,6 @@ import org.xcolab.client.members.exceptions.MemberCategoryNotFoundException;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.exceptions.PasswordLoginException;
 import org.xcolab.client.members.exceptions.UncheckedMemberNotFoundException;
-import org.xcolab.client.members.pojo.Contact_;
 import org.xcolab.client.members.pojo.LoginBean;
 import org.xcolab.client.members.pojo.LoginLog;
 import org.xcolab.client.members.pojo.Member;
@@ -43,8 +42,6 @@ public final class MembersClient {
 
     private static final RestResource<MemberCategory, Long> memberCategoryResource =
             new RestResource1<>(memberService, "membercategories", MemberCategory.TYPES);
-    private static final RestResource<Contact_, Long> contactResource = new RestResource1<>(memberService,
-            "contacts", Contact_.TYPES);
 
     private static final RestResource<LoginLog, Long> loginLogResource = new RestResource1<>(memberService,
             "loginLogs", LoginLog.TYPES);
