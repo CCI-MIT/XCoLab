@@ -164,7 +164,7 @@
 
             dropDownElement.addEventListener("change", function (ev) {
                 var val = ev.target.value;
-                window.location = "${changeElementURL}" + val;
+                window.location = "${changeElementUrl}" + val;
             })
         }
 

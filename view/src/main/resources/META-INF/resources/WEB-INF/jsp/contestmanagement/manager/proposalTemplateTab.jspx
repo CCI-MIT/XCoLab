@@ -543,7 +543,7 @@
 			var dropDownElement = document.getElementById("changeElementSelect");
 			dropDownElement.addEventListener("change", function(ev){
 				var selectedScheduleId = ev.target.value;
-				window.location="${changeElementURL}" + selectedScheduleId;
+				window.location="${changeElementUrl}" + selectedScheduleId;
 			})
 		}
 
