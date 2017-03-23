@@ -14,14 +14,16 @@ public final class ProposalTemplateLifecycleUtil {
     private ProposalTemplateLifecycleUtil() { }
 
     public static PlanTemplate create() {
+        return create(DEFAULT_TEMPLATE_NAME);
+    }
+
+    public static PlanTemplate create(String name) {
         PlanTemplate newPlanTemplate = new PlanTemplate();
-        newPlanTemplate.setName(DEFAULT_TEMPLATE_NAME);
-        newPlanTemplate.setImpactSeriesTemplateId(1L);
+        newPlanTemplate.setName(name);
         newPlanTemplate.setImpactSeriesTemplateId(1L);
         newPlanTemplate.setBaseTemplateId(0L);
         newPlanTemplate = PlanTemplateClientUtil.createPlanTemplate(newPlanTemplate);
         return newPlanTemplate;
-
     }
 
     public static void delete(Long templateId) {

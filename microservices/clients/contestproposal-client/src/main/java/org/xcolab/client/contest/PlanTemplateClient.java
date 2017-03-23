@@ -6,9 +6,11 @@ import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.contest.pojo.templates.PlanTemplateDto;
 import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
 import org.xcolab.client.contest.pojo.templates.PlanTemplateSectionDto;
+import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.dto.DtoUtil;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,17 +39,16 @@ public class PlanTemplateClient {
     }
 
     public static PlanTemplateClient fromService(RestService contestService) {
-        PlanTemplateClient client = instances.get(contestService);
-        if (client == null) {
-            client = new PlanTemplateClient(contestService);
-            instances.put(contestService, client);
-        }
-        return client;
+        return instances.computeIfAbsent(contestService, PlanTemplateClient::new);
     }
 
-    public PlanTemplate getPlanTemplate(long Id_) {
-        return planTemplateResource.get(Id_)
-                .execute().toPojo(contestService);
+    public PlanTemplate getPlanTemplate(long id) {
+        try {
+            return planTemplateResource.get(id)
+                    .executeChecked().toPojo(contestService);
+        } catch (EntityNotFoundException e) {
+            throw new PlanTemplateNotFoundException(id);
+        }
     }
 
     public List<PlanTemplate> getPlanTemplates() {

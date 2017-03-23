@@ -49,6 +49,10 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newLongAttribute("DEFAULT_CONTEST_SCHEDULE_ID")
                     .defaultValue(0L)
                     .build();
+    public static final AttributeGetter<Long> DEFAULT_CONTEST_TEMPLATE_ID =
+            ConfigurationAttributes.newLongAttribute("DEFAULT_CONTEST_TEMPLATE_ID")
+                    .defaultValue(0L)
+                    .build();
     public static final AttributeGetter<String> DEFAULT_TIME_ZONE_ID =
             ConfigurationAttributes.newStringAttribute("DEFAULT_TIME_ZONE_ID")
                     .withCache().build();

@@ -1,11 +1,8 @@
 package org.xcolab.client.proposals.exceptions;
 
-public class PlanTemplateNotFoundException extends Exception {
-    public PlanTemplateNotFoundException(long proposalAttributeId) {
-        this("PlanTemplateNotFoundException with id " + proposalAttributeId + " does not exist");
-    }
+public class PlanTemplateNotFoundException extends RuntimeException {
 
-    public PlanTemplateNotFoundException(String msg) {
-        super(msg);
+    public PlanTemplateNotFoundException(long id) {
+        super("PlanTemplateNotFoundException with id " + id + " does not exist");
     }
 }

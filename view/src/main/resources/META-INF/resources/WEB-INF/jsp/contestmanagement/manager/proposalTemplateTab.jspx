@@ -507,7 +507,6 @@
                 .each(function(i, element) {
                     var $element = jQuery(element);
                     var conditionalSectionTypeFragment = $element.data('section-type');
-                    console.log("Visible for " + conditionalSectionTypeFragment + ", is " + newSectionType);
                     if (newSectionType.indexOf(conditionalSectionTypeFragment) >= 0) {
                         $element.show();
                     } else {
