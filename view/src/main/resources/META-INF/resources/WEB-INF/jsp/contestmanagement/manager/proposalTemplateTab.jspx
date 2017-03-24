@@ -476,10 +476,11 @@
 
 			setNumberOfSections(newSectionId);
 
-			newSectionElement.addEventListener('change', selectTypeChangeCallback, false);
 			newSectionElement.getElementsByClassName('deleteIcon')[0].addEventListener('click', deleteSection, false);
 
 			reCalculateWeights();
+            $(newSectionElement).attr('id', "section" + newSectionId);
+            bindTypeSelectChange();
 		}
 
 		function deleteSection(event){
