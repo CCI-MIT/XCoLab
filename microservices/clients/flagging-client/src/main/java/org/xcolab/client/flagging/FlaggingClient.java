@@ -21,14 +21,14 @@ import java.util.List;
 
 public final class FlaggingClient {
 
-    private static final RestService flaggingService = new RestService(CoLabService.FLAG,
+    private static final RestService moderationService = new RestService(CoLabService.MODERATION,
             ServiceRequestUtils.getNamespace());
-    private static final RestResource<Report, Long> reportResource = new RestResource1<>(flaggingService,
-            "reports", Report.TYPES);
+    private static final RestResource<Report, Long> reportResource = new RestResource1<>(
+            moderationService, "reports", Report.TYPES);
     private static final RestResource<AggregatedReport, Long> aggregatedReportResource = new RestResource1<>(
-            flaggingService, "aggregatedReports", AggregatedReport.TYPES);
+            moderationService, "aggregatedReports", AggregatedReport.TYPES);
     private static final RestResource<ReportTarget, Long> reportTargetResource = new RestResource1<>(
-            flaggingService, "reportTargets", ReportTarget.TYPES);
+            moderationService, "reportTargets", ReportTarget.TYPES);
 
     private FlaggingClient() {
     }

@@ -21,8 +21,7 @@
         <module>contest-service</module>
         <module>emails-service</module>
         <module>files-service</module>
-        <module>filtering-service</module>
-        <module>flagging-service</module>
+        <module>moderation-service</module>
         <module>members-service</module>
         <module>modeling-service</module>
         <module>proposals-service</module>
