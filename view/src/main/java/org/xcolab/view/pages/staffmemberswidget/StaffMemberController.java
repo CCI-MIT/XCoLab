@@ -64,7 +64,11 @@ public class StaffMemberController {
 
         if (categoryRole == null || categoryRole.getRole() == null) {
 
-            staffMembersOverrides.sort(Comparator.comparing(StaffMemberWrapper::getSort));
+            if (categoryId == CategoryRole.ALUMNI.getCategoryId()) {
+                staffMembersOverrides.sort(Comparator.comparing(StaffMemberWrapper::getLastName));
+            } else {
+                staffMembersOverrides.sort(Comparator.comparing(StaffMemberWrapper::getSort));
+            }
             model.addAttribute("staffMembers", staffMembersOverrides);
             return "staffmemberswidget/staffmembers";
         } else {
@@ -140,7 +144,6 @@ public class StaffMemberController {
             }
 
         }
-
 
     }
 
