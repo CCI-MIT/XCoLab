@@ -16,7 +16,7 @@ public enum CoLabService {
     MODEL("modeling-service"),
     SEARCH("search-service"),
     SHARED("sharedcolab-service"),
-    TRACK("tracking-service");
+    TRACKING("tracking-service");
 
     private final String serviceName;
 

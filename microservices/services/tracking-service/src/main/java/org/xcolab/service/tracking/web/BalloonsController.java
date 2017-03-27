@@ -1,4 +1,4 @@
-package org.xcolab.service.balloons.web;
+package org.xcolab.service.tracking.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import org.xcolab.model.tables.pojos.BalloonLink;
 import org.xcolab.model.tables.pojos.BalloonText;
 import org.xcolab.model.tables.pojos.BalloonUserTracking;
-import org.xcolab.service.balloons.domain.balloonlink.BalloonLinkDao;
-import org.xcolab.service.balloons.domain.balloontext.BalloonTextDao;
-import org.xcolab.service.balloons.domain.balloonusertracking.BalloonUserTrackingDao;
-import org.xcolab.service.balloons.exceptions.NotFoundException;
+import org.xcolab.service.tracking.domain.balloonlink.BalloonLinkDao;
+import org.xcolab.service.tracking.domain.balloontext.BalloonTextDao;
+import org.xcolab.service.tracking.domain.balloonusertracking.BalloonUserTrackingDao;
+import org.xcolab.service.tracking.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
@@ -81,7 +82,7 @@ public class BalloonsController {
         if (uuid == null) {
             throw new NotFoundException();
         } else {
-            return this.balloonUserTrackingDao.getBallonUserTrackingByUuid(uuid);
+            return this.balloonUserTrackingDao.getBalloonUserTrackingByUuid(uuid);
         }
     }
 
@@ -98,7 +99,7 @@ public class BalloonsController {
     public boolean updateBalloonUserTracking(@RequestBody BalloonUserTracking balloonUserTracking,
                                              @PathVariable("uuid") String uuid) throws NotFoundException {
 
-        if (balloonUserTrackingDao.getBallonUserTrackingByUuid(uuid) == null) {
+        if (balloonUserTrackingDao.getBalloonUserTrackingByUuid(uuid) == null) {
             List<BalloonUserTracking> searchByEmail = balloonUserTrackingDao
                     .getBallonUserTrackingByEmail(balloonUserTracking.getEmail());
             if (searchByEmail == null || searchByEmail.isEmpty()) {
@@ -118,7 +119,7 @@ public class BalloonsController {
         if (id == null) {
             throw new NotFoundException();
         } else {
-            return this.balloonTextDao.getBallonText(id);
+            return this.balloonTextDao.getBalloonText(id);
         }
     }
 
@@ -126,7 +127,7 @@ public class BalloonsController {
     public boolean updateBalloonText(@RequestBody BalloonText balloonText,
                                      @PathVariable("id") Long id) throws NotFoundException {
 
-        if (balloonTextDao.getBallonText(id) == null) {
+        if (balloonTextDao.getBalloonText(id) == null) {
             throw new NotFoundException();
         } else {
             return balloonTextDao.update(balloonText);
@@ -146,7 +147,7 @@ public class BalloonsController {
     @RequestMapping(value = "/balloonTexts/{id}", method = RequestMethod.DELETE)
     public boolean deleteBalloonText(@PathVariable("id") Long id) throws NotFoundException {
 
-        if (balloonTextDao.getBallonText(id) == null) {
+        if (balloonTextDao.getBalloonText(id) == null) {
             throw new NotFoundException();
         } else {
             return balloonTextDao.delete(id);

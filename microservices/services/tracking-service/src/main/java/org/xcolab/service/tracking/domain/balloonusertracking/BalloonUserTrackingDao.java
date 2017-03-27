@@ -1,12 +1,13 @@
-package org.xcolab.service.balloons.domain.balloonusertracking;
+package org.xcolab.service.tracking.domain.balloonusertracking;
 
 import org.xcolab.model.tables.pojos.BalloonUserTracking;
-import org.xcolab.service.balloons.exceptions.NotFoundException;
+import org.xcolab.service.tracking.exceptions.NotFoundException;
 
 import java.util.List;
 
 public interface BalloonUserTrackingDao {
-    BalloonUserTracking getBallonUserTrackingByUuid(String uuid) throws NotFoundException;
+
+    BalloonUserTracking getBalloonUserTrackingByUuid(String uuid) throws NotFoundException;
 
     List<BalloonUserTracking> getBallonUserTrackingByEmail(String email) throws NotFoundException;
 

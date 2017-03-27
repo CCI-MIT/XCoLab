@@ -1,4 +1,4 @@
-package org.xcolab.service.balloons.domain.balloonlink;
+package org.xcolab.service.tracking.domain.balloonlink;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import org.xcolab.model.tables.pojos.BalloonLink;
-import org.xcolab.service.balloons.exceptions.NotFoundException;
+import org.xcolab.service.tracking.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;

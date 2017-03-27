@@ -15,14 +15,15 @@ import java.util.List;
 
 public final class BalloonsClient {
 
-    private static final RestService balloonService = new RestService(CoLabService.BALLOON,
+    private static final RestService trackingService = new RestService(CoLabService.TRACKING,
             ServiceRequestUtils.getNamespace());
     private static final RestResource<BalloonLink, String> balloonLinkResource = new RestResource1<>(
-            balloonService, "balloonLinks", BalloonLink.TYPES);
+
+            trackingService, "balloonLinks", BalloonLink.TYPES);
     private static final RestResource<BalloonUserTracking, String> balloonUserTrackingResource =
-            new RestResource1<>(balloonService, "balloonUserTrackings", BalloonUserTracking.TYPES);
+            new RestResource1<>(trackingService, "balloonUserTrackings", BalloonUserTracking.TYPES);
     private static final RestResource<BalloonText, Long> balloonTextResource = new RestResource1<>(
-            balloonService, "balloonTexts", BalloonText.TYPES);
+            trackingService, "balloonTexts", BalloonText.TYPES);
 
     public static BalloonLink getBalloonLink(String uuid) throws BalloonUserTrackingNotFound {
         try {

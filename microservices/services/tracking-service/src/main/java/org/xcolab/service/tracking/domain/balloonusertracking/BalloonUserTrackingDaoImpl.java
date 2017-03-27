@@ -1,11 +1,12 @@
-package org.xcolab.service.balloons.domain.balloonusertracking;
+package org.xcolab.service.tracking.domain.balloonusertracking;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import org.xcolab.model.tables.pojos.BalloonUserTracking;
-import org.xcolab.service.balloons.exceptions.NotFoundException;
+import org.xcolab.service.tracking.exceptions.NotFoundException;
 
 import java.util.List;
 
@@ -18,7 +19,8 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
     @Autowired
     private DSLContext dslContext;
 
-    public BalloonUserTracking getBallonUserTrackingByUuid(String uuid) throws NotFoundException {
+    @Override
+    public BalloonUserTracking getBalloonUserTrackingByUuid(String uuid) throws NotFoundException {
         final Record record = dslContext.select()
                 .from(BALLOON_USER_TRACKING)
                 .where(BALLOON_USER_TRACKING.UUID_.eq(uuid)).fetchOne();
@@ -36,6 +38,7 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
                 .fetchInto(BalloonUserTracking.class);
     }
 
+    @Override
     public List<BalloonUserTracking> getBallonUserTrackingByEmail(String email) throws NotFoundException {
         return dslContext.select()
                 .from(BALLOON_USER_TRACKING)
@@ -43,6 +46,7 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
 
     }
 
+    @Override
     public boolean update(BalloonUserTracking balloonUserTracking) {
         return dslContext.update(BALLOON_USER_TRACKING)
                 .set(BALLOON_USER_TRACKING.UUID_, balloonUserTracking.getUuid_())

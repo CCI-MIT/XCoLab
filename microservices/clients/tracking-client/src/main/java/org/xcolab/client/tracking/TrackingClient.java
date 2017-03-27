@@ -13,7 +13,7 @@ import org.xcolab.util.http.client.RestService;
 
 public final class TrackingClient {
 
-    private static final RestService trackingService = new RestService(CoLabService.TRACK,
+    private static final RestService trackingService = new RestService(CoLabService.TRACKING,
             ServiceRequestUtils.getNamespace());
 
     private static final RestResource<TrackedVisit, Long> trackedVisitResource = new RestResource1<>(

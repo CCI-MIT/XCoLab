@@ -59,7 +59,7 @@
 				<configuration combine.self="append">
 					<generator>
 						<database>
-							<includes>xcolab_TrackedVisit|xcolab_TrackedVisitor2User</includes>
+							<includes>xcolab_TrackedVisit|xcolab_TrackedVisitor2User|xcolab_BalloonUserTracking|xcolab_BalloonLink|xcolab_BalloonText</includes>
 						</database>
 					</generator>
 				</configuration>

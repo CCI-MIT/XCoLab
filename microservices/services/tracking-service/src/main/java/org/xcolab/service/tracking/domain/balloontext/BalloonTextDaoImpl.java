@@ -1,17 +1,17 @@
-package org.xcolab.service.balloons.domain.balloontext;
+package org.xcolab.service.tracking.domain.balloontext;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import org.xcolab.model.tables.pojos.BalloonText;
 import org.xcolab.model.tables.records.BalloonTextRecord;
-import org.xcolab.service.balloons.exceptions.NotFoundException;
+import org.xcolab.service.tracking.exceptions.NotFoundException;
 
 import java.util.List;
 
 import static org.xcolab.model.Tables.BALLOON_TEXT;
-
 
 @Repository
 public class BalloonTextDaoImpl implements BalloonTextDao {
@@ -19,7 +19,8 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
     @Autowired
     private DSLContext dslContext;
 
-    public BalloonText getBallonText(Long id) throws NotFoundException {
+    @Override
+    public BalloonText getBalloonText(Long id) throws NotFoundException {
         final Record record = dslContext.select()
                 .from(BALLOON_TEXT)
                 .where(BALLOON_TEXT.ID_.eq(id)).fetchOne();
@@ -85,6 +86,7 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
             return null;
         }
     }
+    @Override
     public boolean delete(Long id) {
         return this.dslContext.delete(BALLOON_TEXT)
                 .where(BALLOON_TEXT.ID_.eq(id))

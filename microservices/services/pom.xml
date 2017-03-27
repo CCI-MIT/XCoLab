@@ -16,7 +16,6 @@
     <modules>
         <module>activities-service</module>
         <module>admin-service</module>
-        <module>balloons-service</module>
         <module>comment-service</module>
         <module>content-service</module>
         <module>contest-service</module>
