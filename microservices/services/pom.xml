@@ -20,7 +20,6 @@
         <module>content-service</module>
         <module>contest-service</module>
         <module>emails-service</module>
-        <module>files-service</module>
         <module>moderation-service</module>
         <module>members-service</module>
         <module>modeling-service</module>

@@ -1,20 +1,27 @@
-package org.xcolab.service.files.domain.fileEntry;
+package org.xcolab.service.contents.domain.fileentry;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
+
 import org.xcolab.model.tables.pojos.FileEntry;
 import org.xcolab.model.tables.records.FileEntryRecord;
-import org.xcolab.service.files.exceptions.NotFoundException;
+import org.xcolab.service.contents.exceptions.NotFoundException;
 
 import static org.xcolab.model.Tables.FILE_ENTRY;
 
 @Repository
 public class FileEntryDaoImpl implements FileEntryDao {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public FileEntryDaoImpl(DSLContext dslContext) {
+        Assert.notNull(dslContext);
+        this.dslContext = dslContext;
+    }
 
     @Override
     public FileEntry create(FileEntry fileEntry) {
