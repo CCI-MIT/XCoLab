@@ -10,7 +10,7 @@ $serviceNamespace = $config['serviceNamespace'];
 //Configuration for the colab instance
 $colabName = $config["colabName"];
 $colabUrl = $config["colabUrl"];
-$fromUrl = $config["fromUrl"];
+$fromEmail = $config["fromEmail"];
 
 echo "[INFO] Connecting to database '$databaseName' as '$databaseUser'\n\n";
 $c = mysqli_connect("127.0.0.1", $databaseUser, $databasePassword, $databaseName) or die(mysqli_error($c));
@@ -23,7 +23,7 @@ while ($row = mysqli_fetch_row($r)) {
         "Thank you very much for waiting for us to make some critical updates to the $colabName. The site is back online now: $colabUrl.<br /> <br />" .
         "Best regards,<br />The $colabName Team";
 
-    sendEmail($row[0], $fromUrl, $subject, $message, $serviceNamespace);
+    sendEmail($row[0], $fromEmail, $subject, $message, $serviceNamespace);
 }
 echo "[INFO] Removing users\n\n";
 $r = mysqli_query($c,"DELETE FROM email") or die(mysqli_error($c));

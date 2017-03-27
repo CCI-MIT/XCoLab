@@ -5,11 +5,12 @@ $config = parse_ini_file("../config.ini");
 $databaseUser = $config["databaseUser"];
 $databasePassword = $config["databasePassword"];
 $databaseName = $config["databaseName"];
+$serviceNamespace = $config['serviceNamespace'];
 
 //Configuration for the colab instance
-$colabName = "Crowdsensor";
-$colabUrl = "www.crowdsensor.org";
-$fromUrl = "no-reply@crowdsensor.org";
+$colabName = $config["colabName"];
+$colabUrl = $config["colabUrl"];
+$fromEmail = $config["fromEmail"];
 
 echo "[INFO] Connecting to database '$databaseName' as '$databaseUser'\n\n";
 $c = mysqli_connect("127.0.0.1", $databaseUser, $databasePassword, $databaseName) or die(mysqli_error($c));
@@ -22,13 +23,13 @@ while ($row = mysqli_fetch_row($r)) {
         "Thank you very much for waiting for us to make some critical updates to the $colabName. The site is back online now: $colabUrl.<br /> <br />" .
         "Best regards,<br />The $colabName Team";
 
-    sendEmail($row[0], $fromUrl, $subject, $message);
+    sendEmail($row[0], $fromEmail, $subject, $message, $serviceNamespace);
 }
 echo "[INFO] Removing users\n\n";
 $r = mysqli_query($c,"DELETE FROM email") or die(mysqli_error($c));
 mysqli_close($c);
 
-function sendEmail($to, $from, $subject, $emailBody){
+function sendEmail($to, $from, $subject, $emailBody, $serviceNamespace){
     $postData = array(
         'to' => array($to),
         'from' => $from,
@@ -39,7 +40,7 @@ function sendEmail($to, $from, $subject, $emailBody){
     );
 
     // Setup cURL
-    $ch = curl_init('http://localhost:8080/emails-service/emails/send');
+    $ch = curl_init('http://localhost:8765/' . $serviceNamespace .'-emails-service/emails/send');
     curl_setopt_array($ch, array(
         CURLOPT_POST => TRUE,
         CURLOPT_RETURNTRANSFER => TRUE,
@@ -52,7 +53,7 @@ function sendEmail($to, $from, $subject, $emailBody){
     // Send the request
     $response = curl_exec($ch);
     if (!$response) {
-        echo "[WARN] failed to send email to $to\n";
+        echo "[WARN] failed to send email to $to. Make sure the proxy and email service are running.\n";
     }
 }
 ?>
