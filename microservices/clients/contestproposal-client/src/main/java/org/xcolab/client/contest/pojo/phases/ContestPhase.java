@@ -56,7 +56,7 @@ public class ContestPhase extends AbstractContestPhase {
         contestClient = ContestClient.fromService(restService);
     }
 
-    public static ContestPhase createFromContestPhase(ContestPhase originalPhase) {
+    public static ContestPhase clone(ContestPhase originalPhase) {
         ContestPhase newPhase = new ContestPhase();
 
         newPhase.setContestPK(originalPhase.getContestPK());
@@ -64,7 +64,6 @@ public class ContestPhase extends AbstractContestPhase {
         newPhase.setPhaseEndDate(originalPhase.getPhaseEndDate());
         newPhase.setContestScheduleId(originalPhase.getContestScheduleId());
         newPhase.setContestPhaseType(originalPhase.getContestPhaseType());
-        newPhase.setContestScheduleId(originalPhase.getContestScheduleId());
         newPhase.setFellowScreeningActive(originalPhase.getFellowScreeningActive());
         newPhase.setContestPhaseAutopromote(originalPhase.getContestPhaseAutopromote());
         newPhase.setContestPhaseDescriptionOverride(

@@ -280,7 +280,12 @@ public class ContestPhaseBean implements Serializable {
 
     //TODO: improve naming?
     public ContestPhase getContestPhase() {
-        ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhasePK);
+        ContestPhase contestPhase;
+        if (contestPhasePK != null && contestPhasePK > 0) {
+            contestPhase = ContestClientUtil.getContestPhase(contestPhasePK);
+        } else {
+            contestPhase = new ContestPhase();
+        }
         contestPhase.setContestPK(contestPK);
         contestPhase.setContestPhaseType(contestPhaseType);
         contestPhase.setContestScheduleId(contestScheduleId);
@@ -295,8 +300,7 @@ public class ContestPhaseBean implements Serializable {
         }
         contestPhase.setFellowScreeningActive(fellowScreeningActive);
 
-        if (contestPhaseAutopromote
-                .equalsIgnoreCase(ContestPhasePromoteType.DEFAULT.getValue())) {
+        if (contestPhaseAutopromote.equalsIgnoreCase(ContestPhasePromoteType.DEFAULT.getValue())) {
             ContestPhaseType type = ContestClientUtil.getContestPhaseType(contestPhaseType);
             contestPhase.setContestPhaseAutopromote(type.getDefaultPromotionType());
         } else {

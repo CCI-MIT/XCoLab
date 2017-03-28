@@ -11,7 +11,6 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.sharedcolab.SharedColabClient;
-import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
 
 import java.io.Serializable;
@@ -78,7 +77,6 @@ public class ContestDescriptionBean implements Serializable {
     public void persist(Contest contest) {
         String oldContestName = contest.getContestShortName();
         updateContestDescription(contest);
-        updateContestSchedule(contest, scheduleTemplateId);
 
         try {
             final CommentThread thread = ThreadClientUtil.getThread(contest.getDiscussionGroupId());
@@ -97,6 +95,7 @@ public class ContestDescriptionBean implements Serializable {
             ContestClientUtil.updateContest(contest);
         }
         WikiPageWrapper.updateContestWiki(contest);
+        updateContestSchedule(contest, scheduleTemplateId);
     }
 
     private void updateContestDescription(Contest contest) {
@@ -120,7 +119,7 @@ public class ContestDescriptionBean implements Serializable {
         boolean noScheduleSelected = contestScheduleId.equals(0L);
 
         if (!noScheduleSelected && !oldScheduleTemplateId.equals(contestScheduleId)) {
-            ContestScheduleUtil.changeScheduleForContest(contest, contestScheduleId);
+            contest.changeScheduleTo(contestScheduleId);
         }
     }
 

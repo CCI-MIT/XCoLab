@@ -17,7 +17,6 @@ import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.entities.LabelStringValue;
 import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
-import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleChangeHelper.IllegalScheduleChangeException;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.ContestScheduleBean;
 import org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper;
@@ -36,6 +35,10 @@ public class SchedulesTabController extends AbstractTabController {
 
     private static final ContestManagerTabs tab = ContestManagerTabs.SCHEDULES;
     private static final String TAB_VIEW = "contestmanagement/manager/schedulesTab";
+
+    private static final String SCHEDULE_CHANGE_ERROR_MESSAGE =
+            "This schedule is used in at least one contest that has already started. "
+                    + "Please make sure you only change future phases.";
 
     @ModelAttribute("currentTabWrapped")
     @Override
@@ -87,8 +90,8 @@ public class SchedulesTabController extends AbstractTabController {
 
         Long scheduleId = elementId != null ? elementId : getFirstScheduleId();
         model.addAttribute("scheduleId", scheduleId);
-        if (scheduleId >= 0 && !model.containsAttribute("contestScheduleWrapper")) {
-            model.addAttribute("contestScheduleWrapper", new ContestScheduleBean(scheduleId));
+        if (scheduleId >= 0 && !model.containsAttribute("contestScheduleBean")) {
+            model.addAttribute("contestScheduleBean", new ContestScheduleBean(scheduleId));
         }
         model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(scheduleId,
                 ContestScheduleLifecycleUtil.getAllScheduleTemplateSelectionItems()));
@@ -125,7 +128,7 @@ public class SchedulesTabController extends AbstractTabController {
                 }
                 return deleteSchedule(request, response, model, elementId);
             default:
-                throw new IllegalArgumentException("Known action");
+                throw new IllegalArgumentException("unknown action");
         }
     }
 
@@ -137,21 +140,22 @@ public class SchedulesTabController extends AbstractTabController {
     }
 
     private String updateSchedule(HttpServletRequest request, HttpServletResponse response,
-            Model model, @ModelAttribute ContestScheduleBean contestScheduleBean,
-            BindingResult result) {
+            Model model, ContestScheduleBean contestScheduleBean, BindingResult result) {
+
+        if (!contestScheduleBean.areContestsCompatibleWithSchedule()) {
+            result.reject("contestScheduleBean", SCHEDULE_CHANGE_ERROR_MESSAGE);
+        }
+
         if (result.hasErrors()) {
-            AlertMessage.danger("Error saving your changes!").flash(request);
+            AlertMessage.NOT_SAVED.flash(request);
             return showScheduleTabController(request, response, model,
                     contestScheduleBean.getScheduleId());
         }
-        try {
-            contestScheduleBean.persist();
-            AlertMessage.CHANGES_SAVED.flash(request);
-            return showScheduleTabController(request, response, model,
-                    contestScheduleBean.getScheduleId());
-        } catch (IllegalScheduleChangeException e) {
-            return ErrorText.ILLEGAL_SCHEDULE_CHANGE.flashAndReturnView(request);
-        }
+
+        contestScheduleBean.persist();
+        AlertMessage.CHANGES_SAVED.flash(request);
+        return showScheduleTabController(request, response, model,
+                contestScheduleBean.getScheduleId());
     }
 
     private String deleteSchedule(HttpServletRequest request, HttpServletResponse response,
@@ -161,7 +165,7 @@ public class SchedulesTabController extends AbstractTabController {
         return showScheduleTabController(request, response, model, null);
     }
 
-    enum Action {
+    private enum Action {
         CREATE, UPDATE, DELETE
     }
 }

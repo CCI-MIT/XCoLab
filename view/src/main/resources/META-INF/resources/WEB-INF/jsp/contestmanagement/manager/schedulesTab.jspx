@@ -8,10 +8,10 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
     <!--@elvariable id="scheduleId" type="java.lang.Long"-->
-    <!--@elvariable id="contestScheduleWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ContestScheduleWrapper"-->
-    <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.ElementSelectIdWrapper"-->
-    <!--@elvariable id="contestPhaseTypesSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
-    <!--@elvariable id="contestPhaseAutopromoteSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="contestScheduleBean" type="org.xcolab.view.pages.contestmanagement.wrappers.ContestScheduleBean"-->
+    <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper"-->
+    <!--@elvariable id="contestPhaseTypesSelectionItems" type="java.util.List<org.xcolab.view.pages.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="contestPhaseAutopromoteSelectionItems" type="java.util.List<org.xcolab.view.pages.contestmanagement.entities.LabelValue>"-->
 
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
@@ -22,7 +22,7 @@
     <c:set var="changeElementUrl" value="/admin/contest/manager/tab/SCHEDULES?elementId=" />
     <c:set var="updateContestScheduleUrl" value="/admin/contest/manager/tab/SCHEDULES" />
 
-    <form action="${updateContestScheduleUrl}?elementId=${contestScheduleWrapper.scheduleId}"
+    <form action="${updateContestScheduleUrl}?elementId=${contestScheduleBean.scheduleId}"
           id="deleteScheduleForm" method="post" style="visibility: hidden;">
         <input type="hidden" name="action" value="DELETE"/>
     </form>
@@ -66,8 +66,8 @@
             </div>
         </form:form>
         <c:if test="${scheduleId >= 0}">
-            <form:form action="${updateContestScheduleUrl}?elementId=${contestScheduleWrapper.scheduleId}"
-                       commandName="contestScheduleWrapper" id="editForm" method="post">
+            <form:form action="${updateContestScheduleUrl}?elementId=${contestScheduleBean.scheduleId}"
+                       commandName="contestScheduleBean" id="editForm" method="post">
                 <input type="hidden" name="action" value="UPDATE" />
                 <form:hidden path="scheduleId"/>
                 <form:hidden path="createNew" id="createNewFlag"/>
@@ -82,11 +82,28 @@
                 </div>
 
                 <div class="addpropbox">
-                    <strong class="inputTitleLeft">Contest phases for this schedule:</strong>
+                    <div>
+                        <strong class="inputTitleLeft">Contest phases for this schedule:</strong>
+                    </div>
 
                     <div class="outerVerticalCenter floatRight">
                         <a class="c-Button__primary innerVerticalCenter" href="#" onclick="addContestPhase(event)">Add contest phase</a>
                     </div>
+
+                    <div class="clearfix"><!-- --></div>
+
+                    <c:if test="${contestScheduleBean.usedInNonEmptyContest}">
+                        <div class="c-Alert__info__message">
+                            You are editing a schedule that is used in at least one non-empty contest.
+                            You can only add, delete, or edit phases that have not started yet.
+                            You can also change the end date (and promote type) of the current phase, as long as the new end date is also in the future.
+                        </div>
+                    </c:if>
+
+                    <div><!--  -->
+                        <form:errors cssClass="c-Alert c-Alert__error"/>
+                    </div>
+
                     <table class="contestOverview">
                         <col span="1" class="extraSmallColumn"/>
                         <!-- <col span="1" class="extraSmallColumn"/> -->
@@ -106,10 +123,10 @@
                         </thead>
                         <tbody id="contestOverviewBody" class="contestPhases">
                         <c:set var="dateTimePickerIndex" value="0"/>
-                        <c:forEach var="schedulePhase" items="${contestScheduleWrapper.schedulePhases}" varStatus="x">
-                            <tr data-filter-attribute="${fn:length(contestScheduleWrapper.schedulePhases) - 1 eq x.index ? 'dummyPhase' : ''}"
+                        <c:forEach var="schedulePhase" items="${contestScheduleBean.schedulePhases}" varStatus="x">
+                            <tr data-filter-attribute="${fn:length(contestScheduleBean.schedulePhases) - 1 eq x.index ? 'dummyPhase' : ''}"
                                 data-form-index="${x.index}"
-                                style="${fn:length(contestScheduleWrapper.schedulePhases) - 1 eq x.index ? 'display:none' : ''}"
+                                style="${fn:length(contestScheduleBean.schedulePhases) - 1 eq x.index ? 'display:none' : ''}"
                                     >
 
                                 <form:hidden path="schedulePhases[${x.index}].contestScheduleId"
@@ -214,7 +231,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:forEach items="${contestScheduleWrapper.contestsUsingSelectedSchedule}" var="contestWrapper"
+                <c:forEach items="${contestScheduleBean.contestsUsingSelectedSchedule}" var="contestWrapper"
                            varStatus="x">
                     <tr>
                         <td data-form-name="index">${x.index + 1}</td>
