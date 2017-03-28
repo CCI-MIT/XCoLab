@@ -650,10 +650,14 @@ public class ContestClient {
 
     public void subscribeMemberToContest(long contestPK, long userId) {
         ActivitiesClientUtil.addSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
+        Contest contest = getContest(contestPK);
+        ActivitiesClientUtil.addSubscription(userId, ActivityEntryType.DISCUSSION, contest.getDiscussionGroupId(), "");
     }
 
     public void unsubscribeMemberFromContest(long contestPK, long userId) {
         ActivitiesClientUtil.deleteSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
+        Contest contest = getContest(contestPK);
+        ActivitiesClientUtil.deleteSubscription(userId, ActivityEntryType.DISCUSSION, contest.getDiscussionGroupId(), "");
     }
 
     public String getProposalNames(List<Long> contestTypeIds, String plurality,

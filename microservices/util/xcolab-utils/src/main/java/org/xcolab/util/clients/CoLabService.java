@@ -10,13 +10,12 @@ public enum CoLabService {
     PROPOSAL("proposals-service"),
     EMAIL("emails-service"),
     FILE("files-service"),
-    FILTER("filtering-service"),
-    FLAG("flagging-service"),
+    MODERATION("moderation-service"),
     MEMBER("members-service"),
     MODEL("modeling-service"),
     SEARCH("search-service"),
     SHARED("sharedcolab-service"),
-    TRACK("tracking-service");
+    TRACKING("tracking-service");
 
     private final String serviceName;
 

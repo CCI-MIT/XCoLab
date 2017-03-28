@@ -396,14 +396,19 @@ public final class ProposalClient {
 
     private void subscribeMemberToProposal(long proposalId, long userId, boolean automatic) {
         activitiesClient.addSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+        Proposal proposal = getProposal(proposalId);
+        activitiesClient.addSubscription(userId, ActivityEntryType.DISCUSSION, proposal.getDiscussionId(), null);
     }
 
     public void unsubscribeMemberFromProposal(long proposalId, long userId) {
         unsubscribeMemberFromProposal(proposalId, userId, false);
+
     }
 
     private void unsubscribeMemberFromProposal(long proposalId, long userId, boolean automatic) {
         activitiesClient.deleteSubscription(userId, ActivityEntryType.PROPOSAL, proposalId, null);
+        Proposal proposal = getProposal(proposalId);
+        activitiesClient.deleteSubscription(userId, ActivityEntryType.DISCUSSION, proposal.getDiscussionId(), null);
     }
     public  Group_ createGroup(Group_ group) {
         return groupResource.create(new GroupDto(group)).execute().toPojo(proposalService);

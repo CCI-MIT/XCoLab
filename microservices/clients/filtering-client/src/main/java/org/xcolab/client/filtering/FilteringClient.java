@@ -13,10 +13,11 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 public final class FilteringClient {
 
-    private static final RestService filteringService = new RestService(CoLabService.FILTER,
+    private static final RestService moderationService = new RestService(CoLabService.MODERATION,
             ServiceRequestUtils.getNamespace());
-    private static final RestResource<FilteredEntry, String> filteredEntryResource = new RestResource1<>(
-            filteringService, "filteredEntries", FilteredEntry.TYPES);
+
+    private static final RestResource<FilteredEntry, String> filteredEntryResource =
+            new RestResource1<>(moderationService, "filteredEntries", FilteredEntry.TYPES);
 
     public static FilteredEntry getFilteredEntryByUuid(String uuid)
             throws FilteredEntryNotFoundException {

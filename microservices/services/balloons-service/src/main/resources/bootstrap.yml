@@ -1,5 +1,0 @@
-spring:
-  application:
-    name: ${xcolab.namespace:xcolab}-balloons-service
-  jmx:
-    default-domain: ${spring.application.name}

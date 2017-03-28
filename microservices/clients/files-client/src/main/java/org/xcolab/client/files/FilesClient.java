@@ -15,10 +15,10 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 public final class FilesClient {
 
-    private static final RestService fileService = new RestService(CoLabService.FILE,
+    private static final RestService contentService = new RestService(CoLabService.CONTENT,
             ServiceRequestUtils.getNamespace());
-    private static final RestResource<FileEntry, Long> fileEntryResource = new RestResource1<>(fileService,
-            "fileEntries", FileEntry.TYPES);
+    private static final RestResource<FileEntry, Long> fileEntryResource = new RestResource1<>(
+            contentService, "fileEntries", FileEntry.TYPES);
 
     private static final PersistenceProvider persistenceProvider =
             new FileSystemPersistenceProvider();
