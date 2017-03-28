@@ -12,10 +12,25 @@ import org.xcolab.model.tables.pojos.ConfigurationAttribute;
 import org.xcolab.service.admin.domain.configurationattribute.ConfigurationAttributeDao;
 import org.xcolab.service.admin.exceptions.NotFoundException;
 
+import java.util.ArrayList;
+
 @RestController
 public class AdminController {
 
     private final ConfigurationAttributeDao configurationAttributeDao;
+
+    public static ArrayList<String> globalMessages;
+
+    @GetMapping("/globalMessages")
+    public ArrayList<String> getGlobalMessages()
+            throws NotFoundException {
+        return globalMessages;
+    }
+
+    @PostMapping("/globalMessages/{Message}")
+    public void setGlobalMessages(@RequestBody String Message) {
+        globalMessages.add(Message);
+    }
 
     @Autowired
     public AdminController(ConfigurationAttributeDao configurationAttributeDao) {
