@@ -28,14 +28,14 @@
 
     <form:form action="${confirmDeleteContestURL }" modelAttribute="massActionConfirmationWrapper"
                id="editForm" method="post">
-        <div class="cmsDetailsBox">
+        <div class="c-ContentBox">
             <div class="outerVerticalCenter">
                 <a class="c-Button__primary innerVerticalCenter" href="#" id="submitButton">DELETE contest(s)</a>
                 <a class="c-Button__secondary innerVerticalCenter" href="/admin/contest/manager">DISCARD &amp; go back to overview</a>
             </div>
         </div>
-        <div class="cmsDetailsBox">
-            <table class="contestOverview">
+        <div class="c-ContentBox">
+            <table class="c-ContentBox__Table">
                 <col span="1" class="extraSmallColumn"/>
                 <col span="1" class="wideColumn"/>
                 <col span="1" class="mediumColumn"/>

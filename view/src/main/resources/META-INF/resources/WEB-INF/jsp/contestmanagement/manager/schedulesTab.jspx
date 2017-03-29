@@ -31,7 +31,7 @@
         <input type="hidden" name="action" value="CREATE"/>
     </form>
 
-    <div class="cmsDetailsBox">
+    <div class="c-ContentBox">
         <div style="margin-bottom: 40px;">
             <div class="floatRight outerVerticalCenter">
                 <a class="c-Button__primary innerVerticalCenter" href="#" onclick="saveExistingSchedule()">SAVE schedule</a>
@@ -42,7 +42,7 @@
         </div>
     </div>
 
-    <div class="cmsDetailsBox">
+    <div class="c-ContentBox">
         <div class="reg_errors"><!--  -->
             <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
         </div>
@@ -104,7 +104,7 @@
                         <form:errors cssClass="c-Alert c-Alert__error"/>
                     </div>
 
-                    <table class="contestOverview">
+                    <table class="c-ContentBox__Table">
                         <col span="1" class="extraSmallColumn"/>
                         <!-- <col span="1" class="extraSmallColumn"/> -->
                         <col span="4" class="mediumColumn"/>
@@ -160,7 +160,7 @@
                                                     var="formatDate"/>
 
                                     <form:input path="schedulePhases[${x.index}].phaseStartDate"
-                                                cssClass="datetimepicker" value="${formatDate}"
+                                                cssClass="js-Datetimepicker" value="${formatDate}"
                                                 data-type-attribute="start"
                                                 data-index-attribute="${dateTimePickerIndex}"
                                                 data-select-attribute="datetimepicker"
@@ -172,7 +172,7 @@
 
                                 <td>
                                     <form:input path="schedulePhases[${x.index}].phaseEndDateFormatted"
-                                                cssClass="datetimepicker"
+                                                cssClass="js-Datetimepicker"
                                                 data-type-attribute="end"
                                                 data-index-attribute="${dateTimePickerIndex + 1}"
                                                 data-select-attribute="datetimepicker"
@@ -194,7 +194,7 @@
                                     </form:checkbox>
                                 </td>
                                 <td>
-                                    <c:if test="${not schedulePhase.contestPhaseHasProposalAssociations}">
+                                    <c:if test="${not (contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.alreadyStarted)}">
                                         <div class="deleteIcon"> <!-- --></div>
                                     </c:if>
                                 </td>
@@ -211,11 +211,11 @@
     </div>
 
 
-    <div class="cmsDetailsBox">
+    <div class="c-ContentBox">
 
         <div class="addpropbox" style="margin-top: 20px;">
             <strong class="inputTitleLeft">Contests using this schedule:</strong>
-            <table class="contestOverview">
+            <table class="c-ContentBox__Table">
                 <colgroup>
                     <col class="extraSmallColumn" span="1" />
                     <col style="text-align: center;" class="mediumColumn" span="1" />
@@ -299,7 +299,7 @@
         }
 
         function initDateTimePicker() {
-            jQuery('.datetimepicker').datetimepicker({
+            jQuery('.js-Datetimepicker').datetimepicker({
                 lazyInit: true,
                 weeks: true,
                 format: 'm/d/Y H:i',

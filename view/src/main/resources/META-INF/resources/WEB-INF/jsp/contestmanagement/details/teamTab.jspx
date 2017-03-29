@@ -20,7 +20,7 @@
 
 	</script>
 
-		<div class="cmsDetailsBox">
+		<div class="c-ContentBox">
 			<p>Search by username to select contest team members. <a href="/register" target="_blank">Register new members by clicking here. </a>
 				<i>(Click SAVE and reload this page to find newly registered members.)</i>
 			</p>

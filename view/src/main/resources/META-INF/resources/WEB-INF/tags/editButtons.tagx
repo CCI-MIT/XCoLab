@@ -21,7 +21,7 @@
     </form>
 
 
-    <div class="cmsDetailsBox">
+    <div class="c-ContentBox">
         <div style="margin-bottom: 40px;">
             <div class="floatRight outerVerticalCenter">
                 <a class="c-Button__primary innerVerticalCenter" href="#" onclick="submitSaveAsExistingForm()">SAVE ${elementName}</a>

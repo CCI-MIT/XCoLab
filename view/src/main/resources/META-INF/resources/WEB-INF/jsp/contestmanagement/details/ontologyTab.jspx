@@ -13,7 +13,7 @@
 
 	<c:set var="updateContestOntologyURL" value="/admin/contest/details/contestId/${contestWrapper.contestPK}/tab/ONTOLOGY/update" />
 
-	<div class="cmsDetailsBox">
+	<div class="c-ContentBox">
 
 		<p>Each contest on the Climate CoLab has a place inside of our climate change taxonomy, which we use to organize and help people easily locate contests.  Please select where your contest falls in each of the four dimensions below.  If you have questions about where your contest best fits, please submit a comment below for the Climate CoLab team.</p>
 
