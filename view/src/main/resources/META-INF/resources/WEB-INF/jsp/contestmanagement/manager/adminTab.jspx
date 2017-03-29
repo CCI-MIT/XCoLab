@@ -16,7 +16,7 @@
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
 
-    <div class="cmsDetailsBox">
+    <div class="c-ContentBox">
         <br/>
         <h1>Admin panel</h1>
         <br />

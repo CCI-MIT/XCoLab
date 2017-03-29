@@ -34,7 +34,7 @@ public class ContestPhase extends AbstractContestPhase {
 
     public ContestPhase(ContestPhase value) {
         super(value);
-        contestClient = ContestClientUtil.getClient();
+        contestClient = value.contestClient;
     }
 
     public ContestPhase(Long contestphasepk, Long contestpk, Long contestphasetype,
@@ -56,7 +56,7 @@ public class ContestPhase extends AbstractContestPhase {
         contestClient = ContestClient.fromService(restService);
     }
 
-    public static ContestPhase createFromContestPhase(ContestPhase originalPhase) {
+    public static ContestPhase clone(ContestPhase originalPhase) {
         ContestPhase newPhase = new ContestPhase();
 
         newPhase.setContestPK(originalPhase.getContestPK());
@@ -64,7 +64,6 @@ public class ContestPhase extends AbstractContestPhase {
         newPhase.setPhaseEndDate(originalPhase.getPhaseEndDate());
         newPhase.setContestScheduleId(originalPhase.getContestScheduleId());
         newPhase.setContestPhaseType(originalPhase.getContestPhaseType());
-        newPhase.setContestScheduleId(originalPhase.getContestScheduleId());
         newPhase.setFellowScreeningActive(originalPhase.getFellowScreeningActive());
         newPhase.setContestPhaseAutopromote(originalPhase.getContestPhaseAutopromote());
         newPhase.setContestPhaseDescriptionOverride(
@@ -195,7 +194,8 @@ public class ContestPhase extends AbstractContestPhase {
 
     public boolean isAlreadyStarted() {
         Date now = new Date();
-        return this.getPhaseStartDate().before(now);
+        final Timestamp phaseStartDate = this.getPhaseStartDate();
+        return phaseStartDate != null && phaseStartDate.before(now);
     }
 
     public Boolean getProposalVisibility(long proposalId) {

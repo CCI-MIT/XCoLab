@@ -18,7 +18,7 @@ import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
 import org.xcolab.client.proposals.pojo.group.Group_;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
-import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleChangeHelper;
+import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 
 import java.util.Random;
@@ -56,7 +56,7 @@ public final class ContestCreatorUtil {
         contest.setContestTypeId(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
         ContestClientUtil.updateContest(contest);
         ContestScheduleChangeHelper
-                changeHelper = new ContestScheduleChangeHelper(contest, contestScheduleId);
+                changeHelper = new ContestScheduleChangeHelper(contest.getContestPK(), contestScheduleId);
         changeHelper.changeScheduleForBlankContest();
 
         setGroupForContest(contest);

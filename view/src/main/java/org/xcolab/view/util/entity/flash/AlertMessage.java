@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 public class AlertMessage {
 
     public static final AlertMessage CHANGES_SAVED = AlertMessage.success("Changes saved");
+    public static final AlertMessage NOT_SAVED = AlertMessage.danger("Changes NOT saved");
     public static final AlertMessage CREATED = AlertMessage.success("Element created");
     public static final AlertMessage DELETED = AlertMessage.success("Element deleted");
 

@@ -1,0 +1,199 @@
+
+
+.c-ContentBox {
+  border: 1px solid $t-Color__primary;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+.c-ContentBox h1 {
+  padding-bottom: 15px;
+}
+
+//TODO: CMS specific
+.c-ContentBox .dropzone {
+  height: 20px;
+  padding: 5px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #0066b3;
+  color: #0066b3;
+}
+.c-ContentBox .dropzone.showAllowDropState.allowDropState {
+  background-color: #CCC;
+  border: 1px solid blue;
+}
+.c-ContentBox .dropzone.showAllowDropState {
+  background-color: #e7f1f5;
+  border: 1px dashed blue;
+}
+
+//TODO: proposals/cms-related
+.c-ContentBox .addpropbox input {
+  float: left;
+  height: 30px;
+}
+.c-ContentBox .addpropbox select {
+  width: 445px;
+}
+.c-ContentBox .addpropbox select.multi {
+  height: initial;
+  min-height: 150px;
+}
+.c-ContentBox .addpropbox select.autoWidth {
+  width: auto;
+}
+.c-ContentBox .addpropbox .wideLargeInput {
+  height: 30px;
+  width: 445px;
+  font-size: 16px;
+  padding-left: 5px;
+  text-align: left;
+}
+.c-ContentBox .addpropbox.dragState {
+  background-color: #CCC;
+  border: 1px solid blue;
+}
+
+
+.c-ContentBox .addpropbox .addprophelp {
+  width: 700px;
+  color: #999;
+}
+
+.c-ContentBox .addpropInputContainer input {
+  width: 910px;
+}
+
+.c-ContentBox .cke_skin_colab {
+  width: 910px;
+}
+
+.c-ContentBox .addpropInputContainer textarea {
+  width: 910px;
+  height: auto;
+  resize: both;
+}
+
+.c-ContentBox .addpropbox .upload {
+  width: 700px;
+}
+
+.c-ContentBox .addpropbox label {
+  width: 200px;
+}
+
+.c-ContentBox .addpropbox .contestDescription {
+  height: 100px;
+}
+
+.c-ContentBox .c-Comment__add {
+  height: 300px;
+}
+
+.c-ContentBox .actionItems {
+  text-align: center;
+}
+
+.c-ContentBox .deleteIcon {
+  position: relative;
+  right: -7px;
+  top: -7px;
+  float: right;
+  background-image: url("/images/icon_question-x.png");
+  width: 22px;
+  height: 22px;
+}
+
+.c-ContentBox .contestPhases .deleteIcon {
+  right: 0;
+  top: 0;
+}
+
+.c-ContentBox .addSection {
+  margin: 20px;
+}
+
+.c-ContentBox .contest-outline-left {
+  float: none;
+  width: auto;
+  min-height: inherit;
+  padding-bottom: 0;
+}
+
+.c-ContentBox .c-ContentBox__Table {
+  table-layout: fixed;
+  margin: inherit;
+  padding: inherit;
+  margin-top: 30px;
+}
+
+.c-ContentBox .c-ContentBox__Table .extraSmallColumn {
+  width: 25px;
+}
+
+.c-ContentBox .c-ContentBox__Table input {
+  float: none;
+  padding-left: 10px;
+}
+
+.c-ContentBox .c-ContentBox__Table .smallColumn {
+  width: 100px;
+}
+
+.c-ContentBox .c-ContentBox__Table .mediumColumn {
+  width: 200px;
+}
+
+.c-ContentBox .c-ContentBox__Table .wideColumn {
+  width: 300px;
+}
+
+.c-ContentBox .c-ContentBox__Table tr {
+  white-space: nowrap;
+  line-height: 30px;
+  height: 30px;
+  background-color: #f2f1e9;
+  display: table-row;
+  margin-bottom: 0;
+  border-bottom: 5px solid white;
+  transition: 0.3s ease-out 0s;
+  padding: inherit;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.c-ContentBox .c-ContentBox__Table tr.draggable {
+  cursor: move;
+}
+
+.c-ContentBox .c-ContentBox__Table .blue tr {
+  background-color: #e7f1f5;
+}
+
+.c-ContentBox .c-ContentBox__Table tr.blue.drag {
+  transform: scale(0.9);
+}
+
+.c-ContentBox .c-ContentBox__Table tr.drag {
+  transform: scale(0.9);
+  border-bottom: 5px solid white;
+}
+
+.c-ContentBox .c-ContentBox__Table tr.allowDrop {
+  transition: 0.3s ease-out 0s;
+  border-top: 34px solid rgba(255, 255, 255, 1);
+}
+
+.c-ContentBox .c-ContentBox__Table td {
+  border-collapse: collapse;
+  vertical-align: middle;
+  text-align: center;
+  line-height: inherit;
+}
+
+.c-ContentBox .c-ContentBox__Table th {
+  vertical-align: middle;
+  text-align: center;
+  line-height: 30px;
+}

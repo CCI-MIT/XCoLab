@@ -212,7 +212,7 @@
             <br/>
 
             <c:if test="${showDataTable}">
-                <div id="impact" class="cmsDetailsBox">
+                <div id="impact" class="c-ContentBox">
                     <h2 class="model_name">Regional
                         <c:if test="${not empty isRegionalSectorContest and isRegionalSectorContest}">
                             Sector
