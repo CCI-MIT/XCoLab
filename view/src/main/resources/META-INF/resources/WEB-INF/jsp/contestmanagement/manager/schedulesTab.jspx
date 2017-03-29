@@ -145,8 +145,8 @@
                                 <td data-form-attribute="indexLable">${x.index + 1}</td>
                                 <td>
                                     <form:hidden path="schedulePhases[${x.index}].contestPhaseTypeOld" data-form-name="contestPhaseTypeOld"/>
-                                    <form:select path="schedulePhases[${x.index}].contestPhaseType" class="autoWidth"
-                                                 data-form-name="contestPhaseType">
+                                    <form:select path="schedulePhases[${x.index}].contestPhaseType" class="autoWidth" data-form-name="contestPhaseType"
+                                                 disabled="${contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.alreadyStarted}">
                                         <form:options items="${contestPhaseTypesSelectionItems}" itemValue="value"
                                                       itemLabel="lable"/>
                                     </form:select>
@@ -165,7 +165,9 @@
                                                 data-index-attribute="${dateTimePickerIndex}"
                                                 data-select-attribute="datetimepicker"
                                                 data-form-name="phaseStartDate"
+                                                readonly="${contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.alreadyStarted}"
                                             />
+
                                 </td>
 
                                 <td>
@@ -175,7 +177,9 @@
                                                 data-index-attribute="${dateTimePickerIndex + 1}"
                                                 data-select-attribute="datetimepicker"
                                                 data-form-name="phaseEndDateFormatted"
+                                                readonly="${contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.ended}"
                                             />
+
                                 </td>
                                 <td>
                                     <form:select path="schedulePhases[${x.index}].contestPhaseAutopromote" class="autoWidth"

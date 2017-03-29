@@ -15,3 +15,9 @@ input, select, textarea {
   font-weight: 200;
   margin-bottom: 7px;
 }
+
+input:disabled, select:disabled,
+input:read-only {
+  pointer-events: none;
+  opacity: 0.5;
+}

@@ -194,7 +194,8 @@ public class ContestPhase extends AbstractContestPhase {
 
     public boolean isAlreadyStarted() {
         Date now = new Date();
-        return this.getPhaseStartDate().before(now);
+        final Timestamp phaseStartDate = this.getPhaseStartDate();
+        return phaseStartDate != null && phaseStartDate.before(now);
     }
 
     public Boolean getProposalVisibility(long proposalId) {
