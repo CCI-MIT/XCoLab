@@ -17,6 +17,8 @@ public interface ProposalDao {
     List<Long> findThreadIdsByGiven(PaginationHelper paginationHelper, Long contestId, Boolean visible,
             Long contestPhaseId, Integer ribbon);
 
+    List<Proposal> findLinkedProposalIdsByGivenProposalId(Long proposalId);
+
     Proposal create(Proposal proposal);
 
     Proposal get(Long proposalId) throws NotFoundException;
