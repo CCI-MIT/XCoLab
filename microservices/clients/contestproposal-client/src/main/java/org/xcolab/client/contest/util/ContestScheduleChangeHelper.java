@@ -1,54 +1,56 @@
 package org.xcolab.client.contest.util;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class ContestScheduleChangeHelper {
 
     private final long contestId;
-    private final List<ContestPhase> existingPhases;
-    private final List<ContestPhase> schedulePhases;
+    private final List<SchedulePhase> existingPhases;
+    private final List<SchedulePhase> newPhases;
 
     public ContestScheduleChangeHelper(long contestId, long newScheduleId) {
         this(contestId, ContestClientUtil.getPhasesForContestScheduleId(newScheduleId));
     }
 
-    public ContestScheduleChangeHelper(long contestId, List<ContestPhase> schedulePhases) {
+    public ContestScheduleChangeHelper(long contestId, List<ContestPhase> newPhases) {
         this.contestId = contestId;
-        this.existingPhases = ContestClientUtil.getAllContestPhases(contestId);
-        this.schedulePhases = schedulePhases;
+        this.existingPhases = SchedulePhase.wrapList(ContestClientUtil.getAllContestPhases(contestId));
+        this.newPhases = SchedulePhase.wrapList(newPhases);
     }
 
-    public boolean startedPhaseTypesMatchSchedule() {
-        return doStartedPhasesMatch(existingPhases, schedulePhases);
+    public boolean isValidChange() {
+        return doStartedPhasesMatch(existingPhases, newPhases)
+                && isActivePhaseValid(existingPhases, newPhases);
     }
 
-    public static boolean doStartedPhasesMatch(List<ContestPhase> currentSchedulePhases,
-            List<ContestPhase> schedulePhases) {
+    public static boolean isValidChange(List<ContestPhase> existingPhases,
+            List<ContestPhase> newPhases) {
+        final List<SchedulePhase> existingSchedulePhases = SchedulePhase.wrapList(existingPhases);
+        final List<SchedulePhase> newSchedulePhases = SchedulePhase.wrapList(newPhases);
 
-        List<ContestPhase> oldPhases = new ArrayList<>(currentSchedulePhases);
-        List<ContestPhase> newPhases = new ArrayList<>(schedulePhases);
+        return doStartedPhasesMatch(existingSchedulePhases, newSchedulePhases)
+                && isActivePhaseValid(existingSchedulePhases, newSchedulePhases);
+    }
 
-        oldPhases.sort(Comparator.comparing(ContestPhase::getPhaseStartDate));
-        newPhases.sort(Comparator.comparing(ContestPhase::getPhaseStartDate));
+    private static boolean doStartedPhasesMatch(List<SchedulePhase> existingPhases,
+            List<SchedulePhase> newPhases) {
 
-        Iterator<ContestPhase> oldPhasesIt = oldPhases.iterator();
-        Iterator<ContestPhase> newPhasesIt = newPhases.iterator();
+        Iterator<SchedulePhase> oldPhasesIt = existingPhases.iterator();
+        Iterator<SchedulePhase> newPhasesIt = newPhases.iterator();
         while (oldPhasesIt.hasNext() && newPhasesIt.hasNext()) {
 
-            ContestPhase oldPhase = oldPhasesIt.next();
+            SchedulePhase oldPhase = oldPhasesIt.next();
             if (oldPhase.isAlreadyStarted()) {
-                ContestPhase newPhase = newPhasesIt.next();
+                SchedulePhase newPhase = newPhasesIt.next();
                 if (!newPhase.isAlreadyStarted()) {
                     return false;
                 }
@@ -64,7 +66,39 @@ public class ContestScheduleChangeHelper {
         return true;
     }
 
+    private static boolean isActivePhaseValid(List<SchedulePhase> existingPhases,
+            List<SchedulePhase> newPhases) {
+        Optional<SchedulePhase> activeCurrentPhaseOpt = getActivePhase(existingPhases);
+        Optional<SchedulePhase> activeNewPhaseOpt = getActivePhase(newPhases);
+        if (activeCurrentPhaseOpt.isPresent() != activeNewPhaseOpt.isPresent()) {
+            return false;
+        }
+
+        if (activeCurrentPhaseOpt.isPresent()) {
+            final SchedulePhase activeCurrentPhase = activeCurrentPhaseOpt.get();
+            final SchedulePhase activeNewPhase = activeNewPhaseOpt.get();
+
+            final boolean typesMatch = activeCurrentPhase.getContestPhaseType().longValue()
+                    == activeNewPhase.getContestPhaseType();
+            final boolean positionsMatch = activeCurrentPhase.getPosition()
+                    == activeNewPhase.getPosition();
+            if (!(typesMatch && positionsMatch)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static Optional<SchedulePhase> getActivePhase(List<SchedulePhase> contestPhases) {
+        return contestPhases.stream()
+                .filter(ContestPhase::isActive)
+                .findFirst();
+    }
+
     public void changeScheduleForStartedContest() {
+        if (!isValidChange()) {
+            throw new IllegalScheduleChangeException("Schedule change invalid");
+        }
         removeFutureContestPhases();
         updateStartedContestPhases();
         createFutureContestPhases();
@@ -79,20 +113,20 @@ public class ContestScheduleChangeHelper {
     }
 
     private void updateStartedContestPhases() {
-        Iterator<ContestPhase> oldPhasesIt = existingPhases.iterator();
-        Iterator<ContestPhase> newPhasesIt = schedulePhases.iterator();
+        Iterator<SchedulePhase> oldPhasesIt = existingPhases.iterator();
+        Iterator<SchedulePhase> newPhasesIt = newPhases.iterator();
         while (oldPhasesIt.hasNext() && newPhasesIt.hasNext()) {
 
-            ContestPhase oldPhase = oldPhasesIt.next();
+            SchedulePhase oldPhase = oldPhasesIt.next();
             if (oldPhase.isAlreadyStarted()) {
-                ContestPhase newPhase = newPhasesIt.next();
+                SchedulePhase newPhase = newPhasesIt.next();
                 updateStartedContestPhaseWithTemplate(oldPhase, newPhase);
             }
         }
     }
 
-    private void updateStartedContestPhaseWithTemplate(ContestPhase contestPhase,
-            ContestPhase templatePhase) {
+    private void updateStartedContestPhaseWithTemplate(SchedulePhase contestPhase,
+            SchedulePhase templatePhase) {
 
         final boolean isDifferentContestType = contestPhase.getContestPhaseType().longValue()
                 != templatePhase.getContestPhaseType();
@@ -128,7 +162,7 @@ public class ContestScheduleChangeHelper {
     }
 
     private void createFutureContestPhases() {
-        for (ContestPhase schedulePhase : schedulePhases) {
+        for (ContestPhase schedulePhase : newPhases) {
             if (!schedulePhase.isAlreadyStarted()) {
                 cloneContestPhaseWithContestId(schedulePhase, contestId);
             }
@@ -146,7 +180,7 @@ public class ContestScheduleChangeHelper {
     public void changeScheduleForBlankContest() {
         removeExistingContestPhases();
 
-        for (ContestPhase schedulePhase : schedulePhases) {
+        for (ContestPhase schedulePhase : newPhases) {
             cloneContestPhaseWithContestId(schedulePhase, contestId);
         }
     }
@@ -164,23 +198,22 @@ public class ContestScheduleChangeHelper {
         public IllegalScheduleChangeException(String message) {
             super(message);
         }
-
-        public IllegalScheduleChangeException(Contest contest, long scheduleId) {
-            super("Can't edit schedule " + scheduleId + " because contest "
-                    + contest.getContestPK() + " already has "
-                    + (contest).getProposalsCount() + " proposals");
-        }
     }
 
-    public static class PhaseTypeMismatchScheduleChangeException extends IllegalScheduleChangeException {
+    public static class PhaseTypeMismatchScheduleChangeException
+            extends IllegalScheduleChangeException {
+
         public PhaseTypeMismatchScheduleChangeException() {
             super("Cannot change contest phase type of a started contest phase.");
         }
     }
 
-    public static class PastEndDateScheduleChangeException extends IllegalScheduleChangeException {
+    public static class PastEndDateScheduleChangeException
+            extends IllegalScheduleChangeException {
+
         public PastEndDateScheduleChangeException() {
             super("Cannot change phase to or from end date that already passed.");
         }
     }
+
 }

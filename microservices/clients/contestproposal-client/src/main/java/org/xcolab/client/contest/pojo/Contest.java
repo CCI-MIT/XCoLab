@@ -633,7 +633,7 @@ public class Contest extends AbstractContest implements Serializable {
         }
         final ContestScheduleChangeHelper contestScheduleChangeHelper =
                 new ContestScheduleChangeHelper(getContestPK(), contestScheduleId);
-        return contestScheduleChangeHelper.startedPhaseTypesMatchSchedule();
+        return contestScheduleChangeHelper.isValidChange();
     }
 
     public boolean isCompatibleWithSchedulePhases(List<ContestPhase> schedulePhases) {
@@ -642,7 +642,7 @@ public class Contest extends AbstractContest implements Serializable {
         }
         final ContestScheduleChangeHelper contestScheduleChangeHelper =
                 new ContestScheduleChangeHelper(getContestPK(), schedulePhases);
-        return contestScheduleChangeHelper.startedPhaseTypesMatchSchedule();
+        return contestScheduleChangeHelper.isValidChange();
     }
 
     public void changeScheduleTo(long contestScheduleId) {

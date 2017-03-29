@@ -34,7 +34,7 @@ public class ContestPhase extends AbstractContestPhase {
 
     public ContestPhase(ContestPhase value) {
         super(value);
-        contestClient = ContestClientUtil.getClient();
+        contestClient = value.contestClient;
     }
 
     public ContestPhase(Long contestphasepk, Long contestpk, Long contestphasetype,

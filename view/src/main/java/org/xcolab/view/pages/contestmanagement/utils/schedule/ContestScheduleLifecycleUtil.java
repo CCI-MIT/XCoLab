@@ -94,7 +94,7 @@ public final class ContestScheduleLifecycleUtil {
             final List<ContestPhase> newSchedulePhases =
                     getCurrentPhasesForSchedule(candidateSchedule.getId_());
             if (ContestScheduleChangeHelper
-                    .doStartedPhasesMatch(currentSchedulePhases, newSchedulePhases)) {
+                    .isValidChange(currentSchedulePhases, newSchedulePhases)) {
                 selectItems.add(new ScheduleLabel(candidateSchedule));
             }
         }
