@@ -36,6 +36,7 @@ public class SchedulesTabController extends AbstractTabController {
     private static final ContestManagerTabs tab = ContestManagerTabs.SCHEDULES;
     private static final String TAB_VIEW = "contestmanagement/manager/schedulesTab";
 
+    private static final String CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY = "contestScheduleBean";
     private static final String SCHEDULE_CHANGE_ERROR_MESSAGE =
             "This schedule is used in at least one contest that has already started. "
                     + "Please make sure you only change future phases.";
@@ -90,8 +91,8 @@ public class SchedulesTabController extends AbstractTabController {
 
         Long scheduleId = elementId != null ? elementId : getFirstScheduleId();
         model.addAttribute("scheduleId", scheduleId);
-        if (scheduleId >= 0 && !model.containsAttribute("contestScheduleBean")) {
-            model.addAttribute("contestScheduleBean", new ContestScheduleBean(scheduleId));
+        if (scheduleId >= 0 && !model.containsAttribute(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY)) {
+            model.addAttribute(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY, new ContestScheduleBean(scheduleId));
         }
         model.addAttribute("elementSelectIdWrapper", new ElementSelectIdWrapper(scheduleId,
                 ContestScheduleLifecycleUtil.getAllScheduleTemplateSelectionItems()));
@@ -135,7 +136,9 @@ public class SchedulesTabController extends AbstractTabController {
     private String createSchedule(HttpServletRequest request, HttpServletResponse response,
             Model model) {
         ContestSchedule newContestSchedule = ContestScheduleLifecycleUtil.createNewSchedule();
+
         AlertMessage.CREATED.flash(request);
+        model.asMap().remove(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY);
         return showScheduleTabController(request, response, model, newContestSchedule.getId_());
     }
 
@@ -143,7 +146,7 @@ public class SchedulesTabController extends AbstractTabController {
             Model model, ContestScheduleBean contestScheduleBean, BindingResult result) {
 
         if (!contestScheduleBean.areContestsCompatibleWithSchedule()) {
-            result.reject("contestScheduleBean", SCHEDULE_CHANGE_ERROR_MESSAGE);
+            result.reject(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY, SCHEDULE_CHANGE_ERROR_MESSAGE);
         }
 
         if (result.hasErrors()) {
@@ -153,14 +156,18 @@ public class SchedulesTabController extends AbstractTabController {
         }
 
         contestScheduleBean.persist();
+
         AlertMessage.CHANGES_SAVED.flash(request);
+        model.asMap().remove(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY);
         return showScheduleTabController(request, response, model,
                 contestScheduleBean.getScheduleId());
     }
 
     private String deleteSchedule(HttpServletRequest request, HttpServletResponse response,
             Model model, Long scheduleId) {
+
         ContestScheduleLifecycleUtil.deleteContestSchedule(scheduleId);
+
         AlertMessage.DELETED.flash(request);
         return showScheduleTabController(request, response, model, null);
     }
