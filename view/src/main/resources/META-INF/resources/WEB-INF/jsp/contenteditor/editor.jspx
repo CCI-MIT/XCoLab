@@ -283,11 +283,14 @@
                 $('#contentArticleFolderId').focus();
             }
             function updateArticleURL(folderName, articleTitle) {
+
                 if(folderName == "Wiki") {
-                    $("#articleURL").html("Article URL: <a id='anchorArticleURL' href='/web/guest/wiki/-/wiki/page/" + articleTitle +
+
+                    $("#articleId").html("Article URL: <a id='anchorArticleURL' href='/web/guest/wiki/-/wiki/page/" + articleTitle +
                             "'>~/web/guest/wiki/-/wiki/page/" + articleTitle + "</a>");
                 } else {
-                    $("#articleURL").html("");
+
+                    $("#articleId").html("");
                 }
             }
             function pad(n, width, z) {
@@ -355,9 +358,10 @@
 
                     loadArticleVersionContentId($( this ).attr("data-attribute"))
                 });
-
+                var folderName = $("#folderName").html().replace("Parent folder: ","");
                 updateArticleURL(folderName, data.title.replace(/ /g,"+"));
-                if($("#articleId").html('')=="") {
+                if($("#articleId").html()=="") {
+
                     $("#articleId").html(
                             'Article ID: <a href="?articleId=' + id + '">' + id + '</a><br/>');
                 }
