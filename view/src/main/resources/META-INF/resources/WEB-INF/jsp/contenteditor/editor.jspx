@@ -357,7 +357,10 @@
                 });
 
                 updateArticleURL(folderName, data.title.replace(/ /g,"+"));
-                $("#articleId").html('Article ID: <a href="?articleId=' + id + '">' + id + '</a><br/>');
+                if($("#articleId").html('')=="") {
+                    $("#articleId").html(
+                            'Article ID: <a href="?articleId=' + id + '">' + id + '</a><br/>');
+                }
 
                 ckEditor.setReadOnly(false);
                 $("#article-view").unmask()
