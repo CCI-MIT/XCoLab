@@ -34,13 +34,13 @@ public class AuthenticationContext {
 
     public Member getMemberOrNull(HttpServletRequest request) {
         final Member realMemberOrNull = getRealMemberOrNull();
-        if (realMemberOrNull != null && PermissionsClient.canAdminAll(realMemberOrNull.getId_())) {
+        if (PermissionsClient.canAdminAll(realMemberOrNull)) {
             Long impersonatedMemberId = getImpersonatedMemberId(request);
             if (impersonatedMemberId != null) {
                 try {
                     return MembersClient.getMember(impersonatedMemberId);
                 } catch (MemberNotFoundException e) {
-                    return null;
+                    return realMemberOrNull;
                 }
             }
         }
