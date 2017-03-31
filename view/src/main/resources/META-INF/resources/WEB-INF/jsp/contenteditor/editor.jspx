@@ -370,6 +370,8 @@
                 $("#article-view").unmask()
 
             }
+
+
             function saveArticle(){
 
                 if($('#contentArticleTitle').val() == ""){
