@@ -66,20 +66,15 @@ public final class FacebookUtil {
                 .queryParam("client_secret", ConfigurationAttributeKey.FACEBOOK_APPLICATION_SECRET.get())
                 .queryParam("code", code);
         final String requestResult = requestHelper.post(uriBuilder, null, String.class);
-        //TODO: copied from liferay - this could be nicer
-        if (StringUtils.isNotEmpty(requestResult)) {
-            int x = requestResult.indexOf("access_token=");
-            if (x >= 0) {
-                int y = requestResult.indexOf(38, x);
-                if (y < x) {
-                    y = requestResult.length();
-                }
 
-                return requestResult.substring(x + 13, y);
-            }
+        if (StringUtils.isEmpty(requestResult)) {
+            throw new FacebookResponseException("Token request returned empty string");
         }
-
-        return null;
+        JSONObject json = new JSONObject(requestResult);
+        if (!json.has("access_token")) {
+            throw new FacebookResponseException("No access token returned.");
+        }
+        return json.getString("access_token");
     }
 
     public static JSONObject getGraphResources(String path, String accessToken, String fields) {
@@ -96,5 +91,12 @@ public final class FacebookUtil {
 
     public static String getAuthRedirectURL(HttpServletRequest request) {
         return ConfigurationAttributeKey.COLAB_URL.get() + SsoEndpoint.FACEBOOK_CALLBACK.getUrl();
+    }
+
+    private static class FacebookResponseException extends RuntimeException {
+
+        public FacebookResponseException(String message) {
+            super(message);
+        }
     }
 }
