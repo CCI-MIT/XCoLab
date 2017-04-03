@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Directory to copy binaries from
-export BINARY_SOURCE_DIR="~/binaries"
+# Source directory from which to retrieve the latest binaries
+export BINARY_SOURCE_DIR="/home/myuser/binaries"
 
-# Directory to run binaries from
-export DEPLOY_DIR="~/xcolab"
+# Directory from which to run binaries
+export DEPLOY_DIR="/home/myuser/bundle"
 
 CLOUD_DEPLOY_DIR=${DEPLOY_DIR}/cloud
 SERVICE_DEPLOY_DIR=${DEPLOY_DIR}/services

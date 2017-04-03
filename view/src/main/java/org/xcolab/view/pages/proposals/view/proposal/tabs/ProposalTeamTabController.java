@@ -23,6 +23,9 @@ import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,10 +42,34 @@ public class ProposalTeamTabController extends BaseProposalTabController {
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=TEAM")
     public String show(Model model, HttpServletRequest request) {
 
+        final Proposal proposal = proposalsContext.getProposal(request);
+        final Member actingMember = proposalsContext.getMember(request);
+        final long proposalId = proposal.getProposalId();
+
         setCommonModelAndPageAttributes(request, model, ProposalTab.TEAM);
+
+        final ClientHelper clients = ProposalsContextUtil.getClients(request);
+        final ProposalClient proposalClient = clients.getProposalClient();
 
         model.addAttribute("requestMembershipBean", new RequestMembershipBean());
         model.addAttribute("requestMembershipInviteBean", new RequestMembershipInviteBean());
+
+
+        List<Proposal> listOfLinkedProposals= proposalClient.getLinkingProposalsForProposalID(proposal.getProposalId());
+
+        model.addAttribute("listOfLinkedProposals", listOfLinkedProposals);
+
+        Map<Proposal, List<Member>> mapOfContributingProposals = new HashMap<Proposal, List<Member>>();
+
+        for (Proposal temp : listOfLinkedProposals) {
+
+            List<Member> contributors = proposalClient.getProposalMembers(temp.getProposalId());
+
+            mapOfContributingProposals.put(temp, contributors);
+        }
+
+        model.addAttribute("mapOfContributingProposals", mapOfContributingProposals);
+
 
         return "/proposals/proposalTeam";
     }

@@ -3,6 +3,8 @@ package org.xcolab.view.files;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +21,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -130,6 +133,8 @@ public class ImageDisplayController {
             }
             out.close();
             in.close();
+            response.setHeader(HttpHeaders.CACHE_CONTROL,
+                    CacheControl.maxAge(7, TimeUnit.DAYS).getHeaderValue());
             return;
         } catch (IOException ignored) {
 

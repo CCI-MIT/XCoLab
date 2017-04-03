@@ -13,7 +13,9 @@ You will need to configure the directories in
 `BINARY_SOURCE_DIR` is be the directory
 containing the XCoLab binaries you want to deploy
 and`DEPLOY_DIR` is the target directory of
-the deployment.
+the deployment. The jars will be run from the
+`DEPLOY_DIR` directory and all configuration
+files should reside there.
 
 ## Running the scripts
 

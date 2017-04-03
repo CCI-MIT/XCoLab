@@ -20,11 +20,11 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
+import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.modeling.models.ui.ModelInputGroupDisplayItem;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
 import org.xcolab.client.proposals.ProposalPhaseClient;
@@ -33,8 +33,6 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
-
-
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -313,9 +311,6 @@ public class Contest extends AbstractContest implements Serializable {
 
     protected List<OntologyTerm> getTermFromSpace(String space) {
 
-
-
-
         if (!ontologySpaceCache.containsKey(space) && (getFocusAreaId() > 0)) {
             if (!faCache.containsKey(this.getFocusAreaId())) {
                 FocusArea fa = ontologyClient.getFocusArea(this
@@ -343,9 +338,7 @@ public class Contest extends AbstractContest implements Serializable {
     public List<ContestPhase> getPhases() {
         if (phases == null) {
             phases = new ArrayList<>();
-            for (ContestPhase phase : contestClient.getAllContestPhases(this.getContestPK())) {
-                phases.add(phase);
-            }
+            phases.addAll(contestClient.getAllContestPhases(this.getContestPK()));
         }
         return phases;
     }
@@ -591,10 +584,8 @@ public class Contest extends AbstractContest implements Serializable {
     public List<ContestPhase> getVisiblePhases() {
         if (visiblePhases == null) {
             visiblePhases = new ArrayList<>();
-            for (ContestPhase phase : contestClient
-                    .getVisibleContestPhases(this.getContestPK())) {
-                visiblePhases.add(phase);
-            }
+            visiblePhases.addAll(contestClient
+                    .getVisibleContestPhases(this.getContestPK()));
         }
         return visiblePhases;
     }
@@ -626,6 +617,45 @@ public class Contest extends AbstractContest implements Serializable {
             setDiscussionGroupId(discussionGroupId);
         }
         return discussionGroupId;
+    }
+
+    public boolean isEmpty() {
+        return !isNotEmpty();
+    }
+
+    public boolean isNotEmpty() {
+        return getTotalProposalsCount() > 0;
+    }
+
+    public boolean isCompatibleWithSchedule(long contestScheduleId) {
+        if (isEmpty()) {
+            return true;
+        }
+        final ContestScheduleChangeHelper contestScheduleChangeHelper =
+                new ContestScheduleChangeHelper(getContestPK(), contestScheduleId);
+        return contestScheduleChangeHelper.isValidChange();
+    }
+
+    public boolean isCompatibleWithSchedulePhases(List<ContestPhase> schedulePhases) {
+        if (isEmpty()) {
+            return true;
+        }
+        final ContestScheduleChangeHelper contestScheduleChangeHelper =
+                new ContestScheduleChangeHelper(getContestPK(), schedulePhases);
+        return contestScheduleChangeHelper.isValidChange();
+    }
+
+    public void changeScheduleTo(long contestScheduleId) {
+        final ContestScheduleChangeHelper contestScheduleChangeHelper =
+                new ContestScheduleChangeHelper(getContestPK(), contestScheduleId);
+
+        if (isEmpty()) {
+            contestScheduleChangeHelper.changeScheduleForBlankContest();
+        } else {
+            contestScheduleChangeHelper.changeScheduleForStartedContest();
+        }
+        setContestScheduleId(contestScheduleId);
+        ContestClientUtil.updateContest(this);
     }
 
     public boolean getIsSharedContestInForeignColab() {

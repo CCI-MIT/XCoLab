@@ -1,5 +1,7 @@
 package org.xcolab.view.api.members;
 
+import org.xcolab.util.CountryUtil;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,28 +35,38 @@ public class MembersStats {
     }
 
     public static class CountryCount {
-        private String country;
+        private String countryCode;
+        private String countryName;
         private long membersCount;
 
-        public CountryCount(String country, long membersCount) {
-            this.country = country;
+        public CountryCount(String countryCode, long membersCount) {
+            this.countryCode = countryCode;
             this.membersCount = membersCount;
+            this.countryName = CountryUtil.getCountryForCode(countryCode);
         }
 
-        public String getCountry() {
-            return country;
+        public String getCountryCode() {
+            return countryCode;
         }
 
         public long getMembersCount() {
             return membersCount;
         }
 
-        public void setCountry(String country) {
-            this.country = country;
+        public void setCountryCode(String countryCode) {
+            this.countryCode = countryCode;
         }
 
         public void setMembersCount(long membersCount) {
             this.membersCount = membersCount;
+        }
+
+        public String getCountryName() {
+            return countryName;
+        }
+
+        public void setCountryName(String countryName) {
+            this.countryName = countryName;
         }
     }
 }

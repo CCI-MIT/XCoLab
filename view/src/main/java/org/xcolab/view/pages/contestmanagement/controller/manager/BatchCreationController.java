@@ -30,7 +30,6 @@ import org.xcolab.view.pages.contestmanagement.beans.ContestCSVBean;
 import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCreatorUtil;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
-import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -248,7 +247,7 @@ public class BatchCreationController {
         contest.setContestTypeId(contestTypeId);
         ContestClientUtil.updateContest(contest);
 
-        ContestScheduleUtil.changeScheduleForContest(contest, contestScheduleId);
+        contest.changeScheduleTo(contestScheduleId);
         return contest;
 
     }

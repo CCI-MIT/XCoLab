@@ -58,6 +58,12 @@ public class ProposalsController {
 
     }
 
+    @RequestMapping(value = "/proposals/{proposalId}/listProposalLinks", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<Proposal> listProposalLinks(
+            @PathVariable(required = false) Long proposalId) {
+        return proposalDao.findLinkedProposalIdsByGivenProposalId(proposalId);
+    }
+
     @RequestMapping(value = "/proposals", method = RequestMethod.POST)
     public Proposal createProposal(@RequestBody Proposal proposal) {
         return this.proposalDao.create(proposal);

@@ -33,6 +33,18 @@ public class ProposalDaoImpl implements ProposalDao {
     private DSLContext dslContext;
 
     @Override
+    public List<Proposal> findLinkedProposalIdsByGivenProposalId(Long proposalId) {
+        final SelectQuery<Record> query = dslContext.selectDistinct(PROPOSAL.fields())
+                .from(PROPOSAL)
+                .getQuery();
+
+        query.addJoin(POINTS,PROPOSAL.PROPOSAL_ID.eq( POINTS.ORIGINATING_PROPOSAL_ID));
+        query.addConditions(POINTS.ORIGINATING_PROPOSAL_ID.notEqual(POINTS.PROPOSAL_ID));
+        query.addConditions(POINTS.PROPOSAL_ID.eq(proposalId));
+        return query.fetchInto(Proposal.class);
+    }
+
+    @Override
     public List<Proposal> findByGiven(PaginationHelper paginationHelper, String filterText, Long contestId,
                                       Boolean visible, Long contestPhaseId, Integer ribbon) {
         final SelectQuery<Record> query = dslContext.select(PROPOSAL.fields())

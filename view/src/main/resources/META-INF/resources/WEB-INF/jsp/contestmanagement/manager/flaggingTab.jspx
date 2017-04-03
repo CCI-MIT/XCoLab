@@ -30,7 +30,7 @@
         <!-- -->
     </form>
 
-    <div class="cmsDetailsBox">
+    <div class="c-ContentBox">
         <div style="margin-bottom: 40px;">
             <div class="floatRight outerVerticalCenter">
                 <a class="c-Button__primary innerVerticalCenter" href="#" onclick="saveExistingReportTarget()">SAVE target</a>
@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <div class="cmsDetailsBox">
+    <div class="c-ContentBox">
         <div class="reg_errors"><!--  -->
             <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
         </div>
@@ -104,7 +104,7 @@
         </form:form>
     </div>
 
-    <div class="cmsDetailsBox">
+    <div class="c-ContentBox">
         <h2>Reports</h2>
 
         <table class="c-Table">

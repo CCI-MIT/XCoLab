@@ -10,11 +10,13 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.CacheControl;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.Assert;
 import org.springframework.validation.SmartValidator;
 import org.springframework.validation.beanvalidation.CustomValidatorBean;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -34,6 +36,7 @@ import org.xcolab.view.theme.ThemeResourceResolver;
 import org.xcolab.view.theme.ThemeVariableInterceptor;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
@@ -74,6 +77,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public FilterRegistrationBean resourceEncodingFilter() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(new ResourceUrlEncodingFilter());
+        return registrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean etagFilter() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        registrationBean.setFilter(new ShallowEtagHeaderFilter());
         return registrationBean;
     }
 
@@ -133,12 +143,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/", "classpath:/dist/")
+                .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS))
                 .resourceChain(true)
                 .addResolver(new VersionResourceResolver()
                         .addContentVersionStrategy("/js/**", "/css/**"));
 
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("classpath:/static/images/")
+                .setCacheControl(CacheControl.maxAge(7, TimeUnit.DAYS))
                 .resourceChain(true)
                 .addResolver(new ThemeResourceResolver());
     }
