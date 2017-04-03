@@ -98,6 +98,21 @@ public class MainViewTest {
         PowerMockito.mockStatic(EmailClient.class);
 
 
+        Mockito.when(MembersClient.login(anyLong(),anyString(),anyString(),anyString()))
+                .thenAnswer(new Answer<Member>() {
+                    @Override
+                    public Member answer(InvocationOnMock invocation)
+                            throws Throwable {
+
+                        Member member = new Member();
+                        member.setScreenName(TestUtil.createStringWithLength(10));
+                        member.setFirstName(TestUtil.createStringWithLength(10));
+                        member.setLastName(TestUtil.createStringWithLength(10));
+                        member.setHashedPassword(TestUtil.createStringWithLength(10));
+                        return member;
+                    }
+                });
+
         Mockito.when(EmailTemplateClientUtil.getContestEmailTemplateByType(anyString()))
                 .thenAnswer(new Answer<ContestEmailTemplate>() {
                     @Override
@@ -245,7 +260,7 @@ public class MainViewTest {
 
 
     @Test
-    public void registrationWorksAndUserToHome() throws Exception {
+    public void registrationWorksAndUserRedirectedToHome() throws Exception {
 
 
         this.mockMvc.perform(post("/register")
@@ -260,7 +275,7 @@ public class MainViewTest {
                 .param("retypePassword", "username")
                 .param("country", "BR")
                 .param("shortBio", "shortbio"))
-                .andExpect(forwardedUrl("/WEB-INF/jsp/loginregister/register.jspx"))
+                .andExpect(forwardedUrl("/"))
                 .andExpect(model().attributeHasFieldErrors(
                         "screenName", "email",
                         "retypeEmail", "firstName",
