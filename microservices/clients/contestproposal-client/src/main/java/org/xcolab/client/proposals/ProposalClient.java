@@ -406,6 +406,7 @@ public final class ProposalClient {
 
     public void unsubscribeMemberFromProposal(long proposalId, long userId) {
         unsubscribeMemberFromProposal(proposalId, userId, false);
+
     }
 
     private void unsubscribeMemberFromProposal(long proposalId, long userId, boolean automatic) {

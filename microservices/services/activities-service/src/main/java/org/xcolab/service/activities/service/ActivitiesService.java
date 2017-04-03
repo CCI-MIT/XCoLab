@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -77,6 +80,10 @@ public class ActivitiesService {
         final ActivitySubscription contestSubscription = createSubscription(memberId,
                 ActivityEntryType.CONTEST, contestId, extraInfo, 0);
 
+        Contest contest = ContestClientUtil.getContest(contestId);
+
+        subscribeDiscussion(memberId,contest.getDiscussionGroupId(), true);
+
         final List<Proposal> proposals = ProposalClientUtil
                 .listProposals(contestId);
         final Set<Long> processedProposals = new HashSet<>();
@@ -103,6 +110,7 @@ public class ActivitiesService {
                     });
             proposalSubscription = automaticSubscription.orElseGet(() -> createSubscription(
                     memberId, ActivityEntryType.PROPOSAL, proposalId, extraInfo, 0));
+
         } else {
             activitySubscriptionDao.delete(memberId, ActivityEntryType.PROPOSAL.getPrimaryTypeId(),
                     proposalId, extraInfo);
@@ -180,6 +188,9 @@ public class ActivitiesService {
                 processedProposals.add(proposal.getProposalId());
             }
         }
+        Contest contest = ContestClientUtil.getContest(contestId);
+        queries.addAll(getDiscussionDeleteQueries(memberId,
+                contest.getDiscussionGroupId(), true));
 
         activitySubscriptionDao.batch(queries);
         return true;

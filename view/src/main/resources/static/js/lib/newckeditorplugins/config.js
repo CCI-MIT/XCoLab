@@ -2,8 +2,7 @@ CKEDITOR.editorConfig = function( config ) {
 
     config.language = 'en';
 
-    //config.extraPlugins = 'justify,panelbutton,floatpanel,colorbutton,uploadwidget,uploadimage';
-    config.extraPlugins = 'justify,colorbutton,uploadimage,copyformatting';
+    config.extraPlugins = 'justify,colorbutton,uploadimage,copyformatting,font','indentblock';
     config.uploadUrl = '/images/uploadCkEditor';
     config.filebrowserImageUploadUrl = '/images/uploadCkEditor';
     config.toolbar = 'custom';
@@ -21,6 +20,7 @@ CKEDITOR.editorConfig = function( config ) {
         { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ], items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
         '/',
         { name: 'styles', items: [ 'Styles', 'Format' ] },
-        { name: 'colors', items: [ 'TextColor', 'BGColor' ] }
+
+        { name: 'colors', items: [ 'FontSize','TextColor', 'BGColor' ] }
 
     ];}

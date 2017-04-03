@@ -186,7 +186,10 @@ public class ActivitySubscriptionEmailHelper {
                         bodyWithComment.append("<br><br><div style='margin-left:20px;>");
                         bodyWithComment.append("<div style='margin-top:14pt;margin-bottom:14pt;'>");
                         Long commentId = new Long(socialActivity.getExtraData());
-                        Comment comment = CommentClientUtil.getComment(commentId);
+                        Comment comment = CommentClientUtil.getComment(commentId, true);
+                        if(comment.getDeletedDate()!=null){
+                            bodyWithComment.append("<b>COMMENT ALREADY DELETED</b>");
+                        }
                         bodyWithComment.append(comment.getContent());
                         bodyWithComment.append("</div></div>");
                         body.append("<div style='margin-left: 10px'>").append(bodyWithComment.toString()).append("</div><br/><br/>");
