@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
-import org.xcolab.client.proposals.helpers.ProposalJudgingCommentHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.entity.utils.email.ContestPhasePromotionEmail;
+import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.model.tables.pojos.ContestPhaseType;
@@ -26,6 +28,7 @@ import org.xcolab.service.contest.utils.email.EmailToAdminDispatcher;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -45,6 +48,8 @@ public class PromotionService {
     private static final String STATUS_CLOSED = "CLOSED";
     private static final long SEMIFINALIST_RIBBON_ID = 3L;
     private static final long FINALIST_RIBBON_ID = 1L;
+
+    private static final Long CLIMATE_COLAB_TEAM_USER_ID = 1431053L;
 
     private Date now;
 
@@ -186,7 +191,8 @@ public class PromotionService {
                             // Add this check for extra security to prevent proposal authors from being spammed (see COLAB-500)
                             if (phasePromotionHelper.isProposalReviewed(p)) {
                                 //TODO: Migrate logic to send email.
-                                contestPhasePromotionEmailNotifyProposalContributors(p, phase);
+                                org.xcolab.client.contest.pojo.phases.ContestPhase cp = ContestClientUtil.getContestPhase(phase.getContestPhasePK());
+                                ContestPhasePromotionEmail.contestPhasePromotionEmailNotifyProposalContributors(p, cp);
                                 PhasePromotionHelper.createProposalContestPhasePromotionDoneAttribute(p.getProposalId(), phase.getContestPhasePK());
 
                             }
@@ -216,15 +222,8 @@ public class PromotionService {
         }
         return promotedProposals;
     }
-    private void contestPhasePromotionEmailNotifyProposalContributors(Proposal proposal , ContestPhase contestPhase){
-        ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
-        String messageBody = reviewContentHelper.getPromotionComment(true);
-        String messageSubject =
-        if ((messageBody!=null)) {
-            MessagingClient
-                    .sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, getMemberUserIds(proposal));
-        }
-    }
+
+
 
     private int distributeRibbons() {
         int promotedProposals = 0;

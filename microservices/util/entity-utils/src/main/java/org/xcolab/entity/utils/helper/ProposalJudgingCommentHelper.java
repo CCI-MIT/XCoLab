@@ -1,4 +1,4 @@
-package org.xcolab.client.proposals.helpers;
+package org.xcolab.entity.utils.helper;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -54,6 +54,13 @@ public class ProposalJudgingCommentHelper {
         return null;
     }
 
+    public String getSubject(){
+        String proposalName = ProposalAttributeClientUtil
+                .getProposalAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0L)
+                .getStringValue();
+
+        return "Judging Results on your Proposal " + proposalName;
+    }
     public void setScreeningComment(String comment) {
         ProposalContestPhaseAttribute fellowActionAttribute = proposalPhaseClient.
                 getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
