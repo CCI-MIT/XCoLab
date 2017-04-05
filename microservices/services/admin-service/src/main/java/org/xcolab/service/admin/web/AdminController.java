@@ -6,11 +6,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.ConfigurationAttribute;
 import org.xcolab.service.admin.domain.configurationattribute.ConfigurationAttributeDao;
 import org.xcolab.service.admin.exceptions.NotFoundException;
+import org.xcolab.service.admin.pojo.Notification;
 
 import java.util.ArrayList;
 
@@ -19,17 +22,24 @@ public class AdminController {
 
     private final ConfigurationAttributeDao configurationAttributeDao;
 
-    public static ArrayList<String> globalMessages;
+    public static ArrayList<Notification> notificationsList;
 
-    @GetMapping("/globalMessages")
-    public ArrayList<String> getGlobalMessages()
-            throws NotFoundException {
-        return globalMessages;
+    @GetMapping("/notifications")
+    public ArrayList<Notification> getNotifications() {
+        notificationsList = new ArrayList<>();
+
+        Notification noti = new Notification();
+        noti.setNotificationId(1);
+        noti.setNotificationText("zeeshan");
+
+        notificationsList.add(noti);
+
+        return notificationsList;
     }
 
-    @PostMapping("/globalMessages/{Message}")
-    public void setGlobalMessages(@RequestBody String Message) {
-        globalMessages.add(Message);
+    @PostMapping("/notifications/{Message}")
+    public void setNotifications(@RequestBody Notification message) {
+        notificationsList.add(message);
     }
 
     @Autowired

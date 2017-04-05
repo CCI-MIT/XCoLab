@@ -4,6 +4,7 @@ import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.admin.exceptions.ConfigurationAttributeNotFoundException;
 import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+import org.xcolab.client.admin.pojo.Notification;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
@@ -13,6 +14,7 @@ import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.types.TypeProvider;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdminClient {
@@ -21,17 +23,19 @@ public class AdminClient {
 
     private static final RestService adminService = new RestService(CoLabService.ADMIN,
             ServiceRequestUtils.getNamespace());
+
     private static final RestResource<ConfigurationAttribute, String> configurationAttributeResource =
             new RestResource1<>(adminService, "attributes", ConfigurationAttribute.TYPES);
 
-
     //create a new resource and name that resource globalMessages
-    private static final RestResource<String, String> globalMessages =
-            new RestResource1<>(
-                    adminService, "globalMessages", new TypeProvider<>(String.class,
-                    new ParameterizedTypeReference<List<String>>() {
-                    })
-            );
+    private static final RestResource<Notification, String> notificationResource =
+            new RestResource1<> (
+                    adminService, "notifications", Notification.TYPES);
+
+    public static List<Notification> getNotifications(String time) throws EntityNotFoundException {
+        System.out.println("zeeshan is here.. ");
+        return notificationResource.list().execute();
+    }
 
     public static ConfigurationAttribute getConfigurationAttribute(String name) {
 
