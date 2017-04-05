@@ -20,12 +20,11 @@ public class ContestPhasePromotionEmail {
 
     public static void contestPhasePromotionEmailNotifyProposalContributors(Proposal proposal, ContestPhase contestPhase) {
 
-        String subject = "Judging Results on your Proposal " + ProposalAttributeClientUtil
-                .getProposalAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0L).getStringValue();
+
 
         ProposalJudgingCommentHelper reviewContentHelper = new ProposalJudgingCommentHelper(proposal, contestPhase);
         String messageBody = reviewContentHelper.getPromotionComment(true);
-
+        String subject =  reviewContentHelper.getSubject();
         if (StringUtils.isNotEmpty(messageBody)) {
             MessagingClient
                     .sendMessage(subject, messageBody, ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, getMemberUserIds(proposal));
