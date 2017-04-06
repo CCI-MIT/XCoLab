@@ -24,8 +24,12 @@
         <div class="sso-register">
             <div style="float: right">
                 <h1>Or sign in with:</h1><br/>
-                <a href="/sso/facebook/register" class="sketchy-icon sketchy-black facebook-sketchy"><span>Facebook</span></a>
-                <a href="/sso/google/register" class="sketchy-icon sketchy-black google-sketchy"><span>Google</span></a>
+                <c:if test="${_isFacebookSsoActive}">
+                    <a href="/sso/facebook/register" class="sketchy-icon sketchy-black facebook-sketchy"><span>Facebook</span></a>
+                </c:if>
+                <c:if test="${_isGoogleSsoActive}">
+                    <a href="/sso/google/register" class="sketchy-icon sketchy-black google-sketchy"><span>Google</span></a>
+                </c:if>
 
                 <a href="#" class="sketchy-icon sketchy-black ${partnerColabClassName}"  onclick="showSharedColabLogin()"><span>${partnerColabName}</span></a>
 

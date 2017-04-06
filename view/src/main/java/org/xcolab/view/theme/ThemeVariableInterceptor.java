@@ -144,6 +144,10 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
                 modelAndView.addObject("_authError", authError);
             }
 
+            modelAndView.addObject("_isGoogleSsoActive", ConfigurationAttributeKey.GOOGLE_SSO_IS_ACTIVE.get());
+            modelAndView.addObject("_isFacebookSsoActive", ConfigurationAttributeKey.FACEBOOK_SSO_IS_ACTIVE.get());
+
+
             modelAndView.addObject("_showLoginPopup", isSigningIn);
             modelAndView.addObject("_showPasswordResetPopup", isPasswordReminder);
             modelAndView.addObject("_showSsoPopup", isSSOSigningIn);

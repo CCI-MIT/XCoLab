@@ -62,6 +62,10 @@ public final class ConfigurationAttributeKey {
 
 
     //SSO Configuration
+    public static final AttributeGetter<Boolean> GOOGLE_SSO_IS_ACTIVE =
+            ConfigurationAttributes.newBooleanAttribute("GOOGLE_SSO_IS_ACTIVE")
+                    .defaultValue(true)
+                    .build();
     public static final AttributeGetter<String> GOOGLE_AUTH_CLIENT_ID =
             ConfigurationAttributes.newStringAttribute("GOOGLE_AUTH_CLIENT_ID")
                     .build();
@@ -81,6 +85,10 @@ public final class ConfigurationAttributeKey {
                     .build();
 
 
+    public static final AttributeGetter<Boolean> FACEBOOK_SSO_IS_ACTIVE =
+            ConfigurationAttributes.newBooleanAttribute("FACEBOOK_SSO_IS_ACTIVE")
+                    .defaultValue(true)
+                    .build();
     public static final AttributeGetter<String> FACEBOOK_APPLICATION_ID =
             ConfigurationAttributes.newStringAttribute("FACEBOOK_APPLICATION_ID")
                     .build();
@@ -129,7 +137,7 @@ public final class ConfigurationAttributeKey {
 
     public static final AttributeGetter<Long> DAILY_DIGEST_TRIGGER_HOUR =
             ConfigurationAttributes.newLongAttribute("DAILY_DIGEST_TRIGGER_HOUR")
-                    .defaultValue(1l)
+                    .defaultValue(1L)
                     .build();
 
     //lastEmailNotification
@@ -209,7 +217,7 @@ public final class ConfigurationAttributeKey {
                     .defaultValue(false).build();
     public static final AttributeGetter<List<Long>> IMPACT_TAB_EXCLUDED_ONTOLOGY_TERM_IDS =
             ConfigurationAttributes.newIdListAttribute("IMPACT_TAB_EXCLUDED_ONTOLOGY_TERM_IDS")
-                    .defaultValue(Collections.<Long>emptyList()).build();
+                    .defaultValue(Collections.emptyList()).build();
 
 
     //Misc features
