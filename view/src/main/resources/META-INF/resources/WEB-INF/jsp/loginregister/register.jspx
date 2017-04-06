@@ -24,10 +24,10 @@
         <div class="sso-register">
             <div style="float: right">
                 <h1>Or sign in with:</h1><br/>
-                <a href="/sso/facebook/register" class="sketchy-icon-black facebook-sketchy" style="margin:0 30px 0 0;"><span>Facebook</span></a>
-                <a href="/sso/google/register" class="sketchy-icon-black google-sketchy" style="margin:0 30px 0 0;"><span>Google</span></a>
+                <a href="/sso/facebook/register" class="sketchy-icon sketchy-black facebook-sketchy"><span>Facebook</span></a>
+                <a href="/sso/google/register" class="sketchy-icon sketchy-black google-sketchy"><span>Google</span></a>
 
-                <a href="#" class="sketchy-icon-black ${partnerColabClassName}"  onclick="showSharedColabLogin()"><span>${partnerColabName}</span></a>
+                <a href="#" class="sketchy-icon sketchy-black ${partnerColabClassName}"  onclick="showSharedColabLogin()"><span>${partnerColabName}</span></a>
 
             </div>
         </div>
