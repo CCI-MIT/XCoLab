@@ -23,6 +23,9 @@ public abstract class AbstractContestType implements Serializable{
     private String rulesPageName;
     private String rulesPageUrl;
     private boolean showProposalSummary;
+    private String  overrideCreationPrompt;
+    private String  pitchName;
+    private Boolean showTeamField;
 
     public AbstractContestType() {
     }
@@ -43,6 +46,9 @@ public abstract class AbstractContestType implements Serializable{
         this.rulesPageName = value.rulesPageName;
         this.rulesPageUrl = value.rulesPageUrl;
         this.showProposalSummary = value.showProposalSummary;
+        this.overrideCreationPrompt = value.overrideCreationPrompt;
+        this.pitchName = value.pitchName;
+        this.showTeamField = value.showTeamField;
     }
 
     public Long getId_() {
@@ -185,6 +191,30 @@ public abstract class AbstractContestType implements Serializable{
         this.showProposalSummary = showProposalSummary;
     }
 
+    public String getOverrideCreationPrompt() {
+        return overrideCreationPrompt;
+    }
+
+    public void setOverrideCreationPrompt(String overrideCreationPrompt) {
+        this.overrideCreationPrompt = overrideCreationPrompt;
+    }
+
+    public String getPitchName() {
+        return pitchName;
+    }
+
+    public void setPitchName(String pitchName) {
+        this.pitchName = pitchName;
+    }
+
+    public Boolean getShowTeamField() {
+        return showTeamField;
+    }
+
+    public void setShowTeamField(Boolean showTeamField) {
+        this.showTeamField = showTeamField;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -249,33 +279,47 @@ public abstract class AbstractContestType implements Serializable{
                 : that.rulesPageName != null) {
             return false;
         }
-        return rulesPageUrl != null ? rulesPageUrl.equals(that.rulesPageUrl)
-                : that.rulesPageUrl == null;
-
+        if (rulesPageUrl != null ? !rulesPageUrl.equals(that.rulesPageUrl)
+                : that.rulesPageUrl != null) {
+            return false;
+        }
+        if (overrideCreationPrompt != null ? !overrideCreationPrompt
+                .equals(that.overrideCreationPrompt)
+                : that.overrideCreationPrompt != null) {
+            return false;
+        }
+        if (pitchName != null ? !pitchName.equals(that.pitchName) : that.pitchName != null) {
+            return false;
+        }
+        return showTeamField != null ? showTeamField.equals(that.showTeamField)
+                : that.showTeamField == null;
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
         int result = id_ != null ? id_.hashCode() : 0;
-        result = prime * result + (contestName != null ? contestName.hashCode() : 0);
-        result = prime * result + (contestNamePlural != null ? contestNamePlural.hashCode() : 0);
-        result = prime * result + (proposalName != null ? proposalName.hashCode() : 0);
-        result = prime * result + (proposalNamePlural != null ? proposalNamePlural.hashCode() : 0);
-        result = prime * result + (portletName != null ? portletName.hashCode() : 0);
-        result = prime * result + (portletUrl != null ? portletUrl.hashCode() : 0);
-        result = prime * result + (friendlyUrlStringContests != null ? friendlyUrlStringContests
+        result = 31 * result + (contestName != null ? contestName.hashCode() : 0);
+        result = 31 * result + (contestNamePlural != null ? contestNamePlural.hashCode() : 0);
+        result = 31 * result + (proposalName != null ? proposalName.hashCode() : 0);
+        result = 31 * result + (proposalNamePlural != null ? proposalNamePlural.hashCode() : 0);
+        result = 31 * result + (portletName != null ? portletName.hashCode() : 0);
+        result = 31 * result + (portletUrl != null ? portletUrl.hashCode() : 0);
+        result = 31 * result + (friendlyUrlStringContests != null ? friendlyUrlStringContests
                 .hashCode()
                 : 0);
-        result = prime * result + (friendlyUrlStringProposal != null ? friendlyUrlStringProposal
+        result = 31 * result + (friendlyUrlStringProposal != null ? friendlyUrlStringProposal
                 .hashCode()
                 : 0);
-        result = prime * result + (menuItemName != null ? menuItemName.hashCode() : 0);
-        result = prime * result + (hasDiscussion != null ? hasDiscussion.hashCode() : 0);
-        result = prime * result + (suggestionContestId != null ? suggestionContestId.hashCode() : 0);
-        result = prime * result + (rulesPageName != null ? rulesPageName.hashCode() : 0);
-        result = prime * result + (rulesPageUrl != null ? rulesPageUrl.hashCode() : 0);
-        result = prime * result + (showProposalSummary ? 1 : 0);
+        result = 31 * result + (menuItemName != null ? menuItemName.hashCode() : 0);
+        result = 31 * result + (hasDiscussion != null ? hasDiscussion.hashCode() : 0);
+        result = 31 * result + (suggestionContestId != null ? suggestionContestId.hashCode() : 0);
+        result = 31 * result + (rulesPageName != null ? rulesPageName.hashCode() : 0);
+        result = 31 * result + (rulesPageUrl != null ? rulesPageUrl.hashCode() : 0);
+        result = 31 * result + (showProposalSummary ? 1 : 0);
+        result = 31 * result + (overrideCreationPrompt != null ? overrideCreationPrompt.hashCode()
+                : 0);
+        result = 31 * result + (pitchName != null ? pitchName.hashCode() : 0);
+        result = 31 * result + (showTeamField != null ? showTeamField.hashCode() : 0);
         return result;
     }
 
@@ -296,6 +340,9 @@ public abstract class AbstractContestType implements Serializable{
                 ", rulesPageName='" + rulesPageName + '\'' +
                 ", rulesPageUrl='" + rulesPageUrl + '\'' +
                 ", showProposalSummary=" + showProposalSummary +
+                ", overrideCreationPrompt=" + overrideCreationPrompt +
+                ", pitchName=" + pitchName +
+                ", showTeamField=" + showTeamField +
                 '}';
     }
 }
