@@ -113,23 +113,25 @@
                 </div>
             </div>
 
-            <div class="addpropbox blue q2">
-                <label>
+            <c:if test="${contestType.showTeamField}">
+                <div class="addpropbox blue q2">
+                    <label>
                     <span><strong>Team name</strong><br />
                     <em>optional</em></span>
-                    <a class="helpTrigger" href="javascript:;"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
-                    20 characters
-                </label>
-                <div class="addprophelp">If you'd like to have your ${fn:toLowerCase(contestType.proposalName)} appear under a team name, insert it here. Otherwise, the ${fn:toLowerCase(contestType.proposalName)} will appear under the user name of its owner.</div>
-                <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
-                    <form:input path="team" id="proposalTeam" />
-                    <form:errors path="team" />
+                        <a class="helpTrigger" href="javascript:;"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
+                        20 characters
+                    </label>
+                    <div class="addprophelp">If you'd like to have your ${fn:toLowerCase(contestType.proposalName)} appear under a team name, insert it here. Otherwise, the ${fn:toLowerCase(contestType.proposalName)} will appear under the user name of its owner.</div>
+                    <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
+                        <form:input path="team" id="proposalTeam" />
+                        <form:errors path="team" />
 
-                    <div class="clearfix"><!-- --></div>
-                    <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">20</span> characters</div>
+                        <div class="clearfix"><!-- --></div>
+                        <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">20</span> characters</div>
+                    </div>
                 </div>
-            </div>
-            <div class="notation">Note: If you enter a team name, it will replace the ${fn:toLowerCase(contestType.proposalName)} owner's name in the Author field.</div>
+                <div class="notation">Note: If you enter a team name, it will replace the ${fn:toLowerCase(contestType.proposalName)} owner's name in the Author field.</div>
+            </c:if>
 
             <div class="addpropbox blue">
                 <label>
@@ -144,7 +146,7 @@
 
             <div class="addpropbox q3">
                 <label>
-                    <strong>Pitch</strong>
+                    <strong>${contestType.pitchName}</strong>
                     <a href="javascript:;" class="helpTrigger"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
                     140 characters
                 </label>

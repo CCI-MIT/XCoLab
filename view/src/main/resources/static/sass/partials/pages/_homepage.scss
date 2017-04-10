@@ -194,22 +194,29 @@ a.join {
 
 .sketchy-icon {
   height: 32px;
-  display: block;
-  float: left;
+  display: inline-block;
   padding: 8px 0 0 41px;
-  color: $t-Color__grey--lightest !important;
-}
+  color: $t-Color__grey--lightest;
+  margin: 0 10px;
 
-.sketchy-icon-black {
-  height: 32px;
-  display: block;
-  float: left;
-  padding: 8px 0 0 41px;
-  color: black !important;
-}
+  &:hover {
+    color: $t-Color__grey--lightest;
+  }
 
-.sketchy-icon span:hover {
-  border-bottom: 1px dashed white;
+  span:hover {
+    border-bottom: 1px dashed white;
+  }
+
+  &.sketchy-black {
+    color: black;
+    &:hover {
+      color: black;
+    }
+
+    span:hover {
+      border-bottom: 1px dashed black;
+    }
+  }
 }
 
 .facebook-sketchy {

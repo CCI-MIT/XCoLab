@@ -111,7 +111,7 @@
                     </div>
                 </div>
                 <c:if test="${not empty proposal.pitch }">
-                    <h2>Pitch</h2>
+                    <h2>${contestType.pitchName}</h2>
 
                     <p class="intro">${proposal.pitch}</p>
 
