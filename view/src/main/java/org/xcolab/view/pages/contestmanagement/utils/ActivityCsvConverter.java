@@ -32,7 +32,7 @@ public class ActivityCsvConverter extends CsvConverter {
 
     private static final Logger log = LoggerFactory.getLogger(ActivityCsvConverter.class);
 
-    private static final int NUM_COLUMNS = 6;
+    private static final int NUM_COLUMNS = 8;
     private static final List<String> COLUMN_NAMES = Arrays.asList(
             "Member ID",
             "screenName",
@@ -57,21 +57,22 @@ public class ActivityCsvConverter extends CsvConverter {
 
 
             ActivityEntryType cet = ActivityEntryType.getActivityEntryTypeByPrimaryType(activityEntry.getPrimaryType());
-            Member member = getMemberOrNull(activityEntry);
+            if(cet!=null) {
+                Member member = getMemberOrNull(activityEntry);
 
 
+                List<String> row = new ArrayList<>();
+                addValue(row, member != null ? member.getId_() : "Member not found");
+                addValue(row, member != null ? member.getScreenName() : "Member not found");
+                addValue(row, member != null ? member.getFirstName() : "Member not found");
+                addValue(row, member != null ? member.getLastName() : "Member not found");
+                addValue(row, member != null ? member.getEmailAddress() : "Member not found");
+                addValue(row, cet.name());
+                addValue(row, activityEntry.getCreateDate());
+                addValue(row, activityEntry.getActivityEntryBody());
 
-            List<String> row = new ArrayList<>();
-            addValue(row, member != null ? member.getId_() : "Member not found");
-            addValue(row, member != null ? member.getScreenName() : "Member not found");
-            addValue(row, member != null ? member.getFirstName() : "Member not found");
-            addValue(row, member != null ? member.getLastName() : "Member not found");
-            addValue(row, member != null ? member.getEmailAddress() : "Member not found");
-            addValue(row, cet.name());
-            addValue(row, activityEntry.getCreateDate());
-            addValue(row, activityEntry.getActivityEntryBody());
-
-            addRow(row);
+                addRow(row);
+            }
 
     }
 

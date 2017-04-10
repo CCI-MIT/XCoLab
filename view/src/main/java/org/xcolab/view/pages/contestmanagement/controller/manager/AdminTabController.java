@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
@@ -92,7 +93,7 @@ public class AdminTabController extends AbstractTabController {
         csvConverter.initiateDownload("votingReport", response);
     }
 
-    @GetMapping("tab/ADMIN/exportActivities")
+    @PostMapping("tab/ADMIN/exportActivities")
     public void exportActivities(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         if (!tabWrapper.getCanView()) {

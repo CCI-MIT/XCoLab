@@ -21,10 +21,11 @@ public enum ActivityEntryType {
     public static ActivityEntryType getActivityEntryTypeByPrimaryType(Long tierType)  {
         Assert.notNull(tierType, "ActivityEntryType cannot be null");
         for (ActivityEntryType contestTier : ActivityEntryType.values()) {
-            if (contestTier.getPrimaryTypeId() == tierType) {
+            if (contestTier.getPrimaryTypeId().longValue() == tierType) {
                 return contestTier;
             }
         }
-        throw new IllegalArgumentException("No ActivityEntryType " + tierType);
+        //throw new IllegalArgumentException("No ActivityEntryType " + tierType);
+        return null;
     }
 }
