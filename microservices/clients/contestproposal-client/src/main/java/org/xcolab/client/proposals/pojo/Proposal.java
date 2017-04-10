@@ -509,6 +509,10 @@ public class Proposal extends AbstractProposal {
         return this.getProposalLinkUrl(contest);
     }
 
+    public String getProposalDiscussionUrl() {
+        return this.getProposalLinkUrl(contest)+"/tab/COMMENTS";
+    }
+
     public String getProposalUrl(ContestPhase inPhase) {
         return this.getProposalLinkUrl(contest, inPhase.getContestPhasePK());
     }

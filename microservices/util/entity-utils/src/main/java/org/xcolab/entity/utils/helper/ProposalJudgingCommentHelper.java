@@ -24,6 +24,7 @@ public class ProposalJudgingCommentHelper {
     private final Proposal proposal;
     private final ContestPhase contestPhase;
     private final ProposalPhaseClient proposalPhaseClient;
+    private String subject;
 
     public ProposalJudgingCommentHelper(Proposal proposal, ContestPhase contestPhase) {
         this.proposal = proposal;
@@ -55,11 +56,15 @@ public class ProposalJudgingCommentHelper {
     }
 
     public String getSubject(){
-        String proposalName = ProposalAttributeClientUtil
-                .getProposalAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0L)
-                .getStringValue();
+        if(this.subject == null) {
+            String proposalName = ProposalAttributeClientUtil
+                    .getProposalAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME, 0L)
+                    .getStringValue();
 
-        return "Judging Results on your Proposal " + proposalName;
+            return "Judging Results on your Proposal " + proposalName;
+        }else{
+            return subject;
+        }
     }
     public void setScreeningComment(String comment) {
         ProposalContestPhaseAttribute fellowActionAttribute = proposalPhaseClient.
@@ -152,6 +157,7 @@ public class ProposalJudgingCommentHelper {
                                 proposalName,
                                 contestName
                         );
+                        subject = wrapper.getSubject();
                         return isWrapWithTemplate ? wrapper.getCompleteMessage(reviewText)
                                 : reviewText;
                     }
@@ -179,6 +185,7 @@ public class ProposalJudgingCommentHelper {
                         proposalName,
                         contestName
                 );
+                subject = wrapper.getSubject();
                 return isWrapWithTemplate ? wrapper.getCompleteMessage(fellowReviewText)
                         : fellowReviewText;
             }

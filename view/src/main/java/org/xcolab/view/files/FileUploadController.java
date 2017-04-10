@@ -90,6 +90,7 @@ public class FileUploadController {
         ImageResponse ir = uploadImageResponse(file, request, resize);
         try {
 
+            response.setContentType("text/html");
             response.getOutputStream()
                     .write(("<script>window.parent.CKEDITOR.tools.callFunction(" + ckEditorFuncNum + ", \"" + ir.getImageUrl() + "\");</script>").getBytes());;
         }catch (IOException ignored){

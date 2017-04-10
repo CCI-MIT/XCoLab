@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.model.tables.pojos.Category;
 import org.xcolab.model.tables.pojos.CategoryGroup;
 import org.xcolab.model.tables.pojos.Comment;
@@ -93,6 +96,8 @@ public class CommentController {
             throw new NotFoundException();
         }
     }
+
+
 
     @PostMapping("/comments")
     public Comment createComment(@RequestBody Comment comment) {
@@ -185,6 +190,7 @@ public class CommentController {
     public Thread getThread(@PathVariable Long threadId) throws NotFoundException {
         return threadDao.get(threadId);
     }
+
 
     @GetMapping("/threads/{threadId}/getProposalIdForThread")
     public Long getProposalIdForThread(@PathVariable Long threadId) throws NotFoundException {

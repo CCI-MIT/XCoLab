@@ -46,7 +46,7 @@ public final class ProposalMemberRatingClient {
 
     public List<ProposalSupporter> getProposalSupporters(Long proposalId) {
         return DtoUtil.toPojos(proposalSupporterResource.list()
-                .withCache(CacheName.MEMBER_RATING)
+                .withCache(CacheName.MISC_REQUEST)
                 .optionalQueryParam("proposalId", proposalId)
                 .execute(), proposalService);
     }
