@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
@@ -13,6 +14,7 @@ import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
+import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvConverter;
 import org.xcolab.view.pages.contestmanagement.utils.VoteCsvConverter;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 import org.xcolab.view.util.entity.enums.ContestPhaseTypeValue;
@@ -53,14 +55,14 @@ public class AdminTabController extends AbstractTabController {
         final Date now = new Date();
         return contestPhasesByType
                 .stream()
-                    .filter(p -> p.getContestPK() != 0L)
-                    .filter(p -> p.getPhaseStartDateDt().before(now))
-                    .sorted(Comparator.comparing(ContestPhase::getPhaseStartDate).reversed())
-                    .map(contestPhase -> {
-                        final String contestName = contestPhase.getContest().getContestShortName();
-                        final Long phaseId = contestPhase.getContestPhasePK();
-                        return new LabelValue(phaseId, String.format("%d in %s", phaseId, contestName));
-                    })
+                .filter(p -> p.getContestPK() != 0L)
+                .filter(p -> p.getPhaseStartDateDt().before(now))
+                .sorted(Comparator.comparing(ContestPhase::getPhaseStartDate).reversed())
+                .map(contestPhase -> {
+                    final String contestName = contestPhase.getContest().getContestShortName();
+                    final Long phaseId = contestPhase.getContestPhasePK();
+                    return new LabelValue(phaseId, String.format("%d in %s", phaseId, contestName));
+                })
                 .collect(Collectors.toList());
     }
 
@@ -88,5 +90,21 @@ public class AdminTabController extends AbstractTabController {
                 .map(ProposalMemberRatingClientUtil::getProposalVotesInPhase)
                 .forEach(csvConverter::addVotes);
         csvConverter.initiateDownload("votingReport", response);
+    }
+
+    @GetMapping("tab/ADMIN/exportActivities")
+    public void exportActivities(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        if (!tabWrapper.getCanView()) {
+            ErrorText.ACCESS_DENIED.flashAndRedirect(request, response);
+            return;
+        }
+
+        ActivityCsvConverter csvConverter = new ActivityCsvConverter();
+        ActivitiesClientUtil.getActivityEntries(0, Integer.MAX_VALUE, null, null)
+                .stream()
+                .forEach(csvConverter::addActivity);
+
+        csvConverter.initiateDownload("activityReport", response);
     }
 }

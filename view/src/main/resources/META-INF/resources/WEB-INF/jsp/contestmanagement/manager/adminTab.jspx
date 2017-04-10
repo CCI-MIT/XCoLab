@@ -52,6 +52,14 @@
                 <button type="submit" class="c-Button__primary">Clear cache</button>
             </form>
         </div>
+        <br/>
+        <br/>
+        <div class="addpropbox">
+            <h2>Activities CSV export</h2>
+            <form action="/admin/contest/manager/tab/ADMIN/exportActivities" method="post">
+                <button type="submit" class="c-Button__primary">Export activities</button>
+            </form>
+        </div>
     </div>
 
 </xcolab:layout>
