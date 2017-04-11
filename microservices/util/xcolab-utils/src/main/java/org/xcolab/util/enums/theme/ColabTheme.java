@@ -1,15 +1,21 @@
 package org.xcolab.util.enums.theme;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
 public enum ColabTheme {
-    CLIMATE_COLAB("climateColab"),
-    SOLVE_COLAB("solveColab"),
-    CROWDSENSOR("crowdsensor"),
-    RESILIENCE_DIALOGUES("resilienceDialogues");
+    CLIMATE_COLAB,
+    SOLVE_COLAB,
+    CROWDSENSOR,
+    RESILIENCE_DIALOGUES,
+    CLIMATE_RISKS_COLAB;
 
     private final String themeName;
 
-    ColabTheme(String themeName) {
-        this.themeName = themeName;
+    ColabTheme() {
+        final String camelCaseName = WordUtils.capitalizeFully(name(), '_')
+                .replaceAll("_", "");
+        this.themeName = StringUtils.uncapitalize(camelCaseName);
     }
 
     public String getThemeName() {
