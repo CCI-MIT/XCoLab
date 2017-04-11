@@ -31,7 +31,7 @@ public class ProposalSearchItem extends AbstractSearchItem {
             searchPojo = pojo;
             this.searchQuery = searchQuery;
             proposalAttribute = ProposalAttributeClientUtil.getProposalAttribute(searchPojo.getClassPrimaryKey());
-            proposal = ProposalClientUtil.getProposal(proposalAttribute.getProposalId());
+            proposal = ProposalClientUtil.getProposal(proposalAttribute.getProposalId(),true);
             ProposalAttributeHelper proposalAttributeHelper = new ProposalAttributeHelper(proposal,
                     ProposalAttributeClientUtil.getClient());
 
@@ -74,6 +74,10 @@ public class ProposalSearchItem extends AbstractSearchItem {
 
         return getContent(proposalAttribute.getStringValue(),searchQuery);
 
+    }
+    @Override
+    public boolean isVisible() {
+        return proposal.getVisible();
     }
 
 

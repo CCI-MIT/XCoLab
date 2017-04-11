@@ -237,14 +237,14 @@ public class ContestClient {
         return DtoUtil.toPojos(contestResource.list()
                 .optionalQueryParam("active", active)
                 .optionalQueryParam("featured", featured)
-                .withCache(CacheName.CONTEST_LIST)
+//                .withCache(CacheName.CONTEST_LIST)
                 .execute(), contestService);
     }
 
     public List<Contest> findContestsByActive(boolean active) {
         return DtoUtil.toPojos(contestResource.list()
                 .optionalQueryParam("active", active)
-                .withCache(CacheName.CONTEST_LIST)
+//                .withCache(CacheName.CONTEST_LIST)
                 .execute(), contestService);
     }
 
@@ -262,7 +262,7 @@ public class ContestClient {
         return DtoUtil.toPojos(contestResource.list()
                 .queryParam("contestTier", contestTier)
                 .queryParam("focusAreaOntologyTerms", focusAreaOntologyTerms.toArray())
-                .withCache(CacheName.CONTEST_LIST)
+//                .withCache(CacheName.CONTEST_LIST)
                 .execute(), contestService);
     }
 

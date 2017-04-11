@@ -12,15 +12,26 @@ import java.util.stream.Collectors;
 public class UriBuilder {
 
     private final UriComponentsBuilder uriComponentsBuilder;
-    private final Map<String, Object> sortedParameters = new TreeMap<>();
-    private final StringBuilder pathBuilder = new StringBuilder();
+    private final Map<String, Object> sortedParameters;
+    private final StringBuilder pathBuilder;
+    private final Map<String, Object> uriVariables;
 
     public UriBuilder(UriComponentsBuilder uriComponentsBuilder) {
         this.uriComponentsBuilder = uriComponentsBuilder;
+        uriVariables = new TreeMap<>();
+        pathBuilder = new StringBuilder();
+        sortedParameters = new TreeMap<>();
+    }
+
+    public UriBuilder(UriBuilder uriBuilderToClone) {
+        this.uriComponentsBuilder = uriBuilderToClone.uriComponentsBuilder.cloneBuilder();
+        this.uriVariables = new TreeMap<>(uriBuilderToClone.uriVariables);
+        this.pathBuilder = new StringBuilder(uriBuilderToClone.pathBuilder);
+        this.sortedParameters = new TreeMap<>(uriBuilderToClone.sortedParameters);
     }
 
     public UriBuilder cloneBuilder() {
-        return new UriBuilder(uriComponentsBuilder.cloneBuilder());
+        return new UriBuilder(this);
     }
 
     public UriBuilder path(String path) {
@@ -35,7 +46,9 @@ public class UriBuilder {
 
     public UriBuilder resource(String resourceName, Object id) {
         Assert.notNull(id, "id cannot be null");
-        return path("/" + resourceName + "/" + id.toString());
+        final String pathVariableName = resourceName + "Id";
+        uriVariables.put(pathVariableName, id.toString());
+        return path("/" + resourceName + "/{" + pathVariableName + "}");
     }
 
     public UriBuilder addRange(int startRecord, int limitRecord) {
@@ -66,6 +79,12 @@ public class UriBuilder {
         return pathBuilder.toString();
     }
 
+    public String getPathVariableString() {
+        return uriVariables.entrySet().stream()
+                .map(entry -> entry.getKey() + "=" + entry.getValue().toString())
+                .collect(Collectors.joining("&"));
+    }
+
     public String getParameterString() {
         return sortedParameters.entrySet().stream()
                 .map(entry -> entry.getKey() + "=" + entry.getValue().toString())
@@ -78,10 +97,10 @@ public class UriBuilder {
     }
 
     public String buildString() {
-        return uriComponentsBuilder.build().toString();
+        return uriComponentsBuilder.buildAndExpand(uriVariables).toString();
     }
 
     public URI buildUri() {
-        return uriComponentsBuilder.build().toUri();
+        return uriComponentsBuilder.buildAndExpand(uriVariables).toUri();
     }
 }

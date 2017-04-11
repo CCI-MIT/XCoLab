@@ -22,7 +22,7 @@
             .contentBody {margin: auto; width: 1022px;  height: 742px;}
             .treeContainer {        height: 561px; overflow-y: scroll;}
             #infoBox {padding: 8px 35px 8px 14px;margin-bottom: 20px;}
-            #innerContent{height: 610px}
+            #innerContent{height: 675px}
             .colFloatLef{float:left}
             #tree-view{width:350px}
             #saveArticle{cursor:pointer}
@@ -99,6 +99,13 @@
             var archiveContentArticleURL = '${archiveContentArticleURL}'
             var ckEditor = null;
             var THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
+            function getFullTreePath(node){
+                if(node.parent){
+                    return  getFullTreePath(node.parent) + "/"+node.name;
+                }else{
+                    return  node.name
+                }
+            }
             jQuery(document).ready(function () {
 
                 $("#article-view").mask({'label':"Please click on an Article or create a new one clicking in the folder`s + article link!", spinner:false});
@@ -198,7 +205,7 @@
                             if(node.kind == "article"){
                                 $("#article-view").unmask();
                                 $("#article-view").mask();
-                                loadArticleVersionContent(node.id, node.parent.name);
+                                loadArticleVersionContent(node.id, getFullTreePath(node.parent));
                             }else{
                                 /*
                                 event.preventDefault();
@@ -284,7 +291,7 @@
             }
             function updateArticleURL(folderName, articleTitle) {
 
-                if(folderName == "Wiki") {
+                if(folderName.indexOf("Wiki") !== -1) {
 
                     $("#articleId").html("Article URL: <a id='anchorArticleURL' href='/web/guest/wiki/-/wiki/page/" + articleTitle +
                             "'>~/web/guest/wiki/-/wiki/page/" + articleTitle + "</a>");

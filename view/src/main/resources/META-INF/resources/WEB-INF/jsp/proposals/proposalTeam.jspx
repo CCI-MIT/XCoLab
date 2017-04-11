@@ -89,7 +89,7 @@
 
                 <div class="c-Headline propsubhead">
                     <h2>
-                        <span>${fn:length(proposal.supporters)}</span> ${fn:length(proposal.supporters) == 1 ? 'supporter' : 'supporters' }
+                        <span>${proposal.supportersCount}</span> ${proposal.supportersCount == 1 ? 'supporter' : 'supporters' }
                     </h2>
                     <c:if test="${proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton  }">
                         <c:set var="supportProposalActionURL" value="${proposal.proposalUrl}/supportProposalAction?forwardToTab=TEAM&amp;contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />

@@ -119,6 +119,7 @@ public class CommentThread extends AbstractCommentThread {
         }
         //Long propId = CommentClientUtil.getProposalIdForThread(threadId);
         //TODO: handle proposal comments
-        return "";
+
+        return null;
     }
 }
