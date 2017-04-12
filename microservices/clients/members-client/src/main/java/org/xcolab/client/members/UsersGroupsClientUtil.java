@@ -12,27 +12,31 @@ public class UsersGroupsClientUtil {
     private static final RestService membersService = new RestService(CoLabService.MEMBER,
             ServiceRequestUtils.getNamespace());
 
-    private static final UsersGroupsClient usersGroupsClient = UsersGroupsClient.fromService(membersService);
+    private static final UsersGroupsClient client = UsersGroupsClient.fromService(membersService);
 
 
     public static UsersGroups createUsersGroups(Long userId, Long groupId) {
-        return usersGroupsClient.createUsersGroups(userId,groupId);
+        return client.createUsersGroups(userId, groupId);
     }
 
     public static UsersGroups createUsersGroups(UsersGroups usersGroups) {
-        return usersGroupsClient.createUsersGroups(usersGroups);
+        return client.createUsersGroups(usersGroups);
     }
 
     public static void deleteUsersGroups(Long userId, Long groupId) {
-         usersGroupsClient.deleteUsersGroups(userId,groupId);
+        client.deleteUsersGroups(userId, groupId);
     }
 
 
     public static List<UsersGroups> getUserGroupsByUserIdGroupId(Long userId, Long groupId) {
-        return usersGroupsClient.getUserGroupsByUserIdGroupId(userId,groupId);
+        return client.getUserGroupsByUserIdGroupId(userId, groupId);
     }
 
     public static boolean isUserInGroups(Long userId, Long groupId) {
-        return usersGroupsClient.isUserInGroups(userId,groupId);
+        return client.isUserInGroups(userId, groupId);
+    }
+
+    public static UsersGroupsClient getClient() {
+        return client;
     }
 }

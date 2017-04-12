@@ -37,8 +37,7 @@ public class ProposalRibbon {
         final ProposalPhaseClient proposalPhaseClient =
                 ProposalPhaseClient.fromService(proposalService);
 
-        ContestPhase contestPhase = contestClient
-                .getContestPhase(proposal.getContestPhase().getContestPhasePK());
+        ContestPhase contestPhase = proposal.getContestPhase();
 
         ProposalContestPhaseAttribute ribbonAttribute =
                 proposalPhaseClient.getProposalContestPhaseAttribute(

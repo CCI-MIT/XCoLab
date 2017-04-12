@@ -3,8 +3,6 @@ package org.xcolab.client.proposals.pojo;
 import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CommentClient;
@@ -25,6 +23,7 @@ import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.UsersGroupsClient;
+import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.UsersGroups;
@@ -63,7 +62,6 @@ import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestService;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -75,8 +73,6 @@ import java.util.stream.Collectors;
 
 public class Proposal extends AbstractProposal {
 
-    private static final Logger _log = LoggerFactory.getLogger(Proposal.class);
-
     private static final Long LONG_DEFAULT_VAL = -1L;
     private static final String STRING_DEFAULT_VAL = "";
 
@@ -85,9 +81,9 @@ public class Proposal extends AbstractProposal {
     private RestService restService;
 
     protected final Contest contest;
-
     protected final ContestPhase contestPhase;
     protected final Proposal2Phase proposal2Phase;
+
     protected final ProposalContestPhaseAttributeHelper proposalContestPhaseAttributeHelper;
     protected final ProposalAttributeHelper proposalAttributeHelper;
 
@@ -108,18 +104,8 @@ public class Proposal extends AbstractProposal {
         this(proposal, version, null, null, null);
     }
 
-
     public Proposal() {
-        this.clients = new Clients();
-        this.setProposalId(0L);
-        this.setCurrentVersion(0);
-        this.contestPhase =  fetchContestPhase();
-        this.contest =  fetchContest(contestPhase);
-        this.proposal2Phase = fetchProposal2Phase();
-        proposalContestPhaseAttributeHelper =
-                new ProposalContestPhaseAttributeHelper(this, contestPhase);
-        proposalAttributeHelper = new ProposalAttributeHelper(this, this.getVersion(),
-                clients.proposalAttribute);
+        this((RestService) null);
     }
 
     public Proposal(Proposal value) {
@@ -131,17 +117,17 @@ public class Proposal extends AbstractProposal {
             this.clients = new Clients();
         }
 
-        this.contestPhase =  fetchContestPhase();
-        this.contest =  fetchContest(contestPhase);
-        this.proposal2Phase = fetchProposal2Phase();
+        ContestAssociation contestAssociation = new ContestAssociation();
+        this.contestPhase =  contestAssociation.getContestPhase();
+        this.contest =  contestAssociation.getContest();
+        this.proposal2Phase = contestAssociation.getProposal2Phase();
 
         proposalContestPhaseAttributeHelper =
                 new ProposalContestPhaseAttributeHelper(this, contestPhase);
 
-        proposalAttributeHelper = new ProposalAttributeHelper(this, this.getVersion(),clients.proposalAttribute);
-
+        proposalAttributeHelper = new ProposalAttributeHelper(this, this.getVersion(),
+                clients.proposalAttribute);
     }
-
 
     public Proposal(Proposal proposal, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
         this(proposal, proposal.getCurrentVersion(), null, contestPhase, proposal2Phase);
@@ -157,39 +143,38 @@ public class Proposal extends AbstractProposal {
         } else {
             this.clients = new Clients();
         }
-        this.contest = contest == null ? fetchContest(contestPhase) : contest;
-        this.contestPhase = contestPhase == null ? fetchContestPhase() : contestPhase;
-        this.proposal2Phase = proposal2Phase == null ? fetchProposal2Phase() : proposal2Phase;
+        ContestAssociation contestAssociation =
+                new ContestAssociation(contest, contestPhase, proposal2Phase);
+        this.contestPhase =  contestAssociation.getContestPhase();
+        this.contest =  contestAssociation.getContest();
+        this.proposal2Phase = contestAssociation.getProposal2Phase();
 
         proposalContestPhaseAttributeHelper =
                 new ProposalContestPhaseAttributeHelper(this, this.contestPhase);
-        proposalAttributeHelper = new ProposalAttributeHelper(this, this.getVersion(), clients.proposalAttribute);
+        proposalAttributeHelper = new ProposalAttributeHelper(this, version,
+                clients.proposalAttribute);
     }
 
+    public Proposal(RestService restService) {
+        super();
+        if (restService != null) {
+            this.restService = restService;
+            this.clients = new Clients(restService);
+        } else {
+            this.clients = new Clients();
+        }
+        this.setProposalId(0L);
+        this.setCurrentVersion(0);
 
-    public Proposal(Long proposalid, Timestamp createdate, Timestamp updateddate,
-            Integer currentversion, Long authorid, Boolean visible, Long discussionid,
-            Long resultsdiscussionid, Long judgediscussionid, Long fellowdiscussionid,
-            Long advisordiscussionid, Long groupid) {
-        super(proposalid, createdate, updateddate, currentversion, authorid, visible, discussionid,
-                resultsdiscussionid, judgediscussionid, fellowdiscussionid,
-                advisordiscussionid, groupid);
-        this.clients = new Clients();
-        this.contestPhase =  fetchContestPhase();
-        this.contest =  fetchContest(contestPhase);
-        this.proposal2Phase = fetchProposal2Phase();
-
+        ContestAssociation contestAssociation = new ContestAssociation();
+        this.contestPhase =  contestAssociation.getContestPhase();
+        this.contest =  contestAssociation.getContest();
+        this.proposal2Phase = contestAssociation.getProposal2Phase();
 
         proposalContestPhaseAttributeHelper =
                 new ProposalContestPhaseAttributeHelper(this, contestPhase);
-        proposalAttributeHelper = new ProposalAttributeHelper(this, this.getVersion(), clients.proposalAttribute);
-    }
-
-
-
-    public Proposal(RestService restService) {
-        this();
-        this.restService = restService;
+        proposalAttributeHelper = new ProposalAttributeHelper(this, this.getVersion(),
+                clients.proposalAttribute);
     }
 
     public Proposal(AbstractProposal abstractProposal, RestService restService) {
@@ -198,53 +183,15 @@ public class Proposal extends AbstractProposal {
 
         this.clients = new Clients(restService);
 
-        this.contestPhase =  fetchContestPhase();
-        this.contest =  fetchContest(contestPhase);
-        this.proposal2Phase = fetchProposal2Phase();
+        ContestAssociation contestAssociation = new ContestAssociation();
+        this.contestPhase =  contestAssociation.getContestPhase();
+        this.contest =  contestAssociation.getContest();
+        this.proposal2Phase = contestAssociation.getProposal2Phase();
 
         proposalContestPhaseAttributeHelper =
                 new ProposalContestPhaseAttributeHelper(this, contestPhase);
-        proposalAttributeHelper = new ProposalAttributeHelper(this, this.getVersion(), clients.proposalAttribute);
-    }
-
-    private Contest fetchContest(ContestPhase contestPhase) {
-        try {
-            if (contestPhase != null) {
-                return clients.contest.getContest(contestPhase.getContestPK());
-            }
-            if (this.getProposalId() != null && this.getProposalId() != 0L) {
-                return clients.proposal.getCurrentContestForProposal(this.getProposalId());
-            } else {
-                return null;
-            }
-        } catch (ContestNotFoundException e) {
-            throw new IllegalStateException("Could not find a contest for proposal "
-                    + this.getProposalId(), e);
-        }
-    }
-
-    private ContestPhase fetchContestPhase() {
-        if (proposal2Phase != null) {
-            return clients.contest.getContestPhase(proposal2Phase.getContestPhaseId());
-        }
-        if (contest != null) {
-            return clients.contest.getActivePhase(contest.getContestPK());
-        }
-        _log.error("Could not get contest phase for proposal {}", this.getProposalId());
-        return null;
-    }
-
-    private Proposal2Phase fetchProposal2Phase() {
-        if (this.getProposalId() == null || this.getProposalId() == 0 || contestPhase == null || contestPhase.getContestPhasePK() == 0) {
-            return null;
-        }
-        try {
-            return clients.proposalPhase.getProposal2PhaseByProposalIdContestPhaseId(this.getProposalId(), contestPhase.getContestPhasePK());
-        } catch (Proposal2PhaseNotFoundException e) {
-            //_log.warn(String.format("Could not fetch p2p for proposal %d, contest phase %d",
-
-        }
-        return null;
+        proposalAttributeHelper = new ProposalAttributeHelper(this, this.getVersion(),
+                clients.proposalAttribute);
     }
 
     public String getProposalLinkUrl(Contest contest) {
@@ -526,7 +473,10 @@ public class Proposal extends AbstractProposal {
             members = new ArrayList<>();
             boolean hasOwner = false;
             RestService membersService = restService.withServiceName(CoLabService.MEMBER.getServiceName());
-            for (UsersGroups user : UsersGroupsClient.fromService(membersService).getUserGroupsByUserIdGroupId(null, this.getGroupId())) {
+
+
+            for (UsersGroups user : clients.usersGroup
+                    .getUserGroupsByUserIdGroupId(null, this.getGroupId())) {
 
                 try {
                     Member member = MembersClient.getMember(user.getUserId());
@@ -580,10 +530,8 @@ public class Proposal extends AbstractProposal {
 
         // All judges are selected when screening is disabled
         if (!contestPhase.getFellowScreeningActive()) {
-            for (Long judge : clients.contestTeamMember.getJudgesForContest(contest.getContestPK())) {
-
-                selectedJudges.add(judge);
-            }
+            selectedJudges
+                    .addAll(clients.contestTeamMember.getJudgesForContest(contest.getContestPK()));
         } else {
             String s = proposalContestPhaseAttributeHelper.getAttributeStringValue(ProposalContestPhaseAttributeKeys.SELECTED_JUDGES, 0, STRING_DEFAULT_VAL);
             if (s.isEmpty()) {
@@ -939,6 +887,7 @@ public class Proposal extends AbstractProposal {
         }
         return ribbonWrapper;
     }
+
     public Long getImage() {
         return proposalAttributeHelper.getAttributeValueLong(ProposalAttributeKeys.IMAGE_ID, 0);
     }
@@ -959,13 +908,15 @@ public class Proposal extends AbstractProposal {
         final ContestTeamMemberClient contestTeamMember;
         final PlanTemplateClient planTemplate;
 
+        final UsersGroupsClient usersGroup;
+
         Clients() {
             this(null);
         }
 
         Clients(RestService restService) {
             if (restService != null) {
-                RestService contestService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
+                RestService contestService = restService.withServiceName(CoLabService.CONTEST.getServiceName());
                 contest = ContestClient.fromService(contestService);
                 planTemplate = PlanTemplateClient.fromService(contestService);
                 proposal = ProposalClient.fromService(restService);
@@ -974,11 +925,14 @@ public class Proposal extends AbstractProposal {
 
                 contestTeamMember =  ContestTeamMemberClient.fromService(contestService);
 
-                RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
+                RestService commentService = restService.withServiceName(CoLabService.COMMENT.getServiceName());
                 comment = CommentClient.fromService(commentService);
                 proposalMemberRating = ProposalMemberRatingClient.fromService(restService);
                 proposalJudgeRating = ProposalJudgeRatingClient.fromService(restService);
                 membership = MembershipClient.fromService(restService);
+
+                RestService membersService = restService.withServiceName(CoLabService.MEMBER.getServiceName());
+                usersGroup = UsersGroupsClient.fromService(membersService);
             } else {
                 contest = ContestClientUtil.getClient();
                 proposal = ProposalClientUtil.getClient();
@@ -990,7 +944,78 @@ public class Proposal extends AbstractProposal {
                 membership = MembershipClientUtil.getClient();
                 planTemplate = PlanTemplateClientUtil.getClient();
                 proposalJudgeRating = ProposalJudgeRatingClientUtil.getClient();
+                usersGroup = UsersGroupsClientUtil.getClient();
             }
+        }
+    }
+
+    private class ContestAssociation {
+        private final Contest contest;
+        private final ContestPhase contestPhase;
+        private final Proposal2Phase proposal2Phase;
+
+        ContestAssociation() {
+            this(null, null, null);
+        }
+
+        ContestAssociation(Contest contest, ContestPhase contestPhase,
+                Proposal2Phase proposal2Phase) {
+            boolean proposalExists = getProposalId() != null && getProposalId() != 0L;
+            if (contest == null && proposalExists) {
+                contest = fetchContestFromProposal();
+            }
+            if (contestPhase == null && contest != null) {
+                contestPhase = fetchPhaseFromContest(contest);
+            }
+            if (proposal2Phase == null && contestPhase != null && proposalExists) {
+                proposal2Phase = fetchProposal2Phase(contestPhase);
+            }
+            if (contest == null && contestPhase != null) {
+                contest = fetchContestFromPhase(contestPhase);
+            }
+            if (contestPhase == null && proposal2Phase != null) {
+                contestPhase = fetchPhaseFromProposal2Phase(proposal2Phase);
+            }
+            this.contestPhase = contestPhase;
+            this.contest = contest;
+            this.proposal2Phase = proposal2Phase;
+        }
+
+        private ContestPhase fetchPhaseFromProposal2Phase(Proposal2Phase proposal2Phase) {
+            return clients.contest.getContestPhase(proposal2Phase.getContestPhaseId());
+        }
+
+        private Contest fetchContestFromPhase(ContestPhase contestPhase) {
+            return clients.contest.getContest(contestPhase.getContestPK());
+        }
+
+        private Proposal2Phase fetchProposal2Phase(ContestPhase contestPhase) {
+            try {
+                return clients.proposalPhase.getProposal2PhaseByProposalIdContestPhaseId(
+                        getProposalId(), contestPhase.getContestPhasePK());
+            } catch (Proposal2PhaseNotFoundException e) {
+                return null;
+            }
+        }
+
+        private ContestPhase fetchPhaseFromContest(Contest contest) {
+            return clients.contest.getActivePhase(contest.getContestPK());
+        }
+
+        private Contest fetchContestFromProposal() {
+            return clients.proposal.getCurrentContestForProposal(getProposalId());
+        }
+
+        public Contest getContest() {
+            return contest;
+        }
+
+        public ContestPhase getContestPhase() {
+            return contestPhase;
+        }
+
+        public Proposal2Phase getProposal2Phase() {
+            return proposal2Phase;
         }
     }
 }

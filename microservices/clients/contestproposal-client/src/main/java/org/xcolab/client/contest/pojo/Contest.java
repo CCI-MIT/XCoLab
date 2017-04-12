@@ -127,9 +127,11 @@ public class Contest extends AbstractContest implements Serializable {
         commentClient = CommentClient.fromService(commentService);
         threadClient = ThreadClient.fromService(commentService);
     }
+
     public String getContestDiscussionLinkUrl() {
         return getContestLinkUrl() + "/discussion";
     }
+
     public String getContestLinkUrl() {
         String link = "/";
 
