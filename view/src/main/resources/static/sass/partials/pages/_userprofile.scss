@@ -305,7 +305,7 @@ input.cmn-toggle-round ~ label:after {
 }
 
 input.cmn-toggle-round:checked ~ label:before {
-  background-color: #2aaae6;
+  background-color: $t-Color__primary;
 }
 
 input.cmn-toggle-round:checked ~ label:after {
@@ -317,7 +317,7 @@ input.cmn-toggle-round:checked ~ label:after {
 }
 
 .profileTable td.points_box {
-  border-color: #30a3fb;
+  border-color: $t-Color__primary;
   border-width: 2px;
   /*border is invisible unless border-style is set*/
 }
