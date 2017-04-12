@@ -715,8 +715,6 @@
     </script>
 
     <xcolab:script src="${_themeJsFolder}/usertracking.js" />
-    <xcolab:script src="${_themeJsFolder}/balloon.js" />
-    <xcolab:script src="${_themeJsFolder}/errorTracker.js" />
     <xcolab:script src="${_themeJsFolder}/widgetLoader.js" />
 </body>
 </html>
