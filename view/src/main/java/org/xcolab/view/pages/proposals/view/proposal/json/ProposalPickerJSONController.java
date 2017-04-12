@@ -1,15 +1,16 @@
 package org.xcolab.view.pages.proposals.view.proposal.json;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.pojo.Contest;
@@ -18,7 +19,6 @@ import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.utils.ProposalPickerFilterUtil;
 import org.xcolab.view.pages.proposals.utils.ProposalPickerSortingUtil;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 
 import java.io.IOException;
 import java.util.Date;
@@ -30,24 +30,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-//-- @RequestMapping("view")
+@RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalPickerJSONController {
 
 	private static final int MAX_CHARS_FOR_NAMES = 75;
 	private static final Logger _log = LoggerFactory.getLogger(ProposalPickerJSONController.class);
 
-	private final ProposalsContext proposalsContext;
-
-	@Autowired
-	public ProposalPickerJSONController(ProposalsContext proposalsContext) {
-		this.proposalsContext = proposalsContext;
-	}
-
-	//-- @ResourceMapping("proposalPicker")
-	@GetMapping("/proposals/proposalPicker")
+	@GetMapping("proposals/proposalPicker")
 	public void proposalPicker(
 			HttpServletRequest request,
 			HttpServletResponse response,
+            @PathVariable String contestYear,
+            @PathVariable String contestUrlName,
 			@RequestParam(value = "type", required = false) String requestType,
 			@RequestParam(value = "filterKey", required = false) String filterType,
 			@RequestParam(required = false) String filterText,
@@ -64,20 +58,20 @@ public class ProposalPickerJSONController {
 		switch (requestType.toUpperCase()) {
 			case "SUBSCRIPTIONSANDSUPPORTING":
 				proposals = ProposalPickerFilterUtil.getFilteredSubscribedSupportingProposalsForUser(
-						memberId, filterType, sectionId, request, proposalsContext);
+						memberId, filterType, sectionId, request);
 				break;
 			case "SUBSCRIPTIONS":
 				proposals = ProposalPickerFilterUtil.getFilteredSubscribedProposalsForUser(
-						memberId, filterType, sectionId, request, proposalsContext);
+						memberId, filterType, sectionId, request);
 				break;
 			case "SUPPORTING":
 				proposals = ProposalPickerFilterUtil.getFilteredSupportingProposalsForUser(
-						memberId, filterType, sectionId, request, proposalsContext);
+						memberId, filterType, sectionId, request);
 				break;
 			case "ALL":
 			case "CONTESTS":
 				proposals = ProposalPickerFilterUtil.getFilteredAllProposals(filterText, filterType,
-						sectionId, contestPK, request, proposalsContext);
+						sectionId, contestPK);
 				break;
 			default:
 				_log.error("Proposal picker was loaded with unknown requestType {}", requestType);
@@ -111,10 +105,12 @@ public class ProposalPickerJSONController {
 				getJSONObjectMapping(proposals, totalCount).getBytes());
 	}
 
-	//-- @ResourceMapping("proposalPickerContests")
+	@GetMapping("proposals/proposalPickerContests")
 	public void proposalPickerContests(
 			HttpServletRequest request,
 			HttpServletResponse response,
+            @PathVariable String contestYear,
+            @PathVariable String contestUrlName,
 			@RequestParam(value = "type", required = false) String requestType,
 			@RequestParam(value = "filterKey", required = false) String filterType,
 			@RequestParam(required = false) String filterText,
@@ -155,9 +151,11 @@ public class ProposalPickerJSONController {
 	/**
 	 * This method is used to fill the counting bubbles for each tab
 	 */
-	//-- @ResourceMapping("proposalPickerCounter")
+	@GetMapping("proposals/proposalPickerCounter")
 	public void proposalPickerCounter(HttpServletRequest request,
-			HttpServletResponse response) throws IOException {
+			HttpServletResponse response,
+            @PathVariable String contestYear,
+            @PathVariable String contestUrlName) throws IOException {
 				/*
 		TODO: Removed to increase performance
 		String filterType = request.getParameter("filterKey");

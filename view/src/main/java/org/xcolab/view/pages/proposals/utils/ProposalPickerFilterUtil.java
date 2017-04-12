@@ -12,12 +12,15 @@ import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.util.IdListUtil;
+import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 
@@ -41,6 +44,7 @@ public class ProposalPickerFilterUtil {
 
     /**
      * Parse filter from frontend parameter and filter the contents of the proposals parameter
+     *
      * @param filterKey the filter key passed as parameter from the frontend
      * @param proposals A list of Proposals paired with their date
      */
@@ -55,46 +59,29 @@ public class ProposalPickerFilterUtil {
     public static List<Pair<Contest, Date>> getFilteredContests(
             long sectionId, HttpServletRequest request, ProposalsContext proposalsContext) {
         List<Pair<Contest, Date>> contests = ProposalPickerFilterUtil.getAllContests();
-        ProposalPickerFilterUtil.filterContests(contests, sectionId, request, proposalsContext, false);
+        ProposalPickerFilterUtil
+                .filterContests(contests, sectionId, request, proposalsContext, false);
         return contests;
     }
 
     public static List<Pair<Contest, Date>> getAllContests() {
         List<Pair<Contest, Date>> contests = new ArrayList<>();
 
-        for (Contest c: ContestClientUtil.getAllContests()) {
-                contests.add(Pair.of(c,  //c
-                        c.getCreated() == null ? new Date(0) : c.getCreated()));
+        for (Contest contest : ContestClientUtil.getAllContests()) {
+            contests.add(Pair.of(contest,
+                    contest.getCreated() == null ? new Date(0) : contest.getCreated()));
 
         }
         return contests;
     }
-
-
-
-    public static List<Pair<Contest, Date>> getTextFilteredContests( long sectionId, String contestName) {
-        List<Pair<Contest, Date>> contests = new ArrayList<>();
-        PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
-
-        List<OntologyTerm> ontologyTerms = OntologyClientUtil.getOntologyTermsForFocusArea(OntologyClientUtil.getFocusArea(planSectionDefinition.getFocusAreaId()));
-        List<Long> ontologyTermIds = new ArrayList<>();
-        for(OntologyTerm term : ontologyTerms) {
-            ontologyTermIds.add(term.getId_());
-        }
-
-        for (Contest c: ContestClientUtil.findContestsByName(contestName, ontologyTermIds, IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds()))) {
-            contests.add(Pair.of((c),  //c
-                    c.getCreated() == null ? new Date(0) : c.getCreated()));
-
-        }
-        return contests;
-    }
-
 
     public static Map<Long, String> filterContests(List<Pair<Contest, Date>> contests,
-            long sectionId, HttpServletRequest request, ProposalsContext proposalsContext, boolean trackRemovedContests) {
-        PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
-        ProposalPickerFilter.CONTEST_TYPE_FILTER.filterContests(contests, planSectionDefinition.getAllowedContestTypeIds());
+            long sectionId, HttpServletRequest request, ProposalsContext proposalsContext,
+            boolean trackRemovedContests) {
+        PlanSectionDefinition planSectionDefinition =
+                PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
+        ProposalPickerFilter.CONTEST_TYPE_FILTER
+                .filterContests(contests, planSectionDefinition.getAllowedContestTypeIds());
 
         List<Long> alwaysIncludedContestIds = planSectionDefinition.getAdditionalIdsAsList();
 
@@ -113,13 +100,15 @@ public class ProposalPickerFilterUtil {
                         contestFocusAreaId, alwaysIncludedContestIds);
         Set<Long> focusAreaRemovedContests =
                 ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filterContests(contests,
-                sectionDefFocusAreaArgument);
+                        sectionDefFocusAreaArgument);
 
         _log.debug(String.format("%d contests left after filtering for focus areas %d and %d",
                 contests.size(), sectionFocusAreaId, contestFocusAreaId));
         final long filterTier = planSectionDefinition.getTier();
-        Set<Long> tierRemovedContests = ProposalPickerFilter.CONTEST_TIER.filterContests(contests, filterTier);
-        _log.debug(String.format("%d contests left after filtering for tier %d", contests.size(), filterTier));
+        Set<Long> tierRemovedContests =
+                ProposalPickerFilter.CONTEST_TIER.filterContests(contests, filterTier);
+        _log.debug(String.format("%d contests left after filtering for tier %d", contests.size(),
+                filterTier));
 
         Map<Long, String> removedContests = new HashMap<>();
         if (trackRemovedContests) {
@@ -133,17 +122,40 @@ public class ProposalPickerFilterUtil {
         return removedContests;
     }
 
+    public static List<Pair<Contest, Date>> getTextFilteredContests(long sectionId,
+            String contestName) {
+
+        PlanSectionDefinition planSectionDefinition =
+                PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
+
+        List<OntologyTerm> ontologyTerms = OntologyClientUtil.getOntologyTermsForFocusArea(
+                OntologyClientUtil.getFocusArea(planSectionDefinition.getFocusAreaId()));
+        List<Long> ontologyTermIds = new ArrayList<>();
+        for (OntologyTerm term : ontologyTerms) {
+            ontologyTermIds.add(term.getId_());
+        }
+
+        List<Pair<Contest, Date>> contests = new ArrayList<>();
+        for (Contest contest : ContestClientUtil.findContestsByName(contestName, ontologyTermIds,
+                IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds()))) {
+            contests.add(Pair.of((contest),
+                    contest.getCreated() == null ? new Date(0) : contest.getCreated()));
+
+        }
+        return contests;
+    }
+
     public static List<Pair<Proposal, Date>> getFilteredSubscribedSupportingProposalsForUser(
-            long userId, String filterKey, long sectionId, HttpServletRequest request, ProposalsContext proposalsContext) {
+            long userId, String filterKey, long sectionId, HttpServletRequest request) {
         List<Pair<Proposal, Date>> proposals = getFilteredSubscribedProposalsForUser(
-                userId, filterKey, sectionId, request, proposalsContext);
+                userId, filterKey, sectionId, request);
 
         Set<Long> includedProposals = new HashSet<>();
         for (Pair<Proposal, Date> entry : proposals) {
             includedProposals.add(entry.getLeft().getProposalId());
         }
         for (Pair<Proposal, Date> entry : getFilteredSupportingProposalsForUser(
-                userId, filterKey, sectionId, request, proposalsContext)) {
+                userId, filterKey, sectionId, request)) {
             if (includedProposals.contains(entry.getLeft().getProposalId())) {
                 continue;
             }
@@ -154,54 +166,69 @@ public class ProposalPickerFilterUtil {
     }
 
     public static List<Pair<Proposal, Date>> getFilteredSubscribedProposalsForUser(
-            long userId, String filterKey, long sectionId, HttpServletRequest request, ProposalsContext proposalsContext) {
+            long memberId, String filterKey, long sectionId, HttpServletRequest request) {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
-        List<ActivitySubscription> activitySubscriptions = ActivitiesClientUtil.getActivitySubscriptions(null, null, userId);
+        List<ActivitySubscription> activitySubscriptions =
+                ActivitiesClientUtil.getActivitySubscriptions(null, null, memberId);
 
-        for (ActivitySubscription as : activitySubscriptions) {
+        final ClientHelper clients = ProposalsContextUtil.getClients(request);
+        final ProposalClient proposalClient = clients.getProposalClient();
+
+        for (ActivitySubscription subscription : activitySubscriptions) {
 
             try {
-                if (as.getClassNameId() == 1368503) {
-                    proposals.add(Pair.of(
-                            ProposalsContextUtil.getClients(request).getProposalClient().getProposal(as.getClassPK()),
-                            new Date(as.getCreateDate().getTime())
-                    ));
+                final long proposalSubscriptionType
+                        = ActivityEntryType.PROPOSAL.getPrimaryTypeId();
+                if (subscription.getClassNameId() == proposalSubscriptionType) {
+                    final Proposal proposal = proposalClient.getProposal(subscription.getClassPK());
+                    if (proposal.isVisible()) {
+                        proposals.add(Pair.of(
+                                proposal,
+                                new Date(subscription.getCreateDate().getTime())
+                        ));
+                    }
                 }
-            }catch (ProposalNotFoundException ignored){
+            } catch (ProposalNotFoundException ignored) {
 
             }
         }
 
-        filterProposals(proposals, filterKey, sectionId, request, proposalsContext);
+        filterProposals(proposals, filterKey, sectionId, request);
 
         return proposals;
     }
 
     public static List<Pair<Proposal, Date>> getFilteredSupportingProposalsForUser(
-            long userId, String filterKey, long sectionId, HttpServletRequest request, ProposalsContext proposalsContext) {
+            long userId, String filterKey, long sectionId, HttpServletRequest request) {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
-        for (ProposalSupporter ps : ProposalMemberRatingClientUtil.getProposalSupportersByUserId(userId)) {
-            try{
-                proposals.add(Pair.of(ProposalsContextUtil.getClients(request).getProposalClient().getProposal(ps.getProposalId()), new Date(ps.getCreateDate().getTime())));
-            }catch (ProposalNotFoundException ignored){
+        final ClientHelper clients = ProposalsContextUtil.getClients(request);
+        final ProposalClient proposalClient = clients.getProposalClient();
+        for (ProposalSupporter ps : ProposalMemberRatingClientUtil
+                .getProposalSupportersByUserId(userId)) {
+            try {
+                proposals.add(Pair.of(proposalClient.getProposal(ps.getProposalId()),
+                        new Date(ps.getCreateDate().getTime())));
+            } catch (ProposalNotFoundException ignored) {
 
             }
         }
 
-        filterProposals(proposals, filterKey, sectionId, request, proposalsContext);
+        filterProposals(proposals, filterKey, sectionId, request);
 
         return proposals;
     }
 
     public static List<Pair<Proposal, Date>> getFilteredAllProposals(String filterText,
-            String filterKey, long sectionId, Long contestPK, HttpServletRequest request, ProposalsContext proposalsContext) {
+            String filterKey, long sectionId, Long contestPK) {
         List<Pair<Proposal, Date>> proposals = new ArrayList<>();
         List<Proposal> proposalsRaw;
 
-        PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
+        PlanSectionDefinition planSectionDefinition =
+                PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
         List<Long> contestTypes = new ArrayList<>();
-        contestTypes.addAll(IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds()));
-        if(contestTypes.isEmpty()) {
+        contestTypes.addAll(IdListUtil
+                .getIdsFromString(planSectionDefinition.getAllowedContestTypeIds()));
+        if (contestTypes.isEmpty()) {
             long defaultTypeId = 0;
             contestTypes.add(defaultTypeId);
         }
@@ -211,7 +238,9 @@ public class ProposalPickerFilterUtil {
         } else {
             //proposalsRaw = ProposalsClient.getAllProposals();
 
-            proposalsRaw = ProposalClientUtil.getProposalsByCurrentContests(contestTypes, getAllowedTiers(planSectionDefinition.getTier()), filterText.isEmpty() ? null : filterText);
+            proposalsRaw = ProposalClientUtil.getProposalsByCurrentContests(contestTypes,
+                    getAllowedTiers(planSectionDefinition.getTier()),
+                    filterText.isEmpty() ? null : filterText);
         }
         for (Proposal p : proposalsRaw) {
             proposals.add(Pair.of(p, new Date(0)));
@@ -242,29 +271,31 @@ public class ProposalPickerFilterUtil {
     }
 
     private static void filterProposals(List<Pair<Proposal, Date>> proposals,
-            String filterKey, long sectionId, HttpServletRequest request,
-            ProposalsContext proposalsContext) {
+            String filterKey, long sectionId, HttpServletRequest request) {
         filterByParameter(filterKey, proposals);
 
         filterByVisibility(proposals);
 
-        PlanSectionDefinition planSectionDefinition = PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
+        PlanSectionDefinition planSectionDefinition =
+                PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
 
-        ProposalPickerFilter.CONTEST_TYPE_FILTER.filter(proposals, planSectionDefinition.getAllowedContestTypeIds());
+        ProposalPickerFilter.CONTEST_TYPE_FILTER
+                .filter(proposals, planSectionDefinition.getAllowedContestTypeIds());
 
         List<Long> filterExceptionContestIds = planSectionDefinition.getAdditionalIdsAsList();
 
         final long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();
         final long contestFocusAreaId;
         if (request != null) {
-            Contest contest = proposalsContext.getContest(request);
+            Contest contest = ProposalsContextUtil.getContest(request);
             contestFocusAreaId = contest.getFocusAreaId();
         } else {
             contestFocusAreaId = 0;
         }
 
         ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filter(proposals,
-                new SectionDefFocusAreaArgument(sectionFocusAreaId, contestFocusAreaId, filterExceptionContestIds));
+                new SectionDefFocusAreaArgument(sectionFocusAreaId, contestFocusAreaId,
+                        filterExceptionContestIds));
 
         ProposalPickerFilter.CONTEST_TIER.filter(proposals, planSectionDefinition.getTier());
     }
@@ -281,12 +312,14 @@ public class ProposalPickerFilterUtil {
     }
 
     public static class SectionDefFocusAreaArgument {
+
         private final Long sectionFocusAreaId;
         private final Long contestFocusAreaId;
         private final List<Long> filterExceptionContestIds;
 
 
-        public SectionDefFocusAreaArgument(Long sectionFocusAreaId, Long contestFocusAreaId, List<Long> filterExceptionContestIds) {
+        public SectionDefFocusAreaArgument(Long sectionFocusAreaId, Long contestFocusAreaId,
+                List<Long> filterExceptionContestIds) {
             this.sectionFocusAreaId = sectionFocusAreaId;
             this.contestFocusAreaId = contestFocusAreaId;
             this.filterExceptionContestIds = filterExceptionContestIds;

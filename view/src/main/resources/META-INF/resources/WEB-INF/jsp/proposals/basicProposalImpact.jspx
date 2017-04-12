@@ -13,8 +13,13 @@
 
         <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
+        <!-- TODO: replace - we already have spin.js -->
         <xcolab:script src="${_themeJsFolder}/proposals/jquery.spin.js"/>
-        <xcolab:script src="${_themeJsFolder}/proposals/handlebars.js"/>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.js"
+                integrity="sha256-nIunjfwyLHiGyWSLQHt+o16X6Z3W+zItLbf3Xgs/9YM="
+                crossorigin="anonymous"><!-- empty --></script>
+
         <xcolab:script src="${_themeJsFolder}/proposals/jquery.scrolltable.js"/>
         <xcolab:script src="${_themeJsFolder}/proposals/numeral.min.js"/>
 
@@ -46,7 +51,7 @@
             var getDataSeriesURL = '${getDataSeriesURL}';
             var saveDataSeriesURL = '${saveDataSeriesURL}';
             var deleteDataSeriesURL = '${deleteDataSeriesURL}';
-            var updateAllSeriesURL = '${updateAllSeriesURL}'
+            var updateAllSeriesURL = '${updateAllSeriesURL}';
             var saveCommentURL = '${saveCommentURL}';
         </script>
 

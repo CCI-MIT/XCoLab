@@ -420,5 +420,10 @@
     <c:if test="${isMove}">
         <xcolab:script src="${_themeJsFolder}/proposals/copyProposalWidget.js"/>
     </c:if>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.js"
+            integrity="sha256-nIunjfwyLHiGyWSLQHt+o16X6Z3W+zItLbf3Xgs/9YM="
+            crossorigin="anonymous"><!-- empty --></script>
+    <xcolab:script src="${_themeJsFolder}/proposals/findAndReplaceDOMText.js" />
+    <xcolab:script src="${_themeJsFolder}/proposals/proposalPicker.js" />
 </xcolab:layout>
 </jsp:root>

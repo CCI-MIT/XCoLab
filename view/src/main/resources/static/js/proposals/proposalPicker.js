@@ -8,6 +8,7 @@ var pickMultipleProposals = false;
 var contestPK = 0;
 var contests = [];
 var pickedProposals = [];
+var spinner = new Spinner();
 
 var proposalPickerProposalEntryTemplate = Handlebars.compile($("#proposalPickerProposalEntryTemplate").html());
 var proposalPickerContestEntryTemplate = Handlebars.compile($("#proposalPickerContestEntryTemplate").html());
@@ -71,19 +72,20 @@ function updateTabRibbons(){
 
 /* Replace the URL placeholders with actual values */
 function replaceURLPlaceholders(rawUrl){
-    var URL = rawUrl.replace('%40%40REPLACE-TYPE%40%40',proposalType).replace('%40%40REPLACE-FILTERKEY%40%40',filterKey);
+    var URL = rawUrl.replace('@@REPLACE-TYPE@@', proposalType)
+                    .replace('@@REPLACE-FILTERKEY@@', filterKey);
     var $propSearch = $('#prop-search');
     if ($propSearch.val() != 'Filter') {
-        URL = URL.replace('%40%40REPLACE-FILTERTEXT%40%40',$propSearch.val());
+        URL = URL.replace('@@REPLACE-FILTERTEXT@@', $propSearch.val());
     }
-    else URL = URL.replace('%40%40REPLACE-FILTERTEXT%40%40','');
-    URL = URL.replace('%40%40REPLACE-START%40%40',proposalPickerPage * proposalsPerPage);
-    URL = URL.replace('%40%40REPLACE-END%40%40',(proposalPickerPage + 1) * proposalsPerPage);
-    URL = URL.replace('%40%40REPLACE-SORTCOLOMN%40%40',sortColumn);
-    URL = URL.replace('%40%40REPLACE-CONTESTSORTCOLOMN%40%40',contestSortColumn);
-    URL = URL.replace('%40%40REPLACE-SORTORDER%40%40',sortOrder);
-    URL = URL.replace('%40%40REPLACE-SECTIONID%40%40',currentSectionId);
-    URL = URL.replace('%40%40REPLACE-CONTESTPK%40%40',contestPK);
+    else URL = URL.replace('@@REPLACE-FILTERTEXT@@',' ');
+    URL = URL.replace('@@REPLACE-START@@', proposalPickerPage * proposalsPerPage);
+    URL = URL.replace('@@REPLACE-END@@', (proposalPickerPage + 1) * proposalsPerPage);
+    URL = URL.replace('@@REPLACE-SORTCOLOMN@@', sortColumn);
+    URL = URL.replace('@@REPLACE-CONTESTSORTCOLOMN@@', contestSortColumn);
+    URL = URL.replace('@@REPLACE-SORTORDER@@', sortOrder);
+    URL = URL.replace('@@REPLACE-SECTIONID@@', currentSectionId);
+    URL = URL.replace('@@REPLACE-CONTESTPK@@', contestPK);
     return URL;
 }
 
