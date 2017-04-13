@@ -75,7 +75,7 @@ public class ForgotPasswordTest {
         PowerMockito.mockStatic(AdminClient.class);
         PowerMockito.mockStatic(ContestClientUtil.class);
         PowerMockito.mockStatic(SharedColabClient.class);
-        PowerMockito.mockStatic(MembersClient.class);
+
         PowerMockito.mockStatic(EmailTemplateClientUtil.class);
         PowerMockito.mockStatic(EmailClient.class);
         PowerMockito.mockStatic(ActivityEntryHelper.class);
