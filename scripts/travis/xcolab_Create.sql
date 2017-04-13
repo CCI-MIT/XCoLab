@@ -1173,6 +1173,9 @@ CREATE TABLE `xcolab_ContestType` (
   `rulesPageName` varchar(75) DEFAULT NULL,
   `rulesPageUrl` varchar(75) DEFAULT NULL,
   `showProposalSummary` tinyint(4) DEFAULT '1',
+  `overrideCreationPrompt` VARCHAR(75) NULL,
+  `pitchName` VARCHAR(75) DEFAULT 'Pitch' NULL,
+  `showTeamField` TINYINT(4) DEFAULT 1 NULL,
   PRIMARY KEY (`id_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

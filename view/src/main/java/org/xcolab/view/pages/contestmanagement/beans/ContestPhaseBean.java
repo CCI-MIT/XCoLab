@@ -280,11 +280,24 @@ public class ContestPhaseBean implements Serializable {
 
     //TODO: improve naming?
     public ContestPhase getContestPhase() {
-        ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhasePK);
+        ContestPhase contestPhase;
+        if (contestPhasePK != null && contestPhasePK > 0) {
+            contestPhase = ContestClientUtil.getContestPhase(contestPhasePK);
+        } else {
+            contestPhase = new ContestPhase();
+        }
         contestPhase.setContestPK(contestPK);
-        contestPhase.setContestPhaseType(contestPhaseType);
+        if (contestPhaseType != null) {
+            contestPhase.setContestPhaseType(contestPhaseType);
+        } else {
+            contestPhase.setContestPhaseType(contestPhaseTypeOld);
+        }
         contestPhase.setContestScheduleId(contestScheduleId);
-        contestPhase.setPhaseStartDate(new Timestamp(phaseStartDate.getTime()));
+        if (phaseStartDate != null) {
+            contestPhase.setPhaseStartDate(new Timestamp(phaseStartDate.getTime()));
+        } else {
+            contestPhase.setPhaseStartDate(null);
+        }
         if (phaseEndDate != null) {
             contestPhase.setPhaseEndDate(new Timestamp(phaseEndDate.getTime()));
         } else {
@@ -295,8 +308,8 @@ public class ContestPhaseBean implements Serializable {
         }
         contestPhase.setFellowScreeningActive(fellowScreeningActive);
 
-        if (contestPhaseAutopromote
-                .equalsIgnoreCase(ContestPhasePromoteType.DEFAULT.getValue())) {
+        if (contestPhaseAutopromote.equalsIgnoreCase(ContestPhasePromoteType.DEFAULT.getValue())
+                && contestPhaseType != null) {
             ContestPhaseType type = ContestClientUtil.getContestPhaseType(contestPhaseType);
             contestPhase.setContestPhaseAutopromote(type.getDefaultPromotionType());
         } else {

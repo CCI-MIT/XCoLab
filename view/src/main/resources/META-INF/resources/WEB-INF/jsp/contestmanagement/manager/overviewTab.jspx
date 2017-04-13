@@ -12,7 +12,7 @@
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>
 
-	<div class="cmsDetailsBox">
+	<div class="c-ContentBox">
 		<div style="margin-bottom: 40px;display:inline">
 			<div class="floatRight outerVerticalCenter">
 				<a class="c-Button__primary innerVerticalCenter" href="/admin/contest/manager/createContest" target="_blank">Create new Contest</a>
@@ -27,7 +27,7 @@
 
 	</div>
 	
-	<div class="cmsDetailsBox">
+	<div class="c-ContentBox">
 		<div class="floatRight outerVerticalCenter">
 			<div class="innerVerticalCenter floatLeft">
 				<h3>Filter: </h3>
@@ -120,7 +120,7 @@
 				</table>
 			</div>
 
-			<table class="contestOverview">
+			<table class="c-ContentBox__Table">
 					<col span="2" class="extraSmallColumn"/>
 					<col span="1" class="wideColumn"/>
 					<col span="1" class="mediumColumn"/>

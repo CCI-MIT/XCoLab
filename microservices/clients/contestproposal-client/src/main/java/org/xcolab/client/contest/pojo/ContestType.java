@@ -19,4 +19,11 @@ public class ContestType extends AbstractContestType {
         return String.format("%d - %s with %s",
                 this.getId_(), this.getContestName(), this.getProposalNamePlural());
     }
+
+    public String getCreationPrompt() {
+        if (getOverrideCreationPrompt() != null) {
+            return getOverrideCreationPrompt();
+        }
+        return "CREATE " + getProposalName();
+    }
 }

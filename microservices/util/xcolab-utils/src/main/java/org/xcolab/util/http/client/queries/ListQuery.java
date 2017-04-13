@@ -34,6 +34,7 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
             if (cacheKey == null) {
                 cacheKey = CacheKeys.withClass(entityType)
                         .withParameter("list-path", uriBuilder.getPathString())
+                        .withParameter("list-path-variables", uriBuilder.getPathVariableString())
                         .withParameter("list-parameters", uriBuilder.getParameterString())
                         .asList();
             }

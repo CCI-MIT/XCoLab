@@ -7,11 +7,11 @@
 			enableDirtyCheck();
 		});
 	</script>
-	<div class="cmsDetailsBox">
+	<div class="c-ContentBox">
 		<jsp:directive.include file="./action.jspx"/>
 	</div>
 
-	<div class="cmsDetailsBox">
+	<div class="c-ContentBox">
 		<h1>Ask your questions here: </h1>
 		<!-- TODO: re-enable comments -->
 		<!--<collab:discussionComments threadId="${currentTabWrapped.discussionId}" />-->

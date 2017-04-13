@@ -3,6 +3,7 @@
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:contestmanagementPortlet="urn:jsptagdir:/WEB-INF/tags"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+<<<<<<< HEAD
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout>
 
@@ -151,3 +152,159 @@
 
     </xcolab:layout>
 </jsp:root>
+=======
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
+
+    <!--@elvariable id="collectionCardWrapperWhat" type="org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper"-->
+    <!--@elvariable id="collectionCardWrapperWhere" type="org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper"-->
+    <!--@elvariable id="ontologyTermsWhat" type="java.util.List<org.xcolab.portlets.contestmanagement.wrappers.OntologyTermWrapper>"-->
+    <!--@elvariable id="ontologyTermsWhere" type="java.util.List<org.xcolab.portlets.contestmanagement.wrappers.OntologyTermWrapper>"-->
+    <!--@elvariable id="section" type="java.lang.Integer"-->
+    <!--@elvariable id="level" type="java.lang.Integer"-->
+
+    <jsp:directive.include file="../init.jspx"/>
+    <jsp:directive.include file="./header.jspx"/>
+
+    <div class="c-ContentBox">
+        <br/>
+        <h1>Admin panel</h1>
+        <br />
+        <div class="addpropbox">
+            <h2>Editors</h2>
+            <b>Click on the links below</b> to open the editors:<br/>
+            <a href="/ontology-editor">Ontology editor</a><br/>
+            <a href="/content-editor">Content editor</a>
+        </div>
+        <br/>
+        <br/>
+        <div class="addpropbox">
+            <h2>Voting</h2>
+            <form:form action="/admin/contest/manager/tab/ADMIN/votingReport" commandName="votingReportBean"
+                       id="votingReportForm" method="get">
+                <label for="votingPhaseIds">Please select the voting phase(s)
+                    you wish to include in the voting report:</label> <br/>
+                <form:select path="votingPhaseIds" id="votingPhaseIds"
+                             class="multi" multiple="multiple" cssStyle="width: 100%;">
+                    <form:option value="" label="--- Please select ---"/>
+                    <form:options items="${votingPhaseSelectionItems}" itemValue="value"
+                                  itemLabel="lable"/>
+                </form:select>
+                <br />
+                <button type="submit" class="c-Button__primary">Generate report</button>
+            </form:form>
+        </div>
+        <br/>
+        <br/>
+        <div class="addpropbox">
+            <h2>Server administration</h2>
+            <form action="/admin/caching/clear" method="post">
+                <button type="submit" class="c-Button__primary">Clear cache</button>
+            </form>
+        </div>
+        <br/>
+        <br/>
+                <div class="addpropbox">
+                <h2>Notifications</h2> <br/>
+                <form:form action="/notificationMessageGET" commandName="votingReportBean"
+                           id="votingReportForm" method="POST">
+                    <label for="votingPhaseIds">Please use this form to add notifications in the system:</label>
+                    <br/><br/>
+                    <p>
+                        <strong class="inputTitleLeft">Notification Text:</strong>
+                        <input type="text"  class="wideLargeInput" name="notificationText"></input><br/>
+                    </p>
+
+                    <!--<p>
+                        Begin Notification at this time: (date and time):
+                         <input type="datetime-local" name="begintime" step="1"></input><br/>
+                    </p>-->
+                    <p>
+                        <strong class="inputTitleLeft">Expire Notification at this time: (date and time): </strong>
+                        <input type="datetime-local" name="expiretime" step="1"></input><br/>
+                        <br/>
+                        <input type="hidden"
+                               name="${_csrf.parameterName}"
+                               value="${_csrf.token}"/>
+                    </p>
+                    <button type="submit" class="c-Button__primary">Add Notification</button>
+                </form:form>
+
+                <form action="/notificationMessageDelete" id="deleteNotificationForm" method="post" style="visibility: hidden;" >
+                    <input type="hidden" id = "notificationId" name="notificationId"/>
+                </form>
+
+
+                <c:if test="${not empty listOfNotifications}">
+                    <div class="div2"><!--  --></div>
+                    <h2>List of Notifications</h2>
+                    <h6>To send next pending notification, delete the currently active notification or wait for it to expire automatically.</h6>
+                    <c:forEach var="notification" items="${listOfNotifications}" varStatus="status">
+                        <table class="colab">
+                            <tbody>
+                                <tr class="colabRow">
+                                    <td>
+                                        <h5><b>Text: ${notification.notificationText}</b></h5>
+                                        <c:choose>
+                                            <c:when  test="${status.index == 0}">
+                                                Status: (Currently Active Globally )
+                                            </c:when>
+                                            <c:otherwise>
+                                                Status: (Pending Global Delivery)
+                                            </c:otherwise>
+                                        </c:choose>
+
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <h5>ID: ${notification.notificationId} </h5>
+                                    </td>
+                                </tr>
+                                <tr class="colabRow">
+                                    <td>
+                                        <h5>Created On: ${notification.beginTime}</h5>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <h5>Expires On: ${notification.endTime}</h5>
+                                        <button type="submit" class="c-Button__primary" onClick="deleteNotification(${notification.notificationId})">Delete Notification</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </c:forEach>
+
+
+
+                    <script>
+                        <![CDATA[
+
+                        function deleteNotification(notificationId) {
+                            document.getElementById('notificationId').value = notificationId;
+                            document.getElementById('deleteNotificationForm').submit();
+                        }
+
+                        ]]>
+                    </script>
+
+
+
+                </c:if>
+                <c:if test="${empty listOfNotifications}">
+                    <h5><br />No Notifications found! You can schedule one using the form above! </h5>
+                </c:if>
+                <div class="div2"><!--  --></div>
+
+            </div>
+            <br/>
+            <br/>
+            
+        <div class="addpropbox">
+            <h2>Activities CSV export</h2>
+            <form action="/admin/contest/manager/tab/ADMIN/exportActivities" method="post">
+                <button type="submit" class="c-Button__primary">Export activities</button>
+            </form>
+        </div>
+    </div>
+
+</xcolab:layout>
+</jsp:root>
+>>>>>>> 069a5fea98b4e1d13c6dc620b80e3a649397a10c

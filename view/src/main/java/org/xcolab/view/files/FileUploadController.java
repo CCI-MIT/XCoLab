@@ -81,7 +81,7 @@ public class FileUploadController {
     @PostMapping("/images/uploadCkEditor")
     public void singleCKEditorUpload(@RequestParam("upload") MultipartFile file,
             HttpServletRequest request, HttpServletResponse response,
-            @RequestParam("CKEditorFuncNum") String ckEditorFuncNum,
+            @RequestParam(required = false, name = "CKEditorFuncNum") String ckEditorFuncNum,
             @RequestParam(required = false) Boolean resize) {
 
         if(request.getParameter("resize") ==null){
@@ -90,6 +90,7 @@ public class FileUploadController {
         ImageResponse ir = uploadImageResponse(file, request, resize);
         try {
 
+            response.setContentType("text/html");
             response.getOutputStream()
                     .write(("<script>window.parent.CKEDITOR.tools.callFunction(" + ckEditorFuncNum + ", \"" + ir.getImageUrl() + "\");</script>").getBytes());;
         }catch (IOException ignored){

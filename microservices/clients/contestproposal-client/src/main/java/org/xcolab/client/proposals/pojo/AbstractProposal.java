@@ -37,34 +37,6 @@ class AbstractProposal implements Serializable {
         this.groupid = value.groupid;
     }
 
-    public AbstractProposal(
-            Long proposalid,
-            Timestamp createdate,
-            Timestamp updateddate,
-            Integer currentversion,
-            Long authorid,
-            Boolean visible,
-            Long discussionid,
-            Long resultsdiscussionid,
-            Long judgediscussionid,
-            Long fellowdiscussionid,
-            Long advisordiscussionid,
-            Long groupid
-    ) {
-        this.proposalid = proposalid;
-        this.createdate = createdate;
-        this.updateddate = updateddate;
-        this.currentversion = currentversion;
-        this.authorid = authorid;
-        this.visible = visible;
-        this.discussionid = discussionid;
-        this.resultsdiscussionid = resultsdiscussionid;
-        this.judgediscussionid = judgediscussionid;
-        this.fellowdiscussionid = fellowdiscussionid;
-        this.advisordiscussionid = advisordiscussionid;
-        this.groupid = groupid;
-    }
-
 
     public Long getProposalId() {
         return this.proposalid;

@@ -22,7 +22,7 @@
             .contentBody {margin: auto; width: 1022px;  height: 742px;}
             .treeContainer {height: 542px; overflow-y: scroll;}
             #infoBox {padding: 8px 35px 8px 14px;margin-bottom: 20px;}
-            #innerContent{height: 610px}
+            #innerContent{height: 675px}
             .colFloatLef{float:left}
             #tree-view{width:350px}
             #saveArticle{cursor:pointer}
@@ -324,7 +324,7 @@
                             <div id="tree-view" data-url="${contentEditorListFolderURL}" ><!-- --></div>
                         </div>
                     </div>
-                    <div class="colFloatLef" style="width: 620px;margin-left: 15px;">
+                    <div class="colFloatLef" style="width: 580px;margin-left: 15px;">
                         <div id="article-view">
                             <h3>Page editor</h3>
 

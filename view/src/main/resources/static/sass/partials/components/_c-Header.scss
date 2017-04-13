@@ -320,8 +320,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 }
 
 .c-Header__login__box { //.loginbox
-  width: 274px;
-  padding: 17px 0 10px 13px;
+  padding: 10px 15px;
   background: $c-Header__login__box__background;
   font-size: 14px;
   color: $c-Header__login__box__textColor;
@@ -344,7 +343,8 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 }
 
 .c-Header__login__with { //.loginwith
-  margin-bottom: 25px;
+
+  text-align: center;
 
   img {
     vertical-align: middle;
@@ -354,7 +354,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
 .c-Header__login__with__del { //.loginwith-del
   height: 0;
-  width: 35%;
+  width: 37%;
   border-bottom: 1px solid;
   margin: 8px 4%;
   float: left;

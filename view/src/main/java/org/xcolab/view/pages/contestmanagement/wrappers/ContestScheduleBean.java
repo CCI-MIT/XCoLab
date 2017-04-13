@@ -6,12 +6,11 @@ import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.view.pages.contestmanagement.beans.ContestPhaseBean;
-import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleChangeHelper.IllegalScheduleChangeException;
-import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.xcolab.view.pages.contestmanagement.beans.ContestPhaseBean.CREATE_CONTEST_PHASE_PK;
 
@@ -80,9 +79,7 @@ public class ContestScheduleBean {
         List<Contest> wrappedContestsUsingSchedule = new ArrayList<>();
         List<Contest> contestsUsingSchedule =
                 ContestClientUtil.getContestsByContestScheduleId(scheduleId);
-        for (Contest contest : contestsUsingSchedule) {
-            wrappedContestsUsingSchedule.add((contest));
-        }
+        wrappedContestsUsingSchedule.addAll(contestsUsingSchedule);
         return wrappedContestsUsingSchedule;
     }
 
@@ -114,19 +111,24 @@ public class ContestScheduleBean {
         this.createNew = createNew;
     }
 
+    public boolean isUsedInNonEmptyContest() {
+        return contestSchedule.isUsedInNonEmptyContest();
+    }
+
+    public boolean areContestsCompatibleWithSchedule() {
+        List<ContestPhase> schedulePhases = getSchedulePhases().stream()
+                .map(ContestPhaseBean::getContestPhase)
+                .collect(Collectors.toList());
+
+        return ContestClientUtil.getContestsByContestScheduleId(getScheduleId())
+                .stream()
+                .allMatch(contest -> contest.isCompatibleWithSchedulePhases(schedulePhases));
+    }
+
     public void persist() {
         removeEmptyContestPhases();
         if (createNew) {
             createNewScheduleFromExistingSchedule();
-        } else {
-            //TODO: once we improve the algorithm we don't have to fail here anymore
-            List<Contest> contestsUsingScheduleId = ContestClientUtil
-                    .getContestsByContestScheduleId(getScheduleId());
-            for (Contest contest : contestsUsingScheduleId) {
-                if (!ContestScheduleUtil.isBlankContest(contest)) {
-                    throw new IllegalScheduleChangeException(contest, getScheduleId());
-                }
-            }
         }
         persistUpdatedSchedule();
     }
@@ -175,7 +177,7 @@ public class ContestScheduleBean {
         List<Contest> contestsUsingScheduleId = ContestClientUtil
                 .getContestsByContestScheduleId(contestScheduleId);
         for (Contest contest : contestsUsingScheduleId) {
-            ContestScheduleUtil.changeScheduleForContest(contest, contestScheduleId);
+            contest.changeScheduleTo(contestScheduleId);
         }
 
     }

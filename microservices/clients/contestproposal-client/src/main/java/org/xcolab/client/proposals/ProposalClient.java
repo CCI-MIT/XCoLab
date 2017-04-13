@@ -47,7 +47,7 @@ public final class ProposalClient {
     private final RestResource1<ProposalVersionDto, Long> proposalVersionResource;
     private final RestResource1<ProposalReferenceDto, Long> proposalReferenceResource;
 
-    private final RestResource<GroupDto,Long> groupResource;
+    private final RestResource<GroupDto, Long> groupResource;
 
     //TODO: methods that use this should be in the service!
     private final ContestClient contestClient;
@@ -406,6 +406,7 @@ public final class ProposalClient {
 
     public void unsubscribeMemberFromProposal(long proposalId, long userId) {
         unsubscribeMemberFromProposal(proposalId, userId, false);
+
     }
 
     private void unsubscribeMemberFromProposal(long proposalId, long userId, boolean automatic) {

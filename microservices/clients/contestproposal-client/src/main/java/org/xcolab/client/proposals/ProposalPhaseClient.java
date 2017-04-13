@@ -59,7 +59,7 @@ public final class ProposalPhaseClient {
                 .executeWithResult()
                 .getOneIfExists();
         if (dto == null) {
-            throw new Proposal2PhaseNotFoundException(proposalId);
+            throw new Proposal2PhaseNotFoundException(proposalId, contestPhaseId);
         }
         return dto.toPojo(proposalService);
     }

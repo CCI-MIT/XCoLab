@@ -8,6 +8,9 @@ import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.search.pojo.SearchPojo;
 
 public class DiscussionSearchItem extends AbstractSearchItem {
@@ -44,7 +47,21 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     @Override
     public String getLinkUrl() {
-        return thread.getLinkUrl();
+        String ret = thread.getLinkUrl();
+        if (ret == null) {
+            Long propId = ThreadClientUtil.getProposalIdForThread(thread.getThreadId());
+            if (propId != null) {
+                ret = ProposalClientUtil.getProposal(propId).getProposalDiscussionUrl();
+            } else {
+                Contest contest = ContestClientUtil.getContestByThreadId(thread.getThreadId());
+                if (contest != null) {
+                    ret = contest.getContestDiscussionLinkUrl();
+                } else {
+                    ret = "";
+                }
+            }
+        }
+        return ret;
     }
 
     @Override

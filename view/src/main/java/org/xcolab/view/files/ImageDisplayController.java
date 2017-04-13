@@ -3,8 +3,11 @@ package org.xcolab.view.files;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
@@ -19,6 +22,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +39,12 @@ public class ImageDisplayController {
     public ImageDisplayController(Environment env) {
         fileUploadPath = env.getProperty("files.upload.dir");
         isProduction = "production".equals(env.getProperty("environment"));
+    }
+
+    @GetMapping("/image/contest/{imageId}")
+    public void serveImage(HttpServletRequest request, HttpServletResponse response,
+            @PathVariable long imageId) throws IOException {
+        serveImage(request, response, imageId, null, null, DefaultImage.CONTEST);
     }
 
     @GetMapping({"/image/{whatever}", "/image"})
@@ -130,6 +140,8 @@ public class ImageDisplayController {
             }
             out.close();
             in.close();
+            response.setHeader(HttpHeaders.CACHE_CONTROL,
+                    CacheControl.maxAge(7, TimeUnit.DAYS).getHeaderValue());
             return;
         } catch (IOException ignored) {
 

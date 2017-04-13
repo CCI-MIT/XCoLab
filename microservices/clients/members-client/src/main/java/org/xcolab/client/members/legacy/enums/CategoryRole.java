@@ -6,6 +6,7 @@ public enum CategoryRole {
     JUDGE(10l, MemberRole.JUDGE,true),
     FELLOW(14l, MemberRole.FELLOW,true),
     IMPACT_FELLOW(15l,MemberRole.IMPACT_ASSESSMENT_FELLOW,true),
+    CATALYST(16l,MemberRole.CATALYST,false),
     EXPERT_ADVISORY(3l,null,false),
     EXPERT_COUNCIL(4l,null,false),
     TEAM(5l,null,false),//MemberRole.STAFF has dummy entries, the staff table has all staff

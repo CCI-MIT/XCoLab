@@ -21,16 +21,16 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
-import org.xcolab.view.util.entity.EntityIdListUtil;
-import org.xcolab.view.util.entity.enums.ContestPhaseTypeValue;
+import org.xcolab.entity.utils.email.ContestPhasePromotionEmail;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
-import org.xcolab.view.pages.proposals.utils.ContestPhasePromotionEmail;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.view.pages.proposals.wrappers.ProposalsPreferencesWrapper;
+import org.xcolab.view.util.entity.EntityIdListUtil;
+import org.xcolab.view.util.entity.enums.ContestPhaseTypeValue;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
@@ -115,7 +115,7 @@ public class ProposalsPreferencesController {
         for (Integer phaseId : phaseIds) {
             ContestPhase contestPhase = ContestClientUtil.getContestPhase(phaseId.longValue());
             for (Proposal proposal : ProposalsContextUtil.getClients(request).getProposalClient().getProposalsInContestPhase(phaseId.longValue())) {
-                ContestPhasePromotionEmail.contestPhasePromotionEmailNotifyProposalContributors(proposal, contestPhase, request);
+                ContestPhasePromotionEmail.contestPhasePromotionEmailNotifyProposalContributors(proposal, contestPhase);
             }
         }
     }

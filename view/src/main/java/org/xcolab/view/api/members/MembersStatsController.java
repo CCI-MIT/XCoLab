@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 
 import java.util.List;
@@ -19,13 +18,13 @@ public class MembersStatsController {
 
     @GetMapping
     public MembersStats getStats(Member loggedInMember) {
-        if (PermissionsClient.canAdminAll(loggedInMember)) {
+//        if (PermissionsClient.canAdminAll(loggedInMember)) {
             List<Member> members = MembersClient.listAllMembers();
             final Map<String, Long> countryCounts = members.stream()
                     .filter(member -> StringUtils.isNotBlank(member.getCountry()))
                     .collect(Collectors.groupingBy(Member::getCountry, Collectors.counting()));
             return new MembersStats(members.size(), countryCounts);
-        }
-        return null;
+//        }
+//        return null;
     }
 }

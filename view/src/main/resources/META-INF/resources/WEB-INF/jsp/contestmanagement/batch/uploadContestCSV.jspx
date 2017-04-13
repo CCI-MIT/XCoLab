@@ -18,7 +18,7 @@
     <script>
         var validateOntologyTermsURL = '${validateOntologyTermsURL}';
     </script>
-    <div class="cmsDetailsBox">
+    <div class="c-ContentBox">
 
         <p>*Be sure to click <strong>Create all contests above</strong> before exiting this page or your content may be lost.</p>
 
@@ -358,7 +358,7 @@
                     ]]>
                 </script>
             </div>
-            <div class="cmsDetailsBox" style="display: none" id="cvsContainer">
+            <div class="c-ContentBox" style="display: none" id="cvsContainer">
                 <table>
                     <thead>
                         <tr><th>Contest short name</th><th>Contest question </th><th>Ontology terms</th></tr>
