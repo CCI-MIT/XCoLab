@@ -1,3 +1,5 @@
+var numberOfSeconds = 5;
+
 var rotator = function(){
 
     $.ajax({
@@ -9,22 +11,20 @@ var rotator = function(){
             var cookieID = getCookie("notificationID");
 
             var obj = JSON.parse(result);
-            //alert(obj.notificationId);
-            //alert(obj.notificationText);
+
             if(obj.notificationId != cookieID)
             {
-                noty({text: obj.notificationId, type: 'success'})
+                noty({text: obj.notificationText, type: 'success'})
                 setCookie("notificationID", obj.notificationId, 1)
-            }
 
-        },
+            }         },
         error: function (result) {
-            alert("Error");
+            //alert("Error");
         }
     });
 
 
-    setTimeout(rotator,5000);
+    setTimeout(rotator, numberOfSeconds*1000);
 
     function setCookie(cname, cvalue, exdays) {
         var d = new Date();
@@ -61,5 +61,6 @@ var rotator = function(){
     }
 
 };
+
 
 rotator();

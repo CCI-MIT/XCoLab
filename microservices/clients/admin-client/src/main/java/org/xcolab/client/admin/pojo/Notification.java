@@ -20,6 +20,25 @@ public class Notification  implements Serializable {
     private long notificationId;
     private String notificationText;
 
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    private Date beginTime;
+    private Date endTime;
+
     public static final TypeProvider<Notification> TYPES =
             new TypeProvider<>(Notification.class,
                     new ParameterizedTypeReference<List<Notification>>() {
@@ -40,5 +59,10 @@ public class Notification  implements Serializable {
     public void setNotificationText(String notificationText) {
         this.notificationText = notificationText;
     }
+
+    public boolean isExpired() {
+        return endTime.after(new Date());
+    }
+
 
 }

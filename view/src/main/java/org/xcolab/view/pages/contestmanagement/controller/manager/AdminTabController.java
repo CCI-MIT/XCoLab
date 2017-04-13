@@ -6,9 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.admin.AdminClient;
+import org.xcolab.client.admin.pojo.Notification;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
@@ -72,6 +75,16 @@ public class AdminTabController extends AbstractTabController {
         }
         setPageAttributes(request, model, tab);
         model.addAttribute("votingReportBean", new VotingReportBean());
+
+        List<Notification> list = null;
+        try {
+            list = AdminClient.getNotifications();
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("listOfNotifications", list);
+
+
         return TAB_VIEW;
     }
 

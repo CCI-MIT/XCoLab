@@ -12,6 +12,10 @@ public class Notification{
     private long notificationId;
     private String notificationText;
 
+
+    private Date beginTime;
+    private Date endTime;
+
     public long getNotificationId() {
         return notificationId;
     }
@@ -28,4 +32,24 @@ public class Notification{
         this.notificationText = notificationText;
     }
 
+
+    public Date getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public boolean isExpired() {
+            return endTime.before(new Date());
+    }
 }
