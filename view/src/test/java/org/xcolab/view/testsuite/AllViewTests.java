@@ -11,7 +11,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import org.xcolab.view.pages.loginregister.ForgotPasswordTest;
 import org.xcolab.view.pages.loginregister.MainViewController;
+import org.xcolab.view.pages.loginregister.MainViewTest;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
@@ -35,12 +37,13 @@ import org.xcolab.view.pages.loginregister.MainViewController;
         org.xcolab.client.members.MembersClient.class,
         org.xcolab.client.admin.EmailTemplateClientUtil.class,
         org.xcolab.client.emails.EmailClient.class,
-        org.xcolab.client.activities.helper.ActivityEntryHelper.class
+        org.xcolab.client.activities.helper.ActivityEntryHelper.class,
+        org.xcolab.client.members.MessagingClient.class
 })
 
 @SuiteClasses({
-        MyClassTest.class,
-        MySecondClassTest.class })
+        ForgotPasswordTest.class,
+        MainViewTest.class })
 public class AllViewTests {
 
 }

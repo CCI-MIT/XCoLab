@@ -26,9 +26,11 @@ import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
+import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
 import org.xcolab.view.util.TestUtil;
 
@@ -74,7 +76,8 @@ import static org.mockito.Matchers.anyString;
         org.xcolab.client.members.MembersClient.class,
         org.xcolab.client.admin.EmailTemplateClientUtil.class,
         org.xcolab.client.emails.EmailClient.class,
-        org.xcolab.client.activities.helper.ActivityEntryHelper.class
+        org.xcolab.client.activities.helper.ActivityEntryHelper.class,
+        org.xcolab.client.members.MessagingClient.class
 })
 
 public class MainViewTest {
@@ -95,8 +98,11 @@ public class MainViewTest {
         PowerMockito.mockStatic(EmailClient.class);
         PowerMockito.mockStatic(ActivityEntryHelper.class);
 
-        MembersClientMockerHelper.mockMembersClient();
+        PowerMockito.mockStatic(MessagingClient.class);
 
+        MembersClientMockerHelper.mockMembersClient();
+        AdminClientMockerHelper.mockAdminClient();
+        EmailTemplateClientMockerHelper.mockEmailTemplateClient();
 
         Mockito.when(ContestClientUtil.getAllContestTypes()).thenReturn(
                 new ArrayList()

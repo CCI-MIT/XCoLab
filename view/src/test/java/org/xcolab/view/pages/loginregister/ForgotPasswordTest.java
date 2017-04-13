@@ -22,20 +22,14 @@ import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.sharedcolab.SharedColabClient;
-import org.xcolab.entity.utils.notifications.member.MemberForgotPasswordNotification;
 import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.view.util.AlertMessageMockHelper;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
-import org.xcolab.view.util.entity.flash.AlertMessage;
 
-import javax.servlet.http.HttpSession;
-
-import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 
 @RunWith(PowerMockRunner.class)
@@ -61,7 +55,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         org.xcolab.client.admin.EmailTemplateClientUtil.class,
         org.xcolab.client.emails.EmailClient.class,
         org.xcolab.client.activities.helper.ActivityEntryHelper.class,
-        org.xcolab.view.util.entity.flash.AlertMessage.class
+        org.xcolab.view.util.entity.flash.AlertMessage.class,
+        org.xcolab.client.members.MessagingClient.class
 
 })
 
@@ -84,6 +79,7 @@ public class ForgotPasswordTest {
         PowerMockito.mockStatic(EmailTemplateClientUtil.class);
         PowerMockito.mockStatic(EmailClient.class);
         PowerMockito.mockStatic(ActivityEntryHelper.class);
+        PowerMockito.mockStatic(MessagingClient.class);
 
         MembersClientMockerHelper.mockMembersClient();
         AdminClientMockerHelper.mockAdminClient();
