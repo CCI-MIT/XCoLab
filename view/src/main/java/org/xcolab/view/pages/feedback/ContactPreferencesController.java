@@ -37,7 +37,7 @@ public class ContactPreferencesController {
             Model model, ContactPreferences preferences)
             throws  IOException {
         preferences.save();
-        AlertMessage.success("Feedback page preferences has been saved.").flash(request);
+
         return "feedback/editPreferences";
 	}
 

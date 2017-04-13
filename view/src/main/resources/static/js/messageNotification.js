@@ -1,36 +1,66 @@
-var intervalMinutes = 10;
-var interval = intervalMinutes * 60 * 1000;
+var numberOfSeconds = 5;
 
-$().ready(function() {
-    if ($('#userPopupTrigger').length > 0) {
-        setTimeout(extendSession() ,interval);
+var rotator = function(){
+
+    $.ajax({
+        type: "GET",
+        url: "/notificationMessage",
+        data: null,
+        success: function (result) {
+
+            var cookieID = getCookie("notificationID");
+
+            var obj = JSON.parse(result);
+
+            if(obj.notificationId != cookieID)
+            {
+                noty({text: obj.notificationText, type: 'success'})
+                setCookie("notificationID", obj.notificationId, 1)
+
+            }         },
+        error: function (result) {
+            //alert("Error");
+        }
+    });
+
+
+    setTimeout(rotator, numberOfSeconds*1000);
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
     }
-});
 
-function extendSession(){
-    try { if ('noWarning' == mySessionRenewAtWarning()) { mySessionRenew(); } } catch(e) {}
-}
-//Closes the warning by invoking the click event of extend button...
-function mySessionRenewAtWarning(){
-    var jqryWarn = new jQuery;
-    var warnElm = jqryWarn.find('.popup-alert-notice');
-    if (warnElm.length > 0) {
-        // Match content of warning with session expiration warning language
-        if (Liferay.Language.get('warning-your-session-will-expire').indexOf(warnElm[0].firstChild.nodeValue) == 0) {
-            // click the extend button
-            warnElm.find('.popup-alert-close').click();
-            return true;
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function checkCookie() {
+        var user = getCookie("username");
+        if (user != "") {
+            alert("Welcome again " + user);
+        } else {
+            user = prompt("Please enter your name:", "");
+            if (user != "" && user != null) {
+                setCookie("username", user, 365);
+            }
         }
     }
-    return "noWarning";
-}
 
-// Extends the session and resets the client timer
-function mySessionRenew() {
-    if (Liferay.Session._stateCheck) {
-        window.clearTimeout(Liferay.Session._stateCheck);
-        Liferay.Session._stateCheck = null;
-    }
-    Liferay.Session.autoExtent = true;
-    Liferay.Session.extend();
-}
+};
+
+
+rotator();
