@@ -125,6 +125,47 @@
                 </c:if>
 
 
+                <div class="c-Headline propsubhead">
+                    <h2>
+                        <span>${fn:length(listOfLinkedProposals)}</span> ${fn:length(listOfLinkedProposals) == 1 ? 'Linked Proposal' : 'Linked Proposals' }
+                    </h2>
+                </div>
+                <c:if test="${not empty listOfLinkedProposals }">
+
+                    <table class="contributors">
+                        <tr class="${(status.index) mod 2 > 0 ? 'even' : 'odd'}">
+                            <td><h4>Proposal Name</h4></td>
+                            <td>
+                                <h4>Author/s</h4>
+                            </td>
+                        </tr>
+                        <c:forEach var="contributingProposals" items="${mapOfContributingProposals}" varStatus="status">
+                            <tr class="${(status.index) mod 2 > 0 ? 'odd' : 'even'}">
+                                <td><h5><a href="${contributingProposals.key.proposalUrl}">${contributingProposals.key.name}</a></h5></td>
+                                <td>
+                                    <table class="contributors2">
+
+                                        <c:forEach var="contributingMember" items="${contributingProposals.value}" varStatus="statusMember">
+                                            <proposalsPortlet:userLinkSimple userId="${contributingMember.userId}" text="${contributingMember.screenName}" />
+                                            <c:if test="${fn:length(contributingProposals.value) != 1 and statusMember.index+1 != fn:length(contributingProposals.value)}">, </c:if>
+                                        </c:forEach>
+
+                                    </table>
+
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </table>
+                </c:if>
+                <c:if test="${empty listOfLinkedProposals}">
+                    <table class="contributors">
+                        <tr class="${(status.index / 2) mod 2 > 0 ? 'even' : 'odd'}">
+                            <td><h5>No Linked Proposals found!</h5></td>
+                        </tr>
+                    </table>
+                </c:if>
+
+
 
 
 
