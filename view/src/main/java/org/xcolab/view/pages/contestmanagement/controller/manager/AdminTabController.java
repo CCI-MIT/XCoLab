@@ -7,16 +7,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-<<<<<<< HEAD
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.pojo.Notification;
-=======
 import org.xcolab.client.activities.ActivitiesClientUtil;
->>>>>>> 069a5fea98b4e1d13c6dc620b80e3a649397a10c
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
@@ -81,11 +75,7 @@ public class AdminTabController extends AbstractTabController {
         }
         setPageAttributes(request, model, tab);
         model.addAttribute("votingReportBean", new VotingReportBean());
-<<<<<<< HEAD
-
-=======
         
->>>>>>> 069a5fea98b4e1d13c6dc620b80e3a649397a10c
         List<Notification> list = null;
         try {
             list = AdminClient.getNotifications();
@@ -94,11 +84,7 @@ public class AdminTabController extends AbstractTabController {
         }
         model.addAttribute("listOfNotifications", list);
 
-<<<<<<< HEAD
-
-=======
         
->>>>>>> 069a5fea98b4e1d13c6dc620b80e3a649397a10c
         return TAB_VIEW;
     }
 
