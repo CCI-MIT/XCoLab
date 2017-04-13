@@ -47,7 +47,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 public class NotificationController {
-    @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm")
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 
     public static int notificationCounter = 0;
 
@@ -71,8 +72,9 @@ public class NotificationController {
             return null;
 
         } catch (Exception e) {
-             AlertMessage.danger("Sorry. Notification cannot be Deleted Successfully!").flash(request);
-             response.sendRedirect("/admin/contest/manager/tab/ADMIN");
+            AlertMessage.danger("Sorry. Notification cannot be Deleted Successfully!")
+                    .flash(request);
+            response.sendRedirect("/admin/contest/manager/tab/ADMIN");
 
             e.printStackTrace();
             return null;
@@ -80,18 +82,14 @@ public class NotificationController {
     }
 
 
-
     @RequestMapping(value = "/notificationMessage", method = RequestMethod.GET)
     public String showNotification(HttpServletRequest request,
-            HttpServletResponse response) throws IOException
-    {
+            HttpServletResponse response) throws IOException {
 
         try {
             List<Notification> list = AdminClient.getNotifications();
 
-            if(list!=null && !list.isEmpty()) {
-                //System.out.println("GET: " + list.get(0).getNotificationText());
-
+            if (list != null && !list.isEmpty()) {
                 JSONObject responseJSON = new JSONObject();
 
 
@@ -101,9 +99,6 @@ public class NotificationController {
                 responseJSON.put("notificationText", chosenNoti.getNotificationText());
                 responseJSON.put("success", true);
                 response.getOutputStream().write(responseJSON.toString().getBytes());
-                 //System.out.println("Getting Notifs: On top of list is: " + list.get(list.size() - 1).getNotificationText());
-            }else {
-                //System.out.println("Notifications Controller: Getting Notifs: List is empty ");
             }
             return null;
 
@@ -120,7 +115,7 @@ public class NotificationController {
     @RequestMapping(value = "/notificationMessageGET", method = RequestMethod.POST)
     public String saveNotification(HttpServletRequest request,
             HttpServletResponse response, @RequestParam String notificationText,
-             @RequestParam String expiretime)
+            @RequestParam String expiretime)
             throws IOException, ParseException {
 
         long memberId = MemberAuthUtil.getMemberId(request);
@@ -130,26 +125,27 @@ public class NotificationController {
 
 
         try {
-            //System.out.println("STRINGS NotificationController.java: BeginTime:"+new Date() + " ExpireTime:"+expiretime);
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
-            expiretime = expiretime.replace("T"," ");
+            expiretime = expiretime.replace("T", " ");
 
-            if(expiretime.length()<"yyyy-MM-dd hh:mm:ss".length())
+            if (expiretime.length() < "yyyy-MM-dd hh:mm:ss".length()) {
                 expiretime = expiretime + ":00";
+            }
 
 
             Date beginDate = new Date();
             Date endDate = formatter.parse(expiretime);
 
-            if(endDate.before(new Date()))
-            {
-                AlertMessage.danger("Expiry date cannot be in the past. Notification will not be saved!").flash(request);
+            if (endDate.before(new Date())) {
+                AlertMessage
+                        .danger("Expiry date cannot be in the past. Notification will not be "
+                                + "saved!")
+                        .flash(request);
                 response.sendRedirect("/admin/contest/manager/tab/ADMIN");
                 return null;
             }
-            //System.out.println("OBJECTS NotificationController.java: BeginTime:"+beginDate + " ExpireTime:"+endDate);
 
             List<Notification> list = AdminClient.getNotifications();
             Date now = new Date();
@@ -161,9 +157,6 @@ public class NotificationController {
 
             AdminClient.setNotifications(newNotification);
             list = AdminClient.getNotifications();
-            //System.out.println("POST DONE. List now has members: "+ list.size());
-            //if(list.size()!=0)
-            //System.out.println("Setting Notifs: On top of list is: "+ list.get(list.size()-1).getNotificationText());
 
             AlertMessage.success("Notification Created Successfully!").flash(request);
             response.sendRedirect("/admin/contest/manager/tab/ADMIN");
@@ -172,13 +165,13 @@ public class NotificationController {
 
         } catch (EntityNotFoundException e) {
 
-            AlertMessage.danger("Sorry. Notification cannot be created at the moment!").flash(request);
+            AlertMessage.danger("Sorry. Notification cannot be created at the moment!")
+                    .flash(request);
             response.sendRedirect("/admin/contest/manager/tab/ADMIN");
 
             e.printStackTrace();
             return null;
         }
     }
-
 
 }
