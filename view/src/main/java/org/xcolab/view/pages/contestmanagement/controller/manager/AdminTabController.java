@@ -75,6 +75,16 @@ public class AdminTabController extends AbstractTabController {
         }
         setPageAttributes(request, model, tab);
         model.addAttribute("votingReportBean", new VotingReportBean());
+        
+        List<Notification> list = null;
+        try {
+            list = AdminClient.getNotifications();
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("listOfNotifications", list);
+
+        
         return TAB_VIEW;
     }
 
