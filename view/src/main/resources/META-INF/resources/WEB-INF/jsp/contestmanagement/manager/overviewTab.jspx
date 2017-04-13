@@ -178,10 +178,10 @@
 									<!--<collab:contestLink contest="${contestWrapper}" />-->
 								</td>
 								<td >${contestWrapper.activePhase.name}</td>
-								<td><form:checkbox path="contestWrappers[${x.index}].contestActive" disabled="true" /></td>
-								<td><form:checkbox path="contestWrappers[${x.index}].contestPrivate" disabled="true" /></td>
-								<td><form:checkbox path="contestWrappers[${x.index}].featured" disabled="true" /></td>
-								<td><form:checkbox path="subscribedToContest[${x.index}]" disabled="true" /></td>
+								<td><form:checkbox path="contestWrappers[${x.index}].contestActive" disabled="false" onclick="processCheckBox()"/></td>
+								<td><form:checkbox path="contestWrappers[${x.index}].contestPrivate" disabled="false"  onclick="processCheckBox()"/></td>
+								<td><form:checkbox path="contestWrappers[${x.index}].featured" disabled="false"  onclick="processCheckBox()"/></td>
+								<td><form:checkbox path="subscribedToContest[${x.index}]" disabled="false"  onclick="processCheckBox()"/></td>
 								<td>${fn:length(contestWrapper.contestJudges)} </td>
 								<td>${fn:length(contestWrapper.contestAdvisors)} </td>
 								<td>${fn:length(contestWrapper.contestFellows)} </td>
@@ -218,6 +218,12 @@
 			bindFilterSelectChange();
 			bindDragDropEvents();
 		});
+
+        function processCheckBox()
+        {
+            document.getElementById("editForm").submit();
+        }
+
 
 		function bindMassActionChange(){
 
