@@ -13,7 +13,6 @@
 
         <xcolab:script src="/js/lib/ckeditor/ckeditor.js" />
 
-        <!-- TODO: a lot of this is currently duplicated on other pages (this snippet is from contest-manager.js) -->
         <!-- TODO: split CKEditor initialization (on demand) and dirty check (always)-->
         <script type="text/javascript">
         <![CDATA[

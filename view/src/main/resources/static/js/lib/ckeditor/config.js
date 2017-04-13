@@ -19,8 +19,10 @@ CKEDITOR.editorConfig = function( config )
     config.toolbarCanCollapse = false;
     config.contentsCss = '/css/themes/climateColab/main.css';
     config.resize_enabled = 'true';
-    config.extraPlugins = 'resize,proposalLink,scayt,menubutton,dialog';
-    config.scayt_autoStartup = true;
+    config.extraPlugins = 'resize,proposalLink,menubutton,dialog';
+    config.scayt_autoStartup = false;
+    config.disableNativeSpellChecker = false;
+    config.removePlugins = 'scayt';
 };
 CKEDITOR.pasteFilterConfig = {
 };
