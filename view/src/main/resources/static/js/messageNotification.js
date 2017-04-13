@@ -1,4 +1,5 @@
-var numberOfSeconds = 5;
+var numberOfMinutes = 3;
+var numberOfSeconds = numberOfMinutes*60;
 
 var rotator = function(){
 
@@ -17,7 +18,7 @@ var rotator = function(){
                 noty({text: obj.notificationText, type: 'success'})
                 setCookie("notificationID", obj.notificationId, 1)
 
-            }         },
+            } },
         error: function (result) {
             //alert("Error");
         }
