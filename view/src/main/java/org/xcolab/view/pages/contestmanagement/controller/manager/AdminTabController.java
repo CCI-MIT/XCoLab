@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.admin.AdminClient;
+import org.xcolab.client.admin.pojo.Notification;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
@@ -29,6 +32,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 
 @Controller
 @RequestMapping("/admin/contest/manager")
