@@ -64,11 +64,10 @@ public class ContestsIndexController extends BaseProposalsController {
 
         if (contestType.getSuggestionContestId() > 0) {
             try {
-                System.out.println("Suggestion Contest Id : (" + contestType.getSuggestionContestId() + ")");
                 Contest c = ContestClientUtil.getContest(contestType.getSuggestionContestId());
                 String link = c.getContestLinkUrl();
                 model.addAttribute("suggestionContestLink", link);
-            }catch (ContestNotFoundException ignored){
+            } catch (ContestNotFoundException ignored) {
 
             }
         }
