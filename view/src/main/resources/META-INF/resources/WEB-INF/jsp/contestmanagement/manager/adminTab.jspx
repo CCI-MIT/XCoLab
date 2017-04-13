@@ -54,6 +54,99 @@
         </div>
         <br/>
         <br/>
+                <div class="addpropbox">
+                <h2>Notifications</h2> <br/>
+                <form:form action="/notificationMessageGET" commandName="votingReportBean"
+                           id="votingReportForm" method="POST">
+                    <label for="votingPhaseIds">Please use this form to add notifications in the system:</label>
+                    <br/><br/>
+                    <p>
+                        <strong class="inputTitleLeft">Notification Text:</strong>
+                        <input type="text"  class="wideLargeInput" name="notificationText"></input><br/>
+                    </p>
+
+                    <!--<p>
+                        Begin Notification at this time: (date and time):
+                         <input type="datetime-local" name="begintime" step="1"></input><br/>
+                    </p>-->
+                    <p>
+                        <strong class="inputTitleLeft">Expire Notification at this time: (date and time): </strong>
+                        <input type="datetime-local" name="expiretime" step="1"></input><br/>
+                        <br/>
+                        <input type="hidden"
+                               name="${_csrf.parameterName}"
+                               value="${_csrf.token}"/>
+                    </p>
+                    <button type="submit" class="c-Button__primary">Add Notification</button>
+                </form:form>
+
+                <form action="/notificationMessageDelete" id="deleteNotificationForm" method="post" style="visibility: hidden;" >
+                    <input type="hidden" id = "notificationId" name="notificationId"/>
+                </form>
+
+
+                <c:if test="${not empty listOfNotifications}">
+                    <div class="div2"><!--  --></div>
+                    <h2>List of Notifications</h2>
+                    <h6>To send next pending notification, delete the currently active notification or wait for it to expire automatically.</h6>
+                    <c:forEach var="notification" items="${listOfNotifications}" varStatus="status">
+                        <table class="colab">
+                            <tbody>
+                                <tr class="colabRow">
+                                    <td>
+                                        <h5><b>Text: ${notification.notificationText}</b></h5>
+                                        <c:choose>
+                                            <c:when  test="${status.index == 0}">
+                                                Status: (Currently Active Globally )
+                                            </c:when>
+                                            <c:otherwise>
+                                                Status: (Pending Global Delivery)
+                                            </c:otherwise>
+                                        </c:choose>
+
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <h5>ID: ${notification.notificationId} </h5>
+                                    </td>
+                                </tr>
+                                <tr class="colabRow">
+                                    <td>
+                                        <h5>Created On: ${notification.beginTime}</h5>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <h5>Expires On: ${notification.endTime}</h5>
+                                        <button type="submit" class="c-Button__primary" onClick="deleteNotification(${notification.notificationId})">Delete Notification</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </c:forEach>
+
+
+
+                    <script>
+                        <![CDATA[
+
+                        function deleteNotification(notificationId) {
+                            document.getElementById('notificationId').value = notificationId;
+                            document.getElementById('deleteNotificationForm').submit();
+                        }
+
+                        ]]>
+                    </script>
+
+
+
+                </c:if>
+                <c:if test="${empty listOfNotifications}">
+                    <h5><br />No Notifications found! You can schedule one using the form above! </h5>
+                </c:if>
+                <div class="div2"><!--  --></div>
+
+            </div>
+            <br/>
+            <br/>
+            
         <div class="addpropbox">
             <h2>Activities CSV export</h2>
             <form action="/admin/contest/manager/tab/ADMIN/exportActivities" method="post">
