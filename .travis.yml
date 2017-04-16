@@ -24,7 +24,7 @@ addons:
 install: true
 
 script:
-- scripts/travis/deploy.sh
+- scripts/travis/build.sh
 
 after_success:
 - scripts/travis/after_script.sh
@@ -32,15 +32,6 @@ after_success:
 deploy:
 - provider: script
   skip_cleanup: true
-  script: rsync -r --delete-after --quiet binaries travis@cognosis.mit.edu:homolog
+  script: scripts/travis/deploy.sh
   on:
-    branch: homolog
-- provider: script
-  skip_cleanup: true
-  script: rsync -r --delete-after --quiet binaries travis@cognosis.mit.edu:$TRAVIS_BRANCH
-  on: /^deploy-.*$/
-- provider: script
-  skip_cleanup: true
-  script: rsync -r --delete-after --quiet binaries travis@cognosis.mit.edu:master
-  on:
-    branch: master
+    all_branches: true
