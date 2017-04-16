@@ -37,6 +37,10 @@ deploy:
     branch: homolog
 - provider: script
   skip_cleanup: true
+  script: rsync -r --delete-after --quiet binaries travis@cognosis.mit.edu:$TRAVIS_BRANCH
+  on: /^deploy-.*$/
+- provider: script
+  skip_cleanup: true
   script: rsync -r --delete-after --quiet binaries travis@cognosis.mit.edu:master
   on:
     branch: master
