@@ -18,6 +18,7 @@ function loadProposals(){
     spinner.spin(document.getElementById('proposalPickerTableContainer'));
     var URL = replaceURLPlaceholders(proposalPickerURL);
     $.getJSON(URL, { get_param: 'value' }, function(data) {
+        $('#numberOfProposals').html(data.totalCount);
     	$("#proposalPicker_proposalsContainer").empty();
         $('#proposalPickerTable').find('> tbody').empty();
         var even = true;
@@ -39,6 +40,7 @@ function loadContests(){
     
     $.getJSON(URL, { get_param: 'value' }, function(data) {
         contests = data.contests;
+        $('#numberOfContests').html(data.totalNumberOfContests);
         $('#proposalPickerTable').find('> tbody').empty();
         var even = true;
         var container = $("#proposalPicker_contestsContainer");
@@ -63,8 +65,6 @@ function updateTabRibbons(){
     $.getJSON(URL, { get_param: 'value' }, function(data) {
         $('#numberOfContests').html(data.numberOfContests);
         $('#numberOfProposals').html(data.numberOfProposals);
-        $('#numberOfSubscriptions').html(data.numberOfSubscriptions);
-        $('#numberOfSupporting').html(data.numberOfSupporting);
         $('#numberOfSubscriptionsSupporting').html(data.numberOfSubscriptionsSupporting);
     });
 }
