@@ -67,7 +67,7 @@ public class ProposalPickerJSONController {
             case "ALL":
             case "CONTESTS":
                 proposals = ProposalPickerFilterUtil
-                    .getFilteredAllProposals(filterText, sectionId, contestPK);
+                    .getFilteredAllProposals(filterText, filterType, sectionId, contestPK, request);
                 break;
             default:
                 _log.error("Proposal picker was loaded with unknown requestType {}", requestType);
@@ -137,7 +137,7 @@ public class ProposalPickerJSONController {
         long memberId = MemberAuthUtil.getMemberId(request);
 
         int numberOfProposals = ProposalPickerFilterUtil
-            .getFilteredAllProposals(filterKey, sectionId, 0L).size();
+            .getFilteredAllProposals("", filterKey, sectionId, 0L, request).size();
         int numberOfSubscriptionsSupporting = ProposalPickerFilterUtil
             .getFilteredSubscribedSupportingProposalsForUser(memberId, filterKey, sectionId,
                 request).size();

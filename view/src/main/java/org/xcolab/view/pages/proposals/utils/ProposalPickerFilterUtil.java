@@ -21,7 +21,6 @@ import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 
 import java.util.ArrayList;
@@ -47,52 +46,6 @@ public class ProposalPickerFilterUtil {
         } else {
             ProposalPickerFilter.ACCEPT_ALL.filter(proposals);
         }
-    }
-
-    public static List<Contest> getFilteredContests(
-            long sectionId, HttpServletRequest request, ProposalsContext proposalsContext) {
-        List<Contest> contests = ProposalPickerFilterUtil.getAllContests();
-        ProposalPickerFilterUtil
-                .filterContests(contests, sectionId, request, proposalsContext);
-        return contests;
-    }
-
-    private static List<Contest> getAllContests() {
-        return new ArrayList<>(ContestClientUtil.getAllContests());
-    }
-
-    public static void filterContests(List<Contest> contests, long sectionId,
-        HttpServletRequest request, ProposalsContext proposalsContext) {
-        PlanSectionDefinition planSectionDefinition =
-                PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
-        ProposalPickerFilter.CONTEST_TYPE_FILTER
-                .filterContests(contests, planSectionDefinition.getAllowedContestTypeIds());
-
-        List<Long> alwaysIncludedContestIds = planSectionDefinition.getAdditionalIdsAsList();
-
-        final long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();
-        final long contestFocusAreaId;
-        if (request != null) {
-            Contest contest = proposalsContext.getContest(request);
-            contestFocusAreaId = contest.getFocusAreaId();
-        } else {
-            contestFocusAreaId = 0;
-        }
-
-        _log.debug(String.format("%d contests before filtering", contests.size()));
-        final SectionDefFocusAreaArgument sectionDefFocusAreaArgument =
-                new SectionDefFocusAreaArgument(sectionFocusAreaId,
-                        contestFocusAreaId, alwaysIncludedContestIds);
-
-        ProposalPickerFilter.SECTION_DEF_FOCUS_AREA_FILTER.filterContests(contests,
-                sectionDefFocusAreaArgument);
-        _log.debug(String.format("%d contests left after filtering for focus areas %d and %d",
-                contests.size(), sectionFocusAreaId, contestFocusAreaId));
-
-        final long filterTier = planSectionDefinition.getTier();
-        ProposalPickerFilter.CONTEST_TIER.filterContests(contests, filterTier);
-        _log.debug(String.format("%d contests left after filtering for tier %d", contests.size(),
-                filterTier));
     }
 
     public static List<Contest> getTextFilteredContests(long sectionId,
@@ -183,8 +136,8 @@ public class ProposalPickerFilterUtil {
         return proposals;
     }
 
-    public static List<Proposal> getFilteredAllProposals(String filterText,
-            long sectionId, Long contestPK) {
+    public static List<Proposal> getFilteredAllProposals(String filterText, String filterKey,
+            long sectionId, Long contestPK, HttpServletRequest request) {
 
         PlanSectionDefinition planSectionDefinition =
                 PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
@@ -207,7 +160,10 @@ public class ProposalPickerFilterUtil {
                     getAllowedTiers(planSectionDefinition.getTier()),
                     filterText.isEmpty() ? null : filterText);
         }
-        return new ArrayList<>(proposals);
+
+        final ArrayList<Proposal> filteredProposals = new ArrayList<>(proposals);
+        filterProposals(filteredProposals, filterKey, sectionId, request);
+        return filteredProposals;
     }
 
     //TODO: redundant to ProposalPickerFilter

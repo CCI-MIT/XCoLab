@@ -344,7 +344,7 @@ public class ProposalsController {
             @RequestParam("contestTierIds") List<Long> contestTierIds,
             @RequestParam("contestTypeIds") List<Long> contestTypeIds,
             @RequestParam("filterText") String filterText) {
-        return proposalService.getProposalsByCurrentContests(contestTypeIds,contestTierIds, filterText);
+        return proposalService.getProposalsByCurrentContests(contestTierIds, contestTypeIds, filterText);
     }
 
 }
