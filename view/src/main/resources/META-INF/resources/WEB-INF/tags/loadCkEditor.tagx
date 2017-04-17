@@ -7,11 +7,6 @@
     <c:if test="${empty _ckEditorLoaded}">
         <c:set var="_ckEditorLoaded" value="true" scope="request" />
 
-        <!--<script type="text/javascript">-->
-            <!--var CKEDITOR_BASEPATH = '/js/lib/ckeditor/';-->
-        <!--</script>-->
-
-        <!--<xcolab:script src="/js/lib/ckeditor/ckeditor.js" />-->
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/ckeditor.js"><!-- --></script>
 
