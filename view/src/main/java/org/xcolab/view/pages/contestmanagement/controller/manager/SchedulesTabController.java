@@ -169,6 +169,7 @@ public class SchedulesTabController extends AbstractTabController {
         ContestScheduleLifecycleUtil.deleteContestSchedule(scheduleId);
 
         AlertMessage.DELETED.flash(request);
+        model.asMap().remove(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY);
         return showScheduleTabController(request, response, model, null);
     }
 
