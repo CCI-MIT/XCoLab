@@ -5,14 +5,18 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import org.xcolab.model.tables.pojos.ContentArticleVersion;
+import org.xcolab.model.tables.pojos.ContentFolder;
 import org.xcolab.model.tables.records.ContentArticleVersionRecord;
+import org.xcolab.service.contents.domain.contentFolder.ContentFolderDao;
 import org.xcolab.service.contents.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.service.utils.PaginationHelper.SortColumn;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.xcolab.model.Tables.CONTENT_ARTICLE;
 import static org.xcolab.model.Tables.CONTENT_ARTICLE_VERSION;
@@ -20,8 +24,17 @@ import static org.xcolab.model.Tables.CONTENT_ARTICLE_VERSION;
 @Repository
 public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
 
+    private final DSLContext dslContext;
+
+    private final ContentFolderDao contentFolderDao;
+
     @Autowired
-    private DSLContext dslContext;
+    public ContentArticleVersionDaoImpl(DSLContext dslContext, ContentFolderDao contentFolderDao) {
+        Assert.notNull(dslContext);
+        Assert.notNull(contentFolderDao);
+        this.dslContext = dslContext;
+        this.contentFolderDao = contentFolderDao;
+    }
 
     @Override
     public ContentArticleVersion create(ContentArticleVersion contentArticleVersion) {
@@ -99,7 +112,8 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
 
     @Override
     public List<ContentArticleVersion> findByGiven(PaginationHelper paginationHelper,
-            Long contentArticleId, Long contentArticleVersion, Long folderId, String title) {
+        Long contentArticleId, Long contentArticleVersion, Long folderId, Long ancestorFolderId,
+        String title) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTENT_ARTICLE_VERSION)
                 .getQuery();
@@ -112,6 +126,12 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
         }
         if (folderId != null) {
             query.addConditions(CONTENT_ARTICLE_VERSION.FOLDER_ID.eq(folderId));
+        }
+        if (ancestorFolderId != null) {
+            final List<Long> ancestorFolderIds =
+                contentFolderDao.findByAncestorFolderId(ancestorFolderId).stream()
+                    .map(ContentFolder::getContentFolderId).collect(Collectors.toList());
+            query.addConditions(CONTENT_ARTICLE_VERSION.FOLDER_ID.in(ancestorFolderIds));
         }
         if (title != null) {
             query.addConditions(CONTENT_ARTICLE_VERSION.TITLE.eq(title));

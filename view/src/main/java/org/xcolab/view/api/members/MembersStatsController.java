@@ -18,13 +18,10 @@ public class MembersStatsController {
 
     @GetMapping
     public MembersStats getStats(Member loggedInMember) {
-//        if (PermissionsClient.canAdminAll(loggedInMember)) {
-            List<Member> members = MembersClient.listAllMembers();
-            final Map<String, Long> countryCounts = members.stream()
-                    .filter(member -> StringUtils.isNotBlank(member.getCountry()))
-                    .collect(Collectors.groupingBy(Member::getCountry, Collectors.counting()));
-            return new MembersStats(members.size(), countryCounts);
-//        }
-//        return null;
+        List<Member> members = MembersClient.listAllMembers();
+        final Map<String, Long> countryCounts = members.stream()
+                .filter(member -> StringUtils.isNotBlank(member.getCountry()))
+                .collect(Collectors.groupingBy(Member::getCountry, Collectors.counting()));
+        return new MembersStats(members.size(), countryCounts);
     }
 }
