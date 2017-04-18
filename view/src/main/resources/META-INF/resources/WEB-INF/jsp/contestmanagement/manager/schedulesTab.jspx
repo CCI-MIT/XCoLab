@@ -283,7 +283,6 @@
 
         jQuery(function () {
             bindDeleteClickEvents(deleteContestPhase);
-            bindContestScheduleSelectChange();
             bindCheckBoxClick();
             bindElementSelectChange();
             initDateTimePicker();
@@ -334,16 +333,6 @@
                     // TODO implement buffer
                 });
             });
-        }
-
-        function bindContestScheduleSelectChange() {
-
-            var dropDownElement = document.getElementById("changeContestScheduleSelect");
-
-            dropDownElement.addEventListener("change", function (ev) {
-                var selectedScheduleId = ev.target.value;
-                window.location = "/admin/contest/manager/tab/SCHEDULES/elementId/" + selectedScheduleId;
-            })
         }
 
         function bindDeleteClickEvents(callback) {
