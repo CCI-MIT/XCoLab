@@ -1,17 +1,16 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
-
 	version="2.0">
 
 	<!--  Proposals Picker  -->
-	<c:set var="proposalPickerURL" value="/proposals/proposalPicker?type=@@REPLACE-TYPE@@&amp;filterKey=@@REPLACE-FILTERKEY@@&amp;filterText=@@REPLACE-FILTERTEXT@@&amp;start=@@REPLACE-START@@&amp;end=@@REPLACE-END@@&amp;sortColumn=@@REPLACE-SORTCOLOMN@@&amp;sortOrder=@@REPLACE-SORTORDER@@&amp;sectionId=@@REPLACE-SECTIONID@@&amp;contestPK=@@REPLACE-CONTESTPK@@" />
+	<c:set var="proposalPickerURL" value="${contest.contestLinkUrl}/proposals/proposalPicker?type=@@REPLACE-TYPE@@&amp;filterKey=@@REPLACE-FILTERKEY@@&amp;filterText=@@REPLACE-FILTERTEXT@@&amp;start=@@REPLACE-START@@&amp;end=@@REPLACE-END@@&amp;sortColumn=@@REPLACE-SORTCOLOMN@@&amp;sortOrder=@@REPLACE-SORTORDER@@&amp;sectionId=@@REPLACE-SECTIONID@@&amp;contestPK=@@REPLACE-CONTESTPK@@" />
 
 	<c:set var="proposalPickerContestsURL"
-						 value="/proposals/proposalPickerContests?type=@@REPLACE-TYPE@@&amp;filterKey=@@REPLACE-FILTERKEY@@&amp;filterText=@@REPLACE-FILTERTEXT@@&amp;start=@@REPLACE-START@@&amp;end=@@REPLACE-END@@&amp;contestSortColumn=@@REPLACE-CONTESTSORTCOLOMN@@&amp;sortOrder=@@REPLACE-SORTORDER@@&amp;sectionId=@@REPLACE-SECTIONID@@" />
+						 value="${contest.contestLinkUrl}/proposals/proposalPickerContests?type=@@REPLACE-TYPE@@&amp;filterKey=@@REPLACE-FILTERKEY@@&amp;filterText=@@REPLACE-FILTERTEXT@@&amp;start=@@REPLACE-START@@&amp;end=@@REPLACE-END@@&amp;contestSortColumn=@@REPLACE-CONTESTSORTCOLOMN@@&amp;sortOrder=@@REPLACE-SORTORDER@@&amp;sectionId=@@REPLACE-SECTIONID@@" />
 
 
 	<c:set var="proposalPickerCounterURL"
-		value="/proposals/proposalPickerCounter?type=@@REPLACE-TYPE@@&amp;filterKey=@@REPLACE-FILTERKEY@@&amp;filterText=@@REPLACE-FILTERTEXT@@&amp;start=@@REPLACE-START@@&amp;end=@@REPLACE-END@@&amp;sortColumn=@@REPLACE-SORTCOLOMN@@&amp;sortOrder=@@REPLACE-SORTORDER@@&amp;sectionId=@@REPLACE-SECTIONID@@" />
+		value="${contest.contestLinkUrl}/proposals/proposalPickerCounter?type=@@REPLACE-TYPE@@&amp;filterKey=@@REPLACE-FILTERKEY@@&amp;filterText=@@REPLACE-FILTERTEXT@@&amp;start=@@REPLACE-START@@&amp;end=@@REPLACE-END@@&amp;sortColumn=@@REPLACE-SORTCOLOMN@@&amp;sortOrder=@@REPLACE-SORTORDER@@&amp;sectionId=@@REPLACE-SECTIONID@@" />
 
 
 	<script>
@@ -36,17 +35,18 @@
 					<ul>
 						<li class="c-TabBar__tab--first active"><a href="javascript:;"
 							onclick="proposalPickerTabSelected($(this),'contests');"> Search
-								by Contest<span class="contestTypeContestNames">&#160;</span>
+								by <span class="contestTypeContestNames">Contest</span>
+                            <div class="c-TabBar__tab__count" id="numberOfContests">&#160;</div>
 						</a></li>
 						<li class="c-TabBar__tab"><a href="javascript:;"
 							onclick="proposalPickerTabSelected($(this),'all');"> Search
-								by Name <span class="contestTypeProposalNames">&#160;</span>
-								<!-- <div class="c-TabBar__tab__count" id="numberOfProposals">&#160;</div> -->
+								by <span class="contestTypeProposalNames">Proposal</span>
+								 <div class="c-TabBar__tab__count" id="numberOfProposals">&#160;</div>
 						</a></li>
 						<li class="c-TabBar__tab--last"><a href="javascript:;"
 							onclick="proposalPickerTabSelected($(this),'subscriptionsAndSupporting');">
 							<span class="contestTypeProposalNamesPlural">&#160;</span> I support or subscribe to
-								<!-- <div class="c-TabBar__tab__count" id="numberOfSubscriptionsSupporting">&#160;</div> -->
+								 <div class="c-TabBar__tab__count" id="numberOfSubscriptionsSupporting">&#160;</div>
 						</a></li>
 					</ul>
 				</div>
@@ -191,7 +191,7 @@
             <td class="c-Table__cell no-border">
                 {{#each data.contests}}
                 <div class="b-Spacing__inline">
-                    <img alt="{{this.name}}" class="js-Tooltip" title="Contest: {{this.name}" height="25" width="25" src="/image/contest?img_id={{this.contestLogoId}}" />
+                    <img alt="{{this.name}}" class="js-Tooltip" title="Contest: {{this.name}}" height="25" width="25" src="/image/contest?img_id={{this.contestLogoId}}" />
                 </div>
                 {{/each}}
             </td>

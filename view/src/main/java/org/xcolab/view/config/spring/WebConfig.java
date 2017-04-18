@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -39,6 +40,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
+@EnableConfigurationProperties(WebProperties.class)
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     private static final Logger log = LoggerFactory.getLogger(WebConfig.class);
@@ -49,20 +51,24 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     private final ConfigurationService configurationService;
 
+    private final WebProperties webProperties;
+
     @Autowired
     public WebConfig(ThemeVariableInterceptor themeVariableInterceptor,
-            PopulateProposalModelInterceptor populateContextInterceptor,
-            ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor,
-            ConfigurationService configurationService) {
+        PopulateProposalModelInterceptor populateContextInterceptor,
+        ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor,
+        ConfigurationService configurationService, WebProperties webProperties) {
         Assert.notNull(configurationService, "ConfigurationService bean is required");
         Assert.notNull(themeVariableInterceptor, "ThemeVariableInterceptor bean is required");
         Assert.notNull(populateContextInterceptor, "PopulateContextInterceptor bean is required");
         Assert.notNull(validateTabPermissionsInterceptor,
                 "ValidateTabPermissionsInterceptor bean is required");
+        Assert.notNull(webProperties);
         this.configurationService = configurationService;
         this.themeVariableInterceptor = themeVariableInterceptor;
         this.populateContextInterceptor = populateContextInterceptor;
         this.validateTabPermissionsInterceptor = validateTabPermissionsInterceptor;
+        this.webProperties = webProperties;
     }
 
     @Override
@@ -143,14 +149,22 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/", "classpath:/dist/")
-                .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS))
+                .setCacheControl(
+                    webProperties.getCache().getScripts().isActive()
+                    ? CacheControl.maxAge(webProperties.getCache().getScripts().getMaxAgeDays(),
+                        TimeUnit.DAYS)
+                    : CacheControl.noCache())
                 .resourceChain(true)
                 .addResolver(new VersionResourceResolver()
                         .addContentVersionStrategy("/js/**", "/css/**"));
 
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("classpath:/static/images/")
-                .setCacheControl(CacheControl.maxAge(7, TimeUnit.DAYS))
+                .setCacheControl(
+                    webProperties.getCache().getImages().isActive()
+                    ? CacheControl.maxAge(webProperties.getCache().getImages().getMaxAgeDays(),
+                        TimeUnit.DAYS)
+                    : CacheControl.noCache())
                 .resourceChain(true)
                 .addResolver(new ThemeResourceResolver());
     }

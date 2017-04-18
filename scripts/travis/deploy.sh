@@ -1,9 +1,9 @@
 #!/bin/bash
 
-set -e
-
-if [ $BUILD_TYPE == 'deploy' ]; then
-   mvn clean package -B -T 4
+if [ ${BUILD_TYPE} == 'deploy' ]; then
+   DEPLOY_FOLDER=${TRAVIS_BRANCH}
+   echo "Copying binaries to folder ${DEPLOY_FOLDER} on cognosis..."
+   rsync -r --delete-after --quiet binaries travis@cognosis.mit.edu:${DEPLOY_FOLDER}
 else
-   mvn clean test -B -T 4
+    echo "Skipping deploy step on branch ${TRAVIS_BRANCH}"
 fi

@@ -127,9 +127,11 @@ public class Contest extends AbstractContest implements Serializable {
         commentClient = CommentClient.fromService(commentService);
         threadClient = ThreadClient.fromService(commentService);
     }
+
     public String getContestDiscussionLinkUrl() {
         return getContestLinkUrl() + "/discussion";
     }
+
     public String getContestLinkUrl() {
         String link = "/";
 
@@ -163,34 +165,36 @@ public class Contest extends AbstractContest implements Serializable {
         }
     }
     public String getSponsorLogoPath() {
-        if(this.getIsSharedContestInForeignColab()) {
+        if (this.getIsSharedContestInForeignColab()) {
 
-            Long i = this.getSponsorLogoId();
-            if (i != null) {
-                return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()+"/image/contest?img_id=" + i;
+            Long imgId = this.getSponsorLogoId();
+            if (imgId != null) {
+                return "http://" +ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()
+                        + "/image/contest/" + imgId;
             }
             return "";
-        }else{
-            Long i = this.getSponsorLogoId();
-            if (i != null) {
-                return "/image/contest?img_id=" + i;
+        } else {
+            Long imgId = this.getSponsorLogoId();
+            if (imgId != null) {
+                return "/image/contest/" + imgId;
             }
             return "";
         }
     }
 
     public String getLogoPath() {
-        if(this.getIsSharedContestInForeignColab()) {
+        if (this.getIsSharedContestInForeignColab()) {
 
-            Long i = this.getContestLogoId();
-            if (i != null) {
-                return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()+"/image/contest?img_id=" + i;
+            Long imgId = this.getContestLogoId();
+            if (imgId != null) {
+                return "http://" + ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()
+                        + "/image/contest/" + imgId;
             }
             return "";
-        }else{
-            Long i = this.getContestLogoId();
-            if (i != null) {
-                return "/image/contest?img_id=" + i;
+        } else {
+            Long imgId = this.getContestLogoId();
+            if (imgId != null) {
+                return "/image/contest/" + imgId;
             }
             return "";
         }

@@ -1,7 +1,5 @@
 package org.xcolab.view.pages.proposals.utils;
 
-import org.apache.commons.lang3.tuple.Pair;
-
 import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -16,7 +14,6 @@ import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,237 +23,178 @@ import java.util.Map;
 public class ProposalPickerSortingUtil {
 
     public static void sortContestsList(String sortOrder, String sortColumn,
-                                        List<Pair<Contest, Date>> contests, final Map<Long, String> removedContests) {
+        List<Contest> contests, final Map<Long, String> removedContests) {
         if (sortColumn != null) {
 
-            boolean descendingSortOrder = (sortOrder != null) && sortOrder.toLowerCase().equals("desc");
-            final int sortOrderModifier = descendingSortOrder? -1 : 1;
+            boolean descendingSortOrder =
+                (sortOrder != null) && sortOrder.toLowerCase().equals("desc");
+            final int sortOrderModifier = descendingSortOrder ? -1 : 1;
 
             switch (sortColumn.toLowerCase()) {
                 case "name":
-                    Collections.sort(contests, new Comparator<Pair<Contest, Date>>() {
-                        @Override
-                        public int compare(Pair<Contest, Date> o1,
-                                           Pair<Contest, Date> o2) {
-                            final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
-                            final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
-                            if (contest1wasRemoved != contest2wasRemoved) {
-                                return contest1wasRemoved ? 1 : -1;
-                            }
-                            return sortOrderModifier * o1.getLeft().getContestShortName()
-                                    .compareTo(o2.getLeft().getContestShortName());
+                    contests.sort((o1, o2) -> {
+                        final boolean contest1wasRemoved =
+                            removedContests.containsKey(o1.getContestPK());
+                        final boolean contest2wasRemoved =
+                            removedContests.containsKey(o2.getContestPK());
+                        if (contest1wasRemoved != contest2wasRemoved) {
+                            return contest1wasRemoved ? 1 : -1;
                         }
+                        return sortOrderModifier * o1.getContestShortName()
+                            .compareTo(o2.getContestShortName());
                     });
                     break;
                 case "comments":
-                    Collections.sort(contests, new Comparator<Pair<Contest, Date>>() {
-                        @Override
-                        public int compare(Pair<Contest, Date> o1,
-                                           Pair<Contest, Date> o2) {
-                            final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
-                            final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
-                            if (contest1wasRemoved != contest2wasRemoved) {
-                                return contest1wasRemoved ? 1 : -1;
-                            }
-                            return sortOrderModifier * (int) (o1.getLeft().getTotalCommentsCount() - o2
-                                    .getLeft().getTotalCommentsCount());
+                    contests.sort((o1, o2) -> {
+                        final boolean contest1wasRemoved =
+                            removedContests.containsKey(o1.getContestPK());
+                        final boolean contest2wasRemoved =
+                            removedContests.containsKey(o2.getContestPK());
+                        if (contest1wasRemoved != contest2wasRemoved) {
+                            return contest1wasRemoved ? 1 : -1;
                         }
+                        return sortOrderModifier * (int) (o1.getTotalCommentsCount() - 
+                            o2.getTotalCommentsCount());
                     });
                     break;
                 case "what":
-                    Collections.sort(contests, new Comparator<Pair<Contest, Date>>() {
-                        @Override
-                        public int compare(Pair<Contest, Date> o1,
-                                           Pair<Contest, Date> o2) {
-                            final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
-                            final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
-                            if (contest1wasRemoved != contest2wasRemoved) {
-                                return contest1wasRemoved ? 1 : -1;
-                            }
-                            return sortOrderModifier * o1.getLeft().getWhatName()
-                                    .compareTo(o2.getLeft().getWhatName());
+                    contests.sort((o1, o2) -> {
+                        final boolean contest1wasRemoved =
+                            removedContests.containsKey(o1.getContestPK());
+                        final boolean contest2wasRemoved =
+                            removedContests.containsKey(o2.getContestPK());
+                        if (contest1wasRemoved != contest2wasRemoved) {
+                            return contest1wasRemoved ? 1 : -1;
                         }
+                        return sortOrderModifier * o1.getWhatName()
+                            .compareTo(o2.getWhatName());
                     });
                     break;
                 case "where":
-                    Collections.sort(contests, new Comparator<Pair<Contest, Date>>() {
-                        @Override
-                        public int compare(Pair<Contest, Date> o1,
-                                           Pair<Contest, Date> o2) {
-                            final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
-                            final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
-                            if (contest1wasRemoved != contest2wasRemoved) {
-                                return contest1wasRemoved ? 1 : -1;
-                            }
-                            return sortOrderModifier * o1.getLeft().getWhereName()
-                                    .compareTo(o2.getLeft().getWhereName());
+                    contests.sort((o1, o2) -> {
+                        final boolean contest1wasRemoved =
+                            removedContests.containsKey(o1.getContestPK());
+                        final boolean contest2wasRemoved =
+                            removedContests.containsKey(o2.getContestPK());
+                        if (contest1wasRemoved != contest2wasRemoved) {
+                            return contest1wasRemoved ? 1 : -1;
                         }
+                        return sortOrderModifier * o1.getWhereName()
+                            .compareTo(o2.getWhereName());
                     });
                     break;
                 case "who":
-                    Collections.sort(contests, new Comparator<Pair<Contest, Date>>() {
-                        @Override
-                        public int compare(Pair<Contest, Date> o1,
-                                           Pair<Contest, Date> o2) {
-                            final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
-                            final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
-                            if (contest1wasRemoved != contest2wasRemoved) {
-                                return contest1wasRemoved ? 1 : -1;
-                            }
-                            return sortOrderModifier * o1.getLeft().getWhoName()
-                                    .compareTo(o2.getLeft().getWhoName());
+                    contests.sort((o1, o2) -> {
+                        final boolean contest1wasRemoved =
+                            removedContests.containsKey(o1.getContestPK());
+                        final boolean contest2wasRemoved =
+                            removedContests.containsKey(o2.getContestPK());
+                        if (contest1wasRemoved != contest2wasRemoved) {
+                            return contest1wasRemoved ? 1 : -1;
                         }
+                        return sortOrderModifier * o1.getWhoName()
+                            .compareTo(o2.getWhoName());
                     });
                     break;
                 case "how":
-                    Collections.sort(contests, new Comparator<Pair<Contest, Date>>() {
-                        @Override
-                        public int compare(Pair<Contest, Date> o1,
-                                           Pair<Contest, Date> o2) {
-                            final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
-                            final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
-                            if (contest1wasRemoved != contest2wasRemoved) {
-                                return contest1wasRemoved ? 1 : -1;
-                            }
-                            return sortOrderModifier * o1.getLeft().getHowName()
-                                    .compareTo(o2.getLeft().getHowName());
+                    contests.sort((o1, o2) -> {
+                        final boolean contest1wasRemoved =
+                            removedContests.containsKey(o1.getContestPK());
+                        final boolean contest2wasRemoved =
+                            removedContests.containsKey(o2.getContestPK());
+                        if (contest1wasRemoved != contest2wasRemoved) {
+                            return contest1wasRemoved ? 1 : -1;
                         }
+                        return sortOrderModifier * o1.getHowName()
+                            .compareTo(o2.getHowName());
                     });
                     break;
                 default:
-                    Collections.sort(contests, new Comparator<Pair<Contest, Date>>() {
-                        @Override
-                        public int compare(Pair<Contest, Date> o1,
-                                           Pair<Contest, Date> o2) {
-                            final boolean contest1wasRemoved = removedContests.containsKey(o1.getLeft().getContestPK());
-                            final boolean contest2wasRemoved = removedContests.containsKey(o2.getLeft().getContestPK());
-                            if (contest1wasRemoved != contest2wasRemoved) {
-                                return contest1wasRemoved ? 1 : -1;
-                            }
-                            return sortOrderModifier * (int) (o1.getLeft().getProposalsCount() - o2
-                                    .getLeft().getProposalsCount());
+                    contests.sort((o1, o2) -> {
+                        final boolean contest1wasRemoved =
+                            removedContests.containsKey(o1.getContestPK());
+                        final boolean contest2wasRemoved =
+                            removedContests.containsKey(o2.getContestPK());
+                        if (contest1wasRemoved != contest2wasRemoved) {
+                            return contest1wasRemoved ? 1 : -1;
                         }
+                        return sortOrderModifier * (int) (o1.getProposalsCount() - o2
+                            .getProposalsCount());
                     });
             }
         }
     }
 
     public static void sortProposalsList(String sortOrder, String sortColumn,
-                                   List<Pair<Proposal, Date>> proposals) {
+        List<Proposal> proposals) {
 
         if (sortColumn != null) {
 
-            boolean descendingSortOrder = (sortOrder != null) && sortOrder.toLowerCase().equals("desc");
+            boolean descendingSortOrder =
+                (sortOrder != null) && sortOrder.toLowerCase().equals("desc");
             final int sortOrderModifier = descendingSortOrder ? -1 : 1;
 
             switch (sortColumn.toLowerCase()) {
                 case "contest":
-                    Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-                        @Override
-                        public int compare(Pair<Proposal, Date> o1,
-                                Pair<Proposal, Date> o2) {
-                            try {
-                                return sortOrderModifier * ProposalClientUtil
-                                        .getCurrentContestForProposal(
-                                                o1.getLeft().getProposalId())
-                                        .getContestName()
-                                        .compareTo(
-                                                ProposalClientUtil
-                                                        .getCurrentContestForProposal(
-                                                                o2.getLeft()
-                                                                        .getProposalId())
-                                                        .getContestName());
-                            } catch ( ContestNotFoundException e) {
-                                return 0;
-                            }
+                    proposals.sort((o1, o2) -> {
+                        try {
+                            return sortOrderModifier * ProposalClientUtil
+                                .getCurrentContestForProposal(o1.getProposalId())
+                                .getContestName().compareTo(ProposalClientUtil
+                                    .getCurrentContestForProposal(o2.getProposalId())
+                                    .getContestName());
+                        } catch (ContestNotFoundException e) {
+                            return 0;
                         }
                     });
                     break;
                 case "proposal":
-                    Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-                        @Override
-                        public int compare(Pair<Proposal, Date> o1,
-                                Pair<Proposal, Date> o2) {
-                                return sortOrderModifier * ProposalAttributeClientUtil
+                    proposals.sort((o1, o2) -> sortOrderModifier * ProposalAttributeClientUtil
 
-                                        .getProposalAttribute(o1.getLeft().getProposalId(),
-                                                ProposalAttributeKeys.NAME, 0L)
-                                        .getStringValue()
-                                        .compareTo(
-                                                ProposalAttributeClientUtil.getProposalAttribute(
-                                                        o2.getLeft().getProposalId(),
-                                                        ProposalAttributeKeys.NAME, 0L)
-                                                        .getStringValue());
-                        }
-                    });
+                        .getProposalAttribute(o1.getProposalId(),
+                            ProposalAttributeKeys.NAME, 0L).getStringValue().compareTo(
+                            ProposalAttributeClientUtil
+                                .getProposalAttribute(o2.getProposalId(),
+                                    ProposalAttributeKeys.NAME, 0L).getStringValue()));
                     break;
                 case "author":
-                    Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-                        @Override
-                        public int compare(Pair<Proposal, Date> o1,
-                                Pair<Proposal, Date> o2) {
-                            try {
-                                ProposalAttribute t1 = ProposalAttributeClientUtil
-                                        .getProposalAttribute(o1.getLeft().getProposalId(),
-                                                ProposalAttributeKeys.TEAM, 0L);
-                                ProposalAttribute t2 = ProposalAttributeClientUtil
-                                        .getProposalAttribute(o2.getLeft().getProposalId(),
-                                                ProposalAttributeKeys.TEAM, 0L);
+                    proposals.sort((o1, o2) -> {
+                        try {
+                            ProposalAttribute t1 = ProposalAttributeClientUtil
+                                .getProposalAttribute(o1.getProposalId(),
+                                    ProposalAttributeKeys.TEAM, 0L);
+                            ProposalAttribute t2 = ProposalAttributeClientUtil
+                                .getProposalAttribute(o2.getProposalId(),
+                                    ProposalAttributeKeys.TEAM, 0L);
 
-                                String author1 = t1 == null
-                                        || t1.getStringValue().trim().isEmpty()
-                                        ? MembersClient
-                                        .getMember(o1.getLeft().getAuthorId())
-                                        .getScreenName() : t1.getStringValue();
-                                String author2 = t2 == null
-                                        || t2.getStringValue().trim().isEmpty()
-                                        ? MembersClient
-                                        .getMember(o2.getLeft().getAuthorId())
-                                        .getScreenName() : t2.getStringValue();
+                            String author1 =
+                                t1 == null || t1.getStringValue().trim().isEmpty() ? MembersClient
+                                    .getMember(o1.getAuthorId()).getScreenName()
+                                    : t1.getStringValue();
+                            String author2 =
+                                t2 == null || t2.getStringValue().trim().isEmpty() ? MembersClient
+                                    .getMember(o2.getAuthorId()).getScreenName()
+                                    : t2.getStringValue();
 
-                                return sortOrderModifier * author1.compareTo(author2);
-                            } catch (MemberNotFoundException e) {
-                                return 0;
-                            }
+                            return sortOrderModifier * author1.compareTo(author2);
+                        } catch (MemberNotFoundException e) {
+                            return 0;
                         }
                     });
                     break;
                 case "date":
-                    Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-                        @Override
-                        public int compare(Pair<Proposal, Date> o1,
-                                Pair<Proposal, Date> o2) {
-                            return o1.getRight().compareTo(o2.getRight());
-                        }
-                    });
+                    proposals.sort(Comparator.comparing(Proposal::getCreateDate));
                     break;
                 case "supporters":
-                    Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-                        @Override
-                        public int compare(Pair<Proposal, Date> o1,
-                                Pair<Proposal, Date> o2) {
-                                return sortOrderModifier * ProposalMemberRatingClientUtil
-                                        .getProposalSupportersCount(o1
-                                                .getLeft().getProposalId())
-                                        - ProposalMemberRatingClientUtil
-                                        .getProposalSupportersCount(o2.getLeft()
-                                                .getProposalId());
-
-                        }
-                    });
+                    proposals.sort((o1, o2) -> sortOrderModifier * ProposalMemberRatingClientUtil
+                        .getProposalSupportersCount(o1.getProposalId())
+                        - ProposalMemberRatingClientUtil
+                        .getProposalSupportersCount(o2.getProposalId()));
                     break;
                 case "comments":
-                    Collections.sort(proposals, new Comparator<Pair<Proposal, Date>>() {
-                        @Override
-                        public int compare(Pair<Proposal, Date> o1,
-                                Pair<Proposal, Date> o2) {
-                            return sortOrderModifier *
-                                    (CommentClientUtil
-                                            .countComments(o1.getLeft().getDiscussionId())
-                                            - CommentClientUtil
-                                            .countComments(o2.getLeft().getDiscussionId()));
-                        }
-                    });
+                    proposals.sort((o1, o2) -> sortOrderModifier * (
+                        CommentClientUtil.countComments(o1.getDiscussionId())
+                            - CommentClientUtil.countComments(o2.getDiscussionId())));
                     break;
                 default:
                     throw new UnsupportedOperationException("Unknown sort column");

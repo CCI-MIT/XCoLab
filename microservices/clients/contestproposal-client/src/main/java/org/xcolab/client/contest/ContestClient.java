@@ -667,7 +667,6 @@ public class ContestClient {
 
     private String getJoinedNameString(List<Long> contestTypeIds, boolean isProposal,
             String plurality, String conjuction) {
-        String proposalsString;
         StringBuilder stringBuilder = new StringBuilder();
         Iterator<Long> iterator = contestTypeIds.iterator();
         int currentWord = 1, totalWords = contestTypeIds.size();
@@ -695,11 +694,7 @@ public class ContestClient {
             }
             currentWord++;
         }
-        proposalsString = stringBuilder.toString();
-
-        proposalsString = "Proposals";
-
-        return proposalsString;
+        return stringBuilder.toString();
     }
 
     private static String convertListToGetParameter(List<Long> list, String parameterName) {
