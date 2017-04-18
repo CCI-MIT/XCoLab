@@ -13,4 +13,6 @@ public interface ContentFolderDao {
     ContentFolder get(Long contentFolderId);
 
     List<ContentFolder> findByGiven(PaginationHelper paginationHelper, Long parentFolderId);
+
+    List<ContentFolder> findByAncestorFolderId(long ancestorFolderId);
 }

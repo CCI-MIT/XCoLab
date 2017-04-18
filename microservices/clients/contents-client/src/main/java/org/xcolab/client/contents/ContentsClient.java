@@ -43,7 +43,7 @@ public final class ContentsClient {
     public static ContentArticleVersion getLatestContentArticleVersion(long folderId, String title)
             throws ContentNotFoundException {
         final ContentArticleVersion contentArticleVersion = contentArticleVersionResource.list()
-                .queryParam("folderId", folderId)
+                .queryParam("ancestorFolderId", folderId)
                 .queryParam("title", title)
                 .queryParam("sort", "-contentArticleVersion")
                 .withCache(CacheName.CONTENT)

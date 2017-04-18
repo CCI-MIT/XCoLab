@@ -79,7 +79,7 @@ public class ContentsController {
         final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
                 sort);
         return contentArticleVersionDao.findByGiven(paginationHelper, contentArticleId, contentArticleVersion,
-                folderId, title);
+                folderId, null, title);
     }
 
 
@@ -92,6 +92,11 @@ public class ContentsController {
         final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
                 sort);
         return contentFolderDao.findByGiven(paginationHelper, parentFolderId);
+    }
+
+    @GetMapping("/contentFolders/{folderId}/descendantFolders")
+    public List<ContentFolder> listDescendantFolders(@PathVariable long folderId) {
+        return contentFolderDao.findByAncestorFolderId(folderId);
     }
 
     @RequestMapping(value = "/contentArticles/{articleId}", method = RequestMethod.GET)
