@@ -12,6 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
@@ -36,6 +38,7 @@ import javax.sql.DataSource;
     }
 )
 @ComponentScan("org.xcolab.service.admin")
+@DirtiesContext(classMode= ClassMode.BEFORE_CLASS)
 ///microservices/services/admin-service/target/test-classes/
 // ../../../../../
 //Users/carlosbpf/ROOT/Professional/MIT/code/XCoLab/microservices/services/admin-service/target/test-classes/
@@ -50,18 +53,39 @@ public class ConfigurationAttributeDaoTest {
     ConfigurationAttributeDao configurationAttributeDao;
 
 
-    @Test
-    public void shouldSaveNewConfigurationAttribute(){
+    private static ConfigurationAttribute getConfigurationAttribute(){
         ConfigurationAttribute ca = new ConfigurationAttribute();
         ca.setName("SUPER");
         ca.setNumericValue(0l);
         ca.setAdditionalId(0l);
         ca.setRealValue(0d);
         ca.setStringValue("DUPER");
-        ca = configurationAttributeDao.create(ca);
+        return ca;
+    }
+    @Test
+    public void shouldSaveNewConfigurationAttribute(){
+
+        ConfigurationAttribute ca = configurationAttributeDao.create(getConfigurationAttribute());
 
         assertNotNull(configurationAttributeDao.getConfigurationAttribute(ca.getName()).get());
 
     }
 
+    @Test
+    public void shouldUpdateNewConfigurationAttribute(){
+        String newStr = "DUPER2";
+        ConfigurationAttribute ca = configurationAttributeDao
+            .getConfigurationAttribute(getConfigurationAttribute().getName())
+            .orElse(configurationAttributeDao.create(getConfigurationAttribute()));
+
+        ca.setStringValue(newStr);
+        assertTrue(configurationAttributeDao.update(ca));
+
+        ca = configurationAttributeDao.getConfigurationAttribute(
+            ca.getName()).get();
+
+        assertNotNull(ca);
+        assertEquals(ca.getStringValue(),newStr);
+
+    }
 }
