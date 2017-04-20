@@ -26,8 +26,13 @@ public class MessageDataPage {
                 .getMessages(member.getUserId(), firstMessage, lastMessage, messageType);
 
         this.messages = new ArrayList<>();
+        Message previous = null;
         for (Message message : messagesRaw) {
-            messages.add(new MessageBean(message));
+            if((previous==null) || (!previous.equals(null) && !message.getMessageId().equals(previous.getMessageId())))
+            {
+                messages.add(new MessageBean(message));
+            }
+            previous = message;
         }
     }
 
