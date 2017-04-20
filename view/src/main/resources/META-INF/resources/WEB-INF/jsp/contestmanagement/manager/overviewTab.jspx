@@ -51,6 +51,12 @@
 				<a class="c-Button__primary innerVerticalCenter" href="#" id="submitButton">SUBMIT</a>
 			</div>
 			<div id="massMessage" style="display: none;">
+                <div class="clearLeft"><!-- --></div>
+                <h3 class="floatLeft">Sender</h3>
+                <form:select path="massMessageBean.sender" id="massMessageBean.sender">
+                    <form:options items="${senderListItems}" itemValue="id_" itemLabel="screenName"/>
+                </form:select>
+                <div class="clearLeft"><!-- --></div>
 				<h3 class="floatLeft">Subject</h3>
 				<form:input path="massMessageBean.subject" />
 				<div class="clearLeft"><!-- --></div>
