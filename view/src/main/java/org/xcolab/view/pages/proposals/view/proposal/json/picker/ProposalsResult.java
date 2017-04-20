@@ -1,0 +1,137 @@
+package org.xcolab.view.pages.proposals.view.proposal.json.picker;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
+
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class ProposalsResult {
+
+    private static final int MAX_CHARS_FOR_NAMES = 75;
+
+    private final List<SimpleProposal> proposals;
+    private final int totalCount;
+
+    public ProposalsResult(List<Proposal> proposals, int totalCount) {
+        this.proposals = proposals.stream()
+                .map(SimpleProposal::new)
+                .collect(Collectors.toList());
+        this.totalCount = totalCount;
+    }
+
+    public List<SimpleProposal> getProposals() {
+        return proposals;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public static class SimpleProposal {
+
+        private final long id;
+        private final String proposalName;
+        private final String contestName;
+        private final String linkUrl;
+        private final long contestId;
+        private final String team;
+        private final String authorName;
+        private final long authorId;
+        private final long dateSubscribed;
+        private final long commentsCount;
+        private final long supportersCount;
+        private final String pitch;
+        private final int ribbon;
+        private final String ribbonText;
+        private final boolean featured;
+
+        public SimpleProposal(Proposal proposal) {
+
+            this.id = proposal.getProposalId();
+            this.proposalName = StringUtils.abbreviate(
+                StringEscapeUtils
+                    .unescapeXml(proposal.getName()), MAX_CHARS_FOR_NAMES);
+            this.contestName = StringUtils.abbreviate(proposal
+                .getContest().getContestShortName(), MAX_CHARS_FOR_NAMES);
+            this.linkUrl = proposal.getProposalUrl();
+            this.contestId = proposal.getContestPK();
+            this.team = proposal.getTeam();
+            this.authorName = proposal.getAuthorName();
+            this.authorId = proposal.getAuthorId();
+            //TODO: get right date
+            this.dateSubscribed = new Date().getTime();
+            this.commentsCount = proposal.getCommentsCount();
+            this.supportersCount = proposal.getSupportersCount();
+            this.pitch = proposal.getPitch();
+            final ProposalRibbon ribbonWrapper = proposal.getRibbonWrapper();
+            this.ribbon = ribbonWrapper.getRibbon();
+            this.ribbonText = ribbonWrapper.getRibbonText();
+            this.featured = proposal.isFeatured();
+        }
+
+        public long getId() {
+            return id;
+        }
+
+        public String getProposalName() {
+            return proposalName;
+        }
+
+        public String getContestName() {
+            return contestName;
+        }
+
+        public String getLinkUrl() {
+            return linkUrl;
+        }
+
+        public long getContestId() {
+            return contestId;
+        }
+
+        public String getTeam() {
+            return team;
+        }
+
+        public String getAuthorName() {
+            return authorName;
+        }
+
+        public long getAuthorId() {
+            return authorId;
+        }
+
+        public long getDateSubscribed() {
+            return dateSubscribed;
+        }
+
+        public long getCommentsCount() {
+            return commentsCount;
+        }
+
+        public long getSupportersCount() {
+            return supportersCount;
+        }
+
+        public String getPitch() {
+            return pitch;
+        }
+
+        public int getRibbon() {
+            return ribbon;
+        }
+
+        public String getRibbonText() {
+            return ribbonText;
+        }
+
+        public boolean isFeatured() {
+            return featured;
+        }
+    }
+}

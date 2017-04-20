@@ -35,17 +35,18 @@
 					<ul>
 						<li class="c-TabBar__tab--first active"><a href="javascript:;"
 							onclick="proposalPickerTabSelected($(this),'contests');"> Search
-								by Contest<span class="contestTypeContestNames">&#160;</span>
+								by <span class="contestTypeContestNames">Contest</span>
+                            <div class="c-TabBar__tab__count" id="numberOfContests">&#160;</div>
 						</a></li>
 						<li class="c-TabBar__tab"><a href="javascript:;"
 							onclick="proposalPickerTabSelected($(this),'all');"> Search
-								by Name <span class="contestTypeProposalNames">&#160;</span>
-								<!-- <div class="c-TabBar__tab__count" id="numberOfProposals">&#160;</div> -->
+								by <span class="contestTypeProposalNames">Proposal</span>
+								 <div class="c-TabBar__tab__count" id="numberOfProposals">&#160;</div>
 						</a></li>
 						<li class="c-TabBar__tab--last"><a href="javascript:;"
 							onclick="proposalPickerTabSelected($(this),'subscriptionsAndSupporting');">
 							<span class="contestTypeProposalNamesPlural">&#160;</span> I support or subscribe to
-								<!-- <div class="c-TabBar__tab__count" id="numberOfSubscriptionsSupporting">&#160;</div> -->
+								 <div class="c-TabBar__tab__count" id="numberOfSubscriptionsSupporting">&#160;</div>
 						</a></li>
 					</ul>
 				</div>

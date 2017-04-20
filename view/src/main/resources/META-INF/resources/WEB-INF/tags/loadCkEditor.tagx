@@ -7,11 +7,8 @@
     <c:if test="${empty _ckEditorLoaded}">
         <c:set var="_ckEditorLoaded" value="true" scope="request" />
 
-        <script type="text/javascript">
-            var CKEDITOR_BASEPATH = '/js/lib/ckeditor/';
-        </script>
 
-        <xcolab:script src="/js/lib/ckeditor/ckeditor.js" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/ckeditor.js"><!-- --></script>
 
         <!-- TODO: split CKEditor initialization (on demand) and dirty check (always)-->
         <script type="text/javascript">
@@ -60,6 +57,7 @@
                 }
             }
         }
+        CKEDITOR.plugins.addExternal( 'proposalLink', '${_libJsFolder}/newckeditorplugins/proposalLink/plugin.js' );
 
         function initializeTextEditors() {
             jQuery("input[type='text'], textarea").each(function() {
@@ -84,7 +82,7 @@
 
                 if ($element.hasClass("rte-editorPlaceholder")) {
 
-                    var editor = CKEDITOR.replace($element.attr("id"));
+                    var editor = CKEDITOR.replace($element.attr("id"), { customConfig: '${_libJsFolder}/newckeditorplugins/configProposal.js'});
 
                     $element.get(0)["ckeditor"] = editor;
                     editor.updatedCharCount = false;

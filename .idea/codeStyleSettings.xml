@@ -104,7 +104,7 @@
           <option name="WHILE_BRACE_FORCE" value="3" />
           <option name="FOR_BRACE_FORCE" value="3" />
           <option name="WRAP_LONG_LINES" value="true" />
-          <option name="PARAMETER_ANNOTATION_WRAP" value="2" />
+          <option name="PARAMETER_ANNOTATION_WRAP" value="1" />
           <option name="VARIABLE_ANNOTATION_WRAP" value="2" />
           <option name="ENUM_CONSTANTS_WRAP" value="5" />
           <option name="PARENT_SETTINGS_INSTALLED" value="true" />
