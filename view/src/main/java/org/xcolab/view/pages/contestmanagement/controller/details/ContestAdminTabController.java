@@ -23,8 +23,8 @@ import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.ContestAdminBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
-import org.xcolab.view.pages.contestmanagement.entities.LabelStringValue;
-import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
+import org.xcolab.util.html.LabelStringValue;
+import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 
 import java.io.IOException;

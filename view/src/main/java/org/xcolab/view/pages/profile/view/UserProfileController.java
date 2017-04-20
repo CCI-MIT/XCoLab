@@ -118,6 +118,7 @@ public class UserProfileController {
             model.addAttribute("newsletterActive",
                     ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE.get());
             model.addAttribute("memberCategories", MembersClient.listMemberCategories());
+            model.addAttribute("countrySelectItems", CountryUtil.getSelectOptions());
             return EDIT_PROFILE_VIEW;
         } catch (MemberNotFoundException e) {
             return ErrorText.NOT_FOUND.flashAndReturnView(request);
@@ -143,6 +144,7 @@ public class UserProfileController {
             if (permissions.getCanEditMemberProfile(memberId)) {
                 model.addAttribute("newsletterBean",
                         new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
+                model.addAttribute("countrySelectItems", CountryUtil.getSelectOptions());
                 return EDIT_PROFILE_VIEW;
             }
         } catch (MemberNotFoundException e) {
@@ -161,6 +163,7 @@ public class UserProfileController {
         UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
         model.addAttribute("permissions", permissions);
         model.addAttribute("_activePageLink", "community");
+        model.addAttribute("countrySelectItems", CountryUtil.getSelectOptions());
 
         if (!permissions.getCanEditMemberProfile(updatedUserBean.getUserId())
                 || memberId != updatedUserBean.getUserId()) {

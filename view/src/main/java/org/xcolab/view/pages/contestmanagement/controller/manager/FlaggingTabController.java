@@ -21,7 +21,7 @@ import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
-import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
+import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportTargetWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;

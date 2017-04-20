@@ -14,7 +14,7 @@ import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
-import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
+import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
 import org.xcolab.view.pages.contestmanagement.wrappers.ContestOverviewWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.MassActionConfirmationWrapper;

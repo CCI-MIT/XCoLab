@@ -10,8 +10,8 @@ import org.xcolab.client.modeling.roma.RomaClient;
 import org.xcolab.client.modeling.roma.RomaClient.RomaClientNotConnectedException;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.view.util.entity.enums.ModelRegions;
-import org.xcolab.view.pages.contestmanagement.entities.LabelStringValue;
-import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
+import org.xcolab.util.html.LabelStringValue;
+import org.xcolab.util.html.LabelValue;
 
 import java.io.Serializable;
 import java.util.ArrayList;

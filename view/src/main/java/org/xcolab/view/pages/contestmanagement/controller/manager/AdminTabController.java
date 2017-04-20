@@ -17,7 +17,7 @@ import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
-import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
+import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvConverter;
 import org.xcolab.view.pages.contestmanagement.utils.VoteCsvConverter;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;

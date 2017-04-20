@@ -96,7 +96,13 @@
 								Country
 							</th>
 							<td>
-								<jsp:include page="./countrySelect.jspx"/>
+                                <form:select cssClass="popupreg_input" path="countryCode">
+                                    <form:option value="" label="Select country"/>
+                                    <form:options items="${countrySelectItems}" itemValue="value" itemLabel="lable"/>
+                                </form:select>
+                                <div class="reg_errors"><!--  -->
+                                    <form:errors cssClass="c-Alert c-Alert__error" path="countryCode" />
+                                </div>
 							</td>
 						</tr>
 

@@ -18,7 +18,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.pages.loginregister.CreateUserBean;
 import org.xcolab.view.pages.loginregister.ImageUploadUtils;
-import org.xcolab.view.pages.loginregister.MainViewController;
+import org.xcolab.view.pages.loginregister.LoginRegisterController;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
 
 import java.io.IOException;
@@ -45,7 +45,7 @@ public class GoogleController {
     public void initiateOpenIdRegistration(HttpServletRequest request, Model model, HttpServletResponse HttpServletResponse)
             throws IOException {
         HttpSession session = request.getSession();
-        session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_REGISTRATION);
+        session.setAttribute(LoginRegisterController.SSO_TARGET_KEY, LoginRegisterController.SSO_TARGET_REGISTRATION);
 
         initiateOpenIdRequest(request, HttpServletResponse);
     }
@@ -63,14 +63,14 @@ public class GoogleController {
         HttpServletResponse.sendRedirect(requestUrl);
 
         String referrer = request.getHeader(HttpHeaders.REFERER);
-        session.setAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY, referrer);
+        session.setAttribute(LoginRegisterController.PRE_LOGIN_REFERRER_KEY, referrer);
     }
 
     @GetMapping("login")
     public void initiateOpenIdLogin(HttpServletRequest request, Model model, HttpServletResponse HttpServletResponse)
             throws IOException {
         HttpSession session = request.getSession();
-        session.setAttribute(MainViewController.SSO_TARGET_KEY, MainViewController.SSO_TARGET_LOGIN);
+        session.setAttribute(LoginRegisterController.SSO_TARGET_KEY, LoginRegisterController.SSO_TARGET_LOGIN);
 
         initiateOpenIdRequest(request, HttpServletResponse);
     }
@@ -83,11 +83,11 @@ public class GoogleController {
         HttpSession session = request.getSession();
         session.removeAttribute(SSOKeys.FACEBOOK_USER_ID);
 
-        String redirectUrl = (String) session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
+        String redirectUrl = (String) session.getAttribute(LoginRegisterController.PRE_LOGIN_REFERRER_KEY);
         if (StringUtils.isBlank(redirectUrl)) {
             redirectUrl = "/";
         }
-        session.removeAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
+        session.removeAttribute(LoginRegisterController.PRE_LOGIN_REFERRER_KEY);
 
         // Check whether the state token matches => CSRF protection
         String stateToken = request.getParameter("state");
@@ -190,11 +190,11 @@ public class GoogleController {
             session.setAttribute(SSOKeys.SSO_PROFILE_IMAGE_ID, Long.toString(imageId));
         }
 
-        if (session.getAttribute(MainViewController.SSO_TARGET_KEY)
-                .equals(MainViewController.SSO_TARGET_LOGIN)) {
+        if (session.getAttribute(LoginRegisterController.SSO_TARGET_KEY)
+                .equals(LoginRegisterController.SSO_TARGET_LOGIN)) {
             response.sendRedirect(SsoEndpoint.REGISTER_OR_LOGIN.getUrl());
-        } else if (session.getAttribute(MainViewController.SSO_TARGET_KEY)
-                .equals(MainViewController.SSO_TARGET_REGISTRATION)) {
+        } else if (session.getAttribute(LoginRegisterController.SSO_TARGET_KEY)
+                .equals(LoginRegisterController.SSO_TARGET_REGISTRATION)) {
             // Create the user and login
             // append SSO attributes
             CreateUserBean userBean = new CreateUserBean();
@@ -228,7 +228,7 @@ public class GoogleController {
 
             userBean.setScreenName(screenName);
 
-            MainViewController.completeRegistration(request, response, userBean,
+            LoginRegisterController.completeRegistration(request, response, userBean,
                     redirectUrl, true);
         }
     }
