@@ -11,12 +11,15 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.model.tables.pojos.ConfigurationAttribute;
+import org.xcolab.model.tables.pojos.ContestEmailTemplate;
 import org.xcolab.service.admin.AdminTestUtils;
 import org.xcolab.service.admin.domain.configurationattribute.ConfigurationAttributeDao;
+import org.xcolab.service.admin.domain.emailtemplate.EmailTemplateDao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,41 +32,42 @@ import static org.junit.Assert.assertTrue;
     }
 )
 @ComponentScan("org.xcolab.service.admin")
-
-public class ConfigurationAttributeDaoTest {
+public class EmailTemplateDaoTest {
 
     @Autowired
-    ConfigurationAttributeDao configurationAttributeDao;
-
+    EmailTemplateDao emailTemplateDao;
 
     @Test
-    public void shouldSaveNewConfigurationAttribute(){
+    public void shouldSaveNewContestEmailTemplate(){
 
-        ConfigurationAttribute ca = configurationAttributeDao.create(AdminTestUtils.getConfigurationAttribute("a"));
+        ContestEmailTemplate cet = AdminTestUtils.getContestEmailTemplate();
+        emailTemplateDao.createEmailTemplate(cet);
 
-        assertNotNull(configurationAttributeDao.getConfigurationAttribute(ca.getName()).get());
+        assertNotNull(emailTemplateDao.getEmailTemplate(cet.getType_()));
 
     }
 
     @Test
-    public void shouldBeEmptyOnNotFoundConfigurationAttribute(){
+    public void shouldBeEmptyOnNotFoundEmailTemplate(){
 
-        assertFalse(configurationAttributeDao.getConfigurationAttribute("b").isPresent());
+        assertNull(emailTemplateDao.getEmailTemplate("b"));
     }
     @Test
-    public void shouldUpdateNewConfigurationAttribute(){
+    public void shouldUpdateEmailTemplate(){
         String newStr = "DUPER2";
 
-        ConfigurationAttribute ca = configurationAttributeDao.create(AdminTestUtils.getConfigurationAttribute("b"));
+        ContestEmailTemplate cet = AdminTestUtils.getContestEmailTemplate();
+        cet.setType_("NEWTYPEEMAILUPDATE");
+        emailTemplateDao.createEmailTemplate(cet);
 
-        ca.setStringValue(newStr);
-        assertTrue(configurationAttributeDao.update(ca));
+        cet.setSubject(newStr);
+        assertTrue(emailTemplateDao.updateEmailTemplate(cet));
 
-        ca = configurationAttributeDao.getConfigurationAttribute(
-            ca.getName()).get();
+        cet = emailTemplateDao.getEmailTemplate(cet.getType_());
 
-        assertNotNull(ca);
-        assertEquals(ca.getStringValue(),newStr);
+        assertNotNull(cet);
+        assertEquals(cet.getSubject(),newStr);
 
     }
+
 }
