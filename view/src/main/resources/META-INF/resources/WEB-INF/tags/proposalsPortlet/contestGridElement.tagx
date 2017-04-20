@@ -53,22 +53,20 @@
 
             </div>
 
+            <c:set var="contestPhaseClosed" value="${not empty contest.activePhase.status and contest.activePhase.status eq 'CLOSED' or contest.activePhase.status eq 'COMPLETED'}" />
             <c:if test="${contest.flag ge 0}">
                 <c:choose>
-                    <c:when test="${not empty contest.flagText and contest.flag == 1}">
-                        <div class="c-ContestBox__meta__flag--color"> ${contest.flagText} </div>
+                    <c:when test="${not empty contest.flagText and contest.flag == 0}">
+                        <div class="c-ContestBox__meta__flag--${contestPhaseClosed ? 'grey' : 'color'}"> ${contest.flagText} </div>
                     </c:when>
-                    <c:when test="${not empty contest.flagText and contest.flag == 2}">
-                        <div class="c-ContestBox__meta__flag--grey"> ${contest.flagText} </div>
+                    <c:when test="${not empty contest.flagText and contest.flag gt 0}">
+                        <div class="c-ContestBox__meta__flag--${contest.flag == 2 ? 'grey' : 'color'}"> ${contest.flagText} </div>
                     </c:when>
                     <c:when test="${contest.contestActive and not empty contest.activePhase.status and contest.activePhase.status eq 'COMPLETED'}">
                         <div class="c-ContestBox__meta__flag--grey" style="font-size: 13px;"> Winners to be announced </div>
                     </c:when>
-                    <c:when test="${not empty contest.activePhase.status and contest.activePhase.status eq 'CLOSED' or contest.activePhase.status eq 'COMPLETED'}">
-                        <div class="c-ContestBox__meta__flag--grey"> ${contest.activePhase.name} </div>
-                    </c:when>
                     <c:when test='${not empty contest.activePhase.status}'>
-                        <div class="c-ContestBox__meta__flag--color"> ${contest.activePhase.name} </div>
+                        <div class="c-ContestBox__meta__flag--${contestPhaseClosed ? 'grey' : 'color'}"> ${contest.activePhase.name} </div>
                     </c:when>
                 </c:choose>
             </c:if>
