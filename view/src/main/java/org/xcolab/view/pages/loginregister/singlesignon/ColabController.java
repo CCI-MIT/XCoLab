@@ -12,7 +12,7 @@ import org.xcolab.client.members.exceptions.PasswordLoginException;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.view.pages.loginregister.CreateUserBean;
 import org.xcolab.view.pages.loginregister.LoginRegisterUtil;
-import org.xcolab.view.pages.loginregister.MainViewController;
+import org.xcolab.view.pages.loginregister.LoginRegisterController;
 
 import java.io.IOException;
 
@@ -63,7 +63,7 @@ public class ColabController {
                 //TODO: get user imageId and save it locally
                 userBean.setShortBio(foreignColab.getShortBio());
                 try {
-                    MainViewController.completeRegistration(request, response, userBean,
+                    LoginRegisterController.completeRegistration(request, response, userBean,
                             redirectUrl.toUriString(), true);
                     return;
 

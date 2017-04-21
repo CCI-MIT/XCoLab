@@ -6,7 +6,7 @@
     xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
-	<!--@elvariable id="massActionsItems" type="java.util.List<org.xcolab.view.pages.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="massActionsItems" type="java.util.List<org.xcolab.util.html.LabelValue>"-->
 	<!--@elvariable id="contestOverviewWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.ContestOverviewWrapper"-->
 
 	<jsp:directive.include file="../init.jspx" />
@@ -51,6 +51,12 @@
 				<a class="c-Button__primary innerVerticalCenter" href="#" id="submitButton">SUBMIT</a>
 			</div>
 			<div id="massMessage" style="display: none;">
+                <div class="clearLeft"><!-- --></div>
+                <h3 class="floatLeft">Sender</h3>
+                <form:select path="massMessageBean.sender" id="massMessageBean.sender">
+                    <form:options items="${senderListItems}" itemValue="id_" itemLabel="screenName"/>
+                </form:select>
+                <div class="clearLeft"><!-- --></div>
 				<h3 class="floatLeft">Subject</h3>
 				<form:input path="massMessageBean.subject" />
 				<div class="clearLeft"><!-- --></div>

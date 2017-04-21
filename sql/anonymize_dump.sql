@@ -2,10 +2,11 @@
 
 -- User information and emails
 update members_Member set emailAddress  = CONCAT('test+u', id_, '@example.com'),
-  screenName = CONCAT('user', id_), firstName = CONCAT('User ', id_), lastName = 'CoLab', openId = '',
+  screenName = CONCAT('user', id_), firstName = CONCAT('User ', id_), lastName = 'CoLab',
   loginDate = '2009-08-19 01:00:00',  passwordModifiedDate = '2009-08-19 01:00:00',
   modifiedDate = '2009-08-19 01:00:00', createDate = '2009-08-19 01:00:00', loginIP = '127.0.0.1',
-  facebookId = 0, hashedPassword = '{SHA-1}NS2PVQOqtxe9YlFzf3xNa8/6XDo=', shortBio = '';
+  hashedPassword = 'PBKDF2_160_128000_g81/ioSNrXo=_pRj14MUWBMdoAVhbI7pqUlGdrII=', facebookId = 0,
+  googleId = '', openId = '', shortBio = '';
 
 -- delete all messages
 delete from xcolab_Message;

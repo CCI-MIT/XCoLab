@@ -14,7 +14,7 @@ import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
-import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
+import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.utils.MassActionUtil;
 
 import java.lang.reflect.InvocationTargetException;

@@ -2,7 +2,7 @@ package org.xcolab.view.pages.contestmanagement.beans;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
+import org.xcolab.util.html.LabelValue;
 
 import java.io.Serializable;
 import java.util.Arrays;

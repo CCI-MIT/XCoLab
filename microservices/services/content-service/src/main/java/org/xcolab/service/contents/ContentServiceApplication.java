@@ -8,16 +8,15 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class
-ContentsServiceApplication extends SpringBootServletInitializer {
+public class ContentServiceApplication extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(ContentsServiceApplication.class);
+        return application.sources(ContentServiceApplication.class);
     }
 
     public static void main(String[] args) {
-        SpringApplication.run(ContentsServiceApplication.class, args);
+        SpringApplication.run(ContentServiceApplication.class, args);
     }
 
 }

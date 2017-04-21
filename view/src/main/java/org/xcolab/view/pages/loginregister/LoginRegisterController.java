@@ -31,17 +31,18 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.Location;
-import org.xcolab.view.util.entity.HttpUtils;
 import org.xcolab.entity.utils.LinkUtils;
-import org.xcolab.view.util.entity.ReCaptchaUtils;
-import org.xcolab.view.util.entity.portlet.RequestParamUtil;
-import org.xcolab.view.util.entity.portlet.session.SessionErrors;
-import org.xcolab.view.util.entity.portlet.session.SessionMessages;
+import org.xcolab.util.CountryUtil;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;
+import org.xcolab.view.util.entity.HttpUtils;
+import org.xcolab.view.util.entity.ReCaptchaUtils;
+import org.xcolab.view.util.entity.portlet.RequestParamUtil;
+import org.xcolab.view.util.entity.portlet.session.SessionErrors;
+import org.xcolab.view.util.entity.portlet.session.SessionMessages;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -53,9 +54,9 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
-public class MainViewController {
+public class LoginRegisterController {
 
-    private static final Logger _log = LoggerFactory.getLogger(MainViewController.class);
+    private static final Logger _log = LoggerFactory.getLogger(LoginRegisterController.class);
 
     public static final String SSO_TARGET_KEY = "SSO_TARGET_KEY";
     public static final String SSO_TARGET_REGISTRATION = "SSO_TARGET_REGISTRATION";
@@ -91,7 +92,7 @@ public class MainViewController {
             redirect = request.getParameter("redirect");
             if (redirect == null) {
                 HttpSession session = request.getSession();
-                redirect = (String) session.getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
+                redirect = (String) session.getAttribute(LoginRegisterController.PRE_LOGIN_REFERRER_KEY);
             }
             if (redirect == null) {
                 redirect = request.getHeader(HttpHeaders.REFERER);
@@ -129,6 +130,7 @@ public class MainViewController {
         final String loginInfoText = ConfigurationAttributeKey.LOGIN_INFO_MESSAGE.get();
         model.addAttribute("hasLoginInfoText", StringUtils.isNotBlank(loginInfoText));
         model.addAttribute("loginInfoText", loginInfoText);
+        model.addAttribute("countrySelectItems", CountryUtil.getSelectOptions());
         return REGISTER_VIEW_NAME;
     }
 

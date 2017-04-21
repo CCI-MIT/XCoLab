@@ -9,7 +9,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
-import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
+import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.utils.ProposalTemplateLifecycleUtil;
 
 import java.util.ArrayList;

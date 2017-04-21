@@ -5,20 +5,29 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.Assert;
 
 import org.xcolab.model.tables.pojos.ContentFolder;
 import org.xcolab.model.tables.records.ContentFolderRecord;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.service.utils.PaginationHelper.SortColumn;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.xcolab.model.Tables.CONTENT_FOLDER;
 
 @Repository
 public class ContentFolderDaoImpl implements ContentFolderDao {
+
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public ContentFolderDaoImpl(DSLContext dslContext) {
+        Assert.notNull(dslContext);
+        this.dslContext = dslContext;
+    }
 
     @Override
     public ContentFolder create(ContentFolder contentFolder) {
@@ -89,5 +98,18 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
         }
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());
         return query.fetchInto(ContentFolder.class);
+    }
+
+    @Override
+    public List<ContentFolder> findByAncestorFolderId(long ancestorFolderId) {
+        final List<ContentFolder> children = findByGiven(PaginationHelper.EVERYTHING, ancestorFolderId);
+        if (children.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<ContentFolder> descendants = new ArrayList<>(children);
+        for (ContentFolder child : children) {
+            descendants.addAll(findByAncestorFolderId(child.getContentFolderId()));
+        }
+        return descendants;
     }
 }

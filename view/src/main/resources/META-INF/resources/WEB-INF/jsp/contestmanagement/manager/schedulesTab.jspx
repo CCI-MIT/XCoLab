@@ -10,8 +10,8 @@
     <!--@elvariable id="scheduleId" type="java.lang.Long"-->
     <!--@elvariable id="contestScheduleBean" type="org.xcolab.view.pages.contestmanagement.wrappers.ContestScheduleBean"-->
     <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper"-->
-    <!--@elvariable id="contestPhaseTypesSelectionItems" type="java.util.List<org.xcolab.view.pages.contestmanagement.entities.LabelValue>"-->
-    <!--@elvariable id="contestPhaseAutopromoteSelectionItems" type="java.util.List<org.xcolab.view.pages.contestmanagement.entities.LabelValue>"-->
+    <!--@elvariable id="contestPhaseTypesSelectionItems" type="java.util.List<org.xcolab.util.html.LabelValue>"-->
+    <!--@elvariable id="contestPhaseAutopromoteSelectionItems" type="java.util.List<org.xcolab.util.html.LabelValue>"-->
 
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>

@@ -7,15 +7,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
-import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
+import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
 import org.xcolab.view.pages.contestmanagement.wrappers.ContestOverviewWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.MassActionConfirmationWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -41,6 +45,15 @@ public class OverviewTabController extends AbstractTabController {
         tabWrapper = new TabWrapper(tab, request, tabContext);
         request.getSession().setAttribute("tabWrapper", tabWrapper);
         return tabWrapper;
+    }
+
+    @ModelAttribute("senderListItems")
+    public List<Member> populateSenderListItems(HttpServletRequest request) {
+        List<Member> staffList;
+        final MemberCategory memberCategory = MembersClient.getMemberCategory(MemberRole.STAFF.getRoleId());
+        staffList = MembersClient.listMembers(memberCategory.getCategoryName(),null,null, null, true, 0, Integer.MAX_VALUE);
+
+        return staffList;
     }
 
     @ModelAttribute("massActionsItems")

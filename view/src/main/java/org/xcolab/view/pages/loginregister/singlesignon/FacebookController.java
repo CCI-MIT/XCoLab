@@ -23,7 +23,7 @@ import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.auth.login.AuthenticationError;
 import org.xcolab.view.pages.loginregister.CreateUserBean;
-import org.xcolab.view.pages.loginregister.MainViewController;
+import org.xcolab.view.pages.loginregister.LoginRegisterController;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
 
 import java.io.IOException;
@@ -50,8 +50,8 @@ public class FacebookController {
     public void initiateFbLogin(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         HttpSession session = request.getSession();
-        session.setAttribute(MainViewController.SSO_TARGET_KEY,
-                MainViewController.SSO_TARGET_LOGIN);
+        session.setAttribute(LoginRegisterController.SSO_TARGET_KEY,
+                LoginRegisterController.SSO_TARGET_LOGIN);
         initiateFbRequest(request, response);
     }
 
@@ -59,8 +59,8 @@ public class FacebookController {
     public void initiateFbRegistration(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         HttpSession session = request.getSession();
-        session.setAttribute(MainViewController.SSO_TARGET_KEY,
-                MainViewController.SSO_TARGET_REGISTRATION);
+        session.setAttribute(LoginRegisterController.SSO_TARGET_KEY,
+                LoginRegisterController.SSO_TARGET_REGISTRATION);
         initiateFbRequest(request, response);
     }
 
@@ -69,7 +69,7 @@ public class FacebookController {
         HttpSession session = request.getSession();
 
         String referrer = request.getHeader(HttpHeaders.REFERER);
-        session.setAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY, referrer);
+        session.setAttribute(LoginRegisterController.PRE_LOGIN_REFERRER_KEY, referrer);
 
         //TODO: potentially replace by current URL
         String facebookAuthRedirectURL = FacebookUtil.getAuthRedirectURL(request);
@@ -93,7 +93,7 @@ public class FacebookController {
         session.removeAttribute(SSOKeys.SSO_GOOGLE_ID);
 
         String redirectUrl = (String) session
-                .getAttribute(MainViewController.PRE_LOGIN_REFERRER_KEY);
+                .getAttribute(LoginRegisterController.PRE_LOGIN_REFERRER_KEY);
         if ((redirectUrl) == null || (redirectUrl.isEmpty())) {
             redirectUrl = "/";
         }
@@ -213,9 +213,9 @@ public class FacebookController {
         }*/
 
         // Finish registration
-        if (session.getAttribute(MainViewController.SSO_TARGET_KEY) != null &&
-                session.getAttribute(MainViewController.SSO_TARGET_KEY)
-                        .equals(MainViewController.SSO_TARGET_REGISTRATION)) {
+        if (session.getAttribute(LoginRegisterController.SSO_TARGET_KEY) != null &&
+                session.getAttribute(LoginRegisterController.SSO_TARGET_KEY)
+                        .equals(LoginRegisterController.SSO_TARGET_REGISTRATION)) {
 
             // append SSO attributes
             CreateUserBean userBean = new CreateUserBean();
@@ -223,7 +223,7 @@ public class FacebookController {
             userBean.setPassword(password);
             userBean.setRetypePassword(password);
 
-            MainViewController.getSSOUserInfo(request.getSession(), userBean);
+            LoginRegisterController.getSSOUserInfo(request.getSession(), userBean);
 
             // Validate uniqueness of the screen name
             // The chance of a collision among 40 equal screennames is 50% -> 5 tries should be sufficient
@@ -248,7 +248,8 @@ public class FacebookController {
                         .error(AuthenticationError.CREDENTIALS.getMessage())
                         .flashAndRedirect(request, response, SsoEndpoint.REGISTER_OR_LOGIN.getUrl());
             } else {
-                MainViewController.completeRegistration(request, response, userBean, redirectUrl, true);
+                LoginRegisterController
+                    .completeRegistration(request, response, userBean, redirectUrl, true);
             }
         } else {
             ErrorMessage

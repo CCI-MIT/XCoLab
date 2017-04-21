@@ -27,7 +27,7 @@ import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.ContestBatchBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestCSVBean;
-import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
+import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCreatorUtil;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 

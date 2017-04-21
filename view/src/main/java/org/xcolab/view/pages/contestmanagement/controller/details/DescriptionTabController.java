@@ -17,7 +17,7 @@ import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.ContestDescriptionBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
-import org.xcolab.view.pages.contestmanagement.entities.LabelValue;
+import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 import org.xcolab.view.util.entity.flash.AlertMessage;

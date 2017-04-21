@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.contestmanagement.entities;
+package org.xcolab.util.html;
 
 public class LabelStringValue {
 
