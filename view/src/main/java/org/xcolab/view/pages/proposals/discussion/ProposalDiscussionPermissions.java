@@ -1,10 +1,13 @@
 package org.xcolab.view.pages.proposals.discussion;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
@@ -14,16 +17,22 @@ import javax.servlet.http.HttpServletRequest;
 public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     private final String discussionTabName;
-    private final Long proposalId;
-    private final Long contestPhaseId;
+    private  Long proposalId;
+    private  Long contestPhaseId;
     private final HttpServletRequest request;
+
+    @Autowired
+    private ProposalsContext proposalsContext;
 
     public ProposalDiscussionPermissions(HttpServletRequest request) {
         super(request);
         discussionTabName = getTabName(request);
-        proposalId = getProposalId(request);
-        contestPhaseId = getContestPhaseId(request);
         this.request = request;
+    }
+
+    public void setProposalId(Long pId,Long cPId ){
+        proposalId = pId;
+        contestPhaseId = cPId;
     }
 
     private String getTabName(HttpServletRequest request) {

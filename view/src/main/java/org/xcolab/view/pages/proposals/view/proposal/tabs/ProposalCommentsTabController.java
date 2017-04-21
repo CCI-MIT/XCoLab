@@ -31,8 +31,11 @@ public class ProposalCommentsTabController extends BaseProposalTabController {
             discussionId = createCommentThread(request);
         }
 
+        ProposalDiscussionPermissions pdp = new ProposalDiscussionPermissions(request);
+        pdp.setProposalId(proposalsContext.getProposal(request).getProposalId(),proposalsContext.getContestPhase(request).getContestPhasePK());
+
         request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME,
-                new ProposalDiscussionPermissions(request));
+                pdp);
 
         model.addAttribute("discussionId", discussionId);
         model.addAttribute("authorId", proposal.getAuthorId());
