@@ -32,13 +32,11 @@ import org.xcolab.service.proposal.domain.proposal2phase.Proposal2PhaseDao;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
 import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao;
 import org.xcolab.service.proposal.exceptions.NotFoundException;
-import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -344,25 +342,5 @@ public class ProposalService {
         } catch (NotFoundException ignored) {
             return false;
         }
-    }
-
-    public List<Proposal> getProposalsByCurrentContests(List<Long> contestTierIds,
-            List<Long> contestTypeIds, String filterText) {
-        HashSet<Proposal> proposals = new HashSet<>();
-        PaginationHelper paginationHelper = new PaginationHelper(null, null, null);
-        if(contestTypeIds != null && !contestTypeIds.isEmpty() && contestTierIds != null && !contestTierIds.isEmpty()) {
-            for (Long contestTierId : contestTierIds) {
-                List<Contest> contests = ContestClientUtil.getContestsMatchingTier(contestTierId);
-                
-                for (Contest contest : contests) {
-                    if (contestTypeIds.contains(contest.getContestTypeId())) {
-                        proposals.addAll(proposalDao
-                                .findByGiven(paginationHelper, filterText, contest.getContestPK(),
-                                    null, null, null));
-                    }
-                }
-            }
-        }
-        return new ArrayList<>(proposals);
     }
 }

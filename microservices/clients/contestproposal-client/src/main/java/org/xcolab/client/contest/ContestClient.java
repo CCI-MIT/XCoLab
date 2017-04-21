@@ -171,7 +171,7 @@ public class ContestClient {
 
     public List<Contest> getContestsMatchingTier(Long contestTier) {
         return DtoUtil.toPojos(
-                contestResource.list().queryParam("contestTier", contestTier).queryParam("limitRecord", Integer.MAX_VALUE).execute(),
+                contestResource.list().queryParam("contestTiers", contestTier).queryParam("limitRecord", Integer.MAX_VALUE).execute(),
                 contestService);
     }
 
@@ -249,19 +249,19 @@ public class ContestClient {
     }
 
     public List<Contest> findContestsByName(String contestName, List<Long> ontologyTermIds, List<Long> contestTypeIds) {
-        return DtoUtil.toPojos(contestResource
-                .service("findContestsByName", ContestDto.TYPES.getTypeReference())
-                .queryParam("contestName", contestName)
-                .queryParam("ontologyTermIds",  convertListToGetParameter(ontologyTermIds, "ontologyTermIds"))
-                .queryParam("contestTypeIds",  convertListToGetParameter(contestTypeIds, "contestTypeIds"))
-                .getList(), contestService);
+        return DtoUtil.toPojos(contestResource.list()
+                .queryParam("searchTerm", contestName)
+                .queryParam("ontologyTermIds",  ontologyTermIds)
+                .queryParam("contestTypeIds",  contestTypeIds)
+//                .withCache(CacheName.CONTEST_LIST)
+                .execute(), contestService);
     }
 
-    public List<Contest> findContestsTierLevelAndOntologyTermIds(Long contestTier,
+    public List<Contest> findContestsByTierAndOntologyTermIds(Long contestTier,
             List<Long> focusAreaOntologyTerms) {
         return DtoUtil.toPojos(contestResource.list()
-                .queryParam("contestTier", contestTier)
-                .queryParam("focusAreaOntologyTerms", focusAreaOntologyTerms.toArray())
+                .queryParam("contestTiers", contestTier)
+                .queryParam("focusAreaIds", focusAreaOntologyTerms.toArray())
 //                .withCache(CacheName.CONTEST_LIST)
                 .execute(), contestService);
     }
@@ -270,7 +270,7 @@ public class ContestClient {
     public List<Contest> getContestMatchingOntologyTerms(List<Long> ontologyTermIds) {
         return DtoUtil.toPojos(contestResource
                 .service("getContestsByOntologyTerm", ContestDto.TYPES.getTypeReference())
-                .queryParam("focusAreaOntologyTerms", ontologyTermIds.toArray())
+                .queryParam("focusAreaIds", ontologyTermIds.toArray())
                 .getList(), contestService);
     }
 
@@ -441,19 +441,18 @@ public class ContestClient {
 
     public List<Contest> getContestsByActivePrivateType(boolean contestActive,
             boolean contestPrivate, Long contestTypeId) {
-        return DtoUtil.toPojos(contestResource
-                .list()
+        return DtoUtil.toPojos(contestResource.list()
                 .addRange(0, Integer.MAX_VALUE)
                 .queryParam("active", contestActive)
                 .queryParam("contestPrivate", contestPrivate)
-                .queryParam("contestTypeId", contestTypeId)
+                .queryParam("contestTypeIds", contestTypeId)
                 .execute(), contestService);
     }
 
     public List<Contest> getContestsByContestTypeId(Long contestTypeId) {
         return DtoUtil.toPojos(contestResource
                 .list()
-                .queryParam("contestTypeId", contestTypeId)
+                .queryParam("contestTypeIds", contestTypeId)
                 .queryParam("limitRecord", Integer.MAX_VALUE)
                 .execute(), contestService);
     }
@@ -624,8 +623,8 @@ public class ContestClient {
 
     public List<Contest> getContestsByContestType(Long contestTypeId) {
         return DtoUtil.toPojos(contestResource.list()
-                .queryParam("contestTypeId", contestTypeId)
-                .withCache(CacheName.CONTEST_LIST)
+                .queryParam("contestTypeIds", contestTypeId)
+//                .withCache(CacheName.CONTEST_LIST)
                 .execute(), contestService);
     }
 
@@ -695,18 +694,6 @@ public class ContestClient {
             currentWord++;
         }
         return stringBuilder.toString();
-    }
-
-    private static String convertListToGetParameter(List<Long> list, String parameterName) {
-        if(list.isEmpty()){
-            return "";
-        }
-        String parameterList = "";
-        for(int i=0; i<list.size()-2; i++) {
-            parameterList += list.get(i) + "&" + parameterName + "=";
-        }
-        parameterList += list.get(list.size()-1);
-        return parameterList;
     }
 
     public List<ContestCollectionCard> getSubContestCollectionCards(long parentCollectionCardId) {

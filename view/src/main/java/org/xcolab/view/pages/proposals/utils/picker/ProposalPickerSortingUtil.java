@@ -1,4 +1,4 @@
-package org.xcolab.view.pages.proposals.utils;
+package org.xcolab.view.pages.proposals.utils.picker;
 
 import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -15,15 +15,14 @@ import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Utility class to sort lists of contests or proposals by a string parameter
  */
 public class ProposalPickerSortingUtil {
 
-    public static void sortContestsList(String sortOrder, String sortColumn,
-        List<Contest> contests, final Map<Long, String> removedContests) {
+    public static void sortContestsList(String sortOrder,
+            String sortColumn, List<Contest> contests) {
         if (sortColumn != null) {
 
             boolean descendingSortOrder =
@@ -32,95 +31,33 @@ public class ProposalPickerSortingUtil {
 
             switch (sortColumn.toLowerCase()) {
                 case "name":
-                    contests.sort((o1, o2) -> {
-                        final boolean contest1wasRemoved =
-                            removedContests.containsKey(o1.getContestPK());
-                        final boolean contest2wasRemoved =
-                            removedContests.containsKey(o2.getContestPK());
-                        if (contest1wasRemoved != contest2wasRemoved) {
-                            return contest1wasRemoved ? 1 : -1;
-                        }
-                        return sortOrderModifier * o1.getContestShortName()
-                            .compareTo(o2.getContestShortName());
-                    });
+                    contests.sort((o1, o2) -> sortOrderModifier
+                        * o1.getContestShortName().compareTo(o2.getContestShortName()));
                     break;
                 case "comments":
-                    contests.sort((o1, o2) -> {
-                        final boolean contest1wasRemoved =
-                            removedContests.containsKey(o1.getContestPK());
-                        final boolean contest2wasRemoved =
-                            removedContests.containsKey(o2.getContestPK());
-                        if (contest1wasRemoved != contest2wasRemoved) {
-                            return contest1wasRemoved ? 1 : -1;
-                        }
-                        return sortOrderModifier * (int) (o1.getTotalCommentsCount() - 
-                            o2.getTotalCommentsCount());
-                    });
+                    contests.sort((o1, o2) -> sortOrderModifier * (int) (o1.getTotalCommentsCount() -
+                            o2.getTotalCommentsCount()));
                     break;
                 case "what":
-                    contests.sort((o1, o2) -> {
-                        final boolean contest1wasRemoved =
-                            removedContests.containsKey(o1.getContestPK());
-                        final boolean contest2wasRemoved =
-                            removedContests.containsKey(o2.getContestPK());
-                        if (contest1wasRemoved != contest2wasRemoved) {
-                            return contest1wasRemoved ? 1 : -1;
-                        }
-                        return sortOrderModifier * o1.getWhatName()
-                            .compareTo(o2.getWhatName());
-                    });
+                    contests.sort((o1, o2) ->
+                        sortOrderModifier * o1.getWhatName().compareTo(o2.getWhatName())
+                    );
                     break;
                 case "where":
-                    contests.sort((o1, o2) -> {
-                        final boolean contest1wasRemoved =
-                            removedContests.containsKey(o1.getContestPK());
-                        final boolean contest2wasRemoved =
-                            removedContests.containsKey(o2.getContestPK());
-                        if (contest1wasRemoved != contest2wasRemoved) {
-                            return contest1wasRemoved ? 1 : -1;
-                        }
-                        return sortOrderModifier * o1.getWhereName()
-                            .compareTo(o2.getWhereName());
-                    });
+                    contests.sort((o1, o2) ->
+                        sortOrderModifier * o1.getWhereName().compareTo(o2.getWhereName()));
                     break;
                 case "who":
-                    contests.sort((o1, o2) -> {
-                        final boolean contest1wasRemoved =
-                            removedContests.containsKey(o1.getContestPK());
-                        final boolean contest2wasRemoved =
-                            removedContests.containsKey(o2.getContestPK());
-                        if (contest1wasRemoved != contest2wasRemoved) {
-                            return contest1wasRemoved ? 1 : -1;
-                        }
-                        return sortOrderModifier * o1.getWhoName()
-                            .compareTo(o2.getWhoName());
-                    });
+                    contests.sort((o1, o2) -> sortOrderModifier * o1.getWhoName()
+                            .compareTo(o2.getWhoName()));
                     break;
                 case "how":
-                    contests.sort((o1, o2) -> {
-                        final boolean contest1wasRemoved =
-                            removedContests.containsKey(o1.getContestPK());
-                        final boolean contest2wasRemoved =
-                            removedContests.containsKey(o2.getContestPK());
-                        if (contest1wasRemoved != contest2wasRemoved) {
-                            return contest1wasRemoved ? 1 : -1;
-                        }
-                        return sortOrderModifier * o1.getHowName()
-                            .compareTo(o2.getHowName());
-                    });
+                    contests.sort((o1, o2) -> sortOrderModifier * o1.getHowName()
+                            .compareTo(o2.getHowName()));
                     break;
                 default:
-                    contests.sort((o1, o2) -> {
-                        final boolean contest1wasRemoved =
-                            removedContests.containsKey(o1.getContestPK());
-                        final boolean contest2wasRemoved =
-                            removedContests.containsKey(o2.getContestPK());
-                        if (contest1wasRemoved != contest2wasRemoved) {
-                            return contest1wasRemoved ? 1 : -1;
-                        }
-                        return sortOrderModifier * (int) (o1.getProposalsCount() - o2
-                            .getProposalsCount());
-                    });
+                    contests.sort((o1, o2) -> sortOrderModifier * (int) (o1.getProposalsCount() - o2
+                            .getProposalsCount()));
             }
         }
     }

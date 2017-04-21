@@ -1,6 +1,5 @@
 package org.xcolab.service.contest.web;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +24,7 @@ import org.xcolab.service.contest.domain.contesttype.ContestTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.collectioncard.CollectionCardService;
 import org.xcolab.service.contest.service.contest.ContestService;
+import org.xcolab.service.contest.service.ontology.OntologyService;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.sql.Timestamp;
@@ -34,32 +34,27 @@ import java.util.List;
 @RestController
 public class ContestController {
 
-    @Autowired
-    private ContestService contestService;
-
-    @Autowired
-    private CollectionCardService collectionCardService;
-
-    @Autowired
-    private ContestDao contestDao;
-
-    @Autowired
-    private ContestCollectionCardDao contestCollectionCardDao;
-
-    @Autowired
+    private final ContestDao contestDao;
     private final ContestTypeDao contestTypeDao;
-
-    @Autowired
     private final ContestDiscussionDao contestDiscussionDao;
+    private final ContestCollectionCardDao contestCollectionCardDao;
 
+    private final ContestService contestService;
+    private final CollectionCardService collectionCardService;
+    private final OntologyService ontologyService;
 
     @Autowired
-    public ContestController(ContestService contestService, ContestDao contestDao,
-            ContestTypeDao contestTypeDao, ContestDiscussionDao contestDiscussionDao) {
+    public ContestController(ContestService contestService,
+        CollectionCardService collectionCardService, ContestDao contestDao,
+        ContestCollectionCardDao contestCollectionCardDao, ContestTypeDao contestTypeDao,
+        ContestDiscussionDao contestDiscussionDao, OntologyService ontologyService) {
         this.contestService = contestService;
+        this.collectionCardService = collectionCardService;
         this.contestDao = contestDao;
+        this.contestCollectionCardDao = contestCollectionCardDao;
         this.contestTypeDao = contestTypeDao;
         this.contestDiscussionDao = contestDiscussionDao;
+        this.ontologyService = ontologyService;
     }
 
     @GetMapping(value = "/contestCollectionCards/{contestCollectionCardId}")
@@ -84,7 +79,8 @@ public class ContestController {
     }
 
     @GetMapping(value = "/contestCollectionCards")
-    public List<ContestCollectionCard> getContestCollectionCards(@RequestParam(required=false) Long parentCollectionCardId) throws NotFoundException{
+    public List<ContestCollectionCard> getContestCollectionCards(
+        @RequestParam(required = false) Long parentCollectionCardId) throws NotFoundException{
         return contestCollectionCardDao.findByGiven(parentCollectionCardId);
     }
 
@@ -102,16 +98,28 @@ public class ContestController {
             @RequestParam(required = false) Long contestYear,
             @RequestParam(required = false) Boolean active,
             @RequestParam(required = false) Boolean featured,
-            @RequestParam(required = false) Long contestTier,
+            @RequestParam(required = false) List<Long> contestTiers,
             @RequestParam(required = false) Long contestScheduleId,
             @RequestParam(required = false) Long planTemplateId,
-            @RequestParam(required = false) List<Long> focusAreaOntologyTerms,
-            @RequestParam(required = false) Long contestTypeId,
-            @RequestParam(required = false) Boolean contestPrivate){
+            @RequestParam(required = false) List<Long> focusAreaIds,
+            @RequestParam(required = false) List<Long> ontologyTermIds,
+            @RequestParam(required = false) List<Long> contestTypeIds,
+            @RequestParam(required = false) Boolean contestPrivate,
+            @RequestParam(required = false) String searchTerm) {
         final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
                 sort);
-        return contestDao.findByGiven(paginationHelper, contestUrlName, contestYear, active, featured, contestTier,
-                focusAreaOntologyTerms, contestScheduleId, planTemplateId, contestTypeId,contestPrivate);
+        if (ontologyTermIds != null) {
+            List<Long> descendantFocusAreas = ontologyService
+                .getFocusAreaIdsForDescendantTerms(ontologyTermIds);
+            if (focusAreaIds != null) {
+                focusAreaIds.addAll(descendantFocusAreas);
+            } else {
+                focusAreaIds = descendantFocusAreas;
+            }
+        }
+        return contestDao.findByGiven(paginationHelper, contestUrlName, contestYear, active,
+            featured, contestTiers, focusAreaIds, contestScheduleId, planTemplateId,
+            contestTypeIds, contestPrivate, searchTerm);
     }
 
     @RequestMapping(value = "/contests/getContestMatchingOntologyTerms", method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -139,23 +147,23 @@ public class ContestController {
     }
 
     @RequestMapping(value = "contests/getNumberOfActiveContestsInCollectionCard", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public int getNumberOfActiveContestsInCollectionCard(@RequestParam(required = true) long collectionCardId,
-            @RequestParam(required = true) boolean onlyFeatured,
-            @RequestParam(required = true) String viewType) {
+    public int getNumberOfActiveContestsInCollectionCard(@RequestParam long collectionCardId,
+            @RequestParam boolean onlyFeatured,
+            @RequestParam String viewType) {
         return collectionCardService.getNumberOfContestsInCollectionCard(collectionCardId, true, viewType, onlyFeatured);
     }
 
     @RequestMapping(value = "contests/getNumberOfPriorContestsInCollectionCard", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public int getNumberOfPriorContestsInCollectionCard(@RequestParam(required = true) long collectionCardId,
-            @RequestParam(required = true) boolean onlyFeatured,
-            @RequestParam(required = true) String viewType) {
+    public int getNumberOfPriorContestsInCollectionCard(@RequestParam long collectionCardId,
+            @RequestParam boolean onlyFeatured,
+            @RequestParam String viewType) {
         return collectionCardService.getNumberOfContestsInCollectionCard(collectionCardId, false, viewType, onlyFeatured);
     }
 
     @RequestMapping(value = "contests/getNumberOfAllContestsInCollectionCard", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public int getNumberOfAllContestsInCollectionCard(@RequestParam(required = true) long collectionCardId,
-            @RequestParam(required = true) boolean onlyFeatured,
-            @RequestParam(required = true) String viewType) {
+    public int getNumberOfAllContestsInCollectionCard(@RequestParam long collectionCardId,
+            @RequestParam boolean onlyFeatured,
+            @RequestParam String viewType) {
         return collectionCardService.getNumberOfContestsInCollectionCard(collectionCardId, null, viewType, onlyFeatured);
     }
 
@@ -283,14 +291,4 @@ public class ContestController {
         return contestTypeDao.findByGiven();
     }
 
-
-
-    @RequestMapping(value = "contests/findContestsByName", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<Contest> findContestsByName(
-            @RequestParam("contestName") String contestName,
-            @RequestParam("ontologyTermIds") List<Long> ontologyTermIds,
-            @RequestParam("contestTypeIds") List<Long> contestTypeIds){
-
-        return contestService.findContestsByName(contestName, ontologyTermIds, contestTypeIds);
-    }
 }

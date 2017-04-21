@@ -2,34 +2,30 @@ package org.xcolab.service.contest.service.ontology;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import org.xcolab.model.tables.pojos.FocusAreaOntologyTerm;
 import org.xcolab.model.tables.pojos.OntologyTerm;
-import org.xcolab.service.contest.domain.focusarea.FocusAreaDao;
 import org.xcolab.service.contest.domain.focusareaontologyterm.FocusAreaOntologyTermDao;
-import org.xcolab.service.contest.domain.ontologyspace.OntologySpaceDao;
 import org.xcolab.service.contest.domain.ontologyterm.OntologyTermDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
+import org.xcolab.util.exceptions.InternalException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OntologyService {
 
     private final OntologyTermDao ontologyTermDao;
 
-    private final OntologySpaceDao ontologySpaceDao;
-
-    private final FocusAreaDao focusAreaDao;
-
     private final FocusAreaOntologyTermDao focusAreaOntologyTermDao;
 
     @Autowired
-    public OntologyService(OntologySpaceDao ontologySpaceDao, OntologyTermDao ontologyTermDao, FocusAreaDao focusAreaDao, FocusAreaOntologyTermDao focusAreaOntologyTermDao) {
-
-        this.ontologySpaceDao = ontologySpaceDao;
+    public OntologyService(OntologyTermDao ontologyTermDao,
+            FocusAreaOntologyTermDao focusAreaOntologyTermDao) {
         this.ontologyTermDao = ontologyTermDao;
-        this.focusAreaDao = focusAreaDao;
         this.focusAreaOntologyTermDao = focusAreaOntologyTermDao;
     }
 
@@ -44,8 +40,9 @@ public class OntologyService {
         return focusAreasIdsByOntologyTermId;
     }
 
-    private Long getOntologyTermIdByFocusAreaAndSpaceId(Long focusAreaId, Long ontologySpaceId) {
-        List<FocusAreaOntologyTerm> ontologyTermsForFocusArea = focusAreaOntologyTermDao.findByGiven(focusAreaId, null);
+    private long getOntologyTermIdByFocusAreaAndSpaceId(Long focusAreaId, long ontologySpaceId) {
+        List<FocusAreaOntologyTerm> ontologyTermsForFocusArea =
+            focusAreaOntologyTermDao.findByGiven(focusAreaId, null);
         for (FocusAreaOntologyTerm focusAreaOntologyTerm : ontologyTermsForFocusArea) {
             long focusAreaOntologyTermOntologyTermId = focusAreaOntologyTerm.getOntologyTermId();
             try {
@@ -57,7 +54,18 @@ public class OntologyService {
 
             }
         }
-        return null;
+        throw new InternalException("Could not find ontology terms for for focusAreaId "
+            + focusAreaId + " and spaceId " + ontologySpaceId);
+    }
+
+    public List<Long> getFocusAreaIdsForDescendantTerms(List<Long> ontologyTermIds) {
+        if (ontologyTermIds != null && !ontologyTermIds.isEmpty()) {
+            final List<Long> allChildTerms = ontologyTermIds.stream()
+                .flatMap(otId -> getAllOntologyTermDescendantTermsIds(otId).stream())
+                .collect(Collectors.toList());
+            return getFocusAreasIdForOntologyTermIds(allChildTerms);
+        }
+        return Collections.emptyList();
     }
 
     public List<Long> getAllOntologyTermDescendantTermsIds(Long ontologyTermId) {
@@ -69,7 +77,7 @@ public class OntologyService {
             for (OntologyTerm ot : getAllOntologyTermDescendantTerms(ontologyTerm)) {
                 terms.add(ot.getId_());
             }
-        }catch (NotFoundException ignored){
+        } catch (NotFoundException ignored) {
         }
         return terms;
     }
@@ -93,8 +101,8 @@ public class OntologyService {
 
         List<FocusAreaOntologyTerm> list = focusAreaOntologyTermDao.findByOntologyTermIds(ontTermId);
         List<Long> focusAreaIds = new ArrayList<>();
-        if (list != null && list.size() > 0) {
-            for(FocusAreaOntologyTerm faot : list){
+        if (list != null && !list.isEmpty()) {
+            for (FocusAreaOntologyTerm faot : list) {
                 focusAreaIds.add(faot.getFocusAreaId());
             }
         }

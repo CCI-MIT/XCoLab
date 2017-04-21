@@ -7,6 +7,7 @@ import org.xcolab.client.contest.pojo.templates.PlanTemplateDto;
 import org.xcolab.client.contest.pojo.templates.PlanTemplateSection;
 import org.xcolab.client.contest.pojo.templates.PlanTemplateSectionDto;
 import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.dto.DtoUtil;
@@ -73,6 +74,7 @@ public class PlanTemplateClient {
 
     public PlanSectionDefinition getPlanSectionDefinition(long id) {
         return planSectionDefinitionResource.get(id)
+                .withCache(CacheName.MISC_REQUEST)
                 .execute().toPojo(contestService);
     }
 

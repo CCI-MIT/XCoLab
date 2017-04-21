@@ -12,16 +12,14 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.pages.proposals.utils.ProposalPickerFilterUtil;
-import org.xcolab.view.pages.proposals.utils.ProposalPickerSortingUtil;
+import org.xcolab.view.pages.proposals.utils.picker.ProposalPickerFilterUtil;
+import org.xcolab.view.pages.proposals.utils.picker.ProposalPickerSortingUtil;
 import org.xcolab.view.pages.proposals.view.proposal.json.picker.ContestsResult;
 import org.xcolab.view.pages.proposals.view.proposal.json.picker.CountsResult;
 import org.xcolab.view.pages.proposals.view.proposal.json.picker.ProposalsResult;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -78,7 +76,7 @@ public class ProposalPickerJSONController {
         if (proposals != null) {
             totalCount = proposals.size();
 
-            ProposalPickerSortingUtil.sortProposalsList(sortOrder, sortColumn, proposals);
+//            ProposalPickerSortingUtil.sortProposalsList(sortOrder, sortColumn, proposals);
             if (end >= totalCount && totalCount > 0) {
                 end = totalCount;
             }
@@ -116,9 +114,8 @@ public class ProposalPickerJSONController {
         if (end >= contests.size() && !contests.isEmpty()) {
             end = contests.size();
         }
-        Map<Long, String> removedContests = new HashMap<>();
         ProposalPickerSortingUtil
-            .sortContestsList(sortOrder, sortColumn, contests, removedContests);
+            .sortContestsList(sortOrder, sortColumn, contests);
         if (contests.size() > (end - start)) {
             contests = contests.subList(start, end);
         }

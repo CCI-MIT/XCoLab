@@ -888,6 +888,10 @@ public class Proposal extends AbstractProposal {
         return ribbonWrapper;
     }
 
+    public boolean hasRibbon() {
+        return getRibbonWrapper().getRibbon() > 0;
+    }
+
     public Long getImage() {
         return proposalAttributeHelper.getAttributeValueLong(ProposalAttributeKeys.IMAGE_ID, 0);
     }

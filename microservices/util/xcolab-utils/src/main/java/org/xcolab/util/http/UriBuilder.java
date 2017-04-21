@@ -5,6 +5,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -57,8 +58,17 @@ public class UriBuilder {
     }
 
     public UriBuilder queryParam(String parameterName, Object parameter) {
-        uriComponentsBuilder.queryParam(parameterName, parameter);
-        sortedParameters.put(parameterName, parameter);
+        if (parameter instanceof Collection) {
+            final Collection<?> parameterList = (Collection<?>) parameter;
+            final String arrayParam = parameterList.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(","));
+            uriComponentsBuilder.queryParam(parameterName, arrayParam);
+            sortedParameters.put(parameterName, arrayParam);
+        } else {
+            uriComponentsBuilder.queryParam(parameterName, parameter);
+            sortedParameters.put(parameterName, parameter);
+        }
         return this;
     }
 
@@ -75,6 +85,11 @@ public class UriBuilder {
         return this;
     }
 
+    private boolean isNotBlankString(Object potentialString) {
+        return !(potentialString instanceof String
+            && StringUtils.isBlank((String) potentialString));
+    }
+
     public String getPathString() {
         return pathBuilder.toString();
     }
@@ -89,11 +104,6 @@ public class UriBuilder {
         return sortedParameters.entrySet().stream()
                 .map(entry -> entry.getKey() + "=" + entry.getValue().toString())
                 .collect(Collectors.joining("&"));
-    }
-
-    private boolean isNotBlankString(Object potentialString) {
-        return !(potentialString instanceof String
-                && StringUtils.isBlank((String) potentialString));
     }
 
     public String buildString() {

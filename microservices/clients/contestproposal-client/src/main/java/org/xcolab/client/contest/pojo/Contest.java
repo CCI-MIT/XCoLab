@@ -567,7 +567,7 @@ public class Contest extends AbstractContest implements Serializable {
         }
 
         List<Contest> contests = contestClient
-                .findContestsTierLevelAndOntologyTermIds(CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS, focusAreaOntologyTermIds);
+                .findContestsByTierAndOntologyTermIds(CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS, focusAreaOntologyTermIds);
         if (!contests.isEmpty()) {
             return contests.get(0);
         } else {
