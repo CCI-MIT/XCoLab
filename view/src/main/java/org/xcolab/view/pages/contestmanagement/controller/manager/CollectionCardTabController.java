@@ -92,11 +92,11 @@ public class CollectionCardTabController extends AbstractTabController {
 
     @PostMapping("tab/COLLECTION_CARDS/delete")
     public String deleteCollectionCardController(HttpServletRequest request,
-            @RequestParam String collectionCardId, HttpServletResponse response) {
+            @RequestParam long collectionCardId, HttpServletResponse response) {
         if (!tabWrapper.getCanEdit()) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
-        ContestClientUtil.deleteContestCollectionCard(new Long(collectionCardId));
+        ContestClientUtil.deleteContestCollectionCard(collectionCardId);
         return "redirect:" + tab.getTabUrl();
     }
 

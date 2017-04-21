@@ -213,11 +213,11 @@ public class OntologyEditorController {
 
     private void printOntologies(OntologyTerm term, int depth) {
         for(OntologyTerm child : OntologyClientUtil.getChildOntologyTerms(term.getId())) {
-            String prefix = "";
+            StringBuilder prefix = new StringBuilder();
             for(int i = 0 ; i <depth; i++) {
-                prefix += "; ";
+                prefix.append("; ");
             }
-            System.out.println(prefix + child.getId() + "; " + child.getName());
+            System.out.println(prefix.toString() + child.getId() + "; " + child.getName());
             printOntologies(child, depth +1);
         }
     }

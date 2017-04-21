@@ -177,7 +177,7 @@ public class ContestMassActionMethods {
         for (Long contestId : contestList) {
             Contest contest = ContestClientUtil.getContest(contestId);
             if (!contest.getIsSharedContestInForeignColab()) {
-                Boolean subscriptionStatus = (boolean) subscriptionStatusObject;
+                boolean subscriptionStatus = (boolean) subscriptionStatusObject;
                 if (subscriptionStatus) {
                     ContestClientUtil.subscribeMemberToContest(contestId, memberId);
                 } else {
