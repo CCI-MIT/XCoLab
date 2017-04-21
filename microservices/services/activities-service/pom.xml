@@ -30,6 +30,17 @@
             <artifactId>h2</artifactId>
             <version>1.4.194</version>
         </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
+            <version>1.7.0RC4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>1.7.0RC4</version>
+        </dependency>
     </dependencies>
 
 
