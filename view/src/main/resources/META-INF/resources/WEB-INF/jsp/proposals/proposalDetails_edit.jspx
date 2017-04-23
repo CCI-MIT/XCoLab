@@ -18,10 +18,6 @@
         var IMAGE_UPLOAD_HELP_TEXT = '${requestScope.imageUploadHelpText}';
     </script>
 
-    <!-- Includes for profanity filter-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.7.0/jquery.modal.min.js" type="text/javascript" charset="utf-8"><!-- --></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.7.0/jquery.modal.min.css" rel="stylesheet" type="text/css" />
-
     <jsp:directive.include file="./proposalDetails/header.jspx" />
 
     <!--ProposalSectionsTabController-->
@@ -38,11 +34,22 @@
     </style>
 
     <c:if test="${mustFilterContent}">
-    <div id="modal_filtering_prof" style="display:none;">
-        <p style="font-size: large;font-weight: 600;">Preparing for submission...</p>
-        <div id="loading_filtering_image" style="text-align: left"><img border="0" src="/images/loader.gif"/></div>
-        <div id="processedFailed" style="display:none;margin-top: 8px;">Your entry contains disallowed words. Please remove offensive words before saving again <a href="#" rel="modal:close">Close</a></div>
-    </div>
+        <div class="modal fade" id="js-filteringModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Preparing for submission...</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="loading_filtering_image" style="text-align: left"><img border="0" src="/images/loader.gif"/></div>
+                        <div id="processedFailed" style="display:none;margin-top: 8px;">Your entry contains disallowed words. Please remove offensive words before saving again</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="close" class="c-Button__secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
     </c:if>
 
     <div class="prop-left">
