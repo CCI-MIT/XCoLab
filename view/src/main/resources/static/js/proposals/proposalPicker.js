@@ -304,13 +304,13 @@ var inputHandler =  function(){
 
 // SORT ARROWS
 
-var sortArrowDown = '<div class="sort-arrow"> &nbsp;<img src="/climatecolab-theme/images/sort-arrow-down.png"></div>';
-var sortArrowUp = '<div class="sort-arrow"> &nbsp;<img src="/climatecolab-theme/images/sort-arrow-up.png"></div>';
+var sortArrowDown = '<div class="c-Table__sortArrow"><img src="/images/sort-arrow-down.png"></div>';
+var sortArrowUp = '<div class="c-Table__sortArrow"><img src="/images/sort-arrow-up.png"></div>';
 
 function sortByColumn(link, column){
     // remove all sort arrows
     link.parent().parent().children().each(function() {
-        $(this).children().remove('.sort-arrow');
+        $(this).children().remove('.c-Table__sortArrow');
     });
 
     if (sortOrder == 'ASC'){
@@ -408,13 +408,13 @@ $("#savePickedProposals").click(function(event) {
 	return false;
 });
 
-$("#proposalPickerModal").find(".c-TitleBar a").click(function(event) {
+$("#proposalPickerModal").find(".c-Table__cell--title a").click(function(event) {
 	event.preventDefault();
 	var link = $(this);
-	var parentContainer = link.parents(".c-TitleBar");
+	var parentContainer = link.parents(".c-Table");
 	var column = link.attr('data-sort-column');
     link.parent().parent().children().each(function() {
-        $(this).children().remove('.sort-arrow');
+        $(this).children().remove('.c-Table__sortArrow');
     });
 
     if (sortOrder == 'ASC'){
@@ -427,8 +427,7 @@ $("#proposalPickerModal").find(".c-TitleBar a").click(function(event) {
     if (parentContainer.attr('data-entity') == 'proposal') {
         sortColumn = column;
     	loadProposals();
-    }
-    else {
+    } else {
         contestSortColumn = column;
     	loadContests();
     }

@@ -1,18 +1,9 @@
 package org.xcolab.view.pages.proposals.utils.picker;
 
-import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.AbstractContest;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.proposals.ProposalAttributeClientUtil;
-import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
-import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -25,40 +16,33 @@ public class ProposalPickerSortingUtil {
             String sortColumn, List<Contest> contests) {
         if (sortColumn != null) {
 
-            boolean descendingSortOrder =
-                (sortOrder != null) && sortOrder.toLowerCase().equals("desc");
-            final int sortOrderModifier = descendingSortOrder ? -1 : 1;
-
+            Comparator<Contest> comparator;
             switch (sortColumn.toLowerCase()) {
                 case "name":
-                    contests.sort((o1, o2) -> sortOrderModifier
-                        * o1.getContestShortName().compareTo(o2.getContestShortName()));
+                    comparator = Comparator.comparing(AbstractContest::getContestShortName);
                     break;
                 case "comments":
-                    contests.sort((o1, o2) -> sortOrderModifier * (int) (o1.getTotalCommentsCount() -
-                            o2.getTotalCommentsCount()));
+                    comparator = Comparator.comparing(Contest::getTotalCommentsCount);
                     break;
                 case "what":
-                    contests.sort((o1, o2) ->
-                        sortOrderModifier * o1.getWhatName().compareTo(o2.getWhatName())
-                    );
+                    comparator = Comparator.comparing(Contest::getWhatName);
                     break;
                 case "where":
-                    contests.sort((o1, o2) ->
-                        sortOrderModifier * o1.getWhereName().compareTo(o2.getWhereName()));
+                    comparator = Comparator.comparing(Contest::getWhereName);
                     break;
                 case "who":
-                    contests.sort((o1, o2) -> sortOrderModifier * o1.getWhoName()
-                            .compareTo(o2.getWhoName()));
+                    comparator = Comparator.comparing(Contest::getWhoName);
                     break;
                 case "how":
-                    contests.sort((o1, o2) -> sortOrderModifier * o1.getHowName()
-                            .compareTo(o2.getHowName()));
+                    comparator = Comparator.comparing(Contest::getHowName);
                     break;
                 default:
-                    contests.sort((o1, o2) -> sortOrderModifier * (int) (o1.getProposalsCount() - o2
-                            .getProposalsCount()));
+                    comparator = Comparator.comparing(Contest::getProposalsCount);
             }
+            if (sortOrder != null && sortOrder.toLowerCase().equals("desc")) {
+                comparator = comparator.reversed();
+            }
+            contests.sort(comparator);
         }
     }
 
@@ -67,79 +51,33 @@ public class ProposalPickerSortingUtil {
 
         if (sortColumn != null) {
 
-            boolean descendingSortOrder =
-                (sortOrder != null) && sortOrder.toLowerCase().equals("desc");
-            final int sortOrderModifier = descendingSortOrder ? -1 : 1;
-
+            Comparator<Proposal> comparator;
             switch (sortColumn.toLowerCase()) {
                 case "contest":
-                    proposals.sort((o1, o2) -> {
-                        try {
-                            return sortOrderModifier * ProposalClientUtil
-                                .getCurrentContestForProposal(o1.getProposalId())
-                                .getContestName().compareTo(ProposalClientUtil
-                                    .getCurrentContestForProposal(o2.getProposalId())
-                                    .getContestName());
-                        } catch (ContestNotFoundException e) {
-                            return 0;
-                        }
-                    });
+                    comparator = Comparator.comparing(o -> o.getContest().getContestName());
                     break;
                 case "proposal":
-                    proposals.sort((o1, o2) -> sortOrderModifier * ProposalAttributeClientUtil
-
-                        .getProposalAttribute(o1.getProposalId(),
-                            ProposalAttributeKeys.NAME, 0L).getStringValue().compareTo(
-                            ProposalAttributeClientUtil
-                                .getProposalAttribute(o2.getProposalId(),
-                                    ProposalAttributeKeys.NAME, 0L).getStringValue()));
+                    comparator = Comparator.comparing(Proposal::getName);
                     break;
                 case "author":
-                    proposals.sort((o1, o2) -> {
-                        try {
-                            ProposalAttribute t1 = ProposalAttributeClientUtil
-                                .getProposalAttribute(o1.getProposalId(),
-                                    ProposalAttributeKeys.TEAM, 0L);
-                            ProposalAttribute t2 = ProposalAttributeClientUtil
-                                .getProposalAttribute(o2.getProposalId(),
-                                    ProposalAttributeKeys.TEAM, 0L);
-
-                            String author1 =
-                                t1 == null || t1.getStringValue().trim().isEmpty() ? MembersClient
-                                    .getMember(o1.getAuthorId()).getScreenName()
-                                    : t1.getStringValue();
-                            String author2 =
-                                t2 == null || t2.getStringValue().trim().isEmpty() ? MembersClient
-                                    .getMember(o2.getAuthorId()).getScreenName()
-                                    : t2.getStringValue();
-
-                            return sortOrderModifier * author1.compareTo(author2);
-                        } catch (MemberNotFoundException e) {
-                            return 0;
-                        }
-                    });
+                    comparator = Comparator.comparing(Proposal::getAuthorName);
                     break;
                 case "date":
-                    proposals.sort(Comparator.comparing(Proposal::getCreateDate));
+                    comparator = Comparator.comparing(Proposal::getCreateDate);
                     break;
                 case "supporters":
-                    proposals.sort((o1, o2) -> sortOrderModifier * ProposalMemberRatingClientUtil
-                        .getProposalSupportersCount(o1.getProposalId())
-                        - ProposalMemberRatingClientUtil
-                        .getProposalSupportersCount(o2.getProposalId()));
+                    comparator = Comparator.comparing(Proposal::getSupportersCountCached);
                     break;
                 case "comments":
-                    proposals.sort((o1, o2) -> sortOrderModifier * (
-                        CommentClientUtil.countComments(o1.getDiscussionId())
-                            - CommentClientUtil.countComments(o2.getDiscussionId())));
+                    comparator = Comparator.comparing(Proposal::getCommentsCount);
                     break;
                 default:
                     throw new UnsupportedOperationException("Unknown sort column");
             }
-        }
-
-        if (sortOrder != null && sortOrder.toLowerCase().equals("desc")) {
-            Collections.reverse(proposals);
+            if (sortOrder != null && sortOrder.toLowerCase().equals("desc")) {
+                comparator = comparator.reversed();
+            }
+            proposals.sort(comparator);
         }
     }
 }

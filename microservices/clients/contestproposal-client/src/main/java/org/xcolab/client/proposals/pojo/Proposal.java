@@ -321,6 +321,10 @@ public class Proposal extends AbstractProposal {
         return clients.proposalMemberRating.getProposalSupportersCount(this.getProposalId());
     }
 
+    public long getSupportersCountCached() {
+        return clients.proposalMemberRating.getProposalSupportersCountCached(this.getProposalId());
+    }
+
     public long getCommentsCount() {
         if (this.getProposalId() > 0) {
             return clients.comment.countComments(this.getDiscussionId());

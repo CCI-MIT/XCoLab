@@ -34,6 +34,7 @@ $c-Table__cell__count__hideImage: false !default;
 
   height: 30px;
   line-height: 30px;
+  white-space: nowrap;
 
   a {
     font-weight: $c-Table__row__fontWeight;

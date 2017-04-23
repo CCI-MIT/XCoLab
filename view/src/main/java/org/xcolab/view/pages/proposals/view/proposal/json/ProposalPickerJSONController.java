@@ -72,23 +72,14 @@ public class ProposalPickerJSONController {
                 throw new InternalException("Unknown requestType " + requestType);
         }
 
-        int totalCount;
-        if (proposals != null) {
-            totalCount = proposals.size();
+        int totalCount = proposals.size();
 
-//            ProposalPickerSortingUtil.sortProposalsList(sortOrder, sortColumn, proposals);
-            if (end >= totalCount && totalCount > 0) {
-                end = totalCount;
-            }
-            if (totalCount > (end - start)) {
-                proposals = proposals.subList(start, end);
-            }
-
-        } else {
-            totalCount = 0;
-            _log.error(
-                "Could not retrieve proposals: proposals variable should not be null for valid"
-                    + " filterKeys.(filterKey was {})", filterType);
+        ProposalPickerSortingUtil.sortProposalsList(sortOrder, sortColumn, proposals);
+        if (end >= totalCount && totalCount > 0) {
+            end = totalCount;
+        }
+        if (totalCount > (end - start)) {
+            proposals = proposals.subList(start, end);
         }
 
         return new ProposalsResult(proposals, totalCount);
@@ -101,7 +92,8 @@ public class ProposalPickerJSONController {
         @RequestParam(value = "type", required = false) String requestType,
         @RequestParam(value = "filterKey", required = false) String filterType,
         @RequestParam(required = false) String filterText,
-        @RequestParam(required = false) int start, @RequestParam(required = false) int end,
+        @RequestParam(required = false) int start,
+        @RequestParam(required = false) int end,
         @RequestParam(required = false) String sortOrder,
         @RequestParam(required = false, value = "contestSortColumn") String sortColumn,
         @RequestParam(required = false) Long sectionId) throws IOException {
@@ -114,8 +106,7 @@ public class ProposalPickerJSONController {
         if (end >= contests.size() && !contests.isEmpty()) {
             end = contests.size();
         }
-        ProposalPickerSortingUtil
-            .sortContestsList(sortOrder, sortColumn, contests);
+        ProposalPickerSortingUtil.sortContestsList(sortOrder, sortColumn, contests);
         if (contests.size() > (end - start)) {
             contests = contests.subList(start, end);
         }
