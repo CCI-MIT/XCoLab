@@ -136,7 +136,8 @@
                     tackle and concludes by stating the contest's focus.
                 </div>
                 <div class="clearfix"><!-- --></div>
-                <div class="addpropInputContainer">
+                
+                <div class="addpropInputContainer" style="min-width:700px;">
                     <form:textarea path="contestDescription" id="contestDescription"
                                    cssClass="rte-editorPlaceholder contestDescription"/>
 
