@@ -44,11 +44,11 @@ public final class ProposalMemberRatingClient {
                 k -> new ProposalMemberRatingClient(proposalService));
     }
 
-    public List<ProposalSupporter> getProposalSupporters(Long proposalId) {
+    public List<ProposalSupporter> getProposalSupporters(long proposalId) {
         return DtoUtil.toPojos(proposalSupporterResource.list()
-                .withCache(CacheName.MISC_REQUEST)
-                .optionalQueryParam("proposalId", proposalId)
-                .execute(), proposalService);
+            .withCache(CacheName.MISC_REQUEST)
+            .queryParam("proposalId", proposalId)
+            .execute(), proposalService);
     }
 
     public List<ProposalSupporter> getProposalSupportersByUserId(Long userId) {
@@ -64,6 +64,15 @@ public final class ProposalMemberRatingClient {
                         .withParameter("proposalId", proposalId)
                         .asCount(), CacheName.MISC_REQUEST)
                 .get();
+    }
+
+    public Integer getProposalSupportersCountCached(Long proposalId) {
+        return proposalSupporterResource.<ProposalSupporterDto, Integer>service("count", Integer.class)
+            .optionalQueryParam("proposalId", proposalId)
+            .withCache(CacheKeys.withClass(ProposalSupporterDto.class)
+                .withParameter("proposalId", proposalId)
+                .asCount(), CacheName.PROPOSAL_DETAILS)
+            .get();
     }
 
     public Boolean isMemberProposalSupporter(Long proposalId, Long memberId) {

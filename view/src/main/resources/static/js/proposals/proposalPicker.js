@@ -8,14 +8,21 @@ var pickMultipleProposals = false;
 var contestPK = 0;
 var contests = [];
 var pickedProposals = [];
-var spinner = new Spinner();
+
+var loadingWheelOpts = {
+    lines: 15, // The number of lines to draw
+    length: 60, // The length of each line
+    width: 20, // The line thickness
+    radius: 60 // The radius of the inner circle
+};
+var spinner = new Spinner(loadingWheelOpts);
 
 var proposalPickerProposalEntryTemplate = Handlebars.compile($("#proposalPickerProposalEntryTemplate").html());
 var proposalPickerContestEntryTemplate = Handlebars.compile($("#proposalPickerContestEntryTemplate").html());
 
 /* Load Proposals for a given tab (determined by var) */
 function loadProposals(){
-    spinner.spin(document.getElementById('proposalPickerTableContainer'));
+    spinner.spin(document.getElementById('proposalPicker_viewArea'));
     var URL = replaceURLPlaceholders(proposalPickerURL);
     $.getJSON(URL, { get_param: 'value' }, function(data) {
         $('#numberOfProposals').html(data.totalCount);
@@ -35,7 +42,7 @@ function loadProposals(){
 
 /* Load Proposals for a given tab (determined by var) */
 function loadContests(){
-    spinner.spin(document.getElementById('proposalPickerTableContainer'));
+    spinner.spin(document.getElementById('proposalPicker_viewArea'));
     var URL = replaceURLPlaceholders(proposalPickerContestsURL);
     
     $.getJSON(URL, { get_param: 'value' }, function(data) {
@@ -147,8 +154,8 @@ function pickProposal(sectionId, proposalNames, proposalNamesPlural, contestName
     
     pickMultipleProposals = false;
     updateTabRibbons();
-    var popupProposalPicker = $('#popup_proposalPicker');
-    popupProposalPicker.show();
+    var popupProposalPicker = $("#proposalPickerModal");
+    popupProposalPicker.modal();
     proposalPickerTabSelected(popupProposalPicker.find('> div > .prop-tabs > ul > li:first > a'),'contests');
 }
 
@@ -160,8 +167,8 @@ function pickProposalList(sectionId, proposalNames, proposalNamePlural, contestN
     
     pickMultipleProposals = true;
     updateTabRibbons();
-    var popupProposalPicker = $('#popup_proposalPicker');
-    popupProposalPicker.show();
+    var popupProposalPicker = $("#proposalPickerModal");
+    popupProposalPicker.modal();
     proposalPickerTabSelected(popupProposalPicker.find('> div > .prop-tabs > ul > li:first > a'),'contests');
 }
 
@@ -213,7 +220,8 @@ function selectProposal(proposalId, proposalName, contestName, proposalLinkUrl, 
         if (inputField.val()) inputField.next().remove();
         inputField.val(proposalId);
         inputField.after('<span><a href="'+proposalLinkUrl+'">' + proposalName + '</a> (<a onclick="removePickedProposal(' + currentSectionId + ',' + proposalId + ', $(this), false);" href="javascript:;">remove</a>)</span>');
-        $('#popup_proposalPicker').hide();
+        var popupProposalPicker = $("#proposalPickerModal");
+        popupProposalPicker.modal("hide");
     }
 }
 
@@ -296,13 +304,13 @@ var inputHandler =  function(){
 
 // SORT ARROWS
 
-var sortArrowDown = '<div class="sort-arrow"> &nbsp;<img src="/climatecolab-theme/images/sort-arrow-down.png"></div>';
-var sortArrowUp = '<div class="sort-arrow"> &nbsp;<img src="/climatecolab-theme/images/sort-arrow-up.png"></div>';
+var sortArrowDown = '<div class="c-Table__sortArrow"><img src="/images/sort-arrow-down.png"></div>';
+var sortArrowUp = '<div class="c-Table__sortArrow"><img src="/images/sort-arrow-up.png"></div>';
 
 function sortByColumn(link, column){
     // remove all sort arrows
     link.parent().parent().children().each(function() {
-        $(this).children().remove('.sort-arrow');
+        $(this).children().remove('.c-Table__sortArrow');
     });
 
     if (sortOrder == 'ASC'){
@@ -317,8 +325,7 @@ function sortByColumn(link, column){
 }
 
 // -------------------- PROPOSAL PICKER HIGHLIGHTING --------------------
-
-var container = document.getElementById('popup_proposalPicker');
+var container = document.getElementById('proposalPickerModal');
 var input = document.getElementById('prop-search');
 
 var highlighterClasses = ['higlightText1'];
@@ -362,28 +369,6 @@ if (input) {
 	};
 }
 
-// -- SPINNING (LOADING) WHEEL --
-
-var loadingWheelOpts = {
-    lines: 13, // The number of lines to draw
-    length: 20, // The length of each line
-    width: 10, // The line thickness
-    radius: 30, // The radius of the inner circle
-    corners: 1, // Corner roundness (0..1)
-    rotate: 0, // The rotation offset
-    direction: 1, // 1: clockwise, -1: counterclockwise
-    color: '#000', // #rgb or #rrggbb or array of colors
-    speed: 1, // Rounds per second
-    trail: 60, // Afterglow percentage
-    shadow: false, // Whether to render a shadow
-    hwaccel: false, // Whether to use hardware acceleration
-    className: 'spinner', // The CSS class to assign to the spinner
-    zIndex: 2e9, // The z-index (defaults to 2000000000)
-    top: 'auto', // Top position relative to parent in px
-    left: 'auto' // Left position relative to parent in px
-};
-var spinner = new Spinner(loadingWheelOpts);
-
 $("#proposalPicker_contestsContainer").on("click", " tr", function(event) {
 	event.preventDefault();
 	contestPK = $(this).attr('data-contestPK');
@@ -406,12 +391,6 @@ $("#breadContestsList").click(function(event) {
 	$("#proposalPickerTableContests").show();
 });
 
-$("#cancelPickedProposals").click(function(event) {
-	$('#popup_proposalPicker').hide();   
-	event.preventDefault();
-	return false;
-});
-
 
 $("#savePickedProposals").click(function(event) {
     var inputField = $("input[name='sectionsContent[" + currentSectionId + "]']");
@@ -424,18 +403,18 @@ $("#savePickedProposals").click(function(event) {
 		proposalListContainer.append('<tr><td><a href="' + proposal.linkUrl + '">' + proposal.proposalName + '</a></td><td class="removeProposalFromList"><a onclick="removePickedProposal(' + currentSectionId + ',' + proposal.proposalId + ', $(this), true);" href="javascript:;">remove</a></td></tr>');
 	}
 	inputField.val(proposalIds.join(","));
-	$('#popup_proposalPicker').hide();   
+    $("#proposalPickerModal").modal("hide");
 	event.preventDefault();
 	return false;
 });
 
-$("#popup_proposalPicker").find(".c-TitleBar a").click(function(event) {
+$("#proposalPickerModal").find(".c-Table__cell--title a").click(function(event) {
 	event.preventDefault();
 	var link = $(this);
-	var parentContainer = link.parents(".c-TitleBar");
+	var parentContainer = link.parents(".c-Table");
 	var column = link.attr('data-sort-column');
     link.parent().parent().children().each(function() {
-        $(this).children().remove('.sort-arrow');
+        $(this).children().remove('.c-Table__sortArrow');
     });
 
     if (sortOrder == 'ASC'){
@@ -448,8 +427,7 @@ $("#popup_proposalPicker").find(".c-TitleBar a").click(function(event) {
     if (parentContainer.attr('data-entity') == 'proposal') {
         sortColumn = column;
     	loadProposals();
-    }
-    else {
+    } else {
         contestSortColumn = column;
     	loadContests();
     }

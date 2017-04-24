@@ -8,6 +8,7 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.service.contest.exceptions.NotFoundException;
@@ -172,6 +173,7 @@ public class ContestDaoImpl implements ContestDao {
     }
 
 
+    @Override
     public Contest getByThreadId(Long threadId) throws NotFoundException {
         final Record record = dslContext.select()
                 .from(CONTEST)
@@ -183,6 +185,7 @@ public class ContestDaoImpl implements ContestDao {
         return record.into(Contest.class);
     }
 
+    @Override
     public Contest getByResourceId(Long resourceId) throws NotFoundException {
         final Record record = dslContext.select()
                 .from(CONTEST)
@@ -194,54 +197,37 @@ public class ContestDaoImpl implements ContestDao {
         return record.into(Contest.class);
     }
 
-    public List<Contest> findByGiven(String contestName, List<Long> focusAreaOntologyTermsIds, List<Long> contestTypeIds) {
-        final SelectQuery<Record> query = dslContext.select()
-                .from(CONTEST).getQuery();
-        if(contestName != null && !contestName.isEmpty()){
-            query.addConditions(CONTEST.CONTEST_NAME.like("%" + contestName + "%")
-            .or(CONTEST.CONTEST_SHORT_NAME.like("%" + contestName + "%")));
-        }
-
-        if(focusAreaOntologyTermsIds != null && !focusAreaOntologyTermsIds.isEmpty()){
-            query.addConditions(CONTEST.FOCUS_AREA_ID.in(focusAreaOntologyTermsIds));
-        }
-
-        if(contestTypeIds != null && !contestTypeIds.isEmpty()) {
-            query.addConditions(CONTEST.CONTEST_TYPE_ID.in(contestTypeIds));
-        }
-        query.addOrderBy(CONTEST.CREATED.desc());
-        return query.fetchInto(Contest.class);
-    }
-
     @Override
-    public List<Contest> findByGiven(PaginationHelper paginationHelper, String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId, Long contestTypeId, Boolean contestPrivate) {
+    public List<Contest> findByGiven(PaginationHelper paginationHelper, String contestUrlName,
+            Long contestYear, Boolean active, Boolean featured, List<Long> contestTiers,
+            List<Long> focusAreaIds, Long contestScheduleId, Long planTemplateId,
+            List<Long> contestTypeIds, Boolean contestPrivate, String searchTerm) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST).getQuery();
 
         if(contestPrivate != null){
             query.addConditions(CONTEST.CONTEST_PRIVATE.eq(contestPrivate));
         }
-        if (contestTier != null) {
-            query.addConditions(CONTEST.CONTEST_TIER.eq(contestTier));
+        if (contestTiers != null) {
+            query.addConditions(CONTEST.CONTEST_TIER.in(contestTiers));
         }
-
         if (contestScheduleId != null) {
             query.addConditions(CONTEST.CONTEST_SCHEDULE_ID.eq(contestScheduleId));
         }
-
         if (planTemplateId != null) {
             query.addConditions(CONTEST.PLAN_TEMPLATE_ID.eq(planTemplateId));
         }
-
-
-        if (focusAreaOntologyTerms != null && !focusAreaOntologyTerms.isEmpty()) {
-            query.addConditions(CONTEST.FOCUS_AREA_ID.in(focusAreaOntologyTerms));
+        if (searchTerm != null && !searchTerm.isEmpty()) {
+            //TODO: replace wild card search with match...against
+            query.addConditions(CONTEST.CONTEST_NAME.like("%" + searchTerm + "%")
+                .or(CONTEST.CONTEST_SHORT_NAME.like("%" + searchTerm + "%")));
         }
-
-        if (contestTypeId != null ) {
-            query.addConditions(CONTEST.CONTEST_TYPE_ID.eq(contestTypeId));
+        if (!CollectionUtils.isEmpty(focusAreaIds)) {
+            query.addConditions(CONTEST.FOCUS_AREA_ID.in(focusAreaIds));
         }
-
+        if (contestTypeIds != null && !contestTypeIds.isEmpty()) {
+            query.addConditions(CONTEST.CONTEST_TYPE_ID.in(contestTypeIds));
+        }
         if (contestUrlName != null) {
             query.addConditions(CONTEST.CONTEST_URL_NAME.eq(contestUrlName));
         }
@@ -254,6 +240,7 @@ public class ContestDaoImpl implements ContestDao {
         if (featured != null) {
             query.addConditions(CONTEST.FEATURED_.eq(featured));
         }
+
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
             switch (sortColumn.getColumnName()) {
                 case "createDate":
@@ -321,6 +308,7 @@ public class ContestDaoImpl implements ContestDao {
         return query.fetchOne(0, Integer.class);
     }
 
+    @Override
     public List<Long> getContestYears() {
         //select ContestYear from xcolab_Contest group by ContestYear order by ContestYear desc;
         final SelectQuery<Record1<Long>> query = dslContext.select(CONTEST.CONTEST_YEAR)

@@ -12,16 +12,14 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.pages.proposals.utils.ProposalPickerFilterUtil;
-import org.xcolab.view.pages.proposals.utils.ProposalPickerSortingUtil;
+import org.xcolab.view.pages.proposals.utils.picker.ProposalPickerFilterUtil;
+import org.xcolab.view.pages.proposals.utils.picker.ProposalPickerSortingUtil;
 import org.xcolab.view.pages.proposals.view.proposal.json.picker.ContestsResult;
 import org.xcolab.view.pages.proposals.view.proposal.json.picker.CountsResult;
 import org.xcolab.view.pages.proposals.view.proposal.json.picker.ProposalsResult;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -74,23 +72,14 @@ public class ProposalPickerJSONController {
                 throw new InternalException("Unknown requestType " + requestType);
         }
 
-        int totalCount;
-        if (proposals != null) {
-            totalCount = proposals.size();
+        int totalCount = proposals.size();
 
-            ProposalPickerSortingUtil.sortProposalsList(sortOrder, sortColumn, proposals);
-            if (end >= totalCount && totalCount > 0) {
-                end = totalCount;
-            }
-            if (totalCount > (end - start)) {
-                proposals = proposals.subList(start, end);
-            }
-
-        } else {
-            totalCount = 0;
-            _log.error(
-                "Could not retrieve proposals: proposals variable should not be null for valid"
-                    + " filterKeys.(filterKey was {})", filterType);
+        ProposalPickerSortingUtil.sortProposalsList(sortOrder, sortColumn, proposals);
+        if (end >= totalCount && totalCount > 0) {
+            end = totalCount;
+        }
+        if (totalCount > (end - start)) {
+            proposals = proposals.subList(start, end);
         }
 
         return new ProposalsResult(proposals, totalCount);
@@ -103,7 +92,8 @@ public class ProposalPickerJSONController {
         @RequestParam(value = "type", required = false) String requestType,
         @RequestParam(value = "filterKey", required = false) String filterType,
         @RequestParam(required = false) String filterText,
-        @RequestParam(required = false) int start, @RequestParam(required = false) int end,
+        @RequestParam(required = false) int start,
+        @RequestParam(required = false) int end,
         @RequestParam(required = false) String sortOrder,
         @RequestParam(required = false, value = "contestSortColumn") String sortColumn,
         @RequestParam(required = false) Long sectionId) throws IOException {
@@ -116,9 +106,7 @@ public class ProposalPickerJSONController {
         if (end >= contests.size() && !contests.isEmpty()) {
             end = contests.size();
         }
-        Map<Long, String> removedContests = new HashMap<>();
-        ProposalPickerSortingUtil
-            .sortContestsList(sortOrder, sortColumn, contests, removedContests);
+        ProposalPickerSortingUtil.sortContestsList(sortOrder, sortColumn, contests);
         if (contests.size() > (end - start)) {
             contests = contests.subList(start, end);
         }

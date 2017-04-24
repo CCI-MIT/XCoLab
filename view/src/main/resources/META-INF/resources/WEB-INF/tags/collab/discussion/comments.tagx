@@ -25,8 +25,9 @@
         <!--@elvariable id="reportTargets" type="java.util.List<org.xcolab.client.flagging.pojo.ReportTarget>"-->
 
 		<!-- Includes for profanity filter-->
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.7.0/jquery.modal.min.css" rel="stylesheet" type="text/css" />
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.7.0/jquery.modal.min.js" type="text/javascript" charset="utf-8"><!-- --></script>
+        <!-- TODO: move bootstrap to layout.tagx when conflicts resolved -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"><!-- --></script>
 
 		<xcolab:loadCkEditor />
 
@@ -50,11 +51,22 @@
 		<xcolab:script src="${_themeJsFolder}/proposals/discussionComments.js" />
 
 		<c:if test="${discussionPermissions.mustFilterContent}">
-			<div id="modal_filtering_prof" style="display:none;">
-				<p style="font-size: large;font-weight: 600;">Preparing for submission...</p>
-				<div id="loading_filtering_image" style="text-align: left"><img border="0" src="/images/loader.gif"/></div>
-				<div id="processedFailed" style="display:none;margin-top: 8px;">Your entry contains disallowed words : <b id = "disallowed_words"><!-- --></b>. Please remove offensive words before saving again <a href="#" rel="modal:close">Close</a></div>
-			</div>
+            <div class="modal fade" id="js-filteringModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Preparing for submission...</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div id="loading_filtering_image" style="text-align: left"><img border="0" src="/images/loader.gif"/></div>
+                            <div id="processedFailed" style="display:none;margin-top: 8px;">Your entry contains disallowed words: <b id = "disallowed_words"><!-- --></b>. Please remove offensive words before saving again</div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="close" class="c-Button__secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
 		</c:if>
 
 		<div class="c-Headline prophead">

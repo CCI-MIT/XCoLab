@@ -343,14 +343,6 @@ table.judgingForm {
     width: 650px;
 }
 
-#popup_proposalPicker {
-    top: 30px;
-}
-
-#popup_proposalPicker .c-Popup {
-    padding: 10px;
-}
-
 .pickerButtons .btn {
     float: right;
 }
@@ -400,18 +392,6 @@ table.judgingForm {
 
 .greyed_out {
     color: #aaa;
-}
-
-#popup_proposalPicker .contestlist td {
-    height: 45px;
-}
-
-#popup_proposalPicker .propbox {
-    height: auto;
-}
-
-#popup_proposalPicker h4 {
-    margin-bottom: 10px;
 }
 
 .proposalPicker_contestsScrollContainer {
@@ -604,11 +584,6 @@ div.selected {
 }
 #impact table .italic {
     font-style: italic;
-}
-
-div.spinner {
-    left: 50% !important;
-    top: 20px !important;
 }
 
 #impact-summary tr {

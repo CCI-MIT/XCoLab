@@ -15,6 +15,7 @@ public enum CacheName {
     PROPOSAL_DETAILS(100, CacheDuration.MEDIUM),
     PROPOSAL_LIST(20, CacheDuration.REQUEST),
     PROPOSAL_LIST_CLOSED(20, CacheDuration.LONG),
+    PROPOSAL_PICKER(20, CacheDuration.SHORT),
     CONFIGURATION(75, CacheDuration.DAILY),
     MEMBER_RATING(100, CacheDuration.SHORT),
     MEMBER(100, CacheDuration.SHORT),

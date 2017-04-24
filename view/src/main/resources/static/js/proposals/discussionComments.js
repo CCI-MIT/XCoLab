@@ -125,7 +125,7 @@ function handleClickOnDiscussion(event){
 function handleFilteredContent(textInput, source, uuidField, callback){
 
     $("#processedFailed").hide();
-    $("#modal_filtering_prof").modal({escapeClose: true, clickClose: false, showClose: true});
+    $("#js-filteringModal").modal();
     var parameters ={
         fullText: textInput,
         source : source

@@ -73,15 +73,18 @@ public class ProposalsController {
     public List<Proposal> listProposals(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
-            @RequestParam(required = false) Long contestId,
+            @RequestParam(required = false) String filterText,
+            @RequestParam(required = false) List<Long> contestIds,
+            @RequestParam(required = false) List<Long> contestTierIds,
+            @RequestParam(required = false) List<Long> contestTypeIds,
             @RequestParam(required = false) Boolean visible,
             @RequestParam(required = false) Long contestPhaseId,
             @RequestParam(required = false) Integer ribbon,
             @RequestParam(required = false) String sort) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
-        return proposalDao
-                .findByGiven(paginationHelper, null, contestId, visible, contestPhaseId, ribbon);
+        return proposalDao.findByGiven(paginationHelper, filterText, contestIds, visible,
+                    contestPhaseId, ribbon, contestTypeIds, contestTierIds);
     }
 
     @RequestMapping(value = "/proposals/{proposalId}", method = RequestMethod.GET)
@@ -153,7 +156,8 @@ public class ProposalsController {
             throws NotFoundException {
         PaginationHelper paginationHelper = new PaginationHelper(0, Integer.MAX_VALUE, null);
 
-        List<Proposal> proposals = proposalDao.findByGiven(paginationHelper, null, null, null, contestPhaseId, null);
+        List<Proposal> proposals = proposalDao.findByGiven(paginationHelper, null,
+            null, null, contestPhaseId, null, null, null);
         int counter = 0;
         for (Proposal p : proposals) {
             ProposalContestPhaseAttribute pcpa = proposalContestPhaseAttributeDao.getByProposalIdContestPhaseIdName(p.getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES);
@@ -338,13 +342,4 @@ public class ProposalsController {
         return proposalDao
                 .findThreadIdsByGiven(paginationHelper, contestId, visible, contestPhaseId, ribbon);
     }
-
-    @RequestMapping(value = "/proposals/getProposalsByCurrentContests", method = {RequestMethod.GET})
-    public List<Proposal> getProposalsByCurrentContests(
-            @RequestParam("contestTierIds") List<Long> contestTierIds,
-            @RequestParam("contestTypeIds") List<Long> contestTypeIds,
-            @RequestParam("filterText") String filterText) {
-        return proposalService.getProposalsByCurrentContests(contestTierIds, contestTypeIds, filterText);
-    }
-
 }

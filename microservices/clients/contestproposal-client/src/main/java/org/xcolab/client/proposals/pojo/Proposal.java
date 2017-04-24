@@ -321,6 +321,10 @@ public class Proposal extends AbstractProposal {
         return clients.proposalMemberRating.getProposalSupportersCount(this.getProposalId());
     }
 
+    public long getSupportersCountCached() {
+        return clients.proposalMemberRating.getProposalSupportersCountCached(this.getProposalId());
+    }
+
     public long getCommentsCount() {
         if (this.getProposalId() > 0) {
             return clients.comment.countComments(this.getDiscussionId());
@@ -886,6 +890,10 @@ public class Proposal extends AbstractProposal {
             ribbonWrapper = new ProposalRibbon(this, restService);
         }
         return ribbonWrapper;
+    }
+
+    public boolean hasRibbon() {
+        return getRibbonWrapper().getRibbon() > 0;
     }
 
     public Long getImage() {

@@ -23,6 +23,7 @@ import org.xcolab.view.util.pagination.SortFilterPage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -178,8 +179,17 @@ public class MembersController {
             MemberListCsvConverter csvConverter = new MemberListCsvConverter();
             List<Member> memberList = MembersClient.listMembers(null, null, null,
                             null, true, 0, Integer.MAX_VALUE);
-            csvConverter.addMembers(memberList);
+            csvConverter.addMembers(removeDuplicates(memberList));
             csvConverter.initiateDownload("membersList", response);
         }
+    }
+    private List<Member>  removeDuplicates(List<Member> members) {
+        HashMap<String,Member> finalMembers = new HashMap<String,Member>();
+        for (Member temp : members) {
+            if (!finalMembers.containsKey(temp.getScreenName())) {
+                finalMembers.put(temp.getScreenName(),temp);
+            }
+        }
+        return new ArrayList<Member>(finalMembers.values());
     }
 }

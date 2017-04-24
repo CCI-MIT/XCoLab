@@ -31,11 +31,10 @@ $c-Table__cell__count__hideImage: false !default;
   border-top: $c-Table__row--title__borderTop;
   border-bottom: $c-Table__row--title__borderBottom;
   color: $c-Table__title__fontColor;
-  position: -webkit-sticky;
-  position: sticky;
 
   height: 30px;
   line-height: 30px;
+  white-space: nowrap;
 
   a {
     font-weight: $c-Table__row__fontWeight;

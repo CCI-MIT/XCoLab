@@ -100,15 +100,38 @@ public final class ProposalClient {
         return listProposals(0, Integer.MAX_VALUE, contestId, null, null, null);
     }
 
-    public List<Proposal> listProposals(int start, int limit, Long contestId,
-            Boolean visible, Long contestPhaseId, Integer ribbon) {
+    public List<Proposal> listProposals(int start, int limit, Long contestId, Boolean visible,
+        Long contestPhaseId, Integer ribbon) {
+        return listProposals(start, limit, null, contestId, null,
+            null, visible, contestPhaseId, ribbon);
+    }
+
+    public List<Proposal> listProposals(int start, int limit, String filterText, Long contestId,
+        List<Long> contestTypeIds, List<Long> contestTierIds, Boolean visible, Long contestPhaseId,
+        Integer ribbon) {
         return DtoUtil.toPojos(proposalResource.list()
                 .addRange(start, limit)
-                .optionalQueryParam("contestId", contestId)
+                .optionalQueryParam("filterText", filterText)
+                .optionalQueryParam("contestIds", contestId)
+                .optionalQueryParam("contestTypeIds", contestTypeIds)
+                .optionalQueryParam("contestTierIds", contestTierIds)
                 .optionalQueryParam("visible", visible)
                 .optionalQueryParam("contestPhaseId", contestPhaseId)
                 .optionalQueryParam("ribbon", ribbon)
                 .execute(), proposalService);
+    }
+
+    public  List<Proposal> getProposalsByCurrentContests(List<Long> contestTypeIds, List<Long> contestTierIds,
+        String filterText) {
+
+        return DtoUtil.toPojos(proposalResource.list()
+            .addRange(0, Integer.MAX_VALUE)
+            .optionalQueryParam("filterText", filterText)
+            .optionalQueryParam("contestTypeIds", contestTypeIds)
+            .optionalQueryParam("contestTierIds", contestTierIds)
+            .optionalQueryParam("visible", true)
+            .withCache(CacheName.MISC_SHORT)
+            .execute(), proposalService);
     }
 
     public List<Long> listProposalIds(int start, int limit, Long contestId,
@@ -162,15 +185,6 @@ public final class ProposalClient {
         return proposalResource.service(proposalId, "isUserInProposalTeam", Boolean.class)
                 .queryParam("memberUserId", memberUserId)
                 .get();
-    }
-
-    public  List<Proposal> getProposalsByCurrentContests(List<Long> contestTypeIds, List<Long> contestTierIds,
-            String filterText) {
-        return DtoUtil.toPojos(proposalResource.service("getProposalsByCurrentContests", ProposalDto.TYPES.getTypeReference())
-                .queryParam("contestTypeIds", convertListToGetParameter(contestTypeIds,"contestTypeIds"))
-                .queryParam("contestTierIds", convertListToGetParameter(contestTierIds,"contestTierIds"))
-                .queryParam("filterText", filterText)
-                .getList(), proposalService);
     }
 
     public List<Proposal> getActiveProposalsInContestPhase(Long contestPhaseId, CacheName cacheName) {

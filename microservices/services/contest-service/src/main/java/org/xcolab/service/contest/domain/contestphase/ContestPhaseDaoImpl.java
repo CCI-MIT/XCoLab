@@ -87,7 +87,7 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
                 .execute() > 0;
     }
 
-
+    @Override
     public List<ContestPhase> findByPhaseAutopromote(String contestPhaseAutoPromote) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST_PHASE).getQuery();
@@ -97,6 +97,7 @@ public class ContestPhaseDaoImpl implements ContestPhaseDao {
         query.addOrderBy(CONTEST_PHASE.PHASE_START_DATE.asc());
         return query.fetchInto(ContestPhase.class);
     }
+
     @Override
     public List<ContestPhase> findByGiven(Long contestPK, Long contestScheduleId,
             Long contestPhaseTypeId) {

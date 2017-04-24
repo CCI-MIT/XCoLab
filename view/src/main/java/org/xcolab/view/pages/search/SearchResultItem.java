@@ -1,7 +1,5 @@
 package org.xcolab.view.pages.search;
 
-import org.jsoup.Jsoup;
-
 import org.xcolab.client.search.pojo.SearchPojo;
 import org.xcolab.view.pages.search.items.AbstractSearchItem;
 
@@ -70,7 +68,7 @@ public class SearchResultItem {
         return isVisible;
     }
 
-    public class Pair {
+    public static class Pair {
         private String key;
         private String value;
 

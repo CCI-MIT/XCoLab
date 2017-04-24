@@ -17,12 +17,9 @@ public interface ContestDao {
     Contest getByThreadId(Long threadId) throws NotFoundException;
 
     List<Contest> findByGiven(PaginationHelper paginationHelper, String contestUrlName,
-            Long contestYear, Boolean active, Boolean featured, Long contestTier,
-            List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId,
-            Long contestTypeId, Boolean contestPrivate);
-
-    List<Contest> findByGiven(String contestName, List<Long> focusAreaOntologyTermsIds,
-            List<Long> contestTierIds);
+        Long contestYear, Boolean active, Boolean featured, List<Long> contestTiers,
+        List<Long> focusAreaIds, Long contestScheduleId, Long planTemplateId,
+        List<Long> contestTypeIds, Boolean contestPrivate, String searchTerm);
 
     Integer countByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured,
             Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId,

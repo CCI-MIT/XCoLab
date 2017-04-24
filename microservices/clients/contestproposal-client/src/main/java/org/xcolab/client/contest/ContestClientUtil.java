@@ -91,10 +91,10 @@ public final class ContestClientUtil {
         return contestClient.findContestsByActive(active);
     }
 
-    public static List<Contest> findContestsTierLevelAndOntologyTermIds(
+    public static List<Contest> findContestsByTierAndOntologyTermIds(
             Long contestTier, List<Long> focusAreaOntologyTerms) {
         return contestClient
-                .findContestsTierLevelAndOntologyTermIds(contestTier, focusAreaOntologyTerms);
+                .findContestsByTierAndOntologyTermIds(contestTier, focusAreaOntologyTerms);
     }
 
     public static List<Contest> getContestMatchingOntologyTerms(
