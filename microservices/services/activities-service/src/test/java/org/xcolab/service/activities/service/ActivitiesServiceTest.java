@@ -22,6 +22,7 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.client.members.pojo.Member;
@@ -58,9 +59,12 @@ import static org.mockito.Matchers.anyString;
 @PrepareForTest({
     org.xcolab.util.http.ServiceRequestUtils.class,
     org.xcolab.client.proposals.ProposalClientUtil.class,
-    org.xcolab.client.proposals.pojo.Proposal.class
-
+    org.xcolab.client.contest.ContestClientUtil.class,
+    org.xcolab.client.contest.ContestClient.class,
+    org.xcolab.client.proposals.pojo.Proposal.class,
+    org.xcolab.client.contest.pojo.Contest.class
 })
+
 /*
 *
 *
@@ -68,7 +72,7 @@ import static org.mockito.Matchers.anyString;
 
     org.xcolab.client.proposals.ProposalAttributeClientUtil.class,
     org.xcolab.client.proposals.ProposalPhaseClientUtil.class,
-    org.xcolab.client.contest.ContestTeamMemberClientUtil.class,
+
     org.xcolab.client.comment.util.CommentClientUtil.class,
     org.xcolab.client.proposals.ProposalMemberRatingClientUtil.class,
     org.xcolab.client.proposals.MembershipClientUtil.class,
@@ -95,43 +99,66 @@ public class ActivitiesServiceTest {
 
         PowerMockito.mockStatic(ProposalClientUtil.class);
 
-        /*PowerMockito.mockStatic(ContestClientUtil.class);
-        PowerMockito.mockStatic(ProposalAttributeClientUtil.class);
-        PowerMockito.mockStatic(ProposalPhaseClientUtil.class);
-        PowerMockito.mockStatic(ContestTeamMemberClientUtil.class);
-        PowerMockito.mockStatic(CommentClientUtil.class);
-        PowerMockito.mockStatic(ProposalMemberRatingClientUtil.class);
-        PowerMockito.mockStatic(MembershipClientUtil.class);
-        PowerMockito.mockStatic(PlanTemplateClientUtil.class);
-        PowerMockito.mockStatic(ProposalJudgeRatingClientUtil.class);
-        PowerMockito.mockStatic(UsersGroupsClientUtil.class);
-*/
+        PowerMockito.mockStatic(ContestClient.class);
+
+        PowerMockito.mockStatic(ContestClientUtil.class);
+
+
+
+        Mockito.mock(Proposal.class);
+
         Mockito.when(ProposalClientUtil.getProposal(anyLong()))
             .thenAnswer(new Answer<Proposal>() {
                 @Override
                 public Proposal answer(InvocationOnMock invocation)
                     throws Throwable {
-                    Proposal proposal = new Proposal();
+                    Proposal proposal = Mockito.mock(Proposal.class);
                     proposal.setDiscussionId(123456l);
                     return proposal;
 
                 }
             });
+
+        Mockito.when(ContestClientUtil.getContest(anyLong()))
+            .thenAnswer(new Answer<Contest>() {
+                @Override
+                public Contest answer(InvocationOnMock invocation)
+                    throws Throwable {
+                    Contest contest = Mockito.mock(Contest.class);
+                    contest.setDiscussionGroupId(123123l);
+                    return contest;
+
+                }
+            });
+    }
+
+    @Test
+    public void shouldSubscribeOnlyOnceForDiscussion() throws Exception {
+
+
+        ActivitySubscription as1 =
+            activitiesService.subscribe(1111, ActivityEntryType.DISCUSSION, 222, null);
+
+        assertTrue(ActivitySubscriptionDao
+            .isSubscribed(1111, ActivityEntryType.DISCUSSION.getPrimaryTypeId(), 222l, 0, null));
+
     }
     @Test
-    public void shouldSubscribeOnlyOnceForSameMemberDiscussionClassPK() throws Exception {
-
-        Mockito.mock(Proposal.class);
-        ActivitySubscription as1 =
-            activitiesService.subscribe(1111, ActivityEntryType.DISCUSSION,222,null);
-
-        assertTrue(ActivitySubscriptionDao.isSubscribed(1111,ActivityEntryType.DISCUSSION.getPrimaryTypeId(),222l,0,null));
-
-
+    public void shouldSubscribeOnlyOnceForProposal() throws Exception {
         ActivitySubscription asp1 =
-            activitiesService.subscribe(11112, ActivityEntryType.PROPOSAL,2221,null);
+            activitiesService.subscribe(11112, ActivityEntryType.PROPOSAL, 2221, null);
         ActivitySubscription asp2 =
-            activitiesService.subscribe(11112, ActivityEntryType.PROPOSAL,2221,null);
-        assertEquals(asp1.getPk(),asp2.getPk());
+            activitiesService.subscribe(11112, ActivityEntryType.PROPOSAL, 2221, null);
+        assertEquals(asp1.getPk(), asp2.getPk());
+    }
+
+    @Test
+    public void shouldSubscribeOnlyOnceForContest() throws Exception {
+        ActivitySubscription asp3 =
+            activitiesService.subscribe(111132, ActivityEntryType.CONTEST,22241,null);
+        ActivitySubscription asp4 =
+            activitiesService.subscribe(111132, ActivityEntryType.CONTEST,22241,null);
+        assertEquals(asp3.getPk(),asp4.getPk());
+
     }
 }
