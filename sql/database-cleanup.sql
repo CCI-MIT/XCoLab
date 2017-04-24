@@ -264,7 +264,7 @@ DROP TABLE IF EXISTS UserSurvey;
 DROP TABLE IF EXISTS Users_UserGroups;
 DROP TABLE IF EXISTS Users_Teams;
 DROP TABLE IF EXISTS xcolab_User_;
-DROP TABLE IF EXISTS xcolab_Users_Roles
+DROP TABLE IF EXISTS xcolab_Users_Roles;
 DROP TABLE IF EXISTS xcolab_Role_;
 DROP TABLE IF EXISTS xcolab_ProposalReferences;
 
