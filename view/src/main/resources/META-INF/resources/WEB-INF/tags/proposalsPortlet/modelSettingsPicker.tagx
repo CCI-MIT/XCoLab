@@ -25,7 +25,7 @@
         <div>
             <c:if test="${not empty isGlobalContest and isGlobalContest}">
                 <div style="margin-left:10px;float:right;"><img
-                        src="http://climatecolab.org/documents/10136/0/Beta+indicator/c09c2c4d-a35d-478e-a0fa-b35619ced45f?t=1431525997197"
+                        src="/images/beta-indicator.png"
                         style="width: 55px"/>
                 </div>
             </c:if>
