@@ -95,6 +95,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         model.addAttribute("edit", editValidated);
         model.addAttribute("voted", voted);
         model.addAttribute("reportTargets", FlaggingClient.listReportTargets(TargetType.PROPOSAL));
+        model.addAttribute("showShareButtons", ConfigurationAttributeKey.SHOW_SHARE_BUTTONS.get());
 
         final Proposal proposal = proposalsContext.getProposal(request);
         final Proposal proposalWrapped = proposalsContext.getProposalWrapped(request);

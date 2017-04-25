@@ -72,12 +72,14 @@
                 </div>
             </div> <!-- /c-Box -->
             <div class="c-Box boxColor--light clearfix">
-                <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="float: left;">
-                    <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
-                    <a class="addthis_button_twitter" id="addThisButton2" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
-                    <a class="addthis_button_email" id="addThisButton3" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
-                    <a class="addthis_button_linkedin" id="addThisButton4" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
-                </div>
+                <c:if test="${showShareButtons}">
+                    <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="float: left;">
+                        <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
+                        <a class="addthis_button_twitter" id="addThisButton2" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
+                        <a class="addthis_button_email" id="addThisButton3" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
+                        <a class="addthis_button_linkedin" id="addThisButton4" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
+                    </div>
+                </c:if>
                 <c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">
 
                     <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
