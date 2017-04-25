@@ -60,8 +60,8 @@
                             </div>
                             <input type="text" name="email" class="form-control" placeholder="Email address" />
                             <div class="clearfix"><!-- --></div>
-                            <div class="btns b-Spacing">
-                                <a class="c-Button__primary c-Header__login__submit" href="javascript:;" onclick="jQuery(this).parents('form').find('input[type=hidden]').filter(':first').val(document.location.href);jQuery(this).parents('form').submit();" id="errorReportPopupSubmit">Submit</a>
+                            <div class="b-Spacing">
+                                <a class="c-Button__primary" href="javascript:;" onclick="jQuery(this).parents('form').find('input[type=hidden]').filter(':first').val(document.location.href);jQuery(this).parents('form').submit();" id="errorReportPopupSubmit">Submit</a>
                             </div>
                         </form>
                     </div>
