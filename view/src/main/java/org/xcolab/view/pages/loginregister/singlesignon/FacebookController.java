@@ -52,6 +52,7 @@ public class FacebookController {
         HttpSession session = request.getSession();
         session.setAttribute(LoginRegisterController.SSO_TARGET_KEY,
                 LoginRegisterController.SSO_TARGET_LOGIN);
+
         initiateFbRequest(request, response);
     }
 
@@ -128,6 +129,8 @@ public class FacebookController {
         if (facebookId > 0) {
             // SSO Attribute
             session.setAttribute(SSOKeys.FACEBOOK_USER_ID, String.valueOf(facebookId));
+            //session.setAttribute("isFacebook", true);
+            //_log.warn("Zeeshan - Setting session variable.");
 
             try {
                 member = MembersClient.findMemberByFacebookId(facebookId);
@@ -252,9 +255,10 @@ public class FacebookController {
                     .completeRegistration(request, response, userBean, redirectUrl, true);
             }
         } else {
-            ErrorMessage
+
+            /*ErrorMessage
                     .error(AuthenticationError.UNKNOWN.getMessage())
-                    .flashAndRedirect(request, response, SsoEndpoint.REGISTER_OR_LOGIN.getUrl());
+                    .flashAndRedirect(request, response, SsoEndpoint.REGISTER_OR_LOGIN.getUrl());*/
         }
     }
 
