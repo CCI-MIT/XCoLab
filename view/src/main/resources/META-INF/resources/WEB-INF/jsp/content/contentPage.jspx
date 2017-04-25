@@ -14,7 +14,7 @@
             <collab:content articleId="${menuArticleId}" />
         </div>
     </c:if>
-    <div class="${not empty contentArticleId ? 'about-right' : ''}">
+    <div class="${not empty menuArticleId ? 'about-right' : ''}">
         <collab:content articleId="${contentArticleId}" />
     </div>
 </xcolab:layout>
