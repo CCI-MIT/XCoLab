@@ -161,4 +161,44 @@ public class ActivitiesServiceTest {
         assertEquals(asp3.getPk(),asp4.getPk());
 
     }
+    @Test
+    public void shouldUnsubscribeDiscussion() throws Exception {
+
+
+        ActivitySubscription as1 =
+            activitiesService.subscribe(1111, ActivityEntryType.DISCUSSION, 222, null);
+            activitiesService.unsubscribe(1111, ActivityEntryType.DISCUSSION, 222, null);
+
+        assertTrue(ActivitySubscriptionDao
+            .isSubscribed(1111, ActivityEntryType.DISCUSSION.getPrimaryTypeId(), 222l, 0, null));
+
+    }
+
+    @Test
+    public void shouldUnsubscribeProposal() throws Exception {
+
+
+        ActivitySubscription as1 =
+            activitiesService.subscribe(1111, ActivityEntryType.PROPOSAL, 222, null);
+
+        activitiesService.unsubscribe(1111, ActivityEntryType.PROPOSAL, 222, null);
+
+        assertTrue(ActivitySubscriptionDao
+            .isSubscribed(1111, ActivityEntryType.PROPOSAL.getPrimaryTypeId(), 222l, 0, null));
+
+    }
+    @Test
+    public void shouldUnsubscribeContest() throws Exception {
+
+
+        ActivitySubscription as1 =
+            activitiesService.subscribe(1111, ActivityEntryType.CONTEST, 222, null);
+
+        activitiesService.unsubscribe(1111, ActivityEntryType.CONTEST, 222, null);
+
+
+        assertTrue(ActivitySubscriptionDao
+            .isSubscribed(1111, ActivityEntryType.CONTEST.getPrimaryTypeId(), 222l, 0, null));
+
+    }
 }
