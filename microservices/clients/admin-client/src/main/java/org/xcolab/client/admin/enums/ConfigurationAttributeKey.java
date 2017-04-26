@@ -246,6 +246,10 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<Boolean> IS_POINTS_ACTIVE =
             ConfigurationAttributes.newBooleanAttribute("IS_POINTS_ACTIVE")
                     .build();
+    public static final AttributeGetter<Boolean> CONTESTS_ALLOW_OPEN_PROPOSALS =
+        ConfigurationAttributes.newBooleanAttribute("CONTESTS_ALLOW_OPEN_PROPOSALS")
+                    .defaultValue(true)
+                    .build();
     public static final AttributeGetter<Boolean> FLAGGING_ALLOW_MEMBERS =
             ConfigurationAttributes.newBooleanAttribute("FLAGGING_ALLOW_MEMBERS")
                     .build();

@@ -127,12 +127,13 @@
                                 <a href="${sortURL }" class="js-Tooltip" title="click to sort by date">Modified</a>
                                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MODIFIED" />
                             </th>
-                            <th class="c-Table__cell--title b-layout__center contributors">
-
-                                <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=CONTRIBUTORS&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'CONTRIBUTORS' ? not sortFilterPage.sortAscending : true }" />
-                                <a href="${sortURL }" class="js-Tooltip" title="click to sort by contributor">Contributors</a>
-                                <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTRIBUTORS" />
-                            </th>
+                            <c:if test="${showContributorsColumn}">
+                                <th class="c-Table__cell--title b-layout__center contributors">
+                                    <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=CONTRIBUTORS&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'CONTRIBUTORS' ? not sortFilterPage.sortAscending : true }" />
+                                    <a href="${sortURL }" class="js-Tooltip" title="click to sort by contributor">Contributors</a>
+                                    <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTRIBUTORS" />
+                                </th>
+                            </c:if>
                         </c:if>
                         <c:if test="${not contestCompleted and (proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions)}">
                             <th class="c-Table__cell--title b-layout__center advancing-status">

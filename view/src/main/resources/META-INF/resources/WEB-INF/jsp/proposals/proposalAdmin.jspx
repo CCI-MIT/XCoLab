@@ -30,26 +30,28 @@
 			<c:set var="addBlueClass" value='false' />
 
 			<c:if test="${proposalsPermissions.canAdminProposal }">
-				<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
-					<strong>This ${contestType.proposalName} can be edited by:</strong>
-					<div>
-						<c:set var="toggleProposalOpenURL" value="${proposal.proposalUrl}/tab/ADMIN/toggleProposalOpen?&amp;contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
+                <c:if test="${allowOpenProposals}">
+                    <div class="addpropbox ${addBlueClass ? 'blue' : '' }">
+                        <strong>This ${contestType.proposalName} can be edited by:</strong>
+                        <div>
+                            <c:set var="toggleProposalOpenURL" value="${proposal.proposalUrl}/tab/ADMIN/toggleProposalOpen?&amp;contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
 
 
 
-						<form action="${toggleProposalOpenURL }" method="post">
-							<![CDATA[
+                            <form action="${toggleProposalOpenURL }" method="post">
+                                <![CDATA[
 								<input type='radio' value='false' name='planOpen' ${not proposal.open ? "checked='checked'" : ''} />Team members only<br />
 								<input type='radio' value='true' name='planOpen' ${proposal.open ? "checked='checked'" : ''} />Anyone<br />
 							]]>
 
-							<a class="c-Button__primary" href="javascript:;" onclick="jQuery(this).parents('form').submit();">
-								Save
-							</a>
-						</form>
-					</div>
-				</div>
-				<c:set var="addBlueClass" value='${not addBlueClass }' />
+                                <a class="c-Button__primary" href="javascript:;" onclick="jQuery(this).parents('form').submit();">
+                                    Save
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                    <c:set var="addBlueClass" value='${not addBlueClass }' />
+                </c:if>
 			</c:if>
 
 			<c:if test="${proposalsPermissions.canAssignRibbon }">
@@ -113,6 +115,7 @@
 							</a>
 						</div>
 					</div>
+                    <c:set var="addBlueClass" value='${not addBlueClass }' />
 				</form>
 			</c:if>
 
@@ -126,6 +129,7 @@
 						</a>
 					</div>
 				</div>
+                <c:set var="addBlueClass" value='${not addBlueClass }' />
 			</c:if>
 
 				<c:if test="${ proposalsPermissions.canCopyProposal }">
@@ -138,6 +142,7 @@
 							</a>
 						</div>
 					</div>
+                    <c:set var="addBlueClass" value='${not addBlueClass }' />
 				</c:if>
 
 			<c:if test="${ proposalsPermissions.canForkProposal }">
@@ -150,6 +155,7 @@
 						</a>
 					</div>
 				</div>
+                <c:set var="addBlueClass" value='${not addBlueClass }' />
 			</c:if>
 
 
