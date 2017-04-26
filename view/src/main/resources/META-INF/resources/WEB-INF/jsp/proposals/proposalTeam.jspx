@@ -123,8 +123,7 @@
                         </c:forEach>
                     </table>
                 </c:if>
-
-
+                
                 <div class="c-Headline propsubhead">
                     <h2>
                         <span>${fn:length(listOfLinkedProposals)}</span> ${fn:length(listOfLinkedProposals) == 1 ? 'Linked Proposal' : 'Linked Proposals' }

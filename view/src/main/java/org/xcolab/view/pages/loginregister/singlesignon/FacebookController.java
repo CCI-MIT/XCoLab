@@ -152,6 +152,7 @@ public class FacebookController {
             }
         }
 
+
         // if email matches -> autologin
         String emailAddress = jsonObject.optString("email");
         if (StringUtils.isNotBlank(emailAddress) && emailAddress.contains("@")) {

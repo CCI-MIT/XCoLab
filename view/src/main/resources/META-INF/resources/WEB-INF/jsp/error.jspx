@@ -32,7 +32,6 @@
             <!--@elvariable id="trace" type="java.lang.String"-->
 
             <c:set var="trace" value="${fn:escapeXml(trace)}"/>
-
             <c:choose>
                 <c:when test="${status == 404}">
 

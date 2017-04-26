@@ -290,4 +290,5 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         return AddUpdateProposalControllerUtil
                 .createOrUpdateProposal(request, updateProposalDetailsBean, proposal, proposalsContext);
     }
+
 }

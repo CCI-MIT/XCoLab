@@ -32,7 +32,6 @@
                 </c:if>
 
                 <a href="#" class="sketchy-icon sketchy-black ${partnerColabClassName}"  onclick="showSharedColabLogin()"><span>${partnerColabName}</span></a>
-
             </div>
         </div>
 
