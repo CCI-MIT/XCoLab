@@ -13,7 +13,7 @@
     <artifactId>xcolab-view</artifactId>
     <name>XCoLab View</name>
     <description>Main view application for the XCoLab</description>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
 
     <dependencies>
         <!-- Spring boot dependencies -->
