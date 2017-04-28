@@ -19,10 +19,10 @@
     <c:if test="${isRegionalContest and empty contestModelDefaultSetting}">
         <c:choose>
             <c:when test="${not empty proposalRegion}">
-                <c:set var="contestModelRegionSetting" value="${proposalRegion}"></c:set>
+                <c:set var="contestModelRegionSetting" value="${proposalRegion}"/>
             </c:when>
             <c:otherwise>
-                <c:set var="contestModelRegionSetting" value="US"></c:set>
+                <c:set var="contestModelRegionSetting" value="US"/>
             </c:otherwise>
         </c:choose>
 
@@ -50,7 +50,7 @@
 
 	<xcolab:stylesheet href="/css/pages/modeling/simulation.css" />
         <div class="spinner-area" style="margin: auto; padding-top: 100px; margin-bottom: -100px;"><!-- --> </div>
-	<div id="modelsOutputContainer"></div>
+	<div id="modelsOutputContainer"><!-- --></div>
 
 	<input type="text" id="modelingScenarioId" class="hidden"/>
 	<input type="text" id="modelingModelId" class="hidden"/>

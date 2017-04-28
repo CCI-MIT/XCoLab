@@ -1,9 +1,7 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 		  xmlns:jsp="http://java.sun.com/JSP/Page"
 		  xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-		   version="2.0">
-
-
+          version="2.0">
 
 	<!--@elvariable id="isRegionalContest" type="java.lang.Boolean"-->
 	
@@ -13,51 +11,51 @@
 
 	<div class='addpropbox'>
 		<div>
-				<c:if test="${not empty isRegionalContest and isRegionalContest}">
-					<div style="margin-left:10px;float:right;"><img
-							src="/images/beta-indicator.png"
-							style="width: 55px"/>
-					</div>
-				</c:if>
-                <h3 style="margin-top: 0;">Which modeling engine would you like to use?</h3>
-                <div class="c-Form__selectbox__new modelsSelectBox">
-                	<fieldset id="modelSet">
-                	<c:forEach var="model" items="${availableModels }">
-
-						<c:choose>
-							<c:when test="${fn:containsIgnoreCase(model.value, 'emf')}">
-								<c:set var="wikiUrl" value="/resources/-/wiki/Main/EMF27+model+runs"/>
-							</c:when>
-							<c:when test="${fn:containsIgnoreCase(model.value, 'roads')}">
-								<c:set var="wikiUrl" value="/resources/-/wiki/Main/EnROADS+by+Climate+Interactive"/>
-							</c:when>
-							<c:otherwise>
-								<c:set var="wikiUrl" value=""/>
-							</c:otherwise>
-						</c:choose>
-
-						<c:choose>
-							<c:when test="${model.key == modelId}">
-								<input type="radio" name="modelSet" id="${model.key }" value="${model.key }" checked="checked" />
-							</c:when>
-							<c:otherwise>
-								<input type="radio" name="modelSet" id="${model.key }" value="${model.key }"  />
-							</c:otherwise>
-						</c:choose>
-
-						<label for="${model.key }"> ${model.value }</label>
-
-						<c:if test="${not empty wikiUrl}">
-							<a href="${wikiUrl}" target="_blank">
-								<span class="fieldWithTooltip">
-									<img height="15" width="15" src="${_themeImageFolder}/icon-addprop-question.png"/>
-								</span>
-							</a>
-						</c:if>
-						<br/>
-                	</c:forEach>
-                	</fieldset>
+            <c:if test="${not empty isRegionalContest and isRegionalContest}">
+                <div style="margin-left:10px;float:right;"><img
+                        src="/images/beta-indicator.png"
+                        style="width: 55px"/>
                 </div>
+            </c:if>
+            <h3 style="margin-top: 0;">Which modeling engine would you like to use?</h3>
+            <div class="c-Form__selectbox__new modelsSelectBox">
+                <fieldset id="modelSet">
+                <c:forEach var="model" items="${availableModels }">
+
+                    <c:choose>
+                        <c:when test="${fn:containsIgnoreCase(model.value, 'emf')}">
+                            <c:set var="wikiUrl" value="/resources/-/wiki/Main/EMF27+model+runs"/>
+                        </c:when>
+                        <c:when test="${fn:containsIgnoreCase(model.value, 'roads')}">
+                            <c:set var="wikiUrl" value="/resources/-/wiki/Main/EnROADS+by+Climate+Interactive"/>
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="wikiUrl" value=""/>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <c:choose>
+                        <c:when test="${model.key == modelId}">
+                            <input type="radio" name="modelSet" id="${model.key }" value="${model.key }" checked="checked" />
+                        </c:when>
+                        <c:otherwise>
+                            <input type="radio" name="modelSet" id="${model.key }" value="${model.key }"  />
+                        </c:otherwise>
+                    </c:choose>
+
+                    <label for="${model.key }"> ${model.value }</label>
+
+                    <c:if test="${not empty wikiUrl}">
+                        <a href="${wikiUrl}" target="_blank">
+                            <span class="fieldWithTooltip">
+                                <img height="15" width="15" src="${_themeImageFolder}/icon-addprop-question.png"/>
+                            </span>
+                        </a>
+                    </c:if>
+                    <br/>
+                </c:forEach>
+                </fieldset>
+            </div>
 		</div>
 	</div>
 	<script>
