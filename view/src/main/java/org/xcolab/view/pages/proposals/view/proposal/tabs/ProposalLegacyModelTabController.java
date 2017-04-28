@@ -41,16 +41,6 @@ public class ProposalLegacyModelTabController extends BaseProposalTabController 
             @RequestParam(required = false) boolean edit) {
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.ACTIONS_IMPACTS);
-        
-        if (edit) {
-        	Map<Long, String> modelIdsWithNames =
-                    getModelIdsAndNames(proposalsContext.getContest(request).getContestPK());
-        	if (modelIdsWithNames.size() > 1) {
-        		model.addAttribute("availableModels", modelIdsWithNames);
-        	}
-        	
-            return "proposals/proposalModel_edit";
-        }
         return "proposals/proposalModel";
     }
 
