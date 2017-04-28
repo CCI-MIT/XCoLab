@@ -1,13 +1,12 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-          xmlns:liferay-ui="http://liferay.com/tld/ui"
           xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
            version="2.0">
+    <!--@elvariable id="_themeImageFolder" type="java.lang.String"-->
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout>
         <!--@elvariable id="isGlobalContest" type="java.lang.Boolean"-->
@@ -30,8 +29,7 @@
 
         <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
-        <!-- Content -->
-        <div id="content">
+        <div>
             <c:if test="${not empty isGlobalContest and isGlobalContest or not empty isRegionalContest and isRegionalContest}">
 
                 <c:set var="modelId" value="${modelId}"/>
@@ -224,7 +222,8 @@
                             <th><!-- --></th>
                             <th class="blue-bg" style="text-align: center" colspan="${fn:length(impactIterations)}">
                                 Proposal’s Greenhouse Gas Emission Reductions, Per Decade [GtCO2e]
-                                <a href="javascript:;" class="helpTrigger"><img
+                                <a href="javascript:;" class="helpTrigger">
+                                <img
                                         src="${_themeImageFolder}/icon-addprop-question.png" width="15"
                                         height="15"/></a><br/>
 
@@ -272,10 +271,10 @@
                                 <tr>
                                     <td class="blue-bg" style="text-align: left">Emission reductions from BAU (by sector)
                                     </td>
-                                    <td class="impact-value"></td>
-                                    <td class="impact-value"></td>
-                                    <td class="impact-value"></td>
-                                    <td class="impact-value"></td>
+                                    <td class="impact-value"><!-- --></td>
+                                    <td class="impact-value"><!-- --></td>
+                                    <td class="impact-value"><!-- --></td>
+                                    <td class="impact-value"><!-- --></td>
                                 </tr>
                             </c:if>
                         </c:forEach>
@@ -365,7 +364,11 @@
                             </label>
                             <div class="addprophelp">Give your comments to provide reasons or aditional data for the estimation of the proposal's impact.</div>
                             <div class="addpropInputContainer">
-                                <textarea  id="impactIAFComment_text_area"><c:if test="${not empty iafComment}">${iafComment.stringValue}</c:if></textarea>
+                                <textarea  id="impactIAFComment_text_area">
+                                    <c:if test="${not empty iafComment}">
+                                        ${iafComment.stringValue}
+                                    </c:if>
+                                </textarea>
                                 <div class="clearfix"><!--  --></div>
 
                             </div>
@@ -387,24 +390,27 @@
         </div>
         <c:if test="${edit}">
             <script type="text/javascript">
+                <![CDATA[
                 jQuery("#saveChangesButton").click(function () {
                     jQuery("#proposalScenarioId").val(jQuery("#modelingScenarioId").val());
                     jQuery("#scenarioModelId").val(jQuery("#modelingModelId").val());
-                    if(jQuery("#impactAuthorComment_text_area")) {
-                        jQuery('<input></input>').attr({
+                    var $authorCommentTextarea = jQuery("#impactAuthorComment_text_area");
+                    if ($authorCommentTextarea) {
+                        jQuery('<input/>').attr({
                             type: 'hidden',
                             id: 'impactAuthorComment',
                             name: 'impactAuthorComment'
                         }).appendTo('#updateProposalScenarioForm');
-                        jQuery("#impactAuthorComment").val(jQuery("#impactAuthorComment_text_area").val());
+                        jQuery("#impactAuthorComment").val($authorCommentTextarea.val());
                     }
-                    if(jQuery("#impactIAFComment_text_area")) {
-                        jQuery('<input></input>').attr({
+                    var $iafCommentTextarea = jQuery("#impactIAFComment_text_area");
+                    if ($iafCommentTextarea) {
+                        jQuery('<input/>').attr({
                             type: 'hidden',
                             id: 'impactIAFComment',
                             name: 'impactIAFComment'
                         }).appendTo('#updateProposalScenarioForm');
-                        jQuery("#impactIAFComment").val(jQuery("#impactIAFComment_text_area").val());
+                        jQuery("#impactIAFComment").val($iafCommentTextarea.val());
                     }
 
                     disableDirtyCheck();
@@ -414,7 +420,9 @@
                 jQuery(function () {
                     enableDirtyCheck();
                 });
+                ]]>
             </script>
+
         </c:if>
         <script type="text/javascript">
             jQuery(function() {
