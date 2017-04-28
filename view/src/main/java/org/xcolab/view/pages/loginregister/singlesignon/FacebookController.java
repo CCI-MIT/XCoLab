@@ -251,10 +251,6 @@ public class FacebookController {
                 LoginRegisterController
                     .completeRegistration(request, response, userBean, redirectUrl, true);
             }
-        } else {
-            ErrorMessage
-                    .error(AuthenticationError.UNKNOWN.getMessage())
-                    .flashAndRedirect(request, response, SsoEndpoint.REGISTER_OR_LOGIN.getUrl());
         }
     }
 
