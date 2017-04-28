@@ -103,19 +103,21 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             }
 
             modelAndView
-                    .addObject("_isSharedColab", ConfigurationAttributeKey.IS_SHARED_COLAB.get());
-
-
-            modelAndView
                     .addObject("_footerArticleId", ConfigurationAttributeKey.FOOTER_CONTENT_ARTICLE_ID.get());
 
-            final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.get();
-            final String partnerColabImgsAndClasses = partnerColabName.replace(" ", "");
-            modelAndView.addObject("_partnerColabName", partnerColabName);
-            modelAndView
-                    .addObject("_partnerColabClassName", partnerColabImgsAndClasses + "-sketchy");
-            modelAndView
-                    .addObject("_partnerColabLogo", partnerColabImgsAndClasses + "PartnerLogo.png");
+
+            final Boolean isSharedColab = ConfigurationAttributeKey.IS_SHARED_COLAB.get();
+            modelAndView.addObject("_isSharedColab", isSharedColab);
+
+            if (isSharedColab) {
+                final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.get();
+                modelAndView.addObject("_partnerColabName", partnerColabName);
+                final String partnerColabImgsAndClasses = partnerColabName.replace(" ", "");
+                modelAndView.addObject("_partnerColabClassName", partnerColabImgsAndClasses + "-sketchy");
+                modelAndView.addObject("_partnerColabLogo", partnerColabImgsAndClasses +
+                        "PartnerLogo.png");
+            }
+
             modelAndView.addObject("_adminEmail", ConfigurationAttributeKey.ADMIN_EMAIL.get());
 
             List<ContestType> contestTypes = ContestClientUtil.getAllContestTypes();

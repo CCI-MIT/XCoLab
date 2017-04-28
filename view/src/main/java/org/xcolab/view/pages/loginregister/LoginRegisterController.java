@@ -121,12 +121,6 @@ public class LoginRegisterController {
         }
         model.addAttribute("generateScreenName", ConfigurationAttributeKey.GENERATE_SCREEN_NAME.get());
         boolean isSharedColab = ConfigurationAttributeKey.IS_SHARED_COLAB.get();
-        if (isSharedColab) {
-            final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.get();
-            final String partnerColabImgsAndClasses = partnerColabName.replace(" ","");
-            model.addAttribute("partnerColabClassName",partnerColabImgsAndClasses+ "-sketchy");
-            model.addAttribute("partnerColabName", partnerColabName);
-        }
         final String loginInfoText = ConfigurationAttributeKey.LOGIN_INFO_MESSAGE.get();
         model.addAttribute("hasLoginInfoText", StringUtils.isNotBlank(loginInfoText));
         model.addAttribute("loginInfoText", loginInfoText);
