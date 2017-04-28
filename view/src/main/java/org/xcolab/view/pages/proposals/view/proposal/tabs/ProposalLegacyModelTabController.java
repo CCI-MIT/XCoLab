@@ -27,16 +27,16 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
-public class ProposalModelTabController extends BaseProposalTabController {
+public class ProposalLegacyModelTabController extends BaseProposalTabController {
 
     private final ProposalsContext proposalsContext;
 
     @Autowired
-    public ProposalModelTabController(ProposalsContext proposalsContext) {
+    public ProposalLegacyModelTabController(ProposalsContext proposalsContext) {
         this.proposalsContext = proposalsContext;
     }
 
-    @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ACTIONSIMPACTS")
+    @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ACTIONS_IMPACTS")
     public String show(Model model, HttpServletRequest request,
             @RequestParam(required = false) boolean edit) {
 
