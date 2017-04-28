@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,19 +21,24 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.impact.ImpactIteration;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
+import org.xcolab.client.proposals.ProposalAttributeClient;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
-import org.xcolab.view.util.entity.enums.ProposalUnversionedAttributeName;
 import org.xcolab.util.enums.contest.ContestTier;
+import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.impact.IntegratedProposalImpactSeries;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactScenarioCombinationWrapper;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactSeries;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactSeriesList;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactUtil;
+import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.view.pages.proposals.tabs.ProposalTab;
+import org.xcolab.view.util.entity.enums.ProposalUnversionedAttributeName;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,6 +50,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
@@ -51,13 +58,17 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
     private final static Logger _log = LoggerFactory.getLogger(ProposalImpactTabController.class);
 
+    private final ProposalsContext proposalsContext;
+
     @Autowired
-    private ProposalsContext proposalsContext;
+    public ProposalImpactTabController(ProposalsContext proposalsContext) {
+        this.proposalsContext = proposalsContext;
+    }
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=IMPACT")
-    public String showProposalDetails(HttpServletRequest request, Model model,
-            @PathVariable Long proposalId, @PathVariable String contestUrlName,
-            @PathVariable Long contestYear, @RequestParam(defaultValue = "false") boolean edit)
+    public String showImpactTab(HttpServletRequest request, Model model,
+            @PathVariable Long contestYear, @PathVariable String contestUrlName,
+            @PathVariable Long proposalId, @RequestParam(defaultValue = "false") boolean edit)
             throws IOException, ScenarioNotFoundException, ModelNotFoundException  {
 
         Contest contest = proposalsContext.getContest(request);
@@ -320,6 +331,57 @@ public class ProposalImpactTabController extends BaseProposalTabController {
         consolidateOptions.put("CONSOLIDATE", consolidated);
         consolidateOptions.put("SEPARATE", separate);
         return consolidateOptions;
+    }
+
+    @PostMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=IMPACT")
+    public String saveImpactTab(HttpServletRequest request, HttpServletResponse response, Model model,
+            @PathVariable Long contestYear, @PathVariable String contestUrlName,
+            @PathVariable Long proposalId,
+            @RequestParam long scenarioId,
+            @RequestParam long modelId,
+            @RequestParam(required = false) String region,
+            @RequestParam(required = false) String impactAuthorComment,
+            @RequestParam(required = false) String impactIAFComment,
+            @RequestParam(required = false) Boolean isConsolidatedScenario)
+            throws ProposalsAuthorizationException, IOException, ScenarioNotFoundException,
+            ModelNotFoundException {
+
+        if (proposalsContext.getProposal(request) != null && !canEditImpactTab(request)) {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
+
+        Proposal proposal = proposalsContext.getProposalWrapped(request);
+        Long consolidatedScenario = isConsolidatedScenario != null && isConsolidatedScenario ? 1L : 0L;
+        proposal.setScenarioId(scenarioId, consolidatedScenario, proposalsContext.getMember(request).getUserId());
+
+        if (StringUtils.isNotBlank(region)) {
+            proposal.setModelRegion(region, proposalsContext.getMember(request).getUserId());
+        }
+
+        ProposalAttributeClient proposalAttributeClient = proposalsContext.getClients(request)
+                .getProposalAttributeClient();
+
+        List<ProposalUnversionedAttribute> unversionedAttributes = proposalAttributeClient.
+                getProposalUnversionedAttributesByProposalId(proposal.getProposalId());
+
+        if (impactAuthorComment != null || impactIAFComment != null) {
+            if (impactAuthorComment != null) {
+
+                proposalAttributeClient.createOrUpdateProposalUnversionedAttribute(proposalsContext.getMember(request).getUserId(),
+                        HtmlUtil.cleanAll(impactAuthorComment),
+                        ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT.toString(),
+                        proposal.getProposalId());
+            }
+            if (impactIAFComment != null) {
+                proposalAttributeClient.createOrUpdateProposalUnversionedAttribute(
+                        proposalsContext.getMember(request).getUserId(),
+                        HtmlUtil.cleanAll(impactIAFComment),
+                        ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString(),
+                        proposal.getProposalId());
+            }
+        }
+        AlertMessage.CHANGES_SAVED.flash(request);
+        return showImpactTab(request, model, contestYear, contestUrlName, proposalId, false);
     }
 
 }
