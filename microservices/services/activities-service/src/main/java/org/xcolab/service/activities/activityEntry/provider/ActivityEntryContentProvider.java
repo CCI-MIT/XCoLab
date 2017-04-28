@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.activityEntry.provider;
+package org.xcolab.service.activities.activityentry.provider;
 
 
 import org.xcolab.model.tables.pojos.ActivityEntry;

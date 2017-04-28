@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
-import org.xcolab.service.activities.activityEntry.provider.ActivityEntryContentProvider;
+import org.xcolab.service.activities.activityentry.provider.ActivityEntryContentProvider;
 import org.xcolab.service.activities.domain.activityEntry.ActivityEntryDao;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
 import org.xcolab.service.activities.enums.ActivityProvidersImpl;

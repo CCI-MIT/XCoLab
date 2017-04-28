@@ -57,7 +57,7 @@ import static org.mockito.Matchers.anyString;
 @RunWith(PowerMockRunner.class)
 @PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
 @PowerMockIgnore("javax.management.*")
-@WebMvcTest(MainViewController.class)
+@WebMvcTest(LoginRegisterController.class)
 @ComponentScan("org.xcolab.view.theme")
 @ComponentScan("org.xcolab.view.auth")
 @ComponentScan("org.xcolab.view.pages.proposals.interceptors")
@@ -80,7 +80,7 @@ import static org.mockito.Matchers.anyString;
         org.xcolab.client.members.MessagingClient.class
 })
 
-public class MainViewTest {
+public class LoginRegisterControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
