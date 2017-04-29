@@ -35,6 +35,11 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
     }
 
     @Override
+    protected boolean isEssentialTransactionMessage() {
+        return true;
+    }
+
+    @Override
     protected ProposalVoteConfirmationTemplate getTemplateWrapper() {
         if (templateWrapper != null) {
             return templateWrapper;
@@ -48,13 +53,13 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
             proposalVoteConfirmationTemplateString = DEFAULT_TEMPLATE_STRING;
         }
         final EmailTemplateClient emailTemplateClient;
-        if(contest.getIsSharedContestInForeignColab()){
+        if (contest.getIsSharedContestInForeignColab()) {
             RestService adminService = new RefreshingRestService(CoLabService.ADMIN,
                     ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
             );
 
             emailTemplateClient = EmailTemplateClient.fromService(adminService);
-        }else{
+        } else {
             emailTemplateClient = EmailTemplateClientUtil.getClient();
         }
         final ContestEmailTemplate emailTemplate =

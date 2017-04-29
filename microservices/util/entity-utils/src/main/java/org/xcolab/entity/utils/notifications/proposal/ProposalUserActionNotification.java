@@ -27,6 +27,11 @@ public class ProposalUserActionNotification extends ProposalNotification {
     }
 
     @Override
+    protected boolean isEssentialTransactionMessage() {
+        return true;
+    }
+
+    @Override
     protected ProposalUserActionNotificationTemplate getTemplateWrapper() {
         if (templateWrapper != null) {
             return templateWrapper;

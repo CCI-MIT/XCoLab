@@ -7,6 +7,7 @@ import org.jsoup.nodes.TextNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
@@ -31,6 +32,10 @@ import javax.mail.internet.InternetAddress;
 
 public abstract class EmailNotification {
     private static final long ADMINISTRATOR_USER_ID = 10144L;
+
+    private static final String COLAB_NAME_PLACEHOLDER = "colab-name";
+    private static final String COLAB_URL_PLACEHOLDER = "colab-url";
+    private static final String COLAB_ADMIN_EMAIL_PLACEHOLDER = "colab-admin-email";
 
     private static final String FIRSTNAME_PLACEHOLDER = "firstname";
     private static final String FULL_NAME_PLACEHOLDER = "fullname";
@@ -197,37 +202,60 @@ public abstract class EmailNotification {
         }
     }
 
-    public void sendEmailNotification() {
-        EmailTemplateWrapper template = getTemplateWrapper();
-        String subject = template.getSubject();
-        String body = template.getHeader() + "\n" + template.getFooter();
-        sendMessage(subject, body, getRecipient());
-    }
+    protected abstract Long getReferenceId();
+
+    protected abstract Member getRecipient();
 
     protected abstract EmailTemplateWrapper getTemplateWrapper();
 
-    protected void sendMessage(String subject, String body, Member recipient) {
+    /**
+     * Indicates whether this message is essential for fundamental operations of the platform.
+     *
+     * If this method returns true, the notification will be sent even if transactional messages
+     * are disabled on the platform or by the user.
+     *
+     * The default is false, overwrite this method if the subclass represents a notification
+     * that is necessary for basic functionality. This is typically the case for messages that
+     * require user action.
+     *
+     * @return true if message should always be sent, false if it is optional
+     */
+    protected boolean isEssentialTransactionMessage() {
+        return false;
+    }
+
+    public void sendEmailNotification() {
+        if (ConfigurationAttributeKey.MESSAGING_SEND_TRANSACTION_EMAILS.get()
+                || isEssentialTransactionMessage()) {
+            EmailTemplateWrapper template = getTemplateWrapper();
+            String subject = template.getSubject();
+            String body = template.getHeader() + "\n" + template.getFooter();
+            sendEmail(subject, body, getRecipient());
+        }
+    }
+
+    private void sendEmail(String subject, String body, Member recipient) {
         try {
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
             InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
 
             EmailClient.sendEmail(fromEmail.getAddress(), toEmail.getAddress(), subject,body, true, fromEmail.getAddress(),getReferenceId());
         } catch (UnsupportedEncodingException e) {
-            _log.error("Could not send message", e);
+            throw new InternalException(e);
         }
     }
 
-    protected abstract Long getReferenceId();
-    protected abstract Member getRecipient();
-
     public void sendMessage() {
-        List<Long> recipients = new ArrayList<>();
-        recipients.add(getRecipient().getUserId());
-        EmailTemplateWrapper template = getTemplateWrapper();
-        String content = template.getHeader() + template.getFooter();
-        content = content.replace("\n", " ").replace("\r", " ");
-        MessagingClient.sendMessage(template.getSubject(), content,
-                ADMINISTRATOR_USER_ID, ADMINISTRATOR_USER_ID, recipients);
+        if (ConfigurationAttributeKey.MESSAGING_SEND_TRANSACTION_EMAILS.get()
+                || isEssentialTransactionMessage()) {
+            List<Long> recipients = new ArrayList<>();
+            recipients.add(getRecipient().getUserId());
+            EmailTemplateWrapper template = getTemplateWrapper();
+            String content = template.getHeader() + template.getFooter();
+            content = content.replace("\n", " ").replace("\r", " ");
+            MessagingClient.sendMessage(template.getSubject(), content, ADMINISTRATOR_USER_ID,
+                    ADMINISTRATOR_USER_ID, recipients);
+        }
     }
 
     protected class EmailNotificationTemplate extends EmailTemplateWrapper {
@@ -244,13 +272,19 @@ public abstract class EmailNotification {
             Contest contest = getContest();
             Proposal proposal = getProposal();
             final boolean hasProposal = contest != null && proposal != null;
-            final ContestType contestType;
 
-            contestType = contest != null
-                        ? ContestClientUtil.getContestType(contest.getContestTypeId()) : null;
+            final ContestType contestType =
+                    contest != null ? ContestClientUtil.getContestType(contest.getContestTypeId())
+                            : null;
 
 
             switch (tag.nodeName()) {
+                case COLAB_NAME_PLACEHOLDER:
+                    return new TextNode(ConfigurationAttributeKey.COLAB_NAME.get(), "");
+                case COLAB_URL_PLACEHOLDER:
+                    return new TextNode(ConfigurationAttributeKey.COLAB_URL.get(), "");
+                case COLAB_ADMIN_EMAIL_PLACEHOLDER:
+                    return new TextNode(ConfigurationAttributeKey.ADMIN_EMAIL.get(), "");
                 case FIRSTNAME_PLACEHOLDER:
                     return new TextNode(getRecipient().getFirstName(), "");
                 case FULL_NAME_PLACEHOLDER:

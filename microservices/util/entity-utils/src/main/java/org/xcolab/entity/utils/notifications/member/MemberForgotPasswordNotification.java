@@ -13,9 +13,6 @@ import org.xcolab.entity.utils.notifications.basic.MemberNotification;
 public class MemberForgotPasswordNotification extends MemberNotification {
     private static final String TEMPLATE_NAME = "MEMBER_RESET_PASSWORD_DEFAULT";
 
-    private static final String SENDER_NAME_PLACEHOLDER = "sender-name";
-    private static final String SENDER_LASTNAME_PLACEHOLDER = "sender-lastname";
-    private static final String SENDER_SCREENNAME_PLACEHOLDER = "sender-screenname";
     private static final String SENDER_IP_PLACEHOLDER = "sender-ip";
     private static final String PASSWORD_RESET_LINK_PLACEHOLDER = "password-reset-link";
     private static final String SYSTEM_LINK_PLACEHOLDER = "system-link";
@@ -29,6 +26,11 @@ public class MemberForgotPasswordNotification extends MemberNotification {
         super(recipient, TEMPLATE_NAME, baseUrl);
         this.memberIp = memberIp;
         this.passwordResetLink = passwordResetLink;
+    }
+
+    @Override
+    protected boolean isEssentialTransactionMessage() {
+        return true;
     }
 
     @Override
@@ -63,12 +65,6 @@ public class MemberForgotPasswordNotification extends MemberNotification {
             }
 
             switch (tag.nodeName()) {
-                case SENDER_NAME_PLACEHOLDER:
-                    return new TextNode(recipient.getFirstName(), "");
-                case SENDER_LASTNAME_PLACEHOLDER:
-                    return new TextNode(recipient.getLastName(), "");
-                case SENDER_SCREENNAME_PLACEHOLDER:
-                    return new TextNode(recipient.getScreenName(), "");
                 case SENDER_IP_PLACEHOLDER:
                     return new TextNode(memberIp, "");
                 case PASSWORD_RESET_LINK_PLACEHOLDER:
