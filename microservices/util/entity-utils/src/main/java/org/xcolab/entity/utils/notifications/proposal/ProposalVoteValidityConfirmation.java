@@ -28,7 +28,7 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
 
     public ProposalVoteValidityConfirmation(Proposal votedProposal, Contest contest,
             Member recipient, String confirmationToken) {
-        super(votedProposal, contest, recipient, null, ConfigurationAttributeKey.COLAB_URL.get());
+        super(votedProposal, contest, recipient, null);
         this.confirmationToken = confirmationToken;
         this.votedProposal = votedProposal;
         this.recipient = recipient;

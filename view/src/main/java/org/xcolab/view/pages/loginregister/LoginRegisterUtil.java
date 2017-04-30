@@ -7,8 +7,10 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.LockoutLoginException;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.exceptions.PasswordLoginException;
+import org.xcolab.client.members.pojo.LoginToken;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
+import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;
 import org.xcolab.entity.utils.notifications.member.MemberRegistrationNotification;
 import org.xcolab.view.auth.AuthenticationContext;
 
@@ -52,9 +54,15 @@ public final class LoginRegisterUtil {
         }
     }
 
+    public static Member autoRegister(String emailAddress, String firstName, String lastName) {
+        return register(MembersClient.generateScreenName(lastName, firstName), null,
+                emailAddress, firstName, lastName, "", null, null,
+                null, null, true);
+    }
+
     public static Member register(String screenName, String password, String email,
-            String firstName, String lastName, String shortBio, String country,
-            String fbIdString, String googleId, String imageId, String baseUrl) {
+            String firstName, String lastName, String shortBio, String country, String fbIdString,
+            String googleId, String imageId, boolean generateLoginUrl) {
 
         Long memberId = SharedColabClient.retrieveSharedId(email, screenName,
                 ConfigurationAttributeKey.COLAB_NAME.get());
@@ -85,14 +93,14 @@ public final class LoginRegisterUtil {
             member.setPortraitFileEntryId(0L);
             MembersClient.updateMember(member);
         }
-        sendEmailNotificationToRegisteredUser(baseUrl, member);
+        if (generateLoginUrl) {
+            final LoginToken loginToken = MembersClient.createLoginToken(memberId);
+            new MemberBatchRegistrationNotification(member, loginToken).sendEmailNotification();
+        } else {
+            new MemberRegistrationNotification(member).sendEmailNotification();
+        }
 
         return member;
-    }
-
-    private static void sendEmailNotificationToRegisteredUser(String baseUrl,
-            Member recipient) {
-        new MemberRegistrationNotification(recipient, baseUrl).sendEmailNotification();
     }
 
     public static Member login(HttpServletRequest request, String login, String password)

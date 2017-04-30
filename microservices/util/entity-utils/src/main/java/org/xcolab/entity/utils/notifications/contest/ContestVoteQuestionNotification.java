@@ -25,7 +25,7 @@ public class ContestVoteQuestionNotification extends ContestNotification {
 
     public ContestVoteQuestionNotification(Member recipient, Contest contest,
             List<Proposal> supportedProposals, String baseUrl) {
-        super(contest, recipient, null, baseUrl);
+        super(contest, recipient, null);
         this.supportedProposals = supportedProposals;
     }
 

@@ -120,7 +120,6 @@ public class LoginRegisterController {
             }
         }
         model.addAttribute("generateScreenName", ConfigurationAttributeKey.GENERATE_SCREEN_NAME.get());
-        boolean isSharedColab = ConfigurationAttributeKey.IS_SHARED_COLAB.get();
         final String loginInfoText = ConfigurationAttributeKey.LOGIN_INFO_MESSAGE.get();
         model.addAttribute("hasLoginInfoText", StringUtils.isNotBlank(loginInfoText));
         model.addAttribute("loginInfoText", loginInfoText);
@@ -234,7 +233,7 @@ public class LoginRegisterController {
         final Member user = LoginRegisterUtil.register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
                         newAccountBean.getEmail(), newAccountBean.getFirstName(), newAccountBean.getLastName(),
                         newAccountBean.getShortBio(), newAccountBean.getCountry(), fbIdString, googleId,
-                        newAccountBean.getImageId(), ConfigurationAttributeKey.COLAB_URL.get());
+                        newAccountBean.getImageId(), false);
 
         // SSO
         if (StringUtils.isNotBlank(fbIdString)) {

@@ -70,8 +70,8 @@ public abstract class EmailNotification {
 
     protected Logger _log;
 
-    public EmailNotification(String baseUrl) {
-        this.baseUrl = baseUrl;
+    public EmailNotification() {
+        this.baseUrl = ConfigurationAttributeKey.COLAB_URL.get();
         _log = LoggerFactory.getLogger(this.getClass());
     }
 
