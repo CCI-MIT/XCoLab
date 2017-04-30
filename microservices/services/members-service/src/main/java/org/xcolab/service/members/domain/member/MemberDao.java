@@ -23,6 +23,7 @@ public interface MemberDao {
 
     Optional<Member> findOneByScreenName(String screenName);
     Optional<Member> findOneByEmail(String email);
+    Optional<Member> findOneByLoginTokenId(String loginTokenId);
 
     boolean isScreenNameTaken(String screenName);
 
