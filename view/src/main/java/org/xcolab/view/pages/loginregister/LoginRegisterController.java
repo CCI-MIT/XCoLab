@@ -64,8 +64,7 @@ public class LoginRegisterController {
     public static final String PRE_LOGIN_REFERRER_KEY = "PRE_LOGIN_REFERRER_KEY";
 
     private static final String USER_NAME_REGEX = "^[a-zA-Z0-9]+$";
-    public static final String REGISTER_VIEW_NAME = "loginregister/register";
-    public static final String LOGIN_VIEW_NAME = "loginregister/login";
+    private static final String REGISTER_VIEW_NAME = "loginregister/register";
 
     //    @Autowired
 //    private Validator validator;
@@ -74,11 +73,6 @@ public class LoginRegisterController {
 //    public void initBinder(WebDataBinder binder) {
 //        binder.setValidator(validator);
 //    }
-
-    @GetMapping("/login")
-    public String login() {
-        return LOGIN_VIEW_NAME;
-    }
 
     /**
      * Main view displayed for contact form
@@ -120,7 +114,6 @@ public class LoginRegisterController {
             }
         }
         model.addAttribute("generateScreenName", ConfigurationAttributeKey.GENERATE_SCREEN_NAME.get());
-        boolean isSharedColab = ConfigurationAttributeKey.IS_SHARED_COLAB.get();
         final String loginInfoText = ConfigurationAttributeKey.LOGIN_INFO_MESSAGE.get();
         model.addAttribute("hasLoginInfoText", StringUtils.isNotBlank(loginInfoText));
         model.addAttribute("loginInfoText", loginInfoText);
@@ -234,7 +227,7 @@ public class LoginRegisterController {
         final Member user = LoginRegisterUtil.register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
                         newAccountBean.getEmail(), newAccountBean.getFirstName(), newAccountBean.getLastName(),
                         newAccountBean.getShortBio(), newAccountBean.getCountry(), fbIdString, googleId,
-                        newAccountBean.getImageId(), ConfigurationAttributeKey.COLAB_URL.get());
+                        newAccountBean.getImageId(), false);
 
         // SSO
         if (StringUtils.isNotBlank(fbIdString)) {

@@ -62,7 +62,7 @@
                     <br/><br/>
                     <p>
                         <strong class="inputTitleLeft">Notification Text:</strong>
-                        <input type="text"  class="wideLargeInput" name="notificationText"></input><br/>
+                        <input type="text"  class="wideLargeInput" name="notificationText"/><br/>
                     </p>
 
                     <!--<p>
@@ -71,7 +71,7 @@
                     </p>-->
                     <p>
                         <strong class="inputTitleLeft">Expire Notification at this time: (date and time): </strong>
-                        <input type="datetime-local" name="expiretime" step="1"></input><br/>
+                        <input type="datetime-local" name="expiretime" step="1"/><br/>
                         <br/>
                         <input type="hidden"
                                name="${_csrf.parameterName}"
@@ -151,6 +151,22 @@
             <h2>Activities CSV export</h2>
             <form action="/admin/contest/manager/tab/ADMIN/exportActivities" method="post">
                 <button type="submit" class="c-Button__primary">Export activities</button>
+            </form>
+        </div>
+
+        <div class="addpropbox">
+            <h2>Batch register members</h2>
+            <form action="/admin/contest/manager/tab/ADMIN/batchRegister" method="post">
+                <div class="c-Alert__info__message" for="batchRegisterMembersList">
+                    Each member will receive an email with a link that allows them to sign in.
+                    Enter one member per line in the following format:<br/>
+                    <code>emailAddress;firstName;lastName</code>
+                </div>
+                <div>
+                <textarea id="batchRegisterMembersList" name="members"
+                          placeholder="Enter members..." style="width: 100%;"><!-- --></textarea>
+                </div>
+                <button type="submit" class="c-Button__primary">Register members</button>
             </form>
         </div>
     </div>

@@ -1,6 +1,5 @@
 package org.xcolab.entity.utils.notifications.proposal;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -14,6 +13,6 @@ public class ProposalVoteNotification extends ProposalNotification {
     public ProposalVoteNotification(Proposal votedProposal, Contest contest, Member recipient) {
         super(votedProposal, contest, recipient,
                 LinkUtils.getNonBlankStringOrDefault(contest.getProposalVoteTemplateString(),
-                        DEFAULT_TEMPLATE_STRING), ConfigurationAttributeKey.COLAB_URL.get());
+                        DEFAULT_TEMPLATE_STRING));
     }
 }

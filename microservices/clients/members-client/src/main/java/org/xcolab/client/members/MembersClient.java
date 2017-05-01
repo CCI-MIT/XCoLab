@@ -7,6 +7,7 @@ import org.xcolab.client.members.exceptions.PasswordLoginException;
 import org.xcolab.client.members.exceptions.UncheckedMemberNotFoundException;
 import org.xcolab.client.members.pojo.LoginBean;
 import org.xcolab.client.members.pojo.LoginLog;
+import org.xcolab.client.members.pojo.LoginToken;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Role_;
@@ -45,6 +46,9 @@ public final class MembersClient {
 
     private static final RestResource<LoginLog, Long> loginLogResource = new RestResource1<>(memberService,
             "loginLogs", LoginLog.TYPES);
+
+    private static final RestResource<LoginToken, String> loginTokenResource = new RestResource1<>(
+            memberService, "loginTokens", LoginToken.TYPES);
 
     private MembersClient() {
     }
@@ -342,10 +346,31 @@ public final class MembersClient {
         }
     }
 
-    public static String createForgotPasswordToken(Long memberId) {
+    public static String createForgotPasswordToken(long memberId) {
         return memberResource.service("createForgotPasswordToken", String.class)
                 .queryParam("memberId", memberId)
                 //TODO: this should be posted!
+                .get();
+    }
+
+    public static LoginToken createLoginToken(long memberId) {
+        return memberResource.service(memberId,"loginToken", LoginToken.class)
+                .post();
+    }
+
+    public static boolean validateLoginToken(String tokenId, String tokenKey) {
+        return loginTokenResource.service(tokenId,"validate", Boolean.class)
+                .queryParam("tokenKey", tokenKey)
+                .get();
+    }
+
+    public static void invalidateLoginToken(String tokenId) {
+        loginTokenResource.service(tokenId,"invalidate", Void.class)
+                .post();
+    }
+
+    public static Member getMemberForLoginToken(String tokenId) {
+        return loginTokenResource.service(tokenId, "member", Member.class)
                 .get();
     }
 

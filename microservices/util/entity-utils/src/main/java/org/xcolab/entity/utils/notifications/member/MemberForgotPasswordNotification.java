@@ -22,8 +22,8 @@ public class MemberForgotPasswordNotification extends MemberNotification {
     private final String passwordResetLink;
 
     public MemberForgotPasswordNotification(String memberIp, String passwordResetLink,
-            Member recipient, String baseUrl) {
-        super(recipient, TEMPLATE_NAME, baseUrl);
+            Member recipient) {
+        super(recipient, TEMPLATE_NAME);
         this.memberIp = memberIp;
         this.passwordResetLink = passwordResetLink;
     }

@@ -5,12 +5,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.security.web.header.writers.DelegatingRequestMatcherHeaderWriter;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter.XFrameOptionsMode;
@@ -49,8 +53,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        generateSecretIfNecessary();
-
         httpSecurity
                 .authorizeRequests()
                     .antMatchers("/admin/management/**").hasRole("ADMIN")
@@ -63,8 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .failureHandler(new AuthenticationFailureHandler())
                     .and()
                 .rememberMe()
-                    .key(properties.getSecret())
-                    .tokenValiditySeconds(properties.getRememberMe().getTokenValiditySeconds())
+                    .rememberMeServices(rememberMeServices())
                     .and()
                 .logout()
                     .permitAll()
@@ -89,9 +90,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         }
     }
 
+    @Bean
+    public RememberMeServices rememberMeServices() {
+        generateSecretIfNecessary();
+        final TokenBasedRememberMeServices rememberMeServices =
+                new TokenBasedRememberMeServices(properties.getSecret(), memberDetailsService());
+        rememberMeServices.setTokenValiditySeconds(properties.getRememberMe().getTokenValiditySeconds());
+        return rememberMeServices;
+    }
+
+    @Bean
+    public MemberDetailsService memberDetailsService() {
+        return new MemberDetailsService();
+    }
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(new MemberDetailsService())
+        auth.userDetailsService(memberDetailsService())
                 .passwordEncoder(new MemberPasswordEncoder());
     }
 
