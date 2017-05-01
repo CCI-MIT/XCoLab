@@ -134,6 +134,10 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newListAttribute("MESSAGING_SPAM_ALERT_EMAILS", s -> s)
             .defaultValue(Collections.emptyList())
             .build();
+    public static final AttributeGetter<Boolean> MESSAGING_SEND_TRANSACTION_EMAILS =
+            ConfigurationAttributes.newBooleanAttribute("MESSAGING_SEND_TRANSACTION_EMAILS")
+            .defaultValue(true)
+            .build();
 
     public static final AttributeGetter<Long> DAILY_DIGEST_TRIGGER_HOUR =
             ConfigurationAttributes.newLongAttribute("DAILY_DIGEST_TRIGGER_HOUR")

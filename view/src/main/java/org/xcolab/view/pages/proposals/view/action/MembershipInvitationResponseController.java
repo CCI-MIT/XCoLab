@@ -105,6 +105,7 @@ public class MembershipInvitationResponseController {
                 final String membershipAcceptedMessage = TemplateReplacementUtil
                         .replaceContestTypeStrings(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_ACCEPTED,
                                 contestType);
+                //TODO: turn into template
                 sendMessage(invitee.getUserId(), recipients, MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,
                         String.format(membershipAcceptedMessage, invitee.getFullName(),
                                 proposalLink));
@@ -122,6 +123,7 @@ public class MembershipInvitationResponseController {
                 final String membershipRejectedMessage = TemplateReplacementUtil
                         .replaceContestTypeStrings(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED,
                                 contestType);
+                //TODO: turn into template
                 sendMessage(invitee.getUserId(), recipients, MSG_MEMBERSHIP_INVITE_RESPONSE_SUBJECT,
                         String.format(membershipRejectedMessage, invitee.getFullName(),
                                 proposalLink));

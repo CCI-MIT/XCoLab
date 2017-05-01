@@ -34,11 +34,11 @@
                 <c:choose>
 
                     <c:when test="${empty filterUserId }">
-                        <c:set var="prevURL" value="/feedswidget/generateDump?page=${sortFilterPage.page - 1}"></c:set>
+                        <c:set var="prevURL" value="/activities?page=${sortFilterPage.page - 1}"></c:set>
                     </c:when>
                     <c:otherwise>
 
-                        <c:set var="prevURL" value="/feedswidget/generateDump?page=${sortFilterPage.page - 1}&amp;userId=${filterUserId}"></c:set>
+                        <c:set var="prevURL" value="/activities?page=${sortFilterPage.page - 1}&amp;userId=${filterUserId}"></c:set>
 
                     </c:otherwise>
                 </c:choose>
@@ -51,10 +51,10 @@
                 <div class="alignright">
                     <c:choose>
                         <c:when test="${empty filterUserId }">
-                            <c:set var="nextURL" value="/feedswidget/generateDump?page=${sortFilterPage.page + 1}"></c:set>
+                            <c:set var="nextURL" value="/activities?page=${sortFilterPage.page + 1}"></c:set>
                         </c:when>
                         <c:otherwise>
-                            <c:set var="nextURL" value="/feedswidget/generateDump?page=${sortFilterPage.page + 1}&amp;userId=${filterUserId}"></c:set>
+                            <c:set var="nextURL" value="/activities?page=${sortFilterPage.page + 1}&amp;userId=${filterUserId}"></c:set>
 
                         </c:otherwise>
                     </c:choose>

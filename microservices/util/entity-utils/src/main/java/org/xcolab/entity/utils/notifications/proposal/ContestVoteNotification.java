@@ -13,7 +13,6 @@ public class ContestVoteNotification extends ProposalNotification {
     public ContestVoteNotification(Member recipient, Contest contest, Proposal votedProposal,
                                    String baseUrl) {
         super(votedProposal, contest, recipient,
-                LinkUtils.getNonBlankStringOrDefault(contest.getVoteTemplateString(), DEFAULT_TEMPLATE_STRING),
-                baseUrl);
+                LinkUtils.getNonBlankStringOrDefault(contest.getVoteTemplateString(), DEFAULT_TEMPLATE_STRING));
     }
 }

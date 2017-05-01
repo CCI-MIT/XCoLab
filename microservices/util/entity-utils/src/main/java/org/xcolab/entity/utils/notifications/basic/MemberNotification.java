@@ -18,8 +18,7 @@ public class MemberNotification extends EmailNotification {
     private static final String SENDER_LASTNAME_PLACEHOLDER = "sender-lastname";
     private static final String SENDER_SCREENNAME_PLACEHOLDER = "sender-screenname";
 
-    public MemberNotification(Member recipient, String templateName, String baseUrl) {
-        super(baseUrl);
+    public MemberNotification(Member recipient, String templateName) {
         this.recipient = recipient;
         this.templateName = templateName;
     }

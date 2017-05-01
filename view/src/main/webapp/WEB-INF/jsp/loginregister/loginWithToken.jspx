@@ -1,0 +1,29 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:layout="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+
+<layout:layout>
+    <h2>Login with unique link</h2>
+    <c:if test="${_isLoggedIn}">
+        You are already logged in.
+    </c:if>
+    <c:if test="${not _isLoggedIn}">
+        <div class="c-Alert__info__message">
+            You clicked a one-time login link. Click the "Log in" button below to complete the login.
+
+            <b>Note:</b> If you are on a public computer,
+            make sure you uncheck "remember-me" before proceeding.
+        </div>
+
+        <form action="/login/token/${tokenId}" method="post">
+            <input type="hidden" name="tokenKey" value="${tokenKey}" />
+            <div>
+                <label for="remember-me">Remember Me:</label> &#160;
+                <input type="checkbox" id="remember-me" name="remember-me" checked="true" />
+            </div>
+            <button type="submit" class="c-Button__primary">Log in</button>
+        </form>
+    </c:if>
+</layout:layout>
+</jsp:root>

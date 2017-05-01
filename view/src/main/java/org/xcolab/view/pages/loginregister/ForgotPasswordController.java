@@ -80,7 +80,7 @@ public class ForgotPasswordController {
 
     private static void sendEmailNotificationToForPasswordReset(String memberIp, String link,
              Member recipient) {
-        new MemberForgotPasswordNotification(memberIp, link, recipient, ConfigurationAttributeKey.COLAB_URL.get())
+        new MemberForgotPasswordNotification(memberIp, link, recipient)
                 .sendEmailNotification();
     }
 

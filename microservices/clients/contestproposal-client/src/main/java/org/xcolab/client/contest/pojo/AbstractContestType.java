@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 
-public abstract class AbstractContestType implements Serializable{
+public abstract class AbstractContestType implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,6 +26,7 @@ public abstract class AbstractContestType implements Serializable{
     private String  overrideCreationPrompt;
     private String  pitchName;
     private Boolean showTeamField;
+    private Boolean showResourceLinks;
 
     public AbstractContestType() {
     }
@@ -49,6 +50,7 @@ public abstract class AbstractContestType implements Serializable{
         this.overrideCreationPrompt = value.overrideCreationPrompt;
         this.pitchName = value.pitchName;
         this.showTeamField = value.showTeamField;
+        this.showResourceLinks = value.showResourceLinks;
     }
 
     public Long getId_() {
@@ -215,6 +217,14 @@ public abstract class AbstractContestType implements Serializable{
         this.showTeamField = showTeamField;
     }
 
+    public Boolean getShowResourceLinks() {
+        return showResourceLinks;
+    }
+
+    public void setShowResourceLinks(Boolean showResourceLinks) {
+        this.showResourceLinks = showResourceLinks;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -284,15 +294,18 @@ public abstract class AbstractContestType implements Serializable{
             return false;
         }
         if (overrideCreationPrompt != null ? !overrideCreationPrompt
-                .equals(that.overrideCreationPrompt)
-                : that.overrideCreationPrompt != null) {
+                .equals(that.overrideCreationPrompt) : that.overrideCreationPrompt != null) {
             return false;
         }
         if (pitchName != null ? !pitchName.equals(that.pitchName) : that.pitchName != null) {
             return false;
         }
-        return showTeamField != null ? showTeamField.equals(that.showTeamField)
-                : that.showTeamField == null;
+        if (showTeamField != null ? !showTeamField.equals(that.showTeamField)
+                : that.showTeamField != null) {
+            return false;
+        }
+        return showResourceLinks != null ? showResourceLinks.equals(that.showResourceLinks)
+                : that.showResourceLinks == null;
     }
 
     @Override
@@ -305,11 +318,9 @@ public abstract class AbstractContestType implements Serializable{
         result = 31 * result + (portletName != null ? portletName.hashCode() : 0);
         result = 31 * result + (portletUrl != null ? portletUrl.hashCode() : 0);
         result = 31 * result + (friendlyUrlStringContests != null ? friendlyUrlStringContests
-                .hashCode()
-                : 0);
+                .hashCode() : 0);
         result = 31 * result + (friendlyUrlStringProposal != null ? friendlyUrlStringProposal
-                .hashCode()
-                : 0);
+                .hashCode() : 0);
         result = 31 * result + (menuItemName != null ? menuItemName.hashCode() : 0);
         result = 31 * result + (hasDiscussion != null ? hasDiscussion.hashCode() : 0);
         result = 31 * result + (suggestionContestId != null ? suggestionContestId.hashCode() : 0);
@@ -320,29 +331,24 @@ public abstract class AbstractContestType implements Serializable{
                 : 0);
         result = 31 * result + (pitchName != null ? pitchName.hashCode() : 0);
         result = 31 * result + (showTeamField != null ? showTeamField.hashCode() : 0);
+        result = 31 * result + (showResourceLinks != null ? showResourceLinks.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "AbstractContestType{" +
-                "id_=" + id_ +
-                ", contestName='" + contestName + '\'' +
-                ", contestNamePlural='" + contestNamePlural + '\'' +
-                ", proposalName='" + proposalName + '\'' +
-                ", proposalNamePlural='" + proposalNamePlural + '\'' +
-                ", portletName='" + portletName + '\'' +
-                ", portletUrl='" + portletUrl + '\'' +
-                ", friendlyUrlStringContests='" + friendlyUrlStringContests + '\'' +
-                ", friendlyUrlStringProposal='" + friendlyUrlStringProposal + '\'' +
-                ", menuItemName='" + menuItemName + '\'' +
-                ", hasDiscussion=" + hasDiscussion + ", suggestionContestId=" + suggestionContestId +
-                ", rulesPageName='" + rulesPageName + '\'' +
-                ", rulesPageUrl='" + rulesPageUrl + '\'' +
-                ", showProposalSummary=" + showProposalSummary +
-                ", overrideCreationPrompt=" + overrideCreationPrompt +
-                ", pitchName=" + pitchName +
-                ", showTeamField=" + showTeamField +
-                '}';
+        return "AbstractContestType{" + "id_=" + id_ + ", contestName='" + contestName + '\''
+                + ", contestNamePlural='" + contestNamePlural + '\'' + ", proposalName='"
+                + proposalName + '\'' + ", proposalNamePlural='" + proposalNamePlural + '\''
+                + ", portletName='" + portletName + '\'' + ", portletUrl='" + portletUrl + '\''
+                + ", friendlyUrlStringContests='" + friendlyUrlStringContests + '\''
+                + ", friendlyUrlStringProposal='" + friendlyUrlStringProposal + '\''
+                + ", menuItemName='" + menuItemName + '\'' + ", hasDiscussion=" + hasDiscussion
+                + ", suggestionContestId=" + suggestionContestId + ", rulesPageName='"
+                + rulesPageName + '\'' + ", rulesPageUrl='" + rulesPageUrl + '\''
+                + ", showProposalSummary=" + showProposalSummary + ", overrideCreationPrompt='"
+                + overrideCreationPrompt + '\'' + ", pitchName='" + pitchName + '\''
+                + ", showTeamField=" + showTeamField + ", showResourceLinks=" + showResourceLinks
+                + '}';
     }
 }

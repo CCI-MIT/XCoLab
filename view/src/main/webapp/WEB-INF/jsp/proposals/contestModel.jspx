@@ -1,0 +1,33 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          version="2.0" >
+	<!--@elvariable id="availableModels" type="java.util.Map<java.lang.Long, java.lang.String>"-->
+	<!--@elvariable id="modelId" type="java.lang.Long"-->
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout title="${contest.contestShortName} - Model">
+
+	<jsp:directive.include file="./init_contest.jspx" />
+	
+	<div class="proposal-head">
+		<div class="inner">
+			<div class='c-Headline'>
+				<div class="contest-image">
+					<img src="${contest.logoPath}" width="52" height="52" alt="Contest Image" />
+				</div>
+				<div class='proposal-title'>
+					<h1>Model <proposalsPortlet:contestLink contest="${contest}" text="${contest.contestShortName} " /></h1>
+				</div>
+			</div>
+		</div>
+		<!-- /inner -->
+	</div>
+	<!-- /proposal-head -->
+    <c:if test="${not empty availableModels }">
+        <proposalsPortlet:modelPicker availableModels="${availableModels  }" contestPK="${contest.contestPK }" />
+    </c:if>
+    <modeling:simulationEdit  modelId="${modelId }" contestModelDefaultSetting="${contest.defaultModelSettings}"/>
+</xcolab:layout>
+</jsp:root>

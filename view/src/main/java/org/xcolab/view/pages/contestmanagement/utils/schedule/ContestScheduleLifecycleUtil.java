@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class ContestScheduleLifecycleUtil {
 
@@ -105,13 +106,10 @@ public final class ContestScheduleLifecycleUtil {
 
     public static List<LabelValue> getAllScheduleTemplateSelectionItems() {
         ContestCreatorUtil.insertSeedDataToContestScheduleTableIfNotAvailable();
-        List<LabelValue> selectItems = new ArrayList<>();
-        for (ContestSchedule scheduleTemplate : ContestClientUtil.getAllContestSchedules()) {
-            selectItems.add(new ScheduleLabel(scheduleTemplate));
-        }
-        Collections.sort(selectItems);
-
-        return selectItems;
+        return ContestClientUtil.getAllContestSchedules().stream()
+                .map(ScheduleLabel::new)
+                .sorted()
+                .collect(Collectors.toList());
     }
 
     private static List<ContestPhase> getCurrentPhasesForSchedule(Long existingContestScheduleId) {

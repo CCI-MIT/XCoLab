@@ -19,8 +19,8 @@ public class ProposalNotification extends ContestNotification {
     private ProposalNotificationTemplate templateWrapper;
 
     public ProposalNotification(Proposal proposal, Contest contest, Member recipient,
-            String templateName, String baseUrl) {
-        super(contest, recipient, templateName, baseUrl);
+            String templateName) {
+        super(contest, recipient, templateName);
         this.proposal = proposal;
     }
 
