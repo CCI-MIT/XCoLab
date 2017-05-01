@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.loginregister.singlesignon;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,8 +12,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.exceptions.PasswordLoginException;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.view.pages.loginregister.CreateUserBean;
-import org.xcolab.view.pages.loginregister.LoginRegisterUtil;
-import org.xcolab.view.pages.loginregister.LoginRegisterController;
+import org.xcolab.view.pages.loginregister.LoginRegisterService;
 
 import java.io.IOException;
 
@@ -22,6 +22,13 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/sso/colab")
 public class ColabController {
+
+    private final LoginRegisterService loginRegisterService;
+
+    @Autowired
+    public ColabController(LoginRegisterService loginRegisterService) {
+        this.loginRegisterService = loginRegisterService;
+    }
 
     @PostMapping
     public void initiateLoginOrReg(HttpServletRequest request, HttpServletResponse response)
@@ -42,7 +49,7 @@ public class ColabController {
         redirectUrl.replaceQueryParam("isSSOSigningIn");
 
         try {
-            LoginRegisterUtil.login(request, login, password);
+            loginRegisterService.login(request, response, login, password);
             response.sendRedirect(redirectUrl.toUriString());
             return;
         } catch (MemberNotFoundException | LockoutLoginException | PasswordLoginException ignored) {
@@ -63,7 +70,7 @@ public class ColabController {
                 //TODO: get user imageId and save it locally
                 userBean.setShortBio(foreignColab.getShortBio());
                 try {
-                    LoginRegisterController.completeRegistration(request, response, userBean,
+                    loginRegisterService.completeRegistration(request, response, userBean,
                             redirectUrl.toUriString(), true);
                     return;
 

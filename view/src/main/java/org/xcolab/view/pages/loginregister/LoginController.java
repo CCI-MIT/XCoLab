@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.view.auth.AuthenticationContext;
+import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,11 +22,11 @@ public class LoginController {
     private static final String LOGIN_VIEW_NAME = "loginregister/login";
     private static final String LOGIN_TOKEN_VIEW_NAME = "loginregister/loginWithToken";
 
-    private final AuthenticationContext authenticationContext;
+    private final AuthenticationService authenticationService;
 
     @Autowired
-    public LoginController(AuthenticationContext authenticationContext) {
-        this.authenticationContext = authenticationContext;
+    public LoginController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
     }
 
     @GetMapping("/login")
@@ -48,7 +48,7 @@ public class LoginController {
         if (MembersClient.validateLoginToken(tokenId, tokenKey)) {
             AlertMessage.success("Login successful!").flash(request);
             final Member member = MembersClient.getMemberForLoginToken(tokenId);
-            authenticationContext.authenticate(request, member);
+            authenticationService.authenticate(request, response, member);
             //TODO: potentially make the links single-use
 //            MembersClient.invalidateLoginToken(tokenId);
         } else {

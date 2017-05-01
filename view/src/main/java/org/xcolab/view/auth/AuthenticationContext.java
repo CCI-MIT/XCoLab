@@ -1,10 +1,8 @@
 package org.xcolab.view.auth;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 import org.springframework.web.util.WebUtils;
 
 import org.xcolab.client.members.MembersClient;
@@ -19,7 +17,6 @@ import java.util.Objects;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
-@Service
 public class AuthenticationContext {
 
     public static final String IMPERSONATE_MEMBER_ID_COOKIE_NAME = "X-Impersonate-memberId";
@@ -58,11 +55,8 @@ public class AuthenticationContext {
     }
 
     public Member getRealMemberOrNull() {
-        final Authentication authentication = SecurityContextHolder.getContext()
-                .getAuthentication();
-        if (authentication != null
-                && authentication.isAuthenticated()
-                && authentication.getPrincipal() instanceof MemberDetails) {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof MemberDetails) {
             MemberDetails memberDetails = (MemberDetails) authentication.getPrincipal();
             return memberDetails.getMember();
         } else {
@@ -77,15 +71,5 @@ public class AuthenticationContext {
         }
 
         throw new UncheckedMemberNotFoundException("No member logged in - check before calling");
-    }
-
-    public void authenticate(HttpServletRequest request, Member member) {
-        //initialize session if it doesn't exist
-        request.getSession();
-
-        final MemberDetails memberDetails = new MemberDetails(member);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                memberDetails, null, memberDetails.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
