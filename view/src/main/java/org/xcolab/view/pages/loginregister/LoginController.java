@@ -49,7 +49,8 @@ public class LoginController {
             AlertMessage.success("Login successful!").flash(request);
             final Member member = MembersClient.getMemberForLoginToken(tokenId);
             authenticationContext.authenticate(request, member);
-            MembersClient.invalidateLoginToken(tokenId);
+            //TODO: potentially make the links single-use
+//            MembersClient.invalidateLoginToken(tokenId);
         } else {
             AlertMessage.danger("Invalid or expired login token.").flash(request);
         }
