@@ -7,7 +7,7 @@ if [ $BUILD_TYPE == 'deploy' ]; then
     mkdir -p binaries/services
 
     echo "Moving view binary"
-    mv view/target/xcolab-view-1.0-SNAPSHOT.jar binaries/view/
+    mv view/target/xcolab-view-1.0-SNAPSHOT.war binaries/view/
 
     echo "Moving cloud binaries"
     mv microservices/cloud/eureka-server/target/eureka-server-1.0-SNAPSHOT.jar binaries/cloud/
