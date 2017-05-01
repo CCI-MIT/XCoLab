@@ -11,6 +11,7 @@ import org.xcolab.client.members.pojo.LoginToken;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.client.members.pojo.TokenValidity;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.ServiceRequestUtils;
@@ -358,10 +359,13 @@ public final class MembersClient {
                 .post();
     }
 
-    public static boolean validateLoginToken(String tokenId, String tokenKey) {
-        return loginTokenResource.service(tokenId,"validate", Boolean.class)
-                .queryParam("tokenKey", tokenKey)
-                .get();
+    public static TokenValidity validateLoginToken(String tokenId, String tokenKey) {
+        try {
+            return loginTokenResource.service(tokenId, "validate", TokenValidity.class)
+                    .queryParam("tokenKey", tokenKey).get();
+        } catch (UncheckedEntityNotFoundException e) {
+            return TokenValidity.INVALID;
+        }
     }
 
     public static void invalidateLoginToken(String tokenId) {

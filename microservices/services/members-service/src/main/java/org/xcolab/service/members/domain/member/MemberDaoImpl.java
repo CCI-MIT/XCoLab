@@ -237,10 +237,7 @@ public class MemberDaoImpl implements MemberDao {
     public Optional<Member> findOneByLoginTokenId(String loginTokenId) {
         final Record record = dslContext.select()
                 .from(MEMBER)
-                .where(MEMBER.LOGIN_TOKEN_ID.eq(loginTokenId)
-                        .and(MEMBER.LOGIN_TOKEN_EXPIRATION_DATE.isNull()
-                                .or(MEMBER.LOGIN_TOKEN_EXPIRATION_DATE
-                                        .gt(Timestamp.from(Instant.now())))))
+                .where(MEMBER.LOGIN_TOKEN_ID.eq(loginTokenId))
                 .fetchOne();
         if (record == null) {
             return Optional.empty();
