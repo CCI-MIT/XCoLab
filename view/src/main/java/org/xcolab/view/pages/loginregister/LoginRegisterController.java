@@ -106,6 +106,14 @@ public class LoginRegisterController {
         getSSOUserInfo(request.getSession(), userBean);
         model.addAttribute("createUserBean", userBean);
 
+        String fbIdString =
+                (String) request.getSession().getAttribute(SSOKeys.FACEBOOK_USER_ID);
+        String googleId = (String) request.getSession().getAttribute(SSOKeys.SSO_GOOGLE_ID);
+
+        if ((StringUtils.isNotBlank(fbIdString) || googleId != null)) {
+            model.addAttribute("isSsoLogin", true);
+        }
+
         // Get country location
         if (StringUtils.isEmpty(userBean.getCountry())) {
             try {
