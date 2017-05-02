@@ -28,10 +28,15 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
 
     public ProposalVoteValidityConfirmation(Proposal votedProposal, Contest contest,
             Member recipient, String confirmationToken) {
-        super(votedProposal, contest, recipient, null, ConfigurationAttributeKey.COLAB_URL.get());
+        super(votedProposal, contest, recipient, null);
         this.confirmationToken = confirmationToken;
         this.votedProposal = votedProposal;
         this.recipient = recipient;
+    }
+
+    @Override
+    protected boolean isEssentialTransactionMessage() {
+        return true;
     }
 
     @Override
@@ -48,13 +53,13 @@ public class ProposalVoteValidityConfirmation extends ProposalNotification {
             proposalVoteConfirmationTemplateString = DEFAULT_TEMPLATE_STRING;
         }
         final EmailTemplateClient emailTemplateClient;
-        if(contest.getIsSharedContestInForeignColab()){
+        if (contest.getIsSharedContestInForeignColab()) {
             RestService adminService = new RefreshingRestService(CoLabService.ADMIN,
                     ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
             );
 
             emailTemplateClient = EmailTemplateClient.fromService(adminService);
-        }else{
+        } else {
             emailTemplateClient = EmailTemplateClientUtil.getClient();
         }
         final ContestEmailTemplate emailTemplate =

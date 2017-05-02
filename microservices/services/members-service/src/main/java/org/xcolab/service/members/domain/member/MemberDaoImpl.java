@@ -234,6 +234,18 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     @Override
+    public Optional<Member> findOneByLoginTokenId(String loginTokenId) {
+        final Record record = dslContext.select()
+                .from(MEMBER)
+                .where(MEMBER.LOGIN_TOKEN_ID.eq(loginTokenId))
+                .fetchOne();
+        if (record == null) {
+            return Optional.empty();
+        }
+        return Optional.of(record.into(Member.class));
+    }
+
+    @Override
     public Optional<Member> findOneByForgotPasswordHash(String newPasswordToken) {
         final Record record = dslContext.select()
                 .from(MEMBER)
@@ -268,6 +280,9 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.PORTRAIT_FILE_ENTRY_ID, member.getPortraitFileEntryId())
                 .set(MEMBER.FORGOT_PASSWORD_TOKEN, member.getForgotPasswordToken())
                 .set(MEMBER.FORGOT_PASSWORD_TOKEN_EXPIRE_TIME, member.getForgotPasswordTokenExpireTime())
+                .set(MEMBER.LOGIN_TOKEN_ID, member.getLoginTokenId())
+                .set(MEMBER.LOGIN_TOKEN_KEY, member.getLoginTokenKey())
+                .set(MEMBER.LOGIN_TOKEN_EXPIRATION_DATE, member.getLoginTokenExpirationDate())
                 .where(MEMBER.ID_.equal(member.getId_()))
                 .execute() > 0;
     }

@@ -1,0 +1,98 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld" version="2.0">
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+
+        <div class="alignright" style="display:none;">
+            <a href="/feedswidget/generateDump">activities in CSV format</a>
+        </div>
+        <div class="clearfix"><!--  --></div>
+        <h2>${portletTitle}</h2>
+        <c:if test="${_isAdmin}">
+        <a href="/feedswidget/editPreferences" class="c-Button__admin">Edit preferences</a><br/>
+        </c:if>
+        <c:choose>
+        <c:when test="${empty activities  }">
+            Nothing found.
+        </c:when>
+        <c:when test="${feedStyle == 'FULL' }">
+            <div class="c-Table fullWidth">
+                <c:forEach items="${activities }" var="activity">
+                    <div id="activitiesTable">
+                        <div class="c-TableList__row ${activity.odd ? 'odd' : '' }">
+                            <div class="c-TableList__item p-Homepage__activitybox__${activity.type.displayName}" ><!--  --></div>
+                            <div class="c-TableList__item" style="width: 750px; margin-top: 20px;">
+                                <c:out value="${activity.body}" escapeXml="false" />
+                            </div>
+                            <h5 class="c-TableList__item right" style="margin-top: 20px; margin-right:10px;">${activity.activityDateAgo}</h5>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+
+            <div class="paginatorControls">
+                <c:choose>
+
+                    <c:when test="${empty filterUserId }">
+                        <c:set var="prevURL" value="/activities?page=${sortFilterPage.page - 1}"></c:set>
+                    </c:when>
+                    <c:otherwise>
+
+                        <c:set var="prevURL" value="/activities?page=${sortFilterPage.page - 1}&amp;userId=${filterUserId}"></c:set>
+
+                    </c:otherwise>
+                </c:choose>
+                <div class="alignleft">
+                    <c:if test="${sortFilterPage.page > 0 }">
+                        <a href="${prevURL }">&amp;laquo; newer</a>
+                    </c:if>
+                </div>
+
+                <div class="alignright">
+                    <c:choose>
+                        <c:when test="${empty filterUserId }">
+                            <c:set var="nextURL" value="/activities?page=${sortFilterPage.page + 1}"></c:set>
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="nextURL" value="/activities?page=${sortFilterPage.page + 1}&amp;userId=${filterUserId}"></c:set>
+
+                        </c:otherwise>
+                    </c:choose>
+                    <c:if test="${ not isLastPage }">
+                        <a href="${nextURL }">older &amp;raquo;</a>
+                    </c:if>
+                </div>
+            </div>
+            <div class="clearfix"><!--  --></div>
+        </c:when>
+        <c:otherwise>
+            <div class="c-TableList">
+                <c:forEach items="${activities }" var="activity">
+                    <div class="c-TableList__row ${activity.odd ? 'odd' : ''}">
+                        <div class="c-TableList__item p-Homepage__activitybox__${activity.type.displayName}"><!--  --></div>
+                        <div class="c-TableList__item">
+                            <h5>${activity.activityDateAgo}</h5>
+                            <div style="width: 410px;">
+                                <c:out value="${activity.body}" escapeXml="false" />
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+        </c:otherwise>
+        </c:choose>
+
+        <c:if test="${seeMoreLinkShown}">
+        <div class="alignright" style="margin-top:10px;">
+            <a href="/activities">View all activities</a>
+        </div>
+        </c:if>
+        <c:if test="${not empty filterUserId}">
+        <script type="text/javascript">
+            var filterSettings = {
+                filterUserId: ${filterUserId},
+                filterUserName: '${filterUser.screenName}'
+            };
+        </script>
+        </c:if>
+</jsp:root>

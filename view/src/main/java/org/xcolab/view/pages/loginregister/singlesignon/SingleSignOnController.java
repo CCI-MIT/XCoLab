@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.loginregister.singlesignon;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,7 @@ import org.xcolab.client.members.exceptions.PasswordLoginException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.util.entity.flash.ErrorMessage;
 import org.xcolab.view.auth.login.AuthenticationError;
-import org.xcolab.view.pages.loginregister.LoginRegisterUtil;
+import org.xcolab.view.pages.loginregister.LoginRegisterService;
 
 import java.io.IOException;
 
@@ -25,6 +26,13 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class SingleSignOnController {
     private static final String REGISTER_OR_LOGIN_VIEW = "loginregister/SSO/registerOrLogin";
+
+    private final LoginRegisterService loginRegisterService;
+
+    @Autowired
+    public SingleSignOnController(LoginRegisterService loginRegisterService) {
+        this.loginRegisterService = loginRegisterService;
+    }
 
     @GetMapping("/sso/registerOrLogin")
     public String registerOrLogin(HttpServletRequest request, Model model) {
@@ -46,7 +54,7 @@ public class SingleSignOnController {
 
         try {
             // Use local authentication API to check credentials
-            Member member = LoginRegisterUtil.login(request, login, password);
+            Member member = loginRegisterService.login(request, response, login, password);
             // Do the linkage of OpenID or Facebook ID
             String fbIdString = (String) session.getAttribute(SSOKeys.FACEBOOK_USER_ID);
             String googleId = (String) session.getAttribute(SSOKeys.SSO_GOOGLE_ID);

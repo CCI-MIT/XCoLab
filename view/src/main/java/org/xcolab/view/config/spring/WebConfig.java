@@ -1,5 +1,7 @@
 package org.xcolab.view.config.spring;
 
+import org.apache.catalina.Context;
+import org.apache.catalina.webresources.StandardRoot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.Assert;
-import org.springframework.validation.SmartValidator;
-import org.springframework.validation.beanvalidation.CustomValidatorBean;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -36,6 +36,7 @@ import org.xcolab.view.pages.proposals.interceptors.ValidateTabPermissionsInterc
 import org.xcolab.view.theme.ThemeResourceResolver;
 import org.xcolab.view.theme.ThemeVariableInterceptor;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -44,6 +45,8 @@ import java.util.concurrent.TimeUnit;
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     private static final Logger log = LoggerFactory.getLogger(WebConfig.class);
+
+    private static final String LOCAL_WEBAPP_DIR_LOCATION = "view/src/main/webapp";
 
     private final ThemeVariableInterceptor themeVariableInterceptor;
     private final PopulateProposalModelInterceptor populateContextInterceptor;
@@ -63,7 +66,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         Assert.notNull(populateContextInterceptor, "PopulateContextInterceptor bean is required");
         Assert.notNull(validateTabPermissionsInterceptor,
                 "ValidateTabPermissionsInterceptor bean is required");
-        Assert.notNull(webProperties);
+        Assert.notNull(webProperties, "webProperties bean is required");
         this.configurationService = configurationService;
         this.themeVariableInterceptor = themeVariableInterceptor;
         this.populateContextInterceptor = populateContextInterceptor;
@@ -98,11 +101,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public RestTemplate restTemplate() {
         return new RestTemplate(new HttpComponentsClientHttpRequestFactory());
     }
-    @Bean
-    public SmartValidator validator() {
-        //TODO: remove when upgrading to Spring boot 1.5.x
-        return new CustomValidatorBean();
-    }
 
     @Bean
     public RewriteInitializer rewriteInitializer() {
@@ -127,7 +125,25 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
 
-        TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory();
+        TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory() {
+            @Override
+            protected void postProcessContext(Context context) {
+
+                final File webappDir = new File(LOCAL_WEBAPP_DIR_LOCATION);
+                if (webappDir.exists()) {
+                    log.info("Configuring webapp dir at {}", webappDir.getAbsolutePath());
+                    context.setDocBase(webappDir.getAbsolutePath());
+                }
+
+                final int cacheSizeInKb = 128 * 1024;
+                StandardRoot standardRoot = new StandardRoot(context);
+                standardRoot.setCacheMaxSize(cacheSizeInKb);
+                context.setResources(standardRoot);
+
+                log.info("Set tomcat cache size to {} MB",
+                    context.getResources().getCacheMaxSize() / 1024);
+            }
+        };
         if (configurationService.isTomcatAjpEnabled()) {
             final AjpConnector ajpConnector =
                     new AjpConnector(configurationService.getTomcatAjpPort());

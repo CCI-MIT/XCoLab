@@ -9,8 +9,8 @@ public class ContestCreationNotification extends ContestNotification {
 
     private static final String TEMPLATE_NAME = "CONTEST_CREATION_DEFAULT";
 
-    public ContestCreationNotification(Contest contest, String baseUrl)
+    public ContestCreationNotification(Contest contest)
             throws MemberNotFoundException {
-        super(contest, MembersClient.getMember(contest.getAuthorId()), TEMPLATE_NAME, baseUrl);
+        super(contest, MembersClient.getMember(contest.getAuthorId()), TEMPLATE_NAME);
     }
 }

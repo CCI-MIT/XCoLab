@@ -69,7 +69,7 @@ public class DescriptionTabController extends AbstractTabController {
     private List<LabelValue> getContestScheduleSelectionItems(long contestId) {
         Contest contest = getContest(contestId);
         Long existingContestScheduleId = contest.getContestScheduleId();
-        Boolean contestHasProposals = contest.getProposalsCount() > 0;
+        boolean contestHasProposals = contest.getProposalsCount() > 0;
         return ContestScheduleLifecycleUtil
                 .getScheduleTemplateSelectionItems(existingContestScheduleId, contestHasProposals);
     }

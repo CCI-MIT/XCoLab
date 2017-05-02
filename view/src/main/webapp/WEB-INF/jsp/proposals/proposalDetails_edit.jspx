@@ -1,0 +1,469 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          version="2.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld">
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout  title="${proposal.name} - Edit">
+    <!--@elvariable id="isMove" type="java.lang.Boolean"-->
+    <!--@elvariable id="hasUnmappedSections" type="java.lang.Boolean"-->
+
+    <jsp:directive.include file="./init_proposal.jspx"/>
+
+    <script type="text/javascript">
+        var EXTERNAL_IMAGE_UPLOAD_URL = '${requestScope.imageUploadServiceUrl}';
+        var IMAGE_UPLOAD_HELP_TEXT = '${requestScope.imageUploadHelpText}';
+    </script>
+
+    <jsp:directive.include file="./proposalDetails/header.jspx" />
+
+    <!--ProposalSectionsTabController-->
+    <c:if test="${isMove}">
+        <jsp:useBean id="baseProposal" scope="request" type="org.xcolab.client.proposals.pojo.Proposal"/>
+        <jsp:useBean id="baseContest" scope="request" type="org.xcolab.client.contest.pojo.Contest"/>
+    </c:if>
+
+    <style>
+        td em {
+            background: #000; border-radius: 5px; font-style: normal;
+            box-shadow: 0 0 2px #000;
+        }
+    </style>
+
+    <c:if test="${mustFilterContent}">
+        <div class="modal fade" id="js-filteringModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Preparing for submission...</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="loading_filtering_image" style="text-align: left"><img border="0" src="/images/loader.gif"/></div>
+                        <div id="processedFailed" style="display:none;margin-top: 8px;">Your entry contains disallowed words. Please remove offensive words before saving again</div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="close" class="c-Button__secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    </c:if>
+
+    <div class="prop-left">
+        <c:set var="updateProposalSectionsURL"
+               value="${proposal.proposalId > 0 ? proposal.proposalUrl : contest.newProposalLinkUrl}"/>
+
+        <div class="c-Headline addprop">
+            <c:choose>
+                <c:when test="${isMove }">
+                    <p>
+                        You're about to move a ${fn:toLowerCase(contestType.proposalName)}
+                        <collab:proposalLink proposal="${baseProposal}" escape="true" />
+                        from ${contestType.contestName}
+                        <collab:contestLink contest="${baseContest}" />
+                        to ${contestType.contestName}
+                        <collab:contestLink contest="${contest}" />.
+                    </p>
+                </c:when>
+                <c:when test="${not empty baseProposal}">
+                    <p>
+                        You're about to create a ${fn:toLowerCase(contestType.proposalName)} that will be based on
+                        <collab:proposalLink proposal="${baseProposal}" escape="true" />.
+                    </p>
+                </c:when>
+            </c:choose>
+            <p>
+                Please complete your ${fn:toLowerCase(contestType.proposalName)} based on the template below.
+                If you have input on the template, please send it in a <a href="/web/guest/feedback" target="_blank">feedback message</a>.
+                To save your ${fn:toLowerCase(contestType.proposalName)}, you must agree to the <a href="${contestType.rulesPageUrl}" target="_blank">${contestType.rulesPageName}</a>
+                and <a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of use</a>.
+                <br/>Please note that you may be automatically logged out of your account after
+                30 minutes. Please save all ${fn:toLowerCase(contestType.proposalName)} content offline before clicking
+                PUBLISH or else it may be lost.
+            </p>
+        </div> <!-- /c-Headline -->
+
+
+        <form action="${contest.proposalLogoPath}images/upload" method="post" enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
+            <input type="file" name="file" id="fileUploadInput" />
+        </form>
+
+
+        <form:form action="${updateProposalSectionsURL }" commandName="updateProposalDetailsBean"
+                   id="editForm"
+                   cssClass="addpropform ${contestType.showProposalSummary ? '' : 'full-wdith'}" >
+            <form:hidden path="baseProposalId" />
+            <form:hidden path="baseProposalContestId" />
+            <form:hidden path="isMove" />
+            <form:hidden path="moveType" />
+            <form:hidden path="moveFromContestPhaseId" />
+            <form:hidden path="moveToContestId" />
+            <form:hidden path="uuid" />
+
+            <div class="addpropbox q1">
+                <label>
+                    <strong>Title</strong>
+                    <a class="helpTrigger" href="javascript:;"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
+                    80 characters
+                </label>
+                <div class="addprophelp">Give your ${fn:toLowerCase(contestType.proposalName)} a title. It's the first thing most people will see, so you'll want to make it descriptive and engaging.</div>
+                <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
+                    <form:input path="name" id="proposalName" />
+                    <form:errors path="name" cssClass="c-Alert c-Alert__error" />
+                    <div class="clearfix"><!--  --></div>
+
+                    <div class="clearfix"><!-- --></div>
+                    <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">80</span> characters</div>
+                </div>
+            </div>
+
+            <c:if test="${contestType.showTeamField}">
+                <div class="addpropbox blue q2">
+                    <label>
+                    <span><strong>Team name</strong><br />
+                    <em>optional</em></span>
+                        <a class="helpTrigger" href="javascript:;"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
+                        20 characters
+                    </label>
+                    <div class="addprophelp">If you'd like to have your ${fn:toLowerCase(contestType.proposalName)} appear under a team name, insert it here. Otherwise, the ${fn:toLowerCase(contestType.proposalName)} will appear under the user name of its owner.</div>
+                    <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
+                        <form:input path="team" id="proposalTeam" />
+                        <form:errors path="team" />
+
+                        <div class="clearfix"><!-- --></div>
+                        <div class="inputLimitContainer"><span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">20</span> characters</div>
+                    </div>
+                </div>
+                <div class="notation">Note: If you enter a team name, it will replace the ${fn:toLowerCase(contestType.proposalName)} owner's name in the Author field.</div>
+            </c:if>
+
+            <div class="addpropbox blue">
+                <label>
+                    <span><strong>${contestType.proposalName} image</strong><br />
+                    <em>optional</em></span>
+                </label>
+
+                <form:hidden path="imageId" id="proposalImageId" />
+                <collab:imageUpload uniqueName="proposalImageUpload" imageIdInput="proposalImageId"
+                                    compactView="true" defaultImage="PROPOSAL" buttonText="Upload an image (optional)" />
+            </div>
+
+            <div class="addpropbox q3">
+                <label>
+                    <strong>${contestType.pitchName}</strong>
+                    <a href="javascript:;" class="helpTrigger"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
+                    140 characters
+                </label>
+                <div class="addprophelp">Insert a tweet-length (140 character) message that conveys the key idea behind your ${fn:toLowerCase(contestType.proposalName)}.</div>
+                <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
+                    <form:textarea path="pitch" id="proposalPitchInput" htmlEscape="false" cssClass="proposalPitchInput" />
+                    <form:errors path="pitch" />
+                    <div class="clearfix"><!-- --></div>
+                    <div class="inputLimitContainer">
+                        <span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">140</span> characters
+                    </div>
+                </div>
+
+                <script>
+                    jQuery("textarea#proposalPitchInput").keydown(function(e) {
+                        var TABKEY = 9;
+                        if(e.keyCode == TABKEY) {
+                            this.value += "    ";
+                            if(e.preventDefault) {
+                                e.preventDefault();
+                            }
+                            return false;
+                        }
+                    });
+                </script>
+            </div>
+
+            <!-- legacy for old proposals-->
+            <c:if test="${fn:length(proposal.description) gt 0}">
+                <div class="addpropbox q3">
+                    <label>
+                        <strong>Description</strong>
+                        <a href="javascript:;" class="helpTrigger"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
+                    </label>
+
+                    <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
+                        <form:textarea cssClass="rte-editorPlaceholder"  cols="54" rows="7" path="description" />
+                    </div>
+                </div>
+            </c:if>
+
+            <c:forEach var="section" items="${proposal.sections }">
+                <c:if test="${not section.locked }">
+                    <div class="addpropbox q3 ${section.type}" data-section-id="${section.sectionDefinitionId }">
+                        <proposalsPortlet:proposalSectionEdit section="${section }" showCopySectionContentButton="${hasUnmappedSections and not empty baseProposal }"/>
+                    </div>
+                </c:if>
+            </c:forEach>
+        </form:form>
+    </div>
+    <jsp:directive.include file="./proposalDetails/proposalSummary.jspx" />
+
+    <div id="c-Popup__accept__TOS" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none;">
+        <div class="c-Popup__wrapper p1" id="c-Popup__accept__TOS">
+            <div class="c-Popup">
+                <h4>By saving your ${fn:toLowerCase(contestType.proposalName)} you are entering the ${_colabName} ${contestType.contestName} and agree to the&#160;
+                    <a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of Use</a>
+                    &#160;and <a href="${contestType.rulesPageUrl}">${contestType.rulesPageName}</a>.</h4>
+
+                <h5>${fn:toUpperCase(contestType.rulesPageName)}:</h5>
+                <div class="terms">
+                        ${preferences.termsOfService}
+                </div>
+                <div class="btns">
+                    <a class="c-Button__primary cp1-1" href="javascript:;" id="tosAccepted">ACCEPT</a>
+                    <a class="c-Button__secondary cp1-2" href="javascript:;" id="closeAcceptTos">DO NOT Accept</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="invalidFieldsPopupContainer" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none; ">
+        <div class="c-Popup__wrapper p1" id="invalidFieldsPopup">
+            <div class="c-Popup">
+                <h4>The following sections have too many characters:</h4>
+                <ul id="invalidFieldsList"><!--  --></ul>
+                <div class="btns">
+                    <a class="c-Button__primary cp1-1" href="javascript:;" onclick="jQuery('#invalidFieldsPopupContainer').fadeOut('fast')">CLOSE</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-overlay-wrap">
+        <div class="admin-overlay">
+            <div class="inner">
+                <div class="admin-left">
+                    <p>
+                        <c:choose>
+                            <c:when test="${proposal.currentVersion le 1}">
+                                You are currently editing a new ${fn:toLowerCase(contestType.proposalName)}
+                            </c:when>
+                            <c:otherwise>
+                                You are editing a ${fn:toLowerCase(contestType.proposalName)}
+                            </c:otherwise>
+                        </c:choose>
+                        <br />
+                        <c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
+                    </p>
+                    <a class="c-Button__primary" href="javascript:void(0)" id="saveChangesButton">SAVE and PUBLISH changes</a>
+                    <c:choose>
+                        <c:when test="${proposal.currentVersion > 0 }">
+                            <collab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
+                                                 linkId="discardChangesButton" text="DISCARD changes" />
+                        </c:when>
+                        <c:otherwise>
+                            <!--  proposal creation, return to contest proposals page on discard -->
+                            <collab:contestLink contest="${contest}" cssClass="c-Button__secondary"
+                                                linkId="discardChangesButton" text="DISCARD changes" />
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+                <div class="admin-right">
+                    <p>&#160;</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ckImageUploadTooltip" style="display: none">
+        ${requestScope.imageUploadHelpText}
+    </div>
+    <div id="ckAnchorTooltip" style="display: none">
+        <h4>Anchor:</h4>
+        <h5>How to use anchors:</h5>
+        <br/>
+        <ol>
+            <li>You have an important section of your proposal you want to make a link to.</li>
+            <li>Select the text for that important section and click on the anchor icon <span style="background-image:url('https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/plugins/icons_hidpi.png?t=GB8B');background-position:0 -1296px;background-size:16px;background-color: white;width: 16px;height: 16px;float: left;display: inline-block;margin-left: 4px;margin-right: 4px;">&#160;</span>(flag), give it a name an click OK.</li>
+            <li>The anchor marker will appear on the text editor.</li>
+            <li>Select the text on the editor where you want to link to your newly created anchor.</li>
+            <li>Click on the link icon <span style="background-image:url('https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/plugins/icons_hidpi.png?t=GB8B');background-position:0 -1320px;background-size:16px;background-color: white;width: 16px;height: 16px;float: left;display: inline-block;margin-left: 4px;margin-right: 4px;">&#160;</span>(Chains).</li>
+            <li>On the field "Link Type" select "Link to anchor in the text".</li>
+            <li>On the field "Select an Anchor" choose "Selector by Anchor Name" , select the anchor name you gave on step #2 .</li>
+
+        </ol>
+    </div>
+    <iframe name="_fileUploadFrame" id="fileUploadFrame" class="hidden" style="display: none;"><!-- comment --></iframe>
+
+    <jsp:directive.include file="./proposalDetails/proposalPicker_widget.jspx" />
+
+    <script type="text/javascript">
+        var submitTimer;
+
+        function updateUploadBtnOffset() {
+            var container = jQuery("#uploadWidget");
+            var containerOffset = container.offset();
+
+            jQuery("#fileUploadInput").offset(containerOffset);
+
+        }
+
+        function showAcceptTosPopup() {
+            jQuery("#c-Popup__accept__TOS").fadeIn("fast");
+        }
+
+        function closeAcceptTosPopup() {
+            jQuery("#c-Popup__accept__TOS").fadeOut("fast");
+            noty({text: 'To create a proposal on Climate CoLab, you must ACCEPT the terms of use and contest rules. Please click "Accept" to continue and save your proposal.!',
+                buttons: [
+                    {
+                        addClass: 'general-button red', text: 'ACCEPT', onClick: function($noty)
+                    {
+                        tosAcceptedSave()
+                        $noty.close();
+                    }
+                    }],
+                    type: 'error'});
+            enableButtons();
+        }
+
+        function tosAcceptedSave() {
+            jQuery("#c-Popup__accept__TOS").fadeOut("fast");
+            disableButtons(true);
+            saveIfValid();
+        }
+
+        function saveIfValid() {
+            if(jQuery("#proposalPitchInput").length ==1 ){
+                if(jQuery("#proposalPitchInput").val() == 0)
+                    noty({text: 'The Pitch field is mandatory!', type: 'error'});
+                jQuery("#proposalPitchInput").focus();
+                return ;
+            }
+            disableButtons();
+            if (validatePlanEditForm()) {
+                disableDirtyCheck();
+                if(getMustFilterContent()) {
+                    var text = "";
+                    text = text + $("#proposalName").val() + " ";
+                    text = text + $("#proposalTeam").val() + " ";
+                    text = text + $("#proposalPitchInput").val() + " ";
+                    for (var ckInstanceId in CKEDITOR.instances) {
+                        if (document.getElementById(ckInstanceId)) {
+                            var ckInstance = CKEDITOR.instances[ckInstanceId];
+                            text = text + (ckInstance.getData()) + " ";
+                        }
+                    }
+                    handleFilteredContent(text,"PROPOSAL", "#uuid",function () { jQuery("#editForm").submit() });
+                }else {
+                    jQuery("#editForm").submit();
+                }
+            }
+        }
+
+        jQuery(function() {
+            updateUploadBtnOffset();
+            $(window).resize(updateUploadBtnOffset);
+
+            jQuery("#saveChangesButton").click(function() {
+                if (${proposal.proposalId > 0}) {
+                    disableButtons(true);
+                    saveIfValid();
+                }
+                else {
+                    disableButtons(false);
+                    showAcceptTosPopup();
+                }
+            });
+
+            jQuery("#closeAcceptTos").click(closeAcceptTosPopup);
+            jQuery("#tosAccepted").click(tosAcceptedSave);
+
+            enableDirtyCheck();
+        });
+
+        function enableButtons() {
+            jQuery("#saveChangesButton,#discardChangesButton").removeClass("disabled");
+        }
+
+        function disableButtons(withTimeout) {
+            var buttons = jQuery("#saveChangesButton,#discardChangesButton");
+            buttons.addClass("disabled");
+
+            if (withTimeout) {
+                setTimeout(function () {
+                    buttons.removeClass("disabled");
+                }, 5000);
+            }
+        }
+    </script>
+
+    <div id="copyProposalContainer" style="display: none;">
+        <div class="c-Popup__wrapper p1" id="copyProposalPopup">
+            <div class="c-Popup">
+                <div class="closepopuplogin">
+                    <a href="javascript:;" onclick="jQuery('#copyProposalContainer').hide()">
+                        <img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X"/>
+                    </a>
+                </div>
+
+                <h4>Choose section from base ${fn:toLowerCase(contestType.proposalName)}, which content you want to copy</h4>
+                <div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
+                    <div id="copyProposalContests"><!--  --></div>
+                    <center>
+                        <a class="c-Button__primary" href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var currentProposal = {
+            proposalId: ${proposal.proposalId},
+            version: ${proposal.version}
+        }
+    </script>
+
+    <c:if test="${not empty baseProposal}">
+        <script>
+            var baseProposal = {
+                proposalId: ${baseProposal.proposalId},
+                version: ${baseProposal.version}
+            }
+        </script>
+    </c:if>
+    <c:if test="${not empty baseContest}">
+        <script>
+            var baseContest = {
+                contestPK: ${baseContest.contestPK}
+            }
+        </script>
+    </c:if>
+
+    <c:choose>
+    <c:when test="${mustFilterContent}">
+        <script>
+            function getMustFilterContent() {
+                return true;
+            }
+        </script>
+    </c:when>
+    <c:otherwise>
+        <script>
+            function getMustFilterContent() {
+                return false;
+            }
+        </script>
+    </c:otherwise>
+    </c:choose>
+
+    <xcolab:loadCkEditor />
+
+    <c:if test="${isMove}">
+        <xcolab:script src="${_themeJsFolder}/proposals/copyProposalWidget.js"/>
+    </c:if>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.3.0/handlebars.js"
+            integrity="sha256-nIunjfwyLHiGyWSLQHt+o16X6Z3W+zItLbf3Xgs/9YM="
+            crossorigin="anonymous"><!-- empty --></script>
+    <xcolab:script src="${_themeJsFolder}/proposals/findAndReplaceDOMText.js" />
+    <xcolab:script src="${_themeJsFolder}/proposals/proposalPicker.js" />
+</xcolab:layout>
+</jsp:root>

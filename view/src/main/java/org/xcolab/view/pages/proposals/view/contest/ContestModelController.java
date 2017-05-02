@@ -1,14 +1,14 @@
 package org.xcolab.view.pages.proposals.view.contest;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
@@ -24,61 +24,53 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-//-- @RequestMapping("view")
 public class ContestModelController extends BaseProposalsController {
     private final static String COOKIE_PREFERRED_MODEL = "cc_contests_preferredModels";
     
-    @Autowired
-    private ProposalsContext proposalsContext;
+    private final ProposalsContext proposalsContext;
 
-	//-- @RequestMapping(params = "pageToDisplay=contestModel")
-    public String showContestProposals(HttpServletRequest request, HttpServletResponse response, Model model,
-			@RequestParam(required = false) boolean refreshModels)
+    @Autowired
+    public ContestModelController(ProposalsContext proposalsContext) {
+        this.proposalsContext = proposalsContext;
+    }
+
+    @GetMapping("/contests/{contestYear}/{contestUrlName}/model")
+    public String showContestModel(HttpServletRequest request, HttpServletResponse response,
+            @PathVariable int contestYear, @PathVariable String contestUrlName,
+            Model model, @RequestParam(required = false) boolean refreshModels)
             throws IOException {
     	
     	if (refreshModels) {
 			RomaClientUtil.client().getManager().clearCache();
 			RomaClientUtil.client().getManager().refreshSimulations();
     	}
-		Long modelId = 0L;
-    	Long contestPK = proposalsContext.getContest(request).getContestPK();
-		try{
-			Contest contest = ContestClientUtil.getContest(contestPK);
-			modelId = contest.getDefaultModelId();
-			Map<Long, String> modelIdsWithNames;
-			if (modelId != null) {
-				modelIdsWithNames = ContestClientUtil.getModelIdsAndNames(proposalsContext.getContest(request).getContestPK());
-				model.addAttribute("availableModels", modelIdsWithNames);
-			}
-			else {
-				modelIdsWithNames = new HashMap<>();
-			}
+        Contest contest = proposalsContext.getContest(request);
+        Long modelId = contest.getDefaultModelId();
 
-			for (Cookie cookie: request.getCookies()) {
-				if (cookie.getName().equals(COOKIE_PREFERRED_MODEL)) {
-					try {
-						JSONObject object = new JSONObject(URLDecoder.decode(cookie.getValue()));
-						if (object.has(String.valueOf(proposalsContext.getContest(request).getContestPK()))) {
+        Map<Long, String> modelIdsWithNames;
+        final Long contestId = contest.getContestPK();
+        if (modelId != null) {
+            modelIdsWithNames = ContestClientUtil.getModelIdsAndNames(contestId);
+            model.addAttribute("availableModels", modelIdsWithNames);
+        } else {
+            modelIdsWithNames = new HashMap<>();
+        }
 
-							long preferredModelId = object.getLong(String.valueOf(contestPK));
-							if (modelIdsWithNames.containsKey(preferredModelId)) {
-								modelId = preferredModelId;
-							}
+        for (Cookie cookie: request.getCookies()) {
+            if (cookie.getName().equals(COOKIE_PREFERRED_MODEL)) {
+                JSONObject json = new JSONObject(URLDecoder.decode(cookie.getValue(), "UTF-8"));
+                if (json.has(String.valueOf(contestId))) {
 
-						}
-
-					}
-					catch (JSONException e) {
-						//ignored
-					}
-				}
-			}
-		}catch (ContestNotFoundException ignored){
-
-		}
+                    long preferredModelId = json.getLong(String.valueOf(contestId));
+                    if (modelIdsWithNames.containsKey(preferredModelId)) {
+                        modelId = preferredModelId;
+                    }
+                }
+            }
+        }
 
     	model.addAttribute("modelId", modelId);
-        return "contestModel";
+        return "proposals/contestModel";
         
     }
 }

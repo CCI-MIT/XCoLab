@@ -38,9 +38,7 @@ public class ContestNotification extends EmailNotification {
     private final Member recipient;
     private ContestNotificationTemplate templateWrapper;
 
-    public ContestNotification(Contest contest, Member recipient, String templateName,
-            String baseUrl) {
-        super(baseUrl);
+    public ContestNotification(Contest contest, Member recipient, String templateName) {
         this.contest = contest;
         this.recipient = recipient;
         this.templateName = templateName;
