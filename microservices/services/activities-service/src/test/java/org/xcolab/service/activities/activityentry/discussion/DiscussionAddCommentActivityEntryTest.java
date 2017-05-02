@@ -10,24 +10,17 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import org.xcolab.client.activities.helper.ActivityEntryHelper;
 
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.model.tables.pojos.ActivityEntry;
-import org.xcolab.service.activities.activityentry.provider.ActivityEntryContentProvider;
-import org.xcolab.service.activities.enums.ActivityProvidersImpl;
-import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.ServiceRequestUtils;
 
 import java.sql.Timestamp;
@@ -75,6 +68,9 @@ public class DiscussionAddCommentActivityEntryTest {
         PowerMockito.mockStatic(CommentClientUtil.class);
         PowerMockito.mockStatic(ThreadClientUtil.class);
         PowerMockito.mockStatic(MessagingClient.class);
+        //PowerMockito.mockStatic(CommentServiceWrapper.class);
+
+
 
         Mockito.when(ContestClientUtil.getAllContestTypes()).thenReturn(
             new ArrayList()
@@ -82,6 +78,9 @@ public class DiscussionAddCommentActivityEntryTest {
     }
     @Test
     public void discussionCommentActivityEntry() throws Exception {
+
+        CommentClient commentClient = Mockito.mock(CommentClient.class);
+        PowerMockito.whenNew(CommentClient.class).withArguments(Mockito.anyObject()).thenReturn(commentClient);
 
         DiscussionAddCommentActivityEntry provider = new DiscussionAddCommentActivityEntry();
 
