@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -15,16 +17,24 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.client.comment.CommentClient;
+import org.xcolab.client.comment.pojo.Comment;
+import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.util.http.client.RestService;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
@@ -51,12 +61,17 @@ import java.util.ArrayList;
     org.xcolab.client.comment.util.CategoryClientUtil.class,
     org.xcolab.client.comment.util.CommentClientUtil.class,
     org.xcolab.client.comment.util.ThreadClientUtil.class,
+    org.xcolab.util.http.client.RestService.class,
+    org.xcolab.client.members.MembersClient.class
 
 })
 public class DiscussionAddCommentActivityEntryTest {
 
     @Mock
     CommentClient commentClient;
+
+    @Mock
+    RestService restService;
 
 
     @Before
@@ -68,10 +83,45 @@ public class DiscussionAddCommentActivityEntryTest {
         PowerMockito.mockStatic(CommentClientUtil.class);
         PowerMockito.mockStatic(ThreadClientUtil.class);
         PowerMockito.mockStatic(MessagingClient.class);
-        //PowerMockito.mockStatic(CommentServiceWrapper.class);
+        PowerMockito.mockStatic(MembersClient.class);
+
+        Mockito.when(MembersClient.getMember(anyLong()))
+                .thenAnswer(new Answer<Member>() {
+                    @Override
+                    public Member answer(InvocationOnMock invocation)
+                            throws Throwable {
+                        Member member = new Member();
+                        member.setScreenName("");
+                        return member;
+
+                    }
+                });
 
 
+        Mockito.when(CommentClientUtil
+                .getComment(Mockito.anyLong()))
+                .thenAnswer(new Answer<Comment>() {
+                    @Override
+                    public Comment answer(InvocationOnMock invocation)
+                            throws Throwable {
+                        Comment c = new Comment();
+                        c.setThreadId(1234l);
+                        return c;
 
+                    }
+         });
+
+        Mockito.when(ThreadClientUtil.getThread(Mockito.anyLong()))
+                .thenAnswer(new Answer<CommentThread>() {
+                    @Override
+                    public CommentThread answer(InvocationOnMock invocation)
+                            throws Throwable {
+                        CommentThread c = new CommentThread();
+                        c.setCategoryId(1234l);
+                        return c;
+
+                    }
+                });
         Mockito.when(ContestClientUtil.getAllContestTypes()).thenReturn(
             new ArrayList()
         );
@@ -87,7 +137,7 @@ public class DiscussionAddCommentActivityEntryTest {
         ActivityEntry activityEntry = new ActivityEntry();
         activityEntry.setMemberId(1234l);
         activityEntry.setClassPrimaryKey(1234l);
-        activityEntry.setExtraData("");
+        activityEntry.setExtraData("1234");
         java.util.Date date = new java.util.Date();
         activityEntry.setCreateDate(new Timestamp(date.getTime()));
 
@@ -100,7 +150,7 @@ public class DiscussionAddCommentActivityEntryTest {
         CommentClientUtil.getComment(Mockito.anyLong());
 
         PowerMockito.verifyStatic(Mockito.times(1));
-        CategoryClientUtil.getCategory(Mockito.anyLong());
+        ThreadClientUtil.getThread(Mockito.anyLong());
 
 
         activityEntry.setPrimaryType(provider.getPrimaryType());

@@ -1,6 +1,5 @@
 package org.xcolab.view.util.clienthelpers;
 
-import org.apache.tomcat.util.buf.B2CConverter;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;

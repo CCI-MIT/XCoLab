@@ -156,5 +156,6 @@ public final class ServiceRequestUtils {
 
     public static void setInitialized(boolean value) {
          isInitialized = value;
+         namespace = "colab";
     }
 }
