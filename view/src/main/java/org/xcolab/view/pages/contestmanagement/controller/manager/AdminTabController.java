@@ -1,11 +1,13 @@
 package org.xcolab.view.pages.contestmanagement.controller.manager;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.admin.AdminClient;
@@ -13,15 +15,17 @@ import org.xcolab.client.admin.pojo.Notification;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.util.html.LabelValue;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
-import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvConverter;
 import org.xcolab.view.pages.contestmanagement.utils.VoteCsvConverter;
+import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 import org.xcolab.view.util.entity.enums.ContestPhaseTypeValue;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,14 +37,19 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 @Controller
 @RequestMapping("/admin/contest/manager")
 public class AdminTabController extends AbstractTabController {
 
-    static final private ContestManagerTabs tab = ContestManagerTabs.ADMIN;
+    private static final ContestManagerTabs tab = ContestManagerTabs.ADMIN;
+    private static final String TAB_VIEW = "contestmanagement/manager/adminTab";
 
-    static final private String TAB_VIEW = "contestmanagement/manager/adminTab";
+    private final LoginRegisterService loginRegisterService;
+
+    @Autowired
+    public AdminTabController(LoginRegisterService loginRegisterService) {
+        this.loginRegisterService = loginRegisterService;
+    }
 
     @ModelAttribute("currentTabWrapped")
     @Override
@@ -117,9 +126,26 @@ public class AdminTabController extends AbstractTabController {
 
         ActivityCsvConverter csvConverter = new ActivityCsvConverter();
         ActivitiesClientUtil.getActivityEntries(0, Integer.MAX_VALUE, null, null)
-                .stream()
                 .forEach(csvConverter::addActivity);
 
         csvConverter.initiateDownload("activityReport", response);
+    }
+
+    @PostMapping("tab/ADMIN/batchRegister")
+    public String batchRegisterMembers(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam String members) {
+        final String[] memberStrings = members.split("\\r\\n|\\n|\\r");
+        for (String memberString : memberStrings) {
+            final String[] values = memberString.split(";");
+            if (values.length != 3) {
+                throw new IllegalArgumentException();
+            }
+            String email = values[0];
+            String firstName = values[1];
+            String lastName = values[2];
+            loginRegisterService.autoRegister(email, firstName, lastName);
+        }
+        AlertMessage.CHANGES_SAVED.flash(request);
+        return "redirect:" + tab.getTabUrl();
     }
 }

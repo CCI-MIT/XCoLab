@@ -31,7 +31,7 @@
                 <div class="p-ContestProposals__header__description">
                     <p>
                         ${contest.contestDescription}
-                        <c:if test="${contest.resourceArticleId > 0}">
+                        <c:if test="${contest.resourceArticleId > 0 and contestType.showResourceLinks}">
                             <a href="${contest.resourceArticleUrl}" id="readMoreLink" style="display: none"> Read more ...</a>
                         </c:if>
                     </p>
@@ -158,7 +158,7 @@
                         </div>
                     </c:if>
 
-                    <c:if test="${contest.resourceArticleId > 0}">
+                    <c:if test="${contest.resourceArticleId > 0 and contestType.showResourceLinks}">
                         <div class="p-ContestProposals__header__detailButton">
                             <a href="${contest.resourceArticleUrl}">Resources</a>
                         </div>

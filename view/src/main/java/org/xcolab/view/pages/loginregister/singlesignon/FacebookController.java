@@ -17,14 +17,15 @@ import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.view.util.entity.flash.ErrorMessage;
-import org.xcolab.view.util.entity.portlet.RequestParamUtil;
 import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.view.auth.AuthenticationContext;
+import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.login.AuthenticationError;
 import org.xcolab.view.pages.loginregister.CreateUserBean;
 import org.xcolab.view.pages.loginregister.LoginRegisterController;
+import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
+import org.xcolab.view.util.entity.flash.ErrorMessage;
+import org.xcolab.view.util.entity.portlet.RequestParamUtil;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -39,11 +40,14 @@ public class FacebookController {
 
     private final static Logger _log = LoggerFactory.getLogger(FacebookController.class);
 
-    private final AuthenticationContext authenticationContext;
+    private final AuthenticationService authenticationService;
+    private final LoginRegisterService loginRegisterService;
 
     @Autowired
-    public FacebookController(AuthenticationContext authenticationContext) {
-        this.authenticationContext = authenticationContext;
+    public FacebookController(AuthenticationService authenticationService,
+            LoginRegisterService loginRegisterService) {
+        this.authenticationService = authenticationService;
+        this.loginRegisterService = loginRegisterService;
     }
 
     @GetMapping("login")
@@ -139,7 +143,7 @@ public class FacebookController {
                     ImageUploadUtils.updateProfilePicture(path, liferayUser, realPictureURLString);
                 }*/
 
-                authenticationContext.authenticate(request, member);
+                authenticationService.authenticate(request, response, member);
                 MembersClient.createLoginLog(member.getUserId(), request.getRemoteAddr(), redirectUrl);
                 response.sendRedirect(redirectUrl);
                 return;
@@ -165,7 +169,7 @@ public class FacebookController {
 
                 updateUserAccountInformation(member, jsonObject);
 
-                authenticationContext.authenticate(request, member);
+                authenticationService.authenticate(request, response, member);
                 MembersClient.createLoginLog(member.getUserId(), request.getRemoteAddr(), redirectUrl);
                 response.sendRedirect(redirectUrl);
                 return;
@@ -248,7 +252,7 @@ public class FacebookController {
                         .error(AuthenticationError.CREDENTIALS.getMessage())
                         .flashAndRedirect(request, response, SsoEndpoint.REGISTER_OR_LOGIN.getUrl());
             } else {
-                LoginRegisterController
+                loginRegisterService
                     .completeRegistration(request, response, userBean, redirectUrl, true);
             }
         }

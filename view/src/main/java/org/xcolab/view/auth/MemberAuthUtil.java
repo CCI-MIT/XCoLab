@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 
 public final class MemberAuthUtil {
 
-    public static final String IMPERSONATE_MEMBER_ID_COOKIE_NAME = "X-Impersonate-memberId";
-
     private static final AuthenticationContext authenticationContext = new AuthenticationContext();
 
     private MemberAuthUtil() {

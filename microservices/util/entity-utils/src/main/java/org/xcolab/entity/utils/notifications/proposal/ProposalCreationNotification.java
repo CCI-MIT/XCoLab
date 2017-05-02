@@ -14,7 +14,6 @@ public class ProposalCreationNotification extends ProposalNotification {
                                         String baseUrl) {
         super(createdProposal, contest, MembersClient.getMemberUnchecked(createdProposal.getAuthorId()),
                 LinkUtils.getNonBlankStringOrDefault(contest.getProposalCreationTemplateString(),
-                        DEFAULT_TEMPLATE_STRING),
-                baseUrl);
+                        DEFAULT_TEMPLATE_STRING));
     }
 }

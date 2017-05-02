@@ -5,6 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,37 +17,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 
-import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.activities.enums.ActivityProvidersType;
-import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.balloons.BalloonsClient;
-import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
-import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.LockoutLoginException;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.exceptions.PasswordLoginException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.util.CountryUtil;
-import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;
-import org.xcolab.view.util.entity.HttpUtils;
 import org.xcolab.view.util.entity.ReCaptchaUtils;
 import org.xcolab.view.util.entity.portlet.RequestParamUtil;
 import org.xcolab.view.util.entity.portlet.session.SessionErrors;
 import org.xcolab.view.util.entity.portlet.session.SessionMessages;
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -64,8 +52,13 @@ public class LoginRegisterController {
     public static final String PRE_LOGIN_REFERRER_KEY = "PRE_LOGIN_REFERRER_KEY";
 
     private static final String USER_NAME_REGEX = "^[a-zA-Z0-9]+$";
-    public static final String REGISTER_VIEW_NAME = "loginregister/register";
-    public static final String LOGIN_VIEW_NAME = "loginregister/login";
+    private static final String REGISTER_VIEW_NAME = "loginregister/register";
+    private final LoginRegisterService loginRegisterService;
+
+    @Autowired
+    public LoginRegisterController(LoginRegisterService loginRegisterService) {
+        this.loginRegisterService = loginRegisterService;
+    }
 
     //    @Autowired
 //    private Validator validator;
@@ -74,11 +67,6 @@ public class LoginRegisterController {
 //    public void initBinder(WebDataBinder binder) {
 //        binder.setValidator(validator);
 //    }
-
-    @GetMapping("/login")
-    public String login() {
-        return LOGIN_VIEW_NAME;
-    }
 
     /**
      * Main view displayed for contact form
@@ -120,13 +108,6 @@ public class LoginRegisterController {
             }
         }
         model.addAttribute("generateScreenName", ConfigurationAttributeKey.GENERATE_SCREEN_NAME.get());
-        boolean isSharedColab = ConfigurationAttributeKey.IS_SHARED_COLAB.get();
-        if (isSharedColab) {
-            final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.get();
-            final String partnerColabImgsAndClasses = partnerColabName.replace(" ","");
-            model.addAttribute("partnerColabClassName",partnerColabImgsAndClasses+ "-sketchy");
-            model.addAttribute("partnerColabName", partnerColabName);
-        }
         final String loginInfoText = ConfigurationAttributeKey.LOGIN_INFO_MESSAGE.get();
         model.addAttribute("hasLoginInfoText", StringUtils.isNotBlank(loginInfoText));
         model.addAttribute("loginInfoText", loginInfoText);
@@ -209,7 +190,7 @@ public class LoginRegisterController {
             return showRegistrationError();
         }
         //TODO: improve redirect to avoid double handling
-        completeRegistration(request, response, newAccountBean, redirect, false);
+        loginRegisterService.completeRegistration(request, response, newAccountBean, redirect, false);
         SessionErrors.clear(request);
         SessionMessages.clear(request);
         return REGISTER_VIEW_NAME;
@@ -217,73 +198,6 @@ public class LoginRegisterController {
 
     private String showRegistrationError() {
         return REGISTER_VIEW_NAME;
-    }
-
-    /**
-     * Completes the user registration with the parameters set in the CreateUserBean
-     *
-     * @param request        The HttpServletRequest object
-     * @param response       The HttpServletResponse object
-     * @param newAccountBean The new user bean object
-     * @param redirect       Redirect URL for this request (may be null)
-     */
-    public static void completeRegistration(HttpServletRequest request, HttpServletResponse response,
-            CreateUserBean newAccountBean, String redirect, boolean postRegistration)
-            throws IOException {
-        HttpSession session = request.getSession();
-        String fbIdString =
-                (String) session.getAttribute(SSOKeys.FACEBOOK_USER_ID);
-        String googleId = (String) session.getAttribute(SSOKeys.SSO_GOOGLE_ID);
-
-        BalloonCookie balloonCookie = BalloonCookie.fromCookieArray(request.getCookies());
-
-        final Member user = LoginRegisterUtil.register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
-                        newAccountBean.getEmail(), newAccountBean.getFirstName(), newAccountBean.getLastName(),
-                        newAccountBean.getShortBio(), newAccountBean.getCountry(), fbIdString, googleId,
-                        newAccountBean.getImageId(), ConfigurationAttributeKey.COLAB_URL.get());
-
-        // SSO
-        if (StringUtils.isNotBlank(fbIdString)) {
-            session.removeAttribute(SSOKeys.FACEBOOK_USER_ID);
-        }
-        if (googleId != null) {
-            session.removeAttribute(SSOKeys.SSO_GOOGLE_ID);
-        }
-
-        if (balloonCookie != null && StringUtils.isNotBlank(balloonCookie.getUuid())) {
-            try {
-                BalloonUserTracking but =
-                        BalloonsClient.getBalloonUserTracking(balloonCookie.getUuid());
-                but.setRegistrationDate(new Timestamp(new Date().getTime()));
-                but.setUserId(user.getId_());
-                BalloonsClient.updateBalloonUserTracking(but);
-            } catch (BalloonUserTrackingNotFound e) {
-                _log.error("Can't find balloon user tracking for uuid: {}",
-                        balloonCookie.getUuid());
-            }
-        }
-
-        try {
-            LoginRegisterUtil.login(request, newAccountBean.getScreenName(), newAccountBean.getPassword(), redirect);
-        } catch (MemberNotFoundException | PasswordLoginException | LockoutLoginException e) {
-            throw new InternalException(e);
-        }
-
-        session.setAttribute("collab_user_has_registered", true);
-
-        ActivityEntryHelper.createActivityEntry(ActivitiesClientUtil.getClient(), user.getUserId(),
-                user.getUserId(), null, ActivityProvidersType.MemberJoinedActivityEntry.getType());
-
-        if (redirect == null) {
-            redirect = "/";
-        }
-
-        if (postRegistration) {
-            // Add request variable for after-registration popover
-            redirect = HttpUtils.addParameter(redirect, "postRegistration", "true");
-        }
-
-        response.sendRedirect(redirect);
     }
 
     private static void setCreateUserBeanSessionVariables(CreateUserBean createUserBean,

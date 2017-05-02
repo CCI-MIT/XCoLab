@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.loginregister;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,12 @@ import javax.servlet.http.HttpServletResponse;
 public class ForgotPasswordController {
 
     private static final String FORGOT_PASSWORD_URL = "/login/resetPassword/update?resetToken=";
+    private final LoginRegisterService loginRegisterService;
+
+    @Autowired
+    public ForgotPasswordController(LoginRegisterService loginRegisterService) {
+        this.loginRegisterService = loginRegisterService;
+    }
 
     @PostMapping("/login/resetPassword")
     public void sendPassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -80,7 +87,7 @@ public class ForgotPasswordController {
 
     private static void sendEmailNotificationToForPasswordReset(String memberIp, String link,
              Member recipient) {
-        new MemberForgotPasswordNotification(memberIp, link, recipient, ConfigurationAttributeKey.COLAB_URL.get())
+        new MemberForgotPasswordNotification(memberIp, link, recipient)
                 .sendEmailNotification();
     }
 
@@ -121,7 +128,7 @@ public class ForgotPasswordController {
 
         if (MembersClient.isForgotPasswordTokenValid(resetToken)) {
             try {
-                LoginRegisterUtil.updatePassword(resetToken, newPassword);
+                loginRegisterService.updatePassword(resetToken, newPassword);
                 AlertMessage.success("Your password was successfully updated!")
                         .flash(request);
                 SessionErrors.clear(request);

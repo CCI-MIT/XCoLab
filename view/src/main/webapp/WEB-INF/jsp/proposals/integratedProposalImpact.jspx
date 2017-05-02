@@ -125,11 +125,9 @@
                                                  modelRegions="${proposal.allModelRegions}"/>
 
 
-                        <c:set var="updateProposalScenarioURL" value="${proposal}/updateProposalScenario?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }"/>
+                        <c:set var="updateProposalScenarioURL" value="${proposal.proposalUrl}/tab/IMPACT" />
 
-
-
-                        <form action="${updateProposalScenarioURL }" id="updateProposalScenarioForm" method="post">
+                        <form action="${updateProposalScenarioURL}" id="updateProposalScenarioForm" method="post">
                             <input type="text" id="proposalScenarioId" name="scenarioId" class="hidden"/>
                             <input type="text" id="scenarioModelId" name="modelId" class="hidden"/>
                             <input type="text" id="isConsolidatedScenario" name="isConsolidatedScenario" class="hidden"/>
