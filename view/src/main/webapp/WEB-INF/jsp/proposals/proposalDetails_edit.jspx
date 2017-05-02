@@ -253,7 +253,7 @@
                         <br />
                         <c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
                     </p>
-                    <a class="c-Button__primary" href="#" id="saveChangesButton">SAVE and PUBLISH changes</a>
+                    <a class="c-Button__primary" href="javascript:void(0)" id="saveChangesButton">SAVE and PUBLISH changes</a>
                     <c:choose>
                         <c:when test="${proposal.currentVersion > 0 }">
                             <collab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
@@ -272,7 +272,24 @@
             </div>
         </div>
     </div>
+    <div id="ckImageUploadTooltip" style="display: none">
+        ${requestScope.imageUploadHelpText}
+    </div>
+    <div id="ckAnchorTooltip" style="display: none">
+        <h4>Anchor:</h4>
+        <h5>How to use anchors:</h5>
+        <br/>
+        <ol>
+            <li>You have an important section of your proposal you want to make a link to.</li>
+            <li>Select the text for that important section and click on the anchor icon <span style="background-image:url('https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/plugins/icons_hidpi.png?t=GB8B');background-position:0 -1296px;background-size:16px;background-color: white;width: 16px;height: 16px;float: left;display: inline-block;margin-left: 4px;margin-right: 4px;">&#160;</span>(flag), give it a name an click OK.</li>
+            <li>The anchor marker will appear on the text editor.</li>
+            <li>Select the text on the editor where you want to link to your newly created anchor.</li>
+            <li>Click on the link icon <span style="background-image:url('https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/plugins/icons_hidpi.png?t=GB8B');background-position:0 -1320px;background-size:16px;background-color: white;width: 16px;height: 16px;float: left;display: inline-block;margin-left: 4px;margin-right: 4px;">&#160;</span>(Chains).</li>
+            <li>On the field "Link Type" select "Link to anchor in the text".</li>
+            <li>On the field "Select an Anchor" choose "Selector by Anchor Name" , select the anchor name you gave on step #2 .</li>
 
+        </ol>
+    </div>
     <iframe name="_fileUploadFrame" id="fileUploadFrame" class="hidden" style="display: none;"><!-- comment --></iframe>
 
     <jsp:directive.include file="./proposalDetails/proposalPicker_widget.jspx" />
@@ -294,6 +311,16 @@
 
         function closeAcceptTosPopup() {
             jQuery("#c-Popup__accept__TOS").fadeOut("fast");
+            noty({text: 'To create a proposal on Climate CoLab, you must ACCEPT the terms of use and contest rules. Please click "Accept" to continue and save your proposal.!',
+                buttons: [
+                    {
+                        addClass: 'general-button red', text: 'ACCEPT', onClick: function($noty)
+                    {
+                        tosAcceptedSave()
+                        $noty.close();
+                    }
+                    }],
+                    type: 'error'});
             enableButtons();
         }
 
@@ -304,6 +331,12 @@
         }
 
         function saveIfValid() {
+            if(jQuery("#proposalPitchInput").length ==1 ){
+                if(jQuery("#proposalPitchInput").val() == 0)
+                    noty({text: 'The Pitch field is mandatory!', type: 'error'});
+                jQuery("#proposalPitchInput").focus();
+                return ;
+            }
             disableButtons();
             if (validatePlanEditForm()) {
                 disableDirtyCheck();
