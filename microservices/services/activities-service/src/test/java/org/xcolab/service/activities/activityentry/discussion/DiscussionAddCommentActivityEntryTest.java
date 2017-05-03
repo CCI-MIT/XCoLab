@@ -3,10 +3,7 @@ package org.xcolab.service.activities.activityentry.discussion;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -17,24 +14,13 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.pojo.Comment;
-import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.MessagingClient;
-import org.xcolab.client.members.pojo.Member;
 import org.xcolab.model.tables.pojos.ActivityEntry;
-import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.client.RestService;
+import org.xcolab.service.activities.activityentry.ActivityEntryTestHelper;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
@@ -52,79 +38,26 @@ import static org.mockito.Matchers.anyString;
 )
 
 @PrepareForTest({
-    org.xcolab.client.admin.EmailTemplateClientUtil.class,
-    org.xcolab.client.members.MembersClient.class,
-    org.xcolab.client.admin.AdminClient.class,
-    org.xcolab.client.contest.ContestClientUtil.class,
-    org.xcolab.client.comment.CommentClient.class,
-    org.xcolab.client.members.MessagingClient.class,
-    org.xcolab.client.comment.util.CategoryClientUtil.class,
-    org.xcolab.client.comment.util.CommentClientUtil.class,
-    org.xcolab.client.comment.util.ThreadClientUtil.class,
-    org.xcolab.util.http.client.RestService.class,
-    org.xcolab.client.members.MembersClient.class
-
+        org.xcolab.client.admin.EmailTemplateClientUtil.class,
+        org.xcolab.client.members.MembersClient.class,
+        org.xcolab.client.admin.AdminClient.class,
+        org.xcolab.client.contest.ContestClientUtil.class,
+        org.xcolab.client.comment.CommentClient.class,
+        org.xcolab.client.members.MessagingClient.class,
+        org.xcolab.client.comment.util.CategoryClientUtil.class,
+        org.xcolab.client.comment.util.CommentClientUtil.class,
+        org.xcolab.client.comment.util.ThreadClientUtil.class,
+        org.xcolab.util.http.client.RestService.class,
+        org.xcolab.client.members.MembersClient.class,
+        org.xcolab.client.proposals.ProposalClientUtil.class,
+        org.xcolab.client.proposals.ProposalAttributeClientUtil.class
 })
-public class DiscussionAddCommentActivityEntryTest {
-
-    @Mock
-    CommentClient commentClient;
-
-    @Mock
-    RestService restService;
+public class DiscussionAddCommentActivityEntryTest{
 
 
     @Before
     public void setup() throws Exception {
-        ServiceRequestUtils.setInitialized(true);
-
-        PowerMockito.mockStatic(ContestClientUtil.class);
-        PowerMockito.mockStatic(CategoryClientUtil.class);
-        PowerMockito.mockStatic(CommentClientUtil.class);
-        PowerMockito.mockStatic(ThreadClientUtil.class);
-        PowerMockito.mockStatic(MessagingClient.class);
-        PowerMockito.mockStatic(MembersClient.class);
-
-        Mockito.when(MembersClient.getMember(anyLong()))
-                .thenAnswer(new Answer<Member>() {
-                    @Override
-                    public Member answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        Member member = new Member();
-                        member.setScreenName("");
-                        return member;
-
-                    }
-                });
-
-
-        Mockito.when(CommentClientUtil
-                .getComment(Mockito.anyLong()))
-                .thenAnswer(new Answer<Comment>() {
-                    @Override
-                    public Comment answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        Comment c = new Comment();
-                        c.setThreadId(1234l);
-                        return c;
-
-                    }
-         });
-
-        Mockito.when(ThreadClientUtil.getThread(Mockito.anyLong()))
-                .thenAnswer(new Answer<CommentThread>() {
-                    @Override
-                    public CommentThread answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        CommentThread c = new CommentThread();
-                        c.setCategoryId(1234l);
-                        return c;
-
-                    }
-                });
-        Mockito.when(ContestClientUtil.getAllContestTypes()).thenReturn(
-            new ArrayList()
-        );
+        ActivityEntryTestHelper.setupBasic();
     }
     @Test
     public void discussionCommentActivityEntry() throws Exception {
