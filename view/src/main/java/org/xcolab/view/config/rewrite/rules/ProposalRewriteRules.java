@@ -4,6 +4,7 @@ import org.ocpsoft.rewrite.config.ConfigurationBuilder;
 import org.ocpsoft.rewrite.config.Direction;
 import org.ocpsoft.rewrite.servlet.config.Forward;
 import org.ocpsoft.rewrite.servlet.config.Path;
+import org.ocpsoft.rewrite.servlet.config.rule.Join;
 
 public class ProposalRewriteRules implements RewriteRuleProvider {
 
@@ -25,49 +26,36 @@ public class ProposalRewriteRules implements RewriteRuleProvider {
                     .perform(Forward.to("/contests{path}"))
                     .where("path").matches(".*");
 
-        configurationBuilder
-                .addRule()
-                    .when(Direction.isInbound().and(
-                            Path.matches(PROPOSAL_IN_PHASE_PATH + "/tab/{tab}")))
-                    .perform(Forward.to(PROPOSAL_PATH + "?phaseId={phaseId}&tab={tab}"))
-                .addRule()
-                    .when(Direction.isInbound().and(
-                            Path.matches(PROPOSAL_PATH + "/tab/{tab}")))
-                    .perform(Forward.to(PROPOSAL_PATH + "?tab={tab}"))
-                .addRule()
-                    .when(Direction.isInbound().and(
-                            Path.matches(PROPOSAL_IN_PHASE_PATH + "/tab/{tab}/edit")))
-                    .perform(Forward.to(PROPOSAL_PATH + "?phaseId={phaseId}&tab={tab}&edit=true"))
-                .addRule()
-                    .when(Direction.isInbound().and(
-                            Path.matches(PROPOSAL_PATH + "/tab/{tab}/edit")))
-                    .perform(Forward.to(PROPOSAL_PATH + "?tab={tab}&edit=true"))
-                .addRule()
-                    .when(Direction.isInbound().and(
-                            Path.matches(PROPOSAL_IN_PHASE_PATH)))
-                    .perform(Forward.to(PROPOSAL_PATH + "?phaseId={phaseId}"))
-                .addRule()
-                    .when(Direction.isInbound().and(
-                            Path.matches(PROPOSAL_PATH + "/version/{version}")
-                    ))
-                    .perform(Forward.to(PROPOSAL_PATH + "?version={version}"))
-                .addRule()
-                    .when(Direction.isInbound().and(
-                            Path.matches(PROPOSAL_PATH + "/edit")
-                    ))
-                    .perform(Forward.to(PROPOSAL_PATH + "?edit=true"))
-                .addRule()
-                    .when(Direction.isInbound().and(
-                            Path.matches(PROPOSAL_PATH + "/voted")
-                    ))
-                    .perform(Forward.to(PROPOSAL_PATH + "?voted=true"))
-                .addRule()
-                    .when(Direction.isInbound().and(
-                            Path.matches(PROPOSAL_PATH
-                                + "/moveFromContestPhaseId/{moveFromContestPhaseId}/move/{moveType}")
-                    ))
-                    .perform(Forward.to(PROPOSAL_PATH
-                        + "?moveFromContestPhaseId={moveFromContestPhaseId}&moveType={moveType}"));
+        configureEditUrls(configurationBuilder);
+        configureTabUrls(configurationBuilder);
 
+        configurationBuilder
+                .addRule(Join.path(PROPOSAL_PATH + "/version/{version}")
+                        .to(PROPOSAL_PATH))
+                .addRule(Join.path(PROPOSAL_PATH + "/voted")
+                        .to(PROPOSAL_PATH + "?voted=true"))
+                .addRule(Join.path(PROPOSAL_PATH
+                            + "/moveFromContestPhaseId/{moveFromContestPhaseId}/move/{moveType}")
+                        .to(PROPOSAL_PATH));
+    }
+
+    private void configureEditUrls(ConfigurationBuilder configurationBuilder) {
+        configurationBuilder
+                .addRule(Join.path(PROPOSAL_PATH + "/edit")
+                        .to(PROPOSAL_PATH + "?edit=true"))
+                .addRule(Join.path(PROPOSAL_IN_PHASE_PATH + "/edit")
+                        .to(PROPOSAL_PATH + "?edit=true"));
+    }
+
+    private void configureTabUrls(ConfigurationBuilder configurationBuilder) {
+        configurationBuilder
+                .addRule(Join.path(PROPOSAL_IN_PHASE_PATH + "/tab/{tab}")
+                        .to(PROPOSAL_PATH))
+                .addRule(Join.path(PROPOSAL_PATH + "/tab/{tab}")
+                        .to(PROPOSAL_PATH))
+                .addRule(Join.path(PROPOSAL_PATH + "/tab/{tab}/edit")
+                        .to(PROPOSAL_PATH + "?edit=true"))
+                .addRule(Join.path(PROPOSAL_IN_PHASE_PATH + "/tab/{tab}/edit")
+                        .to(PROPOSAL_PATH + "?edit=true"));
     }
 }

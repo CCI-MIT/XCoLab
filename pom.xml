@@ -35,6 +35,7 @@
         <commons-collections4.version>4.1</commons-collections4.version>
         <junit.version>4.12</junit.version>
         <rewrite.version>3.4.1.Final</rewrite.version>
+        <rewrite-logging.version>1.0.5.Final</rewrite-logging.version>
 
         <!-- Service communication -->
         <ehcache3.version>3.3.0</ehcache3.version>
@@ -267,6 +268,11 @@
                 <groupId>org.ocpsoft.rewrite</groupId>
                 <artifactId>rewrite-servlet</artifactId>
                 <version>${rewrite.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ocpsoft.logging</groupId>
+                <artifactId>logging-adapter-slf4j</artifactId>
+                <version>${rewrite-logging.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.json</groupId>
