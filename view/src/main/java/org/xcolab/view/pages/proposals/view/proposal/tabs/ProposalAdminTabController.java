@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -42,6 +43,8 @@ public class ProposalAdminTabController extends BaseProposalTabController {
         ContestClient contestClient = proposalsContext.getClients(request).getContestClient();
         setCommonModelAndPageAttributes(request, model, ProposalTab.ADMIN);
         model.addAttribute("availableRibbons", contestClient.getAllContestPhaseRibbonType());
+        model.addAttribute("allowOpenProposals",
+            ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get());
 
         return "proposals/proposalAdmin";
     }
