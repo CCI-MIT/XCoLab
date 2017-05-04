@@ -332,10 +332,12 @@
 
         function saveIfValid() {
             if(jQuery("#proposalPitchInput").length ==1 ){
-                if(jQuery("#proposalPitchInput").val() == 0)
+                if(jQuery("#proposalPitchInput").val() == 0) {
                     noty({text: 'The Pitch field is mandatory!', type: 'error'});
-                jQuery("#proposalPitchInput").focus();
-                return ;
+                    jQuery("#proposalPitchInput").focus();
+                    enableButtons();
+                    return;
+                }
             }
             disableButtons();
             if (validatePlanEditForm()) {

@@ -1,6 +1,5 @@
 package org.xcolab.view.config.rewrite;
 
-import org.ocpsoft.rewrite.servlet.RewriteFilter;
 import org.ocpsoft.rewrite.servlet.impl.RewriteServletContextListener;
 import org.ocpsoft.rewrite.servlet.impl.RewriteServletRequestListener;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
@@ -26,7 +25,7 @@ public class RewriteInitializer implements ServletContextInitializer {
         servletContext.addListener(new RewriteServletContextListener());
 
         final Dynamic rewriteFilter = servletContext.addFilter(
-            "OCPsoft Rewrite Filter", new RewriteFilter());
+            "OCPsoft Rewrite Filter", new CustomRewriteFilter());
         rewriteFilter.setAsyncSupported(true);
         rewriteFilter.addMappingForUrlPatterns(
                 EnumSet.allOf(DispatcherType.class), false, "/*");
