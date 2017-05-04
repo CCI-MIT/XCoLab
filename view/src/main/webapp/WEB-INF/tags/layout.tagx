@@ -293,7 +293,8 @@
                             <label for="header__remember-me">Remember Me:</label> &#160;
                             <input id="header__remember-me" type="checkbox" name="remember-me" checked="true" /> <br/>
                             <input name="redirect" type="hidden" />
-                            <span><em><a href="javascript:;" class="c-Header__login__forgot" onclick="showForgotPasswordPopup()">Forgot your password?</a></em></span> <input name="submit" type="submit" class="c-Header__login__submit" value="LOGIN" id="loginPopupTopSubmit"/>
+                            <span><em><a href="javascript:;" class="c-Header__login__forgot" onclick="showForgotPasswordPopup()">Forgot your password?</a></em></span>
+                            <button type="submit" class="c-Header__login__submit" id="loginPopupTopSubmit">LOGIN</button>
                         </form>
                     </div>
                 </div>

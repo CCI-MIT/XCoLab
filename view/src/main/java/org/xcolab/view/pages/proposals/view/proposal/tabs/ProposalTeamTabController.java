@@ -36,15 +36,17 @@ public class ProposalTeamTabController extends BaseProposalTabController {
 
     private static final Logger _log = LoggerFactory.getLogger(ProposalTeamTabController.class);
 
+    private final ProposalsContext proposalsContext;
+
     @Autowired
-    private ProposalsContext proposalsContext;
+    public ProposalTeamTabController(ProposalsContext proposalsContext) {
+        this.proposalsContext = proposalsContext;
+    }
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=TEAM")
     public String show(Model model, HttpServletRequest request) {
 
         final Proposal proposal = proposalsContext.getProposal(request);
-        final Member actingMember = proposalsContext.getMember(request);
-        final long proposalId = proposal.getProposalId();
 
         setCommonModelAndPageAttributes(request, model, ProposalTab.TEAM);
 
@@ -59,7 +61,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
 
         model.addAttribute("listOfLinkedProposals", listOfLinkedProposals);
 
-        Map<Proposal, List<Member>> mapOfContributingProposals = new HashMap<Proposal, List<Member>>();
+        Map<Proposal, List<Member>> mapOfContributingProposals = new HashMap<>();
 
         for (Proposal temp : listOfLinkedProposals) {
 

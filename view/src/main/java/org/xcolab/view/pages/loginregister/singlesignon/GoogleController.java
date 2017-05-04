@@ -15,10 +15,11 @@ import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.view.auth.AuthenticationContext;
+import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.pages.loginregister.CreateUserBean;
 import org.xcolab.view.pages.loginregister.ImageUploadUtils;
 import org.xcolab.view.pages.loginregister.LoginRegisterController;
+import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
 
 import java.io.IOException;
@@ -34,11 +35,14 @@ public class GoogleController {
 
     private static final String GOOGLE_OAUTH_REQUEST_STATE_TOKEN = "GOOGLE_OAUTH_REQUEST_STATE_TOKEN";
 
-    private final AuthenticationContext authenticationContext;
+    private final AuthenticationService authenticationService;
+    private final LoginRegisterService loginRegisterService;
 
     @Autowired
-    public GoogleController(AuthenticationContext authenticationContext) {
-        this.authenticationContext = authenticationContext;
+    public GoogleController(AuthenticationService authenticationService,
+            LoginRegisterService loginRegisterService) {
+        this.authenticationService = authenticationService;
+        this.loginRegisterService = loginRegisterService;
     }
 
     @GetMapping("register")
@@ -111,7 +115,7 @@ public class GoogleController {
 
                 String path = session.getServletContext().getRealPath("/");
                 ImageUploadUtils.updateProfilePicture(path, registeredMember, profilePicURL);
-                authenticationContext.authenticate(request, registeredMember);
+                authenticationService.authenticate(request, response, registeredMember);
                 MembersClient
                         .createLoginLog(registeredMember.getUserId(), request.getRemoteAddr(), redirectUrl);
 
@@ -228,7 +232,7 @@ public class GoogleController {
 
             userBean.setScreenName(screenName);
 
-            LoginRegisterController.completeRegistration(request, response, userBean,
+            loginRegisterService.completeRegistration(request, response, userBean,
                     redirectUrl, true);
         }
     }

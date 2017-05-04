@@ -18,6 +18,9 @@ input, select, textarea {
 
 input:disabled, select:disabled,
 input:read-only {
-  pointer-events: none;
   opacity: 0.5;
+}
+
+input:disabled, select:disabled {
+  pointer-events: none;
 }

@@ -16,8 +16,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.Assert;
-import org.springframework.validation.SmartValidator;
-import org.springframework.validation.beanvalidation.CustomValidatorBean;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -68,7 +66,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         Assert.notNull(populateContextInterceptor, "PopulateContextInterceptor bean is required");
         Assert.notNull(validateTabPermissionsInterceptor,
                 "ValidateTabPermissionsInterceptor bean is required");
-        Assert.notNull(webProperties);
+        Assert.notNull(webProperties, "webProperties bean is required");
         this.configurationService = configurationService;
         this.themeVariableInterceptor = themeVariableInterceptor;
         this.populateContextInterceptor = populateContextInterceptor;

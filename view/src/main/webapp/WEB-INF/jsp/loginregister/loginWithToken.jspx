@@ -9,21 +9,42 @@
         You are already logged in.
     </c:if>
     <c:if test="${not _isLoggedIn}">
-        <div class="c-Alert__info__message">
-            You clicked a one-time login link. Click the "Log in" button below to complete the login.
+        <c:choose>
+            <c:when test="${isValid}">
+                <div class="c-Alert c-Alert__info__message">
+                    You clicked a unique login link. Click the "Log in" button below to complete the login.
+                </div>
 
-            <b>Note:</b> If you are on a public computer,
-            make sure you uncheck "remember-me" before proceeding.
-        </div>
+                <form action="/login/token/${tokenId}" method="post">
+                    <input type="hidden" name="tokenKey" value="${tokenKey}" />
+                    <div>
+                        <label for="remember-me">Remember me:</label> &#160;
+                        <input type="checkbox" id="remember-me" name="remember-me" checked="true" />
+                    </div>
+                    <div>
+                        <label for="invalidate-link">Invalidate link after login:</label> &#160;
+                        <input type="checkbox" id="invalidate-link" name="invalidateLink" checked="true" />
+                    </div>
+                    <button type="submit" class="c-Button__primary">Log in</button>
+                </form>
+            </c:when>
+            <c:when test="${isExpired}">
+                <div class="c-Alert c-Alert__danger">
+                    Your login link has expired!
+                </div>
+                <form action="/login/token/${tokenId}" method="post">
+                    <input type="hidden" name="tokenKey" value="${tokenKey}" />
+                    <button type="submit" class="c-Button__primary">Send new link</button>
+                </form>
+            </c:when>
+            <c:otherwise>
+                <div class="c-Alert c-Alert__danger">
+                    The token you entered is invalid. Make sure you are using the most recent
+                    login link as only once link is valid at a time.
+                </div>
+            </c:otherwise>
+        </c:choose>
 
-        <form action="/login/token/${tokenId}" method="post">
-            <input type="hidden" name="tokenKey" value="${tokenKey}" />
-            <div>
-                <label for="remember-me">Remember Me:</label> &#160;
-                <input type="checkbox" id="remember-me" name="remember-me" checked="true" />
-            </div>
-            <button type="submit" class="c-Button__primary">Log in</button>
-        </form>
     </c:if>
 </layout:layout>
 </jsp:root>

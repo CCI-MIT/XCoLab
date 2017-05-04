@@ -83,6 +83,8 @@ function validatePlanEditForm() {
         }
     }
     //delete CKEDITOR;
+
+    
     
     return isValid;
 }

@@ -13,15 +13,15 @@ import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.util.enums.theme.ColabTheme;
+import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.view.auth.AuthenticationService;
+import org.xcolab.view.auth.login.AuthenticationError;
+import org.xcolab.view.util.MetaKeys;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.view.util.entity.flash.AnalyticsAttribute;
 import org.xcolab.view.util.entity.flash.ErrorMessage;
 import org.xcolab.view.util.entity.flash.InfoMessage;
-import org.xcolab.util.enums.theme.ColabTheme;
-import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.view.auth.AuthenticationContext;
-import org.xcolab.view.auth.login.AuthenticationError;
-import org.xcolab.view.util.MetaKeys;
 
 import java.util.List;
 
@@ -31,29 +31,29 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
 
-    private final AuthenticationContext authenticationContext;
+    private final AuthenticationService authenticationService;
 
-    public ThemeVariableInterceptor(AuthenticationContext authenticationContext) {
-        Assert.notNull(authenticationContext, "AuthenticationContext is required");
-        this.authenticationContext = authenticationContext;
+    public ThemeVariableInterceptor(AuthenticationService authenticationService) {
+        Assert.notNull(authenticationService, "AuthenticationContext is required");
+        this.authenticationService = authenticationService;
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response,
             Object handler, ModelAndView modelAndView) {
         if (modelAndView != null && !isRedirectView(modelAndView)) {
-            final boolean isLoggedIn = authenticationContext.isLoggedIn();
+            final boolean isLoggedIn = authenticationService.isLoggedIn();
             modelAndView.addObject("_isLoggedIn", isLoggedIn);
 
-            final boolean isImpersonating = authenticationContext.isImpersonating(request);
+            final boolean isImpersonating = authenticationService.isImpersonating(request);
             modelAndView.addObject("_showImpersonationBar", isImpersonating);
             if (isImpersonating) {
-                final Member realMember = authenticationContext.getRealMemberOrNull();
+                final Member realMember = authenticationService.getRealMemberOrNull();
                 modelAndView.addObject("_realMember", realMember);
             }
 
             if (isLoggedIn) {
-                Member member = authenticationContext.getMemberOrThrow(request);
+                Member member = authenticationService.getMemberOrThrow(request);
                 modelAndView.addObject("_member", member);
                 modelAndView.addObject("_unreadMessages",
                         MessagingClient.countUnreadMessagesForUser(member.getUserId()));

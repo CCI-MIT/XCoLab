@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.controller.manager;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,7 @@ import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvConverter;
 import org.xcolab.view.pages.contestmanagement.utils.VoteCsvConverter;
-import org.xcolab.view.pages.loginregister.LoginRegisterUtil;
+import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 import org.xcolab.view.util.entity.enums.ContestPhaseTypeValue;
 import org.xcolab.view.util.entity.flash.AlertMessage;
@@ -36,14 +37,19 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 @Controller
 @RequestMapping("/admin/contest/manager")
 public class AdminTabController extends AbstractTabController {
 
-    static final private ContestManagerTabs tab = ContestManagerTabs.ADMIN;
+    private static final ContestManagerTabs tab = ContestManagerTabs.ADMIN;
+    private static final String TAB_VIEW = "contestmanagement/manager/adminTab";
 
-    static final private String TAB_VIEW = "contestmanagement/manager/adminTab";
+    private final LoginRegisterService loginRegisterService;
+
+    @Autowired
+    public AdminTabController(LoginRegisterService loginRegisterService) {
+        this.loginRegisterService = loginRegisterService;
+    }
 
     @ModelAttribute("currentTabWrapped")
     @Override
@@ -137,7 +143,7 @@ public class AdminTabController extends AbstractTabController {
             String email = values[0];
             String firstName = values[1];
             String lastName = values[2];
-            LoginRegisterUtil.autoRegister(email, firstName, lastName);
+            loginRegisterService.autoRegister(email, firstName, lastName);
         }
         AlertMessage.CHANGES_SAVED.flash(request);
         return "redirect:" + tab.getTabUrl();

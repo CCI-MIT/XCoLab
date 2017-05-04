@@ -31,21 +31,26 @@ public class LoginTokenController {
     }
 
     @GetMapping("/loginTokens/{tokenId}/validate")
-    public boolean validateToken(@PathVariable String tokenId, @RequestParam String tokenKey)
+    public TokenValidity validateToken(@PathVariable String tokenId, @RequestParam String tokenKey)
             throws NotFoundException {
         Member member = memberDao.findOneByLoginTokenId(tokenId)
                 .orElseThrow(NotFoundException::new);
-        return memberService.validatePassword(tokenKey, member.getLoginTokenKey());
+        final boolean isValid = memberService.validatePassword(tokenKey, member.getLoginTokenKey());
+        if (!isValid) {
+            return TokenValidity.INVALID;
+        }
+        if (Instant.now().isAfter(member.getLoginTokenExpirationDate().toInstant())) {
+            return TokenValidity.EXPIRED;
+        }
+        return TokenValidity.VALID;
     }
 
     @PostMapping("/loginTokens/{tokenId}/invalidate")
-    public void invalidateToken(@PathVariable String tokenId, @RequestParam String tokenKey) {
+    public void invalidateToken(@PathVariable String tokenId) {
         final Optional<Member> optionalMember = memberDao.findOneByLoginTokenId(tokenId);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
-            member.setLoginTokenId(null);
-            member.setLoginTokenKey(null);
-            member.setLoginTokenExpirationDate(null);
+            member.setLoginTokenExpirationDate(Timestamp.from(Instant.now()));
             memberDao.updateMember(member);
         }
     }
@@ -60,7 +65,7 @@ public class LoginTokenController {
     public LoginToken generateToken(@PathVariable long memberId) throws NotFoundException {
         String tokenId = Long.toHexString(SecureRandomUtil.nextLong());
         String tokenKey = Long.toHexString(SecureRandomUtil.nextLong());
-        Instant tokenExpirationDate = Instant.now().plus(3, ChronoUnit.DAYS);
+        Instant tokenExpirationDate = Instant.now().plus(7, ChronoUnit.DAYS);
 
         final Member member = memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
         member.setLoginTokenId(tokenId);
@@ -93,5 +98,9 @@ public class LoginTokenController {
         public Instant getTokenExpirationDate() {
             return tokenExpirationDate;
         }
+    }
+
+    public enum TokenValidity {
+        VALID, INVALID, EXPIRED
     }
 }
