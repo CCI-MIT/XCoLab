@@ -174,7 +174,7 @@ public class LoginRegisterController {
         String googleId = (String) session.getAttribute(SSOKeys.SSO_GOOGLE_ID);
 
         if (result.hasErrors()) {
-            return showRegistrationError();
+            return showRegistrationError(model);
         }
         boolean captchaValid = true;
         // require captcha if user is not logged in via SSO
@@ -187,7 +187,7 @@ public class LoginRegisterController {
         if (!captchaValid) {
             SessionErrors.clear(request);
             result.addError(new ObjectError("createUserBean", "Please click the box"));
-            return showRegistrationError();
+            return showRegistrationError(model);
         }
         //TODO: improve redirect to avoid double handling
         loginRegisterService.completeRegistration(request, response, newAccountBean, redirect, false);
@@ -196,7 +196,8 @@ public class LoginRegisterController {
         return REGISTER_VIEW_NAME;
     }
 
-    private String showRegistrationError() {
+    private String showRegistrationError(Model model) {
+        model.addAttribute("countrySelectItems", CountryUtil.getSelectOptions());
         return REGISTER_VIEW_NAME;
     }
 
