@@ -256,6 +256,8 @@ public class FacebookController {
                     .completeRegistration(request, response, userBean, redirectUrl, true);
             }
         }
+
+        response.sendRedirect(SingleSignOnController.REGISTER_OR_LOGIN_URL);
     }
 
     private void updateUserWithFBId(Member member, long fbId) {
