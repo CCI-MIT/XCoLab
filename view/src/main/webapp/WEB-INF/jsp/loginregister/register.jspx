@@ -21,7 +21,7 @@
             <h1>Join the ${_colabName}</h1>
         </div>
 
-        <c:if test="${_isFacebookSsoActive or _isGoogleSsoActive or _isSharedColab}">
+        <c:if test="${(_isFacebookSsoActive or _isGoogleSsoActive or _isSharedColab) and not isSsoLogin}">
             <div class="sso-register">
                 <div style="float: right">
                     <h1>Or sign in with:</h1><br/>
@@ -86,7 +86,14 @@
                 </tr>
                 <tr>
                     <th nowrap="nowrap" class="required-field">Retype email </th>
-                    <td><form:input cssClass="popupreg_input" path="retypeEmail" />
+                    <td>
+                        <c:if test="${isSsoLogin}">
+                            <form:input cssClass="popupreg_input" path="retypeEmail"  value="${createUserBean.email}" />
+                        </c:if>
+                        <c:if test="${not isSsoLogin}">
+                            <form:input cssClass="popupreg_input" path="retypeEmail" />
+                        </c:if>
+
                         <div class="reg_errors"><!--  -->
                             <form:errors cssClass="c-Alert c-Alert__error" path="retypeEmail" />
                         </div>
