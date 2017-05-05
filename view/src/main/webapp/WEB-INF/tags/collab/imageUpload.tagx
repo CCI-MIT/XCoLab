@@ -5,7 +5,10 @@
     <jsp:directive.attribute name="uniqueName" type="java.lang.String" required="true"
                              rtexprvalue="true" description="Unique name for this upload widget"/>
     <jsp:directive.attribute name="defaultImageId" type="java.lang.Long" required="false"
-                             rtexprvalue="true" description="Default image id, if any"/>
+                             rtexprvalue="true" description="Default image id if the current id is not set , if any"/>
+
+
+
     <jsp:directive.attribute name="imageIdInput" type="java.lang.String" required="false"
                              rtexprvalue="true" description="Id of the input field
                              to hold the new image id, if any"/>
@@ -71,7 +74,7 @@
         fileUploadVars['${uniqueName}'].urlDisplayDiv = '#' + '${urlDisplayDiv}';
     </script>
 
-    <c:if test="${empty defaultImageId and not empty imageIdInput}">
+    <c:if test="${not empty imageIdInput}">
         <script>
             jQuery(function() {
                 var vars = fileUploadVars['${uniqueName}'];
@@ -79,8 +82,26 @@
                 if (imageIdInputVal > 0) {
                     jQuery(vars.previewImgId).attr('src',
                         '/image?img_id=' + imageIdInputVal + '&amp;defaultImage=${defaultImage}')
+                }else{
+                    checkForDefaultImageOverride();
                 }
             });
+        </script>
+    </c:if>
+
+    <c:if test="${not empty defaultImageId}">
+        <script>
+           function checkForDefaultImageOverride(){
+                    var vars = fileUploadVars['${uniqueName}'];
+                   jQuery(vars.imageIdInputId).val('${defaultImageId}');
+           }
+        </script>
+    </c:if>
+    <c:if test="${empty defaultImageId}">
+        <script>
+            function checkForDefaultImageOverride(){
+
+            }
         </script>
     </c:if>
 

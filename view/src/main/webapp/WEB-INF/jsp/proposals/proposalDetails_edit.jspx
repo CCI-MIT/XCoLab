@@ -177,7 +177,7 @@
 
                 <form:hidden path="imageId" id="proposalImageId" />
                 <collab:imageUpload uniqueName="proposalImageUpload" imageIdInput="proposalImageId"
-                                    compactView="true" defaultImage="PROPOSAL" buttonText="Upload an image (optional)" />
+                                    compactView="true" defaultImageId="${contest.defaultProposalLogoId}" defaultImage="PROPOSAL" buttonText="Upload an image (optional)" />
             </div>
 
 

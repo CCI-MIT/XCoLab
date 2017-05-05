@@ -95,6 +95,7 @@ public class CreateProposalController extends BaseProposalsController {
         proposal.setVisible(true);
         proposal.setAuthorId(memberId);
 
+
         final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
 
         Proposal proposalWrapped = new Proposal(proposal, 0, contest, contestPhase, null);
@@ -140,6 +141,7 @@ public class CreateProposalController extends BaseProposalsController {
         request.setAttribute("imageUploadServiceUrl",
                 ConfigurationAttributeKey.IMAGE_UPLOAD_EXTERNAL_SERVICE_URL.get());
         request.setAttribute("imageUploadHelpText", ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.get());
+
         return "proposals/proposalDetails_edit";
     }
 
