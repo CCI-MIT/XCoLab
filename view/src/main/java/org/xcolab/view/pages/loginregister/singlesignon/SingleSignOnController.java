@@ -26,6 +26,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class SingleSignOnController {
     private static final String REGISTER_OR_LOGIN_VIEW = "loginregister/SSO/registerOrLogin";
+    public static final String REGISTER_OR_LOGIN_URL = "/sso/registerOrLogin";
 
     private final LoginRegisterService loginRegisterService;
 
