@@ -39,6 +39,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @ComponentScan("org.xcolab.view.theme")
 @ComponentScan("org.xcolab.view.auth")
 @ComponentScan("org.xcolab.view.pages.proposals.interceptors")
+@ComponentScan("org.xcolab.view.pages.loginregister")
 @ComponentScan("org.xcolab.view.pages.proposals.utils.context")
 @ComponentScan("org.xcolab.view.config")
 @TestPropertySource(

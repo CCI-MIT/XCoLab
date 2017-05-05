@@ -58,10 +58,12 @@ import static org.mockito.Matchers.anyString;
 @PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
 @PowerMockIgnore("javax.management.*")
 @WebMvcTest(LoginRegisterController.class)
+
 @ComponentScan("org.xcolab.view.theme")
 @ComponentScan("org.xcolab.view.auth")
 @ComponentScan("org.xcolab.view.pages.proposals.interceptors")
 @ComponentScan("org.xcolab.view.pages.proposals.utils.context")
+@ComponentScan("org.xcolab.view.pages.loginregister")
 @ComponentScan("org.xcolab.view.config")
 @TestPropertySource(
         properties = {
