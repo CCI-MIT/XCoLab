@@ -37,7 +37,7 @@ public class SharedColabController {
         this.sharedContestDao = sharedContestDao;
     }
 
-    @GetMapping(value = "/members/isUsed")
+    @GetMapping("/members/isUsed")
     public boolean isUsed(
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) String email) {
@@ -52,7 +52,14 @@ public class SharedColabController {
         return ret;
     }
 
-    @PostMapping(value = "/members/retrieveSharedId")
+    @GetMapping("/members")
+    public List<SharedMember> listMembers(@RequestParam(required = false) String screenName,
+            @RequestParam(required = false) String email) {
+        checkSharedCoLabServiceActive();
+        return sharedMemberDao.findByGiven(screenName, email);
+    }
+
+    @PostMapping("/members/retrieveSharedId")
     public Long retrieveSharedId(@RequestParam String screenName, @RequestParam String email,
             @RequestParam String colabOrigin) {
         checkSharedCoLabServiceActive();

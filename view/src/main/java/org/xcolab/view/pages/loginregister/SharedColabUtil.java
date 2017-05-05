@@ -5,8 +5,8 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
+import org.xcolab.client.sharedcolab.pojo.Member;
 
 public final class SharedColabUtil {
 
@@ -27,9 +27,9 @@ public final class SharedColabUtil {
 
     public static void registerMemberInSharedColab(Long memberId) {
         try {
-            Member memberInCurrentColab = MembersClient.getMember(memberId);
+            org.xcolab.client.members.pojo.Member memberInCurrentColab = MembersClient.getMember(memberId);
 
-            org.xcolab.client.sharedcolab.pojo.Member member = new org.xcolab.client.sharedcolab.pojo.Member();
+            Member member = new Member();
             member.setId_(memberInCurrentColab.getId_());
             member.setScreenName(memberInCurrentColab.getScreenName());
             member.setEmailAddress(memberInCurrentColab.getEmailAddress());

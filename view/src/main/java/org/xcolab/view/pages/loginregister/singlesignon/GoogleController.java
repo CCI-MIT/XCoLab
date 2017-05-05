@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
-import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.sharedcolab.SharedColabClient;
+import org.xcolab.client.sharedcolab.pojo.SharedMember;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.pages.loginregister.CreateUserBean;
 import org.xcolab.view.pages.loginregister.ImageUploadUtils;
@@ -108,7 +109,8 @@ public class GoogleController {
                 country = getCountry(userInfo.getString("locale"));
             } catch (UserLocationNotResolvableException ignored) { }
 
-            Member registeredMember = findRegisteredMember(userInfo, country);
+            org.xcolab.client.members.pojo.Member
+                    registeredMember = findRegisteredMember(userInfo, country);
             if (registeredMember != null) {
                 String profilePicURL = userInfo.getString("picture");
                 session.setAttribute(SSOKeys.OPEN_ID_LOGIN, registeredMember.getUserId());
@@ -128,12 +130,12 @@ public class GoogleController {
         }
     }
 
-    private Member findRegisteredMember(JSONObject userInfo, String country) {
+    private org.xcolab.client.members.pojo.Member findRegisteredMember(JSONObject userInfo, String country) {
         String googleId = userInfo.getString("id");
         String emailAddress = userInfo.getString("email");
         boolean verifiedEmail = userInfo.optBoolean("verified_email");
 
-        Member member;
+        org.xcolab.client.members.pojo.Member member;
         try {
             member = MembersClient.findMemberByGoogleId(googleId);
         } catch (MemberNotFoundException e) {
@@ -171,13 +173,8 @@ public class GoogleController {
         String path = session.getServletContext().getRealPath("/");
 
         session.setAttribute(SSOKeys.SSO_GOOGLE_ID, googleId);
-        String screenName = null;
         if (StringUtils.isNotBlank(emailAddress)) {
             session.setAttribute(SSOKeys.SSO_EMAIL, emailAddress);
-            // Screenname = email prefix until @ character
-            screenName = emailAddress.substring(0, emailAddress.indexOf("@"));
-            screenName = screenName.replaceAll("[^0-9a-zA-Z\\-\\_\\.]", "");
-            session.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName);
         }
 
         if (StringUtils.isNotBlank(firstName)) {
@@ -211,26 +208,34 @@ public class GoogleController {
             userBean.setCountry(country);
             userBean.setImageId(Long.toString(imageId));
 
-            if (StringUtils.isNotBlank(screenName)) {
-                userBean.setScreenName(screenName);
+            final SharedMember sharedMember =
+                    SharedColabClient.findSharedMemberByEmail(emailAddress);
+            String screenName;
+            if (sharedMember != null) {
+                screenName = sharedMember.getScreenName();
+            } else {
+                // Screenname = email prefix until @ character
+                screenName = emailAddress.substring(0, emailAddress.indexOf("@"));
+                screenName = screenName.replaceAll("[^0-9a-zA-Z\\-\\_\\.]", "");
+                session.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName);
+            }
 
+            if (StringUtils.isNotBlank(screenName)) {
                 // Validate uniqueness of the screen name
                 // The chance of a collision among 40 equal screennames is 50% -> 5 tries should be sufficient
                 for (int i = 0; i < 5; i++) {
                     try {
                         MembersClient.findMemberByScreenName(screenName);
                         // Generate a random suffix for the non-unique screenName
-                        screenName =
-                                userBean.getScreenName()
+                        screenName = userBean.getScreenName()
                                         .concat(RandomStringUtils.random(4, false, true));
                     } catch (MemberNotFoundException e3) {
                         //screen name not used - we can continue
                         break;
                     }
                 }
+                userBean.setScreenName(screenName);
             }
-
-            userBean.setScreenName(screenName);
 
             loginRegisterService.completeRegistration(request, response, userBean,
                     redirectUrl, true);
