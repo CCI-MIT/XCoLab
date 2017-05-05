@@ -1,14 +1,35 @@
 package org.xcolab.view.pages.search.items;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 
 import org.xcolab.client.search.pojo.SearchPojo;
 
-public abstract class AbstractSearchItem {
-    private static final String HTML_CLEAN_UP_REGEXP = "<[^>]*>";
+import java.util.Objects;
 
-    public final static int MAX_CONTENT_LENGTH = 255;
-    public final static int B_TAG_LENGHT = 8;
+public abstract class AbstractSearchItem {
+
+    private final static int MAX_CONTENT_LENGTH = 255;
+
+    public static AbstractSearchItem newInstance(Class<? extends AbstractSearchItem> clazz) {
+        if (Objects.equals(ContentSearchItem.class, clazz)) {
+            return new ContentSearchItem();
+        }
+        if (Objects.equals(ContestSearchItem.class, clazz)) {
+            return new ContestSearchItem();
+        }
+        if (Objects.equals(DiscussionSearchItem.class, clazz)) {
+            return new DiscussionSearchItem();
+        }
+        if (Objects.equals(ProposalSearchItem.class, clazz)) {
+            return new ProposalSearchItem();
+        }
+        if (Objects.equals(UserSearchItem.class, clazz)) {
+            return new UserSearchItem();
+        }
+        throw new IllegalArgumentException(
+                "Invalid class name provided to factory method: " + clazz.getName());
+    }
 
     public abstract String getPrintName();
 
@@ -17,66 +38,32 @@ public abstract class AbstractSearchItem {
     public abstract String getTitle();
 
     public abstract String getLinkUrl();
+
     public abstract String getContent();
-    public String getContent(String contentz, String searchQuery){
-        String content = highlight(contentz,searchQuery);
-        int maxContentLenght = Math.min(content.length(), MAX_CONTENT_LENGTH);
-        int tolerance = maxContentLenght;
-        if(content.length() > MAX_CONTENT_LENGTH +B_TAG_LENGHT){
-            tolerance = maxContentLenght +B_TAG_LENGHT;
-        }
-        String finalString = content.substring(maxContentLenght-B_TAG_LENGHT,tolerance);
-        if(finalString.contains("b>")){
-            if(finalString.contains("<b>")){
-                return content.substring(0,tolerance - B_TAG_LENGHT)+ " ...";
-            }else{
-                return content.substring(0,tolerance)+ " ...";
-            }
 
+    public String getContent(String contentToHighlight, String searchQuery) {
+        if (StringUtils.isBlank(contentToHighlight)) {
+            return "No description found";
         }
-        return content.substring(0, maxContentLenght) + " ...";
-    };
+        final String plainText = Jsoup.parse(contentToHighlight).text();
+        final String abbreviatedText = StringUtils.abbreviate(plainText, MAX_CONTENT_LENGTH);
+        return highlight(abbreviatedText, searchQuery);
+    }
 
-    public static String html2text(String html) {
-        if(html == null) {
+    public String highlight(String plainText, String queryToHighlight) {
+
+        if (plainText == null) {
             return null;
-        }else {
-            return Jsoup.parse(html).text();
         }
-    }
-    public String highlight(String content, String queryToHighlight) {
-
-        if (content == null) {return null;}
-        content = html2text(content);
-        if (queryToHighlight == null) {return content;}
+        if (queryToHighlight == null) {
+            return plainText;
+        }
         String[] tokensInUserContent = queryToHighlight.split("[\\p{Punct}\\s]+");
-        if (tokensInUserContent != null) {
-            for(String token : tokensInUserContent) {
-                content = content.replace(token, "<b>"+token+"</b>");
-            }
+        for (String token : tokensInUserContent) {
+            plainText = plainText.replace(token, "<b>" + token + "</b>");
         }
-        //content = content.replace(queryToHighlight, "<b>"+queryToHighlight+"</b>");
 
-        return content;
-    }
-
-    public static AbstractSearchItem newInstance(Class<? extends AbstractSearchItem> clazz) {
-        if (ContentSearchItem.class == clazz) {
-            return new ContentSearchItem();
-        }
-        if (ContestSearchItem.class == clazz) {
-            return new ContestSearchItem();
-        }
-        if (DiscussionSearchItem.class == clazz) {
-            return new DiscussionSearchItem();
-        }
-        if (ProposalSearchItem.class == clazz) {
-            return new ProposalSearchItem();
-        }
-        if (UserSearchItem.class == clazz) {
-            return new UserSearchItem();
-        }
-        throw new IllegalArgumentException("Invalid class name provided to factory method: " + clazz.getName());
+        return plainText;
     }
 
     public boolean isVisible() {

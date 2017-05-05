@@ -11,6 +11,7 @@ import org.xcolab.client.members.exceptions.LockoutLoginException;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.exceptions.PasswordLoginException;
 import org.xcolab.client.sharedcolab.SharedColabClient;
+import org.xcolab.client.sharedcolab.pojo.Member;
 import org.xcolab.view.pages.loginregister.CreateUserBean;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 
@@ -56,7 +57,7 @@ public class ColabController {
             //login failed
         }
         try {
-            org.xcolab.client.sharedcolab.pojo.Member foreignColab = SharedColabClient.findMemberByScreenName(login);
+            Member foreignColab = SharedColabClient.findMemberByScreenName(login);
             boolean loggedIn = SharedColabClient.validatePassword(password, foreignColab.getId_());
             if (loggedIn) {
                 CreateUserBean userBean = new CreateUserBean();

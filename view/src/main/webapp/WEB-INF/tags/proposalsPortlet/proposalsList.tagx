@@ -86,16 +86,18 @@
                 <td class="c-Table__cell b-layout__center modified no-border">
                     <fmt:formatDate value="${proposal.lastModifiedDateForContestPhase}" type="date" dateStyle="short" timeZone="America/New_York" />
                 </td>
-                <td class="c-Table__cell b-layout__center contributors no-border">
-                    <c:choose>
-                        <c:when test="${proposal.open}">
-                            Anyone
-                        </c:when>
-                        <c:otherwise>
-                            Team only
-                        </c:otherwise>
-                    </c:choose>
-                </td>
+                <c:if test="${showContributorsColumn}">
+                    <td class="c-Table__cell b-layout__center contributors no-border">
+                        <c:choose>
+                            <c:when test="${proposal.open}">
+                                Anyone
+                            </c:when>
+                            <c:otherwise>
+                                Team only
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
+                </c:if>
             </c:if>
             <c:if test="${not contestPhase.completed and (proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions)}">
                 <td class="c-Table__cell b-layout__center advancing-status no-border">

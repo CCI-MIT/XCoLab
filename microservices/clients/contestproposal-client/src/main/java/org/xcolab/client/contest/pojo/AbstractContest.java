@@ -30,6 +30,7 @@ public abstract class AbstractContest {
     private Boolean   featured_;
     private Boolean   plansopenbydefault;
     private Long      sponsorlogoid;
+    private Long      defaultproposallogoid;
     private String    sponsortext;
     private String    sponsorlink;
     private Integer   flag;
@@ -86,6 +87,7 @@ public abstract class AbstractContest {
         this.featured_ = value.featured_;
         this.plansopenbydefault = value.plansopenbydefault;
         this.sponsorlogoid = value.sponsorlogoid;
+        this.defaultproposallogoid = value.defaultproposallogoid;
         this.sponsortext = value.sponsortext;
         this.sponsorlink = value.sponsorlink;
         this.flag = value.flag;
@@ -430,6 +432,15 @@ public abstract class AbstractContest {
     public void setSponsorLogoId(Long sponsorlogoid) {
         this.sponsorlogoid = sponsorlogoid;
     }
+
+    public Long getDefaultProposalLogoId() {
+        return this.defaultproposallogoid;
+    }
+
+    public void setDefaultProposalLogoId(Long defaultproposallogoid) {
+        this.defaultproposallogoid = defaultproposallogoid;
+    }
+
 
     public String getSponsorText() {
         return this.sponsortext;

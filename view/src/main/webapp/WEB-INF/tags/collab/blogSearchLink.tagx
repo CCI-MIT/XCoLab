@@ -7,6 +7,6 @@
   <div class="searchBlogLink">
     <span>Didn't find what you wanted? </span>
     <b>
-      <a href="${target}">Search Climate CoLab News for ${searchPhrase}</a>
+      <a href="${target}">Search ${_colabName} News for ${searchPhrase}</a>
     </b>
   </div></jsp:root>

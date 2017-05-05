@@ -80,9 +80,8 @@
                 If you have input on the template, please send it in a <a href="/web/guest/feedback" target="_blank">feedback message</a>.
                 To save your ${fn:toLowerCase(contestType.proposalName)}, you must agree to the <a href="${contestType.rulesPageUrl}" target="_blank">${contestType.rulesPageName}</a>
                 and <a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of use</a>.
-                <br/>Please note that you may be automatically logged out of your account after
-                30 minutes. Please save all ${fn:toLowerCase(contestType.proposalName)} content offline before clicking
-                PUBLISH or else it may be lost.
+                <br/>Please note that you will be automatically logged out of your account after 2 hours (120 minutes).
+                Please save all ${fn:toLowerCase(contestType.proposalName)} content offline intermittently, and before clicking PUBLISH to avoid data loss.
             </p>
         </div> <!-- /c-Headline -->
 
@@ -120,6 +119,36 @@
                 </div>
             </div>
 
+            <div class="addpropbox q3">
+                <label>
+                    <strong>${contestType.pitchName}(*)</strong>
+                    <a href="javascript:;" class="helpTrigger"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
+                    140 characters
+                </label>
+                <div class="addprophelp">Insert a tweet-length (140 character) message that conveys the key idea behind your ${fn:toLowerCase(contestType.proposalName)}.</div>
+                <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
+                    <form:textarea path="pitch" id="proposalPitchInput" htmlEscape="false" cssClass="proposalPitchInput" />
+                    <form:errors path="pitch" />
+                    <div class="clearfix"><!-- --></div>
+                    <div class="inputLimitContainer">
+                        <span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">140</span> characters
+                    </div>
+                </div>
+
+                <script>
+                    jQuery("textarea#proposalPitchInput").keydown(function(e) {
+                        var TABKEY = 9;
+                        if(e.keyCode == TABKEY) {
+                            this.value += "    ";
+                            if(e.preventDefault) {
+                                e.preventDefault();
+                            }
+                            return false;
+                        }
+                    });
+                </script>
+            </div>
+
             <c:if test="${contestType.showTeamField}">
                 <div class="addpropbox blue q2">
                     <label>
@@ -148,38 +177,9 @@
 
                 <form:hidden path="imageId" id="proposalImageId" />
                 <collab:imageUpload uniqueName="proposalImageUpload" imageIdInput="proposalImageId"
-                                    compactView="true" defaultImage="PROPOSAL" buttonText="Upload an image (optional)" />
+                                    compactView="true" defaultImageId="${contest.defaultProposalLogoId}" defaultImage="PROPOSAL" buttonText="Upload an image (optional)" />
             </div>
 
-            <div class="addpropbox q3">
-                <label>
-                    <strong>${contestType.pitchName}</strong>
-                    <a href="javascript:;" class="helpTrigger"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
-                    140 characters
-                </label>
-                <div class="addprophelp">Insert a tweet-length (140 character) message that conveys the key idea behind your ${fn:toLowerCase(contestType.proposalName)}.</div>
-                <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
-                    <form:textarea path="pitch" id="proposalPitchInput" htmlEscape="false" cssClass="proposalPitchInput" />
-                    <form:errors path="pitch" />
-                    <div class="clearfix"><!-- --></div>
-                    <div class="inputLimitContainer">
-                        <span class="limit_characterCount"><!--  --></span>/&#160;<span class="limit_charactersMax">140</span> characters
-                    </div>
-                </div>
-
-                <script>
-                    jQuery("textarea#proposalPitchInput").keydown(function(e) {
-                        var TABKEY = 9;
-                        if(e.keyCode == TABKEY) {
-                            this.value += "    ";
-                            if(e.preventDefault) {
-                                e.preventDefault();
-                            }
-                            return false;
-                        }
-                    });
-                </script>
-            </div>
 
             <!-- legacy for old proposals-->
             <c:if test="${fn:length(proposal.description) gt 0}">
@@ -333,7 +333,7 @@
         function saveIfValid() {
             if(jQuery("#proposalPitchInput").length ==1 ){
                 if(jQuery("#proposalPitchInput").val() == 0) {
-                    noty({text: 'The Pitch field is mandatory!', type: 'error'});
+                    noty({text: 'The "pitch" field is required. Please enter a short (up to 140 character) message that conveys the main idea of your proposal.', type: 'error'});
                     jQuery("#proposalPitchInput").focus();
                     enableButtons();
                     return;

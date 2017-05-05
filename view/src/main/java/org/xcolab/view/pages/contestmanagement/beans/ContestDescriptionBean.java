@@ -28,6 +28,7 @@ public class ContestDescriptionBean implements Serializable {
     private Long ContestPK;
     private Long contestLogoId;
     private Long sponsorLogoId;
+    private Long defaultproposallogoid;
 
     @Length(min = 3, max = 150, message = "The contest question must be at least 3 characters and"
             + " not more than 150 characters.")
@@ -68,7 +69,7 @@ public class ContestDescriptionBean implements Serializable {
             scheduleTemplateId = contest.getContestScheduleId();
             contestLogoId = contest.getContestLogoId();
             sponsorLogoId = contest.getSponsorLogoId();
-
+            defaultproposallogoid = contest.getDefaultProposalLogoId();
             shouldUpdateContestUrlName = !contest.getContestActive();
             isSharedContest = contest.getIsSharedContest();
         }
@@ -105,6 +106,7 @@ public class ContestDescriptionBean implements Serializable {
         contest.setPlanTemplateId(planTemplateId);
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
+        contest.setDefaultProposalLogoId(defaultproposallogoid);
         contest.setIsSharedContest(isSharedContest);
         ContestClientUtil.updateContest(contest);
         if (contest.getIsSharedContest()) {
@@ -121,6 +123,13 @@ public class ContestDescriptionBean implements Serializable {
         if (!noScheduleSelected && !oldScheduleTemplateId.equals(contestScheduleId)) {
             contest.changeScheduleTo(contestScheduleId);
         }
+    }
+    public Long getDefaultProposalLogoId() {
+        return this.defaultproposallogoid;
+    }
+
+    public void setDefaultProposalLogoId(Long defaultproposallogoid) {
+        this.defaultproposallogoid = defaultproposallogoid;
     }
 
     public Long getContestPK() {

@@ -1,6 +1,8 @@
 package org.xcolab.service.sharedcolab.domain.sharedMember;
 
 import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.jooq.SelectQuery;
 import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -9,6 +11,7 @@ import org.springframework.util.Assert;
 import org.xcolab.model.tables.pojos.SharedMember;
 import org.xcolab.model.tables.records.SharedMemberRecord;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.xcolab.model.Tables.SHARED_MEMBER;
@@ -49,6 +52,21 @@ public class SharedMemberDaoImpl implements SharedMemberDao {
             return Optional.empty();
         }
         return Optional.of(record.into(SharedMember.class));
+    }
+
+    @Override
+    public List<SharedMember> findByGiven(String screenName, String emailAddress) {
+        final SelectQuery<Record> query = dslContext.select().from(SHARED_MEMBER).getQuery();
+
+        if (screenName != null) {
+            query.addConditions(SHARED_MEMBER.SCREEN_NAME.eq(screenName));
+        }
+
+        if (emailAddress != null) {
+            query.addConditions(SHARED_MEMBER.EMAIL_ADDRESS.eq(emailAddress));
+        }
+
+        return query.fetch().into(SharedMember.class);
     }
 
     @Override

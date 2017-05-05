@@ -123,6 +123,21 @@
                                     defaultImage="CONTEST" defaultImageId="${contestWrapper.sponsorLogoId}" />
             </div>
 
+            <div class="addpropbox blue">
+                <label>
+                    <strong>Default proposal image</strong>
+                </label>
+
+                <div class="addprophelp">If available the image used as default proposal icon. Requirements: 300x300 pixels or
+                    larger (if the image is not square, it will appear warped); format in .PNG, JPEG or .JPG; no closed
+                    copyrights attached to the image.
+                </div>
+
+                <form:hidden path="defaultProposalLogoId" id="defaultProposalLogoId"/>
+                <collab:imageUpload uniqueName="defaultProposalLogo" imageIdInput="defaultProposalLogoId" compactView="true"
+                                    defaultImage="PROPOSAL" defaultImageId="${contestWrapper.defaultProposalLogoId}" />
+            </div>
+
             <div class="addpropbox">
                 <label>
                     <strong>Description</strong>

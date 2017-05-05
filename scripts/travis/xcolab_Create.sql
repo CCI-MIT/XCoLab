@@ -1104,6 +1104,7 @@ CREATE TABLE `xcolab_Contest` (
   `featured_` tinyint(4) DEFAULT NULL,
   `plansOpenByDefault` tinyint(4) DEFAULT NULL,
   `sponsorLogoId` bigint(20) DEFAULT NULL,
+  `defaultProposalLogoId` BIGINT(20) NULL DEFAULT NULL,
   `sponsorText` varchar(500) DEFAULT NULL,
   `sponsorLink` varchar(75) DEFAULT NULL,
   `flag` int(11) DEFAULT NULL,
