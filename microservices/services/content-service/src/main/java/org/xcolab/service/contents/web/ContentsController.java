@@ -120,23 +120,6 @@ public class ContentsController {
         }
     }
 
-    @RequestMapping(value = "/contentArticles/{articleId}", method = RequestMethod.DELETE)
-    public String deleteContentArticle(@PathVariable("articleId") Long articleId)
-            throws NotFoundException {
-
-        if (articleId == null || articleId == 0) {
-            throw new NotFoundException("No content article with id given");
-        } else {
-            ContentArticle contentArticle = this.contentArticleDao.get(articleId);
-            if (contentArticle != null) {
-                contentArticle.setVisible(false);
-                this.contentArticleDao.update(contentArticle);
-                return "Content article updated successfully";
-            } else {
-                throw new NotFoundException("No content article with id given");
-            }
-        }
-    }
 
     @RequestMapping(value = "/contentArticleVersions", method = RequestMethod.POST)
     public ContentArticleVersion createContentArticleVersion(

@@ -61,13 +61,21 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
     @Override
     public Optional<ActivitySubscription> get(Long receiverId, Long classNameId, Long classPK,
             String extraInfo) {
-        final List<ActivitySubscription> subscriptions = dslContext.select()
+        //
+            SelectQuery<Record> subscriptionsQuery =
+            dslContext.select()
                 .from(ACTIVITY_SUBSCRIPTION)
                 .where(ACTIVITY_SUBSCRIPTION.RECEIVER_ID.eq(receiverId))
                 .and(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID.eq(classNameId))
                 .and(ACTIVITY_SUBSCRIPTION.CLASS_PK.eq(classPK))
-                .and(ACTIVITY_SUBSCRIPTION.EXTRA_DATA.eq(extraInfo))
-                .fetch().into(ActivitySubscription.class);
+                .getQuery();
+
+        if (extraInfo != null) {
+            subscriptionsQuery.addConditions((ACTIVITY_SUBSCRIPTION.EXTRA_DATA.eq(extraInfo)));
+        }
+
+        final List<ActivitySubscription> subscriptions =  subscriptionsQuery.fetch().into(ActivitySubscription.class);
+
         if (subscriptions.isEmpty()) {
             return Optional.empty();
         }

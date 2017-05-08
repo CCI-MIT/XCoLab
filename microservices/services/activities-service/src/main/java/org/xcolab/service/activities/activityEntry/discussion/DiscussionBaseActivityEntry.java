@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.activityEntry.discussion;
+package org.xcolab.service.activities.activityentry.discussion;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -12,7 +12,6 @@ import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
-import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -25,7 +24,7 @@ import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.model.tables.pojos.ActivityEntry;
-import org.xcolab.service.activities.activityEntry.provider.ActivityEntryContentProvider;
+import org.xcolab.service.activities.activityentry.provider.ActivityEntryContentProvider;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 
 public abstract class DiscussionBaseActivityEntry implements ActivityEntryContentProvider {

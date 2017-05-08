@@ -55,7 +55,7 @@ public class ForgotPasswordController {
             String userNameEmail = request.getParameter("screenName");
 
             Member member;
-            if (userNameEmail.contains("@")) {
+            if (userNameEmail!= null && userNameEmail.contains("@")) {
                 member = MembersClient.findMemberByEmailAddress(userNameEmail);
             } else {
                 member = MembersClient.findMemberByScreenName(userNameEmail);

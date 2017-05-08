@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.activityEntry.proposal;
+package org.xcolab.service.activities.activityentry.proposal;
 
 
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.model.tables.pojos.ActivityEntry;
-import org.xcolab.service.activities.activityEntry.provider.ActivityEntryContentProvider;
+import org.xcolab.service.activities.activityentry.provider.ActivityEntryContentProvider;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 
 public abstract class ProposalBaseActivityEntry implements ActivityEntryContentProvider {
