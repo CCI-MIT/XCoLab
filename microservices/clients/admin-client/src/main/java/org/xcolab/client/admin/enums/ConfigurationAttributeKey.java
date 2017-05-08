@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 public final class ConfigurationAttributeKey {
 
+    private static final Pattern SCHEME_REGEX = Pattern.compile("^https?://");
+
     //Main CoLab configuration
     public static final AttributeGetter<String> ADMIN_EMAIL =
             ConfigurationAttributes.newStringAttribute("ADMIN_EMAIL")
@@ -195,6 +197,7 @@ public final class ConfigurationAttributeKey {
                     .build();
     public static final AttributeGetter<String> PARTNER_COLAB_ADDRESS =
             ConfigurationAttributes.newStringAttribute("PARTNER_COLAB_ADDRESS")
+                    .map(url -> SCHEME_REGEX.matcher(url).matches() ? url : "http://" + url)
                     .build();
 
 

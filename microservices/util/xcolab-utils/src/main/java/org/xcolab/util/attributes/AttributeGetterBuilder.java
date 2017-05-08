@@ -2,6 +2,9 @@ package org.xcolab.util.attributes;
 
 import org.xcolab.util.attributes.wrappers.CachedAttribute;
 import org.xcolab.util.attributes.wrappers.OptionalAttribute;
+import org.xcolab.util.attributes.wrappers.TransformedAttribute;
+
+import java.util.function.Function;
 
 /**
  * This class is a convenience builder for various {@link AttributeGetter}s.
@@ -29,6 +32,12 @@ public class AttributeGetterBuilder<ValueT> {
     public AttributeGetterBuilder<ValueT> defaultValue(AttributeGetter<ValueT> defaultValueGetter) {
         attributeGetter = new OptionalAttribute<>(attributeGetter, defaultValueGetter);
         return this;
+    }
+
+    public <ValueR> AttributeGetterBuilder<ValueR>  map(Function<ValueT, ValueR> transformation) {
+        final TransformedAttribute<ValueT, ValueR> newAttributeGetter =
+                new TransformedAttribute<>(attributeGetter, transformation);
+        return new AttributeGetterBuilder<>(newAttributeGetter);
     }
 
     public AttributeGetter<ValueT> build() {

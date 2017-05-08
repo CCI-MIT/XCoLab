@@ -158,9 +158,9 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public String getProposalLogoPath() {
-        if(this.getIsSharedContestInForeignColab()) {
-            return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()+"/";
-        }else{
+        if (this.getIsSharedContestInForeignColab()) {
+            return ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get() + "/";
+        } else {
             return "/";
         }
     }
@@ -169,7 +169,7 @@ public class Contest extends AbstractContest implements Serializable {
 
             Long imgId = this.getSponsorLogoId();
             if (imgId != null) {
-                return "http://" +ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()
+                return ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()
                         + "/image/contest/" + imgId;
             }
             return "";
@@ -187,7 +187,7 @@ public class Contest extends AbstractContest implements Serializable {
 
             Long imgId = this.getContestLogoId();
             if (imgId != null) {
-                return "http://" + ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()
+                return ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()
                         + "/image/contest/" + imgId;
             }
             return "";
@@ -453,8 +453,8 @@ public class Contest extends AbstractContest implements Serializable {
 
     public String getResourceArticleUrl() {
         if(this.getIsSharedContestInForeignColab()) {
-            return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()+"/resources/" + this.getContestYear()
-                    + "/" + this.getContestUrlName();
+            return ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()+"/resources/"
+                    + this.getContestYear() + "/" + this.getContestUrlName();
         } else {
             return "/resources/" + this.getContestYear()
                     + "/" + this.getContestUrlName();
