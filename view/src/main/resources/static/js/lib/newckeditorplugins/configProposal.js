@@ -36,7 +36,7 @@ CKEDITOR.on('dialogDefinition', function (e) {
             var entryId ="ckimageDialogHelp_"+fieldId;
             if($("#"+entryId).length!=1){
 
-                $('<span>&#160;&#160;</span><span id="'+entryId+'" style="cursor: pointer;text-decoration: underline;">need help?<img   style="width: 15px; height: 15px;" src="/images/icon-addprop-question-bar.png" /></span><br/><br/><a href="http://imgur.com" target="_blank" class="cke_dialog_ui_button cke_dialog_ui_button_ok"><span class="cke_dialog_ui_button cke_dialog_ui_button_ok">UPLOAD</span></a>')
+                $('<span>&#160;&#160;</span><span id="'+entryId+'" style="cursor: pointer;text-decoration: underline;">Help?<img   style="width: 15px; height: 15px;" src="/images/icon-addprop-question-bar.png" /></span><br/><br/><a href="http://imgur.com" target="_blank" class="cke_dialog_ui_button cke_dialog_ui_button_ok"><span class="cke_dialog_ui_button cke_dialog_ui_button_ok">UPLOAD</span></a>')
                         .insertAfter($("#"+fieldId));
 
                 $('#'+entryId).tooltipster({
@@ -64,7 +64,7 @@ CKEDITOR.on('dialogDefinition', function (e) {
 
 
             if($("#"+entryId).length!=1){
-                $('<span>&#160;&#160;</span><span id="'+entryId+'" style="cursor: pointer;text-decoration: underline;">need help?<img   style="width: 15px; height: 15px;" src="/images/icon-addprop-question-bar.png" /></span>').insertAfter($("#"+fieldId).parent().parent().parent().find("label"));
+                $('<span>&#160;&#160;</span><span id="'+entryId+'" style="cursor: pointer;text-decoration: underline;">Help?<img   style="width: 15px; height: 15px;" src="/images/icon-addprop-question-bar.png" /></span>').insertAfter($("#"+fieldId).parent().parent().parent().find("label"));
 
                 $('#'+entryId).tooltipster({
                     contentCloning: false,

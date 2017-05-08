@@ -1,8 +1,11 @@
 package org.xcolab.service.emails.util;
 
+import org.codemonkey.simplejavamail.MailException;
 import org.codemonkey.simplejavamail.Mailer;
 import org.codemonkey.simplejavamail.TransportStrategy;
 import org.codemonkey.simplejavamail.email.Email;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -10,13 +13,18 @@ import org.springframework.stereotype.Component;
 
 import javax.mail.Message;
 
-//"classpath:application.properties",
 @PropertySource({"file:${user.home}/.xcolab.application.properties"})
 @Component
-public class EmailUtil {
+public class EmailService {
+
+    private static final Logger log = LoggerFactory.getLogger(EmailService.class);
+
+    private final Environment env;
 
     @Autowired
-    private Environment env;
+    public EmailService(Environment env) {
+        this.env = env;
+    }
 
     public void sendEmailToRecipient(org.xcolab.service.emails.pojo.Email emailPojo) {
         final Email email = new Email();
@@ -56,8 +64,8 @@ public class EmailUtil {
                     new Mailer(smtpHost, Integer.parseInt(smtpPort), userName, password)
                             .sendMail(email);
             }
-        }catch (Exception ignore){
-
+        } catch (MailException e) {
+            log.error("Failed to send email {}", emailPojo.getSubject(), e);
         }
     }
 }
