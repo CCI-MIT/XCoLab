@@ -58,7 +58,7 @@ public class ContentArticleDaoTest {
     }
 
     @Test
-    public void shouldCreateNewActivityEntry() throws Exception {
+    public void shouldCreateNewContentArticle() throws Exception {
 
         ContentArticle ae = new ContentArticle();
         ae = contentArticleDao.create(ae);
@@ -67,7 +67,7 @@ public class ContentArticleDaoTest {
     }
 
     @Test
-    public void shouldGetActivityEntry() throws Exception {
+    public void shouldGetContentArticle() throws Exception {
 
         ContentArticle ae = contentArticleDao.get(02l);
 
@@ -76,7 +76,7 @@ public class ContentArticleDaoTest {
     }
 
     @Test
-    public void shouldDeleteActivityEntry() throws Exception {
+    public void shouldDeleteContentArticle() throws Exception {
 
         ContentArticle ae = new ContentArticle();
         ae = contentArticleDao.create(ae);
@@ -87,7 +87,7 @@ public class ContentArticleDaoTest {
     }
 
     @Test
-    public void shouldUpdateActivityEntry() throws Exception {
+    public void shouldUpdateContentArticle() throws Exception {
         ContentArticle ae = new ContentArticle();
         ae.setAuthorId(03l);
         ae = contentArticleDao.create(ae);
