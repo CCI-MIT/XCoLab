@@ -68,12 +68,13 @@ public class ContentPageDaoTest {
     public void shouldUpdateContentPage() throws Exception {
         ContentPage ae = new ContentPage();
         ae.setTitle("aaa");
+        ae.setContentArticleId(01l);
         ae = contentPageDao.create(ae);
         ae.setTitle("bbb");
         contentPageDao.update(ae);
 
-        ContentPage cp = contentPageDao.get(ae.getContentArticleId()).isPresent());
-        assertEquals(az.getAuthorId(),ae.getAuthorId());
+        ContentPage cp = contentPageDao.get(ae.getPageId()).get();
+        assertEquals(cp.getTitle(),ae.getTitle());
 
     }
 }
