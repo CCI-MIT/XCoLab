@@ -51,9 +51,7 @@ public class ContentArticleVersionDaoTest {
     @Test
     public void shouldGetContentArticleVersion() throws Exception {
 
-        ContentArticleVersion ae = contentArticleVersionDao.get(1567l);
-
-        assertNotNull(contentArticleVersionDao.get(ae.getContentArticleVersionId()));
+        assertNotNull(contentArticleVersionDao.get(1567l));
 
     }
 

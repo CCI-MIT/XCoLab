@@ -47,14 +47,14 @@ public class ContentArticleDaoTest {
 
         List<? extends ContentArticle> az = contentArticleDao.getArticlesInFolder(5l);
 
-        assertEquals(1,az.size());
+        assertEquals(2,az.size());
 
     }
 
     @Test
     public void shouldGetArticles() throws Exception {
         List<? extends ContentArticle> az = contentArticleDao.getArticles();
-        assertEquals(2,az.size());
+        assertEquals(3,az.size());
     }
 
     @Test
