@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.activityentry;
+package org.xcolab.service.activities.activityEntry;
 
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;

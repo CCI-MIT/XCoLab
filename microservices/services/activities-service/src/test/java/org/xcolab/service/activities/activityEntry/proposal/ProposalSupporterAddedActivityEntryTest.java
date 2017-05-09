@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.activityentry.discussion;
+package org.xcolab.service.activities.activityEntry.proposal;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,10 +14,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.util.ThreadClientUtil;
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.model.tables.pojos.ActivityEntry;
-import org.xcolab.service.activities.activityentry.ActivityEntryTestHelper;
+import org.xcolab.service.activities.activityEntry.ActivityEntryTestHelper;
 
 import java.sql.Timestamp;
 
@@ -51,10 +50,10 @@ import java.sql.Timestamp;
         org.xcolab.client.proposals.ProposalClientUtil.class,
         org.xcolab.client.proposals.ProposalAttributeClientUtil.class
 })
-public class DiscussionAddProposalCommentActivityEntryTest {
+public class ProposalSupporterAddedActivityEntryTest {
 
     @Before
-    public void setup() throws Exception{
+    public void setup() throws Exception {
         ActivityEntryTestHelper.setupBasic();
     }
 
@@ -62,9 +61,10 @@ public class DiscussionAddProposalCommentActivityEntryTest {
     public void discussionCommentActivityEntry() throws Exception {
 
         CommentClient commentClient = Mockito.mock(CommentClient.class);
-        PowerMockito.whenNew(CommentClient.class).withArguments(Mockito.anyObject()).thenReturn(commentClient);
+        PowerMockito.whenNew(CommentClient.class).withArguments(Mockito.anyObject()).thenReturn
+                (commentClient);
 
-        DiscussionAddProposalCommentActivityEntry provider = new DiscussionAddProposalCommentActivityEntry();
+        ProposalSupporterAddedActivityEntry provider = new ProposalSupporterAddedActivityEntry();
 
         ActivityEntry activityEntry = new ActivityEntry();
         activityEntry.setMemberId(1234l);
@@ -76,17 +76,15 @@ public class DiscussionAddProposalCommentActivityEntryTest {
         provider.setActivityEntry(activityEntry);
 
 
-
-
-        PowerMockito.verifyStatic(Mockito.times(1));
-        ThreadClientUtil.getThread(Mockito.anyLong());
-
-
         activityEntry.setPrimaryType(provider.getPrimaryType());
         activityEntry.setSecondaryType(provider.getSecondaryType());
 
         activityEntry.setActivityEntryBody(provider.getBody());
         activityEntry.setActivityEntryTitle(provider.getTitle());
         activityEntry.setActivityEntryName(provider.getName());
+
+        PowerMockito.verifyStatic(Mockito.times(1));
+        MembersClient.getMember(Mockito.anyLong());
+
     }
 }

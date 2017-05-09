@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.activityentry.proposal;
+package org.xcolab.service.activities.activityEntry.proposal;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.model.tables.pojos.ActivityEntry;
-import org.xcolab.service.activities.activityentry.ActivityEntryTestHelper;
+import org.xcolab.service.activities.activityEntry.ActivityEntryTestHelper;
 
 import java.sql.Timestamp;
 
@@ -49,9 +49,8 @@ import java.sql.Timestamp;
         org.xcolab.client.members.MembersClient.class,
         org.xcolab.client.proposals.ProposalClientUtil.class,
         org.xcolab.client.proposals.ProposalAttributeClientUtil.class
-
 })
-public class ProposalVoteRetractActivityEntryTest {
+public class ProposalVoteActivityEntryTest {
 
     @Before
     public void setup() throws Exception {
@@ -64,7 +63,7 @@ public class ProposalVoteRetractActivityEntryTest {
         CommentClient commentClient = Mockito.mock(CommentClient.class);
         PowerMockito.whenNew(CommentClient.class).withArguments(Mockito.anyObject()).thenReturn(commentClient);
 
-        ProposalVoteRetractActivityEntry provider = new ProposalVoteRetractActivityEntry();
+        ProposalVoteActivityEntry provider = new ProposalVoteActivityEntry();
 
         ActivityEntry activityEntry = new ActivityEntry();
         activityEntry.setMemberId(1234l);

@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.activityentry.discussion;
+package org.xcolab.service.activities.activityEntry.discussion;
 
 public class DiscussionAddProposalCommentActivityEntry extends DiscussionBaseActivityEntry {
 

@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.activityentry.member;
+package org.xcolab.service.activities.activityEntry.proposal;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.model.tables.pojos.ActivityEntry;
-import org.xcolab.service.activities.activityentry.ActivityEntryTestHelper;
+import org.xcolab.service.activities.activityEntry.ActivityEntryTestHelper;
+import org.xcolab.service.activities.activityEntry.member.MemberJoinedActivityEntry;
 
 import java.sql.Timestamp;
 
@@ -50,11 +51,11 @@ import java.sql.Timestamp;
         org.xcolab.client.proposals.ProposalClientUtil.class,
         org.xcolab.client.proposals.ProposalAttributeClientUtil.class
 })
-public class MemberJoinedActivityEntryTest {
+public class ProposalAttributeRemoveActivityEntryTest {
+
     @Before
     public void setup() throws Exception {
         ActivityEntryTestHelper.setupBasic();
-
     }
 
     @Test

@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.activityentry.proposal;
+package org.xcolab.service.activities.activityEntry.proposal;
 
 public class ProposalVoteActivityEntry  extends ProposalBaseActivityEntry {
 

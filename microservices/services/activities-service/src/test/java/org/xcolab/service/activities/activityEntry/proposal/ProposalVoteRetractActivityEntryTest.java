@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.activityentry.discussion;
+package org.xcolab.service.activities.activityEntry.proposal;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,11 +14,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import org.xcolab.client.comment.CommentClient;
-import org.xcolab.client.comment.util.CategoryClientUtil;
-import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.model.tables.pojos.ActivityEntry;
-import org.xcolab.service.activities.activityentry.ActivityEntryTestHelper;
+import org.xcolab.service.activities.activityEntry.ActivityEntryTestHelper;
 
 import java.sql.Timestamp;
 
@@ -32,9 +30,9 @@ import java.sql.Timestamp;
 @ComponentScan("org.xcolab.view.pages.proposals.utils.context")
 @ComponentScan("org.xcolab.view.config")
 @TestPropertySource(
-    properties = {
-        "cache.active=false"
-    }
+        properties = {
+                "cache.active=false"
+        }
 )
 
 @PrepareForTest({
@@ -51,21 +49,22 @@ import java.sql.Timestamp;
         org.xcolab.client.members.MembersClient.class,
         org.xcolab.client.proposals.ProposalClientUtil.class,
         org.xcolab.client.proposals.ProposalAttributeClientUtil.class
-})
-public class DiscussionAddCommentActivityEntryTest{
 
+})
+public class ProposalVoteRetractActivityEntryTest {
 
     @Before
     public void setup() throws Exception {
         ActivityEntryTestHelper.setupBasic();
     }
+
     @Test
     public void discussionCommentActivityEntry() throws Exception {
 
         CommentClient commentClient = Mockito.mock(CommentClient.class);
         PowerMockito.whenNew(CommentClient.class).withArguments(Mockito.anyObject()).thenReturn(commentClient);
 
-        DiscussionAddCommentActivityEntry provider = new DiscussionAddCommentActivityEntry();
+        ProposalVoteRetractActivityEntry provider = new ProposalVoteRetractActivityEntry();
 
         ActivityEntry activityEntry = new ActivityEntry();
         activityEntry.setMemberId(1234l);
@@ -76,15 +75,6 @@ public class DiscussionAddCommentActivityEntryTest{
 
         provider.setActivityEntry(activityEntry);
 
-        PowerMockito.verifyStatic(Mockito.times(2));
-        CategoryClientUtil.getCategory(Mockito.anyLong());
-
-        PowerMockito.verifyStatic(Mockito.times(1));
-        CommentClientUtil.getComment(Mockito.anyLong());
-
-        PowerMockito.verifyStatic(Mockito.times(1));
-        ThreadClientUtil.getThread(Mockito.anyLong());
-
 
         activityEntry.setPrimaryType(provider.getPrimaryType());
         activityEntry.setSecondaryType(provider.getSecondaryType());
@@ -92,6 +82,11 @@ public class DiscussionAddCommentActivityEntryTest{
         activityEntry.setActivityEntryBody(provider.getBody());
         activityEntry.setActivityEntryTitle(provider.getTitle());
         activityEntry.setActivityEntryName(provider.getName());
+
+        PowerMockito.verifyStatic(Mockito.times(1));
+        MembersClient.getMember(Mockito.anyLong());
+
+
     }
 
 }
