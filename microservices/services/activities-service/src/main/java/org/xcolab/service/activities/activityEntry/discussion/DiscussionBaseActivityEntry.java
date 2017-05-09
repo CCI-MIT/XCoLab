@@ -77,25 +77,19 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
         if(this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_PROPOSAL_COMMENT.getSecondaryTypeId())){
             try {//proposal comment
                 thread = ThreadClientUtil.getThread(activityEntry.getClassPrimaryKey());
-                final Long proposalId =
-                        ThreadClientUtil.getProposalIdForThread(thread.getThreadId());
 
-                if (proposalId != null) {
-
-                    proposal = ProposalClientUtil.getProposal(proposalId);
-                    contest = ProposalClientUtil
-                            .getCurrentContestForProposal(proposal.getProposalId());
+                proposal = ProposalClientUtil.getProposalByThreadId(thread.getThreadId());
+                contest = ProposalClientUtil
+                        .getCurrentContestForProposal(proposal.getProposalId());
 
 
-                    proposalName = ProposalAttributeClientUtil
-                            .getProposalAttribute(proposal.getProposalId(),
-                                    ProposalAttributeKeys.NAME, null).getStringValue();
-                }
+                proposalName = ProposalAttributeClientUtil
+                        .getProposalAttribute(proposal.getProposalId(),
+                                ProposalAttributeKeys.NAME, null).getStringValue();
             } catch (ProposalNotFoundException | ContestNotFoundException | ThreadNotFoundException ignored) {
 
 
             }
-            return;
         }
     }
 

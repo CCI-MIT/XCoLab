@@ -19,13 +19,11 @@ import org.xcolab.service.comments.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.service.utils.PaginationHelper.SortColumn;
 
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
 import static org.xcolab.model.Tables.CATEGORY;
 import static org.xcolab.model.Tables.COMMENT;
-import static org.xcolab.model.Tables.PROPOSAL;
 import static org.xcolab.model.Tables.THREAD;
 
 @Repository
@@ -185,16 +183,4 @@ public class ThreadDaoImpl implements ThreadDao {
         return Optional.of(record.into(Comment.class));
     }
 
-    @Override
-    public Optional<Long> getProposalIdForThread(long threadId){
-        Record record = dslContext
-                .select(PROPOSAL.PROPOSAL_ID)
-                .from(THREAD)
-                .innerJoin(PROPOSAL).on(PROPOSAL.DISCUSSION_ID.eq(THREAD.THREAD_ID))
-                .where(THREAD.THREAD_ID.eq(threadId)).fetchOne();
-        if (record == null) {
-            return Optional.empty();
-        }
-        return Optional.of(record.into(Long.class));
-    }
 }

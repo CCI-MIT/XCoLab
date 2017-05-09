@@ -11,6 +11,7 @@ import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.search.pojo.SearchPojo;
 
 public class DiscussionSearchItem extends AbstractSearchItem {
@@ -49,10 +50,10 @@ public class DiscussionSearchItem extends AbstractSearchItem {
     public String getLinkUrl() {
         String ret = thread.getLinkUrl();
         if (ret == null) {
-            Long propId = ThreadClientUtil.getProposalIdForThread(thread.getThreadId());
-            if (propId != null) {
-                ret = ProposalClientUtil.getProposal(propId).getProposalDiscussionUrl();
-            } else {
+            try {
+                ret = ProposalClientUtil.getProposalByThreadId(thread.getThreadId())
+                        .getProposalDiscussionUrl();
+            } catch (ProposalNotFoundException e) {
                 Contest contest = ContestClientUtil.getContestByThreadId(thread.getThreadId());
                 if (contest != null) {
                     ret = contest.getContestDiscussionLinkUrl();

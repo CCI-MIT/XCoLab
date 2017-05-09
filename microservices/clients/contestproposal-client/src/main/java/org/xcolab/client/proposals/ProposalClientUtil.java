@@ -112,6 +112,10 @@ public final class ProposalClientUtil {
         return client.getLinkingProposals(proposalId);
     }
 
+    public static Proposal getProposalByThreadId(long threadId) throws ProposalNotFoundException {
+        return client.getProposalByThreadId(threadId);
+    }
+
     public static Proposal getProposal(long proposalId) throws ProposalNotFoundException {
         return client.getProposal(proposalId);
     }

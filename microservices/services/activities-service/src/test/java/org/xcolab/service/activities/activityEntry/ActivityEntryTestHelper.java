@@ -1,8 +1,6 @@
 package org.xcolab.service.activities.activityEntry;
 
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 
 import org.xcolab.client.admin.AdminClient;
@@ -33,11 +31,8 @@ import static org.mockito.Matchers.anyString;
 
 public final class ActivityEntryTestHelper {
 
-
-
-    public static void setupBasic() throws Exception{
+    public static void setupBasic() throws Exception {
         ServiceRequestUtils.setInitialized(true);
-        Proposal proposal;
         PowerMockito.mockStatic(AdminClient.class);
         PowerMockito.mockStatic(ContestClientUtil.class);
         PowerMockito.mockStatic(CategoryClientUtil.class);
@@ -48,142 +43,85 @@ public final class ActivityEntryTestHelper {
         PowerMockito.mockStatic(ProposalClientUtil.class);
         PowerMockito.mockStatic(ProposalAttributeClientUtil.class);
 
-        proposal = Mockito.mock(Proposal.class);
+        Proposal proposal = Mockito.mock(Proposal.class);
+
         Mockito.when(proposal.getProposalLinkUrl(anyObject()))
-                .thenAnswer(new Answer<String>() {
-                    @Override
-                    public String answer(InvocationOnMock invocation)
-                            throws Throwable {
+                .thenReturn("");
 
-                        return "";
-
-                    }
-                });
         Mockito.when(ContestClientUtil.getContestType(anyLong()))
-                .thenAnswer(new Answer<ContestType>() {
-                    @Override
-                    public ContestType answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        ContestType contestType = new ContestType();
-                        contestType.setProposalName("");
-                        return contestType;
-
-                    }
+                .thenAnswer(invocation -> {
+                    ContestType contestType = new ContestType();
+                    contestType.setProposalName("");
+                    return contestType;
                 });
-        Mockito.when(MembersClient.getMember(anyLong()))
-                .thenAnswer(new Answer<Member>() {
-                    @Override
-                    public Member answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        Member member = new Member();
-                        member.setScreenName("");
-                        return member;
 
-                    }
+        Mockito.when(MembersClient.getMember(anyLong()))
+                .thenAnswer(invocation -> {
+                    Member member = new Member();
+                    member.setScreenName("");
+                    return member;
                 });
 
         Mockito.when(ProposalAttributeClientUtil.getProposalAttribute(anyLong(),anyString(),anyObject()))
-                .thenAnswer(new Answer<ProposalAttribute>() {
-                    @Override
-                    public ProposalAttribute answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        ProposalAttribute proposalAttribute = new ProposalAttribute();
-                        proposalAttribute.setProposalId(1230l);
+                .thenAnswer(invocation -> {
+                    ProposalAttribute proposalAttribute = new ProposalAttribute();
+                    proposalAttribute.setProposalId(1230L);
 
-                        return proposalAttribute;
+                    return proposalAttribute;
 
-                    }
                 });
 
         Mockito.when(ProposalClientUtil.getProposal(anyLong()))
-                .thenAnswer(new Answer<Proposal>() {
-                    @Override
-                    public Proposal answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        Proposal proposalz = proposal;
-                        proposalz.setProposalId(1230l);
+                .thenAnswer(invocation -> {
+                    proposal.setProposalId(1230L);
+                    return proposal;
 
-                        return proposalz;
-
-                    }
                 });
 
         Mockito.when(ProposalClientUtil.getCurrentContestForProposal(anyLong()))
-                .thenAnswer(new Answer<Contest>() {
-                    @Override
-                    public Contest answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        Contest contest = new Contest();
-                        contest.setContestTypeId(213l);
+                .thenAnswer(invocation -> {
+                    Contest contest = new Contest();
+                    contest.setContestTypeId(213L);
 
-                        return contest;
-
-                    }
+                    return contest;
                 });
-
-
 
         Mockito.when(CommentClientUtil
                 .getComment(Mockito.anyLong()))
-                .thenAnswer(new Answer<Comment>() {
-                    @Override
-                    public Comment answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        Comment c = new Comment();
-                        c.setThreadId(1234l);
-                        return c;
-
-                    }
+                .thenAnswer(invocation -> {
+                    Comment c = new Comment();
+                    c.setThreadId(1234L);
+                    return c;
                 });
 
         Mockito.when(ThreadClientUtil.getThread(Mockito.anyLong()))
-                .thenAnswer(new Answer<CommentThread>() {
-                    @Override
-                    public CommentThread answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        CommentThread c = new CommentThread();
-                        c.setCategoryId(-1234l);
-                        c.setThreadId(1233l);
-                        return c;
-
-                    }
+                .thenAnswer(invocation -> {
+                    CommentThread c = new CommentThread();
+                    c.setCategoryId(-1234L);
+                    c.setThreadId(1233L);
+                    return c;
                 });
 
-        Mockito.when(ThreadClientUtil.getProposalIdForThread(Mockito.anyLong()))
-                .thenAnswer(new Answer<Long>() {
-                    @Override
-                    public Long answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        return 1230l;
-
-                    }
+        Mockito.when(ProposalClientUtil.getProposalByThreadId(Mockito.anyLong()))
+                .thenAnswer(invocation -> {
+                    proposal.setProposalId(1230L);
+                    return proposal;
                 });
 
 
         Mockito.when(CategoryClientUtil.getCategory(Mockito.anyLong()))
-                .thenAnswer(new Answer<Category>() {
-                    @Override
-                    public Category answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        Category c = new Category();
-                        c.setCategoryId(-1234l);
-                        c.setName("a");
-                        return c;
-
-                    }
+                .thenAnswer(invocation -> {
+                    Category c = new Category();
+                    c.setCategoryId(-1234L);
+                    c.setName("a");
+                    return c;
                 });
 
-        Mockito.when(ContestClientUtil.getAllContestTypes()).thenReturn(
-                new ArrayList()
-        );
+        Mockito.when(ContestClientUtil.getAllContestTypes())
+                .thenReturn(new ArrayList<>());
+
         Mockito.when(AdminClient.getConfigurationAttribute(anyString()))
-                .thenAnswer(new Answer<ConfigurationAttribute>() {
-                    @Override
-                    public ConfigurationAttribute answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        return new ConfigurationAttribute("COLAB_NAME", 0l, 0l,
-                                "12312312332", 0d);
-                    }
-                });
+                .thenReturn(new ConfigurationAttribute("COLAB_NAME", 0L, 0L,
+                        "12312312332", 0d));
     }
 }

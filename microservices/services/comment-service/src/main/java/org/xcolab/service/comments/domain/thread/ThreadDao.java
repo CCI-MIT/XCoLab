@@ -25,5 +25,4 @@ public interface ThreadDao {
 
     Optional<Comment> getLastComment(long threadId);
 
-    Optional<Long> getProposalIdForThread(long threadId);
 }

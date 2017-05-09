@@ -55,7 +55,7 @@ public class ProposalDaoImpl implements ProposalDao {
     @Override
     public List<Proposal> findByGiven(PaginationHelper paginationHelper, String filterText,
             List<Long> contestIds, Boolean visible, Long contestPhaseId, Integer ribbon,
-            List<Long> contestTypeIds, List<Long> contestTierIds) {
+            List<Long> contestTypeIds, List<Long> contestTierIds, Long threadId) {
         final SelectQuery<Record> query = dslContext.selectDistinct(PROPOSAL.fields())
                 .from(PROPOSAL)
                 .getQuery();
@@ -102,6 +102,10 @@ public class ProposalDaoImpl implements ProposalDao {
             if (visible) {
                 isVisibleInCurrentPhase(query);
             }
+        }
+
+        if (threadId != null) {
+            query.addConditions(PROPOSAL.DISCUSSION_ID.eq(threadId));
         }
 
         if (contestIds != null) {
