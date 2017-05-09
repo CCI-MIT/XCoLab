@@ -9,11 +9,11 @@ import org.xcolab.util.http.client.RestService;
 import java.util.List;
 
 public final class PointsClientUtil {
-    private static final RestService proposalService = new RestService(CoLabService.PROPOSAL,
+    private static final RestService contestService = new RestService(CoLabService.CONTEST,
             ServiceRequestUtils.getNamespace());
 
     private static final PointsClient client
-            = PointsClient.fromService(proposalService);
+            = PointsClient.fromService(contestService);
 
     public static PointsClient getClient() {
         return client;

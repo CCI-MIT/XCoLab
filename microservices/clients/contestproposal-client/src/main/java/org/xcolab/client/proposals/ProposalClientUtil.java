@@ -23,9 +23,9 @@ import java.util.regex.Pattern;
 
 public final class ProposalClientUtil {
 
-    private static final RestService proposalService = new RestService(CoLabService.PROPOSAL,
+    private static final RestService contestService = new RestService(CoLabService.CONTEST,
             ServiceRequestUtils.getNamespace());
-    private static final ProposalClient client = ProposalClient.fromService(proposalService);
+    private static final ProposalClient client = ProposalClient.fromService(contestService);
 
     public static ProposalClient getClient() {
         return client;

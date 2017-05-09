@@ -13,11 +13,11 @@ import java.util.List;
 
 public final class ProposalAttributeClientUtil {
 
-    private static final RestService proposalService = new RestService(CoLabService.PROPOSAL,
+    private static final RestService contestService = new RestService(CoLabService.CONTEST,
             ServiceRequestUtils.getNamespace());
 
     private static final ProposalAttributeClient client =
-            ProposalAttributeClient.fromService(proposalService);
+            ProposalAttributeClient.fromService(contestService);
 
     public static ProposalAttributeClient getClient() {
         return client;

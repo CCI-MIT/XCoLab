@@ -90,7 +90,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
                     commentClient = CommentClient.fromService(commentsService);
                     threadClient = ThreadClient.fromService(commentsService);
-                    RestService proposalsService = new RefreshingRestService(CoLabService.PROPOSAL,
+                    RestService proposalsService = new RefreshingRestService(CoLabService.CONTEST,
                             ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
                     );
 

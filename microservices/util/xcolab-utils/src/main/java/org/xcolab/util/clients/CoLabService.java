@@ -7,7 +7,6 @@ public enum CoLabService {
     COMMENT("comment-service"),
     CONTENT("content-service"),
     CONTEST("contest-service"),
-    PROPOSAL("proposals-service"),
     EMAIL("emails-service"),
     FILE("files-service"),
     MODERATION("moderation-service"),

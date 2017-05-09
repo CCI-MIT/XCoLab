@@ -74,7 +74,7 @@ public class ClientHelper {
 
     public ClientHelper(Contest contest) {
         if (contest != null && contest.getIsSharedContestInForeignColab()) {
-            proposalService = new RefreshingRestService(CoLabService.PROPOSAL,
+            proposalService = new RefreshingRestService(CoLabService.CONTEST,
                     ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
             );
             proposalClient = ProposalClient.fromService(proposalService);
@@ -107,7 +107,7 @@ public class ClientHelper {
             );
             activitiesClient = ActivitiesClient.fromService(activitiesService);
         } else {
-            proposalService = new RestService(CoLabService.PROPOSAL,
+            proposalService = new RestService(CoLabService.CONTEST,
                     ServiceRequestUtils.getNamespace());
             proposalClient = ProposalClientUtil.getClient();
             membershipClient = MembershipClientUtil.getClient();

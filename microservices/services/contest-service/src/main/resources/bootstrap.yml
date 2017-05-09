@@ -1,5 +1,10 @@
 spring:
   application:
     name: ${xcolab.namespace:xcolab}-contest-service
+  http:
+      encoding:
+        charset: UTF-8
+        enabled: true
+        force: true
   jmx:
     default-domain: ${spring.application.name}

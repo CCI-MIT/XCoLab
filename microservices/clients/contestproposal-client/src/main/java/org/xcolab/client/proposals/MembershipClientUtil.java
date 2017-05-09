@@ -10,10 +10,10 @@ import java.util.List;
 
 public class MembershipClientUtil {
 
-    private static final RestService proposalService = new RestService(CoLabService.PROPOSAL,
+    private static final RestService contestService = new RestService(CoLabService.CONTEST,
             ServiceRequestUtils.getNamespace());
 
-    private static final MembershipClient client = MembershipClient.fromService(proposalService);
+    private static final MembershipClient client = MembershipClient.fromService(contestService);
 
     public static MembershipClient getClient() {
         return client;
