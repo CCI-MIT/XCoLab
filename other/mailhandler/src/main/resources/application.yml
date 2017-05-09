@@ -1,3 +1,6 @@
+server:
+  port: 8181
+
 mail:
   smtp:
     port: 8025
