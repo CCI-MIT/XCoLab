@@ -13,6 +13,7 @@ import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
+import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
@@ -112,6 +113,11 @@ public class ContentEditorController extends BaseContentEditor{
             versions.put(articleVersion);
         }
         articleVersion = new JSONObject();
+        ContentPage cp = ContentsClient.getContentPageByContentArticleId(contentArticleVersion.getContentArticleId());
+
+        if(cp!=null){
+            articleVersion.put("contentUrl",cp.getTitle());
+        }
         if (contentArticleVersion != null) {
             articleVersion.put("title", contentArticleVersion.getTitle());
             articleVersion.put("folderId", contentArticleVersion.getFolderId());
@@ -119,6 +125,8 @@ public class ContentEditorController extends BaseContentEditor{
             articleVersion.put("content", contentArticleVersion.getContent());
             articleVersion.put("createdDate",contentArticleVersion.getCreateDate());
             articleVersion.put("versions",versions);
+
+
         }
         return articleVersion;
     }

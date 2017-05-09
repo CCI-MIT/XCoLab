@@ -38,6 +38,18 @@ public class ContentPageDaoImpl implements ContentPageDao {
     }
 
     @Override
+    public Optional<ContentPage> getByContentArticleId(long contentArticleId) {
+        final Record record = dslContext.select()
+                .from(CONTENT_PAGE)
+                .where(CONTENT_PAGE.CONTENT_ARTICLE_ID.eq(contentArticleId))
+                .fetchOne();
+        if (record == null) {
+            return Optional.empty();
+        }
+        return Optional.of(record.into(ContentPage.class));
+    }
+
+    @Override
     public List<ContentPage> list(String title) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTENT_PAGE)
