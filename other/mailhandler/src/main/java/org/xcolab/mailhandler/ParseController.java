@@ -49,8 +49,9 @@ public class ParseController {
 
     @RequestMapping
     public ResponseEntity<String> handle(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam String to, @RequestParam String from,
-            @RequestParam String subject, @RequestParam String html, @RequestParam String text,
+            @RequestParam String to, @RequestParam String from, @RequestParam String subject,
+            @RequestParam (required = false) String html,
+            @RequestParam (required = false) String text,
             @RequestParam (value = "spam_score", required = false) Float spamScore,
             @RequestParam (value = "spam_report", required = false) String spamReport) {
 
@@ -61,9 +62,16 @@ public class ParseController {
         final String smtpPassword = mailProperties.getSmtp().getPass();
         final String smtpConnection = mailProperties.getSmtp().getTransport();
 
-        List<String> recipients = extractRecipientsFromMappings(to);
+        if (html == null && text == null) {
+            log.error("Email has not text or html parameter.");
+            return ResponseEntity.badRequest().body("Need to specify at least one of html or text");
+        }
 
+        List<String> recipients = extractRecipientsFromMappings(to);
         if (recipients.isEmpty()) {
+            if (!to.contains("no-reply@")) {
+                log.warn("No mappings found for to = {}.", to);
+            }
             return ResponseEntity.notFound().build();
         }
 
@@ -72,6 +80,7 @@ public class ParseController {
             sendEmail(from, subject, html, text, smtpHost, smtpPort, smtpUsername, smtpPassword,
                     smtpConnection, recipients, attachments);
         } catch (MailException e) {
+            log.error("Exception while sending mail:", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
@@ -118,7 +127,7 @@ public class ParseController {
             email.addRecipient(null, recipient, Message.RecipientType.TO);
         }
 
-        if (!html.isEmpty()) {
+        if (html != null && !html.isEmpty()) {
             email.setTextHTML(html);
         } else {
             email.setText(text);
