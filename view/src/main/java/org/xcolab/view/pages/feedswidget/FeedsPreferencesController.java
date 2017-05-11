@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.view.util.entity.flash.AlertMessage;
@@ -21,14 +22,14 @@ import javax.servlet.http.HttpServletResponse;
 public class FeedsPreferencesController {
 	
     @GetMapping("/feedswidget/editPreferences")
-    public String showFeed(HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String showFeed(@RequestParam(required = false) String preferenceId,HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		long memberId = MemberAuthUtil.getMemberId(request);
 		if (!PermissionsClient.canAdminAll(memberId)) {
 			return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
 		}
 
-		model.addAttribute("feedsPreferences", new FeedsPreferences(request));
+		model.addAttribute("feedsPreferences", new FeedsPreferences(preferenceId));
         
     	// populate feed types
     	Map<String, String> feedTypes = new HashMap<>();
@@ -47,10 +48,11 @@ public class FeedsPreferencesController {
 	
 
     @PostMapping("/feedswidget/savePreferences")
-    public String savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, FeedsPreferences preferences) throws  IOException {
+    public void savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, FeedsPreferences preferences) throws  IOException {
     	preferences.store();
 		AlertMessage.success("Feeds widget preferences has been saved.").flash(request);
-		return "/feedswidget/editPreferences";
+
+        response.sendRedirect("/feedswidget/editPreferences?preferenceId="+preferences.getPreferenceId());
 	}
 
 }

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.view.util.entity.flash.AlertMessage;
@@ -19,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 public class StaffMembersPreferencesController {
 
     @GetMapping("/staffmemberswidget/editPreferences")
-    public String showStaffMembers(HttpServletRequest request, HttpServletResponse response, Model model) {
-    	model.addAttribute("staffMembersPreferences", new StaffMembersPreferences());
+    public String showStaffMembers(@RequestParam(required = false) String preferenceId, HttpServletRequest request, HttpServletResponse response, Model model) {
+    	model.addAttribute("staffMembersPreferences", new StaffMembersPreferences(preferenceId));
     	model.addAttribute("categories", StaffMembersPreferences.getCategories());
 
         long memberId = MemberAuthUtil.getMemberId(request);
@@ -32,10 +33,11 @@ public class StaffMembersPreferencesController {
 
 
     @PostMapping("/staffmemberswidget/savePreferences")
-    public String savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, StaffMembersPreferences preferences) throws  IOException {
+    public void savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, StaffMembersPreferences preferences) throws  IOException {
     	preferences.store();
         AlertMessage.success("Staff members widget preferences has been saved.").flash(request);
-        return "/staffmemberswidget/editPreferences";
+
+        response.sendRedirect("/staffmemberswidget/editPreferences?preferenceId="+preferences.getPreferenceId());
 	}
 
 }

@@ -5,11 +5,13 @@ import org.json.JSONObject;
 import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+import org.xcolab.entity.utils.WidgetPreference;
+import org.xcolab.util.attributes.AttributeGetter;
 
 import java.io.IOException;
 import java.io.Serializable;
 
-public class ContactPreferences implements Serializable {
+public class ContactPreferences extends WidgetPreference implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private final static String RECIPIENTS_PREF = "RECIPIENTS";
@@ -27,10 +29,17 @@ public class ContactPreferences implements Serializable {
     private String messageSubject;
     private String expandLinkText;
 
-    public ContactPreferences() {
-        JSONObject prefs =
-                new JSONObject(ConfigurationAttributeKey.PORTLET_CONTACT_FORM_PREFERENCES.get());
+    @Override
+    public AttributeGetter<String> getConfigurationAttribute() {
+        return ConfigurationAttributeKey.PORTLET_CONTACT_FORM_PREFERENCES;
+    }
 
+
+    public ContactPreferences() {
+        this(null);
+    }
+    public ContactPreferences(String preferenceId) {
+        super(preferenceId);
         if (prefs.has(MESSAGE_FORMAT_PREF)) {
             messageFormat = prefs.getString(MESSAGE_FORMAT_PREF);
         } else {
@@ -74,11 +83,7 @@ public class ContactPreferences implements Serializable {
         prefs.put(MESSAGE_SUBJECT_PREF, messageSubject);
         prefs.put(EXPAND_LINK_TEXT_PREF, expandLinkText);
         prefs.put(RECIPIENTS_PREF, recipients);
-        ConfigurationAttribute configurationAttribute = new ConfigurationAttribute();
-        configurationAttribute
-                .setName(ConfigurationAttributeKey.PORTLET_CONTACT_FORM_PREFERENCES.name());
-        configurationAttribute.setStringValue(prefs.toString());
-        AdminClient.updateConfigurationAttribute(configurationAttribute);
+        savePreferences(prefs,null);
     }
 
     public String getRecipients() {

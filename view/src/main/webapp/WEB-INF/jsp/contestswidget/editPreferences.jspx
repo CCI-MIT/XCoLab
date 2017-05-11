@@ -2,11 +2,51 @@
 		xmlns:jsp="http://java.sun.com/JSP/Page"
 		xmlns:form="http://www.springframework.org/tags/form"
 		xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
 		 version="2.0">
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 	<xcolab:layout>
 		<form:form action="/contestswidget/savePreferences" commandName="contestPreferences">
 			<table>
+                <tr>
+                    <td>
+                        Preference ID:
+                    </td>
+                    <td>
+                        <select id="prefID" >
+                            <option value="${contestPreferences.preferenceId}" selected="selected" >${contestPreferences.preferenceId}</option>
+                            <c:forEach var="preferenceSaved" items="${contestPreferences.allPreferenceIds}">
+                                    <c:if test="${preferenceSaved != contestPreferences.preferenceId}">
+                                        <option value="${preferenceSaved}" >${preferenceSaved}</option>
+                                    </c:if>
+
+                            </c:forEach>
+                            <option value="-1">CREATE NEW PREFERENCE</option>
+                        </select>
+
+                        <form:hidden path="preferenceId" id="newPref"  cssStyle="margin-left:20px;"/>
+
+                        <script>
+                            jQuery(document).ready(function () {
+                                var initialSelection = '${contestPreferences.preferenceId}';
+                                $("#prefID").change(function(){
+                                    var currentValue = $( this ).val();
+                                    if(currentValue == -1){
+                                        $("#newPref").attr("type","text");
+                                        $("#newPref").attr("placeholder","preference identification");
+                                    }else{
+                                        if(currentValue != initialSelection){
+                                          window.location = window.location.pathname + "?preferenceId="+currentValue;
+                                        }else {
+                                            $("#newPref").hide();
+                                        }
+                                    }
+                                });
+
+                            });
+                        </script>
+                    </td>
+                </tr>
 				<tr>
 					<td style="width:30%">
 						Enter title

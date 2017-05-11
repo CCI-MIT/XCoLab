@@ -34,25 +34,26 @@ public class StaffMemberController {
 
     @GetMapping
     public String showStaffMembers(HttpServletRequest request, HttpServletResponse response,
-            Model model, @RequestParam long categoryId, @RequestParam String title,
-            @RequestParam(required = false, defaultValue = "3") int columnAmount,
-            @RequestParam(required = false, defaultValue = "true") boolean displayPhoto,
-            @RequestParam(required = false, defaultValue = "true") boolean displayUrl) {
+            Model model,
+            @RequestParam(required = false) String preferenceId,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) Integer columnAmount,
+            @RequestParam(required = false) Boolean displayPhoto,
+            @RequestParam(required = false) Boolean displayUrl) {
 
-        //TODO: turn this into widget-specific preferences
-        //        StaffMembersPreferences preferences = new StaffMembersPreferences();
-        //
-        //        model.addAttribute("portletTitle", preferences.getPortletTitle());
-        //        model.addAttribute("columnAmount", preferences.getColumnAmount());
-        //        model.addAttribute("displayPhoto", preferences.isDisplayPhoto());
-        //        model.addAttribute("displayUrl", preferences.isDisplayUrl());
-        //
-        //        final int categoryId = preferences.getCategoryId();
 
-        model.addAttribute("widgetTitle", title);
-        model.addAttribute("columnAmount", columnAmount);
-        model.addAttribute("displayPhoto", displayPhoto);
-        model.addAttribute("displayUrl", displayUrl);
+        StaffMembersPreferences preferences = new StaffMembersPreferences(preferenceId);
+
+
+        model.addAttribute("preferences",preferences);
+
+        categoryId = (categoryId!=null)?(categoryId):(preferences.getCategoryId());
+
+        model.addAttribute("widgetTitle", ((title!=null)?(title):(preferences.getPortletTitle())));
+        model.addAttribute("columnAmount", ((columnAmount != null)?(columnAmount):(preferences.getColumnAmount())));
+        model.addAttribute("displayPhoto", ((displayPhoto != null)?(displayPhoto):(preferences.isDisplayPhoto())));
+        model.addAttribute("displayUrl", ((displayUrl!=null)?(displayUrl):(preferences.isDisplayUrl())));
         CategoryRole categoryRole;
         try {
             categoryRole = CategoryRole.fromCategoryId(categoryId);

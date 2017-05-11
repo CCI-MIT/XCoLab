@@ -7,10 +7,50 @@
 	<xcolab:layout>
 		<h1>Edit</h1>
 
+
 		<form:form action="/staffmemberswidget/savePreferences" commandName="staffMembersPreferences">
 			<table>
+                <tr>
+                    <td>
+                        Preference ID:
+                    </td>
+                    <td>
+                        <select id="prefID" >
+                            <option value="${staffMembersPreferences.preferenceId}" selected="selected" >${staffMembersPreferences.preferenceId}</option>
+                            <c:forEach var="preferenceSaved" items="${staffMembersPreferences.allPreferenceIds}">
+                                <c:if test="${preferenceSaved != staffMembersPreferences.preferenceId}">
+                                    <option value="${preferenceSaved}" >${preferenceSaved}</option>
+                                </c:if>
+
+                            </c:forEach>
+                            <option value="-1">CREATE NEW PREFERENCE</option>
+                        </select>
+
+                        <form:hidden path="preferenceId" id="newPref"  cssStyle="margin-left:20px;"/>
+
+                        <script>
+                            jQuery(document).ready(function () {
+                                var initialSelection = '${staffMembersPreferences.preferenceId}';
+                                $("#prefID").change(function(){
+                                    var currentValue = $( this ).val();
+                                    if(currentValue == -1){
+                                        $("#newPref").attr("type","text");
+                                        $("#newPref").attr("placeholder","preference identification");
+                                    }else{
+                                        if(currentValue != initialSelection){
+                                            window.location = window.location.pathname + "?preferenceId="+currentValue;
+                                        }else {
+                                            $("#newPref").hide();
+                                        }
+                                    }
+                                });
+
+                            });
+                        </script>
+                    </td>
+                </tr>
 				<tr>
-					<td>Portlet title:</td>
+					<td>Widget title:</td>
 					<td>
 						<form:input path="portletTitle" />
 					</td>
