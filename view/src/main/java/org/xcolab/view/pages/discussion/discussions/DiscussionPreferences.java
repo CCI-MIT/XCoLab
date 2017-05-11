@@ -26,12 +26,11 @@ public class DiscussionPreferences extends WidgetPreference {
         return ConfigurationAttributeKey.PORTLET_DISCUSSION_PREFERENCES;
     }
 
+    public DiscussionPreferences() {
+        this(null);
+    }
     public DiscussionPreferences(String preferenceId) {
         super(preferenceId);
-    }
-    public DiscussionPreferences() {
-        super();
-
 
         try {
             categoryGroupId = Integer.parseInt((prefs.has(CATEGORY_GROUP_ID_PREFERENCE)) ? (prefs

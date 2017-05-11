@@ -9,6 +9,8 @@ import org.xcolab.client.admin.pojo.ConfigurationAttribute;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.entity.utils.WidgetPreference;
+import org.xcolab.util.attributes.AttributeGetter;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -17,7 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RandomProposalsPreferences {
+public class RandomProposalsPreferences extends WidgetPreference {
     private final static String SELECTED_PHASES_PREFERENCE = "SELECTED_PHASES";
     private final static String FLAG_FILTER_PREFERENCE = "FLAG_FILTERS";
     private final static String TITLE_PREFERENCE = "TITLE";
@@ -51,11 +53,20 @@ public class RandomProposalsPreferences {
         this.feedSize = feedSize;
     }
 
-    
-    public RandomProposalsPreferences() {
-        JSONObject prefs = new JSONObject(ConfigurationAttributeKey.PORTLET_RANDOM_PROPOSALS_PREFERENCES.get());
 
-        selectedPhases = convertStringsToLongs(((prefs.has(SELECTED_PHASES_PREFERENCE))?(prefs.getString(SELECTED_PHASES_PREFERENCE)):("")).split(","));
+    public RandomProposalsPreferences() {
+        this(null);
+    }
+
+    @Override
+    public AttributeGetter<String> getConfigurationAttribute() {
+        return ConfigurationAttributeKey.PORTLET_RANDOM_PROPOSALS_PREFERENCES;
+    }
+
+    public RandomProposalsPreferences(String preferenceId) {
+        super(preferenceId);
+
+        selectedPhases = convertStringsToLongs(((prefs.has(SELECTED_PHASES_PREFERENCE))?(prefs.getString(SELECTED_PHASES_PREFERENCE)):("")).split("-"));
         flagFiltersStr = (prefs.has(FLAG_FILTER_PREFERENCE))?(prefs.getString(FLAG_FILTER_PREFERENCE)):("");
         title = (prefs.has(TITLE_PREFERENCE))?(prefs.getString(TITLE_PREFERENCE)):( "Interesting Proposals");
         allProposalsTitle = (prefs.has(ALL_PROPOSALS_TITLE))?(prefs.getString(ALL_PROPOSALS_TITLE)):( "see all finalists");
@@ -72,20 +83,17 @@ public class RandomProposalsPreferences {
     }
     
     public void submit() throws  IOException {
-        JSONObject prefs = new JSONObject();
+        JSONObject prefsz = new JSONObject();
     	
-        prefs.put(SELECTED_PHASES_PREFERENCE, StringUtils.join(convertLongsToStrings(selectedPhases), ","));
-        prefs.put(FLAG_FILTER_PREFERENCE, flagFiltersStr);
-        prefs.put(TITLE_PREFERENCE, title);
-        prefs.put(FEED_SIZE_PREFERENCE, feedSize+"");
-        prefs.put(ALL_PROPOSALS_TITLE, allProposalsTitle);
-        prefs.put(ALL_PROPOSALS_URL, allProposalsUrl);
-        prefs.put(IS_COMPACT, Boolean.toString(isCompact));
+        prefsz.put(SELECTED_PHASES_PREFERENCE, StringUtils.join(convertLongsToStrings(selectedPhases), "-"));
+        prefsz.put(FLAG_FILTER_PREFERENCE, flagFiltersStr);
+        prefsz.put(TITLE_PREFERENCE, title);
+        prefsz.put(FEED_SIZE_PREFERENCE, feedSize+"");
+        prefsz.put(ALL_PROPOSALS_TITLE, allProposalsTitle);
+        prefsz.put(ALL_PROPOSALS_URL, allProposalsUrl);
+        prefsz.put(IS_COMPACT, Boolean.toString(isCompact));
 
-        ConfigurationAttribute configurationAttribute = new ConfigurationAttribute();
-        configurationAttribute.setName(ConfigurationAttributeKey.PORTLET_RANDOM_PROPOSALS_PREFERENCES.name());
-        configurationAttribute.setStringValue(prefs.toString());
-        AdminClient.updateConfigurationAttribute(configurationAttribute);
+        savePreferences(prefsz,preferenceId);
         
 
     }
