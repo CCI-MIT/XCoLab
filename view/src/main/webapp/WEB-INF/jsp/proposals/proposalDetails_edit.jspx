@@ -214,7 +214,7 @@
                     &#160;and <a href="${contestType.rulesPageUrl}">${contestType.rulesPageName}</a>.</h4>
 
                 <h5>${fn:toUpperCase(contestType.rulesPageName)}:</h5>
-                <div class="terms">
+                <div id="termsScroll" class="terms">
                         ${preferences.termsOfService}
                 </div>
                 <div class="btns">
