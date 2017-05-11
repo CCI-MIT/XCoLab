@@ -35,10 +35,6 @@ public class ThreadClient {
                 .toPojo(commentService);
     }
 
-    public Long getProposalIdForThread(long threadId) {
-        return commentServiceWrapper.getProposalIdForThread(threadId, CacheName.MISC_RUNTIME);
-    }
-
     public boolean updateThread(CommentThread thread) {
         return commentServiceWrapper.updateThread(new CommentThreadDto(thread));
     }
@@ -57,11 +53,6 @@ public class ThreadClient {
     }
 
     public static ThreadClient fromService(RestService contestService) {
-        ThreadClient client = instances.get(contestService);
-        if (client == null) {
-            client = new ThreadClient(contestService);
-            instances.put(contestService, client);
-        }
-        return client;
+        return instances.computeIfAbsent(contestService, ThreadClient::new);
     }
 }

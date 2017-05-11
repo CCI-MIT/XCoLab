@@ -35,10 +35,6 @@ public final class CommentClientUtil {
         return commentClient.countCommentsByAuthor(authorId);
     }
 
-    public static int countCommentsInContestPhase(long contestPhaseId, long contestId) {
-        return commentClient.countCommentsInContestPhase(contestPhaseId, contestId);
-    }
-
     public static Comment getComment(long commentId) throws CommentNotFoundException {
         return getComment(commentId, false);
     }

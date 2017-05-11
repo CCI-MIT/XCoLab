@@ -1,23 +1,23 @@
 package org.xcolab.service.activities.enums;
 
 
-import org.xcolab.service.activities.activityentry.discussion.DiscussionAddCommentActivityEntry;
-import org.xcolab.service.activities.activityentry.discussion
+import org.xcolab.service.activities.activityEntry.discussion.DiscussionAddCommentActivityEntry;
+import org.xcolab.service.activities.activityEntry.discussion
         .DiscussionAddContestCommentActivityEntry;
-import org.xcolab.service.activities.activityentry.discussion.DiscussionAddProposalCommentActivityEntry;
-import org.xcolab.service.activities.activityentry.discussion.DiscussionAddedActivityEntry;
-import org.xcolab.service.activities.activityentry.member.MemberJoinedActivityEntry;
-import org.xcolab.service.activities.activityentry.proposal.ProposalAttributeRemoveActivityEntry;
-import org.xcolab.service.activities.activityentry.proposal.ProposalAttributeUpdateActivityEntry;
-import org.xcolab.service.activities.activityentry.proposal.ProposalCreatedActivityEntry;
-import org.xcolab.service.activities.activityentry.proposal.ProposalMemberAddedActivityEntry;
-import org.xcolab.service.activities.activityentry.proposal.ProposalMemberRemovedActivityEntry;
-import org.xcolab.service.activities.activityentry.proposal.ProposalSupporterAddedActivityEntry;
-import org.xcolab.service.activities.activityentry.proposal.ProposalSupporterRemovedActivityEntry;
-import org.xcolab.service.activities.activityentry.proposal.ProposalVoteActivityEntry;
-import org.xcolab.service.activities.activityentry.proposal.ProposalVoteRetractActivityEntry;
-import org.xcolab.service.activities.activityentry.proposal.ProposalVoteSwitchActivityEntry;
-import org.xcolab.service.activities.activityentry.provider.ActivityEntryContentProvider;
+import org.xcolab.service.activities.activityEntry.discussion.DiscussionAddProposalCommentActivityEntry;
+import org.xcolab.service.activities.activityEntry.discussion.DiscussionAddedActivityEntry;
+import org.xcolab.service.activities.activityEntry.member.MemberJoinedActivityEntry;
+import org.xcolab.service.activities.activityEntry.proposal.ProposalAttributeRemoveActivityEntry;
+import org.xcolab.service.activities.activityEntry.proposal.ProposalAttributeUpdateActivityEntry;
+import org.xcolab.service.activities.activityEntry.proposal.ProposalCreatedActivityEntry;
+import org.xcolab.service.activities.activityEntry.proposal.ProposalMemberAddedActivityEntry;
+import org.xcolab.service.activities.activityEntry.proposal.ProposalMemberRemovedActivityEntry;
+import org.xcolab.service.activities.activityEntry.proposal.ProposalSupporterAddedActivityEntry;
+import org.xcolab.service.activities.activityEntry.proposal.ProposalSupporterRemovedActivityEntry;
+import org.xcolab.service.activities.activityEntry.proposal.ProposalVoteActivityEntry;
+import org.xcolab.service.activities.activityEntry.proposal.ProposalVoteRetractActivityEntry;
+import org.xcolab.service.activities.activityEntry.proposal.ProposalVoteSwitchActivityEntry;
+import org.xcolab.service.activities.activityEntry.provider.ActivityEntryContentProvider;
 
 public enum ActivityProvidersImpl {
     DiscussionAddCommentActivityEntry(1, new DiscussionAddCommentActivityEntry()),

@@ -1,0 +1,13 @@
+server:
+  port: 8181
+
+mail:
+  smtp:
+    port: 8025
+  domains:
+    - domain: example.com
+      mappings:
+        - username: admin
+          recipients:
+            - admin1@example.com
+            - admin2@example.com

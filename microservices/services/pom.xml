@@ -23,7 +23,6 @@
         <module>moderation-service</module>
         <module>members-service</module>
         <module>modeling-service</module>
-        <module>proposals-service</module>
         <module>search-service</module>
         <module>sharedcolab-service</module>
         <module>tracking-service</module>

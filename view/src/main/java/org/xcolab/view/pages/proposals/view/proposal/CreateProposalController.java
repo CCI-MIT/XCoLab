@@ -82,7 +82,7 @@ public class CreateProposalController extends BaseProposalsController {
         Proposal proposal;
 
         if (contest.getIsSharedContestInForeignColab()) {
-            RestService proposalService = new RefreshingRestService(CoLabService.PROPOSAL,
+            RestService proposalService = new RefreshingRestService(CoLabService.CONTEST,
                     ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
             );
             proposal = new Proposal(proposalService);

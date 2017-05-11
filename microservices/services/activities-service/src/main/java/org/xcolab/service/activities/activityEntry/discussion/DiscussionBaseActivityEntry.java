@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.activityentry.discussion;
+package org.xcolab.service.activities.activityEntry.discussion;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -24,7 +24,7 @@ import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.model.tables.pojos.ActivityEntry;
-import org.xcolab.service.activities.activityentry.provider.ActivityEntryContentProvider;
+import org.xcolab.service.activities.activityEntry.provider.ActivityEntryContentProvider;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 
 public abstract class DiscussionBaseActivityEntry implements ActivityEntryContentProvider {
@@ -77,25 +77,19 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
         if(this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_PROPOSAL_COMMENT.getSecondaryTypeId())){
             try {//proposal comment
                 thread = ThreadClientUtil.getThread(activityEntry.getClassPrimaryKey());
-                final Long proposalId =
-                        ThreadClientUtil.getProposalIdForThread(thread.getThreadId());
 
-                if (proposalId != null) {
-
-                    proposal = ProposalClientUtil.getProposal(proposalId);
-                    contest = ProposalClientUtil
-                            .getCurrentContestForProposal(proposal.getProposalId());
+                proposal = ProposalClientUtil.getProposalByThreadId(thread.getThreadId());
+                contest = ProposalClientUtil
+                        .getCurrentContestForProposal(proposal.getProposalId());
 
 
-                    proposalName = ProposalAttributeClientUtil
-                            .getProposalAttribute(proposal.getProposalId(),
-                                    ProposalAttributeKeys.NAME, null).getStringValue();
-                }
+                proposalName = ProposalAttributeClientUtil
+                        .getProposalAttribute(proposal.getProposalId(),
+                                ProposalAttributeKeys.NAME, null).getStringValue();
             } catch (ProposalNotFoundException | ContestNotFoundException | ThreadNotFoundException ignored) {
 
 
             }
-            return;
         }
     }
 

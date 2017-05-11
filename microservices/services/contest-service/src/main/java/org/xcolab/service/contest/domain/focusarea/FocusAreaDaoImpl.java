@@ -6,14 +6,12 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.FocusArea;
-import org.xcolab.model.tables.pojos.FocusAreaOntologyTerm;
 import org.xcolab.model.tables.records.FocusAreaRecord;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
 
 import static org.xcolab.model.Tables.FOCUS_AREA;
-import static org.xcolab.model.Tables.FOCUS_AREA_ONTOLOGY_TERM;
 
 @Repository
 public class FocusAreaDaoImpl implements FocusAreaDao {

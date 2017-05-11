@@ -26,6 +26,8 @@ import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.html.HtmlUtil;
@@ -90,7 +92,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
                     commentClient = CommentClient.fromService(commentsService);
                     threadClient = ThreadClient.fromService(commentsService);
-                    RestService proposalsService = new RefreshingRestService(CoLabService.PROPOSAL,
+                    RestService proposalsService = new RefreshingRestService(CoLabService.CONTEST,
                             ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
                     );
 
@@ -128,9 +130,9 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
             if (commentThread.getIsQuiet() != null && !commentThread.getIsQuiet()) {
 
                 if (commentThread.getCategory() == null) {
-                    final Long proposalIdForThread = threadClient
-                            .getProposalIdForThread(commentThread.getThreadId());
-                    if (proposalIdForThread != null && proposalIdForThread != 0L) {
+                    try {
+                        final Proposal proposal =
+                            proposalClient.getProposalByThreadId(commentThread.getThreadId());
 
                         //proposal
                         ActivityEntryHelper.createActivityEntry(activityClient, memberId,
@@ -139,14 +141,13 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                                 ActivityProvidersType.DiscussionAddProposalCommentActivityEntry
                                         .getType());
                         try {
-                            Contest contest = proposalClient
-                                    .getCurrentContestForProposal(proposalIdForThread);
+                            Contest contest = proposal.getContest();
                             SharedColabUtil.checkTriggerForAutoUserCreationInContest(
                                     contest.getContestPK(), memberId);
                         } catch (ContestNotFoundException ignored) {
 
                         }
-                    } else {
+                    } catch (ProposalNotFoundException e) {
                         //contest
                         ActivityEntryHelper.createActivityEntry(activityClient, memberId,
                                 commentThread.getThreadId(),
