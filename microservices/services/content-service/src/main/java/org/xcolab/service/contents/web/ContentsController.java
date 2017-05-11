@@ -230,6 +230,11 @@ public class ContentsController {
     public ContentPage getContentPage(@PathVariable long pageId) throws NotFoundException {
         return contentPageDao.get(pageId).orElseThrow(NotFoundException::new);
     }
+    @GetMapping("/contentPages/getByContentArticleId")
+    public ContentPage getContentPageByContentArticleId(@RequestParam long contentArticleId) throws NotFoundException {
+        return contentPageDao.getByContentArticleId(contentArticleId).orElseThrow(NotFoundException::new);
+    }
+
 
     @PostMapping("/contentPages")
     public ContentPage createContentPage(@RequestBody ContentPage page) {

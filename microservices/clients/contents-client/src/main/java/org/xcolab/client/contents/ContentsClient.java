@@ -225,6 +225,18 @@ public final class ContentsClient {
         return page;
     }
 
+    public static ContentPage getContentPageByContentArticleId(Long contentArticleId) {
+        try {
+            final ContentPage page = contentPageResource
+                    .service("getByContentArticleId", ContentPage.TYPES.getEntityType())
+                    .queryParam("contentArticleId", contentArticleId).getChecked();
+            return page;
+        }catch (EntityNotFoundException enfe){
+
+        }
+        return null;
+    }
+
     public static List<ContentPage> getContentPages(String title) {
         final List<ContentPage> page = contentPageResource.list()
                 .queryParam("title", title)
