@@ -280,10 +280,12 @@ public class ContestClient {
 
 
     public Contest getContestByThreadId(Long threadId) {
-        return contestResource
-                .service("getContestByThreadId", ContestDto.class)
-                .queryParam("threadId", threadId)
-                .execute().toPojo(contestService);
+        try {
+            return contestResource.service("getContestByThreadId", ContestDto.class)
+                    .queryParam("threadId", threadId).execute().toPojo(contestService);
+        } catch (UncheckedEntityNotFoundException e) {
+            throw new ContestNotFoundException("No contest with threadId = " + threadId);
+        }
     }
 
     public Contest getContestByResourceArticleId(Long resourceArticleId) {
