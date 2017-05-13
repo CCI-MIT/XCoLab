@@ -33,21 +33,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final RememberMeServices rememberMeServices;
     private final MemberDetailsService memberDetailsService;
+    private final WebProperties webProperties;
 
     @Autowired
     public WebSecurityConfig(RememberMeServices rememberMeServices,
-            MemberDetailsService memberDetailsService) {
+            MemberDetailsService memberDetailsService,
+            WebProperties webProperties) {
         this.rememberMeServices = rememberMeServices;
         this.memberDetailsService = memberDetailsService;
+        this.webProperties = webProperties;
     }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.authorizeRequests()
+                .antMatchers("/admin/management/**").hasRole("ADMIN");
+
+        if (webProperties.getGuestAccess().isAllowAll()) {
+            httpSecurity.authorizeRequests()
+                    .anyRequest().permitAll();
+        } else {
+            if (webProperties.getGuestAccess().isAlwaysAllowHomepage()) {
+                httpSecurity.authorizeRequests()
+                        .antMatchers("/").permitAll();
+            }
+            httpSecurity.authorizeRequests()
+                    .anyRequest().authenticated();
+        }
+
         httpSecurity
-                .authorizeRequests()
-                    .antMatchers("/admin/management/**").hasRole("ADMIN")
-                    .anyRequest().permitAll()
-                    .and()
                 .formLogin()
                     .loginPage("/login")
                     .permitAll()
