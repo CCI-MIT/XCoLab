@@ -25,8 +25,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
-import org.xcolab.service.activities.activityEntry.member.MemberJoinedActivityEntry;
-import org.xcolab.service.activities.activityEntry.provider.ActivityEntryContentProvider;
+import org.xcolab.service.activities.activityentry.member.MemberJoinedActivityEntry;
+import org.xcolab.service.activities.activityentry.provider.ActivityEntryContentProvider;
 import org.xcolab.service.activities.domain.activityEntry.ActivityEntryDao;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
 import org.xcolab.service.activities.enums.ActivityProvidersImpl;

@@ -1,4 +1,4 @@
-package org.xcolab.mailhandler;
+package org.xcolab.mailhandler.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -24,8 +24,6 @@ public class MailProperties {
      */
     private List<Domain> domains;
 
-    private final EmailAddress from = new EmailAddress();
-
     private final SmtpProperties smtp = new SmtpProperties();
 
     public SmtpProperties getSmtp() {
@@ -38,39 +36,6 @@ public class MailProperties {
 
     public void setDomains(List<Domain> domains) {
         this.domains = domains;
-    }
-
-    public EmailAddress getFrom() {
-        return from;
-    }
-
-    public static class EmailAddress {
-
-        /**
-         * Name of the owner of this email address.
-         */
-        private String name;
-
-        /**
-         * The email address.
-         */
-        private String email;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
     }
 
     public static class Domain {

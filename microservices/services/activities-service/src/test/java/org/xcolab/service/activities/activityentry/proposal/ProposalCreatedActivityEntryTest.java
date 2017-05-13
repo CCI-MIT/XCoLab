@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.activityEntry.proposal;
+package org.xcolab.service.activities.activityentry.proposal;
 
 import org.junit.Before;
 import org.junit.Test;
