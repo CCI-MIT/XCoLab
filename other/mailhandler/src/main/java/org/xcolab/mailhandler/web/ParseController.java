@@ -1,4 +1,4 @@
-package org.xcolab.mailhandler;
+package org.xcolab.mailhandler.web;
 
 import org.codemonkey.simplejavamail.MailException;
 import org.codemonkey.simplejavamail.Mailer;
@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import org.xcolab.mailhandler.MailProperties.Domain;
-import org.xcolab.mailhandler.MailProperties.EmailAddress;
-import org.xcolab.mailhandler.MailProperties.Mapping;
+import org.xcolab.mailhandler.config.MailProperties;
+import org.xcolab.mailhandler.config.MailProperties.Domain;
+import org.xcolab.mailhandler.config.MailProperties.Mapping;
+import org.xcolab.mailhandler.pojo.MatchedMapping;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,10 +42,20 @@ public class ParseController {
     private final MailProperties mailProperties;
     private final Pattern EMAIL_PATTERN = Pattern.compile(
             "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b", Pattern.CASE_INSENSITIVE);
+    private final String smtpHost;
+    private final int smtpPort;
+    private final String smtpUsername;
+    private final String smtpPassword;
+    private final String smtpConnection;
 
     @Autowired
     public ParseController(MailProperties mailProperties) {
         this.mailProperties = mailProperties;
+        smtpHost = mailProperties.getSmtp().getHost();
+        smtpPort = mailProperties.getSmtp().getPort();
+        smtpUsername = mailProperties.getSmtp().getUser();
+        smtpPassword = mailProperties.getSmtp().getPass();
+        smtpConnection = mailProperties.getSmtp().getTransport();
     }
 
     @RequestMapping
@@ -55,20 +66,13 @@ public class ParseController {
             @RequestParam (value = "spam_score", required = false) Float spamScore,
             @RequestParam (value = "spam_report", required = false) String spamReport) {
 
-
-        final String smtpHost = mailProperties.getSmtp().getHost();
-        final int smtpPort = mailProperties.getSmtp().getPort();
-        final String smtpUsername = mailProperties.getSmtp().getUser();
-        final String smtpPassword = mailProperties.getSmtp().getPass();
-        final String smtpConnection = mailProperties.getSmtp().getTransport();
-
         if (html == null && text == null) {
             log.error("Email has not text or html parameter.");
             return ResponseEntity.badRequest().body("Need to specify at least one of html or text");
         }
 
-        List<String> recipients = extractRecipientsFromMappings(to);
-        if (recipients.isEmpty()) {
+        List<MatchedMapping> matchedMappings = extractMappingsFromToField(to);
+        if (matchedMappings.isEmpty()) {
             if (!to.contains("no-reply@")) {
                 log.warn("No mappings found for to = {}.", to);
             }
@@ -77,8 +81,10 @@ public class ParseController {
 
         final Collection<MultipartFile> attachments = getAttachments(request);
         try {
-            sendEmail(from, subject, html, text, smtpHost, smtpPort, smtpUsername, smtpPassword,
-                    smtpConnection, recipients, attachments);
+            for (MatchedMapping matchedMapping : matchedMappings) {
+                sendEmail(matchedMapping.getEmailAddress(), from, subject, html, text,
+                        matchedMapping.getMapping().getRecipients(), attachments);
+            }
         } catch (MailException e) {
             log.error("Exception while sending mail:", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
@@ -98,29 +104,26 @@ public class ParseController {
         return fileMap.values();
     }
 
-    private List<String> extractRecipientsFromMappings(@RequestParam String to) {
-        List<String> recipients = new ArrayList<>();
+    private List<MatchedMapping> extractMappingsFromToField(String to) {
+        List<MatchedMapping> matchedMappings = new ArrayList<>();
         final List<Domain> candidateDomains = mailProperties.getDomains().stream()
                 .filter(domain -> to.contains(domain.getDomain()))
                 .collect(Collectors.toList());
         for (Domain domain : candidateDomains) {
             for (Mapping mapping : domain.getMappings()) {
                 if (to.contains(mapping.getUsername() + "@" + domain.getDomain())) {
-                    recipients.addAll(mapping.getRecipients());
+                    matchedMappings.add(new MatchedMapping(domain, mapping));
                 }
             }
         }
-        return recipients;
+        return matchedMappings;
     }
 
-    private void sendEmail(@RequestParam String from, @RequestParam String subject,
-            @RequestParam String html, @RequestParam String text, String smtpHost, int smtpPort,
-            String smtpUsername, String smtpPassword, String smtpConnection,
-            List<String> recipients, Collection<MultipartFile> attachments) {
+    private void sendEmail(String fromAddress, String originalSender, String subject, String html,
+            String text, List<String> recipients, Collection<MultipartFile> attachments) {
         final Email email = new Email();
-        final EmailAddress sender = mailProperties.getFrom();
-        email.setFromAddress(sender.getName(), sender.getEmail());
-        email.setReplyToAddress(null, extractEmail(from));
+        email.setFromAddress(null, fromAddress);
+        email.setReplyToAddress(null, extractEmail(originalSender));
         email.setSubject("forwarded message: " + subject);
 
         for (String recipient : recipients) {
