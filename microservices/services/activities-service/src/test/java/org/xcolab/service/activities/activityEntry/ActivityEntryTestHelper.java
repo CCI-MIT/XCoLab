@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.activityEntry;
+package org.xcolab.service.activities.activityentry;
 
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;

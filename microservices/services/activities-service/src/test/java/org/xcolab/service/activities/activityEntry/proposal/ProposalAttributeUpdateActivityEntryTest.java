@@ -16,7 +16,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.model.tables.pojos.ActivityEntry;
-import org.xcolab.service.activities.activityEntry.ActivityEntryTestHelper;
+import org.xcolab.service.activities.activityentry.ActivityEntryTestHelper;
+import org.xcolab.service.activities.activityentry.proposal.ProposalAttributeUpdateActivityEntry;
 
 import java.sql.Timestamp;
 

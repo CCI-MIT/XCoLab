@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.activityEntry.member;
+package org.xcolab.service.activities.activityentry.member;
 
 
 import org.slf4j.Logger;
@@ -9,7 +9,7 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.model.tables.pojos.ActivityEntry;
-import org.xcolab.service.activities.activityEntry.provider.ActivityEntryContentProvider;
+import org.xcolab.service.activities.activityentry.provider.ActivityEntryContentProvider;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 
 public class MemberJoinedActivityEntry implements ActivityEntryContentProvider {

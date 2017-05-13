@@ -1,4 +1,4 @@
-package org.xcolab.service.activities.activityEntry.discussion;
+package org.xcolab.service.activities.activityentry.discussion;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +17,8 @@ import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.model.tables.pojos.ActivityEntry;
-import org.xcolab.service.activities.activityEntry.ActivityEntryTestHelper;
+import org.xcolab.service.activities.activityentry.ActivityEntryTestHelper;
+
 
 import java.sql.Timestamp;
 
