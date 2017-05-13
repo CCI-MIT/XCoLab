@@ -25,7 +25,8 @@ import static org.junit.Assert.assertTrue;
 @TestPropertySource(
     properties = {
         "cache.active=false",
-        "eureka.client.enabled=false"
+        "eureka.client.enabled=false",
+        "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MYSQL"
     }
 )
 @ComponentScan("org.xcolab.service.admin")
