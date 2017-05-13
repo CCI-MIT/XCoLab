@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.client.sharedcolab.pojo.SharedMember;
 import org.xcolab.view.auth.AuthenticationService;
@@ -109,8 +110,7 @@ public class GoogleController {
                 country = getCountry(userInfo.getString("locale"));
             } catch (UserLocationNotResolvableException ignored) { }
 
-            org.xcolab.client.members.pojo.Member
-                    registeredMember = findRegisteredMember(userInfo, country);
+            Member registeredMember = findRegisteredMember(userInfo, country);
             if (registeredMember != null) {
                 String profilePicURL = userInfo.getString("picture");
                 session.setAttribute(SSOKeys.OPEN_ID_LOGIN, registeredMember.getUserId());
@@ -130,12 +130,12 @@ public class GoogleController {
         }
     }
 
-    private org.xcolab.client.members.pojo.Member findRegisteredMember(JSONObject userInfo, String country) {
+    private Member findRegisteredMember(JSONObject userInfo, String country) {
         String googleId = userInfo.getString("id");
         String emailAddress = userInfo.getString("email");
         boolean verifiedEmail = userInfo.optBoolean("verified_email");
 
-        org.xcolab.client.members.pojo.Member member;
+        Member member;
         try {
             member = MembersClient.findMemberByGoogleId(googleId);
         } catch (MemberNotFoundException e) {
