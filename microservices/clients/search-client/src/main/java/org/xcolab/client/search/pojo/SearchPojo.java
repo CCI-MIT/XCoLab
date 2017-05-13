@@ -50,4 +50,10 @@ public class SearchPojo implements Serializable {
     public void setSearchTypeId(Long searchType) {
         searchTypeId = searchType;
     }
+
+    @Override
+    public String toString() {
+        return "SearchPojo{" + "relevance=" + relevance + ", classPrimaryKey=" + classPrimaryKey
+                + ", searchTypeId=" + searchTypeId + '}';
+    }
 }

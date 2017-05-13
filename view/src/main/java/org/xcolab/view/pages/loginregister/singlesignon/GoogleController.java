@@ -227,7 +227,7 @@ public class GoogleController {
                     try {
                         MembersClient.findMemberByScreenName(screenName);
                         // Generate a random suffix for the non-unique screenName
-                        screenName = userBean.getScreenName()
+                        screenName = screenName
                                         .concat(RandomStringUtils.random(4, false, true));
                     } catch (MemberNotFoundException e3) {
                         //screen name not used - we can continue
