@@ -248,11 +248,15 @@ public class ContestClient {
                 .execute(), contestService);
     }
 
-    public List<Contest> findContestsByName(String contestName, List<Long> ontologyTermIds, List<Long> contestTypeIds) {
+    public List<Contest> findPublicContests(String contestName,
+            List<Long> ontologyTermIds, List<Long> contestTypeIds, List<Long> contestTiers) {
         return DtoUtil.toPojos(contestResource.list()
-                .queryParam("searchTerm", contestName)
-                .queryParam("ontologyTermIds",  ontologyTermIds)
-                .queryParam("contestTypeIds",  contestTypeIds)
+                .addRange(0, Integer.MAX_VALUE)
+                .optionalQueryParam("searchTerm", contestName)
+                .optionalQueryParam("ontologyTermIds",  ontologyTermIds)
+                .optionalQueryParam("contestTypeIds",  contestTypeIds)
+                .optionalQueryParam("contestTiers",  contestTiers)
+                .queryParam("contestPrivate", false)
 //                .withCache(CacheName.CONTEST_LIST)
                 .execute(), contestService);
     }
