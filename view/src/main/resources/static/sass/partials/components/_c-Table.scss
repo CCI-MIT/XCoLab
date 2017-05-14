@@ -23,6 +23,14 @@ $c-Table__cell__count__hideImage: false !default;
   &.featured {
     background-color: $t-Color__grey--lightest;
   }
+
+  &.selected {
+    background-color: $t-Color__grey--lightest;
+    color: $t-Color__secondary;
+    a {
+      color: $t-Color__secondary;
+    }
+  }
 }
 
 .c-Table__row--title { //thead.blueheaderbar
