@@ -2,8 +2,12 @@
 
 set -e
 
-if [ $BUILD_TYPE == 'deploy' ]; then
+if [ ${BUILD_TYPE} == 'deploy' ]; then
    mvn clean package -B -T 4
 else
-   mvn clean test -B -T 4
+   if [ ${RUN_INTEGRATION_TESTS} == 'true' ]; then
+       mvn clean test -B -T 2 -Pintegration-tests
+   else
+       mvn clean test -B -T 4
+   fi
 fi

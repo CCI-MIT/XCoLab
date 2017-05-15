@@ -9,6 +9,9 @@ cache:
   directories:
   - $HOME/.m2
 
+env:
+  - RUN_INTEGRATION_TESTS=true
+  - RUN_INTEGRATION_TESTS=false
 
 before_install:
 - gem install dpl --source http://rubygems.org

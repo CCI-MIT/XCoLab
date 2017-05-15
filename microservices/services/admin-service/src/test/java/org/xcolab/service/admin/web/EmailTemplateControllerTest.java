@@ -63,7 +63,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 )
 
 @WebAppConfiguration
-public class EmailTemplateTest {
+public class EmailTemplateControllerTest {
 
     private MockMvc mockMvc;
 
