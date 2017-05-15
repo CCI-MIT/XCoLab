@@ -131,6 +131,7 @@
                 <configuration>
                     <forkCount>2</forkCount>
                     <reuseForks>true</reuseForks>
+                    <argLine>-Xmx512m -Xms256m</argLine>
                     <excludes>
                         <exclude>**/*ControllerTest.java</exclude>
                         <exclude>**/*DaoTest.java</exclude>
@@ -244,7 +245,7 @@
                     <configuration combine.self="override">
                         <forkCount>3</forkCount>
                         <reuseForks>true</reuseForks>
-                        <argLine>-Xmx1024m</argLine>
+                        <argLine>-Xmx512m -Xms256m</argLine>
                         <includes>
                             <include>**/*ControllerTest.java</include>
                             <include>**/*DaoTest.java</include>
