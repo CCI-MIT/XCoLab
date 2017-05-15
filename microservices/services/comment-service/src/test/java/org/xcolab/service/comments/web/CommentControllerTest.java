@@ -22,6 +22,7 @@ import org.xcolab.service.utils.ControllerUtils;
 
 import java.nio.charset.Charset;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -66,9 +67,8 @@ public class CommentControllerTest {
 
         mockMvc.perform(get("/comments").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(contentType));
-        //TODO: check size
-        //                .andExpect(jsonPath("$", arrayWithSize(2)));
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(2)));
     }
 
     @Test
@@ -86,9 +86,8 @@ public class CommentControllerTest {
                     .param("authorId", "12345")
                     .contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(contentType));
-        //TODO: check author filtering
-        //                .andExpect(jsonPath("$", arrayWithSize(1)));
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
@@ -141,17 +140,16 @@ public class CommentControllerTest {
 
         mockMvc.perform(get("/threads").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(contentType));
-        //                .andExpect(jsonPath("$", arrayWithSize(1)));
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
     public void testGetLastActivityDate__shouldReturnCorrectDate() throws Exception {
 
         mockMvc.perform(get("/threads/201/lastActivityDate").contentType(contentType).accept(contentType))
-                .andExpect(status().isOk());
-        //TODO: check date
-        //                .andExpect(content().string("1280936197000"));
+                .andExpect(status().isOk())
+                .andExpect(content().string("1280932597000"));
     }
 
     @Test
@@ -159,7 +157,7 @@ public class CommentControllerTest {
 
         mockMvc.perform(get("/threads/201/lastActivityAuthorId").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
-                .andExpect(content().string("164395"));
+                .andExpect(content().string("12345"));
     }
 
     @Test
@@ -167,8 +165,8 @@ public class CommentControllerTest {
 
         mockMvc.perform(get("/categories").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(contentType));
-        //                .andExpect(jsonPath("$", arrayWithSize(1)));
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
@@ -192,8 +190,8 @@ public class CommentControllerTest {
 
         mockMvc.perform(get("/groups").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(contentType));
-        //                .andExpect(jsonPath("$", arrayWithSize(1)));
+                .andExpect(content().contentType(contentType))
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
