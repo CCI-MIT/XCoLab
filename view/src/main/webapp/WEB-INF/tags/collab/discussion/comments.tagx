@@ -119,12 +119,12 @@
 							<tr class="${status.index mod 2 == 0 ? 'odd' : 'even'}">
 								<td class="c-Comment__commentor">
 									<a id="_message_${message.commentId}"></a>
-									<collab:userPortrait screenName="${message.author.screenName}"
+									<collab:userPortrait screenName="${message.author.displayName}"
 														 portraitId="${message.author.portraitId}"
 														 userId="${message.author.userId}"
 														 width="59" height="59" />
 									<br />
-									<collab:userLinkSimple text="${message.author.screenName}" userId="${message.author.userId}" /> <br />
+									<collab:userLinkSimple text="${message.author.displayName}" userId="${message.author.userId}" /> <br />
 									<br />
 									<collab:dateTime epoch="${message.createDate.time}" format="dateText" /><br />
 									<collab:dateTime epoch="${message.createDate.time}" format="time" /><br />

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.util.http.client.types.TypeProvider;
@@ -101,6 +102,17 @@ public class Member implements Serializable {
 
     public String getScreenName() {
         return this.screenName;
+    }
+
+    @JsonIgnore
+    public String getDisplayName() {
+
+        if(ConfigurationAttributeKey.DISPLAY_FIRST_NAME_LAST_NAME.get()){
+            return this.getFullName();
+        }
+        else {
+            return this.screenName;
+        }
     }
 
     public void setScreenName(String screenName) {
@@ -317,7 +329,7 @@ public class Member implements Serializable {
         if (this.getId_() <= 0) {
             return "";
         }
-        return "<a href='" + generateUserHref(this.getId_())+ "'>" + this.getScreenName()+ "</a>";
+        return "<a href='" + generateUserHref(this.getId_())+ "'>" + this.getDisplayName()+ "</a>";
     }
 
     private  String generateUserHref(long userId)  {
