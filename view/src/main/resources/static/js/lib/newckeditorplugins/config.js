@@ -2,7 +2,7 @@ CKEDITOR.editorConfig = function( config ) {
 
     config.language = 'en';
 
-    config.extraPlugins = 'justify,colorbutton,uploadimage,copyformatting,font','indentblock';
+    config.extraPlugins = 'justify,colorbutton,uploadimage,copyformatting,font,indentblock';
     config.uploadUrl = '/images/uploadCkEditor';
     config.filebrowserImageUploadUrl = '/images/uploadCkEditor';
     config.toolbar = 'custom';

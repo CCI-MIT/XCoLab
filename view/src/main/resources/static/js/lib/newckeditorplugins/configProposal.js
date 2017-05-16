@@ -81,5 +81,11 @@ CKEDITOR.on('dialogDefinition', function (e) {
                 });
             }
         }
+        if(dialogName == "link"){
+            var editor = this.getParentEditor();
+            var selectedContent = editor.getSelection().getSelectedText();
+            this.setValueOf('info','linkDisplayText', selectedContent);
+            
+        }
     };
 });
