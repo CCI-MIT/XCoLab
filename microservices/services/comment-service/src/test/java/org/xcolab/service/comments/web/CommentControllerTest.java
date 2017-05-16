@@ -1,6 +1,7 @@
 package org.xcolab.service.comments.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -149,7 +150,9 @@ public class CommentControllerTest {
 
         mockMvc.perform(get("/threads/201/lastActivityDate").contentType(contentType).accept(contentType))
                 .andExpect(status().isOk())
-                .andExpect(content().string("1280932597000"));
+                .andExpect(content().string(Long.toString(
+                        DateUtils.parseDate("2010-08-04 16:36:37",
+                                "yyyy-MM-dd HH:mm:ss").getTime())));
     }
 
     @Test
