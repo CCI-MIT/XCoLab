@@ -251,7 +251,7 @@ public class Member implements Serializable {
 
     @JsonIgnore
     public String getFullName() {
-        return this.getFirstName() + " " + this.getLastName();
+        return StringUtils.capitalize(this.getFirstName()) + " " + StringUtils.capitalize(this.getLastName());
     }
 
     @JsonIgnore

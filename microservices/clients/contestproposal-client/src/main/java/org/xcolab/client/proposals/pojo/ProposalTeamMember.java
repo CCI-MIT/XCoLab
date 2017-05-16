@@ -19,7 +19,7 @@ public class ProposalTeamMember {
     }
     
     public String getScreenName() {
-        return user.getScreenName(); 
+        return user.getDisplayName();
     }
     
     public long getUserId() {

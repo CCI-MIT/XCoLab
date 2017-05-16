@@ -19,9 +19,9 @@
                 <!--@elvariable id="role" type="org.xcolab.view.util.entity.enums.MemberRole"-->
                 <div class="comment">
                     <div class="c-Comment__commentor">
-                        <proposalsPortlet:userPortrait  screenName="${wrapper.author.screenName}" portraitId="${wrapper.author.portraitId}" userId="${wrapper.author.userId}" width="59" height="59" />
+                        <proposalsPortlet:userPortrait  screenName="${wrapper.author.displayName}" portraitId="${wrapper.author.portraitId}" userId="${wrapper.author.userId}" width="59" height="59" />
                         <br />
-                        <proposalsPortlet:userLinkSimple text="${wrapper.author.screenName}" userId="${wrapper.author.userId}" /> <br />
+                        <proposalsPortlet:userLinkSimple text="${wrapper.author.displayName}" userId="${wrapper.author.userId}" /> <br />
                         <br />
 
                         <div class="role-indicator">

@@ -14,7 +14,7 @@
         <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
         <a href="/web/guest/members">Members</a>
         <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-        <collab:userLinkSimple userId="${messagingBean.user.userId}" text="${messagingBean.user.screenName}" />
+        <collab:userLinkSimple userId="${messagingBean.user.userId}" text="${messagingBean.user.displayName}" />
         <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
         <a href="/messaging">Messages</a>
     </div>
@@ -72,13 +72,13 @@
                                     <td class="c-Table__cell">
                                         <c:choose>
                                             <c:when test="${messagingBean.type == 'SENT'}">
-                                                <collab:userLinkSimple userId="${message.to.get(0).id_}" text="${message.to.get(0).screenName}" />
+                                                <collab:userLinkSimple userId="${message.to.get(0).id_}" text="${message.to.get(0).displayName}" />
                                                 <c:if test="${message.to.size() > 1}">
                                                     + ${message.to.size() - 1}
                                                 </c:if>
                                             </c:when>
                                             <c:when test="${messagingBean.type != 'SENT'}">
-                                                <collab:userLinkSimple userId="${message.from.userId}" text="${message.from.screenName}" />
+                                                <collab:userLinkSimple userId="${message.from.userId}" text="${message.from.displayName}" />
                                             </c:when>
                                         </c:choose>
 
