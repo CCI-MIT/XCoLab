@@ -127,14 +127,10 @@
 
             <div class="c-Headline propsubhead">
                 <h2>
-                    <span>${fn:length(listOfLinkedProposals)}</span> Linked
-
-                    <c:if test="${fn:length(listOfLinkedProposals) le 1}">
-                        ${contestType.proposalNameLowercase}
-                    </c:if>
-                    <c:if test="${fn:length(listOfLinkedProposals) gt 1}">
-                        ${contestType.proposalNamePluralLowercase}
-                    </c:if>
+                    <span>${fn:length(listOfLinkedProposals)}</span> linked
+                    ${fn:length(listOfLinkedProposals) eq 1
+                        ? contestType.proposalNameLowercase
+                        : contestType.proposalNamePluralLowercase}
                 </h2>
             </div>
             <c:if test="${not empty listOfLinkedProposals }">
