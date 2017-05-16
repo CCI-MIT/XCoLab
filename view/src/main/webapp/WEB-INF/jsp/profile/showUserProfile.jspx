@@ -28,7 +28,7 @@
 		<img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
 		<a href="/members">Members</a>
 		<img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-		<a href="/members/profile/${currentUserProfile.userId}">${userBean.screenName}</a>
+		<a href="/members/profile/${currentUserProfile.userId}">${userBean.displayName}</a>
 	</div>
 	<c:choose>
 		<c:when test="${currentUserProfile.active}">
@@ -276,7 +276,7 @@
 					</div>
 
 					<div class="activityBody">
-						<collab:userLinkSimple text="${message.from.screenName}" userId="${message.from.userId}" />
+						<collab:userLinkSimple text="${message.from.displayName}" userId="${message.from.userId}" />
 						sent you a message:&#160; <a
 							href="/messaging/message/${message.messageId}">${message.subject}</a>
 					</div>

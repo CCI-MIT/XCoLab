@@ -273,6 +273,10 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("GENERATE_SCREEN_NAME")
                     .build();
 
+    public static final AttributeGetter<Boolean> DISPLAY_FIRST_NAME_LAST_NAME =
+            ConfigurationAttributes.newBooleanAttribute("DISPLAY_FIRST_NAME_LAST_NAME")
+                    .build();
+
 
     //Configuration of Solve's header bar
     public static final AttributeGetter<Boolean> MIT_HEADER_BAR_SHOW =

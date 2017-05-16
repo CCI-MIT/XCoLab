@@ -107,7 +107,7 @@
                             <tr class="c-Table__row">
                                 <td class="c-Table__cell"><a href="${thread.linkUrl}">${thread.title}</a></td>
                                 <td class="c-Table__cell">${thread.commentsCount}</td>
-                                <td class="c-Table__cell"><collab:userLinkSimple userId="${thread.lastActivityAuthor.userId}" text="${thread.lastActivityAuthor.screenName}"/></td>
+                                <td class="c-Table__cell"><collab:userLinkSimple userId="${thread.lastActivityAuthor.userId}" text="${thread.lastActivityAuthor.displayName}"/></td>
                                 <td class="c-Table__cell">${thread.lastActivityDateFormatted}</td>
                             </tr>
                         </c:forEach>
