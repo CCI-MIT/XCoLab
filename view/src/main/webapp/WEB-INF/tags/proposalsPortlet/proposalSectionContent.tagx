@@ -45,6 +45,19 @@
                 </c:otherwise>
             </c:choose>
         </c:when>
+        <c:when test="${section.type == 'CHECKBOX_OPTION' }">
+            <ul>
+            <c:forEach var="value" items="${section.optionsForCheckbox}">
+                <c:choose>
+                    <c:when test="${section.isOptionForCheckboxSelected(value)}">
+                        <li>${value}</li>
+                    </c:when>
+
+                </c:choose>
+
+            </c:forEach>
+            </ul>
+        </c:when>
 		<c:otherwise>
 			<p>${section.contentFormatted }</p>
 		</c:otherwise>

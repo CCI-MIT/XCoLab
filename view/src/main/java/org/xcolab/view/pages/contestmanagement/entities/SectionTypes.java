@@ -4,6 +4,8 @@ public enum SectionTypes {
     TEXT_SECTION("", "Text section"),
     //"IMAGE_SECTOR("IMAGE", "Image section"),
     DROPDOWN_MENU("DROPDOWN_MENU", "Dropdown menu"),
+    CHECKBOX_OPTION("CHECKBOX_OPTION","Checkbox option"),
+    SECTION_HEADER("SECTION_HEADER","Section Header"),
     INLINE_PROPOSAL_REFERENCE("PROPOSAL_LIST_TEXT_REFERENCE", "Inline proposal reference"),
     EXPLICIT_SINGLE_PROPOSAL_REFERENCE("PROPOSAL_REFERENCE", "Explicit single proposal reference"),
     EXPLICIT_MULTI_PROPOSAL_REFERENCE("PROPOSAL_LIST_REFERENCE",

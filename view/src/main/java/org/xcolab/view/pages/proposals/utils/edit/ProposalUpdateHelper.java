@@ -65,6 +65,21 @@ public class ProposalUpdateHelper {
                         filledAll = false;
                     }
                     break;
+                case CHECKBOX_OPTION:
+                    if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
+                        String optionValues = newSectionValue.replace(",",";");
+
+                        ProposalsContextUtil.getClients(request).getProposalAttributeClient()
+                                .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
+                                        ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(),
+                                        optionValues);
+                        if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
+                            updateProposalReferences = true;
+                        }
+                    } else {
+                        filledAll = false;
+                    }
+                    break;
                 case ONTOLOGY_REFERENCE:
                     if (StringUtils.isNumeric(newSectionValue)) {
                         long newNumericVal = Long.parseLong(newSectionValue);

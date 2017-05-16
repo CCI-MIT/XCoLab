@@ -9,7 +9,7 @@
 		
 	<jsp:directive.attribute name="showCopySectionContentButton" type="java.lang.Boolean" 
 		required="false" rtexprvalue="true" description="Tells if 'copy content from base proposal section' button should be shown" />
-	
+
 	<label>
 		<strong>${section.title}</strong> 
 		<a href="javascript:;" class="helpTrigger"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
@@ -22,6 +22,7 @@
 	
 	<div class="addpropInputContainer" id="proposalSection_${section.sectionDefinitionId }"  >
 		<c:choose>
+
 			<c:when test="${section.type == 'ONTOLOGY_REFERENCE' }">
 				<c:set var="term" value="${section.numericValueAsOntologyTerm }" />
 				<select name='sectionsContent[${section.sectionDefinitionId }]'>
@@ -52,6 +53,27 @@
 					</c:forEach>
 				</select>
 			</c:when>
+            <c:when test="${section.type == 'CHECKBOX_OPTION'}">
+
+                    <c:forEach var="value" items="${section.optionsForCheckbox}">
+                        <c:choose>
+                            <c:when test="${section.isOptionForCheckboxSelected(value)}">
+                            <div class="checkboxContainer">
+                                <input type="checkbox" id="${section.sectionDefinitionId }_${value}" name='sectionsContent[${section.sectionDefinitionId }]' value="${value}" checked="checked"/>
+                                <span>${value}</span>
+                            </div>
+                            </c:when>
+                            <c:otherwise>
+                             <div class="checkboxContainer">
+                                 <input type="checkbox"  id="${section.sectionDefinitionId }_${value}" name='sectionsContent[${section.sectionDefinitionId }]' value="${value}" />
+                                 <span>${value}</span>
+                            </div>
+                            </c:otherwise>
+                        </c:choose>
+
+                    </c:forEach>
+
+            </c:when>
 
             <c:when test="${section.type == 'PROPOSAL_REFERENCE' }">
                 <c:set var="p" value="${section.numericValueAsProposal }" />
