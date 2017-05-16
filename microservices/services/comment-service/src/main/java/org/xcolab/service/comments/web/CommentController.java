@@ -69,6 +69,7 @@ public class CommentController {
         return commentDao.findByGiven(paginationHelper, authorId, threadId, includeDeleted);
     }
 
+    //TODO: write test
     //TODO: move to contestPhase endpoint in contest-service
     @GetMapping("/comments/countCommentsInContestPhase")
     public Integer countCommentsInContestPhase(@RequestParam long contestPhaseId,
@@ -77,8 +78,7 @@ public class CommentController {
     }
 
     @GetMapping("/comments/countCommentsInProposals")
-    public Integer countCommentsInContestPhase(
-            @RequestParam List<Long> threadIds) {
+    public Integer countCommentsInThreads(@RequestParam List<Long> threadIds) {
         return commentDao.countByGiven(threadIds);
     }
 

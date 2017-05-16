@@ -77,15 +77,9 @@ public class MembersController {
             sortFilterPage.setSortAscending(false);
         }
 
-        String categoryFilterValue =
-                "Judge".equalsIgnoreCase(memberCategoryParam) ? "Judges" : memberCategoryParam;
-        if (StringUtils.isEmpty(categoryFilterValue)) {
-            categoryFilterValue = "Member";
-        }
-
         MembersPermissions membersPermissions = new MembersPermissions(request);
         final String emailFilterParam = membersPermissions.getCanAdminAll() ? filterParam : null;
-        List<Member> members = MembersClient.listMembers(categoryFilterValue, filterParam,
+        List<Member> members = MembersClient.listMembers(memberCategoryParam, filterParam,
                 emailFilterParam, sortFilterPage.getSortColumn(), sortFilterPage.isSortAscending(),
                 firstUser, endUser);
 
@@ -95,7 +89,7 @@ public class MembersController {
             users.add(memberItem);
         }
 
-        int usersCount = MembersClient.countMembers(categoryFilterValue, filterParam);
+        int usersCount = MembersClient.countMembers(memberCategoryParam, filterParam);
         int pagesCount = (int) Math.ceil(usersCount / (double) USERS_PER_PAGE);
         int endPage = pagesCount;
         if (startPage + 10 < pagesCount) {

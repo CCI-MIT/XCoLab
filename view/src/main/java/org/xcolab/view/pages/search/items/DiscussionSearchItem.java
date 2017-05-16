@@ -3,16 +3,16 @@ package org.xcolab.view.pages.search.items;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
-import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.search.pojo.SearchPojo;
+import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 public class DiscussionSearchItem extends AbstractSearchItem {
 
@@ -23,12 +23,13 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     @Override
     public void init(SearchPojo pojo, String searchQuery) {
+        this.searchQuery = searchQuery;
         try {
             comment = CommentClientUtil.getComment(pojo.getClassPrimaryKey());
-            thread = ThreadClientUtil.getThread(comment.getThreadId());
-            this.searchQuery = searchQuery;
-        } catch (CommentNotFoundException | ThreadNotFoundException ignored) {
-
+            thread = comment.getThread();
+        } catch (CommentNotFoundException e) {
+            throw ReferenceResolutionException.toObject(Comment.class, pojo.getClassPrimaryKey())
+                    .build();
         }
     }
 
@@ -50,19 +51,33 @@ public class DiscussionSearchItem extends AbstractSearchItem {
     public String getLinkUrl() {
         String ret = thread.getLinkUrl();
         if (ret == null) {
-            try {
-                ret = ProposalClientUtil.getProposalByThreadId(thread.getThreadId())
-                        .getProposalDiscussionUrl();
-            } catch (ProposalNotFoundException e) {
-                Contest contest = ContestClientUtil.getContestByThreadId(thread.getThreadId());
-                if (contest != null) {
-                    ret = contest.getContestDiscussionLinkUrl();
-                } else {
-                    ret = "";
-                }
-            }
+            ret = getProposalDiscussionUrl();
+        }
+        if (ret == null) {
+            ret = getContestDiscussionUrl();
+        }
+        if (ret == null) {
+            throw ReferenceResolutionException.toObject(Thread.class, thread.getThreadId()).build();
         }
         return ret;
+    }
+
+    private String getProposalDiscussionUrl() {
+        try {
+            return ProposalClientUtil.getProposalByThreadId(thread.getThreadId())
+                    .getProposalDiscussionUrl();
+        } catch (ProposalNotFoundException e) {
+            return null;
+        }
+    }
+
+    private String getContestDiscussionUrl() {
+        try {
+            Contest contest = ContestClientUtil.getContestByThreadId(thread.getThreadId());
+            return contest.getContestDiscussionLinkUrl();
+        } catch (ContestNotFoundException e1) {
+            return null;
+        }
     }
 
     @Override

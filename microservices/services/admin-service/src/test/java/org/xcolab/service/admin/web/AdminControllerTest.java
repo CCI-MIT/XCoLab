@@ -64,7 +64,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 )
 
 @WebAppConfiguration
-public class AdminTest {
+public class AdminControllerTest {
 
 
     private MockMvc mockMvc;

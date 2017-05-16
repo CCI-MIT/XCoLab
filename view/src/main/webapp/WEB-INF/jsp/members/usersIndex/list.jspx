@@ -3,7 +3,7 @@
 		  xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
 		  version="2.0" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
 
-	<!--@elvariable id="users" type="java.util.List<org.xcolab.client.members.pojo.Member>"-->
+	<!--@elvariable id="users" type="java.util.List<org.xcolab.view.pages.members.users.utils.MemberItem>"-->
 	<!--@elvariable id="sortFilterPage" type="org.xcolab.view.util.pagination.SortFilterPage"-->
 	<!--@elvariable id="memberCategory" type="org.xcolab.client.members.pojo.MemberCategory"-->
 	<!--@elvariable id="permissions" type="org.xcolab.view.pages.members.users.utils.MembersPermissions"-->
@@ -60,17 +60,17 @@
 				<tr class="c-Table__row">
 					<td class="c-Table__cell user">
 						<div class="usersFlag">
-							<a href="/members/profile/${user.userId}">
+							<a href="/members/profile/${user.memberId}">
 								${user.screenName}
 							</a>
 							<c:if test="${permissions.canAdminAll}">
 								<div style="float: right">
-									<a href="/members/profile/${user.userId}/edit"
+									<a href="/members/profile/${user.memberId}/edit"
 									   style="margin-right: 10px">
 										<img src="${_themeImageFolder}/icon-activity-edit.png"
 											 height="15" style="vertical-align: middle" alt="edit" />
 									</a>
-									<a href="/impersonate?memberId=${user.userId}">
+									<a href="/impersonate?memberId=${user.memberId}">
 										<img src="${_themeImageFolder}/icon-request-membership.png"
 											 height="15" style="vertical-align: middle" alt="impersonate" />
 									</a>
@@ -88,9 +88,9 @@
 						${user.activityCountFormatted}
 					</td>
 					<td class="c-Table__cell category odd">
-						<img src="${_themeImageFolder}/${user.memberRole.memberCategory.imageName}.png"
+						<img src="${_themeImageFolder}/${user.memberCategory.imageName}.png"
 							 width="16" height="16" />
-						&#160;${user.memberRole.memberCategory.displayName}
+						&#160;${user.memberCategory.displayName}
 					</td>
 					<td class="c-Table__cell member-since">
 						${user.memberSince}

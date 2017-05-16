@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MemberCategory implements Serializable {
+public class MemberCategory implements Serializable, Comparable<MemberCategory> {
 
     private static final long serialVersionUID = -2052172539;
 
@@ -123,5 +123,10 @@ public class MemberCategory implements Serializable {
 
         sb.append(")");
         return sb.toString();
+    }
+
+    @Override
+    public int compareTo(MemberCategory o) {
+        return getSortOrder().compareTo(o.getSortOrder());
     }
 }

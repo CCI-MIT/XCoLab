@@ -128,21 +128,13 @@ function initializePickedProposals() {
 	$("input[name='sectionsContent[" + currentSectionId + "]']").siblings('ul').find('li').each(function() {
 		var proposalLink = $(this).find('a').eq(0);
 		var proposal = {};
-		proposal.proposalName = proposalLink.text();
-		
-		var linkElementRegex =  /.*contestId\/(\d*)\/planId\/(\d*)/;
-        var proposalLinkUrl = proposalLink.attr('href');
-        var match = linkElementRegex.exec(proposalLinkUrl);
-		if (match != null) {
-			proposal.proposalId = match[2];
-			proposal.contestId = match[1];
-            proposal.linkUrl = proposalLinkUrl;
-            console.log(proposalLinkUrl)
-		}
+        proposal.proposalName = proposalLink.text();
+        proposal.proposalId = proposalLink.data('proposal-id');
+        proposal.contestId = proposalLink.data('contest-id');
+        proposal.linkUrl = proposalLink.attr('href');
 		pickedProposals.push(proposal);
 	});
-    
-    
+
 }
 
 
@@ -196,7 +188,7 @@ function selectProposal(proposalId, proposalName, contestName, proposalLinkUrl, 
     var inputField = $("input[name='sectionsContent[" + currentSectionId + "]']");
     linkClicked.parent().parent().addClass('ui-datatable-highlight');
     //linkClicked.remove();
-    if(pickMultipleProposals) {
+    if (pickMultipleProposals) {
     	var idx = -1;
     	var proposal = null;
 		for (var i = 0; i < pickedProposals.length; i++) {
@@ -216,7 +208,7 @@ function selectProposal(proposalId, proposalName, contestName, proposalLinkUrl, 
     			pickedProposals.push({proposalId: proposalId, proposalName: proposalName, linkUrl: proposalLinkUrl, contestName: contestName, contestId: contestId});
     		}
     	}
-    } else{
+    } else {
         if (inputField.val()) inputField.next().remove();
         inputField.val(proposalId);
         inputField.after('<span><a href="'+proposalLinkUrl+'">' + proposalName + '</a> (<a onclick="removePickedProposal(' + currentSectionId + ',' + proposalId + ', $(this), false);" href="javascript:;">remove</a>)</span>');
@@ -394,13 +386,13 @@ $("#breadContestsList").click(function(event) {
 
 $("#savePickedProposals").click(function(event) {
     var inputField = $("input[name='sectionsContent[" + currentSectionId + "]']");
-    var proposalListContainer = inputField.siblings('table');
+    var proposalListContainer = inputField.siblings('ul');
     var proposalIds = [];
     proposalListContainer.empty();
 	for (var i = 0; i < pickedProposals.length; i++) {
 		var proposal = pickedProposals[i];
 		proposalIds.push(proposal.proposalId);
-		proposalListContainer.append('<tr><td><a href="' + proposal.linkUrl + '">' + proposal.proposalName + '</a></td><td class="removeProposalFromList"><a onclick="removePickedProposal(' + currentSectionId + ',' + proposal.proposalId + ', $(this), true);" href="javascript:;">remove</a></td></tr>');
+		proposalListContainer.append('<li><a href="' + proposal.linkUrl + '">' + proposal.proposalName + '</a> (<a onclick="removePickedProposal(' + currentSectionId + ',' + proposal.proposalId + ', $(this), true);" href="javascript:;">remove</a>)</li>');
 	}
 	inputField.val(proposalIds.join(","));
     $("#proposalPickerModal").modal("hide");

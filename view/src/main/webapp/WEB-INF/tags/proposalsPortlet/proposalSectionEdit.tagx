@@ -87,20 +87,24 @@
                         (<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), false);">remove</a>)</span><br />
                     </c:otherwise>
                 </c:choose>
-                <a class="c-Button__primary" href="javascript:;" onclick="pickProposal(${section.sectionDefinitionId}, '${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}');">Select ${section.proposalNames}</a>
+                <a class="c-Button__primary" href="javascript:;" onclick="pickProposal(${section.sectionDefinitionId}, '${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}');">
+                    Select ${section.proposalNames}
+                </a>
             </c:when>
             <c:when test="${section.type == 'PROPOSAL_LIST_REFERENCE' }">
                 <c:set var="pl" value="${section.stringValueAsProposalArray }"/>
                 <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${empty pl ? '' : section.stringValue}"/>
-                <table>
+                <ul>
                     <c:forEach var="p" items="${pl}">
-                		<tr>
-                			<td><collab:proposalLink proposal="${p}" /> </td>
-                			<td class="removeProposalFromList"><a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), true);">remove</a></td>
-                		</tr>
+                        <li>
+                			<collab:proposalLink proposal="${p}" />
+                			(<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), true);">remove</a>)
+                        </li>
                 	</c:forEach>
-                </table>
-                <a class="c-Button__primary" href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId}, '${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}');">Add ${section.proposalNames}</a>
+                </ul>
+                <a class="c-Button__primary" href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId}, '${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}');">
+                    Edit ${section.proposalNames} list
+                </a>
             </c:when>
 
 			<c:otherwise>

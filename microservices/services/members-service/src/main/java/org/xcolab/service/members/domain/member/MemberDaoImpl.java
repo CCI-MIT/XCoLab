@@ -20,11 +20,12 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.jooq.impl.DSL.countDistinct;
+import static org.jooq.impl.DSL.max;
 import static org.jooq.impl.DSL.sum;
 import static org.xcolab.model.Tables.LOGIN_LOG;
 import static org.xcolab.model.Tables.MEMBER;
+import static org.xcolab.model.Tables.MEMBER_CATEGORY;
 import static org.xcolab.model.Tables.POINTS;
-import static org.xcolab.model.Tables.ROLES_CATEGORY;
 import static org.xcolab.model.Tables.SOCIAL_ACTIVITY;
 import static org.xcolab.model.Tables.USERS_ROLES;
 
@@ -42,12 +43,15 @@ public class MemberDaoImpl implements MemberDao {
     public List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
             String partialEmail, String roleName, String email, String screenName, Long facebookId,
             String googleId) {
-        final SelectQuery<Record> query = dslContext.select()
+        final SelectQuery<Record> query = dslContext.selectDistinct(MEMBER.fields())
                 .from(MEMBER)
-                .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
-                .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
                 .where(MEMBER.STATUS.eq(0))
                 .getQuery();
+
+        if (roleName != null) {
+            query.addJoin(USERS_ROLES, MEMBER.ID_.equal(USERS_ROLES.USER_ID));
+            query.addJoin(MEMBER_CATEGORY, MEMBER_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID));
+        }
 
         if (partialName != null || partialEmail != null) {
             Condition searchCondition = DSL.falseCondition();
@@ -62,7 +66,7 @@ public class MemberDaoImpl implements MemberDao {
             query.addConditions(searchCondition);
         }
         if (roleName != null) {
-            query.addConditions(ROLES_CATEGORY.CATEGORY_NAME.eq(roleName));
+            query.addConditions(MEMBER_CATEGORY.DISPLAY_NAME.eq(roleName));
         }
         if (screenName != null) {
             query.addConditions(MEMBER.SCREEN_NAME.eq(screenName));
@@ -97,15 +101,17 @@ public class MemberDaoImpl implements MemberDao {
                     query.addOrderBy(sortColumn.isAscending()
                             ? activityCount.asc() : activityCount.desc());
                     break;
+                    //TODO: this sorting doesn't work
                 case "roleName":
+                    Field<Object> roleNameField = dslContext.select(max(MEMBER_CATEGORY.SORT_ORDER))
+                            .from(MEMBER_CATEGORY)
+                            .join(USERS_ROLES).on(USERS_ROLES.ROLE_ID.eq(MEMBER_CATEGORY.ROLE_ID))
+                            .where(USERS_ROLES.USER_ID.eq(MEMBER.ID_))
+                            .asField("roleName");
+                    query.addSelect(roleNameField);
                     query.addOrderBy(sortColumn.isAscending()
-                            ? ROLES_CATEGORY.CATEGORY_NAME.asc()
-                            : ROLES_CATEGORY.CATEGORY_NAME.desc());
-                    break;
-                case "roleOrdinal":
-                    query.addOrderBy(sortColumn.isAscending()
-                            ? ROLES_CATEGORY.ROLE_ORDINAL.asc()
-                            : ROLES_CATEGORY.ROLE_ORDINAL.desc());
+                            ? roleNameField.asc()
+                            : roleNameField.desc());
                     break;
                 case "points":
                     Field<Object> points =
@@ -114,7 +120,6 @@ public class MemberDaoImpl implements MemberDao {
                                     .where(POINTS.USER_ID.equal(MEMBER.ID_))
                                     .asField("points");
                     query.addSelect(points);
-                    query.addSelect(MEMBER.fields());
                     query.addOrderBy(sortColumn.isAscending()
                             ? points.asc() : points.desc());
                     break;
@@ -150,7 +155,7 @@ public class MemberDaoImpl implements MemberDao {
         final SelectQuery<Record1<Integer>> query = dslContext.select(countDistinct(MEMBER.ID_))
                 .from(MEMBER)
                 .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
-                .join(ROLES_CATEGORY).on(ROLES_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
+                .join(MEMBER_CATEGORY).on(MEMBER_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
                 .where(MEMBER.STATUS.eq(0))
                 .getQuery();
 
@@ -163,7 +168,7 @@ public class MemberDaoImpl implements MemberDao {
             query.addConditions(MEMBER.EMAIL_ADDRESS.contains(partialName));
         }
         if (roleName != null) {
-            query.addConditions(ROLES_CATEGORY.CATEGORY_NAME.eq(roleName));
+            query.addConditions(MEMBER_CATEGORY.DISPLAY_NAME.eq(roleName));
         }
         return query.fetchOne().into(Integer.class);
     }

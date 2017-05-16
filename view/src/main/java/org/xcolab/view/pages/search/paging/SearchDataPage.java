@@ -49,8 +49,8 @@ public class SearchDataPage {
         final int endRow = page * PAGE_SIZE;
         final int startRow = endRow - PAGE_SIZE;
 
-        List<SearchPojo> searchPojoList = SearchClient.search(startRow,endRow,searchLocation,queryStr);
-        totalResults = SearchClient.searchCount(searchLocation,queryStr);
+        List<SearchPojo> searchPojoList = SearchClient.search(startRow, endRow, searchLocation, queryStr);
+        totalResults = SearchClient.searchCount(searchLocation, queryStr);
 
         items = new ArrayList<>();
         int i = 0;

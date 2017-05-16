@@ -254,9 +254,10 @@ public class FacebookController {
             } else {
                 loginRegisterService
                     .completeRegistration(request, response, userBean, redirectUrl, true);
+                //completeRegistration already sends a redirect -> return to avoid sending another
+                return;
             }
         }
-
         response.sendRedirect(SingleSignOnController.REGISTER_OR_LOGIN_URL);
     }
 

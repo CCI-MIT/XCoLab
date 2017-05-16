@@ -43,10 +43,12 @@ public class ProposalPickerFilterUtil {
             ontologyTermIds.add(term.getId_());
         }
 
+        List<Long> allowedTiers = getAllowedTiers(planSectionDefinition.getTier());
+
         final List<Long> allowedContestTypeIds =
             IdListUtil.getIdsFromString(planSectionDefinition.getAllowedContestTypeIds());
-        return ContestClientUtil.findContestsByName(contestName, ontologyTermIds,
-            allowedContestTypeIds);
+        return ContestClientUtil.findPublicContests(contestName, ontologyTermIds,
+            allowedContestTypeIds, allowedTiers);
     }
 
     public static List<Proposal> getFilteredSubscribedSupportingProposalsForUser(
@@ -140,8 +142,7 @@ public class ProposalPickerFilterUtil {
         } else {
             final List<Long> allowedTiers = getAllowedTiers(planSectionDefinition.getTier());
             proposals = proposalClient.getProposalsByCurrentContests(contestTypes,
-                allowedTiers.isEmpty() ? null : allowedTiers,
-                filterText.isEmpty() ? null : filterText);
+                allowedTiers, filterText.isEmpty() ? null : filterText);
         }
 
         final ArrayList<Proposal> filteredProposals = new ArrayList<>(proposals);
@@ -150,20 +151,25 @@ public class ProposalPickerFilterUtil {
     }
 
     private static List<Long> getAllowedTiers(Long filterTier) {
-
+        //TODO: make this processes clearer by introducing a boolean field to allow lower tiers
         // if filterTier < 0:
         //  allow tier <= (-filterTier)
         // else if filterTier > 0
         //  only allow tier == filterTier
         List<Long> allowedTiers = new ArrayList<>();
         final long positiveFilterTier = Math.abs(filterTier);
-        allowedTiers.add(positiveFilterTier);
-        if (filterTier < 0) {
-            for (Long currentTier = positiveFilterTier - 1; currentTier >= 0; currentTier--) {
-                allowedTiers.add(currentTier);
+        if (positiveFilterTier > 0) {
+            allowedTiers.add(positiveFilterTier);
+            if (filterTier < 0) {
+                for (Long currentTier = positiveFilterTier - 1; currentTier >= 0; currentTier--) {
+                    allowedTiers.add(currentTier);
+                }
             }
         }
-        return allowedTiers;
+        if (!allowedTiers.isEmpty()) {
+            return allowedTiers;
+        }
+        return null;
     }
 
     private static void filterProposals(List<Proposal> proposals,
