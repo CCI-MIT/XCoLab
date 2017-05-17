@@ -17,7 +17,7 @@
           src="${_themeImageFolder}/arrow.gif" width="8" height="8" /> <a
           href="/web/guest/members">Members</a> <img
           src="${_themeImageFolder}/arrow.gif" width="8" height="8" /> <a
-          href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">${userBean.screenName}</a>
+          href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">${userBean.displayName}</a>
     <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />Subscriptions
     </div>
 
