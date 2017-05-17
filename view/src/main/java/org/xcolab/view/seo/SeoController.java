@@ -37,7 +37,7 @@ public class SeoController {
             sb.append("User-agent: *\n" + "Disallow: /");
         }
 
-        response.getOutputStream().write("".getBytes());
+        response.getOutputStream().write(sb.toString().getBytes());
         response.setContentType("text/plain");
     }
 
