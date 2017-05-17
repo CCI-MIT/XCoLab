@@ -66,7 +66,7 @@ public class RequestHelper {
             final CacheKey<T, List<R>> cacheKey, CacheName cacheName) {
         return getCached(cacheName, cacheKey, () -> {
             ResponseEntity<List<R>> response = restTemplate.exchange(uriBuilder.buildString(),
-                    HttpMethod.GET, null, typeReference);
+                    HttpMethod.GET, null, typeReference, uriBuilder.getUriVariables());
             return response.getBody();
         });
     }
@@ -93,7 +93,8 @@ public class RequestHelper {
     public <T, R> R getUnchecked(final UriBuilder uriBuilder, final Class<R> returnType,
             CacheKey<T, R> cacheKey, CacheName cacheName) {
         return getCached(cacheName, cacheKey,
-                () -> restTemplate.getForObject(uriBuilder.buildUri(), returnType));
+                () -> restTemplate.getForObject(uriBuilder.buildString(), returnType,
+                        uriBuilder.getUriVariables()));
     }
 
     public int getCount(UriBuilder uriBuilder) {
@@ -103,7 +104,8 @@ public class RequestHelper {
     public int getCount(final UriBuilder uriBuilder,
             final CacheKey<?, Integer> cacheKey, CacheName cacheName) {
         return getCached(cacheName, cacheKey, () -> {
-            final HttpHeaders httpHeaders = restTemplate.headForHeaders(uriBuilder.buildString());
+            final HttpHeaders httpHeaders = restTemplate.headForHeaders(uriBuilder.buildString(),
+                    uriBuilder.getUriVariables());
             final List<String> countHeaders = httpHeaders.get("X-Total-Count");
             if (countHeaders.isEmpty()) {
                 return 0;
@@ -148,17 +150,20 @@ public class RequestHelper {
 
         HttpEntity<T> httpEntity = new HttpEntity<>(entity);
 
-        restTemplate.exchange(uriBuilder.buildString(), HttpMethod.PUT, httpEntity, Void.class);
+        restTemplate.exchange(uriBuilder.buildString(), HttpMethod.PUT, httpEntity, Void.class,
+                uriBuilder.getUriVariables());
         return true;
     }
 
     public boolean delete(UriBuilder uriBuilder) {
-        restTemplate.exchange(uriBuilder.buildString(), HttpMethod.DELETE, null, Void.class);
+        restTemplate.exchange(uriBuilder.buildString(), HttpMethod.DELETE, null,
+                Void.class, uriBuilder.getUriVariables());
         return true;
     }
 
     public <T> boolean delete(UriBuilder uriBuilder, CacheKey<T, T> cacheKey, CacheName cacheName) {
-        restTemplate.exchange(uriBuilder.buildString(), HttpMethod.DELETE, null, Void.class);
+        restTemplate.exchange(uriBuilder.buildString(), HttpMethod.DELETE, null,
+                Void.class, uriBuilder.getUriVariables());
         final boolean cacheActive = cacheProvider.isActive() && cacheKey != null;
         if (cacheActive) {
             cacheProvider.delete(cacheKey, cacheName);
@@ -174,7 +179,8 @@ public class RequestHelper {
     }
 
     public <T> T post(UriBuilder uriBuilder, Object entity, Class<T> returnType) {
-        return restTemplate.postForObject(uriBuilder.buildString(), entity, returnType);
+        return restTemplate.postForObject(uriBuilder.buildString(), entity, returnType,
+                uriBuilder.getUriVariables());
     }
 
     public void invalidateCache(CacheKey<?, ?> cacheKey, CacheName cacheName) {
