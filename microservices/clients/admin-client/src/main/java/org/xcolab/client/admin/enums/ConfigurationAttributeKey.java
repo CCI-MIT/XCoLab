@@ -275,6 +275,7 @@ public final class ConfigurationAttributeKey {
 
     public static final AttributeGetter<Boolean> DISPLAY_FIRST_NAME_LAST_NAME =
             ConfigurationAttributes.newBooleanAttribute("DISPLAY_FIRST_NAME_LAST_NAME")
+                    .defaultValue(false)
                     .build();
 
 
