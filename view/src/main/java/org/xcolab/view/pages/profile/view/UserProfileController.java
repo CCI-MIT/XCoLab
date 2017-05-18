@@ -304,17 +304,24 @@ public class UserProfileController {
         //	fireGoogleEvent = !profileWasComplete && profileIsComplete();
         //}
 
-        if (updatedUserBean.getImageId() != currentUserProfile.getUserBean().getImageId()) {
+        final long newImageId = updatedUserBean.getImageId();
+        if (newImageId != currentUserProfile.getUserBean().getImageId()) {
 
-            try {
-                FileEntry fe = FilesClient.getFileEntry(updatedUserBean.getImageId());
-                if (fe != null) {
-                    currentUserProfile.getUser().setPortraitFileEntryId(fe.getFileEntryId());
-                    changedMember = true;
+            if (newImageId > 0) {
+                try {
+                    FileEntry fe = FilesClient.getFileEntry(newImageId);
+                    if (fe != null) {
+                        currentUserProfile.getUser().setPortraitFileEntryId(fe.getFileEntryId());
+                        changedMember = true;
+                    }
+                } catch (FileEntryNotFoundException e) {
+                    throw new IllegalStateException(
+                            "No file entry found for imageId " + newImageId + " for member " +
+                                    updatedUserBean.getUserId());
                 }
-            } catch (FileEntryNotFoundException e) {
-                throw new IllegalStateException("No file entry found for imageId " + updatedUserBean.getImageId()
-                        + " for member " + updatedUserBean.getUserId());
+            } else {
+                currentUserProfile.getUser().setPortraitFileEntryId(0L);
+                changedMember = true;
             }
         }
 
