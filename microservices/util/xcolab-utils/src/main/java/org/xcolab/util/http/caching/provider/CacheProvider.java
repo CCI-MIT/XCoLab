@@ -21,7 +21,11 @@ public interface CacheProvider {
 
     boolean isActive();
 
-    void clear();
+    default void clear() {
+        for (CacheName cacheName : CacheName.values()) {
+            clear(cacheName);
+        }
+    }
 
     void clear(CacheName cacheName);
 }
