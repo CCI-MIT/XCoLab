@@ -4,16 +4,24 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
 <layout:layout>
-    <h2>Restricted access - login required</h2>
-    <c:if test="${not _isLoggedIn}">
-        <div class="c-Alert__info__message">
-            Please log into your account to verify that you are authorized to access this page.
-        </div>
-        <script type="text/javascript">
-            jQuery(function() {
-                jQuery("#popup_login").show();
-            });
-        </script>
-    </c:if>
+    <c:choose>
+        <c:when test="${not _isLoggedIn}">
+            <h2>Restricted access - login required</h2>
+            <div class="c-Alert c-Alert__info__message">
+                Please log into your account to verify that you are authorized to access this page.
+            </div>
+            <script type="text/javascript">
+                jQuery(function() {
+                    jQuery("#popup_login").show();
+                });
+            </script>
+        </c:when>
+        <c:otherwise>
+            <h2>You are logged in.</h2>
+            <p>
+                Continue browsing or click <a href="/">here</a> to return to the home page.
+            </p>
+        </c:otherwise>
+    </c:choose>
 </layout:layout>
 </jsp:root>
