@@ -2,6 +2,7 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+          xmlns:spring="http://www.springframework.org/tags"
           version="2.0">
     <jsp:directive.attribute name="title" type="java.lang.String" required="false" rtexprvalue="true" description="Page title" />
     <jsp:directive.attribute name="meta1" type="java.lang.String" required="false" rtexprvalue="true" description="Social media meta info 1" />
@@ -196,7 +197,7 @@
             </div>
             <ul id="c-Header__menu" class="${_isHomePage ? 'backgroundLight' : ''}">
                 <!-- TODO: mark current page with class 'isCurrent' -->
-                <li class="${_activePageLink == 'about' ? 'isCurrent' : ''}"><a href="/page/about">About</a></li>
+                <li class="${_activePageLink == 'about' ? 'isCurrent' : ''}"><a href="/page/about"><spring:message code="homepage.menu.about" /></a></li>
                 <c:forEach var="_contestPage" items="${_contestPages}">
                     <c:if test="${_contestPage.menuItemName != ''}">
                         <li class="${_activePageLink == _contestPage.portletName ? 'isCurrent' : ''}">

@@ -10,6 +10,7 @@ server:
   compression:
     enabled: true
 
+
 tomcat:
   ajp:
     enabled: true

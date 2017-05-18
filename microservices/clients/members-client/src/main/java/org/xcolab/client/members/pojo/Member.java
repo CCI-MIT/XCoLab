@@ -52,6 +52,7 @@ public class Member implements Serializable {
     private Long portraitFileEntryId;
     private Integer   autoregisteredmemberstatus;
     private String    uuid;
+    private String    defaultlocale;
 
     public Member() {
     }
@@ -76,6 +77,7 @@ public class Member implements Serializable {
         this.portraitFileEntryId = value.portraitFileEntryId;
         this.autoregisteredmemberstatus = value.autoregisteredmemberstatus;
         this.uuid = value.uuid;
+        this.defaultlocale = value.defaultlocale;
     }
 
     public static Member fromId(String memberIdString) {
@@ -237,6 +239,14 @@ public class Member implements Serializable {
 
     public void setPortraitFileEntryId(Long portraitfileentryid) {
         this.portraitFileEntryId = portraitfileentryid;
+    }
+
+    public String getDefaultLocale() {
+        return this.defaultlocale;
+    }
+
+    public void setDefaultLocale(String defaultlocale) {
+        this.defaultlocale = defaultlocale;
     }
 
     @JsonIgnore

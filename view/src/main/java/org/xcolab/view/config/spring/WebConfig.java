@@ -11,17 +11,22 @@ import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletCon
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.CacheControl;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
 
@@ -38,6 +43,7 @@ import org.xcolab.view.theme.ThemeVariableInterceptor;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -60,7 +66,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public WebConfig(ThemeVariableInterceptor themeVariableInterceptor,
         PopulateProposalModelInterceptor populateContextInterceptor,
         ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor,
-        ConfigurationService configurationService, WebProperties webProperties) {
+        ConfigurationService configurationService
+            , WebProperties webProperties) {
         Assert.notNull(configurationService, "ConfigurationService bean is required");
         Assert.notNull(themeVariableInterceptor, "ThemeVariableInterceptor bean is required");
         Assert.notNull(populateContextInterceptor, "PopulateContextInterceptor bean is required");
@@ -72,16 +79,31 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         this.populateContextInterceptor = populateContextInterceptor;
         this.validateTabPermissionsInterceptor = validateTabPermissionsInterceptor;
         this.webProperties = webProperties;
+
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(themeVariableInterceptor);
-
+        registry.addInterceptor(localeChangeInterceptor());
         registry.addInterceptor(populateContextInterceptor).addPathPatterns("/contests/**");
         registry.addInterceptor(validateTabPermissionsInterceptor).addPathPatterns("/contests/**");
     }
 
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasenames("i18n/homepage");
+        return messageSource;
+    }
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver slr = new SessionLocaleResolver();
+        slr.setDefaultLocale(Locale.US);//default to US
+        slr.setLocaleAttributeName("memberLocale");
+        return slr;
+    }
     @Bean
     public FilterRegistrationBean resourceEncodingFilter() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
@@ -94,6 +116,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(new ShallowEtagHeaderFilter());
         return registrationBean;
+    }
+
+    @Bean
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+        lci.setParamName("lang");
+
+        return lci;
     }
 
     @LoadBalanced
