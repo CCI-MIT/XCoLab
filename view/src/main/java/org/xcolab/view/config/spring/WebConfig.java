@@ -94,6 +94,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasenames("i18n/homepage");
+        messageSource.setDefaultEncoding("utf-8");
         return messageSource;
     }
 
