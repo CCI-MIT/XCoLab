@@ -19,8 +19,6 @@ public interface MemberDao {
     Integer getMemberMaterializedPoints(Long memberId);
     Integer getMemberHypotheticalPoints(Long memberId);
 
-    Integer getMemberActivityCount(Long memberId);
-
     Optional<Member> findOneByScreenName(String screenName);
     Optional<Member> findOneByEmail(String email);
     Optional<Member> findOneByLoginTokenId(String loginTokenId);

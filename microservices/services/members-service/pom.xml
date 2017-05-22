@@ -87,7 +87,17 @@
 				<configuration combine.self="append">
 					<generator>
 						<database>
-							<includes>members_ColabSSO|members_Member|Users_Roles|Role_|xcolab_Message|xcolab_MessageRecipientStatus|xcolab_MessagingUserPreferences|xcolab_RolesCategory|SocialActivity|xcolab_Points|xcolab_MemberCategory|xcolab_ContestTeamMember|members_RoleGroupRoles|members_RoleGroup|xcolab_StaffMember|xcolab_LoginLog|xcolab_AnalyticsUserEvent|Users_Groups|UserGroupRole</includes>
+							<includes>
+                                | members_Member | members_ColabSSO
+                                | Users_Roles | Role_ | xcolab_MemberCategory
+                                | xcolab_ContestTeamMember | members_RoleGroupRoles | members_RoleGroup
+                                | Users_Groups | UserGroupRole | xcolab_StaffMember
+                                | xcolab_LoginLog | xcolab_AnalyticsUserEvent
+                                | xcolab_Message | xcolab_MessageRecipientStatus
+                                | xcolab_MessagingUserPreferences
+                                | xcolab_Points
+                                | activities_ActivityEntry
+                            </includes>
 						</database>
 					</generator>
 				</configuration>

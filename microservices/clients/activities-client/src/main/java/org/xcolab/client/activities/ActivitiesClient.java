@@ -173,11 +173,6 @@ public final class ActivitiesClient {
     }
 
     public static ActivitiesClient fromService(RestService activitiesService) {
-        ActivitiesClient client = instances.get(activitiesService);
-        if (client == null) {
-            client = new ActivitiesClient(activitiesService);
-            instances.put(activitiesService, client);
-        }
-        return client;
+        return instances.computeIfAbsent(activitiesService, ActivitiesClient::new);
     }
 }

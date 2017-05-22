@@ -22,11 +22,11 @@ import java.util.Optional;
 import static org.jooq.impl.DSL.countDistinct;
 import static org.jooq.impl.DSL.max;
 import static org.jooq.impl.DSL.sum;
+import static org.xcolab.model.Tables.ACTIVITY_ENTRY;
 import static org.xcolab.model.Tables.LOGIN_LOG;
 import static org.xcolab.model.Tables.MEMBER;
 import static org.xcolab.model.Tables.MEMBER_CATEGORY;
 import static org.xcolab.model.Tables.POINTS;
-import static org.xcolab.model.Tables.SOCIAL_ACTIVITY;
 import static org.xcolab.model.Tables.USERS_ROLES;
 
 @Repository
@@ -92,9 +92,10 @@ public class MemberDaoImpl implements MemberDao {
                             ? MEMBER.SCREEN_NAME.asc() : MEMBER.SCREEN_NAME.desc());
                     break;
                 case "activityCount":
+                    //TODO: this property is owned by the activities-service
                     Field<Object> activityCount = this.dslContext.selectCount()
-                            .from(SOCIAL_ACTIVITY)
-                            .where(SOCIAL_ACTIVITY.USER_ID.equal(MEMBER.ID_))
+                            .from(ACTIVITY_ENTRY)
+                            .where(ACTIVITY_ENTRY.MEMBER_ID.equal(MEMBER.ID_))
                             .asField("activityCount");
                     query.addSelect(activityCount);
                     query.addSelect(MEMBER.fields());
@@ -324,12 +325,5 @@ public class MemberDaoImpl implements MemberDao {
     public Integer getMemberHypotheticalPoints(Long memberId) {
         return dslContext.select(sum(POINTS.HYPOTHETICAL_POINTS))
                 .from(POINTS).where(POINTS.USER_ID.eq(memberId)).fetchOne(0, Integer.class);
-    }
-
-    @Override
-    public Integer getMemberActivityCount(Long memberId) {
-        return this.dslContext.selectCount()
-                .from(SOCIAL_ACTIVITY).where(SOCIAL_ACTIVITY.USER_ID.equal(memberId))
-                .fetchOne(0, Integer.class);
     }
 }
