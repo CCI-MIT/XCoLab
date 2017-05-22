@@ -132,7 +132,11 @@ public final class ProposalAttributeClient {
         return DtoUtil.toPojos(proposalAttributeResource.list()
                 .optionalQueryParam("proposalId", proposalId)
                 .optionalQueryParam("version", version)
-                .withCache(CacheName.PROPOSAL_DETAILS)
+                //.withCache(CacheKeys.of(ProposalAttributeDto.class, proposalId),CacheName.PROPOSAL_DETAILS))
+                .withCache(CacheKeys.withClass(ProposalAttributeDto.class)
+                        .withParameter("proposalId", proposalId)
+                        .withParameter("version",version)
+                        .asList(), CacheName.PROPOSAL_DETAILS)
                 .execute(), proposalService);
     }
 
@@ -154,12 +158,20 @@ public final class ProposalAttributeClient {
         return proposalAttribute;
     }
 
+
+    public void invalidateProposalAttibuteCache(Proposal proposal) {
+        ServiceRequestUtils.invalidateCache(CacheKeys.withClass(ProposalDto.class)
+                .withParameter("proposalId", proposal.getProposalId())
+                .withParameter("version", proposal.getVersion()).asList(), CacheName.PROPOSAL_DETAILS);
+    }
     public ProposalAttribute setProposalAttribute(ProposalAttribute proposalAttribute,
             Long authorId) {
         //TODO: replace with better cache invalidation mechanism
-        ServiceRequestUtils.invalidateCache(CacheKeys.withClass(ProposalDto.class)
-                .withParameter("proposalId", proposalAttribute.getProposalId())
-                .withParameter("includeDeleted", false).build(), CacheName.MISC_REQUEST);
+
+        //.optionalQueryParam("proposalId", proposalId)
+        //        .optionalQueryParam("version", version)
+        //        .withCache(CacheName.PROPOSAL_DETAILS)
+
         return proposalAttributeResource.service("setProposalAttribute", ProposalAttributeDto.class)
                 .queryParam("authorId", authorId)
                 .post(proposalAttribute)

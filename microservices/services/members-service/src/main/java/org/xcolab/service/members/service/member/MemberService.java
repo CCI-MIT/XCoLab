@@ -48,7 +48,7 @@ public class MemberService {
     }
 
     public String generateScreenName(String[] inputData) {
-        UsernameGenerator usernameGenerator = new UsernameGenerator(inputData, true, MAX_SCREEN_NAME_LENGTH);
+        UsernameGenerator usernameGenerator = new UsernameGenerator(inputData, false, MAX_SCREEN_NAME_LENGTH);
 
         String username;
         do {

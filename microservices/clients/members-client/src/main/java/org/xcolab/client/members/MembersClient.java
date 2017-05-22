@@ -109,14 +109,6 @@ public final class MembersClient {
         }
     }
 
-    public static Integer getMemberActivityCount(long memberId) {
-        try {
-            return memberResource.service(memberId, "activityCount", Integer.class).getChecked();
-        } catch (EntityNotFoundException e) {
-            return 0;
-        }
-    }
-
     public static Integer getMemberMaterializedPoints(long memberId) {
         try {
             return memberResource.service(memberId, "points", Integer.class).getChecked();

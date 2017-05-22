@@ -397,7 +397,7 @@ public class Proposal extends AbstractProposal {
     public String getAuthorName() {
         String authorName = getTeam();
         if (StringUtils.isBlank(authorName)) {
-            authorName = getAuthor().getScreenName();
+            authorName = getAuthor().getDisplayName();
         }
         return authorName;
     }

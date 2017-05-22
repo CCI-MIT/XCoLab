@@ -251,7 +251,7 @@ public class Member implements Serializable {
 
     @JsonIgnore
     public long getPortraitId() {
-        return getPortraitFileEntryId();
+        return getPortraitFileEntryId() != null ? getPortraitFileEntryId() : 0;
     }
 
     @JsonIgnore

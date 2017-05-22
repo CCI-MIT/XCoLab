@@ -1,6 +1,8 @@
 package org.xcolab.view.pages.search.items;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
@@ -15,6 +17,8 @@ import org.xcolab.client.search.pojo.SearchPojo;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 public class DiscussionSearchItem extends AbstractSearchItem {
+
+    private static final Logger _log = LoggerFactory.getLogger(DiscussionSearchItem.class);
 
     private CommentThread thread;
     private Comment comment;
@@ -57,7 +61,8 @@ public class DiscussionSearchItem extends AbstractSearchItem {
             ret = getContestDiscussionUrl();
         }
         if (ret == null) {
-            throw ReferenceResolutionException.toObject(Thread.class, thread.getThreadId()).build();
+            _log.error("URL for thread {} not resolvable", thread.getThreadId());
+            return "";
         }
         return ret;
     }
@@ -87,6 +92,6 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     @Override
     public boolean isVisible() {
-        return ((!getLinkUrl().isEmpty()) && (!thread.getIsQuiet()));
+        return StringUtils.isNotEmpty(getLinkUrl()) && !thread.getIsQuiet();
     }
 }

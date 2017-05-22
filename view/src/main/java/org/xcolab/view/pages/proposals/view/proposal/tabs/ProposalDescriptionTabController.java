@@ -147,6 +147,8 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
 
             model.addAttribute("mustFilterContent",
                     ConfigurationAttributeKey.FILTER_PROFANITY.get());
+            model.addAttribute("showProposalEditHelpText",
+                    ConfigurationAttributeKey.CONTESTS_SHOW_PROPOSAL_EDIT_HELP_TEXT.get());
 
             return "proposals/proposalDetails_edit";
         }

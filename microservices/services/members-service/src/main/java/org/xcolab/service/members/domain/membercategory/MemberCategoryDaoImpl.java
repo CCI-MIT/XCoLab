@@ -11,20 +11,28 @@ import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.service.utils.PaginationHelper.SortColumn;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.xcolab.model.Tables.MEMBER_CATEGORY;
 
 @Repository
 public class MemberCategoryDaoImpl implements MemberCategoryDao {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public MemberCategoryDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
 
     @Override
-    public MemberCategory getMemberCategory(Long roleId) {
-        return this.dslContext.select()
-                .from(MEMBER_CATEGORY)
-                .where(MEMBER_CATEGORY.ROLE_ID.equal(roleId)).fetchAny().into(MemberCategory.class);
+    public Optional<MemberCategory> getMemberCategory(Long roleId) {
+        final Record record = this.dslContext.select().from(MEMBER_CATEGORY)
+                .where(MEMBER_CATEGORY.ROLE_ID.equal(roleId)).fetchOne();
+        if (record == null) {
+            return Optional.empty();
+        }
+        return Optional.of(record.into(MemberCategory.class));
     }
 
     @Override
