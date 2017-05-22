@@ -4,11 +4,14 @@ import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.pojo.ProposalDto;
+import org.xcolab.client.proposals.pojo.attributes.ProposalAttributeDto;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.Proposal2PhaseDto;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttributeDto;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
+import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
@@ -50,12 +53,21 @@ public final class ProposalPhaseClient {
                 .computeIfAbsent(proposalService, k -> new ProposalPhaseClient(proposalService));
     }
 
+    public void invalidateProposal2PhaseCache(long proposalId, long contestPhaseId) {
+        ServiceRequestUtils.invalidateCache(CacheKeys.withClass(Proposal2PhaseDto.class)
+                .withParameter("proposalId", proposalId)
+                .withParameter("contestPhaseId", contestPhaseId)
+                .asList(), CacheName.PROPOSAL_PHASE);
+    }
     public Proposal2Phase getProposal2PhaseByProposalIdContestPhaseId(Long proposalId,
             Long contestPhaseId) throws Proposal2PhaseNotFoundException {
         final Proposal2PhaseDto dto = proposal2PhaseResource.list()
                 .queryParam("proposalId", proposalId)
                 .queryParam("contestPhaseId", contestPhaseId)
-                .withCache(CacheName.PROPOSAL_PHASE)
+                .withCache(CacheKeys.withClass(Proposal2PhaseDto.class)
+                        .withParameter("proposalId", proposalId)
+                        .withParameter("contestPhaseId",contestPhaseId)
+                        .asList(), CacheName.PROPOSAL_PHASE)
                 .executeWithResult()
                 .getOneIfExists();
         if (dto == null) {
