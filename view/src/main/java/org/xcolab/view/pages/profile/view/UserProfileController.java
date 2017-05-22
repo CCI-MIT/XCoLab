@@ -29,6 +29,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
+import org.xcolab.view.i18n.I18nUtils;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.view.util.entity.flash.ErrorMessage;
 import org.xcolab.util.CountryUtil;
@@ -119,6 +120,7 @@ public class UserProfileController {
                     ConfigurationAttributeKey.IS_MY_EMMA_ACTIVE.get());
             model.addAttribute("memberCategories", MembersClient.listMemberCategories());
             model.addAttribute("countrySelectItems", CountryUtil.getSelectOptions());
+            model.addAttribute("languageSelectItems", I18nUtils.getSelectList());
             return EDIT_PROFILE_VIEW;
         } catch (MemberNotFoundException e) {
             return ErrorText.NOT_FOUND.flashAndReturnView(request);
@@ -145,6 +147,7 @@ public class UserProfileController {
                 model.addAttribute("newsletterBean",
                         new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
                 model.addAttribute("countrySelectItems", CountryUtil.getSelectOptions());
+                model.addAttribute("languageSelectItems", I18nUtils.getSelectList());
                 return EDIT_PROFILE_VIEW;
             }
         } catch (MemberNotFoundException e) {
@@ -164,6 +167,7 @@ public class UserProfileController {
         model.addAttribute("permissions", permissions);
         model.addAttribute("_activePageLink", "community");
         model.addAttribute("countrySelectItems", CountryUtil.getSelectOptions());
+        model.addAttribute("languageSelectItems", I18nUtils.getSelectList());
 
         if (!permissions.getCanEditMemberProfile(updatedUserBean.getUserId())
                 || memberId != updatedUserBean.getUserId()) {
@@ -247,6 +251,17 @@ public class UserProfileController {
             } else {
                 validationError = true;
                 _log.warn("Country name change failed for userId: {}", currentUserProfile.getUser().getId_());
+            }
+        }
+
+        if (updatedUserBean.getDefaultLocale() != null) {
+
+            if (!result.hasErrors() && !updatedUserBean.getDefaultLocale().isEmpty()) {
+                currentUserProfile.getUser().setDefaultLocale(HtmlUtil.cleanAll(updatedUserBean.getDefaultLocale()));
+                changedUserPart = true;
+            } else {
+                validationError = true;
+                _log.warn("Default language locale change failed for userId: {}", currentUserProfile.getUser().getId_());
             }
         }
 

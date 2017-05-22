@@ -201,7 +201,7 @@
                 <c:forEach var="_contestPage" items="${_contestPages}">
                     <c:if test="${_contestPage.menuItemName != ''}">
                         <li class="${_activePageLink == _contestPage.portletName ? 'isCurrent' : ''}">
-                            <a href="${_contestPage.portletUrl}">${_contestPage.menuItemName}</a>
+                            <a href="${_contestPage.portletUrl}"><spring:message code="${_contestPage.menuItemName}"/></a>
                         </li>
                     </c:if>
                 </c:forEach>

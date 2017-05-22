@@ -2,6 +2,7 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+    xmlns:spring="http://www.springframework.org/tags"
     xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
 	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -105,6 +106,24 @@
                                 </div>
 							</td>
 						</tr>
+                        <tr>
+                            <th class="b m required-field">
+                                Language
+                            </th>
+                            <td>
+                                <form:select cssClass="popupreg_input" path="defaultLocale">
+                                    <form:option value="" label="Select language"/>
+                                    <c:forEach var="lang" items="${languageSelectItems}">
+                                        <form:option value="${lang['value']}" >
+                                            <spring:message code="${lang['lable']}"/>
+                                        </form:option>
+                                    </c:forEach>
+                                </form:select>
+                                <div class="reg_errors"><!--  -->
+                                    <form:errors cssClass="c-Alert c-Alert__error" path="countryCode" />
+                                </div>
+                            </td>
+                        </tr>
 
 						<!--
 						<tr>

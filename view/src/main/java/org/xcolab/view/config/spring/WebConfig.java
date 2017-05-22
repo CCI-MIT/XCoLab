@@ -36,6 +36,8 @@ import org.xcolab.view.config.ConfigurationService;
 import org.xcolab.view.config.rewrite.RewriteInitializer;
 import org.xcolab.view.config.tomcat.AjpConnector;
 import org.xcolab.view.config.tomcat.ForwardedHostValve;
+import org.xcolab.view.i18n.CustomLocaleChangeInterceptor;
+import org.xcolab.view.i18n.I18nUtils;
 import org.xcolab.view.pages.proposals.interceptors.PopulateProposalModelInterceptor;
 import org.xcolab.view.pages.proposals.interceptors.ValidateTabPermissionsInterceptor;
 import org.xcolab.view.theme.ThemeResourceResolver;
@@ -101,8 +103,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();
-        slr.setDefaultLocale(Locale.US);//default to US
-        slr.setLocaleAttributeName("memberLocale");
+        slr.setDefaultLocale(I18nUtils.DEFAULT_LOCALE);
+        slr.setLocaleAttributeName(I18nUtils.MEMBER_LOCALE_SESSION_IDENTIFIER);
         return slr;
     }
     @Bean
@@ -121,7 +123,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
-        LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+        LocaleChangeInterceptor lci = new CustomLocaleChangeInterceptor();
         lci.setParamName("lang");
 
         return lci;
