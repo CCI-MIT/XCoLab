@@ -25,8 +25,8 @@
                 <div class="prop"><strong>${contest.proposalsCount}</strong>
                     <c:choose>
                         <c:when test="${contest.proposalsCount == 1}">
-                            <spring:message code="${contestType.proposalName}"/></c:when>
-                        <c:otherwise> <spring:message code="${contestType.proposalNamePlural}"/></c:otherwise>
+                            &#160;<spring:message code="${contestType.proposalName}"/></c:when>
+                        <c:otherwise>&#160;<spring:message code="${contestType.proposalNamePlural}"/></c:otherwise>
                     </c:choose>
                 </div>
 

@@ -84,7 +84,7 @@
                             <c:set var="showPrior" value="/contests?viewType=${viewType}&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false"/>
                             <li class="${not showActiveContests and not showAllContests ?  'active' : ''}"><a href="${showPrior}" >Prior <spring:message code="${contestType.contestNamePlural}"/></a></li>
                             <c:set var="showAll" value="/contests?viewType=${viewType}&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=${showActiveContests }&amp;showAllContests=true"/>
-                            <li class="${showAllContests ?  'active' : ''}"><a href="${showAll}" ><spring:message code="All ${contestType.contestNamePlural}"/></a></li>
+                            <li class="${showAllContests ?  'active' : ''}"><a href="${showAll}" >All <spring:message code="${contestType.contestNamePlural}"/></a></li>
                         </ul>
                     </div>
                 </div>

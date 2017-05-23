@@ -1,5 +1,6 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
+    xmlns:spring="http://www.springframework.org/tags"
     xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld" version="2.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
@@ -37,8 +38,8 @@
                             <div class="prop"><strong>${contest.proposalsCount}</strong>
                                 <c:choose>
                                     <c:when test="${contest.proposalsCount == 1}">
-                                        ${contestType.proposalNameLowercase}</c:when>
-                                    <c:otherwise> ${contestType.proposalNamePluralLowercase}</c:otherwise>
+                                        &#160;<spring:message code="${contestType.proposalNameLowercase}"/></c:when>
+                                    <c:otherwise>&#160;<spring:message code="${contestType.proposalNamePluralLowercase}"/> </c:otherwise>
                                 </c:choose>
                             </div>
                             <c:if test="${not contest.contestInVotingPhase}">
