@@ -51,7 +51,7 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
          return dslContext.update(CONTENT_FOLDER)
                 .set(CONTENT_FOLDER.CONTENT_FOLDER_NAME, contentFolder.getContentFolderName())
                 .set(CONTENT_FOLDER.CONTENT_FOLDER_DESCRIPTION, contentFolder.getContentFolderDescription())
-                .set(CONTENT_FOLDER.CONTENT_FOLDER_ID, contentFolder.getParentFolderId())
+                .set(CONTENT_FOLDER.PARENT_FOLDER_ID, contentFolder.getParentFolderId())
                 .where(CONTENT_FOLDER.CONTENT_FOLDER_ID.eq(contentFolder.getContentFolderId()))
                 .execute() > 0;
     }

@@ -117,7 +117,6 @@ public class CommentThread extends AbstractCommentThread {
                 return categoryGroup.getLinkUrl() + "/thread/" + getThreadId();
             }
         }
-        //Long propId = CommentClientUtil.getProposalIdForThread(threadId);
         //TODO: handle proposal comments
 
         return null;

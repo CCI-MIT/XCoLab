@@ -31,7 +31,7 @@ public class FeedsController {
 	private String showFeed(HttpServletRequest request, HttpServletResponse response,
 			SortFilterPage sortFilterPage, Model model, Boolean isWidget) {
 
-		FeedsPreferences preferences = new FeedsPreferences(request);
+		FeedsPreferences preferences = new FeedsPreferences("fullfeed");
         if(!isWidget){
             preferences.setFeedStyle("FULL");
             preferences.setFeedMaxLength(25);

@@ -355,8 +355,10 @@ public final class ContestClientUtil {
         return contestClient.autoPromoteProposals();
     }
 
-    public static List<Contest> findContestsByName(String contestName, List<Long> ontologyTermIds, List<Long> contestTypeIds){
-        return contestClient.findContestsByName(contestName,ontologyTermIds, contestTypeIds);
+    public static List<Contest> findPublicContests(String contestName, List<Long> ontologyTermIds,
+            List<Long> contestTypeIds, List<Long> contestTiers){
+        return contestClient.findPublicContests(contestName, ontologyTermIds,
+                contestTypeIds, contestTiers);
     }
 
     public static boolean deleteContest(long contestId) {

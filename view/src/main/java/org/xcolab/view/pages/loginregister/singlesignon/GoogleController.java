@@ -15,6 +15,8 @@ import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.sharedcolab.SharedColabClient;
+import org.xcolab.client.sharedcolab.pojo.SharedMember;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.pages.loginregister.CreateUserBean;
 import org.xcolab.view.pages.loginregister.ImageUploadUtils;
@@ -171,13 +173,8 @@ public class GoogleController {
         String path = session.getServletContext().getRealPath("/");
 
         session.setAttribute(SSOKeys.SSO_GOOGLE_ID, googleId);
-        String screenName = null;
         if (StringUtils.isNotBlank(emailAddress)) {
             session.setAttribute(SSOKeys.SSO_EMAIL, emailAddress);
-            // Screenname = email prefix until @ character
-            screenName = emailAddress.substring(0, emailAddress.indexOf("@"));
-            screenName = screenName.replaceAll("[^0-9a-zA-Z\\-\\_\\.]", "");
-            session.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName);
         }
 
         if (StringUtils.isNotBlank(firstName)) {
@@ -211,26 +208,34 @@ public class GoogleController {
             userBean.setCountry(country);
             userBean.setImageId(Long.toString(imageId));
 
-            if (StringUtils.isNotBlank(screenName)) {
-                userBean.setScreenName(screenName);
+            final SharedMember sharedMember =
+                    SharedColabClient.findSharedMemberByEmail(emailAddress);
+            String screenName;
+            if (sharedMember != null) {
+                screenName = sharedMember.getScreenName();
+            } else {
+                // Screenname = email prefix until @ character
+                screenName = emailAddress.substring(0, emailAddress.indexOf("@"));
+                screenName = screenName.replaceAll("[^0-9a-zA-Z\\-\\_\\.]", "");
+                session.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName);
+            }
 
+            if (StringUtils.isNotBlank(screenName)) {
                 // Validate uniqueness of the screen name
                 // The chance of a collision among 40 equal screennames is 50% -> 5 tries should be sufficient
                 for (int i = 0; i < 5; i++) {
                     try {
                         MembersClient.findMemberByScreenName(screenName);
                         // Generate a random suffix for the non-unique screenName
-                        screenName =
-                                userBean.getScreenName()
+                        screenName = screenName
                                         .concat(RandomStringUtils.random(4, false, true));
                     } catch (MemberNotFoundException e3) {
                         //screen name not used - we can continue
                         break;
                     }
                 }
+                userBean.setScreenName(screenName);
             }
-
-            userBean.setScreenName(screenName);
 
             loginRegisterService.completeRegistration(request, response, userBean,
                     redirectUrl, true);

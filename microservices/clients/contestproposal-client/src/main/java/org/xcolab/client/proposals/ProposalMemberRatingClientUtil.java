@@ -11,10 +11,10 @@ import java.util.List;
 
 public final class ProposalMemberRatingClientUtil {
 
-    private static final RestService proposalService = new RestService(CoLabService.PROPOSAL,
+    private static final RestService contestService = new RestService(CoLabService.CONTEST,
             ServiceRequestUtils.getNamespace());
     private static final ProposalMemberRatingClient client =
-            ProposalMemberRatingClient.fromService(proposalService);
+            ProposalMemberRatingClient.fromService(contestService);
 
     public static ProposalMemberRatingClient getClient() {
         return client;

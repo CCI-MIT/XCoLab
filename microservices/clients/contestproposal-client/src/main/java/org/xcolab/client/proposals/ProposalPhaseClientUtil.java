@@ -11,11 +11,11 @@ import java.util.List;
 
 public final class ProposalPhaseClientUtil {
 
-    private static final RestService proposalService = new RestService(CoLabService.PROPOSAL,
+    private static final RestService contestService = new RestService(CoLabService.CONTEST,
             ServiceRequestUtils.getNamespace());
 
     private static final ProposalPhaseClient client =
-            ProposalPhaseClient.fromService(proposalService);
+            ProposalPhaseClient.fromService(contestService);
 
     public static ProposalPhaseClient getClient() {
         return client;

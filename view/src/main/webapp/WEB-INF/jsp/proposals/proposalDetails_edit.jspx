@@ -177,7 +177,7 @@
 
                 <form:hidden path="imageId" id="proposalImageId" />
                 <collab:imageUpload uniqueName="proposalImageUpload" imageIdInput="proposalImageId"
-                                    compactView="true" defaultImage="PROPOSAL" buttonText="Upload an image (optional)" />
+                                    compactView="true" defaultImageId="${contest.defaultProposalLogoId}" defaultImage="PROPOSAL" buttonText="Upload an image (optional)" />
             </div>
 
 
@@ -197,9 +197,16 @@
 
             <c:forEach var="section" items="${proposal.sections }">
                 <c:if test="${not section.locked }">
-                    <div class="addpropbox q3 ${section.type}" data-section-id="${section.sectionDefinitionId }">
-                        <proposalsPortlet:proposalSectionEdit section="${section }" showCopySectionContentButton="${hasUnmappedSections and not empty baseProposal }"/>
-                    </div>
+                    <c:choose>
+                        <c:when test="${section.type == 'SECTION_HEADER' }">
+                            <h4>${section.title}</h4>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="addpropbox q3 ${section.type}" data-section-id="${section.sectionDefinitionId }">
+                                <proposalsPortlet:proposalSectionEdit section="${section }" showCopySectionContentButton="${hasUnmappedSections and not empty baseProposal }"/>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
                 </c:if>
             </c:forEach>
         </form:form>
@@ -214,7 +221,7 @@
                     &#160;and <a href="${contestType.rulesPageUrl}">${contestType.rulesPageName}</a>.</h4>
 
                 <h5>${fn:toUpperCase(contestType.rulesPageName)}:</h5>
-                <div class="terms">
+                <div id="termsScroll" class="terms">
                         ${preferences.termsOfService}
                 </div>
                 <div class="btns">

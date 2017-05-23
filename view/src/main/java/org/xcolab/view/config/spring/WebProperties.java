@@ -10,8 +10,46 @@ public class WebProperties {
      */
     public final Cache cache = new Cache();
 
+    /**
+     * Configure whether non-members can see content on the site.
+     */
+    private final GuestAccess guestAccess = new GuestAccess();
+
     public Cache getCache() {
         return cache;
+    }
+
+    public GuestAccess getGuestAccess() {
+        return guestAccess;
+    }
+
+    public static class GuestAccess {
+
+        /**
+         * Allow guest access to all pages.
+         */
+        private boolean allowAll = true;
+
+        /**
+         * Override to allow access to the home page even if guest access is disabled.
+         */
+        private boolean alwaysAllowHomepage = true;
+
+        public boolean isAllowAll() {   
+            return allowAll;
+        }
+
+        public void setAllowAll(boolean allowAll) {
+            this.allowAll = allowAll;
+        }
+
+        public boolean isAlwaysAllowHomepage() {
+            return alwaysAllowHomepage;
+        }
+
+        public void setAlwaysAllowHomepage(boolean alwaysAllowHomepage) {
+            this.alwaysAllowHomepage = alwaysAllowHomepage;
+        }
     }
 
     public static class Cache {

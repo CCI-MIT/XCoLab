@@ -23,8 +23,9 @@ public class PaginationHelper {
 
         Validate.isTrue(this.startRecord >= 0, "startRecord is %d, must be zero or positive", this.startRecord);
         Validate.isTrue(this.limitRecord > 0, "limitRecord is %d, must be positive", this.limitRecord);
-        Validate.isTrue(this.limitRecord > this.startRecord,
-                "limitRecord (%d) has to be greater than startRecord (%d)", this.limitRecord, this.startRecord);
+        Validate.isTrue(this.limitRecord >= this.startRecord,
+                "limitRecord (%d) has to be greater than or equal to startRecord (%d)",
+                this.limitRecord, this.startRecord);
 
         if (StringUtils.isNotBlank(sort)) {
             for (String sortString : sort.split(",")) {

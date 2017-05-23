@@ -189,10 +189,13 @@ fieldset.fieldset .control-group { //
 }
 
 .teamBox .teamMemberAdd input {
-  width: 260px;
+  width: 350px;
   height: 40px;
-  background: #FFF url("/images/contest-icon-cplus-orange.png") 225px no-repeat;
+  background: #FFF url("/images/contest-icon-cplus-orange.png") no-repeat;
+  float:left;
   background-size: 20px;
+  background-position: 98% 50%;
+  padding-left: 10px;
 }
 
 .teamBox .teamMemberListing .name {
@@ -206,17 +209,22 @@ fieldset.fieldset .control-group { //
   z-index: 1100;
 }
 
+
 li.ui-menu-item {
   border-bottom: 1px solid #ccc;
-  background: #fff url("/images/contest-icon-cplus-blue.png") 225px;
+  background: #fff url("/images/contest-icon-cplus-blue.png");
   background-size: 20px;
   background-repeat: no-repeat;
+  background-position: 98% 50%;
+  padding-left: 10px;
 }
 
 li.ui-menu-item .ui-state-focus {
-  background-size: 20px;
-  background: #FFF url("/images/contest-icon-cplus-green.png") no-repeat 225px;
+  background: #FFF url("/images/contest-icon-cplus-green.png");
   border: 1px solid #ccc;
   border-radius: 0;
   color: #000;
+  background-repeat: no-repeat;
+  background-position: 98% 50%;
+  padding-left: 10px;
 }

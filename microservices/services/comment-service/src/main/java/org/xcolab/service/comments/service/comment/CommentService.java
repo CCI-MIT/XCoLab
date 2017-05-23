@@ -8,8 +8,6 @@ import org.xcolab.service.comments.domain.comment.CommentDao;
 @Service
 public class CommentService {
 
-    private final static int MAX_SCREEN_NAME_LENGTH = 26;
-
     private final CommentDao commentDao;
 
     @Autowired

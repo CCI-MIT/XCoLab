@@ -10,7 +10,9 @@ import org.xcolab.client.admin.pojo.ConfigurationAttribute;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.entity.utils.WidgetPreference;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
+import org.xcolab.util.attributes.AttributeGetter;
 
 import java.io.IOException;
 
@@ -18,7 +20,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 
 
-public class ProposalsPreferencesWrapper {
+public class ProposalsPreferencesWrapper extends WidgetPreference {
 
     private final static String TERMS_OF_SERVICE_PREF = "TERMS_OF_SERVICE";
     private final static String CALL_TO_ACTION = "CALL_TO_ACTION";
@@ -43,16 +45,22 @@ public class ProposalsPreferencesWrapper {
 
     private EmailTemplateWrapper termsOfServiceTemplateWrapper;
 
-    public ProposalsPreferencesWrapper() {
+    @Override
+    public AttributeGetter<String> getConfigurationAttribute() {
+        return ConfigurationAttributeKey.PORTLET_PROPOSALS_PREFERENCES;
     }
 
-    public ProposalsPreferencesWrapper(HttpServletRequest request) {
+    public ProposalsPreferencesWrapper() {
+        this(null);
+    }
+    public ProposalsPreferencesWrapper(String preferenceId) {
+        super(preferenceId);
 
-        JSONObject preferences = new JSONObject(ConfigurationAttributeKey.PORTLET_PROPOSALS_PREFERENCES.get());
+
 
         termsOfService = getTermsOfServiceTemplateWrapper().getHeader();
-        callToAction = (preferences.has(CALL_TO_ACTION))?(preferences.getString(CALL_TO_ACTION)):(CALL_TO_ACTION_DEFAULT);
-        contestTypeId = (preferences.has(CONTEST_TYPE_ID))?(preferences.getString(CONTEST_TYPE_ID)):("0");
+        callToAction = (prefs.has(CALL_TO_ACTION))?(prefs.getString(CALL_TO_ACTION)):(CALL_TO_ACTION_DEFAULT);
+        contestTypeId = (prefs.has(CONTEST_TYPE_ID))?(prefs.getString(CONTEST_TYPE_ID)):("0");
 
         contestType = ContestClientUtil.getContestType(Long.parseLong(contestTypeId));
 
@@ -72,7 +80,7 @@ public class ProposalsPreferencesWrapper {
     }
 
     public void store() throws  IOException {
-        JSONObject prefs = new JSONObject();
+
         ContestEmailTemplate template = EmailTemplateClientUtil.getContestEmailTemplateByType(TERMS_OF_SERVICE_PREF);
         template.setHeader(termsOfService);
         EmailTemplateClientUtil.updateContestEmailTemplate(template);
@@ -81,10 +89,7 @@ public class ProposalsPreferencesWrapper {
         prefs.put(CONTEST_TYPE_ID, contestTypeId);
 
 
-        ConfigurationAttribute configurationAttribute = new ConfigurationAttribute();
-        configurationAttribute.setName(ConfigurationAttributeKey.PORTLET_PROPOSALS_PREFERENCES.name());
-        configurationAttribute.setStringValue(prefs.toString());
-        AdminClient.updateConfigurationAttribute(configurationAttribute);
+        savePreferences(prefs,preferenceId);
     }
 
     public String getTitle(){

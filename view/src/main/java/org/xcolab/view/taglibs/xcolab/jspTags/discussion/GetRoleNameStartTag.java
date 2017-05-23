@@ -65,7 +65,7 @@ public class GetRoleNameStartTag extends BodyTagSupport {
                 try{
                     Contest c = ContestClientUtil.getContest(contestId);
                     if(c.getIsSharedContestInForeignColab()){
-                        RestService proposalsService = new RefreshingRestService(CoLabService.PROPOSAL,
+                        RestService proposalsService = new RefreshingRestService(CoLabService.CONTEST,
                                 ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
                         );
                         proposalClient = ProposalClient.fromService(proposalsService);

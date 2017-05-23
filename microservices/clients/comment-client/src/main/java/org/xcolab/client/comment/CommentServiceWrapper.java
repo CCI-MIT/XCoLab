@@ -155,19 +155,6 @@ class CommentServiceWrapper {
         }
     }
 
-    public Long getProposalIdForThread(long threadId, CacheName cacheName) {
-        try {
-            return threadResource.<CommentThread, Long>service(threadId, "getProposalIdForThread", Long.class)
-                    .withCache(CacheKeys.withClass(CommentThread.class)
-                            .withParameter("threadId", threadId)
-                            .withParameter("service", "getProposalIdForThread")
-                            .build(Long.class), cacheName)
-                    .getChecked();
-        } catch (EntityNotFoundException e) {
-            return null;
-        }
-    }
-
     public boolean updateThread(CommentThreadDto thread) {
         return threadResource.update(thread, thread.getThreadId()).execute();
     }

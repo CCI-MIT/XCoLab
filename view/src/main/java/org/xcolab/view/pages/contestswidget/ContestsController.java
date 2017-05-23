@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
@@ -31,9 +32,9 @@ public class ContestsController {
     }
 
     @GetMapping("/contestswidget")
-    public String showContests(HttpServletRequest request, HttpServletResponse response, Model model)  {
+    public String showContests(@RequestParam(required = false) String preferenceId, HttpServletRequest request, HttpServletResponse response, Model model)  {
 
-        ContestPreferences contestPreferences = new ContestPreferences();
+        ContestPreferences contestPreferences = new ContestPreferences(preferenceId);
 
         List<Contest> contestWrappers = new ArrayList<>();
         final List<Long> selectedContests = contestPreferences.getSelectedContests();

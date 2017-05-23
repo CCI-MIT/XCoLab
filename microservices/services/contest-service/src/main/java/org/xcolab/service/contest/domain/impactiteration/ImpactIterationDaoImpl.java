@@ -6,7 +6,6 @@ import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xcolab.model.tables.pojos.ImpactIteration;
-import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
 

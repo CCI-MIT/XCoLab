@@ -4,6 +4,7 @@ import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.sharedcolab.exceptions.MemberNotFoundException;
 import org.xcolab.client.sharedcolab.pojo.Member;
 import org.xcolab.client.sharedcolab.pojo.SharedContest;
+import org.xcolab.client.sharedcolab.pojo.SharedMember;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.client.RefreshingRestService;
@@ -17,21 +18,19 @@ import java.util.List;
 
 public class SharedColabClient {
 
-    private static final RestService sharedColabService;
+    private static final RestService sharedColabService = new RefreshingRestService(
+            CoLabService.SHARED, ConfigurationAttributeKey.SHARED_COLAB_NAMESPACE
+                .withDefaultValue(ServiceRequestUtils.getNamespace()));
 
-    static {
-        sharedColabService = new RefreshingRestService(CoLabService.SHARED,
-                ConfigurationAttributeKey.SHARED_COLAB_NAMESPACE
-                        .withDefaultValue(ServiceRequestUtils.getNamespace())
-        );
-    }
+    private static final RestService partnerMemberService = new RefreshingRestService(
+            CoLabService.MEMBER, ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
 
-    private static final RestService partnerMemberService = new RefreshingRestService(CoLabService.MEMBER,
-            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
-    );
 
     private static final RestResource<Member, Long> partnerMemberResource = new RestResource1<>(
             partnerMemberService, "members", Member.TYPES);
+
+    private static final RestResource<SharedMember, Long> sharedMemberResource = new RestResource1<>(
+            partnerMemberService, "members", SharedMember.TYPES);
 
     private static final RestResource<SharedContest, Long> sharedContestResource = new RestResource1<>(
             sharedColabService, "contests", SharedContest.TYPES);
@@ -59,6 +58,19 @@ public class SharedColabClient {
                 .post();
     }
 
+    public static SharedMember findSharedMemberByEmail(String email) {
+        return sharedMemberResource.list()
+                .queryParam("email", email)
+                .executeWithResult()
+                .getOneIfExists();
+    }
+
+    public static SharedMember findSharedMemberByScreenName(String screenName) {
+        return sharedMemberResource.list()
+                .queryParam("screenName", screenName)
+                .executeWithResult()
+                .getOneIfExists();
+    }
 
 
     public static void updateSharedContestName(Long sharedContestId, String sharedContestName) {

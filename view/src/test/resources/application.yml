@@ -1,0 +1,48 @@
+server:
+  port: 18082
+  error:
+    whitelabel:
+      enabled: false
+    include-stacktrace: always
+  session:
+    persistent: true
+    timeout: 7200
+
+tomcat:
+  ajp:
+    enabled: true
+
+management:
+  add-application-context-header: false
+  context-path: /admin/management
+
+cache:
+  enabled: false
+
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jspx
+    favicon:
+      enabled: false
+  http:
+    multipart:
+      max-file-size: 2MB
+
+eureka:
+  client:
+    enabled: false
+
+logging:
+  level:
+    ROOT: WARN
+    com.netflix.eureka: INFO
+    org.xcolab.util.http.caching.provider: INFO
+    org.springframework: INFO
+    org.springframework.jmx: WARN
+    org.springframework.web: WARN
+    org.springframework.boot.web: WARN
+    org.springframework.boot.actuate: WARN
+    org.springframework.context.annotation: WARN
+    org.springframework.beans.factory.annotation: WARN

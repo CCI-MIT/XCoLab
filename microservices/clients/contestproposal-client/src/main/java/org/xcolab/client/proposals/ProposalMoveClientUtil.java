@@ -10,10 +10,10 @@ import java.util.List;
 
 public final class ProposalMoveClientUtil {
 
-    private static final RestService proposalService = new RestService(CoLabService.PROPOSAL,
+    private static final RestService contestService = new RestService(CoLabService.CONTEST,
             ServiceRequestUtils.getNamespace());
     private static final ProposalMoveClient client
-            = ProposalMoveClient.fromService(proposalService);
+            = ProposalMoveClient.fromService(contestService);
 
     public static ProposalMoveClient getClient() {
         return client;

@@ -124,9 +124,18 @@
                 </c:if>
                 <c:if test="${not empty proposal.sections }">
                     <c:forEach var="section" items="${proposal.sections }" varStatus="status">
-                        <h3>${section.title }</h3>
 
-                        <proposalsPortlet:proposalSectionContent section="${section }" />
+                        <c:choose>
+                            <c:when test="${section.type == 'SECTION_HEADER' }">
+                                <h3><b>${section.title }</b></h3>
+                            </c:when>
+                            <c:otherwise>
+                                <h3>${section.title }</h3>
+                                <proposalsPortlet:proposalSectionContent section="${section }" />
+                            </c:otherwise>
+                        </c:choose>
+
+
 
                         <c:if test="${not status.last }">
                             <div class="div2"><!--  --></div>

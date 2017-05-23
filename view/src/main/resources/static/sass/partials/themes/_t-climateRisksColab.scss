@@ -229,6 +229,8 @@ $p-ContestProposals__header__detailButton__borderRadius: 0;
 $p-ContestProposals__header__detailButton__padding: 5px 10px 5px 10px;
 $p-ContestProposals__header__detailButton__border: none;
 $p-ContestProposals__header__detailButton__backgroundColor: transparent;
+$p-ContestProposals__header__paddingBottom: 5px;
+$p-ContestProposals__header__description__padding: 5px 20px;
 
 $c-TableList__background--odd: url(/images/bg-noise.png) $t-Color__grey--lightest;
 
@@ -306,7 +308,6 @@ $p-Discussion__right__borderBottom__paddingBottom: 11px !default;
 
 $c-Footer__link__textColor--hover: $t-Color__primary;
 $c-ContestBox__text__title__textColor--hover: $t-Color__primary;
-$p-ContestProposals__header__paddingTop: 30px;
 $p-Contests__priorActiveAllWidget__a__color--isHover: white;
 
 

@@ -6,7 +6,7 @@
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <!--@elvariable id="proposalsModel" type="org.xcolab.portlets.randomproposals.ProposalsModel"-->
     <c:if test="${_isAdmin}">
-        <a href="/randomproposalswidget/editPreferences" class="c-Button__admin">Edit preferences</a><br/>
+        <a href="/randomproposalswidget/editPreferences?preferenceId=${proposalsModel.preferences.preferenceId}" class="c-Button__admin">Edit preferences</a><br/>
     </c:if>
 	<div>
         <h2> ${proposalsModel.preferences.title}<span>

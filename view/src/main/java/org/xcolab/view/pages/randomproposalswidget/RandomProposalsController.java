@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.proposals.ProposalClientUtil;
@@ -22,9 +23,9 @@ import javax.servlet.http.HttpServletResponse;
 public class RandomProposalsController {
 
     @GetMapping("/randomproposalswidget")
-    public String showRandomProposals(HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String showRandomProposals(@RequestParam(required = false) String preferenceId, HttpServletRequest request, HttpServletResponse response, Model model) {
 
-        RandomProposalsPreferences preferences = new RandomProposalsPreferences();
+        RandomProposalsPreferences preferences = new RandomProposalsPreferences(preferenceId);
 
 
         ProposalsModel proposalsModel = new ProposalsModel(getProposals(preferences), preferences

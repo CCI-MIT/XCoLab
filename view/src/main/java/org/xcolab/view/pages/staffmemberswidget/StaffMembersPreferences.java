@@ -5,13 +5,17 @@ import org.json.JSONObject;
 import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+import org.xcolab.client.members.legacy.enums.CategoryRole;
+import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.entity.utils.WidgetPreference;
+import org.xcolab.util.attributes.AttributeGetter;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StaffMembersPreferences implements Serializable {
+public class StaffMembersPreferences extends WidgetPreference implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -22,35 +26,32 @@ public class StaffMembersPreferences implements Serializable {
     private final static String CATEGORY_ID = "CATEGORY_ID";
 
 
-    private final static int defaultColumnAmount = 4;
+    private final static int defaultColumnAmount = 3;
     private final static boolean defaultDisplayPhoto = true;
     private final static boolean defaultDisplayUrl = true;
     private final static int defaultCategoryId = 1;
     private final static String defaultPortletTitle = "";
 
-    private static final Map<Integer, String> categories;
+    private static final Map<Long, String> categories;
     static
     {
         categories = new HashMap<>();
-        categories.put(1, "Modeling Steering Committee: External Members");
-        categories.put(2, "Modeling Steering Committee: Climate CoLab Staff");
-        categories.put(3, "Expert Advisory Board");
-        categories.put(4, "Expert Council");
-        categories.put(5, "Project Staff: Team");
-        categories.put(6, "Project Staff: Vendors");
-        categories.put(7, "Project Staff: Advisors");
-        categories.put(8, "Project Staff: Alumni");
-        categories.put(9, "Advisors");
-        categories.put(10, "Judges");
-        categories.put(11, "Fellows 2014");
-        categories.put(12, "Fellows 2012 & 2013");
-        categories.put(13, "Catalysts");
-        categories.put(14, "Fellows 2015");
-        categories.put(15, "Impact Assessment Fellows 2015");
-        categories.put(16, "Fellows 2016");
+
+        categories.put(CategoryRole.ADVISOR.getCategoryId(),"Advisors");
+        categories.put(CategoryRole.JUDGE.getCategoryId(),"Judges");
+        categories.put(CategoryRole.FELLOW.getCategoryId(),"Fellows");
+        categories.put(CategoryRole.IMPACT_FELLOW.getCategoryId(),"Impact Fellows");
+        categories.put(CategoryRole.CATALYST.getCategoryId(),"Catalyst");
+        categories.put(CategoryRole.EXPERT_ADVISORY.getCategoryId(),"Expert Advisors");
+        categories.put(CategoryRole.EXPERT_COUNCIL.getCategoryId(),"Expert Council");
+        categories.put(CategoryRole.TEAM.getCategoryId(),"Project Staff: Team");
+        categories.put(CategoryRole.VENDORS.getCategoryId(),"Project Staff: Vendors");
+        categories.put(CategoryRole.ADVISORS_STAFF.getCategoryId(),"Project Staff: Advisors");
+        categories.put(CategoryRole.ALUMNI.getCategoryId(),"Project Staff: Alumni");
+        categories.put(CategoryRole.RESARCH_COLAB.getCategoryId(),"Research Collaborator");
     }
 
-    public static Map<Integer, String> getCategories() {
+    public static Map<Long, String> getCategories() {
         return categories;
     }
 
@@ -61,10 +62,16 @@ public class StaffMembersPreferences implements Serializable {
     private int categoryId;
 
 
+    @Override
+    public AttributeGetter<String> getConfigurationAttribute() {
+        return ConfigurationAttributeKey.PORTLET_STAFF_MEMBERS_PREFERENCES;
+    }
     public StaffMembersPreferences() {
+        this(null);
+    }
+    public StaffMembersPreferences(String preferenceId) {
+        super(preferenceId);
 
-
-        JSONObject prefs = new JSONObject(ConfigurationAttributeKey.PORTLET_STAFF_MEMBERS_PREFERENCES.get());
 
         columnAmount = defaultColumnAmount;
         try {
@@ -100,10 +107,7 @@ public class StaffMembersPreferences implements Serializable {
         prefs.put(DISPLAY_URL,String.valueOf(displayUrl));
 		prefs.put(PORTLET_TITLE, String.valueOf(portletTitle));
 
-        ConfigurationAttribute configurationAttribute = new ConfigurationAttribute();
-        configurationAttribute.setName(ConfigurationAttributeKey.PORTLET_STAFF_MEMBERS_PREFERENCES.name());
-        configurationAttribute.setStringValue(prefs.toString());
-        AdminClient.updateConfigurationAttribute(configurationAttribute);
+        savePreferences(prefs,preferenceId);
         
         return null;
     }

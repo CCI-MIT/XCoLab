@@ -117,11 +117,17 @@ public class ContestProposalsController extends BaseProposalsController {
         }
 
         model.addAttribute("sortFilterPage", sortFilterPage);
+        model.addAttribute("proposals",
+            new ProposalsSortFilterBean(proposals, sortFilterPage));
         model.addAttribute("showCountdown",
                 ConfigurationAttributeKey.SHOW_CONTEST_COUNTDOWN.get());
-        model.addAttribute("proposals", new ProposalsSortFilterBean(proposals, sortFilterPage));
-        model.addAttribute("defaultTimeZoneId", ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.get());
-        model.addAttribute("showShareButtons", ConfigurationAttributeKey.SHOW_SHARE_BUTTONS.get());
+        model.addAttribute("defaultTimeZoneId",
+            ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.get());
+        model.addAttribute("showShareButtons",
+            ConfigurationAttributeKey.SHOW_SHARE_BUTTONS.get());
+        model.addAttribute("showContributorsColumn",
+            ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get());
+
         boolean showEditLink = false;
         if (loggedInMember != null) {
             showEditLink = PermissionsClient.canAdminAll(loggedInMember.getUserId())

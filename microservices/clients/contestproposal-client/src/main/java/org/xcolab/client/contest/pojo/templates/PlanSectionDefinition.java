@@ -297,6 +297,20 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
     public List<String> getOptionsForDropdownMenu() {
         return Arrays.asList(this.getAllowedValues().split(";"));
     }
+    public List<String> getOptionsForCheckbox() {
+        return Arrays.asList(this.getAllowedValues().split(";"));
+    }
+    private List<String> getSelectedValuesForCheckbox(){
+        return Arrays.asList(this.getStringValue().split(";"));
+    }
+    public boolean isOptionForCheckboxSelected(String value) {
+        for(String selectedValue : getSelectedValuesForCheckbox()){
+            if(selectedValue.equals(value)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public List<Long> getAllowedContestTypeIdsList() {
         final List<Long> allowedContestTypeIds =

@@ -7,7 +7,9 @@ $p-ContestProposals__list__element--judgeFellow__border--left: none !default;
 $p-ContestProposals__list__element--contributor__width: 106px !default;
 $p-ContestProposals__list__element--proposalname__judgeActions__width: 480px !default;
 $p-ContestProposals__header__paddingTop: 0 !default;
+$p-ContestProposals__header__paddingBottom: 20px !default;
 $p-ContestProposals__header__title__fontWeight: $b-Typography__fontWeight !default;
+$p-ContestProposals__header__description__padding: 20px !default;
 $p-ContestProposals__header__isTwoColumns: false !default;
 $p-ContestProposals__header__leftColumn__width: 630px !default;
 $p-ContestProposals__header__rightColumn__width: 300px !default;
@@ -33,7 +35,7 @@ $p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.pn
 .p-ContestProposals__header { //.contest-detail
   background-color: $p-Contests__contestDetail__backgroundColor;
   padding-top: $p-ContestProposals__header__paddingTop;
-  padding-bottom: 20px;
+  padding-bottom: $p-ContestProposals__header__paddingBottom;
   border-bottom: 1px solid $t-Color__grey--light;
   margin-top: -4px;
   color: $t-Color__grey--darkest;
@@ -79,7 +81,7 @@ $p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.pn
 }
 
 .p-ContestProposals__header__description { //.contest-detail .description {
-  padding: 20px;
+  padding: $p-ContestProposals__header__description__padding;
 
   p { //.contest-detail .description p
     padding-right: 22px;
@@ -111,7 +113,6 @@ $p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.pn
   display: $p-ContestProposals__header__team__display;
   padding: 10px 16px;
   position: relative;
-  min-height: 37px;
 }
 
 .p-ContestProposals__header__team__roleName { //.contestTeamRole .contestTeamRoleName

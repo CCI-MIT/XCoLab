@@ -29,10 +29,6 @@ public final class ThreadClientUtil {
         return threadClient.getThread(threadId);
     }
 
-    public static Long getProposalIdForThread(long threadId) {
-        return threadClient.getProposalIdForThread(threadId);
-    }
-
     public static boolean updateThread(CommentThread thread) {
         return threadClient.updateThread(thread);
     }

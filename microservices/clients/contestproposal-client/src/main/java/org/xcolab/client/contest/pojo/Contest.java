@@ -158,9 +158,9 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public String getProposalLogoPath() {
-        if(this.getIsSharedContestInForeignColab()) {
-            return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()+"/";
-        }else{
+        if (this.getIsSharedContestInForeignColab()) {
+            return ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get() + "/";
+        } else {
             return "/";
         }
     }
@@ -169,7 +169,7 @@ public class Contest extends AbstractContest implements Serializable {
 
             Long imgId = this.getSponsorLogoId();
             if (imgId != null) {
-                return "http://" +ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()
+                return ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()
                         + "/image/contest/" + imgId;
             }
             return "";
@@ -187,7 +187,7 @@ public class Contest extends AbstractContest implements Serializable {
 
             Long imgId = this.getContestLogoId();
             if (imgId != null) {
-                return "http://" + ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()
+                return ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()
                         + "/image/contest/" + imgId;
             }
             return "";
@@ -282,7 +282,7 @@ public class Contest extends AbstractContest implements Serializable {
             ContestPhase cp = contestClient.getActivePhase(this.getContestPK());
             if (cp != null) {
                 //TODO:REPLACE THIS CALL FOR SYNCD CONTEST REFERENCE
-                RestService proposalService =  restService.withServiceName(CoLabService.PROPOSAL.getServiceName());
+                RestService proposalService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
 
                 return ProposalPhaseClient.fromService(proposalService)
                         .getProposalCountForActiveContestPhase(cp.getContestPhasePK());
@@ -424,7 +424,7 @@ public class Contest extends AbstractContest implements Serializable {
         Set<Proposal> proposalList = new HashSet<>();
 
         List<ContestPhase> contestPhases = contestClient.getAllContestPhases(this.getContestPK());
-        RestService proposalService =  restService.withServiceName(CoLabService.PROPOSAL.getServiceName());
+        RestService proposalService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
         for (ContestPhase contestPhase : contestPhases) {
             List<Proposal> proposals = ProposalClient.fromService(proposalService)
                     .getActiveProposalsInContestPhase(contestPhase.getContestPhasePK());
@@ -453,8 +453,8 @@ public class Contest extends AbstractContest implements Serializable {
 
     public String getResourceArticleUrl() {
         if(this.getIsSharedContestInForeignColab()) {
-            return "http://"+ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()+"/resources/" + this.getContestYear()
-                    + "/" + this.getContestUrlName();
+            return ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()+"/resources/"
+                    + this.getContestYear() + "/" + this.getContestUrlName();
         } else {
             return "/resources/" + this.getContestYear()
                     + "/" + this.getContestUrlName();
@@ -480,7 +480,7 @@ public class Contest extends AbstractContest implements Serializable {
 
     public long getVotesCount() {
         ContestPhase phase = contestClient.getActivePhase(this.getContestPK());
-        RestService proposalMemberRatingService =  restService.withServiceName(CoLabService.PROPOSAL.getServiceName());
+        RestService proposalMemberRatingService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
 
         return ProposalMemberRatingClient.fromService(proposalMemberRatingService).countProposalVotesInContestPhase(phase.getContestPhasePK());
     }
@@ -677,7 +677,7 @@ public class Contest extends AbstractContest implements Serializable {
     public boolean getJudgeStatus() {
         try {
 
-            RestService proposalsService =  restService.withServiceName(CoLabService.PROPOSAL.getServiceName());
+            RestService proposalsService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
 
 
 
@@ -706,7 +706,7 @@ public class Contest extends AbstractContest implements Serializable {
      */
     public boolean getScreeningStatus() {
         try {
-            RestService proposalsService =  restService.withServiceName(CoLabService.PROPOSAL.getServiceName());
+            RestService proposalsService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
 
 
             ContestPhase contestPhase = contestClient.getActivePhase(this.getContestPK());

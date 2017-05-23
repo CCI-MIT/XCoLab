@@ -69,7 +69,7 @@ public class JudgeReviewStatusTag extends BodyTagSupport {
             ProposalClient proposalClient;
 
             if (contest.getIsSharedContestInForeignColab()) {
-                RestService proposalsService = new RefreshingRestService(CoLabService.PROPOSAL,
+                RestService proposalsService = new RefreshingRestService(CoLabService.CONTEST,
                         ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
                 );
                 proposalClient = ProposalClient.fromService(proposalsService);

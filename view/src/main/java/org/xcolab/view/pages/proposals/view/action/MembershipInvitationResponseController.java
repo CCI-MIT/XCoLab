@@ -64,7 +64,7 @@ public class MembershipInvitationResponseController {
         ProposalClient proposalClient;
         ProposalAttributeClient proposalAttributeClient;
         if (contest.getIsSharedContestInForeignColab()) {
-            RestService proposalService = new RefreshingRestService(CoLabService.PROPOSAL,
+            RestService proposalService = new RefreshingRestService(CoLabService.CONTEST,
                     ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
             );
 

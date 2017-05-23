@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.view.util.entity.flash.AlertMessage;
@@ -19,24 +20,25 @@ import javax.servlet.http.HttpServletResponse;
 public class ContestPreferencesController {
 	
     @GetMapping("contestswidget/editPreferences")
-    public String showPreferences(HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String showPreferences(@RequestParam(required = false) String preferenceId, HttpServletRequest request, HttpServletResponse response, Model model) {
 
         long memberId = MemberAuthUtil.getMemberId(request);
         if (!PermissionsClient.canAdminAll(memberId)) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
-    	model.addAttribute("contestPreferences", new ContestPreferences());
+    	model.addAttribute("contestPreferences", new ContestPreferences(preferenceId));
         return "contestswidget/editPreferences";
     }
 	
 
     @PostMapping("contestswidget/savePreferences")
-    public String savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, ContestPreferences contestPreferences)
+    public void savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, ContestPreferences contestPreferences)
             throws  IOException {
         contestPreferences.submit();
         AlertMessage.success("Contest widget preferences has been saved.").flash(request);
-        return "contestswidget/editPreferences";
+        response.sendRedirect("/contestswidget/editPreferences?preferenceId="+contestPreferences.getPreferenceId());
+
     }
 
 }

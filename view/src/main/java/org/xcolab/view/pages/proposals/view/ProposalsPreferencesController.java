@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -65,8 +66,8 @@ public class ProposalsPreferencesController {
     }
 
     @GetMapping("/proposals/editPreferences")
-    public String showPreferences(HttpServletRequest request, HttpServletResponse response, Model model) {
-        model.addAttribute("preferences", new ProposalsPreferencesWrapper(request));
+    public String showPreferences(@RequestParam(required = false) String preferenceId, HttpServletRequest request, HttpServletResponse response, Model model) {
+        model.addAttribute("preferences", new ProposalsPreferencesWrapper(preferenceId));
 
         long memberId = MemberAuthUtil.getMemberId(request);
         if (!PermissionsClient.canAdminAll(memberId)) {
@@ -136,11 +137,13 @@ public class ProposalsPreferencesController {
         //moving parameters are set
         String message = moveProposals(EntityIdListUtil.PROPOSALS.fromIdList(proposalIdsToBeMoved), moveFromContestId, moveToContestPhaseId, ribbonId, false,
                 request);
-
+        if(message.isEmpty()){
+            message = "Preferences saved successfully!";
+        }
 
         AlertMessage.success(message).flash(request);
 
-        response.sendRedirect("/proposals/editPreferences");
+        response.sendRedirect("/proposals/editPreferences?preferenceId="+preferences.getPreferenceId());
     }
 
     //-- @RequestMapping(params = "action=checkForMissingTeamMembers")

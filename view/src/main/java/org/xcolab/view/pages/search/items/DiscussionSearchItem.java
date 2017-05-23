@@ -1,19 +1,24 @@
 package org.xcolab.view.pages.search.items;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
-import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.search.pojo.SearchPojo;
+import org.xcolab.util.exceptions.ReferenceResolutionException;
 
 public class DiscussionSearchItem extends AbstractSearchItem {
+
+    private static final Logger _log = LoggerFactory.getLogger(DiscussionSearchItem.class);
 
     private CommentThread thread;
     private Comment comment;
@@ -22,12 +27,13 @@ public class DiscussionSearchItem extends AbstractSearchItem {
 
     @Override
     public void init(SearchPojo pojo, String searchQuery) {
+        this.searchQuery = searchQuery;
         try {
             comment = CommentClientUtil.getComment(pojo.getClassPrimaryKey());
-            thread = ThreadClientUtil.getThread(comment.getThreadId());
-            this.searchQuery = searchQuery;
-        } catch (CommentNotFoundException | ThreadNotFoundException ignored) {
-
+            thread = comment.getThread();
+        } catch (CommentNotFoundException e) {
+            throw ReferenceResolutionException.toObject(Comment.class, pojo.getClassPrimaryKey())
+                    .build();
         }
     }
 
@@ -49,19 +55,34 @@ public class DiscussionSearchItem extends AbstractSearchItem {
     public String getLinkUrl() {
         String ret = thread.getLinkUrl();
         if (ret == null) {
-            Long propId = ThreadClientUtil.getProposalIdForThread(thread.getThreadId());
-            if (propId != null) {
-                ret = ProposalClientUtil.getProposal(propId).getProposalDiscussionUrl();
-            } else {
-                Contest contest = ContestClientUtil.getContestByThreadId(thread.getThreadId());
-                if (contest != null) {
-                    ret = contest.getContestDiscussionLinkUrl();
-                } else {
-                    ret = "";
-                }
-            }
+            ret = getProposalDiscussionUrl();
+        }
+        if (ret == null) {
+            ret = getContestDiscussionUrl();
+        }
+        if (ret == null) {
+            _log.error("URL for thread {} not resolvable", thread.getThreadId());
+            return "";
         }
         return ret;
+    }
+
+    private String getProposalDiscussionUrl() {
+        try {
+            return ProposalClientUtil.getProposalByThreadId(thread.getThreadId())
+                    .getProposalDiscussionUrl();
+        } catch (ProposalNotFoundException e) {
+            return null;
+        }
+    }
+
+    private String getContestDiscussionUrl() {
+        try {
+            Contest contest = ContestClientUtil.getContestByThreadId(thread.getThreadId());
+            return contest.getContestDiscussionLinkUrl();
+        } catch (ContestNotFoundException e1) {
+            return null;
+        }
     }
 
     @Override

@@ -1,0 +1,66 @@
+package org.xcolab.service.comments.domain.comment;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import org.xcolab.model.tables.pojos.Comment;
+import org.xcolab.service.utils.PaginationHelper;
+
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@DataJpaTest
+@AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
+@TestPropertySource(
+        properties = {
+                "cache.active=false",
+                "eureka.client.enabled=false",
+                "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MYSQL"
+        }
+)
+@ComponentScan("org.xcolab.service.comments")
+public class CommentDaoTest {
+
+    @Autowired
+    private CommentDao commentDao;
+
+    @Test
+    public void testCountByGiven__shouldReturnCorrectCount() throws Exception {
+        final int count = commentDao.countByGiven(null, null);
+        Assert.assertEquals("Total comment count incorrect", 2, count);
+    }
+
+    @Test
+    public void testFindByGiven__shouldReturnCorrectNumber() throws Exception {
+        final List<Comment> comments =
+                commentDao.findByGiven(PaginationHelper.EVERYTHING, null, null, false);
+        assertThat("Total comment count incorrect", comments, hasSize(2));
+    }
+
+    @Test
+    public void testFindByGiven__includeDeleted__shouldReturnCorrectNumber() throws Exception {
+        final List<Comment> comments =
+                commentDao.findByGiven(PaginationHelper.EVERYTHING, null, null, true);
+        assertThat("Total comment count incorrect", comments, hasSize(3));
+    }
+
+    @Test
+    public void testFindByGiven__pagination__shouldReturnCorrectNumber() throws Exception {
+        final List<Comment> comments =
+                commentDao.findByGiven(new PaginationHelper(1, 1, null),
+                        null, null, true);
+        assertThat("Total comment count incorrect", comments, hasSize(1));
+    }
+
+}

@@ -53,13 +53,14 @@ public class ContestsIndexController extends BaseProposalsController {
 
     @GetMapping("/contests")
     public String showContestsIndex(HttpServletRequest request, HttpServletResponse response, Model model,
+            @RequestParam(required = false) String preferenceId,
             @RequestParam(required = false) String viewType,
             @RequestParam(required = false, defaultValue="true") boolean showActiveContests,
             @RequestParam(required = false, defaultValue="false") boolean showAllContests,
             @RequestParam(required = false, defaultValue = "" + FEATURED_COLLECTION_CARD_ID) long currentCollectionCardId,
             SortFilterPage sortFilterPage) {
 
-        ProposalsPreferencesWrapper preferences = new ProposalsPreferencesWrapper(request);
+        ProposalsPreferencesWrapper preferences = new ProposalsPreferencesWrapper(preferenceId);
         ContestType contestType = preferences.getContestType();
 
         if (contestType.getSuggestionContestId() > 0) {

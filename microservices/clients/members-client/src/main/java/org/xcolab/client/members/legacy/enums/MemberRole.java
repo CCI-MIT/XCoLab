@@ -51,10 +51,10 @@ public enum MemberRole {
         return getMemberCategory().getImageName();
     }
 
-    public MemberCategory getMemberCategory()throws NoSuchMemberRoleException{
+    public MemberCategory getMemberCategory() {
         final MemberCategory memberCategory = MembersClient.getMemberCategory(roleId);
         if (memberCategory == null) {
-            throw new NoSuchMemberRoleException(String.format("No member category with roleId %d exists", roleId));
+            throw new IllegalArgumentException("No member category with roleId %d exists" + roleId);
         }
         return memberCategory;
     }
@@ -85,7 +85,7 @@ public enum MemberRole {
         return null;
     }
 
-    public static MemberRole getHighestRole(List<Role_> roles) throws NoSuchMemberRoleException{
+    public static MemberRole getHighestRole(List<Role_> roles) throws NoSuchMemberRoleException {
         MemberRole role = MemberRole.MEMBER;
 
         for (Role_ r: roles) {

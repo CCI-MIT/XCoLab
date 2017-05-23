@@ -10,7 +10,9 @@ import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
+import org.xcolab.entity.utils.WidgetPreference;
 import org.xcolab.util.IdListUtil;
+import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
@@ -21,7 +23,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ContestPreferences {
+public class ContestPreferences extends WidgetPreference{
     private List<Long> selectedContests;
     private final static String SELECTED_CONTESTS_PREFERENCE = "SELECTED_CONTESTS";
     private final static String TITLE_PREFERENCE = "CONTEST_TITLE";
@@ -53,9 +55,17 @@ public class ContestPreferences {
         this.feedSize = feedSize;
     }
 
-    
+
+    @Override
+    public AttributeGetter<String> getConfigurationAttribute() {
+        return ConfigurationAttributeKey.PORTLET_CONTESTS_PREFERENCES;
+    }
+
     public ContestPreferences() {
-    	JSONObject prefs = new JSONObject(ConfigurationAttributeKey.PORTLET_CONTESTS_PREFERENCES.get());
+        this(null);
+    }
+    public ContestPreferences(String preferenceId) {
+        super(preferenceId);
 
         selectedContests = IdListUtil
                 .getIdsFromString((prefs.has(SELECTED_CONTESTS_PREFERENCE))?(prefs.getString(SELECTED_CONTESTS_PREFERENCE)):(""));
@@ -122,18 +132,16 @@ public class ContestPreferences {
 
     public void submit()
             throws  IOException {
-        JSONObject prefs = new JSONObject();
+        JSONObject prefsToSave = new JSONObject();
 
-        prefs.put(SELECTED_CONTESTS_PREFERENCE, IdListUtil.getStringFromIds(selectedContests));
-        prefs.put(TITLE_PREFERENCE, title);
-        prefs.put(FEED_SIZE_PREFERENCE, feedSize+"");
-        prefs.put(ALL_CONTESTS_TITLE, allContestsTitle);
-        prefs.put(SHOW_COUNTS, Boolean.toString(showCounts));
-        prefs.put(ALL_CONTESTS_URL, allContestsUrl);
-        ConfigurationAttribute configurationAttribute = new ConfigurationAttribute();
-        configurationAttribute.setName(ConfigurationAttributeKey.PORTLET_CONTESTS_PREFERENCES.name());
-        configurationAttribute.setStringValue(prefs.toString());
-        AdminClient.updateConfigurationAttribute(configurationAttribute);
+        prefsToSave.put(SELECTED_CONTESTS_PREFERENCE, IdListUtil.getStringFromIds(selectedContests));
+        prefsToSave.put(TITLE_PREFERENCE, title);
+        prefsToSave.put(FEED_SIZE_PREFERENCE, feedSize+"");
+        prefsToSave.put(ALL_CONTESTS_TITLE, allContestsTitle);
+        prefsToSave.put(SHOW_COUNTS, Boolean.toString(showCounts));
+        prefsToSave.put(ALL_CONTESTS_URL, allContestsUrl);
+
+        savePreferences(prefsToSave,this.preferenceId);
     }
 
     public List<Long> getSelectedContests() {

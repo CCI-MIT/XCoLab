@@ -202,7 +202,7 @@ public class ContestPhase extends AbstractContestPhase {
         ProposalPhaseClient proposalPhaseClient;
         if (restService != null) {
             RestService proposalService =
-                    restService.withServiceName(CoLabService.PROPOSAL.getServiceName());
+                    restService.withServiceName(CoLabService.CONTEST.getServiceName());
             proposalPhaseClient = ProposalPhaseClient.fromService(proposalService);
         } else {
             proposalPhaseClient = ProposalPhaseClientUtil.getClient();
@@ -215,7 +215,7 @@ public class ContestPhase extends AbstractContestPhase {
     }
 
     public boolean setProposalVisibility(long proposalId, boolean visible) {
-        RestService proposalService = restService.withServiceName(CoLabService.PROPOSAL.getServiceName());
+        RestService proposalService = restService.withServiceName(CoLabService.CONTEST.getServiceName());
         ProposalPhaseClient.fromService(proposalService)
                 .setProposalContestPhaseAttribute(proposalId, this.getContestPhasePK(),
                         ProposalContestPhaseAttributeKeys.VISIBLE, 0L, visible ? 1L : 0L, "");

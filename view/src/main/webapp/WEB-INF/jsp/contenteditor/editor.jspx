@@ -372,6 +372,11 @@
                     $("#articleId").html(
                             'Article ID: <a href="?articleId=' + id + '">' + id + '</a><br/>');
                 }
+                if(data.contentUrl){
+                    $("#articleURL").html('Page that uses this article: <a href="/page/' + data.contentUrl + '">page</a>');
+                }else{
+                    $("#articleURL").html('');
+                }
 
                 ckEditor.setReadOnly(false);
                 $("#article-view").unmask()
@@ -486,11 +491,11 @@
                                 <div id="folderName">Parent folder: <!-- --></div>
                                 <div id="createdAtDate"><!-- --></div>
                                 <br/>
-                                <!--<div id="articleURL">&lt;!&ndash; Article URL:  &ndash;&gt;</div>-->
                                 <div>
                                 <textarea id="articleVersionContent" name="articleVersionContent" rows = "10" cols="80"><!-- --></textarea>
                                 </div>
                                 <div id="articleId"><!-- Article ID: --></div>
+                                <div id="articleURL"><!-- Article URL: --></div>
                                 <div id="">Previous versions:</div>
                                 <div id="articleVersions" style="max-height: 70px;overflow-y: scroll;"><!-- Article versions: --></div>
 

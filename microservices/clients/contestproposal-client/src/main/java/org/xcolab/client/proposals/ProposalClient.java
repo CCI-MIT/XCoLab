@@ -245,6 +245,17 @@ public final class ProposalClient {
         return linkingProposals;
     }
 
+    public Proposal getProposalByThreadId(long threadId) {
+        final ProposalDto proposal = proposalResource.list()
+                .queryParam("threadId", threadId)
+                .executeWithResult()
+                .getOneIfExists();
+        if (proposal != null) {
+            return proposal.toPojo(proposalService);
+        }
+        throw new ProposalNotFoundException("No proposal with threadId = " + threadId);
+    }
+
     public Proposal getProposal(long proposalId) throws ProposalNotFoundException {
         return getProposal(proposalId, false);
     }

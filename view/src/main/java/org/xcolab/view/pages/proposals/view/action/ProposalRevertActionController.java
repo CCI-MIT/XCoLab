@@ -62,7 +62,8 @@ public class ProposalRevertActionController {
             String newSectionValue = section.getStringValue();
             if (section.getType() == PlanSectionTypeKeys.TEXT
                     || section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE
-                    || section.getType() == PlanSectionTypeKeys.DROPDOWN_MENU) {
+                    || section.getType() == PlanSectionTypeKeys.DROPDOWN_MENU
+                    || section.getType() == PlanSectionTypeKeys.CHECKBOX_OPTION) {
 
                 ProposalAttributeClientUtil.setProposalAttribute(userId,
                         oldProposalVersionToBeBecomeCurrent.getProposalId(),

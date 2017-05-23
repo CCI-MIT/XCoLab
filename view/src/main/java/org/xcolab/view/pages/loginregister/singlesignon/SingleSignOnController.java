@@ -35,12 +35,12 @@ public class SingleSignOnController {
         this.loginRegisterService = loginRegisterService;
     }
 
-    @GetMapping("/sso/registerOrLogin")
+    @GetMapping(REGISTER_OR_LOGIN_URL)
     public String registerOrLogin(HttpServletRequest request, Model model) {
         return REGISTER_OR_LOGIN_VIEW;
     }
 
-    @PostMapping("/sso/registerOrLogin/login")
+    @PostMapping(REGISTER_OR_LOGIN_URL)
     public void linkUser(HttpServletRequest request, Model model, HttpServletResponse response,
             @RequestParam String login, @RequestParam String password) throws IOException {
         try {
