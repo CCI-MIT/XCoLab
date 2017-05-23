@@ -355,7 +355,7 @@
                             </div>
                         </div>
                     </c:if>
-                    <c:if test="${canCommentAsAIF}">
+                    <c:if test="${canCommentAsIAF}">
                         <div class="addpropbox q1">
                             <label>
                                 <strong>Comments from Impact Assessment Fellow</strong>

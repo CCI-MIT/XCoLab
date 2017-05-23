@@ -71,9 +71,6 @@ public class ProposalsDisplayPermissions {
 
     private boolean isSubscribedToContest() {
 
-
-
-
         return contestPhase != null
                 &&
                 clientHelper.getActivitiesClient().isSubscribedToActivity(memberId,
@@ -103,5 +100,11 @@ public class ProposalsDisplayPermissions {
     public boolean getCanSeeSupportButton() {
         return (memberId == 0 || !isSupporter())
                 && !proposalsPermissions.isVotingEnabled();
+    }
+
+    public boolean getCanSeeReviewStatus() {
+        return proposalsPermissions.getCanJudgeActions()
+                || proposalsPermissions.getCanFellowActions()
+                || proposalsPermissions.getCanIAFActions();
     }
 }

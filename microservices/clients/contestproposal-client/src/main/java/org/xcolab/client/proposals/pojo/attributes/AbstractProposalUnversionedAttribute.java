@@ -1,9 +1,10 @@
 package org.xcolab.client.proposals.pojo.attributes;
 
-import java.io.Serializable;
+import org.xcolab.util.attributes.AbstractAttribute;
+
 import java.sql.Timestamp;
 
-class AbstractProposalUnversionedAttribute implements Serializable {
+class AbstractProposalUnversionedAttribute extends AbstractAttribute {
 
     private static final long serialVersionUID = 1L;
 
@@ -13,52 +14,29 @@ class AbstractProposalUnversionedAttribute implements Serializable {
     private Long lastauthorid;
     private Timestamp createdate;
     private Timestamp lastupdatedate;
-    private String name;
-    private Integer addtionalid;
-    private Long numericvalue;
-    private String stringvalue;
-    private Double realvalue;
 
     public AbstractProposalUnversionedAttribute() {}
 
     public AbstractProposalUnversionedAttribute(AbstractProposalUnversionedAttribute value) {
+        super(value);
         this.id_ = value.id_;
         this.proposalid = value.proposalid;
         this.createauthorid = value.createauthorid;
         this.lastauthorid = value.lastauthorid;
         this.createdate = value.createdate;
         this.lastupdatedate = value.lastupdatedate;
-        this.name = value.name;
-        this.addtionalid = value.addtionalid;
-        this.numericvalue = value.numericvalue;
-        this.stringvalue = value.stringvalue;
-        this.realvalue = value.realvalue;
     }
 
-    public AbstractProposalUnversionedAttribute(
-            Long id_,
-            Long proposalid,
-            Long createauthorid,
-            Long lastauthorid,
-            Timestamp createdate,
-            Timestamp lastupdatedate,
-            String name,
-            Integer addtionalid,
-            Long numericvalue,
-            String stringvalue,
-            Double realvalue
-    ) {
+    public AbstractProposalUnversionedAttribute(Long id_, Long proposalid, Long createauthorid,
+            Long lastauthorid, Timestamp createdate, Timestamp lastupdatedate, String name,
+            Integer additionalId, Long numericvalue, String stringvalue, Double realvalue) {
+        super(name, additionalId, numericvalue, stringvalue, realvalue);
         this.id_ = id_;
         this.proposalid = proposalid;
         this.createauthorid = createauthorid;
         this.lastauthorid = lastauthorid;
         this.createdate = createdate;
         this.lastupdatedate = lastupdatedate;
-        this.name = name;
-        this.addtionalid = addtionalid;
-        this.numericvalue = numericvalue;
-        this.stringvalue = stringvalue;
-        this.realvalue = realvalue;
     }
 
     public Long getId_() {
@@ -109,61 +87,16 @@ class AbstractProposalUnversionedAttribute implements Serializable {
         this.lastupdatedate = lastupdatedate;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getAddtionalId() {
-        return this.addtionalid;
-    }
-
-    public void setAddtionalId(Integer addtionalid) {
-        this.addtionalid = addtionalid;
-    }
-
-    public Long getNumericValue() {
-        return this.numericvalue;
-    }
-
-    public void setNumericValue(Long numericvalue) {
-        this.numericvalue = numericvalue;
-    }
-
-    public String getStringValue() {
-        return this.stringvalue;
-    }
-
-    public void setStringValue(String stringvalue) {
-        this.stringvalue = stringvalue;
-    }
-
-    public Double getRealValue() {
-        return this.realvalue;
-    }
-
-    public void setRealValue(Double realvalue) {
-        this.realvalue = realvalue;
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
+        int result = super.hashCode();
         result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
         result = prime * result + ((proposalid == null) ? 0 : proposalid.hashCode());
         result = prime * result + ((createauthorid == null) ? 0 : createauthorid.hashCode());
         result = prime * result + ((lastauthorid == null) ? 0 : lastauthorid.hashCode());
         result = prime * result + ((createdate == null) ? 0 : createdate.hashCode());
         result = prime * result + ((lastupdatedate == null) ? 0 : lastupdatedate.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((addtionalid == null) ? 0 : addtionalid.hashCode());
-        result = prime * result + ((numericvalue == null) ? 0 : numericvalue.hashCode());
-        result = prime * result + ((stringvalue == null) ? 0 : stringvalue.hashCode());
-        result = prime * result + ((realvalue == null) ? 0 : realvalue.hashCode());
         return result;
     }
 
@@ -178,7 +111,8 @@ class AbstractProposalUnversionedAttribute implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final AbstractProposalUnversionedAttribute other = (AbstractProposalUnversionedAttribute) obj;
+        final AbstractProposalUnversionedAttribute other =
+                (AbstractProposalUnversionedAttribute) obj;
         if (id_ == null) {
             if (other.id_ != null) {
                 return false;
@@ -221,39 +155,35 @@ class AbstractProposalUnversionedAttribute implements Serializable {
         } else if (!lastupdatedate.equals(other.lastupdatedate)) {
             return false;
         }
-        if (name == null) {
-            if (other.name != null) {
+        if (getName() == null) {
+            if (other.getName() != null) {
                 return false;
             }
-        } else if (!name.equals(other.name)) {
+        } else if (!getName().equals(other.getName())) {
             return false;
         }
-        if (addtionalid == null) {
-            if (other.addtionalid != null) {
-                return false;
-            }
-        } else if (!addtionalid.equals(other.addtionalid)) {
+        if (getAdditionalId() != other.getAdditionalId()) {
             return false;
         }
-        if (numericvalue == null) {
-            if (other.numericvalue != null) {
+        if (getNumericValue() == null) {
+            if (other.getNumericValue() != null) {
                 return false;
             }
-        } else if (!numericvalue.equals(other.numericvalue)) {
+        } else if (!getNumericValue().equals(other.getNumericValue())) {
             return false;
         }
-        if (stringvalue == null) {
-            if (other.stringvalue != null) {
+        if (getStringValue() == null) {
+            if (other.getStringValue() != null) {
                 return false;
             }
-        } else if (!stringvalue.equals(other.stringvalue)) {
+        } else if (!getStringValue().equals(other.getStringValue())) {
             return false;
         }
-        if (realvalue == null) {
-            if (other.realvalue != null) {
+        if (getRealValue() == null) {
+            if (other.getRealValue() != null) {
                 return false;
             }
-        } else if (!realvalue.equals(other.realvalue)) {
+        } else if (!getRealValue().equals(other.getRealValue())) {
             return false;
         }
         return true;
@@ -261,7 +191,7 @@ class AbstractProposalUnversionedAttribute implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("ProposalUnversionedAttribute (");
+        StringBuilder sb = new StringBuilder(super.toString()).append("(");
 
         sb.append(id_);
         sb.append(", ").append(proposalid);
@@ -269,11 +199,6 @@ class AbstractProposalUnversionedAttribute implements Serializable {
         sb.append(", ").append(lastauthorid);
         sb.append(", ").append(createdate);
         sb.append(", ").append(lastupdatedate);
-        sb.append(", ").append(name);
-        sb.append(", ").append(addtionalid);
-        sb.append(", ").append(numericvalue);
-        sb.append(", ").append(stringvalue);
-        sb.append(", ").append(realvalue);
 
         sb.append(")");
         return sb.toString();

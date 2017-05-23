@@ -270,19 +270,19 @@
                                 </label>
                                 <div class="addprophelp">Give your comments for your proposal's estimation of impact.</div>
                                 <div class="addpropInputContainer">
-                                    <textarea id="impactAuthorComment_text_area"><c:if test="${not empty authorComment}">${authorComment.stringValue}</c:if></textarea>
+                                    <textarea id="impactAuthorComment_text_area"><c:if test="${not empty authorComment}">${authorComment}</c:if></textarea>
                                     <div class="clearfix"><!--  --></div>
                                 </div>
                             </div>
                         </c:if>
-                        <c:if test="${canCommentAsAIF}">
+                        <c:if test="${canCommentAsIAF}">
                             <div class="addpropbox q1">
                                 <label>
                                     <strong>Comments from Impact Assessment Fellow </strong>
                                 </label>
                                 <div class="addprophelp">Give your comments to provide reasons or aditional data for the estimation of the proposal's impact.</div>
                                 <div class="addpropInputContainer">
-                                    <textarea  id="impactIAFComment_text_area"><c:if test="${not empty iafComment}">${iafComment.stringValue}</c:if></textarea>
+                                    <textarea  id="impactIAFComment_text_area"><c:if test="${not empty iafComment}">${iafComment}</c:if></textarea>
                                     <div class="clearfix"><!--  --></div>
 
                                 </div>
@@ -305,11 +305,11 @@
                 <c:if test="${ not edit}">
                     <c:if test="${not empty authorComment}">
                         <h3>Comments from Author</h3>
-                        <p>${authorComment.stringValue}</p>
+                        <p>${authorComment}</p>
                     </c:if>
                     <c:if test="${not empty iafComment}">
                         <h3>Comments from Impact Assessment Fellow</h3>
-                        <p>${iafComment.stringValue}</p>
+                        <p>${iafComment}</p>
                     </c:if>
                 </c:if>
             </div>

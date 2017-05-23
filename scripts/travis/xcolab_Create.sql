@@ -892,7 +892,7 @@ CREATE TABLE `xcolab_ProposalUnversionedAttribute` (
   `createDate` datetime DEFAULT NULL,
   `lastUpdateDate` datetime DEFAULT NULL,
   `name` varchar(75) DEFAULT NULL,
-  `addtionalId` int(11) DEFAULT NULL,
+  `additionalId` bigint(20) DEFAULT NULL,
   `numericValue` bigint(20) DEFAULT NULL,
   `stringValue` varchar(75) DEFAULT NULL,
   `realValue` double DEFAULT NULL,
