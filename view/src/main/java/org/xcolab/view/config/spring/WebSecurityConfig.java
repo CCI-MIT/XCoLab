@@ -22,6 +22,7 @@ import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.handlers.LogoutSuccessHandler;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.auth.login.spring.MemberPasswordEncoder;
+import org.xcolab.view.config.spring.properties.WebProperties;
 
 import java.util.ArrayList;
 import java.util.List;

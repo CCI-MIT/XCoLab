@@ -9,6 +9,7 @@ import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.provider.CacheProvider;
 import org.xcolab.util.http.caching.provider.CacheProviderNoOpImpl;
+import org.xcolab.view.config.spring.properties.CacheProperties;
 
 import java.lang.reflect.InvocationTargetException;
 

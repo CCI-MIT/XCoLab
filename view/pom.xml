@@ -214,6 +214,10 @@
             <groupId>com.librato.metrics</groupId>
             <artifactId>metrics-librato</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.coursera</groupId>
+            <artifactId>metrics-datadog</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
