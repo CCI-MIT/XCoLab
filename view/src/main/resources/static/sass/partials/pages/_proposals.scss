@@ -762,3 +762,13 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   overflow: auto;
   position: relative;
 }
+
+// admin tab columns
+.admin_left {
+  width: 400px;
+  float: left;
+}
+
+.admin_right {
+  float: left;
+}

@@ -114,10 +114,6 @@ function initUserInfoPopup() {
 	});
 }
 
-function initWikiBorderless() {
-	jQuery(".wiki-borderless table, .wiki-borderless table td, .wiki-borderless table tr").removeAttr("border").css("border", 0);
-}
-
 function initTreeWithDynatree() {
     var treeContainer = jQuery(".jsTreeContainer");
     if (treeContainer.length > 0) {
@@ -303,7 +299,6 @@ jQuery(document).ready(function() {
 	initSearchUpperBox();
 	initLoginPopupUpper();
 	initUserInfoPopup();
-	initWikiBorderless();
 	initTreeWithDynatree();
 	
 	jQuery(".popup .close").click(function() {
