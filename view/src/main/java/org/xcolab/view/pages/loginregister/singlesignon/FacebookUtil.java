@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.util.http.RequestHelper;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.exceptions.translation.TranslationErrorHandler;
@@ -90,7 +91,7 @@ public final class FacebookUtil {
     }
 
     public static String getAuthRedirectURL(HttpServletRequest request) {
-        return ConfigurationAttributeKey.COLAB_URL.get() + SsoEndpoint.FACEBOOK_CALLBACK.getUrl();
+        return PlatformAttributeKey.PLATFORM_COLAB_URL.get() + SsoEndpoint.FACEBOOK_CALLBACK.getUrl();
     }
 
     private static class FacebookResponseException extends RuntimeException {

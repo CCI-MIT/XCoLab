@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.members.MembersClient;
@@ -126,13 +126,16 @@ public class ContestPhaseService {
                     ProposalMemberRatingClientUtil.addProposalVote(proposals.get(0).getProposalId(),lastOrActivePhase.getContestPhasePK(),user.getUserId());
 
                     org.xcolab.client.contest.pojo.Contest c = ContestClientUtil.getContest(contest.getContestPK());//THIS LOOKS UGLY as HELL
-                    new ContestVoteNotification(member, c, proposals.get(0), ConfigurationAttributeKey.COLAB_URL.get()).sendMessage();
+                    new ContestVoteNotification(member, c, proposals.get(0),
+                            PlatformAttributeKey.PLATFORM_COLAB_URL.get()).sendMessage();
                 }
                 // Send a notification to the user
                 else {
                     try {
-                        org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil.getContest(contest.getContestPK());//THIS LOOKS UGLY as HELL
-                        new ContestVoteQuestionNotification(member, contestMicro, proposals,ConfigurationAttributeKey.COLAB_URL.get() ).sendMessage();
+                        org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil
+                                .getContest(contest.getContestPK());//THIS LOOKS UGLY as HELL
+                        new ContestVoteQuestionNotification(member, contestMicro, proposals,
+                                PlatformAttributeKey.PLATFORM_COLAB_URL.get() ).sendMessage();
                     } catch (ContestNotFoundException ignored) {
 
                     }

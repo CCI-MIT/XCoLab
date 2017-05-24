@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.util.metrics.MetricsUtil;
 
 import java.util.concurrent.TimeUnit;
@@ -45,7 +45,7 @@ public class MetricsConfig {
     @ConditionalOnProperty(value = LIBRATO_ENABLED_PROPERTY, havingValue = "true")
     LibratoReporter libratoReporter() {
         return Librato.reporter(metricRegistry(), libratoEmail, libratoApiToken)
-                .setSource(ConfigurationAttributeKey.COLAB_URL.get())
+                .setSource(PlatformAttributeKey.PLATFORM_COLAB_URL.get())
                 .start(10, TimeUnit.SECONDS);
     }
 }

@@ -4,10 +4,9 @@ package org.xcolab.view.pages.randomproposalswidget;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -29,7 +28,7 @@ public class RandomProposalsController {
 
 
         ProposalsModel proposalsModel = new ProposalsModel(getProposals(preferences), preferences
-    			, ConfigurationAttributeKey.COLAB_URL+ "/proposal?img_id=");
+    			, PlatformAttributeKey.PLATFORM_COLAB_URL+ "/proposal?img_id=");
 
     	model.addAttribute("proposalsModel", proposalsModel);
 

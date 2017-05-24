@@ -5,7 +5,7 @@ import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.members.pojo.LoginToken;
 import org.xcolab.client.members.pojo.Member;
@@ -49,7 +49,7 @@ public class MemberBatchRegistrationNotification extends MemberNotification {
     }
 
     private String getLoginLink() {
-        String colabUrl = ConfigurationAttributeKey.COLAB_URL.get();
+        String colabUrl = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
         String loginUrl = colabUrl + "/login/token/" + loginToken.getTokenId()
                 + "?tokenKey=" + loginToken.getTokenKey();
         return String.format(LINK_FORMAT_STRING, loginUrl , "here");
