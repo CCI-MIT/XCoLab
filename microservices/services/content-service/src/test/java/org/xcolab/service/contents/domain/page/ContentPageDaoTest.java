@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @TestPropertySource(
         properties = {
-                "cache.active=false",
+                "cache.enabled=false",
                 "eureka.client.enabled=false",
                 "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MYSQL"
         }

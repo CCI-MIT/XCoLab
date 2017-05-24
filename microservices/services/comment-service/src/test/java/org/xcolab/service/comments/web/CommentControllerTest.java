@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("org.xcolab.service.comments")
 @ComponentScan("com.netflix.discovery")
 @TestPropertySource(properties = {
-        "cache.active=false",
+        "cache.enabled=false",
         "eureka.client.enabled=false",
         "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MYSQL"
 })

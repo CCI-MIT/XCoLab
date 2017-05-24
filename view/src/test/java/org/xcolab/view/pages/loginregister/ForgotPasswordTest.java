@@ -21,7 +21,6 @@ import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
-import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.util.http.ServiceRequestUtils;
@@ -44,7 +43,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @ComponentScan("org.xcolab.view.config")
 @TestPropertySource(
         properties = {
-                "cache.active=false"
+                "cache.enabled=false"
         }
 )
 
@@ -65,7 +64,6 @@ public class ForgotPasswordTest {
 
     @Autowired
     private MockMvc mockMvc;
-
 
 
     @Before

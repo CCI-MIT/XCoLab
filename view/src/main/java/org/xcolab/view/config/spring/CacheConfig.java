@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.Assert;
 
-import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.provider.CacheProvider;
 import org.xcolab.util.http.caching.provider.CacheProviderNoOpImpl;
@@ -20,21 +19,28 @@ import java.lang.reflect.InvocationTargetException;
 @EnableConfigurationProperties(CacheProperties.class)
 public class CacheConfig {
 
-    private final RedisTemplate redisTemplate;
+    @SuppressWarnings("SpringAutowiredFieldsWarningInspection")
+    @Autowired(required = false)
+    private RedisTemplate redisTemplate;
+
+    private final CacheProperties cacheProperties;
 
     @Autowired
-    public CacheConfig(RedisTemplate redisTemplate) {
-        this.redisTemplate = redisTemplate;
+    public CacheConfig(CacheProperties cacheProperties) {
+        Assert.notNull(cacheProperties, "CacheProperties are required");
+        this.cacheProperties = cacheProperties;
     }
 
     @Bean
-    public CacheProvider cacheProvider(CacheProperties cacheProperties) {
+    public CacheProvider cacheProvider() {
         CacheProvider cacheProvider;
         if (cacheProperties.isEnabled()) {
             final Class<? extends CacheProvider> provider = cacheProperties.getProvider();
             Assert.notNull(provider, "No CacheProvider configured.");
             try {
                 if (provider == RedisCacheProvider.class) {
+                    Assert.notNull(redisTemplate,
+                            "RedisTemplate is required when redis caching is enabled");
                     cacheProvider = new RedisCacheProvider(redisTemplate);
                 } else {
                     cacheProvider = provider.getConstructor().newInstance();
