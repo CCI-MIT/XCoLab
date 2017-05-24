@@ -1,6 +1,7 @@
 package org.xcolab.client.contest.pojo;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.pojo.CommentThread;
@@ -176,7 +177,8 @@ public class Contest extends AbstractContest implements Serializable {
         } else {
             Long imgId = this.getSponsorLogoId();
             if (imgId != null) {
-                return "/image/contest/" + imgId;
+                final String imageDomain = PlatformAttributeKey.PLATFORM_UPLOADED_IMAGE_DOMAIN.get();
+                return imageDomain + "/image/contest/" + imgId;
             }
             return "";
         }
@@ -194,7 +196,8 @@ public class Contest extends AbstractContest implements Serializable {
         } else {
             Long imgId = this.getContestLogoId();
             if (imgId != null) {
-                return "/image/contest/" + imgId;
+                final String imageDomain = PlatformAttributeKey.PLATFORM_UPLOADED_IMAGE_DOMAIN.get();
+                return imageDomain + "/image/contest/" + imgId;
             }
             return "";
         }

@@ -9,6 +9,7 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.util.CommentClientUtil;
@@ -18,11 +19,11 @@ import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
-import org.xcolab.view.util.entity.NotificationUnregisterUtils;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
-import org.xcolab.view.util.entity.subscriptions.ActivitySubscriptionConstraint;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.view.util.entity.NotificationUnregisterUtils;
+import org.xcolab.view.util.entity.subscriptions.ActivitySubscriptionConstraint;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
@@ -138,7 +139,7 @@ public class ActivitySubscriptionEmailHelper {
                 String body = getDigestMessageBody(userDigestActivities);
                 String unsubscribeFooter = getUnsubscribeDailyDigestFooter(NotificationUnregisterUtils.getActivityUnregisterLink(recipient));
 
-                sendEmailMessage(recipient, subject, body, unsubscribeFooter, ConfigurationAttributeKey.COLAB_URL.get(),recipient.getId_());
+                sendEmailMessage(recipient, subject, body, unsubscribeFooter, PlatformAttributeKey.PLATFORM_COLAB_URL.get(),recipient.getId_());
             } catch (MemberNotFoundException ignored) {
                 _log.error("sendDailyDigestNotifications: MemberNotFound : {}",
                         ignored.getMessage());
@@ -286,9 +287,9 @@ public class ActivitySubscriptionEmailHelper {
 
                 //TODO: fix this because this was only done so the code would compile
                 String unsubscribeFooter = getUnsubscribeIndividualSubscriptionFooter(
-                        ConfigurationAttributeKey.COLAB_URL.get(),
+                        PlatformAttributeKey.PLATFORM_COLAB_URL.get(),
                         NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId())));
-                sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter, ConfigurationAttributeKey.COLAB_URL.get(),activity.getActivityEntryId());
+                sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter, PlatformAttributeKey.PLATFORM_COLAB_URL.get(),activity.getActivityEntryId());
             }
         }
     }

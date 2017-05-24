@@ -5,6 +5,7 @@ import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.filtering.FilteringClient;
@@ -61,7 +62,7 @@ public final class AddUpdateProposalControllerUtil {
 
         final ActivitiesClient activitiesClient = clients.getActivitiesClient();
         if (createNew) {
-            ProposalCreationUtil.sendAuthorNotification(ConfigurationAttributeKey.COLAB_URL.get(),
+            ProposalCreationUtil.sendAuthorNotification(PlatformAttributeKey.PLATFORM_COLAB_URL.get(),
                     proposalWrapper, contestPhase, request);
 
             final List<ActivitySubscription> activitySubscriptions = activitiesClient

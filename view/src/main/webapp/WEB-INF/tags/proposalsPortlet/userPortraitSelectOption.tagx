@@ -19,7 +19,7 @@
 		</c:otherwise>
 	</c:choose>
 	<option value="${userId}" width="${width}" height="${height}" css="${cssClass}"
-			data-imagesrc="/image/user_male_portrait?screenName=${screenName}&amp;companyId=10112&amp;portraitId=${portraitId}&amp;userId=${userId}"
+			data-imagesrc="${_staticImagePath}/image/user_male_portrait?screenName=${screenName}&amp;companyId=10112&amp;portraitId=${portraitId}&amp;userId=${userId}"
 			data-description="${judgeStatus}">
 			${fullName} (${screenName})
 	</option>

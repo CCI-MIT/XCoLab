@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.entity.utils.notifications.member.MemberForgotPasswordNotification;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.view.util.entity.portlet.session.SessionErrors;
 import org.xcolab.view.util.entity.portlet.session.SessionMessages;
 
@@ -44,7 +44,7 @@ public class ForgotPasswordController {
         String referer = request.getHeader(HttpHeaders.REFERER);
         redirect = !StringUtils.isBlank(redirect) ? redirect : referer;
 
-        redirect = !StringUtils.isBlank(redirect) ? redirect : ConfigurationAttributeKey.COLAB_URL.get();
+        redirect = !StringUtils.isBlank(redirect) ? redirect : PlatformAttributeKey.PLATFORM_COLAB_URL.get();
 
         redirect = Helper.removeParamFromRequestStr(redirect, "signinRegError");
         redirect = Helper.removeParamFromRequestStr(redirect, "isPasswordReminder");
@@ -62,7 +62,7 @@ public class ForgotPasswordController {
             }
 
             String token = MembersClient.createForgotPasswordToken(member.getUserId());
-            String colabUrl = ConfigurationAttributeKey.COLAB_URL.get();
+            String colabUrl = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
             String passwordLink = colabUrl + FORGOT_PASSWORD_URL + token;
 
             sendEmailNotificationToForPasswordReset(request.getRemoteAddr(),

@@ -5,7 +5,7 @@ import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.notifications.basic.MemberNotification;
@@ -70,7 +70,7 @@ public class MemberForgotPasswordNotification extends MemberNotification {
                 case PASSWORD_RESET_LINK_PLACEHOLDER:
                     return parseXmlNode(getPasswordLink());
                 case SYSTEM_LINK_PLACEHOLDER:
-                    return new TextNode(ConfigurationAttributeKey.COLAB_URL.get(), "");
+                    return new TextNode(PlatformAttributeKey.PLATFORM_COLAB_URL.get(), "");
                 default:
             }
             return null;

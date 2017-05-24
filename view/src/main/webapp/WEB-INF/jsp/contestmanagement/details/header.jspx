@@ -9,7 +9,7 @@
 				<div class="proposal-image">
 					<c:choose>
 						<c:when test='${contestWrapper.contestLogoId > 0}'>
-							<img src="/image/proposal?img_id=${contestWrapper.contestLogoId}" width="52" height="52" alt="${contestWrapper.contestName }" />
+							<img src="${_staticImagePath}/image/proposal?img_id=${contestWrapper.contestLogoId}" width="52" height="52" alt="${contestWrapper.contestName }" />
 						</c:when>
 						<c:otherwise>
 							<img src="${_themeImageFolder}/proposal_default.png" width="52" height="52" alt="${contestWrapper.contestName}" />

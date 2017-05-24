@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
@@ -71,7 +72,7 @@ public abstract class EmailNotification {
     protected Logger _log;
 
     public EmailNotification() {
-        this.baseUrl = ConfigurationAttributeKey.COLAB_URL.get();
+        this.baseUrl = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
         _log = LoggerFactory.getLogger(this.getClass());
     }
 
@@ -282,7 +283,7 @@ public abstract class EmailNotification {
                 case COLAB_NAME_PLACEHOLDER:
                     return new TextNode(ConfigurationAttributeKey.COLAB_NAME.get(), "");
                 case COLAB_URL_PLACEHOLDER:
-                    return new TextNode(ConfigurationAttributeKey.COLAB_URL.get(), "");
+                    return new TextNode(PlatformAttributeKey.PLATFORM_COLAB_URL.get(), "");
                 case COLAB_ADMIN_EMAIL_PLACEHOLDER:
                     return new TextNode(ConfigurationAttributeKey.ADMIN_EMAIL.get(), "");
                 case FIRSTNAME_PLACEHOLDER:
