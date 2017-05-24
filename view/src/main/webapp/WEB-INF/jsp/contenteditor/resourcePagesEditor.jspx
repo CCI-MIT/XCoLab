@@ -55,6 +55,7 @@
 
         <c:set var="contentEditorListFolderURL" value="/content-editor/resourcePagesListFolder"/>
 
+        <c:set  var="previewArticleURL" value="/content-editor/previewArticle"/>
 
         <c:set  var="getArticleVersionURL" value="/content-editor/contentEditorGetLatestResourceArticleVersion"/>
 
