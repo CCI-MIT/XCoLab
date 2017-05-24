@@ -3,9 +3,6 @@ package org.xcolab.view.config.spring;
 import com.codahale.metrics.Metric;
 import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.MetricRegistry;
-import com.librato.metrics.reporter.Librato;
-import com.librato.metrics.reporter.LibratoReporter;
-import org.apache.commons.lang3.StringUtils;
 import org.coursera.metrics.datadog.DatadogReporter;
 import org.coursera.metrics.datadog.DatadogReporter.Expansion;
 import org.coursera.metrics.datadog.transport.HttpTransport;
@@ -23,7 +20,6 @@ import org.xcolab.util.metrics.MetricsUtil;
 import org.xcolab.view.config.spring.properties.MetricsProperties;
 import org.xcolab.view.config.spring.properties.MetricsProperties.ReportingConfig;
 import org.xcolab.view.config.spring.properties.MetricsProperties.ReportingConfig.DatadogConfig;
-import org.xcolab.view.config.spring.properties.MetricsProperties.ReportingConfig.LibratoConfig;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -42,34 +38,22 @@ public class MetricsConfig {
 
     private static final Logger _log = LoggerFactory.getLogger(MetricsConfig.class);
 
-    private static final String LIBRATO_ENABLED_PROPERTY = "metrics.reporting.librato.enabled";
     private static final String DATADOG_ENABLED_PROPERTY = "metrics.reporting.datadog.enabled";
 
     private static final String METRIC_PREFIX = "xcolab.view";
 
     private final ReportingConfig reportingConfig;
-    private final LibratoConfig libratoConfig;
     private final DatadogConfig datadogConfig;
 
     @Autowired
     public MetricsConfig(MetricsProperties metricsProperties) {
         reportingConfig = metricsProperties.getReporting();
-        libratoConfig = reportingConfig.getLibrato();
         datadogConfig = reportingConfig.getDatadog();
 
-        if (libratoConfig.isEnabled() && !isLibratoConfigValid()) {
-            throw new IllegalStateException("Librato metric reporting is enabled but "
-                    + "the configuration is invalid.");
-        }
         if (datadogConfig.isEnabled() && !isDatadogConfigValid()) {
             throw new IllegalStateException("Datadog metric reporting is enabled but "
                     + "the configuration is invalid.");
         }
-    }
-
-    private boolean isLibratoConfigValid() {
-        return StringUtils.isNotBlank(libratoConfig.getEmail())
-                && StringUtils.isNoneBlank(libratoConfig.getApiToken());
     }
 
     private boolean isDatadogConfigValid() {
@@ -79,19 +63,6 @@ public class MetricsConfig {
     @Bean
     public MetricRegistry metricRegistry() {
         return MetricsUtil.REGISTRY;
-    }
-
-    @Bean
-    @ConditionalOnProperty(value = LIBRATO_ENABLED_PROPERTY, havingValue = "true")
-    LibratoReporter libratoReporter() {
-        _log.info("Starting librato metrics reporter for {}", libratoConfig.getEmail());
-        return Librato.reporter(metricRegistry(),
-                    libratoConfig.getEmail(), libratoConfig.getApiToken())
-                .setSource(PlatformAttributeKey.PLATFORM_COLAB_URL.get())
-                .setFilter(new PrefixMetricFilter(
-                        reportingConfig.getIncludes(), reportingConfig.getExcludes()))
-                .setPrefix(METRIC_PREFIX)
-                .start(10, TimeUnit.SECONDS);
     }
 
     @Bean
