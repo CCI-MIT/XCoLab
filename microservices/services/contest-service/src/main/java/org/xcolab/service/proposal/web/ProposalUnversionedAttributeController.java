@@ -16,8 +16,13 @@ import java.util.List;
 @RestController
 public class ProposalUnversionedAttributeController {
 
+    private final ProposalUnversionedAttributeDao proposalUnversionedAttributeDao;
+
     @Autowired
-    private ProposalUnversionedAttributeDao proposalUnversionedAttributeDao;
+    public ProposalUnversionedAttributeController(
+            ProposalUnversionedAttributeDao proposalUnversionedAttributeDao) {
+        this.proposalUnversionedAttributeDao = proposalUnversionedAttributeDao;
+    }
 
     @RequestMapping(value = "/proposalUnversionedAttributes", method = RequestMethod.POST)
     public ProposalUnversionedAttribute createProposalUnversionedAttribute(@RequestBody ProposalUnversionedAttribute proposalUnversionedAttribute) {

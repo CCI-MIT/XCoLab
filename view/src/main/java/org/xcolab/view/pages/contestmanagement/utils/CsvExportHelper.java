@@ -4,7 +4,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.CollectionUtils;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class CsvExportHelper {
 
-    private final static String URL_DOMAIN = ConfigurationAttributeKey.COLAB_URL.get();
+    private final static String URL_DOMAIN = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
     private final List<String[]> records = new ArrayList<>();
 
     public CsvExportHelper() {

@@ -25,9 +25,9 @@ import org.xcolab.util.metrics.MetricsUtil;
 
 import java.util.Map;
 
-public class CacheProviderEhcache2Impl implements CacheProvider {
+public class Ehcache2CacheProvider implements CacheProvider {
 
-    private static final Logger log = LoggerFactory.getLogger(CacheProviderEhcache2Impl.class);
+    private static final Logger log = LoggerFactory.getLogger(Ehcache2CacheProvider.class);
 
     private CacheManager cacheManager;
 

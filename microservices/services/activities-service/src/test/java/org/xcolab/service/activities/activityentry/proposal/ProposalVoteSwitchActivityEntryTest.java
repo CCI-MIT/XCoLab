@@ -31,7 +31,7 @@ import java.sql.Timestamp;
 @ComponentScan("org.xcolab.view.config")
 @TestPropertySource(
         properties = {
-                "cache.active=false"
+                "cache.enabled=false"
         }
 )
 

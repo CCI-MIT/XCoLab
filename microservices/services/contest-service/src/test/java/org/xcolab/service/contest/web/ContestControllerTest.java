@@ -59,7 +59,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @TestPropertySource(
-        properties = {"cache.active=false", "eureka.client.enabled=false"})
+        properties = {"cache.enabled=false", "eureka.client.enabled=false"})
 @PrepareForTest({org.xcolab.client.contest.pojo.Contest.class,
         org.xcolab.client.contest.ContestClient.class,
         org.xcolab.client.contest.ContestTeamMemberClient.class,

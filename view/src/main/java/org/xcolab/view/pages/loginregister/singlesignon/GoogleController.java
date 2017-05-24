@@ -11,7 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -60,7 +60,7 @@ public class GoogleController {
             throws IOException {
         HttpSession session = request.getSession();
 
-        final String callbackUrl = ConfigurationAttributeKey.COLAB_URL.get()
+        final String callbackUrl = PlatformAttributeKey.PLATFORM_COLAB_URL.get()
                 + SsoEndpoint.GOOGLE_CALLBACK.getUrl();
         GoogleAuthHelper helper = new GoogleAuthHelper(callbackUrl);
         String requestUrl = helper.buildLoginUrl();
@@ -100,7 +100,7 @@ public class GoogleController {
         String authCode = request.getParameter("code");
         if (authCode != null && stateToken != null && stateToken
                 .equals(session.getAttribute(GOOGLE_OAUTH_REQUEST_STATE_TOKEN))) {
-            final String callbackUrl = ConfigurationAttributeKey.COLAB_URL.get()
+            final String callbackUrl = PlatformAttributeKey.PLATFORM_COLAB_URL.get()
                     + SsoEndpoint.GOOGLE_CALLBACK.getUrl();
             JSONObject userInfo = new GoogleAuthHelper(callbackUrl).getUserInfoJson(authCode);
 

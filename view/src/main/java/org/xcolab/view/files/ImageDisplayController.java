@@ -1,8 +1,5 @@
 package org.xcolab.view.files;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
@@ -11,6 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.enums.ServerEnvironment;
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
 import org.xcolab.client.files.pojo.FileEntry;
@@ -29,22 +28,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@PropertySource({"file:${user.home}/.xcolab.application.properties"})
 public class ImageDisplayController {
 
-    private final String fileUploadPath;
     private final boolean isProduction;
+    private final String path = PlatformAttributeKey.FILES_UPLOAD_DIR.get();
 
-    @Autowired
-    public ImageDisplayController(Environment env) {
-        fileUploadPath = env.getProperty("files.upload.dir");
-        isProduction = "production".equals(env.getProperty("environment"));
+    public ImageDisplayController() {
+        final ServerEnvironment serverEnvironment =
+                PlatformAttributeKey.PLATFORM_SERVER_ENVIRONMENT.get();
+        isProduction = serverEnvironment == ServerEnvironment.PRODUCTION;
     }
 
     @GetMapping("/image/contest/{imageId}")
-    public void serveImage(HttpServletRequest request, HttpServletResponse response,
+    public void serveContestImage(HttpServletRequest request, HttpServletResponse response,
             @PathVariable long imageId) throws IOException {
         serveImage(request, response, imageId, null, null, DefaultImage.CONTEST);
+    }
+
+    @GetMapping("/image/proposal/{imageId}")
+    public void serveProposalImage(HttpServletRequest request, HttpServletResponse response,
+            @PathVariable long imageId) throws IOException {
+        serveImage(request, response, imageId, null, null, DefaultImage.PROPOSAL);
+    }
+
+    @GetMapping("/image/member/{memberId}")
+    public void serveMemberImage(HttpServletRequest request, HttpServletResponse response,
+            @PathVariable long memberId) throws IOException {
+        serveImage(request, response, null, null, memberId, DefaultImage.MEMBER);
     }
 
     @GetMapping({"/image/{whatever}", "/image"})
@@ -74,9 +84,6 @@ public class ImageDisplayController {
         }
 
         if (imageId != null && imageId > 0) {
-            String path = request.getSession().getServletContext().getRealPath("/");
-            path = (fileUploadPath != null) ? (fileUploadPath) : (path);
-
             try {
                 FileEntry fileEntry = FilesClient.getFileEntry(imageId);
                 String filePath = FilesClient.getFilePathFromFinalDestination(fileEntry, path);

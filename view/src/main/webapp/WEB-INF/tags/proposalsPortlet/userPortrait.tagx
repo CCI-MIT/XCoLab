@@ -7,5 +7,5 @@
 	<jsp:directive.attribute name="height" type="java.lang.Integer" required="true" rtexprvalue="true" description="Height" />
 	<jsp:directive.attribute name="userId" type="java.lang.Long" required="true" rtexprvalue="true" description="UserId" />
 	
-	<img src="/image/user_male_portrait?screenName=${screenName}&amp;companyId=10112&amp;portraitId=${portraitId}&amp;userId=${userId}" width="${width}" height="${height}" />
+	<img src="${_staticImagePath}/image/user_male_portrait?screenName=${screenName}&amp;portraitId=${portraitId}&amp;userId=${userId}" width="${width}" height="${height}" />
 </jsp:root>

@@ -49,6 +49,8 @@ public class ProposalsSortFilterBean {
                     proposalComparator = ProposalsColumn.JUDGESTATUS.getComparator(); break;
                 case "SCREENINGSTATUS":
                     proposalComparator = ProposalsColumn.SCREENINGSTATUS.getComparator(); break;
+                case "IAFSTATUS":
+                    proposalComparator = ProposalsColumn.IAFSTATUS.getComparator(); break;
                 case "OVERALLSTATUS":
                     proposalComparator = ProposalsColumn.OVERALLSTATUS.getComparator(); break;
                 default:

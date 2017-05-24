@@ -177,13 +177,6 @@ public class CacheProviderEhcache3Impl implements CacheProvider, DisposableBean 
     }
 
     @Override
-    public void clear() {
-        for (CacheName cacheName : CacheName.values()) {
-            clear(cacheName);
-        }
-    }
-
-    @Override
     public void clear(CacheName cacheName) {
         if (cacheName != CacheName.NONE) {
             final Cache<String, Object> cache = getCache(cacheName);

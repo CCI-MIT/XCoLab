@@ -6,7 +6,7 @@ import org.jsoup.nodes.TextNode;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
@@ -29,7 +29,8 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
 
     public ProposalMembershipInviteNotification(Proposal proposal, Contest contest, Member sender,
             Member invitee, MembershipRequest membershipRequest, String message) {
-        super(proposal, contest, sender, invitee, null, ConfigurationAttributeKey.COLAB_URL.get());
+        super(proposal, contest, sender, invitee, null,
+                PlatformAttributeKey.PLATFORM_COLAB_URL.get());
         this.membershipRequest = membershipRequest;
         this.message = message;
     }

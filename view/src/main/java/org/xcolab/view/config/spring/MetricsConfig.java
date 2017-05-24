@@ -18,7 +18,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.util.metrics.MetricsUtil;
 import org.xcolab.view.config.spring.properties.MetricsProperties;
 import org.xcolab.view.config.spring.properties.MetricsProperties.ReportingConfig;
@@ -87,7 +87,7 @@ public class MetricsConfig {
         _log.info("Starting librato metrics reporter for {}", libratoConfig.getEmail());
         return Librato.reporter(metricRegistry(),
                     libratoConfig.getEmail(), libratoConfig.getApiToken())
-                .setSource(ConfigurationAttributeKey.COLAB_URL.get())
+                .setSource(PlatformAttributeKey.PLATFORM_COLAB_URL.get())
                 .setFilter(new PrefixMetricFilter(
                         reportingConfig.getIncludes(), reportingConfig.getExcludes()))
                 .setPrefix(METRIC_PREFIX)
@@ -103,7 +103,7 @@ public class MetricsConfig {
         final HttpTransport transport = new Builder().withApiKey(datadogConfig.getApiKey()).build();
         final DatadogReporter datadogReporter =
                 DatadogReporter.forRegistry(metricRegistry())
-                        .withHost(ConfigurationAttributeKey.COLAB_URL.get())
+                        .withHost(PlatformAttributeKey.PLATFORM_COLAB_URL.get())
                         .withTransport(transport)
                         .withPrefix(METRIC_PREFIX)
                         .withExpansions(expansions)

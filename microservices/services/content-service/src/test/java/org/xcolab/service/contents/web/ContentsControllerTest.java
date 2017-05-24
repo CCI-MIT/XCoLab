@@ -56,7 +56,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @TestPropertySource(
         properties = {
-                "cache.active=false",
+                "cache.enabled=false",
                 "eureka.client.enabled=false"
         }
 )
