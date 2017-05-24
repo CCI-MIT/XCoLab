@@ -325,6 +325,7 @@ CREATE TABLE `members_Member` (
   `forgotPasswordTokenExpireTime` datetime DEFAULT NULL,
   `portraitFileEntryId` bigint(20) DEFAULT NULL,
   `reportKarma` int(11) DEFAULT '100',
+  `defaultLocale` VARCHAR(45) NULL DEFAULT 'en',
   `autoRegisteredMemberStatus` int(4) DEFAULT '0',
   `uuid` varchar(40) DEFAULT NULL,
   loginTokenId VARCHAR(75) NULL,
