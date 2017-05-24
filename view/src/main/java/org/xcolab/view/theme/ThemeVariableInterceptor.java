@@ -8,6 +8,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.view.RedirectView;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MessagingClient;
@@ -63,15 +64,28 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
 
             ColabTheme activeTheme = ConfigurationAttributeKey.ACTIVE_THEME.get();
 
-            modelAndView.addObject("_themeCssFolder", activeTheme.getCssPath());
-            modelAndView.addObject("_themeJsFolder", activeTheme.getJsPath());
-            modelAndView.addObject("_themeImageFolder", activeTheme.getImagePath());
-            modelAndView.addObject("_libCssFolder", "/css/lib");
-            modelAndView.addObject("_libJsFolder", "/js/lib");
+            final String scriptDomain = PlatformAttributeKey.PLATFORM_SCRIPT_DOMAIN.get();
+            final String themeImageDomain = PlatformAttributeKey.PLATFORM_STATIC_IMAGE_DOMAIN.get();
+            final String userImageDomain = PlatformAttributeKey.PLATFORM_UPLOADED_IMAGE_DOMAIN.get();
 
-            modelAndView.addObject("_logoPath", activeTheme.getLogoPath());
-            modelAndView.addObject("_logoPathSocial", activeTheme.getLogoPathSocial());
-            modelAndView.addObject("_logoPathBig", activeTheme.getLogoPathBig());
+            modelAndView.addObject("_libCssFolder",
+                    scriptDomain + "/css/lib");
+            modelAndView.addObject("_libJsFolder",
+                    scriptDomain + "/js/lib");
+            modelAndView.addObject("_themeCssFolder",
+                    scriptDomain + activeTheme.getCssPath());
+            modelAndView.addObject("_themeJsFolder",
+                    scriptDomain + activeTheme.getJsPath());
+            modelAndView.addObject("_themeImageFolder",
+                    themeImageDomain + activeTheme.getImagePath());
+            modelAndView.addObject("_logoPath",
+                    themeImageDomain + activeTheme.getLogoPath());
+            modelAndView.addObject("_logoPathSocial",
+                    themeImageDomain + activeTheme.getLogoPathSocial());
+            modelAndView.addObject("_logoPathBig",
+                    themeImageDomain + activeTheme.getLogoPathBig());
+            modelAndView.addObject("_staticImagePath",
+                    userImageDomain + "/images");
 
             modelAndView.addObject("_contestPages", ContestClientUtil.getActiveContestTypes());
             modelAndView.addObject("_colabName", ConfigurationAttributeKey.COLAB_NAME.get());

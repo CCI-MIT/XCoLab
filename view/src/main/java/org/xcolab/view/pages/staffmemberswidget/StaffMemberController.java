@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
@@ -152,8 +152,9 @@ public class StaffMemberController {
         StaffMember sm = new StaffMember();
         sm.setUserId(member.getId_());
         sm.setCategoryId(categoryRole.getCategoryId());
-        sm.setPhotoUrl("/image/user_male_portrait?userId=" + member.getId_()
-                + "&screenName=carlosbpf&portraitId=" + member.getPortraitId() + "");
+        final String userImageDomain = PlatformAttributeKey.PLATFORM_UPLOADED_IMAGE_DOMAIN.get();
+        sm.setPhotoUrl(userImageDomain + "/image/user_male_portrait?userId=" + member.getId_()
+                + "&portraitId=" + member.getPortraitId() + "");
         sm.setFirstNames(member.getFirstName());
         sm.setLastName(member.getLastName());
         sm.setSort(0);
