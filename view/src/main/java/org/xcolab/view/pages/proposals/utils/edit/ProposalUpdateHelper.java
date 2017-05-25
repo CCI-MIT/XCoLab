@@ -154,7 +154,11 @@ public class ProposalUpdateHelper {
         if(evictCache){
             ProposalsContextUtil.getClients(request).getProposalAttributeClient().invalidateProposalAttibuteCache(proposalWrapper);
             ProposalsContextUtil.getClients(request).getProposalClient().invalidateProposalCache(proposalWrapper.getProposalId());
-            ProposalsContextUtil.getClients(request).getProposalPhaseClient().invalidateProposal2PhaseCache(proposalWrapper.getProposalId(),p2p.getContestPhaseId());
+            if(p2p!=null) {
+                ProposalsContextUtil.getClients(request).getProposalPhaseClient()
+                        .invalidateProposal2PhaseCache(proposalWrapper.getProposalId(), p2p
+                                .getContestPhaseId());
+            }
         }
         doAnalytics(request, filledAll);
     }

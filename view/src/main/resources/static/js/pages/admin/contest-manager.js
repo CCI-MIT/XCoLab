@@ -64,16 +64,16 @@ function createFormInputsIdReplacements(oldSectionElementId, newSectionElementId
 }
 
 function replaceInputDataByTagName(newSectionElement, newSectionInputData, tagName){
-    console.debug("replaceInputDataByTagName -> tagName", tagName);
+    //console.debug("replaceInputDataByTagName -> tagName", tagName);
     var sectionFormInputs = newSectionElement.getElementsByTagName(tagName);
     for (var i = 0; i < sectionFormInputs.length; i++) {
-        console.log(" sectionFormInputs[i].id", sectionFormInputs[i].id);
-        console.log(" newSectionInputData", newSectionInputData);
+        //console.log(" sectionFormInputs[i].id", sectionFormInputs[i].id);
+        //console.log(" newSectionInputData", newSectionInputData);
 
         var sectionInputData = newSectionInputData[sectionFormInputs[i].id];
-        console.log(" sectionFormInputs[i]", sectionFormInputs[i]);
-        console.log(" sectionFormInputs[i].id", sectionFormInputs[i].id);
-        console.log(" sectionInputData", typeof(sectionInputData));
+        //console.log(" sectionFormInputs[i]", sectionFormInputs[i]);
+        //console.log(" sectionFormInputs[i].id", sectionFormInputs[i].id);
+        //console.log(" sectionInputData", typeof(sectionInputData));
         if(typeof(sectionInputData) != 'undefined') {
             sectionFormInputs[i].id = sectionInputData.id;
             sectionFormInputs[i].name = sectionInputData.name;
@@ -85,8 +85,8 @@ function replaceSectionFormIds(newSectionElement, newSectionInputData, newSectio
     newSectionElement.style.display = "";
 
     if(newSectionId != undefined) {
-        console.log("newSectionId", newSectionId);
-        console.log("newSectionElement", newSectionElement);
+        //console.log("newSectionId", newSectionId);
+        //console.log("newSectionElement", newSectionElement);
         newSectionElement.id = newSectionId;
         newSectionElement.setAttribute("data-section-id", newSectionId);
     }
