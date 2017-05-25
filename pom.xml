@@ -56,11 +56,11 @@
         <javax-mail.version>1.4.7</javax-mail.version>
 
         <!-- Assets -->
-        <sass-maven-plugin.version>2.22</sass-maven-plugin.version>
+        <sass-maven-plugin.version>2.23</sass-maven-plugin.version>
 
         <!-- Monitoring -->
         <metrics.version>3.2.2</metrics.version>
-        <metrics-librato.version>5.0.5</metrics-librato.version>
+        <metrics-datadog.version>1.1.10</metrics-datadog.version>
 
         <!-- Test dependencies -->
         <junit.version>4.12</junit.version>
@@ -186,6 +186,11 @@
                 <artifactId>metrics-ehcache</artifactId>
                 <version>${metrics.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.coursera</groupId>
+                <artifactId>metrics-datadog</artifactId>
+                <version>${metrics-datadog.version}</version>
+            </dependency>
 
             <!-- Test dependencies -->
             <dependency>
@@ -257,11 +262,6 @@
                 <version>1.0.7</version>
             </dependency>
             <dependency>
-                <groupId>com.librato.metrics</groupId>
-                <artifactId>metrics-librato</artifactId>
-                <version>${metrics-librato.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.ocpsoft.rewrite</groupId>
                 <artifactId>rewrite-servlet</artifactId>
                 <version>${rewrite.version}</version>
@@ -304,7 +304,7 @@
 
                 <plugin>
 					<artifactId>maven-war-plugin</artifactId>
-					<version>3.0.0</version>
+					<version>3.1.0</version>
 				</plugin>
 
 				<plugin>

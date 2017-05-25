@@ -10,8 +10,8 @@ cache:
   - $HOME/.m2
 
 env:
-  - RUN_INTEGRATION_TESTS=true
   - RUN_INTEGRATION_TESTS=false
+  - RUN_INTEGRATION_TESTS=true
 
 before_install:
 - gem install dpl --source http://rubygems.org
@@ -43,6 +43,7 @@ deploy:
 
 notifications:
   slack:
-    secure: rhro98Ms8yOaxkJ1frjEVdY8H39z3usNsbfdemviJk4iXZ5NMd1f6siCipXmjQc0DQY9wCM26rEpmjxVtF7P71D/jE85g/5LBSTpx03bQjvJQGVHCYl9kzStrJd5OBGWsfcv+NbiYxkjzg7w/xVZX452bmvqISCNbPMhmKcKFU4nbKBE8I28XfBdhpYvrWbAsINUreyJGAq1qfZqNI49yTm2PrFDepPJUugPUthH9QZktfiqbF2a/rOKQWk8ssRBv6tcqVTZWMKtPEJ5o2Gj/QdWxg+9Q0g+VwxLHWZ/JLC1tRzTpiDqTZCgKpiTa82OqSSlfOpCkRFvkjmkoQsKRXtJYDrgIw9ePxVnmFqa3U9tHc9PatCoNsP2FiiU1I29VGAMtOL7i8fIzxktRJz3lbVgWsFgdirDHcb5t/kNL3+LWa7j9kg22NPl48ugaaaxeyvF5LmO0zyCJ+g/GOuuNOLpsWP90bgytAIduyP3OYTYT9EqY78YwE8yx9McXoDQ1dPWwlPe0Wi84DKQ8mwQHF4UpHYbeu6WRdNQ52BXS443PY2Ykxw70vjABkUjAXCLHqVte3mG/kItsUguDMV4EBl3gawV9JhfRpR6ZNNbJG2Vbte6qbC5v0YZAVqkg62n32ICfPjz4XIi2oWpOQSNVMgGoFbLvEG1s6RV/bF9FBM=
+    rooms:
+    - secure: Z3A5wv/NkuCBJ9u31QYJwHV1QUKa5qltnJ8NK/Gz6bkFg3hokNFK3oQruc9K1Mx2ozNTWOp3KS+3XIHrdq0blIUuMnogPm+YahAntSXLw7SzBbd1YIqZ/JuaHd5XZTeXda+GBQQfBd4fym8rg460j/HJbTmI0b+JxdWUFRFF71abBoUCZW59NX9XZM5UEisUH6W+LfdmwfYgJCqpFtHK6ejEUfsLbUQxqb9BkVxwV5Xb62O/unJeqJLDVTiEXNsNPQWnINgduzF5LlVTBO7wbFTV6z78b+kfWSzYumt/vgOedrTsVY8wzSbWCzK3AhvMUii9MPGg8ZSkEzBuRpZAFdJF30f8qz/Eu3xwRmZMz5BjUo84LE4XLCv5kZMuHEDo7QgJ+1DTdzo+ZsCcQH0xBXdjlDI+oAbNlstS3DsgzO8YNuVR/VF5BwcwEY2i9vD5IYjIhvakOsatkeo2IGfwP1cs3yuAIJl+Q0rAb79vaAfyqBiE3T5jFYT+ZI8FMDFM/hYzgTArQ1G3zQSUz1f+4n4OkvrtBBQkgIuVO22E1n07OnO+9yZoCRHM65VQI+nlyWybjRynbAg0q4OhDEBcX7lmiZXIWpAsfnd9OTwtznHZz1PsR3jkelFmGStE7Ovw49VtUeR+qDP05gTX74vnujRJ6+uuBoB0YtYHYeQ6uzI=
     on_success: change
     on_failure: always

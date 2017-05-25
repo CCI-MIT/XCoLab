@@ -15,16 +15,6 @@
 
 		<jsp:directive.include file="./proposalDetails/header.jspx" />
 
-		<style type="text/css">
-			.admin_left {
-				width: 400px;
-				float: left;
-			}
-			.admin_right {
-				float: left;
-			}
-		</style>
-
 		<div id="content">
 			<div class="admin_left">
 			<c:set var="addBlueClass" value='false' />

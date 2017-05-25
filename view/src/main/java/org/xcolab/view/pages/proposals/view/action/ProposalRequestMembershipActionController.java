@@ -9,7 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
@@ -20,7 +20,6 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.entity.utils.notifications.proposal.ProposalMembershipInviteNotification;
 import org.xcolab.entity.utils.notifications.proposal.ProposalUserActionNotification;
-import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.RequestMembershipBean;
@@ -28,6 +27,7 @@ import org.xcolab.view.pages.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -85,7 +85,7 @@ public class ProposalRequestMembershipActionController {
                 sender.getUserId(), comment);
 
         new ProposalUserActionNotification(proposal, contest, sender, proposalAuthor,
-                MEMBERSHIP_REQUEST_TEMPLATE, ConfigurationAttributeKey.COLAB_URL.get()).sendMessage();
+                MEMBERSHIP_REQUEST_TEMPLATE, PlatformAttributeKey.PLATFORM_COLAB_URL.get()).sendMessage();
 
 
         AlertMessage.success("A membership request has been sent!").flash(request);

@@ -28,7 +28,7 @@ import static org.junit.Assert.assertTrue;
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @TestPropertySource(
-        properties = {"cache.active=false", "eureka.client.enabled=false",
+        properties = {"cache.enabled=false", "eureka.client.enabled=false",
                 "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MYSQL"})
 @ComponentScan("org.xcolab.service.contents")
 @ComponentScan("org.xcolab.client")

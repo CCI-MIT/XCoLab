@@ -67,7 +67,7 @@ import static org.mockito.Matchers.anyString;
 @ComponentScan("org.xcolab.view.config")
 @TestPropertySource(
         properties = {
-                "cache.active=false"
+                "cache.enabled=false"
         }
 )
 

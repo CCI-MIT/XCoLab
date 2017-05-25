@@ -4,6 +4,7 @@ import org.xcolab.util.attributes.AbstractAttributeGetter;
 import org.xcolab.util.attributes.Attribute;
 import org.xcolab.util.attributes.AttributeProvider;
 import org.xcolab.util.attributes.exceptions.AttributeFormatException;
+import org.xcolab.util.attributes.exceptions.AttributeNotFoundException;
 
 /**
  * A getter for values of a specified enum type.
@@ -28,8 +29,12 @@ public class EnumAttribute<EnumT extends Enum<EnumT>> extends AbstractAttributeG
     @Override
     protected EnumT extractValue(Attribute attribute) {
         final String stringValue = attribute.getStringValue();
+        if (stringValue == null) {
+            throw new AttributeNotFoundException("No EnumAttribute found for "
+                    + enumType.getCanonicalName());
+        }
         try {
-            return Enum.valueOf(enumType, stringValue);
+            return Enum.valueOf(enumType, stringValue.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new AttributeFormatException("EnumAttribute for " + enumType.getCanonicalName()
                     + " can't resolve element " + stringValue);

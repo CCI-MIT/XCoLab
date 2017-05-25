@@ -17,9 +17,14 @@ import static org.xcolab.model.Tables.PROPOSAL_UNVERSIONED_ATTRIBUTE;
 @Repository
 public class ProposalUnversionedAttributeDaoImpl implements ProposalUnversionedAttributeDao {
 
-    @Autowired
-    private DSLContext dslContext;
+    private final DSLContext dslContext;
 
+    @Autowired
+    public ProposalUnversionedAttributeDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
+
+    @Override
     public ProposalUnversionedAttribute create(ProposalUnversionedAttribute proposalUnversionedAttribute) {
 
         ProposalUnversionedAttributeRecord ret = this.dslContext.insertInto(PROPOSAL_UNVERSIONED_ATTRIBUTE)
@@ -30,7 +35,7 @@ public class ProposalUnversionedAttributeDaoImpl implements ProposalUnversionedA
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.CREATE_DATE, proposalUnversionedAttribute.getCreateDate())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.LAST_UPDATE_DATE, proposalUnversionedAttribute.getLastUpdateDate())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.NAME, proposalUnversionedAttribute.getName())
-                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.ADDTIONAL_ID, proposalUnversionedAttribute.getAddtionalId())
+                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.ADDITIONAL_ID, proposalUnversionedAttribute.getAdditionalId())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.NUMERIC_VALUE, proposalUnversionedAttribute.getNumericValue())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.STRING_VALUE, proposalUnversionedAttribute.getStringValue())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.REAL_VALUE, proposalUnversionedAttribute.getRealValue())
@@ -45,6 +50,7 @@ public class ProposalUnversionedAttributeDaoImpl implements ProposalUnversionedA
 
     }
 
+    @Override
     public ProposalUnversionedAttribute get(Long id_) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(PROPOSAL_UNVERSIONED_ATTRIBUTE)
@@ -68,7 +74,7 @@ public class ProposalUnversionedAttributeDaoImpl implements ProposalUnversionedA
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.CREATE_DATE, proposalUnversionedAttribute.getCreateDate())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.LAST_UPDATE_DATE, proposalUnversionedAttribute.getLastUpdateDate())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.NAME, proposalUnversionedAttribute.getName())
-                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.ADDTIONAL_ID, proposalUnversionedAttribute.getAddtionalId())
+                .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.ADDITIONAL_ID, proposalUnversionedAttribute.getAdditionalId())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.NUMERIC_VALUE, proposalUnversionedAttribute.getNumericValue())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.STRING_VALUE, proposalUnversionedAttribute.getStringValue())
                 .set(PROPOSAL_UNVERSIONED_ATTRIBUTE.REAL_VALUE, proposalUnversionedAttribute.getRealValue())

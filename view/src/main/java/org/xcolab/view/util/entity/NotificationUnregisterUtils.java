@@ -3,7 +3,7 @@ package org.xcolab.view.util.entity;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.members.pojo.Member;
 
 import java.util.HashMap;
@@ -62,7 +62,7 @@ public class NotificationUnregisterUtils {
         }
 
         unregisterLink = unregisterLink.replaceAll(Pattern.quote(DOMAIN_PLACEHOLDER),
-                ConfigurationAttributeKey.COLAB_URL.get());
+                PlatformAttributeKey.PLATFORM_COLAB_URL.get());
         
         return unregisterLink;
     }

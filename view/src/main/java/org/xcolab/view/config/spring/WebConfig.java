@@ -34,6 +34,7 @@ import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.auth.resolver.MemberArgumentResolver;
 import org.xcolab.view.config.ConfigurationService;
 import org.xcolab.view.config.rewrite.RewriteInitializer;
+import org.xcolab.view.config.spring.properties.WebProperties;
 import org.xcolab.view.config.tomcat.AjpConnector;
 import org.xcolab.view.config.tomcat.ForwardedHostValve;
 import org.xcolab.view.i18n.CustomLocaleChangeInterceptor;

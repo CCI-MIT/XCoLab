@@ -23,6 +23,8 @@ public enum ProposalsColumn {
             (o1, o2) -> (o1.getOverallStatus().getStatusValue() - o2.getOverallStatus().getStatusValue())),
     SCREENINGSTATUS(
             (o1, o2) -> (o1.getScreeningStatus().getStatusValue() - o2.getScreeningStatus().getStatusValue())),
+    IAFSTATUS(
+            (o1, o2) -> (o1.getImpactAssessmentStatus().getStatusValue() - o2.getImpactAssessmentStatus().getStatusValue())),
     MODIFIED(Comparator.comparing(Proposal::getLastModifiedDate)),
     CONTRIBUTORS((o1, o2) -> {
         if (o1.isOpen()) {

@@ -22,9 +22,9 @@ import org.xcolab.client.contest.pojo.impact.ImpactIteration;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.proposals.ProposalAttributeClient;
-import org.xcolab.client.proposals.ProposalAttributeClientUtil;
+import org.xcolab.client.proposals.enums.ProposalUnversionedAttributeName;
+import org.xcolab.client.proposals.helpers.ProposalUnversionedAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
 import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.errors.ErrorText;
@@ -35,9 +35,9 @@ import org.xcolab.view.pages.proposals.impact.ProposalImpactSeries;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactSeriesList;
 import org.xcolab.view.pages.proposals.impact.ProposalImpactUtil;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
+import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.view.util.entity.enums.ProposalUnversionedAttributeName;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
@@ -81,29 +81,22 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             userAllowedToEdit = canEditImpactTab(request);
             boolean userCanCommentAsAuthor = canCommentAsAuthor(request);
             model.addAttribute("canCommentAsAuthor", userCanCommentAsAuthor);
-            boolean userCanCommentAsAIF = canCommentAsAIF(request);
-            model.addAttribute("canCommentAsAIF", userCanCommentAsAIF);
+            boolean userCanCommentAsAIF = canCommentAsIAF(request);
+            model.addAttribute("canCommentAsIAF", userCanCommentAsAIF);
         }
 
-        List<ProposalUnversionedAttribute> unversionedAttributes = ProposalAttributeClientUtil
+        final ClientHelper clients = proposalsContext.getClients(request);
+        ProposalUnversionedAttributeHelper unversionedAttributeHelper =
+                new ProposalUnversionedAttributeHelper(proposalWrapper,
+                        clients.getProposalAttributeClient());
 
-                .
-                getProposalUnversionedAttributesByProposalId(proposalWrapper.getProposalId());
-        if ( unversionedAttributes != null && ! unversionedAttributes.isEmpty()) {
-            for (ProposalUnversionedAttribute pua : unversionedAttributes) {
-                if (pua.getName().equals(ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT
-                        .toString())) {
-                    if (StringUtils.isNotBlank(pua.getStringValue())) {
-                        model.addAttribute("authorComment", pua);
-                    }
-                }
-                if (pua.getName()
-                        .equals(ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT.toString())) {
-                    if (StringUtils.isNotBlank(pua.getStringValue())) {
-                        model.addAttribute("iafComment", pua);
-                    }
-                }
-            }
+        final String authorComment = proposalWrapper.getImpactCommentAuthor();
+        if (StringUtils.isNotBlank(authorComment)) {
+            model.addAttribute("authorComment", authorComment);
+        }
+        final String iafComment = proposalWrapper.getImpactCommentIaf();
+        if (StringUtils.isNotBlank(iafComment)) {
+            model.addAttribute("iafComment", iafComment);
         }
 
         model.addAttribute("edit", userAllowedToEdit);
@@ -130,10 +123,8 @@ public class ProposalImpactTabController extends BaseProposalTabController {
             model.addAttribute("impactIterations", impactIterations);
         }
 
-        if(showSubProposalListing){
+        if (showSubProposalListing) {
             model.addAttribute("impactSerieses", getImpactTabBasicProposal(proposalWrapper.getWrapped(),
-
-
                     request, contest));
         }
         model.addAttribute("showSubProposalListing", showSubProposalListing);
@@ -180,7 +171,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
     private boolean canCommentAsAuthor(HttpServletRequest request) {
         return proposalsContext.getPermissions(request).getCanAdminProposal();
     }
-    private boolean canCommentAsAIF(HttpServletRequest request) {
+    private boolean canCommentAsIAF(HttpServletRequest request) {
         return proposalsContext.getPermissions(request).getCanIAFActions()
                 || proposalsContext.getPermissions(request).getCanAdminAll();
     }
@@ -212,7 +203,7 @@ public class ProposalImpactTabController extends BaseProposalTabController {
                 proposalImpactScenarioCombinationWrapper.isConsolidationOfScenariosPossible();
         boolean isProposalUsingCombinedScenario = false;
 
-        if(isConsolidationPossible){
+        if (isConsolidationPossible) {
             boolean isValidScenario = (proposalWrapper.getScenarioId() != null && proposalWrapper.getScenarioId() != 0);
             if (isValidScenario) {
                 Long proposalScenarioId = proposalWrapper.getScenarioId();
@@ -360,9 +351,6 @@ public class ProposalImpactTabController extends BaseProposalTabController {
 
         ProposalAttributeClient proposalAttributeClient = proposalsContext.getClients(request)
                 .getProposalAttributeClient();
-
-        List<ProposalUnversionedAttribute> unversionedAttributes = proposalAttributeClient.
-                getProposalUnversionedAttributesByProposalId(proposal.getProposalId());
 
         if (impactAuthorComment != null || impactIAFComment != null) {
             if (impactAuthorComment != null) {

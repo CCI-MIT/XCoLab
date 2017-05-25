@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.admin.util.TemplateReplacementUtilPlaceholder;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.model.tables.pojos.Member;
@@ -142,12 +143,12 @@ public class MessagingService {
     }
 
     private static String createMessageURL(Message m) {
-        String home = ConfigurationAttributeKey.COLAB_URL.get();
+        String home = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
         return home + MessageConstants.EMAIL_MESSAGE_URL_TEMPLATE + m.getMessageId();
     }
 
     private static String createProfileEditUrl(Member member) {
-        String home = ConfigurationAttributeKey.COLAB_URL.get();
+        String home = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
         return home + "/members/profile/" + member.getId_() + "/edit";
     }
 

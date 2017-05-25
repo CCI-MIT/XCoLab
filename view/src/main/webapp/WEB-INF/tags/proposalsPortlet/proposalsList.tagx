@@ -99,58 +99,71 @@
                     </td>
                 </c:if>
             </c:if>
-            <c:if test="${not contestPhase.completed and (proposalsPermissions.canJudgeActions or proposalsPermissions.canFellowActions)}">
+            <c:if test="${not contestPhase.completed and proposalsDisplayPermissions.canSeeReviewStatus}">
                 <td class="c-Table__cell b-layout__center advancing-status no-border">
-                    <c:if test="${proposalsPermissions.canFellowActions}">
-                        <span class="js-Tooltip" data-tooltip-content="#js-Tooltip__content__fellow${proposal.proposalId}">
+                    <c:if test="${proposalsPermissions.canFellowActions or proposalsPermissions.canIAFActions}">
+                        <c:choose>
+                            <c:when test="${proposal.screeningStatus.statusValue == 0}">
+                                <c:set var="fellowStatusTooltip"
+                                       value="Fellows have not decided yet if the ${contestType.proposalName} will be forwarded to judges." />
+                            </c:when>
+                            <c:when test="${proposal.screeningStatus.statusValue == 1}">
+                                <c:set var="fellowStatusTooltip"
+                                       value="Fellows decided that the ${contestType.proposalName} will not proceed to next round." />
+                            </c:when>
+                            <c:otherwise>
+                                <c:set var="fellowStatusTooltip"
+                                       value="Fellows decided that the ${contestType.proposalName} should be forwarded to judges." />
+                            </c:otherwise>
+                        </c:choose>
+                        <span class="js-Tooltip" title="${fellowStatusTooltip}">
                             <proposalsPortlet:proposalJudgingIcon value="${proposal.screeningStatus.statusValue}" />
                         </span>
-                        <div class="c-Tooltip" id="js-Tooltip__content__fellow${proposal.proposalId}">
-                            <c:choose>
-                                <c:when test="${proposal.screeningStatus.statusValue == 0}">
-                                    Fellows have not decided yet if the ${contestType.proposalName} will be forwarded to judges.
-                                </c:when>
-                                <c:when test="${proposal.screeningStatus.statusValue == 1}">
-                                    Fellows decided that the ${contestType.proposalName} will not proceed to next round.
-                                </c:when>
-                                <c:otherwise>
-                                    Fellows decided that the ${contestType.proposalName} should be forwarded to judges.
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
+
+                        <c:choose>
+                            <c:when test="${proposal.impactAssessmentStatus == 'POSITIVE'}">
+                                <c:set var="iafStatusTooltip"
+                                       value="IA Fellows have completed the assessement of this ${contestType.proposalName}." />
+                            </c:when>
+                            <c:otherwise>
+                                <c:set var="iafStatusTooltip"
+                                       value="IA Fellows have not assessed this ${contestType.proposalName} yet." />
+                            </c:otherwise>
+                        </c:choose>
+                        <span class="js-Tooltip" title="${iafStatusTooltip}">
+                            <proposalsPortlet:proposalJudgingIcon value="${proposal.impactAssessmentStatus.statusValue}" />
+                        </span>
                     </c:if>
-                    <span class="js-Tooltip" data-tooltip-content="#js-Tooltip__content__judge${proposal.proposalId}">
+
+                    <c:choose>
+                        <c:when test="${proposal.judgeStatus.statusValue == 0}">
+                            <c:set var="judgeStatusTooltip" value="The judges have not rated this ${contestType.proposalName} yet." />
+                        </c:when>
+                        <c:when test="${proposal.judgeStatus.statusValue == 1}">
+                            <c:set var="judgeStatusTooltip" value="Fellows decided that the ${contestType.proposalName} will not proceed to next round." />
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="judgeStatusTooltip" value="All judges have completed the reviewing process." />
+                        </c:otherwise>
+                    </c:choose>
+                    <span class="js-Tooltip" title="${judgeStatusTooltip}">
                         <proposalsPortlet:proposalJudgingIcon value="${proposal.judgeStatus.statusValue}" />
                     </span>
-                    <div class="c-Tooltip" id="js-Tooltip__content__judge${proposal.proposalId}">
-                        <c:choose>
-                            <c:when test="${proposal.judgeStatus.statusValue == 0}">
-                                The judges have not rated this ${contestType.proposalName} yet.
-                            </c:when>
-                            <c:when test="${proposal.judgeStatus.statusValue == 1}">
-                                Fellows decided that the ${contestType.proposalName} will not proceed to next round.
-                            </c:when>
-                            <c:otherwise>
-                                All judges have completed the reviewing process.
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                    <span class="js-Tooltip" data-tooltip-content="#js-Tooltip__content__review${proposal.proposalId}">
+
+                    <c:choose>
+                        <c:when test="${proposal.overallStatus.statusValue == 0}">
+                            <c:set var="overallStatusTooltip" value="The ${contestType.proposalName} review has not been done yet." />
+                        </c:when>
+                        <c:when test="${proposal.overallStatus.statusValue == 1}">
+                            <c:set var="overallStatusTooltip" value="${contestType.proposalName} review has been prepared and ${contestType.proposalName} will not advance." />
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="overallStatusTooltip" value="${contestType.proposalName} review has been prepared and ${contestType.proposalName} will advance." />
+                        </c:otherwise>
+                    </c:choose>
+                    <span class="js-Tooltip" title="${overallStatusTooltip}">
                         <proposalsPortlet:proposalJudgingIcon value="${proposal.overallStatus.statusValue}" />
                     </span>
-                    <div class="c-Tooltip" id="js-Tooltip__content__review${proposal.proposalId}">
-                        <c:choose>
-                            <c:when test="${proposal.overallStatus.statusValue == 0}">
-                                The ${contestType.proposalName} review has not been done yet.
-                            </c:when>
-                            <c:when test="${proposal.overallStatus.statusValue == 1}">
-                                ${contestType.proposalName} review has been prepared and ${contestType.proposalName} will not advance.
-                            </c:when>
-                            <c:otherwise>
-                                ${contestType.proposalName} review has been prepared and ${contestType.proposalName} will advance.
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
                 </td>
             </c:if>
         </tr>

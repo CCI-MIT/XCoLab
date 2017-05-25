@@ -42,12 +42,7 @@ public final class ProposalAttributeClient {
     }
 
     public static ProposalAttributeClient fromService(RestService proposalService) {
-        ProposalAttributeClient instance = instances.get(proposalService);
-        if (instance == null) {
-            instance = new ProposalAttributeClient(proposalService);
-            instances.put(proposalService, instance);
-        }
-        return instance;
+        return instances.computeIfAbsent(proposalService, ProposalAttributeClient::new);
     }
 
     public ProposalAttribute createProposalAttribute(ProposalAttribute proposalAttribute) {
@@ -205,10 +200,6 @@ public final class ProposalAttributeClient {
     public List<ProposalUnversionedAttribute> getProposalUnversionedAttributesByProposalId(
             Long proposalId) {
         return DtoUtil.toPojos(proposalUnversionedAttributeResource.list()
-                .withCache(CacheKeys.withClass(ProposalUnversionedAttributeDto.class)
-                                .withParameter("proposalId", proposalId)
-                                .asList(),
-                        CacheName.MISC_MEDIUM)
                 .optionalQueryParam("proposalId", proposalId)
                 .execute(), proposalService);
     }

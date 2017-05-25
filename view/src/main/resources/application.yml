@@ -5,7 +5,6 @@ server:
       enabled: false
     include-stacktrace: always
   session:
-    persistent: true
     timeout: 7200
   compression:
     enabled: true
@@ -21,7 +20,7 @@ management:
 
 cache:
   enabled: true
-  provider: org.xcolab.util.http.caching.provider.ehcache2.CacheProviderEhcache2Impl
+  provider: org.xcolab.util.http.caching.provider.ehcache2.Ehcache2CacheProvider
   disk-storage:
     enabled: true
     max-megabytes: 1000
@@ -36,6 +35,8 @@ spring:
   http:
     multipart:
       max-file-size: 2MB
+  session:
+    store-type: hash_map
 
 eureka:
   client:

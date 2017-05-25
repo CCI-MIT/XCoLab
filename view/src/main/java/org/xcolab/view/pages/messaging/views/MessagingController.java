@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
 import org.xcolab.client.members.legacy.enums.MessageType;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
-import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.errors.ErrorText;
@@ -27,6 +27,7 @@ import org.xcolab.view.pages.messaging.beans.MessageBean;
 import org.xcolab.view.pages.messaging.beans.MessagingBean;
 import org.xcolab.view.pages.messaging.beans.SendMessageBean;
 import org.xcolab.view.pages.messaging.utils.MessagingPermissions;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.List;
@@ -143,7 +144,7 @@ public class MessagingController {
             try {
                 MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(messageSubject),
                         HtmlUtil.cleanSome(messageContent,
-                                ConfigurationAttributeKey.COLAB_URL.get()),
+                                PlatformAttributeKey.PLATFORM_COLAB_URL.get()),
                         loggedInMember.getUserId(), recipientIds);
                 AlertMessage.success("The message has been sent!").flash(request);
             } catch (MessageLimitExceededException e) {

@@ -33,6 +33,15 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-eureka</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session</artifactId>
+        </dependency>
 
         <!-- JSP dependencies -->
         <dependency>
@@ -211,8 +220,8 @@
             <artifactId>metrics-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.librato.metrics</groupId>
-            <artifactId>metrics-librato</artifactId>
+            <groupId>org.coursera</groupId>
+            <artifactId>metrics-datadog</artifactId>
         </dependency>
     </dependencies>
 
@@ -293,6 +302,23 @@
     <profiles>
         <profile>
             <id>skip-sass</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>nl.geodienstencentrum.maven</groupId>
+                        <artifactId>sass-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sass-compilation</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>integration-tests</id>
             <build>
                 <plugins>
                     <plugin>

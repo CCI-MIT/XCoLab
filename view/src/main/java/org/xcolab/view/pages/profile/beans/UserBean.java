@@ -4,11 +4,12 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
-import org.xcolab.view.util.validation.UniqueEmail;
 import org.xcolab.view.util.validation.CompareStrings;
+import org.xcolab.view.util.validation.UniqueEmail;
 import org.xcolab.view.util.validation.ValidBioLength;
 
 import java.io.Serializable;
@@ -108,7 +109,8 @@ public class UserBean implements Serializable {
     }
 
     public String getPortraitString() {
-        return "/image/user_male_portrait?img_id=" + this.imageId;
+        final String userImageDomain = PlatformAttributeKey.PLATFORM_UPLOADED_IMAGE_DOMAIN.get();
+        return userImageDomain + "/image/user_male_portrait?img_id=" + this.imageId;
     }
 
     public long getImageId() {

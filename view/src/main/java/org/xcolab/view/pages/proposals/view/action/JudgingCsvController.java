@@ -10,7 +10,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
@@ -28,11 +28,11 @@ import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.view.pages.proposals.judging.ProposalRatingWrapper;
+import org.xcolab.view.pages.proposals.judging.ProposalReview;
+import org.xcolab.view.pages.proposals.judging.ProposalReviewCsvExporter;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
-import org.xcolab.view.pages.proposals.judging.ProposalReview;
-import org.xcolab.view.pages.proposals.judging.ProposalReviewCsvExporter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -122,7 +122,7 @@ public class JudgingCsvController {
                     }
 
 
-                    final String proposalUrl = ConfigurationAttributeKey.COLAB_URL.get() + proposal
+                    final String proposalUrl = PlatformAttributeKey.PLATFORM_COLAB_URL.get() + proposal
                             .getProposalLinkUrl(contest, judgingPhase.getContestPhasePK());
                     final ProposalReview proposalReview =
                             new ProposalReview(proposal, judgingPhase, proposalUrl);

@@ -41,10 +41,13 @@ import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
+import org.xcolab.client.proposals.enums.ProposalUnversionedAttributeName;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
 import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.helpers.ProposalContestPhaseAttributeHelper;
+import org.xcolab.client.proposals.helpers.ProposalUnversionedAttributeHelper;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
+import org.xcolab.client.proposals.pojo.attributes.ProposalUnversionedAttribute;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
@@ -55,8 +58,8 @@ import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.membershiprequest.MembershipRequestStatus;
 import org.xcolab.util.enums.modeling.ModelRegions;
+import org.xcolab.util.enums.promotion.AssessmentStatus;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
-import org.xcolab.util.enums.promotion.GenericJudgingStatus;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestService;
@@ -85,7 +88,8 @@ public class Proposal extends AbstractProposal {
     protected final Proposal2Phase proposal2Phase;
 
     protected final ProposalContestPhaseAttributeHelper proposalContestPhaseAttributeHelper;
-    protected final ProposalAttributeHelper proposalAttributeHelper;
+    private final ProposalAttributeHelper proposalAttributeHelper;
+    private final ProposalUnversionedAttributeHelper unversionedAttributeHelper;
 
     protected List<ProposalTeamMember> members;
     private List<PlanSectionDefinition> sections;
@@ -127,6 +131,8 @@ public class Proposal extends AbstractProposal {
 
         proposalAttributeHelper = new ProposalAttributeHelper(this, this.getVersion(),
                 clients.proposalAttribute);
+        unversionedAttributeHelper = new ProposalUnversionedAttributeHelper(this,
+                clients.proposalAttribute);
     }
 
     public Proposal(Proposal proposal, ContestPhase contestPhase, Proposal2Phase proposal2Phase) {
@@ -153,6 +159,8 @@ public class Proposal extends AbstractProposal {
                 new ProposalContestPhaseAttributeHelper(this, this.contestPhase);
         proposalAttributeHelper = new ProposalAttributeHelper(this, version,
                 clients.proposalAttribute);
+        unversionedAttributeHelper = new ProposalUnversionedAttributeHelper(this,
+                clients.proposalAttribute);
     }
 
     public Proposal(RestService restService) {
@@ -175,6 +183,8 @@ public class Proposal extends AbstractProposal {
                 new ProposalContestPhaseAttributeHelper(this, contestPhase);
         proposalAttributeHelper = new ProposalAttributeHelper(this, this.getVersion(),
                 clients.proposalAttribute);
+        unversionedAttributeHelper = new ProposalUnversionedAttributeHelper(this,
+                clients.proposalAttribute);
     }
 
     public Proposal(AbstractProposal abstractProposal, RestService restService) {
@@ -191,6 +201,8 @@ public class Proposal extends AbstractProposal {
         proposalContestPhaseAttributeHelper =
                 new ProposalContestPhaseAttributeHelper(this, contestPhase);
         proposalAttributeHelper = new ProposalAttributeHelper(this, this.getVersion(),
+                clients.proposalAttribute);
+        unversionedAttributeHelper = new ProposalUnversionedAttributeHelper(this,
                 clients.proposalAttribute);
     }
 
@@ -764,52 +776,93 @@ public class Proposal extends AbstractProposal {
         return subProposalScenarioIds;
     }
 
+    public String getImpactCommentAuthor() {
+        ProposalUnversionedAttribute authorCommentAttribute = unversionedAttributeHelper
+                .getAttributeOrNull(ProposalUnversionedAttributeName.IMPACT_AUTHOR_COMMENT
+                        .toString(), 0);
+        if (authorCommentAttribute != null) {
+            final String authorComment = authorCommentAttribute.getStringValue();
+            if (StringUtils.isNotBlank(authorComment)) {
+                return authorComment;
+            }
+        }
+        return "";
+    }
+
+    public String getImpactCommentIaf() {
+        ProposalUnversionedAttribute iafCommentAttribute = unversionedAttributeHelper
+                .getAttributeOrNull(ProposalUnversionedAttributeName.IMPACT_IAF_COMMENT
+                        .toString(), 0);
+        if (iafCommentAttribute != null) {
+            final String iafComment = iafCommentAttribute.getStringValue();
+            if (StringUtils.isNotBlank(iafComment)) {
+                return iafComment;
+            }
+        }
+        return "";
+    }
+
     /**
      * Determine if fellows are done with proposal
      */
-    public GenericJudgingStatus getScreeningStatus() {
+    public AssessmentStatus getScreeningStatus() {
         switch (getFellowAction()) {
             case INCOMPLETE:
             case OFFTOPIC:
             case NOT_ADVANCE_OTHER:
-                return GenericJudgingStatus.STATUS_REJECTED;
+                return AssessmentStatus.NEGATIVE;
             case PASS_TO_JUDGES:
-                return GenericJudgingStatus.STATUS_ACCEPTED;
+                return AssessmentStatus.POSITIVE;
             default:
-                return GenericJudgingStatus.STATUS_UNKNOWN;
+                return AssessmentStatus.UNKNOWN;
         }
+    }
+
+    /**
+     * Determine if IA fellows are done with proposal
+     */
+    //TODO: other mechanism for indicating status
+    public AssessmentStatus getImpactAssessmentStatus() {
+        final String impactCommentIaf = getImpactCommentIaf();
+        if (impactCommentIaf.startsWith("Done")) {
+            return AssessmentStatus.POSITIVE;
+        }
+        if (impactCommentIaf.startsWith("Started")) {
+            return AssessmentStatus.NEGATIVE;
+        }
+        return AssessmentStatus.UNKNOWN;
     }
 
     /**
      * Determine if judges are done with proposal
      */
-    public GenericJudgingStatus getJudgeStatus() {
+    public AssessmentStatus getJudgeStatus() {
         if (getFellowAction() == JudgingSystemActions.FellowAction.INCOMPLETE
                 || getFellowAction() == JudgingSystemActions.FellowAction.OFFTOPIC
                 || getFellowAction() == JudgingSystemActions.FellowAction.NOT_ADVANCE_OTHER) {
-            return GenericJudgingStatus.STATUS_REJECTED;
+            return AssessmentStatus.NEGATIVE;
         }
         if (!getSelectedJudges().isEmpty() && getAllJudgesReviewFinished()) {
-            return GenericJudgingStatus.STATUS_ACCEPTED;
+            return AssessmentStatus.POSITIVE;
         }
-        return GenericJudgingStatus.STATUS_UNKNOWN;
+        return AssessmentStatus.UNKNOWN;
     }
 
     /**
      * Determines whether the screening/advance decision of the proposal is done
      */
-    public GenericJudgingStatus getOverallStatus() {
+    public AssessmentStatus getOverallStatus() {
         if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.MOVE_ON
                 && (getProposalReview()!=null)) {
-            return GenericJudgingStatus.STATUS_ACCEPTED;
+            return AssessmentStatus.POSITIVE;
         }
         if (getJudgeDecision() == JudgingSystemActions.AdvanceDecision.DONT_MOVE_ON
                 && (getProposalReview()!=null)
-                || getScreeningStatus() == GenericJudgingStatus.STATUS_REJECTED) {
-            return GenericJudgingStatus.STATUS_REJECTED;
+                || getScreeningStatus() == AssessmentStatus.NEGATIVE) {
+            return AssessmentStatus.NEGATIVE;
         }
 
-        return GenericJudgingStatus.STATUS_UNKNOWN;
+        return AssessmentStatus.UNKNOWN;
     }
 
     public Member getUserForSelectedVersion() {

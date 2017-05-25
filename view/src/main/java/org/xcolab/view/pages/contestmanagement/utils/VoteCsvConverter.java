@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
@@ -57,7 +57,7 @@ public class VoteCsvConverter extends CsvConverter {
     }
 
     public void addVotes(List<ProposalVote> proposalVotes) {
-        final String colabUrl = ConfigurationAttributeKey.COLAB_URL.get();
+        final String colabUrl = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
 
         //local caches, since many votes will likely be in the same contest
         Map<Long, Contest> contests  = new HashMap<>();
