@@ -29,7 +29,6 @@ import java.util.Date;
                 "spring.datasource.url=jdbc:h2:mem:testdb;MODE=MYSQL"
         }
 )
-
 @PrepareForTest({
         org.xcolab.util.http.ServiceRequestUtils.class,
         org.xcolab.client.proposals.ProposalClientUtil.class,
@@ -37,8 +36,6 @@ import java.util.Date;
         org.xcolab.client.proposals.pojo.Proposal.class,
         org.xcolab.client.contest.pojo.Contest.class
 })
-
-
 @ComponentScan("org.xcolab.service.contest")
 @ComponentScan("org.xcolab.client")
 public class PromotionServiceTest {
