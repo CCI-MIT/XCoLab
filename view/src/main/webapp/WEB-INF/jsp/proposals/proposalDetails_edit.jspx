@@ -247,39 +247,32 @@
         </div>
     </div>
 
-    <div class="admin-overlay-wrap">
-        <div class="admin-overlay">
-            <div class="inner">
-                <div class="admin-left">
-                    <p>
-                        <c:choose>
-                            <c:when test="${proposal.currentVersion le 1}">
-                                You are currently editing a new ${fn:toLowerCase(contestType.proposalName)}
-                            </c:when>
-                            <c:otherwise>
-                                You are editing a ${fn:toLowerCase(contestType.proposalName)}
-                            </c:otherwise>
-                        </c:choose>
-                        <br />
-                        <c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
-                    </p>
-                    <a class="c-Button__primary" href="javascript:void(0)" id="saveChangesButton">SAVE and PUBLISH changes</a>
-                    <c:choose>
-                        <c:when test="${proposal.currentVersion > 0 }">
-                            <collab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
-                                                 linkId="discardChangesButton" text="DISCARD changes" />
-                        </c:when>
-                        <c:otherwise>
-                            <!--  proposal creation, return to contest proposals page on discard -->
-                            <collab:contestLink contest="${contest}" cssClass="c-Button__secondary"
-                                                linkId="discardChangesButton" text="DISCARD changes" />
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-                <div class="admin-right">
-                    <p>&#160;</p>
-                </div>
-            </div>
+    <div class="c-ControlsOverlay">
+        <div class="inner">
+            <p>
+                <c:choose>
+                    <c:when test="${proposal.currentVersion le 1}">
+                        You are currently editing a new ${fn:toLowerCase(contestType.proposalName)}
+                    </c:when>
+                    <c:otherwise>
+                        You are editing a ${fn:toLowerCase(contestType.proposalName)}
+                    </c:otherwise>
+                </c:choose>
+                <br />
+                <c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
+            </p>
+            <a class="c-Button__primary" href="javascript:void(0)" id="saveChangesButton">SAVE and PUBLISH changes</a>
+            <c:choose>
+                <c:when test="${proposal.currentVersion > 0 }">
+                    <collab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
+                                         linkId="discardChangesButton" text="DISCARD changes" />
+                </c:when>
+                <c:otherwise>
+                    <!--  proposal creation, return to contest proposals page on discard -->
+                    <collab:contestLink contest="${contest}" cssClass="c-Button__secondary"
+                                        linkId="discardChangesButton" text="DISCARD changes" />
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
     <div id="ckImageUploadTooltip" style="display: none">

@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 public enum ErrorText {
     ACCESS_DENIED(ErrorMessage.error("You are not logged into your account or do not have "
             + "the correct permissions to access this page. "
-            + "Please login and try again.<br /><br />"
-            + "Please note that you may be automatically logged out of your account after 30 minutes.")
+            + "Please login and try again.<br /><br /> Please note that you"
+            + "may be automatically logged out of your account after 2 hours (120 minutes).")
                 .withTitle("Access Denied")),
     PAGE_NOT_FOUND(ErrorMessage.error("The page you are looking for does not exist.")
                             .withTitle("Page not found")),

@@ -135,43 +135,36 @@
                                    value="${proposal.modelRegion}"/>
                         </form>
 
-                        <div class="admin-overlay-wrap">
-                            <div class="admin-overlay">
-                                <div class="inner">
-                                    <div class="admin-left">
-                                        <p>
-                                            <c:choose>
-                                                <c:when test="${proposal.currentVersion le 1}">
-                                                    You are currently editing a new proposal
-                                                </c:when>
-                                                <c:otherwise>
-                                                    You are editing a proposal
-                                                </c:otherwise>
-                                            </c:choose>
-                                            <br/>
-                                            <c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
-                                        </p>
+                        <div class="c-ControlsOverlay">
+                            <div class="inner">
+                                <p>
+                                    <c:choose>
+                                        <c:when test="${proposal.currentVersion le 1}">
+                                            You are currently editing a new proposal
+                                        </c:when>
+                                        <c:otherwise>
+                                            You are editing a proposal
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <br/>
+                                    <c:if test="${not empty proposal.name }">"${proposal.name}"</c:if>
+                                </p>
 
-                                        <a class="c-Button__primary" href="#" id="saveChangesButton">SAVE and PUBLISH
-                                            changes</a>
-                                        <c:choose>
-                                            <c:when test="${proposal.currentVersion > 0 }">
-                                                <collab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
-                                                                     linkId="discardChangesButton"
-                                                                     text="DISCARD changes"/>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <!--  proposal creation, return to contest proposals page on discard -->
-                                                <collab:contestLink contest="${contest }" cssClass="c-Button__secondary"
-                                                                    linkId="discardChangesButton"
-                                                                    text="DISCARD changes"/>
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </div>
-                                    <div class="admin-right">
-                                        <p>&#160;</p>
-                                    </div>
-                                </div>
+                                <a class="c-Button__primary" href="#" id="saveChangesButton">SAVE and PUBLISH
+                                    changes</a>
+                                <c:choose>
+                                    <c:when test="${proposal.currentVersion > 0 }">
+                                        <collab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
+                                                             linkId="discardChangesButton"
+                                                             text="DISCARD changes"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <!--  proposal creation, return to contest proposals page on discard -->
+                                        <collab:contestLink contest="${contest }" cssClass="c-Button__secondary"
+                                                            linkId="discardChangesButton"
+                                                            text="DISCARD changes"/>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
                         </div>
                     </c:when>

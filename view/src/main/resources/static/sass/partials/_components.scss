@@ -12,6 +12,7 @@
 @import 'components/c-ContentBox';
 @import 'components/c-ContestBox';
 @import 'components/c-ContestCard';
+@import 'components/c-ControlsOverlay';
 @import 'components/c-CollectionCard';
 @import 'components/c-ListView';
 @import 'components/c-Count';
@@ -28,7 +29,7 @@
 @import "components/c-TableList";
 @import 'components/c-TitleBar';
 @import 'components/c-Tooltip';
-@import 'components/_c-Upload';
+@import 'components/c-Upload';
 
 //page styles
 
@@ -54,9 +55,6 @@
 
 
 // misc styles
-@import "liferay/liferay";
-@import 'liferay/wiki';
-@import 'liferay/blog';
 @import "pages/shame";
 
 // bootstrap components
