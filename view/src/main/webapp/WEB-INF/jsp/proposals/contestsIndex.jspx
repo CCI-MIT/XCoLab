@@ -4,8 +4,8 @@
     xmlns:spring="http://www.springframework.org/tags"
 	version="2.0">
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-    <spring:message code="${contestType.contestNamePlural}" var="title"/>
-	<xcolab:layout title="${title}">
+
+	<xcolab:layout title="${contestType.contestNamePlural}">
 		<!--@elvariable id="viewType" type="java.lang.String"-->
 		<!--@elvariable id="showCollectionCards" type="java.lang.Boolean"-->
 		<xcolab:script src="${_themeJsFolder}/proposals/proposals.js" />

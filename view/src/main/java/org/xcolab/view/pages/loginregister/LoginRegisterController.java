@@ -27,6 +27,7 @@ import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.util.CountryUtil;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.i18n.I18nUtils;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;
 import org.xcolab.view.util.entity.ReCaptchaUtils;
@@ -111,6 +112,7 @@ public class LoginRegisterController {
         // Get country location
         if (StringUtils.isEmpty(userBean.getCountry())) {
             try {
+                userBean.setLanguage(I18nUtils.DEFAULT_LOCALE.getLanguage());
                 userBean.setCountry(getCountryCodeFromRemoteAddress(request.getRemoteAddr()));
             } catch (UserLocationNotResolvableException ignored) {
             }
@@ -120,6 +122,7 @@ public class LoginRegisterController {
         model.addAttribute("hasLoginInfoText", StringUtils.isNotBlank(loginInfoText));
         model.addAttribute("loginInfoText", loginInfoText);
         model.addAttribute("countrySelectItems", CountryUtil.getSelectOptions());
+        model.addAttribute("languageSelectItems", I18nUtils.getSelectList());
         return REGISTER_VIEW_NAME;
     }
 
@@ -206,6 +209,7 @@ public class LoginRegisterController {
 
     private String showRegistrationError(Model model) {
         model.addAttribute("countrySelectItems", CountryUtil.getSelectOptions());
+        model.addAttribute("languageSelectItems", I18nUtils.getSelectList());
         return REGISTER_VIEW_NAME;
     }
 

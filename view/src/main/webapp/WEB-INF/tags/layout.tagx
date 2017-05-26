@@ -203,7 +203,7 @@
                 <c:forEach var="_contestPage" items="${_contestPages}">
                     <c:if test="${_contestPage.menuItemName != ''}">
                         <li class="${_activePageLink == _contestPage.portletName ? 'isCurrent' : ''}">
-                            <a href="${_contestPage.portletUrl}"><spring:message code="${_contestPage.menuItemName}"/></a>
+                            <a href="${_contestPage.portletUrl}">${_contestPage.menuItemName}</a>
                         </li>
                     </c:if>
                 </c:forEach>
@@ -418,14 +418,15 @@
         <div class="c-Popup">
             <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_login').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a></div>
 
-            <h4>Please log in to the ${_colabName}</h4>
+            <h4><spring:message code="homepage.modals.login.message"/> ${_colabName}</h4>
             <c:choose>
                 <c:when test='${_authError != null}'>
                     <div class="c-Alert__error__message">${_authError.message}</div>
                 </c:when>
                 <c:otherwise>
                     <div class="c-Alert__info__message">
-                        Welcome!  To access the link you clicked, please login or register as a free member using Facebook, Google, or your username &amp; password.
+                        <spring:message code="homepage.modals.login.welcome"/>
+
                     </div>
                 </c:otherwise>
             </c:choose>
@@ -444,27 +445,27 @@
             <div class="login_popup_box">
                 <form id="signInForm_form" method="post" action="/login" onsubmit="addRedirectBeforeSubmit('signInFormPopup'); return true;" >
                     <div>
-                        <label for="username">Username:</label>
+                        <label for="username"><spring:message code="homepage.modals.login.field.username"/></label>
                         <input id="username" name="username" type="text" class="c-Header__login__username"
                                onkeypress="return submitenter(this,event)" style="float: right;" />
                         <div class="clearfix"><!-- --></div>
-                        <label for="password">Password:</label> &#160;
+                        <label for="password"><spring:message code="homepage.modals.login.field.password"/></label> &#160;
                         <input id="password" name="password" type="password" class="c-Header__login__password"
                                onkeypress="return submitenter(this,event)" style="float: right;" />
                         <div class="clearfix"><!-- --></div>
                     </div>
                     <div>
-                        <label for="remember-me">Remember Me:</label> &#160;
+                        <label for="remember-me"><spring:message code="homepage.modals.login.rememberme"/></label> &#160;
                         <input type="checkbox" id="remember-me" name="remember-me" checked="true" />
                     </div>
                     <input name="redirect" type="hidden" />
                     <div class="btns">
                         <div style="float: left;">
-                            <span><em><a href="javascript:;" class="c-Header__login__forgot" style="color:#900;" onclick="showForgotPasswordPopup()">Forgot your password?</a></em></span><br />
-                            <span><em><a href="/register?redirect=${_requestUri}" class="c-Header__login__forgot" >Haven't registered yet?</a></em></span><br />
+                            <span><em><a href="javascript:;" class="c-Header__login__forgot" style="color:#900;" onclick="showForgotPasswordPopup()"><spring:message code="homepage.modals.login.forgot"/></a></em></span><br />
+                            <span><em><a href="/register?redirect=${_requestUri}" class="c-Header__login__forgot" ><spring:message code="homepage.modals.login.register"/></a></em></span><br />
                             <div class="clearfix"><!-- --></div>
                         </div>
-                        <a href="javascript:;" class="c-Button__primary c-Header__login__submit" onclick="jQuery(this).parents('form').submit();" id="deferLoginPopupSubmit">LOGIN</a>
+                        <a href="javascript:;" class="c-Button__primary c-Header__login__submit" onclick="jQuery(this).parents('form').submit();" id="deferLoginPopupSubmit"><spring:message code="homepage.modals.login.buttons.login"/></a>
                     </div>
                 </form>
             </div>
@@ -499,24 +500,24 @@
             <div class="c-Popup">
                 <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_SSO_login').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a></div>
                 <div><img style="max-height:55px" src="${_themeImageFolder}/${_partnerColabLogo}" alt="${_partnerColabName}" /> </div>
-                <div style="margin-top: 15px;margin-bottom: 15px;">Are you a ${_partnerColabName} member? Login to ${_colabName} using your ${_partnerColabName} username and password.</div>
-                <div style="font-size: small;">${_colabName} will receive your ${_partnerColabName} public profile and email address.</div>
+                <div style="margin-top: 15px;margin-bottom: 15px;"><spring:message code="homepage.modals.sso.message.phrase1"/> ${_partnerColabName} <spring:message code="homepage.modals.sso.message.phrase2"/> ${_colabName} <spring:message code="homepage.modals.sso.message.phrase3"/> ${_partnerColabName} <spring:message code="homepage.modals.sso.message.phrase4"/></div>
+                <div style="font-size: small;">${_colabName} <spring:message code="homepage.modals.sso.message.phrase5"/> ${_partnerColabName} <spring:message code="homepage.modals.sso.message.phrase6"/> </div>
                 <div class="clearfix"><!-- --></div>
                 <c:if test='${_showSsoPopup}'>
-                    <div class="c-Alert__error__message"><p>Authentication failed, please check your username and password.</p></div>
+                    <div class="c-Alert__error__message"><p><spring:message code="homepage.modals.sso.message.error"/></p></div>
                 </c:if>
                 <div class="login_popup_box">
                     <form id="signInSSOForm_form" method="post" action="/sso/colab"
                           onsubmit="addRedirectBeforeSubmit('signInSSOForm_form'); return true;" >
 
-                        <label>Username:</label>
+                        <label><spring:message code="homepage.modals.sso.field.username"/></label>
                         <input name="login" type="text" class="c-Header__login__username" onkeypress="return submitenter(this,event)" style="float: right;"/>
                         <div class="clearfix"><!-- --></div>
-                        <label>Password:</label> &#160;
+                        <label><spring:message code="homepage.modals.sso.field.password"/></label> &#160;
                         <input name="password" type="password" class="c-Header__login__password" onkeypress="return submitenter(this,event)" style="float: right;"/>
                         <input name="redirect" type="hidden" />
                         <div class="btns" style="margin-top: 26px;text-align: right;">
-                            <a href="javascript:;" class="c-Button__primary c-Header__login__submit" onclick="jQuery(this).parents('form').submit();" id="">LOGIN</a>
+                            <a href="javascript:;" class="c-Button__primary c-Header__login__submit" onclick="jQuery(this).parents('form').submit();" id=""><spring:message code="homepage.modals.sso.button.login"/></a>
                         </div>
                     </form>
                 </div>

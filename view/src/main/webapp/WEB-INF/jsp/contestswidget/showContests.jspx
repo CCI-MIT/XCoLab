@@ -38,8 +38,8 @@
                             <div class="prop"><strong>${contest.proposalsCount}</strong>
                                 <c:choose>
                                     <c:when test="${contest.proposalsCount == 1}">
-                                        &#160;<spring:message code="${contestType.proposalNameLowercase}"/></c:when>
-                                    <c:otherwise>&#160;<spring:message code="${contestType.proposalNamePluralLowercase}"/> </c:otherwise>
+                                        &#160;${contestType.proposalNameLowercase}</c:when>
+                                    <c:otherwise>&#160;${contestType.proposalNamePluralLowercase}</c:otherwise>
                                 </c:choose>
                             </div>
                             <c:if test="${not contest.contestInVotingPhase}">

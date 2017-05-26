@@ -1,5 +1,6 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:spring="http://www.springframework.org/tags"
           version="2.0">
 
     <jsp:directive.attribute name="uniqueName" type="java.lang.String" required="true"
@@ -21,11 +22,12 @@
     <jsp:directive.attribute name="buttonText" type="java.lang.String" required="false"
                              rtexprvalue="true" description="Text for the upload button"/>
 
+    <spring:message code="colab.default.image.button.upload" var="defaultImageText"/>
     <c:set var="shouldDisplayUrl" value="${(empty shouldDisplayUrl) ? false : shouldDisplayUrl}" />
     <c:set var="compactView" value="${(empty compactView) ? false : compactView}" />
     <c:set var="defaultImage" value="${(empty defaultImage) ? 'NONE' : defaultImage}" />
     <c:set var="defaultImageId" value="${(empty defaultImageId) ? '' : defaultImageId}" />
-    <c:set var="buttonText" value="${(empty buttonText) ? 'UPLOAD image' : buttonText}" />
+    <c:set var="buttonText" value="${(empty buttonText) ? defaultImageText : buttonText}" />
 
     <c:set var="uploadImageInputId" value="${uniqueName}Input"/>
     <c:set var="urlDisplayDiv" value="${uniqueName}ImageUrl"/>

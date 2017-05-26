@@ -96,7 +96,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasenames("i18n/homepage");
+        messageSource.setBasenames("i18n/homepage",
+                "i18n/register");
         messageSource.setDefaultEncoding("utf-8");
         return messageSource;
     }

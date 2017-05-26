@@ -36,7 +36,7 @@
 				</div>
 				<div class="proposal-title">
 					<div class="prop-description">
-						<spring:message code="${contestType.proposalName}"/> for
+						${contestType.proposalName} for
 						<collab:contestLink contest="${contest}" />
 						by
 						<c:choose>

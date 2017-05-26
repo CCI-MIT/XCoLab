@@ -36,10 +36,10 @@
                     <span>${fn:length(proposals.proposals)}</span>
                     <c:choose>
                         <c:when test="${fn:length(proposals.proposals) == 1}">
-                            &#160;<spring:message code="${contestType.proposalName}" />
+                            &#160;${contestType.proposalName}
                         </c:when>
                         <c:otherwise>
-                            &#160;<spring:message code="${contestType.proposalNamePlural}"/>
+                            &#160;${contestType.proposalNamePlural}
                         </c:otherwise>
                     </c:choose>
                 </h2>
@@ -85,7 +85,7 @@
                             <span class="js-Tooltip
 " title="click to sort by name">
                                 <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=NAME&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'NAME' ? not sortFilterPage.sortAscending : true }" />
-                                <a href="${sortURL }"><spring:message code="${contestType.proposalName}"/> name</a>
+                                <a href="${sortURL }">${contestType.proposalName} name</a>
                                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="NAME" />
                             </span>
                             /&#160;

@@ -2,10 +2,13 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+          xmlns:spring="http://www.springframework.org/tags"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-<xcolab:layout title="Register">
+
+<spring:message code="register.title.register" var="title"/>
+<xcolab:layout title="${title}">
 
     <!--@elvariable id="generateScreenName" type="java.lang.Boolean"-->
     <!--@elvariable id="colabName" type="java.lang.String"-->
@@ -18,13 +21,13 @@
     <div class="popupreg_form">
 
         <div class="popupreg_head">
-            <h1>Join the ${_colabName}</h1>
+            <h1><spring:message code="register.header.joinmessage"/> ${_colabName}</h1>
         </div>
 
         <c:if test="${(_isFacebookSsoActive or _isGoogleSsoActive or _isSharedColab) and not isSsoLogin}">
             <div class="sso-register">
                 <div style="float: right">
-                    <h1>Or sign in with:</h1><br/>
+                    <h1><spring:message code="register.header.joinwith"/>:</h1><br/>
                     <c:if test="${_isFacebookSsoActive}">
                         <a href="/sso/facebook/register" class="sketchy-icon sketchy-black facebook-sketchy"><span>Facebook</span></a>
                     </c:if>
@@ -41,7 +44,7 @@
         </c:if>
 
         <div class="is-required">
-            <span class="required-field"><!-- --></span> is a required field.
+            <span class="required-field"><!-- --></span> <spring:message code="register.header.validation.mandatory"/> .
         </div>
 
         <c:if test="${hasLoginInfoText}">
@@ -62,20 +65,20 @@
             <form:errors cssClass="c-Alert c-Alert__error" />
             <table class="reg">
                 <tr style="${ generateScreenName ? 'display: none;' : ''}">
-                    <th nowrap="nowrap" class="required-field">Screen name </th>
+                    <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.screenname"/> </th>
                     <td><form:input cssClass="popupreg_input" path="screenName" /><br />
                         <div class="reg_errors"><!--  -->
                             <form:errors cssClass="c-Alert c-Alert__error" path="screenName" />
                         </div></td>
                 </tr>
                 <tr>
-                    <th nowrap="nowrap" class="required-field">Email </th>
+                    <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.email"/> </th>
                     <td><form:input cssClass="popupreg_input" path="email" />
                         <div class="reg_errors"><!--  -->
                             <form:errors cssClass="c-Alert c-Alert__error" path="email" />
                         </div>
                     </td>
-                    <th class="second" rowspan="4">Photo</th>
+                    <th class="second" rowspan="4"><spring:message code="register.form.fields.photo"/></th>
                     <td rowspan="4">
                         <div style="float: right">
                             <form:hidden id="userRegistrationImageId" path="imageId" />
@@ -85,7 +88,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th nowrap="nowrap" class="required-field">Retype email </th>
+                    <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.retypeemail"/></th>
                     <td>
                         <c:if test="${isSsoLogin}">
                             <form:input cssClass="popupreg_input" path="retypeEmail"  value="${createUserBean.email}" />
@@ -101,7 +104,7 @@
                 </tr>
 
                 <tr>
-                    <th nowrap="nowrap" class="required-field">First name </th>
+                    <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.firstname"/></th>
                     <td><form:input cssClass="popupreg_input" path="firstName" onchange="generateScreenName()"/>
                         <div class="reg_errors"><!--  -->
                             <form:errors cssClass="c-Alert c-Alert__error" path="firstName" />
@@ -109,7 +112,7 @@
                 </tr>
 
                 <tr>
-                    <th nowrap="nowrap" class="required-field">Last name </th>
+                    <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.lastname"/> </th>
                     <td><form:input cssClass="popupreg_input" path="lastName" onchange="generateScreenName()"/>
                         <div class="reg_errors"><!--  -->
                             <form:errors cssClass="c-Alert c-Alert__error" path="lastName" />
@@ -117,17 +120,17 @@
                 </tr>
 
                 <tr>
-                    <th nowrap="nowrap" class="required-field">Password </th>
+                    <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.password"/> </th>
                     <td><form:password cssClass="popupreg_input" path="password" />
                         <div class="reg_errors"><!--  -->
                             <form:errors cssClass="c-Alert c-Alert__error" path="password" />
                         </div></td>
-                    <td colspan="2" class="p-LoginRegister__signup__infofield"><b>Note:</b> Passwords must be between 8 and 24 characters long.</td>
+                    <td colspan="2" class="p-LoginRegister__signup__infofield"><b><spring:message code="register.form.fields.password.note"/></b> <spring:message code="register.form.fields.password.notemsg"/></td>
                 </tr>
 
 
                 <tr>
-                    <th nowrap="nowrap" class="required-field">Retype password </th>
+                    <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.retypepassword"/> </th>
                     <td><form:password cssClass="popupreg_input"
                                        path="retypePassword" />
                         <div class="reg_errors"><!--  -->
@@ -135,12 +138,32 @@
                         </div></td>
 
                     <th class="second required-field">
-                        Country
+                        <spring:message code="register.form.fields.country"/>
                     </th>
                     <td>
                         <form:select cssClass="popupreg_input" path="country">
-                            <form:option value="" label="Select country"/>
+                            <spring:message code="register.form.fields.country.defaultselectoption" var="countryOption"/>
+                            <form:option value="" label="${countryOption}"/>
                             <form:options items="${countrySelectItems}" itemValue="value" itemLabel="lable"/>
+                        </form:select>
+                        <div class="reg_errors"><!--  -->
+                            <form:errors cssClass="c-Alert c-Alert__error" path="country" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="second required-field">
+                        <spring:message code="register.form.fields.language"/>
+                    </th>
+                    <td colspan="3">
+                        <form:select cssClass="popupreg_input" path="language">
+                            <spring:message code="register.form.fields.language.defaultselectoption" var="languageOption"/>
+                            <form:option value="" label="${languageOption}"/>
+                            <c:forEach var="lang" items="${languageSelectItems}">
+                                <form:option value="${lang['value']}" >
+                                    <spring:message code="${lang['lable']}"/>
+                                </form:option>
+                            </c:forEach>
                         </form:select>
                         <div class="reg_errors"><!--  -->
                             <form:errors cssClass="c-Alert c-Alert__error" path="country" />
@@ -149,12 +172,12 @@
                 </tr>
 
                 <tr>
-                    <th>Short bio</th>
+                    <th><spring:message code="register.form.fields.shortbio"/></th>
                     <td colspan="3">
                         <form:textarea cssClass="rte-editorPlaceholder shortBioContent" path="shortBio" />
                         <div class="inputLimitContainer" style="margin-top: 10px; float:right; ">
                             <span class="limit_characterCount"><!--  --></span>/&#160;
-                            <span class="limit_charactersMax">2000</span> characters
+                            <span class="limit_charactersMax">2000</span> <spring:message code="register.form.fields.shortbio.maxcharmsg"/>
                         </div>
                         <div class="reg_errors"><!--  -->
                             <form:errors cssClass="c-Alert c-Alert__error" path="shortBio" />
@@ -164,7 +187,7 @@
 
                 <c:if test="${ createUserBean.captchaNeeded }">
                     <tr>
-                        <th nowrap="nowrap" class="required-field">Click on the box </th>
+                        <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.captcha"/> </th>
                         <td colspan="3">
                             <div class="g-recaptcha" data-sitekey="${recaptchaDataSiteKey}"><!-- --></div>
                             <div class="reg_errors"><!--  -->
@@ -174,18 +197,17 @@
                     </tr>
                 </c:if>
                 <tr>
-                    <th nowrap="nowrap">Terms of use</th>
-                    <td class="popupreg_terms-right" colspan="3">By registering for this site, you agree to abide<br />
-                        by the<a href="/web/guest/resources/-/wiki/Main/Terms+of+use">Terms of Use</a> and
-                        <a href="/web/guest/resources/-/wiki/Main/Community%20philosophy%20and%20policies">Community Philosophy and Policy</a>.
-                        <p>We require a valid email address in order to count your vote.</p>
+                    <th nowrap="nowrap"><spring:message code="register.form.fields.termsofuse"/></th>
+                    <td class="popupreg_terms-right" colspan="3"><spring:message code="register.form.fields.termsofuse.line1"/><br />
+                        <spring:message code="register.form.fields.termsofuse.line2a"/><a href="/web/guest/resources/-/wiki/Main/Terms+of+use"><spring:message code="register.form.fields.termsofuse.line2b"/></a><spring:message code="register.form.fields.termsofuse.line2c"/>
+                        <a href="/web/guest/resources/-/wiki/Main/Community%20philosophy%20and%20policies"><spring:message code="register.form.fields.termsofuse.line2d"/></a>.
+                        <p><spring:message  code="register.form.fields.termsofuse.line3"/></p>
                     </td>
                 </tr>
                 <tr>
                     <th><!-- --></th>
                     <td colspan="3">
-                        <a class="c-Button__primary" href="javascript:;" onclick="try {pageTracker._trackPageview('/user/registerSubmit')} catch(err) {};updateTextarea();jQuery('#registrationForm').submit();">CREATE
-                            account</a>
+                        <a class="c-Button__primary" href="javascript:;" onclick="try {pageTracker._trackPageview('/user/registerSubmit')} catch(err) {};updateTextarea();jQuery('#registrationForm').submit();"><spring:message code="register.form.buttons.createaccount"/></a>
                     </td>
                 </tr>
             </table>

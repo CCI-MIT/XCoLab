@@ -64,9 +64,8 @@
                     ${proposal.supportersCount}
                 </span> supporters
                     <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
-                        <spring:message code="${contestType.proposalName}" var="proposalName"/>
                         <a class="c-Box__button boxColor--dark" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!handleOnClickAtSupportBtn(this)) return false;">
-                            <c:set var="supportText" value="Support ${proposalName}" />
+                            <c:set var="supportText" value="Support ${contestType.proposalName}" />
                             ${proposalsDisplayPermissions.canSeeSupportButton ? supportText : 'Retract support' }
                         </a>
                     </c:if>
@@ -130,7 +129,7 @@
                 </div>
             </c:if>
 
-            <h5 class="topbox">${proposalName} Summary</h5>
+            <h5 class="topbox">${contestType.proposalName} Summary</h5>
 
             <div class="prop-title addprop">
                 ${proposal.name}
@@ -140,11 +139,11 @@
                 <div class="prop-settings">
                     <c:choose>
                         <c:when test="${proposal.open }">
-                            <strong>Public ${proposalName}:</strong> Anyone will be able to edit this ${proposalName}. The ${proposalName} owner can limit editing to team member using the ${proposalName}'s Admin tab. &#160;
+                            <strong>Public ${contestType.proposalName}:</strong> Anyone will be able to edit this ${contestType.proposalName}. The ${contestType.proposalName} owner can limit editing to team member using the ${contestType.proposalName}'s Admin tab. &#160;
                         </c:when>
                         <c:otherwise>
-                            <strong>Team ${proposalName}:</strong> Only members listed on the ${proposalName}'s Contributors tab will be able to edit this ${proposalName}.
-                            Members can request to join the ${proposalName} team on the Contributors tab. The ${proposalName} owner can open this ${proposalName} for anyone to edit using the Admin tab. &#160;
+                            <strong>Team ${contestType.proposalName}:</strong> Only members listed on the ${contestType.proposalName}'s Contributors tab will be able to edit this ${contestType.proposalName}.
+                            Members can request to join the ${contestType.proposalName} team on the Contributors tab. The ${contestType.proposalName} owner can open this ${contestType.proposalName} for anyone to edit using the Admin tab. &#160;
                         </c:otherwise>
                     </c:choose>
 
@@ -169,7 +168,7 @@
             </div>
 
             <div class="prop-contest">
-                <strong><spring:message code="${contestType.contestName}" />: </strong>
+                <strong>${contestType.contestName}: </strong>
                 <proposalsPortlet:contestLink contest="${contest }" /><br />
                 ${contest.contestName}
             </div>
@@ -202,8 +201,8 @@
             </c:if>
             <c:if test="${not empty proposal.baseProposal }">
                 <div class="prop-avatar" style="font-size: 13px">
-                    <strong>Base <spring:message code="${contestType.proposalName}"/>: </strong>
-                    This <spring:message code="${contestType.proposalName}"/> was created as a copy of
+                    <strong>Base ${contestType.proposalName}: </strong>
+                    This ${contestType.proposalName} was created as a copy of
                     <collab:proposalLink proposal="${proposal.baseProposal }" />
                 </div>
             </c:if>

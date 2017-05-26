@@ -21,37 +21,43 @@ public class CreateUserBean implements Serializable {
     private static final String EMAIL_REGEX =
             "(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
 
+
     @NotBlank
-    @Length(min = 3, max = 26, message = "length must be between 3 and 26 characters")
+    @Length(min = 3, max = 26)
     private String screenName;
 
-    @NotBlank(message = "please enter your email address")
+    @NotBlank
     @Email(regexp = EMAIL_REGEX)
     private String email;
 
-    @NotBlank(message = "please retype your email address")
+    @NotBlank
     @Email(regexp = EMAIL_REGEX)
     private String retypeEmail;
 
-    @NotBlank(message = "please enter your first name")
+    @NotBlank
     private String firstName;
 
-    @NotBlank(message = "please enter your last name")
+    @NotBlank
     private String lastName;
 
-    @NotBlank(message = "please choose a password")
+    @NotBlank
     @Length(min = 8, max = 24)
     private String password;
 
-    @NotBlank(message = "please retype your password")
+    @NotBlank
     @Length(min = 8, max = 24)
     private String retypePassword;
 
     private String shortBio;
 
-    @NotBlank(message = "Please select a country from the list above.")
+    @NotBlank
     @Length(min = 0, max = 300)
     private String country;
+
+
+    @NotBlank(message = "register.form.validation.language")
+    @Length(min = 0, max = 300)
+    private String language;
 
     private String recaptcha_response_field;
 
@@ -172,5 +178,13 @@ public class CreateUserBean implements Serializable {
 
     public void setCaptchaNeeded(boolean captchaNeeded) {
         isCaptchaNeeded = captchaNeeded;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }
