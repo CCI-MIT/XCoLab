@@ -1,11 +1,19 @@
 package org.xcolab.view.util.validation;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.xcolab.view.i18n.ResourceMessageResolver;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
 
 public class ValidScreenNameValidator implements ConstraintValidator<ValidScreenName, Object> {
+
     private String screenNameProperty;
+
+    @Autowired
+    ResourceMessageResolver resourceMessageResolver;
 
     @Override
     public void initialize(ValidScreenName constraintAnnotation) {
@@ -31,9 +39,9 @@ public class ValidScreenNameValidator implements ConstraintValidator<ValidScreen
 			 * the default message
 			 */
             if (isDefaultMessage) {
-                String message = "Please provide a " +
+                String message = resourceMessageResolver.getLocalizedMessage("register.form.validation.screenNameContent.screenNameInvalid1")+" " +
                         screenNameProperty +
-                        " containing only alphanumeric characters - no whitespaces or other special signs";
+                        " " + resourceMessageResolver.getLocalizedMessage("register.form.validation.screenNameContent.screenNameInvalid2");
                 context.disableDefaultConstraintViolation();
                 ConstraintViolationBuilder violationBuilder = context
                         .buildConstraintViolationWithTemplate(message);

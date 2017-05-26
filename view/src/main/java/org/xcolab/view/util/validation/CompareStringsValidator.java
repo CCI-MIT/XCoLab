@@ -1,5 +1,9 @@
 package org.xcolab.view.util.validation;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.xcolab.view.i18n.ResourceMessageResolver;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +16,10 @@ public class CompareStringsValidator implements ConstraintValidator<CompareStrin
     private String[] propertyNames;
     private StringComparisonMode comparisonMode;
     private boolean allowNull;
+    private String[] equalFieldsDict;
+
+    @Autowired
+    ResourceMessageResolver resourceMessageResolver;
 
     @Override
     public void initialize(CompareStrings constraintAnnotation) {
@@ -51,14 +59,17 @@ public class CompareStringsValidator implements ConstraintValidator<CompareStrin
                 break;
             }
         }
-
+        equalFieldsDict = new String[3];
+        equalFieldsDict[0] = resourceMessageResolver.getLocalizedMessage("register.form.validation.equalfields.dict.must");
+        equalFieldsDict[1] = resourceMessageResolver.getLocalizedMessage("register.form.validation.equalfields.dict.beequal");
+        equalFieldsDict[2] = resourceMessageResolver.getLocalizedMessage("register.form.validation.equalfields.dict.benotequal");
 
         if (!isValid) {
             boolean isDefaultMessage = "".equals(context.getDefaultConstraintMessageTemplate());
             /* if custom message was provided, don't touch it, otherwise build the default message */
             if (isDefaultMessage) {
                 String resolvedMessage = ConstraintValidatorHelper
-                        .resolveMessage(propertyNames[validationFailedAtIndex].split(","), comparisonMode);
+                        .resolveMessage(propertyNames[validationFailedAtIndex].split(","), comparisonMode,equalFieldsDict);
                 context.disableDefaultConstraintViolation();
                 ConstraintViolationBuilder violationBuilder =
                         context.buildConstraintViolationWithTemplate(resolvedMessage);

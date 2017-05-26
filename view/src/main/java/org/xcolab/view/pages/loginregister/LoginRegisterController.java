@@ -28,6 +28,7 @@ import org.xcolab.util.CountryUtil;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.i18n.I18nUtils;
+import org.xcolab.view.i18n.ResourceMessageResolver;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;
 import org.xcolab.view.util.entity.ReCaptchaUtils;
@@ -55,6 +56,9 @@ public class LoginRegisterController {
     private static final String USER_NAME_REGEX = "^[a-zA-Z0-9]+$";
     private static final String REGISTER_VIEW_NAME = "loginregister/register";
     private final LoginRegisterService loginRegisterService;
+
+    @Autowired
+    ResourceMessageResolver resourceMessageResolver;
 
     @Autowired
     public LoginRegisterController(LoginRegisterService loginRegisterService) {
@@ -197,7 +201,8 @@ public class LoginRegisterController {
         }
         if (!captchaValid) {
             SessionErrors.clear(request);
-            result.addError(new ObjectError("createUserBean", "Please click the box"));
+            
+            result.addError(new ObjectError("createUserBean", resourceMessageResolver.getLocalizedMessage("register.form.validation.captcha.message")));
             return showRegistrationError(model);
         }
         //TODO: improve redirect to avoid double handling
