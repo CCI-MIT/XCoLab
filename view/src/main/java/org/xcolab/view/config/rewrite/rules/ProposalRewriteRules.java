@@ -31,6 +31,10 @@ public class ProposalRewriteRules implements RewriteRuleProvider {
         configureTabUrls(configurationBuilder);
 
         configurationBuilder
+                .addRule(Join.path(PROPOSAL_IN_PHASE_PATH)
+                        .to(PROPOSAL_PATH))
+                .addRule(Join.path(PROPOSAL_IN_PHASE_PATH + "/version/{version}")
+                        .to(PROPOSAL_PATH))
                 .addRule(Join.path(PROPOSAL_PATH + "/version/{version}")
                         .to(PROPOSAL_PATH))
                 .addRule(Join.path(PROPOSAL_PATH + "/voted")
