@@ -25,7 +25,7 @@ public class SendGridEventWebhookController {
     private static final Logger log = LoggerFactory.getLogger(SendGridEventWebhookController.class);
 
     private final List<SendGridEventProcessor> eventProcessors;
-    
+
     @Autowired
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     public SendGridEventWebhookController(Optional<List<SendGridEventProcessor>> eventProcessors) {

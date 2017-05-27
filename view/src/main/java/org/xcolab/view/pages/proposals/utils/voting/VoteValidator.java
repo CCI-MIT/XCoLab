@@ -44,6 +44,10 @@ public class VoteValidator {
             return ValidationResult.VALID;
         }
 
+        if (member.getIsEmailBounced()) {
+            return ValidationResult.INVALID_BOUNCED_EMAIL;
+        }
+
         if (isEmailBlacklisted()) {
             return ValidationResult.INVALID_BLACKLISTED;
         }
@@ -130,6 +134,7 @@ public class VoteValidator {
     public enum ValidationResult {
         VALID,
         INVALID_BLACKLISTED,
+        INVALID_BOUNCED_EMAIL,
         INVALID_DUPLICATE,
         AWAITING_RESPONSE
     }

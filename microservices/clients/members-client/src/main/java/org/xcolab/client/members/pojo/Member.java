@@ -34,6 +34,7 @@ public class Member implements Serializable {
     private String screenName;
     private String emailAddress;
     private boolean isEmailConfirmed;
+    private boolean isEmailBounced;
     private Timestamp createDate;
     private Timestamp modifiedDate;
     private Timestamp passwordModifiedDate;
@@ -60,6 +61,8 @@ public class Member implements Serializable {
         this.id_ = value.id_;
         this.screenName = value.screenName;
         this.emailAddress = value.emailAddress;
+        this.isEmailConfirmed = value.isEmailConfirmed;
+        this.isEmailBounced = value.isEmailBounced;
         this.createDate = value.createDate;
         this.modifiedDate = value.modifiedDate;
         this.passwordModifiedDate = value.passwordModifiedDate;
@@ -125,6 +128,22 @@ public class Member implements Serializable {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public boolean getIsEmailConfirmed() {
+        return isEmailConfirmed;
+    }
+
+    public void setIsEmailConfirmed(boolean emailConfirmed) {
+        isEmailConfirmed = emailConfirmed;
+    }
+
+    public boolean getIsEmailBounced() {
+        return isEmailBounced;
+    }
+
+    public void setIsEmailBounced(boolean emailBounced) {
+        isEmailBounced = emailBounced;
     }
 
     public Timestamp getCreateDate() {
@@ -353,13 +372,5 @@ public class Member implements Serializable {
     @Override
     public int hashCode() {
         return (int) (this.getId_() ^ this.getId_() >>> 32);
-    }
-
-    public boolean getIsEmailConfirmed() {
-        return isEmailConfirmed;
-    }
-
-    public void setIsEmailConfirmed(boolean emailConfirmed) {
-        isEmailConfirmed = emailConfirmed;
     }
 }
