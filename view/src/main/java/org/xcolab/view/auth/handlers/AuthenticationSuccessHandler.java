@@ -59,7 +59,11 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 
         String refererHeader = request.getHeader(HttpHeaders.REFERER);
         MembersClient.createLoginLog(member.getId_(), request.getRemoteAddr(), refererHeader);
-        if (StringUtils.isNotBlank(refererHeader)) {
+
+        final String redirect = request.getParameter("redirect");
+        if (StringUtils.isNotBlank(redirect)) {
+            getRedirectStrategy().sendRedirect(request, response, redirect);
+        } else if (StringUtils.isNotBlank(refererHeader) && !refererHeader.endsWith("/login")) {
             getRedirectStrategy().sendRedirect(request, response, refererHeader);
         } else {
             super.onAuthenticationSuccess(request, response, authentication);
