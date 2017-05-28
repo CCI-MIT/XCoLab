@@ -19,6 +19,7 @@ import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
@@ -31,19 +32,22 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class ThreadController extends BaseDiscussionController {
 
-    public static final String CREATE_THREAD_URL = "/discussion/threads/create";
-
-    @GetMapping({"/web/guest/discussion/thread/{threadId}","/discussion/thread/{threadId}"})
+    @GetMapping("/discussion/thread/{threadId}")
     public String showThread(HttpServletRequest request, HttpServletResponse response, Model model,
                              @PathVariable Long threadId)
             throws DiscussionAuthorizationException, ThreadNotFoundException {
 
-
         CategoryGroup categoryGroup = getCategoryGroup(request);
         CommentThread thread = ThreadClientUtil.getThread(threadId);
 
+        DiscussionPermissions permissions = new DiscussionPermissions(request);
+        if (!getCanView(permissions, categoryGroup, threadId)) {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
+
+        // should not be reached
         checkCanView(request,
-                String.format("Thread %d is not in the portlet's configured category group %d",
+                String.format("Thread %d is not in the configured category group %d",
                         threadId, categoryGroup.getGroupId()),
                 categoryGroup, threadId);
 
@@ -60,6 +64,13 @@ public class ThreadController extends BaseDiscussionController {
 
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
+
+        DiscussionPermissions permissions = new DiscussionPermissions(request);
+        if (!getCanEdit(permissions, categoryGroup, 0L)) {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
+
+        // should not be reached
         checkCanEdit(request, "User does not have the necessary permissions to create a thread ",
                 categoryGroup, 0L);
 
@@ -72,14 +83,20 @@ public class ThreadController extends BaseDiscussionController {
     }
 
 
-    @PostMapping("/discussion/thread/createThread")
-    public void createThreadAction(HttpServletRequest request, HttpServletResponse response,
-                                     @RequestParam long categoryId, @RequestParam String title,
-                                     @RequestParam String body)
+    @PostMapping("/discussion/thread/create")
+    public String createThreadAction(HttpServletRequest request, HttpServletResponse response,
+            Model model, @RequestParam long categoryId, @RequestParam String title,
+            @RequestParam String body)
             throws IOException, DiscussionAuthorizationException {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
+        DiscussionPermissions permissions = new DiscussionPermissions(request);
+        if (!getCanEdit(permissions, categoryGroup, 0L)) {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
+
+        // should not be reached
         checkCanEdit(request, "User does not have the necessary permissions to create a thread ",
                 categoryGroup, 0L);
 
@@ -104,9 +121,9 @@ public class ThreadController extends BaseDiscussionController {
                         ActivityProvidersType.DiscussionAddedActivityEntry.getType());
             }
 
-            response.sendRedirect(thread.getLinkUrl());
+            return "redirect:" + thread.getLinkUrl();
         } else {
-            response.sendRedirect(CREATE_THREAD_URL);
+            return createThread(request, response, model);
         }
     }
 

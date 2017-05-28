@@ -19,7 +19,7 @@
         <h1>Create new thread</h1>
         <div class="addthread">
             <div class="c-Comment__new">
-                <c:set var="addThreadUrl" value="/discussion/thread/createThread" />
+                <c:set var="addThreadUrl" value="/discussion/thread/create" />
                 <form id="addThreadForm" action="${addThreadUrl }" method="post">
                     <div>
                         <label class="portlet-form-label">Category: <br />
@@ -42,7 +42,7 @@
                     </div>
                     <div>
                         <a class="c-Button__primary" id="addThreadButton" href="#">Add</a>
-                        <a class="c-Button__secondary" id="canelAddThreadButton" href="/web/guest/discussion">Cancel</a>
+                        <a class="c-Button__secondary" id="canelAddThreadButton" href="/discussion">Cancel</a>
                     </div>
                 </form>
             </div>

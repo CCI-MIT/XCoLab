@@ -21,7 +21,7 @@
                 //found old discussion url -> redirect to new url
                 var newUrl = hash.replace("#discussion%3DpageType%3ACATEGORY%2CcategoryId%3A", "category/");
                 newUrl = newUrl.replace("#discussion%3DpageType%3ATHREAD%2CthreadId%3A", "thread/");
-                window.location = '/web/guest/discussion/' + newUrl;
+                window.location = '/discussion/' + newUrl;
             }
         </script>
         <collab:content articleId="${communityTopContentArticleId}" />
@@ -117,7 +117,7 @@
                         <div class="comm_list">
                             <h2>Categories</h2>
                             <ul class="discussionCategories">
-                                <li><a href="/web/guest/discussion">All Discussions</a></li>
+                                <li><a href="/discussion">All Discussions</a></li>
                                 <c:forEach var="category" items="${categories}">
                                     <li><a href="${category.linkUrl}">${category.name}</a></li>
                                 </c:forEach>

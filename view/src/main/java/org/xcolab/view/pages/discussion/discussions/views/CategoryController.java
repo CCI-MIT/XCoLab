@@ -19,6 +19,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
@@ -40,14 +41,14 @@ public class CategoryController extends BaseDiscussionController {
     }
 
     @GetMapping("/discussion/categories/sort/{sortColumn}")
-    public String showCategoriesSort(HttpServletRequest request, HttpServletResponse response, Model model,
-                                 @PathVariable String sortColumn) {
+    public String showCategoriesSort(HttpServletRequest request, HttpServletResponse response,
+            Model model, @PathVariable String sortColumn) {
         model.addAttribute("_activePageLink", "community");
-        return showCategories(request,response,model,sortColumn,false);
+        return showCategories(request, response, model, sortColumn,false);
     }
 
-    public String showCategories(HttpServletRequest request, HttpServletResponse response, Model model,
-                 String sortColumn, Boolean sortAscending) {
+    private String showCategories(HttpServletRequest request, HttpServletResponse response,
+            Model model, String sortColumn, Boolean sortAscending) {
         long memberId = MemberAuthUtil.getMemberId(request);
 
         ThreadSortColumn threadSortColumn;
@@ -74,7 +75,7 @@ public class CategoryController extends BaseDiscussionController {
         return "/discussion/category";
     }
 
-    @GetMapping({"/web/guest/discussion/category/{categoryId}","/web/guest/discussion/category/{categoryId}"})
+    @GetMapping("/discussion/category/{categoryId}")
     public String showCategory(HttpServletRequest request, HttpServletResponse response, Model model,
                                @PathVariable long categoryId, @RequestParam(required = false) String sortColumn,
                                @RequestParam(required = false) boolean sortAscending)
@@ -134,6 +135,13 @@ public class CategoryController extends BaseDiscussionController {
             throws DiscussionAuthorizationException {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
+
+        DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
+        if (!getCanEdit(discussionPermissions, categoryGroup, 0L)) {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
+
+        // should not be reached
         checkCanEdit(request, "User does not have the necessary permissions to create a category",
                 categoryGroup, 0L);
 
@@ -142,12 +150,18 @@ public class CategoryController extends BaseDiscussionController {
     }
 
     // @ActionMapping(params = "action=createCategory")
-    public void createCategoryAction(HttpServletRequest request, HttpServletResponse response,
+    public String createCategoryAction(HttpServletRequest request, HttpServletResponse response,
                                    @RequestParam String title, @RequestParam String description)
             throws IOException, DiscussionAuthorizationException, OperationNotSupportedException {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
+        DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
+        if (!getCanEdit(discussionPermissions, categoryGroup, 0L)) {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
+
+        // should not be reached
         checkCanEdit(request, "User does not have the necessary permissions to create a category",
                 categoryGroup, 0L);
 
@@ -156,12 +170,20 @@ public class CategoryController extends BaseDiscussionController {
 
 
     @GetMapping("/discussion/subscribeCategory")
-    public void subscribeCategory(HttpServletRequest request, HttpServletResponse response, @RequestParam long categoryId)
+    public String subscribeCategory(HttpServletRequest request, HttpServletResponse response, @RequestParam long categoryId)
             throws DiscussionAuthorizationException, IOException {
 
         long memberId = MemberAuthUtil.getMemberId(request);
         CategoryGroup categoryGroup = getCategoryGroup(request);
-        checkCanView(request, "You do not have permissions to view this category", categoryGroup, 0L);
+
+        DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
+        if (!getCanView(discussionPermissions, categoryGroup, 0L)) {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
+
+        // should not be reached
+        checkCanView(request, "You do not have permissions to view this category",
+                categoryGroup, 0L);
 
         if (memberId > 0) {
             if (categoryId > 0) {
@@ -172,16 +194,23 @@ public class CategoryController extends BaseDiscussionController {
                         ActivityEntryType.DISCUSSION, categoryGroup.getGroupId(), "");
             }
         }
-        response.sendRedirect("/web/guest/discussion");
+        return "redirect:/discussion";
     }
 
 
     @GetMapping("/discussion/unsubscribeCategory")
-    public void unsubscribeCategory(HttpServletRequest request, HttpServletResponse response, @RequestParam long categoryId)
+    public String unsubscribeCategory(HttpServletRequest request, HttpServletResponse response, @RequestParam long categoryId)
             throws DiscussionAuthorizationException, IOException {
 
         long memberId = MemberAuthUtil.getMemberId(request);
         CategoryGroup categoryGroup = getCategoryGroup(request);
+
+        DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
+        if (!getCanView(discussionPermissions, categoryGroup, 0L)) {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
+
+        // should not be reached
         checkCanView(request, "You do not have permissions to view this category", categoryGroup, 0L);
 
         if (memberId > 0) {
@@ -195,7 +224,7 @@ public class CategoryController extends BaseDiscussionController {
                         ActivityEntryType.DISCUSSION, categoryGroup.getGroupId(), "");
             }
         }
-        response.sendRedirect("/web/guest/discussion");
+        return "redirect:/discussion";
     }
 
     @Override
