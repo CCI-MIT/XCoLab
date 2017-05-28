@@ -35,20 +35,10 @@ import javax.servlet.http.HttpServletResponse;
 public class CategoryController extends BaseDiscussionController {
 
     @GetMapping("/discussion")
-    public String showCategories(HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String showCategories(HttpServletRequest request, HttpServletResponse response,
+            Model model, @RequestParam(required = false) String sortColumn,
+            @RequestParam(defaultValue = "false") boolean sortAscending) {
         model.addAttribute("_activePageLink", "community");
-        return showCategories(request, response, model, ThreadSortColumn.DATE.name(), false);
-    }
-
-    @GetMapping("/discussion/categories/sort/{sortColumn}")
-    public String showCategoriesSort(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable String sortColumn) {
-        model.addAttribute("_activePageLink", "community");
-        return showCategories(request, response, model, sortColumn,false);
-    }
-
-    private String showCategories(HttpServletRequest request, HttpServletResponse response,
-            Model model, String sortColumn, Boolean sortAscending) {
         long memberId = MemberAuthUtil.getMemberId(request);
 
         ThreadSortColumn threadSortColumn;
@@ -68,17 +58,19 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("sortColumn", threadSortColumn);
         model.addAttribute("sortAscending", sortAscending);
 
-        model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(memberId,
-                ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0, ""));
+        model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(
+                memberId, ActivityEntryType.DISCUSSION.getPrimaryTypeId(),
+                categoryGroup.getGroupId(),0, ""));
 
         model.addAttribute("_activePageLink", "community");
         return "/discussion/category";
     }
 
     @GetMapping("/discussion/category/{categoryId}")
-    public String showCategory(HttpServletRequest request, HttpServletResponse response, Model model,
-                               @PathVariable long categoryId, @RequestParam(required = false) String sortColumn,
-                               @RequestParam(required = false) boolean sortAscending)
+    public String showCategory(HttpServletRequest request, HttpServletResponse response,
+            Model model, @PathVariable long categoryId,
+            @RequestParam(required = false) String sortColumn,
+            @RequestParam(defaultValue = "false") boolean sortAscending)
             throws DiscussionAuthorizationException, CategoryNotFoundException {
 
         long memberId = MemberAuthUtil.getMemberId(request);
