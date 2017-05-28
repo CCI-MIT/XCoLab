@@ -10,9 +10,9 @@
     <collab:content articleId="${communityTopContentArticleId}" />
     <div id="content">
         <div id="bread" class="pro">
-            <a href="/web/guest/community">Community</a>
+            <a href="/members">Community</a>
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-            <a href="/web/guest/members">Members</a>
+            <a href="/members">Members</a>
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
             <collab:userLinkSimple userId="${user.userId}" text="${user.displayName}" />
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />

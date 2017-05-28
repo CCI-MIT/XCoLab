@@ -24,7 +24,7 @@
 	<!--</portlet:resourceURL>-->
 
 	<div id="bread" class="pro">
-		<a href="/community">Community</a>
+		<a href="/members">Community</a>
 		<img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
 		<a href="/members">Members</a>
 		<img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />

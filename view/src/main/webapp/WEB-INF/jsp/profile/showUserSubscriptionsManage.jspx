@@ -3,7 +3,8 @@
           xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:subscriptions="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0"
+          xmlns:collab="urn:jsptagdir:/WEB-INF/tags/collab">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout title="Manage subscriptions">
 
@@ -16,11 +17,11 @@
            value="/members/profile/${currentUserProfile.userId}/subscriptions/remove"/>
 
     <div id="bread" class="pro">
-        <a href="/web/guest/community">Community</a> <img
+        <a href="/members">Community</a> <img
             src="${_themeImageFolder}/arrow.gif" width="8" height="8"/> <a
-            href="/web/guest/members">Members</a> <img
-            src="${_themeImageFolder}/arrow.gif" width="8" height="8"/> <a
-            href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">${userBean.screenName}</a>
+            href="/members">Members</a> <img
+            src="${_themeImageFolder}/arrow.gif" width="8" height="8"/>
+        <collab:userLinkSimple userId="${currentUserProfile.userId}" text="${userBean.displayName}" />
         <img src="${_themeImageFolder}/arrow.gif" width="8" height="8"/>Manage Subscriptions
     </div>
 

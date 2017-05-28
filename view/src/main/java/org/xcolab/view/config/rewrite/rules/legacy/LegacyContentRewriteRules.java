@@ -119,17 +119,18 @@ public class LegacyContentRewriteRules implements RewriteRuleProvider {
     private void redirectContentPagesResilienceDialogues(ConfigurationBuilder configurationBuilder) {
         configurationBuilder
                 .addRule()
-                .when(Direction.isInbound().and(Path.matches("/web/guest/community")))
-                .perform(Redirect.permanent("/page/community"))
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/community")
+                                                .or(Path.matches("/community"))))
+                    .perform(Redirect.permanent("/page/community"))
                 .addRule()
-                .when(Direction.isInbound().and(Path.matches("/web/guest/partners")))
-                .perform(Redirect.permanent("/page/partners"))
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/partners")))
+                    .perform(Redirect.permanent("/page/partners"))
                 .addRule()
-                .when(Direction.isInbound().and(Path.matches("/web/guest/participants1")))
-                .perform(Redirect.permanent("/page/participants"))
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/participants1")))
+                    .perform(Redirect.permanent("/page/participants"))
                 .addRule()
-                .when(Direction.isInbound().and(Path.matches("/web/guest/materials")))
-                .perform(Redirect.permanent("/page/materials"));
+                    .when(Direction.isInbound().and(Path.matches("/web/guest/materials")))
+                    .perform(Redirect.permanent("/page/materials"));
 
         configurationBuilder
                 .addRule()

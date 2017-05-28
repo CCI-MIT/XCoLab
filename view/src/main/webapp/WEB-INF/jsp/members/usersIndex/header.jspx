@@ -11,9 +11,9 @@
 	<script type="text/javascript" src="/members-portlet/js/main.js"><!-- --></script>
 
 	<div id="bread" class="pro">
-		<a href="/web/guest/community">Community</a>&#160; <img
+		<a href="/members">Community</a>&#160; <img
 			src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
-		<a href="/web/guest/members">Members</a>
+		<a href="/members">Members</a>
 	</div>
 
 	<!-- HELP DIVS -->
