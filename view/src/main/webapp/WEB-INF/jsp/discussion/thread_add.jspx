@@ -9,9 +9,9 @@
 
     <div id="content">
         <div id="bread" class="pro">
-            <a href="/web/guest/members">Community</a>&#160;
+            <a href="/members">Community</a>&#160;
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
-            <a href="/web/guest/discussion">Discussion</a>&#160;
+            <a href="/discussion">Discussion</a>&#160;
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
             <a href="/discussion/threads/create">Create Thread</a>&#160;
         </div>
@@ -19,7 +19,7 @@
         <h1>Create new thread</h1>
         <div class="addthread">
             <div class="c-Comment__new">
-                <c:set var="addThreadUrl" value="/discussion/thread/createThread" />
+                <c:set var="addThreadUrl" value="/discussion/thread/create" />
                 <form id="addThreadForm" action="${addThreadUrl }" method="post">
                     <div>
                         <label class="portlet-form-label">Category: <br />
@@ -42,7 +42,7 @@
                     </div>
                     <div>
                         <a class="c-Button__primary" id="addThreadButton" href="#">Add</a>
-                        <a class="c-Button__secondary" id="canelAddThreadButton" href="/web/guest/discussion">Cancel</a>
+                        <a class="c-Button__secondary" id="canelAddThreadButton" href="/discussion">Cancel</a>
                     </div>
                 </form>
             </div>

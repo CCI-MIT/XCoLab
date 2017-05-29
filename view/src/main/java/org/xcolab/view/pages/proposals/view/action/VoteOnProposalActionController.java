@@ -78,7 +78,8 @@ public class VoteOnProposalActionController {
                 VoteValidator voteValidator = new VoteValidator(member, proposal, contest,
                         request.getRemoteAddr(), clients.getProposalMemberRatingClient());
                 final ValidationResult validationResult = voteValidator.validate();
-                if (validationResult == ValidationResult.INVALID_BLACKLISTED) {
+                if (validationResult == ValidationResult.INVALID_BLACKLISTED
+                        || validationResult == ValidationResult.INVALID_BOUNCED_EMAIL) {
                     //TODO: decide if we want to inform users of this
 //                    AlertMessage.danger("Your vote was NOT counted because it violates our email policy. "
 //                            + "Please refer to the Voting Rules for additional information.")

@@ -7,11 +7,12 @@
         <jsp:directive.include file="init.jspx"/>
      <div id="content">
         <div id="bread" class="pro">
-            <a href="/web/guest/members">Community</a>&#160;
+            <a href="/members">Community</a>&#160;
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
-            <a href="/web/guest/discussion">Discussion</a>&#160;
+            <a href="/discussion">Discussion</a>&#160;
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
-            <a href="/web/guest/discussion/-/discussion/categories/create">Create Category</a>&#160;
+            <!-- TODO: add url - does not currently exist -->
+            <a href="/discussion">Create Category</a>&#160;
         </div>
 
         <h1>Create new category</h1>
@@ -31,7 +32,7 @@
                     </div>
                     <div>
                         <input type="submit" class="c-Button__primary" value="Add" />
-                        <a class="c-Button__secondary" href="/web/guest/discussion">Cancel</a>
+                        <a class="c-Button__secondary" href="/discussion">Cancel</a>
                     </div>
                 </form>
             </div>

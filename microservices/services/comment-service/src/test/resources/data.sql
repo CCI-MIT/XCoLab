@@ -1,5 +1,5 @@
 INSERT INTO comment_CategoryGroup (groupId, description, url, isQuiet)
-  VALUES (701, 'Test Category', '/web/guest/discussion', 0);
+  VALUES (701, 'Test Category', '/discussion', 0);
 
 INSERT INTO comment_Category (categoryId, groupId, authorId, name, description, createDate, deletedDate, sort, isQuiet)
   VALUES (101, 701, 10144, 'General', 'Description', '2010-10-02 00:00:00', null, null, 0);

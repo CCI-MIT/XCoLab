@@ -96,7 +96,7 @@
                     <div class="prop-butt">
                         <img src="${_themeImageFolder}/icon-proposal-thumb.png" width="20" height="22" alt="support ${contestType.proposalName}" />
 
-                        <a class="c-Button__primary" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin()) return false;">
+                        <a class="c-Button__primary" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin(this)) return false;">
                             <c:choose>
                                 <c:when test="${proposalsDisplayPermissions.canSeeSupportButton}">
                                     Support ${contestType.proposalName}
