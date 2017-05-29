@@ -1,6 +1,9 @@
 package org.xcolab.view.config.spring;
 
+import org.ocpsoft.common.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,6 +18,7 @@ import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.session.web.http.SessionRepositoryFilter;
 
 import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.auth.handlers.AuthenticationFailureHandler;
@@ -26,6 +30,8 @@ import org.xcolab.view.config.spring.properties.WebProperties;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.DispatcherType;
 
 @Configuration
 @EnableWebSecurity
@@ -63,6 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/css/**").permitAll()
                     .antMatchers("/js/**").permitAll()
                     .antMatchers("/login/**").permitAll()
+                    .antMatchers("/reportError**").permitAll()
                     .anyRequest().authenticated();
         }
 
@@ -92,6 +99,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(memberDetailsService)
                 .passwordEncoder(new MemberPasswordEncoder());
+    }
+
+    @Bean
+    @Autowired(required = false)
+    public FilterRegistrationBean sessionFilterErrorDispatch(
+            SessionRepositoryFilter sessionRepositoryFilter) {
+        Assert.notNull(sessionRepositoryFilter, "SessionRepositoryFilter bean is required");
+        final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        registrationBean.setFilter(sessionRepositoryFilter);
+        //override registration to ensure sessions are initialized correctly for errors
+        registrationBean.setDispatcherTypes(DispatcherType.REQUEST,
+                DispatcherType.ASYNC, DispatcherType.ERROR);
+        registrationBean.setOrder(SessionRepositoryFilter.DEFAULT_ORDER);
+        return registrationBean;
     }
 
     private List<RequestMatcher> getWhiteList(){
