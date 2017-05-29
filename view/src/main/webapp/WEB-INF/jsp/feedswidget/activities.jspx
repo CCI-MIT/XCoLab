@@ -8,8 +8,9 @@
 	<xcolab:layout>
 		<collab:content articleId="${communityTopContentArticleId}" />
 		<div id="content">
-			<div class="pro" id="bread"><a href="/community">Community</a>
-				<div class="memberActivitiesContainer" style="display: inline;"><img alt="" height="8" src="images/arrow.gif" width="8" /> <a href="/community">Community</a> <img alt="" height="8" src="/images/arrow.gif" width="8" /> <a href="/activities">All activities</a></div>
+			<div class="pro" id="bread"><a href="/members">Community</a>
+				<div class="memberActivitiesContainer" style="display: inline;"><img alt="" height="8" src="images/arrow.gif" width="8" />
+                    <a href="/members">Community</a> <img alt="" height="8" src="/images/arrow.gif" width="8" /> <a href="/activities">All activities</a></div>
 			</div>
 
 			<jsp:directive.include file="activities_common.jspx" />

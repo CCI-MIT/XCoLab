@@ -7,9 +7,9 @@
     <c:choose>
         <c:when test="${not _isLoggedIn}">
             <h2>Restricted access - login required</h2>
-            <div class="c-Alert c-Alert__info__message">
-                Please log into your account to verify that you are authorized to access this page.
-            </div>
+            <p>
+                Use popup to login or click <a href="javascript:deferUntilLogin();">here</a>.
+            </p>
             <script type="text/javascript">
                 jQuery(function() {
                     jQuery("#popup_login").show();

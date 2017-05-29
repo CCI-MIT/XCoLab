@@ -40,6 +40,7 @@ public class MemberDaoTest {
                         null, null, null, null, null);
         assertEquals("Wrong number of members", 2, members.size());
     }
+
 }
 
 

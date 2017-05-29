@@ -50,6 +50,7 @@ logging:
     com.netflix.eureka: INFO
     org.xcolab.util.http.caching.provider: INFO
     org.xcolab.view.config: INFO
+    org.xcolab.view.crons: INFO
     org.springframework: INFO
     org.springframework.jmx: WARN
     org.springframework.web: WARN

@@ -10,8 +10,7 @@ import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.view.pages.discussion.discussions.DiscussionPreferences;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
-        .DiscussionAuthorizationException;
+import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
 import javax.servlet.http.HttpServletRequest;
 
