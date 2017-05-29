@@ -109,6 +109,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         slr.setLocaleAttributeName(I18nUtils.MEMBER_LOCALE_SESSION_IDENTIFIER);
         return slr;
     }
+
     @Bean
     public FilterRegistrationBean resourceEncodingFilter() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();

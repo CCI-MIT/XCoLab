@@ -65,6 +65,7 @@ import static org.mockito.Matchers.anyString;
 @ComponentScan("org.xcolab.view.pages.proposals.utils.context")
 @ComponentScan("org.xcolab.view.pages.loginregister")
 @ComponentScan("org.xcolab.view.config")
+@ComponentScan("org.xcolab.view.i18n")
 @TestPropertySource(
         properties = {
                 "cache.enabled=false"
