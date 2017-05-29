@@ -62,7 +62,7 @@
                 <input type="hidden" name="redirect" value="${redirect}" />
             </c:if>
             <div class="reg_errors"><!--  --></div>
-            <form:errors cssClass="c-Alert c-Alert__error" />
+            <form:errors cssClass="c-Alert c-Alert__error" htmlEscape="false"/>
             <table class="reg">
                 <tr style="${ generateScreenName ? 'display: none;' : ''}">
                     <th nowrap="nowrap" class="required-field"><spring:message code="register.form.fields.screenname"/> </th>
@@ -198,10 +198,8 @@
                 </c:if>
                 <tr>
                     <th nowrap="nowrap"><spring:message code="register.form.fields.termsofuse"/></th>
-                    <td class="popupreg_terms-right" colspan="3"><spring:message code="register.form.fields.termsofuse.line1"/><br />
-                        <spring:message code="register.form.fields.termsofuse.line2a"/><a href="/web/guest/resources/-/wiki/Main/Terms+of+use"><spring:message code="register.form.fields.termsofuse.line2b"/></a><spring:message code="register.form.fields.termsofuse.line2c"/>
-                        <a href="/web/guest/resources/-/wiki/Main/Community%20philosophy%20and%20policies"><spring:message code="register.form.fields.termsofuse.line2d"/></a>.
-                        <p><spring:message  code="register.form.fields.termsofuse.line3"/></p>
+                    <td class="popupreg_terms-right" colspan="3">
+                        <spring:message code="register.form.fields.termsofuse.linemsg" />
                     </td>
                 </tr>
                 <tr>

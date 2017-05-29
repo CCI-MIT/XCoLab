@@ -70,14 +70,10 @@ public class UniqueScreenNameEmailValidator
                     sb.append(" "+resourceMessageResolver
                             .getLocalizedMessage("register.form.validation.screenNameEmail.alreadyexists"));
                 } else {
-                    sb.append(" "+(resourceMessageResolver
+                    sb.append(" "+resourceMessageResolver
                             .getLocalizedMessage(
-                                    "register.form.validation.screenNameEmail.alreadyexists.sharedcolab1")+" "
-                            + ConfigurationAttributeKey.PARTNER_COLAB_NAME.get()
-                            +" "+resourceMessageResolver
-                                    .getLocalizedMessage(
-                                            "register.form.validation.screenNameEmail.alreadyexists.sharedcolab2")
-                            ));
+                                    "register.form.validation.screenNameEmail.alreadyexists.sharedcolab",
+                                    new String[]{ConfigurationAttributeKey.PARTNER_COLAB_NAME.get()}));
                 }
                 context.disableDefaultConstraintViolation();
                 ConstraintViolationBuilder violationBuilder =

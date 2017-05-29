@@ -18,9 +18,13 @@ public class ResourceMessageResolver {
 
     public String getLocalizedMessage(String messageId) {
 
-        Locale loc = LocaleContextHolder.getLocale();
+        return messageSource.getMessage(messageId, null, LocaleContextHolder.getLocale());
 
-        return messageSource.getMessage(messageId,null,loc);
+    }
+
+    public String getLocalizedMessage(String messageId, String[] options) {
+
+        return messageSource.getMessage(messageId, options, LocaleContextHolder.getLocale());
 
     }
 }

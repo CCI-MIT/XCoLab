@@ -39,9 +39,7 @@ public class ValidScreenNameValidator implements ConstraintValidator<ValidScreen
 			 * the default message
 			 */
             if (isDefaultMessage) {
-                String message = resourceMessageResolver.getLocalizedMessage("register.form.validation.screenNameContent.screenNameInvalid1")+" " +
-                        screenNameProperty +
-                        " " + resourceMessageResolver.getLocalizedMessage("register.form.validation.screenNameContent.screenNameInvalid2");
+                String message = resourceMessageResolver.getLocalizedMessage("register.form.validation.screenNameContent.screenNameInvalid",new String[]{screenNameProperty});
                 context.disableDefaultConstraintViolation();
                 ConstraintViolationBuilder violationBuilder = context
                         .buildConstraintViolationWithTemplate(message);

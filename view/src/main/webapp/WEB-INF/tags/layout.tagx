@@ -500,8 +500,8 @@
             <div class="c-Popup">
                 <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_SSO_login').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a></div>
                 <div><img style="max-height:55px" src="${_themeImageFolder}/${_partnerColabLogo}" alt="${_partnerColabName}" /> </div>
-                <div style="margin-top: 15px;margin-bottom: 15px;"><spring:message code="homepage.modals.sso.message.phrase1"/> ${_partnerColabName} <spring:message code="homepage.modals.sso.message.phrase2"/> ${_colabName} <spring:message code="homepage.modals.sso.message.phrase3"/> ${_partnerColabName} <spring:message code="homepage.modals.sso.message.phrase4"/></div>
-                <div style="font-size: small;">${_colabName} <spring:message code="homepage.modals.sso.message.phrase5"/> ${_partnerColabName} <spring:message code="homepage.modals.sso.message.phrase6"/> </div>
+                <div style="margin-top: 15px;margin-bottom: 15px;"><spring:message code="homepage.modals.sso.message.phrase1" arguments="${_partnerColabName},${_colabName}" argumentSeparator=","/>  </div>
+                <div style="font-size: small;"><spring:message code="homepage.modals.sso.message.phrase2" arguments="${_partnerColabName},${_colabName}" argumentSeparator=","/>  </div>
                 <div class="clearfix"><!-- --></div>
                 <c:if test='${_showSsoPopup}'>
                     <div class="c-Alert__error__message"><p><spring:message code="homepage.modals.sso.message.error"/></p></div>

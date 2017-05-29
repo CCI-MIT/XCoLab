@@ -41,9 +41,8 @@ public class ValidBioLengthValidator implements
 			 */
             if (isDefaultMessage) {
                 context.disableDefaultConstraintViolation();
-                String message = resourceMessageResolver.getLocalizedMessage("register.form.validation.biografy.message1")+" " +
-                        BIO_MAX_LENGTH +
-                        " "+resourceMessageResolver.getLocalizedMessage("register.form.validation.biografy.message2");
+                String message = resourceMessageResolver.getLocalizedMessage(
+                        "register.form.validation.biografy.message", new String[]{BIO_MAX_LENGTH+""});
                 ConstraintValidatorContext.ConstraintViolationBuilder violationBuilder = context
                         .buildConstraintViolationWithTemplate(message);
                 violationBuilder.addConstraintViolation();
