@@ -46,7 +46,7 @@
 
                                 <span class="c-Count"><span class="c-Count__number">${threads.size()}</span> discussions</span>
 
-                                <a onclick="if(!deferUntilLogin()){return false}else{return true}" class="b-Spacing__inline--large" href="/discussion/threads/create">
+                                <a onclick="if(!deferUntilLogin(this)) return false;" class="b-Spacing__inline--large" href="/discussion/threads/create">
                                     <img style="vertical-align: middle;" height="30"
                                          src="${_themeImageFolder}/icon_new-topic.png" /> new discussion
                                 </a>
@@ -64,7 +64,7 @@
 
                             <c:set var="unsubscribeUrl" value="/dicussion/unsubscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
                             <a class="subscribeLinkSmall" href="${isSubscribed ? unsubscribeUrl : subscribeUrl}"
-                               onclick="if(!deferUntilLogin()) return false;">
+                               onclick="if(!deferUntilLogin(this)) return false;">
                                 <img src="${_themeImageFolder}/subscribe_small_2.png" /> ${isSubscribed ? 'Unsubscribe' : 'Subscribe'}
                             </a>
                         </div>

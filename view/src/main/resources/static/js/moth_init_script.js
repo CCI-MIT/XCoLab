@@ -184,15 +184,28 @@ function removeMSWordChars(str) {
     return result.join("");
 }
 
-
-
-function deferUntilLogin(fn) {
+function deferUntilLogin(source) {
  
     if (_isLoggedIn) {
         return true;
     } else {
-    	jQuery('#popup_login').show();
-    	jQuery("#signInForm_form input[name=redirect]").val(location.toString());
+        if (source != null) {
+            var $source = $(source);
+            jQuery("#signInForm_form input[name=redirect]").val($source.attr('href'));
+        }
+        jQuery('#popup_login').show();
+    }
+}
+
+function deferUntilLoginTargeted(targetLocation) {
+
+    if (_isLoggedIn) {
+        return true;
+    } else {
+        if (targetLocation != null) {
+            jQuery("#signInForm_form input[name=redirect]").val(targetLocation);
+        }
+        jQuery('#popup_login').show();
     }
 }
 
@@ -246,22 +259,6 @@ function showForgotPasswordPopup() {
 	jQuery('#popup_login').hide();
 	jQuery('#popup_forgotpassword').show();
 }
-
-function deferUntilLoginTargeted(loc) {
-
-    if (_isLoggedIn) {
-        return true;
-    } else {
-        jQuery('#popup_login').show();
-        if (loc!=null) {
-            jQuery("#signInForm_form input[name=redirect]").val(loc);
-        } else {
-            jQuery("#signInForm_form input[name=redirect]").val(location.toString());
-        }
-    }
-
-}
-
 
 function insertParam(key, value)
 {
