@@ -26,6 +26,8 @@ public class UserBean implements Serializable {
 
     private String screenName;
 
+    private String displayName;
+
     @NotBlank(groups = {UserBean.EmailChanged.class})
     @Email(regexp = EMAIL_REGEX, groups = {UserBean.EmailChanged.class},message = "Please write a valid email!")
     private String emailStored;
@@ -72,6 +74,7 @@ public class UserBean implements Serializable {
     public UserBean(Member member) {
         userId = member.getId_();
         screenName = member.getScreenName();
+        displayName = member.getDisplayName();
         firstName = member.getFirstName();
         lastName = member.getLastName();
         emailStored = member.getEmailAddress();
@@ -123,6 +126,10 @@ public class UserBean implements Serializable {
     public String getScreenName() {
         return screenName;
     }
+    public String getDisplayName() {
+        return displayName;
+    }
+
 
     public void setScreenName(String screenName) {
         this.screenName = screenName;

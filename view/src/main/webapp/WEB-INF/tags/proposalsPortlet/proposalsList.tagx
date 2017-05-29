@@ -52,10 +52,10 @@
                             <collab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.team}"/>
                         </c:when>
                         <c:when test="${proposal.members.size() > 1}">
-                            <collab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.author.screenName} and ${proposal.members.size() - 1} ${proposal.members.size() > 2 ? 'others' : 'other'}"/>
+                            <collab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.author.displayName} and ${proposal.members.size() - 1} ${proposal.members.size() > 2 ? 'others' : 'other'}"/>
                         </c:when>
                         <c:otherwise>
-                            <collab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.author.screenName}"/>
+                            <collab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.author.displayName}"/>
                         </c:otherwise>
                     </c:choose>
                 </h4>

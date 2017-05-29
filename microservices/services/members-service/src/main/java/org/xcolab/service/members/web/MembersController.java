@@ -185,17 +185,6 @@ public class MembersController {
                     member.getOpenId(), member.getPortraitFileEntryId(), member.getId_(), member.getGoogleId());
     }
 
-
-    @GetMapping("{memberId}/activityCount")
-    public int getMemberActivityCount(@PathVariable Long memberId) {
-        if (memberId == null) {
-            return 0;
-        } else {
-            Integer ret = memberDao.getMemberActivityCount(memberId);
-            return ((ret == null) ? (0) : (ret));
-        }
-    }
-
     @GetMapping("{memberId}/points")
     public int getMemberPoints(@PathVariable Long memberId,
             @RequestParam (required = false, defaultValue = "false") boolean hypothetical) {

@@ -159,8 +159,8 @@
                     </c:if>
 
                     <c:if test="${contest.resourceArticleId > 0 and contestType.showResourceLinks}">
-                        <div class="p-ContestProposals__header__detailButton">
-                            <a href="${contest.resourceArticleUrl}">Resources</a>
+                        <div class="p-ContestProposals__header__detailButton" >
+                            <a href="${contest.resourceArticleUrl}">Details</a>
                         </div>
                     </c:if>
 

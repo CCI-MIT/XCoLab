@@ -257,6 +257,10 @@ public final class ConfigurationAttributeKey {
         ConfigurationAttributes.newBooleanAttribute("CONTESTS_ALLOW_OPEN_PROPOSALS")
                     .defaultValue(true)
                     .build();
+    public static final AttributeGetter<Boolean> CONTESTS_SHOW_PROPOSAL_EDIT_HELP_TEXT =
+            ConfigurationAttributes.newBooleanAttribute("CONTESTS_SHOW_PROPOSAL_EDIT_HELP_TEXT")
+                    .defaultValue(true)
+                    .build();
     public static final AttributeGetter<Boolean> FLAGGING_ALLOW_MEMBERS =
             ConfigurationAttributes.newBooleanAttribute("FLAGGING_ALLOW_MEMBERS")
                     .build();
@@ -271,6 +275,11 @@ public final class ConfigurationAttributeKey {
                     .build();
     public static final AttributeGetter<Boolean> GENERATE_SCREEN_NAME =
             ConfigurationAttributes.newBooleanAttribute("GENERATE_SCREEN_NAME")
+                    .build();
+
+    public static final AttributeGetter<Boolean> DISPLAY_FIRST_NAME_LAST_NAME =
+            ConfigurationAttributes.newBooleanAttribute("DISPLAY_FIRST_NAME_LAST_NAME")
+                    .defaultValue(false)
                     .build();
 
 

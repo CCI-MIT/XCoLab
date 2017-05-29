@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.util.http.client.types.TypeProvider;
@@ -33,6 +34,7 @@ public class Member implements Serializable {
     private String screenName;
     private String emailAddress;
     private boolean isEmailConfirmed;
+    private boolean isEmailBounced;
     private Timestamp createDate;
     private Timestamp modifiedDate;
     private Timestamp passwordModifiedDate;
@@ -59,6 +61,8 @@ public class Member implements Serializable {
         this.id_ = value.id_;
         this.screenName = value.screenName;
         this.emailAddress = value.emailAddress;
+        this.isEmailConfirmed = value.isEmailConfirmed;
+        this.isEmailBounced = value.isEmailBounced;
         this.createDate = value.createDate;
         this.modifiedDate = value.modifiedDate;
         this.passwordModifiedDate = value.passwordModifiedDate;
@@ -103,6 +107,17 @@ public class Member implements Serializable {
         return this.screenName;
     }
 
+    @JsonIgnore
+    public String getDisplayName() {
+
+        if(ConfigurationAttributeKey.DISPLAY_FIRST_NAME_LAST_NAME.get()){
+            return this.getFullName();
+        }
+        else {
+            return this.screenName;
+        }
+    }
+
     public void setScreenName(String screenName) {
         this.screenName = screenName;
     }
@@ -113,6 +128,22 @@ public class Member implements Serializable {
 
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
+    }
+
+    public boolean getIsEmailConfirmed() {
+        return isEmailConfirmed;
+    }
+
+    public void setIsEmailConfirmed(boolean emailConfirmed) {
+        isEmailConfirmed = emailConfirmed;
+    }
+
+    public boolean getIsEmailBounced() {
+        return isEmailBounced;
+    }
+
+    public void setIsEmailBounced(boolean emailBounced) {
+        isEmailBounced = emailBounced;
     }
 
     public Timestamp getCreateDate() {
@@ -229,7 +260,7 @@ public class Member implements Serializable {
 
     @JsonIgnore
     public long getPortraitId() {
-        return getPortraitFileEntryId();
+        return getPortraitFileEntryId() != null ? getPortraitFileEntryId() : 0;
     }
 
     @JsonIgnore
@@ -239,7 +270,7 @@ public class Member implements Serializable {
 
     @JsonIgnore
     public String getFullName() {
-        return this.getFirstName() + " " + this.getLastName();
+        return StringUtils.capitalize(this.getFirstName()) + " " + StringUtils.capitalize(this.getLastName());
     }
 
     @JsonIgnore
@@ -317,7 +348,7 @@ public class Member implements Serializable {
         if (this.getId_() <= 0) {
             return "";
         }
-        return "<a href='" + generateUserHref(this.getId_())+ "'>" + this.getScreenName()+ "</a>";
+        return "<a href='" + generateUserHref(this.getId_())+ "'>" + this.getDisplayName()+ "</a>";
     }
 
     private  String generateUserHref(long userId)  {
@@ -341,13 +372,5 @@ public class Member implements Serializable {
     @Override
     public int hashCode() {
         return (int) (this.getId_() ^ this.getId_() >>> 32);
-    }
-
-    public boolean getIsEmailConfirmed() {
-        return isEmailConfirmed;
-    }
-
-    public void setIsEmailConfirmed(boolean emailConfirmed) {
-        isEmailConfirmed = emailConfirmed;
     }
 }

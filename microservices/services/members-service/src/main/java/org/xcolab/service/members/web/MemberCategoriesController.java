@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.MemberCategory;
 import org.xcolab.service.members.domain.membercategory.MemberCategoryDao;
-import org.xcolab.service.members.service.membercategory.MemberCategoryService;
+import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
@@ -17,15 +17,16 @@ import java.util.List;
 @RestController
 public class MemberCategoriesController {
 
-    @Autowired
-    private MemberCategoryDao memberCategoryDao;
+    private final MemberCategoryDao memberCategoryDao;
 
     @Autowired
-    private MemberCategoryService memberCategoryService;
+    public MemberCategoriesController(MemberCategoryDao memberCategoryDao) {
+        this.memberCategoryDao = memberCategoryDao;
+    }
 
     @RequestMapping(value = "/membercategories/{roleId}", method = RequestMethod.GET)
-    public MemberCategory getMemberCategory(@PathVariable long roleId) {
-        return this.memberCategoryDao.getMemberCategory(roleId);
+    public MemberCategory getMemberCategory(@PathVariable long roleId) throws NotFoundException {
+        return memberCategoryDao.getMemberCategory(roleId).orElseThrow(NotFoundException::new);
     }
 
     @RequestMapping(value = "/membercategories", method = RequestMethod.GET)
@@ -37,6 +38,6 @@ public class MemberCategoriesController {
             @RequestParam(required = false) String categoryName,
             @RequestParam(required = false) Boolean showInList) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
-        return this.memberCategoryDao.findByGiven(paginationHelper, displayName, categoryName, showInList);
+        return memberCategoryDao.findByGiven(paginationHelper, displayName, categoryName, showInList);
     }
 }

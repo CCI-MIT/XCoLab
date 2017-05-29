@@ -18,7 +18,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.xcolab.mailhandler.config.MailProperties;
 import org.xcolab.mailhandler.config.MailProperties.Domain;
 import org.xcolab.mailhandler.config.MailProperties.Mapping;
+import org.xcolab.mailhandler.config.MailProperties.SpamSettings;
 import org.xcolab.mailhandler.pojo.MatchedMapping;
+import org.xcolab.mailhandler.util.SpamReportHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ public class ParseController {
     private final String smtpUsername;
     private final String smtpPassword;
     private final String smtpConnection;
+    private final SpamSettings spamSettings;
 
     @Autowired
     public ParseController(MailProperties mailProperties) {
@@ -56,6 +59,7 @@ public class ParseController {
         smtpUsername = mailProperties.getSmtp().getUser();
         smtpPassword = mailProperties.getSmtp().getPass();
         smtpConnection = mailProperties.getSmtp().getTransport();
+        spamSettings = mailProperties.getSpam();
     }
 
     @RequestMapping
@@ -67,8 +71,14 @@ public class ParseController {
             @RequestParam (value = "spam_report", required = false) String spamReport) {
 
         if (html == null && text == null) {
-            log.error("Email has not text or html parameter.");
+            log.error("Email has neither text nor html parameter.");
             return ResponseEntity.badRequest().body("Need to specify at least one of html or text");
+        }
+
+        SpamReportHelper spamReportHelper = new SpamReportHelper(spamScore, spamReport, spamSettings);
+
+        if (spamReportHelper.shouldFilterMessage()) {
+            return ResponseEntity.ok("Message processed successfully; marked as spam.");
         }
 
         List<MatchedMapping> matchedMappings = extractMappingsFromToField(to);
@@ -82,7 +92,13 @@ public class ParseController {
         final Collection<MultipartFile> attachments = getAttachments(request);
         try {
             for (MatchedMapping matchedMapping : matchedMappings) {
-                sendEmail(matchedMapping.getEmailAddress(), from, subject, html, text,
+                sendEmail(matchedMapping.getEmailAddress(), from,
+                        spamReportHelper.shouldShowSpamWarning()
+                                ? spamReportHelper.getWarning() + subject : subject,
+                        spamReportHelper.shouldShowSpamReport()
+                                ? html + spamReportHelper.formatSpamReport(true) : html,
+                        spamReportHelper.shouldShowSpamReport()
+                                ? text + spamReportHelper.formatSpamReport(false) : text,
                         matchedMapping.getMapping().getRecipients(), attachments);
             }
         } catch (MailException e) {
@@ -92,6 +108,8 @@ public class ParseController {
 
         return ResponseEntity.ok("Email sent.");
     }
+
+
 
     private Collection<MultipartFile> getAttachments(HttpServletRequest request) {
         final Map<String, MultipartFile> fileMap;

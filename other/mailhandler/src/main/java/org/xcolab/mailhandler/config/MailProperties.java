@@ -26,6 +26,8 @@ public class MailProperties {
 
     private final SmtpProperties smtp = new SmtpProperties();
 
+    private final SpamSettings spam = new SpamSettings();
+
     public SmtpProperties getSmtp() {
         return smtp;
     }
@@ -36,6 +38,91 @@ public class MailProperties {
 
     public void setDomains(List<Domain> domains) {
         this.domains = domains;
+    }
+
+    public SpamSettings getSpam() {
+        return spam;
+    }
+
+    public static class SpamSettings {
+
+        /**
+         * Show warnings when a message is considered spam by the filter.
+         */
+        private boolean showWarning = false;
+
+        /**
+         * Show spam score when sending a message with a warning.
+         */
+        private boolean showScoreOnWarning = true;
+
+        /**
+         * Show spam report when sending a message with a warning.
+         */
+        private boolean showReportOnWarning = false;
+
+        /**
+         * Don't forward messages messages above the filter threshold.
+         */
+        private boolean filter = false;
+
+        /**
+         * Threshold for showing warnings, if active.
+         */
+        private float warningThreshold = 4.0f;
+
+        /**
+         * Threshold for filtering messages, if active.
+         */
+        private float filterThreshold = 5.0f;
+
+        public boolean isShowWarning() {
+            return showWarning;
+        }
+
+        public void setShowWarning(boolean showWarning) {
+            this.showWarning = showWarning;
+        }
+
+        public boolean isShowReportOnWarning() {
+            return showReportOnWarning;
+        }
+
+        public void setShowReportOnWarning(boolean showReportOnWarning) {
+            this.showReportOnWarning = showReportOnWarning;
+        }
+
+        public boolean isFilter() {
+            return filter;
+        }
+
+        public void setFilter(boolean filter) {
+            this.filter = filter;
+        }
+
+        public boolean isShowScoreOnWarning() {
+            return showScoreOnWarning;
+        }
+
+        public void setShowScoreOnWarning(boolean showScoreOnWarning) {
+            this.showScoreOnWarning = showScoreOnWarning;
+        }
+
+        public float getWarningThreshold() {
+            return warningThreshold;
+        }
+
+        public void setWarningThreshold(float warningThreshold) {
+            this.warningThreshold = warningThreshold;
+        }
+
+        public float getFilterThreshold() {
+            return filterThreshold;
+        }
+
+        public void setFilterThreshold(float filterThreshold) {
+            this.filterThreshold = filterThreshold;
+        }
     }
 
     public static class Domain {

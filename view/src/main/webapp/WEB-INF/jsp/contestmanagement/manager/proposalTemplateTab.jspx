@@ -220,17 +220,10 @@
 								</div>
 							</div>
 
-
                             <div class="js-sectionTypeDependent" data-section-type="DROPDOWN_MENU"
                                     style="display: none">
-                                <strong>Dropdown options:</strong><small>(use ';' to separate the options)</small><br/>
-                                <form:input id="${x.index}_allowedValues_DROPDOWN_MENU" path="sections[${x.index}].allowedValues" data-form-name="allowedValues"/>
-                            </div>
-
-                            <div class="js-sectionTypeDependent" data-section-type="CHECKBOX_OPTION"
-                                 style="display: none">
-                                <strong>Checkbox options:</strong><small>(use ';' to separate the options)</small><br/>
-                                <form:input id="${x.index}_allowedValues_CHECKBOX_OPTION" path="sections[${x.index}].allowedValues" data-form-name="allowedValues"/>
+                                <strong >Options :</strong><small>(use ';' to separate the options)</small><br/>
+                                <form:input  path="sections[${x.index}].allowedValues" data-form-name="allowedValues"/>
                             </div>
 
 						</div>
@@ -509,21 +502,7 @@
             var sectionIndex = jQuery(event.target).closest('.js-SectionParent').data('section-id');
             setSectionType(sectionIndex, newSectionType);
 		}
-        function setupInputFieldForAllowedValues(sectionIndex,newSectionType){
 
-            if(newSectionType.indexOf('CHECKBOX_OPTION')>=0){
-                toggleInputNameAllowedValues("DROPDOWN_MENU","CHECKBOX_OPTION",sectionIndex);
-
-            }
-            if(newSectionType.indexOf('DROPDOWN_MENU')>=0){
-                toggleInputNameAllowedValues("CHECKBOX_OPTION","DROPDOWN_MENU",sectionIndex);
-            }
-        }
-        function toggleInputNameAllowedValues(toUnset,toSet,sectionIndex){
-            $("#"+sectionIndex+"_allowedValues_"+toUnset).attr("name","");
-            $("#"+sectionIndex+"_allowedValues_"+toSet).attr("name","sections["+sectionIndex+"].allowedValues");
-            //0_allowedValues_DROPDOWN_MENU
-        }
 
 		function setSectionType(sectionIndex, newSectionType) {
             jQuery('#section' + sectionIndex + ' .js-sectionTypeDependent')
@@ -532,8 +511,8 @@
                     var conditionalSectionTypeFragment = $element.data('section-type');
                     if (newSectionType.indexOf(conditionalSectionTypeFragment) >= 0) {
                         $element.show();
-                        console.log(" --- " );
-                        setupInputFieldForAllowedValues(sectionIndex,newSectionType);
+                        //console.log(" - newSectionType - "+newSectionType);
+                        //setupInputFieldForAllowedValues(sectionIndex,newSectionType);
 
                     } else {
                         $element.hide();

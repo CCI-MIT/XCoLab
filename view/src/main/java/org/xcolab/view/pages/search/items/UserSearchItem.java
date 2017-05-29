@@ -30,7 +30,7 @@ public class UserSearchItem extends AbstractSearchItem {
 
     @Override
     public String getTitle() {
-        return highlight(member.getScreenName(),searchQuery);
+        return highlight(member.getDisplayName(),searchQuery);
     }
 
     @Override

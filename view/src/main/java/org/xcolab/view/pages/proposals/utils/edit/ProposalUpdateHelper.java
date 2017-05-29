@@ -46,6 +46,7 @@ public class ProposalUpdateHelper {
         boolean filledAll = updateBasicFields();
 
         boolean updateProposalReferences = false;
+        boolean evictCache = false;
         for (PlanSectionDefinition section : proposalWrapper.getSections()) {
             String newSectionValue =
                     updateProposalSectionsBean.getSectionsContent().get(section.getSectionDefinitionId());
@@ -58,6 +59,7 @@ public class ProposalUpdateHelper {
                                 .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
                                         ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(),
                                         HtmlUtil.cleanSome(newSectionValue, LinkUtils.getBaseUri(request)));
+                        evictCache = true;
                         if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
                             updateProposalReferences = true;
                         }
@@ -76,6 +78,7 @@ public class ProposalUpdateHelper {
                         if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
                             updateProposalReferences = true;
                         }
+                        evictCache = true;
                     } else {
                         filledAll = false;
                     }
@@ -130,6 +133,7 @@ public class ProposalUpdateHelper {
                     break;
                 default:
             }
+
         }
 
         if (p2p != null && p2p.getVersionTo() != -1) {
@@ -147,6 +151,15 @@ public class ProposalUpdateHelper {
             ProposalsContextUtil.getClients(request).getProposalClient().populateTableWithProposal(proposalWrapper.getWrapped().getProposalId());
         }
 
+        if(evictCache){
+            ProposalsContextUtil.getClients(request).getProposalAttributeClient().invalidateProposalAttibuteCache(proposalWrapper);
+            ProposalsContextUtil.getClients(request).getProposalClient().invalidateProposalCache(proposalWrapper.getProposalId());
+            if(p2p!=null) {
+                ProposalsContextUtil.getClients(request).getProposalPhaseClient()
+                        .invalidateProposal2PhaseCache(proposalWrapper.getProposalId(), p2p
+                                .getContestPhaseId());
+            }
+        }
         doAnalytics(request, filledAll);
     }
 

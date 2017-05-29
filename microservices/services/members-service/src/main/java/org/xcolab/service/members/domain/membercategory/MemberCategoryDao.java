@@ -4,9 +4,10 @@ import org.xcolab.model.tables.pojos.MemberCategory;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MemberCategoryDao {
-    MemberCategory getMemberCategory(Long roleId);
+    Optional<MemberCategory> getMemberCategory(Long roleId);
 
     List<MemberCategory> findByGiven(PaginationHelper paginationHelper, String displayName,
             String categoryName, Boolean showInList);

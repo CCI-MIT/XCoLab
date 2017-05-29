@@ -86,7 +86,7 @@ public class ListQuery<T> implements CacheableQuery<T, List<T>> {
     @Override
     public String toString() {
         return "ListQuery{" +
-                "uriBuilder=" + uriBuilder.buildString() +
+                "uriBuilder=" + uriBuilder.buildAndExpandString() +
                 ", typeReference=" + typeReference.toString() +
                 ", cacheKey=" + cacheKey +
                 ", cacheRetention=" + cacheName +

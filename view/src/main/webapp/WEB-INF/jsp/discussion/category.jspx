@@ -27,9 +27,9 @@
         <collab:content articleId="${communityTopContentArticleId}" />
         <div id="content">
             <div id="bread" class="pro">
-                <a href="/web/guest/members">Community</a>&#160;
+                <a href="/members">Community</a>&#160;
                 <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
-                <a href="/web/guest/discussion">Discussion</a>
+                <a href="/discussion">Discussion</a>
                 <c:if test="${not empty currentCategory}">
                     &#160;
                     <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
@@ -107,7 +107,7 @@
                             <tr class="c-Table__row">
                                 <td class="c-Table__cell"><a href="${thread.linkUrl}">${thread.title}</a></td>
                                 <td class="c-Table__cell">${thread.commentsCount}</td>
-                                <td class="c-Table__cell"><collab:userLinkSimple userId="${thread.lastActivityAuthor.userId}" text="${thread.lastActivityAuthor.screenName}"/></td>
+                                <td class="c-Table__cell"><collab:userLinkSimple userId="${thread.lastActivityAuthor.userId}" text="${thread.lastActivityAuthor.displayName}"/></td>
                                 <td class="c-Table__cell">${thread.lastActivityDateFormatted}</td>
                             </tr>
                         </c:forEach>

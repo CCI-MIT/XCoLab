@@ -8,13 +8,13 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout title="${messageBean.subject}">
     <collab:content articleId="${communityTopContentArticleId}" />
-
+    <div id="content">
         <div id="bread" class="pro">
-            <a href="/web/guest/community">Community</a>
+            <a href="/members">Community</a>
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-            <a href="/web/guest/members">Members</a>
+            <a href="/members">Members</a>
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-            <collab:userLinkSimple userId="${user.userId}" text="${user.screenName}" />
+            <collab:userLinkSimple userId="${user.userId}" text="${user.displayName}" />
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
             <a href="/messaging">Messages</a>
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
@@ -24,7 +24,7 @@
         <h1>${messageBean.subject}</h1>
         <p>
             <strong>
-                message from <em>${messageBean.from.screenName}</em> to <em>${messageBean.to.get(0).screenName}</em>
+                message from <em>${messageBean.from.displayName}</em> to <em>${messageBean.to.get(0).displayName}</em>
                 <c:if test="${messageBean.to.size() > 1}">
                     and ${messageBean.to.size() - 1} others
                 </c:if>
@@ -39,5 +39,6 @@
             <a class="c-Button__primary" data-toggle="modal" data-target="#sendMessageModal">Reply</a>
             <xcolab:sendMessageModal replyToMessage="${messageBean}" />
         </c:if>
+    </div>
 </xcolab:layout>
 </jsp:root>

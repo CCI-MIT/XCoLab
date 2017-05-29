@@ -553,6 +553,7 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   textarea {
     width: 440px;
     padding: 5px;
+    resize: vertical;
   }
 
   &.full-width textarea {
