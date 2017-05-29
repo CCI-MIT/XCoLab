@@ -14,6 +14,7 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.CacheControl;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -46,7 +47,6 @@ import org.xcolab.view.theme.ThemeVariableInterceptor;
 
 import java.io.File;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -67,10 +67,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     public WebConfig(ThemeVariableInterceptor themeVariableInterceptor,
-        PopulateProposalModelInterceptor populateContextInterceptor,
-        ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor,
-        ConfigurationService configurationService
-            , WebProperties webProperties) {
+            PopulateProposalModelInterceptor populateContextInterceptor,
+            ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor,
+            ConfigurationService configurationService, WebProperties webProperties) {
         Assert.notNull(configurationService, "ConfigurationService bean is required");
         Assert.notNull(themeVariableInterceptor, "ThemeVariableInterceptor bean is required");
         Assert.notNull(populateContextInterceptor, "PopulateContextInterceptor bean is required");
@@ -82,15 +81,29 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         this.populateContextInterceptor = populateContextInterceptor;
         this.validateTabPermissionsInterceptor = validateTabPermissionsInterceptor;
         this.webProperties = webProperties;
-
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(themeVariableInterceptor);
-        registry.addInterceptor(localeChangeInterceptor());
+
         registry.addInterceptor(populateContextInterceptor).addPathPatterns("/contests/**");
         registry.addInterceptor(validateTabPermissionsInterceptor).addPathPatterns("/contests/**");
+        registry.addInterceptor(localeChangeInterceptor());
+    }
+
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor lci = new CustomLocaleChangeInterceptor();
+        lci.setParamName("lang");
+
+        return lci;
+    }
+
+    @Bean
+    public FilterRegistrationBean resourceEncodingFilter() {
+        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+        registrationBean.setFilter(new ResourceUrlEncodingFilter());
+        return registrationBean;
     }
 
     @Bean
@@ -111,25 +124,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public FilterRegistrationBean resourceEncodingFilter() {
-        FilterRegistrationBean registrationBean = new FilterRegistrationBean();
-        registrationBean.setFilter(new ResourceUrlEncodingFilter());
-        return registrationBean;
-    }
-
-    @Bean
     public FilterRegistrationBean etagFilter() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(new ShallowEtagHeaderFilter());
         return registrationBean;
-    }
-
-    @Bean
-    public LocaleChangeInterceptor localeChangeInterceptor() {
-        LocaleChangeInterceptor lci = new CustomLocaleChangeInterceptor();
-        lci.setParamName("lang");
-
-        return lci;
     }
 
     @LoadBalanced
@@ -177,7 +175,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 context.setResources(standardRoot);
 
                 log.info("Set tomcat cache size to {} MB",
-                    context.getResources().getCacheMaxSize() / 1024);
+                        context.getResources().getCacheMaxSize() / 1024);
             }
         };
         if (configurationService.isTomcatAjpEnabled()) {
@@ -202,10 +200,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/", "classpath:/dist/")
                 .setCacheControl(
-                    webProperties.getCache().getScripts().isActive()
-                    ? CacheControl.maxAge(webProperties.getCache().getScripts().getMaxAgeDays(),
-                        TimeUnit.DAYS)
-                    : CacheControl.noCache())
+                        webProperties.getCache().getScripts().isActive()
+                                ? CacheControl.maxAge(webProperties.getCache().getScripts().getMaxAgeDays(),
+                                TimeUnit.DAYS)
+                                : CacheControl.noCache())
                 .resourceChain(true)
                 .addResolver(new VersionResourceResolver()
                         .addContentVersionStrategy("/js/**", "/css/**"));
@@ -213,10 +211,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("classpath:/static/images/")
                 .setCacheControl(
-                    webProperties.getCache().getImages().isActive()
-                    ? CacheControl.maxAge(webProperties.getCache().getImages().getMaxAgeDays(),
-                        TimeUnit.DAYS)
-                    : CacheControl.noCache())
+                        webProperties.getCache().getImages().isActive()
+                                ? CacheControl.maxAge(webProperties.getCache().getImages().getMaxAgeDays(),
+                                TimeUnit.DAYS)
+                                : CacheControl.noCache())
                 .resourceChain(true)
                 .addResolver(new ThemeResourceResolver());
     }

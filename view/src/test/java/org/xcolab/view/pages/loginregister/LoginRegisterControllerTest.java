@@ -14,6 +14,8 @@ import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -66,11 +68,8 @@ import static org.mockito.Matchers.anyString;
 @ComponentScan("org.xcolab.view.pages.loginregister")
 @ComponentScan("org.xcolab.view.config")
 @ComponentScan("org.xcolab.view.i18n")
-@TestPropertySource(
-        properties = {
-                "cache.enabled=false"
-        }
-)
+
+@TestPropertySource(properties = {"cache.enabled=false"})
 
 @PrepareForTest({
         org.xcolab.client.admin.AdminClient.class,
@@ -159,6 +158,7 @@ public class LoginRegisterControllerTest {
                 .param("lastName", "Name")
                 .param("password", "username")
                 .param("retypePassword", "username")
+                .param("language", "en")
                 .param("country", "BR")
                 .param("shortBio", "shortbio"))
                 .andExpect(redirectedUrl("/"));
