@@ -1,8 +1,12 @@
 package org.xcolab.view.util.entity.flash;
 
+import java.io.Serializable;
+
 import javax.servlet.http.HttpServletRequest;
 
-public class AlertMessage {
+public class AlertMessage implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public static final AlertMessage CHANGES_SAVED = AlertMessage.success("Changes saved");
     public static final AlertMessage NOT_SAVED = AlertMessage.danger("Changes NOT saved");
