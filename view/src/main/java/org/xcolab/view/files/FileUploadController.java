@@ -36,19 +36,19 @@ public class FileUploadController {
         fileUploadPath = env.getProperty("files.upload.dir");
     }
 
-    @PostMapping("/images/upload")
+    @PostMapping("/image/upload")
     public ImageResponse singleFileUpload(@RequestParam("file") MultipartFile file,
             HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) Boolean resize) {
 
-            if(request.getParameter("resize") ==null){
+            if (request.getParameter("resize") == null) {
                 resize = false;
             }
         return uploadImageResponse(file, request, resize);
     }
 
     private ImageResponse uploadImageResponse(MultipartFile file,
-            HttpServletRequest request,  Boolean resize) {
+            HttpServletRequest request, Boolean resize) {
         try {
             String path = request.getSession().getServletContext().getRealPath("/");
 
@@ -78,22 +78,23 @@ public class FileUploadController {
         }
     }
 
-    @PostMapping("/images/uploadCkEditor")
+    @PostMapping("/image/uploadCkEditor")
     public void singleCKEditorUpload(@RequestParam("upload") MultipartFile file,
             HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false, name = "CKEditorFuncNum") String ckEditorFuncNum,
             @RequestParam(required = false) Boolean resize) {
 
-        if(request.getParameter("resize") ==null){
+        if (request.getParameter("resize") == null) {
             resize = false;
         }
         ImageResponse ir = uploadImageResponse(file, request, resize);
         try {
-
             response.setContentType("text/html");
             response.getOutputStream()
-                    .write(("<script>window.parent.CKEDITOR.tools.callFunction(" + ckEditorFuncNum + ", \"" + ir.getImageUrl() + "\");</script>").getBytes());;
-        }catch (IOException ignored){
+                    .write(("<script>window.parent.CKEDITOR.tools.callFunction("
+                            + ckEditorFuncNum + ", \"" + ir.getImageUrl()
+                            + "\");</script>").getBytes());
+        } catch (IOException ignored) {
 
         }
     }

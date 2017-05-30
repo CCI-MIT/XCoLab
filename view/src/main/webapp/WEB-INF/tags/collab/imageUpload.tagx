@@ -34,7 +34,7 @@
     <c:set var="FILE_UPLOAD_MAX_WIDTH" value="300" />
     <c:set var="FILE_UPLOAD_MAX_HEIGHT" value="300" />
     <c:set var="FILE_UPLOAD_MAX_FILE_SIZE" value="2097152" /> <!-- Max image size 2MB -->
-    <c:set var="FILE_UPLOAD_URL" value="/images/upload" />
+    <c:set var="FILE_UPLOAD_URL" value="/image/upload" />
 
     <c:if test="${empty _imageUploadScriptsLoaded}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/css/jquery.fileupload.min.css"/>
