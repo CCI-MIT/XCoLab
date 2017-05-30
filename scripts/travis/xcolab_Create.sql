@@ -947,7 +947,7 @@ CREATE TABLE `xcolab_PlanSectionDefinition` (
   `focusAreaId` bigint(20) DEFAULT NULL,
   `tier` bigint(20) DEFAULT NULL,
   `allowedContestTypeIds` varchar(75) DEFAULT NULL,
-  `allowedValues` varchar(75) DEFAULT NULL,
+  `allowedValues` longtext,
   `additionalIds` varchar(75) DEFAULT NULL,
   `locked` tinyint(4) DEFAULT NULL,
   `contestIntegrationRelevance` tinyint(4) DEFAULT NULL,
