@@ -4,7 +4,7 @@ import org.xcolab.util.http.exceptions.translation.service.HttpServiceExceptionO
 
 public class Http500InternalServiceException extends HttpRuntimeException {
     public Http500InternalServiceException(HttpServiceExceptionObject httpServiceExceptionObject,
-            String location) {
-        super(httpServiceExceptionObject, location);
+            String location, String serviceName) {
+        super(httpServiceExceptionObject, location, serviceName);
     }
 }

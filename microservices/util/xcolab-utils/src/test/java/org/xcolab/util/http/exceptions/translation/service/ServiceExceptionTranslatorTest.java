@@ -22,7 +22,7 @@ public class ServiceExceptionTranslatorTest {
                     + ",\"message\":\"test\""
                     + ",\"path\":\"/members-service/messages\"}";
     private static final HttpStatusCodeException HTTP_500_SERVER_ERROR_EXCEPTION = new HttpServerErrorException(
-            HttpStatus.INTERNAL_SERVER_ERROR, "", new ContentTypeJsonHeaders(),
+            HttpStatus.INTERNAL_SERVER_ERROR, "", new ServiceResponseHeaders(),
             HTTP_500_RUNTIME_EXCEPTION_STRING.getBytes(),
             null);
 
@@ -32,7 +32,7 @@ public class ServiceExceptionTranslatorTest {
             + "\"message\":\"[omitted]\","
             + "\"path\":\"/members-service/messages/test\"}";
     private static final HttpStatusCodeException HTTP_400_BAD_REQUEST_EXCEPTION = new HttpClientErrorException(
-            HttpStatus.BAD_REQUEST, "", new ContentTypeJsonHeaders(),
+            HttpStatus.BAD_REQUEST, "", new ServiceResponseHeaders(),
             HTTP_400_BAD_REQUEST_EXCEPTION_STRING.getBytes(),
             null);
 
@@ -42,12 +42,12 @@ public class ServiceExceptionTranslatorTest {
             + "\"message\":\"Object Not Found\","
             + "\"path\":\"/members-service/messages/112125234645345\"}";
     private static final HttpStatusCodeException HTTP_404_NOT_FOUND_EXCEPTION = new HttpClientErrorException(
-            HttpStatus.NOT_FOUND, "", new ContentTypeJsonHeaders(),
+            HttpStatus.NOT_FOUND, "", new ServiceResponseHeaders(),
             HTTP_404_NOT_FOUND_EXCEPTION_STRING.getBytes(),
             null);
 
     private static final HttpStatusCodeException HTTP_404_EMPTY_CLIENT_ERROR_EXCEPTION = new HttpClientErrorException(
-            HttpStatus.NOT_FOUND, "", new ContentTypeJsonHeaders(),
+            HttpStatus.NOT_FOUND, "", new ServiceResponseHeaders(),
             "".getBytes(),
             null);
 
@@ -94,10 +94,24 @@ public class ServiceExceptionTranslatorTest {
         translator.translateException(HTTP_404_NOT_FOUND_EXCEPTION, null, null);
     }
 
-    private static class ContentTypeJsonHeaders extends HttpHeaders {
-        ContentTypeJsonHeaders() {
+    @Test
+    public void testTranslateException__shouldContainServiceName() {
+        final ServiceExceptionTranslator translator = new ServiceExceptionTranslator();
+        try {
+            translator.translateException(HTTP_500_SERVER_ERROR_EXCEPTION, null, null);
+        } catch (Http500InternalServiceException e) {
+            Assert.assertEquals("Service name not captures from headers.",
+                    "my-service-name", e.getServiceName());
+            return;
+        }
+        Assert.fail("[Test precondition failed] no exception thrown");
+    }
+
+    private static class ServiceResponseHeaders extends HttpHeaders {
+        ServiceResponseHeaders() {
             super();
             add("Content-Type", "application/json");
+            add("X-Application-Context", "my-service-name");
         }
     }
 }

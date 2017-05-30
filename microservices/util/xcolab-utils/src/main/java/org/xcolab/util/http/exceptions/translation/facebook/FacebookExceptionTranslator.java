@@ -1,5 +1,6 @@
 package org.xcolab.util.http.exceptions.translation.facebook;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.HttpStatusCodeException;
 
 import org.xcolab.util.http.exceptions.translation.ExceptionTranslator;
@@ -12,7 +13,7 @@ public class FacebookExceptionTranslator extends ExceptionTranslator<FacebookErr
 
     @Override
     protected void doTranslateException(HttpStatusCodeException exception, String location,
-            FacebookErrorResponseObject exceptionObject) {
+            FacebookErrorResponseObject exceptionObject, HttpHeaders headers) {
         throw new FacebookException(exception, exceptionObject, location);
     }
     public static class FacebookException extends RuntimeException {
