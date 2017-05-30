@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.view.webhooks.sendgrid.model.EventType;
 import org.xcolab.view.webhooks.sendgrid.model.SendGridEvent;
 
@@ -34,6 +35,7 @@ public class BounceEventProcessor implements SendGridEventProcessor {
             if (isHardBounce && !member.getIsEmailBounced()) {
                 member.setIsEmailBounced(true);
                 MembersClient.updateMember(member);
+                ProposalMemberRatingClientUtil.invalidateVotesForMember(member.getId_());
                 log.debug("Marked {}'s email {} as bounced ({}).",
                         member.getScreenName(), email, event.getReason());
             }

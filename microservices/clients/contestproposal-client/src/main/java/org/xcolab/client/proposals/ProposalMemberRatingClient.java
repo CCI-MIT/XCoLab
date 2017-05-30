@@ -167,6 +167,22 @@ public final class ProposalMemberRatingClient {
         return getProposalVotes(contestPhaseId, null, null);
     }
 
+    public List<ProposalVote> getVotesByMember(long memberId) {
+        return DtoUtil.toPojos(proposalVoteResource.list()
+                .queryParam("userId", memberId)
+                .execute(), proposalService);
+    }
+
+    public void invalidateVotesForMember(long memberId) {
+        final List<ProposalVote> votes = getVotesByMember(memberId);
+        votes.stream()
+                .filter(ProposalVote::getIsValid)
+                .forEach(vote -> {
+                    vote.setIsValid(false);
+                    updateProposalVote(vote);
+                });
+    }
+
     public List<ProposalVote> getProposalVotes(Long contestPhaseId, Long proposalId, Long userId) {
         return DtoUtil.toPojos(proposalVoteResource.list()
                 .optionalQueryParam("contestPhaseId", contestPhaseId)

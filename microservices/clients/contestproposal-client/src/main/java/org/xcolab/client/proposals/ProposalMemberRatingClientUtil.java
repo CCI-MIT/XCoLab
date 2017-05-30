@@ -96,6 +96,14 @@ public final class ProposalMemberRatingClientUtil {
         return client.getProposalVotes(contestPhaseId, proposalId, userId);
     }
 
+    public static List<ProposalVote> getVotesByMember(long memberId) {
+        return client.getVotesByMember(memberId);
+    }
+
+    public static void invalidateVotesForMember(long memberId) {
+        client.invalidateVotesForMember(memberId);
+    }
+
     public static boolean updateProposalVote(ProposalVote proposalVote) {
         return client.updateProposalVote(proposalVote);
     }
