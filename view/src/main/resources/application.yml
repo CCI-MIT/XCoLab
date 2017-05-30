@@ -16,6 +16,8 @@ tomcat:
 management:
   add-application-context-header: false
   context-path: /admin/management
+  security:
+    roles: ACTUATOR,ADMIN
 
 cache:
   enabled: true
@@ -57,3 +59,6 @@ logging:
     org.springframework.boot.actuate: WARN
     org.springframework.context.annotation: WARN
     org.springframework.beans.factory.annotation: WARN
+
+security:
+  filter-dispatcher-types: ASYNC,REQUEST,ERROR
