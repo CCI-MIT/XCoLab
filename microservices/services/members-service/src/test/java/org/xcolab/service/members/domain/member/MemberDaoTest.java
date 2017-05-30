@@ -46,7 +46,7 @@ public class MemberDaoTest {
         final List<Member> members =
                 memberDao.findByGiven(PaginationHelper.EVERYTHING, "admin", null,
                         null, null, null, null, null);
-        assertEquals("Wrong number of members", 1, members.size());
+        assertEquals("Wrong number of members with name:admin", 1, members.size());
     }
 
 }
