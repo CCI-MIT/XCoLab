@@ -111,7 +111,7 @@
                     <a class="helpTrigger" href="javascript:;"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
                     80 characters
                 </label>
-                <div class="addprophelp">Give your ${fn:toLowerCase(contestType.proposalName)} a title. It's the first thing most people will see, so you'll want to make it descriptive and engaging.</div>
+                <div class="addprophelp">Give the ${fn:toLowerCase(contestType.proposalName)} a title. It's the first thing most people will see, so you'll want to make it descriptive and engaging.</div>
                 <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
                     <form:input path="name" id="proposalName" />
                     <form:errors path="name" cssClass="c-Alert c-Alert__error" />
@@ -128,7 +128,7 @@
                     <a href="javascript:;" class="helpTrigger"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
                     140 characters
                 </label>
-                <div class="addprophelp">Insert a tweet-length (140 character) message that conveys the key idea behind your ${fn:toLowerCase(contestType.proposalName)}.</div>
+                <div class="addprophelp">Insert a tweet-length (140 character) message that conveys the key idea behind the ${fn:toLowerCase(contestType.proposalName)}.</div>
                 <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
                     <form:textarea path="pitch" id="proposalPitchInput" htmlEscape="false" cssClass="proposalPitchInput" />
                     <form:errors path="pitch" />
@@ -160,7 +160,7 @@
                         <a class="helpTrigger" href="javascript:;"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
                         20 characters
                     </label>
-                    <div class="addprophelp">If you'd like to have your ${fn:toLowerCase(contestType.proposalName)} appear under a team name, insert it here. Otherwise, the ${fn:toLowerCase(contestType.proposalName)} will appear under the user name of its owner.</div>
+                    <div class="addprophelp">If you'd like to have the ${fn:toLowerCase(contestType.proposalName)} appear under a team name, insert it here. Otherwise, the ${fn:toLowerCase(contestType.proposalName)} will appear under the user name of its owner.</div>
                     <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
                         <form:input path="team" id="proposalTeam" />
                         <form:errors path="team" />
@@ -175,12 +175,12 @@
             <div class="addpropbox blue">
                 <label>
                     <span><strong>${contestType.proposalName} image</strong><br />
-                    <em>optional</em></span>
+                    </span>
                 </label>
 
                 <form:hidden path="imageId" id="proposalImageId" />
                 <collab:imageUpload uniqueName="proposalImageUpload" imageIdInput="proposalImageId"
-                                    compactView="true" defaultImageId="${contest.defaultProposalLogoId}" defaultImage="PROPOSAL" buttonText="Upload an image (optional)" />
+                                    compactView="true" defaultImageId="${contest.defaultProposalLogoId}" defaultImage="PROPOSAL" buttonText="Upload an image" />
             </div>
 
 
