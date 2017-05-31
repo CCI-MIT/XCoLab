@@ -107,7 +107,7 @@
 
             <div class="addpropbox q1">
                 <label>
-                    <strong>Title</strong>
+                    <strong>Title *</strong>
                     <a class="helpTrigger" href="javascript:;"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
                     80 characters
                 </label>
@@ -124,7 +124,7 @@
 
             <div class="addpropbox q3">
                 <label>
-                    <strong>${contestType.pitchName}(*)</strong>
+                    <strong>${contestType.pitchName} * </strong>
                     <a href="javascript:;" class="helpTrigger"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
                     140 characters
                 </label>
@@ -160,7 +160,7 @@
                         <a class="helpTrigger" href="javascript:;"><img src="${_themeImageFolder}/icon-addprop-question.png" width="15" height="15" /></a><br />
                         20 characters
                     </label>
-                    <div class="addprophelp">If you'd like to have the ${fn:toLowerCase(contestType.proposalName)} appear under a team name, insert it here. Otherwise, the ${fn:toLowerCase(contestType.proposalName)} will appear under the user name of its owner.</div>
+                    <div class="addprophelp">If you'd like to have the ${fn:toLowerCase(contestType.proposalName)} appear under a team name, insert it here. Otherwise, the ${fn:toLowerCase(contestType.proposalName)} will appear under the name of its owner.</div>
                     <div class="addpropInputContainer ${contestType.showProposalSummary ? '' : 'full-wdith'}">
                         <form:input path="team" id="proposalTeam" />
                         <form:errors path="team" />

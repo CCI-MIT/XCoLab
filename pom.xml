@@ -26,7 +26,7 @@
         <!-- Database -->
         <jooq.version>3.9.2</jooq.version>
         <mysql-connector.version>5.1.39</mysql-connector.version>
-        <HikariCP.version>2.6.2</HikariCP.version>
+        <HikariCP.version>2.6.0</HikariCP.version>
         <commons-dbcp2.version>2.1.1</commons-dbcp2.version>
 
         <!-- Core -->
