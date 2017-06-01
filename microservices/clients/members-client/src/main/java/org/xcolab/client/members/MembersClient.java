@@ -16,6 +16,7 @@ import org.xcolab.client.members.pojo.TokenValidity;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.util.http.caching.CacheKey;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
@@ -75,23 +76,36 @@ public final class MembersClient {
                 .optionalQueryParam("partialEmail", emailFilterValue)
                 .optionalQueryParam("roleName", categoryFilterValue);
 
+        String sortFieldContent = "";
         if (sortField != null && !sortField.isEmpty()) {
             final String prefix = (ascOrder) ? ("") : ("-");
+
             switch (sortField) {
-                case "USER_NAME": memberListQuery.queryParam("sort", prefix + "screenName");
+                case "USER_NAME": sortFieldContent = prefix + "screenName";
                     break;
-                case "MEMBER_SINCE": memberListQuery.queryParam("sort", prefix + "createDate");
+                case "MEMBER_SINCE": sortFieldContent = prefix + "createDate";
                     break;
-                case "CATEGORY": memberListQuery.queryParam("sort", prefix + "roleName");
+                case "CATEGORY": sortFieldContent = prefix + "roleName";
                     break;
-                case "ACTIVITY": memberListQuery.queryParam("sort", prefix + "activityCount");
+                case "ACTIVITY": sortFieldContent = prefix + "activityCount";
                     break;
-                case "POINTS": memberListQuery.queryParam("sort", prefix + "points");
+                case "POINTS": sortFieldContent = prefix + "points";
                     break;
                 default:
             }
-        }
 
+            if(!sortFieldContent.isEmpty()) {
+                memberListQuery.queryParam("sort",sortFieldContent);
+            }
+        }
+        memberListQuery
+                .withCache(CacheKeys.withClass(Member.class)
+                        .withParameter("partialName", screenNameFilterValue)
+                        .withParameter("partialEmail", emailFilterValue)
+                        .withParameter("roleName", categoryFilterValue)
+                        .withParameter("sort",sortFieldContent)
+                                .asList(),
+                        CacheName.MISC_MEDIUM);
         return memberListQuery.execute();
     }
 
@@ -111,7 +125,12 @@ public final class MembersClient {
 
     public static Integer getMemberMaterializedPoints(long memberId) {
         try {
-            return memberResource.service(memberId, "points", Integer.class).getChecked();
+            return memberResource.<Member, Integer>service(memberId,"points", Integer.class)
+                    .withCache(CacheKeys.withClass(Member.class)
+                            .withParameter("memberId", memberId)
+                            .asCount(), CacheName.MISC_REQUEST)
+                    .getChecked();
+
         } catch (EntityNotFoundException e) {
             return 0;
         }
