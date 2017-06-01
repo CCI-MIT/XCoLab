@@ -339,7 +339,7 @@ CREATE TABLE `members_Member` (
   KEY `IX_XCOLAB_MEMBERS_FACEBOOK_ID` (`facebookId`),
   KEY `IX_XCOLAB_MEMBERS_OPEN_ID` (`openId`)
   /*, FULLTEXT KEY `members_Member_names_bio` (`firstName`,`lastName`,`shortBio`,`screenName`)*/
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ProposalVersion` (
   `proposalId` bigint(20) NOT NULL,
