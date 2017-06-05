@@ -42,6 +42,7 @@ public class ContentPageDaoImpl implements ContentPageDao {
         final Record record = dslContext.select()
                 .from(CONTENT_PAGE)
                 .where(CONTENT_PAGE.CONTENT_ARTICLE_ID.eq(contentArticleId))
+                .limit(1)
                 .fetchOne();
         if (record == null) {
             return Optional.empty();

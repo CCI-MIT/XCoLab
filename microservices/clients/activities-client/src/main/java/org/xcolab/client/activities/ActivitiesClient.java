@@ -93,7 +93,7 @@ public final class ActivitiesClient {
                                     .withParameter("memberId", memberId)
                                     .withParameter("memberIdsToExclude", memberIdsToExclude)
                                     .asCount(),
-                            CacheName.MISC_REQUEST)
+                            CacheName.MISC_MEDIUM)
                     .getChecked();
         } catch (EntityNotFoundException e) {
             return 0;

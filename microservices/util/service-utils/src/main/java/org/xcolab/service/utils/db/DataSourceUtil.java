@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.PropertyResolver;
 
+import org.xcolab.util.metrics.MetricsUtil;
+
 public final class DataSourceUtil {
 
     private static final Logger log = LoggerFactory.getLogger(DataSourceUtil.class);
@@ -23,6 +25,7 @@ public final class DataSourceUtil {
     private static final String DB_USERNAME_PROPERTY_NAME = "db.username";
     private static final String DB_PASSWORD_PROPERTY_NAME = "db.password";
     private static final String DB_SCHEMA_PROPERTY_NAME = "db.schema";
+    public static final int LEAK_DETECTION_THRESHOLD_MS = 20_000;
 
     private DataSourceUtil() {
     }
@@ -64,11 +67,15 @@ public final class DataSourceUtil {
         dataSource.setIdleTimeout(IDLE_TIMEOUT_MS);
         dataSource.setRegisterMbeans(false);
 
+        dataSource.setLeakDetectionThreshold(LEAK_DETECTION_THRESHOLD_MS);
+        dataSource.setMetricRegistry(MetricsUtil.REGISTRY);
+
         //mysql optimizations
         dataSource.addDataSourceProperty("cachePrepStmts", true);
         dataSource.addDataSourceProperty("prepStmtCacheSize", PREPARED_STATEMENT_CACHE_SIZE);
         dataSource.addDataSourceProperty("prepStmtCacheSqlLimit",
                 PREPARED_STATEMENT_CACHE_SQL_LIMIT);
+
 
         return dataSource;
     }
