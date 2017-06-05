@@ -1,6 +1,7 @@
 package org.xcolab.util.http.exceptions.translation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -23,11 +24,11 @@ public abstract class ExceptionTranslator<T> {
             HttpMethod httpMethod, URI requestUri) {
         final T exceptionObject = getExceptionObject(exception, httpMethod, requestUri);
         final String location = getLocation(httpMethod, requestUri);
-        doTranslateException(exception, location, exceptionObject);
+        doTranslateException(exception, location, exceptionObject, exception.getResponseHeaders());
     }
 
-    protected abstract void doTranslateException(HttpStatusCodeException exception,
-            String location, T exceptionObject);
+    protected abstract void doTranslateException(HttpStatusCodeException exception, String location,
+            T exceptionObject, HttpHeaders headers);
 
     public T getExceptionObject(HttpStatusCodeException exception,
             HttpMethod httpMethod, URI requestUri) {

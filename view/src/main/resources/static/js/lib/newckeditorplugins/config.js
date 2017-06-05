@@ -3,8 +3,8 @@ CKEDITOR.editorConfig = function( config ) {
     config.language = 'en';
 
     config.extraPlugins = 'justify,colorbutton,uploadimage,copyformatting,font,indentblock';
-    config.uploadUrl = '/images/uploadCkEditor';
-    config.filebrowserImageUploadUrl = '/images/uploadCkEditor';
+    config.uploadUrl = '/image/uploadCkEditor';
+    config.filebrowserImageUploadUrl = '/image/uploadCkEditor';
     config.toolbar = 'custom';
     config.toolbar_custom = [
         { name: 'clipboard', groups: [ 'clipboard', 'undo' ], items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ,'-','CopyFormatting'] },

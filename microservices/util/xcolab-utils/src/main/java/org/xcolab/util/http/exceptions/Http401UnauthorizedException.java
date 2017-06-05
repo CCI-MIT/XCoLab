@@ -4,7 +4,7 @@ import org.xcolab.util.http.exceptions.translation.service.HttpServiceExceptionO
 
 public class Http401UnauthorizedException extends HttpRuntimeException {
     public Http401UnauthorizedException(HttpServiceExceptionObject httpServiceExceptionObject,
-            String location) {
-        super(httpServiceExceptionObject, location);
+            String location, String serviceName) {
+        super(httpServiceExceptionObject, location, serviceName);
     }
 }

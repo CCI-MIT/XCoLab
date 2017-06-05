@@ -41,7 +41,7 @@ public class ColabController {
         if (StringUtils.isBlank(redirect) || redirect.contains("/register")) {
             redirect =  "/";
         }
-        UriComponentsBuilder redirectUrl = UriComponentsBuilder.fromHttpUrl(redirect);
+        UriComponentsBuilder redirectUrl = UriComponentsBuilder.fromUriString(redirect);
         redirectUrl.replaceQueryParam("signinRegError");
         redirectUrl.replaceQueryParam("isSigningInPopup");
         redirectUrl.replaceQueryParam("isSigningIn");

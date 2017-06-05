@@ -24,6 +24,7 @@ import org.xcolab.view.util.entity.flash.AlertMessage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,6 +54,12 @@ public class OverviewTabController extends AbstractTabController {
         final MemberCategory memberCategory = MembersClient.getMemberCategory(MemberRole.STAFF.getRoleId());
         staffList = MembersClient.listMembers(memberCategory.getCategoryName(),null,null, null, true, 0, Integer.MAX_VALUE);
 
+        ArrayList<String> matchList = new ArrayList<>(Arrays.asList("gary-olson","eduhaime","yiftach-nagar","YueHan","nvtaub"));
+
+        for (int i = 0; i < staffList.size(); i++) {
+            if(matchList.contains(staffList.get(i).getScreenName()))
+                staffList.remove(i);
+        }
         return staffList;
     }
 

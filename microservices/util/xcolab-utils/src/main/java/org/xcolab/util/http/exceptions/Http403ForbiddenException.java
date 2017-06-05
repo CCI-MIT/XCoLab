@@ -4,7 +4,7 @@ import org.xcolab.util.http.exceptions.translation.service.HttpServiceExceptionO
 
 public class Http403ForbiddenException extends HttpRuntimeException {
     public Http403ForbiddenException(HttpServiceExceptionObject httpServiceExceptionObject,
-            String location) {
-        super(httpServiceExceptionObject, location);
+            String location, String serviceName) {
+        super(httpServiceExceptionObject, location, serviceName);
     }
 }
