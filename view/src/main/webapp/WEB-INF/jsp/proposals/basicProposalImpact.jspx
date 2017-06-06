@@ -524,6 +524,7 @@
             }
 
             function recalculateEditSeriesValues() {
+                console.log("recalculateEditSeriesValues");
                 var $impactElement = $('#impact');
                 var bauValues = $impactElement.find('table tr#impact-edit-row-BAU td span');
                 var reductionValueElements = $impactElement.find('table tr#impact-edit-row-' + IMPACT_REDUCTION_PLACEHOLDER + ' input');
@@ -533,9 +534,11 @@
                 $('a#save-button').removeClass('disabled');
 
                 for (var i = 0; i &lt; bauValues.size(); i++) {
-                    var reductionValue = parseFloat($(reductionValueElements[i]).attr('value').replace(',', '.'));
-                    var adoptionValue = parseFloat($(adoptionValueElements[i]).attr('value').replace(',', '.'));
+                    console.log(" --- --- ");
+                    var reductionValue = parseFloat($(reductionValueElements[i]).val().replace(',', '.'));
+                    var adoptionValue = parseFloat($(adoptionValueElements[i]).val().replace(',', '.'));
 
+                    console.log("(("+$(reductionValueElements[i]).val()+ " --- --- "+ $(adoptionValueElements[i]).val()+"))");
                     var isValid = integrityCheckSeriesValue($(reductionValueElements[i]), reductionValue);
                     isValid = isValid &amp;&amp; integrityCheckSeriesValue($(adoptionValueElements[i]), adoptionValue);
 
@@ -551,6 +554,7 @@
             }
 
             function integrityCheckSeriesValue(inputField, value) {
+                console.log("integrityCheckSeriesValue");
                 if (isNaN(value)) {
                     inputField.addClass('error');
                     $('a#save-button').addClass('disabled');
@@ -572,6 +576,7 @@
 
             function loadSeriesEditData(url) {
                 setDetailViewSpinnerMode(true);
+                console.log("loadSeriesEditData");
                 $.getJSON(url, {get_param: 'value'}, function (data) {
                     if (data.success === false) {
 
@@ -650,21 +655,21 @@
                         // Register input event handler
                         $('#impact').find('table tr.impact-edit-row input').on('blur', function () {
                             // check valid input
-                            var floatValue = parseFloat($(this).attr('value'));
+                            var floatValue = parseFloat($(this).val());
 
                             //  descendant from IMPACT_REDUCTION edit row -> allow negative values
                             if ($(this).parents('#impact-edit-row-IMPACT_REDUCTION').length > 0) {
                                 if (floatValue &lt; -100.0) {
-                                    $(this).attr('value', "-100");
+                                    $(this).val("-100");
                                 }
                             } else {
                                 if (floatValue &lt; 0) {
-                                    $(this).attr('value', "0");
+                                    $(this).val("0");
                                 }
                             }
 
                             if (floatValue &gt; 100) {
-                                $(this).attr('value', "100");
+                                $(this).val("100");
                             }
 
                             userInputOccurred = true;
@@ -773,10 +778,10 @@
                 var adoptionData = {};
 
                 $.each($('tr#impact-edit-row-' + IMPACT_REDUCTION_PLACEHOLDER + ' input'), function (idx) {
-                    reductionData[$(this).attr('name')] = $(this).attr('value');
+                    reductionData[$(this).attr('name')] = $(this).val();
                 });
                 $.each($('tr#impact-edit-row-' + IMPACT_ADOPTION_RATE_PLACEHOLDER + ' input'), function (idx) {
-                    adoptionData[$(this).attr('name')] = $(this).attr('value');
+                    adoptionData[$(this).attr('name')] = $(this).val();
                 });
 
                 var postJson = {};
@@ -820,6 +825,7 @@
             }
 
             function continueButtonClicked(event) {
+                console.log(" ---------- ");
                 newRegionTermId = $('div#new-series select#region').val();
                 newSectorTermId = $('div#new-series select#sector').val();
                 var url = replaceImpactURLPlaceholders(getDataSeriesURL,
@@ -903,7 +909,7 @@
 
 
             function insertNewSeries(resultValues) {
-
+                console.log(resultValues);
                 var regionTermName = $('div#impact-series-detail h3#region-title').text();
                 var sectorTermName = $('div#impact-series-detail h3#sector-title').text();
                 var seriesData = {
@@ -932,6 +938,7 @@
             }
 
             function updateSeriesValues(resultValues) {
+                console.log(" - updateSeriesValues - ")
                 for (var i = 0; i &lt; resultValues.length; i++) {
                     var valueCell = $($('tr#impact-row-' + currentEditingRowIndex + ' td.impact-value')[i]);
                     valueCell.text($(resultValues[i]).text());

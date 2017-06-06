@@ -40,7 +40,7 @@ function initUserAssignmentInputs() {
         var originalLen = this.value.length;
 
         formatInputValue.bind(this, true)();
-
+            
         jQuery(this).attr("data-changed-by-user", "true");
 
         this.setSelectionRange(start+(this.value.length-originalLen), end+(this.value.length-originalLen));

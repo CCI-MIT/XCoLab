@@ -1,6 +1,7 @@
 package org.xcolab.service.contest.service.contestphase;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -43,7 +44,6 @@ import static org.mockito.Matchers.anyString;
 )
 
 @PrepareForTest({
-        org.xcolab.util.http.ServiceRequestUtils.class,
         org.xcolab.client.proposals.ProposalClientUtil.class,
         org.xcolab.client.proposals.ProposalPhaseClientUtil.class,
         org.xcolab.client.proposals.pojo.Proposal.class,
@@ -53,6 +53,7 @@ import static org.mockito.Matchers.anyString;
 
 @ComponentScan("org.xcolab.service.contest")
 @ComponentScan("org.xcolab.client")
+
 public class ContestPhaseServiceTest {
 
     @Autowired
@@ -64,7 +65,8 @@ public class ContestPhaseServiceTest {
     @Before
     public void setup() throws Exception {
 
-        PowerMockito.mockStatic(ServiceRequestUtils.class);
+        ServiceRequestUtils.setInitialized(true);
+
         PowerMockito.mockStatic(ProposalClientUtil.class);
         PowerMockito.mockStatic(ProposalPhaseClientUtil.class);
         Mockito.when(ProposalPhaseClientUtil
@@ -92,6 +94,7 @@ public class ContestPhaseServiceTest {
     }
 
     @Test
+
     public void shouldForcePromotionOfProposalInPhase() throws Exception {
 
         contestPhaseService.forcePromotionOfProposalInPhase(1333850l,1318613l);
