@@ -8,6 +8,7 @@ import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
+import org.xcolab.util.CountryUtil;
 import org.xcolab.view.util.validation.CompareStrings;
 import org.xcolab.view.util.validation.UniqueEmail;
 import org.xcolab.view.util.validation.ValidBioLength;
@@ -113,8 +114,16 @@ public class UserBean implements Serializable {
     }
 
     public String getCountryName() {
-        //return CountryUtil.getCountryForCode(countryCode);
-        return countryCode;
+        if(countryCode.length() == 2) {
+            if(countryCode == "CS"){
+                return "Country not set";
+            }else {
+                return CountryUtil.getCountryForCode(countryCode);
+            }
+        }
+        else {
+            return countryCode;
+        }
     }
 
     public String getShortBio() {

@@ -281,7 +281,8 @@ public class FacebookController {
 
     private String getCountry(JSONObject response) throws UserLocationNotResolvableException, JSONException {
         try {
-            return getCountryFromLocationObject(response);
+            //return getCountryFromLocationObject(response);
+            return getCountryFromLocaleObject(response);
         } catch (UserLocationNotResolvableException e) {
             return getCountryFromLocaleObject(response);
         }
@@ -289,7 +290,7 @@ public class FacebookController {
 
     private String getCountryFromLocationObject(JSONObject response) throws UserLocationNotResolvableException, JSONException {
 
-        final JSONObject location = response.optJSONObject("location");
+        final JSONObject location = response.optJSONObject("locale");
         if (location != null) {
             String locationString = location.getString("name");
 
@@ -303,12 +304,11 @@ public class FacebookController {
 
     private String getCountryFromLocaleObject(JSONObject response) throws UserLocationNotResolvableException , JSONException  {
 
-        final String localeString = response.optString("locale");
+        final String localeString = response.optString("locale").replace("_","-");
         if (localeString != null) {
-            String[] localeParts = localeString.split("_");
-            Locale locale = new Locale(localeParts[0], localeParts[1]);
+            Locale locale = Locale.forLanguageTag(localeString);
 
-            return locale.getDisplayCountry();
+            return locale.getCountry();
         }
 
         throw new UserLocationNotResolvableException("Could not retrieve country from Facebook locale");

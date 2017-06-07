@@ -36,7 +36,7 @@ import javax.servlet.http.HttpSession;
 public class GoogleController {
 
     private static final String GOOGLE_OAUTH_REQUEST_STATE_TOKEN = "GOOGLE_OAUTH_REQUEST_STATE_TOKEN";
-
+    private static final String ENGLISH_LOCALE = "en";
     private final AuthenticationService authenticationService;
     private final LoginRegisterService loginRegisterService;
 
@@ -248,9 +248,18 @@ public class GoogleController {
 
     private String getCountryFromLocaleObject(String localeCountryString) throws UserLocationNotResolvableException {
         if (StringUtils.isNotEmpty(localeCountryString)) {
-            Locale locale = new Locale("en", localeCountryString);
 
-            return locale.getDisplayCountry();
+            Locale locale;
+            if(localeCountryString.length()>2) {
+                locale = Locale.forLanguageTag(localeCountryString);//new Locale("en", localeCountryString);
+            }else{
+                locale = new Locale(ENGLISH_LOCALE, localeCountryString);
+            }
+            if(locale.getCountry() == null){
+                return ENGLISH_LOCALE;
+            }
+
+            return locale.getCountry();//locale.getDisplayCountry();
         }
 
         throw new UserLocationNotResolvableException("Could not retrieve country from Google locale");

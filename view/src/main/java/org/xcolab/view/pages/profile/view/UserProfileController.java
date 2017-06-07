@@ -295,7 +295,8 @@ public class UserProfileController {
         }
         if (updatedUserBean.getCountryCode() != null && !updatedUserBean.getCountryCode().equals(existingCountry)
                 && !StringUtils.isEmpty(updatedUserBean.getCountryCode())) {
-            member.setCountry(CountryUtil.getCountryForCode(updatedUserBean.getCountryCode()));
+            //member.setCountry(CountryUtil.getCountryForCode(updatedUserBean.getCountryCode()));
+            member.setCountry(updatedUserBean.getCountryCode());
             changedMember = true;
         }
 
