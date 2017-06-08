@@ -121,7 +121,8 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                     baseContest, baseContestPhase, null);
 
             UpdateProposalDetailsBean updateProposalDetailsBean = new UpdateProposalDetailsBean(
-                    proposalWrapped, baseProposalWrapped, true, MoveType.valueOf(moveType));
+                    proposalWrapped, baseProposalWrapped, true,
+                    MoveType.valueOf(moveType, true));
             updateProposalDetailsBean.setMoveFromContestPhaseId(moveFromContestPhaseId);
             updateProposalDetailsBean.setMoveToContestId(baseContestPhase.getContestPhasePK());
 
