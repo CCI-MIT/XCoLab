@@ -162,7 +162,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		var contest = null;
 		
 		function addContestToTermAndParents(level, contest, term, isOther) {
-			
+			//console.log(" - ",level, contest, term, isOther)
 			if (term == null || typeof(term) != 'object') return;
 			// don't add contests to the space root if they have been associated with one of its children 
 			/*if (term.parent == null &amp;&amp; level &gt; 0) return;*/
@@ -206,10 +206,13 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
                 contestsCount++;
 
                 focusArea = focusAreas[${contest.focusAreaId}];
+                if(focusAreas[${contest.focusAreaId}] != null) {
+                    console.log("undefined: " + ${contest.focusAreaId})
 
-                for (var idx in focusArea.terms) {
-                    addContestToTermAndParents(0, contest, ontologyTerms[focusArea.terms[idx]]);
-                    ontologyTerms[focusArea.terms[idx]].space.contests.push(contest);
+                    for (var idx in focusArea.terms) {
+                        addContestToTermAndParents(0, contest, ontologyTerms[focusArea.terms[idx]]);
+                        ontologyTerms[focusArea.terms[idx]].space.contests.push(contest);
+                    }
                 }
             </c:if>
 		</c:forEach>
@@ -220,10 +223,13 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
                         proposalsCount: ${contest.proposalsCount}, contestLink: '<collab:contestLink contest="${contest}" text="visit" />'};
                 otherContests[${contest.contestPK}] = otherContest;
                 focusArea = focusAreas[${contest.focusAreaId}];
-
-                for (var idx in focusArea.terms) {
-                    addContestToTermAndParents(0, otherContest, ontologyTerms[focusArea.terms[idx]], true);
-                    ontologyTerms[focusArea.terms[idx]].space.otherContests.push(contest);
+                if(focusAreas[${contest.focusAreaId}] != null) {
+                    console.log("undefined: " + ${contest.focusAreaId})
+                    for (var idx in focusArea.terms) {
+                        addContestToTermAndParents(0, otherContest, ontologyTerms[focusArea.terms[idx]],
+                                true);
+                        ontologyTerms[focusArea.terms[idx]].space.otherContests.push(contest);
+                    }
                 }
             </c:if>
 		</c:forEach>
@@ -261,6 +267,7 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		
 		function renderContests(contests, space) {
 			//contests.sort(function(a, b) { - (a.created - b.created) });
+            console.log("renderContests length: "+contests.length)
 			contests.sort(function(a, b) { 
 				var orderArrayA = a.orderFromTerm[space.id],  orderArrayB = b.orderFromTerm[space.id];
 				for (var i = 0; i < orderArrayA.length && i < orderArrayB.length; i++) {
