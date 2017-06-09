@@ -1,21 +1,23 @@
 // namespace = dateTimeFormatter
 var dateTimeFormatter = {
-        dateTime: function (unixEpoch){
-        return moment.unix(unixEpoch / 1000).format("MM/DD/YYYY hh:mm A") + ' ' + dateTimeFormatter.getZoneAsCode();
+    dateTime: function (unixEpoch) {
+        return moment.unix(unixEpoch / 1000).format("MM/DD/YYYY hh:mm A") + ' '
+                + dateTimeFormatter.getZoneAsCode();
     },
 
-        date: function (unixEpoch){
+    date: function (unixEpoch) {
         return moment.unix(unixEpoch / 1000).format("MM/DD/YYYY");
     },
 
-    dateText: function (unixEpoch){
+    dateText: function (unixEpoch) {
         return moment.unix(unixEpoch / 1000).format("MMM. DD, YYYY");
     },
 
-        time: function (unixEpoch){
-        return moment.unix(unixEpoch / 1000).format("hh:mm A") + ' ' + dateTimeFormatter.getZoneAsCode();
+    time: function (unixEpoch) {
+        return moment.unix(unixEpoch / 1000).format("hh:mm A") + ' '
+                + dateTimeFormatter.getZoneAsCode();
     },
-        getZoneAsCode: function (){
+    getZoneAsCode: function () {
         var paren = new Date().toString().match(/\(.+\)/);
         return paren ? paren[0].match(/([A-Z])/g).join("") : "";
     }

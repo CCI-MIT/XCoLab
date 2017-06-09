@@ -27,7 +27,6 @@ jQuery(function() {
 });
 
 function initializeJavaScript(){
-    initTooltips();
     evaluateTime();
     jQuery(".addpropform .helpTrigger").click(function() {
         var trigger = jQuery(this);

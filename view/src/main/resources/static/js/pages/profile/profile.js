@@ -4,10 +4,7 @@ jQuery(function() {
         trigger.parent().parent().find(".profilehelp").slideToggle("fast");
     });
 
-    // tooltips
-    initTooltips();
     selectCountry();
-
 });
 
 function selectCountry() {

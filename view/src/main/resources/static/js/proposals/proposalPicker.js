@@ -36,7 +36,6 @@ function loadProposals(){
         highlighter();
         if (data.proposals.length > 0) addPaginationToProposalPickerTable(proposalPickerPage > 0,data.totalCount > ((proposalPickerPage+1) * proposalsPerPage),Math.ceil(data.totalCount / proposalsPerPage));
         spinner.stop();
-        initTooltips();
     });
 }
 
