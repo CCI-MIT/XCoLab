@@ -40,15 +40,29 @@ public class VoteValidator {
     }
 
     public ValidationResult validate() {
+        ProposalVote vote = getVote(member);
+        if (vote == null) {
+            throw new InternalException("Could not retrieve vote");
+        }
+        final ValidationResult validationResult = getValidationResult(vote);
+        if (validationResult != ValidationResult.VALID) {
+            invalidateVote(vote);
+        }
+        return validationResult;
+    }
+
+    private ValidationResult getValidationResult(ProposalVote vote) {
         if (member.isVerifiedAccount() || isEmailWhitelisted()) {
             return ValidationResult.VALID;
         }
 
         if (member.getIsEmailBounced()) {
+            invalidateVote(vote);
             return ValidationResult.INVALID_BOUNCED_EMAIL;
         }
 
         if (isEmailBlacklisted()) {
+            invalidateVote(vote);
             return ValidationResult.INVALID_BLACKLISTED;
         }
 
@@ -58,15 +72,10 @@ public class VoteValidator {
             return ValidationResult.VALID;
         }
 
-        final ProposalVote vote = getVote(member);
-        if (vote == null) {
-            throw new InternalException("Could not retrieve vote");
-        }
-
         ValidationResult result = ValidationResult.VALID;
         for (Member otherMember : usersWithSharedIP) {
             if (isNameSimilar(otherMember)) {
-                vote.setIsValid(false);
+                invalidateVote(vote);
                 result = ValidationResult.INVALID_DUPLICATE;
                 break;
             }
@@ -83,18 +92,23 @@ public class VoteValidator {
 
         }
         if (vote.getIsValid() && recentVotesFromSharedIP > 7) {
-            vote.setIsValid(false);
+            String confirmationToken = generateAndSetConfirmationToken(vote);
+            new ProposalVoteValidityConfirmation(proposal, contest, member, confirmationToken)
+                    .sendEmailNotification();
             result = ValidationResult.AWAITING_RESPONSE;
-            sendConfirmationMail(vote);
         }
-        proposalMemberRatingClient.updateProposalVote(vote);
         return result;
     }
 
-    private ProposalVote getVote(Member otherUser) {
+    private void invalidateVote(ProposalVote vote) {
+        vote.setIsValid(false);
+        proposalMemberRatingClient.updateProposalVote(vote);
+    }
+
+    private ProposalVote getVote(Member votingMember) {
         return proposalMemberRatingClient
                 .getProposalVoteByProposalIdUserId(proposal.getProposalId(),
-                        otherUser.getUserId());
+                        votingMember.getUserId());
     }
 
     private boolean isRecentVote(ProposalVote otherVote) {
@@ -123,12 +137,12 @@ public class VoteValidator {
                 .anyMatch(pattern -> pattern.matcher(member.getEmailAddress()).find());
     }
 
-    private void sendConfirmationMail(ProposalVote vote) {
+    private String generateAndSetConfirmationToken(ProposalVote vote) {
         String confirmationToken = UUID.randomUUID().toString();
         vote.setConfirmationToken(confirmationToken);
         vote.setConfirmationEmailSendDate(new Timestamp(new Date().getTime()));
-        new ProposalVoteValidityConfirmation(proposal, contest, member, confirmationToken)
-                .sendEmailNotification();
+        proposalMemberRatingClient.updateProposalVote(vote);
+        return confirmationToken;
     }
 
     public enum ValidationResult {
