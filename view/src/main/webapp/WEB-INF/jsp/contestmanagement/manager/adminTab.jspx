@@ -56,7 +56,7 @@
         <br/>
                 <div class="addpropbox">
                 <h2>Notifications</h2> <br/>
-                <form:form action="/notificationMessageGET" commandName="votingReportBean"
+                <form:form action="/admin/contest/manager/tab/ADMIN/notificationMessageCreate" commandName="votingReportBean"
                            id="votingReportForm" method="POST">
                     <label for="votingPhaseIds">Please use this form to add notifications in the system:</label>
                     <br/><br/>
@@ -80,7 +80,8 @@
                     <button type="submit" class="c-Button__primary">Add Notification</button>
                 </form:form>
 
-                <form action="/notificationMessageDelete" id="deleteNotificationForm" method="post" style="visibility: hidden;" >
+                <form action="/admin/contest/manager/tab/ADMIN/notificationMessageDelete"
+                      id="deleteNotificationForm" method="post" style="visibility: hidden;" >
                     <input type="hidden" id = "notificationId" name="notificationId"/>
                 </form>
 
