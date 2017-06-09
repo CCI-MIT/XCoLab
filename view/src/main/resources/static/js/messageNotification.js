@@ -1,67 +1,31 @@
-var numberOfMinutes = 3;
-var numberOfSeconds = numberOfMinutes*60;
+(function () {
+    var POLLING_INITIAL_DELAY_SECONDS = 2;
+    var POLLING_INTERVAL_MINUTES = 3;
 
-var rotator = function(){
+    function poll() {
+        $.ajax({
+            type: "GET",
+            url: "/notificationMessage",
+            data: null,
+            success: function (result) {
 
-    $.ajax({
-        type: "GET",
-        url: "/notificationMessage",
-        data: null,
-        success: function (result) {
+                var cookieId = Cookies.get("notificationId");
 
-            var cookieID = getCookie("notificationID");
+                var jsonResult = JSON.parse(result);
 
-            var obj = JSON.parse(result);
+                if (jsonResult.notificationId != cookieId) {
+                    noty({text: jsonResult.notificationText, type: 'success'});
+                    Cookies.set('notificationId', jsonResult.notificationId, {expires: 1});
+                }
+            },
+            error: function (result) {
+                console.error('Retrieving notifications: ' + result)
+            }
+        });
+        setTimeout(poll, POLLING_INTERVAL_MINUTES * 60 * 1000);
+    }
 
-            if(obj.notificationId != cookieID)
-            {
-                noty({text: obj.notificationText, type: 'success'})
-                setCookie("notificationID", obj.notificationId, 1)
-
-            } },
-        error: function (result) {
-            //alert("Error");
-        }
+    jQuery(function() {
+        setTimeout(poll, POLLING_INITIAL_DELAY_SECONDS * 1000);
     });
-
-
-    setTimeout(rotator, numberOfSeconds*1000);
-
-    function setCookie(cname, cvalue, exdays) {
-        var d = new Date();
-        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-        var expires = "expires="+d.toUTCString();
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-    }
-
-    function getCookie(cname) {
-        var name = cname + "=";
-        var ca = document.cookie.split(';');
-        for(var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
-
-    function checkCookie() {
-        var user = getCookie("username");
-        if (user != "") {
-            alert("Welcome again " + user);
-        } else {
-            user = prompt("Please enter your name:", "");
-            if (user != "" && user != null) {
-                setCookie("username", user, 365);
-            }
-        }
-    }
-
-};
-
-
-rotator();
+}());
