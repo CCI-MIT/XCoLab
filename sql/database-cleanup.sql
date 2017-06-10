@@ -1,7 +1,4 @@
-ALTER TABLE xcolab_ContestCollectionCard DROP FOREIGN KEY FK_parent;
-ALTER TABLE xcolab_ContestCollectionCard DROP FOREIGN KEY FK_big_ontology_term;
-ALTER TABLE xcolab_ContestCollectionCard DROP FOREIGN KEY FK_small_ontology_term;
-ALTER TABLE xcolab_ContestCollectionCard DROP FOREIGN KEY FK_ontology_term_to_load;
+SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS Account_;
 DROP TABLE IF EXISTS a_propteams;
@@ -168,6 +165,7 @@ DROP TABLE IF EXISTS PluginSetting;
 DROP TABLE IF EXISTS PlanPositionTmp;
 DROP TABLE IF EXISTS PlanForScenarios;
 DROP TABLE IF EXISTS Plan;
+DROP TABLE IF EXISTS PlanVote;
 DROP TABLE IF EXISTS Phone;
 DROP TABLE IF EXISTS PasswordTracker;
 DROP TABLE IF EXISTS PasswordPolicyRel;
@@ -289,3 +287,9 @@ DROP TABLE IF EXISTS xcolab_DiscussionMessageFlag;
 DROP TABLE IF EXISTS xcolab_DiscussionMessage;
 DROP TABLE IF EXISTS xcolab_DiscussionCategoryGroup;
 DROP TABLE IF EXISTS xcolab_DiscussionCategory;
+
+DROP TABLE IF EXISTS User_;
+
+DROP TABLE IF EXISTS xcolab_SpamReport;
+
+SET FOREIGN_KEY_CHECKS = 1
