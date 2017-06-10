@@ -2,7 +2,12 @@ package org.xcolab.service.members.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import org.xcolab.model.tables.pojos.Users_Groups;
 import org.xcolab.service.members.domain.usergroup.UsersGroupsDao;
 import org.xcolab.service.members.exceptions.ConflictException;
@@ -30,18 +35,14 @@ public class UsersGroupsController {
     }
 
     @RequestMapping(value = "/usersGroups", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<Users_Groups> getUsersGroups(
-            @RequestParam(required = false) Long userId,
-            @RequestParam(required = false) Long groupId
-    ) {
+    public List<Users_Groups> getUsersGroups(@RequestParam(required = false) Long userId,
+            @RequestParam(required = false) Long groupId) {
         return usersGroupsDao.findByGiven(userId, groupId);
     }
 
     @RequestMapping(value = "/usersGroups/deleteUsersGroups", method = {RequestMethod.DELETE})
-    public Boolean deleteUsersGroups(
-            @RequestParam(required = false) Long userId,
-            @RequestParam(required = false) Long groupId
-    ) {
+    public Boolean deleteUsersGroups(@RequestParam(required = false) Long userId,
+            @RequestParam(required = false) Long groupId) {
         return usersGroupsDao.delete(userId, groupId)> 0;
     }
 

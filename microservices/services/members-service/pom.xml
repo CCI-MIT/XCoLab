@@ -91,7 +91,7 @@
                                 | members_Member | members_ColabSSO
                                 | Users_Roles | Role_ | xcolab_MemberCategory
                                 | xcolab_ContestTeamMember | members_RoleGroupRoles | members_RoleGroup
-                                | Users_Groups | UserGroupRole | xcolab_StaffMember
+                                | Users_Groups | xcolab_StaffMember
                                 | xcolab_LoginLog | xcolab_AnalyticsUserEvent
                                 | xcolab_Message | xcolab_MessageRecipientStatus
                                 | xcolab_MessagingUserPreferences

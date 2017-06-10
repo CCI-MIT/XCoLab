@@ -3,6 +3,7 @@ package org.xcolab.view.pages.proposals.discussion;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
@@ -123,7 +124,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     private boolean isUserProposalAuthorOrTeamMember(Proposal proposal) {
         boolean isAuthor = proposal.getAuthorId() == memberId;
-        boolean isMember = MembersClient.isUserInGroup(memberId, proposal.getProposalId());
+        boolean isMember = UsersGroupsClientUtil.isMemberInGroup(memberId, proposal.getProposalId());
 
         return isAuthor || isMember;
     }

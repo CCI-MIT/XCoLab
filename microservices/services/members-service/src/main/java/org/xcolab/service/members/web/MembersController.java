@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.Member;
 import org.xcolab.model.tables.pojos.Role_;
-import org.xcolab.model.tables.pojos.UserGroupRole;
 import org.xcolab.service.members.domain.member.MemberDao;
-import org.xcolab.service.members.domain.usergrouprole.UserGroupRoleDao;
 import org.xcolab.service.members.exceptions.NotFoundException;
 import org.xcolab.service.members.service.member.MemberService;
 import org.xcolab.service.members.service.role.RoleService;
@@ -38,17 +36,12 @@ public class MembersController {
 
     private final RoleService roleService;
 
-    private final UserGroupRoleDao userGroupRoleDao;
-
-
     @Autowired
     public MembersController(MemberDao memberDao, RoleService roleService,
-            MemberService memberService, UserGroupRoleDao userGroupRoleDao) {
+            MemberService memberService) {
         this.memberDao = memberDao;
         this.roleService = roleService;
         this.memberService = memberService;
-        this.userGroupRoleDao = userGroupRoleDao;
-
     }
 
     @GetMapping
@@ -139,27 +132,6 @@ public class MembersController {
     public boolean deleteMemberRole(@PathVariable long memberId,
             @PathVariable Long roleId) {
         return this.roleService.deleteMemberRole(memberId, roleId);
-    }
-
-    @GetMapping("{memberId}/isMemberInGroup")
-    public Boolean isMemberInGroup(@PathVariable Long memberId,
-                                   @RequestParam Long groupId) {
-        if (memberId == null) {
-            return false;
-        } else {
-            List<UserGroupRole> ret = this.userGroupRoleDao.findByGiven(memberId, groupId);
-            return ret != null && !ret.isEmpty();
-        }
-    }
-    @GetMapping("{memberId}/addMemberToGroup")
-    public Boolean addMemberToGroup(@PathVariable Long memberId,
-                                    @RequestParam Long groupId) {
-        UserGroupRole ugr = new UserGroupRole();
-        ugr.setGroupId(groupId);
-        ugr.setUserId(memberId);
-        ugr.setRoleId(10125L);
-        this.userGroupRoleDao.create(ugr);
-        return true;
     }
 
     @GetMapping("count")

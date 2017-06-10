@@ -488,12 +488,8 @@ public class Proposal extends AbstractProposal {
         if (members == null) {
             members = new ArrayList<>();
             boolean hasOwner = false;
-            RestService membersService = restService.withServiceName(CoLabService.MEMBER.getServiceName());
 
-
-            for (UsersGroups user : clients.usersGroup
-                    .getUserGroupsByUserIdGroupId(null, this.getGroupId())) {
-
+            for (UsersGroups user : clients.usersGroup.getUserGroupsByGroupId(getGroupId())) {
                 try {
                     Member member = MembersClient.getMember(user.getUserId());
 

@@ -116,8 +116,7 @@ public class ProposalService {
 
             proposalDao.update(proposal);
 
-            UsersGroupsClientUtil.createUsersGroups(authorId, proposal.getGroupId());
-            MembersClient.createUserGroupRole(authorId,proposal.getGroupId());
+            UsersGroupsClientUtil.addMemberToGroup(authorId, proposal.getGroupId());
 
             if (contestPhaseId > 0) {
                 // associate proposal with phase
@@ -299,7 +298,7 @@ public class ProposalService {
         try {
             Proposal proposal = proposalDao.get(proposalId);
             ArrayList<Member> members = new ArrayList<>();
-            for (UsersGroups user : UsersGroupsClientUtil.getUserGroupsByUserIdGroupId(null, proposal.getGroupId())) {
+            for (UsersGroups user : UsersGroupsClientUtil.getUserGroupsByGroupId(proposal.getGroupId())) {
                 try {
                     members.add(MembersClient.getMember(user.getUserId()));
                 } catch (MemberNotFoundException ignored) {
@@ -321,8 +320,8 @@ public class ProposalService {
         }
     }
 
-    public List<Proposal> getMemberProposals(Long userId) {
-        List<UsersGroups> ug = UsersGroupsClientUtil.getUserGroupsByUserIdGroupId(userId, null);
+    public List<Proposal> getMemberProposals(Long memberId) {
+        List<UsersGroups> ug = UsersGroupsClientUtil.getUserGroupsByMemberId(memberId);
         List<Proposal> proposals = new ArrayList<>();
         for (UsersGroups ugroup : ug) {
             try {

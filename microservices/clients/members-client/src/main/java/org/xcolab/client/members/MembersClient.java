@@ -16,7 +16,6 @@ import org.xcolab.client.members.pojo.TokenValidity;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.caching.CacheKey;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
@@ -494,17 +493,5 @@ public final class MembersClient {
 
     public static boolean isSubscribedToNewsletter(long memberId) {
         return memberResource.service(memberId, "isSubscribed", Boolean.class).get();
-    }
-
-    public static boolean isUserInGroup(Long memberId, Long groupId) {
-        return memberResource.service(memberId, "isMemberInGroup", Boolean.class)
-                .queryParam("groupId", groupId)
-                .get();
-    }
-
-    public static void createUserGroupRole(Long memberId, Long groupId) {
-         memberResource.service(memberId, "addMemberToGroup", Boolean.class)
-                .queryParam("groupId", groupId)
-                .get();
     }
 }
