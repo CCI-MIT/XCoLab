@@ -10,8 +10,10 @@ CREATE TABLE `activities_ActivityEntry` (
   `activityEntryTitle` varchar(255) DEFAULT NULL,
   `activityEntryBody` text,
   `activityEntryName` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`activityEntryId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1722454 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`activityEntryId`),
+  KEY `activityEntry_memberId` (`memberId`),
+  KEY `activityEntry_createDate` (`createDate`),
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ProposalVote` (
   `proposalId` bigint(20) DEFAULT NULL,
@@ -37,7 +39,7 @@ CREATE TABLE `xcolab_ContestTeamMember` (
   `roleId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_`),
   KEY `IX_E1468F04` (`contestId`)
-) ENGINE=InnoDB AUTO_INCREMENT=11726 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `sharedcolab_SharedMember` (
   `sharedMemberId` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -46,7 +48,7 @@ CREATE TABLE `sharedcolab_SharedMember` (
   `createDate` datetime DEFAULT NULL,
   `colabOrigin` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`sharedMemberId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2651615 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `flagging_ReportTarget` (
   `reportTargetId` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -56,7 +58,7 @@ CREATE TABLE `flagging_ReportTarget` (
   `screeningThreshold` int(11) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`reportTargetId`),
   UNIQUE KEY `flagging_ReportTarget__typeReason` (`type`,`reason`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_BalloonLink` (
   `uuid_` varchar(75) NOT NULL,
@@ -74,7 +76,7 @@ CREATE TABLE `xcolab_FocusArea` (
   `order_` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_`),
   KEY `IX_B61888D4` (`name`(50))
-) ENGINE=InnoDB AUTO_INCREMENT=1313722 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_Message` (
   `messageId` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -85,7 +87,7 @@ CREATE TABLE `xcolab_Message` (
   `content` longtext,
   PRIMARY KEY (`messageId`),
   KEY `IX_9DF5C6F0` (`fromId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1389862 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ContestDiscussion` (
   `DiscussionId` bigint(20) NOT NULL,
@@ -115,7 +117,7 @@ CREATE TABLE `xcolab_ProposalMoveHistory` (
   KEY `IX_FA79AD74` (`targetPhaseId`),
   KEY `IX_4110BC53` (`targetProposalId`),
   KEY `IX_6001D87B` (`targetProposalId`,`targetContestId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1923 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ProposalContestPhaseAttribute` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -131,7 +133,7 @@ CREATE TABLE `xcolab_ProposalContestPhaseAttribute` (
   KEY `IX_EAA7A52A` (`contestPhaseId`,`proposalId`),
   KEY `IX_68DFE42A` (`proposalId`,`contestPhaseId`),
   KEY `IX_8F351DBF` (`proposalId`,`contestPhaseId`,`name`,`additionalId`)
-) ENGINE=InnoDB AUTO_INCREMENT=50223 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ContentArticle` (
   `contentArticleId` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -143,7 +145,7 @@ CREATE TABLE `xcolab_ContentArticle` (
   `viewRoleGroupId` bigint(20) DEFAULT NULL,
   `visible` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`contentArticleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1758 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_MemberCategory` (
   `roleId` bigint(20) NOT NULL,
@@ -220,7 +222,7 @@ CREATE TABLE `xcolab_ContestPhase` (
   KEY `IX_4F735B66` (`ContestPK`,`phaseInactiveOverride`),
   KEY `IX_1BB9EC37` (`contestPhaseAutopromote`),
   KEY `IX_D9B6142C` (`contestScheduleId`,`ContestPK`)
-) ENGINE=InnoDB AUTO_INCREMENT=1318675 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ContestPhaseRibbonType` (
   `id_` bigint(20) NOT NULL,
@@ -247,7 +249,7 @@ CREATE TABLE `xcolab_OntologySpace` (
   `order_` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_`),
   KEY `IX_18FC4546` (`name`(50))
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ModelOutputItem` (
   `modelOutputItemModifierPK` bigint(20) NOT NULL,
@@ -368,7 +370,7 @@ CREATE TABLE `xcolab_PointsDistributionConfiguration` (
   KEY `IX_27247AAA` (`targetPlanSectionDefinitionId`),
   KEY `IX_7D0AD60D` (`targetSubProposalId`),
   KEY `IX_D44477AA` (`targetUserId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2502 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ContentArticleVersion` (
   `contentArticleVersionId` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -379,7 +381,7 @@ CREATE TABLE `xcolab_ContentArticleVersion` (
   `title` varchar(555) DEFAULT NULL,
   `content` longtext,
   PRIMARY KEY (`contentArticleVersionId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4059 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_TrackedVisit` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -394,7 +396,7 @@ CREATE TABLE `xcolab_TrackedVisit` (
   `createDate` datetime DEFAULT NULL,
   PRIMARY KEY (`id_`),
   KEY `IX_21569857` (`uuid_`)
-) ENGINE=InnoDB AUTO_INCREMENT=4381468 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ContestSchedule` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -403,7 +405,7 @@ CREATE TABLE `xcolab_ContestSchedule` (
   `status` varchar(75) DEFAULT NULL,
   `baseScheduleId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_`)
-) ENGINE=InnoDB AUTO_INCREMENT=2014 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ContestCollectionCard` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -425,7 +427,7 @@ CREATE TABLE `xcolab_ContestCollectionCard` (
   CONSTRAINT `FK_ontology_term_to_load` FOREIGN KEY (`ontology_term_to_load`) REFERENCES `xcolab_OntologyTerm` (`id_`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_parent` FOREIGN KEY (`parent`) REFERENCES `xcolab_ContestCollectionCard` (`id_`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_small_ontology_term` FOREIGN KEY (`small_ontology_term`) REFERENCES `xcolab_OntologyTerm` (`id_`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=129 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `files_FileEntry` (
   `fileEntryId` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -434,7 +436,7 @@ CREATE TABLE `files_FileEntry` (
   `fileEntryName` varchar(255) DEFAULT NULL,
   `fileEntrySize` int(11) DEFAULT NULL,
   PRIMARY KEY (`fileEntryId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2513729 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ImpactIteration` (
   `iterationId` bigint(20) NOT NULL,
@@ -457,7 +459,7 @@ CREATE TABLE `sharedcolab_SharedContest` (
   `createDate` datetime DEFAULT NULL,
   `colabOrigin` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`sharedContestId`)
-) ENGINE=InnoDB AUTO_INCREMENT=11305023 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `filtering_FilteredEntry` (
   `filteredEntryId` bigint(10) NOT NULL AUTO_INCREMENT,
@@ -488,36 +490,6 @@ CREATE TABLE `xcolab_ActivitySubscription` (
   KEY `IX_C2ED8710` (`classNameId`,`classPK`,`type_`,`extraData`(50),`receiverId`),
   KEY `IX_1413A2B6` (`classNameId`,`classPK`,`type_`,`receiverId`),
   KEY `IX_33049EE6` (`receiverId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1451707 DEFAULT CHARSET=utf8;
-
-CREATE TABLE `SocialActivity` (
-  `activityId` bigint(20) NOT NULL,
-  `groupId` bigint(20) DEFAULT NULL,
-  `companyId` bigint(20) DEFAULT NULL,
-  `userId` bigint(20) DEFAULT NULL,
-  `createDate` bigint(20) DEFAULT NULL,
-  `mirrorActivityId` bigint(20) DEFAULT NULL,
-  `classNameId` bigint(20) DEFAULT NULL,
-  `classPK` bigint(20) DEFAULT NULL,
-  `type_` int(11) DEFAULT NULL,
-  `extraData` longtext,
-  `receiverUserId` bigint(20) DEFAULT NULL,
-  `activitySetId` bigint(20) DEFAULT NULL,
-  `parentClassNameId` bigint(20) DEFAULT NULL,
-  `parentClassPK` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`activityId`),
-  UNIQUE KEY `IX_8F32DEC9` (`groupId`,`userId`,`createDate`,`classNameId`,`classPK`,`type_`,`receiverUserId`),
-  KEY `IX_82E39A0C` (`classNameId`),
-  KEY `IX_A853C757` (`classNameId`,`classPK`),
-  KEY `IX_64B1BC66` (`companyId`),
-  KEY `IX_2A2468` (`groupId`),
-  KEY `IX_1271F25F` (`mirrorActivityId`),
-  KEY `IX_1F00C374` (`mirrorActivityId`,`classNameId`,`classPK`),
-  KEY `IX_121CA3CB` (`receiverUserId`),
-  KEY `IX_3504B8BC` (`userId`),
-  KEY `IX_FB604DC7` (`groupId`,`userId`,`classNameId`,`classPK`,`type_`,`receiverUserId`),
-  KEY `IX_F542E9BC` (`activitySetId`),
-  KEY `IX_D0E9029E` (`classNameId`,`classPK`,`type_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ProposalRating` (
@@ -531,7 +503,7 @@ CREATE TABLE `xcolab_ProposalRating` (
   `otherDataString` varchar(75) DEFAULT NULL,
   `onlyForInternalUsage` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id_`)
-) ENGINE=InnoDB AUTO_INCREMENT=23406 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ContestPhaseType` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -544,7 +516,7 @@ CREATE TABLE `xcolab_ContestPhaseType` (
   `pointsAccessible` int(11) DEFAULT NULL,
   `defaultPromotionType` varchar(75) DEFAULT NULL,
   PRIMARY KEY (`id_`)
-) ENGINE=InnoDB AUTO_INCREMENT=402 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ProposalAttributeType` (
   `name` varchar(75) NOT NULL,
@@ -570,7 +542,7 @@ CREATE TABLE `comment_Thread` (
   `sharedColabThreadId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`threadId`),
   KEY `comment_Thread__categoryId` (`categoryId`,`createDate`)
-) ENGINE=InnoDB AUTO_INCREMENT=1365984 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Role_` (
   `roleId` bigint(20) NOT NULL,
@@ -612,7 +584,7 @@ CREATE TABLE `xcolab_OntologyTerm` (
   KEY `IX_3E2347AB` (`ontologySpaceId`),
   KEY `IX_FEB70AB0` (`parentId`),
   KEY `IX_A6AC072` (`parentId`,`ontologySpaceId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1311495 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Group_` (
   `groupId` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -645,7 +617,7 @@ CREATE TABLE `Group_` (
   KEY `IX_63A2AABD` (`companyId`,`site`),
   KEY `IX_F981514E` (`uuid_`),
   KEY `IX_26CC761A` (`uuid_`,`companyId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2854011 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ContestTeamMemberRole` (
   `id_` bigint(20) NOT NULL,
@@ -663,13 +635,13 @@ CREATE TABLE `xcolab_ContentPage` (
   `modifiedDate` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`pageId`),
   UNIQUE KEY `xcolab_ContentPage_title_uindex` (`title`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `members_RoleGroup` (
   `roleGroupId` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`roleGroupId`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE `comment_CategoryGroup` (
   `groupId` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -677,7 +649,7 @@ CREATE TABLE `comment_CategoryGroup` (
   `url` varchar(200) DEFAULT NULL,
   `isQuiet` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`groupId`)
-) ENGINE=InnoDB AUTO_INCREMENT=702 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ImpactDefaultSeriesData` (
   `seriesId` bigint(20) NOT NULL,
@@ -713,7 +685,7 @@ CREATE TABLE `MembershipRequest` (
   KEY `IX_C28C72EC` (`groupId`,`statusId`),
   KEY `IX_66D70879` (`userId`),
   KEY `IX_35AA8FA6` (`groupId`,`userId`,`statusId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2851664 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ModelDiscussion` (
   `modelDiscussionId` bigint(20) NOT NULL,
@@ -745,7 +717,7 @@ CREATE TABLE `xcolab_PlanTemplate` (
   `impactSeriesTemplateId` bigint(20) DEFAULT NULL,
   `focusAreaListTemplateId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_`)
-) ENGINE=InnoDB AUTO_INCREMENT=1303316 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ConfigurationAttribute` (
   `name` varchar(75) NOT NULL,
@@ -762,7 +734,7 @@ CREATE TABLE `xcolab_TrackedVisitor2User` (
   `userId` bigint(20) DEFAULT NULL,
   `createDate` datetime DEFAULT NULL,
   PRIMARY KEY (`id_`)
-) ENGINE=InnoDB AUTO_INCREMENT=109063 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Users_Groups` (
   `userId` bigint(20) NOT NULL,
@@ -782,7 +754,7 @@ CREATE TABLE `xcolab_PointType` (
   `sort` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id_`),
   KEY `IX_8DD75651` (`parentPointTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_Proposal2Phase` (
   `proposalId` bigint(20) NOT NULL,
@@ -808,7 +780,7 @@ CREATE TABLE `comment_Category` (
   `isQuiet` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`categoryId`),
   KEY `comment_Category__groupId` (`groupId`,`sort`)
-) ENGINE=InnoDB AUTO_INCREMENT=1305702 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_BalloonText` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -827,7 +799,7 @@ CREATE TABLE `xcolab_BalloonText` (
   `enabled` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id_`),
   KEY `IX_CE6BAAA5` (`enabled`)
-) ENGINE=InnoDB AUTO_INCREMENT=502 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ImpactDefaultSeries` (
   `seriesId` bigint(20) NOT NULL,
@@ -864,7 +836,7 @@ CREATE TABLE `xcolab_Proposal` (
   `groupId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`proposalId`),
   KEY `IX_BBC99B8B` (`updatedDate`)
-) ENGINE=InnoDB AUTO_INCREMENT=1333836 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ProposalAttribute` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -883,7 +855,7 @@ CREATE TABLE `xcolab_ProposalAttribute` (
   KEY `IX_F612A28C` (`proposalId`,`version`,`versionWhenCreated`,`name`,`additionalId`)
   /*,
   FULLTEXT KEY `stringValue_ProposalAtribute` (`stringValue`)*/
-) ENGINE=InnoDB AUTO_INCREMENT=387726 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ProposalUnversionedAttribute` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -893,14 +865,14 @@ CREATE TABLE `xcolab_ProposalUnversionedAttribute` (
   `createDate` datetime DEFAULT NULL,
   `lastUpdateDate` datetime DEFAULT NULL,
   `name` varchar(75) DEFAULT NULL,
-  `addtionalId` int(11) DEFAULT NULL,
+  `additionalId` bigint(20) DEFAULT NULL,
   `numericValue` bigint(20) DEFAULT NULL,
   `stringValue` varchar(75) DEFAULT NULL,
   `realValue` double DEFAULT NULL,
   PRIMARY KEY (`id_`),
   KEY `IX_2FC1B0ED` (`proposalId`),
   KEY `IX_417CDAEC` (`proposalId`,`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=802 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ProposalSupporter` (
   `proposalId` bigint(20) NOT NULL,
@@ -934,7 +906,7 @@ CREATE TABLE `xcolab_LoginLog` (
   `country` varchar(75) DEFAULT NULL,
   `entryUrl` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`pk`)
-) ENGINE=InnoDB AUTO_INCREMENT=146643 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_PlanSectionDefinition` (
   `id_` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -952,7 +924,7 @@ CREATE TABLE `xcolab_PlanSectionDefinition` (
   `locked` tinyint(4) DEFAULT NULL,
   `contestIntegrationRelevance` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id_`)
-) ENGINE=InnoDB AUTO_INCREMENT=1303330 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ModelInputItem` (
   `modelInputItemPK` bigint(20) NOT NULL,
@@ -995,7 +967,7 @@ CREATE TABLE `flagging_Report` (
   KEY `flagging_Report__createDate` (`createDate`),
   KEY `flagging_Report__reporter` (`reporterMemberId`),
   KEY `flagging_Report__manager` (`managerMemberId`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_RolesCategory` (
   `roleId` bigint(20) NOT NULL,
@@ -1021,7 +993,7 @@ CREATE TABLE `xcolab_MessagingUserPreferences` (
   `dailyMessageLimit` int(11) DEFAULT NULL,
   PRIMARY KEY (`messagingPreferencesId`),
   KEY `IX_F504493F` (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1315290 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_MessageRecipientStatus` (
   `messageRecipientId` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -1034,7 +1006,7 @@ CREATE TABLE `xcolab_MessageRecipientStatus` (
   KEY `IX_76FF2A4C` (`messageId`,`userId`),
   KEY `IX_74DCC2DA` (`userId`),
   KEY `IX_88CD5CB0` (`userId`,`archived`)
-) ENGINE=InnoDB AUTO_INCREMENT=1401892 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_AnalyticsUserEvent` (
   `userId` bigint(20) NOT NULL,
@@ -1068,7 +1040,7 @@ CREATE TABLE `comment_Comment` (
   KEY `comment_Comment__threadId` (`threadId`,`createDate`),
   KEY `comment_Comment__authorId` (`authorId`)/*,
   FULLTEXT KEY `content_comment_Comment` (`content`)*/
-) ENGINE=InnoDB AUTO_INCREMENT=1363204 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `Users_Roles` (
   `userId` bigint(20) NOT NULL,
@@ -1229,7 +1201,7 @@ CREATE TABLE `xcolab_ContentFolder` (
   `contentFolderDescription` text,
   `parentFolderId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`contentFolderId`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `xcolab_ColabEmail` (
   `colabEmailId` BIGINT(20) NOT NULL AUTO_INCREMENT,

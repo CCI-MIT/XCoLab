@@ -10,6 +10,8 @@ delete from Users_Roles;
 INSERT INTO Users_Roles (userId, roleId) VALUES (10144, 10118), (10144, 10122), (10145, 10122);
 
 delete from activities_ActivityEntry;
+delete from xcolab_ActivitySubscription;
+delete from xcolab_ColabEmail;
 
 delete from sharedcolab_SharedContest;
 delete from xcolab_Contest;
@@ -31,12 +33,29 @@ delete from xcolab_ProposalSupporter;
 delete from xcolab_ProposalUnversionedAttribute;
 delete from xcolab_ProposalVersion;
 delete from xcolab_ProposalVote;
+delete from xcolab_ProposalVote_deleted;
+delete from xcolab_ProposalVoteRemoved;
+delete from MembershipRequest;
+
+delete from xcolab_PlanTemplate;
+delete from xcolab_PlanTemplateSection;
+delete from xcolab_PlanSectionDefinition;
+
 delete from xcolab_StaffMember;
+
+delete from xcolab_PointsDistributionConfiguration;
+
+delete from flagging_Report;
 
 delete from xcolab_FocusArea where id_ > 2;
 delete from xcolab_FocusAreaOntologyTerm;
 
 delete from xcolab_OntologyTerm where id_ not in (1, 2, 3, 1300601);
+
+delete from Group_;
+delete from Users_Groups;
+-- TODO: this table will be removed soon
+delete from UserGroupRole;
 
 delete from xcolab_Points;
 
@@ -51,8 +70,14 @@ delete from comment_Category where categoryId not in (12501, 12502);
 -- session and login information
 delete from xcolab_TrackedVisit;
 delete from xcolab_TrackedVisitor2User;
+delete from xcolab_BalloonUserTracking;
+delete from xcolab_BalloonText;
+delete from xcolab_BalloonLink;
+delete from xcolab_AnalyticsUserEvent;
 delete from xcolab_LoginLog;
 
+delete from files_FileEntry;
+delete from filtering_FilteredEntry;
 
 delete from xcolab_ContentPage;
 delete from xcolab_ContentArticle;
@@ -97,7 +122,7 @@ INSERT INTO xcolab_ContentArticleVersion (contentArticleVersionId, contentArticl
 INSERT INTO xcolab_ContentArticle (contentArticleId, authorId, createDate, maxVersionId, folderId, editRoleGroupId, viewRoleGroupId, visible)
   VALUES (5, 10144, '2016-05-11 09:21:08', 5, 2, null, null, 1);
 INSERT INTO xcolab_ContentArticleVersion (contentArticleVersionId, contentArticleId, folderId, authorId, createDate, title, content)
-  VALUES (5, 5, 2, 10144, '2016-07-19 12:38:47', 'Landing page buttom', 'Content.');
+  VALUES (5, 5, 2, 10144, '2016-07-19 12:38:47', 'Landing page bottom', 'Content.');
 
 -- Members menu
 INSERT INTO xcolab_ContentArticle (contentArticleId, authorId, createDate, maxVersionId, folderId, editRoleGroupId, viewRoleGroupId, visible)
@@ -111,7 +136,10 @@ INSERT INTO xcolab_ContentArticle (contentArticleId, authorId, createDate, maxVe
 INSERT INTO xcolab_ContentArticleVersion (contentArticleVersionId, contentArticleId, folderId, authorId, createDate, title, content)
   VALUES (7, 7, 2, 10144, '2016-07-19 12:38:47', 'Discussion menu', 'Content.');
 
-INSERT INTO xcolab.xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue)
+delete from xcolab_ConfigurationAttribute where name in ('FOOTER_CONTENT_ARTICLE_ID',
+  'LANDING_PAGE_BANNER_CONTENT_ARTICLE_ID', 'LANDING_PAGE_BOTTOM_CONTENT_ARTICLE_ID',
+  'MEMBERS_CONTENT_ARTICLE_ID', 'DISCUSSION_CONTENT_ARTICLE_ID');
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue)
   VALUES ('FOOTER_CONTENT_ARTICLE_ID', 0, 3, ' ', 0),
   ('LANDING_PAGE_BANNER_CONTENT_ARTICLE_ID', 0, 4, ' ', 0),
   ('LANDING_PAGE_BOTTOM_CONTENT_ARTICLE_ID', 0, 5, ' ', 0),
