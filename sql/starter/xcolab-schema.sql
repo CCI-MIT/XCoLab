@@ -12,7 +12,7 @@ CREATE TABLE `activities_ActivityEntry` (
   `activityEntryName` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`activityEntryId`),
   KEY `activityEntry_memberId` (`memberId`),
-  KEY `activityEntry_createDate` (`createDate`),
+  KEY `activityEntry_createDate` (`createDate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_ProposalVote` (
