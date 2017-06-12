@@ -248,6 +248,13 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   }
 }
 
+.c-Header__menu__right__displayName {
+  display: inline-block;
+  max-width: 150px;
+  text-align: right;
+  vertical-align: middle;
+}
+
 .c-Header__search__pop { //.searchpop
   position: absolute;
   top: 11px;
