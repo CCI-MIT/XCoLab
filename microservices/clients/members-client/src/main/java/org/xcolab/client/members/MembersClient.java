@@ -16,7 +16,6 @@ import org.xcolab.client.members.pojo.TokenValidity;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.util.http.ServiceRequestUtils;
-import org.xcolab.util.http.caching.CacheKey;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
@@ -63,9 +62,11 @@ public final class MembersClient {
                 .queryParam("sort", "screenName")
                 .execute();
     }
+
     public static List<Member> listAllMembers() {
         return listMembers(null, null, null, null, true, 0, Integer.MAX_VALUE);
     }
+
     public static List<Member> listMembers(String categoryFilterValue,
             String screenNameFilterValue, String emailFilterValue, String sortField,
             boolean ascOrder, int firstMember, int lastMember) {
@@ -76,36 +77,29 @@ public final class MembersClient {
                 .optionalQueryParam("partialEmail", emailFilterValue)
                 .optionalQueryParam("roleName", categoryFilterValue);
 
-        String sortFieldContent = "";
         if (sortField != null && !sortField.isEmpty()) {
             final String prefix = (ascOrder) ? ("") : ("-");
 
             switch (sortField) {
-                case "USER_NAME": sortFieldContent = prefix + "screenName";
+                case "USER_NAME":
+                    memberListQuery.queryParam("sort", prefix + "screenName");
                     break;
-                case "MEMBER_SINCE": sortFieldContent = prefix + "createDate";
+                case "MEMBER_SINCE":
+                    memberListQuery.queryParam("sort", prefix + "createDate");
                     break;
-                case "CATEGORY": sortFieldContent = prefix + "roleName";
+                case "CATEGORY":
+                    memberListQuery.queryParam("sort", prefix + "roleName");
                     break;
-                case "ACTIVITY": sortFieldContent = prefix + "activityCount";
+                case "ACTIVITY":
+                    memberListQuery.queryParam("sort", prefix + "activityCount");
                     break;
-                case "POINTS": sortFieldContent = prefix + "points";
+                case "POINTS":
+                    memberListQuery.queryParam("sort", prefix + "points");
                     break;
                 default:
             }
-
-            if(!sortFieldContent.isEmpty()) {
-                memberListQuery.queryParam("sort",sortFieldContent);
-            }
         }
-        memberListQuery
-                .withCache(CacheKeys.withClass(Member.class)
-                        .withParameter("partialName", screenNameFilterValue)
-                        .withParameter("partialEmail", emailFilterValue)
-                        .withParameter("roleName", categoryFilterValue)
-                        .withParameter("sort",sortFieldContent)
-                                .asList(),
-                        CacheName.MISC_MEDIUM);
+        memberListQuery.withCache(CacheName.MEMBER_LIST);
         return memberListQuery.execute();
     }
 
