@@ -21,7 +21,6 @@ import org.xcolab.service.utils.ControllerUtils;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -150,7 +149,7 @@ public class MembersController {
     }
 
     @PostMapping("registerFromSharedColab")
-    public Member registerFromSharedColab(@RequestBody Member member) throws NoSuchAlgorithmException {
+    public Member registerFromSharedColab(@RequestBody Member member) {
             return memberService.registerWithHashedPassword(member.getScreenName(), member.getHashedPassword(),
                     member.getEmailAddress(), member.getFirstName(), member.getLastName(),
                     member.getShortBio(), member.getCountry(), member.getFacebookId(),

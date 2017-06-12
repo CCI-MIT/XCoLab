@@ -56,9 +56,13 @@ public class MemberDaoImpl implements MemberDao {
         if (partialName != null || partialEmail != null) {
             Condition searchCondition = DSL.falseCondition();
             if (partialName != null) {
-                searchCondition = MEMBER.SCREEN_NAME.contains(partialName)
-                        .or(MEMBER.FIRST_NAME.contains(partialName))
-                        .or(MEMBER.LAST_NAME.contains(partialName));
+                String[] searchTerms = partialName.split("\\s");
+                for (String searchTerm : searchTerms) {
+                    searchCondition = searchCondition
+                            .or(MEMBER.SCREEN_NAME.contains(searchTerm))
+                            .or(MEMBER.FIRST_NAME.contains(searchTerm))
+                            .or(MEMBER.LAST_NAME.contains(searchTerm));
+                }
             }
             if (partialEmail != null) {
                 searchCondition = searchCondition.or(MEMBER.EMAIL_ADDRESS.contains(partialEmail));
