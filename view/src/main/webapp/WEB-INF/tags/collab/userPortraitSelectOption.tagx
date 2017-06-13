@@ -10,7 +10,7 @@
 
 
 	<option value="${userId}" width="${width}" height="${height}" css="${cssClass}"
-			data-imagesrc="${_staticImagePath}/image/user_male_portrait?screenName=${screenName}&amp;companyId=10112&amp;portraitId=${portraitId}"
+			data-imagesrc="${_uploadedImageFolder}/user_male_portrait?screenName=${screenName}&amp;companyId=10112&amp;portraitId=${portraitId}"
 			data-description="${dataDescription}">
 			${fullName} (${screenName})
 	</option>

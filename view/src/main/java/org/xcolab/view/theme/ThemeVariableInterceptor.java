@@ -78,14 +78,14 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
                     scriptDomain + activeTheme.getJsPath());
             modelAndView.addObject("_themeImageFolder",
                     themeImageDomain + activeTheme.getImagePath());
+            modelAndView.addObject("_uploadedImageFolder",
+                    userImageDomain + "/image");
             modelAndView.addObject("_logoPath",
                     themeImageDomain + activeTheme.getLogoPath());
             modelAndView.addObject("_logoPathSocial",
                     themeImageDomain + activeTheme.getLogoPathSocial());
             modelAndView.addObject("_logoPathBig",
                     themeImageDomain + activeTheme.getLogoPathBig());
-            modelAndView.addObject("_staticImagePath",
-                    userImageDomain + "/images");
 
             modelAndView.addObject("_contestPages", ContestClientUtil.getActiveContestTypes());
             modelAndView.addObject("_colabName", ConfigurationAttributeKey.COLAB_NAME.get());

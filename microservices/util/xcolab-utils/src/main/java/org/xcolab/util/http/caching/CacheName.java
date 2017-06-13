@@ -19,7 +19,7 @@ public enum CacheName {
     CONFIGURATION(75, CacheDuration.DAILY),
     MEMBER_RATING(100, CacheDuration.SHORT),
     MEMBER(100, CacheDuration.SHORT),
-    MEMBERLIST(100, CacheDuration.MEDIUM),
+    MEMBER_LIST(20, CacheDuration.MEDIUM),
     ROLES(100, CacheDuration.MEDIUM),
     CONTENT(50, CacheDuration.DAILY)
     ;

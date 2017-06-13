@@ -26,7 +26,7 @@
     <!--@elvariable id="_logoPath" type="java.lang.String"-->
     <!--@elvariable id="_logoPathSocial" type="java.lang.String"-->
     <!--@elvariable id="_logoPathBig" type="java.lang.String"-->
-    <!--@elvariable id="_staticImagePath" type="java.lang.String"-->
+    <!--@elvariable id="_uploadedImageFolder" type="java.lang.String"-->
 
 
     <!--@elvariable id="_contestPages" type="java.util.List<org.xcolab.client.contest.pojo.ContestType>"-->
@@ -223,7 +223,12 @@
             <c:when test="${_isLoggedIn}">
                 <ul id="c-Header__menu__right">
                     <li class="user ${_member.screenName.length() > 22 ? 'small' : ''}">
-                        <a href="javascript:;" id="userPopupTrigger" >${_member.displayName} <img src="${_staticImagePath}/image/user_male_portrait?userId=${_member.userId}&amp;screenName=${_member.screenName}&amp;portraitId=${_member.portraitId}" width="24" height="25" alt="${_member.screenName}" /></a>
+                        <a href="javascript:;" id="userPopupTrigger" >
+                            <span class="c-Header__menu__right__displayName">
+                                ${_member.displayName}
+                            </span>
+                            <img src="${_uploadedImageFolder}/user_male_portrait?userId=${_member.userId}&amp;screenName=${_member.screenName}&amp;portraitId=${_member.portraitId}" width="24" height="25" alt="${_member.screenName}" />
+                        </a>
                         <c:if test="${_unreadMessages > 0}">
                             <div class="c-Header__user__notification c-Header__user__notification__top">
                                 ${_unreadMessages}
@@ -236,7 +241,7 @@
 
                 <!-- USER POPUP -->
                 <div class="c-Header__user__pop" id="userPopupContainer">
-                    <div class="c-Header__user__top"><img src="${_staticImagePath}/image/user_male_portrait?userId=${_member.userId}&amp;screenName=${_member.screenName}&amp;portraitId=${_member.portraitFileEntryId}" width="24" height="25" alt="${_member.screenName}" /></div>
+                    <div class="c-Header__user__top"><img src="${_uploadedImageFolder}/user_male_portrait?userId=${_member.userId}&amp;screenName=${_member.screenName}&amp;portraitId=${_member.portraitFileEntryId}" width="24" height="25" alt="${_member.screenName}" /></div>
                     <div class="c-Header__user__box">
                         <ul>
                             <li><a href="/members/profile/${_member.userId}">My profile</a></li>

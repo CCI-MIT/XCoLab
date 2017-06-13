@@ -102,7 +102,7 @@
 
 		<div class="users-pagination">
 			<c:if test="${pagesCount gt 0}">
-				<table>
+				<table class="pagination">
 					<tbody>
 					<tr>
 						<td>
@@ -127,7 +127,7 @@
 								<span>
 									<c:set var="pageURL" value="/members?page=${p}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;sortFilterPage.filter=${sortFilterPage.filter}" />
 
-									<a href="${pageURL}">${p}</a>&#160;
+									<a class="${p == pageNumber ? 'c' : ''}" href="${pageURL}">${p}</a>&#160;
 								</span>
 							</c:forEach>
 
