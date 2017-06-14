@@ -130,6 +130,12 @@ public class CreateProposalController extends BaseProposalsController {
         model.addAttribute("isEditingProposal", true);
         model.addAttribute("showProposalEditHelpText",
                 ConfigurationAttributeKey.CONTESTS_SHOW_PROPOSAL_EDIT_HELP_TEXT.get());
+
+        model.addAttribute("saveButtonText",
+                ConfigurationAttributeKey.PROPOSALS_SAVE_BUTTON_TEXT.get());
+        model.addAttribute("saveHelpText",
+                ConfigurationAttributeKey.PROPOSALS_SAVE_HELP_TEXT.get());
+
         ContestType contestType = ProposalsContextUtil.getContestType(request);
         final String seoText = "Create " + contestType.getProposalName() + " in " + contest.getContestShortName();
         setSeoTexts(request, seoText, null, null);

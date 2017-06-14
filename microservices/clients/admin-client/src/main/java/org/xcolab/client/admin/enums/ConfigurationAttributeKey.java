@@ -238,6 +238,16 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newStringAttribute("MEMBERS_DEFAULT_SORT_COLUMN")
                     .defaultValue("").build();
 
+    // Proposal feature flags
+    public static final AttributeGetter<String> PROPOSALS_SAVE_BUTTON_TEXT =
+            ConfigurationAttributes.newStringAttribute("PROPOSALS_SAVE_BUTTON_TEXT")
+                    .defaultValue("SAVE and PUBLISH changes")
+                    .build();
+    public static final AttributeGetter<String> PROPOSALS_SAVE_HELP_TEXT =
+            ConfigurationAttributes.newStringAttribute("PROPOSALS_SAVE_HELP_TEXT")
+                    .defaultValue((String) null)
+                    .build();
+
     //Misc feature flags
     public static final AttributeGetter<Boolean> BETA_RIBBON_SHOW =
             ConfigurationAttributes.newBooleanAttribute("BETA_RIBBON_SHOW")
