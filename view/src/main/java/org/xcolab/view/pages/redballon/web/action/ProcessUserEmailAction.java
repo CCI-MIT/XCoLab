@@ -1,12 +1,10 @@
 package org.xcolab.view.pages.redballon.web.action;
 
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
@@ -31,7 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-
 @Controller
 public class ProcessUserEmailAction {
 
@@ -47,8 +44,9 @@ public class ProcessUserEmailAction {
     public static final String URLPLACEHOLDER = "URLPLACEHOLDER";
 
     @PostMapping("/redballoon/sendEmail")
-    public void processUserEmail(HttpServletRequest request, HttpServletResponse response, Model model,
-                                 @Valid UserEmailBean userEmailBean, BindingResult bindingResult) throws IOException, AddressException {
+    public void processUserEmail(HttpServletRequest request, HttpServletResponse response,
+            Model model, @Valid UserEmailBean userEmailBean, BindingResult bindingResult)
+            throws IOException, AddressException {
 
         if (userEmailBean != null && !bindingResult.hasErrors()) {
             BalloonUserTracking but = BalloonUtils.getBalloonUserTracking(request, response, null, null, null);
@@ -78,12 +76,13 @@ public class ProcessUserEmailAction {
         }
     }
 
-
-    private void sendNotificationEmail(HttpServletRequest request, BalloonUserTracking but, BalloonLink link) throws AddressException {
+    private void sendNotificationEmail(HttpServletRequest request,
+            BalloonUserTracking but, BalloonLink link)
+            throws AddressException {
 
         HttpSession session = request.getSession(false);
 
-        if (session.getAttribute(EMAIL_SENT)==null) {
+        if (session.getAttribute(EMAIL_SENT) == null) {
             return;
         }
 
@@ -96,15 +95,13 @@ public class ProcessUserEmailAction {
             String messageSubject = text.getEmailSubjectTemplate();
             String messageBody = text.getEmailTemplate().replaceAll(URLPLACEHOLDER, BalloonUtils.getBalloonUrlForLink(request, link));
 
-
-
             String mailAdr = session.getAttribute(USER_EMAIL) == null ? but.getEmail() : session.getAttribute(USER_EMAIL).toString();
 
             if (StringUtils.isBlank(mailAdr)) {
                 return;
             }
 
-            String[] recipients = new String[]{mailAdr};
+            String[] recipients = {mailAdr};
             List<String> addressTo = new ArrayList<>();
             Collections.addAll(addressTo, recipients);
 
@@ -115,7 +112,6 @@ public class ProcessUserEmailAction {
         } catch (BalloonUserTrackingNotFound ignored) {
 
         }
-
 
     }
 

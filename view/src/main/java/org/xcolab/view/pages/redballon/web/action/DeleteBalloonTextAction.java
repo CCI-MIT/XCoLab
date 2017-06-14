@@ -2,7 +2,6 @@ package org.xcolab.view.pages.redballon.web.action;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.balloons.BalloonsClient;
@@ -18,6 +17,5 @@ public class DeleteBalloonTextAction {
 		BalloonsClient.deleteBalloonText(balloonTextId);
 		return "redballoon/view";
 	}
-
 
 }

@@ -4,9 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -28,15 +27,14 @@ import javax.validation.Valid;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-
 @Controller
 public class BalloonController {
 
-    @RequestMapping(value ={"/redballoon/{context}/link/{linkUuid}","/{context}"},  method = RequestMethod.GET)
-    public String showBalloon(Model model, HttpServletRequest request, HttpServletResponse response,
-                              @PathVariable(required = false) String linkUuid,
-                              @PathVariable(required = false) String context,
-                              @Valid UserEmailBean userEmailBean, BindingResult bindingResult)
+    @GetMapping({"/redballoon/{context}/link/{linkUuid}","/{context}"})
+    public String showBalloon(HttpServletRequest request, HttpServletResponse response, Model model,
+            @PathVariable(required = false) String linkUuid,
+            @PathVariable(required = false) String context,
+            @Valid UserEmailBean userEmailBean, BindingResult bindingResult)
             throws IOException, ParserConfigurationException {
 
         BalloonUserTracking but = null;
@@ -64,7 +62,7 @@ public class BalloonController {
             // user wasn't following any link so we need to create new root of a reference tree
             but = BalloonUtils.getBalloonUserTracking(request, response, null, null, null);
         }
-        if (but.getBalloonTextId()!=null && but.getBalloonTextId() > 0) {
+        if (but.getBalloonTextId() != null && but.getBalloonTextId() > 0) {
             BalloonText text;
             try {
                 text = BalloonsClient.getBalloonText(but.getBalloonTextId());

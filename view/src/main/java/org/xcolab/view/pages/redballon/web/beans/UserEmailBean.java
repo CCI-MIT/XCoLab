@@ -30,6 +30,4 @@ public class UserEmailBean {
 		this.acceptTos = acceptTos;
 	}
 
-	
-
 }

@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.redballon.utils;
 
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,31 +20,29 @@ import org.xcolab.view.pages.loginregister.BalloonCookie;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class BalloonUtils {
-	
-	private static final Random rand = new Random();
-	private final static String SHARE_LINK_PATTERN = "%s/redballoon/socialnetworkprize2016/link/%s";
-	private final static Logger _log = LoggerFactory.getLogger(BalloonUtils.class);
-	
+
+    private final static Logger _log = LoggerFactory.getLogger(BalloonUtils.class);
+
+    private final static String SHARE_LINK_PATTERN = "%s/redballoon/socialnetworkprize2016/link/%s";
+
 	public static BalloonUserTracking getBalloonUserTracking(HttpServletRequest request,
 			HttpServletResponse response, String parent, String linkuuid, String context) {
 		BalloonCookie cookie = BalloonCookie.fromCookieArray(request.getCookies());
-		
 
 		Member member = MemberAuthUtil.getMemberOrNull(request);
 		if (cookie.getUuid() == null) {
-                if (member !=null && member.getId_() > 0 ) {
-                    cookie.setUuid(member.getUuid());
-                }
-                else {
-                    cookie.setUuid(UUID.randomUUID().toString());
-                }
+            if (member !=null && member.getId_() > 0 ) {
+                cookie.setUuid(member.getUuid());
+            }
+            else {
+                cookie.setUuid(UUID.randomUUID().toString());
+            }
 
             response.addCookie(cookie.getHttpCookie());
 		}
@@ -56,10 +55,10 @@ public class BalloonUtils {
 			}
 		}
 		if (but == null) {
-			if (member !=null && member.getId_() > 0 ) {
+			if (member != null && member.getId_() > 0) {
 				List<BalloonUserTracking> buts = BalloonsClient
 						.getBalloonUserTrackingByEmail(member.getEmailAddress());
-				if (! buts.isEmpty()) {
+				if (!buts.isEmpty()) {
 					but = buts.get(0);
 					but.setUserId(member.getUserId());
 					BalloonsClient.updateBalloonUserTracking(but);
@@ -78,16 +77,14 @@ public class BalloonUtils {
 			but.setUserAgent(request.getHeader(HttpHeaders.USER_AGENT));
 			// populate GeoLocation data
 			try {
-				Location location = TrackingClient
-						.getLocationForIp(request.getRemoteAddr());
+				Location location = TrackingClient.getLocationForIp(request.getRemoteAddr());
 				if (location != null) {
 					but.setCity(location.getCity());
 					but.setCountry(location.getCountry());
 					but.setLatitude(location.getLatitude());
 					but.setLongitude(location.getLongitude());
 				}
-			}
-			catch (Throwable t) {
+			} catch (Throwable t) {
 				_log.error("Error when processing user location", t);
 			}
 
@@ -98,9 +95,9 @@ public class BalloonUtils {
 
 			// pick randomly balloon text to be displayed
 			List<BalloonText> texts = BalloonsClient.getAllEnabledBalloonTexts();
-			if (! texts.isEmpty()) {
-				but.setBalloonTextId(texts.get(rand.nextInt(texts.size())).getId_());
-			}else{
+			if (!texts.isEmpty()) {
+				but.setBalloonTextId(texts.get(RandomUtils.nextInt(0, texts.size())).getId_());
+			} else {
 				but.setBalloonTextId(0L);
 			}
 
