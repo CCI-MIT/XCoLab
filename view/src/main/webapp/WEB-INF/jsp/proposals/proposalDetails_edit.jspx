@@ -83,8 +83,10 @@
                     and <a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of use</a>.
                 </c:if>
 
-                <br/>Please note that you will be automatically logged out of your account after 2 hours (120 minutes).
-                Please save all ${fn:toLowerCase(contestType.proposalName)} content offline intermittently, and before clicking PUBLISH to avoid data loss.
+                <br/>
+                In the past, users have occasionally lost work while inputting text into this form.
+                To prevent this, we recommend that you either (a) prepare your text offline before copying and pasting it into the form or (b) use the SAVE button right after you begin and save frequently.
+                The system will log you out automatically after 2 hours, causing loss of any inputs not previously saved.
             </p>
         </div> <!-- /c-Headline -->
 
