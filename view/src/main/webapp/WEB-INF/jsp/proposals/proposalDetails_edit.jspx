@@ -174,17 +174,19 @@
                 <div class="notation">Note: If you enter a team name, it will replace the ${fn:toLowerCase(contestType.proposalName)} owner's name in the Author field.</div>
             </c:if>
 
-            <div class="addpropbox blue">
-                <label>
-                    <span><strong>${contestType.proposalName} image</strong><br />
-                    </span>
-                </label>
+            <c:if test="${showImageUpload}">
+                <div class="addpropbox blue">
+                    <label>
+                        <span>
+                            <strong>${contestType.proposalName} image</strong><br />
+                        </span>
+                    </label>
 
-                <form:hidden path="imageId" id="proposalImageId" />
-                <collab:imageUpload uniqueName="proposalImageUpload" imageIdInput="proposalImageId"
-                                    compactView="true" defaultImageId="${contest.defaultProposalLogoId}" defaultImage="PROPOSAL" buttonText="Upload an image" />
-            </div>
-
+                    <form:hidden path="imageId" id="proposalImageId" />
+                    <collab:imageUpload uniqueName="proposalImageUpload" imageIdInput="proposalImageId"
+                                        compactView="true" defaultImageId="${contest.defaultProposalLogoId}" defaultImage="PROPOSAL" buttonText="Upload an image" />
+                </div>
+            </c:if>
 
             <!-- legacy for old proposals-->
             <c:if test="${fn:length(proposal.description) gt 0}">

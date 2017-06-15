@@ -247,6 +247,10 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newStringAttribute("PROPOSALS_SAVE_HELP_TEXT")
                     .defaultValue((String) null)
                     .build();
+    public static final AttributeGetter<Boolean> PROPOSALS_SHOW_IMAGE_UPLOAD =
+            ConfigurationAttributes.newBooleanAttribute("PROPOSALS_SHOW_IMAGE_UPLOAD")
+                    .defaultValue(true)
+                    .build();
 
     //Misc feature flags
     public static final AttributeGetter<Boolean> BETA_RIBBON_SHOW =

@@ -131,6 +131,8 @@ public class CreateProposalController extends BaseProposalsController {
         model.addAttribute("showProposalEditHelpText",
                 ConfigurationAttributeKey.CONTESTS_SHOW_PROPOSAL_EDIT_HELP_TEXT.get());
 
+        model.addAttribute("showImageUpload",
+                ConfigurationAttributeKey.PROPOSALS_SHOW_IMAGE_UPLOAD.get());
         model.addAttribute("saveButtonText",
                 ConfigurationAttributeKey.PROPOSALS_SAVE_BUTTON_TEXT.get());
         model.addAttribute("saveHelpText",
