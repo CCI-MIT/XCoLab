@@ -54,20 +54,7 @@ public class MemberDaoImpl implements MemberDao {
         }
 
         if (partialName != null || partialEmail != null) {
-            Condition searchCondition = DSL.falseCondition();
-            if (partialName != null) {
-                String[] searchTerms = partialName.split("\\s");
-                for (String searchTerm : searchTerms) {
-                    searchCondition = searchCondition
-                            .or(MEMBER.SCREEN_NAME.contains(searchTerm))
-                            .or(MEMBER.FIRST_NAME.contains(searchTerm))
-                            .or(MEMBER.LAST_NAME.contains(searchTerm));
-                }
-            }
-            if (partialEmail != null) {
-                searchCondition = searchCondition.or(MEMBER.EMAIL_ADDRESS.contains(partialEmail));
-            }
-            query.addConditions(searchCondition);
+            addSearchCondition(partialName, partialEmail, query);
         }
         if (roleName != null) {
             query.addConditions(MEMBER_CATEGORY.DISPLAY_NAME.eq(roleName));
@@ -135,6 +122,24 @@ public class MemberDaoImpl implements MemberDao {
         return query.fetchInto(Member.class);
     }
 
+    private void addSearchCondition(String partialName, String partialEmail,
+            SelectQuery<?> query) {
+        Condition searchCondition = DSL.falseCondition();
+        if (partialName != null) {
+            String[] searchTerms = partialName.split("\\s");
+            for (String searchTerm : searchTerms) {
+                searchCondition = searchCondition
+                        .or(MEMBER.SCREEN_NAME.contains(searchTerm))
+                        .or(MEMBER.FIRST_NAME.contains(searchTerm))
+                        .or(MEMBER.LAST_NAME.contains(searchTerm));
+            }
+        }
+        if (partialEmail != null) {
+            searchCondition = searchCondition.or(MEMBER.EMAIL_ADDRESS.contains(partialEmail));
+        }
+        query.addConditions(searchCondition);
+    }
+
     @Override
     public List<Member> findByIp(String ip) {
         final SelectQuery<Record> query = dslContext.select()
@@ -164,13 +169,8 @@ public class MemberDaoImpl implements MemberDao {
                 .where(MEMBER.STATUS.eq(0))
                 .getQuery();
 
-        if (partialName != null) {
-            query.addConditions(MEMBER.SCREEN_NAME.contains(partialName)
-                    .or(MEMBER.FIRST_NAME.contains(partialName))
-                    .or(MEMBER.LAST_NAME.contains(partialName)));
-        }
-        if (partialEmail != null) {
-            query.addConditions(MEMBER.EMAIL_ADDRESS.contains(partialName));
+        if (partialName != null || partialEmail != null) {
+            addSearchCondition(partialName, partialEmail, query);
         }
         if (roleName != null) {
             query.addConditions(MEMBER_CATEGORY.DISPLAY_NAME.eq(roleName));
