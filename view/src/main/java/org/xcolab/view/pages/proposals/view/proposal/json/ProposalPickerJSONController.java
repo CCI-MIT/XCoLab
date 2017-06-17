@@ -15,7 +15,6 @@ import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.utils.picker.ProposalPickerFilterUtil;
 import org.xcolab.view.pages.proposals.utils.picker.ProposalPickerSortingUtil;
 import org.xcolab.view.pages.proposals.view.proposal.json.picker.ContestsResult;
-import org.xcolab.view.pages.proposals.view.proposal.json.picker.CountsResult;
 import org.xcolab.view.pages.proposals.view.proposal.json.picker.ProposalsResult;
 
 import java.io.IOException;
@@ -118,21 +117,40 @@ public class ProposalPickerJSONController {
      * This method is used to fill the counting bubbles for each tab
      */
     @GetMapping("proposals/proposalPickerCounter")
-    public CountsResult proposalPickerCounter(HttpServletRequest request,
+    public int proposalPickerCounter(HttpServletRequest request,
         HttpServletResponse response, @PathVariable String contestYear,
         @PathVariable String contestUrlName, @RequestParam String filterKey,
-        @RequestParam long sectionId) throws IOException {
+        @RequestParam long sectionId, @RequestParam Tab tab)
+            throws IOException {
         long memberId = MemberAuthUtil.getMemberId(request);
 
-        int numberOfProposals = ProposalPickerFilterUtil
-            .getFilteredAllProposals("", filterKey, sectionId, 0L, request).size();
-        int numberOfSubscriptionsSupporting = ProposalPickerFilterUtil
-            .getFilteredSubscribedSupportingProposalsForUser(memberId, filterKey, sectionId,
-                request).size();
-        int numberOfContests =
-            ProposalPickerFilterUtil.getTextFilteredContests(sectionId, "").size();
+        switch (tab) {
+            case ALL_CONTESTS:
+                return ProposalPickerFilterUtil.getTextFilteredContests(sectionId, "")
+                        .size();
+            case ALL_PROPOSALS:
+                return ProposalPickerFilterUtil.getFilteredAllProposals(
+                        "", filterKey, sectionId, 0L, request)
+                        .size();
+            case SUBSCRIBED_PROPOSALS:
+                return ProposalPickerFilterUtil.getFilteredSubscribedProposalsForUser(
+                        memberId, filterKey, sectionId, request)
+                        .size();
+            case SUPPORTED_PROPOSALS:
+                return ProposalPickerFilterUtil.getFilteredSupportingProposalsForUser(
+                        memberId, filterKey, sectionId, request)
+                        .size();
+            case SUBSCRIBED_SUPPORTED_PROPOSALS:
+                return ProposalPickerFilterUtil.getFilteredSubscribedSupportingProposalsForUser(
+                        memberId, filterKey, sectionId, request)
+                        .size();
+            default:
+                throw new IllegalArgumentException("Unknown tab: " + tab);
+        }
+    }
 
-        return new CountsResult(numberOfProposals, numberOfSubscriptionsSupporting,
-            numberOfContests);
+    public enum Tab {
+        ALL_CONTESTS, ALL_PROPOSALS, SUBSCRIBED_PROPOSALS, SUPPORTED_PROPOSALS,
+        SUBSCRIBED_SUPPORTED_PROPOSALS;
     }
 }

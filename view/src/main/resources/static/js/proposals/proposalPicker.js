@@ -25,7 +25,6 @@ function loadProposals(){
     spinner.spin(document.getElementById('proposalPicker_viewArea'));
     var URL = replaceURLPlaceholders(proposalPickerURL);
     $.getJSON(URL, { get_param: 'value' }, function(data) {
-        $('#numberOfProposals').html(data.totalCount);
     	$("#proposalPicker_proposalsContainer").empty();
         $('#proposalPickerTable').find('> tbody').empty();
         var even = true;
@@ -46,7 +45,6 @@ function loadContests(){
     
     $.getJSON(URL, { get_param: 'value' }, function(data) {
         contests = data.contests;
-        $('#numberOfContests').html(data.totalNumberOfContests);
         $('#proposalPickerTable').find('> tbody').empty();
         var even = true;
         var container = $("#proposalPicker_contestsContainer");
@@ -66,12 +64,19 @@ function loadContests(){
 
 /* Update the small badges holding the counter for each tab*/
 function updateTabRibbons(){
-    var URL = replaceURLPlaceholders(proposalPickerCounterURL);
+    $('#numberOfContests').html('');
+    $('#numberOfProposals').html('');
+    $('#numberOfSubscriptionsSupporting').html('');
 
-    $.getJSON(URL, { get_param: 'value' }, function(data) {
-        $('#numberOfContests').html(data.numberOfContests);
-        $('#numberOfProposals').html(data.numberOfProposals);
-        $('#numberOfSubscriptionsSupporting').html(data.numberOfSubscriptionsSupporting);
+    var URL = replaceURLPlaceholders(proposalPickerCounterURL);
+    $.get(URL, {tab: "ALL_CONTESTS"}, function(data) {
+        $('#numberOfContests').html(data);
+    });
+    $.get(URL, {tab: "ALL_PROPOSALS"}, function(data) {
+        $('#numberOfProposals').html(data);
+    });
+    $.get(URL, {tab: "SUBSCRIBED_SUPPORTED_PROPOSALS"}, function(data) {
+        $('#numberOfSubscriptionsSupporting').html(data);
     });
 }
 
@@ -98,7 +103,8 @@ function replaceURLPlaceholders(rawUrl){
 function proposalPickerTabSelected(element, type){
     proposalType = type;
     element.parent().parent().children().removeClass('active');
-    element.parent().addClass('active'); proposalPickerPage = 0;
+    element.parent().addClass('active');
+    proposalPickerPage = 0;
     // check if date should be displayed
     if (type == 'all'){
         $('#proposalPickerTable').find('> thead > tr > td:nth-child(3)').children().hide();
@@ -112,8 +118,7 @@ function proposalPickerTabSelected(element, type){
     	$("#proposalPickerTableContests").show();
         proposalsPickerProposalsContainer.find(".breadcrumb").show();
     	loadContests();
-    }
-    else {
+    } else {
     	contestPK = 0;
         proposalsPickerProposalsContainer.show();
     	$("#proposalPickerTableContests").hide();
