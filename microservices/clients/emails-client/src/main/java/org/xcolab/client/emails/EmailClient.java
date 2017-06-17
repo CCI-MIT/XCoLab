@@ -19,7 +19,6 @@ public final class EmailClient {
     }
 
     public static void sendEmail(String from, String to, String subject, String emailBody, Boolean isHtml, String replyTo, Long referenceId) {
-
         List<String> toAdd = new ArrayList<>();
         toAdd.add(to);
         sendEmail(from, toAdd, subject, emailBody, isHtml, replyTo,referenceId);

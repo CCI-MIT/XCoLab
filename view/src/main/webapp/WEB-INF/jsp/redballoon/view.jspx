@@ -9,7 +9,7 @@
 		<div class="balloonContainer">
 		${balloonText.textBeforeForm }
 
-		<form:form modelAttribute="userEmailBean" action="/redballoon/sendEmail" id="sendUserEmailForm" method="post">
+		<form:form modelAttribute="userEmailBean" id="sendUserEmailForm" method="post">
 
 			<div>
 				<form:checkbox path="acceptTos" />${balloonText.acceptTosText }<br />

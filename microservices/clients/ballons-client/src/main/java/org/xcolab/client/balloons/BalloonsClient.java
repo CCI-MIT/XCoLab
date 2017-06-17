@@ -1,6 +1,8 @@
 package org.xcolab.client.balloons;
 
-import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
+import org.xcolab.client.balloons.exceptions.BalloonLinkNotFoundException;
+import org.xcolab.client.balloons.exceptions.BalloonTextNotFoundException;
+import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFoundException;
 import org.xcolab.client.balloons.pojo.BalloonLink;
 import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
@@ -25,11 +27,11 @@ public final class BalloonsClient {
     private static final RestResource<BalloonText, Long> balloonTextResource = new RestResource1<>(
             trackingService, "balloonTexts", BalloonText.TYPES);
 
-    public static BalloonLink getBalloonLink(String uuid) throws BalloonUserTrackingNotFound {
+    public static BalloonLink getBalloonLink(String uuid) throws BalloonLinkNotFoundException {
         try {
             return balloonLinkResource.get(uuid).executeChecked();
         } catch (EntityNotFoundException e) {
-            throw new BalloonUserTrackingNotFound(
+            throw new BalloonLinkNotFoundException(
                     "BalloonLink " + uuid + " does not exist");
         }
     }
@@ -42,23 +44,23 @@ public final class BalloonsClient {
     }
 
     public static BalloonLink getBalloonLinkByMemberUuid(String memberUuid)
-            throws BalloonUserTrackingNotFound {
+            throws BalloonLinkNotFoundException {
         final BalloonLink balloonLink = balloonLinkResource.list()
                 .queryParam("memberUuid", memberUuid)
                 .executeWithResult().getFirstIfExists();
         if (balloonLink == null) {
-            throw new BalloonUserTrackingNotFound(
+            throw new BalloonLinkNotFoundException(
                     "BalloonLink with memberUuid " + memberUuid + " does not exist");
         }
         return balloonLink;
     }
 
     public static BalloonUserTracking getBalloonUserTracking(String uuid)
-            throws BalloonUserTrackingNotFound {
+            throws BalloonUserTrackingNotFoundException {
         try {
             return balloonUserTrackingResource.get(uuid).executeChecked();
         } catch (EntityNotFoundException e) {
-            throw new BalloonUserTrackingNotFound(
+            throw new BalloonUserTrackingNotFoundException(
                     "BalloonUserTracking " + uuid + " does not exist");
         }
     }
@@ -82,11 +84,11 @@ public final class BalloonsClient {
                 balloonUserTracking.getUuid_()).execute();
     }
 
-    public static BalloonText getBalloonText(Long id) throws BalloonUserTrackingNotFound {
+    public static BalloonText getBalloonText(Long id) throws BalloonTextNotFoundException {
         try {
             return balloonTextResource.get(id).executeChecked();
         } catch (EntityNotFoundException e) {
-            throw new BalloonUserTrackingNotFound(
+            throw new BalloonTextNotFoundException(
                     "BalloonText " + id + " does not exist");
         }
     }

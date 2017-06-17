@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.balloons.BalloonsClient;
-import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
+import org.xcolab.client.balloons.exceptions.BalloonTextNotFoundException;
 import org.xcolab.view.pages.redballon.web.beans.AddEditBalloonTextBean;
 
 @Controller
@@ -30,7 +30,7 @@ public class BalloonPreferencesController {
 			} else {
 				model.addAttribute("addEditBalloonText", new AddEditBalloonTextBean());
 			}
-		} catch(BalloonUserTrackingNotFound ignored) {
+		} catch(BalloonTextNotFoundException ignored) {
 
 		}
 		

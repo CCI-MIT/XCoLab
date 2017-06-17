@@ -11,9 +11,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"><!-- --></script>
 
 	<script>
-		if (window.location.toString() != '${shareLink}') {
-			window.location = '${shareLink}';
-		}
 		new Clipboard('#copyButton');
 	</script>
 

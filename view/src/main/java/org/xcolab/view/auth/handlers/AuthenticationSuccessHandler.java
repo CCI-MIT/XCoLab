@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import org.xcolab.client.balloons.BalloonsClient;
-import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
+import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFoundException;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -53,7 +53,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
                     BalloonsClient.updateBalloonUserTracking(but);
 
                 }
-            } catch (BalloonUserTrackingNotFound ignored) {
+            } catch (BalloonUserTrackingNotFoundException ignored) {
             }
         }
 
