@@ -137,6 +137,8 @@ public class CreateProposalController extends BaseProposalsController {
                 ConfigurationAttributeKey.PROPOSALS_SAVE_BUTTON_TEXT.get());
         model.addAttribute("saveHelpText",
                 ConfigurationAttributeKey.PROPOSALS_SAVE_HELP_TEXT.get());
+        model.addAttribute("proposalPickerDefaultTabIsContests",
+                ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS.get());
 
         ContestType contestType = ProposalsContextUtil.getContestType(request);
         final String seoText = "Create " + contestType.getProposalName() + " in " + contest.getContestShortName();

@@ -156,6 +156,8 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                     ConfigurationAttributeKey.PROPOSALS_SAVE_BUTTON_TEXT.get());
             model.addAttribute("saveHelpText",
                     ConfigurationAttributeKey.PROPOSALS_SAVE_HELP_TEXT.get());
+            model.addAttribute("proposalPickerDefaultTabIsContests",
+                    ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS.get());
 
             return "proposals/proposalDetails_edit";
         }

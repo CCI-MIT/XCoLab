@@ -1,7 +1,5 @@
 package org.xcolab.view.pages.proposals.view.proposal.json;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,12 +25,10 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalPickerJSONController {
 
-    private static final Logger _log = LoggerFactory.getLogger(ProposalPickerJSONController.class);
-
     @GetMapping("proposals/proposalPicker")
     public ProposalsResult proposalPicker(HttpServletRequest request, HttpServletResponse response,
         @PathVariable String contestYear, @PathVariable String contestUrlName,
-        @RequestParam(value = "type", required = false) String requestType,
+        @RequestParam(required = false) Tab tab,
         @RequestParam(value = "filterKey", required = false) String filterType,
         @RequestParam(required = false) String filterText,
         @RequestParam(required = false) int start,
@@ -45,30 +41,29 @@ public class ProposalPickerJSONController {
         List<Proposal> proposals;
         final long memberId = MemberAuthUtil.getMemberId(request);
 
-        switch (requestType.toUpperCase()) {
-            case "SUBSCRIPTIONSANDSUPPORTING":
+        switch (tab) {
+            case SUBSCRIBED_SUPPORTED_PROPOSALS:
                 proposals = ProposalPickerFilterUtil
                     .getFilteredSubscribedSupportingProposalsForUser(memberId, filterType,
                         sectionId, request);
                 break;
-            case "SUBSCRIPTIONS":
+            case SUBSCRIBED_PROPOSALS:
                 proposals = ProposalPickerFilterUtil
                     .getFilteredSubscribedProposalsForUser(memberId, filterType, sectionId,
                         request);
                 break;
-            case "SUPPORTING":
+            case SUPPORTED_PROPOSALS:
                 proposals = ProposalPickerFilterUtil
                     .getFilteredSupportingProposalsForUser(memberId, filterType, sectionId,
                         request);
                 break;
-            case "ALL":
-            case "CONTESTS":
+            case ALL_PROPOSALS:
+            case ALL_CONTESTS:
                 proposals = ProposalPickerFilterUtil
                     .getFilteredAllProposals(filterText, filterType, sectionId, contestPK, request);
                 break;
             default:
-                _log.error("Proposal picker was loaded with unknown requestType {}", requestType);
-                throw new InternalException("Unknown requestType " + requestType);
+                throw new InternalException("Unknown tab " + tab);
         }
 
         int totalCount = proposals.size();
@@ -88,7 +83,7 @@ public class ProposalPickerJSONController {
     public ContestsResult proposalPickerContests(HttpServletRequest request,
         HttpServletResponse response, @PathVariable String contestYear,
         @PathVariable String contestUrlName,
-        @RequestParam(value = "type", required = false) String requestType,
+        @RequestParam(required = false) Tab tab,
         @RequestParam(value = "filterKey", required = false) String filterType,
         @RequestParam(required = false) String filterText,
         @RequestParam(required = false) int start,
@@ -150,7 +145,10 @@ public class ProposalPickerJSONController {
     }
 
     public enum Tab {
-        ALL_CONTESTS, ALL_PROPOSALS, SUBSCRIBED_PROPOSALS, SUPPORTED_PROPOSALS,
-        SUBSCRIBED_SUPPORTED_PROPOSALS;
+        ALL_CONTESTS,
+        ALL_PROPOSALS,
+        SUBSCRIBED_PROPOSALS,
+        SUPPORTED_PROPOSALS,
+        SUBSCRIBED_SUPPORTED_PROPOSALS
     }
 }

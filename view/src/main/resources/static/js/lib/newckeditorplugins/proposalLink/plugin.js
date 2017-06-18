@@ -38,7 +38,8 @@ CKEDITOR.plugins.add( 'proposalLink', {
     	
     		editor.addCommand( 'proposalLink', new CKEDITOR.command( editor, {
     			exec: function() {
-    				pickProposal(sectionId, contestTypeNames[0], contestTypeNames[1], contestTypeNames[2], contestTypeNames[3]);
+    			    //TODO: this doesn't honor ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS
+    				pickProposal(sectionId, 'ALL_CONTESTS', contestTypeNames[0], contestTypeNames[1], contestTypeNames[2], contestTypeNames[3]);
     			}}));
     	}
     	

@@ -3,14 +3,13 @@
 	version="2.0">
 
 	<!--  Proposals Picker  -->
-	<c:set var="proposalPickerURL" value="${contest.contestLinkUrl}/proposals/proposalPicker?type=@@REPLACE-TYPE@@&amp;filterKey=@@REPLACE-FILTERKEY@@&amp;filterText=@@REPLACE-FILTERTEXT@@&amp;start=@@REPLACE-START@@&amp;end=@@REPLACE-END@@&amp;sortColumn=@@REPLACE-SORTCOLOMN@@&amp;sortOrder=@@REPLACE-SORTORDER@@&amp;sectionId=@@REPLACE-SECTIONID@@&amp;contestPK=@@REPLACE-CONTESTPK@@" />
+	<c:set var="proposalPickerURL" value="${contest.contestLinkUrl}/proposals/proposalPicker?tab=@@REPLACE-TAB@@&amp;filterKey=@@REPLACE-FILTERKEY@@&amp;filterText=@@REPLACE-FILTERTEXT@@&amp;start=@@REPLACE-START@@&amp;end=@@REPLACE-END@@&amp;sortColumn=@@REPLACE-SORTCOLOMN@@&amp;sortOrder=@@REPLACE-SORTORDER@@&amp;sectionId=@@REPLACE-SECTIONID@@&amp;contestPK=@@REPLACE-CONTESTPK@@" />
 
 	<c:set var="proposalPickerContestsURL"
-						 value="${contest.contestLinkUrl}/proposals/proposalPickerContests?type=@@REPLACE-TYPE@@&amp;filterKey=@@REPLACE-FILTERKEY@@&amp;filterText=@@REPLACE-FILTERTEXT@@&amp;start=@@REPLACE-START@@&amp;end=@@REPLACE-END@@&amp;contestSortColumn=@@REPLACE-CONTESTSORTCOLOMN@@&amp;sortOrder=@@REPLACE-SORTORDER@@&amp;sectionId=@@REPLACE-SECTIONID@@" />
-
+						 value="${contest.contestLinkUrl}/proposals/proposalPickerContests?tab=@@REPLACE-TAB@@&amp;filterKey=@@REPLACE-FILTERKEY@@&amp;filterText=@@REPLACE-FILTERTEXT@@&amp;start=@@REPLACE-START@@&amp;end=@@REPLACE-END@@&amp;contestSortColumn=@@REPLACE-CONTESTSORTCOLOMN@@&amp;sortOrder=@@REPLACE-SORTORDER@@&amp;sectionId=@@REPLACE-SECTIONID@@" />
 
 	<c:set var="proposalPickerCounterURL"
-		value="${contest.contestLinkUrl}/proposals/proposalPickerCounter?type=@@REPLACE-TYPE@@&amp;filterKey=@@REPLACE-FILTERKEY@@&amp;filterText=@@REPLACE-FILTERTEXT@@&amp;start=@@REPLACE-START@@&amp;end=@@REPLACE-END@@&amp;sortColumn=@@REPLACE-SORTCOLOMN@@&amp;sortOrder=@@REPLACE-SORTORDER@@&amp;sectionId=@@REPLACE-SECTIONID@@" />
+		value="${contest.contestLinkUrl}/proposals/proposalPickerCounter?filterKey=@@REPLACE-FILTERKEY@@&amp;filterText=@@REPLACE-FILTERTEXT@@&amp;sectionId=@@REPLACE-SECTIONID@@" />
 
 
 	<script>
@@ -18,7 +17,6 @@
 		var proposalPickerContestsURL = '${proposalPickerContestsURL}';
 		var proposalPickerCounterURL = '${proposalPickerCounterURL}';
 		var filterKey = 'ACCEPTALL';
-		var proposalType;
 	</script>
 
     <div id="proposalPickerModal" class="modal bs-Modal fade" tab-index="-1" role="dialog">
@@ -31,20 +29,25 @@
                 </div>
                 <div class="modal-body">
                     <div class="c-TabBar clearfix">
-                        <ul>
-                            <li class="c-TabBar__tab--first active"><a href="javascript:;"
-                                                                       onclick="proposalPickerTabSelected($(this),'contests');"> By <span class="contestTypeContestNames">Contest</span>
-                                <div class="c-TabBar__tab__count" id="numberOfContests">&#160;</div>
-                            </a></li>
-                            <li class="c-TabBar__tab"><a href="javascript:;"
-                                                         onclick="proposalPickerTabSelected($(this),'all');">All <span class="contestTypeProposalNamesPlural">Proposals</span>
-                                <div class="c-TabBar__tab__count" id="numberOfProposals">&#160;</div>
-                            </a></li>
-                            <li class="c-TabBar__tab--last"><a href="javascript:;"
-                                                               onclick="proposalPickerTabSelected($(this),'subscriptionsAndSupporting');">
-                                Supported or subscribed to
-                                <div class="c-TabBar__tab__count" id="numberOfSubscriptionsSupporting">&#160;</div>
-                            </a></li>
+                        <ul id="js-ProposalPicker__tabBar">
+                            <li class="c-TabBar__tab--first active" id="js-ProposalPicker__tabBar__ALL_CONTESTS">
+                                <a href="javascript:;" onclick="proposalPickerTabSelected(PICKER_TAB_ALL_CONTESTS);">
+                                    By <span class="contestTypeContestNames">Contest</span>
+                                    <div class="c-TabBar__tab__count" id="numberOfContests">&#160;</div>
+                                </a>
+                            </li>
+                            <li class="c-TabBar__tab" id="js-ProposalPicker__tabBar__ALL_PROPOSALS">
+                                <a href="javascript:;" onclick="proposalPickerTabSelected(PICKER_TAB_ALL_PROPOSALS);">
+                                    All <span class="contestTypeProposalNamesPlural">Proposals</span>
+                                    <div class="c-TabBar__tab__count" id="numberOfProposals">&#160;</div>
+                                </a>
+                            </li>
+                            <li class="c-TabBar__tab--last" id="js-ProposalPicker__tabBar__SUBSCRIPTIONS_AND_SUPPORTING">
+                                <a href="javascript:;" onclick="proposalPickerTabSelected(PICKER_TAB_SUBSCRIPTIONS_AND_SUPPORTING);">
+                                    Supported or subscribed to
+                                    <div class="c-TabBar__tab__count" id="numberOfSubscriptionsSupporting">&#160;</div>
+                                </a>
+                            </li>
                         </ul>
                     </div>
 

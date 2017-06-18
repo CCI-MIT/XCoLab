@@ -251,6 +251,10 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("PROPOSALS_SHOW_IMAGE_UPLOAD")
                     .defaultValue(true)
                     .build();
+    public static final AttributeGetter<Boolean> PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS =
+            ConfigurationAttributes.newBooleanAttribute("PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS")
+                    .defaultValue(true)
+                    .build();
 
     //Misc feature flags
     public static final AttributeGetter<Boolean> BETA_RIBBON_SHOW =

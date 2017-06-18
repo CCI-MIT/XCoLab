@@ -87,7 +87,9 @@
                         (<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), false);">remove</a>)</span><br />
                     </c:otherwise>
                 </c:choose>
-                <a class="c-Button__primary" href="javascript:;" onclick="pickProposal(${section.sectionDefinitionId}, '${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}');">
+                <a class="c-Button__primary" href="javascript:;" onclick="pickProposal(${section.sectionDefinitionId},
+                        ${proposalPickerDefaultTabIsContests ? 'PICKER_TAB_ALL_CONTESTS' : 'PICKER_TAB_ALL_PROPOSALS'},
+                        '${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}');">
                     Select ${section.proposalNames}
                 </a>
             </c:when>
@@ -102,7 +104,9 @@
                         </li>
                 	</c:forEach>
                 </ul>
-                <a class="c-Button__primary" href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId}, '${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}');">
+                <a class="c-Button__primary" href="javascript:;" onclick="pickProposalList(${section.sectionDefinitionId},
+                        ${proposalPickerDefaultTabIsContests ? 'PICKER_TAB_ALL_CONTESTS' : 'PICKER_TAB_ALL_PROPOSALS'},
+                        '${section.proposalNames}', '${section.proposalNamesPlural}', '${section.contestNames}', '${section.contestNamesPlural}');">
                     Edit ${section.proposalNames} list
                 </a>
             </c:when>

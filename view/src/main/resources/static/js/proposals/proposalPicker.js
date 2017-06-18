@@ -8,6 +8,11 @@ var pickMultipleProposals = false;
 var contestPK = 0;
 var contests = [];
 var pickedProposals = [];
+var pickerTab;
+
+var PICKER_TAB_ALL_PROPOSALS = 'ALL_PROPOSALS';
+var PICKER_TAB_ALL_CONTESTS = 'ALL_CONTESTS';
+var PICKER_TAB_SUBSCRIPTIONS_AND_SUPPORTING = 'SUBSCRIBED_SUPPORTED_PROPOSALS';
 
 var loadingWheelOpts = {
     lines: 15, // The number of lines to draw
@@ -82,7 +87,7 @@ function updateTabRibbons(){
 
 /* Replace the URL placeholders with actual values */
 function replaceURLPlaceholders(rawUrl){
-    var URL = rawUrl.replace('@@REPLACE-TYPE@@', proposalType)
+    var URL = rawUrl.replace('@@REPLACE-TAB@@', pickerTab)
                     .replace('@@REPLACE-FILTERKEY@@', filterKey);
     var $propSearch = $('#prop-search');
     if ($propSearch.val() != 'Filter') {
@@ -100,20 +105,19 @@ function replaceURLPlaceholders(rawUrl){
 }
 
 /* Proposal picker tab selected (click) */
-function proposalPickerTabSelected(element, type){
-    proposalType = type;
-    element.parent().parent().children().removeClass('active');
-    element.parent().addClass('active');
+function proposalPickerTabSelected(tab){
+    pickerTab = tab;
+    $('#js-ProposalPicker__tabBar').children().removeClass('active');
+    $('#js-ProposalPicker__tabBar__' + tab).addClass('active');
     proposalPickerPage = 0;
     // check if date should be displayed
-    if (type == 'all'){
+    if (tab == PICKER_TAB_ALL_PROPOSALS){
         $('#proposalPickerTable').find('> thead > tr > td:nth-child(3)').children().hide();
     } else {
         $('#proposalPickerTable').find('> thead > tr > td:nth-child(3) > a').show();
     }
     var proposalsPickerProposalsContainer = $("#proposalsPicker_proposalsContainer");
-    if (type == 'contests') {
-
+    if (tab == PICKER_TAB_ALL_CONTESTS) {
         proposalsPickerProposalsContainer.hide();
     	$("#proposalPickerTableContests").show();
         proposalsPickerProposalsContainer.find(".breadcrumb").show();
@@ -143,7 +147,7 @@ function initializePickedProposals() {
 
 
 /* Pick just a single proposal */
-function pickProposal(sectionId, proposalNames, proposalNamesPlural, contestNames, contestNamesPlural) {
+function pickProposal(sectionId, defaultTab, proposalNames, proposalNamesPlural, contestNames, contestNamesPlural) {
     currentSectionId = sectionId;
     initializePickedProposals();
     replaceContestTypeNameVariables(proposalNames, proposalNamesPlural, contestNames, contestNamesPlural);
@@ -152,11 +156,11 @@ function pickProposal(sectionId, proposalNames, proposalNamesPlural, contestName
     updateTabRibbons();
     var popupProposalPicker = $("#proposalPickerModal");
     popupProposalPicker.modal();
-    proposalPickerTabSelected(popupProposalPicker.find('> div > .prop-tabs > ul > li:first > a'),'contests');
+    proposalPickerTabSelected(defaultTab);
 }
 
 /* Pick a list of proposals */
-function pickProposalList(sectionId, proposalNames, proposalNamePlural, contestNames, contestNamesPlural) {
+function pickProposalList(sectionId, defaultTab, proposalNames, proposalNamePlural, contestNames, contestNamesPlural) {
     currentSectionId = sectionId;
     initializePickedProposals();
     replaceContestTypeNameVariables(proposalNames, proposalNamePlural, contestNames, contestNamesPlural);
@@ -165,7 +169,7 @@ function pickProposalList(sectionId, proposalNames, proposalNamePlural, contestN
     updateTabRibbons();
     var popupProposalPicker = $("#proposalPickerModal");
     popupProposalPicker.modal();
-    proposalPickerTabSelected(popupProposalPicker.find('> div > .prop-tabs > ul > li:first > a'),'contests');
+    proposalPickerTabSelected(defaultTab);
 }
 
 function replaceContestTypeNameVariables(proposalNames, proposalNamesPlural, contestNames, contestNamesPlural) {
