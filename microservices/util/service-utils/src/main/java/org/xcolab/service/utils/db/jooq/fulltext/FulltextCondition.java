@@ -36,6 +36,7 @@ public class FulltextCondition extends CustomCondition {
     private QueryPart delegate(Configuration configuration) {
         switch (configuration.dialect().family()) {
             case MYSQL:
+            case MARIADB:
                 StringBuilder sql = new StringBuilder("MATCH (");
                 boolean isFirst = true;
                 for (Field<?> field : fields) {
@@ -54,7 +55,8 @@ public class FulltextCondition extends CustomCondition {
                 sql.append("')");
                 return DSL.condition(sql.toString());
             default:
-                throw new UnsupportedOperationException("Dialect not supported");
+                throw new UnsupportedOperationException("Dialect not supported: "
+                        + configuration.dialect());
         }
     }
 }
