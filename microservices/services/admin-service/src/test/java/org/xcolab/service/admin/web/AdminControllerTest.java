@@ -7,8 +7,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +78,7 @@ public class AdminControllerTest {
     private AdminController controller;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
 
@@ -91,18 +89,14 @@ public class AdminControllerTest {
 
 
         Mockito.when(configurationAttributeDao.getConfigurationAttribute(anyString()))
-            .thenAnswer(new Answer<Optional<ConfigurationAttribute>>() {
-                @Override
-                public Optional<ConfigurationAttribute> answer(InvocationOnMock invocation)
-                    throws Throwable {
-                    if("ACTIVE_THEMEZ".equals(invocation.getArguments()[0])){
-                        return Optional.of(getConfigAttribute());
-                    }else{
-                        return Optional.empty();
-                    }
-
-
+            .thenAnswer(invocation -> {
+                if("ACTIVE_THEMEZ".equals(invocation.getArguments()[0])){
+                    return Optional.of(getConfigAttribute());
+                }else{
+                    return Optional.empty();
                 }
+
+
             });
 
         //.thenAnswer( Optional.of(getConfigAttribute()));
@@ -121,7 +115,7 @@ public class AdminControllerTest {
     @Autowired
     void setConverters(HttpMessageConverter<?>[] converters) {
 
-        this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream()
+        this.mappingJackson2HttpMessageConverter = Arrays.stream(converters)
             .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
             .findAny()
             .orElse(null);
@@ -152,7 +146,6 @@ public class AdminControllerTest {
     @Test
     public void shouldCreateNewConfigurationAttributeInPost() throws Exception {
 
-
         ConfigurationAttribute ca = getConfigAttribute();
         this.mockMvc.perform(
                 post("/attributes")
@@ -177,7 +170,7 @@ public class AdminControllerTest {
     }
 
 
-    private Notification getNotification(Long id ){
+    private Notification getNotification(Long id) {
         Notification notification = new Notification();
         notification.setBeginTime(new Date());
         Calendar cal = Calendar.getInstance();
@@ -191,8 +184,9 @@ public class AdminControllerTest {
 
     @Test
     public void shouldCreateAndDeleteNotificationInPost() throws Exception {
+        //TODO: this test does a lot - not clear what it's testing
 
-        Notification notification = getNotification(123l);
+        Notification notification = getNotification(1L);
         this.mockMvc.perform(
             get("/notifications/")
                 .contentType(contentType).accept(contentType)
@@ -200,6 +194,7 @@ public class AdminControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray())
             .andExpect(content().contentType(contentType));
+
         this.mockMvc.perform(
             post("/notifications/")
                 .contentType(contentType).accept(contentType)
@@ -215,7 +210,7 @@ public class AdminControllerTest {
             .andExpect(content().contentType(contentType));
 
         this.mockMvc.perform(
-            delete("/notifications/"+ notification.getNotificationId())
+            delete("/notifications/" + notification.getNotificationId())
                 .contentType(contentType).accept(contentType)
                 .content(objectMapper.writeValueAsString(notification)))
             .andExpect(status().isOk());
