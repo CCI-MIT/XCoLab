@@ -348,8 +348,16 @@
         function saveIfValid() {
             if(jQuery("#proposalPitchInput").length ==1 ){
                 if(jQuery("#proposalPitchInput").val() == 0) {
-                    noty({text: 'The "pitch" field is required. Please enter a short (up to 140 character) message that conveys the main idea of your proposal.', type: 'error'});
+                    noty({text: 'The "pitch" field is required. Please enter a short (up to 140 character) message that conveys the main idea of your proposal.', type: 'error',timeout: 10000,});
                     jQuery("#proposalPitchInput").focus();
+                    enableButtons();
+                    return;
+                }
+            }
+            if(jQuery("#proposalName").length ==1 ){
+                if(jQuery("#proposalName").val() == 0) {
+                    noty({text: 'The "title" field is required. It\'s the first thing most people will see, so you\'ll want to make it descriptive and engaging.', type: 'error',timeout: 10000,});
+                    jQuery("#proposalName").focus();
                     enableButtons();
                     return;
                 }
