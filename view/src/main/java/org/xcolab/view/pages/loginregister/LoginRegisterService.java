@@ -11,7 +11,7 @@ import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.balloons.BalloonsClient;
-import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
+import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFoundException;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.LockoutLoginException;
@@ -85,7 +85,7 @@ public class LoginRegisterService {
                 but.setRegistrationDate(new Timestamp(new Date().getTime()));
                 but.setUserId(member.getId_());
                 BalloonsClient.updateBalloonUserTracking(but);
-            } catch (BalloonUserTrackingNotFound e) {
+            } catch (BalloonUserTrackingNotFoundException e) {
                 _log.error("Can't find balloon user tracking for uuid: {}",
                         balloonCookie.getUuid());
             }

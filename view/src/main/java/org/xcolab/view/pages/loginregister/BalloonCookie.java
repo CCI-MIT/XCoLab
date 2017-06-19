@@ -1,49 +1,41 @@
 package org.xcolab.view.pages.loginregister;
 
-import java.io.IOException;
+import org.apache.commons.lang3.StringUtils;
+
+import org.xcolab.util.exceptions.InternalException;
+
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Arrays;
+import java.util.Optional;
 
 import javax.servlet.http.Cookie;
 
 public class BalloonCookie implements Serializable {
-    public static final String COOKIE_NAME = "climatecolabBalloonCookie2016";
+
+    //TODO: include year?
+    private static final String COOKIE_NAME = "xcolabBalloonCookie";
 
     private static final long serialVersionUID = 1L;
     private String uuid;
-    private String extraDataLogged;
 
-    public BalloonCookie() { }
-
-    public BalloonCookie(BalloonCookie bc) {
-        if (bc != null) {
-            setUuid(bc.uuid);
-            extraDataLogged = bc.extraDataLogged;
-        }
-    }
+    private BalloonCookie() { }
 
     public static BalloonCookie fromCookieArray(Cookie[] cookies) {
         if (cookies == null) {
             return new BalloonCookie();
         }
-        for (Cookie c : cookies) {
-            if (c.getName().equals(COOKIE_NAME)) {
-                BalloonCookie bc = new BalloonCookie();
-                try {
-                    String[] vals = URLDecoder.decode(c.getValue(), "UTF-8").split("\\|");
-                    if (vals.length > 0) {
-                        bc.uuid = vals[0];
-                        if (vals.length > 1) {
-                            bc.extraDataLogged = vals[1];
-                        }
-
-                        return bc;
-                    }
-                } catch (IOException e) {
-                    //
-                }
+        final Optional<Cookie> cookieOptional = Arrays.stream(cookies)
+                .filter(c -> c.getName().equals(COOKIE_NAME))
+                .findFirst();
+        if (cookieOptional.isPresent()) {
+            BalloonCookie bc = new BalloonCookie();
+            String stringUuid = decodeValue(cookieOptional.get().getValue());
+            if (StringUtils.isNotEmpty(stringUuid)) {
+                bc.uuid = stringUuid;
+                return bc;
             }
         }
         return new BalloonCookie();
@@ -63,33 +55,36 @@ public class BalloonCookie implements Serializable {
         if (uuid != null && !uuid.equals("null") && !uuid.equals("")) {
             this.uuid = uuid;
         } else {
-            uuid = "";
+            this.uuid = "";
         }
     }
 
-    /**
-     * convenience method for liferay
-     */
-    public String getCookieName() {
-        return COOKIE_NAME;
-    }
-
     public Cookie getHttpCookie() {
-        Cookie cookie = new Cookie(COOKIE_NAME, toString());
+        Cookie cookie = new Cookie(COOKIE_NAME, encodeValue(uuid));
         cookie.setMaxAge(Integer.MAX_VALUE);
         cookie.setPath("/");
-
         return cookie;
+    }
+
+    private static String encodeValue(String value) {
+        try {
+            final String stringValue = value == null ? "" : value;
+            return URLEncoder.encode(stringValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new InternalException(e);
+        }
+    }
+
+    private static String decodeValue(String encodedValue) {
+        try {
+            return URLDecoder.decode(encodedValue, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new InternalException(e);
+        }
     }
 
     @Override
     public String toString() {
-        try {
-            return URLEncoder
-                    .encode((uuid == null ? "" : uuid) + "|" + (extraDataLogged == null ? "" : extraDataLogged),
-                            "UTF-8");
-        } catch (UnsupportedEncodingException ignored) {
-        }
-        return "";
+        return "BalloonCookie[uuid = " + uuid + "]";
     }
 }

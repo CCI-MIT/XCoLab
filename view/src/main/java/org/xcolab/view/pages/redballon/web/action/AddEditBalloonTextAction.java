@@ -1,12 +1,10 @@
 package org.xcolab.view.pages.redballon.web.action;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.balloons.BalloonsClient;
-import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFound;
+import org.xcolab.client.balloons.exceptions.BalloonTextNotFoundException;
 import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.view.pages.redballon.web.beans.AddEditBalloonTextBean;
 
@@ -24,13 +22,11 @@ public class AddEditBalloonTextAction {
 
             try {
                 balloonText = BalloonsClient.getBalloonText(addEditBalloonTextBean.getBalloonTextId());
-            } catch (BalloonUserTrackingNotFound balloonUserTrackingNotFound) {
+            } catch (BalloonTextNotFoundException e) {
                 balloonText = null;
             }
         } else {
             balloonText = new BalloonText();
-
-
         }
         balloonText.setName(addEditBalloonTextBean.getName());
         balloonText.setTextAfterForm(addEditBalloonTextBean.getTextAfterForm());

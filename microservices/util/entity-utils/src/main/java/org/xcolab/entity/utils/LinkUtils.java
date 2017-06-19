@@ -2,6 +2,8 @@ package org.xcolab.entity.utils;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
+
 import javax.servlet.http.HttpServletRequest;
 
 public final class LinkUtils {
@@ -23,5 +25,9 @@ public final class LinkUtils {
             return string;
         }
         return defaultString;
+    }
+
+    public static String getAbsoluteUrl(String relativeUri) {
+        return PlatformAttributeKey.PLATFORM_COLAB_URL.get() + relativeUri;
     }
 }
