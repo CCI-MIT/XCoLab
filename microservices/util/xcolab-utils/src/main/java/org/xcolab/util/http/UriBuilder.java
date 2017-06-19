@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.Assert;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -61,21 +62,22 @@ public class UriBuilder {
         if (parameter instanceof Collection) {
             final Collection<?> parameterList = (Collection<?>) parameter;
             final String arrayParam = parameterList.stream()
-                .map(Object::toString)
-                .collect(Collectors.joining(","));
-            uriComponentsBuilder.queryParam(parameterName, arrayParam);
-            sortedParameters.put(parameterName, arrayParam);
-        } else {
-            uriComponentsBuilder.queryParam(parameterName, parameter);
-            sortedParameters.put(parameterName, parameter);
+                    .map(Object::toString)
+                    .collect(Collectors.joining(","));
+            return queryParam(parameterName, arrayParam);
         }
+
+        uriVariables.put(parameterName, parameter);
+        uriComponentsBuilder.queryParam(parameterName, "{" + parameterName + "}");
+        sortedParameters.put(parameterName, parameter);
         return this;
     }
 
     public UriBuilder queryParam(String parameterName, Object... parameter) {
-        uriComponentsBuilder.queryParam(parameterName, parameter);
-        sortedParameters.put(parameterName, parameter);
-        return this;
+        final String arrayParam = Arrays.stream(parameter)
+                .map(Object::toString)
+                .collect(Collectors.joining(","));
+        return queryParam(parameterName, arrayParam);
     }
 
     public UriBuilder optionalQueryParam(String parameterName, Object optionalParameter) {
@@ -94,7 +96,7 @@ public class UriBuilder {
         return pathBuilder.toString();
     }
 
-    public String getPathVariableString() {
+    public String getUriVariableString() {
         return uriVariables.entrySet().stream()
                 .map(entry -> entry.getKey() + "=" + entry.getValue().toString())
                 .collect(Collectors.joining("&"));
