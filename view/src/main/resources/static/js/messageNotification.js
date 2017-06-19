@@ -11,11 +11,9 @@
 
                 var cookieId = Cookies.get("notificationId");
 
-                var jsonResult = JSON.parse(result);
-
-                if (jsonResult.notificationId != cookieId) {
-                    noty({text: jsonResult.notificationText, type: 'success'});
-                    Cookies.set('notificationId', jsonResult.notificationId, {expires: 1});
+                if (result.notificationId != cookieId) {
+                    noty({text: result.notificationText, type: 'success'});
+                    Cookies.set('notificationId', result.notificationId, {expires: 1});
                 }
             },
             error: function (result) {

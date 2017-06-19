@@ -14,9 +14,11 @@ import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.pojo.Notification;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.util.html.LabelValue;
-import org.xcolab.util.http.exceptions.EntityNotFoundException;
+import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
@@ -28,6 +30,8 @@ import org.xcolab.view.util.entity.enums.ContestPhaseTypeValue;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -88,16 +92,10 @@ public class AdminTabController extends AbstractTabController {
         }
         setPageAttributes(request, model, tab);
         model.addAttribute("votingReportBean", new VotingReportBean());
-        
-        List<Notification> list = null;
-        try {
-            list = AdminClient.getNotifications();
-        } catch (EntityNotFoundException e) {
-            e.printStackTrace();
-        }
+
+        List<Notification> list = AdminClient.getNotifications();
         model.addAttribute("listOfNotifications", list);
 
-        
         return TAB_VIEW;
     }
 
@@ -146,6 +144,60 @@ public class AdminTabController extends AbstractTabController {
             loginRegisterService.autoRegister(email, firstName, lastName);
         }
         AlertMessage.CHANGES_SAVED.flash(request);
+        return "redirect:" + tab.getTabUrl();
+    }
+
+    @PostMapping("tab/ADMIN/notificationMessageDelete")
+    public String saveNotification(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam String notificationId, Member loggedInMember)
+            throws IOException {
+
+        if (!PermissionsClient.canAdminAll(loggedInMember)) {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
+
+        AdminClient.deleteNotifications(notificationId);
+
+        AlertMessage.DELETED.flash(request);
+        return "redirect:" + tab.getTabUrl();
+    }
+
+    @PostMapping("tab/ADMIN/notificationMessageCreate")
+    public String saveNotification(HttpServletRequest request,
+            HttpServletResponse response, @RequestParam String notificationText,
+            @RequestParam String expiretime)
+            throws IOException, ParseException {
+
+        long memberId = MemberAuthUtil.getMemberId(request);
+        if (!PermissionsClient.canAdminAll(memberId)) {
+            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        }
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+        expiretime = expiretime.replace("T", " ");
+
+        if (expiretime.length() < "yyyy-MM-dd hh:mm:ss".length()) {
+            expiretime = expiretime + ":00";
+        }
+
+
+        Date endDate = formatter.parse(expiretime);
+
+        if (endDate.before(new Date())) {
+            AlertMessage.danger("Expiry date cannot be in the past. "
+                    + "Notification will not be saved!")
+                    .flash(request);
+            return "redirect:" + tab.getTabUrl();
+        }
+
+        Notification newNotification = new Notification();
+        newNotification.setNotificationText(notificationText);
+        newNotification.setEndTime(endDate);
+
+        AdminClient.setNotifications(newNotification);
+
+        AlertMessage.CREATED.flash(request);
         return "redirect:" + tab.getTabUrl();
     }
 }

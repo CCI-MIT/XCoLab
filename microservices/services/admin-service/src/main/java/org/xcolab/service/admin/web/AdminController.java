@@ -21,7 +21,11 @@ public class AdminController {
 
     private final ConfigurationAttributeDao configurationAttributeDao;
 
+    //TODO: this should be in the database
     private final ArrayList<Notification> notificationsList = new ArrayList<>();
+
+    //TODO: moved from the view, remove when moving list to database
+    private long notificationCounter;
 
     @Autowired
     public AdminController(ConfigurationAttributeDao configurationAttributeDao) {
@@ -44,6 +48,7 @@ public class AdminController {
         if (message.getEndTime().before(message.getBeginTime())) {
             throw new IllegalArgumentException("Begin time cannot be after end time.");
         } else {
+            message.setNotificationId(++notificationCounter);
             notificationsList.add(message);
         }
     }
