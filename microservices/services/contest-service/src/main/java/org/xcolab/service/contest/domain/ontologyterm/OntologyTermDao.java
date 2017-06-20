@@ -11,4 +11,7 @@ public interface OntologyTermDao {
     boolean update(OntologyTerm ontologyTerm);
     OntologyTerm create(OntologyTerm ontologyTerm);
     int delete(Long id_);
+
+    List<OntologyTerm> getOntologyTermByFocusAreaAndOntologySpaceName(Long focusArea,
+            String ontologySpaceName);
 }

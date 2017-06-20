@@ -332,11 +332,8 @@ public class Contest extends AbstractContest implements Serializable {
             }
             List<OntologyTerm> terms = new ArrayList<>();
             for (OntologyTerm t : ontologyClient
-                    .getOntologyTermsForFocusArea(faCache.get(this.getFocusAreaId()))) {
-                if (ontologyClient.getOntologySpace(t.getOntologySpaceId()).getName()
-                        .equalsIgnoreCase(space)) {
+                    .getOntologyTermsByFocusAreaOntologySpaceName(this.getFocusAreaId(),space)) {
                     terms.add(t);
-                }
             }
             ontologySpaceCache.put(space, terms.isEmpty() ? null : terms);
         }

@@ -11,6 +11,8 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import java.util.List;
 
+import static org.xcolab.model.Tables.FOCUS_AREA_ONTOLOGY_TERM;
+import static org.xcolab.model.Tables.ONTOLOGY_SPACE;
 import static org.xcolab.model.Tables.ONTOLOGY_TERM;
 
 @Repository
@@ -85,6 +87,21 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
 
     }
 
+
+    public List<OntologyTerm> getOntologyTermByFocusAreaAndOntologySpaceName(Long focusArea,
+            String ontologySpaceName) {
+
+        final SelectQuery<Record> query = dslContext.select(ONTOLOGY_TERM.fields())
+                .from(FOCUS_AREA_ONTOLOGY_TERM).getQuery();
+        query.addJoin(ONTOLOGY_TERM,ONTOLOGY_TERM.ID_.eq(FOCUS_AREA_ONTOLOGY_TERM.ONTOLOGY_TERM_ID));
+
+        query.addJoin(ONTOLOGY_SPACE,ONTOLOGY_SPACE.ID_.eq(ONTOLOGY_TERM.ONTOLOGY_SPACE_ID));
+
+        query.addConditions(FOCUS_AREA_ONTOLOGY_TERM.FOCUS_AREA_ID.eq(focusArea));
+        query.addConditions(ONTOLOGY_SPACE.NAME.eq(ontologySpaceName));
+
+        return query.fetchInto(OntologyTerm.class);
+    }
 
 
 

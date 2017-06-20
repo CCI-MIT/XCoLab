@@ -66,6 +66,13 @@ public class OntologyController {
         return ontologyService.getAllOntologyTermDescendantTerms(ontologyTerm);
     }
 
+    @RequestMapping(value = "/ontologyTerms/getOntologyTermsByFocusAreaOntologySpaceName", method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<OntologyTerm> getOntologyTermsByFocusAreaOntologySpaceName(@RequestParam Long focusAreaId , @RequestParam String ontologySpaceName)
+    throws  NotFoundException {
+
+        return ontologyTermDao.getOntologyTermByFocusAreaAndOntologySpaceName(focusAreaId,ontologySpaceName );
+    }
+
     @RequestMapping(value = "/ontologyTerms", method = {RequestMethod.GET, RequestMethod.HEAD})
 
     public List<OntologyTerm> getOntologyTerms(@RequestParam(required = false) String name,

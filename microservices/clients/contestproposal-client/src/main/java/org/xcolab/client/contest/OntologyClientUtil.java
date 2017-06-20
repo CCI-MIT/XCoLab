@@ -91,6 +91,10 @@ public final class OntologyClientUtil {
         return client.getFocusAreaOntologyTermsByFocusArea(focusAreaId);
     }
 
+    public static List<OntologyTerm> getOntologyTermsByFocusAreaOntologySpaceName(Long focusAreaId, String ontologySpaceName) {
+        return client.getOntologyTermsByFocusAreaOntologySpaceName(focusAreaId,ontologySpaceName);
+    }
+
     public static List<OntologyTerm> getAllOntologyTermDescendant(
             Long ontologyTermId) {
         return client.getAllOntologyTermDescendant(ontologyTermId);

@@ -198,6 +198,14 @@ public class OntologyClient {
                 .getList(), contestService);
     }
 
+    public List<OntologyTerm> getOntologyTermsByFocusAreaOntologySpaceName(Long focusAreaId, String ontologySpaceName) {
+        return DtoUtil.toPojos(ontologyTermResource
+                .service("getOntologyTermsByFocusAreaOntologySpaceName", OntologyTermDto.TYPES.getTypeReference())
+                .queryParam("focusAreaId", focusAreaId)
+                .queryParam("ontologySpaceName", ontologySpaceName)
+                .getList(), contestService);
+    }
+
     public List<OntologyTerm> getOntologyTermsByName(String name) {
         return DtoUtil.toPojos(ontologyTermResource.list()
                 .optionalQueryParam("name", name)
