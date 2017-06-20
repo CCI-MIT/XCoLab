@@ -7,9 +7,7 @@
 	 version="2.0">
 
     <!--@elvariable id="memberCategory" type="org.xcolab.client.members.pojo.MemberCategory"-->
-
-	<script type="text/javascript" src="/members-portlet/js/main.js"><!-- --></script>
-
+    
 	<div id="bread" class="pro">
 		<a href="/members">Community</a>&#160; <img
 			src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
