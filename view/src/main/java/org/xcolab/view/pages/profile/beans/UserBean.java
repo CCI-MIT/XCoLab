@@ -114,16 +114,10 @@ public class UserBean implements Serializable {
     }
 
     public String getCountryName() {
-        if(countryCode.length() == 2) {
-            if(countryCode == "CS"){
-                return "Country not set";
-            }else {
-                return CountryUtil.getCountryForCode(countryCode);
-            }
+        if (countryCode == null || countryCode.equals("CS")) {
+            return "Country not set";
         }
-        else {
-            return countryCode;
-        }
+        return CountryUtil.getCountryForCode(countryCode);
     }
 
     public String getShortBio() {
