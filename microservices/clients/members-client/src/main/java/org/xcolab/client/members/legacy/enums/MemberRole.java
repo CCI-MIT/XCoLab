@@ -44,7 +44,7 @@ public enum MemberRole {
     }
 
     public String getPrintName() throws NoSuchMemberRoleException {
-        return WordUtils.capitalizeFully((getMemberCategory().getDisplayName()));
+        return WordUtils.capitalize((getMemberCategory().getDisplayName()));
     }
 
     public String getImageUrl() throws NoSuchMemberRoleException {
