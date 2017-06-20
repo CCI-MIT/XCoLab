@@ -67,13 +67,13 @@ public enum MemberRole {
         return roleId;
     }
 
-    public static MemberRole fromRoleId(long roleId) throws NoSuchMemberRoleException {
+    public static MemberRole fromRoleId(long roleId) {
         for (MemberRole memberRole : MemberRole.values()) {
             if (roleId == memberRole.getRoleId() || memberRole.getOtherRoleIds().contains(roleId)) {
                 return memberRole;
             }
         }
-        throw new NoSuchMemberRoleException("Unknown role id given: " + roleId);
+        return null;
     }
 
     public static MemberRole fromRoleName(String roleName)  {
@@ -85,23 +85,16 @@ public enum MemberRole {
         return null;
     }
 
-    public static MemberRole getHighestRole(List<Role_> roles) throws NoSuchMemberRoleException {
+    public static MemberRole getHighestRole(List<Role_> roles) {
         MemberRole role = MemberRole.MEMBER;
 
         for (Role_ r: roles) {
-            final String roleString = r.getName();
-
-                MemberRole currentRole = MemberRole.fromRoleName(roleString);
-                if (currentRole != null) {
-                    if (currentRole.getMemberCategory().getSortOrder() > role.getMemberCategory().getSortOrder()) {
-                        role = currentRole;
-                    }
+            MemberRole currentRole = MemberRole.fromRoleId(r.getRoleId());
+            if (currentRole != null && currentRole.getMemberCategory().getShowInList()) {
+                if (currentRole.getMemberCategory().getSortOrder() > role.getMemberCategory().getSortOrder()) {
+                    role = currentRole;
                 }
-
-        }
-
-        if (role == MemberRole.MODERATOR) {
-            role = MemberRole.STAFF;
+            }
         }
 
         return role;

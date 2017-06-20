@@ -99,10 +99,7 @@ public class UserProfileWrapper implements Serializable {
         attendsConference = false; //TODO: store this outside expando if we want to reactive this
         badges = new BadgeBean(member.getId_());
 
-        try {
-            highestRole = MemberRole.getHighestRole(member.getRoles());
-        } catch (MemberRole.NoSuchMemberRoleException ignored) {
-        }
+        highestRole = MemberRole.getHighestRole(member.getRoles());
 
         userSubscriptions = new UserSubscriptionsWrapper(member);
         supportedProposals.clear();
@@ -333,12 +330,10 @@ public class UserProfileWrapper implements Serializable {
 
     public List<Proposal> getLinkingProposals() {
         if (linkingProposals == null) {
-                linkingProposals = new ArrayList<>();
-                List<Proposal> proposals = ProposalClientUtil.getLinkingProposalsForUser(getUserId());
-                for (Proposal p : proposals) {
-                    linkingProposals.add((p));
-                }
+            linkingProposals = new ArrayList<>();
+            List<Proposal> proposals = ProposalClientUtil.getLinkingProposalsForUser(getUserId());
 
+            linkingProposals.addAll(proposals);
         }
         return linkingProposals;
     }
