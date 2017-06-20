@@ -13,8 +13,7 @@ import org.springframework.security.web.authentication.rememberme.TokenBasedReme
 import org.xcolab.util.autoconfigure.XCoLabProperties;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
+import java.util.UUID;
 
 @Configuration
 @EnableConfigurationProperties(XCoLabProperties.class)
@@ -33,8 +32,7 @@ public class WebSecurityBeansConfig {
         // Make sure we have a secret key even when not configured
         if (StringUtils.isBlank(properties.getSecret())) {
             _log.warn("No application secret configured - generating one-time secret.");
-            SecureRandom random = new SecureRandom();
-            String secret = new BigInteger(130, random).toString(32);
+            String secret = UUID.randomUUID().toString();
             _log.warn("Generated secret key: {}", secret);
             properties.setSecret(secret);
         }

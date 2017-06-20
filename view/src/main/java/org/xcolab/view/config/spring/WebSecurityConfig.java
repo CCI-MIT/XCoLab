@@ -24,6 +24,7 @@ import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.session.web.http.SessionRepositoryFilter;
 
+import org.xcolab.util.autoconfigure.XCoLabProperties;
 import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.auth.handlers.AuthenticationFailureHandler;
 import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
@@ -48,14 +49,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final RememberMeServices rememberMeServices;
     private final MemberDetailsService memberDetailsService;
     private final WebProperties webProperties;
+    private final XCoLabProperties xCoLabProperties;
+
 
     @Autowired
     public WebSecurityConfig(RememberMeServices rememberMeServices,
-            MemberDetailsService memberDetailsService,
-            WebProperties webProperties) {
+            MemberDetailsService memberDetailsService, WebProperties webProperties,
+            XCoLabProperties xCoLabProperties) {
         this.rememberMeServices = rememberMeServices;
         this.memberDetailsService = memberDetailsService;
         this.webProperties = webProperties;
+        this.xCoLabProperties = xCoLabProperties;
     }
 
     @Override
@@ -89,6 +93,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .rememberMe()
                     .rememberMeServices(rememberMeServices)
+                    // need to specify same key that is used in rememberMeServices
+                    .key(xCoLabProperties.getSecret())
                     .and()
                 .logout()
                     .permitAll()
