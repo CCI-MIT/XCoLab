@@ -18,12 +18,20 @@
                 <form action="/login/token/${tokenId}" method="post">
                     <input type="hidden" name="tokenKey" value="${tokenKey}" />
                     <div>
-                        <label for="remember-me">Remember me:</label> &#160;
+                        <label for="remember-me">
+                            Remember me
+                            <img src="/images/icon-addprop-question-bar.png" class="js-Tooltip" style="vertical-align: middle;"
+                                 title="If this box is checked, you will stay logged into the site automatically for one month." />:
+                        </label> &#160;
                         <input type="checkbox" id="remember-me" name="remember-me" checked="true" />
                     </div>
                     <div>
-                        <label for="invalidate-link">Invalidate link after login:</label> &#160;
-                        <input type="checkbox" id="invalidate-link" name="invalidateLink" checked="true" />
+                        <label for="invalidate-link">
+                            Invalidate link after login
+                            <img src="/images/icon-addprop-question-bar.png" class="js-Tooltip" style="vertical-align: middle;"
+                                 title="If you are using a public computer, check this box to prevent others from being able to use your login." />:
+                        </label> &#160;
+                        <input type="checkbox" id="invalidate-link" name="invalidateLink" />
                     </div>
                     <button type="submit" class="c-Button__primary">Log in</button>
                 </form>
