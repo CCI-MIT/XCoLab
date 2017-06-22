@@ -194,7 +194,7 @@
 
 			<h2 style="margin-top: 20px;">${currentUserProfile.proposalString} Links</h2>
 			<c:if test="${empty currentUserProfile.linkingProposals}">
-					There are no proposals linking to this member's <span class="lowercase">${currentUserProfile.proposalsString}</span> yet.
+					There are no <span class="lowercase">${currentUserProfile.proposalsString}</span> linking to this member's <span class="lowercase">${currentUserProfile.proposalsString}</span> yet.
 			</c:if>
 
 			<table class="colab">
