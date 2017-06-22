@@ -547,7 +547,8 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public boolean getShowParentContest(){
-        return this.getContestTier() == CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS - 1;
+        return false;
+        //        return this.getContestTier() == 3 - 1;
     }
 
     public List<Contest> getSubContests() {
@@ -558,16 +559,15 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public Contest getParentContest() {
-
         List<OntologyTerm> list = ontologyClient.getAllOntologyTermsFromFocusAreaWithOntologySpace(
                 ontologyClient.getFocusArea(this.getFocusAreaId()), ontologyClient.getOntologySpace(ONTOLOGY_SPACE_ID_WHERE));
         List<Long> focusAreaOntologyTermIds = new ArrayList<>();
-        for(OntologyTerm ot: list){
+        for (OntologyTerm ot : list) {
             focusAreaOntologyTermIds.add(ot.getId_());
         }
 
         List<Contest> contests = contestClient
-                .findContestsByTierAndOntologyTermIds(CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS, focusAreaOntologyTermIds);
+                .findContestsByTierAndOntologyTermIds(3L, focusAreaOntologyTermIds);
         if (!contests.isEmpty()) {
             return contests.get(0);
         } else {
