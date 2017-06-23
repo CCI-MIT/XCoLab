@@ -21,13 +21,10 @@ import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
-import org.xcolab.client.tracking.TrackingClient;
-import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.util.CountryUtil;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;
 import org.xcolab.view.util.entity.ReCaptchaUtils;
 import org.xcolab.view.util.entity.portlet.RequestParamUtil;
@@ -108,13 +105,6 @@ public class LoginRegisterController {
             model.addAttribute("isSsoLogin", true);
         }
 
-        // Get country location
-        if (StringUtils.isEmpty(userBean.getCountry())) {
-            try {
-                userBean.setCountry(getCountryCodeFromRemoteAddress(request.getRemoteAddr()));
-            } catch (UserLocationNotResolvableException ignored) {
-            }
-        }
         model.addAttribute("generateScreenName", ConfigurationAttributeKey.GENERATE_SCREEN_NAME.get());
         final String loginInfoText = ConfigurationAttributeKey.LOGIN_INFO_MESSAGE.get();
         model.addAttribute("hasLoginInfoText", StringUtils.isNotBlank(loginInfoText));
@@ -156,20 +146,6 @@ public class LoginRegisterController {
         if (StringUtils.isNotEmpty(country)) {
             createUserBean.setCountry(country);
         }
-    }
-
-    private String getCountryCodeFromRemoteAddress(String ipAddr) throws UserLocationNotResolvableException {
-        try {
-            Location location = TrackingClient.getLocationForIp(ipAddr);
-            if (location != null) {
-                return location.getCountry();
-            }
-        } catch (Exception e) {
-            throw new UserLocationNotResolvableException(
-                    String.format("Could not retrieve country from IP address %s", ipAddr), e);
-        }
-        throw new UserLocationNotResolvableException(
-                String.format("Could not retrieve country from IP address %s", ipAddr));
     }
 
     @PostMapping("/register")
@@ -234,7 +210,7 @@ public class LoginRegisterController {
             String bio = request.getParameter("bio");
 
             Member loggedInMember = MemberAuthUtil.getMemberOrNull(request);
-            if(loggedInMember!= null) {
+            if (loggedInMember!= null) {
 
                 if (!loggedInMember.getScreenName().equals(screenName)) {
                     if (StringUtils.isNotEmpty(screenName) && SharedColabClient

@@ -1,11 +1,10 @@
 package org.xcolab.view.pages.loginregister.singlesignon;
 
+import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
@@ -37,8 +36,6 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/sso/facebook")
 public class FacebookController {
-
-    private final static Logger _log = LoggerFactory.getLogger(FacebookController.class);
 
     private final AuthenticationService authenticationService;
     private final LoginRegisterService loginRegisterService;
@@ -196,12 +193,7 @@ public class FacebookController {
             session.setAttribute(SSOKeys.SSO_SCREEN_NAME, screenName);
         }
 
-        try {
-            session.setAttribute(SSOKeys.SSO_COUNTRY, getCountry(jsonObject));
-        } catch (UserLocationNotResolvableException e) {
-            session.setAttribute(SSOKeys.SSO_COUNTRY, null);
-            _log.warn("", e);
-        }
+        session.setAttribute(SSOKeys.SSO_COUNTRY, getCountry(jsonObject));
 
         // Get the FB image url
         /*
@@ -271,43 +263,24 @@ public class FacebookController {
         String country = member.getCountry();
 
         if (StringUtils.isEmpty(country)) {
-            try {
-                member.setCountry(getCountry(jsonObject));
-            } catch (UserLocationNotResolvableException ignored) {
-            }
+            member.setCountry(getCountry(jsonObject));
         }
         MembersClient.updateMember(member);
     }
 
-    private String getCountry(JSONObject response) throws UserLocationNotResolvableException, JSONException {
+    private String getCountry(JSONObject response) {
         try {
-            //return getCountryFromLocationObject(response);
             return getCountryFromLocaleObject(response);
         } catch (UserLocationNotResolvableException e) {
-            return getCountryFromLocaleObject(response);
+            return null;
         }
-    }
-
-    private String getCountryFromLocationObject(JSONObject response) throws UserLocationNotResolvableException, JSONException {
-
-        final JSONObject location = response.optJSONObject("locale");
-        if (location != null) {
-            String locationString = location.getString("name");
-
-            if (locationString.contains(",")) {
-                return locationString.split(",")[1].trim();
-            }
-        }
-
-        throw new UserLocationNotResolvableException("Could not retrieve country from Facebook location");
     }
 
     private String getCountryFromLocaleObject(JSONObject response) throws UserLocationNotResolvableException , JSONException  {
 
-        final String localeString = response.optString("locale").replace("_","-");
-        if (localeString != null) {
-            Locale locale = Locale.forLanguageTag(localeString);
-
+        final String localeString = response.optString("locale");
+        if (StringUtils.isNotEmpty(localeString)) {
+            Locale locale = LocaleUtils.toLocale(localeString);
             return locale.getCountry();
         }
 

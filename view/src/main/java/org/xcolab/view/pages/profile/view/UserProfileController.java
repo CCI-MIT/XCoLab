@@ -51,8 +51,8 @@ import javax.servlet.http.HttpServletResponse;
 public class UserProfileController {
 
     private final static Logger _log = LoggerFactory.getLogger(UserProfileController.class);
-    public static final String SHOW_PROFILE_VIEW = "profile/showUserProfile";
-    public static final String EDIT_PROFILE_VIEW = "profile/editUserProfile";
+    private static final String SHOW_PROFILE_VIEW = "profile/showUserProfile";
+    private static final String EDIT_PROFILE_VIEW = "profile/editUserProfile";
 
     @Autowired
     private SmartValidator validator;
@@ -242,7 +242,7 @@ public class UserProfileController {
         if (updatedUserBean.getCountryName() != null) {
             validator.validate(updatedUserBean, result);
             if (!result.hasErrors() && !updatedUserBean.getCountryName().isEmpty()) {
-                 currentUserProfile.getUser().setCountry(HtmlUtil.cleanAll(updatedUserBean.getCountryName()));
+                currentUserProfile.getUser().setCountry(HtmlUtil.cleanAll(updatedUserBean.getCountryCode()));
                 changedUserPart = true;
             } else {
                 validationError = true;

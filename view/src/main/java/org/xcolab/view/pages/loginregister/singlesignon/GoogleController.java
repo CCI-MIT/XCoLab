@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.loginregister.singlesignon;
 
+import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
@@ -36,7 +37,6 @@ import javax.servlet.http.HttpSession;
 public class GoogleController {
 
     private static final String GOOGLE_OAUTH_REQUEST_STATE_TOKEN = "GOOGLE_OAUTH_REQUEST_STATE_TOKEN";
-    private static final String ENGLISH_LOCALE = "en";
     private final AuthenticationService authenticationService;
     private final LoginRegisterService loginRegisterService;
 
@@ -248,18 +248,8 @@ public class GoogleController {
 
     private String getCountryFromLocaleObject(String localeCountryString) throws UserLocationNotResolvableException {
         if (StringUtils.isNotEmpty(localeCountryString)) {
-
-            Locale locale;
-            if(localeCountryString.length()>2) {
-                locale = Locale.forLanguageTag(localeCountryString);//new Locale("en", localeCountryString);
-            }else{
-                locale = new Locale(ENGLISH_LOCALE, localeCountryString);
-            }
-            if(locale.getCountry() == null){
-                return ENGLISH_LOCALE;
-            }
-
-            return locale.getCountry();//locale.getDisplayCountry();
+            Locale locale = LocaleUtils.toLocale(localeCountryString);
+            return locale.getCountry();
         }
 
         throw new UserLocationNotResolvableException("Could not retrieve country from Google locale");
