@@ -31,6 +31,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
 
@@ -295,14 +297,21 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
     }
 
     public List<String> getOptionsForDropdownMenu() {
-        return Arrays.asList(this.getAllowedValues().split(";"));
+        return Stream.of(this.getAllowedValues().split(";"))
+                .map(String::trim)
+                .collect(Collectors.toList());
     }
+
     public List<String> getOptionsForCheckbox() {
-        return Arrays.asList(this.getAllowedValues().split(";"));
+        return Stream.of(this.getAllowedValues().split(";"))
+                .map(String::trim)
+                .collect(Collectors.toList());
     }
-    private List<String> getSelectedValuesForCheckbox(){
+
+    private List<String> getSelectedValuesForCheckbox() {
         return Arrays.asList(this.getStringValue().split(";"));
     }
+
     public boolean isOptionForCheckboxSelected(String value) {
         for(String selectedValue : getSelectedValuesForCheckbox()){
             if(selectedValue.equals(value)){
