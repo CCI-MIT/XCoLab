@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.content;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,7 @@ public class ContentController {
                     .getContentArticle(contentPage.getContentArticleId());
 
             if (!contentArticle.canView(member)) {
+                response.setStatus(HttpStatus.FORBIDDEN.value());
                 return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
             }
 
@@ -45,6 +47,7 @@ public class ContentController {
             //TODO: allow different active pages
             model.addAttribute("_activePageLink", "about");
         } catch (ContentNotFoundException e) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
             return ErrorText.PAGE_NOT_FOUND.flashAndReturnView(request);
         }
         return "content/contentPage";
