@@ -12,7 +12,6 @@ public final class PlatformAttributeKey {
     public static final AttributeGetter<String> PLATFORM_COLAB_URL =
             PlatformAttributes.newStringAttribute("xcolab.platform.url")
                     .withCache()
-                    .defaultValue(ConfigurationAttributeKey.COLAB_URL)
                     .build();
 
     public static final AttributeGetter<ServerEnvironment> PLATFORM_SERVER_ENVIRONMENT =
