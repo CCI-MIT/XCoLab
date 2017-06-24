@@ -129,7 +129,7 @@
 							<th class="b m" >Stored email
 							</th>
 							<td>
-								<form:input  id="emailStored" cssClass="profile_input" path="emailStored" readonly="true"></form:input>
+								<form:input  id="emailStored" cssClass="profile_input" path="emailStored" readonly="true"/>
 							</td>
 						</tr>
 						<tr id="EmailRow">
@@ -137,7 +137,7 @@
 								New email
 							</th>
 							<td>
-								<form:input  id="email" cssClass="profile_input" path="email"></form:input>
+								<form:input  id="email" cssClass="profile_input" path="email"/>
 								<div class="reg_errors"><!--  -->
 									<form:errors cssClass="c-Alert c-Alert__error" path="email" />
 								</div>
@@ -149,7 +149,7 @@
 								New email retype
 							</th>
 							<td>
-								<form:input  id="retypeEmail" cssClass="profile_input" path="retypeEmail"></form:input>
+								<form:input  id="retypeEmail" cssClass="profile_input" path="retypeEmail" autocomplete="off"/>
 								<div class="reg_errors"><!--  -->
 									<form:errors cssClass="c-Alert c-Alert__error" path="retypeEmail" />
 								</div>
