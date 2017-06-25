@@ -6,7 +6,6 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
 	xmlns:portlet="http://java.sun.com/portlet_2_0" version="2.0">
-	<link rel='stylesheet' href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"></link>
 	<h1>Configure balloon</h1>
 	
 	<portlet:renderURL var="addEditBalloonText">

@@ -8,7 +8,6 @@
 
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jcarousel/0.3.1/jquery.jcarousel-core.min.js"><!-- --></script>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"><!-- --></script>
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
 
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/jqplot/1.0.8/jquery.jqplot.min.css" type="text/css"/>
 	<script src="https://cdn.jsdelivr.net/jqplot/1.0.8/jquery.jqplot.min.js"><!-- --></script>

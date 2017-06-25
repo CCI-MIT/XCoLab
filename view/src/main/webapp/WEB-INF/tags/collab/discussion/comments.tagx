@@ -24,11 +24,6 @@
         <!--@elvariable id="shareUrl" type="java.lang.String"-->
         <!--@elvariable id="reportTargets" type="java.util.List<org.xcolab.client.flagging.pojo.ReportTarget>"-->
 
-		<!-- Includes for profanity filter-->
-        <!-- TODO: move bootstrap to layout.tagx when conflicts resolved -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"><!-- --></script>
-
 		<xcolab:loadCkEditor />
 
 		<c:if test="${discussionPermissions.mustFilterContent}">

@@ -9,10 +9,6 @@
     <jsp:directive.attribute name="subject" type="java.lang.String" required="false" rtexprvalue="true" description="Pre-filled subject"/>
     <jsp:directive.attribute name="content" type="java.lang.String" required="false" rtexprvalue="true" description="Pre-filled content"/>
 
-    <!-- TODO: move bootstrap to layout.tagx when conflicts resolved -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"><!-- --></script>
-
     <c:set var="showRecipients" value="${empty recipient and empty replyToMessage}"/>
 
     <div id="sendMessageModal" class="modal bs-Modal fade" tab-index="-1" role="dialog">
