@@ -144,9 +144,8 @@ $p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.pn
   display: $p-ContestProposals__header__detailButton__display;
 
   padding: $p-ContestProposals__header__detailButton__padding;
-  width: 115px;
-  height: 27px;
-  line-height: 27px;
+  min-width: 115px;
+  line-height: 30px;
   margin-left: 3px;
 
   font-size: 16px;

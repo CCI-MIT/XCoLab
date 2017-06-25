@@ -57,7 +57,7 @@
                         <form:hidden path="contestIds[${x.index}]"
                                      data-form-name="contestPK"/>
                         <td>
-                            <form:checkbox path="selectedContest[${x.index}]" cssClass="checkbox"/>
+                            <form:checkbox path="selectedContest[${x.index}]" />
                         </td>
                         <td>
                             <collab:contestLink contest="${contestWrapper}" />

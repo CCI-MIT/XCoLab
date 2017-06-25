@@ -85,7 +85,7 @@
 
             <div class="addpropbox">
                 <strong class="inputTitleLeft">Notification Threshold:</strong>
-                <form:textarea path="notificationThreshold" cssClass="wideLargeInput"/>
+                <form:input path="notificationThreshold" cssClass="wideLargeInput"/>
 
                 <div class="reg_errors"><!--  -->
                     <form:errors cssClass="c-Alert c-Alert__error" path="notificationThreshold"/>

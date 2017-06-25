@@ -782,7 +782,7 @@
 
     <!-- Ddslick -->
     <!-- TODO: only used in proposalJuding.jspx - replace? -->
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['ddslick']}" src="${_libCssFolder}/jquery.ddslick.min.js" />
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['ddslick']}" src="${_libJsFolder}/jquery.ddslick.min.js" />
 
     <!-- ============ DEFERRED SCRIPTS ============ -->
     <xcolab:script src="${_themeJsFolder}/messageNotification.js" defer="true" />

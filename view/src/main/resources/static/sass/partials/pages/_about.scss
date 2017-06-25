@@ -46,8 +46,7 @@ $p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !defaul
 
 .about-left li a {
   width: 206px;
-  height: 30px;
-  padding: 11px 0 0 4px;
+  line-height: 2em;
   font-size: 18px;
   font-weight: $p-About__left__li__a__fontWeight;
   color: $t-Color__primary;
@@ -75,13 +74,8 @@ $p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !defaul
   border-bottom: 1px solid #ccc;
 }
 
-.about-left li ul li {
-  height: 29px;
-}
-
 .about-left li ul li a {
   width: 182px;
-  height: 21px;
   padding: 6px 0 1px $p-About__left__li__ul__li__a__padding--left;
   font-size: 14px;
   color: $t-Color__primary;
@@ -274,8 +268,7 @@ $p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !defaul
 }
 
 .contribute {
-  width: 365px;
-  height: 131px;
+  min-height: 165px;
   background: $p-About__contribute__background;
   padding: 34px 0 0 320px;
   margin-top: 55px;
@@ -380,7 +373,6 @@ $p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !defaul
 
 .checkout {
   background: url(/images/pattern-6x6-white.png) $p-About__checkout__backgroundColor;
-  width: 505px;
   padding: 24px 16px 26px 32px;
   font-size: 17px;
   line-height: normal;

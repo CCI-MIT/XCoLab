@@ -29,7 +29,7 @@
 		<input type="hidden" name="balloonTextId" value="${addEditBalloonText.balloonTextId }" />
 		<div class="control-group">
     		<div class="controls">
-      			<label class="checkbox">
+      			<label>
         			<form:checkbox path="enabled" /> Enabled
 				</label>
     		</div>
