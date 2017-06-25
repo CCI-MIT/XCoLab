@@ -73,7 +73,7 @@
         <script>
 
             <![CDATA[
-            jQuery(document).ready(function () {
+            jQuery(function () {
 
                 loadArticleVersionContent(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.articleId}, "");
 
@@ -104,7 +104,7 @@
                     return  node.name
                 }
             }
-            jQuery(document).ready(function () {
+            jQuery(function () {
 
                 $("#article-view").mask({'label':"Please click on an Article or create a new one clicking in the folder`s + article link!", spinner:false});
 

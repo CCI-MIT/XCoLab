@@ -161,7 +161,7 @@
         </div>
 
         <script>
-            jQuery( document ).ready(function() {
+            jQuery(function() {
                 jQuery("#submit-forcePromotion-link").click(function () {
                     disableDirtyCheck();
                     $('#submit-forcePromotion').click();

@@ -81,7 +81,7 @@
     <c:if test="${proposalsPermissions.canAdminAll or proposalsPermissions.canContestManagerActions}">
         <xcolab:requireLibrary name="ddslick"/>
         <script type="text/javascript">
-            jQuery(document).ready(function() {
+            jQuery(function() {
                 var $judgesSelectElement = jQuery('#judges-select');
                 $judgesSelectElement.ddslick({
                     showSelectedHTML: true,

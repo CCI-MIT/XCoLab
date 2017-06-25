@@ -232,7 +232,7 @@
 		</c:if>
 
 		<script type="text/javascript">
-			jQuery(document).ready(function() {
+			jQuery(function() {
                 jQuery('#popup_flagging_form_targetType').attr('value', 'COMMENT');
                 <c:forEach items="${reportTargets}" var="reportTarget">
                     <![CDATA[

@@ -99,7 +99,7 @@
 
     <c:if test="${promptLoginWindow == 'true' }">
         <script>
-            $( document ).ready(function() {
+            jQuery(function() {
                 deferUntilLogin();
             });
         </script>

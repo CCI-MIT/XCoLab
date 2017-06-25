@@ -219,7 +219,7 @@
 		var actionURL = "/admin/contest/manager/update";
 		var massActionUrl = "/admin/contest/api/massAction";
 
-		jQuery('document').ready(function(){
+		jQuery(function(){
 			bindMassActionChange();
 			bindSelectAllClick();
 			bindFormSubmits();

@@ -164,7 +164,7 @@
                 spinner: false
             });
         }
-        jQuery(document).ready(function () {
+        jQuery(function () {
             showEmptySelection();
 
 
@@ -238,7 +238,7 @@
                 <c:forEach var="ontSpace" items="${ontologySpaces}">
                     <script>
                         <![CDATA[
-                            jQuery(document).ready(function () {
+                            jQuery(function () {
                                 $('#tree-${ontSpace.id}').tree({
                                     buttonLeft: false,
                                     autoOpen: true

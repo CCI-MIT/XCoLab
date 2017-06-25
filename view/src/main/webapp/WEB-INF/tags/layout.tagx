@@ -625,7 +625,7 @@
                     </div>
                 </div>
                 <script>
-                    $(document).ready(function (){
+                    jQuery(function (){
                         jQuery('#popup_postRegistrationSSO').show();
                     });
                 </script>

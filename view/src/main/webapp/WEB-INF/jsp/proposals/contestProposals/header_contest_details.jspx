@@ -209,7 +209,7 @@
             }
         }
 
-        $(document).ready(function () {
+        jQuery(function () {
             var readMoreLink = document.querySelector("#readMoreLink");
             if (readMoreLink) {
                 var lastParagraph = readMoreLink.previousElementSibling;

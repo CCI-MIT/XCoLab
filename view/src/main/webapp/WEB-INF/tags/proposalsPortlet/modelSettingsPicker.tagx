@@ -75,7 +75,7 @@
         var scenarioId = parseInt("${scenarioId}");
         var modelId = parseInt("${modelId}");
 
-        jQuery().ready(function () {
+        jQuery(function () {
             var proposalToModelMap = document.getElementById("proposalToModelMap");
             proposalToModelMap.style.display = "none";
             if (consolidationPossible &amp;&amp; isProposalUsingCombinedScenario) {

@@ -1,4 +1,4 @@
-$(document).ready(function() {
+jQuery(function() {
     console.log("ready");
     var $postRegisterForm = $('#postRegister_form');
     $postRegisterForm.find('#redirect').val(document.URL);

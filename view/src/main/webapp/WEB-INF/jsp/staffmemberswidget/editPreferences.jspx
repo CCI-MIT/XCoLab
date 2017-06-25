@@ -29,7 +29,7 @@
                         <form:hidden path="preferenceId" id="newPref"  cssStyle="margin-left:20px;"/>
 
                         <script>
-                            jQuery(document).ready(function () {
+                            jQuery(function () {
                                 var initialSelection = '${staffMembersPreferences.preferenceId}';
                                 $("#prefID").change(function(){
                                     var currentValue = $( this ).val();

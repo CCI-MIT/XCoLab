@@ -245,7 +245,7 @@
         </script>
 
         <script type="text/javascript">
-            jQuery(document).ready(function() {
+            jQuery(function() {
                 jQuery('#popup_flagging_form_targetType').attr('value', 'PROPOSAL');
                 <c:forEach items="${reportTargets}" var="reportTarget">
                 <![CDATA[

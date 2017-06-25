@@ -68,7 +68,7 @@
             <script>
 
                 <![CDATA[
-                jQuery(document).ready(function () {
+                jQuery(function () {
 
                     loadPageContent(THRESHOLD_TO_AVOID_NODE_COLISION + ${param.pageId});
 
@@ -98,7 +98,7 @@
                 return re.test(title);
 
             }
-            jQuery(document).ready(function () {
+            jQuery(function () {
 
                 $("#article-view").mask({
                     'label': "Please click on an Page or create a new one clicking in the create page button!",

@@ -54,7 +54,7 @@
 
         var ckEditor = null;
         var THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
-        jQuery(document).ready(function () {
+        jQuery(function () {
             $("#deleteOntologyTerm").hide();
             $("#article-view").mask({'label':"Please click on an Ontology term or <br/>create a new one clicking on the add new term link!", spinner:false});
 

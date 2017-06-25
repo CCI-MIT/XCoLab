@@ -32,7 +32,7 @@
     <!--@elvariable id="promptLoginWindow" type="java.lang.String"-->
     <c:if test="${promptLoginWindow == 'true' }">
         <script>
-            $( document ).ready(function() {
+            jQuery(function() {
                 deferUntilLogin();
             });
         </script>

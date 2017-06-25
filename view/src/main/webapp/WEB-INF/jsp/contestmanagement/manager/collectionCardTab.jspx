@@ -175,7 +175,7 @@
 
 
         <![CDATA[
-                $( document ).ready(function() {
+                jQuery(function() {
                     document.getElementById("ontologyTermToLoad").disabled=true;
                     document.getElementById("smallOntologyTerm").disabled=true;
                     document.getElementById("bigOntologyTerm").disabled=true;
