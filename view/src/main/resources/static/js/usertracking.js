@@ -1,18 +1,15 @@
 //find existing cookie containing the uuid
-var uuid = null;
 var isTrackedVisitor = null;
-if (jQuery.cookie("userTrackingUuid")) {
-    uuid = jQuery.cookie("userTrackingUuid");
-    if (jQuery.cookie("userTrackingIsTrackedVisitor")) {
-        isTrackedVisitor = jQuery.cookie("userTrackingIsTrackedVisitor");
-    }
+var uuid = Cookies.get("userTrackingUuid");
+if (userTrackingUuid) {
+    isTrackedVisitor = Cookies.get("userTrackingIsTrackedVisitor");
 } else {
-    jQuery.removeCookie("userTrackingIsTrackedVisitor", { path: '/' });
+    Cookies.remove("userTrackingIsTrackedVisitor");
 }
 
 if (typeof usertracking_userId == 'undefined') {
     isTrackedVisitor = false;
-    jQuery.removeCookie("userTrackingIsTrackedVisitor", { path: '/' });
+    Cookies.remove("userTrackingIsTrackedVisitor");
 }
 
 var url = document.location.href+"";
@@ -31,10 +28,9 @@ if (isTrackedVisitor) {
     postData.isTrackedVisitor = true;
 }
 
-
 jQuery.post("/trackVisitor", postData, function(data) {
-    jQuery.cookie("userTrackingUuid", data.uuid, {path: '/'});
+    Cookies.set("userTrackingUuid", data.uuid);
     if (data.isTrackedVisitor) {
-        jQuery.cookie("userTrackingIsTrackedVisitor", data.isTrackedVisitor, {path: '/'});
+        Cookies.set("userTrackingIsTrackedVisitor", data.isTrackedVisitor);
     }
 });

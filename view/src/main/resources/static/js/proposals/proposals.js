@@ -4,8 +4,7 @@
  * @param viewType type of the view (GRID/LIST)
  */
 function setContestsViewTypeCookie(viewType) {
-	jQuery.cookie("cc_contests_viewType", null, {expires: -1});
-	jQuery.cookie("cc_contests_viewType", viewType, {expires: 365, path: '/'});
+	Cookies.set("cc_contests_viewType", viewType, {expires: 365});
 }
 
 /**

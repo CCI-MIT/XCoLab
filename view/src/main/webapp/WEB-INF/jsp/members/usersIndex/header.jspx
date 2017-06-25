@@ -19,7 +19,7 @@
 		<div class="c-Helpbox__header">
 			<span class="c-Helpbox__header__title">Registration and Contacting Members</span>
 			<div class="c-Helpbox__header__close">
-				<a href="javascript:;" onclick="jQuery.cookie('climatecolab_hide_members_msg', 'true'); jQuery('#help1').hide()">
+				<a href="javascript:;" onclick="Cookies.set('climatecolab_hide_members_msg', 'true'); jQuery('#help1').hide()">
 				<img src="${_themeImageFolder}/helpbox_close.png" width="20" height="20" alt="X" /></a>
 			</div>
 		</div>
@@ -30,7 +30,9 @@
 			name below to open their profile and then selecting "Send message."
 		</div>
 		<script>
-			if (!jQuery.cookie("climatecolab_hide_members_msg")) jQuery("#help1").show();
+			if (!Cookies.get("climatecolab_hide_members_msg")) {
+			    jQuery("#help1").show();
+			}
 		</script>
 	</div>
 
