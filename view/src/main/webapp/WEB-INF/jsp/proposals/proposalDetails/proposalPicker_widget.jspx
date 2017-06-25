@@ -1,6 +1,7 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	version="2.0">
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          version="2.0" >
 
 	<!--  Proposals Picker  -->
 	<c:set var="proposalPickerURL" value="${contest.contestLinkUrl}/proposals/proposalPicker?tab=@@REPLACE-TAB@@&amp;filterKey=@@REPLACE-FILTERKEY@@&amp;filterText=@@REPLACE-FILTERTEXT@@&amp;start=@@REPLACE-START@@&amp;end=@@REPLACE-END@@&amp;sortColumn=@@REPLACE-SORTCOLOMN@@&amp;sortOrder=@@REPLACE-SORTORDER@@&amp;sectionId=@@REPLACE-SECTIONID@@&amp;contestPK=@@REPLACE-CONTESTPK@@" />
@@ -11,13 +12,17 @@
 	<c:set var="proposalPickerCounterURL"
 		value="${contest.contestLinkUrl}/proposals/proposalPickerCounter?filterKey=@@REPLACE-FILTERKEY@@&amp;filterText=@@REPLACE-FILTERTEXT@@&amp;sectionId=@@REPLACE-SECTIONID@@" />
 
-
 	<script>
 		var proposalPickerURL = '${proposalPickerURL}';
 		var proposalPickerContestsURL = '${proposalPickerContestsURL}';
 		var proposalPickerCounterURL = '${proposalPickerCounterURL}';
 		var filterKey = 'ACCEPTALL';
 	</script>
+
+    <xcolab:requireLibrary name="spin.js" />
+    <xcolab:requireLibrary name="handlebars.js" />
+    <xcolab:script src="${_themeJsFolder}/proposals/findAndReplaceDOMText.js" />
+    <xcolab:script src="${_themeJsFolder}/proposals/proposalPicker.js" />
 
     <div id="proposalPickerModal" class="modal bs-Modal fade" tab-index="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
@@ -230,6 +235,5 @@
 					{{contest.who}}
                 </td>
             </tr>
-  
 	</script>
 </jsp:root>

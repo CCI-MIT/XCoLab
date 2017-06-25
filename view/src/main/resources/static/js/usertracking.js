@@ -1,7 +1,7 @@
 //find existing cookie containing the uuid
 var isTrackedVisitor = null;
 var uuid = Cookies.get("userTrackingUuid");
-if (userTrackingUuid) {
+if (uuid) {
     isTrackedVisitor = Cookies.get("userTrackingIsTrackedVisitor");
 } else {
     Cookies.remove("userTrackingIsTrackedVisitor");

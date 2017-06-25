@@ -6,7 +6,6 @@
 	<xcolab:layout title="${contestType.contestNamePlural}">
 		<!--@elvariable id="viewType" type="java.lang.String"-->
 		<!--@elvariable id="showCollectionCards" type="java.lang.Boolean"-->
-		<xcolab:script src="${_themeJsFolder}/proposals/proposals.js" />
 		<jsp:directive.include file="./init.jspx" />
 		<c:if test="${_isAdmin}">
 			<a href="/proposals/editPreferences" class="c-Button__admin">Edit contests preferences</a><br/>
@@ -49,8 +48,9 @@
 		</c:choose>
 		<script>
 		<![CDATA[
-			// set contest view type, see https://issues.liferay.com/browse/LPS-25733
-			setContestsViewTypeCookie('${viewType}');
+			jQuery(function() {
+			    setContestsViewTypeCookie('${viewType}');
+			});
 
 			jQuery(".show-active").hover(
 					function() {
@@ -73,6 +73,8 @@
 			);
 		]]>
 		</script>
+        <xcolab:requireLibrary name="autoSuggest" />
+        <xcolab:requireLibrary name="jQuery UI" />
 		<xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>
 	</xcolab:layout>
 </jsp:root>

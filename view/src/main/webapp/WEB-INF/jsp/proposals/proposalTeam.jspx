@@ -10,7 +10,7 @@
         <jsp:directive.include file="./init_proposal_tab.jspx" />
 
         <jsp:directive.include file="./proposalDetails/header.jspx" />
-        <xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>
+
         <!--ProposalTeamTabController-->
         <jsp:useBean id="requestMembershipBean" scope="request" type="org.xcolab.view.pages.proposals.requests.RequestMembershipBean"/>
         <jsp:useBean id="requestMembershipInviteBean" scope="request" type="org.xcolab.view.pages.proposals.requests.RequestMembershipInviteBean"/>
@@ -174,11 +174,10 @@
                     </tr>
                 </table>
             </c:if>
-
-
-
-
-
         </div>
+
+        <xcolab:requireLibrary name="autoSuggest" />
+        <xcolab:requireLibrary name="jQuery UI" />
+        <xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>
     </xcolab:layout>
 </jsp:root>

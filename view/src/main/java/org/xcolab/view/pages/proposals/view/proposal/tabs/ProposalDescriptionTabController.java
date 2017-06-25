@@ -25,22 +25,23 @@ import org.xcolab.client.proposals.ProposalMoveClient;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
-import org.xcolab.view.util.entity.EntityGroupingUtil;
-import org.xcolab.view.util.entity.enums.ContestPhaseTypeValue;
-import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.enums.proposal.MoveType;
+import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
+import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.view.pages.proposals.view.proposal.AddUpdateProposalControllerUtil;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
-import org.xcolab.view.pages.proposals.tabs.ProposalTab;
+import org.xcolab.view.util.entity.EntityGroupingUtil;
+import org.xcolab.view.util.entity.enums.ContestPhaseTypeValue;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -146,6 +147,8 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             request.setAttribute("imageUploadHelpText",
                     ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.get());
 
+            model.addAttribute("hasProposalPicker", hasProposalPicker(proposal));
+
             model.addAttribute("mustFilterContent",
                     ConfigurationAttributeKey.FILTER_PROFANITY.get());
             model.addAttribute("showProposalEditHelpText",
@@ -181,6 +184,11 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         return baseProposalWrapped.getSections().stream()
                 .filter(section -> StringUtils.isNotBlank(section.getContent()))
                 .anyMatch(section -> !newContestSections.contains(section.getSectionDefinitionId()));
+    }
+
+    private boolean hasProposalPicker(Proposal proposal) {
+        return proposal.getSections().stream()
+                .anyMatch(p -> PlanSectionTypeKeys.PROPOSAL_PICKER_SECTION_TYPES.contains(p.getType()));
     }
 
     private void populateMoveHistory(HttpServletRequest request, Model model, Proposal proposal,

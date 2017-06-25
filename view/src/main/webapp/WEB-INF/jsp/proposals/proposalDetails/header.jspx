@@ -8,12 +8,6 @@
 	<!--@elvariable id="edit" type="java.lang.Boolean"-->
 	<!--@elvariable id="tabs" type="java.util.List<org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper>"-->
 	<!--@elvariable id="promptLoginWindow" type="java.lang.String"-->
-	<xcolab:loadCkEditor />
-	<xcolab:script src="${_themeJsFolder}/proposals/discussionComments.js"/>
-	<xcolab:script src="${_themeJsFolder}/proposals/historyWidget.js"/>
-	<xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>
-	<xcolab:script src="${_themeJsFolder}/proposals/imageviewer.min.js" />
-	<link rel="stylesheet" type="text/css"  href="${_libCssFolder}/imageviewer.css"/>
 
 	<script>
         var proposalId = ${ proposal.proposalId }; var contestId = ${contest.contestPK};
@@ -110,5 +104,15 @@
             });
         </script>
     </c:if>
+
+    <xcolab:loadCkEditor />
+    <xcolab:requireLibrary name="autoSuggest" />
+    <xcolab:requireLibrary name="jQuery UI" />
+    <xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>
+    <xcolab:script src="${_themeJsFolder}/proposals/discussionComments.js"/>
+    <xcolab:script src="${_themeJsFolder}/proposals/historyWidget.js"/>
+
+    <link rel="stylesheet" type="text/css"  href="${_libCssFolder}/imageviewer.css"/>
+    <xcolab:script src="${_themeJsFolder}/proposals/imageviewer.min.js" />
 
 </jsp:root>

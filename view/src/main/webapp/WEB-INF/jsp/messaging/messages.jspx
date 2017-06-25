@@ -23,7 +23,6 @@
 
 
     <div class="messagingContainer">
-        <!--TODO view layer transition: note that this is already moved to /js/lib/jquery.validate.pack.j-->
         <xcolab:script src="${_libJsFolder}/jquery.validate.pack.js"/>
         <div class="main_long">
             <div class="left_col">

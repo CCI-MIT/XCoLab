@@ -21,7 +21,8 @@
 		
 	</div>
 	<script>
-		// set contest view type, see https://issues.liferay.com/browse/LPS-25733 
-		setContestsViewTypeCookie('${viewType}');
+        jQuery(function() {
+            setContestsViewTypeCookie('${viewType}');
+        });
 	</script>
 </jsp:root>

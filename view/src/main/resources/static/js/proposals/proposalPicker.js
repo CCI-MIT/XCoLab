@@ -20,10 +20,16 @@ var loadingWheelOpts = {
     width: 20, // The line thickness
     radius: 60 // The radius of the inner circle
 };
-var spinner = new Spinner(loadingWheelOpts);
 
-var proposalPickerProposalEntryTemplate = Handlebars.compile($("#proposalPickerProposalEntryTemplate").html());
-var proposalPickerContestEntryTemplate = Handlebars.compile($("#proposalPickerContestEntryTemplate").html());
+var spinner;
+var proposalPickerProposalEntryTemplate;
+var proposalPickerContestEntryTemplate;
+
+jQuery(function() {
+    spinner = new Spinner(loadingWheelOpts);
+    proposalPickerProposalEntryTemplate = Handlebars.compile($("#proposalPickerProposalEntryTemplate").html());
+    proposalPickerContestEntryTemplate = Handlebars.compile($("#proposalPickerContestEntryTemplate").html());
+});
 
 /* Load Proposals for a given tab (determined by var) */
 function loadProposals(){
@@ -332,7 +338,7 @@ var highlighterClasses = ['higlightText1'];
 var instance;
 var highlighter = function() {
     instance && instance.revert();
-    if (input.value) {
+    if (input != null && input.value) {
         var called = false;
         try {
             var regex = new RegExp(input.value, 'gi');

@@ -7,8 +7,7 @@
     <c:if test="${empty _ckEditorLoaded}">
         <c:set var="_ckEditorLoaded" value="true" scope="request" />
 
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/ckeditor.js"><!-- --></script>
+        <xcolab:requireLibrary name="CKEditor" />
 
         <!-- TODO: split CKEditor initialization (on demand) and dirty check (always)-->
         <script type="text/javascript">
@@ -57,7 +56,6 @@
                 }
             }
         }
-        CKEDITOR.plugins.addExternal( 'proposalLink', '${_libJsFolder}/newckeditorplugins/proposalLink/plugin.js' );
 
         function initializeTextEditors() {
             jQuery("input[type='text'], textarea").each(function() {
@@ -139,6 +137,8 @@
         }
 
         jQuery(function() {
+            CKEDITOR.plugins.addExternal( 'proposalLink',
+                    '${_libJsFolder}/newckeditorplugins/proposalLink/plugin.js' );
             initializeTextEditors();
         });
         ]]>

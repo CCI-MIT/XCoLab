@@ -6,8 +6,6 @@
           version="2.0">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/css/jquery.fileupload.min.css" />
-
     <h2>Upload your image</h2>
     <collab:imageUpload uniqueName="fileupload1" shouldDisplayUrl="true" defaultImage="MEMBER"/>
 </xcolab:layout>

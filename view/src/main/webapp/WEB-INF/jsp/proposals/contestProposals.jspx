@@ -180,6 +180,8 @@
             </table>
         </div>
 
+        <xcolab:requireLibrary name="autoSuggest" />
+        <xcolab:requireLibrary name="jQuery UI" />
         <xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>
     </xcolab:layout>
 </jsp:root>

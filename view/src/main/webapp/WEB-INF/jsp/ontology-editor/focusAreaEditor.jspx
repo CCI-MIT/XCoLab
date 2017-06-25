@@ -8,12 +8,10 @@
     <xcolab:layout>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"><!-- --></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jqtree/1.3.6/tree.jquery.min.js"><!-- --></script>
-        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"><!-- --></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"><!-- --></script>
+        <xcolab:requireLibrary name="jQuery UI" />
+        <xcolab:requireLibrary name="spin.js" />
         <xcolab:script src="${_libJsFolder}/jquery.loadmask.spin.js" />
 
-
-        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css"><!-- --></link>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqtree/1.3.6/jqtree.min.css"><!-- --></link>
         <style>
 

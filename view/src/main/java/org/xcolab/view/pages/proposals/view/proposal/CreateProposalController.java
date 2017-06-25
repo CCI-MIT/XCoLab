@@ -19,9 +19,8 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
-import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -32,6 +31,8 @@ import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.view.pages.proposals.utils.edit.ProposalUpdateHelper;
+import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -130,6 +131,7 @@ public class CreateProposalController extends BaseProposalsController {
         model.addAttribute("isEditingProposal", true);
         model.addAttribute("showProposalEditHelpText",
                 ConfigurationAttributeKey.CONTESTS_SHOW_PROPOSAL_EDIT_HELP_TEXT.get());
+        model.addAttribute("hasProposalPicker", hasProposalPicker(proposal));
 
         model.addAttribute("showImageUpload",
                 ConfigurationAttributeKey.PROPOSALS_SHOW_IMAGE_UPLOAD.get());
@@ -155,6 +157,11 @@ public class CreateProposalController extends BaseProposalsController {
         request.setAttribute("imageUploadHelpText", ConfigurationAttributeKey.IMAGE_UPLOAD_HELP_TEXT.get());
 
         return "proposals/proposalDetails_edit";
+    }
+
+    private boolean hasProposalPicker(Proposal proposal) {
+        return proposal.getSections().stream()
+                .anyMatch(p -> PlanSectionTypeKeys.PROPOSAL_PICKER_SECTION_TYPES.contains(p.getType()));
     }
 
     @PostMapping("createProposal")

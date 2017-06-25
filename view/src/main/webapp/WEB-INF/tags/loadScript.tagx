@@ -1,0 +1,20 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          version="2.0">
+    <jsp:directive.attribute name="src" type="java.lang.String" required="true" rtexprvalue="true" description="Path to script" />
+    <jsp:directive.attribute name="shouldLoad" type="java.lang.String" required="true" rtexprvalue="true" description="Flag to indicate whether the script should be loaded. Fill with loadLibaryX variable." />
+    <jsp:directive.attribute name="integrity" type="java.lang.String" required="false" rtexprvalue="true" description="Optional content hash." />
+
+    <c:if test="${shouldLoad}">
+        <c:url var="encodedUrl" value="${src}" />
+        <c:choose>
+            <c:when test="${not empty integrity}">
+                <script src="${encodedUrl}" type="text/javascript"
+                        integrity="${integrity}" crossorigin="anonymous"><!--  --></script>
+            </c:when>
+            <c:otherwise>
+                <script src="${encodedUrl}" type="text/javascript"><!--  --></script>
+            </c:otherwise>
+        </c:choose>
+    </c:if>
+</jsp:root>

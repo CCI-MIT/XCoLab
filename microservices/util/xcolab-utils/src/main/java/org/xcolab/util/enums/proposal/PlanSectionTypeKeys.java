@@ -1,5 +1,7 @@
 package org.xcolab.util.enums.proposal;
 
+import java.util.EnumSet;
+
 public enum PlanSectionTypeKeys {
     TEXT,
     DROPDOWN_MENU,
@@ -9,5 +11,10 @@ public enum PlanSectionTypeKeys {
     PROPOSAL_REFERENCE,
     PROPOSAL_LIST_REFERENCE,
     PROPOSAL_LIST_TEXT_REFERENCE,
-    IMAGE
+    IMAGE;
+
+    public static final EnumSet<PlanSectionTypeKeys> PROPOSAL_PICKER_SECTION_TYPES = EnumSet
+            .of(PlanSectionTypeKeys.PROPOSAL_REFERENCE,
+                    PlanSectionTypeKeys.PROPOSAL_LIST_REFERENCE,
+                    PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE);
 }
