@@ -2,7 +2,19 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           version="2.0">
     <jsp:directive.attribute name="src" type="java.lang.String" required="false" rtexprvalue="true" description="Path to script" />
+    <jsp:directive.attribute name="async" type="java.lang.Boolean" required="false" rtexprvalue="true" description="If true, script is loaded asynchronously." />
+    <jsp:directive.attribute name="defer" type="java.lang.Boolean" required="false" rtexprvalue="true" description="If true, script loading is deferred." />
 
     <c:url var="encodedUrl" value="${src}" />
-    <script src="${encodedUrl}" type="text/javascript"><!--  --></script>
+    <c:choose>
+        <c:when test="${async}">
+            <script src="${encodedUrl}" type="text/javascript" async="async"><!--  --></script>
+        </c:when>
+        <c:when test="${defer}">
+            <script src="${encodedUrl}" type="text/javascript" defer="defer"><!--  --></script>
+        </c:when>
+        <c:otherwise>
+            <script src="${encodedUrl}" type="text/javascript"><!--  --></script>
+        </c:otherwise>
+    </c:choose>
 </jsp:root>

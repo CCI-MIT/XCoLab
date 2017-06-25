@@ -292,7 +292,7 @@ function closePopup(obj) {
 
 
 
-jQuery(document).ready(function() {
+jQuery(function() {
 	initSearchUpperBox();
 	initLoginPopupUpper();
 	initUserInfoPopup();

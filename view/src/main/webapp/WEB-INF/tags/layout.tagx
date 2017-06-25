@@ -80,35 +80,43 @@
     </script>
 
     <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet" type="text/css" />
+
+    <!-- TODO: use cdnjs -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
     <xcolab:stylesheet href="${_themeCssFolder}/main.css" />
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"><!-- empty --></script>
+
+    <!-- where are we using this? -->
+    <!-- TODO: on demand -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.1/jquery-ui.min.js"><!-- empty --></script>
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.1/themes/base/minified/jquery-ui.min.css" />
 
     <!-- TODO: replace jquery-cookie (deprecated) with js-cookie -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.3.1/jquery.cookie.min.js"><!-- empty --></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.js"><!-- --></script>
 
+    <!-- TODO: on demand-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.3.1/moment.min.js"><!-- empty --></script>
+
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.0/packaged/jquery.noty.packaged.min.js"><!-- empty --></script>
 
-    <!-- looks like this is only used in modeling-->
+    <!-- TODO: on demand-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"><!-- empty --></script>
 
-    <!-- where are we using this? -->
-    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.1/themes/base/minified/jquery-ui.min.css" />
-
+    <!-- TODO: on demand (?)-->
     <xcolab:stylesheet href="${_libCssFolder}/autoSuggest.css" />
+
+    <!-- TODO: on demand-->
     <xcolab:stylesheet href="${_libCssFolder}/ui.dynatree.css" />
-    <xcolab:stylesheet href="${_libCssFolder}/tooltipster-4.1.8.bundle.min.css" />
-    <xcolab:script src="${_libJsFolder}/tooltipster-4.1.8.bundle.min.js" />
     <xcolab:script src="${_libJsFolder}/jquery.dynatree.min.js" />
+
+    <!-- TODO: on demand-->
     <xcolab:script src="${_libJsFolder}/jquery.ddslick.min.js" />
+
     <xcolab:script src="${_themeJsFolder}/dateTimeFormatter.js" />
     <xcolab:script src="${_themeJsFolder}/moth_init_script.js" />
-    <xcolab:script src="${_themeJsFolder}/messageNotification.js" />
 
     <c:choose>
         <c:when test='${request.serverName == "localhost"}'>
@@ -683,14 +691,18 @@
         </c:choose>
     </c:if>
 
-<!-- /popup login -->
+    <!-- /popup login -->
 
+    <!-- ============ SCRIPTS ============ -->
+
+    <!-- Display messages -->
     <c:if test="${not empty __alertMessage}">
         <script type="text/javascript">
             noty({text: '${__alertMessage.message}', type: '${__alertMessage.type.notyType}'});
         </script>
     </c:if>
 
+    <!-- Analytics -->
     <c:if test='${not empty __analyticsAttribute}'>
         <c:forEach var="event" items='${__analyticsAttribute.events}'>
             <script type="text/javascript">
@@ -729,8 +741,17 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"
             integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"><!-- --></script>
-    <xcolab:script src="${_themeJsFolder}/usertracking.js"/>
+
+    <!-- Resolve widgets -->
     <xcolab:script src="${_themeJsFolder}/widgetLoader.js" />
+
+    <!-- Tooltips-->
+    <xcolab:stylesheet href="${_libCssFolder}/tooltipster-4.1.8.bundle.min.css" />
+    <xcolab:script src="${_libJsFolder}/tooltipster-4.1.8.bundle.min.js" />
+
+    <!-- Defered libraries -->
+    <xcolab:script src="${_themeJsFolder}/messageNotification.js" defer="true" />
+    <xcolab:script src="${_themeJsFolder}/usertracking.js" defer="true"/>
 </body>
 </html>
 </jsp:root>
