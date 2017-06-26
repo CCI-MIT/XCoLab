@@ -9,6 +9,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.enums.ServerEnvironment;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MessagingClient;
@@ -61,6 +62,11 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
                 boolean isAdmin = PermissionsClient.canAdminAll(member.getUserId());
                 modelAndView.addObject("_isAdmin", isAdmin);
             }
+
+            final ServerEnvironment serverEnvironment =
+                    PlatformAttributeKey.PLATFORM_SERVER_ENVIRONMENT.get();
+            modelAndView.addObject("_isProduction",
+                    serverEnvironment == ServerEnvironment.PRODUCTION);
 
             ColabTheme activeTheme = ConfigurationAttributeKey.ACTIVE_THEME.get();
 

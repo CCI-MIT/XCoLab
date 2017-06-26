@@ -16,6 +16,8 @@
     <!--@elvariable id="_isLoggedIn" type="java.lang.Boolean"-->
     <!--@elvariable id="_isAdmin" type="java.lang.Boolean"-->
 
+    <!--@elvariable id="_isProduction" type="java.lang.Boolean"-->
+
     <!--@elvariable id="_showImpersonationBar" type="java.lang.Boolean"-->
     <!--@elvariable id="_realMember" type="org.xcolab.client.members.pojo.Member"-->
     <!--@elvariable id="_member" type="org.xcolab.client.members.pojo.Member"-->
@@ -149,12 +151,19 @@
 
     <!-- ============ META CONTENT ============ -->
 
+    <c:if test="${_isProduction}">
+        <!-- Prevent indexing of non-production sites -->
+        <meta name="robots" content="noindex, nofollow" />
+    </c:if>
+
     <meta name="p:domain_verify" content="70e4477f0ab70225da1533151386c16f"/>
+
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="${_colabName}" />
     <meta property="og:title" content="${_openGraphShareTitle}" />
     <meta property="og:description" content="${_openGraphShareDescription}" />
     <meta property="og:image" content="${_logoPathBig}" />
+
     <link href="${_themeImageFolder}/favicon.ico" rel="Shortcut Icon" />
     <link rel="image_src" type="image/png" href="${_logoPathBig}" />
 </head>
