@@ -68,7 +68,7 @@ public class LoginRegisterService {
         final Member member = register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
                         newAccountBean.getEmail(), newAccountBean.getFirstName(), newAccountBean.getLastName(),
                         newAccountBean.getShortBio(), newAccountBean.getCountry(), fbIdString, googleId,
-                        newAccountBean.getImageId(), false);
+                        newAccountBean.getImageId(), false, newAccountBean.getLanguage());
 
         // SSO
         if (StringUtils.isNotBlank(fbIdString)) {
@@ -126,12 +126,12 @@ public class LoginRegisterService {
     public Member autoRegister(String emailAddress, String firstName, String lastName) {
         return register(MembersClient.generateScreenName(lastName, firstName), null,
                 emailAddress, firstName, lastName, "", null, null,
-                null, null, true);
+                null, null, true, "en");
     }
 
     public Member register(String screenName, String password, String email,
             String firstName, String lastName, String shortBio, String country, String fbIdString,
-            String googleId, String imageId, boolean generateLoginUrl) {
+            String googleId, String imageId, boolean generateLoginUrl, String language) {
 
         Long memberId = SharedColabClient.retrieveSharedId(email, screenName,
                 ConfigurationAttributeKey.COLAB_NAME.get());
@@ -144,6 +144,7 @@ public class LoginRegisterService {
         member.setHashedPassword(password);
         member.setLastName(lastName);
         member.setGoogleId(googleId);
+        member.setDefaultLocale(language);
         try {
             member.setFacebookId(Long.parseLong(fbIdString));
         } catch (NumberFormatException ignored) {

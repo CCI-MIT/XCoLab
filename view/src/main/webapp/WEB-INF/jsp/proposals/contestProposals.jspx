@@ -2,6 +2,7 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+          xmlns:spring="http://www.springframework.org/tags"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           version="2.0">
@@ -35,10 +36,10 @@
                     <span>${fn:length(proposals.proposals)}</span>
                     <c:choose>
                         <c:when test="${fn:length(proposals.proposals) == 1}">
-                            ${contestType.proposalName}
+                            &#160;${contestType.proposalName}
                         </c:when>
                         <c:otherwise>
-                            ${contestType.proposalNamePlural}
+                            &#160;${contestType.proposalNamePlural}
                         </c:otherwise>
                     </c:choose>
                 </h2>

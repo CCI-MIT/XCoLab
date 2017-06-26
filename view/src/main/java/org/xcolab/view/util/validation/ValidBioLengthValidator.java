@@ -1,6 +1,9 @@
 package org.xcolab.view.util.validation;
 
 import org.jsoup.Jsoup;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.xcolab.view.i18n.ResourceMessageResolver;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -9,6 +12,9 @@ public class ValidBioLengthValidator implements
         ConstraintValidator<ValidBioLength, Object> {
     private static final int BIO_MAX_LENGTH = 2000;
     private String bioProperty;
+
+    @Autowired
+    ResourceMessageResolver resourceMessageResolver;
 
     @Override
     public void initialize(ValidBioLength constraintAnnotation) {
@@ -35,9 +41,8 @@ public class ValidBioLengthValidator implements
 			 */
             if (isDefaultMessage) {
                 context.disableDefaultConstraintViolation();
-                String message = "The length of your bio must be less than or equal " +
-                        BIO_MAX_LENGTH +
-                        " characters";
+                String message = resourceMessageResolver.getLocalizedMessage(
+                        "register.form.validation.biografy.message", new String[]{BIO_MAX_LENGTH+""});
                 ConstraintValidatorContext.ConstraintViolationBuilder violationBuilder = context
                         .buildConstraintViolationWithTemplate(message);
                 violationBuilder.addConstraintViolation();

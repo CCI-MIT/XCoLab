@@ -81,17 +81,17 @@ public abstract class ConstraintValidatorHelper {
         return true;
     }
 
-    public static String resolveMessage(String[] propertyNames, StringComparisonMode comparisonMode) {
+    public static String resolveMessage(String[] propertyNames, StringComparisonMode comparisonMode, String[] comparisonDict) {
         StringBuffer buffer = concatPropertyNames(propertyNames);
-        buffer.append(" must");
+        buffer.append(" "+comparisonDict[0]);
         switch (comparisonMode) {
             case EQUAL:
             case EQUAL_IGNORE_CASE:
-                buffer.append(" be equal");
+                buffer.append(" "+comparisonDict[1]);
                 break;
             case NOT_EQUAL:
             case NOT_EQUAL_IGNORE_CASE:
-                buffer.append(" not be equal");
+                buffer.append(" "+comparisonDict[2]);
                 break;
         }
         buffer.append('.');

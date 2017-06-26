@@ -64,6 +64,10 @@ public class UserBean implements Serializable {
     @NotBlank(message = "A country selection is required. Please selected a country from the list above.")
     private String countryCode;
 
+
+
+    private String defaultLocale;
+
     private long userId;
     private long imageId;
     private boolean sendEmailOnMessage;
@@ -82,6 +86,11 @@ public class UserBean implements Serializable {
         countryCode = member.getCountry();
         shortBio = member.getShortBio();
 
+        if(member.getDefaultLocale()!=null){
+            defaultLocale = member.getDefaultLocale();
+        }else{
+            defaultLocale = "en";//TODO:migrate this to a single i18n file
+        }
         if(member.getPortraitFileEntryId()==null){
             imageId = 0;
         } else {
@@ -119,6 +128,13 @@ public class UserBean implements Serializable {
         return CountryUtil.getCountryForCode(countryCode);
     }
 
+    public String getDefaultLocale() {
+        return defaultLocale;
+    }
+
+    public void setDefaultLocale(String defaultLocale) {
+        this.defaultLocale = defaultLocale;
+    }
     public String getShortBio() {
         return shortBio;
     }

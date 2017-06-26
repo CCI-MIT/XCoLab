@@ -1,16 +1,27 @@
 package org.xcolab.view.util.validation;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.sharedcolab.SharedColabClient;
+import org.xcolab.view.i18n.ResourceMessageResolver;
+
+import java.util.Locale;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
 
-public class UniqueScreenNameEmailValidator implements ConstraintValidator<UniqueScreenNameAndEmail, Object> {
+public class UniqueScreenNameEmailValidator
+        implements ConstraintValidator<UniqueScreenNameAndEmail, Object> {
 
     private String screenNameProperty;
     private String emailProperty;
+
+    @Autowired
+    ResourceMessageResolver resourceMessageResolver;
 
     @Override
     public void initialize(UniqueScreenNameAndEmail constraintAnnotation) {
@@ -21,9 +32,11 @@ public class UniqueScreenNameEmailValidator implements ConstraintValidator<Uniqu
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
 
-        String screenName = ConstraintValidatorHelper
-                .getPropertyValue(String.class, screenNameProperty, value);
-        String email = ConstraintValidatorHelper.getPropertyValue(String.class, emailProperty, value);
+
+        String screenName =
+                ConstraintValidatorHelper.getPropertyValue(String.class, screenNameProperty, value);
+        String email =
+                ConstraintValidatorHelper.getPropertyValue(String.class, emailProperty, value);
 
         if (email == null || screenName == null) {
             return true;
@@ -34,24 +47,33 @@ public class UniqueScreenNameEmailValidator implements ConstraintValidator<Uniqu
 
         if (!isValid) {
             boolean isDefaultMessage = "".equals(context.getDefaultConstraintMessageTemplate());
-            /* if custom message was provided, don't touch it, otherwise build the default message */
+            /* if custom message was provided, don't touch it, otherwise build the default
+            message */
             if (isDefaultMessage) {
                 StringBuilder sb = new StringBuilder();
-                sb.append("A member with given");
+                sb.append(resourceMessageResolver.getLocalizedMessage(
+                        "register.form.validation.screenNameEmail.memberwith"));
                 if (!uniqueEmail) {
-                    sb.append(" email");
+                    sb.append(" "+resourceMessageResolver
+                            .getLocalizedMessage("register.form.validation.screenNameEmail.email"));
                 }
                 if (!uniqueScreenName) {
                     if (!uniqueEmail) {
-                        sb.append(" and");
+                        sb.append(" "+resourceMessageResolver.getLocalizedMessage(
+                                "register.form.validation.screenNameEmail.and"));
                     }
-                    sb.append(" screen name");
+                    sb.append(" "+resourceMessageResolver.getLocalizedMessage(
+                            "register.form.validation.screenNameEmail.screenName"));
 
                 }
                 if (!ConfigurationAttributeKey.IS_SHARED_COLAB.get()) {
-                    sb.append(" already exists");
+                    sb.append(" "+resourceMessageResolver
+                            .getLocalizedMessage("register.form.validation.screenNameEmail.alreadyexists"));
                 } else {
-                    sb.append(" already exists. \n Please choose another screen name or, if you are a member of "+ConfigurationAttributeKey.PARTNER_COLAB_NAME.get()+", please use the CoLab logo to the right to sign in!");
+                    sb.append(" "+resourceMessageResolver
+                            .getLocalizedMessage(
+                                    "register.form.validation.screenNameEmail.alreadyexists.sharedcolab",
+                                    new String[]{ConfigurationAttributeKey.PARTNER_COLAB_NAME.get()}));
                 }
                 context.disableDefaultConstraintViolation();
                 ConstraintViolationBuilder violationBuilder =

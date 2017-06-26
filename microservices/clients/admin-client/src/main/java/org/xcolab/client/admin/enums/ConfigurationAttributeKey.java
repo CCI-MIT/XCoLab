@@ -365,4 +365,8 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newLongAttribute("DISCUSSION_CONTENT_ARTICLE_ID")
                     .build();
 
+    public static final AttributeGetter<Boolean> IS_I18N_ACTIVE =
+            ConfigurationAttributes.newBooleanAttribute("IS_I18N_ACTIVE")
+                    .defaultValue(false)
+                    .build();
 }

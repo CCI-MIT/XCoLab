@@ -202,16 +202,16 @@ public class ContestControllerTest {
         Mockito.verify(contestDao, Mockito.times(1)).update(Mockito.anyObject());
     }
 
-    @Test
-    public void shouldGetContestDiscussion() throws Exception {
-        this.mockMvc.perform(
-                get("/contestDiscussions").param("startRecord", "1").param("limitRecord", "100")
-                        .param("sort", "").param("contestId", "").param("tab", "2016")
+        @Test
+        public void shouldGetContestDiscussion() throws Exception {
+            this.mockMvc.perform(
+                    get("/contestDiscussions").param("startRecord", "1").param("limitRecord", "100")
+                            .param("sort", "").param("contestId", "").param("tab", "2016")
 
-        ).andExpect(status().isOk());
-        Mockito.verify(contestDiscussionDao, Mockito.times(1))
-                .findByGiven(Mockito.anyObject(), Mockito.anyObject(), Mockito.anyObject());
-    }
+            ).andExpect(status().isOk());
+            Mockito.verify(contestDiscussionDao, Mockito.times(1))
+                    .findByGiven(Mockito.anyObject(), Mockito.anyObject(), Mockito.anyObject());
+        }
     @Test
     public void shouldUpdateContestDiscussion() throws Exception {
 

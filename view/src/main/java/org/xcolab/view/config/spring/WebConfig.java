@@ -11,17 +11,23 @@ import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletCon
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.CacheControl;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
 
@@ -32,6 +38,8 @@ import org.xcolab.view.config.rewrite.RewriteInitializer;
 import org.xcolab.view.config.spring.properties.WebProperties;
 import org.xcolab.view.config.tomcat.AjpConnector;
 import org.xcolab.view.config.tomcat.ForwardedHostValve;
+import org.xcolab.view.i18n.CustomLocaleChangeInterceptor;
+import org.xcolab.view.i18n.I18nUtils;
 import org.xcolab.view.pages.proposals.interceptors.PopulateProposalModelInterceptor;
 import org.xcolab.view.pages.proposals.interceptors.ValidateTabPermissionsInterceptor;
 import org.xcolab.view.theme.ThemeResourceResolver;
@@ -59,9 +67,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
     public WebConfig(ThemeVariableInterceptor themeVariableInterceptor,
-        PopulateProposalModelInterceptor populateContextInterceptor,
-        ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor,
-        ConfigurationService configurationService, WebProperties webProperties) {
+            PopulateProposalModelInterceptor populateContextInterceptor,
+            ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor,
+            ConfigurationService configurationService, WebProperties webProperties) {
         Assert.notNull(configurationService, "ConfigurationService bean is required");
         Assert.notNull(themeVariableInterceptor, "ThemeVariableInterceptor bean is required");
         Assert.notNull(populateContextInterceptor, "PopulateContextInterceptor bean is required");
@@ -81,6 +89,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
         registry.addInterceptor(populateContextInterceptor).addPathPatterns("/contests/**");
         registry.addInterceptor(validateTabPermissionsInterceptor).addPathPatterns("/contests/**");
+        registry.addInterceptor(localeChangeInterceptor());
+    }
+
+    public LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor lci = new CustomLocaleChangeInterceptor();
+        lci.setParamName("lang");
+
+        return lci;
     }
 
     @Bean
@@ -88,6 +104,23 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(new ResourceUrlEncodingFilter());
         return registrationBean;
+    }
+
+    @Bean
+    public MessageSource messageSource() {
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasenames("i18n/homepage",
+                "i18n/register");
+        messageSource.setDefaultEncoding("utf-8");
+        return messageSource;
+    }
+
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver slr = new SessionLocaleResolver();
+        slr.setDefaultLocale(I18nUtils.DEFAULT_LOCALE);
+        slr.setLocaleAttributeName(I18nUtils.MEMBER_LOCALE_SESSION_IDENTIFIER);
+        return slr;
     }
 
     @Bean
@@ -142,7 +175,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                 context.setResources(standardRoot);
 
                 log.info("Set tomcat cache size to {} MB",
-                    context.getResources().getCacheMaxSize() / 1024);
+                        context.getResources().getCacheMaxSize() / 1024);
             }
         };
         if (configurationService.isTomcatAjpEnabled()) {
@@ -167,10 +200,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/", "classpath:/dist/")
                 .setCacheControl(
-                    webProperties.getCache().getScripts().isActive()
-                    ? CacheControl.maxAge(webProperties.getCache().getScripts().getMaxAgeDays(),
-                        TimeUnit.DAYS)
-                    : CacheControl.noCache())
+                        webProperties.getCache().getScripts().isActive()
+                                ? CacheControl.maxAge(webProperties.getCache().getScripts().getMaxAgeDays(),
+                                TimeUnit.DAYS)
+                                : CacheControl.noCache())
                 .resourceChain(true)
                 .addResolver(new VersionResourceResolver()
                         .addContentVersionStrategy("/js/**", "/css/**"));
@@ -178,10 +211,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("classpath:/static/images/")
                 .setCacheControl(
-                    webProperties.getCache().getImages().isActive()
-                    ? CacheControl.maxAge(webProperties.getCache().getImages().getMaxAgeDays(),
-                        TimeUnit.DAYS)
-                    : CacheControl.noCache())
+                        webProperties.getCache().getImages().isActive()
+                                ? CacheControl.maxAge(webProperties.getCache().getImages().getMaxAgeDays(),
+                                TimeUnit.DAYS)
+                                : CacheControl.noCache())
                 .resourceChain(true)
                 .addResolver(new ThemeResourceResolver());
     }

@@ -1,9 +1,13 @@
 package org.xcolab.view.auth.handlers;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication
+        .SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFoundException;
@@ -11,10 +15,12 @@ import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.auth.AuthenticationContext;
+import org.xcolab.view.i18n.I18nUtils;
 import org.xcolab.view.pages.loginregister.BalloonCookie;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +29,9 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     private final AuthenticationContext authenticationContext;
+
+    @Autowired
+    private LocaleResolver localeResolver;
 
     public AuthenticationSuccessHandler(AuthenticationContext authenticationContext) {
         this.authenticationContext = authenticationContext;
@@ -36,19 +45,20 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
         final Member member = authenticationContext.getRealMemberOrNull();
         BalloonCookie bc = BalloonCookie.fromCookieArray(request.getCookies());
         if (StringUtils.isNotBlank(bc.getUuid())) {
-            // cookie is present, get BalloonUserTracking if it exists and update association to the current user
+            // cookie is present, get BalloonUserTracking if it exists and update association to
+            // the current user
             try {
                 BalloonUserTracking but = BalloonsClient.getBalloonUserTracking(bc.getUuid());
                 if (but == null) {
                     List<BalloonUserTracking> buts =
-                            BalloonsClient
-                                    .getBalloonUserTrackingByEmail(member.getEmailAddress());
+                            BalloonsClient.getBalloonUserTrackingByEmail(member.getEmailAddress());
                     if (!buts.isEmpty()) {
                         but = buts.get(0);
                     }
                 }
 
-                if (but != null && but.getUserId()!= null && but.getUserId() != member.getUserId()) {
+                if (but != null && but.getUserId() != null && but.getUserId() != member
+                        .getUserId()) {
                     but.setUserId(member.getUserId());
                     BalloonsClient.updateBalloonUserTracking(but);
 

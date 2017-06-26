@@ -29,6 +29,7 @@ create table members_Member
 	forgotPasswordTokenExpireTime datetime null,
 	portraitFileEntryId bigint null,
 	reportKarma int default '100' null,
+  defaultLocale VARCHAR(45) NULL DEFAULT 'en',
 	autoRegisteredMemberStatus int(4) default '0' null,
 	uuid varchar(40) null,
 	loginTokenId varchar(75) null,

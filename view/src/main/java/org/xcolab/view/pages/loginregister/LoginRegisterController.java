@@ -21,10 +21,15 @@ import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
+import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.util.CountryUtil;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.i18n.I18nUtils;
+import org.xcolab.view.i18n.ResourceMessageResolver;
+import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;
 import org.xcolab.view.util.entity.ReCaptchaUtils;
 import org.xcolab.view.util.entity.portlet.RequestParamUtil;
@@ -51,6 +56,9 @@ public class LoginRegisterController {
     private static final String USER_NAME_REGEX = "^[a-zA-Z0-9]+$";
     private static final String REGISTER_VIEW_NAME = "loginregister/register";
     private final LoginRegisterService loginRegisterService;
+
+    @Autowired
+    ResourceMessageResolver resourceMessageResolver;
 
     @Autowired
     public LoginRegisterController(LoginRegisterService loginRegisterService) {
@@ -105,14 +113,38 @@ public class LoginRegisterController {
             model.addAttribute("isSsoLogin", true);
         }
 
+        // Get country location
+        if (StringUtils.isEmpty(userBean.getCountry())) {
+            try {
+                userBean.setLanguage(I18nUtils.DEFAULT_LOCALE.getLanguage());
+                userBean.setCountry(getCountryCodeFromRemoteAddress(request.getRemoteAddr()));
+            } catch (UserLocationNotResolvableException ignored) {
+            }
+        }
         model.addAttribute("generateScreenName", ConfigurationAttributeKey.GENERATE_SCREEN_NAME.get());
         final String loginInfoText = ConfigurationAttributeKey.LOGIN_INFO_MESSAGE.get();
         model.addAttribute("hasLoginInfoText", StringUtils.isNotBlank(loginInfoText));
         model.addAttribute("loginInfoText", loginInfoText);
         model.addAttribute("countrySelectItems", CountryUtil.getSelectOptions());
+
+        model.addAttribute("isI18NActive",ConfigurationAttributeKey.IS_I18N_ACTIVE.get());
+        model.addAttribute("languageSelectItems", I18nUtils.getSelectList());
         return REGISTER_VIEW_NAME;
     }
 
+    private String getCountryCodeFromRemoteAddress(String ipAddr) throws UserLocationNotResolvableException {
+        try {
+            Location location = TrackingClient.getLocationForIp(ipAddr);
+            if (location != null) {
+                return location.getCountry();
+            }
+        } catch (Exception e) {
+            throw new UserLocationNotResolvableException(
+                    String.format("Could not retrieve country from IP address %s", ipAddr), e);
+        }
+        throw new UserLocationNotResolvableException(
+                String.format("Could not retrieve country from IP address %s", ipAddr));
+    }
     public static void getSSOUserInfo(HttpSession session, CreateUserBean createUserBean) {
         // append SSO attributes from session
         String fbIdString =
@@ -170,7 +202,8 @@ public class LoginRegisterController {
         }
         if (!captchaValid) {
             SessionErrors.clear(request);
-            result.addError(new ObjectError("createUserBean", "Please click the box"));
+            
+            result.addError(new ObjectError("createUserBean", resourceMessageResolver.getLocalizedMessage("register.form.validation.captcha.message")));
             return showRegistrationError(model);
         }
         //TODO: improve redirect to avoid double handling
@@ -182,6 +215,8 @@ public class LoginRegisterController {
 
     private String showRegistrationError(Model model) {
         model.addAttribute("countrySelectItems", CountryUtil.getSelectOptions());
+        model.addAttribute("isI18NActive",ConfigurationAttributeKey.IS_I18N_ACTIVE.get());
+        model.addAttribute("languageSelectItems", I18nUtils.getSelectList());
         return REGISTER_VIEW_NAME;
     }
 

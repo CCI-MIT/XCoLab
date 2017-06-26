@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConfigurationService {
 
-    @Value("${server.use-forward-headers:false}")
+    //@Value("${server.use-forward-headers:false}")
     private boolean useForwardHeaders;
 
-    @Value("${tomcat.ajp.enabled:false}")
+    //@Value("${tomcat.ajp.enabled:false}")
     private boolean tomcatAjpEnabled;
 
-    @Value("${tomcat.ajp.port:18010}")
+    //@Value("${tomcat.ajp.port:18010}")
     private int tomcatAjpPort;
 
     public boolean isUseForwardHeaders() {
