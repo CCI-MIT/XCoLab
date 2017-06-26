@@ -78,9 +78,9 @@
             <p>
                 <c:if test="${showProposalEditHelpText}">
                     Please complete your ${fn:toLowerCase(contestType.proposalName)} based on the template below.
-                    If you have input on the template, please send it in a <a href="/web/guest/feedback" target="_blank">feedback message</a>.
+                    If you have input on the template, please send it in a <a href="/feedback" target="_blank">feedback message</a>.
                     To save your ${fn:toLowerCase(contestType.proposalName)}, you must agree to the <a href="${contestType.rulesPageUrl}" target="_blank">${contestType.rulesPageName}</a>
-                    and <a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of use</a>.
+                    and <a href="/wiki/Terms+of+use" target="_blank">Terms of use</a>.
                 </c:if>
 
                 <br/>
