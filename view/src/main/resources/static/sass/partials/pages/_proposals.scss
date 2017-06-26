@@ -342,7 +342,7 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 }
 
 .votebox-top .vote img {
-  padding: 0 3px 0 5px;
+  margin: 0 3px 0 5px;
 }
 
 .votebox-top .question {
@@ -766,6 +766,7 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 // admin tab columns
 .admin_left {
   width: 400px;
+  margin-right: 40px;
   float: left;
 }
 

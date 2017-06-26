@@ -107,7 +107,7 @@ a {
   text-decoration: $b-Typography__textDecoration__a;
 }
 
-a:hover {
+a:hover, a:focus {
   color: $b-Typography__textColor__a--isHover;
   text-decoration: $b-Typography__textDecoration__a--hover;
 }
