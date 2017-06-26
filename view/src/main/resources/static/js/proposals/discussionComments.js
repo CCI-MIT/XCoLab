@@ -74,8 +74,8 @@ jQuery(function() {
         });
 
         //restore comment content from a previously set cookie.
-        if ($messageContent.val() == "" && $.cookie("proposal-comment-body")) {
-            $messageContent.val($.cookie("proposal-comment-body"));
+        if ($messageContent.val() == "" && Cookies.get("proposal-comment-body")) {
+            $messageContent.val(Cookies.get("proposal-comment-body"));
         }
 
         //submit button functionality for adding new comments
@@ -87,12 +87,13 @@ jQuery(function() {
 function handleClickOnDiscussion(event){
     //save the comment in a cookie, in case the user is not logged in
 
-    if($("#cke_messageContent iframe") == null || $("#cke_messageContent iframe").contents().find("body").text() == "") {
-        $.removeCookie("proposal-comment-body", {path: "/"});
-        $.cookie("proposal-comment-body", $("#messageContent").val(), {path: "/"});
+    var $ckeMessageContent = $("#cke_messageContent").find("iframe");
+    if($ckeMessageContent == null || $ckeMessageContent.contents().find("body").text() == "") {
+        Cookies.remove("proposal-comment-body");
+        Cookies.set("proposal-comment-body", $("#messageContent").val());
     } else {
-        $.removeCookie("proposal-comment-body", {path: "/"});
-        $.cookie("proposal-comment-body", $("#cke_messageContent iframe").contents().find("body").text(), {path: "/"});
+        Cookies.remove("proposal-comment-body");
+        Cookies.set("proposal-comment-body", $ckeMessageContent.contents().find("body").text());
     }
 
     if ($("#addCommentButton").attr("data-is-deferred") == "true") {

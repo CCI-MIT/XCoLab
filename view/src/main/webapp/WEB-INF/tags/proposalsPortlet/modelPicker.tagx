@@ -60,7 +60,7 @@
 	</div>
 	<script>
 		var preferredModelsCookie = "cc_contests_preferredModels";
-		var preferredModelsStr = $.cookie(preferredModelsCookie);
+		var preferredModelsStr = Cookies.get(preferredModelsCookie);
 		var preferredModelsMap = {};
 		// try to parse preferred models
 		try {
@@ -69,8 +69,6 @@
 				// there is a preferred model, select it in models select box
 				$(".modelsSelectBox").val(preferredModelsMap["${contestPK}"]);
 			}
-			
-			
 		} catch (e) {
 			// ignore
 		}
@@ -81,9 +79,8 @@
 			jQuery(".act-edit_right").html("");
 			preferredModelsMap["${contestPK}"] = $(this).val();
 			
-			$.cookie("cc_contests_preferredModels", JSON.stringify(preferredModelsMap), { expires : 365 });
+			Cookies.set("cc_contests_preferredModels", JSON.stringify(preferredModelsMap), { expires : 365 });
 		});
-
 
 	</script>
 </jsp:root>

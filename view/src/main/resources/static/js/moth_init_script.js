@@ -225,7 +225,7 @@ function showSharedContestAutoRegPopUp(fn, contestId) {
 
 	if (_isLoggedIn) {
 		//if has cookie for contestId return true;
-		var sharedContestConfirm = $.cookie("sharedColab_"+contestId);
+		var sharedContestConfirm = Cookies.get("sharedColab_" + contestId);
 		if(sharedContestConfirm === undefined) {
 			sharedContestConfirm = false;
 		}
@@ -245,8 +245,8 @@ function showSharedContestAutoRegPopUp(fn, contestId) {
 }
 
 function handleOkForSharedColabAutoReg() {
-	$.cookie("sharedColab_"+sharedContestAutoRegContestId, "true");
-	if(sharedContestAutoRegCallbackFunction!=null){
+	Cookies.set("sharedColab_"+sharedContestAutoRegContestId, "true");
+	if (sharedContestAutoRegCallbackFunction != null) {
 		sharedContestAutoRegCallbackFunction.call(null);
 	}
 }
@@ -260,9 +260,9 @@ function showForgotPasswordPopup() {
 	jQuery('#popup_forgotpassword').show();
 }
 
-function insertParam(key, value)
-{
-    key = escape(key); value = escape(value);
+function insertParam(key, value) {
+    key = escape(key);
+    value = escape(value);
 
     var kvp = document.location.search.substr(1).split('&');
 
