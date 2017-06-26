@@ -41,7 +41,7 @@ public class WikiController {
         return "content/wikiList";
     }
 
-    @GetMapping("/wiki/{pageTitle}")
+    @GetMapping("/wiki/{pageTitle:.*}")
     public String showWikiPage(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member, @PathVariable String pageTitle)
             throws IOException {
