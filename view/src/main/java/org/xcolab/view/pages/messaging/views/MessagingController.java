@@ -142,9 +142,9 @@ public class MessagingController {
         if (messagingPermissions.getCanSendMessage()) {
             List<Long> recipientIds = IdListUtil.getIdsFromString(userIdsRecipients);
             try {
+                final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
                 MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(messageSubject),
-                        HtmlUtil.cleanSome(messageContent,
-                                PlatformAttributeKey.PLATFORM_COLAB_URL.get()),
+                        HtmlUtil.cleanSome(messageContent, baseUri),
                         loggedInMember.getUserId(), recipientIds);
                 AlertMessage.success("The message has been sent!").flash(request);
             } catch (MessageLimitExceededException e) {

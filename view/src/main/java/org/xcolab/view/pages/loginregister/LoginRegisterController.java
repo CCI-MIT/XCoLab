@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
@@ -261,8 +262,8 @@ public class LoginRegisterController {
                 json.getJSONObject("bio").put("success", true);
                 if (StringUtils.isNotEmpty(bio)) {
                     if (bio.length() <= 2000) {
-                        loggedInMember.setShortBio(
-                                        HtmlUtil.cleanSome(bio, LinkUtils.getBaseUri(request)));
+                        final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+                        loggedInMember.setShortBio(HtmlUtil.cleanSome(bio, baseUri));
                         MembersClient.updateMember(loggedInMember);
                     } else {
                         json.getJSONObject("bio").put("success", false);

@@ -2,19 +2,19 @@ package org.xcolab.view.pages.proposals.utils.edit;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
-import org.xcolab.entity.utils.LinkUtils;
-import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextImpl;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
+import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -55,10 +55,11 @@ public class ProposalUpdateHelper {
                 case PROPOSAL_LIST_TEXT_REFERENCE:
                 case DROPDOWN_MENU:
                     if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
+                        final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
                         ProposalsContextUtil.getClients(request).getProposalAttributeClient()
                                 .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
                                         ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(),
-                                        HtmlUtil.cleanSome(newSectionValue, LinkUtils.getBaseUri(request)));
+                                        HtmlUtil.cleanSome(newSectionValue, baseUri));
                         evictCache = true;
                         if (section.getType() == PlanSectionTypeKeys.PROPOSAL_LIST_TEXT_REFERENCE) {
                             updateProposalReferences = true;
@@ -175,19 +176,21 @@ public class ProposalUpdateHelper {
         }
 
         if (!StringUtils.equals(updateProposalSectionsBean.getPitch(), proposalWrapper.getPitch())) {
+            final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
             ProposalsContextUtil.getClients(request).getProposalAttributeClient()
                     .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
                     ProposalAttributeKeys.PITCH, 0L, HtmlUtil.cleanSome(updateProposalSectionsBean.getPitch(),
-                            LinkUtils.getBaseUri(request)));
+                            baseUri));
         } else {
             filledAll = false;
         }
 
         if (!StringUtils.equals(updateProposalSectionsBean.getDescription(), proposalWrapper.getDescription())) {
+            final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
             ProposalsContextUtil.getClients(request).getProposalAttributeClient()
                     .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
                     ProposalAttributeKeys.DESCRIPTION, 0L, HtmlUtil.cleanSome(updateProposalSectionsBean.getDescription(),
-                            LinkUtils.getBaseUri(request)));
+                            baseUri));
         } else {
             filledAll = false;
         }
