@@ -4,16 +4,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.util.CommentClientUtil;
-import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
-
-
+import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
+        .DiscussionAuthorizationException;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
@@ -48,7 +47,8 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
 
         Comment comment = commentClient.getComment(commentId);
 
-        comment.setContent(HtmlUtil.cleanSome(content, LinkUtils.getBaseUri(request)));
+        final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+        comment.setContent(HtmlUtil.cleanSome(content, baseUri));
         commentClient.updateComment(comment);
 
         redirectToReferrer(request, response);

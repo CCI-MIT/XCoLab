@@ -11,6 +11,7 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
@@ -28,7 +29,6 @@ import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.util.http.client.RefreshingRestService;
@@ -37,7 +37,7 @@ import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.loginregister.SharedColabUtil;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
-    .DiscussionAuthorizationException;
+        .DiscussionAuthorizationException;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
 
@@ -115,8 +115,8 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
             checkPermissions(request, "User isn't allowed to add comment", 0L);
 
-            final String body = HtmlUtil.cleanSome(newMessage.getDescription(),
-                LinkUtils.getBaseUri(request));
+            final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+            final String body = HtmlUtil.cleanSome(newMessage.getDescription(), baseUri);
 
             Comment comment = new Comment();
             comment.setContent(body);

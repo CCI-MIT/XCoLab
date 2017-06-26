@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.CategoryGroup;
@@ -112,11 +113,12 @@ public class ThreadController extends BaseDiscussionController {
 
             Comment comment = new Comment();
             comment.setThreadId(thread.getThreadId());
-            comment.setContent(HtmlUtil.cleanSome(body, ""));
+            final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+            comment.setContent(HtmlUtil.cleanSome(body, baseUri));
             comment.setAuthorId(memberId);
             comment = CommentClientUtil.createComment(comment);
 
-            if( !thread.getIsQuiet()) {
+            if(!thread.getIsQuiet()) {
                 ActivityEntryHelper.createActivityEntry(ActivitiesClientUtil.getClient(),memberId, categoryId, (comment.getCommentId()+""),
                         ActivityProvidersType.DiscussionAddedActivityEntry.getType());
             }

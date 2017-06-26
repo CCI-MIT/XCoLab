@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
@@ -267,8 +268,7 @@ public class UserProfileController {
             AlertMessage.CHANGES_SAVED.flash(request);
             return EDIT_PROFILE_VIEW;
         } else {
-            response.sendRedirect("/web/guest/member/-/member/userId/" + memberId);
-            return EDIT_PROFILE_VIEW;
+            return "redirect:/members/profile/" + memberId;
         }
     }
 
@@ -283,7 +283,8 @@ public class UserProfileController {
 
         boolean changedMember = false;
         if (!existingBio.equals(updatedUserBean.getShortBio())) {
-            member.setShortBio(HtmlUtil.cleanSome(updatedUserBean.getShortBio(), ""));
+            final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+            member.setShortBio(HtmlUtil.cleanSome(updatedUserBean.getShortBio(), baseUri));
             changedMember = true;
         }
 
@@ -295,7 +296,6 @@ public class UserProfileController {
         }
         if (updatedUserBean.getCountryCode() != null && !updatedUserBean.getCountryCode().equals(existingCountry)
                 && !StringUtils.isEmpty(updatedUserBean.getCountryCode())) {
-            //member.setCountry(CountryUtil.getCountryForCode(updatedUserBean.getCountryCode()));
             member.setCountry(updatedUserBean.getCountryCode());
             changedMember = true;
         }

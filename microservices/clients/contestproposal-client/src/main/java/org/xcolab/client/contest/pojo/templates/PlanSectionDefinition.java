@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
@@ -107,7 +108,8 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
             //default text if available
             return ( !StringUtils.isEmpty(this.getDefaultText())) ? this.getDefaultText() : null;
         }
-        Document contentDocument = Jsoup.parse(content.trim());
+        final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+        Document contentDocument = Jsoup.parse(content.trim(), baseUri);
         contentDocument = HtmlUtil.addNoFollowToLinkTagsInDocument(contentDocument);
 
         for (Element aTagElements : contentDocument.select("a")) {
