@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.content;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,6 +60,7 @@ public class WikiController {
                 }
                 model.addAttribute("contentArticleVersion", contentArticleVersion);
             } catch (ContentNotFoundException e) {
+                response.setStatus(HttpStatus.NOT_FOUND.value());
                 return ErrorText.NOT_FOUND.flashAndReturnView(request);
             }
         }
@@ -73,6 +75,7 @@ public class WikiController {
         final Contest contest = ContestClientUtil.getContest(contestUrlName, contestYear);
 
         if (contest == null) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
             return ErrorText.NOT_FOUND.flashAndReturnView(request);
         }
         try {
@@ -84,6 +87,7 @@ public class WikiController {
                 model.addAttribute("contentArticleVersion", contentArticleVersion);
             }
         } catch (ContentNotFoundException e) {
+            response.setStatus(HttpStatus.NOT_FOUND.value());
             return ErrorText.NOT_FOUND.flashAndReturnView(request);
         }
 
