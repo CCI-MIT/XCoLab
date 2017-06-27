@@ -84,7 +84,17 @@ CKEDITOR.on('dialogDefinition', function (e) {
         if(dialogName == "link"){
             var editor = this.getParentEditor();
             var selectedContent = editor.getSelection().getSelectedText();
+
+
+            if($(editor.getSelection().getNative().anchorNode.innerHTML)) {
+                var urlTyped = $(editor.getSelection().getNative().anchorNode.innerHTML).attr(
+                        "data-cke-saved-href");
+                this.setValueOf('info','url',urlTyped);
+            }
+
             this.setValueOf('info','linkDisplayText', selectedContent);
+            this.setValueOf('info','linkType', 'url');
+
             
         }
     };

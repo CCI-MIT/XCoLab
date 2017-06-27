@@ -77,6 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             }
             httpSecurity.authorizeRequests()
                     .antMatchers("/images/**").permitAll()
+                    .antMatchers("/image/**").permitAll()
                     .antMatchers("/css/**").permitAll()
                     .antMatchers("/js/**").permitAll()
                     .antMatchers("/login/**").permitAll()
@@ -102,10 +103,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .and()
                 .csrf()
                     .disable()
-                .headers().addHeaderWriter(new DelegatingRequestMatcherHeaderWriter(
-                        new NegatedRequestMatcher(
-                                new OrRequestMatcher(getWhiteList())),
-                                new XFrameOptionsHeaderWriter(XFrameOptionsMode.SAMEORIGIN)));
+                .headers()
+                    .defaultsDisabled()
+                    .addHeaderWriter(
+                        new DelegatingRequestMatcherHeaderWriter(
+                                new NegatedRequestMatcher(new OrRequestMatcher(getWhiteList())),
+                                new XFrameOptionsHeaderWriter(XFrameOptionsMode.SAMEORIGIN))
+                    );
+
     }
 
     @Autowired
@@ -135,6 +140,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private List<RequestMatcher> getWhiteList(){
         List<RequestMatcher> whitelist = new ArrayList<>();
+        whitelist.add(new RegexRequestMatcher(".*localhost*", HttpMethod.POST.name()));
         whitelist.add(new RegexRequestMatcher(".*climatecolab.org.*", HttpMethod.POST.name()));
         whitelist.add(new RegexRequestMatcher(".*solvecolab.mit.edu.*",HttpMethod.POST.name()));
         whitelist.add(new RegexRequestMatcher(".*kcc.mit.edu.org.*",HttpMethod.POST.name()));
