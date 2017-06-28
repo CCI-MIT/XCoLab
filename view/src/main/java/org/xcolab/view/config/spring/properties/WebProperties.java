@@ -35,6 +35,17 @@ public class WebProperties {
          */
         private boolean alwaysAllowHomepage = true;
 
+        /**
+         * If false, the platform does not allow registering new members.
+         * Existing members will still be able to log in.
+         */
+        private boolean allowRegistration = true;
+
+        /**
+         * If false, the platform does not allow members to log in.
+         */
+        private boolean allowLogin = true;
+
         public boolean isAllowAll() {   
             return allowAll;
         }
@@ -49,6 +60,22 @@ public class WebProperties {
 
         public void setAlwaysAllowHomepage(boolean alwaysAllowHomepage) {
             this.alwaysAllowHomepage = alwaysAllowHomepage;
+        }
+
+        public boolean isAllowRegistration() {
+            return allowRegistration;
+        }
+
+        public void setAllowRegistration(boolean allowRegistration) {
+            this.allowRegistration = allowRegistration;
+        }
+
+        public boolean isAllowLogin() {
+            return allowLogin;
+        }
+
+        public void setAllowLogin(boolean allowLogin) {
+            this.allowLogin = allowLogin;
         }
     }
 

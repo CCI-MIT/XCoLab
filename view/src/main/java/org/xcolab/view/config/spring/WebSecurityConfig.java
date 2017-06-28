@@ -25,13 +25,14 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.session.web.http.SessionRepositoryFilter;
 
 import org.xcolab.util.autoconfigure.XCoLabProperties;
-import org.xcolab.view.auth.AuthenticationContext;
+import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.handlers.AuthenticationFailureHandler;
 import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.handlers.LogoutSuccessHandler;
 import org.xcolab.view.auth.login.spring.MemberDetailsService;
 import org.xcolab.view.auth.login.spring.MemberPasswordEncoder;
 import org.xcolab.view.config.spring.properties.WebProperties;
+import org.xcolab.view.config.spring.properties.WebProperties.GuestAccess;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,16 +51,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final MemberDetailsService memberDetailsService;
     private final WebProperties webProperties;
     private final XCoLabProperties xCoLabProperties;
-
+    private final AuthenticationService authenticationService;
 
     @Autowired
     public WebSecurityConfig(RememberMeServices rememberMeServices,
             MemberDetailsService memberDetailsService, WebProperties webProperties,
-            XCoLabProperties xCoLabProperties) {
+            XCoLabProperties xCoLabProperties, AuthenticationService authenticationService) {
         this.rememberMeServices = rememberMeServices;
         this.memberDetailsService = memberDetailsService;
         this.webProperties = webProperties;
         this.xCoLabProperties = xCoLabProperties;
+        this.authenticationService = authenticationService;
     }
 
     @Override
@@ -67,11 +69,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.authorizeRequests()
                 .antMatchers("/admin/management/**").hasRole("ADMIN");
 
-        if (webProperties.getGuestAccess().isAllowAll()) {
+        final GuestAccess guestAccessProperties = webProperties.getGuestAccess();
+        if (!guestAccessProperties.isAllowRegistration()) {
+            httpSecurity.authorizeRequests()
+                    .antMatchers("/register/**").denyAll();
+        }
+
+        if (guestAccessProperties.isAllowAll()) {
             httpSecurity.authorizeRequests()
                     .anyRequest().permitAll();
         } else {
-            if (webProperties.getGuestAccess().isAlwaysAllowHomepage()) {
+            if (guestAccessProperties.isAlwaysAllowHomepage()) {
                 httpSecurity.authorizeRequests()
                         .antMatchers("/").permitAll();
             }
@@ -89,7 +97,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/login")
                     .permitAll()
-                    .successHandler(new AuthenticationSuccessHandler(new AuthenticationContext()))
+                    .successHandler(new AuthenticationSuccessHandler(authenticationService,
+                            guestAccessProperties.isAllowLogin()))
                     .failureHandler(new AuthenticationFailureHandler())
                     .and()
                 .rememberMe()

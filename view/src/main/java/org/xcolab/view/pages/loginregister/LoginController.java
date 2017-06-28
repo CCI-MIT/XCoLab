@@ -15,6 +15,7 @@ import org.xcolab.client.members.pojo.TokenValidity;
 import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.view.util.entity.flash.ErrorMessage;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -76,5 +77,14 @@ public class LoginController {
                 AlertMessage.danger("Invalid login token.").flash(request);
                 return "redirect:/";
         }
+    }
+
+    @GetMapping("/loginDisabled")
+    public String showLoginDisabled(HttpServletRequest request) {
+        return ErrorMessage.error("The login function has been disabled on this site. "
+                + "Please use the <a href='/feedback'>feedback form</a> to contact "
+                + "an administrator for more information.")
+                .withTitle("Login disabled")
+                .flashAndReturnView(request);
     }
 }

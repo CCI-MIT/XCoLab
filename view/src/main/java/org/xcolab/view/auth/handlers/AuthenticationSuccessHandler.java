@@ -1,26 +1,21 @@
 package org.xcolab.view.auth.handlers;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication
-        .SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFoundException;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.view.auth.AuthenticationContext;
-import org.xcolab.view.i18n.I18nUtils;
+import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.pages.loginregister.BalloonCookie;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,13 +23,13 @@ import javax.servlet.http.HttpServletResponse;
 
 public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
-    private final AuthenticationContext authenticationContext;
+    private final AuthenticationService authenticationService;
+    private final boolean allowLogin;
 
-    @Autowired
-    private LocaleResolver localeResolver;
-
-    public AuthenticationSuccessHandler(AuthenticationContext authenticationContext) {
-        this.authenticationContext = authenticationContext;
+    public AuthenticationSuccessHandler(AuthenticationService authenticationService,
+            boolean allowLogin) {
+        this.authenticationService = authenticationService;
+        this.allowLogin = allowLogin;
         setDefaultTargetUrl("/");
     }
 
@@ -42,7 +37,14 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws ServletException, IOException {
 
-        final Member member = authenticationContext.getRealMemberOrNull();
+        final Member member = authenticationService.getRealMemberOrNull();
+
+        if (!allowLogin && !PermissionsClient.canAdminAll(member)) {
+            authenticationService.logout(request, response);
+            getRedirectStrategy().sendRedirect(request, response, "/loginDisabled");
+            return;
+        }
+
         BalloonCookie bc = BalloonCookie.fromCookieArray(request.getCookies());
         if (StringUtils.isNotBlank(bc.getUuid())) {
             // cookie is present, get BalloonUserTracking if it exists and update association to

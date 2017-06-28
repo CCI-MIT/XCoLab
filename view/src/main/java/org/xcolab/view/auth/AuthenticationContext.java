@@ -56,7 +56,12 @@ public class AuthenticationContext {
 
     public Member getRealMemberOrNull() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof MemberDetails) {
+        return getRealMemberOrNull(authentication);
+    }
+
+    public Member getRealMemberOrNull(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()
+                && authentication.getPrincipal() instanceof MemberDetails) {
             MemberDetails memberDetails = (MemberDetails) authentication.getPrincipal();
             return memberDetails.getMember();
         } else {
