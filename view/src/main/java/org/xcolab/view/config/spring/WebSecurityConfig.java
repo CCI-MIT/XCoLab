@@ -7,17 +7,14 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders
-        .AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration
-        .WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.header.writers.DelegatingRequestMatcherHeaderWriter;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
-import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter
-        .XFrameOptionsMode;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter.XFrameOptionsMode;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RegexRequestMatcher;
@@ -70,6 +67,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/management/**").hasRole("ADMIN");
 
         final GuestAccess guestAccessProperties = webProperties.getGuestAccess();
+
+        if (!guestAccessProperties.isAllowSso()) {
+            httpSecurity.authorizeRequests()
+                    .antMatchers("/sso/**").denyAll();
+        }
+
         if (!guestAccessProperties.isAllowRegistration()) {
             httpSecurity.authorizeRequests()
                     .antMatchers("/register/**").denyAll();
