@@ -5,6 +5,9 @@
           xmlns:spring="http://www.springframework.org/tags"
           version="2.0">
     <jsp:directive.attribute name="title" type="java.lang.String" required="false" rtexprvalue="true" description="Page title" />
+
+    <jsp:directive.attribute name="canonicalUrlRelative" type="java.lang.String" required="false" rtexprvalue="true" description="Canonical url for this page (relative to root), if any" />
+
     <jsp:directive.attribute name="meta1" type="java.lang.String" required="false" rtexprvalue="true" description="Social media meta info 1" />
     <jsp:directive.attribute name="meta2" type="java.lang.String" required="false" rtexprvalue="true" description="Social media meta info 2" />
 
@@ -37,6 +40,7 @@
 
     <!--@elvariable id="_contestPages" type="java.util.List<org.xcolab.client.contest.pojo.ContestType>"-->
     <!--@elvariable id="_colabName" type="java.lang.String"-->
+    <!--@elvariable id="_colabUrl" type="java.lang.String"-->
     <!--@elvariable id="_colabShortName" type="java.lang.String"-->
     <!--@elvariable id="_googleAnalyticsKey" type="java.lang.String"-->
     <!--@elvariable id="_betaRibbonShow" type="java.lang.Boolean"-->
@@ -76,6 +80,9 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <meta content="${_metaPageDescription}" lang="en-US" name="description" />
     <meta content="${_metaPageKeywords}" lang="en-US" name="keywords" />
+    <c:if test="${not empty canonicalUrlRelative}">
+        <link rel="canonical" href="${colabUrl}${canonicalUrlRelative}" />
+    </c:if>
 
     <title>${title}${(not empty title) ? ' - ' : ''}${_colabName}</title>
 
@@ -115,7 +122,7 @@
     <script>
         /* <![CDATA[ */
         $.fn.modal.Constructor.prototype.enforceFocus = function() {
-            modal_this = this
+            modal_this = this;
             $(document).on('focusin.modal', function (e) {
                 if (modal_this.$element[0] !== e.target && !modal_this.$element.has(e.target).length
                         && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_select')

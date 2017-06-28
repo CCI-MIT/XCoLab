@@ -95,6 +95,7 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
 
             modelAndView.addObject("_contestPages", ContestClientUtil.getActiveContestTypes());
             modelAndView.addObject("_colabName", ConfigurationAttributeKey.COLAB_NAME.get());
+            modelAndView.addObject("_colabUrl", PlatformAttributeKey.PLATFORM_COLAB_URL.get());
             modelAndView
                     .addObject("_colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
             modelAndView.addObject("_googleAnalyticsKey",
