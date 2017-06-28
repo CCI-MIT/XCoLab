@@ -81,8 +81,8 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
     }
 
     @PostMapping("tab/PROPOSAL_TEMPLATES/create")
-    public String createNewProposalTemplateTabController(HttpServletRequest request, Model model,
-            HttpServletResponse response) throws IOException {
+    public String createNewProposalTemplateTabController(HttpServletRequest request,
+            HttpServletResponse response, Model model) throws IOException {
 
         if (!tabWrapper.getCanEdit()) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
@@ -93,9 +93,9 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
     }
 
     @PostMapping("tab/PROPOSAL_TEMPLATES/delete/{elementId}")
-    public String deleteProposalTemplateTabController(HttpServletRequest request, Model model,
-            @PathVariable Long elementId,
-            HttpServletResponse response) throws IOException {
+    public String deleteProposalTemplateTabController(HttpServletRequest request,
+            HttpServletResponse response, Model model,
+            @PathVariable Long elementId) throws IOException {
 
         if (!tabWrapper.getCanEdit()) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
@@ -106,8 +106,8 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
     }
 
     @PostMapping("tab/PROPOSAL_TEMPLATES/update")
-    public String updateProposalTemplatesTabController(HttpServletRequest request, Model model,
-            HttpServletResponse response,
+    public String updateProposalTemplatesTabController(HttpServletRequest request,
+            HttpServletResponse response, Model model,
             @ModelAttribute ProposalTemplateWrapper updatedProposalTemplateWrapper,
             BindingResult result) throws IOException {
 

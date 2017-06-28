@@ -1,7 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
@@ -19,7 +18,6 @@ import java.util.Set;
 
 public class ProposalTemplateWrapper {
 
-    private final static Logger _log = LoggerFactory.getLogger(ProposalTemplateWrapper.class);
     private List<SectionDefinitionWrapper> sections;
     private Integer numberOfSections;
     private PlanTemplate planTemplate;
@@ -162,8 +160,7 @@ public class ProposalTemplateWrapper {
         Set<Long> remainingPlanSectionDefinitionIds = new HashSet<>();
         List<SectionDefinitionWrapper> removedSectionDefinitions = new ArrayList<>();
         for (SectionDefinitionWrapper sectionBaseDefinition : sections) {
-            if ((sectionBaseDefinition.getTitle() == null || sectionBaseDefinition.getTitle()
-                    .isEmpty())
+            if (StringUtils.isEmpty(sectionBaseDefinition.getTitle())
                     && !sectionBaseDefinition.isTemplateSection()) {
                 removedSectionDefinitions.add(sectionBaseDefinition);
             } else {
@@ -189,9 +186,7 @@ public class ProposalTemplateWrapper {
             }
         }
 
-        for (SectionDefinitionWrapper removedSectionDefinition : removedSectionDefinitions) {
-            sections.remove(removedSectionDefinition);
-        }
+        sections.removeAll(removedSectionDefinitions);
 
     }
 
@@ -269,17 +264,13 @@ public class ProposalTemplateWrapper {
     }
 
     public List<Contest> getContestsUsingTemplate() {
-        List<Contest> contestsUsingSelectedTemplate = new ArrayList<>();
-        List<Contest> contestsUsingSelectedTemplateList;
 
         Long planTemplateId = planTemplate.getId_();
-        contestsUsingSelectedTemplateList =
+        List<Contest> contestsUsingSelectedTemplateList =
                 ContestClientUtil.getContestsByPlanTemplateId(planTemplateId);
 
-
-        for (Contest contest : contestsUsingSelectedTemplateList) {
-            contestsUsingSelectedTemplate.add((contest));
-        }
+        List<Contest> contestsUsingSelectedTemplate = new ArrayList<>();
+        contestsUsingSelectedTemplate.addAll(contestsUsingSelectedTemplateList);
 
         return contestsUsingSelectedTemplate;
     }
