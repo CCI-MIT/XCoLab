@@ -54,6 +54,9 @@ public class Member implements Serializable {
     private Integer   autoregisteredmemberstatus;
     private String    uuid;
     private String    defaultlocale;
+    private String    loginTokenId;
+    private String    loginTokenKey;
+    private Timestamp loginTokenExpirationDate;
 
     public Member() {
     }
@@ -331,6 +334,30 @@ public class Member implements Serializable {
         this.uuid = uuid;
     }
 
+    public String getLoginTokenId() {
+        return loginTokenId;
+    }
+
+    public void setLoginTokenId(String loginTokenId) {
+        this.loginTokenId = loginTokenId;
+    }
+
+    public String getLoginTokenKey() {
+        return loginTokenKey;
+    }
+
+    public void setLoginTokenKey(String loginTokenKey) {
+        this.loginTokenKey = loginTokenKey;
+    }
+
+    public Timestamp getLoginTokenExpirationDate() {
+        return loginTokenExpirationDate;
+    }
+
+    public void setLoginTokenExpirationDate(Timestamp loginTokenExpirationDate) {
+        this.loginTokenExpirationDate = loginTokenExpirationDate;
+    }
+
     @Override
     public String toString() {
 
@@ -383,4 +410,5 @@ public class Member implements Serializable {
     public int hashCode() {
         return (int) (this.getId_() ^ this.getId_() >>> 32);
     }
+
 }
