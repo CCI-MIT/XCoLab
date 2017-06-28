@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 public class I18nUtils {
     public static final String MEMBER_LOCALE_SESSION_IDENTIFIER = "memberLocale";
     public static final Locale DEFAULT_LOCALE = Locale.US;
+
     private static final Map<String, String> codeToLocale = new HashMap<>();
     private static final List<LabelStringValue> selectOptions;
 

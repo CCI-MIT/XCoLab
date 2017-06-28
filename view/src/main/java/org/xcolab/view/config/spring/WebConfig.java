@@ -14,7 +14,6 @@ import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.http.CacheControl;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -32,13 +31,14 @@ import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
 
 import org.xcolab.view.auth.AuthenticationContext;
+import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.resolver.MemberArgumentResolver;
 import org.xcolab.view.config.ConfigurationService;
+import org.xcolab.view.i18n.MemberLocaleResolver;
 import org.xcolab.view.config.rewrite.RewriteInitializer;
 import org.xcolab.view.config.spring.properties.WebProperties;
 import org.xcolab.view.config.tomcat.AjpConnector;
 import org.xcolab.view.config.tomcat.ForwardedHostValve;
-import org.xcolab.view.i18n.CustomLocaleChangeInterceptor;
 import org.xcolab.view.i18n.I18nUtils;
 import org.xcolab.view.pages.proposals.interceptors.PopulateProposalModelInterceptor;
 import org.xcolab.view.pages.proposals.interceptors.ValidateTabPermissionsInterceptor;
@@ -92,11 +92,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(localeChangeInterceptor());
     }
 
-    public LocaleChangeInterceptor localeChangeInterceptor() {
-        LocaleChangeInterceptor lci = new CustomLocaleChangeInterceptor();
-        lci.setParamName("lang");
-
-        return lci;
+    private LocaleChangeInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName("lang");
+        return localeChangeInterceptor;
     }
 
     @Bean
@@ -116,11 +115,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public LocaleResolver localeResolver() {
-        SessionLocaleResolver slr = new SessionLocaleResolver();
-        slr.setDefaultLocale(I18nUtils.DEFAULT_LOCALE);
-        slr.setLocaleAttributeName(I18nUtils.MEMBER_LOCALE_SESSION_IDENTIFIER);
-        return slr;
+    public LocaleResolver localeResolver(AuthenticationService authenticationService) {
+        SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
+        sessionLocaleResolver.setLocaleAttributeName(I18nUtils.MEMBER_LOCALE_SESSION_IDENTIFIER);
+        return new MemberLocaleResolver(authenticationService, sessionLocaleResolver);
     }
 
     @Bean
