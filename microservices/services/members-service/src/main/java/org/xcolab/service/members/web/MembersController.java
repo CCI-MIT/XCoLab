@@ -85,7 +85,7 @@ public class MembersController {
     @GetMapping("{memberId}")
     public Member getMember(@PathVariable long memberId) throws NotFoundException {
         if (memberId == 0) {
-            throw new NotFoundException("No message id given");
+            throw new NotFoundException("No member id given");
         } else {
             return memberDao.getMember(memberId).orElseThrow(NotFoundException::new);
         }

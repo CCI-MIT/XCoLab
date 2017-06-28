@@ -378,8 +378,10 @@ public final class MembersClient {
     }
 
     public static LoginToken createLoginToken(long memberId) {
-        return memberResource.service(memberId,"loginToken", LoginToken.class)
-                .post();
+        final LoginToken loginToken =
+                memberResource.service(memberId, "loginToken", LoginToken.class).post();
+        ServiceRequestUtils.clearCache(CacheName.MEMBER);
+        return loginToken;
     }
 
     public static TokenValidity validateLoginToken(String tokenId, String tokenKey) {
