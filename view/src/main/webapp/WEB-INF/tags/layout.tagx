@@ -265,7 +265,9 @@
                             </div>
                         </c:if>
                     </li>
-                    <li class="help"><a href="/wiki/Help">Help</a></li>
+                    <li class="help">
+                        <a href="/wiki/Help"><spring:message code="homepage.menu.help" /></a>
+                    </li>
                 </ul>
 
 
@@ -300,9 +302,15 @@
 
             <c:otherwise>
                 <ul id="c-Header__menu__right">
-                    <li class="register"><a href="/register?redirect=${_requestUri}"><spring:message code="homepage.menu.visitor.register" /></a></li>
-                    <li class="login" ><a  href="javascript:;" id="loginPopupTrigger"><spring:message code="homepage.menu.visitor.login" /></a></li>
-                    <li class="help"><a href="/wiki/Help"><spring:message code="homepage.menu.visitor.help" /></a></li>
+                    <li class="register">
+                        <a href="/register?redirect=${_requestUri}"><spring:message code="homepage.menu.visitor.register" /></a>
+                    </li>
+                    <li class="login" >
+                        <a  href="javascript:;" id="loginPopupTrigger"><spring:message code="homepage.menu.visitor.login" /></a>
+                    </li>
+                    <li class="help">
+                        <a href="/wiki/Help"><spring:message code="homepage.menu.help" /></a>
+                    </li>
                 </ul>
 
                 <!-- LOGIN POPUP -->
@@ -456,7 +464,7 @@
         <div class="c-Popup">
             <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_login').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a></div>
 
-            <h4><spring:message code="homepage.modals.login.message"/> ${_colabName}</h4>
+            <h4><spring:message code="homepage.modals.login.message" arguments="${_colabName}" /> </h4>
             <c:choose>
                 <c:when test='${_authError != null}'>
                     <div class="c-Alert__error__message">${_authError.message}</div>
@@ -536,10 +544,22 @@
         <!-- Shared poupup login -->
         <div id="popup_SSO_login" class="c-Popup__wrapper small" style="display: none;">
             <div class="c-Popup">
-                <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_SSO_login').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a></div>
-                <div><img style="max-height:55px" src="${_themeImageFolder}/${_partnerColabLogo}" alt="${_partnerColabName}" /> </div>
-                <div style="margin-top: 15px;margin-bottom: 15px;"><spring:message code="homepage.modals.sso.message.phrase1" arguments="${_partnerColabName},${_colabName}" argumentSeparator=","/>  </div>
-                <div style="font-size: small;"><spring:message code="homepage.modals.sso.message.phrase2" arguments="${_partnerColabName},${_colabName}" argumentSeparator=","/>  </div>
+                <div class="closepopuplogin">
+                    <a href="javascript:;" onclick="jQuery('#popup_SSO_login').hide()">
+                        <img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" />
+                    </a>
+                </div>
+                <div>
+                    <img style="max-height:55px" src="${_themeImageFolder}/${_partnerColabLogo}" alt="${_partnerColabName}" />
+                </div>
+                <div style="margin-top: 15px;margin-bottom: 15px;">
+                    <spring:message code="homepage.modals.sso.message.phrase1"
+                                    arguments="${_partnerColabName},${_colabName}" />
+                </div>
+                <div style="font-size: small;">
+                    <spring:message code="homepage.modals.sso.message.phrase2"
+                                    arguments="${_partnerColabName},${_colabName}" />
+                </div>
                 <div class="clearfix"><!-- --></div>
                 <c:if test='${_showSsoPopup}'>
                     <div class="c-Alert__error__message"><p><spring:message code="homepage.modals.sso.message.error"/></p></div>

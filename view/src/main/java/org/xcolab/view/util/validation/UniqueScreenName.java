@@ -11,11 +11,9 @@ import javax.validation.Payload;
 
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UniqueScreenNameEmailValidator.class)
+@Constraint(validatedBy = UniqueScreenNameValidator.class)
 @Documented
-public @interface UniqueScreenNameAndEmail {
-    String emailProperty();
-
+public @interface UniqueScreenName {
     String screenNameProperty();
 
     String message() default "";

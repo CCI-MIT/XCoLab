@@ -8,32 +8,32 @@ import org.xcolab.view.i18n.ResourceMessageResolver;
 
 import javax.validation.ConstraintValidatorContext;
 
-public class UniqueEmailValidator extends CustomValidator<UniqueEmail> {
+public class UniqueScreenNameValidator extends CustomValidator<UniqueScreenName> {
 
-    private String emailProperty;
+    private String screenNameProperty;
 
     private final ResourceMessageResolver resourceMessageResolver;
 
     @Autowired
-    public UniqueEmailValidator(ResourceMessageResolver resourceMessageResolver) {
+    public UniqueScreenNameValidator(ResourceMessageResolver resourceMessageResolver) {
         this.resourceMessageResolver = resourceMessageResolver;
     }
 
     @Override
-    public void initialize(UniqueEmail constraintAnnotation) {
-        emailProperty = constraintAnnotation.emailProperty();
+    public void initialize(UniqueScreenName constraintAnnotation) {
+        this.screenNameProperty = constraintAnnotation.screenNameProperty();
     }
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
 
-        String email = ConstraintValidatorHelper.getPropertyValue(String.class, emailProperty, value);
+        String screenName = ConstraintValidatorHelper.getPropertyValue(String.class, screenNameProperty, value);
 
-        if (email == null) {
+        if (screenName == null) {
             return true;
         }
 
-        boolean isValid = !SharedColabClient.isEmailUsed(email);
+        boolean isValid = !SharedColabClient.isScreenNameUsed(screenName);
 
         if(!isValid) {
             boolean isDefaultMessage = "".equals(context.getDefaultConstraintMessageTemplate());
@@ -41,7 +41,7 @@ public class UniqueEmailValidator extends CustomValidator<UniqueEmail> {
             if (isDefaultMessage) {
                 StringBuilder message = new StringBuilder();
                 message.append(resourceMessageResolver.getLocalizedMessage(
-                        "register.form.validation.uniqueEmail.message"));
+                        "register.form.validation.uniqueScreenName.message"));
 
                 if (ConfigurationAttributeKey.IS_SHARED_COLAB.get()) {
                     message.append("<br />")

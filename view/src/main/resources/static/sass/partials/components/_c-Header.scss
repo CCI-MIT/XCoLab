@@ -393,7 +393,6 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 }
 
 .c-Header__login__submit { //.login-submit
-  width: 88px;
   height: 30px;
   padding-top: 3px;
   background: $c-Header__login__submit__background;
@@ -435,20 +434,19 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
 .c-Header__user__pop { //.userpop
   position: absolute;
-  top: 11px;
+  top: 13px;
   left: 752px;
-  width: 175px;
   z-index: 100;
 }
 
 .c-Header__user__top { //.usertop
   width: 47px;
-  height: 34px;
+  height: 43px;
   padding: 8px 0 0 8px;
   margin-left: 120px;
   background: $c-Header__user__top__background;
-  @include border-top-left-radius(3px);
-  @include border-top-right-radius(3px);
+  @include border-top-left-radius(4px);
+  @include border-top-right-radius(4px);
 
   img {
     border: $c-Header__user__top__img__border;
@@ -456,15 +454,16 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 }
 
 .c-Header__user__box { //.userbox
-  width: 158px;
-  padding: 10px 0 18px 17px;
+  width: 167px;
+  padding-top: 10px;
+  padding-bottom: 18px;
   background: $c-Header__user__box__background;
   font-size: 14px;
   color: $c-Header__user__box__textColor;
   font-weight: $b-Typography__fontWeight--bold;
-  @include border-bottom-left-radius(3px);
-  @include border-bottom-right-radius(3px);
-  @include border-top-left-radius(3px);
+  @include border-bottom-left-radius(4px);
+  @include border-bottom-right-radius(4px);
+  @include border-top-left-radius(4px);
 
   a {
     margin-top: 10px;

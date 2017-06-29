@@ -7,7 +7,7 @@ public class ValidScreenNameValidatorTest {
 
     @Test
     public void testScreenNameTester() {
-        ValidScreenNameValidator v = new ValidScreenNameValidator();
+        ValidScreenNameValidator v = new ValidScreenNameValidator(null);
         Assert.assertEquals(true, v.validateScreenName("test123AA"));
 
         Assert.assertEquals(false, v.validateScreenName("test test"));

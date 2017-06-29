@@ -5,40 +5,34 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
-
-import java.util.Locale;
+import org.springframework.util.Assert;
 
 @Component
 public class ResourceMessageResolver {
 
     private static final Logger _log = LoggerFactory.getLogger(ResourceMessageResolver.class);
 
+    private final MessageSource messageSource;
+
     @Autowired
-    private MessageSource messageSource;
-
-
-    public String getLocalizedMessage(String messageId) {
-        try {
-            return messageSource.getMessage(messageId, null, LocaleContextHolder.getLocale());
-        } catch (NoSuchMessageException e) {
-            _log.error("Resource message not found: " + messageId + " for locale "
-                    + LocaleContextHolder.getLocale());
-            return "";
-        }
+    public ResourceMessageResolver(MessageSource messageSource) {
+        Assert.notNull(messageSource, "MessageSource is required");
+        this.messageSource = messageSource;
     }
 
-    public String getLocalizedMessage(String messageId, String[] options) {
-        try {
-            return messageSource.getMessage(messageId, options, LocaleContextHolder.getLocale());
+    public String getLocalizedMessage(String messageId) {
+        return getLocalizedMessage(messageId, null);
+    }
 
+    public String getLocalizedMessage(String messageId, String[] args) {
+        try {
+            return messageSource.getMessage(messageId, args, LocaleContextHolder.getLocale());
         } catch (NoSuchMessageException e) {
-            _log.error("Resource message not found: " + messageId + " for locale "
-                    + LocaleContextHolder.getLocale());
+            _log.error("Resource message not found: {} for locale {}", messageId,
+                    LocaleContextHolder.getLocale());
             return "";
         }
-
     }
 }
