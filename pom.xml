@@ -11,6 +11,11 @@
 	<name>XCoLab Parent</name>
 	<packaging>pom</packaging>
 
+    <scm>
+        <connection>scm:git:https://github.com/CCI-MIT/XCoLab</connection>
+        <url>https://github.com/CCI-MIT/XCoLab</url>
+    </scm>
+
 	<modules>
 		<module>microservices</module>
 		<module>view</module>
@@ -303,13 +308,46 @@
                 </plugin>
 
                 <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>buildnumber-maven-plugin</artifactId>
+                    <version>1.4</version>
+                    <executions>
+                        <execution>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>create</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <doCheck>false</doCheck>
+                        <doUpdate>false</doUpdate>
+                        <revisionOnScmFailure>unknown</revisionOnScmFailure>
+                    </configuration>
+                </plugin>
+
+                <plugin>
 					<artifactId>maven-war-plugin</artifactId>
 					<version>3.1.0</version>
+                    <configuration>
+                        <archive>
+                            <manifestEntries>
+                                <Git-Commit>${buildNumber}</Git-Commit>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
 				</plugin>
 
 				<plugin>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>3.0.2</version>
+                    <configuration>
+                        <archive>
+                            <manifestEntries>
+                                <Git-Commit>${buildNumber}</Git-Commit>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
 				</plugin>
 
 				<plugin>
@@ -346,6 +384,10 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+            </plugin>
 		</plugins>
 	</build>
 

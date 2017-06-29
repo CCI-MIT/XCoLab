@@ -170,6 +170,14 @@
                 <button type="submit" class="c-Button__primary">Register members</button>
             </form>
         </div>
+
+        <div class="addpropbox">
+            <h2>Server info</h2>
+            <ul>
+                <li>Build commit: <a href="https://github.com/CCI-MIT/XCoLab/commit/${buildCommit}">${buildCommit}</a></li>
+                <li>Java version: ${javaVersion} by ${javaVendor}</li>
+            </ul>
+        </div>
     </div>
 
 </xcolab:layout>

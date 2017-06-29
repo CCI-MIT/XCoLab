@@ -1,5 +1,7 @@
 package org.xcolab.view.pages.contestmanagement.controller.manager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,14 +32,18 @@ import org.xcolab.view.util.entity.enums.ContestPhaseTypeValue;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 import java.util.stream.Collectors;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -45,14 +51,21 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/admin/contest/manager")
 public class AdminTabController extends AbstractTabController {
 
+    private static final Logger log = LoggerFactory.getLogger(AdminTabController.class);
+
     private static final ContestManagerTabs tab = ContestManagerTabs.ADMIN;
     private static final String TAB_VIEW = "contestmanagement/manager/adminTab";
+    private static final Attributes.Name MANIFEST_ATTRIBUTE_GIT_COMMIT
+            = new Attributes.Name("Git-Commit");
 
     private final LoginRegisterService loginRegisterService;
+    private final ServletContext servletContext;
 
     @Autowired
-    public AdminTabController(LoginRegisterService loginRegisterService) {
+    public AdminTabController(LoginRegisterService loginRegisterService,
+            ServletContext servletContext) {
         this.loginRegisterService = loginRegisterService;
+        this.servletContext = servletContext;
     }
 
     @ModelAttribute("currentTabWrapped")
@@ -85,7 +98,7 @@ public class AdminTabController extends AbstractTabController {
     }
 
     @GetMapping("tab/ADMIN")
-    public String showEditorsTabController(HttpServletRequest request, HttpServletResponse response,
+    public String showAdminTabController(HttpServletRequest request, HttpServletResponse response,
             Model model) {
         if (!tabWrapper.getCanView()) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
@@ -96,7 +109,31 @@ public class AdminTabController extends AbstractTabController {
         List<Notification> list = AdminClient.getNotifications();
         model.addAttribute("listOfNotifications", list);
 
+        model.addAttribute("buildCommit", getBuildCommit());
+        model.addAttribute("javaVersion", Runtime.class.getPackage().getImplementationVersion());
+        model.addAttribute("javaVendor", Runtime.class.getPackage().getImplementationVendor());
+
         return TAB_VIEW;
+    }
+
+    private String getBuildCommit() {
+        try (final InputStream manifestInputStream =
+                servletContext.getResourceAsStream("/META-INF/MANIFEST.MF")) {
+            if (manifestInputStream != null) {
+                final Manifest manifest = new Manifest(manifestInputStream);
+                final Attributes mainAttributes = manifest.getMainAttributes();
+                if (mainAttributes.containsKey(MANIFEST_ATTRIBUTE_GIT_COMMIT)) {
+                    return (String) mainAttributes.get(MANIFEST_ATTRIBUTE_GIT_COMMIT);
+                } else {
+                    log.warn("Manifest does not contain 'Git-Commit' attribute.");
+                }
+            } else {
+                log.error("Could not open input stream for manifest.");
+            }
+        } catch (IOException e) {
+            log.error("Exception while opening input stream for manifest: {}", e.getMessage() );
+        }
+        return "unknown";
     }
 
     @GetMapping("tab/ADMIN/votingReport")
