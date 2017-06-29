@@ -10,7 +10,7 @@ public abstract class AbstractAttribute implements Attribute, Serializable {
     private static final long serialVersionUID = 1L;
 
     private String name;
-    private long additionalId;
+    private Long additionalId;
     private Long numericValue;
     private String stringValue;
     private Double realValue;
