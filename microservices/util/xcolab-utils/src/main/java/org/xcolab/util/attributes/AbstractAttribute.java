@@ -1,6 +1,7 @@
 package org.xcolab.util.attributes;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A convenience skeleton implementation of the {@link Attribute} interface.
@@ -78,6 +79,28 @@ public abstract class AbstractAttribute implements Attribute, Serializable {
 
     public void setRealValue(Double realValue) {
         this.realValue = realValue;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AbstractAttribute)) {
+            return false;
+        }
+        AbstractAttribute that = (AbstractAttribute) o;
+        return Objects.equals(getName(), that.getName())
+                && Objects.equals(getAdditionalId(), that.getAdditionalId())
+                && Objects.equals(getNumericValue(), that.getNumericValue())
+                && Objects.equals(getStringValue(), that.getStringValue())
+                && Objects.equals(getRealValue(), that.getRealValue());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getAdditionalId(), getNumericValue(), getStringValue(),
+                getRealValue());
     }
 
     @Override
