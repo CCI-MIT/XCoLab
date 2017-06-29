@@ -5,10 +5,15 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.auth.login.spring.MemberDetails;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,10 +23,15 @@ public class AuthenticationService {
 
     private final AuthenticationContext authenticationContext = new AuthenticationContext();
     private final RememberMeServices rememberMeServices;
+    private final List<LogoutHandler> logoutHandlers = new ArrayList<>();
 
     @Autowired
     public AuthenticationService(RememberMeServices rememberMeServices) {
         this.rememberMeServices = rememberMeServices;
+        if (rememberMeServices instanceof LogoutHandler) {
+            logoutHandlers.add((LogoutHandler) rememberMeServices);
+        }
+        logoutHandlers.add(new SecurityContextLogoutHandler());
     }
 
     public boolean isLoggedIn() {
@@ -40,6 +50,10 @@ public class AuthenticationService {
         return authenticationContext.getRealMemberOrNull();
     }
 
+    public Member getRealMemberOrNull(Authentication authentication) {
+        return authenticationContext.getRealMemberOrNull(authentication);
+    }
+
     public Member getMemberOrThrow(HttpServletRequest request) {
         return authenticationContext.getMemberOrThrow(request);
     }
@@ -54,5 +68,12 @@ public class AuthenticationService {
                 memberDetails, null, memberDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         rememberMeServices.loginSuccess(request, response, authentication);
+    }
+
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        final Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+        logoutHandlers.forEach(
+                logoutHandler -> logoutHandler.logout(request, response, authentication));
     }
 }
