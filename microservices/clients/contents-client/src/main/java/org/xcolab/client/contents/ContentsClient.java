@@ -237,6 +237,19 @@ public final class ContentsClient {
         return null;
     }
 
+    public static ContentArticleVersion getByArticleVersionLanguage(Long contentArticleId, String language) {
+        try {
+            final ContentArticleVersion contentArticleVersion = contentArticleVersionResource
+                    .service("getByArticleVersionLanguage", ContentArticleVersion.TYPES.getEntityType())
+                    .queryParam("contentArticleId", contentArticleId)
+                    .queryParam("language", language)
+                    .getChecked();
+            return contentArticleVersion;
+        }catch (EntityNotFoundException enfe){
+
+        }
+        return null;
+    }
     public static List<ContentPage> getContentPages(String title) {
         final List<ContentPage> page = contentPageResource.list()
                 .queryParam("title", title)

@@ -45,6 +45,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                 .set(CONTENT_ARTICLE_VERSION.FOLDER_ID, contentArticleVersion.getFolderId())
                 .set(CONTENT_ARTICLE_VERSION.CONTENT, contentArticleVersion.getContent())
                 .set(CONTENT_ARTICLE_VERSION.TITLE, contentArticleVersion.getTitle())
+                .set(CONTENT_ARTICLE_VERSION.LANG, contentArticleVersion.getLang())
                 .returning(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID)
                 .fetchOne();
 
@@ -108,6 +109,17 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                     .fetch()
                     .into(ContentArticleVersion.class);
         }
+    }
+    public ContentArticleVersion getByArticleVersionLanguage(Long articleId, String language) throws NotFoundException {
+        final Record record = this.dslContext.select()
+                .from(CONTENT_ARTICLE_VERSION)
+                .where(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID.eq(articleId))
+                .and(CONTENT_ARTICLE_VERSION.LANG.eq(language))
+                .fetchOne();
+        if (record == null) {
+            throw new NotFoundException();
+        }
+        return record.into(ContentArticleVersion.class);
     }
 
     @Override

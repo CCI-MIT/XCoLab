@@ -19,4 +19,6 @@ public interface ContentArticleVersionDao {
         Long folderId, Long ancestorFolderId, String title);
 
     List<ContentArticleVersion> getByFolderId(Long contentFolderId);
+
+    ContentArticleVersion getByArticleVersionLanguage(Long articleId, String language) throws NotFoundException;
 }

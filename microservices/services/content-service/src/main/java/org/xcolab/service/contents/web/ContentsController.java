@@ -165,6 +165,19 @@ public class ContentsController {
         }
     }
 
+    @RequestMapping(value = "/contentArticleVersions/getByArticleVersionLanguage", method = RequestMethod.GET)
+    public ContentArticleVersion getByArticleVersionLanguage(
+            @PathVariable("contentArticleId") Long contentArticleId,
+            @PathVariable("language") String language) throws NotFoundException {
+        if (contentArticleId == 0) {
+            contentArticleId = null;
+        }
+        if(language.isEmpty()){
+            language = "en";
+        }
+        return this.contentArticleVersionDao.getByArticleVersionLanguage(contentArticleId,language);
+
+    }
     @RequestMapping(value = "/contentArticleVersions/{articleVersionId}", method = RequestMethod.PUT)
     public boolean updateContentArticleVersion(
             @RequestBody ContentArticleVersion contentArticleVersion,
@@ -203,6 +216,8 @@ public class ContentsController {
         return this.contentArticleVersionDao.getByFolderId(contentFolderId);
 
     }
+
+
 
     @RequestMapping(value = "/contentFolders/{contentFolderId}", method = RequestMethod.PUT)
     public boolean updateContentFolder(@RequestBody ContentFolder contentFolder,

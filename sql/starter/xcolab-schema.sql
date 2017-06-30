@@ -380,6 +380,7 @@ CREATE TABLE `xcolab_ContentArticleVersion` (
   `authorId` bigint(20) DEFAULT NULL,
   `createDate` datetime DEFAULT NULL,
   `title` varchar(555) DEFAULT NULL,
+  `lang` varchar(2) DEFAULT 'en',
   `content` longtext,
   PRIMARY KEY (`contentArticleVersionId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
