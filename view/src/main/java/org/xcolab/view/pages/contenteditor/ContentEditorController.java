@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
@@ -17,6 +18,7 @@ import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.i18n.I18nUtils;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -33,6 +35,9 @@ public class ContentEditorController extends BaseContentEditor{
     public String handleRenderRequest(HttpServletRequest request, HttpServletRequest response, Model model) {
         long memberId = MemberAuthUtil.getMemberId(request);
         if (PermissionsClient.canAdminAll(memberId)) {
+            if(ConfigurationAttributeKey.IS_I18N_ACTIVE.get()) {
+                model.addAttribute("i18nOptions", I18nUtils.getSelectList());
+            }
             return "contenteditor/editor";
         } else {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
@@ -76,10 +81,20 @@ public class ContentEditorController extends BaseContentEditor{
 
     @GetMapping("/content-editor/contentEditorGetLatestArticleVersion")
     public void contentEditorGetLatestArticleVersion(HttpServletRequest request, HttpServletResponse response,
-                                                     @RequestParam(required = false) Long articleId)
+                                                     @RequestParam(required = false) Long articleId,
+                                                        @RequestParam(required = false) String encoding)
             throws IOException, ContentNotFoundException {
-
-        ContentArticleVersion contentArticleVersion = ContentsClient.getLatestContentArticleVersion(articleId);
+        String defaultEncoding =I18nUtils.DEFAULT_LOCALE.getLanguage();
+        if(encoding==null||encoding.isEmpty()){
+            encoding = defaultEncoding;
+        }
+        ContentArticleVersion contentArticleVersion = ContentsClient.getByArticleVersionLanguage(articleId,encoding);
+        if(contentArticleVersion == null){
+            //if there is no content for the encoding passed, get the default from the database
+            contentArticleVersion = ContentsClient.getByArticleVersionLanguage(articleId,defaultEncoding);
+            contentArticleVersion.setContentArticleVersionId(0l);
+            contentArticleVersion.setLang(encoding);
+        }
 
         JSONObject articleVersion = getContentArticleVersion(articleId, contentArticleVersion);
 
@@ -123,6 +138,7 @@ public class ContentEditorController extends BaseContentEditor{
             articleVersion.put("folderId", contentArticleVersion.getFolderId());
             articleVersion.put("articleId", contentArticleVersion.getContentArticleId());
             articleVersion.put("content", contentArticleVersion.getContent());
+            articleVersion.put("lang", contentArticleVersion.getLang());
             articleVersion.put("createdDate",contentArticleVersion.getCreateDate());
             articleVersion.put("versions",versions);
 

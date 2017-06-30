@@ -1,6 +1,7 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:spring="http://www.springframework.org/tags"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           version="2.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -25,7 +26,9 @@
             #saveArticle{cursor:pointer}
             #articleURL{overflow:hidden}
             #anchorArticleURL{display: block; width:0; white-space: nowrap;}
-
+            .selectedI18nTab{
+                background-color: red;
+            }
             #articleVersions span:hover {
                 text-decoration:none;
                 cursor:pointer;
@@ -316,21 +319,32 @@
             }
 
 
-            function loadArticleVersionContentId(id){
+            function loadArticleVersionContentId(id, lang){
 
                 var url = getArticleVersionIdURL;
 
-                var parameters={articleVersionId : id};
+                var parameters = {};
+                if(lang) {
+                     parameters = {articleVersionId: id, encoding: lang};
+                }else{
+                    parameters = {articleVersionId: id};
+                }
 
                 $.get(url ,parameters ,loadContentArticleResponse);
 
             }
+
             function formatDate(ctd){
                 var dateObject = new Date(ctd); //read in as Date object
                 var timeZoneIdentifier = String(String(dateObject).split("(")[1]).split(")")[0];  //get the timezone abbreviation
                 return(dateObject.getMonth()+1)+"/"+dateObject.getDate()+"/"+dateObject.getFullYear()+" "+pad(dateObject.getHours(),2)+":"+pad(dateObject.getMinutes(),2)+" "+timeZoneIdentifier;
 
             }
+            $(".i18nOptions").click(function (event){
+                var enc = (event.target.id).replace("changeToVersion_","");
+
+                loadArticleVersionContentId($('#contentArticleId').val(), enc)
+            });
 
             function loadContentArticleResponse(response) {
                 var responseData = JSON.parse(response);
@@ -343,6 +357,11 @@
 
                 var input = $('#contentArticleId');
                 input.attr("value",id);
+
+                //set the right tab
+                $(".i18nOptions").removeClass("selectedI18nTab");
+                $("#changeToVersion_"+data.lang).addClass("selectedI18nTab")
+
 
                 $('#contentArticleFolderId').attr("value",data.folderId);
                 var input1 = $('#contentArticleTitle');
@@ -488,6 +507,15 @@
                                 <div id="folderName">Parent folder: <!-- --></div>
                                 <div id="createdAtDate"><!-- --></div>
                                 <br/>
+                                <div>
+                                    <ul>
+
+                                        <c:forEach var="lang" items="${i18nOptions}">
+                                            <li class="i18nOptions" id="changeToVersion_${lang['value']}"><spring:message code="${lang['lable']}"/></li>
+                                        </c:forEach>
+
+                                    </ul>
+                                </div>
                                 <div>
                                 <textarea id="articleVersionContent" name="articleVersionContent" rows = "10" cols="80"><!-- --></textarea>
                                 </div>

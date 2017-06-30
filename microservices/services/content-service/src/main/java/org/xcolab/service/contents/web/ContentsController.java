@@ -167,8 +167,8 @@ public class ContentsController {
 
     @RequestMapping(value = "/contentArticleVersions/getByArticleVersionLanguage", method = RequestMethod.GET)
     public ContentArticleVersion getByArticleVersionLanguage(
-            @PathVariable("contentArticleId") Long contentArticleId,
-            @PathVariable("language") String language) throws NotFoundException {
+            @RequestParam("contentArticleId") Long contentArticleId,
+            @RequestParam("language") String language) throws NotFoundException {
         if (contentArticleId == 0) {
             contentArticleId = null;
         }
