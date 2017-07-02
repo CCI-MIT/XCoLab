@@ -6,10 +6,11 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.view.pages.contestmanagement.utils.ContestResourcesHtmlParserUtil;
@@ -114,7 +115,7 @@ public class ContestResourcesBean implements Serializable {
 
     @SuppressWarnings("unused")
     public ContestResourcesBean() {
-        this(ContestClientUtil.getContestType(
+        this(ContestTypeClient.getContestType(
                 ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));
     }
 

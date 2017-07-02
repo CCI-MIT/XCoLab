@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -104,7 +105,7 @@ public class ProposalsPreferencesController {
         model.addAttribute("contestPhaseType", contestPhaseTypeMap);
         model.addAttribute("contestPhases", contestPhasesMap);
         model.addAttribute("proposals", proposalsMap);
-        model.addAttribute("contestTypes", ContestClientUtil.getAllContestTypes());
+        model.addAttribute("contestTypes", ContestTypeClient.getAllContestTypes());
 
         return "proposals/editPreferences";
     }

@@ -39,6 +39,7 @@ public class BaseProposalsController {
     }
 
     protected void setBasePageAttributes(HttpServletRequest request, Model model) {
-        model.addAttribute("_activePageLink", proposalsContext.getContestType(request).getPortletName());
+        model.addAttribute("_activePageLink",
+                proposalsContext.getContestType(request).getIdentifier());
     }
 }

@@ -4,10 +4,10 @@ package org.xcolab.service.activities.activityentry.proposal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -58,7 +58,7 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
 
             contest = ProposalClientUtil.getCurrentContestForProposal(rawProposal.getProposalId());
 
-            contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
+            contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
 
             proposalName = ProposalAttributeClientUtil
                     .getProposalAttribute(rawProposal.getProposalId(), ProposalAttributeKeys.NAME,null).getStringValue();

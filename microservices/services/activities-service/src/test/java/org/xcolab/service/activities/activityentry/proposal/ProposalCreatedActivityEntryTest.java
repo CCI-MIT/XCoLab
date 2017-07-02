@@ -17,7 +17,6 @@ import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.service.activities.activityentry.ActivityEntryTestHelper;
-import org.xcolab.service.activities.activityentry.proposal.ProposalCreatedActivityEntry;
 
 import java.sql.Timestamp;
 
@@ -40,6 +39,7 @@ import java.sql.Timestamp;
         org.xcolab.client.admin.EmailTemplateClientUtil.class,
         org.xcolab.client.members.MembersClient.class,
         org.xcolab.client.admin.AdminClient.class,
+        org.xcolab.client.admin.ContestTypeClient.class,
         org.xcolab.client.contest.ContestClientUtil.class,
         org.xcolab.client.comment.CommentClient.class,
         org.xcolab.client.members.MessagingClient.class,

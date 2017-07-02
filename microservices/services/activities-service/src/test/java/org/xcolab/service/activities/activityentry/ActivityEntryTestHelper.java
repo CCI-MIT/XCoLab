@@ -4,7 +4,9 @@ import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
 import org.xcolab.client.admin.AdminClient;
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.pojo.Category;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
@@ -13,7 +15,6 @@ import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
@@ -42,18 +43,19 @@ public final class ActivityEntryTestHelper {
         PowerMockito.mockStatic(MembersClient.class);
         PowerMockito.mockStatic(ProposalClientUtil.class);
         PowerMockito.mockStatic(ProposalAttributeClientUtil.class);
+        PowerMockito.mockStatic(ContestTypeClient.class);
 
         Proposal proposal = Mockito.mock(Proposal.class);
 
         Mockito.when(proposal.getProposalLinkUrl(anyObject()))
                 .thenReturn("");
 
-        Mockito.when(ContestClientUtil.getContestType(anyLong()))
-                .thenAnswer(invocation -> {
-                    ContestType contestType = new ContestType();
-                    contestType.setProposalName("");
-                    return contestType;
-                });
+        final ContestType contestType = Mockito.mock(ContestType.class);
+        Mockito.when(contestType.getProposalName())
+                .thenReturn("");
+
+        Mockito.when(ContestTypeClient.getContestType(anyLong()))
+                .thenAnswer(invocation -> contestType);
 
         Mockito.when(MembersClient.getMember(anyLong()))
                 .thenAnswer(invocation -> {
@@ -117,7 +119,7 @@ public final class ActivityEntryTestHelper {
                     return c;
                 });
 
-        Mockito.when(ContestClientUtil.getAllContestTypes())
+        Mockito.when(ContestTypeClient.getAllContestTypes())
                 .thenReturn(new ArrayList<>());
 
         Mockito.when(AdminClient.getConfigurationAttribute(anyString(), anyString()))

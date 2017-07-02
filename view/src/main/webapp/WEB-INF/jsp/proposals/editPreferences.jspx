@@ -9,7 +9,7 @@
     <!--@elvariable id="contests" type="java.util.List<org.xcolab.client.contest.pojo.Contest>"-->
     <!--@elvariable id="availableRibbons" type="java.util.List<org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType>"-->
     <!--@elvariable id="message" type="java.lang.String"-->
-    <!--@elvariable id="contestTypes" type="java.util.List<org.xcolab.client.contest.pojo.ContestType>"-->
+    <!--@elvariable id="contestTypes" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
     <!--@elvariable id="proposal" type="org.xcolab.client.proposals.pojo.Proposal"-->
 
     <xcolab:script src="${_themeJsFolder}/proposals/admin-portlet-preferences.js"/>
@@ -165,7 +165,7 @@
                     <label for="contestTypeId">Contest type:</label>
                     <form:select path="contestTypeId" id="contestTypeId">
                         <c:forEach var="option" items="${contestTypes}">
-                            <form:option value="${option.id_}" label="${option.id_} - ${option.contestName} with ${option.proposalNamePlural}"/>
+                            <form:option value="${option.id}" label="${option.id} - ${option.contestName} with ${option.proposalNamePlural}"/>
                         </c:forEach>
                     </form:select>
                     <form:errors path="contestType"/>

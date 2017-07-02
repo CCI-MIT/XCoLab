@@ -3,10 +3,11 @@ package org.xcolab.client.proposals;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.activities.ActivitiesClient;
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
@@ -384,7 +385,7 @@ public final class ProposalClient {
     public ContestType getContestTypeFromProposalId(Long proposalId) {
         try {
             Contest contest = getCurrentContestForProposal(proposalId);
-            return contestClient.getContestType(contest.getContestTypeId());
+            return ContestTypeClient.getContestType(contest.getContestTypeId());
         } catch (ContestNotFoundException e) {
             throw ReferenceResolutionException.toObject(Contest.class, "")
                     .fromObject(Proposal.class, proposalId);

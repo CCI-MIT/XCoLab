@@ -3,7 +3,7 @@
 
         xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld" version="2.0" >
 
-    <!--@elvariable id="contestType" type="org.xcolab.client.contest.pojo.ContestType"-->
+    <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
     <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
     <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
 

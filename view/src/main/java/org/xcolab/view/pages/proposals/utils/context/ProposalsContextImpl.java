@@ -3,9 +3,10 @@ package org.xcolab.view.pages.proposals.utils.context;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
@@ -193,7 +194,7 @@ public class ProposalsContextImpl implements ProposalsContext {
             final ContestClient contestClient = clientHelper.getContestClient();
 
             if (contest != null) {
-                contestType = contestClient.getContestType(contest.getContestTypeId());
+                contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
                 contestPhase = contextHelper.getContestPhase(contest, proposal);
                 if (proposal != null) {
                     proposal2Phase = contextHelper.getProposal2Phase(contestPhase);

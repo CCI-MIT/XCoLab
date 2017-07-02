@@ -11,16 +11,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.ConfigurationAttribute;
+import org.xcolab.model.tables.pojos.ContestTypeAttribute;
 import org.xcolab.service.admin.domain.configurationattribute.ConfigurationAttributeDao;
+import org.xcolab.service.admin.domain.contesttypeattribute.ContestTypeAttributeDao;
 import org.xcolab.service.admin.exceptions.NotFoundException;
 import org.xcolab.service.admin.pojo.Notification;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class AdminController {
 
     private final ConfigurationAttributeDao configurationAttributeDao;
+    private final ContestTypeAttributeDao contestTypeAttributeDao;
 
     //TODO: this should be in the database
     private final ArrayList<Notification> notificationsList = new ArrayList<>();
@@ -29,8 +33,10 @@ public class AdminController {
     private long notificationCounter;
 
     @Autowired
-    public AdminController(ConfigurationAttributeDao configurationAttributeDao) {
+    public AdminController(ConfigurationAttributeDao configurationAttributeDao,
+            ContestTypeAttributeDao contestTypeAttributeDao) {
         this.configurationAttributeDao = configurationAttributeDao;
+        this.contestTypeAttributeDao = contestTypeAttributeDao;
     }
 
     @DeleteMapping("/notifications/{notificationId}")
@@ -70,6 +76,33 @@ public class AdminController {
 
     @PutMapping("/attributes/{attributeName}")
     public boolean updateConfigurationAttribute(@RequestBody ConfigurationAttribute pojo,
+            @PathVariable String attributeName)
+            throws NotFoundException {
+        return configurationAttributeDao.update(pojo);
+    }
+
+    @GetMapping("/contestTypeAttributes")
+    public List<ContestTypeAttribute> listContestTypeAttributes() {
+        return contestTypeAttributeDao.list();
+    }
+
+    @GetMapping("/contestTypeAttributes/{attributeName}")
+    public ContestTypeAttribute getContestTypeAttribute(@PathVariable String attributeName,
+            @RequestParam long additionalId,
+            @RequestParam(required = false) String locale)
+            throws NotFoundException {
+        return contestTypeAttributeDao.get(attributeName, additionalId, locale)
+                .orElseThrow(NotFoundException::new);
+    }
+
+    @PostMapping("/contestTypeAttributes")
+    public ContestTypeAttribute createContestTypeAttribute(
+            @RequestBody ContestTypeAttribute pojo) {
+        return contestTypeAttributeDao.create(pojo);
+    }
+
+    @PutMapping("/contestTypeAttributes/{attributeName}")
+    public boolean updateContestTypeAttribute(@RequestBody ConfigurationAttribute pojo,
             @PathVariable String attributeName)
             throws NotFoundException {
         return configurationAttributeDao.update(pojo);

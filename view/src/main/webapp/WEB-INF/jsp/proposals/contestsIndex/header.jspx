@@ -80,7 +80,7 @@
                     </c:choose>
                     <div id="priorActiveAllWidget">
                         <ul>
-                            <li class="${showActiveContests ?  'active' : ''}"><a href="${contestType.portletUrl}" >Active ${contestType.contestNamePlural}</a></li>
+                            <li class="${showActiveContests ?  'active' : ''}"><a href="${contestType.contestBaseUrl}" >Active ${contestType.contestNamePlural}</a></li>
                             <c:set var="showPrior" value="/contests?viewType=${viewType}&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false"/>
                             <li class="${not showActiveContests and not showAllContests ?  'active' : ''}"><a href="${showPrior}" >Prior ${contestType.contestNamePlural}</a></li>
                             <c:set var="showAll" value="/contests?viewType=${viewType}&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=${showActiveContests }&amp;showAllContests=true"/>
@@ -129,7 +129,7 @@
             <div id="archivedContestsMarkerContainer">
                 <img src="${_themeImageFolder}/contests-archive.png" />
 
-                <strong>Archived:</strong>&#160;You are currently viewing archived ${contestNamePlural}.&#160; <a href="${contestType.portletUrl}" >Back to active ${contestNamePlural}</a>
+                <strong>Archived:</strong>&#160;You are currently viewing archived ${contestNamePlural}.&#160; <a href="${contestType.contestBaseUrl}" >Back to active ${contestNamePlural}</a>
             </div>
         </c:otherwise>
     </c:choose>

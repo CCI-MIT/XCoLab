@@ -15,6 +15,17 @@ CREATE TABLE `activities_ActivityEntry` (
   KEY `activityEntry_createDate` (`createDate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+create table admin_ContestTypeAttribute
+(
+	name varchar(75) not null,
+	additionalId bigint not null,
+	locale varchar(5) default '' not null,
+	numericValue bigint null,
+	stringValue longtext null,
+	realValue double null,
+	primary key (name, additionalId, locale)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `xcolab_ProposalVote` (
   `proposalId` bigint(20) DEFAULT NULL,
   `contestPhaseId` bigint(20) NOT NULL,

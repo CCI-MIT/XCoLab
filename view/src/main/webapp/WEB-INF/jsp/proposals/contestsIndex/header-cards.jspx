@@ -58,7 +58,7 @@
 	    <c:otherwise>
             <div id="archivedContestsMarkerContainer">
                 <img src="${_themeImageFolder}/contests-archive.png" />
-                <strong>Archived:</strong>&#160;You are currently viewing completed ${contestType.contestNamePlural}.&#160; <a href="${contestType.portletUrl}" >Back to active ${contestType.contestNamePlural}</a>
+                <strong>Archived:</strong>&#160;You are currently viewing completed ${contestType.contestNamePlural}.&#160; <a href="${contestType.contestBaseUrl}" >Back to active ${contestType.contestNamePlural}</a>
             </div>
 		</c:otherwise>
 	</c:choose>

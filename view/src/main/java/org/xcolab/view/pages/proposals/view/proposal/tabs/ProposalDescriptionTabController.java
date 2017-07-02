@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.flagging.FlaggingClient;
@@ -218,14 +219,14 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                 EntityGroupingUtil.groupByContestType(linkedProposals);
         Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
 
-        for (ContestType contestType : clients.getContestClient()
+        for (ContestType contestType : ContestTypeClient
                 .getActiveContestTypes()) {
-            contestTypeProposalWrappersByContestTypeId.put(contestType.getId_(),
+            contestTypeProposalWrappersByContestTypeId.put(contestType.getId(),
                     new ContestTypeProposal(contestType));
             final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
             if (proposalsInContestType != null) {
                 for (Proposal p : proposalsInContestType) {
-                    contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
+                    contestTypeProposalWrappersByContestTypeId.get(contestType.getId())
                             .getProposals().add((p));
                 }
             }

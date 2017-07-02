@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.PointsClientUtil;
@@ -75,8 +75,8 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
 
     private List<LabelValue> getContestTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
-        for (ContestType contestType : ContestClientUtil.getActiveContestTypes()) {
-            selectItems.add(new LabelValue(contestType.getId_(),
+        for (ContestType contestType : ContestTypeClient.getActiveContestTypes()) {
+            selectItems.add(new LabelValue(contestType.getId(),
                     contestType.getLabelName()));
         }
         return selectItems;

@@ -8,11 +8,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.view.RedirectView;
 
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.enums.PlatformAttributeKey;
 import org.xcolab.client.admin.enums.ServerEnvironment;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
@@ -100,7 +100,7 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject("_logoPathBig",
                     themeImageDomain + activeTheme.getLogoPathBig());
 
-            modelAndView.addObject("_contestPages", ContestClientUtil.getActiveContestTypes());
+            modelAndView.addObject("_contestPages", ContestTypeClient.getActiveContestTypes());
             modelAndView.addObject("_colabName", ConfigurationAttributeKey.COLAB_NAME.get());
             modelAndView.addObject("_colabUrl", PlatformAttributeKey.PLATFORM_COLAB_URL.get());
             modelAndView
@@ -149,7 +149,7 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
 
             modelAndView.addObject("_adminEmail", ConfigurationAttributeKey.ADMIN_EMAIL.get());
 
-            List<ContestType> contestTypes = ContestClientUtil.getAllContestTypes();
+            List<ContestType> contestTypes = ContestTypeClient.getAllContestTypes();
             if (!contestTypes.isEmpty()) {
                 modelAndView.addObject("_contestNameLowerCase",
                         contestTypes.get(contestTypes.size() - 1).getContestName().toLowerCase());

@@ -50,6 +50,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @PrepareForTest({
         org.xcolab.client.admin.AdminClient.class,
+        org.xcolab.client.admin.ContestTypeClient.class,
         org.xcolab.client.contest.ContestClientUtil.class,
         org.xcolab.client.sharedcolab.SharedColabClient.class,
         org.xcolab.client.members.MembersClient.class,

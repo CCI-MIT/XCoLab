@@ -11,7 +11,7 @@ import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestCollectionCard;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
 import org.xcolab.client.contest.pojo.ontology.OntologySpace;
@@ -63,14 +63,10 @@ public class ContestsIndexController extends BaseProposalsController {
         ProposalsPreferencesWrapper preferences = new ProposalsPreferencesWrapper(preferenceId);
         ContestType contestType = preferences.getContestType();
 
-        if (contestType.getSuggestionContestId() > 0) {
-            try {
-                Contest c = ContestClientUtil.getContest(contestType.getSuggestionContestId());
-                String link = c.getContestLinkUrl();
-                model.addAttribute("suggestionContestLink", link);
-            } catch (ContestNotFoundException ignored) {
-
-            }
+        if (contestType.isSuggestionsActive()) {
+            Contest c = ContestClientUtil.getContest(contestType.getSuggestionContestId());
+            String link = c.getContestLinkUrl();
+            model.addAttribute("suggestionContestLink", link);
         }
 
         if (viewType == null) {
@@ -97,7 +93,7 @@ public class ContestsIndexController extends BaseProposalsController {
         }
 
         List<Contest> priorContests = ContestClientUtil.getContestsByActivePrivateType(false, false,
-                contestType.getId_());
+                contestType.getId());
 
         boolean showOnlyFeatured = false;
         List<Contest> contests = new ArrayList<>();
@@ -192,12 +188,12 @@ public class ContestsIndexController extends BaseProposalsController {
 
 
             List<Contest> contestsToWrap = showAllContests
-                    ? ContestClientUtil.getContestsByContestTypeId(contestType.getId_())
-                    : ContestClientUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId_());
+                    ? ContestClientUtil.getContestsByContestTypeId(contestType.getId())
+                    : ContestClientUtil.getContestsByActivePrivateType(showActiveContests, false, contestType.getId());
 
 
 
-            priorContests = ContestClientUtil.getContestsByActivePrivateType(false, false, contestType.getId_());
+            priorContests = ContestClientUtil.getContestsByActivePrivateType(false, false, contestType.getId());
 
             for (Contest contest: contestsToWrap) {
                 if (! contest.getContestPrivate()) {

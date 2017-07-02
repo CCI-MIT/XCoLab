@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.enums.PlatformAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
@@ -64,9 +64,9 @@ public class ContestAdminTabController extends AbstractTabController {
     private List<LabelValue> getContestTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
 
-        for (ContestType contestType : ContestClientUtil.getAllContestTypes()) {
-            selectItems.add(new LabelValue(contestType.getId_(),
-                    String.format("%d - %s with %s", contestType.getId_(),
+        for (ContestType contestType : ContestTypeClient.getAllContestTypes()) {
+            selectItems.add(new LabelValue(contestType.getId(),
+                    String.format("%d - %s with %s", contestType.getId(),
                             contestType.getContestName(), contestType.getProposalNamePlural())));
         }
 
@@ -144,7 +144,7 @@ public class ContestAdminTabController extends AbstractTabController {
 
         String subject = "<contest/> draft was submitted from the <contest/> management tool!";
 
-        ContestType contestType = ContestClientUtil
+        ContestType contestType = ContestTypeClient
                 .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
         subject = TemplateReplacementUtil.replaceContestTypeStrings(subject, contestType);
         body = TemplateReplacementUtil.replaceContestTypeStrings(body, contestType);

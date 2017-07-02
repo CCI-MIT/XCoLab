@@ -17,7 +17,6 @@ import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.service.activities.activityentry.ActivityEntryTestHelper;
-import org.xcolab.service.activities.activityentry.proposal.ProposalMemberAddedActivityEntry;
 
 import java.sql.Timestamp;
 
@@ -40,6 +39,7 @@ import java.sql.Timestamp;
         org.xcolab.client.admin.EmailTemplateClientUtil.class,
         org.xcolab.client.members.MembersClient.class,
         org.xcolab.client.admin.AdminClient.class,
+        org.xcolab.client.admin.ContestTypeClient.class,
         org.xcolab.client.contest.ContestClientUtil.class,
         org.xcolab.client.comment.CommentClient.class,
         org.xcolab.client.members.MessagingClient.class,
@@ -63,7 +63,8 @@ public class ProposalMemberAddedActivityEntryTest {
         CommentClient commentClient = Mockito.mock(CommentClient.class);
         PowerMockito.whenNew(CommentClient.class).withArguments(Mockito.anyObject()).thenReturn(commentClient);
 
-        ProposalMemberAddedActivityEntry provider = new ProposalMemberAddedActivityEntry();
+        org.xcolab.service.activities.activityentry.proposal.ProposalMemberAddedActivityEntry
+                provider = new ProposalMemberAddedActivityEntry();
 
         ActivityEntry activityEntry = new ActivityEntry();
         activityEntry.setMemberId(1234l);

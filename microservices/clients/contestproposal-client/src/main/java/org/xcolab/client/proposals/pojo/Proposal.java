@@ -4,6 +4,7 @@ import edu.mit.cci.roma.client.Scenario;
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
@@ -17,7 +18,7 @@ import org.xcolab.client.contest.PlanTemplateClient;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
@@ -214,10 +215,10 @@ public class Proposal extends AbstractProposal {
         Long proposalId = this.getProposalId();
         ContestType contestType;
         if (contest.getIsSharedContestInForeignColab()) {
-            contestType = ContestClientUtil.getClient()
+            contestType = ContestTypeClient
                     .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
         } else {
-            contestType = clients.contest.getContestType(contest.getContestTypeId());
+            contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
         }
         String link = "/";
         link += contestType.getFriendlyUrlStringContests();

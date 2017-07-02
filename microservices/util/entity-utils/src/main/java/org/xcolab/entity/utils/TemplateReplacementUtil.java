@@ -1,9 +1,9 @@
 package org.xcolab.entity.utils;
 
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.util.TemplateReplacementUtilPlaceholder;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.util.exceptions.InternalException;
 
 import java.io.UnsupportedEncodingException;
@@ -26,7 +26,7 @@ public final class TemplateReplacementUtil {
 
     public static String replaceContestTypeStrings(String text, ContestType contestType) {
             if (contestType == null) {
-                contestType = ContestClientUtil.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
+                contestType = ContestTypeClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
             }
             return text.replaceAll(PROPOSAL_PLACEHOLDER, contestType.getProposalName())
                     .replaceAll(PROPOSALS_PLACEHOLDER, contestType.getProposalNamePlural())

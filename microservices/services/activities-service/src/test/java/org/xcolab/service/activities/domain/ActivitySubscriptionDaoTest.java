@@ -10,17 +10,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -38,7 +32,7 @@ import static org.junit.Assert.assertTrue;
 public class ActivitySubscriptionDaoTest {
 
     @Autowired
-    ActivitySubscriptionDao activitySubscriptionDao;
+    private ActivitySubscriptionDao activitySubscriptionDao;
 
     @Test
     public void shouldCreateNewActivitySubscription() throws Exception {

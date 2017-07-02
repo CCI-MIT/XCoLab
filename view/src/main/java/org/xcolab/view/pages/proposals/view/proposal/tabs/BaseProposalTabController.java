@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;

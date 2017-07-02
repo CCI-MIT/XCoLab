@@ -39,6 +39,7 @@ import java.sql.Timestamp;
         org.xcolab.client.admin.EmailTemplateClientUtil.class,
         org.xcolab.client.members.MembersClient.class,
         org.xcolab.client.admin.AdminClient.class,
+        org.xcolab.client.admin.ContestTypeClient.class,
         org.xcolab.client.contest.ContestClientUtil.class,
         org.xcolab.client.comment.CommentClient.class,
         org.xcolab.client.members.MessagingClient.class,
@@ -64,7 +65,8 @@ public class ProposalMemberRemovedActivityEntryTest {
         PowerMockito.whenNew(CommentClient.class).withArguments(Mockito.anyObject()).thenReturn
                 (commentClient);
 
-        ProposalMemberRemovedActivityEntry provider = new ProposalMemberRemovedActivityEntry();
+        org.xcolab.service.activities.activityentry.proposal.ProposalMemberRemovedActivityEntry
+                provider = new org.xcolab.service.activities.activityentry.proposal.ProposalMemberRemovedActivityEntry();
 
         ActivityEntry activityEntry = new ActivityEntry();
         activityEntry.setMemberId(1234l);

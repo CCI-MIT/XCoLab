@@ -70,7 +70,8 @@ public class ConfigurationAttributeDaoImpl implements ConfigurationAttributeDao 
                 .set(CONFIGURATION_ATTRIBUTE.STRING_VALUE, pojo.getStringValue())
                 .set(CONFIGURATION_ATTRIBUTE.NUMERIC_VALUE, pojo.getNumericValue())
                 .set(CONFIGURATION_ATTRIBUTE.REAL_VALUE, pojo.getRealValue())
-                .where(CONFIGURATION_ATTRIBUTE.NAME.eq(pojo.getName()))
+                .where(CONFIGURATION_ATTRIBUTE.NAME.eq(pojo.getName())
+                        .and(CONFIGURATION_ATTRIBUTE.LOCALE.eq(pojo.getLocale())))
                 .execute() > 0;
     }
 }

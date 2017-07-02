@@ -38,7 +38,7 @@
     <!--@elvariable id="_uploadedImageFolder" type="java.lang.String"-->
 
 
-    <!--@elvariable id="_contestPages" type="java.util.List<org.xcolab.client.contest.pojo.ContestType>"-->
+    <!--@elvariable id="_contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
     <!--@elvariable id="_colabName" type="java.lang.String"-->
     <!--@elvariable id="_colabUrl" type="java.lang.String"-->
     <!--@elvariable id="_colabShortName" type="java.lang.String"-->
@@ -235,8 +235,8 @@
                 <li class="${_activePageLink == 'about' ? 'isCurrent' : ''}"><a href="/page/about"><spring:message code="homepage.menu.about" /></a></li>
                 <c:forEach var="_contestPage" items="${_contestPages}">
                     <c:if test="${_contestPage.menuItemName != ''}">
-                        <li class="${_activePageLink == _contestPage.portletName ? 'isCurrent' : ''}">
-                            <a href="${_contestPage.portletUrl}">${_contestPage.menuItemName}</a>
+                        <li class="${_activePageLink == _contestPage.identifier ? 'isCurrent' : ''}">
+                            <a href="${_contestPage.contestBaseUrl}">${_contestPage.menuItemName}</a>
                         </li>
                     </c:if>
                 </c:forEach>

@@ -1,7 +1,9 @@
 package org.xcolab.client.contest.pojo;
 
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.pojo.CommentThread;
@@ -137,12 +139,12 @@ public class Contest extends AbstractContest implements Serializable {
         String link = "/";
 
         if (this.getIsSharedContestInForeignColab()) {
-            link += ContestClientUtil.getClient().getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get())
+            link += ContestTypeClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get())
                     .getFriendlyUrlStringContests();
         } else {
 
             if(this.getContestTypeId()!=null) {
-                link += contestClient.getContestType(this.getContestTypeId())
+                link += ContestTypeClient.getContestType(this.getContestTypeId())
                         .getFriendlyUrlStringContests();
             }else{
                 System.out.println(" > ContestID("+this.getContestPK()+")");
@@ -437,7 +439,7 @@ public class Contest extends AbstractContest implements Serializable {
 
     public ContestType getContestType() {
         if (contestType == null) {
-            contestType = contestClient.getContestType(this.getContestTypeId());
+            contestType = ContestTypeClient.getContestType(this.getContestTypeId());
         }
         return contestType;
     }
@@ -739,13 +741,13 @@ public class Contest extends AbstractContest implements Serializable {
 
     public String getNewProposalLinkUrl() {
         if (getIsSharedContestInForeignColab()) {
-            final ContestType contestType = ContestClientUtil.getClient()
+            final ContestType contestType = ContestTypeClient
                     .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
-            final String portletUrl = contestType.getPortletUrl();
+            final String portletUrl = contestType.getContestBaseUrl();
             return String.format("%s/%s/%s/createProposal",
                     portletUrl, this.getContestYear(), this.getContestUrlName());
         } else {
-            final String portletUrl = getContestType().getPortletUrl();
+            final String portletUrl = getContestType().getContestBaseUrl();
             return String.format("%s/%s/%s/createProposal",
                     portletUrl, this.getContestYear(), this.getContestUrlName());
         }

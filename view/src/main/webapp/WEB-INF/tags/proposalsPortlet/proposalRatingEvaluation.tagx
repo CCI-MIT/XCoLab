@@ -3,7 +3,7 @@
           xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
 
 
-    <!--@elvariable id="contestType" type="org.xcolab.client.contest.pojo.ContestType"-->
+    <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
 
     <jsp:directive.attribute name="wrapper" type="org.xcolab.client.proposals.pojo.proposals.ProposalRatings" required="true" rtexprvalue="true" description="ProposalRatings" />
     <jsp:directive.attribute name="showRating" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the Rating should be displayed or not" />

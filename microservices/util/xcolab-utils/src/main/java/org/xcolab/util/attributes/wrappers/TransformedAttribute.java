@@ -44,7 +44,7 @@ public class TransformedAttribute<ValueT, ValueR> implements AttributeGetter<Val
 
     public static class LocalizableWrapper<ValueT, ValueR>
             extends TransformedAttribute<ValueT, ValueR>
-            implements LocalizableAttributeGetter<ValueR>{
+            implements LocalizableAttributeGetter<ValueR> {
 
         private LocalizableWrapper(AttributeGetter<ValueT> wrappedAttributeGetter,
                 Function<ValueT, ValueR> transformation) {
