@@ -1,4 +1,8 @@
+-- COLAB-2087
 ALTER TABLE xcolab_ConfigurationAttribute ADD locale VARCHAR(5) DEFAULT '' NOT NULL;
+
+CREATE INDEX xcolab_ConfigurationAttribute_name_locale_index
+    ON xcolab_ConfigurationAttribute (name, locale);
 
 create table admin_ContestTypeAttribute
 (
