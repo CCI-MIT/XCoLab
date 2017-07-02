@@ -8,6 +8,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.xcolab.util.attributes.i18n.LocalizableAttributeGetter.*;
+
 public class ContestType implements Serializable {
 
     private final long id;
@@ -37,7 +39,7 @@ public class ContestType implements Serializable {
         //noinspection unchecked
         return (T) attributeCache.computeIfAbsent(getter, key -> {
             if (getter instanceof LocalizableAttributeGetter) {
-                return ((LocalizableAttributeGetter) getter).get(locale, id);
+                return localizable(getter).get(locale, id);
             }
             return getter.get(id);
         });

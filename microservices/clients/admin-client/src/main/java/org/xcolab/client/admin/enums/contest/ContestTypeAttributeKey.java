@@ -64,7 +64,7 @@ public final class ContestTypeAttributeKey {
 
     public static final AttributeGetter<Boolean> SUGGESTIONS_IS_ACTIVE =
             ContestTypeAttributes.newBooleanAttribute("SUGGESTIONS_IS_ACTIVE")
-                    .defaultValue(true)
+                    .defaultValue(false)
                     .build();
 
     public static final AttributeGetter<Long> SUGGESTIONS_CONTEST_ID =
