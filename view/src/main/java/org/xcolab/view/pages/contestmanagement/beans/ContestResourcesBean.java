@@ -7,7 +7,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.admin.pojo.ContestType;

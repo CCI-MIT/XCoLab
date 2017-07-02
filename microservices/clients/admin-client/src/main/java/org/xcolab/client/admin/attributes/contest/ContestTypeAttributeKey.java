@@ -1,4 +1,4 @@
-package org.xcolab.client.admin.enums.contest;
+package org.xcolab.client.admin.attributes.contest;
 
 import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.attributes.i18n.LocalizableAttributeGetter;

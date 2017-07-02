@@ -3,9 +3,7 @@ package org.xcolab.view.pages.randomproposalswidget;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;

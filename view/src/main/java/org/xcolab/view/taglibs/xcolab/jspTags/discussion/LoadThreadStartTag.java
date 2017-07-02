@@ -3,7 +3,7 @@ package org.xcolab.view.taglibs.xcolab.jspTags.discussion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CategoryClient;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;

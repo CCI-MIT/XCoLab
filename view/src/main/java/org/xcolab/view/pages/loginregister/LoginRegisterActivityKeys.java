@@ -3,7 +3,7 @@ package org.xcolab.view.pages.loginregister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 

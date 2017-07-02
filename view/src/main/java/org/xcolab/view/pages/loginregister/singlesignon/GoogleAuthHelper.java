@@ -14,7 +14,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.util.exceptions.InternalException;
 
 import java.io.IOException;

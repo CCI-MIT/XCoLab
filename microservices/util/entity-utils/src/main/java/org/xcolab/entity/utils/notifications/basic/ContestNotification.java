@@ -10,7 +10,7 @@ import org.jsoup.nodes.TextNode;
 
 import org.xcolab.client.admin.EmailTemplateClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;

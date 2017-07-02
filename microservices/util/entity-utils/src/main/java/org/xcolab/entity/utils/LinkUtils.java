@@ -2,7 +2,7 @@ package org.xcolab.entity.utils;
 
 import org.apache.commons.lang3.StringUtils;
 
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 
 import javax.servlet.http.HttpServletRequest;
 

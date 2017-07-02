@@ -5,7 +5,7 @@ import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.members.pojo.LoginToken;
 import org.xcolab.client.members.pojo.Member;

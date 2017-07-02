@@ -5,7 +5,7 @@ import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CommentClientUtil;

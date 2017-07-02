@@ -1,4 +1,4 @@
-package org.xcolab.client.admin.enums.contest;
+package org.xcolab.client.admin.attributes.configuration;
 
 import org.xcolab.util.attributes.AttributeGetterBuilder;
 import org.xcolab.util.attributes.Attributes;
@@ -6,47 +6,47 @@ import org.xcolab.util.attributes.Attributes;
 import java.util.List;
 import java.util.function.Function;
 
-final class ContestTypeAttributes {
+final class ConfigurationAttributes {
 
-    private ContestTypeAttributes() {
+    private ConfigurationAttributes() {
     }
 
     public static AttributeGetterBuilder<String> newStringAttribute(String name) {
-        return Attributes.newStringAttribute(new ContestTypeAttributeProvider(name));
+        return Attributes.newStringAttribute(new ConfigurationAttributeProvider(name));
     }
 
     public static AttributeGetterBuilder<String> newLocalizedStringAttribute(String name) {
-        return Attributes.newLocalizedStringAttribute(new ContestTypeAttributeProvider(name));
+        return Attributes.newLocalizedStringAttribute(new ConfigurationAttributeProvider(name));
     }
 
     public static AttributeGetterBuilder<Long> newLongAttribute(String name) {
-        return Attributes.newLongAttribute(new ContestTypeAttributeProvider(name));
+        return Attributes.newLongAttribute(new ConfigurationAttributeProvider(name));
     }
 
     public static AttributeGetterBuilder<Boolean> newBooleanAttribute(String name) {
-        return Attributes.newBooleanAttribute(new ContestTypeAttributeProvider(name));
+        return Attributes.newBooleanAttribute(new ConfigurationAttributeProvider(name));
     }
 
     public static AttributeGetterBuilder<Double> newDoubleAttribute(String name) {
-        return Attributes.newDoubleAttribute(new ContestTypeAttributeProvider(name));
+        return Attributes.newDoubleAttribute(new ConfigurationAttributeProvider(name));
     }
 
     public static AttributeGetterBuilder<List<Long>> newIdListAttribute(String name) {
-        return Attributes.newIdListAttribute(new ContestTypeAttributeProvider(name));
+        return Attributes.newIdListAttribute(new ConfigurationAttributeProvider(name));
     }
 
     public static <T> AttributeGetterBuilder<List<T>> newListAttribute(String name,
             Function<String, T> conversionFunction) {
         return Attributes.newListAttribute(
-                new ContestTypeAttributeProvider(name), conversionFunction);
+                new ConfigurationAttributeProvider(name), conversionFunction);
     }
 
     public static <T extends Enum<T>> AttributeGetterBuilder<T> newEnumAttribute(
             String name, Class<T> enumType) {
-        return Attributes.newEnumAttribute(new ContestTypeAttributeProvider(name), enumType);
+        return Attributes.newEnumAttribute(new ConfigurationAttributeProvider(name), enumType);
     }
 
     public static <T> AttributeGetterBuilder<T> newJsonAttribute(String name, Class<T> entityType) {
-        return Attributes.newJsonAttribute(new ContestTypeAttributeProvider(name), entityType);
+        return Attributes.newJsonAttribute(new ConfigurationAttributeProvider(name), entityType);
     }
 }

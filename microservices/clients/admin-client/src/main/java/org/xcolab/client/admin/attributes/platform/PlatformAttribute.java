@@ -1,4 +1,4 @@
-package org.xcolab.client.admin.enums;
+package org.xcolab.client.admin.attributes.platform;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;

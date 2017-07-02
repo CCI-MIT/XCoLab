@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;

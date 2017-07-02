@@ -3,7 +3,7 @@ package org.xcolab.view.pages.discussion.discussions.views;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.comment.exceptions.CategoryGroupNotFoundException;
 import org.xcolab.client.comment.pojo.CategoryGroup;
 import org.xcolab.client.comment.util.CategoryClientUtil;

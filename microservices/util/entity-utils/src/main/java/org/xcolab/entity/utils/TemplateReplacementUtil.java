@@ -1,7 +1,7 @@
 package org.xcolab.entity.utils;
 
 import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.util.TemplateReplacementUtilPlaceholder;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.util.exceptions.InternalException;

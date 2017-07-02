@@ -2,7 +2,7 @@ package org.xcolab.view.pages.proposals.utils.context;
 
 import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CategoryClient;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;

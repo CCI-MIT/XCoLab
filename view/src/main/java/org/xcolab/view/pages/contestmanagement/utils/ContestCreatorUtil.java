@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ConfigurationAttribute;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;

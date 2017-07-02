@@ -8,8 +8,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;

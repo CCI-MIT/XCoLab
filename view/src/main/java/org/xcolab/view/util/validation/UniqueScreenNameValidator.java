@@ -2,7 +2,7 @@ package org.xcolab.view.util.validation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 

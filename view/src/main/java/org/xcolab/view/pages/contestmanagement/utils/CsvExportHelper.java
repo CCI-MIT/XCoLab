@@ -4,7 +4,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.CollectionUtils;
 
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;

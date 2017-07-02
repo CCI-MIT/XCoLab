@@ -1,7 +1,7 @@
 package org.xcolab.client.admin.util;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 
 //TODO: move entire TemplateReplacementUtil here
 public final class TemplateReplacementUtilPlaceholder {

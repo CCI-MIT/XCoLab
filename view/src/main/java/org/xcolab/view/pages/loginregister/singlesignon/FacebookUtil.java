@@ -8,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.util.http.RequestHelper;
 import org.xcolab.util.http.UriBuilder;
 import org.xcolab.util.http.exceptions.translation.TranslationErrorHandler;

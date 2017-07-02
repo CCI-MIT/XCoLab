@@ -6,7 +6,7 @@ import org.jsoup.nodes.TextNode;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;

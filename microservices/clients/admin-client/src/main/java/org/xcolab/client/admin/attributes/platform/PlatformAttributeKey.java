@@ -1,5 +1,6 @@
-package org.xcolab.client.admin.enums;
+package org.xcolab.client.admin.attributes.platform;
 
+import org.xcolab.client.admin.enums.ServerEnvironment;
 import org.xcolab.util.attributes.AttributeGetter;
 
 import java.io.File;

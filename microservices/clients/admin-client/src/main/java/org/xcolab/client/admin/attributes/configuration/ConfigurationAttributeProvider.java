@@ -1,4 +1,4 @@
-package org.xcolab.client.admin.enums;
+package org.xcolab.client.admin.attributes.configuration;
 
 import org.springframework.util.Assert;
 

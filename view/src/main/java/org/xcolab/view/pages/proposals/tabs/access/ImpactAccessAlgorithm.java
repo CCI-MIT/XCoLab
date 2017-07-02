@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.proposals.tabs.access;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.util.enums.contest.ContestTier;

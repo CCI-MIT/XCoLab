@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabContext;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;

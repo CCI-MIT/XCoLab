@@ -2,11 +2,8 @@ package org.xcolab.view.pages.staffmemberswidget;
 
 import org.json.JSONObject;
 
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.members.legacy.enums.CategoryRole;
-import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.entity.utils.WidgetPreference;
 import org.xcolab.util.attributes.AttributeGetter;
 

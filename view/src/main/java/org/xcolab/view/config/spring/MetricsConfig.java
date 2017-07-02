@@ -15,7 +15,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.util.metrics.MetricsUtil;
 import org.xcolab.view.config.spring.properties.MetricsProperties;
 import org.xcolab.view.config.spring.properties.MetricsProperties.ReportingConfig;

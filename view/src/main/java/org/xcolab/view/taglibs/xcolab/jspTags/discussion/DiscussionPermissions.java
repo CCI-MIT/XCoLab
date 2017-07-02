@@ -1,6 +1,6 @@
 package org.xcolab.view.taglibs.xcolab.jspTags.discussion;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.members.PermissionsClient;

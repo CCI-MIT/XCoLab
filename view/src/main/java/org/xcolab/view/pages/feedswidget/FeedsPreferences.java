@@ -4,16 +4,12 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.entity.utils.WidgetPreference;
 import org.xcolab.util.attributes.AttributeGetter;
 
 import java.io.IOException;
 import java.io.Serializable;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class FeedsPreferences extends WidgetPreference implements Serializable {
 

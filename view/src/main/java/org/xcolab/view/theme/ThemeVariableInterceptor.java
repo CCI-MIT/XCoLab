@@ -9,8 +9,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.view.RedirectView;
 
 import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.enums.ServerEnvironment;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.members.MessagingClient;
@@ -28,6 +28,7 @@ import org.xcolab.view.util.entity.flash.InfoMessage;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -100,7 +101,10 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject("_logoPathBig",
                     themeImageDomain + activeTheme.getLogoPathBig());
 
-            modelAndView.addObject("_contestPages", ContestTypeClient.getActiveContestTypes());
+            modelAndView.addObject("_contestPages", ContestTypeClient
+                    .getActiveContestTypes().stream()
+                            .map(contestType -> contestType.withLocale(locale.getLanguage()))
+                            .collect(Collectors.toList()));
             modelAndView.addObject("_colabName", ConfigurationAttributeKey.COLAB_NAME.get());
             modelAndView.addObject("_colabUrl", PlatformAttributeKey.PLATFORM_COLAB_URL.get());
             modelAndView
@@ -149,7 +153,9 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
 
             modelAndView.addObject("_adminEmail", ConfigurationAttributeKey.ADMIN_EMAIL.get());
 
-            List<ContestType> contestTypes = ContestTypeClient.getAllContestTypes();
+            List<ContestType> contestTypes = ContestTypeClient.getAllContestTypes().stream()
+                    .map(contestType -> contestType.withLocale(locale.getLanguage()))
+                    .collect(Collectors.toList());
             if (!contestTypes.isEmpty()) {
                 modelAndView.addObject("_contestNameLowerCase",
                         contestTypes.get(contestTypes.size() - 1).getContestName().toLowerCase());

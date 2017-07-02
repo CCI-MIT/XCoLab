@@ -5,7 +5,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.resource.ResourceResolverChain;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.util.enums.theme.ColabTheme;
 
 import java.util.Collections;

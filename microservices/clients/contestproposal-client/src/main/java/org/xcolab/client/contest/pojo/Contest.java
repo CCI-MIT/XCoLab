@@ -1,8 +1,8 @@
 package org.xcolab.client.contest.pojo;
 
 import org.xcolab.client.admin.ContestTypeClient;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;

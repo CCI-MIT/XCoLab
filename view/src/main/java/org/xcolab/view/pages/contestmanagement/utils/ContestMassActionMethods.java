@@ -1,6 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.utils;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;

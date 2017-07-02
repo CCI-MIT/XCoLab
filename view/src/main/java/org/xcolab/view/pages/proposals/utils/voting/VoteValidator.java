@@ -3,7 +3,7 @@ package org.xcolab.view.pages.proposals.utils.voting;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;

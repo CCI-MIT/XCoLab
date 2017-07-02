@@ -1,4 +1,4 @@
-package org.xcolab.client.admin.enums.contest;
+package org.xcolab.client.admin.attributes.contest;
 
 import org.springframework.util.Assert;
 

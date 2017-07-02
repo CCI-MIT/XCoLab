@@ -1,6 +1,6 @@
 package org.xcolab.client.admin.pojo;
 
-import org.xcolab.client.admin.enums.contest.ContestTypeAttributeKey;
+import org.xcolab.client.admin.attributes.contest.ContestTypeAttributeKey;
 import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.attributes.i18n.LocalizableAttributeGetter;
 
@@ -25,6 +25,10 @@ public class ContestType implements Serializable {
     public ContestType(long id, String locale) {
         this.id = id;
         this.locale = locale;
+    }
+
+    public ContestType withLocale(String locale) {
+        return new ContestType(this.id, locale);
     }
 
     public long getId() {
