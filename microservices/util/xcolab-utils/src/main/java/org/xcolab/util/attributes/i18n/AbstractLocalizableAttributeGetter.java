@@ -2,6 +2,7 @@ package org.xcolab.util.attributes.i18n;
 
 import org.xcolab.util.attributes.AbstractAttributeGetter;
 import org.xcolab.util.attributes.Attribute;
+import org.xcolab.util.attributes.exceptions.AttributeNotFoundException;
 
 public abstract class AbstractLocalizableAttributeGetter<ValueT>
         extends AbstractAttributeGetter<ValueT>
@@ -29,12 +30,22 @@ public abstract class AbstractLocalizableAttributeGetter<ValueT>
 
     @Override
     public ValueT get(String locale) {
-        return extractValue(getLocalizableAttributeProvider().get(locale));
+        try {
+            return extractValue(getLocalizableAttributeProvider().get(locale));
+        } catch (AttributeNotFoundException e) {
+            // try with default locale
+            return get();
+        }
     }
 
     @Override
     public ValueT get(String locale, long additionalId) {
-        return extractValue(getLocalizableAttributeProvider().get(locale, additionalId));
+        try {
+            return extractValue(getLocalizableAttributeProvider().get(locale, additionalId));
+        } catch (AttributeNotFoundException e) {
+            // try with default locale
+            return get(additionalId);
+        }
     }
 
     private LocalizableAttributeProvider<Attribute> getLocalizableAttributeProvider() {
