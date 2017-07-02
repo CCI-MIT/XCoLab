@@ -34,7 +34,7 @@ import static org.junit.Assert.assertTrue;
 public class ConfigurationAttributeDaoTest {
 
     @Autowired
-    ConfigurationAttributeDao configurationAttributeDao;
+    private ConfigurationAttributeDao configurationAttributeDao;
 
 
     @Test
@@ -42,14 +42,14 @@ public class ConfigurationAttributeDaoTest {
 
         ConfigurationAttribute ca = configurationAttributeDao.create(AdminTestUtils.getConfigurationAttribute("a"));
 
-        assertNotNull(configurationAttributeDao.getConfigurationAttribute(ca.getName()).get());
+        assertNotNull(configurationAttributeDao.getConfigurationAttribute(ca.getName(), null).get());
 
     }
 
     @Test
     public void shouldBeEmptyOnNotFoundConfigurationAttribute(){
 
-        assertFalse(configurationAttributeDao.getConfigurationAttribute("b").isPresent());
+        assertFalse(configurationAttributeDao.getConfigurationAttribute("b", null).isPresent());
     }
     @Test
     public void shouldUpdateNewConfigurationAttribute(){
@@ -61,7 +61,7 @@ public class ConfigurationAttributeDaoTest {
         assertTrue(configurationAttributeDao.update(ca));
 
         ca = configurationAttributeDao.getConfigurationAttribute(
-            ca.getName()).get();
+            ca.getName(), null).get();
 
         assertNotNull(ca);
         assertEquals(ca.getStringValue(),newStr);

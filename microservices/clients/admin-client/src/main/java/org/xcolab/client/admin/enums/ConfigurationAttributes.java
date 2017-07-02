@@ -15,6 +15,9 @@ final class ConfigurationAttributes {
         return Attributes.newStringAttribute(new ConfigurationAttributeProvider(name));
     }
 
+    public static AttributeGetterBuilder<String> newLocalizedStringAttribute(String name) {
+        return Attributes.newLocalizedStringAttribute(new ConfigurationAttributeProvider(name));
+    }
 
     public static AttributeGetterBuilder<Long> newLongAttribute(String name) {
         return Attributes.newLongAttribute(new ConfigurationAttributeProvider(name));

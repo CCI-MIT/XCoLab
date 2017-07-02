@@ -8,7 +8,7 @@ public interface ConfigurationAttributeDao {
 
     ConfigurationAttribute create(ConfigurationAttribute pojo);
 
-    Optional<ConfigurationAttribute> getConfigurationAttribute(String attributeName);
+    Optional<ConfigurationAttribute> getConfigurationAttribute(String attributeName, String locale);
 
     boolean update(ConfigurationAttribute pojo);
 }

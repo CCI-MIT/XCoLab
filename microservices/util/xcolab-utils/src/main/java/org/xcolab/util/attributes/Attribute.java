@@ -7,7 +7,9 @@ public interface Attribute {
 
     String getName();
 
-    long getAdditionalId();
+    Long getAdditionalId();
+
+    String getLocale();
 
     Long getNumericValue();
 

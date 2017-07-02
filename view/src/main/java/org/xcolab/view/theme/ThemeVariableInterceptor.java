@@ -3,6 +3,7 @@ package org.xcolab.view.theme;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.view.RedirectView;
@@ -26,6 +27,7 @@ import org.xcolab.view.util.entity.flash.ErrorMessage;
 import org.xcolab.view.util.entity.flash.InfoMessage;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,16 +36,21 @@ import javax.servlet.http.HttpServletResponse;
 public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
 
     private final AuthenticationService authenticationService;
+    private final LocaleResolver localeResolver;
 
-    public ThemeVariableInterceptor(AuthenticationService authenticationService) {
+    public ThemeVariableInterceptor(AuthenticationService authenticationService,
+            LocaleResolver localeResolver) {
         Assert.notNull(authenticationService, "AuthenticationContext is required");
+        Assert.notNull(localeResolver, "LocaleResolver is required");
         this.authenticationService = authenticationService;
+        this.localeResolver = localeResolver;
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response,
             Object handler, ModelAndView modelAndView) {
         if (modelAndView != null && !isRedirectView(modelAndView)) {
+            final Locale locale = localeResolver.resolveLocale(request);
             final boolean isLoggedIn = authenticationService.isLoggedIn();
             modelAndView.addObject("_isLoggedIn", isLoggedIn);
 
@@ -114,7 +121,8 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             if (StringUtils.isNotBlank(metaDescriptionAttribute)) {
                 modelAndView.addObject("_metaPageDescription", HtmlUtil.cleanAll(metaDescriptionAttribute));
             } else {
-                modelAndView.addObject("_metaPageDescription", ConfigurationAttributeKey.META_PAGE_DESCRIPTION.get());
+                modelAndView.addObject("_metaPageDescription",
+                        ConfigurationAttributeKey.META_PAGE_DESCRIPTION.get(locale.getLanguage()));
             }
             final String metaKeywordsAttribute = (String) request.getAttribute(MetaKeys.KEYWORDS.getAttributeName());
             if (StringUtils.isNotBlank(metaKeywordsAttribute)) {

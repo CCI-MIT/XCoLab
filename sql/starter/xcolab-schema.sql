@@ -723,10 +723,11 @@ CREATE TABLE `xcolab_PlanTemplate` (
 CREATE TABLE `xcolab_ConfigurationAttribute` (
   `name` varchar(75) NOT NULL,
   `additionalId` bigint(20) NOT NULL,
+  `locale` VARCHAR(5) DEFAULT '' NOT NULL,
   `numericValue` bigint(20) DEFAULT NULL,
   `stringValue` longtext,
   `realValue` double DEFAULT NULL,
-  PRIMARY KEY (`name`,`additionalId`)
+  PRIMARY KEY (`name`, `additionalId`, `locale`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_TrackedVisitor2User` (

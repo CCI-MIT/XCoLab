@@ -120,7 +120,7 @@ public final class ActivityEntryTestHelper {
         Mockito.when(ContestClientUtil.getAllContestTypes())
                 .thenReturn(new ArrayList<>());
 
-        Mockito.when(AdminClient.getConfigurationAttribute(anyString()))
+        Mockito.when(AdminClient.getConfigurationAttribute(anyString(), anyString()))
                 .thenReturn(new ConfigurationAttribute("COLAB_NAME", 0L, 0L,
                         "12312312332", 0d));
     }

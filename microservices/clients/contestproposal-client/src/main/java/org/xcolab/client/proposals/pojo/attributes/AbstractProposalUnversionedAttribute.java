@@ -30,7 +30,7 @@ class AbstractProposalUnversionedAttribute extends AbstractAttribute {
     public AbstractProposalUnversionedAttribute(Long id_, Long proposalid, Long createauthorid,
             Long lastauthorid, Timestamp createdate, Timestamp lastupdatedate, String name,
             Integer additionalId, Long numericvalue, String stringvalue, Double realvalue) {
-        super(name, additionalId, numericvalue, stringvalue, realvalue);
+        super(name, additionalId, null, numericvalue, stringvalue, realvalue);
         this.id_ = id_;
         this.proposalid = proposalid;
         this.createauthorid = createauthorid;

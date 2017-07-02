@@ -16,7 +16,7 @@ public class AdminClientMockerHelper {
 
         PowerMockito.mockStatic(AdminClient.class);
         //generic mock for ConfigAttribute
-        Mockito.when(AdminClient.getConfigurationAttribute(anyString()))
+        Mockito.when(AdminClient.getConfigurationAttribute(anyString(), anyString()))
                 .thenAnswer(new Answer<ConfigurationAttribute>() {
                     @Override
                     public ConfigurationAttribute answer(InvocationOnMock invocation)

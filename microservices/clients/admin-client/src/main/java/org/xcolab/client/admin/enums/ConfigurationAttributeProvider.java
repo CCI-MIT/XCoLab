@@ -3,10 +3,11 @@ package org.xcolab.client.admin.enums;
 import org.springframework.util.Assert;
 
 import org.xcolab.client.admin.AdminClient;
-import org.xcolab.util.attributes.AttributeProvider;
 import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+import org.xcolab.util.attributes.i18n.LocalizableAttributeProvider;
 
-class ConfigurationAttributeProvider implements AttributeProvider<ConfigurationAttribute> {
+class ConfigurationAttributeProvider
+        implements LocalizableAttributeProvider<ConfigurationAttribute> {
 
     private final String name;
 
@@ -22,11 +23,21 @@ class ConfigurationAttributeProvider implements AttributeProvider<ConfigurationA
 
     @Override
     public ConfigurationAttribute get() {
-        return AdminClient.getConfigurationAttribute(name);
+        return AdminClient.getConfigurationAttribute(name, null);
     }
 
     @Override
     public ConfigurationAttribute get(long additionalId) {
+        throw new UnsupportedOperationException("Configuration Attributes don't support additional ids");
+    }
+
+    @Override
+    public ConfigurationAttribute get(String locale) {
+        return AdminClient.getConfigurationAttribute(name, locale);
+    }
+
+    @Override
+    public ConfigurationAttribute get(String locale, long additionalId) {
         throw new UnsupportedOperationException("Configuration Attributes don't support additional ids");
     }
 

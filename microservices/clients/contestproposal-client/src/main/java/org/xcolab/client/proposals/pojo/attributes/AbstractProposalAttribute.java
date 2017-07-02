@@ -24,7 +24,7 @@ class AbstractProposalAttribute extends AbstractAttribute {
     public AbstractProposalAttribute(Long id_, Long proposalid, Integer version,
             Integer versionwhencreated, String name, Long additionalid, Long numericvalue,
             String stringvalue, Double realvalue) {
-        super(name, additionalid, numericvalue, stringvalue, realvalue);
+        super(name, additionalid, null, numericvalue, stringvalue, realvalue);
         this.id_ = id_;
         this.proposalid = proposalid;
         this.version = version;

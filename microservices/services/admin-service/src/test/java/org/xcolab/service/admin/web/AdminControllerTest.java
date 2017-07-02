@@ -52,8 +52,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("org.xcolab.service.admin")
 @ComponentScan("com.netflix.discovery")
 
-
-
 @TestPropertySource(
     properties = {
         "cache.enabled=false",
@@ -88,7 +86,7 @@ public class AdminControllerTest {
        this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
 
-        Mockito.when(configurationAttributeDao.getConfigurationAttribute(anyString()))
+        Mockito.when(configurationAttributeDao.getConfigurationAttribute(anyString(), anyString()))
             .thenAnswer(invocation -> {
                 if("ACTIVE_THEMEZ".equals(invocation.getArguments()[0])){
                     return Optional.of(getConfigAttribute());

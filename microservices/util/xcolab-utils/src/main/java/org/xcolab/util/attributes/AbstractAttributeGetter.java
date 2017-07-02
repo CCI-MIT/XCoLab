@@ -11,6 +11,10 @@ public abstract class AbstractAttributeGetter<ValueT> implements AttributeGetter
         this.attributeProvider = attributeProvider;
     }
 
+    protected AttributeProvider<? extends Attribute> getAttributeProvider() {
+        return attributeProvider;
+    }
+
     @Override
     public String name() {
         return attributeProvider.name();

@@ -6,8 +6,10 @@ import org.xcolab.util.attributes.basic.EnumAttribute;
 import org.xcolab.util.attributes.basic.IdListAttribute;
 import org.xcolab.util.attributes.basic.JsonAttribute;
 import org.xcolab.util.attributes.basic.ListAttribute;
+import org.xcolab.util.attributes.basic.LocalizedStringAttribute;
 import org.xcolab.util.attributes.basic.LongAttribute;
 import org.xcolab.util.attributes.basic.StringAttribute;
+import org.xcolab.util.attributes.i18n.LocalizableAttributeProvider;
 
 import java.util.List;
 import java.util.function.Function;
@@ -23,6 +25,11 @@ public final class Attributes {
     public static AttributeGetterBuilder<String> newStringAttribute(
             AttributeProvider<?> attributeProvider) {
         return new AttributeGetterBuilder<>(new StringAttribute(attributeProvider));
+    }
+
+    public static AttributeGetterBuilder<String> newLocalizedStringAttribute(
+            LocalizableAttributeProvider<?> attributeProvider) {
+        return new AttributeGetterBuilder<>(new LocalizedStringAttribute(attributeProvider));
     }
 
     public static AttributeGetterBuilder<Long> newLongAttribute(

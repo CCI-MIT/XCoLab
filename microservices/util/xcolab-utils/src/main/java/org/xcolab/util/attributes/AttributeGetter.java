@@ -36,6 +36,6 @@ public interface AttributeGetter<ValueT> {
     }
 
     default AttributeGetter<ValueT> withDefaultValue(ValueT defaultValue) {
-        return new OptionalAttribute<>(this, defaultValue);
+        return OptionalAttribute.of(this, defaultValue);
     }
 }

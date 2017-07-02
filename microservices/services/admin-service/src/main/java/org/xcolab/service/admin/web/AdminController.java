@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.ConfigurationAttribute;
@@ -54,9 +55,10 @@ public class AdminController {
     }
 
     @GetMapping("/attributes/{attributeName}")
-    public ConfigurationAttribute getConfigurationAttribute(@PathVariable String attributeName)
+    public ConfigurationAttribute getConfigurationAttribute(@PathVariable String attributeName,
+            @RequestParam(required = false) String locale)
             throws NotFoundException {
-        return configurationAttributeDao.getConfigurationAttribute(attributeName)
+        return configurationAttributeDao.getConfigurationAttribute(attributeName, locale)
                 .orElseThrow(NotFoundException::new);
     }
 

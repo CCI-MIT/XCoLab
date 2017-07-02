@@ -12,6 +12,7 @@ public abstract class AbstractAttribute implements Attribute, Serializable {
 
     private String name;
     private Long additionalId;
+    private String locale;
     private Long numericValue;
     private String stringValue;
     private Double realValue;
@@ -22,15 +23,17 @@ public abstract class AbstractAttribute implements Attribute, Serializable {
     public AbstractAttribute(AbstractAttribute value) {
         this.name = value.name;
         this.additionalId = value.additionalId;
+        this.locale = value.locale;
         this.numericValue = value.numericValue;
         this.stringValue = value.stringValue;
         this.realValue = value.realValue;
     }
 
-    public AbstractAttribute(String name, long additionalId, Long numericValue,
+    public AbstractAttribute(String name, long additionalId, String locale, Long numericValue,
             String stringValue, Double realValue) {
         this.name = name;
         this.additionalId = additionalId;
+        this.locale = locale;
         this.numericValue = numericValue;
         this.stringValue = stringValue;
         this.realValue = realValue;
@@ -46,12 +49,21 @@ public abstract class AbstractAttribute implements Attribute, Serializable {
     }
 
     @Override
-    public long getAdditionalId() {
+    public Long getAdditionalId() {
         return this.additionalId;
     }
 
     public void setAdditionalId(Long additionalId) {
         this.additionalId = additionalId;
+    }
+
+    @Override
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
     }
 
     @Override
@@ -92,6 +104,7 @@ public abstract class AbstractAttribute implements Attribute, Serializable {
         AbstractAttribute that = (AbstractAttribute) o;
         return Objects.equals(getName(), that.getName())
                 && Objects.equals(getAdditionalId(), that.getAdditionalId())
+                && Objects.equals(getLocale(), that.getLocale())
                 && Objects.equals(getNumericValue(), that.getNumericValue())
                 && Objects.equals(getStringValue(), that.getStringValue())
                 && Objects.equals(getRealValue(), that.getRealValue());
@@ -99,8 +112,8 @@ public abstract class AbstractAttribute implements Attribute, Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getAdditionalId(), getNumericValue(), getStringValue(),
-                getRealValue());
+        return Objects.hash(getName(), getAdditionalId(), getLocale(),
+                getNumericValue(), getStringValue(), getRealValue());
     }
 
     @Override
@@ -109,6 +122,7 @@ public abstract class AbstractAttribute implements Attribute, Serializable {
         return this.getClass().getSimpleName()
                 + " (" + name +
                 ", " + additionalId +
+                ", " + locale +
                 ", " + numericValue +
                 ", " + stringValue +
                 ", " + realValue +

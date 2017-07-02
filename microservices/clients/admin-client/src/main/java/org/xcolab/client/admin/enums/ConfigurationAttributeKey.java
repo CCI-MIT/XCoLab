@@ -1,6 +1,7 @@
 package org.xcolab.client.admin.enums;
 
 import org.xcolab.util.attributes.AttributeGetter;
+import org.xcolab.util.attributes.i18n.LocalizableAttributeGetter;
 import org.xcolab.util.enums.theme.ColabTheme;
 
 import java.util.Collections;
@@ -177,9 +178,9 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> IMAGE_UPLOAD_EXTERNAL_SERVICE_URL =
             ConfigurationAttributes.newStringAttribute("IMAGE_UPLOAD_EXTERNAL_SERVICE_URL")
                     .build();
-    public static final AttributeGetter<String> IMAGE_UPLOAD_HELP_TEXT =
-            ConfigurationAttributes.newStringAttribute("IMAGE_UPLOAD_HELP_TEXT")
-                    .build();
+    public static final LocalizableAttributeGetter<String> IMAGE_UPLOAD_HELP_TEXT =
+            ConfigurationAttributes.newLocalizedStringAttribute("IMAGE_UPLOAD_HELP_TEXT")
+                    .buildLocalizable();
 
     //Shared CoLab configuration
     public static final AttributeGetter<Boolean> IS_SHARED_COLAB =
@@ -201,20 +202,20 @@ public final class ConfigurationAttributeKey {
 
 
     //Social media share text
-    public static final AttributeGetter<String> OPEN_GRAPH_SHARE_TITLE =
-            ConfigurationAttributes.newStringAttribute("OPEN_GRAPH_SHARE_TITLE")
-                    .build();
-    public static final AttributeGetter<String> OPEN_GRAPH_SHARE_DESCRIPTION =
-            ConfigurationAttributes.newStringAttribute("OPEN_GRAPH_SHARE_DESCRIPTION")
-                    .build();
-    public static final AttributeGetter<String> META_PAGE_DESCRIPTION =
-            ConfigurationAttributes.newStringAttribute("META_PAGE_DESCRIPTION")
+    public static final LocalizableAttributeGetter<String> OPEN_GRAPH_SHARE_TITLE =
+            ConfigurationAttributes.newLocalizedStringAttribute("OPEN_GRAPH_SHARE_TITLE")
+                    .buildLocalizable();
+    public static final LocalizableAttributeGetter<String> OPEN_GRAPH_SHARE_DESCRIPTION =
+            ConfigurationAttributes.newLocalizedStringAttribute("OPEN_GRAPH_SHARE_DESCRIPTION")
+                    .buildLocalizable();
+    public static final LocalizableAttributeGetter<String> META_PAGE_DESCRIPTION =
+            ConfigurationAttributes.newLocalizedStringAttribute("META_PAGE_DESCRIPTION")
                     .defaultValue("")
-                    .build();
-    public static final AttributeGetter<String> META_PAGE_KEYWORDS =
-            ConfigurationAttributes.newStringAttribute("META_PAGE_KEYWORDS")
+                    .buildLocalizable();
+    public static final LocalizableAttributeGetter<String> META_PAGE_KEYWORDS =
+            ConfigurationAttributes.newLocalizedStringAttribute("META_PAGE_KEYWORDS")
                     .defaultValue("")
-                    .build();
+                    .buildLocalizable();
 
 
     //Impact tab configuration
@@ -227,22 +228,23 @@ public final class ConfigurationAttributeKey {
 
 
     //Misc features
-    public static final AttributeGetter<String> LOGIN_INFO_MESSAGE =
-            ConfigurationAttributes.newStringAttribute("LOGIN_INFO_MESSAGE")
-                    .defaultValue("").build();
+    public static final LocalizableAttributeGetter<String> LOGIN_INFO_MESSAGE =
+            ConfigurationAttributes.newLocalizedStringAttribute("LOGIN_INFO_MESSAGE")
+                    .defaultValue("")
+                    .buildLocalizable();
     public static final AttributeGetter<String> MEMBERS_DEFAULT_SORT_COLUMN =
             ConfigurationAttributes.newStringAttribute("MEMBERS_DEFAULT_SORT_COLUMN")
                     .defaultValue("").build();
 
     // Proposal feature flags
-    public static final AttributeGetter<String> PROPOSALS_SAVE_BUTTON_TEXT =
-            ConfigurationAttributes.newStringAttribute("PROPOSALS_SAVE_BUTTON_TEXT")
+    public static final LocalizableAttributeGetter<String> PROPOSALS_SAVE_BUTTON_TEXT =
+            ConfigurationAttributes.newLocalizedStringAttribute("PROPOSALS_SAVE_BUTTON_TEXT")
                     .defaultValue("SAVE and PUBLISH changes")
-                    .build();
-    public static final AttributeGetter<String> PROPOSALS_SAVE_HELP_TEXT =
-            ConfigurationAttributes.newStringAttribute("PROPOSALS_SAVE_HELP_TEXT")
+                    .buildLocalizable();
+    public static final LocalizableAttributeGetter<String> PROPOSALS_SAVE_HELP_TEXT =
+            ConfigurationAttributes.newLocalizedStringAttribute("PROPOSALS_SAVE_HELP_TEXT")
                     .defaultValue((String) null)
-                    .build();
+                    .buildLocalizable();
     public static final AttributeGetter<Boolean> PROPOSALS_SHOW_IMAGE_UPLOAD =
             ConfigurationAttributes.newBooleanAttribute("PROPOSALS_SHOW_IMAGE_UPLOAD")
                     .defaultValue(true)
@@ -304,9 +306,9 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<Boolean> MIT_HEADER_BAR_SHOW =
             ConfigurationAttributes.newBooleanAttribute("MIT_HEADER_BAR_SHOW")
                     .defaultValue(false).build();
-    public static final AttributeGetter<String> MIT_HEADER_BAR_LINK_TEXT =
-            ConfigurationAttributes.newStringAttribute("MIT_HEADER_BAR_LINK_TEXT")
-                    .defaultValue("").build();
+    public static final LocalizableAttributeGetter<String> MIT_HEADER_BAR_LINK_TEXT =
+            ConfigurationAttributes.newLocalizedStringAttribute("MIT_HEADER_BAR_LINK_TEXT")
+                    .defaultValue("").buildLocalizable();
     public static final AttributeGetter<String> MIT_HEADER_BAR_LINK_URL =
             ConfigurationAttributes.newStringAttribute("MIT_HEADER_BAR_LINK_URL")
                     .defaultValue("").build();
@@ -317,6 +319,7 @@ public final class ConfigurationAttributeKey {
                     .defaultValue(true).build();
 
     //Portlet preferences config
+    //TODO: allow localizing portlet preferences
     public static final AttributeGetter<String> PORTLET_CONTACT_FORM_PREFERENCES =
             ConfigurationAttributes.newStringAttribute("PORTLET_CONTACT_FORM_PREFERENCES")
                     .build();
