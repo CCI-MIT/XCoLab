@@ -225,12 +225,6 @@ INSERT INTO xcolab_OntologyTerm (id_, parentId, ontologySpaceId, name, descripti
 INSERT INTO xcolab_OntologyTerm (id_, parentId, ontologySpaceId, name, descriptionUrl, order_) VALUES (3, 0, 104, 'Anywhere', '', 5);
 INSERT INTO xcolab_OntologyTerm (id_, parentId, ontologySpaceId, name, descriptionUrl, order_) VALUES (1300601, 0, 105, 'Any kind of action', '', 5);
 
-INSERT INTO xcolab_PointDistributionTarget (id_, contestId, proposalId, numberOfPoints, pointTypeOverride) VALUES (1, 1302401, 1323519, 1000, 0);
-INSERT INTO xcolab_PointDistributionTarget (id_, contestId, proposalId, numberOfPoints, pointTypeOverride) VALUES (2, 1302401, 1324201, 1833, 0);
-INSERT INTO xcolab_PointDistributionTarget (id_, contestId, proposalId, numberOfPoints, pointTypeOverride) VALUES (3, 1302401, 1324804, 1000, 0);
-INSERT INTO xcolab_PointDistributionTarget (id_, contestId, proposalId, numberOfPoints, pointTypeOverride) VALUES (4, 1302401, 1324606, 167, 0);
-INSERT INTO xcolab_PointDistributionTarget (id_, contestId, proposalId, numberOfPoints, pointTypeOverride) VALUES (5, 1302401, 1323902, 6000, 0);
-
 INSERT INTO xcolab_PointType (id_, parentPointTypeId, percentageOfParent, distributionStrategy, receiverLimitationStrategy, name, sort) VALUES (1, 0, 1, 'DEFINED_BY_CHILDREN_PERCENTAGES', 'ANY_USER', '', 1);
 INSERT INTO xcolab_PointType (id_, parentPointTypeId, percentageOfParent, distributionStrategy, receiverLimitationStrategy, name, sort) VALUES (2, 3, 0.9, 'USER_DEFINED', 'ANY_TEAM_MEMBER', '', 2);
 INSERT INTO xcolab_PointType (id_, parentPointTypeId, percentageOfParent, distributionStrategy, receiverLimitationStrategy, name, sort) VALUES (3, 1, 0.05, 'DEFINED_BY_CHILDREN_PERCENTAGES', 'ANY_USER', '', 3);
