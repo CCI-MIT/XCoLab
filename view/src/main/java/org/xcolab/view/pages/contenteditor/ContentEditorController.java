@@ -19,7 +19,6 @@ import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +52,7 @@ public class ContentEditorController extends BaseContentEditor{
 
         if (contentFolders != null) {
             for (ContentFolder cf : contentFolders) {
-                if(cf.getContentFolderId().longValue() != ContentFolder.RESOURCE_FOLDER_ID) {
+                if(cf.getContentFolderId() != ContentFolder.RESOURCE_FOLDER_ID) {
                     responseArray.put(folderNode(cf.getContentFolderName(),
                             cf.getContentFolderId().toString()));
                 }
@@ -115,7 +114,7 @@ public class ContentEditorController extends BaseContentEditor{
         articleVersion = new JSONObject();
         ContentPage cp = ContentsClient.getContentPageByContentArticleId(contentArticleVersion.getContentArticleId());
 
-        if(cp!=null){
+        if (cp!=null) {
             articleVersion.put("contentUrl",cp.getTitle());
         }
         if (contentArticleVersion != null) {

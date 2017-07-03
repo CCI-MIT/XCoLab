@@ -12,6 +12,7 @@ import org.xcolab.util.http.client.types.TypeProvider;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
@@ -24,6 +25,7 @@ public class ContentPage implements Serializable {
 
     private Long pageId;
     private String title;
+    private String metaDescription;
     private Long menuArticleId;
     private Long contentArticleId;
     private Timestamp createDate;
@@ -55,6 +57,14 @@ public class ContentPage implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getMetaDescription() {
+        return metaDescription;
+    }
+
+    public void setMetaDescription(String metaDescription) {
+        this.metaDescription = metaDescription;
     }
 
     public Long getMenuArticleId() {
@@ -95,73 +105,27 @@ public class ContentPage implements Serializable {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((pageId == null) ? 0 : pageId.hashCode());
-        result = prime * result + ((title == null) ? 0 : title.hashCode());
-        result = prime * result + ((menuArticleId == null) ? 0 : menuArticleId.hashCode());
-        result = prime * result + ((contentArticleId == null) ? 0 : contentArticleId.hashCode());
-        result = prime * result + ((createDate == null) ? 0 : createDate.hashCode());
-        result = prime * result + ((modifiedDate == null) ? 0 : modifiedDate.hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ContentPage)) {
+            return false;
+        }
+        ContentPage that = (ContentPage) o;
+        return Objects.equals(getPageId(), that.getPageId())
+                && Objects.equals(getTitle(), that.getTitle())
+                && Objects.equals(getMetaDescription(), that.getMetaDescription())
+                && Objects.equals(getMenuArticleId(), that.getMenuArticleId())
+                && Objects.equals(getContentArticleId(), that.getContentArticleId())
+                && Objects.equals(getCreatedDate(), that.getCreatedDate())
+                && Objects.equals(getModifiedDate(), that.getModifiedDate());
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final ContentPage other = (ContentPage) obj;
-        if (pageId == null) {
-            if (other.pageId != null) {
-                return false;
-            }
-        } else if (!pageId.equals(other.pageId)) {
-            return false;
-        }
-        if (title == null) {
-            if (other.title != null) {
-                return false;
-            }
-        } else if (!title.equals(other.title)) {
-            return false;
-        }
-        if (menuArticleId == null) {
-            if (other.menuArticleId != null) {
-                return false;
-            }
-        } else if (!menuArticleId.equals(other.menuArticleId)) {
-            return false;
-        }
-        if (contentArticleId == null) {
-            if (other.contentArticleId != null) {
-                return false;
-            }
-        } else if (!contentArticleId.equals(other.contentArticleId)) {
-            return false;
-        }
-        if (createDate == null) {
-            if (other.createDate != null) {
-                return false;
-            }
-        } else if (!createDate.equals(other.createDate)) {
-            return false;
-        }
-        if (modifiedDate == null) {
-            if (other.modifiedDate != null) {
-                return false;
-            }
-        } else if (!modifiedDate.equals(other.modifiedDate)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(getPageId(), getTitle(), getMetaDescription(), getMenuArticleId(),
+                getContentArticleId(), createDate, getModifiedDate());
     }
 
     @Override

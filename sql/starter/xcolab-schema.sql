@@ -641,6 +641,7 @@ CREATE TABLE `xcolab_ContestTeamMemberRole` (
 CREATE TABLE `xcolab_ContentPage` (
   `pageId` bigint(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `metaDescription` VARCHAR(255),
   `menuArticleId` bigint(11) DEFAULT NULL,
   `contentArticleId` bigint(11) NOT NULL,
   `createdDate` timestamp NULL DEFAULT NULL,

@@ -14,3 +14,6 @@ create table admin_ContestTypeAttribute
 	realValue double null,
 	primary key (name, additionalId, locale)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- COLAB-2086
+ALTER TABLE xcolab_ContentPage ADD metaDescription VARCHAR(255) AFTER title;

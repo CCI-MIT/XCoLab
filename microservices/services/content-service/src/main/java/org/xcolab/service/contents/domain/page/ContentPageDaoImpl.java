@@ -67,6 +67,7 @@ public class ContentPageDaoImpl implements ContentPageDao {
     public boolean update(ContentPage page) {
         return dslContext.update(CONTENT_PAGE)
                 .set(CONTENT_PAGE.TITLE, page.getTitle())
+                .set(CONTENT_PAGE.META_DESCRIPTION, page.getMetaDescription())
                 .set(CONTENT_PAGE.MENU_ARTICLE_ID, page.getMenuArticleId())
                 .set(CONTENT_PAGE.CONTENT_ARTICLE_ID, page.getContentArticleId())
                 .set(CONTENT_PAGE.MODIFIED_DATE, DSL.currentTimestamp())
@@ -78,6 +79,7 @@ public class ContentPageDaoImpl implements ContentPageDao {
     public ContentPage create(ContentPage page) {
         final ContentPageRecord ret = this.dslContext.insertInto(CONTENT_PAGE)
                 .set(CONTENT_PAGE.TITLE, page.getTitle())
+                .set(CONTENT_PAGE.META_DESCRIPTION, page.getMetaDescription())
                 .set(CONTENT_PAGE.MENU_ARTICLE_ID, page.getMenuArticleId())
                 .set(CONTENT_PAGE.CONTENT_ARTICLE_ID, page.getContentArticleId())
                 .set(CONTENT_PAGE.CREATED_DATE, DSL.currentTimestamp())
