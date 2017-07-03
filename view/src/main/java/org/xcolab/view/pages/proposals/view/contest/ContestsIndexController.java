@@ -293,10 +293,11 @@ public class ContestsIndexController extends BaseProposalsController {
         model.addAttribute("showContestDisplayOptions", ConfigurationAttributeKey.SHOW_CONTESTS_DISPLAY_OPTIONS.get());
 
 
-        final String description = String.format("View %s %s run on the %s.",
+        final String description = String.format("View %s %s run on the %s. ",
                 showAllContests ? "all" : showActiveContests ? "active" : "prior",
                 contestType.getContestNamePluralLowercase(),
-                ConfigurationAttributeKey.COLAB_NAME.get());
+                ConfigurationAttributeKey.COLAB_NAME.get())
+                + ConfigurationAttributeKey.META_PAGE_DESCRIPTION_CONTESTS.get();
         model.addAttribute("pageDescription", description);
 
         setBasePageAttributes(request, model);

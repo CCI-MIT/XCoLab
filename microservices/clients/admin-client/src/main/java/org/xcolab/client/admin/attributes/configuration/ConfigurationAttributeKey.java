@@ -213,6 +213,10 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newLocalizedStringAttribute("META_PAGE_DESCRIPTION")
                     .defaultValue("")
                     .buildLocalizable();
+    public static final LocalizableAttributeGetter<String> META_PAGE_DESCRIPTION_CONTESTS =
+            ConfigurationAttributes.newLocalizedStringAttribute("META_PAGE_DESCRIPTION_CONTESTS")
+                    .defaultValue(META_PAGE_DESCRIPTION)
+                    .buildLocalizable();
     public static final LocalizableAttributeGetter<String> META_PAGE_KEYWORDS =
             ConfigurationAttributes.newLocalizedStringAttribute("META_PAGE_KEYWORDS")
                     .defaultValue("")

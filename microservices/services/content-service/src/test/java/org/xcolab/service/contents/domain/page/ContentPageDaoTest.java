@@ -12,11 +12,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.model.tables.pojos.ContentArticle;
 import org.xcolab.model.tables.pojos.ContentPage;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -33,7 +31,7 @@ import static org.junit.Assert.assertTrue;
 public class ContentPageDaoTest {
 
     @Autowired
-    ContentPageDao contentPageDao;
+    private ContentPageDao contentPageDao;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -43,38 +41,36 @@ public class ContentPageDaoTest {
 
         ContentPage ae = new ContentPage();
         ae.setTitle("pagetitle");
-        ae.setContentArticleId(01l);
+        ae.setContentArticleId(1L);
         ae = contentPageDao.create(ae);
         assertTrue(contentPageDao.get(ae.getPageId()).isPresent());
-
     }
+
     @Test
     public void shouldGetContentPage() throws Exception {
-
-        assertTrue(contentPageDao.get(2l).isPresent());
-
+        assertTrue(contentPageDao.get(2L).isPresent());
     }
+
     @Test
     public void shouldListContentPages() throws Exception {
 
         ContentPage ae = new ContentPage();
         ae.setTitle("pagetitlez");
-        ae.setContentArticleId(01l);
+        ae.setContentArticleId(1L);
         ae = contentPageDao.create(ae);
         assertEquals(1,contentPageDao.list(ae.getTitle()).size());
-
     }
+
     @Test
     public void shouldUpdateContentPage() throws Exception {
         ContentPage ae = new ContentPage();
         ae.setTitle("aaa");
-        ae.setContentArticleId(01l);
+        ae.setContentArticleId(1L);
         ae = contentPageDao.create(ae);
         ae.setTitle("bbb");
         contentPageDao.update(ae);
 
         ContentPage cp = contentPageDao.get(ae.getPageId()).get();
         assertEquals(cp.getTitle(),ae.getTitle());
-
     }
 }
