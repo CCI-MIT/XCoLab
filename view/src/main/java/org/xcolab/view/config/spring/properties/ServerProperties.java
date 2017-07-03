@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ServerProperties {
 
     /**
-     *
+     * Use forward headers from proxy to populate remote ip and host fields.
      */
     private boolean useForwardHeaders = false;
 

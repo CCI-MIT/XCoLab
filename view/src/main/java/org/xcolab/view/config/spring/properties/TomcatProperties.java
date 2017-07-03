@@ -6,12 +6,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class TomcatProperties {
 
     /**
-     *
+     * Enable tomcat AJP connector.
      */
     private boolean tomcatAjpEnabled = true;
 
     /**
-     *
+     * Change port for the AJP connector.
      */
     private int tomcatAjpPort = 18010;
 
