@@ -4,12 +4,13 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           version="2.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-    <xcolab:layout>
+
+    <jsp:directive.include file="./init_proposal_tab.jspx"/>
+
+    <xcolab:layout title="${proposal.name} - Impact">
         <!--@elvariable id="impactIterations" type="java.util.List<ImpactIteration>"-->
         <!--@elvariable id="impactSerieses" type="java.util.List<ImpactSeries>"-->
         <!--@elvariable id="regionTerms" type="java.util.List<OntologyTerm>"-->
-
-        <jsp:directive.include file="./init_proposal_tab.jspx"/>
 
         <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
