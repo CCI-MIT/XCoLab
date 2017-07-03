@@ -13,7 +13,6 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
@@ -141,10 +140,6 @@ public class CreateProposalController extends BaseProposalsController {
                 ConfigurationAttributeKey.PROPOSALS_SAVE_HELP_TEXT.get());
         model.addAttribute("proposalPickerDefaultTabIsContests",
                 ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS.get());
-
-        ContestType contestType = ProposalsContextUtil.getContestType(request);
-        final String seoText = "Create " + contestType.getProposalName() + " in " + contest.getContestShortName();
-        setSeoTexts(request, seoText, null, null);
 
         AnalyticsUtil.publishEvent(request, memberId, ProposalUpdateHelper.PROPOSAL_ANALYTICS_KEY + 1,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_CATEGORY,

@@ -8,7 +8,7 @@
           xmlns:spring="http://www.springframework.org/tags"
           version="2.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-    <xcolab:layout title="${proposal.name}">
+    <xcolab:layout title="${proposal.name}" description="${proposal.pitch}">
         <!--@elvariable id="voted" type="java.lang.Boolean"-->
         <!--@elvariable id="votingDeadline" type="java.lang.String"-->
         <!--@elvariable id="targetMoveHistory" type="org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory"-->

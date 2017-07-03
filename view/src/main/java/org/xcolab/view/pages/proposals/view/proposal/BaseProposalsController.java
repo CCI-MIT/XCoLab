@@ -20,22 +20,11 @@ public class BaseProposalsController {
         super();
     }
 
-    protected void setSeoTexts(HttpServletRequest request,
-            String pageTitle, String pageSubtitle, String pageDescription) {
-
-        //TODO: customize page titles for proposals
-//        if (StringUtils.isNotBlank(pageTitle)) {
-//            PortletUtil.setPageTitle(pageTitle, request);
-//        }
+    protected void setSeoTexts(HttpServletRequest request, String pageDescription) {
 
         if (StringUtils.isNotBlank(pageDescription)) {
             request.setAttribute(MetaKeys.DESCRIPTION.getAttributeName(), pageDescription);
         }
-
-//        TODO: subtitles?
-//        if (StringUtils.isNotBlank(pageSubtitle)) {
-//            PortletUtil.setPageSubtitle(pageSubtitle, request);
-//        }
     }
 
     protected void setBasePageAttributes(HttpServletRequest request, Model model) {

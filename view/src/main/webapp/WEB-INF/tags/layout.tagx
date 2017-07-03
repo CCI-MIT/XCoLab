@@ -5,6 +5,7 @@
           xmlns:spring="http://www.springframework.org/tags"
           version="2.0">
     <jsp:directive.attribute name="title" type="java.lang.String" required="false" rtexprvalue="true" description="Page title" />
+    <jsp:directive.attribute name="description" type="java.lang.String" required="false" rtexprvalue="true" description="Page description for meta tag" />
 
     <jsp:directive.attribute name="canonicalUrlRelative" type="java.lang.String" required="false" rtexprvalue="true" description="Canonical url for this page (relative to root), if any" />
 
@@ -78,7 +79,9 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <meta content="${_metaPageDescription}" lang="en-US" name="description" />
+    <meta content="${not empty description ? description : _metaPageDescription}"
+          lang="en-US" name="description" />
+
     <meta content="${_metaPageKeywords}" lang="en-US" name="keywords" />
     <c:if test="${not empty canonicalUrlRelative}">
         <link rel="canonical" href="${colabUrl}${canonicalUrlRelative}" />

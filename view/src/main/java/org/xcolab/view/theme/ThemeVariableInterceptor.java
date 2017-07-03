@@ -128,12 +128,7 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
                 modelAndView.addObject("_metaPageDescription",
                         ConfigurationAttributeKey.META_PAGE_DESCRIPTION.get(locale.getLanguage()));
             }
-            final String metaKeywordsAttribute = (String) request.getAttribute(MetaKeys.KEYWORDS.getAttributeName());
-            if (StringUtils.isNotBlank(metaKeywordsAttribute)) {
-                modelAndView.addObject("_metaPageKeywords", metaKeywordsAttribute);
-            } else {
-                modelAndView.addObject("_metaPageKeywords", ConfigurationAttributeKey.META_PAGE_KEYWORDS.get());
-            }
+            modelAndView.addObject("_metaPageKeywords", ConfigurationAttributeKey.META_PAGE_KEYWORDS.get());
 
             modelAndView
                     .addObject("_footerArticleId", ConfigurationAttributeKey.FOOTER_CONTENT_ARTICLE_ID.get());

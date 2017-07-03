@@ -8,7 +8,8 @@
 
     <jsp:directive.include file="./init_proposal_tab.jspx" />
 
-    <xcolab:layout title="${proposal.name} - Evaluation">
+    <xcolab:layout title="${proposal.name} - Evaluation"
+                   description="Evaluation results for ${contestType.proposalName} '${proposal.name}' in ${contestType.contestName} '${contest.contestShortName}'">
     <!--@elvariable id="move" type="java.lang.Boolean"-->
     <!--@elvariable id="showPublicRatingForm" type="java.lang.Boolean"-->
     <!--@elvariable id="showEvaluation" type="java.lang.Boolean"-->

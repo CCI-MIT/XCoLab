@@ -291,7 +291,13 @@ public class ContestsIndexController extends BaseProposalsController {
         model.addAttribute("showActiveContests", showActiveContests);
         model.addAttribute("showAllContests", showAllContests);
         model.addAttribute("showContestDisplayOptions", ConfigurationAttributeKey.SHOW_CONTESTS_DISPLAY_OPTIONS.get());
-        setSeoTexts(request, showAllContests ? "All contests" : showActiveContests ? "Active contests" : "Prior contests", null, null);
+
+
+        final String description = String.format("View %s %s run on the %s.",
+                showAllContests ? "all" : showActiveContests ? "active" : "prior",
+                contestType.getContestNamePluralLowercase(),
+                ConfigurationAttributeKey.COLAB_NAME.get());
+        model.addAttribute("pageDescription", description);
 
         setBasePageAttributes(request, model);
         return "/proposals/contestsIndex";

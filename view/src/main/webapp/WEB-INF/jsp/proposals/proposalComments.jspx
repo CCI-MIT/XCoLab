@@ -4,7 +4,8 @@
 		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
 	version="2.0">
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-	<xcolab:layout  title="${proposal.name} - Comments">
+	<xcolab:layout  title="${proposal.name} - Comments"
+                    description="Comments for ${contestType.proposalName} '${proposal.name}' in ${contestType.contestName} '${contest.contestShortName}'">
 
 		<!--@elvariable id="discussionId" type="java.lang.Long"-->
 

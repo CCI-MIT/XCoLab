@@ -135,8 +135,6 @@ public class ContestProposalsController extends BaseProposalsController {
         }
         model.addAttribute("showEditLink", showEditLink);
 
-        setSeoTexts(request, contest.getContestShortName(), null, contest.getContestDescription());
-
         setBasePageAttributes(request, model);
         return "/proposals/contestProposals";
     }
