@@ -28,8 +28,9 @@ import org.springframework.web.servlet.resource.VersionResourceResolver;
 
 import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.auth.resolver.MemberArgumentResolver;
-import org.xcolab.view.config.ConfigurationService;
 import org.xcolab.view.config.rewrite.RewriteInitializer;
+import org.xcolab.view.config.spring.properties.ServerProperties;
+import org.xcolab.view.config.spring.properties.TomcatProperties;
 import org.xcolab.view.config.spring.properties.WebProperties;
 import org.xcolab.view.config.tomcat.AjpConnector;
 import org.xcolab.view.config.tomcat.ForwardedHostValve;
@@ -43,7 +44,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-@EnableConfigurationProperties(WebProperties.class)
+@EnableConfigurationProperties(
+        {WebProperties.class, TomcatProperties.class, ServerProperties.class})
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     private static final Logger log = LoggerFactory.getLogger(WebConfig.class);
@@ -54,7 +56,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     private final PopulateProposalModelInterceptor populateContextInterceptor;
     private final ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor;
 
-    private final ConfigurationService configurationService;
+    private final TomcatProperties tomcatProperties;
+    private final ServerProperties serverProperties;
 
     private final WebProperties webProperties;
 
@@ -62,14 +65,17 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public WebConfig(ThemeVariableInterceptor themeVariableInterceptor,
             PopulateProposalModelInterceptor populateContextInterceptor,
             ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor,
-            ConfigurationService configurationService, WebProperties webProperties) {
-        Assert.notNull(configurationService, "ConfigurationService bean is required");
+            TomcatProperties tomcatProperties, ServerProperties serverProperties,
+            WebProperties webProperties) {
+        Assert.notNull(tomcatProperties, "TomcatProperties bean is required");
+        Assert.notNull(serverProperties, "ServerProperties bean is required");
         Assert.notNull(themeVariableInterceptor, "ThemeVariableInterceptor bean is required");
         Assert.notNull(populateContextInterceptor, "PopulateContextInterceptor bean is required");
         Assert.notNull(validateTabPermissionsInterceptor,
                 "ValidateTabPermissionsInterceptor bean is required");
         Assert.notNull(webProperties, "webProperties bean is required");
-        this.configurationService = configurationService;
+        this.tomcatProperties = tomcatProperties;
+        this.serverProperties = serverProperties;
         this.themeVariableInterceptor = themeVariableInterceptor;
         this.populateContextInterceptor = populateContextInterceptor;
         this.validateTabPermissionsInterceptor = validateTabPermissionsInterceptor;
@@ -119,7 +125,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public EmbeddedServletContainerCustomizer customizer() {
         return container -> {
-            if (configurationService.isUseForwardHeaders()) {
+            if (serverProperties.isUseForwardHeaders()) {
                 if (container instanceof TomcatEmbeddedServletContainerFactory) {
                     ((TomcatEmbeddedServletContainerFactory) container)
                             .addContextValves(new ForwardedHostValve());
@@ -153,11 +159,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                         context.getResources().getCacheMaxSize() / 1024);
             }
         };
-        if (configurationService.isTomcatAjpEnabled()) {
+        if (tomcatProperties.isTomcatAjpEnabled()) {
             final AjpConnector ajpConnector =
-                    new AjpConnector(configurationService.getTomcatAjpPort());
+                    new AjpConnector(tomcatProperties.getTomcatAjpPort());
             tomcat.addAdditionalTomcatConnectors(ajpConnector);
-            log.info("Configured AJP connector on port {}", configurationService.getTomcatAjpPort());
+            log.info("Configured AJP connector on port {}", tomcatProperties.getTomcatAjpPort());
         }
 
         return tomcat;

@@ -9,11 +9,6 @@ server:
   compression:
     enabled: true
 
-
-tomcat:
-  ajp:
-    enabled: true
-
 management:
   add-application-context-header: false
   context-path: /admin/management
