@@ -31,7 +31,7 @@ public final class EntityGroupingUtil {
             Map<Long, ContestType> contestIdToContestTypeMap = new HashMap<>();
             for (ContestType contestType : contestTypes) {
                 final List<Contest> contests = ContestClientUtil.getContestsByContestType(contestType.getId());
-                proposalsByContestType.put(contestType, new ArrayList<Proposal>());
+                proposalsByContestType.put(contestType, new ArrayList<>());
                 for (Contest contest : contests) {
                     contestIdToContestTypeMap.put(contest.getContestPK(), contestType);
                 }

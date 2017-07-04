@@ -18,6 +18,7 @@ public class I18nUtils {
 
     static {
         codeToLocale.put("en", "colab.languages.en");
+        codeToLocale.put("de", "colab.languages.de");
         codeToLocale.put("pt", "colab.languages.pt");
         codeToLocale.put("es", "colab.languages.es");
 
