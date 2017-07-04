@@ -113,7 +113,7 @@
                             <!--@elvariable id="role" type="org.xcolab.view.util.entity.enums.MemberRole"-->
 							<tr class="${status.index mod 2 == 0 ? 'odd' : 'even'}">
 								<td class="c-Comment__commentor">
-									<a id="_message_${message.commentId}"></a>
+									<a id="_message_${message.commentId}"><!-- empty --></a>
 									<collab:userPortrait screenName="${message.author.displayName}"
 														 portraitId="${message.author.portraitId}"
 														 userId="${message.author.userId}"

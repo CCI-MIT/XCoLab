@@ -114,8 +114,8 @@
     <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet" type="text/css" />
 
     <!-- TODO: use cdnjs -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
     <xcolab:stylesheet href="${_themeCssFolder}/main.css" />
 
     <!-- ============ PRIORITY SCRIPTS ============ -->
@@ -220,7 +220,6 @@
                 <a href="/"><img src="${_logoPath}" alt="${_colabName}" height="42" /></a>
             </div>
             <ul id="c-Header__menu" class="${_isHomePage ? 'backgroundLight' : ''}">
-                <!-- TODO: mark current page with class 'isCurrent' -->
                 <li class="${_activePageLink == 'about' ? 'isCurrent' : ''}"><a href="/page/about"><spring:message code="homepage.menu.about" /></a></li>
                 <c:forEach var="_contestPage" items="${_contestPages}">
                     <c:if test="${_contestPage.menuItemName != ''}">

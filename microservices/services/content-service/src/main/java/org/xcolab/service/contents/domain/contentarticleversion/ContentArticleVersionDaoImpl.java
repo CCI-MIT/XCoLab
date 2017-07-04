@@ -32,8 +32,8 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
 
     @Autowired
     public ContentArticleVersionDaoImpl(DSLContext dslContext, ContentFolderDao contentFolderDao) {
-        Assert.notNull(dslContext);
-        Assert.notNull(contentFolderDao);
+        Assert.notNull(dslContext, "DSLContext is required");
+        Assert.notNull(contentFolderDao, "ContentFolderDao is required");
         this.dslContext = dslContext;
         this.contentFolderDao = contentFolderDao;
     }
