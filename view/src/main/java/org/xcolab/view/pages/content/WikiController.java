@@ -36,7 +36,7 @@ public class WikiController {
         if (folderId > 0 && PermissionsClient.canAdminAll(member)) {
             final List<ContentArticleVersion> contentArticleVersions = ContentsClient
                     .getContentArticleVersions(0, Integer.MAX_VALUE, folderId, null, null,
-                            null);
+                            null, null);
             model.addAttribute("contentArticleVersions", contentArticleVersions);
         }
         return "content/wikiList";

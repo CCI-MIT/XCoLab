@@ -38,6 +38,7 @@ public class ContentEditorController extends BaseContentEditor{
             if(ConfigurationAttributeKey.IS_I18N_ACTIVE.get()) {
                 model.addAttribute("i18nOptions", I18nUtils.getSelectList());
             }
+            model.addAttribute("i18nActive", ConfigurationAttributeKey.IS_I18N_ACTIVE.get());
             return "contenteditor/editor";
         } else {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
@@ -118,7 +119,7 @@ public class ContentEditorController extends BaseContentEditor{
 
         JSONArray versions = new JSONArray();
         List<ContentArticleVersion> cavs = ContentsClient
-                .getContentArticleVersions(0,Integer.MAX_VALUE,null,articleId,null,null);
+                .getContentArticleVersions(0,Integer.MAX_VALUE,null,articleId,null,null, contentArticleVersion.getLang());
 
         JSONObject articleVersion;
         for(ContentArticleVersion cav: cavs){
@@ -211,13 +212,18 @@ public class ContentEditorController extends BaseContentEditor{
                                           @RequestParam(required = false) Long articleId,
                                           @RequestParam(required = false) String title,
                                           @RequestParam(required = false) Long folderId,
-                                          @RequestParam(required = false) String content
+                                          @RequestParam(required = false) String content,
+                                          @RequestParam(required = false) String lang
     ) throws IOException {
         long userId = MemberAuthUtil.getMemberId(request);
 
+        if(lang == null) {
+            lang = I18nUtils.DEFAULT_LOCALE.getLanguage();
+        }
         ContentArticleVersion contentArticleVersion = new ContentArticleVersion();
 
         contentArticleVersion.setContentArticleId(articleId);
+        contentArticleVersion.setLang(lang);
 
         contentArticleVersion.setAuthorId(userId);
         contentArticleVersion.setFolderId((folderId));

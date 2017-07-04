@@ -75,11 +75,12 @@ public class ContentsController {
             @RequestParam(required = false) Long contentArticleId,
             @RequestParam(required = false) Long contentArticleVersion,
             @RequestParam(required = false) String title,
+            @RequestParam(required = false) String lang,
             @RequestParam(required = false) String sort) {
         final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
                 sort);
         return contentArticleVersionDao.findByGiven(paginationHelper, contentArticleId, contentArticleVersion,
-                folderId, null, title);
+                folderId, null, title, lang);
     }
 
 

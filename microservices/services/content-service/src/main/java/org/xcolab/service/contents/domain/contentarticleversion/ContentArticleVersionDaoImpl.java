@@ -130,7 +130,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
     @Override
     public List<ContentArticleVersion> findByGiven(PaginationHelper paginationHelper,
         Long contentArticleId, Long contentArticleVersion, Long folderId, Long ancestorFolderId,
-        String title) {
+        String title, String lang) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTENT_ARTICLE_VERSION)
                 .getQuery();
@@ -152,6 +152,10 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
         }
         if (title != null) {
             query.addConditions(CONTENT_ARTICLE_VERSION.TITLE.eq(title));
+        }
+
+        if (lang != null) {
+            query.addConditions(CONTENT_ARTICLE_VERSION.LANG.eq(lang));
         }
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {

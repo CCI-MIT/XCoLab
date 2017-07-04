@@ -71,7 +71,7 @@ public final class ContentsClient {
 
     public static List<ContentArticleVersion> getContentArticleVersions(Integer startRecord,
             Integer limitRecord, Long folderId, Long contentArticleId,
-            Long contentArticleVersion, String title) {
+            Long contentArticleVersion, String title, String lang) {
         return contentArticleVersionResource.list()
                 .optionalQueryParam("startRecord", startRecord)
                 .optionalQueryParam("limitRecord", limitRecord)
@@ -79,6 +79,7 @@ public final class ContentsClient {
                 .optionalQueryParam("folderId", folderId)
                 .optionalQueryParam("contentArticleVersion", contentArticleVersion)
                 .optionalQueryParam("title", title)
+                .optionalQueryParam("lang", lang)
                 .optionalQueryParam("sort","-contentArticleVersion")
                 .withCache(CacheName.CONTENT)
                 .execute();

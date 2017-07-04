@@ -9,6 +9,7 @@ import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
+import org.xcolab.view.i18n.I18nUtils;
 
 import java.util.Locale;
 
@@ -34,8 +35,14 @@ public class LoadContentArticleTag extends BodyTagSupport {
 
                 final long version = contentArticle.getMaxVersionId();
             //public static ContentArticleVersion getByArticleVersionLanguage(Long contentArticleId, String language) {
-                final ContentArticleVersion contentArticleVersion = ContentsClient
+                 ContentArticleVersion contentArticleVersion = ContentsClient
                         .getByArticleVersionLanguage(contentArticle.getContentArticleId(), localeString);
+                 if(contentArticleVersion == null){
+                     contentArticleVersion = ContentsClient
+                             .getByArticleVersionLanguage(contentArticle.getContentArticleId(),
+                                     I18nUtils.DEFAULT_LOCALE.getLanguage());
+                 }
+
                 pageContext.setAttribute("contentArticle", contentArticle);
                 pageContext.setAttribute("contentArticleVersion", contentArticleVersion);
             } catch (ContentNotFoundException e) {

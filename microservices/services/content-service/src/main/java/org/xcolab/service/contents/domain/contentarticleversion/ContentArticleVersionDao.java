@@ -16,7 +16,7 @@ public interface ContentArticleVersionDao {
     ContentArticleVersion get(Long contentArticleId) throws NotFoundException;
 
     List<ContentArticleVersion> findByGiven(PaginationHelper paginationHelper, Long contentArticleId, Long contentArticleVersion,
-        Long folderId, Long ancestorFolderId, String title);
+        Long folderId, Long ancestorFolderId, String title, String lang);
 
     List<ContentArticleVersion> getByFolderId(Long contentFolderId);
 
