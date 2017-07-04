@@ -97,7 +97,8 @@ public class ContestNotification extends EmailNotification {
     }
 
     private String getOtherContestLink(String linkText) {
-        return String.format(LINK_FORMAT_STRING, baseUrl + "/web/guest/plans", linkText);
+        return String.format(LINK_FORMAT_STRING,
+                baseUrl + contest.getContestType().getContestBaseUrl(), linkText);
     }
 
     protected class ContestNotificationTemplate extends EmailNotificationTemplate {

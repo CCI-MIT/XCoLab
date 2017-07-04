@@ -99,7 +99,7 @@
         </script>
 
         <script id="impactSeriesAuthorTemplate" type="text/x-handlebars-template">
-            <a href="/web/guest/member/-/member/userId/{{author.userId}}">{{author.name}}</a>
+            <a href="/members/profile/{{author.userId}}">{{author.name}}</a>
         </script>
 
 

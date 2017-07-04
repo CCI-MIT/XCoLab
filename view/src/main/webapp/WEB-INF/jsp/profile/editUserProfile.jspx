@@ -235,7 +235,7 @@
 				</div>
 
 				<a class="c-Button__primary" href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();">Save</a>
-				<a class="c-Button__secondary" href="/web/guest/member/-/member/userId/${currentUserProfile.userId}">Cancel</a>
+				<a class="c-Button__secondary" href="/members/profile/${currentUserProfile.userId}">Cancel</a>
 			</div>
 		</div> <!-- /main -->
 

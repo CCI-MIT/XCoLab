@@ -193,7 +193,7 @@ function initUserAutocomplete(idPostfix, canEdit) {
                             htmlTemplate += '<span class="input">0.0</span>';
                         }
                         htmlTemplate +=
-                            '<a href="/web/guest/member/-/member/userId/'+ui.item.id+'">'
+                            '<a href="/members/profile/'+ui.item.id+'">'
                             +'<span class="userId">'
                             + ui.item.value +
                             '</a></span>';

@@ -40,7 +40,7 @@ function addVersionToTable(data, even){
     var dateObject = new Date(data.date); //read in as Date object
     var timeZoneIdentifier = String(String(dateObject).split("(")[1]).split(")")[0];  //get the timezone abbreviation
     var adjustedDateString = (dateObject.getMonth()+1)+"/"+dateObject.getDate()+"/"+dateObject.getFullYear()+" "+pad(dateObject.getHours(),2)+":"+pad(dateObject.getMinutes(),2)+" "+timeZoneIdentifier;
-    $('#versions').find('> div > div > table > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + (data.version == getVersion() ? ' ui-datatable-highlighted' : '') + '"><td style="width: 200px;"><a href="' + proposalUrl + '/version/' + data.version + '">' + /*dateTimeFormatter.dateTime(data.date)*/ adjustedDateString + '</a></td><td><em>by <a href="/web/guest/member/-/member/userId/'+ data.author.userId + '">' + data.author.screenName + '</a></em></td><td><em>in phase <a href="' + phaseUrl + '">' + data.contestPhase.name + '</a></em></td></tr>');
+    $('#versions').find('> div > div > table > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + (data.version == getVersion() ? ' ui-datatable-highlighted' : '') + '"><td style="width: 200px;"><a href="' + proposalUrl + '/version/' + data.version + '">' + /*dateTimeFormatter.dateTime(data.date)*/ adjustedDateString + '</a></td><td><em>by <a href="/members/profile/'+ data.author.userId + '">' + data.author.screenName + '</a></em></td><td><em>in phase <a href="' + phaseUrl + '">' + data.contestPhase.name + '</a></em></td></tr>');
 }
 
 function addPagination(prev,next,currentPage,totalPages){

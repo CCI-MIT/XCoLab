@@ -126,7 +126,7 @@ public class ContentArticle implements Serializable {
 
     @JsonIgnore
     public String getLinkUrl() {
-        return "/web/guest/wiki/-/wiki/page/" + title;
+        return "/wiki/" + title;
     }
 
     @JsonIgnore

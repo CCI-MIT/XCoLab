@@ -102,7 +102,7 @@ public class ContestResourcesBean implements Serializable {
     private static final String OVERVIEW_RULES_CONTENT =
             "All entrants must agree to the <rules-link/> and "
                     +
-                    "<a href=\"/web/guest/resources/-/wiki/Main/Terms+of+use\" target=\"_blank\">Terms of Use</a>";
+                    "<a href=\"/wiki/Terms+of+use\" target=\"_blank\">Terms of Use</a>";
 
 
     private final List<SectionDefinitionWrapper> baseSections;

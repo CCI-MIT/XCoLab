@@ -69,7 +69,7 @@ public class ActivitySubscriptionEmailHelper {
 
     private final static String USER_PROFILE_LINK_PLACEHOLDER = "USER_PROFILE_LINK";
 
-    private final static String USER_PROFILE_LINK_TEMPLATE = "DOMAIN_PLACEHOLDER/web/guest/member/-/member/userId/USER_ID";
+    private final static String USER_PROFILE_LINK_TEMPLATE = "DOMAIN_PLACEHOLDER/members/profile/USER_ID";
 
     private final static String USER_ID_PLACEHOLDER = "USER_ID";
 

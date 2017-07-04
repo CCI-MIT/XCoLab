@@ -30,7 +30,7 @@
                             </c:if>
                         </div>
                         <div class="question">
-                            <a href="/web/guest/resources/-/wiki/Main/contest+rules#Voting" target="_blank">
+                            <a href="${contestType.rulesPageUrl}#Voting" target="_blank">
                                 <img src="${_themeImageFolder}/icon-proposal-question.png" width="23" height="23" alt="Question?" />
                             </a>
                         </div>

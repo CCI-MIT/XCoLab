@@ -30,7 +30,7 @@ public class PageLinkWrapper {
 
 
     public String getLinkUrl() {
-        String url = "/web/guest/messaging/-/messaging";
+        String url = "/messaging";
         if (messageType != MessageType.INBOX) {
             url += "/mailbox/" + messageType.name();
         }

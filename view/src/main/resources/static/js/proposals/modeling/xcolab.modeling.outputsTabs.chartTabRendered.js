@@ -250,11 +250,11 @@ if (typeof(XCoLab.modeling) == 'undefined')
                     var emfModelsUnderChartMessage = "<tr class='emfModelsUnderChartMessage'><td colspan='" + columnCount + "'>" +
                         "Results shown for the following models. ";
                     if (isModelRegional) {
-                        emfModelsUnderChartMessage += "See <a href='/web/guest/resources/-/wiki/Main/Climate+CoLab+Regional+Modeling+Tools' target='_blank'>Climate CoLab Regional model runs for more details.</a></td></tr>";
+                        emfModelsUnderChartMessage += "See <a href='/wiki/Climate+CoLab+Regional+Modeling+Tools' target='_blank'>Climate CoLab Regional model runs for more details.</a></td></tr>";
                     } else if (isModelEMF) {
-                        emfModelsUnderChartMessage += "See <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs' target='_blank'>EMF27 model runs for more details.</a></td></tr>";
+                        emfModelsUnderChartMessage += "See <a href='/wiki/EMF27+model+runs' target='_blank'>EMF27 model runs for more details.</a></td></tr>";
                     } else if (isModelEnRoads) {
-                        emfModelsUnderChartMessage += "See <a href='/web/guest/resources/-/wiki/Main/EnROADS+by+Climate+Interactive' target='_blank'>Climate Interactive EnROADS model runs for more details.</a></td></tr>";
+                        emfModelsUnderChartMessage += "See <a href='/wiki/EnROADS+by+Climate+Interactive' target='_blank'>Climate Interactive EnROADS model runs for more details.</a></td></tr>";
                     } else {
                         emfModelsUnderChartMessage = "";
                     }

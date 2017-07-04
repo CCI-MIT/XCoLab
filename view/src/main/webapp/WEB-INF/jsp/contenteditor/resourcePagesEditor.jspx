@@ -191,8 +191,8 @@
 
             function updateArticleURL(folderName, articleTitle) {
                 if(folderName == "Wiki") {
-                    $("#articleURL").html("Article URL: <a id='anchorArticleURL' href='/web/guest/wiki/-/wiki/page/" + articleTitle +
-                            "'>~/web/guest/wiki/-/wiki/page/" + articleTitle + "</a>");
+                    $("#articleURL").html("Article URL: <a id='anchorArticleURL' href='/wiki/" + articleTitle +
+                            "'>~/wiki/" + articleTitle + "</a>");
                 } else {
                     $("#articleURL").html("");
                 }

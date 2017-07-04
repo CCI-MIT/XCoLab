@@ -13,7 +13,7 @@
 	<div class="c-Headline formmargin">
 		<div style="position: relative;">
 			<c:if test="${showContestManagementLink}">
-				<a href="/web/guest/cms/-/contestmanagement/manager/tab/OVERVIEW" target="_blank">Go to Contest Management Tool</a>
+				<a href="/admin/contest" target="_blank">Go to Contest Management Tool</a>
 			</c:if>
 		</div>
 		<div class="c-contest-title">

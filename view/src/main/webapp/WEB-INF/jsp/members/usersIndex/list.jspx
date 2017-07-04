@@ -27,7 +27,7 @@
 							 style="width: 15px; height: 15px;" src="${_themeImageFolder}/icon-addprop-question-bar.png" />
 						<span id="js-Tooltip__content__points" class="c-Tooltip">
 							CoLab Points are awarded to all the members who contributed to a winning integrated proposal, as well as those who contributed to any sub-proposals it contains.
-							<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
+							<a href="/wiki/Climate+CoLab+Points">(See more)</a>
 						</span>
 
 						<a class="js-Tooltip" title="click to sort by points" href="${sortURLPoints }"> Points</a>

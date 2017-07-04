@@ -104,7 +104,7 @@
 								<br />
 								<div style="display: none;" class="profilehelp">
 									${_colabShortName} Points are awarded to all the members who contributed to a winning integrated ${currentUserProfile.proposalString}, as well as those who contributed to any sub-${currentUserProfile.proposalsString} it contains.
-									<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
+									<a href="/wiki/Climate+CoLab+Points">(See more)</a>
 								</div>
 								<div class="clearfix"><!-- --></div>
 							</td>
@@ -126,7 +126,7 @@
 								<br />
 								<div style="display: none;" class="profilehelp">
 									The maximum number of ${_colabShortName} Points this member could receive. This is a measure of how many times the member’s ${currentUserProfile.proposalsString} have been included in other ${currentUserProfile.proposalsString} and how important it is in those ${currentUserProfile.proposalsString}.
-									<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
+									<a href="/wiki/Climate+CoLab+Points">(See more)</a>
 								</div>
 								<div class="clearfix"><!-- --></div>
 							</td>

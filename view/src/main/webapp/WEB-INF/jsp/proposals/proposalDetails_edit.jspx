@@ -226,7 +226,7 @@
         <div class="c-Popup__wrapper p1" id="c-Popup__accept__TOS">
             <div class="c-Popup">
                 <h4>By saving your ${fn:toLowerCase(contestType.proposalName)} you are entering the ${_colabName} ${contestType.contestName} and agree to the
-                    <a href="/web/guest/resources/-/wiki/Main/Terms+of+use" target="_blank">Terms of Use</a>
+                    <a href="/wiki/Terms+of+use" target="_blank">Terms of Use</a>
                     and <a href="${contestType.rulesPageUrl}">${contestType.rulesPageName}</a>.</h4>
 
                 <h5>${fn:toUpperCase(contestType.rulesPageName)}:</h5>

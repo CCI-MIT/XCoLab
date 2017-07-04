@@ -26,7 +26,7 @@ public class ContentSearchItem extends AbstractSearchItem {
     @Override
     public String getLinkUrl() {
         try {
-            return "/web/guest/resources/-/wiki/Main/" + URLEncoder.encode("", "UTF-8");
+            return "/wiki/" + URLEncoder.encode("", "UTF-8");
         } catch (UnsupportedEncodingException ignored) {
 
         }

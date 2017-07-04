@@ -25,7 +25,7 @@
 		</div>
 		<div class="c-Helpbox__text">
 			Anyone in the world can become a member of the ${_colabName}
-			community by&#160;<a href="/web/guest/loginregister">registering</a>
+			community by&#160;<a href="/register">registering</a>
 			on the site. Send a message to a member by clicking on the screen
 			name below to open their profile and then selecting "Send message."
 		</div>

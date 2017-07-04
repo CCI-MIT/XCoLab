@@ -100,7 +100,7 @@ public class ContentArticleVersion implements Serializable {
 
     @JsonIgnore
     public String getLinkUrl() {
-        return "/web/guest/wiki/-/wiki/page/" + title.replace(" ", "+");
+        return "/wiki/" + title.replace(" ", "+");
     }
 
     @Override
