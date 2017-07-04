@@ -17,3 +17,12 @@ create table admin_ContestTypeAttribute
 
 -- COLAB-2086
 ALTER TABLE xcolab_ContentPage ADD metaDescription VARCHAR(255) AFTER title;
+
+-- i18n changes for profile
+ALTER TABLE `members_Member`
+ADD COLUMN `defaultLocale` VARCHAR(45) NULL DEFAULT 'en' AFTER `reportKarma`;
+
+-- i18n changes for content article
+ALTER TABLE xcolab_ContentArticleVersion
+ADD COLUMN `lang` VARCHAR(4) NULL DEFAULT 'en' AFTER `content`;
+

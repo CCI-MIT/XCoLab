@@ -1,10 +1,7 @@
 package org.xcolab.view.tags;
 
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
