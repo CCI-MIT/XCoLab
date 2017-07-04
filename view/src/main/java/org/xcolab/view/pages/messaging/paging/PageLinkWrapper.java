@@ -35,7 +35,7 @@ public class PageLinkWrapper {
             url += "/mailbox/" + messageType.name();
         }
         if (page > 1) {
-            url += "/page/" + page;
+            url += "?pageNumber=" + page;
         }
         return url;
     }
