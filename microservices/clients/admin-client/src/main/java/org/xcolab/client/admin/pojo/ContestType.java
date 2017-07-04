@@ -7,6 +7,7 @@ import org.xcolab.util.attributes.i18n.LocalizableAttributeGetter;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.xcolab.util.attributes.i18n.LocalizableAttributeGetter.*;
 
@@ -149,4 +150,22 @@ public class ContestType implements Serializable {
     public boolean isActive() {
         return getAttribute(ContestTypeAttributeKey.IS_ACTIVE);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ContestType)) {
+            return false;
+        }
+        ContestType that = (ContestType) o;
+        return getId() == that.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
+
 }
