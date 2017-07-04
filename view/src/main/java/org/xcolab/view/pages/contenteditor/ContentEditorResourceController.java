@@ -62,7 +62,7 @@ public class ContentEditorResourceController extends BaseContentEditor {
 
         JSONArray versions = new JSONArray();
         List<ContentArticleVersion> cavs = ContentsClient
-                .getContentArticleVersions(0,Integer.MAX_VALUE,null,articleId,null,null);
+                .getContentArticleVersions(0,Integer.MAX_VALUE,null,articleId,null,null, null);
 
         JSONObject articleVersion;
         for(ContentArticleVersion cav: cavs){

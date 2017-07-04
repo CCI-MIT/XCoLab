@@ -175,7 +175,7 @@ public class ContentsControllerTest {
                 .andExpect(status().isOk());
 
         Mockito.verify(contentArticleVersionDao,Mockito.times(1)).findByGiven(Mockito.anyObject()
-        ,Mockito.anyLong(),Mockito.anyLong(),Mockito.anyLong(),Mockito.anyLong(),Mockito.anyString());
+        ,Mockito.anyLong(),Mockito.anyLong(),Mockito.anyLong(),Mockito.anyLong(),Mockito.anyString(), Mockito.anyString());
     }
 
     @Test

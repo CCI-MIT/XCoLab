@@ -1,8 +1,10 @@
 package org.xcolab.service.contents.domain.contentarticleversion;
 
 import org.jooq.DSLContext;
+import org.jooq.Query;
 import org.jooq.Record;
 import org.jooq.SelectQuery;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -45,6 +47,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                 .set(CONTENT_ARTICLE_VERSION.FOLDER_ID, contentArticleVersion.getFolderId())
                 .set(CONTENT_ARTICLE_VERSION.CONTENT, contentArticleVersion.getContent())
                 .set(CONTENT_ARTICLE_VERSION.TITLE, contentArticleVersion.getTitle())
+                .set(CONTENT_ARTICLE_VERSION.LANG, contentArticleVersion.getLang())
                 .returning(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID)
                 .fetchOne();
 
@@ -109,11 +112,25 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                     .into(ContentArticleVersion.class);
         }
     }
+    public ContentArticleVersion getByArticleVersionLanguage(Long articleId, String language) throws NotFoundException {
+
+        final Record record = this.dslContext.select()
+                .from(CONTENT_ARTICLE_VERSION)
+                .where(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID.eq(articleId))
+                .and(CONTENT_ARTICLE_VERSION.LANG.eq(language))
+                .orderBy(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.desc())
+                .limit(0,1)
+                .fetchOne();
+        if (record == null) {
+            throw new NotFoundException();
+        }
+        return record.into(ContentArticleVersion.class);
+    }
 
     @Override
     public List<ContentArticleVersion> findByGiven(PaginationHelper paginationHelper,
         Long contentArticleId, Long contentArticleVersion, Long folderId, Long ancestorFolderId,
-        String title) {
+        String title, String lang) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTENT_ARTICLE_VERSION)
                 .getQuery();
@@ -135,6 +152,10 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
         }
         if (title != null) {
             query.addConditions(CONTENT_ARTICLE_VERSION.TITLE.eq(title));
+        }
+
+        if (lang != null) {
+            query.addConditions(CONTENT_ARTICLE_VERSION.LANG.eq(lang));
         }
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {

@@ -50,11 +50,11 @@ public class ContentArticleServiceTest {
     public void shouldDeleteContentArticleAndContentArticleVersions() throws Exception {
 
         Long contentArticleId = 02l;
-        int totalOfContentArticleVersions = contentArticleVersionDao.findByGiven(new PaginationHelper(0,10,null),contentArticleId,null,null,null,null).size();
+        int totalOfContentArticleVersions = contentArticleVersionDao.findByGiven(new PaginationHelper(0,10,null),contentArticleId,null,null,null,null,null).size();
         int ret = contentArticleService.delete(contentArticleId);
 
         assertTrue(ret > 0);
-        int totalAfterDelete = contentArticleVersionDao.findByGiven(new PaginationHelper(0,10,null),2l,null,null,null,null).size();
+        int totalAfterDelete = contentArticleVersionDao.findByGiven(new PaginationHelper(0,10,null),2l,null,null,null,null,null).size();
         assertEquals(totalAfterDelete,0);
         assertNotEquals(totalOfContentArticleVersions,totalAfterDelete);
         exception.expect(NotFoundException.class);

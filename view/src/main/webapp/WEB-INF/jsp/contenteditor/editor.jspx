@@ -1,6 +1,7 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:spring="http://www.springframework.org/tags"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           version="2.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -25,7 +26,12 @@
             #saveArticle{cursor:pointer}
             #articleURL{overflow:hidden}
             #anchorArticleURL{display: block; width:0; white-space: nowrap;}
-
+            /*.selectedI18nTab{
+                background-color: red;
+            }*/
+            .i18nOptions{
+                cursor:pointer;
+            }
             #articleVersions span:hover {
                 text-decoration:none;
                 cursor:pointer;
@@ -45,8 +51,32 @@
                 color:blue;
                 text-decoration:underline;
             }
-
-
+            .i18nOptions span {
+                display: inline-block;
+                padding-top: 3px;
+                padding-right: 5px;
+                padding-left: 5px;
+                padding-bottom: 3px;
+                font-size: 12px;
+                background: #30a3fb;
+                color: #fff;
+                text-transform: uppercase;
+                font-weight: 500;
+                -moz-border-radius-topleft: 5px;
+                -webkit-border-top-left-radius: 5px;
+                border-top-left-radius: 5px;
+                -moz-border-radius-topright: 5px;
+                -webkit-border-top-right-radius: 5px;
+                border-top-right-radius: 5px;
+                -moz-box-sizing: content-box;
+                -webkit-box-sizing: content-box;
+                box-sizing: content-box;
+            }
+            .selectedI18nTab span {
+                color: #30a3fb;
+                background: white;
+                box-shadow: none;
+            }
         </style>
         <xcolab:stylesheet href="${_libCssFolder}/jquery.loadmask.spin.css" />
 
@@ -202,7 +232,7 @@
                             if(node.kind == "article"){
                                 $("#article-view").unmask();
                                 $("#article-view").mask();
-                                loadArticleVersionContent(node.id, getFullTreePath(node.parent));
+                                loadArticleVersionContent(node.id, getFullTreePath(node.parent),"en");
                             }else{
                                 /*
                                 event.preventDefault();
@@ -263,6 +293,14 @@
                     $("#previewArticleForm").submit();
                 });
 
+                $(".i18nOptions span").click(function (event){
+
+
+                    var enc = ($(event.target).parent().prop("id")).replace("changeToVersion_","");
+                    //console.log(" Enc found: - "+enc);
+
+                    loadArticleVersionContent(parseInt($('#contentArticleId').val())+ parseInt(THRESHOLD_TO_AVOID_NODE_COLISION),"", enc)
+                });
 
             });
             function addVersionEntry(dateOfEdit, versionId){
@@ -302,7 +340,7 @@
                 n = n + '';
                 return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
             }
-            function loadArticleVersionContent(id, folderName){
+            function loadArticleVersionContent(id, folderName, lang){
                 var id = (parseInt(id) - parseInt(THRESHOLD_TO_AVOID_NODE_COLISION));
 
                 $("#folderName").html("Parent folder: " +folderName);
@@ -310,27 +348,34 @@
                 var url = getArticleVersionURL;
 
                 var parameters={articleId : id};
+                if(lang) {
+                    parameters = {articleId: id, encoding: lang};
+                }
 
                 $.get(url ,parameters ,loadContentArticleResponse);
 
             }
 
 
-            function loadArticleVersionContentId(id){
+
+            function loadArticleVersionContentId(id, lang){
 
                 var url = getArticleVersionIdURL;
 
-                var parameters={articleVersionId : id};
+                var parameters = {articleVersionId: id};
 
                 $.get(url ,parameters ,loadContentArticleResponse);
 
             }
+
             function formatDate(ctd){
                 var dateObject = new Date(ctd); //read in as Date object
                 var timeZoneIdentifier = String(String(dateObject).split("(")[1]).split(")")[0];  //get the timezone abbreviation
                 return(dateObject.getMonth()+1)+"/"+dateObject.getDate()+"/"+dateObject.getFullYear()+" "+pad(dateObject.getHours(),2)+":"+pad(dateObject.getMinutes(),2)+" "+timeZoneIdentifier;
 
             }
+
+
 
             function loadContentArticleResponse(response) {
                 var responseData = JSON.parse(response);
@@ -343,6 +388,13 @@
 
                 var input = $('#contentArticleId');
                 input.attr("value",id);
+
+                //set the right tab
+                $(".i18nOptions").removeClass("selectedI18nTab");
+                $("#changeToVersion_"+data.lang).addClass("selectedI18nTab");
+
+                $("#lang").val(data.lang);
+
 
                 $('#contentArticleFolderId').attr("value",data.folderId);
                 var input1 = $('#contentArticleTitle');
@@ -395,8 +447,10 @@
                 var title = $('#contentArticleTitle').val();
                 var folderId =$('#contentArticleFolderId').val();
                 var content = ckEditor.getData();
+                var lang = $("#lang").val();
+
                 var parameters={articleId : articleId, title: title, folderId: folderId
-                ,content: content};
+                ,content: content, lang:lang};
 
                 $.post(url ,parameters , function (response) {
                     var responseData = JSON.parse(response);
@@ -408,7 +462,7 @@
                     $('#tree-view').tree('reload');
                     var folderName = $("#folderName").html().replace("Parent folder: ","");
                     var id = (parseInt(data.articleVersionId) + parseInt(THRESHOLD_TO_AVOID_NODE_COLISION));
-                    loadArticleVersionContent(id, folderName);
+                    loadArticleVersionContent(id, folderName,lang);
 
 
                 });
@@ -483,11 +537,24 @@
                                     <!-- FORM FIELDS -->
                                     <input type="hidden" id="contentArticleId"/>
                                     <input type="hidden" id="contentArticleFolderId"/>
+                                    <input type="hidden" id="lang"/>
                                     Article title: <input type="text" id="contentArticleTitle"  maxcharacters="300"  />
                                 </div>
                                 <div id="folderName">Parent folder: <!-- --></div>
                                 <div id="createdAtDate"><!-- --></div>
-                                <br/>
+                               <c:if test="${i18nActive}">
+                                    <div>
+                                        <ul class="c-TabBar clearfix">
+
+                                            <c:forEach var="lang" items="${i18nOptions}">
+                                                <li class="c-TabBar__tab i18nOptions" id="changeToVersion_${lang['value']}">
+                                                   <span><spring:message code="${lang['lable']}"/></span>
+                                                </li>
+                                            </c:forEach>
+
+                                        </ul>
+                                    </div>
+                               </c:if>
                                 <div>
                                 <textarea id="articleVersionContent" name="articleVersionContent" rows = "10" cols="80"><!-- --></textarea>
                                 </div>

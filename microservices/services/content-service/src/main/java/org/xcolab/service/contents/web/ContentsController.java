@@ -75,11 +75,12 @@ public class ContentsController {
             @RequestParam(required = false) Long contentArticleId,
             @RequestParam(required = false) Long contentArticleVersion,
             @RequestParam(required = false) String title,
+            @RequestParam(required = false) String lang,
             @RequestParam(required = false) String sort) {
         final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
                 sort);
         return contentArticleVersionDao.findByGiven(paginationHelper, contentArticleId, contentArticleVersion,
-                folderId, null, title);
+                folderId, null, title, lang);
     }
 
 
@@ -165,6 +166,19 @@ public class ContentsController {
         }
     }
 
+    @RequestMapping(value = "/contentArticleVersions/getByArticleVersionLanguage", method = RequestMethod.GET)
+    public ContentArticleVersion getByArticleVersionLanguage(
+            @RequestParam("contentArticleId") Long contentArticleId,
+            @RequestParam("language") String language) throws NotFoundException {
+        if (contentArticleId == 0) {
+            contentArticleId = null;
+        }
+        if(language.isEmpty()){
+            language = "en";
+        }
+        return this.contentArticleVersionDao.getByArticleVersionLanguage(contentArticleId,language);
+
+    }
     @RequestMapping(value = "/contentArticleVersions/{articleVersionId}", method = RequestMethod.PUT)
     public boolean updateContentArticleVersion(
             @RequestBody ContentArticleVersion contentArticleVersion,
@@ -203,6 +217,8 @@ public class ContentsController {
         return this.contentArticleVersionDao.getByFolderId(contentFolderId);
 
     }
+
+
 
     @RequestMapping(value = "/contentFolders/{contentFolderId}", method = RequestMethod.PUT)
     public boolean updateContentFolder(@RequestBody ContentFolder contentFolder,
