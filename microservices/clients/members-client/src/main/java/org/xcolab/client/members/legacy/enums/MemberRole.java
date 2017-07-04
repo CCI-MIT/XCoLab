@@ -1,6 +1,6 @@
 package org.xcolab.client.members.legacy.enums;
 
-import org.apache.commons.lang3.text.WordUtils;
+import org.apache.commons.text.WordUtils;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.MemberCategory;
