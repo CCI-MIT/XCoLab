@@ -31,12 +31,12 @@ public class LoadContentArticleTag extends BodyTagSupport {
                 }
 
                 final long version = contentArticle.getMaxVersionId();
-            //public static ContentArticleVersion getByArticleVersionLanguage(Long contentArticleId, String language) {
+            //public static ContentArticleVersion getLatestVersionByArticleIdAndLanguage(Long contentArticleId, String language) {
                  ContentArticleVersion contentArticleVersion = ContentsClient
-                        .getByArticleVersionLanguage(contentArticle.getContentArticleId(), localeString);
-                 if(contentArticleVersion == null){
+                        .getLatestVersionByArticleIdAndLanguage(contentArticle.getContentArticleId(), localeString);
+                 if (contentArticleVersion == null) {
                      contentArticleVersion = ContentsClient
-                             .getByArticleVersionLanguage(contentArticle.getContentArticleId(),
+                             .getLatestVersionByArticleIdAndLanguage(contentArticle.getContentArticleId(),
                                      I18nUtils.DEFAULT_LOCALE.getLanguage());
                  }
 

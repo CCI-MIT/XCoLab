@@ -88,10 +88,10 @@ public class ContentEditorController extends BaseContentEditor{
         if(encoding==null||encoding.isEmpty()){
             encoding = defaultEncoding;
         }
-        ContentArticleVersion contentArticleVersion = ContentsClient.getByArticleVersionLanguage(articleId,encoding);
+        ContentArticleVersion contentArticleVersion = ContentsClient.getLatestVersionByArticleIdAndLanguage(articleId,encoding);
         if(contentArticleVersion == null){
             //if there is no content for the encoding passed, get the default from the database
-            contentArticleVersion = ContentsClient.getByArticleVersionLanguage(articleId,defaultEncoding);
+            contentArticleVersion = ContentsClient.getLatestVersionByArticleIdAndLanguage(articleId,defaultEncoding);
             contentArticleVersion.setContentArticleVersionId(0l);
             contentArticleVersion.setLang(encoding);
         }

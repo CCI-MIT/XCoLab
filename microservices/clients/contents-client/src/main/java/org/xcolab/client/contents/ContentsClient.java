@@ -228,29 +228,25 @@ public final class ContentsClient {
 
     public static ContentPage getContentPageByContentArticleId(Long contentArticleId) {
         try {
-            final ContentPage page = contentPageResource
+            return contentPageResource
                     .service("getByContentArticleId", ContentPage.TYPES.getEntityType())
                     .queryParam("contentArticleId", contentArticleId).getChecked();
-            return page;
-        }catch (EntityNotFoundException enfe){
-
+        } catch (EntityNotFoundException enfe) {
+            return null;
         }
-        return null;
     }
 
-    public static ContentArticleVersion getByArticleVersionLanguage(Long contentArticleId, String language) {
-        try {
-            final ContentArticleVersion contentArticleVersion = contentArticleVersionResource
-                    .service("getByArticleVersionLanguage", ContentArticleVersion.TYPES.getEntityType())
-                    .queryParam("contentArticleId", contentArticleId)
-                    .queryParam("language", language)
-                    .getChecked();
-            return contentArticleVersion;
-        }catch (EntityNotFoundException enfe){
+    public static ContentArticleVersion getLatestVersionByArticleIdAndLanguage(
+            long contentArticleId, String language) {
 
-        }
-        return null;
+        return contentArticleVersionResource.list()
+                .queryParam("contentArticleId", contentArticleId)
+                .optionalQueryParam("lang", language)
+                .queryParam("sort", "-contentArticleVersion")
+                .executeWithResult()
+                .getFirstIfExists();
     }
+
     public static List<ContentPage> getContentPages(String title) {
         final List<ContentPage> page = contentPageResource.list()
                 .queryParam("title", title)
