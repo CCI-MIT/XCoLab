@@ -17,8 +17,10 @@ public class I18nBeanConfig {
     @Bean
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasenames("i18n/homepage",
-                "i18n/register");
+        messageSource.setBasenames(
+                "i18n/homepage",
+                "i18n/register",
+                "i18n/contests");
         messageSource.setDefaultEncoding("utf-8");
         return messageSource;
     }
