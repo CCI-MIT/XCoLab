@@ -28,10 +28,11 @@ public abstract class WidgetPreference {
         if (prefs.has(PREFERENCES_JSON_OBJECT)) {
 
             JSONObject preferencesArray = prefs.getJSONObject(PREFERENCES_JSON_OBJECT);
+            //preferencesArray.keySet().stream().forEach(s -> allPreferenceIds.add(s));
+            allPreferenceIds.addAll(preferencesArray.keySet());
 
             if (id != null) {
                 preferenceId = id;
-                allPreferenceIds.addAll(preferencesArray.keySet());
             } else {
                 preferenceId = DEFAULT_ID;
                 allPreferenceIds.add(DEFAULT_ID);
