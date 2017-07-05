@@ -3,9 +3,17 @@ body {
   font-size: 15px;
 }
 
-.inner, #content, #c-Footer__menu ul {
+.inner, #content, #c-Footer__menu__left {
   width: 984px;
   margin: 0 auto;
+}
+
+#c-Footer__menu__right { //#menu-right
+  float: right;
+  min-width: 300px;
+  height: 44px;
+  position: relative;
+  padding-top: 7px;
 }
 
 .inner:after {

@@ -3,6 +3,7 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:spring="http://www.springframework.org/tags"
+          xmlns:addthis="http://www.addthis.com/help/api-spec"
           version="2.0">
     <jsp:directive.attribute name="title" type="java.lang.String" required="false" rtexprvalue="true" description="Page title" />
     <jsp:directive.attribute name="description" type="java.lang.String" required="false" rtexprvalue="true" description="Page description for meta tag" />
@@ -364,7 +365,7 @@
     <!-- Footer -->
     <div id="c-Footer">
         <div id="c-Footer__menu">
-            <ul>
+            <ul id="c-Footer__menu__left">
                 <li><a href="/feedback"><spring:message code="homepage.bottom.menu.contact" /></a></li>
                 <li><a href="/wiki/Help"><spring:message code="homepage.bottom.menu.help"/></a></li>
                 <c:choose>
@@ -377,6 +378,12 @@
                         <li><a href="javascript:return false;" onclick="deferUntilLogin();"><spring:message code="homepage.bottom.menu.signin"/></a></li>
                     </c:otherwise>
                 </c:choose>
+            </ul>
+            <ul id="c-Footer__menu__right" class="addthis_toolbox addthis_default_style addthis_32x32_style">
+                <a class="addthis_button_facebook" id="addThisButton1" addthis:title="" addthis:description=""><!--  --></a>
+                <a class="addthis_button_twitter" id="addThisButton2" addthis:title="" addthis:description=""><!--  --></a>
+                <a class="addthis_button_email" id="addThisButton3" addthis:title="" addthis:description=""><!--  --></a>
+                <a class="addthis_button_linkedin" id="addThisButton4" addthis:title="" addthis:description=""><!--  --></a>
             </ul>
         </div> <!-- #c-Footer__menu -->
 
