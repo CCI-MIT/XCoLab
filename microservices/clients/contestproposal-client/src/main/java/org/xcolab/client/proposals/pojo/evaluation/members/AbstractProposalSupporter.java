@@ -101,13 +101,8 @@ class AbstractProposalSupporter implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("ProposalSupporter (");
+        String sb = "ProposalSupporter (" + proposalid + ", " + userid + ", " + createdate + ")";
 
-        sb.append(proposalid);
-        sb.append(", ").append(userid);
-        sb.append(", ").append(createdate);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

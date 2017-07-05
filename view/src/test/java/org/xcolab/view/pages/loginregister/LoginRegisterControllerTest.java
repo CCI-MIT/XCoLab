@@ -4,8 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -149,20 +147,13 @@ public class LoginRegisterControllerTest {
                 .param("shortBio", "shortbio"))
                 .andExpect(redirectedUrl("/"));
         PowerMockito.verifyStatic(Mockito.times(1));
-        MembersClient.login(100l,"username","127.0.0.1",null);
+        MembersClient.login(100L,"username","127.0.0.1",null);
 
     }
     @Test
     public void generateScreenName() throws Exception {
         Mockito.when(MembersClient.generateScreenName(anyString(),anyString()))
-                .thenAnswer(new Answer<String>() {
-                    @Override
-                    public String answer(InvocationOnMock invocation)
-                            throws Throwable {
-
-                        return "---";
-                    }
-                });
+                .thenAnswer(invocation -> "---");
 
 
         this.mockMvc.perform(post("/api/register/generateScreenName")

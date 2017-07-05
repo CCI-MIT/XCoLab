@@ -98,7 +98,6 @@ public class ContestsIndexController extends BaseProposalsController {
         List<Contest> priorContests = ContestClientUtil.getContestsByActivePrivateType(false, false,
                 contestType.getId());
 
-        boolean showOnlyFeatured = false;
         List<Contest> contests = new ArrayList<>();
 
         /*--------------------------------*/
@@ -118,6 +117,7 @@ public class ContestsIndexController extends BaseProposalsController {
 
             Long ontologyTermToLoad;
             boolean showCollectionCards=true;
+            boolean showOnlyFeatured = false;
             if(sortFilterPage != null && sortFilterPage.getFilter() != null && !sortFilterPage.getFilter().isEmpty()) { //if search function was used
                 ontologyTermToLoad = null;
                 currentCollectionCardId = BY_TOPIC_COLLECTION_CARD_ID;
@@ -226,18 +226,18 @@ public class ContestsIndexController extends BaseProposalsController {
         	List<FocusArea> focusAreasRaw = OntologyClientUtil.getAllFocusAreas();
         	List<FocusAreaOntologyTerm> focusAreasOntologyTermsRaw = OntologyClientUtil.getAllFocusAreaOntologyTerms();
         	Map<Long, FocusArea> focusAreas = new TreeMap<>();
-        	Map<Long, OntologySpace> ontologySpaces = new HashMap<>();
-        	Map<Long, OntologyTerm> ontologyTerms = new TreeMap<>();
-        	
-        	for (FocusArea area: focusAreasRaw) {
+
+            for (FocusArea area: focusAreasRaw) {
         		focusAreas.put(area.getId_(), new FocusArea(area));
         	}
-        	
-        	for (OntologySpace space: ontologySpacesRaw) {
+
+            Map<Long, OntologySpace> ontologySpaces = new HashMap<>();
+            for (OntologySpace space: ontologySpacesRaw) {
         		ontologySpaces.put(space.getId_(), new OntologySpace(space));
         	}
-        	
-        	for (OntologyTerm term: ontologyTermsRaw) {
+
+            Map<Long, OntologyTerm> ontologyTerms = new TreeMap<>();
+            for (OntologyTerm term: ontologyTermsRaw) {
         		OntologyTerm termWrapped = new OntologyTerm(term);
         		ontologySpaces.get(term.getOntologySpaceId()).addTerm(termWrapped);
         		ontologyTerms.put(term.getId_(), termWrapped);

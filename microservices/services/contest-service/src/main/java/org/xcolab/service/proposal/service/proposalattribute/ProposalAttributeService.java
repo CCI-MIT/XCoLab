@@ -104,8 +104,8 @@ public class ProposalAttributeService {
 
     private static String getProposalNameFromOldTitle(String oldTitle) {
         if (oldTitle != null) {
-            String threadTokens[] = oldTitle.split(" ");
-            if (threadTokens != null && threadTokens.length > 1) {
+            String[] threadTokens = oldTitle.split(" ");
+            if (threadTokens.length > 1) {
                 return threadTokens[0];
             }
         }
@@ -122,7 +122,7 @@ public class ProposalAttributeService {
 
     private static Long zeroIfNull(Long val) {
         if (val == null) {
-            return 0l;
+            return 0L;
         } else {
             return val;
         }

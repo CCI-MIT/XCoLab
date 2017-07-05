@@ -8,14 +8,16 @@ public abstract class BasePageChecker implements PageChecker {
 	protected SiteMonitor monitor;
 
 
-	public void configure(String configuration, String message, SiteMonitor monitor) {
+	@Override
+    public void configure(String configuration, String message, SiteMonitor monitor) {
 		this.message = message;
 		this.monitor = monitor;
 		configure(configuration);
 
 	}
 
-	public String getMessage() {
+	@Override
+    public String getMessage() {
 		return message;
 	}
 

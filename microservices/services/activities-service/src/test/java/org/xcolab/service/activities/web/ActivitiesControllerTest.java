@@ -7,8 +7,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -26,7 +24,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
 import org.xcolab.service.activities.activityentry.member.MemberJoinedActivityEntry;
-import org.xcolab.service.activities.activityentry.provider.ActivityEntryContentProvider;
 import org.xcolab.service.activities.domain.activityEntry.ActivityEntryDao;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
 import org.xcolab.service.activities.enums.ActivityProvidersImpl;
@@ -101,40 +98,20 @@ public class ActivitiesControllerTest {
     })
 
     @Before
-    public void before(){
+    public void before() {
 
         PowerMockito.mockStatic(ActivityProvidersImpl.class);
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
-
         MemberJoinedActivityEntry mjae = Mockito.mock(MemberJoinedActivityEntry.class);
         Mockito.when(ActivityProvidersImpl.getActivityEntryContentProviderByType(anyInt()))
-            .thenAnswer(new Answer<ActivityEntryContentProvider>() {
-                @Override
-                public ActivityEntryContentProvider answer(InvocationOnMock invocation)
-                    throws Throwable {
-                    return mjae;
-                }
-            });
+            .thenAnswer(invocation -> mjae);
 
         Mockito.when(activityEntryDao.create(anyObject()))
-            .thenAnswer(new Answer<ActivityEntry>() {
-                @Override
-                public ActivityEntry answer(InvocationOnMock invocation)
-                    throws Throwable {
-                    return new ActivityEntry();
-                }
-            });
+            .thenAnswer(invocation -> new ActivityEntry());
 
         Mockito.when(activitySubscriptionDao.get(anyLong()))
-            .thenAnswer(new Answer<Optional<ActivitySubscription>>() {
-                @Override
-                public Optional<ActivitySubscription> answer(InvocationOnMock invocation)
-                    throws Throwable {
-                    return Optional.of(new ActivitySubscription());
-                }
-            });
-
+            .thenAnswer(invocation -> Optional.of(new ActivitySubscription()));
     }
 
     @Test
@@ -157,7 +134,7 @@ public class ActivitiesControllerTest {
             get("/activityEntries/1234")
                 .contentType(contentType).accept(contentType))
             .andExpect(status().isOk());
-        Mockito.verify(activityEntryDao,Mockito.times(1)).get(1234l);
+        Mockito.verify(activityEntryDao,Mockito.times(1)).get(1234L);
     }
 
     @Test

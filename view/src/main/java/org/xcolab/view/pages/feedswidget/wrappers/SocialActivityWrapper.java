@@ -133,7 +133,7 @@ public class SocialActivityWrapper implements Serializable {
 
         private final String[] classes;
         private final String displayName;
-        private final static Map<String, ActivityType> activityMap = new HashMap<String, ActivityType>();
+        private final static Map<String, ActivityType> activityMap = new HashMap<>();
         private final static ActivityType defaultType = COMMENT;
 
         static {

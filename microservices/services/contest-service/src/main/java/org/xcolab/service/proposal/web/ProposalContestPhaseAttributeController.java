@@ -44,7 +44,7 @@ public class ProposalContestPhaseAttributeController {
     @RequestMapping(value = "/proposalContestPhaseAttributes", method = RequestMethod.POST)
     public ProposalContestPhaseAttribute createProposalContestPhaseAttribute(@RequestBody ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
         if(proposalContestPhaseAttribute.getAdditionalId() == null){
-            proposalContestPhaseAttribute.setAdditionalId(0l);
+            proposalContestPhaseAttribute.setAdditionalId(0L);
         }
         if(proposalContestPhaseAttribute.getStringValue() == null){
             proposalContestPhaseAttribute.setStringValue("");
@@ -53,7 +53,7 @@ public class ProposalContestPhaseAttributeController {
             proposalContestPhaseAttribute.setRealValue(0.0);
         }
         if(proposalContestPhaseAttribute.getNumericValue() == null){
-            proposalContestPhaseAttribute.setNumericValue(0l);
+            proposalContestPhaseAttribute.setNumericValue(0L);
         }
         return this.proposalContestPhaseAttributeDao.create(proposalContestPhaseAttribute);
     }

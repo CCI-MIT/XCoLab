@@ -16,9 +16,14 @@ import static org.xcolab.model.Tables.POINT_TYPE;
 @Repository
 public class PointTypeDaoImpl implements PointTypeDao {
 
-    @Autowired
-    private DSLContext dslContext;
+    private final DSLContext dslContext;
 
+    @Autowired
+    public PointTypeDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
+
+    @Override
     public PointType create(PointType pointType) {
 
         PointTypeRecord ret = this.dslContext.insertInto(POINT_TYPE)
@@ -40,6 +45,7 @@ public class PointTypeDaoImpl implements PointTypeDao {
 
     }
 
+    @Override
     public PointType get(Long id_) throws NotFoundException {
 
         final Record record =  this.dslContext.selectFrom(POINT_TYPE)
@@ -53,6 +59,7 @@ public class PointTypeDaoImpl implements PointTypeDao {
 
     }
 
+    @Override
     public boolean update(PointType pointType) {
         return dslContext.update(POINT_TYPE)
                 .set(POINT_TYPE.ID_, pointType.getId_())

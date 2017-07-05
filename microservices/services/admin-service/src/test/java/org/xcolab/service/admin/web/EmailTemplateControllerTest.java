@@ -7,8 +7,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +21,13 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import org.xcolab.model.tables.pojos.ConfigurationAttribute;
 import org.xcolab.model.tables.pojos.ContestEmailTemplate;
 import org.xcolab.service.admin.AdminTestUtils;
-import org.xcolab.service.admin.domain.configurationattribute.ConfigurationAttributeDaoImpl;
 import org.xcolab.service.admin.domain.emailtemplate.EmailTemplateDao;
-import org.xcolab.service.admin.domain.emailtemplate.EmailTemplateDaoImpl;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.Optional;
 
-import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
@@ -78,7 +71,7 @@ public class EmailTemplateControllerTest {
     private EmailTemplateController controller;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
 
@@ -88,18 +81,12 @@ public class EmailTemplateControllerTest {
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
         Mockito.when(emailTemplateDao.getEmailTemplate(anyString()))
-            .thenAnswer(new Answer<ContestEmailTemplate>() {
-                @Override
-                public ContestEmailTemplate answer(InvocationOnMock invocation)
-                    throws Throwable {
-                        return AdminTestUtils.getContestEmailTemplate();
-                }
-            });
+            .thenAnswer(invocation -> AdminTestUtils.getContestEmailTemplate());
     }
     @Autowired
     void setConverters(HttpMessageConverter<?>[] converters) {
 
-        this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream()
+        this.mappingJackson2HttpMessageConverter = Arrays.stream(converters)
             .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
             .findAny()
             .orElse(null);

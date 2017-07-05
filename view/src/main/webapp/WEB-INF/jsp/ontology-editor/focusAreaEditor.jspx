@@ -23,7 +23,7 @@
             #tree-view{width:450px}
             #saveArticle{cursor:pointer}
             #articleURL{overflow:hidden}
-            #anchorArticleURL{display: block; width:0px; white-space: nowrap;}
+            #anchorArticleURL{display: block; width:0; white-space: nowrap;}
         </style>
         <xcolab:stylesheet href="${_libCssFolder}/jquery.loadmask.spin.css" />
 

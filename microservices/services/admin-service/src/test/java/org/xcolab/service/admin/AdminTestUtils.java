@@ -8,8 +8,8 @@ public class AdminTestUtils {
         ConfigurationAttribute ca = new ConfigurationAttribute();
         ca.setName("SUPER" + nameComplement);
         ca.setLocale("");
-        ca.setNumericValue(0l);
-        ca.setAdditionalId(0l);
+        ca.setNumericValue(0L);
+        ca.setAdditionalId(0L);
         ca.setRealValue(0d);
         ca.setStringValue("DUPER");
         return ca;

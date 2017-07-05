@@ -182,17 +182,10 @@ class AbstractProposalVote implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("ProposalVote (");
+        String sb = "ProposalVote (" + proposalid + ", " + contestphaseid + ", " + userid + ", "
+                + createdate + ", " + isvalid + ", " + confirmationemailsenddate + ", "
+                + confirmationtoken + ")";
 
-        sb.append(proposalid);
-        sb.append(", ").append(contestphaseid);
-        sb.append(", ").append(userid);
-        sb.append(", ").append(createdate);
-        sb.append(", ").append(isvalid);
-        sb.append(", ").append(confirmationemailsenddate);
-        sb.append(", ").append(confirmationtoken);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

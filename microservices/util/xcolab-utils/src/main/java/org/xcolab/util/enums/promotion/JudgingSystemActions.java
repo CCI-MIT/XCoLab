@@ -13,7 +13,7 @@ public class JudgingSystemActions {
         int attributeValue;
         String description;
 
-        private AdvanceDecision(int attributeValue, String description) {
+        AdvanceDecision(int attributeValue, String description) {
             this.attributeValue = attributeValue;
             this.description = description;
         }
@@ -49,7 +49,8 @@ public class JudgingSystemActions {
         boolean commentEnabled;
         boolean selectJudgesEnabled;
 
-        private FellowAction(int attributeValue, String description, boolean commentEnabled, boolean selectJudgesEnabled) {
+        FellowAction(int attributeValue, String description, boolean commentEnabled,
+                boolean selectJudgesEnabled) {
             this.attributeValue = attributeValue;
             this.description = description;
             this.commentEnabled = commentEnabled;
@@ -58,7 +59,9 @@ public class JudgingSystemActions {
 
         public static FellowAction fromInt(Integer value) {
             for(FellowAction a : values()) {
-                if(a.attributeValue == value) return a;
+                if(a.attributeValue == value) {
+                    return a;
+                }
             }
 
             return NO_DECISION;
@@ -86,12 +89,13 @@ public class JudgingSystemActions {
     }
 
     public enum JudgeReviewStatus {
+
         NOT_RESPONSIBLE(0, "Judge is not responsible for reviewing"),
         NOT_DONE(1, "Judge is responsible but has not finished yet"),
         DONE(2, "Judge has finished the review");
 
-        private int statusValue;
-        private String statusDescription;
+        private final int statusValue;
+        private final String statusDescription;
 
         JudgeReviewStatus(int status, String statusDescription) {
             this.statusValue = status;

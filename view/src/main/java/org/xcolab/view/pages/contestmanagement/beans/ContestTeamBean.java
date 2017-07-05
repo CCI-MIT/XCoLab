@@ -50,39 +50,30 @@ public class ContestTeamBean implements Serializable {
     }
 
     private void populateJudges() {
-        for (Long judge : ContestTeamMemberClientUtil.getJudgesForContest(contest.getContestPK())) {
-            userIdsJudges.add(judge);
-        }
+        userIdsJudges
+                .addAll(ContestTeamMemberClientUtil.getJudgesForContest(contest.getContestPK()));
     }
 
     private void poupulateAIF() {
-        for (Long fellow : ContestTeamMemberClientUtil
-                .getIAFellowsForContest(contest.getContestPK())) {
-            userIdsIAFellows.add(fellow);
-        }
+        userIdsIAFellows
+                .addAll(ContestTeamMemberClientUtil.getIAFellowsForContest(contest.getContestPK()));
 
     }
 
     private void populateFellows() {
-        for (Long fellow : ContestTeamMemberClientUtil
-                .getFellowsForContest(contest.getContestPK())) {
-            userIdsFellows.add(fellow);
-        }
+        userIdsFellows
+                .addAll(ContestTeamMemberClientUtil.getFellowsForContest(contest.getContestPK()));
     }
 
     private void populateAdvisors() {
-        for (Long advisor : ContestTeamMemberClientUtil
-                .getAdvisorsForContest(contest.getContestPK())) {
-            userIdsAdvisors.add(advisor);
-        }
+        userIdsAdvisors
+                .addAll(ContestTeamMemberClientUtil.getAdvisorsForContest(contest.getContestPK()));
     }
 
     private void populateContestManagers() {
 
-        for (Long contestManager : ContestTeamMemberClientUtil
-                .getContestManagersForContest(contest.getContestPK())) {
-            userIdsContestManagers.add(contestManager);
-        }
+        userIdsContestManagers.addAll(ContestTeamMemberClientUtil
+                .getContestManagersForContest(contest.getContestPK()));
 
     }
 

@@ -211,7 +211,7 @@ public final class ProposalAttributeClient {
         ProposalUnversionedAttribute pua;
         try {
              pua =
-                    getProposalUnversionedAttribute(proposalId, attributeName.toString());
+                    getProposalUnversionedAttribute(proposalId, attributeName);
                 pua.setCreateAuthorId(authorId);
                 pua.setLastUpdateDate(new Timestamp(new Date().getTime()));
                 pua.setStringValue(attributeValue);

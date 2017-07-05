@@ -89,11 +89,11 @@ public class ContentEditorResourceController extends BaseContentEditor {
 
 
         JSONArray responseArray = new JSONArray();
-        Map<String, String> yearFolders = new LinkedHashMap<>();
 
 
         if (node == null || node.isEmpty()) {//root
             List<Contest> allContests = ContestClientUtil.getAllContests();
+            Map<String, String> yearFolders = new LinkedHashMap<>();
             for (Contest c : allContests) {
                 yearFolders.put(c.getContestYear().toString(), "");
 
@@ -107,11 +107,10 @@ public class ContentEditorResourceController extends BaseContentEditor {
                 responseArray.put(folderNode(year, year));
             }
         } else {//year
-            Integer year = 2016;
-            year = Integer.parseInt(node);//should be the year
+            Integer year = Integer.parseInt(node);//should be the year
             List<Contest> contestsInYear = ContestClientUtil.getAllContestsInYear(year);
             for (Contest c : contestsInYear) {
-                if (c.getResourceArticleId() != null && c.getResourceArticleId() != 0l) {
+                if (c.getResourceArticleId() != null && c.getResourceArticleId() != 0L) {
                     responseArray
                             .put(articleNode(c.getContestShortName(),
                                     c.getResourceArticleId()));

@@ -81,8 +81,8 @@ a.model_name_description {
 .model_description .brand {
   cursor: pointer;
   position: relative;
-  right: 0px;
-  top: 0px;
+  right: 0;
+  top: 0;
   float: right;
   margin-top: -50px;
 }

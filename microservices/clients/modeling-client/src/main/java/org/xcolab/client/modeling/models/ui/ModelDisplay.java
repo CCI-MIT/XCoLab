@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,20 +108,16 @@ public class ModelDisplay implements Serializable {
     }
 
     public List<ModelOutputDisplayItem> getOutputs() {
-        Collections.sort(outputs, new Comparator<ModelOutputDisplayItem>() {
-
-            @Override
-            public int compare(ModelOutputDisplayItem o1, ModelOutputDisplayItem o2) {
-                int compareResult = o1.compareTo(o2);
-                if (compareResult != 0) {
-                    return compareResult;
-                }
-                if (o1.getOrder() != -1) {
-                    return compareResult;
-                }
-                
-                return o1.getName().compareTo(o2.getName());
+        outputs.sort((o1, o2) -> {
+            int compareResult = o1.compareTo(o2);
+            if (compareResult != 0) {
+                return compareResult;
             }
+            if (o1.getOrder() != -1) {
+                return compareResult;
+            }
+
+            return o1.getName().compareTo(o2.getName());
         });
         return outputs;
     }

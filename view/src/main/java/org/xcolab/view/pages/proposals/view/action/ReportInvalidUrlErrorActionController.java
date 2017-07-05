@@ -65,12 +65,13 @@ public class ReportInvalidUrlErrorActionController {
     }
 
     private String getMessageBody(String url, SimpleExceptionErrorReportWrapper simpleExceptionErrorReportWrapper, Member user) {
-        String userScreenName = USER_SCREEN_NAME_PLACEHOLDER;
+
         String emailAddress = EMAIL_ADDRESS_PLACEHOLDER;
         if ((simpleExceptionErrorReportWrapper.getUserEmailAddress()!=null)) {
             emailAddress = simpleExceptionErrorReportWrapper.getUserEmailAddress();
         }
 
+        String userScreenName = USER_SCREEN_NAME_PLACEHOLDER;
         if ((user!=null)) {
             userScreenName = user.getScreenName();
             if ((emailAddress == null) || emailAddress.equals(EMAIL_ADDRESS_PLACEHOLDER)) {

@@ -57,7 +57,7 @@ public class OntologyEditorController {
         if (ontologySpaceId != null) {
             //
             if (ontologyTermParentId == null) {
-                ontologyTermParentId = 0l;
+                ontologyTermParentId = 0L;
             }
             List<OntologyTerm> ontologyTerms =
                     OntologyClientUtil.getOntologyTerms(ontologyTermParentId, ontologySpaceId);
@@ -117,7 +117,7 @@ public class OntologyEditorController {
     @PostMapping("/ontology-editor/deleteOntologyTerm")
     public void deleteOntologyTerm(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) Long id) throws IOException {
-        if(id !=null && id != 0l) {
+        if(id !=null && id != 0L) {
             deleteOntologyTermAndChildren(id);
         }
         defaultOperationReturnMessage(true, "Ontology term deleted successfully", response);
@@ -136,7 +136,7 @@ public class OntologyEditorController {
 
 
 
-        if(id !=null && id != 0l) {
+        if(id !=null && id != 0L) {
             OntologyTerm ontologyTerm = OntologyClientUtil.getOntologyTerm(id);
             ontologyTerm.setDescriptionUrl(descriptionUrl);
             ontologyTerm.setOrder_(order);

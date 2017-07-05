@@ -74,7 +74,7 @@ public class Contest extends AbstractContest implements Serializable {
     private static final long CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS = 3L;
     private static final String EMAIL_TEMPLATE_URL = "/resources/-/wiki/Main/Judging+Mail+Templates";
 
-    private Map<String, String> ontologyJoinedNames = new HashMap<>();
+    private final Map<String, String> ontologyJoinedNames = new HashMap<>();
     private List<ContestPhase> visiblePhases;
 
 
@@ -333,10 +333,8 @@ public class Contest extends AbstractContest implements Serializable {
                 faCache.put(fa.getId_(), fa);
             }
             List<OntologyTerm> terms = new ArrayList<>();
-            for (OntologyTerm t : ontologyClient
-                    .getOntologyTermsByFocusAreaOntologySpaceName(this.getFocusAreaId(),space)) {
-                    terms.add(t);
-            }
+            terms.addAll(ontologyClient
+                    .getOntologyTermsByFocusAreaOntologySpaceName(this.getFocusAreaId(), space));
             ontologySpaceCache.put(space, terms.isEmpty() ? null : terms);
         }
         return ontologySpaceCache.get(space);

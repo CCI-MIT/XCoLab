@@ -124,7 +124,6 @@ public class UpdateModelDisplayFromJSONAction {
                     displayItem.setOrder(order);
                     if (displayItem instanceof ModelInputIndividualDisplayItem) {
                         ((ModelInputIndividualDisplayItem) displayItem).setGroupId(parentGroup);
-                        ;
                     }
                 }
             }

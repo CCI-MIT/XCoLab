@@ -92,7 +92,7 @@ public class ContentEditorController extends BaseContentEditor{
         if(contentArticleVersion == null){
             //if there is no content for the encoding passed, get the default from the database
             contentArticleVersion = ContentsClient.getLatestVersionByArticleIdAndLanguage(articleId,defaultEncoding);
-            contentArticleVersion.setContentArticleVersionId(0l);
+            contentArticleVersion.setContentArticleVersionId(0L);
             contentArticleVersion.setLang(encoding);
         }
 

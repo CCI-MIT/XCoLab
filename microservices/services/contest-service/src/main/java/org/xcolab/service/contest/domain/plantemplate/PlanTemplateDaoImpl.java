@@ -35,6 +35,7 @@ public class PlanTemplateDaoImpl implements PlanTemplateDao {
 
     }
 
+    @Override
     public PlanTemplate create(PlanTemplate planTemplate) {
 
         PlanTemplateRecord ret = this.dslContext.insertInto(PLAN_TEMPLATE)
@@ -60,6 +61,7 @@ public class PlanTemplateDaoImpl implements PlanTemplateDao {
                 .execute();
     }
 
+    @Override
     public boolean update(PlanTemplate planTemplate) {
         return dslContext.update(PLAN_TEMPLATE)
                 .set(PLAN_TEMPLATE.NAME, planTemplate.getName())

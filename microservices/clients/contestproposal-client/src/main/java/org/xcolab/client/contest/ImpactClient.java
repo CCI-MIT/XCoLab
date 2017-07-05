@@ -44,12 +44,7 @@ public class ImpactClient {
     }
 
     public static ImpactClient fromService(RestService contestService) {
-        ImpactClient client = instances.get(contestService);
-        if (client == null) {
-            client = new ImpactClient(contestService);
-            instances.put(contestService, client);
-        }
-        return client;
+        return instances.computeIfAbsent(contestService, ImpactClient::new);
     }
 
     public List<ImpactTemplateMaxFocusArea> getContestImpactFocusAreas(Contest contest) {

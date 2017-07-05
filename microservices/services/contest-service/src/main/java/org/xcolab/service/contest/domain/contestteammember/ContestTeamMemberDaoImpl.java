@@ -66,6 +66,7 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
                 .fetchOne().into(Integer.class) > 0;
 
     }
+    @Override
     public ContestTeamMember findOneBy(Long memberId, Long contestId, Long roleId) {
 
         final Record record =  this.dslContext.selectFrom(CONTEST_TEAM_MEMBER)

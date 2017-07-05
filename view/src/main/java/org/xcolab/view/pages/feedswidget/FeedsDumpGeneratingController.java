@@ -22,10 +22,11 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class FeedsDumpGeneratingController {
-	private DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+	private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
 	private byte[] generatedActivities = {};
-	private int activitiesInGeneratedDump = 0;
+	private int activitiesInGeneratedDump;
 
 	@GetMapping("/feedswidget/generateDump")
 	public void showFeed(HttpServletRequest request, HttpServletResponse response)

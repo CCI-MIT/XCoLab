@@ -91,15 +91,10 @@ public class BalloonLink implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("BalloonLink (");
+        String sb =
+                "BalloonLink (" + uuid_ + ", " + targeturl + ", " + visits + ", " + balloonuseruuid
+                        + ", " + createdate + ")";
 
-        sb.append(uuid_);
-        sb.append(", ").append(targeturl);
-        sb.append(", ").append(visits);
-        sb.append(", ").append(balloonuseruuid);
-        sb.append(", ").append(createdate);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

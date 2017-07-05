@@ -375,11 +375,8 @@
 
             }
 
-
-
             function loadContentArticleResponse(response) {
-                var responseData = JSON.parse(response);
-                var data = responseData;
+                var data = JSON.parse(response);
                 var id = data.articleId;
                 var textarea = $('#articleVersionContent');
 

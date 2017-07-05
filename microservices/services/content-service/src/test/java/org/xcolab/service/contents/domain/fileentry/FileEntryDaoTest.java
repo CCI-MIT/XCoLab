@@ -12,7 +12,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.model.tables.pojos.ContentArticleVersion;
 import org.xcolab.model.tables.pojos.FileEntry;
 
 import static org.junit.Assert.assertNotNull;
@@ -31,7 +30,7 @@ import static org.junit.Assert.assertNotNull;
 public class FileEntryDaoTest {
 
     @Autowired
-    FileEntryDao fileEntryDao;
+    private FileEntryDao fileEntryDao;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -47,7 +46,7 @@ public class FileEntryDaoTest {
     @Test
     public void shouldGetFileEntry() throws Exception {
 
-        assertNotNull(fileEntryDao.get(901l));
+        assertNotNull(fileEntryDao.get(901L));
 
     }
 }

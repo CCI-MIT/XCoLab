@@ -45,12 +45,7 @@ class CommentServiceWrapper {
     }
 
     static CommentServiceWrapper fromService(RestService commentService) {
-        CommentServiceWrapper serviceWrapper = instances.get(commentService);
-        if (serviceWrapper == null) {
-            serviceWrapper = new CommentServiceWrapper(commentService);
-            instances.put(commentService, serviceWrapper);
-        }
-        return serviceWrapper;
+        return instances.computeIfAbsent(commentService, CommentServiceWrapper::new);
     }
 
     public List<CommentDto> listComments(Integer startRecord, Integer limitRecord, String sort,

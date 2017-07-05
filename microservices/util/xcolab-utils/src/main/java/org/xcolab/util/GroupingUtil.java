@@ -15,7 +15,7 @@ public final class GroupingUtil {
         Map<K, List<V>> groupedEntities = new LinkedHashMap<>();
         for (V value : list) {
             final K key = keyExtractor.apply(value);
-            List<V> valuesForKey = groupedEntities.computeIfAbsent(key, k -> new ArrayList<V>());
+            List<V> valuesForKey = groupedEntities.computeIfAbsent(key, k -> new ArrayList<>());
             valuesForKey.add(value);
         }
         return groupedEntities;

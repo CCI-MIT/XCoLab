@@ -112,17 +112,10 @@ public class MemberCategory implements Serializable, Comparable<MemberCategory> 
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("MemberCategory (");
+        String sb = "MemberCategory (" + roleid + ", " + displayname + ", " + categoryname + ", "
+                + sortorder + ", " + showinlist + ", " + imagename + ")";
 
-        sb.append(roleid);
-        sb.append(", ").append(displayname);
-        sb.append(", ").append(categoryname);
-        sb.append(", ").append(sortorder);
-        sb.append(", ").append(showinlist);
-        sb.append(", ").append(imagename);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 
     @Override

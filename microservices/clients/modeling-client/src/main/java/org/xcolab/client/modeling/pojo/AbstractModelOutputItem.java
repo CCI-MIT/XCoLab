@@ -261,22 +261,12 @@ public abstract class AbstractModelOutputItem implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("ModelOutputItem (");
+        String sb = "ModelOutputItem (" + modeloutputitemmodifierpk + ", " + modelid + ", "
+                + modeloutputitemid + ", " + modeloutputitemorder + ", " + modelitemrangepolicy
+                + ", " + modelitemrangemessage + ", " + modelitemerrorpolicy + ", "
+                + modelitemerrormessage + ", " + modelitemlabelformat + ", " + modelitemisvisible
+                + ", " + itemtype + ", " + relatedoutputitem + ")";
 
-        sb.append(modeloutputitemmodifierpk);
-        sb.append(", ").append(modelid);
-        sb.append(", ").append(modeloutputitemid);
-        sb.append(", ").append(modeloutputitemorder);
-        sb.append(", ").append(modelitemrangepolicy);
-        sb.append(", ").append(modelitemrangemessage);
-        sb.append(", ").append(modelitemerrorpolicy);
-        sb.append(", ").append(modelitemerrormessage);
-        sb.append(", ").append(modelitemlabelformat);
-        sb.append(", ").append(modelitemisvisible);
-        sb.append(", ").append(itemtype);
-        sb.append(", ").append(relatedoutputitem);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

@@ -137,19 +137,11 @@ public class ActivitySubscription implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("ActivitySubscription (");
+        String sb =
+                "ActivitySubscription (" + pk + ", " + classnameid + ", " + classpk + ", " + type_
+                        + ", " + automaticsubscriptioncounter + ", " + extradata + ", " + receiverid
+                        + ", " + createdate + ", " + modifieddate + ")";
 
-        sb.append(pk);
-        sb.append(", ").append(classnameid);
-        sb.append(", ").append(classpk);
-        sb.append(", ").append(type_);
-        sb.append(", ").append(automaticsubscriptioncounter);
-        sb.append(", ").append(extradata);
-        sb.append(", ").append(receiverid);
-        sb.append(", ").append(createdate);
-        sb.append(", ").append(modifieddate);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

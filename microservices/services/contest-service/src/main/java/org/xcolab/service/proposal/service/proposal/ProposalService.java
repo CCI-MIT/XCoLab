@@ -158,11 +158,11 @@ public class ProposalService {
 
         Group_ group = new Group_();
 
-        group.setCompanyId(10112l);
+        group.setCompanyId(10112L);
         group.setCreatorUserId(authorId);
-        group.setClassNameId(10009l);
-        group.setParentGroupId(0l);
-        group.setLiveGroupId(0l);
+        group.setClassNameId(10009L);
+        group.setParentGroupId(0L);
+        group.setLiveGroupId(0L);
         group.setName(groupName);
         group.setDescription(groupDescription);
         group.setType_(2);

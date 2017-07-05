@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.proposals.utils.context;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.util.Assert;
 import org.springframework.web.servlet.LocaleResolver;
 
 import org.xcolab.client.admin.ContestTypeClient;
@@ -36,6 +37,7 @@ public class ProposalContextImpl implements ProposalContext {
     private ClientHelper clientHelper;
 
     public ProposalContextImpl(HttpServletRequest request, LocaleResolver localeResolver) {
+        Assert.notNull(localeResolver, "LocaleResolver is required");
         this.localeResolver = localeResolver;
         this.request = request;
         init();
@@ -43,8 +45,7 @@ public class ProposalContextImpl implements ProposalContext {
 
     private void init() {
         ProposalContextHelper contextHelper = new ProposalContextHelper(request);
-        final String language = localeResolver != null
-                ? localeResolver.resolveLocale(request).getLanguage() : null;
+        final String language = localeResolver.resolveLocale(request).getLanguage();
 
         final Member member = contextHelper.getMember();
 

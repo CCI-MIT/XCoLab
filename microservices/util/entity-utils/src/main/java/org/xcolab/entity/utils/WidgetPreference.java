@@ -11,14 +11,15 @@ import java.util.List;
 
 public abstract class WidgetPreference {
 
-    public abstract AttributeGetter<String> getConfigurationAttribute();
-
-    protected String preferenceId;
-    protected JSONObject prefs;
-    private final List<String> allPreferenceIds = new ArrayList<>();
-
     private final static String DEFAULT_ID = "default";
     private final static String PREFERENCES_JSON_OBJECT = "preferences";
+    private final List<String> allPreferenceIds = new ArrayList<>();
+    protected String preferenceId;
+    protected JSONObject prefs;
+
+    public WidgetPreference() {
+        this(DEFAULT_ID);
+    }
 
     public WidgetPreference(String id) {
 
@@ -30,49 +31,47 @@ public abstract class WidgetPreference {
 
             if (id != null) {
                 preferenceId = id;
-                preferencesArray.keySet().stream().forEach(s -> allPreferenceIds.add(s));
+                allPreferenceIds.addAll(preferencesArray.keySet());
             } else {
                 preferenceId = DEFAULT_ID;
                 allPreferenceIds.add(DEFAULT_ID);
             }
-            if(preferencesArray.has(preferenceId)) {
+            if (preferencesArray.has(preferenceId)) {
                 prefs = preferencesArray.getJSONObject(preferenceId);
-            }else{
+            } else {
                 prefs = preferencesArray.getJSONObject(DEFAULT_ID);
                 preferenceId = DEFAULT_ID;
             }
 
-        }else{
+        } else {
             allPreferenceIds.add(DEFAULT_ID);
             preferenceId = DEFAULT_ID;
         }
     }
 
-    public WidgetPreference() {
-        this(DEFAULT_ID);
-    }
+    public abstract AttributeGetter<String> getConfigurationAttribute();
 
     protected void savePreferences(JSONObject prefsToSave, String id) {
-        id = (id==null?(DEFAULT_ID):(id));
+        id = (id == null ? (DEFAULT_ID) : (id));
         JSONObject currentPreferences = new JSONObject(getConfigurationAttribute().get());
         if (!currentPreferences.has(PREFERENCES_JSON_OBJECT)) {
-            JSONObject defaultPrefs =currentPreferences ;
+            JSONObject defaultPrefs = currentPreferences;
 
             currentPreferences = new JSONObject();
             JSONObject preferences = new JSONObject();
-            preferences.put(id,prefsToSave);
-            if(!id.equals(DEFAULT_ID)){
-                preferences.put(DEFAULT_ID,defaultPrefs);
+            preferences.put(id, prefsToSave);
+            if (!id.equals(DEFAULT_ID)) {
+                preferences.put(DEFAULT_ID, defaultPrefs);
             }
 
-            currentPreferences.put(PREFERENCES_JSON_OBJECT,preferences);
+            currentPreferences.put(PREFERENCES_JSON_OBJECT, preferences);
 
-        }else{
+        } else {
 
             JSONObject preferences = currentPreferences.getJSONObject(PREFERENCES_JSON_OBJECT);
 
-            preferences.put(id,prefsToSave);
-            currentPreferences.put(PREFERENCES_JSON_OBJECT,preferences);
+            preferences.put(id, prefsToSave);
+            currentPreferences.put(PREFERENCES_JSON_OBJECT, preferences);
         }
         ConfigurationAttribute configurationAttribute = new ConfigurationAttribute();
         configurationAttribute.setName(getConfigurationAttribute().name());
@@ -99,6 +98,5 @@ public abstract class WidgetPreference {
     public List<String> getAllPreferenceIds() {
         return allPreferenceIds;
     }
-
 
 }

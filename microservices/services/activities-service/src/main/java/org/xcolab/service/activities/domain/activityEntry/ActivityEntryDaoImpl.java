@@ -21,8 +21,10 @@ import static org.xcolab.model.Tables.ACTIVITY_ENTRY;
 @Repository
 public class ActivityEntryDaoImpl implements ActivityEntryDao {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public ActivityEntryDaoImpl(DSLContext dslContext) {this.dslContext = dslContext;}
 
     @Override
     public ActivityEntry create(ActivityEntry activityEntry) {
@@ -60,8 +62,11 @@ public class ActivityEntryDaoImpl implements ActivityEntryDao {
 
     }
 
+    @Override
     public List<ActivityEntry> getActivitiesAfter(Date date) {
-        if (date == null) return null;
+        if (date == null) {
+            return null;
+        }
         final SelectQuery<Record> query = dslContext.select()
                 .from(ACTIVITY_ENTRY)
                 .getQuery();

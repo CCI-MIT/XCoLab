@@ -8,7 +8,6 @@ import org.xcolab.view.pages.proposals.utils.ProposalsColumn;
 import org.xcolab.view.util.pagination.SortFilterPage;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -66,30 +65,27 @@ public class ProposalsSortFilterBean {
             sortFilterPage.setSortAscending(!sortFilterPage.isSortAscending()); // default sort is date DESC
         }
 
-        if(this.proposals!=null&& !this.proposals.isEmpty()) {
+        if (this.proposals != null && !this.proposals.isEmpty()) {
 
-            Collections.sort(this.proposals, new Comparator<Proposal>() {
-                @Override
-                public int compare(Proposal o1, Proposal o2) {
-                    if (StringUtils.isBlank(sortFilterPage.getSortColumn())) {
-                        final ProposalRibbon ribbon1 = o1.getRibbonWrapper();
-                        final ProposalRibbon ribbon2 = o2.getRibbonWrapper();
+            this.proposals.sort((o1, o2) -> {
+                if (StringUtils.isBlank(sortFilterPage.getSortColumn())) {
+                    final ProposalRibbon ribbon1 = o1.getRibbonWrapper();
+                    final ProposalRibbon ribbon2 = o2.getRibbonWrapper();
 
-                        int sortOrderDiff = ribbon1.getSortOrder() - ribbon2.getSortOrder();
-                        if (sortOrderDiff != 0) {
-                            return sortOrderDiff;
-                        }
-
-                        int ribbonDiff = ribbon1.getRibbon() - ribbon2.getRibbon();
-                        if (ribbonDiff != 0) {
-                            return ribbonDiff;
-                        }
+                    int sortOrderDiff = ribbon1.getSortOrder() - ribbon2.getSortOrder();
+                    if (sortOrderDiff != 0) {
+                        return sortOrderDiff;
                     }
-                    if (sortFilterPage.isSortAscending()) {
-                        return proposalComparator.compare(o1, o2);
+
+                    int ribbonDiff = ribbon1.getRibbon() - ribbon2.getRibbon();
+                    if (ribbonDiff != 0) {
+                        return ribbonDiff;
                     }
-                    return proposalComparator.compare(o2, o1);
                 }
+                if (sortFilterPage.isSortAscending()) {
+                    return proposalComparator.compare(o1, o2);
+                }
+                return proposalComparator.compare(o2, o1);
             });
 
             for (Proposal contest : this.proposals) {

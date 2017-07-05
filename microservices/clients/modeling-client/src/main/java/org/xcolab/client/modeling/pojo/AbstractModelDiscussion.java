@@ -92,13 +92,9 @@ public abstract class AbstractModelDiscussion implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("ModelDiscussion (");
+        String sb =
+                "ModelDiscussion (" + modeldiscussionid + ", " + modelid + ", " + categoryid + ")";
 
-        sb.append(modeldiscussionid);
-        sb.append(", ").append(modelid);
-        sb.append(", ").append(categoryid);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

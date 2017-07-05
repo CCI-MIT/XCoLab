@@ -1,11 +1,11 @@
 package org.xcolab.service.contest.domain.focusareaontologyterm;
 
 import org.jooq.DSLContext;
-import org.jooq.DeleteQuery;
 import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import org.xcolab.model.tables.pojos.FocusAreaOntologyTerm;
 
 import java.util.List;
@@ -32,6 +32,7 @@ public class FocusAreaOntologyTermDaoImpl implements FocusAreaOntologyTermDao {
         return query.fetchInto(FocusAreaOntologyTerm.class);
     }
 
+    @Override
     public FocusAreaOntologyTerm create(FocusAreaOntologyTerm focusAreaOntologyTerm) {
 
         this.dslContext.insertInto(FOCUS_AREA_ONTOLOGY_TERM)

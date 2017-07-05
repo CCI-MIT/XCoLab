@@ -70,10 +70,8 @@ public class ContestMassActionMethods {
             if(cpt.getStatus().equals(ContestStatus.OPEN_FOR_SUBMISSION.name())){
                 List<Proposal> proposals = ProposalClientUtil
                         .getActiveProposalsInContestPhase(cp.getContestPhasePK());
-                for(Proposal p: proposals){
-                    if(proposalsMap.get(p.getProposalId())==null) {
-                        proposalsMap.put(p.getProposalId(),p);
-                    }
+                for (Proposal p: proposals) {
+                    proposalsMap.putIfAbsent(p.getProposalId(), p);
                 }
             }
 

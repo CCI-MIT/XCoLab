@@ -11,8 +11,6 @@ import org.xcolab.entity.utils.WidgetPreference;
 import org.xcolab.util.attributes.AttributeGetter;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,12 +99,7 @@ public class RandomProposalsPreferences extends WidgetPreference {
 
         List<Contest> contests = ContestClientUtil.getAllContests();
 
-        Collections.sort(contests, new Comparator<Contest>() {
-            @Override
-            public int compare(Contest o1, Contest o2) {
-                return (int) (o1.getContestPK() - o2.getContestPK());
-            }
-        });
+        contests.sort((o1, o2) -> (int) (o1.getContestPK() - o2.getContestPK()));
 
         Map<Long, String> phases = new LinkedHashMap<>();
         for (Contest c : contests) {

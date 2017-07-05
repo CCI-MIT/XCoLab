@@ -178,12 +178,12 @@ public class MembersController {
         }
     }
     private List<Member>  removeDuplicates(List<Member> members) {
-        HashMap<String,Member> finalMembers = new HashMap<String,Member>();
+        HashMap<String,Member> finalMembers = new HashMap<>();
         for (Member temp : members) {
             if (!finalMembers.containsKey(temp.getScreenName())) {
                 finalMembers.put(temp.getScreenName(),temp);
             }
         }
-        return new ArrayList<Member>(finalMembers.values());
+        return new ArrayList<>(finalMembers.values());
     }
 }

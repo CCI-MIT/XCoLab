@@ -84,9 +84,7 @@ public class ProposalsPreferencesController {
                 }
                 List<Proposal> proposals = proposalContext.getClients().getProposalClient().getProposalsInContestPhase(cp.getContestPhasePK());
                 List<Proposal> wrappers = new ArrayList<>();
-                for (Proposal p : proposals) {
-                    wrappers.add((p));
-                }
+                wrappers.addAll(proposals);
                 proposalsMap.put(cp.getContestPhasePK(), wrappers);
             }
         }

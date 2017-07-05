@@ -24,6 +24,7 @@ public class ColabEmailDaoImpl implements ColabEmailDao {
         this.dslContext = dslContext;
     }
 
+    @Override
     public ColabEmail create(ColabEmail colabEmail) {
 
         ColabEmailRecord ret = this.dslContext.insertInto(COLAB_EMAIL)
@@ -47,6 +48,7 @@ public class ColabEmailDaoImpl implements ColabEmailDao {
 
     }
 
+    @Override
     public ColabEmail get(Long colabEmailId) throws NotFoundException{
 
         final Record record =  this.dslContext.selectFrom(COLAB_EMAIL)
@@ -60,6 +62,7 @@ public class ColabEmailDaoImpl implements ColabEmailDao {
 
     }
 
+    @Override
     public boolean update(ColabEmail colabEmail) {
         return dslContext.update(COLAB_EMAIL)
                 .set(COLAB_EMAIL.COLAB_EMAIL_ID, colabEmail.getColabEmailId())

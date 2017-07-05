@@ -70,12 +70,13 @@ public class ProposalVersionsJsonController {
     @GetMapping("/api/proposals/{proposalId}/versions/{version}/index")
     public void getProposalVersionIndex(HttpServletRequest request, HttpServletResponse response,
             @PathVariable("version") Integer version, @PathVariable("proposalId") Long proposalId) throws IOException {
-        int index = 0;
+
 
         Contest c = ProposalClientUtil.getCurrentContestForProposal(proposalId);
 
         ClientHelper clientHelper = new ClientHelper(c);
-        index = clientHelper.getProposalClient().countProposalVersionsGroupedVersionsByContest(proposalId,c.getContestPK());
+        int index = clientHelper.getProposalClient()
+                .countProposalVersionsGroupedVersionsByContest(proposalId, c.getContestPK());
 
         final JsonObject json = Json.createObjectBuilder()
                 .add("index", index).build();

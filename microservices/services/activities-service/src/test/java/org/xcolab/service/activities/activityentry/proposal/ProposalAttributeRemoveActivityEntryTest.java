@@ -68,18 +68,13 @@ public class ProposalAttributeRemoveActivityEntryTest {
         MemberJoinedActivityEntry provider = new MemberJoinedActivityEntry();
 
         ActivityEntry activityEntry = new ActivityEntry();
-        activityEntry.setMemberId(1234l);
-        activityEntry.setClassPrimaryKey(1234l);
+        activityEntry.setMemberId(1234L);
+        activityEntry.setClassPrimaryKey(1234L);
         activityEntry.setExtraData("1234");
         java.util.Date date = new java.util.Date();
         activityEntry.setCreateDate(new Timestamp(date.getTime()));
 
         provider.setActivityEntry(activityEntry);
-
-
-
-
-
 
         activityEntry.setPrimaryType(provider.getPrimaryType());
         activityEntry.setSecondaryType(provider.getSecondaryType());

@@ -14,8 +14,6 @@ import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 import org.xcolab.util.json.JsonUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,26 +78,18 @@ public class ModelOutputIndexedDisplayItem extends ModelOutputDisplayItem {
      * in preferred display order.
      */
     public List<ModelOutputSeriesDisplayItem> getSeries() {
-        Collections.sort(series,
-                new Comparator<ModelOutputSeriesDisplayItem>() {
+        series.sort((o1, o2) -> {
+            if (o1.getOrder() != -1) {
+                o1.compareTo(o2);
+            }
 
-                    @Override
-                    public int compare(ModelOutputSeriesDisplayItem o1,
-                            ModelOutputSeriesDisplayItem o2) {
-                        if (o1.getOrder() != -1) {
-                            o1.compareTo(o2);
-                        }
+            if (o1.getMetaData().getLabels().length >= 2
+                    && o2.getMetaData().getLabels().length >= 2) {
+                return o1.getMetaData().getLabels()[1].compareTo(o2.getMetaData().getLabels()[1]);
+            }
 
-                        if (o1.getMetaData().getLabels().length >= 2
-                                && o2.getMetaData().getLabels().length >= 2) {
-                            return o1.getMetaData().getLabels()[1]
-                                    .compareTo(o2.getMetaData().getLabels()[1]);
-                        }
-
-                        return o1.getName().compareTo(o2.getName());
-                    }
-
-                });
+            return o1.getName().compareTo(o2.getName());
+        });
         return series;
     }
 

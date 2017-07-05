@@ -162,16 +162,9 @@ class AbstractProposalVersion implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("ProposalVersion (");
+        String sb = "ProposalVersion (" + proposalid + ", " + version + ", " + authorid + ", "
+                + createdate + ", " + updatetype + ", " + updateadditionalid + ")";
 
-        sb.append(proposalid);
-        sb.append(", ").append(version);
-        sb.append(", ").append(authorid);
-        sb.append(", ").append(createdate);
-        sb.append(", ").append(updatetype);
-        sb.append(", ").append(updateadditionalid);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

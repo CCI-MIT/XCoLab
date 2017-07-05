@@ -9,8 +9,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
@@ -108,22 +106,11 @@ public class ContestControllerTest {
 
 
         Mockito.when(contestDao.get(anyLong()))
-                .thenAnswer(new Answer<org.xcolab.model.tables.pojos.Contest>() {
-                    @Override
-                    public org.xcolab.model.tables.pojos.Contest answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        return new org.xcolab.model.tables.pojos.Contest();
-                    }
-                });
+                .thenAnswer(invocation -> new org.xcolab.model.tables.pojos.Contest());
 
         Mockito.when(contestDiscussionDao.get(anyLong()))
-                .thenAnswer(new Answer<Optional<org.xcolab.model.tables.pojos.ContestDiscussion>>() {
-                    @Override
-                    public Optional<org.xcolab.model.tables.pojos.ContestDiscussion> answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        return Optional.of(new org.xcolab.model.tables.pojos.ContestDiscussion());
-                    }
-                });
+                .thenAnswer(
+                        invocation -> Optional.of(new org.xcolab.model.tables.pojos.ContestDiscussion()));
     }
 
     private static AbstractContest getContest() {

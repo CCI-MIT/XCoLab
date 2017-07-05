@@ -47,12 +47,7 @@ public final class EmailTemplateClient {
     }
 
     public static EmailTemplateClient fromService(RestService contestService) {
-        EmailTemplateClient client = instances.get(contestService);
-        if (client == null) {
-            client = new EmailTemplateClient(contestService);
-            instances.put(contestService, client);
-        }
-        return client;
+        return instances.computeIfAbsent(contestService, EmailTemplateClient::new);
     }
 
 }

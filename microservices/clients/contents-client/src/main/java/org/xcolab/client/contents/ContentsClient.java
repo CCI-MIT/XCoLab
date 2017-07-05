@@ -187,15 +187,13 @@ public final class ContentsClient {
     }
 
     public static ContentPage createContentPage(ContentPage contentPage) {
-        final ContentPage result = contentPageResource.create(contentPage)
+        return contentPageResource.create(contentPage)
                 .execute();
-        return result;
     }
 
     public static Boolean updateContentPage(ContentPage contentPage) {
-        final Boolean result = contentPageResource.update(contentPage, contentPage.getPageId())
+        return contentPageResource.update(contentPage, contentPage.getPageId())
                 .execute();
-        return result;
     }
 
     public static List<ContentArticleVersion> getChildArticleVersions(long folderId) {

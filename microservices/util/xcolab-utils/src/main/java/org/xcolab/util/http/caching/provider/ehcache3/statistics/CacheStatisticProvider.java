@@ -59,7 +59,7 @@ public class CacheStatisticProvider {
     }
 
     public enum CacheEvent {
-        HIT, MISS;
+        HIT, MISS
     }
 
     private static class MeterMapKey {

@@ -7,15 +7,13 @@ import org.xcolab.view.pages.proposals.utils.ContestsColumn;
 import org.xcolab.view.util.pagination.SortFilterPage;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class ContestsSortFilterBean {
     private final List<Contest> contests;
-    private ContestsColumn sortColumn;
-    private List<Contest> contestsFeatured = new ArrayList<Contest>();
-    private List<Contest> contestsNormal = new ArrayList<Contest>();
+    private final ContestsColumn sortColumn;
+    private List<Contest> contestsFeatured = new ArrayList<>();
+    private List<Contest> contestsNormal = new ArrayList<>();
 
     public ContestsSortFilterBean(List<Contest> contests, final SortFilterPage sortFilterPage) {
         this(contests, sortFilterPage, null);
@@ -49,21 +47,17 @@ public class ContestsSortFilterBean {
         else {
             sortColumn = sortColumnConstruct == null ? ContestsColumn.DEFAULT : sortColumnConstruct;
         }
-        Collections.sort(this.contests, new Comparator<Contest>() {
-            final
-            @Override
-            public int compare(Contest o1, Contest o2) {
-                if (o1.isFeatured() && !o2.isFeatured()) {
-                    return -1;
-                }
-                else if (! o1.isFeatured() && o2.isFeatured()) {
-                    return 1;
-                }
-                if (sortFilterPage.isSortAscending()) {
-                    return sortColumn.getColumnComparator().compare(o1, o2);
-                }
-                return sortColumn.getColumnComparator().compare(o2, o1);
+        this.contests.sort((o1, o2) -> {
+            if (o1.isFeatured() && !o2.isFeatured()) {
+                return -1;
             }
+            if (!o1.isFeatured() && o2.isFeatured()) {
+                return 1;
+            }
+            if (sortFilterPage.isSortAscending()) {
+                return sortColumn.getColumnComparator().compare(o1, o2);
+            }
+            return sortColumn.getColumnComparator().compare(o2, o1);
         });
         for (Contest contest: this.contests) {
             if (contest.isFeatured()) {

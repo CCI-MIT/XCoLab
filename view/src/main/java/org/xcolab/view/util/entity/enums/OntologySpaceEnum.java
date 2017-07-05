@@ -10,7 +10,7 @@ public enum OntologySpaceEnum {
         return spaceId;
     }
 
-    private long spaceId;
+    private final long spaceId;
     private long anyOntologyTermId;
 
     OntologySpaceEnum(long spaceId) {

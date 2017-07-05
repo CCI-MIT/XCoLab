@@ -18,9 +18,14 @@ import static org.xcolab.model.Tables.ONTOLOGY_TERM;
 @Repository
 public class OntologyTermDaoImpl implements OntologyTermDao {
 
-    @Autowired
-    private DSLContext dslContext;
+    private final DSLContext dslContext;
 
+    @Autowired
+    public OntologyTermDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
+
+    @Override
     public OntologyTerm get(Long id_) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(ONTOLOGY_TERM)
@@ -51,6 +56,7 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
         return query.fetchInto(OntologyTerm.class);
     }
 
+    @Override
     public boolean update(OntologyTerm ontologyTerm) {
         return dslContext.update(ONTOLOGY_TERM)
                 .set(ONTOLOGY_TERM.PARENT_ID, ontologyTerm.getParentId())
@@ -68,6 +74,7 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
                 .execute();
     }
 
+    @Override
     public OntologyTerm create(OntologyTerm ontologyTerm) {
 
         OntologyTermRecord ret = this.dslContext.insertInto(ONTOLOGY_TERM)
@@ -88,6 +95,7 @@ public class OntologyTermDaoImpl implements OntologyTermDao {
     }
 
 
+    @Override
     public List<OntologyTerm> getOntologyTermByFocusAreaAndOntologySpaceName(Long focusArea,
             String ontologySpaceName) {
 
