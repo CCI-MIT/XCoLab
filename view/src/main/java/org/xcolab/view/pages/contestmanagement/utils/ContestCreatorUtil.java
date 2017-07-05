@@ -13,12 +13,12 @@ import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
+import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
 import org.xcolab.client.proposals.pojo.group.Group_;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
-import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 
 import java.util.Random;

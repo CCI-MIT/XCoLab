@@ -7,7 +7,7 @@ import org.xcolab.client.members.UsersGroupsClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,14 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
     private final String discussionTabName;
+    private final ProposalContext proposalContext;
     private  Long proposalId;
     private  Long contestPhaseId;
-    private final HttpServletRequest request;
 
-    public ProposalDiscussionPermissions(HttpServletRequest request) {
+    public ProposalDiscussionPermissions(HttpServletRequest request,
+            ProposalContext proposalContext) {
         super(request);
-        discussionTabName = getTabName(request);
-        this.request = request;
+        this.proposalContext = proposalContext;
+        this.discussionTabName = getTabName(request);
     }
 
     public void setProposalId(Long pId,Long cPId ){
@@ -58,20 +59,6 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
         return proposalId;
     }
 
-    private Long getContestPhaseId(HttpServletRequest request) {
-        Long phaseId = null;
-        try {
-            String contestPhaseIdParameter = request.getParameter("phaseId");
-            if (contestPhaseIdParameter != null) {
-                phaseId = Long.parseLong(contestPhaseIdParameter);
-            } else if (proposalId != null && proposalId > 0) {
-                phaseId = ProposalsContextUtil.getClients(request).getProposalClient().getLatestContestPhaseInProposal(proposalId).getContestPhasePK();
-            }
-        } catch (NumberFormatException  ignored) {
-        }
-        return phaseId;
-    }
-
     @Override
     public boolean getCanSeeAddCommentButton() {
         boolean canSeeAddCommentButton = false;
@@ -98,7 +85,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
 
         boolean isUserAllowed = false;
         try {
-            Proposal proposal = ProposalsContextUtil.getClients(request).getProposalClient().getProposal(proposalId);
+            Proposal proposal = proposalContext.getClients().getProposalClient().getProposal(proposalId);
             isUserAllowed = isUserFellowOrJudgeOrAdvisor(proposal)
                     || isUserProposalAuthorOrTeamMember(proposal)
                     || getCanAdminAll();
@@ -108,7 +95,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
     }
 
     private boolean isUserFellowOrJudgeOrAdvisor(Proposal proposal) {
-        ContestPhase contestPhase = ProposalsContextUtil.getClients(request).getContestClient().getContestPhase(contestPhaseId);
+        ContestPhase contestPhase = proposalContext.getClients().getContestClient().getContestPhase(contestPhaseId);
         Proposal proposalWrapper = new Proposal(proposal, contestPhase);
 
 

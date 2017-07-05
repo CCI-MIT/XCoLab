@@ -13,12 +13,12 @@ import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
-import org.xcolab.view.util.entity.enums.OntologySpaceEnum;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.OntologyWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
+import org.xcolab.view.util.entity.enums.OntologySpaceEnum;
 
 import java.util.ArrayList;
 import java.util.List;

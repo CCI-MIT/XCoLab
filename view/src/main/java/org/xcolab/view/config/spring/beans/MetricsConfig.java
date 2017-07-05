@@ -1,4 +1,4 @@
-package org.xcolab.view.config.spring;
+package org.xcolab.view.config.spring.beans;
 
 import com.codahale.metrics.Metric;
 import com.codahale.metrics.MetricFilter;

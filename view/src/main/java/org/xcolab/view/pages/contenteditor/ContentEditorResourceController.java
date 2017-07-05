@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
-import org.xcolab.client.contents.pojo.ContentFolder;
-import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.PermissionsClient;

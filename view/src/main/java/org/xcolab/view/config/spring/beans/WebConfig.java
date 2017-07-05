@@ -1,4 +1,4 @@
-package org.xcolab.view.config.spring;
+package org.xcolab.view.config.spring.beans;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.webresources.StandardRoot;
@@ -19,6 +19,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -27,11 +28,12 @@ import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
 
 import org.xcolab.view.auth.AuthenticationContext;
-import org.xcolab.view.auth.resolver.MemberArgumentResolver;
 import org.xcolab.view.config.rewrite.RewriteInitializer;
 import org.xcolab.view.config.spring.properties.ServerProperties;
 import org.xcolab.view.config.spring.properties.TomcatProperties;
 import org.xcolab.view.config.spring.properties.WebProperties;
+import org.xcolab.view.config.spring.resolvers.MemberArgumentResolver;
+import org.xcolab.view.config.spring.resolvers.ProposalContextArgumentResolver;
 import org.xcolab.view.config.tomcat.AjpConnector;
 import org.xcolab.view.config.tomcat.ForwardedHostValve;
 import org.xcolab.view.pages.proposals.interceptors.PopulateProposalModelInterceptor;
@@ -52,34 +54,41 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     private static final String LOCAL_WEBAPP_DIR_LOCATION = "view/src/main/webapp";
 
+    // Configuration properties
+    private final TomcatProperties tomcatProperties;
+    private final ServerProperties serverProperties;
+    private final WebProperties webProperties;
+
+    // Interceptors
     private final ThemeVariableInterceptor themeVariableInterceptor;
     private final PopulateProposalModelInterceptor populateContextInterceptor;
     private final ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor;
 
-    private final TomcatProperties tomcatProperties;
-    private final ServerProperties serverProperties;
-
-    private final WebProperties webProperties;
+    // Other beans
+    private final LocaleResolver localeResolver;
 
     @Autowired
     public WebConfig(ThemeVariableInterceptor themeVariableInterceptor,
             PopulateProposalModelInterceptor populateContextInterceptor,
             ValidateTabPermissionsInterceptor validateTabPermissionsInterceptor,
             TomcatProperties tomcatProperties, ServerProperties serverProperties,
-            WebProperties webProperties) {
+            WebProperties webProperties, LocaleResolver localeResolver) {
         Assert.notNull(tomcatProperties, "TomcatProperties bean is required");
         Assert.notNull(serverProperties, "ServerProperties bean is required");
-        Assert.notNull(themeVariableInterceptor, "ThemeVariableInterceptor bean is required");
-        Assert.notNull(populateContextInterceptor, "PopulateContextInterceptor bean is required");
-        Assert.notNull(validateTabPermissionsInterceptor,
-                "ValidateTabPermissionsInterceptor bean is required");
         Assert.notNull(webProperties, "webProperties bean is required");
         this.tomcatProperties = tomcatProperties;
         this.serverProperties = serverProperties;
+        this.webProperties = webProperties;
+
+        Assert.notNull(themeVariableInterceptor, "ThemeVariableInterceptor bean is required");
+        Assert.notNull(populateContextInterceptor, "PopulateContextInterceptor bean is required");
+        Assert.notNull(validateTabPermissionsInterceptor, "ValidateTabPermissionsInterceptor bean is required");
         this.themeVariableInterceptor = themeVariableInterceptor;
         this.populateContextInterceptor = populateContextInterceptor;
         this.validateTabPermissionsInterceptor = validateTabPermissionsInterceptor;
-        this.webProperties = webProperties;
+
+        Assert.notNull(localeResolver, "LocaleResolver bean is required");
+        this.localeResolver = localeResolver;
     }
 
     @Override
@@ -172,6 +181,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new MemberArgumentResolver(new AuthenticationContext()));
+        argumentResolvers.add(new ProposalContextArgumentResolver(localeResolver));
         super.addArgumentResolvers(argumentResolvers);
     }
 

@@ -30,17 +30,17 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
-import org.xcolab.view.i18n.I18nUtils;
-import org.xcolab.view.util.entity.flash.AlertMessage;
-import org.xcolab.view.util.entity.flash.ErrorMessage;
 import org.xcolab.util.CountryUtil;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.i18n.I18nUtils;
 import org.xcolab.view.pages.profile.beans.MessageBean;
 import org.xcolab.view.pages.profile.beans.NewsletterBean;
 import org.xcolab.view.pages.profile.beans.UserBean;
 import org.xcolab.view.pages.profile.utils.UserProfilePermissions;
 import org.xcolab.view.pages.profile.wrappers.UserProfileWrapper;
+import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.view.util.entity.flash.ErrorMessage;
 
 import java.io.IOException;
 

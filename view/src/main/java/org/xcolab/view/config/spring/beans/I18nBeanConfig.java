@@ -1,4 +1,4 @@
-package org.xcolab.view.config.spring;
+package org.xcolab.view.config.spring.beans;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

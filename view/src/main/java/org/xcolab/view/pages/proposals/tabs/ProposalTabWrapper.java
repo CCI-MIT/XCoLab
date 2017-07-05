@@ -1,7 +1,6 @@
 package org.xcolab.view.pages.proposals.tabs;
 
-import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,25 +9,25 @@ public class ProposalTabWrapper {
     private ProposalTab tab;
     private String displayName;
     private final HttpServletRequest request;
-    private final ProposalsContext context;
-    private final ProposalsPermissions permissions;
-    
-    public ProposalTabWrapper(ProposalTab tab, HttpServletRequest request, ProposalsContext context) {
+    private final ProposalContext proposalContext;
+
+    public ProposalTabWrapper(ProposalTab tab, HttpServletRequest request, ProposalContext proposalContext) {
         super();
         this.tab = tab;
         this.request = request;
-        this.context = context;
-        this.permissions = context.getPermissions(request);
+        this.proposalContext = proposalContext;
     }
     
     public ProposalTab getTab() {
         return tab;
     }
+
     public void setTab(ProposalTab tab) {
         this.tab = tab;
     }
+
     public int getActivityCount() {
-        return tab.getActivityCount(context, request);
+        return tab.getActivityCount(proposalContext, request);
     }
 
     public String getName() {
@@ -51,10 +50,10 @@ public class ProposalTabWrapper {
     }
     
     public boolean getCanEdit() {
-        return tab.getCanEdit(request);
+        return tab.getCanEdit(proposalContext);
     }
     
     public boolean getCanAccess() {
-        return tab.getCanAccess(request);
+        return tab.getCanAccess(proposalContext);
     }
 }

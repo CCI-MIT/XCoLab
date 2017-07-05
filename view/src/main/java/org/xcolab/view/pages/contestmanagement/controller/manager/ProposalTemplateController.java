@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
-import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.controller.AbstractProposalTemplateTabController;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
@@ -20,6 +19,7 @@ import org.xcolab.view.pages.contestmanagement.utils.ProposalTemplateLifecycleUt
 import org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.ProposalTemplateWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.List;

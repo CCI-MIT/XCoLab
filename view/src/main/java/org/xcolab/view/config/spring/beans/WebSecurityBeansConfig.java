@@ -1,4 +1,4 @@
-package org.xcolab.view.config.spring;
+package org.xcolab.view.config.spring.beans;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

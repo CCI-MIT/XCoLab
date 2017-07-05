@@ -5,9 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
@@ -21,11 +21,11 @@ import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
-import org.xcolab.view.pages.loginregister.SharedColabUtil;
-import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.view.pages.loginregister.SharedColabUtil;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -2,9 +2,9 @@ package org.xcolab.view.pages.search.items;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.search.pojo.SearchPojo;
 
 public class ContestSearchItem extends AbstractSearchItem {

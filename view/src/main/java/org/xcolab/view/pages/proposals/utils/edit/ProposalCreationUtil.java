@@ -16,12 +16,11 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.entity.utils.notifications.proposal.ProposalCreationNotification;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 public final class ProposalCreationUtil {
@@ -83,15 +82,16 @@ public final class ProposalCreationUtil {
         }
     }
 
-    public static void sendAuthorNotification(String baseUrl,
-            Proposal proposalWrapper, ContestPhase contestPhase, HttpServletRequest request) {
+    public static void sendAuthorNotification(ProposalContext proposalContext, String baseUrl,
+            Proposal proposalWrapper,
+            ContestPhase contestPhase) {
         try {
-            ContestClient contestClient = ProposalsContextUtil.getClients(request).getContestClient();
+            ContestClient contestClient = proposalContext.getClients().getContestClient();
             Contest contest = contestClient
                     .getContest(contestClient.getContestPhase(contestPhase.getContestPhasePK()).getContestPK());
 
             final ProposalClient proposalClient =
-                    ProposalsContextUtil.getClients(request).getProposalClient();
+                    proposalContext.getClients().getProposalClient();
             Proposal updatedProposal = proposalClient.getProposal(proposalWrapper.getProposalId());
             Contest contestMicro = contestClient.getContest(contest.getContestPK());
             new ProposalCreationNotification(updatedProposal, contestMicro, baseUrl).sendMessage();

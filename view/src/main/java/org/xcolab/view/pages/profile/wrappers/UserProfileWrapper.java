@@ -19,13 +19,13 @@ import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
-import org.xcolab.view.util.entity.ActivityUtil;
-import org.xcolab.view.util.entity.EntityGroupingUtil;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.profile.beans.BadgeBean;
 import org.xcolab.view.pages.profile.beans.MessageBean;
 import org.xcolab.view.pages.profile.beans.UserBean;
 import org.xcolab.view.pages.profile.entity.Badge;
+import org.xcolab.view.util.entity.ActivityUtil;
+import org.xcolab.view.util.entity.EntityGroupingUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;

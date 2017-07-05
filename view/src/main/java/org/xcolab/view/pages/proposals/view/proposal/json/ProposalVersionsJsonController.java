@@ -3,9 +3,7 @@ package org.xcolab.view.pages.proposals.view.proposal.json;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -22,7 +20,6 @@ import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.Objects;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;

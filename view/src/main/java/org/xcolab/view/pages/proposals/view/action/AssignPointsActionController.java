@@ -1,7 +1,6 @@
 package org.xcolab.view.pages.proposals.view.action;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,11 +14,9 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
-import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.AssignPointsBean;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -32,9 +29,6 @@ import javax.validation.Valid;
 @Controller
 public class AssignPointsActionController {
 
-    @Autowired
-    private ProposalsContext proposalsContext;
-
     private final Map<Long, Double> pointTypePercentageModifiers = new HashMap<>();
 
     private void initializePercentageModifiers(PointType pointType) {
@@ -46,14 +40,14 @@ public class AssignPointsActionController {
 
     @PostMapping({"/contests/{contestYear}/{contestUrlName}/phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/POINTS/savePointAssignments",
             "/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/POINTS/savePointAssignments"})
-    public void savePointAssignments(HttpServletRequest request, Model model,
-                                HttpServletResponse response, @Valid AssignPointsBean assignPointsBean,
-                                BindingResult result)
+    public void savePointAssignments(HttpServletRequest request, HttpServletResponse response,
+            Model model, ProposalContext proposalContext, Member currentMember,
+            @Valid AssignPointsBean assignPointsBean, BindingResult result)
             throws ProposalsAuthorizationException, IOException {
-        final Member currentMember = proposalsContext.getMember(request);
-        final Proposal proposal = proposalsContext.getProposal(request);
-        final Contest contest = proposalsContext.getContest(request);
-        final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
+
+        final Proposal proposal = proposalContext.getProposal();
+        final Contest contest = proposalContext.getContest();
+        final ContestPhase contestPhase = proposalContext.getContestPhase();
 
         if (result.hasErrors()) {
             response.sendRedirect(proposal.getProposalLinkUrl(contest, contestPhase.getContestPhasePK()) + "/tab/POINTS");
@@ -61,14 +55,13 @@ public class AssignPointsActionController {
         }
 
         // Security handling
-        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-        if (!ProposalTab.POINTS.getCanEdit(request)) {
+        if (!ProposalTab.POINTS.getCanEdit(proposalContext)) {
             response.sendRedirect(proposal.getProposalLinkUrl(contest, contestPhase.getContestPhasePK()) + "/tab/POINTS");
             return;
         }
 
         //first, delete the existing configuration
-        ProposalsContextUtil.getClients(request).getPointsClient()
+        proposalContext.getClients().getPointsClient()
                 .deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
 
         try {
@@ -101,7 +94,7 @@ public class AssignPointsActionController {
                     pointsDistributionConfiguration.setPercentage(percentage);
                     pointsDistributionConfiguration.setCreator(currentMember.getUserId());
 
-                    ProposalsContextUtil.getClients(request).getPointsClient()
+                    proposalContext.getClients().getPointsClient()
                             .createPointsDistributionConfiguration(pointsDistributionConfiguration);
 
                 }
@@ -115,7 +108,7 @@ public class AssignPointsActionController {
             //in case a (validation) error occurs, we simply delete all created configurations.
             //since we do client-side validations, this state will not be reached by regular uses
             // of the UI.
-            ProposalsContextUtil.getClients(request).getPointsClient().deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
+            proposalContext.getClients().getPointsClient().deletePointsDistributionConfigurationByProposalId(proposal.getProposalId());
             throw e;
         }
 

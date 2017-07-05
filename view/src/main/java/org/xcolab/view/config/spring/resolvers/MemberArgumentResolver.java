@@ -1,4 +1,4 @@
-package org.xcolab.view.auth.resolver;
+package org.xcolab.view.config.spring.resolvers;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.util.Assert;

@@ -8,10 +8,10 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
-import org.xcolab.view.util.entity.ActivityUtil;
 import org.xcolab.view.pages.feedswidget.FeedTypeDataProvider;
 import org.xcolab.view.pages.feedswidget.FeedsPreferences;
 import org.xcolab.view.pages.feedswidget.wrappers.SocialActivityWrapper;
+import org.xcolab.view.util.entity.ActivityUtil;
 import org.xcolab.view.util.pagination.SortFilterPage;
 
 import java.util.ArrayList;

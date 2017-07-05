@@ -2,8 +2,8 @@ package org.xcolab.view.config.rewrite.rules.legacy;
 
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
 
-import org.xcolab.view.config.rewrite.rules.RewriteRuleProvider;
 import org.xcolab.view.config.rewrite.SimpleRewriteBuilder;
+import org.xcolab.view.config.rewrite.rules.RewriteRuleProvider;
 
 public class LegacyNewsRewriteRules implements RewriteRuleProvider {
 

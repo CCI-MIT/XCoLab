@@ -4,7 +4,7 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.tabs.ProposalTabCanAccessAlgorithm;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextWrapper;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 public class PointsAccessAlgorithm implements ProposalTabCanAccessAlgorithm {
 
@@ -23,20 +23,20 @@ public class PointsAccessAlgorithm implements ProposalTabCanAccessAlgorithm {
     }
 
     @Override
-    public boolean canAccess(ProposalsContextWrapper contextWrapper) {
-        Contest contest = contextWrapper.getContest();
+    public boolean canAccess(ProposalContext proposalContext) {
+        Contest contest = proposalContext.getContest();
         final boolean pointsActive = contest != null && contest.getDefaultParentPointType() > 0;
         if (!pointsActive) {
             return false;
         }
 
-        ProposalsPermissions permissions = contextWrapper.getPermissions();
+        ProposalsPermissions permissions = proposalContext.getPermissions();
         final boolean canEdit = permissions.getIsTeamMember() || permissions.getCanAdminProposal();
         if (isEdit && !canEdit) {
             return false;
         }
 
-        final ContestClient contestClient = contextWrapper.getClients().getContestClient();
+        final ContestClient contestClient = proposalContext.getClients().getContestClient();
         int pointsAccessible = contestClient.getPointsAccessibleForActivePhaseOfContest(contest);
         if (isEdit) {
             final boolean editAllowed = pointsAccessible >= 2;

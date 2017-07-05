@@ -8,9 +8,9 @@ import org.joda.time.format.DateTimeFormatter;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.view.pages.contestmanagement.utils.ContestResourcesHtmlParserUtil;

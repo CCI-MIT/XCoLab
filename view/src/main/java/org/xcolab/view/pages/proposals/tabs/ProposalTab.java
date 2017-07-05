@@ -6,8 +6,7 @@ import org.xcolab.view.pages.proposals.tabs.access.ImpactAccessAlgorithm;
 import org.xcolab.view.pages.proposals.tabs.access.LegacyImpactAccessAlgorithm;
 import org.xcolab.view.pages.proposals.tabs.access.PointsAccessAlgorithm;
 import org.xcolab.view.pages.proposals.tabs.access.ScreeningAccessAlgorithm;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextWrapper;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -66,15 +65,15 @@ public enum ProposalTab {
         return this.ordinal() == 0;
     }
 
-    public boolean getCanAccess(HttpServletRequest request) {
-        return canAccessTabAlgorithm.canAccess(new ProposalsContextWrapper(request));
+    public boolean getCanAccess(ProposalContext proposalContext) {
+        return canAccessTabAlgorithm.canAccess(proposalContext);
     }
 
-    public boolean getCanEdit(HttpServletRequest request) {
-        return canEditAlgorithm.canAccess(new ProposalsContextWrapper(request));
+    public boolean getCanEdit(ProposalContext proposalContext) {
+        return canEditAlgorithm.canAccess(proposalContext);
     }
 
-    public int getActivityCount(ProposalsContext context, HttpServletRequest request) {
+    public int getActivityCount(ProposalContext context, HttpServletRequest request) {
         return activitiesCountAlgorithm.getActivityCount(context, request);
     }
 

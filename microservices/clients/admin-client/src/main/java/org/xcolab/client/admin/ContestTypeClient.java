@@ -77,6 +77,10 @@ public class ContestTypeClient {
         return new ContestType(id);
     }
 
+    public static ContestType getContestType(long id, String language) {
+        return new ContestType(id, language);
+    }
+
     public static String getProposalNames(List<Long> contestTypeIds, String plurality,
             String conjunction) {
         return getJoinedNameString(contestTypeIds, true, plurality, conjunction);

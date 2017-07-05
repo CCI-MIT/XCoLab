@@ -2,6 +2,7 @@ package org.xcolab.view.pages.proposals.permissions;
 
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
@@ -10,41 +11,40 @@ import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.util.MemberRoleChoiceAlgorithm;
+import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.pages.proposals.utils.context.ProposalContextHelper;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextImpl;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
+import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
 import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class ProposalsPermissions {
 
     private final boolean planIsEditable;
 
     private final long memberId;
+    private final Member member;
     private final boolean isLoggedIn;
 
     private final Proposal proposal;
     private final ContestPhase contestPhase;
     private final ContestStatus contestStatus;
-    private final HttpServletRequest request;
 
-    private final ProposalContextHelper proposalContextHelper;
+    private final ProposalClient proposalClient;
+    private final ContestClient contestClient;
 
 
-    public ProposalsPermissions(HttpServletRequest request, Proposal proposal, ContestPhase contestPhase) {
-        this.request = request;
-        this.proposalContextHelper = (ProposalContextHelper) request.getAttribute(
-                ProposalsContextImpl.PROPOSAL_CONTEST_HELPER);
+    public ProposalsPermissions(ClientHelper clientHelper, Member member, Proposal proposal, ContestPhase contestPhase) {
+        this.member = member;
+
+        this.proposalClient = clientHelper.getProposalClient();
+        this.contestClient = clientHelper.getContestClient();
 
         if (contestPhase != null) {
             final long contestPhaseTypeId = contestPhase.getContestPhaseType();
 
-            final ContestPhaseType contestPhaseType = proposalContextHelper.getClientHelper().getContestClient()
+            final ContestPhaseType contestPhaseType = clientHelper.getContestClient()
                     .getContestPhaseType(contestPhaseTypeId);
             String statusStr = contestPhaseType.getStatus();
             contestStatus = ContestStatus.valueOf(statusStr);
@@ -61,10 +61,14 @@ public class ProposalsPermissions {
                     && contestPhase.getPhaseActive();
 
         }
-        memberId = MemberAuthUtil.getMemberId(request);
-        isLoggedIn = memberId > 0;
+        this.memberId = member != null ? member.getId_() : 0;
+        this.isLoggedIn = this.memberId > 0;
         this.contestPhase = contestPhase;
         this.proposal = proposal;
+    }
+
+    public Member getMember() {
+        return member;
     }
 
     public boolean getCanReport() {
@@ -144,9 +148,10 @@ public class ProposalsPermissions {
         return getCanAdminAll() || isOwner();
     }
 
+
     public boolean getIsTeamMember() {
         return proposal != null && proposal.getProposalId() > 0
-                && ProposalsContextUtil.getClients(request).getProposalClient().isUserInProposalTeam(proposal.getProposalId(),memberId)
+                && proposalClient.isUserInProposalTeam(proposal.getProposalId(),memberId)
                 && isLoggedIn;
     }
 
@@ -168,7 +173,7 @@ public class ProposalsPermissions {
 
     private boolean isProposalMember() {
         return proposal != null && proposal.getProposalId() > 0 &&
-                ProposalsContextUtil.getClients(request).getProposalClient().isUserInProposalTeam(proposal.getProposalId(),memberId);
+                proposalClient.isUserInProposalTeam(proposal.getProposalId(),memberId);
     }
 
     public boolean getCanFellowActions() {
@@ -224,8 +229,8 @@ public class ProposalsPermissions {
         }
 
         try {
-            Contest latestProposalContest = proposalContextHelper.getClientHelper().getProposalClient().getCurrentContestForProposal(proposal.getProposalId());
-            ContestPhase activePhaseForContest = proposalContextHelper.getClientHelper().getContestClient().getActivePhase(latestProposalContest.getContestPK());
+            Contest latestProposalContest = proposalClient.getCurrentContestForProposal(proposal.getProposalId());
+            ContestPhase activePhaseForContest = contestClient.getActivePhase(latestProposalContest.getContestPK());
             boolean onlyPromoteIfThisIsNotTheLatestContestPhaseInContest = contestPhase.equals(activePhaseForContest);
             return !onlyPromoteIfThisIsNotTheLatestContestPhaseInContest && getCanAdminAll();
         }catch (ContestNotFoundException ignored){
@@ -259,7 +264,7 @@ public class ProposalsPermissions {
     private boolean wasProposalMovedElsewhere() {
 
         try {
-            final long currentContestId = proposalContextHelper.getClientHelper().getProposalClient()
+            final long currentContestId = proposalClient
                     .getCurrentContestForProposal(proposal.getProposalId()).getContestPK();
             return currentContestId != contestPhase.getContestPK();
         }catch(ContestNotFoundException ignored){
@@ -267,4 +272,5 @@ public class ProposalsPermissions {
         }
 
     }
+
 }

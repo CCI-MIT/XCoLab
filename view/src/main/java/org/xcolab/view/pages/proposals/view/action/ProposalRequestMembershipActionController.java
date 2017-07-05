@@ -1,10 +1,8 @@
 package org.xcolab.view.pages.proposals.view.action;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,8 +23,7 @@ import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.RequestMembershipBean;
 import org.xcolab.view.pages.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
@@ -46,17 +43,10 @@ public class ProposalRequestMembershipActionController {
     private static final String MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED = "Your request has been accepted <br />Comments: ";
     private static final String MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED = "Your request has been rejected <br />Comments: ";
 
-    private final ProposalsContext proposalsContext;
-
-    @Autowired
-    public ProposalRequestMembershipActionController(ProposalsContext proposalsContext) {
-        Assert.notNull(proposalsContext, "ProposalsContext bean is required");
-        this.proposalsContext = proposalsContext;
-    }
-
     @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/TEAM/requestMembership")
-    public void requestMembership(HttpServletRequest request, HttpServletResponse response, Model model,
-            Member sender, @Valid RequestMembershipBean requestMembershipBean,
+    public void requestMembership(HttpServletRequest request, HttpServletResponse response,
+            Model model, ProposalContext proposalContext, Member sender,
+            @Valid RequestMembershipBean requestMembershipBean,
             BindingResult result, @RequestParam("requestComment") String comment)
             throws IOException {
 
@@ -66,8 +56,8 @@ public class ProposalRequestMembershipActionController {
             return;
         }
 
-        final Proposal proposal = proposalsContext.getProposal(request);
-        final Contest contest = proposalsContext.getContest(request);
+        final Proposal proposal = proposalContext.getProposal();
+        final Contest contest = proposalContext.getContest();
 
         final String tabUrl = proposal.getProposalLinkUrl(contest) + "/tab/TEAM";
 
@@ -79,7 +69,7 @@ public class ProposalRequestMembershipActionController {
 
         final Member proposalAuthor = MembersClient.getMemberUnchecked(proposal.getAuthorId());
 
-        final ClientHelper clients = proposalsContext.getClients(request);
+        final ClientHelper clients = proposalContext.getClients();
         final MembershipClient membershipClient = clients.getMembershipClient();
         membershipClient.addRequestedMembershipRequest(proposal.getProposalId(),
                 sender.getUserId(), comment);
@@ -95,12 +85,12 @@ public class ProposalRequestMembershipActionController {
 
     @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/TEAM/inviteMember")
     public void invite(HttpServletRequest request, HttpServletResponse response, Model model,
-            Member sender, @Valid RequestMembershipInviteBean requestMembershipInviteBean,
-            BindingResult result)
+            ProposalContext proposalContext, Member sender,
+            @Valid RequestMembershipInviteBean requestMembershipInviteBean, BindingResult result)
             throws IOException {
 
-        final Proposal proposal = proposalsContext.getProposal(request);
-        final Contest contest = proposalsContext.getContest(request);
+        final Proposal proposal = proposalContext.getProposal();
+        final Contest contest = proposalContext.getContest();
         final String tabUrl = proposal.getProposalLinkUrl(contest) + "/tab/TEAM";
 
         String input = requestMembershipInviteBean.getInviteRecipient();
@@ -111,7 +101,7 @@ public class ProposalRequestMembershipActionController {
             return;
         }
 
-        final ClientHelper clients = proposalsContext.getClients(request);
+        final ClientHelper clients = proposalContext.getClients();
         final MembershipClient membershipClient = clients.getMembershipClient();
 
         String[] inputParts = input.split(" ");
@@ -143,22 +133,22 @@ public class ProposalRequestMembershipActionController {
 
     @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ADMIN/replyToMembershipRequest")
     public void respond(HttpServletRequest request, HttpServletResponse response, Model model,
-            Member loggedInMember, @RequestParam String approve,
+            ProposalContext proposalContext, Member loggedInMember, @RequestParam String approve,
             @RequestParam String comment, @RequestParam long requestId)
             throws IOException {
 
-        final Proposal proposal = proposalsContext.getProposal(request);
-        final Contest contest = proposalsContext.getContest(request);
+        final Proposal proposal = proposalContext.getProposal();
+        final Contest contest = proposalContext.getContest();
         final String tabUrl = proposal.getProposalLinkUrl(contest) + "/tab/ADMIN";
 
-        final ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        final ProposalsPermissions permissions = proposalContext.getPermissions();
         if (!permissions.getCanAdminProposal()) {
             AlertMessage.danger("Access denied!").flash(request);
             response.sendRedirect(tabUrl);
             return;
         }
 
-        final ClientHelper clients = ProposalsContextUtil.getClients(request);
+        final ClientHelper clients = proposalContext.getClients();
         final MembershipClient membershipClient = clients.getMembershipClient();
 
         long proposalId = proposal.getProposalId();

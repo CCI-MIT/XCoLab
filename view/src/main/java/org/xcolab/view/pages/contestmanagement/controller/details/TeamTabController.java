@@ -9,16 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.ContestTeamBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.ContestTeamWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

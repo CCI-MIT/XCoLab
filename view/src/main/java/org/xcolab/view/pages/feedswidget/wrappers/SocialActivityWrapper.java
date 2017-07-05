@@ -5,10 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.view.util.entity.activityEntry.DiscussionActivitySubType;
 import org.xcolab.view.util.entity.activityEntry.MemberSubActivityType;
 import org.xcolab.view.util.entity.activityEntry.ProposalActivitySubType;
-import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.io.Serializable;
 import java.util.Date;
