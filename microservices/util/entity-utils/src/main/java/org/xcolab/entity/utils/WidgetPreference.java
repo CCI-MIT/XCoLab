@@ -36,7 +36,7 @@ public abstract class WidgetPreference {
                 preferenceId = id;
             } else {
                 preferenceId = DEFAULT_ID;
-                allPreferenceIds.add(DEFAULT_ID);
+                //allPreferenceIds.add(DEFAULT_ID);
             }
             if(preferencesArray.has(preferenceId)) {
                 prefs = preferencesArray.getJSONObject(preferenceId);
