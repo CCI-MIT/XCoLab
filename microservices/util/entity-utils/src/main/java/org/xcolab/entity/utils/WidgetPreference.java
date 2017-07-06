@@ -28,8 +28,8 @@ public abstract class WidgetPreference {
 
             JSONObject preferencesArray = prefs.getJSONObject(PREFERENCES_JSON_OBJECT);
             //preferencesArray.keySet().stream().forEach(s -> allPreferenceIds.add(s));
-            for(String prefId: preferencesArray.keySet()){
-                allPreferenceIds.add(prefId);
+            for(int i=0;i<preferencesArray.names().length();i++){
+                allPreferenceIds.add(preferencesArray.names().get(i).toString());
             }
 
             if (id != null) {
