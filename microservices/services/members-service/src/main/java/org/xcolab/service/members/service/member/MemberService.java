@@ -98,9 +98,9 @@ public class MemberService {
 
     public Member register(String screenName, String password, String email, String firstName,
             String lastName, String shortBio, String country, Long facebookId, String openId,
-            Long imageId, Long liferayUserId, String googleId) {
+            Long imageId, Long liferayUserId, String googleId, String defaultLocale) {
         memberDao.createMember(screenName, hashPassword(password), email, firstName, lastName,
-                shortBio, country, facebookId, openId, imageId, liferayUserId, googleId);
+                shortBio, country, facebookId, openId, imageId, liferayUserId, googleId,defaultLocale);
         final Member member = memberDao.findOneByScreenName(screenName)
                 .orElseThrow(IllegalStateException::new);
         //TODO: centralize this ID in constant (see MemberRole enum)
@@ -111,10 +111,10 @@ public class MemberService {
 
     public Member registerWithHashedPassword(String screenName, String password, String email,
             String firstName, String lastName, String shortBio, String country, Long facebookId,
-            String openId, Long imageId, Long liferayUserId, String googleId) {
+            String openId, Long imageId, Long liferayUserId, String googleId, String defaultLocale) {
         return memberDao.getMember(liferayUserId).orElseGet(() -> {
             memberDao.createMember(screenName, password, email, firstName, lastName,
-                    shortBio, country, facebookId, openId, imageId, liferayUserId, googleId);
+                    shortBio, country, facebookId, openId, imageId, liferayUserId, googleId,defaultLocale);
             final Member member = memberDao.findOneByScreenName(screenName)
                     .orElseThrow(IllegalStateException::new);
             member.setAutoRegisteredMemberStatus(1);
