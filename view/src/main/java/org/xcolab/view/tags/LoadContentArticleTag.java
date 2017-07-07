@@ -6,7 +6,7 @@ import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
-import org.xcolab.view.i18n.I18nUtils;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.util.Locale;
 

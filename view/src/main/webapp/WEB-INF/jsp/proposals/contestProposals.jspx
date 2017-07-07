@@ -24,7 +24,7 @@
             <div class="c-Headline__fold">
                 <c:if test="${contest.hideRibbons and contestPhase.completed}">
                     <div class="fold-message">
-                        <h3>We’re tallying the votes… stay tuned for the results!</h3>
+                        <h3><spring:message code="contests.details.tallying" /> </h3>
                         <c:if test="${_isAdmin}">
                             <h4>Admin info: Ribbons are hidden for non-admin accounts.</h4>
                         </c:if>
@@ -82,21 +82,31 @@
                 <thead>
                     <tr class="c-Table__row--title">
                         <th class="c-Table__cell--title propname-authors">
-                            <span class="js-Tooltip
-" title="click to sort by name">
+                            <spring:message var="tooltipProposalName"
+                                    code="contests.details.tooltip.proposalname" />
+                            <span class="js-Tooltip" title="${tooltipProposalName}">
                                 <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=NAME&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'NAME' ? not sortFilterPage.sortAscending : true }" />
-                                <a href="${sortURL }">${contestType.proposalName} name</a>
+                                <a href="${sortURL }">
+                                    <spring:message code="contests.details.proposalname"
+                                                    arguments="${contestType.proposalName}" />
+                                </a>
                                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="NAME" />
                             </span>
                             /&#160;
-                            <span class="js-Tooltip" title="click to sort by author">
+                            <spring:message var="tooltipAuthors"
+                                            code="contests.details.tooltip.authors" />
+                            <span class="js-Tooltip" title="${tooltipAuthors}">
                                 <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=AUTHOR&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'AUTHOR' ? not sortFilterPage.sortAscending : true }" />
-                                <a href="${sortURL }">Author(s)</a>
+                                <a href="${sortURL }">
+                                    <spring:message code="contests.details.authors" />
+                                </a>
                                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="AUTHOR" />
                             </span>
                         </th>
                         <c:if test="${contestPhase.canVote or (contestPhase.completed and not contest.hideRibbons)}">
-                            <th class="c-Table__cell--title b-layout__center votes js-Tooltip" title="click to sort by number of votes">
+                            <spring:message var="tooltipVotes"
+                                            code="contests.details.tooltip.votes" />
+                            <th class="c-Table__cell--title b-layout__center votes js-Tooltip" title="${tooltipVotes}">
                                 <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=VOTES&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'VOTES' ? not sortFilterPage.sortAscending : true }" />
                                 <a href="${sortURL }">
                                     <img src="${_themeImageFolder}/icon-proposal-vote.png" />
@@ -105,7 +115,9 @@
                             </th>
                         </c:if>
                         <c:if test="${not contestPhase.canVote}">
-                            <th class="c-Table__cell--title b-layout__center supporters js-Tooltip" title="click to sort by number of supporters">
+                            <spring:message var="tooltipSupporters"
+                                            code="contests.details.tooltip.supporters" />
+                            <th class="c-Table__cell--title b-layout__center supporters js-Tooltip" title="${tooltipSupporters}">
                                 <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=SUPPORTERS&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'SUPPORTERS' ? not sortFilterPage.sortAscending : true }" />
                                 <a href="${sortURL }">
                                     <img src="${_themeImageFolder}/icon-proposal-thumb.png" />
@@ -113,7 +125,9 @@
                                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SUPPORTERS" />
                             </th>
                         </c:if>
-                        <th class="c-Table__cell--title b-layout__center comments js-Tooltip" title="click to sort by number of comments">
+                        <spring:message var="tooltipComments"
+                                        code="contests.details.tooltip.comments" />
+                        <th class="c-Table__cell--title b-layout__center comments js-Tooltip" title="${tooltipComments}">
                             <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=COMMENTS&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'COMMENTS' ? not sortFilterPage.sortAscending : true }" />
                             <a href="${sortURL }">
                                 <img src="${_themeImageFolder}/icon-list-comment.png" />
@@ -121,16 +135,23 @@
                             <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="COMMENTS" />
                         </th>
                         <c:if test="${not contestPhase.completed}">
+                            <spring:message var="tooltipModified"
+                                            code="contests.details.tooltip.modified" />
                             <th class="c-Table__cell--title b-layout__center modified">
-
                                 <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=MODIFIED&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'MODIFIED' ? not sortFilterPage.sortAscending : true }" />
-                                <a href="${sortURL }" class="js-Tooltip" title="click to sort by date">Modified</a>
+                                <a href="${sortURL }" class="js-Tooltip" title="${tooltipModified}">
+                                    <spring:message code="contests.details.modified" />
+                                </a>
                                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MODIFIED" />
                             </th>
                             <c:if test="${showContributorsColumn}">
+                                <spring:message var="tooltipContributors"
+                                                code="contests.details.tooltip.contributors" />
                                 <th class="c-Table__cell--title b-layout__center contributors">
                                     <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=CONTRIBUTORS&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'CONTRIBUTORS' ? not sortFilterPage.sortAscending : true }" />
-                                    <a href="${sortURL }" class="js-Tooltip" title="click to sort by contributor">Contributors</a>
+                                    <a href="${sortURL }" class="js-Tooltip" title="${tooltipContributors}">
+                                        <spring:message code="contests.details.contributors" />
+                                    </a>
                                     <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTRIBUTORS" />
                                 </th>
                             </c:if>

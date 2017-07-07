@@ -33,7 +33,7 @@ import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.CountryUtil;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.errors.ErrorText;
-import org.xcolab.view.i18n.I18nUtils;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.pages.profile.beans.MessageBean;
 import org.xcolab.view.pages.profile.beans.NewsletterBean;
 import org.xcolab.view.pages.profile.beans.UserBean;

@@ -8,7 +8,7 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 import org.xcolab.view.auth.AuthenticationService;
-import org.xcolab.view.i18n.I18nUtils;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.i18n.MemberLocaleResolver;
 
 @Configuration

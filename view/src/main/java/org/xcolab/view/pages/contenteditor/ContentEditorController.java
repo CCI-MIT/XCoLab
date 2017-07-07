@@ -18,7 +18,7 @@ import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
-import org.xcolab.view.i18n.I18nUtils;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.IOException;
 import java.util.List;
