@@ -48,6 +48,7 @@ public class VoteCsvConverter extends CsvConverter {
             "Email address",
             "Email is verified",
             "Email bounced",
+            "Vote date",
             "vote_is_valid",
             "confirmationEmailSendDate");
 
@@ -108,8 +109,8 @@ public class VoteCsvConverter extends CsvConverter {
             addValue(row, member != null ? member.hasLinkedSocialAccount() : "Member not found");
             addValue(row, member != null ? member.getEmailAddress() : "Member not found");
             addValue(row, member != null ? member.getIsEmailConfirmed() : "Member not found");
-            //TODO: add bounced emails
-            addValue(row, "unknown");
+            addValue(row, member != null ? member.getIsEmailBounced() : "Member not found");
+            addValue(row, vote.getCreateDate());
             addValue(row, vote.getIsValid());
             addValue(row, vote.getConfirmationEmailSendDate());
             addRow(row);
