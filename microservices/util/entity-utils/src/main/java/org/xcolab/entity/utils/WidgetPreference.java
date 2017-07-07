@@ -29,13 +29,15 @@ public abstract class WidgetPreference {
 
             JSONObject preferencesArray = prefs.getJSONObject(PREFERENCES_JSON_OBJECT);
             //preferencesArray.keySet().stream().forEach(s -> allPreferenceIds.add(s));
-            allPreferenceIds.addAll(preferencesArray.keySet());
+            for(int i=0;i<preferencesArray.names().length();i++){
+                allPreferenceIds.add(preferencesArray.names().get(i).toString());
+            }
 
             if (id != null) {
                 preferenceId = id;
             } else {
                 preferenceId = DEFAULT_ID;
-                allPreferenceIds.add(DEFAULT_ID);
+                //allPreferenceIds.add(DEFAULT_ID);
             }
             if (preferencesArray.has(preferenceId)) {
                 prefs = preferencesArray.getJSONObject(preferenceId);
@@ -49,6 +51,7 @@ public abstract class WidgetPreference {
             preferenceId = DEFAULT_ID;
         }
     }
+
 
     public abstract AttributeGetter<String> getConfigurationAttribute();
 
