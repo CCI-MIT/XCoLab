@@ -20,7 +20,12 @@ public class I18nBeanConfig {
         messageSource.setBasenames(
                 "i18n/homepage",
                 "i18n/register",
-                "i18n/contests");
+                "i18n/contests",
+                "i18n/profile",
+                "i18n/message",
+                "i18n/colab",
+                "i18n/search"
+        );
         messageSource.setDefaultEncoding("utf-8");
         return messageSource;
     }

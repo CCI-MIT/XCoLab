@@ -1,12 +1,12 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-        xmlns:jsp="http://java.sun.com/JSP/Page"
-        version="2.0">
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          version="2.0" xmlns:spring="http://www.springframework.org/tags">
   <jsp:directive.attribute name="target" type="java.lang.String" required="false" rtexprvalue="true" description="Blog Search URL" />
   <jsp:directive.attribute name="searchPhrase" type="java.lang.String" required="false" rtexprvalue="true" description="Search Phrase" />
 
   <div class="searchBlogLink">
-    <span>Didn't find what you wanted? </span>
+    <span><spring:message code="search.didnotfind"/></span>
     <b>
-      <a href="${target}">Search ${_colabName} News for ${searchPhrase}</a>
+      <a href="${target}"><spring:message code="search.colabnews" arguments="${_colabName},${searchPhrase}" argumentSeparator=","/></a>
     </b>
   </div></jsp:root>

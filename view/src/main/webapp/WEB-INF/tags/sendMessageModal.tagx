@@ -1,6 +1,7 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           version="2.0" xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+          xmlns:spring="http://www.springframework.org/tags"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <jsp:directive.attribute name="recipient" type="org.xcolab.client.members.pojo.Member" required="false" rtexprvalue="true" description="Recipient"/>
@@ -16,7 +17,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">
-                        Send <strong>${not empty recipient ? recipient.fullName : ''}</strong> a message
+                        <c:set var="argumentToSendUser" value="${not empty recipient ? recipient.fullName : ''}"/>
+                        <spring:message code="message.modal.sendUserMessage" arguments="${argumentToSendUser}"/>
+
                     </h4>
                 </div>
                 <form method="post" id="messageForm" action="/messaging/sendMessage"
@@ -38,7 +41,7 @@
                         </c:choose>
 
                         <div class="form-group">
-                            <label for="messageSubject">Subject: </label>
+                            <label for="messageSubject"><spring:message code="message.modal.subject"/> </label>
                             <c:if test="${not empty replyToMessage}">
                                 <c:set var="subject" value="RE: ${replyToMessage.subject}" />
                             </c:if>
@@ -63,8 +66,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="close" id="messageSendButton" class="c-Button__secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" id="messageSendButton" class="c-Button__primary">Send</button>
+                        <button type="close" id="messageSendButton" class="c-Button__secondary" data-dismiss="modal"><spring:message code="message.modal.buttons.cancel"/></button>
+                        <button type="submit" id="messageSendButton" class="c-Button__primary"><spring:message code="message.modal.buttons.send"/></button>
                     </div>
                 </form>
             </div>
@@ -72,6 +75,12 @@
         <!-- /popup login -->
         <div class="clearfix"><!-- --></div>
     </div>
+
+    <spring:message code="message.modal.buttons.notification.selectrecepient" var="selectRecipients"/>
+    <spring:message code="message.modal.buttons.notification.member" var="memberNotFoundMsg"/>
+    <spring:message code="message.modal.buttons.notification.notFound" var="memberNotFoundMsg2"/>
+    <spring:message code="message.modal.buttons.notification.limitexceeded" var="limitExceeded"/>
+    <spring:message code="message.modal.buttons.notification.limitexceeded2" var="limitExceeded2"/>
 
     <script type="text/javascript">
         <![CDATA[
@@ -84,14 +93,14 @@
 
                 if (currentSearchText.length != 0) {
                     noty({
-                        text: "The member " + currentSearchText + " could not be found!",
+                        text: "${memberNotFoundMsg} " + currentSearchText + " ${memberNotFoundMsg2}",
                         type: 'error'
                     });
                     return false;
                 }
                 numberOfRecipients = $userListRecipients.find("li").length;
                 if (numberOfRecipients == 0) {
-                    noty({text: "Please select at least one recipient", type: 'error'});
+                    noty({text: "${selectRecipients}", type: 'error'});
                     return false;
                 }
             }
@@ -99,9 +108,9 @@
             var numberOfMessagesLeft = parseInt($("#numberOfMessagesLeft").html());
             if (numberOfMessagesLeft < numberOfRecipients) {
                 noty({
-                    text: "You've exceeded your message limit for today. Please remove at least "
+                    text: "${limitExceeded} "
                     + (numberOfRecipients
-                    - numberOfMessagesLeft) + " recipients or wait 24 hours.", type: 'error'
+                    - numberOfMessagesLeft) + " ${limitExceeded2}", type: 'error'
                 });
                 return false;
             }

@@ -361,7 +361,7 @@
 						</form>
 					</td>
                     <td>
-                        <spring:message code="profile.account.delete.message" arguments="${_colabName}"
+                        <spring:message code="profile.account.delete.message" arguments="${_colabName}"/>
 
                     </td>
 				</tr>
@@ -424,6 +424,7 @@
     <spring:message code="profile.newsletter.notification.failed" var="newsletterFailed"/>
     <spring:message code="profile.sso.notification.successufull" var="ssoSuccess"/>
     <spring:message code="profile.sso.notification.failed" var="ssoFailed"/>
+
 	<script type="text/javascript">
 
 		function updateUploadBtnOffset() {
