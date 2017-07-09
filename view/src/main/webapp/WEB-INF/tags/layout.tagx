@@ -452,7 +452,7 @@
         <div class="c-Popup">
             <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_login').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a></div>
 
-            <h4><spring:message code="homepage.modals.login.message" arguments="${_colabName}" /> </h4>
+            <h4><collab:message code="homepage.modals.login.message" /> </h4>
             <c:choose>
                 <c:when test='${_authError != null}'>
                     <div class="c-Alert__error__message">${_authError.message}</div>
@@ -541,12 +541,10 @@
                     <img style="max-height:55px" src="${_themeImageFolder}/${_partnerColabLogo}" alt="${_partnerColabName}" />
                 </div>
                 <div style="margin-top: 15px;margin-bottom: 15px;">
-                    <spring:message code="homepage.modals.sso.message.phrase1"
-                                    arguments="${_partnerColabName},${_colabName}" />
+                    <collab:message code="homepage.modals.sso.message.phrase1" arguments="${_partnerColabName}" />
                 </div>
                 <div style="font-size: small;">
-                    <spring:message code="homepage.modals.sso.message.phrase2"
-                                    arguments="${_partnerColabName},${_colabName}" />
+                    <collab:message code="homepage.modals.sso.message.phrase2" arguments="${_partnerColabName}" />
                 </div>
                 <div class="clearfix"><!-- --></div>
                 <c:if test='${_showSsoPopup}'>

@@ -14,6 +14,15 @@ import static org.xcolab.util.attributes.i18n.LocalizableAttributeGetter.localiz
 
 public class ContestType implements Serializable {
 
+    private final static String PROPOSAL_PLACEHOLDER = "<proposal/>";
+    private final static String CONTEST_PLACEHOLDER = "<contest/>";
+    private final static String PROPOSALS_PLACEHOLDER = "<proposals/>";
+    private final static String CONTESTS_PLACEHOLDER = "<contests/>";
+    private final static String PROPOSAL_LC_PLACEHOLDER = "<proposal-lc/>";
+    private final static String CONTEST_LC_PLACEHOLDER = "<contest-lc/>";
+    private final static String PROPOSALS_LC_PLACEHOLDER = "<proposals-lc/>";
+    private final static String CONTESTS_LC_PLACEHOLDER = "<contests-lc/>";
+
     private final long id;
     private final String language;
 
@@ -166,6 +175,29 @@ public class ContestType implements Serializable {
 
     public boolean isActive() {
         return getAttribute(ContestTypeAttributeKey.IS_ACTIVE);
+    }
+
+    /**
+     * Formats the given String by replacing references to contest or proposal names.
+     * The following substitutions are made:
+     * <proposal/> -> Proposal
+     * <contest/> -> Contest
+     * <proposals/> -> Proposals
+     * <contests/> -> Contests
+     *
+     * Lowercase versions of all elements are available by using the -lc suffix, e.g. <proposal-lc/>.
+     * @param text The text to be formatted.
+     * @return A formatted String with proposal and contest names inserted.
+     */
+    public String format(String text) {
+        return text.replaceAll(PROPOSAL_PLACEHOLDER, getProposalName())
+                .replaceAll(PROPOSALS_PLACEHOLDER, getProposalNamePlural())
+                .replaceAll(CONTEST_PLACEHOLDER, getContestName())
+                .replaceAll(CONTESTS_PLACEHOLDER, getContestNamePlural())
+                .replaceAll(PROPOSAL_LC_PLACEHOLDER, getProposalNameLowercase())
+                .replaceAll(PROPOSALS_LC_PLACEHOLDER, getProposalNamePluralLowercase())
+                .replaceAll(CONTEST_LC_PLACEHOLDER, getContestNameLowercase())
+                .replaceAll(CONTESTS_LC_PLACEHOLDER, getContestNamePluralLowercase());
     }
 
     @Override
