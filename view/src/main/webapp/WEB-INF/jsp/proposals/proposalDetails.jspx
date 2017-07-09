@@ -17,6 +17,13 @@
         <jsp:directive.include file="./init_proposal_tab.jspx" />
         <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
+        <spring:message var="textShowHistory" code="contests.proposal.versions.showhistory" />
+        <spring:message var="textHideHistory" code="contests.proposal.versions.hidehistory" />
+        <script type="text/javascript">
+            var textShowHistory = '${textShowHistory}';
+            var textHideHistory = '${textHideHistory}';
+        </script>
+
 
         <div id="content">
             <div class="prop-left ${contestType.showProposalSummary ? '' : 'full-width'}">
@@ -31,8 +38,9 @@
 
 
                             <div class="edit-prop-butts" style="line-height: normal;">
-                                <a href="javascript:;" id="versionContainerTrigger" onclick="triggerHistoryVisibility();">Show
-                                    history</a>
+                                <a href="javascript:;" id="versionContainerTrigger" onclick="triggerHistoryVisibility();">
+                                    ${textShowHistory}
+                                </a>
                                 <span id="versionId" style="display: none;">${proposal.selectedVersion.version}</span>
                             </div>
 
@@ -46,21 +54,31 @@
                             </c:if>
 
                             <c:if test="${proposal.wasMovedToContest != null}">
-                                <div>This ${contestType.proposalName} was moved to: <collab:contestLink contest="${proposal.wasMovedToContest}" /></div>
+                                <div>
+                                    <collab:message code="contests.proposal.moving.movedto" contestType="${contestType}">
+                                        <spring:argument><collab:contestLink contest="${proposal.wasMovedToContest}" /></spring:argument>
+                                    </collab:message>
+                                </div>
                             </c:if>
 
                             <c:if test="${not empty targetMoveHistory}">
                                 <div>
                                     <c:choose>
                                         <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'MOVE_PERMANENTLY'}">
-                                            This ${contestType.proposalName} was moved here from <collab:contestLink contest="${targetMoveHistory.sourceContest}"/>
+                                            <collab:message code="contests.proposal.moving.movedfrom" contestType="${contestType}">
+                                                <spring:argument><collab:contestLink contest="${targetMoveHistory.sourceContest}"/></spring:argument>
+                                            </collab:message>
                                         </c:when>
                                         <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'COPY'}">
-                                            This ${contestType.proposalName} was reopened here from <collab:contestLink contest="${targetMoveHistory.sourceContest}"/>
+                                            <collab:message code="contests.proposal.moving.reopened" contestType="${contestType}">
+                                                <spring:argument><collab:contestLink contest="${targetMoveHistory.sourceContest}"/></spring:argument>
+                                            </collab:message>
                                         </c:when>
                                         <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'FORK'}">
-                                            This ${contestType.proposalName} was forked from <collab:proposalLink proposal="${targetMoveHistory.sourceProposal}"/>
-                                            in the ${contestType.contestName} <collab:contestLink contest="${targetMoveHistory.sourceContest}"/>
+                                            <collab:message code="contests.proposal.moving.forked" contestType="${contestType}">
+                                                <spring:argument><collab:proposalLink proposal="${targetMoveHistory.sourceProposal}"/></spring:argument>
+                                                <spring:argument><collab:contestLink contest="${targetMoveHistory.sourceContest}"/></spring:argument>
+                                            </collab:message>
                                         </c:when>
                                     </c:choose>
                                     <c:if test="${proposalsPermissions.canAdminAll}">
@@ -75,7 +93,11 @@
                                                 and (sourceMoveHistory.sourcePhaseId == null
                                                         or sourceMoveHistory.sourcePhaseId == contestPhase.contestPhasePK)}">
                                         <div>
-                                            This ${contestType.proposalName} was reopened in <collab:contestLink contest="${sourceMoveHistory.sourceContest}"/>
+                                            <collab:message code="contests.proposal.moving.reopenedin" contestType="${contestType}">
+                                                <spring:argument>
+                                                    <collab:contestLink contest="${sourceMoveHistory.sourceContest}"/>
+                                                </spring:argument>
+                                            </collab:message>
                                             <c:if test="${proposalsPermissions.canAdminAll}">
                                                 by <collab:userLinkSimple userId="${sourceMoveHistory.movingUser.userId}" text="${sourceMoveHistory.movingUser.screenName}"/>
                                             </c:if>
@@ -86,7 +108,7 @@
 
                             <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
                                 <div class="lastedited">
-                                    Currently viewing version from
+                                    <spring:message code="contests.proposal.versions.currentlyviewing" />
                                     <script>document.write(moment.unix(${proposal.selectedVersion.createDate.time} / 1000).format("MM/DD/YYYY hh:mm A"));
                                         var version = ${proposal.selectedVersion.version};
                                         triggerHistoryVisibility();
@@ -119,7 +141,7 @@
                     <div class="div1"><!--  --></div>
                 </c:if>
 
-                <h2>Description</h2>
+                <h2><spring:message code="contests.proposal.sections.description" /></h2>
                 <c:if test="${empty proposal.sections or fn:length(proposal.description) gt 0}">
                             ${proposal.description }
                 </c:if>
@@ -171,16 +193,26 @@
                     <div class="closepopuplogin">
                         <a href="javascript:;" onclick="jQuery('#popup_justVoted').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a>
                     </div>
-                    <h2 style="color: #66b035;">Thank you for voting!</h2>
+                    <h2 style="color: #66b035;">
+                        <spring:message code="contests.proposal.voting.thankyou" />
+                    </h2>
                     <div>
                         <p style="color: #545454; margin-top: 5px;">
-                            You just voted for <b>${proposal.name}</b> in the ${contestType.contestName} <b>${proposal.contest.contestName}</b>. <br />
-                            <br />
+                            <collab:message code="contests.proposal.voting.youjustvoted">
+                                <spring:argument>${proposal.name}</spring:argument>
+                                <spring:argument>${proposal.contest.contestName}</spring:argument>
+                            </collab:message>
+                            <br/><br/>
                             <c:if test="${not empty votingDeadline}">
-                                You can vote for one ${contestType.proposalName} in each ${contestType.contestName}, and can change your vote as many times as you’d like until ${votingDeadline}.<br/>
+                                <collab:message code="contests.proposal.voting.youcanvote" contestType="${contestType}">
+                                    <spring:argument>${votingDeadline}</spring:argument>
+                                </collab:message>
+                                <br/>
                             </c:if>
                         </p>
-                        <h4 style="color: #30a3fb;">Share your vote and invite others to vote, too:</h4>
+                        <h4 style="color: #30a3fb;">
+                            <spring:message code="contests.proposal.voting.share" />
+                        </h4>
                         <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="width: 205px;">
                             <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
                             <a class="addthis_button_twitter" id="addThisButton2" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>

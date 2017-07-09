@@ -87,8 +87,7 @@
                             <span class="js-Tooltip" title="${tooltipProposalName}">
                                 <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=NAME&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'NAME' ? not sortFilterPage.sortAscending : true }" />
                                 <a href="${sortURL }">
-                                    <spring:message code="contests.details.proposalname"
-                                                    arguments="${contestType.proposalName}" />
+                                    <collab:message code="contests.details.proposalname" contestType="${contestType}" />
                                 </a>
                                 <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="NAME" />
                             </span>

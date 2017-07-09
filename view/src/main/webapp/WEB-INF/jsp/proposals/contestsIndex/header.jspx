@@ -1,7 +1,7 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:spring="http://www.springframework.org/tags"
-          version="2.0">
+          version="2.0" xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
     <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
     <!--@elvariable id="showAllContests" type="java.lang.Boolean"-->
@@ -73,15 +73,9 @@
         <c:if test="${priorContestsExist}">
             <div class="show">
                 <div class="show-active">
-                    <spring:message var="selectorTextActive" code="contests.selector.active">
-                        <spring:argument>${contestType.contestNamePlural}</spring:argument>
-                    </spring:message>
-                    <spring:message var="selectorTextPrior" code="contests.selector.prior">
-                        <spring:argument>${contestType.contestNamePlural}</spring:argument>
-                    </spring:message>
-                    <spring:message var="selectorTextAll" code="contests.selector.all">
-                        <spring:argument>${contestType.contestNamePlural}</spring:argument>
-                    </spring:message>
+                    <collab:message var="selectorTextActive" code="contests.selector.active" contestType="${contestType}" />
+                    <collab:message var="selectorTextPrior" code="contests.selector.prior" contestType="${contestType}" />
+                    <collab:message var="selectorTextAll" code="contests.selector.all" contestType="${contestType}" />
                     <c:choose>
                         <c:when test="${showActiveContests }">
                             <a href="#" >${selectorTextActive}</a>
@@ -115,9 +109,7 @@
             <div class="divider"><!--  --></div>
             <div class="show">
                 <a href="${suggestionContestLink}">
-                    <spring:message code="contests.suggestnew">
-                        <spring:argument>${contestType.contestName}</spring:argument>
-                    </spring:message>
+                    <collab:message code="contests.suggestnew" contestType="${contestType}" />
                 </a>
             </div>
         </c:if>
@@ -132,9 +124,7 @@
                     <input type="hidden" name="sortAscending" value="${sortFilterPage.sortAscending }" />
                     <input type="hidden" name="showAllContests" value="${showAllContests }"/>
 
-                    <spring:message var="messageFilterText" code="contests.filter">
-                        <spring:argument>${contestType.contestNamePlural}</spring:argument>
-                    </spring:message>
+                    <collab:message var="messageFilterText" code="contests.filter" contestType="${contestType}" />
                     <input type="text" id="contestFilterInput" value="${sortFilterPage.filter }" placeholder="${messageFilterText}" name="filter" />
                     <c:if test="${not empty sortFilterPage.filter }">
                         <a href="javascript:;" id="contestsFilterClear">&#160;</a>
@@ -151,9 +141,9 @@
         <div id="archivedContestsMarkerContainer">
             <img src="${_themeImageFolder}/contests-archive.png" />
 
-            <spring:message code="contests.archived.message" arguments="${contestType.contestNamePlural}" />
+            <collab:message code="contests.archived.message" contestType="${contestType}" />
             <a href="${contestType.contestBaseUrl}">
-                <spring:message code="contests.archived.back" arguments="${contestType.contestNamePlural}" />
+                <collab:message code="contests.archived.back" contestType="${contestType}" />
             </a>
         </div>
     </c:if>
