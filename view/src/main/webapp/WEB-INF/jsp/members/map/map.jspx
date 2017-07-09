@@ -14,7 +14,7 @@
             display: inline-block;
         }
 
-        .tooltip {
+        .map-tooltip {
             color: #50b948;
             position: absolute;;
             font-size: 35px;
@@ -57,7 +57,7 @@
 
             <jsp:include page="map-svg.jspx"/>
 
-            <div class="tooltip"><!-- --></div>
+            <div class="map-tooltip"><!-- --></div>
             <div id="legend">
                 <span style="float: left">0</span>
                 <span id="legend-max" style="float: right; color: white;">100,000</span>
@@ -111,7 +111,7 @@
 
             d3.select("#legend-max").html(maxMembers);
 
-            var currentSelection = d3.select("body").select(".tooltip").append("span");
+            var currentSelection = d3.select("body").select(".map-tooltip").append("span");
 
             d3.select("body").selectAll("path")
                 .data(countryStats, function (d) {
