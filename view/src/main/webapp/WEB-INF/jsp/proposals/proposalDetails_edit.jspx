@@ -309,6 +309,12 @@
     </div>
     <iframe name="_fileUploadFrame" id="fileUploadFrame" class="hidden" style="display: none;"><!-- comment --></iframe>
 
+    <!-- TODO: replace with i18n message -->
+    <c:set var="acceptTosNotificationText" value="To create a ${contestType.proposalName} on the ${_colabName}, you must ACCEPT the terms of use and ${contestType.contestName} rules. Please click Accept to continue and save your ${contestType.proposalName}!" />
+    <script type="text/javascript">
+        var acceptTosNotificationText = '${acceptTosNotificationText}';
+    </script>
+
     <script type="text/javascript">
         var submitTimer;
 
@@ -326,7 +332,7 @@
 
         function closeAcceptTosPopup() {
             jQuery("#c-Popup__accept__TOS").fadeOut("fast");
-            noty({text: 'To create a proposal on Climate CoLab, you must ACCEPT the terms of use and contest rules. Please click "Accept" to continue and save your proposal.!',
+            noty({text: acceptTosNotificationText,
                 buttons: [
                     {
                         addClass: 'general-button red', text: 'ACCEPT', onClick: function($noty)

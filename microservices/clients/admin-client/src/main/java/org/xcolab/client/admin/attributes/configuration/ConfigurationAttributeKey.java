@@ -45,6 +45,11 @@ public final class ConfigurationAttributeKey {
                     .withCache()
                     .build();
 
+    public static final AttributeGetter<Boolean> REGISTRATION_IS_OPEN =
+            ConfigurationAttributes.newBooleanAttribute("REGISTRATION_IS_OPEN")
+                    .defaultValue(true)
+                    .build();
+
     public static final AttributeGetter<Long> DEFAULT_CONTEST_TYPE_ID =
             ConfigurationAttributes.newLongAttribute("DEFAULT_CONTEST_TYPE_ID")
                     .withCache().build();
