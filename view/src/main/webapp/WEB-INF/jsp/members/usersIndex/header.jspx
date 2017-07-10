@@ -24,7 +24,12 @@
 			</div>
 		</div>
 		<div class="c-Helpbox__text">
-			<spring:message code="community.page.help.text" arguments="${_colabName}"/>
+            <c:if test="${isRegistrationOpen}">
+				<spring:message code="community.page.help.text" arguments="${_colabName}"/>
+            </c:if>
+            <spring:message code="community.page.help.text2"/>
+            Send a message to a member by clicking on the screen
+			name below to open their profile and then selecting "Send message."
 		</div>
 		<script>
 			if (!Cookies.get("climatecolab_hide_members_msg")) {

@@ -115,6 +115,7 @@ public class MembersController {
         model.addAttribute("pointsActive", isPointsActive);
 
         model.addAttribute("permissions", membersPermissions);
+        model.addAttribute("isRegistrationOpen", ConfigurationAttributeKey.REGISTRATION_IS_OPEN.get());
 
         model.addAttribute("_activePageLink", "community");
         return "members/users";

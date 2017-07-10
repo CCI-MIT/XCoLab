@@ -55,8 +55,7 @@ public class FormatTimeSpanTag extends SimpleTagSupport {
         
         if (returnUnit) {
             getJspContext().getOut().append(unit.format(retVal));
-        }
-        else {
+        } else {
             getJspContext().getOut().append(String.valueOf(retVal));
         }
         

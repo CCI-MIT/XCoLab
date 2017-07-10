@@ -1,6 +1,8 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core" 
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld" version="2.0">
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+          xmlns:spring="http://www.springframework.org/tags"
+          version="2.0">
 
 	<!--@elvariable id="showCountdown" type="java.lang.Boolean"-->
 
@@ -27,14 +29,21 @@
 			<c:set var="subscribeContestURL" value="/contests/subscribeContest?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }"/>
 
 			<div class="c-TitleBar__actionButton c-TitleBar__element right">
-				<span class="js-Tooltip" title="Receive daily activity digests about this ${contestType.contestName} and its ${contestType.proposalNamePlural} via email or under 'My subscriptions'.">
+
+                <spring:message code="contests.details.subscribe.tooltip" var="tooltipSubscribe">
+                    <spring:argument>${contestType.contestName}</spring:argument>
+                    <spring:argument>${contestType.proposalNamePlural}</spring:argument>
+                </spring:message>
+				<span class="js-Tooltip" title="${tooltipSubscribe}">
 					<a href="${proposalsPermissions.canSubscribeContest ? subscribeContestURL : '#' }" onclick="if(!deferUntilLogin(this)) return false;" >
 						<c:choose>
 							<c:when test="${proposalsDisplayPermissions.canSeeSubscribeContestButton }">
-								<img src="${_themeImageFolder}/subscribe-light.png" />Subscribe
+								<img src="${_themeImageFolder}/subscribe-light.png" />
+                                <spring:message code="contests.details.subscribe" />
 							</c:when>
 							<c:otherwise>
-								<img src="${_themeImageFolder}/unsubscribe-light.png" />Unsubscribe
+								<img src="${_themeImageFolder}/unsubscribe-light.png" />
+                                <spring:message code="contests.details.unsubscribe" />
 							</c:otherwise>
 						</c:choose>
 					</a>

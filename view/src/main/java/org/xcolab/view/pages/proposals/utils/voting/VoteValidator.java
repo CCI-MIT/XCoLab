@@ -66,6 +66,10 @@ public class VoteValidator {
             return ValidationResult.INVALID_BLACKLISTED;
         }
 
+        if (remoteIp == null) {
+            return ValidationResult.VALID;
+        }
+        
         List<Member> usersWithSharedIP = MembersClient.findMembersByIp(remoteIp);
         usersWithSharedIP.remove(member);
         if (usersWithSharedIP.isEmpty()) {

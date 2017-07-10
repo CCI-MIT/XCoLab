@@ -1,4 +1,4 @@
-package org.xcolab.view.i18n;
+package org.xcolab.util.i18n;
 
 import org.xcolab.util.html.LabelStringValue;
 
@@ -9,7 +9,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class I18nUtils {
+public final class I18nUtils {
+
     public static final String MEMBER_LOCALE_SESSION_IDENTIFIER = "memberLocale";
     public static final Locale DEFAULT_LOCALE = Locale.US;
 
@@ -28,8 +29,23 @@ public class I18nUtils {
         selectOptions.sort(Comparator.comparing(LabelStringValue::getLable));
     }
 
+    private I18nUtils() {
+    }
 
     public static List<LabelStringValue> getSelectList(){
         return selectOptions;
+    }
+
+    public static boolean hasCapitalNouns(Locale locale) {
+        return hasCapitalNouns(locale.getLanguage());
+    }
+
+    public static boolean hasCapitalNouns(String language) {
+        if (language != null) {
+            if ("de".equalsIgnoreCase(language)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

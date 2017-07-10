@@ -3,29 +3,30 @@ package org.xcolab.client.admin.pojo;
 import org.xcolab.client.admin.attributes.contest.ContestTypeAttributeKey;
 import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.attributes.i18n.LocalizableAttributeGetter;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static org.xcolab.util.attributes.i18n.LocalizableAttributeGetter.*;
+import static org.xcolab.util.attributes.i18n.LocalizableAttributeGetter.localizable;
 
 public class ContestType implements Serializable {
 
     private final long id;
-    private final String locale;
+    private final String language;
 
     private final Map<AttributeGetter, Object> attributeCache = new HashMap<>();
 
     public ContestType(long id) {
         this.id = id;
-        this.locale = null;
+        this.language = null;
     }
 
-    public ContestType(long id, String locale) {
+    public ContestType(long id, String language) {
         this.id = id;
-        this.locale = locale;
+        this.language = language;
     }
 
     public ContestType withLocale(String locale) {
@@ -36,15 +37,15 @@ public class ContestType implements Serializable {
         return this.id;
     }
 
-    public String getLocale() {
-        return locale;
+    public String getLanguage() {
+        return language;
     }
 
     private <T> T getAttribute(AttributeGetter<T> getter) {
         //noinspection unchecked
         return (T) attributeCache.computeIfAbsent(getter, key -> {
             if (getter instanceof LocalizableAttributeGetter) {
-                return localizable(getter).get(locale, id);
+                return localizable(getter).get(language, id);
             }
             return getter.get(id);
         });
@@ -55,7 +56,11 @@ public class ContestType implements Serializable {
     }
 
     public String getContestNameLowercase() {
-        return getAttribute(ContestTypeAttributeKey.CONTEST_NAME).toLowerCase();
+        final String attribute = getAttribute(ContestTypeAttributeKey.CONTEST_NAME);
+        if (I18nUtils.hasCapitalNouns(language)) {
+            return attribute;
+        }
+        return attribute.toLowerCase();
     }
 
     public String getContestNamePlural() {
@@ -63,7 +68,11 @@ public class ContestType implements Serializable {
     }
 
     public String getContestNamePluralLowercase() {
-        return getAttribute(ContestTypeAttributeKey.CONTEST_NAME_PLURAL).toLowerCase();
+        final String attribute = getAttribute(ContestTypeAttributeKey.CONTEST_NAME_PLURAL);
+        if (I18nUtils.hasCapitalNouns(language)) {
+            return attribute;
+        }
+        return attribute.toLowerCase();
     }
 
     public String getProposalName() {
@@ -71,7 +80,11 @@ public class ContestType implements Serializable {
     }
 
     public String getProposalNameLowercase() {
-        return getAttribute(ContestTypeAttributeKey.PROPOSAL_NAME).toLowerCase();
+        final String attribute = getAttribute(ContestTypeAttributeKey.PROPOSAL_NAME);
+        if (I18nUtils.hasCapitalNouns(language)) {
+            return attribute;
+        }
+        return attribute.toLowerCase();
     }
 
     public String getProposalNamePlural() {
@@ -79,7 +92,11 @@ public class ContestType implements Serializable {
     }
 
     public String getProposalNamePluralLowercase() {
-        return getAttribute(ContestTypeAttributeKey.PROPOSAL_NAME).toLowerCase();
+        final String attribute = getAttribute(ContestTypeAttributeKey.PROPOSAL_NAME_PLURAL);
+        if (I18nUtils.hasCapitalNouns(language)) {
+            return attribute;
+        }
+        return attribute.toLowerCase();
     }
 
     public String getContestBaseUrl() {
