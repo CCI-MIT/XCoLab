@@ -9,25 +9,22 @@
     <!--@elvariable id="memberCategory" type="org.xcolab.client.members.pojo.MemberCategory"-->
     
 	<div id="bread" class="pro">
-		<a href="/members">Community</a>&#160; <img
+		<a href="/members"><spring:message code="colab.breadcrums.community"/> </a>&#160; <img
 			src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
-		<a href="/members">Members</a>
+		<a href="/members"><spring:message code="colab.breadcrums.members"/> </a>
 	</div>
 
 	<!-- HELP DIVS -->
 	<div class="c-Helpbox" id="help1" style="display: none;">
 		<div class="c-Helpbox__header">
-			<span class="c-Helpbox__header__title">Registration and Contacting Members</span>
+			<span class="c-Helpbox__header__title"><spring:message code="community.page.help.title"/> </span>
 			<div class="c-Helpbox__header__close">
 				<a href="javascript:;" onclick="Cookies.set('climatecolab_hide_members_msg', 'true'); jQuery('#help1').hide()">
 				<img src="${_themeImageFolder}/helpbox_close.png" width="20" height="20" alt="X" /></a>
 			</div>
 		</div>
 		<div class="c-Helpbox__text">
-			Anyone in the world can become a member of the ${_colabName}
-			community by&#160;<a href="/register">registering</a>
-			on the site. Send a message to a member by clicking on the screen
-			name below to open their profile and then selecting "Send message."
+			<spring:message code="community.page.help.text" arguments="${_colabName}"/>
 		</div>
 		<script>
 			if (!Cookies.get("climatecolab_hide_members_msg")) {
@@ -45,7 +42,7 @@
 
 	<div class="comm_disc-head">
 		<div class="comm_info-left members">
-        	<span>${usersCount}</span> Members
+            <span>${usersCount}</span> <spring:message code="community.page.members.count"/>
 		</div>
 		<div>
 
@@ -53,8 +50,9 @@
 				<c:set var="filterURL" value="/members?sortFilterPage.sortColumn=${sortFilterPage.sortColumn}&amp;sortFilterPage.sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}" />
 
 				<form action="${filterURL }" id="filterUsersForm" method="post">
-					<input class="comm_search" type="text" value="${sortFilterPage.filter }" placeholder="Filter users" name="filter" />
-					<button type="submit" class="c-Button__primary">Search</button>
+                    <spring:message code="community.page.members.search.placeholder" var="placeHolder"/>
+					<input class="comm_search" type="text" value="${sortFilterPage.filter }" placeholder="${placeHolder}" name="filter" />
+					<button type="submit" class="c-Button__primary"><spring:message code="community.page.members.search.button.search"/></button>
 				</form>
 			</div>
 

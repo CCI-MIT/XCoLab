@@ -2,7 +2,7 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          version="2.0">
+          version="2.0" xmlns:spring="http://www.springframework.org/tags">
 
     <!--@elvariable id="currentCategory" type="org.xcolab.client.comment.pojo.Category"-->
     <!--@elvariable id="categories" type="java.util.List<org.xcolab.client.comment.pojo.Category>"-->
@@ -27,9 +27,9 @@
         <collab:content articleId="${communityTopContentArticleId}" />
         <div id="content">
             <div id="bread" class="pro">
-                <a href="/members">Community</a>&#160;
+                <a href="/members"><spring:message code="colab.breadcrums.community"/></a>&#160;
                 <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
-                <a href="/discussion">Discussion</a>
+                <a href="/discussion"><spring:message code="colab.breadcrums.discussion"/></a>
                 <c:if test="${not empty currentCategory}">
                     &#160;
                     <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
@@ -39,16 +39,18 @@
 
             <div class="c-Comment__threads">
                 <div>
-                    <h3>${empty currentCategory ? 'All Discussions' : currentCategory.name}</h3>
+                    <spring:message code="discussion.categorypage.alldiscussions" var="allDiscussions"/>
+                    <h3>${empty currentCategory ? allDiscussions : currentCategory.name}</h3>
                     <div class="p-Discussion__row">
                         <div class="p-Discussion__left">
                             <div class="b-Spacing ${not empty currentCategory ? 'separatorBelow' : ''}">
 
-                                <span class="c-Count"><span class="c-Count__number">${threads.size()}</span> discussions</span>
+                                <span class="c-Count"><span class="c-Count__number">${threads.size()}</span>&#160;<spring:message code="discussion.categorypage.count"/></span>
 
-                                <a onclick="if(!deferUntilLogin(this)) return false;" class="b-Spacing__inline--large" href="/discussion/threads/create">
+                                <a onclick="if(!deferUntilLogin(this)) {return false;
+}" class="b-Spacing__inline--large" href="/discussion/threads/create">
                                     <img style="vertical-align: middle;" height="30"
-                                         src="${_themeImageFolder}/icon_new-topic.png" /> new discussion
+                                         src="${_themeImageFolder}/icon_new-topic.png" />&#160;<spring:message code="discussion.categorypage.newdiscussion"/>
                                 </a>
                             </div>
 
@@ -64,7 +66,8 @@
 
                             <c:set var="unsubscribeUrl" value="/dicussion/unsubscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
                             <a class="subscribeLinkSmall" href="${isSubscribed ? unsubscribeUrl : subscribeUrl}"
-                               onclick="if(!deferUntilLogin(this)) return false;">
+                               onclick="if(!deferUntilLogin(this)) {return false;
+}">
                                 <img src="${_themeImageFolder}/subscribe_small_2.png" /> ${isSubscribed ? 'Unsubscribe' : 'Subscribe'}
                             </a>
                         </div>
@@ -79,28 +82,28 @@
                             <th class="c-Table__cell--title">
                                 <c:set var="sortURL" value="${baseUrl}?sortColumn=TITLE&amp;sortAscending=${!sortAscending}" />
 
-                                <a class="js-Tooltip" title="click to sort by title" href="${sortURL }">Title</a>
+                                <a class="js-Tooltip" title="click to sort by title" href="${sortURL }"><spring:message code="discussion.categorypage.table.title"/></a>
                                 <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="TITLE" />
                             </th>
 
                             <th class="c-Table__cell--title">
                                 <c:set var="sortURL" value="${baseUrl}?sortColumn=REPLIES&amp;sortAscending=${!sortAscending}" />
 
-                                <a class="js-Tooltip" title="click to sort by replies" href="${sortURL }">Replies</a>
+                                <a class="js-Tooltip" title="click to sort by replies" href="${sortURL }"><spring:message code="discussion.categorypage.table.replies"/></a>
                                 <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="REPLIES" />
                             </th>
 
                             <th class="c-Table__cell--title">
                                 <c:set var="sortURL" value="${baseUrl}?sortColumn=LAST_COMMENTER&amp;sortAscending=${!sortAscending}" />
 
-                                <a class="js-Tooltip" title="click to sort by last commenter" href="${sortURL }">Last Commenter</a>
+                                <a class="js-Tooltip" title="click to sort by last commenter" href="${sortURL }"><spring:message code="discussion.categorypage.table.lastcommenter"/></a>
                                 <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="LAST_COMMENTER" />
                             </th>
 
                             <th class="c-Table__cell--title">
                                 <c:set var="sortURL" value="${baseUrl}?sortColumn=DATE&amp;sortAscending=${!sortAscending}" />
 
-                                <a class="js-Tooltip" title="click to sort by date" href="${sortURL }">Date</a>
+                                <a class="js-Tooltip" title="click to sort by date" href="${sortURL }"><spring:message code="discussion.categorypage.table.date" /></a>
                                 <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="DATE" />
                             </th>
                         </tr>
@@ -117,9 +120,9 @@
 
                     <div class="p-Discussion__right c-Comment__threads__sidebar">
                         <div class="comm_list">
-                            <h2>Categories</h2>
+                            <h2><spring:message code="discussion.categorypage.categories"/> </h2>
                             <ul class="discussionCategories">
-                                <li><a href="/discussion">All Discussions</a></li>
+                                <li><a href="/discussion"><spring:message code="discussion.categorypage.alldiscussions"/></a></li>
                                 <c:forEach var="category" items="${categories}">
                                     <li><a href="${category.linkUrl}">${category.name}</a></li>
                                 </c:forEach>

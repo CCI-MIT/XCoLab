@@ -1,38 +1,39 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
-        version="2.0">
+          version="2.0" xmlns:spring="http://www.springframework.org/tags">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout>
         <jsp:directive.include file="init.jspx"/>
      <div id="content">
         <div id="bread" class="pro">
-            <a href="/members">Community</a>&#160;
+            <a href="/members"><spring:message code="colab.breadcrums.community"/></a>&#160;
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
-            <a href="/discussion">Discussion</a>&#160;
+            <a href="/discussion"><spring:message code="colab.breadcrums.discussion"/></a>&#160;
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
             <!-- TODO: add url - does not currently exist -->
-            <a href="/discussion">Create Category</a>&#160;
+            <a href="/discussion"><spring:message code="colab.breadcrums.createcategory"/></a>&#160;
         </div>
 
-        <h1>Create new category</h1>
+        <h1><spring:message code="discussion.categoryadd.title"/></h1>
         <div class="addthread">
             <div class="c-Comment__new">
                 <c:set var="addCategoryUrl" value="/discussion/category/createCategory" />
                 <form id="addThreadForm" action="${addCategoryUrl }" method="post">
                     <div>
-                        <label class="portlet-form-label">Title: <br />
+                        <label class="portlet-form-label"><spring:message code="discussion.categoryadd.form.title"/><br />
                             <input class="portlet-form-input-field input_long" name="title" maxlength="255" style="width:660px;" type="text" value="" />
                         </label>
                     </div>
                     <div>
-                        <label class="portlet-form-label">Description: <br />
+                        <label class="portlet-form-label"><spring:message code="discussion.categoryadd.form.description"/><br />
                             <textarea class="portlet-form-input-field profile_about" name="description" cols="20" rows="2" style="width: 660px; height: 100px;"><!-- --></textarea>
                         </label>
                     </div>
                     <div>
-                        <input type="submit" class="c-Button__primary" value="Add" />
-                        <a class="c-Button__secondary" href="/discussion">Cancel</a>
+                        <spring:message code="discussion.categoryadd.form.buttons.add" var="addDisc"/>
+                        <input type="submit" class="c-Button__primary" value="${addDisc}" />
+                        <a class="c-Button__secondary" href="/discussion"><spring:message code="discussion.categoryadd.form.buttons.cancel"/></a>
                     </div>
                 </form>
             </div>

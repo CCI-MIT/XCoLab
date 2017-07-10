@@ -24,6 +24,9 @@ public class I18nBeanConfig {
                 "i18n/profile",
                 "i18n/message",
                 "i18n/colab",
+                "i18n/subscription",
+                "i18n/community",
+                "i18n/discussion",
                 "i18n/search"
         );
         messageSource.setDefaultEncoding("utf-8");
