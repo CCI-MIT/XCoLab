@@ -1,6 +1,6 @@
 var itemsPerPage = 10;
 var defaultPhaseId = -1;
-var totalCount = 0
+var totalCount = 0;
 function loadHistory(page) {
     // Load the page with items of the current contest phase
     if (page == -1 && getPhaseId() != defaultPhaseId) {
@@ -52,7 +52,7 @@ function addPagination(prev,next,currentPage,totalPages){
     $('#versions').find('> div > div > table > tbody').append('<tr><td colspan="3" style="text-align:center !important; background-color: white;">' + output + '</td></tr>');
 }
 
-function triggerHistoryVisibility(){
+function triggerHistoryVisibility() {
     var $versions = $('#versions');
     if ($versions.hasClass('hidden')) {
         if (getVersion() != -1) {
@@ -61,13 +61,11 @@ function triggerHistoryVisibility(){
             loadHistory(-1);
         }
 
-        $('#versionContainerTrigger').text("Hide history");
-
-    }
-    else  {
+        $('#versionContainerTrigger').text(textHideHistory);
+    } else  {
         $versions.slideUp( "slow", function() {
             $('#versions').addClass('hidden');
-            $('#versionContainerTrigger').text("Show history");
+            $('#versionContainerTrigger').text(textShowHistory);
         });
     }
 }

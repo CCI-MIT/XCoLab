@@ -21,7 +21,7 @@
     <div class="popupreg_form">
 
         <div class="popupreg_head">
-            <h1><spring:message code="register.header.joinmessage" arguments="${_colabName}" /></h1>
+            <h1><collab:message code="register.header.joinmessage" /></h1>
         </div>
 
         <c:if test="${(_isFacebookSsoActive or _isGoogleSsoActive or _isSharedColab) and not isSsoLogin}">

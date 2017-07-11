@@ -30,10 +30,7 @@
 
 			<div class="c-TitleBar__actionButton c-TitleBar__element right">
 
-                <spring:message code="contests.details.subscribe.tooltip" var="tooltipSubscribe">
-                    <spring:argument>${contestType.contestName}</spring:argument>
-                    <spring:argument>${contestType.proposalNamePlural}</spring:argument>
-                </spring:message>
+                <collab:message code="contests.details.subscribe.tooltip" var="tooltipSubscribe" contestType="${contestType}" />
 				<span class="js-Tooltip" title="${tooltipSubscribe}">
 					<a href="${proposalsPermissions.canSubscribeContest ? subscribeContestURL : '#' }" onclick="if(!deferUntilLogin(this)) return false;" >
 						<c:choose>

@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 public class ProposalTabWrapper {
 
     private ProposalTab tab;
-    private String displayName;
     private final HttpServletRequest request;
     private final ProposalContext proposalContext;
 
@@ -35,10 +34,11 @@ public class ProposalTabWrapper {
     }
     
     public String getDisplayName() {
-        if (displayName == null) {
-            displayName = tab.getDisplayName();
-        }
-        return displayName;
+        return tab.getDisplayName();
+    }
+
+    public String getDisplayNameMessageCode() {
+        return tab.getDisplayNameMessageCode();
     }
     
     public boolean isDefault() {

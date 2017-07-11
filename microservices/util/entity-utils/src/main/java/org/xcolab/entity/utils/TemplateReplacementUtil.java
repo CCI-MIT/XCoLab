@@ -12,11 +12,6 @@ import javax.mail.internet.InternetAddress;
 
 public final class TemplateReplacementUtil {
 
-    private final static String PROPOSAL_PLACEHOLDER = "<proposal/>";
-    private final static String CONTEST_PLACEHOLDER = "<contest/>";
-    private final static String PROPOSALS_PLACEHOLDER = "<proposals/>";
-    private final static String CONTESTS_PLACEHOLDER = "<contests/>";
-
     private TemplateReplacementUtil() {
     }
 
@@ -28,10 +23,7 @@ public final class TemplateReplacementUtil {
             if (contestType == null) {
                 contestType = ContestTypeClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
             }
-            return text.replaceAll(PROPOSAL_PLACEHOLDER, contestType.getProposalName())
-                    .replaceAll(PROPOSALS_PLACEHOLDER, contestType.getProposalNamePlural())
-                    .replaceAll(CONTEST_PLACEHOLDER, contestType.getContestName())
-                    .replaceAll(CONTESTS_PLACEHOLDER, contestType.getContestNamePlural());
+            return contestType.format(text);
     }
 
     public static InternetAddress getAdminFromEmailAddress() {
