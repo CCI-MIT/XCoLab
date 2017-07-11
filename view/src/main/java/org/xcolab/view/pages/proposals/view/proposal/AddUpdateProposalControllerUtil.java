@@ -55,7 +55,7 @@ public final class AddUpdateProposalControllerUtil {
 
         final Proposal2Phase p2p = proposalContext.getProposal2Phase();
         ProposalUpdateHelper proposalUpdateHelper = new ProposalUpdateHelper(request,
-                proposalContext, updateProposalSectionsBean, proposalContext.getProposal(), p2p, memberId);
+                proposalContext, updateProposalSectionsBean, proposal, p2p, memberId);
         proposalUpdateHelper.updateProposal();
 
         final ActivitiesClient activitiesClient = clients.getActivitiesClient();
