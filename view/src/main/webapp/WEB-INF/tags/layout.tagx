@@ -772,6 +772,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"
             integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"><!-- --></script>
 
+    <!-- CKEditor incompatibility with jquery and bootstrap -->
+    <script>
+        /* <![CDATA[ */
+        $.fn.modal.Constructor.prototype.enforceFocus = function() {
+            modal_this = this
+            $(document).on('focusin.modal', function (e) {
+                if (modal_this.$element[0] !== e.target && !modal_this.$element.has(e.target).length
+                        && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_select')
+                        && $(e.target.parentNode).hasClass('cke_contents cke_reset')
+                        && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_text')) {
+                    modal_this.$element.focus()
+                }
+            })
+        };
+
+        /* ]]> */
+    </script>
     <!-- Resolve widgets -->
     <xcolab:script src="${_themeJsFolder}/widgetLoader.js" />
 
@@ -801,6 +818,10 @@
 
     <!-- Spin.js -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['spin.js']}" src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js" />
+
+    <xcolab:script src="${_themeJsFolder}/proposals/jquery.spin.js"/>
+
+    <xcolab:script src="${_themeJsFolder}/proposals/jquery.scrolltable.js"/>
 
     <!-- AutoSuggest -->
     <!-- TODO: where is this used? -->
