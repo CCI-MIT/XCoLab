@@ -328,6 +328,7 @@ CREATE TABLE `members_Member` (
   `modifiedDate` datetime DEFAULT NULL,
   `passwordModifiedDate` datetime DEFAULT NULL,
   `country` varchar(75) DEFAULT NULL,
+  `state` varchar(50) null,
   `shortBio` text,
   `facebookId` bigint(20) DEFAULT NULL,
   `googleId` varchar(50) DEFAULT NULL,

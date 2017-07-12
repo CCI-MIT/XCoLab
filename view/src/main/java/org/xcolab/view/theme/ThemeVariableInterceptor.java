@@ -73,8 +73,8 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
 
             final ServerEnvironment serverEnvironment =
                     PlatformAttributeKey.PLATFORM_SERVER_ENVIRONMENT.get();
-            modelAndView.addObject("_isProduction",
-                    serverEnvironment == ServerEnvironment.PRODUCTION);
+            final boolean isProductionEnvironment = serverEnvironment == ServerEnvironment.PRODUCTION;
+            modelAndView.addObject("_isProduction", isProductionEnvironment);
 
             ColabTheme activeTheme = ConfigurationAttributeKey.ACTIVE_THEME.get();
 
@@ -109,8 +109,8 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject("_colabUrl", PlatformAttributeKey.PLATFORM_COLAB_URL.get());
             modelAndView
                     .addObject("_colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
-            modelAndView.addObject("_googleAnalyticsKey",
-                    ConfigurationAttributeKey.GOOGLE_ANALYTICS_KEY.get());
+            final String googleAnalyticsKey = ConfigurationAttributeKey.GOOGLE_ANALYTICS_KEY.get();
+            modelAndView.addObject("_googleAnalyticsKey", googleAnalyticsKey);
 
             modelAndView
                     .addObject("_betaRibbonShow", ConfigurationAttributeKey.BETA_RIBBON_SHOW.get());

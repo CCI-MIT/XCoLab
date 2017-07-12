@@ -99,16 +99,18 @@ public class SectionFocusAreaFilter {
             if (filterExceptionContestIds.contains(contest.getContestPK())) {
                 continue;
             }
-            FocusArea focusArea = OntologyClientUtil.getFocusArea(contest.getFocusAreaId());
-            List<OntologyTerm> contestTerms =
-                OntologyClientUtil.getOntologyTermsForFocusArea(focusArea);
-            for (OntologyTerm requiredTerm : requiredTerms) {
-                List<OntologyTerm> requiredDescendantTerms =
-                    OntologyClientUtil.getAllOntologyTermDescendant(requiredTerm.getId_());
-                requiredDescendantTerms.add(requiredTerm);
-                if (!CollectionUtils.containsAny(requiredDescendantTerms, contestTerms)) {
-                    i.remove();
-                    break;
+            if (contest.getHasFocusArea()) {
+                FocusArea focusArea = OntologyClientUtil.getFocusArea(contest.getFocusAreaId());
+                List<OntologyTerm> contestTerms =
+                        OntologyClientUtil.getOntologyTermsForFocusArea(focusArea);
+                for (OntologyTerm requiredTerm : requiredTerms) {
+                    List<OntologyTerm> requiredDescendantTerms =
+                            OntologyClientUtil.getAllOntologyTermDescendant(requiredTerm.getId_());
+                    requiredDescendantTerms.add(requiredTerm);
+                    if (!CollectionUtils.containsAny(requiredDescendantTerms, contestTerms)) {
+                        i.remove();
+                        break;
+                    }
                 }
             }
 

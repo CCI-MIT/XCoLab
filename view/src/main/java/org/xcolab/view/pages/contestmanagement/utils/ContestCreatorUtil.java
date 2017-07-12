@@ -66,8 +66,7 @@ public final class ContestCreatorUtil {
     }
 
     private static PlanTemplate getOrCreateDefaultTemplate() {
-        final long defaultTemplateId = ConfigurationAttributeKey
-                .DEFAULT_CONTEST_TEMPLATE_ID.get();
+        final long defaultTemplateId = ConfigurationAttributeKey.DEFAULT_CONTEST_TEMPLATE_ID.get();
         try {
             if (defaultTemplateId > 0) {
                 return PlanTemplateClientUtil.getPlanTemplate(defaultTemplateId);

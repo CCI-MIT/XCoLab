@@ -79,10 +79,11 @@ public final class OntologyClientUtil {
 
 
     public static Boolean isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(
-            Long focusAreaId,
-            Long ontologyTermId) {
-        return client
-                .isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(focusAreaId,
+            Long focusAreaId, Long ontologyTermId) {
+        if (focusAreaId == null) {
+            return false;
+        }
+        return client.isAnyOntologyTermOfFocusAreaIdADescendantOfOntologyTermId(focusAreaId,
                         ontologyTermId);
     }
 

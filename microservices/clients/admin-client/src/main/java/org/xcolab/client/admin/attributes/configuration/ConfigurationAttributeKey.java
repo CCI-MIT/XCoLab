@@ -1,12 +1,16 @@
 package org.xcolab.client.admin.attributes.configuration;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.attributes.i18n.LocalizableAttributeGetter;
+import org.xcolab.util.attributes.wrappers.TransformedAttribute;
 import org.xcolab.util.enums.theme.ColabTheme;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.regex.Pattern;
 
 public final class ConfigurationAttributeKey {
@@ -29,12 +33,12 @@ public final class ConfigurationAttributeKey {
 
     public static final AttributeGetter<String> COLAB_URL_PRODUCTION =
             ConfigurationAttributes.newStringAttribute("COLAB_URL_PRODUCTION")
-                    .withCache()
                     .defaultValue(PlatformAttributeKey.PLATFORM_COLAB_URL)
                     .build();
     public static final AttributeGetter<String> BLOG_URL =
             ConfigurationAttributes.newStringAttribute("BLOG_URL")
-                    .withCache().build();
+                    .defaultValue("")
+                    .build();
     public static final AttributeGetter<ColabTheme> ACTIVE_THEME =
             ConfigurationAttributes.newEnumAttribute("ACTIVE_THEME", ColabTheme.class)
                     .withCache()
@@ -52,7 +56,8 @@ public final class ConfigurationAttributeKey {
 
     public static final AttributeGetter<Long> DEFAULT_CONTEST_TYPE_ID =
             ConfigurationAttributes.newLongAttribute("DEFAULT_CONTEST_TYPE_ID")
-                    .withCache().build();
+                    .defaultValue(0L)
+                    .build();
     public static final AttributeGetter<Long> DEFAULT_CONTEST_SCHEDULE_ID =
             ConfigurationAttributes.newLongAttribute("DEFAULT_CONTEST_SCHEDULE_ID")
                     .defaultValue(0L)
@@ -63,57 +68,61 @@ public final class ConfigurationAttributeKey {
                     .build();
     public static final AttributeGetter<String> DEFAULT_TIME_ZONE_ID =
             ConfigurationAttributes.newStringAttribute("DEFAULT_TIME_ZONE_ID")
-                    .withCache().build();
+                    .defaultValue(TimeZone.getDefault().getDisplayName())
+                    .build();
     public static final AttributeGetter<String> GOOGLE_ANALYTICS_KEY =
             ConfigurationAttributes.newStringAttribute("GOOGLE_ANALYTICS_KEY")
-                    .withCache().build();
+                    .withCache()
+                    .defaultValue("")
+                    .build();
 
 
     //SSO Configuration
-    public static final AttributeGetter<Boolean> GOOGLE_SSO_IS_ACTIVE =
-            ConfigurationAttributes.newBooleanAttribute("GOOGLE_SSO_IS_ACTIVE")
-                    .defaultValue(true)
-                    .build();
     public static final AttributeGetter<String> GOOGLE_AUTH_CLIENT_ID =
             ConfigurationAttributes.newStringAttribute("GOOGLE_AUTH_CLIENT_ID")
+                    .defaultValue("")
                     .build();
     public static final AttributeGetter<String> GOOGLE_AUTH_CLIENT_SECRET =
             ConfigurationAttributes.newStringAttribute("GOOGLE_AUTH_CLIENT_SECRET")
                     .build();
+    public static final AttributeGetter<Boolean> GOOGLE_SSO_IS_ACTIVE =
+            ConfigurationAttributes.newBooleanAttribute("GOOGLE_SSO_IS_ACTIVE")
+                    .defaultValue(TransformedAttribute.of(GOOGLE_AUTH_CLIENT_ID, StringUtils::isNotEmpty))
+                    .build();
 
     public static final AttributeGetter<String> GOOGLE_RECAPTCHA_SITE_KEY =
             ConfigurationAttributes.newStringAttribute("GOOGLE_RECAPTCHA_SITE_KEY")
+                    .defaultValue("")
                     .build();
     public static final AttributeGetter<String> GOOGLE_RECAPTCHA_SITE_SECRET_KEY =
             ConfigurationAttributes.newStringAttribute("GOOGLE_RECAPTCHA_SITE_SECRET_KEY")
                     .build();
     public static final AttributeGetter<Boolean> GOOGLE_RECAPTCHA_IS_ACTIVE =
             ConfigurationAttributes.newBooleanAttribute("GOOGLE_RECAPTCHA_IS_ACTIVE")
-                    .defaultValue(true)
+                    .defaultValue(TransformedAttribute.of(GOOGLE_RECAPTCHA_SITE_KEY, StringUtils::isNotEmpty))
                     .build();
 
-
-    public static final AttributeGetter<Boolean> FACEBOOK_SSO_IS_ACTIVE =
-            ConfigurationAttributes.newBooleanAttribute("FACEBOOK_SSO_IS_ACTIVE")
-                    .defaultValue(true)
-                    .build();
     public static final AttributeGetter<String> FACEBOOK_APPLICATION_ID =
             ConfigurationAttributes.newStringAttribute("FACEBOOK_APPLICATION_ID")
+                    .defaultValue("")
                     .build();
     public static final AttributeGetter<String> FACEBOOK_APPLICATION_SECRET =
             ConfigurationAttributes.newStringAttribute("FACEBOOK_APPLICATION_SECRET")
                     .build();
+    public static final AttributeGetter<Boolean> FACEBOOK_SSO_IS_ACTIVE =
+            ConfigurationAttributes.newBooleanAttribute("FACEBOOK_SSO_IS_ACTIVE")
+                    .defaultValue(TransformedAttribute.of(FACEBOOK_APPLICATION_ID, StringUtils::isNotEmpty))
+                    .build();
     public static final AttributeGetter<Boolean> FACEBOOK_VERIFIED_REQUIRED =
             ConfigurationAttributes.newBooleanAttribute("FACEBOOK_VERIFIED_REQUIRED")
+                    .defaultValue(false)
                     .build();
 
 
     //MyEmma configuration
-    public static final AttributeGetter<Boolean> IS_MY_EMMA_ACTIVE =
-            ConfigurationAttributes.newBooleanAttribute("IS_MY_EMMA_ACTIVE")
-                    .build();
     public static final AttributeGetter<String> MY_EMMA_ACCOUNT_ID =
             ConfigurationAttributes.newStringAttribute("MY_EMMA_ACCOUNT_ID")
+                    .defaultValue("")
                     .build();
     public static final AttributeGetter<String> MY_EMMA_GROUP_ID =
             ConfigurationAttributes.newStringAttribute("MY_EMMA_GROUP_ID")
@@ -123,6 +132,10 @@ public final class ConfigurationAttributeKey {
                     .build();
     public static final AttributeGetter<String> MY_EMMA_PRIVATE_API_KEY =
             ConfigurationAttributes.newStringAttribute("MY_EMMA_PRIVATE_API_KEY")
+                    .build();
+    public static final AttributeGetter<Boolean> IS_MY_EMMA_ACTIVE =
+            ConfigurationAttributes.newBooleanAttribute("IS_MY_EMMA_ACTIVE")
+                    .defaultValue(TransformedAttribute.of(MY_EMMA_ACCOUNT_ID, StringUtils::isNotEmpty))
                     .build();
 
     //Messaging settings
@@ -191,7 +204,8 @@ public final class ConfigurationAttributeKey {
     //Shared CoLab configuration
     public static final AttributeGetter<Boolean> IS_SHARED_COLAB =
             ConfigurationAttributes.newBooleanAttribute("IS_SHARED_COLAB")
-                    .defaultValue(false).build();
+                    .defaultValue(false)
+                    .build();
     public static final AttributeGetter<String> SHARED_COLAB_NAMESPACE =
             ConfigurationAttributes.newStringAttribute("SHARED_COLAB_NAMESPACE")
                     .build();
@@ -210,9 +224,11 @@ public final class ConfigurationAttributeKey {
     //Social media share text
     public static final LocalizableAttributeGetter<String> OPEN_GRAPH_SHARE_TITLE =
             ConfigurationAttributes.newLocalizedStringAttribute("OPEN_GRAPH_SHARE_TITLE")
+                    .defaultValue(COLAB_NAME)
                     .buildLocalizable();
     public static final LocalizableAttributeGetter<String> OPEN_GRAPH_SHARE_DESCRIPTION =
             ConfigurationAttributes.newLocalizedStringAttribute("OPEN_GRAPH_SHARE_DESCRIPTION")
+                    .defaultValue("")
                     .buildLocalizable();
     public static final LocalizableAttributeGetter<String> META_PAGE_DESCRIPTION =
             ConfigurationAttributes.newLocalizedStringAttribute("META_PAGE_DESCRIPTION")
@@ -231,10 +247,12 @@ public final class ConfigurationAttributeKey {
     //Impact tab configuration
     public static final AttributeGetter<Boolean> IMPACT_TAB_IS_ACTIVE =
             ConfigurationAttributes.newBooleanAttribute("IMPACT_TAB_IS_ACTIVE")
-                    .defaultValue(false).build();
+                    .defaultValue(false)
+                    .build();
     public static final AttributeGetter<List<Long>> IMPACT_TAB_EXCLUDED_ONTOLOGY_TERM_IDS =
             ConfigurationAttributes.newIdListAttribute("IMPACT_TAB_EXCLUDED_ONTOLOGY_TERM_IDS")
-                    .defaultValue(Collections.emptyList()).build();
+                    .defaultValue(Collections.emptyList())
+                    .build();
 
 
     //Misc features
@@ -244,7 +262,8 @@ public final class ConfigurationAttributeKey {
                     .buildLocalizable();
     public static final AttributeGetter<String> MEMBERS_DEFAULT_SORT_COLUMN =
             ConfigurationAttributes.newStringAttribute("MEMBERS_DEFAULT_SORT_COLUMN")
-                    .defaultValue("").build();
+                    .defaultValue("")
+                    .build();
 
     // Proposal feature flags
     public static final LocalizableAttributeGetter<String> PROPOSALS_SAVE_BUTTON_TEXT =
@@ -267,6 +286,7 @@ public final class ConfigurationAttributeKey {
     //Misc feature flags
     public static final AttributeGetter<Boolean> BETA_RIBBON_SHOW =
             ConfigurationAttributes.newBooleanAttribute("BETA_RIBBON_SHOW")
+                    .defaultValue(false)
                     .build();
     public static final AttributeGetter<Boolean> SHOW_SEARCH_MENU_ITEM =
             ConfigurationAttributes.newBooleanAttribute("SHOW_SEARCH_MENU_ITEM")
@@ -278,9 +298,11 @@ public final class ConfigurationAttributeKey {
                     .build();
     public static final AttributeGetter<Boolean> PUBLISH_JUDGING_RESULTS =
             ConfigurationAttributes.newBooleanAttribute("PUBLISH_JUDGING_RESULTS")
+                    .defaultValue(true)
                     .build();
     public static final AttributeGetter<Boolean> IS_POINTS_ACTIVE =
             ConfigurationAttributes.newBooleanAttribute("IS_POINTS_ACTIVE")
+                    .defaultValue(true)
                     .build();
     public static final AttributeGetter<Boolean> CONTESTS_ALLOW_OPEN_PROPOSALS =
         ConfigurationAttributes.newBooleanAttribute("CONTESTS_ALLOW_OPEN_PROPOSALS")
@@ -292,18 +314,23 @@ public final class ConfigurationAttributeKey {
                     .build();
     public static final AttributeGetter<Boolean> FLAGGING_ALLOW_MEMBERS =
             ConfigurationAttributes.newBooleanAttribute("FLAGGING_ALLOW_MEMBERS")
+                    .defaultValue(false)
                     .build();
     public static final AttributeGetter<Boolean> SHOW_CONTEST_COUNTDOWN =
             ConfigurationAttributes.newBooleanAttribute("SHOW_CONTEST_COUNTDOWN")
+                    .defaultValue(true)
                     .build();
     public static final AttributeGetter<Boolean> FILTER_PROFANITY =
             ConfigurationAttributes.newBooleanAttribute("FILTER_PROFANITY")
+                    .defaultValue(false)
                     .build();
     public static final AttributeGetter<Boolean> SHOW_CONTESTS_DISPLAY_OPTIONS =
             ConfigurationAttributes.newBooleanAttribute("SHOW_CONTESTS_DISPLAY_OPTIONS")
+                    .defaultValue(true)
                     .build();
     public static final AttributeGetter<Boolean> GENERATE_SCREEN_NAME =
             ConfigurationAttributes.newBooleanAttribute("GENERATE_SCREEN_NAME")
+                    .defaultValue(false)
                     .build();
 
     public static final AttributeGetter<Boolean> DISPLAY_FIRST_NAME_LAST_NAME =
@@ -315,18 +342,22 @@ public final class ConfigurationAttributeKey {
     //Configuration of Solve's header bar
     public static final AttributeGetter<Boolean> MIT_HEADER_BAR_SHOW =
             ConfigurationAttributes.newBooleanAttribute("MIT_HEADER_BAR_SHOW")
-                    .defaultValue(false).build();
+                    .defaultValue(false)
+                    .build();
     public static final LocalizableAttributeGetter<String> MIT_HEADER_BAR_LINK_TEXT =
             ConfigurationAttributes.newLocalizedStringAttribute("MIT_HEADER_BAR_LINK_TEXT")
-                    .defaultValue("").buildLocalizable();
+                    .defaultValue("")
+                    .buildLocalizable();
     public static final AttributeGetter<String> MIT_HEADER_BAR_LINK_URL =
             ConfigurationAttributes.newStringAttribute("MIT_HEADER_BAR_LINK_URL")
-                    .defaultValue("").build();
+                    .defaultValue("")
+                    .build();
 
     //Configuration of Collection Cards
     public static final AttributeGetter<Boolean> COLAB_USES_CARDS =
             ConfigurationAttributes.newBooleanAttribute("COLAB_USES_CARDS")
-                    .defaultValue(true).build();
+                    .defaultValue(false)
+                    .build();
 
     //Portlet preferences config
     //TODO: allow localizing portlet preferences

@@ -80,10 +80,10 @@ public class OntologyTabController extends AbstractTabController {
 
         Contest contest = getContest();
         Long focusAreaId = contest.getFocusAreaId();
-        if (focusAreaId <= 0) {
+        if (focusAreaId == null) {
             FocusArea focusArea = new FocusArea();
 
-            focusArea.setName(" Focus area for " + contest.getContestShortName());
+            focusArea.setName("Focus area for " + contest.getContestShortName());
             focusArea.setOrder_(0);
             focusArea = OntologyClientUtil.createFocusArea(focusArea);
             focusAreaId = focusArea.getId();
