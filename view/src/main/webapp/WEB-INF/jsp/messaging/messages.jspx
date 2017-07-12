@@ -8,7 +8,7 @@
     <spring:message code="message.messages.title" var="title"/>
 <xcolab:layout title="${title}">
     <collab:content articleId="${communityTopContentArticleId}" />
-    <!--@elvariable id="messagingBean" type="org.xcolab.portlets.messaging.beans.MessagingBean"-->
+    <!--@elvariable id="messagingBean" type="org.xcolab.view.pages.messaging.beans.MessagingBean"-->
     <div id="content">
     <div id="bread" class="pro">
         <a href="/members">Community</a>
@@ -50,7 +50,7 @@
                     <table class="c-Table">
                         <thead>
                             <tr class="c-Table__row--title">
-                                <th class="c-Table__cell--title"></th>
+                                <th class="c-Table__cell--title"><!-- --></th>
                                 <th class="c-Table__cell--title"><spring:message code="message.messages.form.subject"/> </th>
                                 <spring:message code="message.messages.form.from" var="fromType"/>
                                 <spring:message code="message.messages.form.to" var="toType"/>
@@ -61,7 +61,6 @@
                         </thead>
                         <tbody>
                             <c:forEach var="message" items="${messagingBean.dataPage.messages}" varStatus="x">
-                                <!--@elvariable id="message" type="org.xcolab.portlets.messaging.beans.MessageBean"-->
                                 <tr class="c-Table__row">
                                     <td class="c-Table__cell">
                                         <c:if test="${messagingBean.type == 'INBOX'}">

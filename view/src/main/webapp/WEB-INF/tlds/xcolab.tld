@@ -12,27 +12,6 @@
     <uri>http://climatecolab.org/tags/xcolab_1.0</uri>
 
     <tag>
-        <name>formatTimeSpan</name>
-        <tag-class>org.xcolab.view.taglibs.xcolab.tags.FormatTimeSpanTag</tag-class>
-        <body-content>empty</body-content>
-
-        <attribute>
-            <name>value</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-            <type>java.lang.Long</type>
-        </attribute>
-
-        <attribute>
-            <name>returnUnit</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-            <type>java.lang.Boolean</type>
-        </attribute>
-  	
-    </tag>
-
-    <tag>
         <description>Retrieves the message with the given code, or text if code isn't resolvable.
             The HTML escaping flag participates in a page-wide or application-wide setting
             (i.e. by HtmlEscapeTag or a "defaultHtmlEscape" context-param in web.xml).</description>

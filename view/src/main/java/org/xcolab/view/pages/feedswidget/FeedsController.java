@@ -22,6 +22,7 @@ public class FeedsController {
 
 		return showFeed(request, response, sortFilterPage, model,false);
 	}
+
     @GetMapping("/feedswidget")
     public String showFeedWidget(HttpServletRequest request, HttpServletResponse response,
 			SortFilterPage sortFilterPage, Model model) {
@@ -32,7 +33,7 @@ public class FeedsController {
 			SortFilterPage sortFilterPage, Model model, Boolean isWidget) {
 
 		FeedsPreferences preferences = new FeedsPreferences("fullfeed");
-        if(!isWidget){
+        if (!isWidget) {
             preferences.setFeedStyle("FULL");
             preferences.setFeedMaxLength(25);
             preferences.setFeedSize(25);
@@ -43,6 +44,7 @@ public class FeedsController {
 		model.addAttribute("feedStyle", preferences.getFeedStyle());
 		model.addAttribute("portletTitle", preferences.getPortletTitle());
 		model.addAttribute("seeMoreLinkShown", preferences.getSeeMoreLinkShown());
-		return preferences.getFeedType().getViewAndpopulateModel(request, response, sortFilterPage, preferences, model);
+		return preferences.getFeedType()
+                .getViewAndpopulateModel(request, response, sortFilterPage, preferences, model);
 	}
 }

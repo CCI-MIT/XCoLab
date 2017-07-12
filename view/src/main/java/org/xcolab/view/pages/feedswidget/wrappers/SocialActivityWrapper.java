@@ -1,11 +1,11 @@
 package org.xcolab.view.pages.feedswidget.wrappers;
 
-import com.ocpsoft.pretty.time.PrettyTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.time.DurationFormatter;
 import org.xcolab.view.util.entity.activityEntry.DiscussionActivitySubType;
 import org.xcolab.view.util.entity.activityEntry.MemberSubActivityType;
 import org.xcolab.view.util.entity.activityEntry.ProposalActivitySubType;
@@ -21,7 +21,6 @@ public class SocialActivityWrapper implements Serializable {
 
     private final static Logger _log = LoggerFactory.getLogger(SocialActivityWrapper.class);
     private static final long serialVersionUID = 1L;
-    private static final PrettyTime timeAgoConverter = new PrettyTime();
     private static final int MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
     private final ActivityEntry activity;
@@ -96,7 +95,7 @@ public class SocialActivityWrapper implements Serializable {
     }
     
     public String getActivityDateAgo() {
-        return timeAgoConverter.format(new Date(activity.getCreateDate().getTime()));
+        return DurationFormatter.forRequestLocale().format(activity.getCreateDate());
     }
     
     public boolean isOdd() {

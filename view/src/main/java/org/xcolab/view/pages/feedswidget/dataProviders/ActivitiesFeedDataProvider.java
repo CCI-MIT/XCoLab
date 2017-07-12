@@ -26,11 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 
 	@Override
-	public String populateModel(HttpServletRequest request,
-								HttpServletResponse response, SortFilterPage sortFilterPage,
-								FeedsPreferences feedsPreferences, Model model) {
-
-
+	public String populateModel(HttpServletRequest request, HttpServletResponse response,
+            SortFilterPage sortFilterPage, FeedsPreferences feedsPreferences, Model model) {
 
         Map<String, String[]> parameters = request.getParameterMap();
         final int pageSize = feedsPreferences.getFeedSize();
@@ -69,7 +66,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
         List<Member> staffList = MembersClient
                 .listMembers(memberCategory.getCategoryName(), null, null, null, true, 0,
                         Integer.MAX_VALUE);
-        if(staffList!= null &&! staffList.isEmpty()) {
+        if (staffList!= null &&! staffList.isEmpty()) {
             for (Member m : staffList){
                 idsToExclude.put(m.getId_(),m.getUserId());
             }
@@ -124,6 +121,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
 
         return "feedswidget/activities";
     }
+
     private static int getDaysBetween(Date d1, Date d2){
         return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
     }

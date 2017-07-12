@@ -3,13 +3,15 @@
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld" version="2.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
+    <!--@elvariable id="activities" type="java.util.List<org.xcolab.view.pages.feedswidget.wrappers.SocialActivityWrapper>"-->
+
         <div class="alignright" style="display:none;">
             <a href="/feedswidget/generateDump">activities in CSV format</a>
         </div>
         <div class="clearfix"><!--  --></div>
         <h2>${portletTitle}</h2>
         <c:if test="${_isAdmin}">
-        <a href="/feedswidget/editPreferences" class="c-Button__admin">Edit preferences</a><br/>
+            <a href="/feedswidget/editPreferences" class="c-Button__admin">Edit preferences</a><br/>
         </c:if>
         <c:choose>
         <c:when test="${empty activities  }">
@@ -17,14 +19,16 @@
         </c:when>
         <c:when test="${feedStyle == 'FULL' }">
             <div class="c-Table fullWidth">
-                <c:forEach items="${activities }" var="activity">
+                <c:forEach items="${activities}" var="activity">
                     <div id="activitiesTable">
                         <div class="c-TableList__row ${activity.odd ? 'odd' : '' }">
                             <div class="c-TableList__item p-Homepage__activitybox__${activity.type.displayName}" ><!--  --></div>
                             <div class="c-TableList__item" style="width: 750px; margin-top: 20px;">
                                 <c:out value="${activity.body}" escapeXml="false" />
                             </div>
-                            <h5 class="c-TableList__item right" style="margin-top: 20px; margin-right:10px;">${activity.activityDateAgo}</h5>
+                            <h5 class="c-TableList__item right" style="margin-top: 20px; margin-right:10px;">
+                                ${activity.activityDateAgo}
+                            </h5>
                         </div>
                     </div>
                 </c:forEach>
@@ -34,11 +38,11 @@
                 <c:choose>
 
                     <c:when test="${empty filterUserId }">
-                        <c:set var="prevURL" value="/activities?page=${sortFilterPage.page - 1}"></c:set>
+                        <c:set var="prevURL" value="/activities?page=${sortFilterPage.page - 1}"/>
                     </c:when>
                     <c:otherwise>
 
-                        <c:set var="prevURL" value="/activities?page=${sortFilterPage.page - 1}&amp;userId=${filterUserId}"></c:set>
+                        <c:set var="prevURL" value="/activities?page=${sortFilterPage.page - 1}&amp;userId=${filterUserId}"/>
 
                     </c:otherwise>
                 </c:choose>
@@ -51,10 +55,10 @@
                 <div class="alignright">
                     <c:choose>
                         <c:when test="${empty filterUserId }">
-                            <c:set var="nextURL" value="/activities?page=${sortFilterPage.page + 1}"></c:set>
+                            <c:set var="nextURL" value="/activities?page=${sortFilterPage.page + 1}"/>
                         </c:when>
                         <c:otherwise>
-                            <c:set var="nextURL" value="/activities?page=${sortFilterPage.page + 1}&amp;userId=${filterUserId}"></c:set>
+                            <c:set var="nextURL" value="/activities?page=${sortFilterPage.page + 1}&amp;userId=${filterUserId}"/>
 
                         </c:otherwise>
                     </c:choose>

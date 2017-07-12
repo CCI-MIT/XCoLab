@@ -16,7 +16,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.types.TypeProvider;
-import org.xcolab.util.time.HumanTime;
+import org.xcolab.util.time.DurationFormatter;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -83,8 +83,7 @@ public class CommentThread extends AbstractCommentThread {
 
     @JsonIgnore
     public String getLastActivityDateFormatted() {
-        //TODO: handle locale specific formatting
-        return HumanTime.exactly(new Date().getTime() - getLastActivityDate().getTime());
+        return DurationFormatter.forRequestLocale().format(getLastActivityDate());
     }
 
     @JsonIgnore

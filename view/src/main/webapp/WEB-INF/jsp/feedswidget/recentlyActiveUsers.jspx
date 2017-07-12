@@ -2,8 +2,10 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <div class="comm_rightcol-bdr">
+
         <h3>Recently active</h3><br />
-        <c:forEach items="${recentlyActiveUsers }" var="member">
+
+        <c:forEach items="${recentlyActiveUsers}" var="member">
             <div class="comm_rightcol-time">
                 ${member.lastActivityDateAgo}
             </div>

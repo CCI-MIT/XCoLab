@@ -11,13 +11,9 @@
 			<img src="${contest.logoPath}" width="52" height="52" alt="Contest Image" />
 		</div>
 		<h1>${contest.contestShortName}</h1>
-		<c:if test="${contestPhase.active and contestPhase.millisecondsTillEnd > 0 and showCountdown}">
+		<c:if test="${contestPhase.active and not empty contestPhase.phaseEndDate and showCountdown}">
 			<div class="days-left">
-				<span>
-					<collab:formatTimeSpan value="${contestPhase.millisecondsTillEnd }" />
-				</span>
-				<collab:formatTimeSpan value="${contestPhase.millisecondsTillEnd }" returnUnit="true" />
-				until ${contestPhase.name} ends
+                ${contestPhase.durationTillEndFormatted} until ${contestPhase.name} ends
 			</div>
 		</c:if>
 	</div>

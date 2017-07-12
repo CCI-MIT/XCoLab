@@ -14,6 +14,7 @@ import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.time.DurationFormatter;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -179,9 +180,14 @@ public class ContestPhase extends AbstractContestPhase {
         return this.getPhaseActive();
     }
 
-    public long getMillisecondsTillEnd() {
-        return (this.getPhaseEndDate() != null) ? (this.getPhaseEndDate().getTime() - System
-                .currentTimeMillis()) : -1;
+    public String getDurationTillEnd() {
+        return DurationFormatter.forRequestLocale().formatDifference(getPhaseEndDate());
+    }
+
+    public String getDurationTillEndFormatted() {
+        String duration = getDurationTillEnd();
+        //surrounds number with <span> tag for formatting
+        return duration.replaceAll("\\b(\\d+)\\b", "<span>$1</span>");
     }
 
     public String getName() {

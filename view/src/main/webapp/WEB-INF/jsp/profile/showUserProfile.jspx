@@ -259,7 +259,7 @@
 					<p><spring:message code="profile.show.nonewmessages"/></p>
 				</c:if>
 
-				<c:forEach var="message" items="${currentUserProfile.messages}"> <!-- test="${not empty currentUserProfile.messages}" -->
+				<c:forEach var="message" items="${currentUserProfile.messages}">
 
 					<div class="comm_rightcol-time">
 						<c:choose>
