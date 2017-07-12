@@ -303,7 +303,7 @@ public class UserProfileController {
 
         boolean changedMember = false;
         if (!existingBio.equals(updatedUserBean.getShortBio())) {
-            final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+            final String baseUri = PlatformAttributeKey.COLAB_URL.get();
             member.setShortBio(HtmlUtil.cleanSome(updatedUserBean.getShortBio(), baseUri));
             changedMember = true;
         }

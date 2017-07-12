@@ -74,7 +74,7 @@ public class MetricsConfig {
         final HttpTransport transport = new Builder().withApiKey(datadogConfig.getApiKey()).build();
         final DatadogReporter datadogReporter =
                 DatadogReporter.forRegistry(metricRegistry())
-                        .withHost(PlatformAttributeKey.PLATFORM_COLAB_URL.get())
+                        .withHost(PlatformAttributeKey.COLAB_URL.get())
                         .withTransport(transport)
                         .withPrefix(METRIC_PREFIX)
                         .withExpansions(expansions)

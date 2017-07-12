@@ -75,7 +75,7 @@ public class ProposalRequestMembershipActionController {
                 sender.getUserId(), comment);
 
         new ProposalUserActionNotification(proposal, contest, sender, proposalAuthor,
-                MEMBERSHIP_REQUEST_TEMPLATE, PlatformAttributeKey.PLATFORM_COLAB_URL.get()).sendMessage();
+                MEMBERSHIP_REQUEST_TEMPLATE, PlatformAttributeKey.COLAB_URL.get()).sendMessage();
 
 
         AlertMessage.success("A membership request has been sent!").flash(request);

@@ -261,7 +261,7 @@ public class LoginRegisterController {
                 json.getJSONObject("bio").put("success", true);
                 if (StringUtils.isNotEmpty(bio)) {
                     if (bio.length() <= 2000) {
-                        final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+                        final String baseUri = PlatformAttributeKey.COLAB_URL.get();
                         loggedInMember.setShortBio(HtmlUtil.cleanSome(bio, baseUri));
                         MembersClient.updateMember(loggedInMember);
                     } else {

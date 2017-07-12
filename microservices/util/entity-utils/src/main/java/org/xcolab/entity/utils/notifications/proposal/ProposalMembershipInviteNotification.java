@@ -30,7 +30,7 @@ public class ProposalMembershipInviteNotification extends ProposalUserActionNoti
     public ProposalMembershipInviteNotification(Proposal proposal, Contest contest, Member sender,
             Member invitee, MembershipRequest membershipRequest, String message) {
         super(proposal, contest, sender, invitee, null,
-                PlatformAttributeKey.PLATFORM_COLAB_URL.get());
+                PlatformAttributeKey.COLAB_URL.get());
         this.membershipRequest = membershipRequest;
         this.message = message;
     }

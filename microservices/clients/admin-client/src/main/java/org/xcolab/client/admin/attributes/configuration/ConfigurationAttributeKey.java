@@ -33,7 +33,7 @@ public final class ConfigurationAttributeKey {
 
     public static final AttributeGetter<String> COLAB_URL_PRODUCTION =
             ConfigurationAttributes.newStringAttribute("COLAB_URL_PRODUCTION")
-                    .defaultValue(PlatformAttributeKey.PLATFORM_COLAB_URL)
+                    .defaultValue(PlatformAttributeKey.COLAB_URL)
                     .build();
     public static final AttributeGetter<String> BLOG_URL =
             ConfigurationAttributes.newStringAttribute("BLOG_URL")

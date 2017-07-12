@@ -146,7 +146,9 @@ public class ActivitySubscriptionEmailHelper {
                 String body = getDigestMessageBody(userDigestActivities);
                 String unsubscribeFooter = getUnsubscribeDailyDigestFooter(NotificationUnregisterUtils.getActivityUnregisterLink(recipient));
 
-                sendEmailMessage(recipient, subject, body, unsubscribeFooter, PlatformAttributeKey.PLATFORM_COLAB_URL.get(),recipient.getId_());
+                sendEmailMessage(recipient, subject, body, unsubscribeFooter, PlatformAttributeKey.COLAB_URL
+
+                        .get(),recipient.getId_());
             } catch (MemberNotFoundException ignored) {
                 _log.error("sendDailyDigestNotifications: MemberNotFound : {}",
                         ignored.getMessage());
@@ -285,9 +287,10 @@ public class ActivitySubscriptionEmailHelper {
 
                 //TODO: fix this because this was only done so the code would compile
                 String unsubscribeFooter = getUnsubscribeIndividualSubscriptionFooter(
-                        PlatformAttributeKey.PLATFORM_COLAB_URL.get(),
+                        PlatformAttributeKey.COLAB_URL.get(),
                         NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId())));
-                sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter, PlatformAttributeKey.PLATFORM_COLAB_URL.get(),activity.getActivityEntryId());
+                sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter, PlatformAttributeKey.COLAB_URL
+                        .get(),activity.getActivityEntryId());
             }
         }
     }

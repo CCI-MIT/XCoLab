@@ -60,7 +60,9 @@ public final class AddUpdateProposalControllerUtil {
 
         final ActivitiesClient activitiesClient = clients.getActivitiesClient();
         if (createNew) {
-            ProposalCreationUtil.sendAuthorNotification(proposalContext, PlatformAttributeKey.PLATFORM_COLAB_URL.get(),
+            ProposalCreationUtil.sendAuthorNotification(proposalContext, PlatformAttributeKey.COLAB_URL
+
+                            .get(),
                     proposal, contestPhase);
 
             final List<ActivitySubscription> activitySubscriptions = activitiesClient

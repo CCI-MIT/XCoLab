@@ -62,7 +62,7 @@ public class NotificationUnregisterUtils {
         }
 
         unregisterLink = unregisterLink.replaceAll(Pattern.quote(DOMAIN_PLACEHOLDER),
-                PlatformAttributeKey.PLATFORM_COLAB_URL.get());
+                PlatformAttributeKey.COLAB_URL.get());
         
         return unregisterLink;
     }

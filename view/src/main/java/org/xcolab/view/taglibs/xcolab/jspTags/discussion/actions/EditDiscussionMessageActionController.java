@@ -47,7 +47,7 @@ public class EditDiscussionMessageActionController extends BaseDiscussionsAction
 
         Comment comment = commentClient.getComment(commentId);
 
-        final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+        final String baseUri = PlatformAttributeKey.COLAB_URL.get();
         comment.setContent(HtmlUtil.cleanSome(content, baseUri));
         commentClient.updateComment(comment);
 

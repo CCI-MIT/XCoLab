@@ -55,7 +55,7 @@ public class ProposalUpdateHelper {
                 case PROPOSAL_LIST_TEXT_REFERENCE:
                 case DROPDOWN_MENU:
                     if (newSectionValue != null && !newSectionValue.trim().equals(section.getContent())) {
-                        final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+                        final String baseUri = PlatformAttributeKey.COLAB_URL.get();
                         proposalContext.getClients().getProposalAttributeClient()
                                 .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
                                         ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(),
@@ -176,7 +176,7 @@ public class ProposalUpdateHelper {
         }
 
         if (!StringUtils.equals(updateProposalSectionsBean.getPitch(), proposalWrapper.getPitch())) {
-            final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+            final String baseUri = PlatformAttributeKey.COLAB_URL.get();
             proposalContext.getClients().getProposalAttributeClient()
                     .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
                     ProposalAttributeKeys.PITCH, 0L, HtmlUtil.cleanSome(updateProposalSectionsBean.getPitch(),
@@ -186,7 +186,7 @@ public class ProposalUpdateHelper {
         }
 
         if (!StringUtils.equals(updateProposalSectionsBean.getDescription(), proposalWrapper.getDescription())) {
-            final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+            final String baseUri = PlatformAttributeKey.COLAB_URL.get();
             proposalContext.getClients().getProposalAttributeClient()
                     .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
                     ProposalAttributeKeys.DESCRIPTION, 0L, HtmlUtil.cleanSome(updateProposalSectionsBean.getDescription(),

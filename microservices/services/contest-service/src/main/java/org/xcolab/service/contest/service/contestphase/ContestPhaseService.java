@@ -121,7 +121,7 @@ public class ContestPhaseService {
 
                     org.xcolab.client.contest.pojo.Contest c = ContestClientUtil.getContest(contest.getContestPK());//THIS LOOKS UGLY as HELL
                     new ContestVoteNotification(member, c, proposals.get(0),
-                            PlatformAttributeKey.PLATFORM_COLAB_URL.get()).sendMessage();
+                            PlatformAttributeKey.COLAB_URL.get()).sendMessage();
                 }
                 // Send a notification to the user
                 else {
@@ -129,7 +129,7 @@ public class ContestPhaseService {
                         org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil
                                 .getContest(contest.getContestPK());//THIS LOOKS UGLY as HELL
                         new ContestVoteQuestionNotification(member, contestMicro, proposals,
-                                PlatformAttributeKey.PLATFORM_COLAB_URL.get() ).sendMessage();
+                                PlatformAttributeKey.COLAB_URL.get() ).sendMessage();
                     } catch (ContestNotFoundException ignored) {
 
                     }

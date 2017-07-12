@@ -28,6 +28,6 @@ public final class LinkUtils {
     }
 
     public static String getAbsoluteUrl(String relativeUri) {
-        return PlatformAttributeKey.PLATFORM_COLAB_URL.get() + relativeUri;
+        return PlatformAttributeKey.COLAB_URL.get() + relativeUri;
     }
 }

@@ -109,7 +109,7 @@ public class UserBean implements Serializable {
     }
 
     public String getPortraitString() {
-        final String userImageDomain = PlatformAttributeKey.PLATFORM_UPLOADED_IMAGE_DOMAIN.get();
+        final String userImageDomain = PlatformAttributeKey.IMAGES_UPLOADED_DOMAIN.get();
         return userImageDomain + "/image/user_male_portrait?img_id=" + this.imageId;
     }
 

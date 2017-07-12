@@ -109,7 +109,7 @@ public class JudgingCsvController {
                     }
 
 
-                    final String proposalUrl = PlatformAttributeKey.PLATFORM_COLAB_URL.get() + proposal
+                    final String proposalUrl = PlatformAttributeKey.COLAB_URL.get() + proposal
                             .getProposalLinkUrl(contest, judgingPhase.getContestPhasePK());
                     final ProposalReview proposalReview =
                             new ProposalReview(proposal, judgingPhase, proposalUrl);

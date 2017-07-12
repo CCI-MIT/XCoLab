@@ -143,12 +143,12 @@ public class MessagingService {
     }
 
     private static String createMessageURL(Message m) {
-        String home = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+        String home = PlatformAttributeKey.COLAB_URL.get();
         return home + MessageConstants.EMAIL_MESSAGE_URL_TEMPLATE + m.getMessageId();
     }
 
     private static String createProfileEditUrl(Member member) {
-        String home = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+        String home = PlatformAttributeKey.COLAB_URL.get();
         return home + "/members/profile/" + member.getId_() + "/edit";
     }
 

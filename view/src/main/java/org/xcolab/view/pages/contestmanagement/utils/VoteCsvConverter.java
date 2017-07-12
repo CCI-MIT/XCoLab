@@ -58,7 +58,7 @@ public class VoteCsvConverter extends CsvConverter {
     }
 
     public void addVotes(List<ProposalVote> proposalVotes) {
-        final String colabUrl = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+        final String colabUrl = PlatformAttributeKey.COLAB_URL.get();
 
         //local caches, since many votes will likely be in the same contest
         Map<Long, Contest> contests  = new HashMap<>();

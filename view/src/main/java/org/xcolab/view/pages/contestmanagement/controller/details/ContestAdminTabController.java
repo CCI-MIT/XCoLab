@@ -125,7 +125,7 @@ public class ContestAdminTabController extends AbstractTabController {
             Member member)
             throws IOException {
 
-        String contestUrl = PlatformAttributeKey.PLATFORM_COLAB_URL.get()
+        String contestUrl = PlatformAttributeKey.COLAB_URL.get()
                 + "/admin/contest/details/contestId/" + contestId;
         if (!tab.isEmpty()) {
             contestUrl += "/tab/" + tab;

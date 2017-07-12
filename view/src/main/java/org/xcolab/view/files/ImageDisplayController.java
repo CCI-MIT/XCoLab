@@ -35,7 +35,7 @@ public class ImageDisplayController {
 
     public ImageDisplayController() {
         final ServerEnvironment serverEnvironment =
-                PlatformAttributeKey.PLATFORM_SERVER_ENVIRONMENT.get();
+                PlatformAttributeKey.SERVER_ENVIRONMENT.get();
         isProduction = serverEnvironment == ServerEnvironment.PRODUCTION;
     }
 

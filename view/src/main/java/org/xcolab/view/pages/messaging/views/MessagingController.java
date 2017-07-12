@@ -136,7 +136,7 @@ public class MessagingController {
         if (messagingPermissions.getCanSendMessage()) {
             List<Long> recipientIds = IdListUtil.getIdsFromString(userIdsRecipients);
             try {
-                final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+                final String baseUri = PlatformAttributeKey.COLAB_URL.get();
                 MessagingClient.checkLimitAndSendMessage(HtmlUtil.cleanAll(messageSubject),
                         HtmlUtil.cleanSome(messageContent, baseUri),
                         loggedInMember.getUserId(), recipientIds);
