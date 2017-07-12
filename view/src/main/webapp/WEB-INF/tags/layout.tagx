@@ -820,13 +820,12 @@
 
     <!-- Spin.js -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['spin.js']}" src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js" />
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['spin.js']}" src="${_themeJsFolder}/proposals/jquery.spin.js"/>
 
-    <xcolab:script src="${_themeJsFolder}/proposals/jquery.spin.js"/>
-
+    <!-- TODO: where is this used? -->
     <xcolab:script src="${_themeJsFolder}/proposals/jquery.scrolltable.js"/>
 
     <!-- AutoSuggest -->
-    <!-- TODO: where is this used? -->
     <xcolab:loadStylesheet shouldLoad="${_librariesToLoad['autoSuggest']}" href="${_libCssFolder}/autoSuggest.css" />
 
     <!-- Handlebars.js-->

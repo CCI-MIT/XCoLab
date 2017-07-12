@@ -11,13 +11,13 @@
 
                 var cookieId = Cookies.get("notificationId");
 
-                if (result.notificationId != cookieId) {
+                if (result.notificationId > 0 && result.notificationId != cookieId) {
                     noty({text: result.notificationText, type: 'success'});
                     Cookies.set('notificationId', result.notificationId, {expires: 1});
                 }
             },
             error: function (result) {
-                console.error('Retrieving notifications: ' + result)
+                console.error('Error retrieving notifications: ' + result)
             }
         });
         setTimeout(poll, POLLING_INTERVAL_MINUTES * 60 * 1000);
