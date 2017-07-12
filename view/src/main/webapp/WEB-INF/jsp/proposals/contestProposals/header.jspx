@@ -13,7 +13,10 @@
 		<h1>${contest.contestShortName}</h1>
 		<c:if test="${contestPhase.active and not empty contestPhase.phaseEndDate and showCountdown}">
 			<div class="days-left">
-                ${contestPhase.durationTillEndFormatted} until ${contestPhase.name} ends
+                <spring:message code="contests.untilphaseends">
+                    <spring:argument>${contestPhase.durationTillEndFormatted}</spring:argument>
+                    <spring:argument>${contestPhase.name}</spring:argument>
+                </spring:message>
 			</div>
 		</c:if>
 	</div>

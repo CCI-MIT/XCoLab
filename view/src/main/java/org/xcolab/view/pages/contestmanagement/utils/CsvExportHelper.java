@@ -117,7 +117,7 @@ public class CsvExportHelper {
         String firstName = member.getFullName();
         String lastName = member.getLastName();
         String emailAddress = member.getEmailAddress();
-        String role = teamMember.getMemberType();
+        String role = teamMember.getMemberTypeForDisplay();
 
         return new String[]{contestTitle, proposalTitle, proposalLink, username, firstName,
                 lastName, emailAddress, role, lastPhaseTitle};

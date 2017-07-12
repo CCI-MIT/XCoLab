@@ -286,6 +286,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.GOOGLE_ID, member.getGoogleId())
                 .set(MEMBER.SHORT_BIO, member.getShortBio())
                 .set(MEMBER.AUTO_REGISTERED_MEMBER_STATUS, member.getAutoRegisteredMemberStatus())
+                .set(MEMBER.DEFAULT_LOCALE, member.getDefaultLocale())
                 .set(MEMBER.COUNTRY, member.getCountry())
                 .set(MEMBER.STATUS, member.getStatus())
                 .set(MEMBER.PORTRAIT_FILE_ENTRY_ID, member.getPortraitFileEntryId())

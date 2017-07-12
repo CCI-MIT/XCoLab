@@ -4,6 +4,8 @@
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
+          xmlns:spring="http://www.springframework.org/tags"
           version="2.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout title="${proposal.name} - Team"
@@ -17,13 +19,12 @@
         <jsp:useBean id="requestMembershipInviteBean" scope="request" type="org.xcolab.view.pages.proposals.requests.RequestMembershipInviteBean"/>
 
         <div id="content">
-            <!-- liferay-ui:success key="membershipRequestSent" message="Membership request sent" />
-            <liferay-ui:success key="memberInviteSent" message="Membership invitation sent" / -->
 
-            <!-- liferay-ui:error key="memberInviteRecipientError" message="The specified invitee is invalid." / -->
             <div class="c-Headline prophead" style="position: relative;">
                 <h2>
-                    <span>${fn:length(proposal.members)}</span> ${fn:length(proposal.members) == 1 ? 'member' : 'members'}
+                    <spring:message var="memberText" code="contests.proposal.team.member"/>
+                    <spring:message var="membersText" code="contests.proposal.team.members"/>
+                    <span>${fn:length(proposal.members)}</span> ${fn:length(proposal.members) == 1 ? memberText : membersText}
                 </h2>
                 <c:if test="${proposalsDisplayPermissions.canSeeRequestMembershipButton}">
                     <div class="prop-butt-popover">
@@ -39,7 +40,10 @@
                                 <form:textarea id="requestComment" cssClass="requestComment" path="requestComment" onfocus="this.value=''" value="Optional comment" style="display:none;"/>
                                 <form:errors cssClass="c-Alert c-Alert__error" path="requestComment" />
                                 <div id="requestButtons">
-                                    <a href="javascript:;" class="c-Button__primary requestMembershipSubmitButton" onclick="if(deferUntilLogin()) requestMembership();">Request membership</a>
+                                    <a href="javascript:;" class="c-Button__primary requestMembershipSubmitButton"
+                                       onclick="if(deferUntilLogin()) {requestMembership();}">
+                                        <spring:message code="contests.proposal.team.request" />
+                                    </a>
                                 </div>
                             </div>
                         </form:form>
@@ -59,7 +63,10 @@
                                 <form:textarea id="invite-comment" cssClass="requestComment" path="inviteComment" placeholder="Optional comment" style="display:none;"/>
                                 <!--<form:errors cssClass="c-Alert c-Alert__error" path="requestComment" />-->
                                 <div id="requestButtons">
-                                    <a href="javascript:;" class="c-Button__primary requestMembershipSubmitButton" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a>
+                                    <a href="javascript:;" class="c-Button__primary requestMembershipSubmitButton"
+                                       onclick="if(deferUntilLogin()) {inviteMember();}">
+                                        <spring:message code="contests.proposal.team.invite" />
+                                    </a>
                                 </div>
                             </div>
                         </form:form>
@@ -71,15 +78,19 @@
             <table class="contributors">
                 <c:forEach var="member" items="${proposal.members }" varStatus="status">
 
+                    <spring:message var="ownerText" code="contests.proposal.team.role.owner"/>
+                    <spring:message var="memberText" code="contests.proposal.team.role.member"/>
                     <tr class="${status.index mod 2 > 0 ? 'even' : 'odd'}">
                         <td><proposalsPortlet:proposalTeamMember member="${member }" /></td>
-                        <td>${member.memberType }</td>
+                        <td>${member.memberType == 'OWNER' ? ownerText : memberText}</td>
                         <c:if test="${proposalsPermissions.canManageUsers}">
                             <td>
-                                <c:if test="${member.memberType != 'Owner'}">
+                                <c:if test="${member.memberType != 'OWNER'}">
                                     <c:set var="removeUserFromTeam" value="${proposal.proposalUrl}/tab/TEAM/removeUserFromTeam?member=${member.userId}" />
 
-                                    <a href="${removeUserFromTeam }">Remove</a>
+                                    <a href="${removeUserFromTeam }">
+                                        <spring:message code="contests.proposal.team.remove" />
+                                    </a>
                                 </c:if>
                             </td>
                         </c:if>
@@ -90,20 +101,22 @@
 
             <div class="c-Headline propsubhead">
                 <h2>
-                    <span>${proposal.supportersCount}</span> ${proposal.supportersCount == 1 ? 'supporter' : 'supporters' }
+                    <spring:message var="supporterText" code="contests.supports.supporter" />
+                    <spring:message var="supportersText" code="contests.supports.supporters" />
+                    <span>${proposal.supportersCount}</span> ${proposal.supportersCount == 1 ? supporterText : supportersText }
                 </h2>
                 <c:if test="${proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton  }">
                     <c:set var="supportProposalActionURL" value="${proposal.proposalUrl}/supportProposalAction?forwardToTab=TEAM&amp;contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
                     <div class="prop-butt">
                         <img src="${_themeImageFolder}/icon-proposal-thumb.png" width="20" height="22" alt="support ${contestType.proposalName}" />
 
-                        <a class="c-Button__primary" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin(this)) return false;">
+                        <a class="c-Button__primary" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin(this)) {return false;}">
                             <c:choose>
                                 <c:when test="${proposalsDisplayPermissions.canSeeSupportButton}">
-                                    Support ${contestType.proposalName}
+                                    <collab:message code="contests.supports.support" contestType="${contestType}"/>
                                 </c:when>
                                 <c:otherwise>
-                                    Retract support
+                                    <spring:message code="contests.supports.retract" />
                                 </c:otherwise>
                             </c:choose>
                         </a>
@@ -128,19 +141,21 @@
 
             <div class="c-Headline propsubhead">
                 <h2>
-                    <span>${fn:length(listOfLinkedProposals)}</span> linked
-                    ${fn:length(listOfLinkedProposals) eq 1
-                        ? contestType.proposalNameLowercase
-                        : contestType.proposalNamePluralLowercase}
+                    <collab:message var="linkedProposalText" code="contests.proposal.team.linkedproposal" contestType="${contestType}"/>
+                    <collab:message var="linkedProposalsText" code="contests.proposal.team.linkedproposals" contestType="${contestType}"/>
+                    <span>${fn:length(listOfLinkedProposals)}</span> ${fn:length(listOfLinkedProposals) == 1
+                        ? linkedProposalText : linkedProposalsText}
                 </h2>
             </div>
             <c:if test="${not empty listOfLinkedProposals }">
 
                 <table class="contributors">
                     <tr class="${(status.index) mod 2 > 0 ? 'even' : 'odd'}">
-                        <td><h4>${contestType.proposalName} Name </h4></td>
                         <td>
-                            <h4>Author/s</h4>
+                            <h4><collab:message code="contests.details.proposalname" contestType="${contestType}"/></h4>
+                        </td>
+                        <td>
+                            <h4><spring:message code="contests.details.authors" /></h4>
                         </td>
                     </tr>
                     <c:forEach var="contributingProposals" items="${mapOfContributingProposals}" varStatus="status">
@@ -164,14 +179,7 @@
             <c:if test="${empty listOfLinkedProposals}">
                 <table class="contributors">
                     <tr class="${(status.index / 2) mod 2 > 0 ? 'even' : 'odd'}">
-                        <td><h5>No linked
-                            <c:if test="${fn:length(listOfLinkedProposals) le 1}">
-                                ${contestType.proposalNameLowercase}
-                            </c:if>
-                            <c:if test="${fn:length(listOfLinkedProposals) gt 1}">
-                                ${contestType.proposalNamePluralLowercase}
-                            </c:if>
-                            found!</h5></td>
+                        <td><collab:message code="contests.proposal.team.nolinkedproposals" contestType="${contestType}"/></td>
                     </tr>
                 </table>
             </c:if>

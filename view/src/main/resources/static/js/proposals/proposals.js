@@ -105,21 +105,23 @@ function enableDirtyCheck() {
 /* Request membership form logic */
 function clearContents(element) {
     element.value = '';
-};
+}
 
 function requestMembership() {
     $('#requestComment').slideDown('slow');
     $('.prop-butt-popover:first').css('background', 'url('+_themeImageFolder+'/search-bg.png)');
-    $('#requestButtons').empty();
-    $('#requestButtons').append('<div class="c-Button__secondary"><a href="javascript:;" class="requestMembershipSubmitFormButton b-layout__left" onclick="hideRequestForm(true);">Cancel</a></div>');
-    $('#requestButtons').append('<div class="c-Button__primary"><a href="javascript:;" class="requestMembershipSubmitFormButton b-layout__right" onclick="$(\'#requestMembershipForm\').submit();hideRequestForm(false);">Send</a></div>');
+    var $requestButtons = $('#requestButtons');
+    $requestButtons.empty();
+    $requestButtons.append('<a href="javascript:;" class="c-Button__secondary" onclick="hideRequestForm(true);">Cancel</a>');
+    $requestButtons.append('<a href="javascript:;" class="c-Button__primary b-layout__right" onclick="$(\'#requestMembershipForm\').submit();hideRequestForm(false);">Send</a>');
 }
 function hideRequestForm(animate) {
     var speed = animate ? 600 : 1;
     $('#requestComment').slideUp('slow', function () {
         $('.prop-butt-popover:first').css('background', 'none');
-        $('#requestButtons').empty();
-        $('#requestButtons').append('<div class="c-Button__primary" style="display:block;"><a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) requestMembership();">Request membership</a></div>');
+        var $requestButtons = $('#requestButtons');
+        $requestButtons.empty();
+        $requestButtons.append('<a href="javascript:;" class="c-Button__primary" onclick="if(deferUntilLogin()) requestMembership();">Request membership</a>');
     });
 }
 /* End of request membership form logic */
@@ -129,18 +131,20 @@ function inviteMember() {
     $('#invite-comment').slideDown('slow');
     $('#invite-recipient').slideDown('slow');
     $('.prop-butt-popover:first').css('background', 'url('+_themeImageFolder+'/search-bg.png)');
-    $('#requestButtons').empty();
-    $('#requestButtons').append('<div class="c-Button__secondary"><a href="javascript:;" class="requestMembershipSubmitFormButton b-layout__left" onclick="hideInviteForm(true);">Cancel</a></div>');
-    $('#requestButtons').append('<div class="c-Button__primary"><a href="javascript:;" class="requestMembershipSubmitFormButton b-layout__right" onclick="$(\'#requestInviteForm\').submit();hideInviteForm(false);">Send</a></div>');
+    var $requestButtons = $('#requestButtons');
+    $requestButtons.empty();
+    $requestButtons.append('<a href="javascript:;" class="c-Button__secondary b-layout__left" onclick="hideInviteForm(true);">Cancel</a>');
+    $requestButtons.append('<a href="javascript:;" class="c-Button__primary b-layout__right" onclick="$(\'#requestInviteForm\').submit();hideInviteForm(false);">Send</a>');
 }
 
 function hideInviteForm(animate) {
     var speed = animate ? 600 : 1;
     $('#invite-comment').slideUp('slow', function () {
         $('.prop-butt-popover:first').css('background', 'none');
-        $('#requestButtons').empty();
-        $('#requestButtons').append(
-            '<div class="c-Button__primary" style="display:block;"><a href="javascript:;" class="requestMembershipSubmitButton" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a></div>');
+        var $requestButtons = $('#requestButtons');
+        $requestButtons.empty();
+        $requestButtons.append(
+            '<a href="javascript:;" class="c-Button__primary" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a>');
     });
     $('#invite-recipient').slideUp('slow');
 }
@@ -173,12 +177,7 @@ function checkModelSetRadioWithId(id) {
     var modelSetRadios = document.getElementsByName("modelSet");
     var len = modelSetRadios.length;
     for (var i = 0; i < len; i++) {
-        if (modelSetRadios[i].id == id) {
-            modelSetRadios[i].checked = true;
-        }
-        else {
-            modelSetRadios[i].checked = false;
-        }
+        modelSetRadios[i].checked = modelSetRadios[i].id == id;
     }
 }
 
