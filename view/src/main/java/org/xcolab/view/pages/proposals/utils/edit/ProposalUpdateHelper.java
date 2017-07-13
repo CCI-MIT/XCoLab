@@ -8,11 +8,14 @@ import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
+import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
+
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -114,21 +117,14 @@ public class ProposalUpdateHelper {
                     }
                     break;
                 case PROPOSAL_LIST_REFERENCE:
-                    StringBuilder cleanedReferences = new StringBuilder();
-                    if (StringUtils.isNotBlank(newSectionValue)) {
-                        String[] referencedProposals = newSectionValue.split(",");
-                        for (String referencedProposal : referencedProposals) {
-                            if (StringUtils.isNotBlank(referencedProposal) && StringUtils
-                                    .isNumeric(referencedProposal)) {
-                                cleanedReferences.append(referencedProposal).append(",");
-                            }
-                        }
-                    }
-                    if (!section.getStringValue().equals(cleanedReferences.toString())) {
+                    //parse ids to make sure we only save actual ids
+                    final List<Long> parsedIds = IdListUtil.getIdsFromString(newSectionValue);
+                    final String cleanedReferences = IdListUtil.getStringFromIds(parsedIds);
+                    if (!section.getStringValue().equals(cleanedReferences)) {
                         proposalContext.getClients().getProposalAttributeClient()
                                 .setProposalAttribute(memberId, proposalWrapper.getProposalId(),
                                         ProposalAttributeKeys.SECTION, section.getSectionDefinitionId(),
-                                        cleanedReferences.toString());
+                                        cleanedReferences);
                         updateProposalReferences = true;
                     }
                     break;
