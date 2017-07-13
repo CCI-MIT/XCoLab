@@ -74,7 +74,7 @@ public final class ProposalClient {
         proposalVersionResource = new RestResource1<>(proposalService,
                 "proposalVersions", ProposalVersionDto.TYPES);
         proposalReferenceResource = new RestResource1<>(proposalService,
-                "proposalReference", ProposalReferenceDto.TYPES);
+                "proposalReferences", ProposalReferenceDto.TYPES);
 
         groupResource = new RestResource1<>(proposalService, "groups", GroupDto.TYPES);
 

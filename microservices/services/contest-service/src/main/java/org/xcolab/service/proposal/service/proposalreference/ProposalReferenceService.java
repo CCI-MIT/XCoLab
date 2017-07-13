@@ -49,6 +49,7 @@ public class ProposalReferenceService {
         }
         populateTableWithProposal(proposal, new HashSet<>());
     }
+
     private void populateTableWithProposal(Proposal proposal, Set<Long> processedProposals)  {
         if (processedProposals.contains(proposal.getProposalId())) {
             return;
