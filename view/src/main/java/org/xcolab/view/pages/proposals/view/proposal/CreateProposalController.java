@@ -87,10 +87,9 @@ public class CreateProposalController extends BaseProposalsController {
         proposal.setVisible(true);
         proposal.setAuthorId(memberId);
 
-
         final ContestPhase contestPhase = proposalContext.getContestPhase();
 
-        Proposal proposalWrapped = new Proposal(proposal, 0, contest, contestPhase, null);
+        proposal = new Proposal(proposal, 0, contest, contestPhase, null);
         if (baseProposalId != null && baseProposalId > 0) {
             try {
                 Contest baseContest = contestClient.getContest(baseContestId);
@@ -104,7 +103,7 @@ public class CreateProposalController extends BaseProposalsController {
 
                 if (!model.containsAttribute("updateProposalDetailsBean")) {
                     UpdateProposalDetailsBean updateProposalDetailsBean =
-                            new UpdateProposalDetailsBean(proposalWrapped, baseProposalWrapper);
+                            new UpdateProposalDetailsBean(proposal, baseProposalWrapper);
                     model.addAttribute("updateProposalDetailsBean", updateProposalDetailsBean);
                 }
             } catch (ContestNotFoundException | ProposalNotFoundException ignored) {
@@ -112,12 +111,12 @@ public class CreateProposalController extends BaseProposalsController {
             }
         } else if (!model.containsAttribute("updateProposalDetailsBean")) {
             UpdateProposalDetailsBean updateProposalDetailsBean =
-                    new UpdateProposalDetailsBean(proposalWrapped);
+                    new UpdateProposalDetailsBean(proposal);
             model.addAttribute("updateProposalDetailsBean", updateProposalDetailsBean);
         }
 
         model.addAttribute("mustFilterContent",ConfigurationAttributeKey.FILTER_PROFANITY.get());
-        model.addAttribute("proposal", proposalWrapped);
+        model.addAttribute("proposal", proposal);
 
         model.addAttribute("isEditingProposal", true);
         model.addAttribute("showProposalEditHelpText",
