@@ -67,4 +67,13 @@ public enum ActivityProvidersImpl {
         }
         return null;
     }
+    public static ActivityEntryContentProvider getActivityEntryContentProviderByPrimarySecondaryType(Long primaryType, Long secondaryType){
+        for (ActivityProvidersImpl dir : ActivityProvidersImpl.values()) {
+            // do what you want
+            if(dir.getPrimaryType() == id){
+                return dir.getActivityEntryContentProvider();
+            }
+        }
+        return null;
+    }
 }
