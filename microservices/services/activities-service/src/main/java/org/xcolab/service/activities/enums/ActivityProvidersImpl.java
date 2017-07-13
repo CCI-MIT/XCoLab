@@ -46,6 +46,9 @@ public enum ActivityProvidersImpl {
     ActivityEntryContentProvider activityEntryContentProvider;
 
 
+    
+
+
     ActivityProvidersImpl(Integer activityProvidersTypez, ActivityEntryContentProvider activityEntryContentProviderz){
         activityProvidersType = activityProvidersTypez;
         activityEntryContentProvider = activityEntryContentProviderz;
