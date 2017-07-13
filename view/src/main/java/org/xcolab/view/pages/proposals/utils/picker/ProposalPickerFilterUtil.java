@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ProposalPickerFilterUtil {
 
@@ -34,11 +35,13 @@ public class ProposalPickerFilterUtil {
         PlanSectionDefinition planSectionDefinition =
                 PlanTemplateClientUtil.getPlanSectionDefinition(sectionId);
 
-        List<OntologyTerm> ontologyTerms = OntologyClientUtil.getOntologyTermsForFocusArea(
-                OntologyClientUtil.getFocusArea(planSectionDefinition.getFocusAreaId()));
-        List<Long> ontologyTermIds = new ArrayList<>();
-        for (OntologyTerm term : ontologyTerms) {
-            ontologyTermIds.add(term.getId_());
+        final Long focusAreaId = planSectionDefinition.getFocusAreaId();
+        List<Long> ontologyTermIds = null;
+        if (focusAreaId != null) {
+            ontologyTermIds = OntologyClientUtil.getOntologyTermsForFocusArea(OntologyClientUtil.getFocusArea(focusAreaId))
+                    .stream()
+                    .map(OntologyTerm::getId)
+                    .collect(Collectors.toList());
         }
 
         List<Long> allowedTiers = getAllowedTiers(planSectionDefinition.getTier());
@@ -182,9 +185,9 @@ public class ProposalPickerFilterUtil {
 
         List<Long> filterExceptionContestIds = planSectionDefinition.getAdditionalIdsAsList();
 
-        final long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();
+        final Long sectionFocusAreaId = planSectionDefinition.getFocusAreaId();
         Contest contest = proposalContext.getContest();
-        final long contestFocusAreaId = contest.getFocusAreaId();
+        final Long contestFocusAreaId = contest.getFocusAreaId();
 
         sectionFocusAreaFilter.filterProposals(proposals, sectionFocusAreaId,
             contestFocusAreaId, filterExceptionContestIds);

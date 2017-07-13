@@ -33,7 +33,7 @@ public class SectionDefinitionWrapper implements Serializable {
     private String defaultText = "";
     private String helpText = "";
     private int characterLimit = 200;
-    private long focusAreaId;
+    private Long focusAreaId;
     private long level;
     private long pointType;
     private String pointPercentage;
@@ -102,7 +102,7 @@ public class SectionDefinitionWrapper implements Serializable {
     }
 
     private void initOntologyTermIdsWithFocusAreaId() {
-        if (this.focusAreaId != 0) {
+        if (focusAreaId != null) {
             FocusArea focusArea = OntologyClientUtil.getFocusArea(this.focusAreaId);
 
             OntologySpace space = OntologyClientUtil
@@ -393,14 +393,14 @@ public class SectionDefinitionWrapper implements Serializable {
         this.contestIntegrationRelevance = contestIntegrationRelevance;
     }
 
-    public long getFocusAreaId() {
+    public Long getFocusAreaId() {
         if (ontologyTermsSet() && getFocusAreaViaOntologyTerms() != null) {
             focusAreaId = getFocusAreaViaOntologyTerms().getId_();
         }
         return focusAreaId;
     }
 
-    public void setFocusAreaId(long focusAreaId) {
+    public void setFocusAreaId(Long focusAreaId) {
         this.focusAreaId = focusAreaId;
     }
 
