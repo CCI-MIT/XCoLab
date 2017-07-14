@@ -17,7 +17,7 @@ $c-Alert__success__message__background: $t-Color__success__background !default;
   margin: 10px auto;
   background-color: $c-Alert__backgroundColor;
   border: 1px solid $c-Alert__border;
-  @include border-radius(4px);
+  border-radius: 4px;
   font-size: 14px;
 }
 

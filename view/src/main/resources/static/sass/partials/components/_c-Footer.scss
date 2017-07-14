@@ -23,8 +23,6 @@ $c-Footer__link__textColor--hover: $t-Color__accent !default;
     @include background(url(/images/bg-noise.png), $c-Footer__menu__backgroundColor);
   }
 
-  -moz-box-shadow: $c-Footer__menu__boxShadow;
-  -webkit-box-shadow: $c-Footer__menu__boxShadow;
   box-shadow: $c-Footer__menu__boxShadow;
 
   li {

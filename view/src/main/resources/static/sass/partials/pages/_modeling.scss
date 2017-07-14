@@ -8,7 +8,7 @@
   line-height: 20px;
   background: url(/images/grid_t.gif) white;
   border: 1px solid $t-Color__grey--lightest;
-  @include border-radius(10px);
+  border-radius: 10px;
   padding-bottom: 15px;
 }
 
@@ -575,7 +575,7 @@
   margin: 0 7px 7px 0;
   font: 11px Verdana, Geneva, sans-serif;
   line-height: normal;
-  @include border-radius(5px);
+  border-radius: 5px;
 }
 
 .rounded_button a {
@@ -583,7 +583,7 @@
   padding: 6px 10px 0 10px;
   display: inline-block;
   line-height: normal;
-  @include border-radius(5px);
+  border-radius: 5px;
 }
 
 .rounded_button.brn a {
@@ -642,7 +642,7 @@
   margin-left: -6px;
   background: $t-Color__primary;
   cursor: pointer;
-  @include border-radius(4px);
+  border-radius: 4px;
   border: 0;
 }
 

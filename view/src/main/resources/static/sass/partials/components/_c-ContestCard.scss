@@ -29,7 +29,7 @@ $c-ContestCard__shadow--hover:  0 0 10px  $t-Color__grey--light;
   @if $c-ContestCard__border__bottom != null {
     border-bottom: $c-ContestCard__border__bottom;
   }
-  @include border-radius($c-ContestCard__border__radius);
+  border-radius: $c-ContestCard__border__radius;
 
   background: $c-ContestCard__background;
 

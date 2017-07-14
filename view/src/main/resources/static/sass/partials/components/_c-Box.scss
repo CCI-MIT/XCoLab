@@ -111,5 +111,5 @@ $c-Box__button__boxColor--light__backgroundColor--hover: null !default;
 
 .c-Box--round {
   @extend .c-Box;
-  @include border-radius($c-Box__rounded__borderRadius);
+  border-radius: $c-Box__rounded__borderRadius;
 }

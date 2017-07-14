@@ -155,7 +155,7 @@ $p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.pn
   background: $p-ContestProposals__header__detailButton__backgroundColor;
   border: $p-ContestProposals__header__detailButton__border;
 
-  @include border-radius($p-ContestProposals__header__detailButton__borderRadius);
+  border-radius: $p-ContestProposals__header__detailButton__borderRadius;
 }
 
 .p-ContestProposals__header__detailButton__count { //.discussion-button-badge {
@@ -169,7 +169,7 @@ $p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.pn
   background: $t-Color__primary--darkest;
   padding: 0 5px;
   margin-left: 5px;
-  @include border-radius(8px);
+  border-radius: 8px;
 }
 
 .p-ContestProposals__header__ontology {

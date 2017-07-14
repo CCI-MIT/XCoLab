@@ -176,7 +176,7 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $b-Typography__textColor__
   line-height: 34px;
   background: $t-Color__grey--lightest;
   border: solid 1px $t-Color__grey--medium;
-  @include border-radius(6px);
+  border-radius: 6px;
   margin-right: 16px;
   font-size: 12px;
   font-weight: $b-Typography__fontWeight--bold;
@@ -188,7 +188,7 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $b-Typography__textColor__
     padding-right: 6px;
 
     &.selected {
-      @include border-radius(5px);
+      border-radius: 5px;
       color: white;
 
       border: solid 1px #4746ad;
@@ -371,8 +371,6 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $b-Typography__textColor__
 
 #priorActiveAllWidget {
   border: 1px solid $t-Color__primary;
-  -moz-box-shadow: 0 2px 2px #666;
-  -webkit-box-shadow: 0 2px 2px #666;
   box-shadow: 0 2px 2px #666;
   position: absolute;
   display: none;

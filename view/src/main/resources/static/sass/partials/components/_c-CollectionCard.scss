@@ -26,7 +26,7 @@ $c-CollectionCard__contests__tag__textColor: $t-Color__grey--medium;
   &:hover {
     box-shadow: $c-CollectionCard__background__container__shadow--hover;
   }
-  @include border-radius($c-CollectionCard__border__radius);
+  border-radius: $c-CollectionCard__border__radius;
 }
 
 .c-CollectionCard__separator {
@@ -69,7 +69,7 @@ $c-CollectionCard__contests__tag__textColor: $t-Color__grey--medium;
   width: 200px;
 
   border: $c-CollectionCard__border;
-  @include border-radius($c-CollectionCard__border__radius);
+  border-radius: $c-CollectionCard__border__radius;
 
   background: $c-CollectionCard__background;
 

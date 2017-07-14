@@ -29,7 +29,7 @@ $c-ContestBox--hover__boxShadow: 0 0 10px #666 !default;
   @if $c-ContestBox__border__bottom != null {
     border-bottom: $c-ContestBox__border__bottom;
   }
-  @include border-radius($c-ContestBox__border__radius);
+  border-radius: $c-ContestBox__border__radius;
 
   background: $c-ContestBox__background;
 
@@ -38,7 +38,7 @@ $c-ContestBox--hover__boxShadow: 0 0 10px #666 !default;
   }
 
   &:hover {
-    @include box-shadow($c-ContestBox--hover__boxShadow);
+    box-shadow: $c-ContestBox--hover__boxShadow;
   }
 
   padding: 9px 8px;

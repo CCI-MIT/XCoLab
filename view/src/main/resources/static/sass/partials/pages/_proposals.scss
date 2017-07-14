@@ -128,7 +128,7 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   background: $p-Proposal__edit__button__backgroundColor;
   font-size: 14px;
   color: white;
-  @include border-radius(3px);
+  border-radius: 3px;
 }
 .edit-prop-butts a:hover {
   color: white;
@@ -272,7 +272,7 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   font-weight: $b-Typography__fontWeight--bold;
   color: black;
   padding: 4px 0 0 31px;
-  @include border-radius(3px);
+  border-radius: 3px;
 }
 
 .thumbbox {
@@ -482,7 +482,7 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
 /* add proposal boxes */
 .addpropbox {
   background: $t-Color__grey--lightest;
-  @include border-radius(12px);
+  border-radius: 12px;
   padding: 13px 15px 12px 12px;
   margin-bottom: 13px;
   line-height: 19px;
