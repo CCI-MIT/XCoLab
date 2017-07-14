@@ -7,8 +7,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +21,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import org.xcolab.model.tables.pojos.ActivityEntry;
 import org.xcolab.model.tables.pojos.ActivitySubscription;
-import org.xcolab.service.activities.activityentry.member.MemberJoinedActivityEntry;
 import org.xcolab.service.activities.domain.activityEntry.ActivityEntryDao;
 import org.xcolab.service.activities.domain.activitySubscription.ActivitySubscriptionDao;
-import org.xcolab.service.activities.enums.ActivityProvidersImpl;
 import org.xcolab.service.activities.service.ActivitiesService;
 import org.xcolab.service.activities.utils.Utils;
 import org.xcolab.service.utils.PaginationHelper;
@@ -51,10 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan("org.xcolab.service.activities")
 
 @ComponentScan("com.netflix.discovery")
-@PrepareForTest({
-    org.xcolab.service.activities.enums.ActivityProvidersImpl.class
 
-})
 
 
 @TestPropertySource(
@@ -93,19 +86,14 @@ public class ActivitiesControllerTest {
 
     private HttpMessageConverter mappingJackson2HttpMessageConverter;
 
-    @PrepareForTest({
-        org.xcolab.service.activities.enums.ActivityProvidersImpl.class
-    })
 
     @Before
     public void before() {
 
-        PowerMockito.mockStatic(ActivityProvidersImpl.class);
+
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
-        MemberJoinedActivityEntry mjae = Mockito.mock(MemberJoinedActivityEntry.class);
-        Mockito.when(ActivityProvidersImpl.getActivityEntryContentProviderByType(anyInt()))
-            .thenAnswer(invocation -> mjae);
+
 
         Mockito.when(activityEntryDao.create(anyObject()))
             .thenAnswer(invocation -> new ActivityEntry());

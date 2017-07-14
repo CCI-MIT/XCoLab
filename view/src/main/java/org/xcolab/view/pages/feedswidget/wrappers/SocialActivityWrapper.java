@@ -30,7 +30,7 @@ public class SocialActivityWrapper implements Serializable {
     private String body;
     private final boolean odd;
 
-    public SocialActivityWrapper(ActivityEntry activity, int daysBetween, boolean indicateNewDate, boolean odd, HttpServletRequest request, int maxLength) {
+    public SocialActivityWrapper(ActivityEntry activity, int daysBetween, boolean indicateNewDate, boolean odd, int maxLength, String actBody) {
         this.activity = activity;
 
         this.daysBetween = daysBetween;
@@ -39,7 +39,7 @@ public class SocialActivityWrapper implements Serializable {
         long createDay = activity.getCreateDate().getTime() / MILLISECONDS_PER_DAY;
         long daysNow = new Date().getTime() / MILLISECONDS_PER_DAY;
         daysAgo = daysNow - createDay;
-        body = activity.getActivityEntryBody();
+        body = actBody;
         if (body != null) {
             body = body.replaceAll("c.my_sites[^\\\"]*", "web/guest/member/-/member/userId/" + activity.getMemberId());
         }
@@ -67,24 +67,7 @@ public class SocialActivityWrapper implements Serializable {
     public boolean getIndicateNewDate() {
         return indicateNewDate;
     }
-
-    public Boolean getIsEmpty() {
-       return isEmpty(activity);
-    }
     
-    public static Boolean isEmpty(ActivityEntry entry) {
-        String body = entry.getActivityEntryBody();
-        return body == null || body.trim().isEmpty();
-    }
-
-    public static Boolean isEmpty(ActivityEntry activity, HttpServletRequest request) {
-        try {
-            return isEmpty(activity);
-        } catch (Throwable e) {
-            _log.error("Some error interpreting activity: {}", e.getMessage());
-            return false;
-        }
-    }
 
     public void setDaysAgo(long daysAgo) {
         this.daysAgo = daysAgo;

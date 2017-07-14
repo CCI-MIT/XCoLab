@@ -29,7 +29,6 @@ public class MemberWrapper implements Serializable {
         this.user = user;
         this.activity = activity;
         if (activity != null) {
-            lastActivityBody = activity.getActivityEntryBody();
             lastActivityDate = new Date(activity.getCreateDate().getTime());
         }
     }
@@ -37,7 +36,7 @@ public class MemberWrapper implements Serializable {
     public MemberWrapper(ActivityEntry activity) {
         this.activity = activity;
         if (activity != null) {
-            lastActivityBody = this.activity.getActivityEntryBody();
+
             lastActivityDate = new Date(activity.getCreateDate().getTime());
             try {
                 user = MembersClient.getMember(activity.getMemberId());

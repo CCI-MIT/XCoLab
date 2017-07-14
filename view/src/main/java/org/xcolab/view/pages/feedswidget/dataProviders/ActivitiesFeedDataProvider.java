@@ -1,5 +1,7 @@
 package org.xcolab.view.pages.feedswidget.dataProviders;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
@@ -8,6 +10,8 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
+import org.xcolab.view.activityentry.ActivityEntryHelper;
+import org.xcolab.view.i18n.ResourceMessageResolver;
 import org.xcolab.view.pages.feedswidget.FeedTypeDataProvider;
 import org.xcolab.view.pages.feedswidget.FeedsPreferences;
 import org.xcolab.view.pages.feedswidget.wrappers.SocialActivityWrapper;
@@ -23,7 +27,18 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Component
 public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
+
+    @Autowired
+    private ActivityEntryHelper activityEntryHelper;
+
+    @Override
+    public String getFeedTypeName() {
+        return "Activities";
+    }
+
+
 
 	@Override
 	public String populateModel(HttpServletRequest request, HttpServletResponse response,
@@ -89,8 +104,8 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
         List<SocialActivityWrapper> activities = new ArrayList<>();
         Date now = new Date();
         for (ActivityEntry activity : windowedActivities) {
-
-            if (SocialActivityWrapper.isEmpty(activity, request)) {
+            String activityBody = activityEntryHelper.getActivityBody(activity);
+            if (activityBody.isEmpty()) {
                 continue;
             }
 
@@ -101,8 +116,8 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
             int curDaysBetween =
                         getDaysBetween(new Date(activity.getCreateDate().getTime()), now);
             activities.add(new SocialActivityWrapper(activity, curDaysBetween,
-                    lastDaysBetween < curDaysBetween, i % 2 == 1, request,
-                    feedsPreferences.getFeedMaxLength()));
+                    lastDaysBetween < curDaysBetween, i % 2 == 1,
+                    feedsPreferences.getFeedMaxLength(),activityBody));
             lastDaysBetween = curDaysBetween;
             i++;
         }

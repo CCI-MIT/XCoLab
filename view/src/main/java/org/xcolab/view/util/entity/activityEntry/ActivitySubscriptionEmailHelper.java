@@ -4,6 +4,7 @@ import org.apache.commons.collections4.comparators.ComparatorChain;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
@@ -23,6 +24,7 @@ import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.util.entity.NotificationUnregisterUtils;
 import org.xcolab.view.util.entity.subscriptions.ActivitySubscriptionConstraint;
 
@@ -83,6 +85,9 @@ public class ActivitySubscriptionEmailHelper {
 
     private static final String UNSUBSCRIBE_DAILY_DIGEST_NOTIFICATION_TEXT = "You are receiving this message because you subscribed to receiving a daily digest of activities on the <colab-name/>.  " +
             "To stop receiving these notifications, please click <a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
+
+    @Autowired
+    private ActivityEntryHelper activityEntryHelper;
 
     public void sendEmailNotifications() {
 
@@ -185,7 +190,9 @@ public class ActivitySubscriptionEmailHelper {
                 if (socialActivity.getPrimaryType().equals(ActivityEntryType.DISCUSSION.getPrimaryTypeId())) {
                     try {
                         StringBuilder bodyWithComment = new StringBuilder();
-                        bodyWithComment.append(socialActivity.getActivityEntryBody());
+                        bodyWithComment.append(
+                                activityEntryHelper.getActivityBody(socialActivity)
+                        );
                         bodyWithComment.append("<br><br><div style='margin-left:20px;>");
                         bodyWithComment.append("<div style='margin-top:14pt;margin-bottom:14pt;'>");
                         Long commentId = new Long(socialActivity.getExtraData());
@@ -197,11 +204,11 @@ public class ActivitySubscriptionEmailHelper {
                         bodyWithComment.append("</div></div>");
                         body.append("<div style='margin-left: 10px'>").append(bodyWithComment.toString()).append("</div><br/><br/>");
                     } catch (CommentNotFoundException ex) {
-                        body.append("<div style='margin-left: 10px'>").append(socialActivity.getActivityEntryBody()).append("</div><br/><br/>");
+                        body.append("<div style='margin-left: 10px'>").append(socialActivity).append("</div><br/><br/>");
                     }
 
                 } else {
-                    body.append("<div style='margin-left: 10px'>").append(socialActivity.getActivityEntryBody()).append("</div><br/><br/>");
+                    body.append("<div style='margin-left: 10px'>").append(activityEntryHelper.getActivityBody(socialActivity)).append("</div><br/><br/>");
                 }
 
             }
@@ -256,7 +263,7 @@ public class ActivitySubscriptionEmailHelper {
     private void sendInstantNotifications(ActivityEntry activity) {
 
         String subject = clearLinksInSubject(activity.getActivityEntryTitle()) + " ";//get old implementation for subject
-        String messageTemplate = activity.getActivityEntryBody();
+        String messageTemplate = activityEntryHelper.getActivityBody(activity);
 
         Set<Member> recipients = new HashSet<>();
         Map<Long, ActivitySubscription> subscriptionsPerUser = new HashMap<>();
