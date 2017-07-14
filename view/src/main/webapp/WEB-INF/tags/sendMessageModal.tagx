@@ -17,9 +17,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">
-                        <c:set var="argumentToSendUser" value="${not empty recipient ? recipient.fullName : ''}"/>
-                        <spring:message code="message.modal.sendUserMessage" arguments="${argumentToSendUser}"/>
-
+                        <c:if test="${not empty recipient}">
+                            <spring:message code="message.modal.sendUserMessage" arguments="${recipient.fullName}"/>
+                        </c:if>
                     </h4>
                 </div>
                 <form method="post" id="messageForm" action="/messaging/sendMessage"
