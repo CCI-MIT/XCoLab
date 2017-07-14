@@ -27,6 +27,7 @@ public class I18nBeanConfig {
                 "i18n/subscription",
                 "i18n/community",
                 "i18n/discussion",
+                "i18n/activity",
                 "i18n/search"
         );
         messageSource.setDefaultEncoding("utf-8");

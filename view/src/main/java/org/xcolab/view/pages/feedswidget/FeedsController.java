@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.feedswidget;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,11 +9,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.view.util.pagination.SortFilterPage;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class FeedsController {
+
+    @Autowired
+    private List<FeedTypeDataProvider> dataProviderList;
 
 	@GetMapping("/activities")
 	public String showFeedActivities(HttpServletRequest request, HttpServletResponse response,
@@ -43,6 +49,11 @@ public class FeedsController {
 		model.addAttribute("feedStyle", preferences.getFeedStyle());
 		model.addAttribute("portletTitle", preferences.getPortletTitle());
 		model.addAttribute("seeMoreLinkShown", preferences.getSeeMoreLinkShown());
-		return preferences.getFeedType().getViewAndpopulateModel(request, response, sortFilterPage, preferences, model);
+		for(FeedTypeDataProvider ftpdp : dataProviderList){
+		    if(ftpdp.getFeedTypeName().equals(preferences.getFeedType().getDescription())){
+		        return ftpdp.populateModel(request, response, sortFilterPage, preferences, model);
+            }
+        }
+        return null;
 	}
 }

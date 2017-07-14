@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.profile.wrappers;
 
 import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.view.activityentry.ActivityEntryHelper;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,12 +12,12 @@ public class UserActivityWrapper implements Serializable {
     private final ActivityEntry activity;
     private String body;
 
-    public UserActivityWrapper(ActivityEntry activity) {
+    public UserActivityWrapper(ActivityEntry activity, ActivityEntryHelper activityEntryHelper) {
         this.activity = activity;
 
 
         if (this.activity != null) {
-            body = activity.getActivityEntryBody();
+            body = activityEntryHelper.getActivityBody(this.activity);
             if (body != null) {
                 body = body.trim().equals("") ? activity.getActivityEntryTitle() : body;
                 body = body.replaceAll("c.my_sites[^\\\"]*",

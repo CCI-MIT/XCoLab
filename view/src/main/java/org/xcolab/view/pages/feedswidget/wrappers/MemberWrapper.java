@@ -6,6 +6,7 @@ import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.activityentry.ActivityEntryHelper;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -30,7 +31,6 @@ public class MemberWrapper implements Serializable{
         this.user = user;
         this.activity = activity;
         if (activity != null) {
-            lastActivityBody = activity.getActivityEntryBody();
             lastActivityDate = new Date(activity.getCreateDate().getTime());
         }
     }
@@ -38,7 +38,7 @@ public class MemberWrapper implements Serializable{
     public MemberWrapper(ActivityEntry activity) {
         this.activity = activity;
         if (activity != null) {
-            lastActivityBody = this.activity.getActivityEntryBody();
+
             lastActivityDate = new Date(activity.getCreateDate().getTime());
             try {
                 user = MembersClient.getMember(activity.getMemberId());

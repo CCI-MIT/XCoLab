@@ -3,10 +3,10 @@ package org.xcolab.client.activities.enums;
 public enum ActivityProvidersType {
 
     DiscussionAddCommentActivityEntry(1, 39202L, 5L),
-    DiscussionAddedActivityEntry(2, 39202L, 3L),
+    DiscussionAddedActivityEntry(2,39202L, 3L),
     DiscussionAddProposalCommentActivityEntry(3, 39202L ,1L),
 
-    MemberJoinedActivityEntry(4, 10038L,  1L),
+    MemberJoinedActivityEntry(4,10038L,  1L),
 
     ProposalAttributeRemoveActivityEntry(5,1368503L, 2L),
     ProposalAttributeUpdateActivityEntry(6,1368503L, 1L),
@@ -19,7 +19,11 @@ public enum ActivityProvidersType {
     ProposalVoteRetractActivityEntry(13,1368503L, 4L),
     ProposalVoteSwitchActivityEntry(14,1368503L, 5L),
 
-    DiscussionAddContestCommentActivityEntry(15, 39202L, 6L);
+    DiscussionAddContestCommentActivityEntry(15,39202L, 6L);
+
+
+
+
 
     Integer activityProvidersType;
 
@@ -27,15 +31,31 @@ public enum ActivityProvidersType {
     Long activitySecondaryType;
 
     ActivityProvidersType(Integer activityProvidersTypez,
-    Long activityPrimaryTypez, Long activitySecondaryTypez){
+             Long activityPrimaryTypez, Long activitySecondaryTypez){
         activityProvidersType = activityProvidersTypez;
         activityPrimaryType = activityPrimaryTypez;
         activitySecondaryType = activitySecondaryTypez;
+
     }
 
 
     public Integer getType(){
         return activityProvidersType;
+    }
+    public Long getActivityPrimaryType(){
+        return activityPrimaryType;
+    }
+    public Long getActivitySecondaryType(){
+        return activitySecondaryType;
+    }
+
+    public static ActivityProvidersType getActivityProviderByType(Integer id){
+        for (ActivityProvidersType dir : ActivityProvidersType.values()) {
+            if(dir.getType() == id){
+                return dir;
+            }
+        }
+        return null;
     }
 
 }

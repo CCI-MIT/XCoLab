@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.view.activityentry.ActivityEntryHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -27,6 +28,8 @@ public class FeedsDumpGeneratingController {
 
 	private byte[] generatedActivities = {};
 	private int activitiesInGeneratedDump;
+
+	private ActivityEntryHelper activityEntryHelper;
 
 	@GetMapping("/feedswidget/generateDump")
 	public void showFeed(HttpServletRequest request, HttpServletResponse response)
@@ -58,7 +61,10 @@ public class FeedsDumpGeneratingController {
 				for (ActivityEntry activity : ActivitiesClientUtil.getActivityEntries(0,Integer.MAX_VALUE,null,null)) {
 					try {
 
-						String body = activity.getActivityEntryBody();
+						String body = activityEntryHelper.getActivityBody(activity);
+
+
+
 						if (body != null && !body.trim().isEmpty()) {
 						    //TODO: this doesn't work post-liferay
 							body = body.replace("/web/guest",

@@ -69,10 +69,10 @@
 				<span>${thread.commentsCount}</span>
 				<c:choose>
 					<c:when test="${thread.commentsCount == 1 }">
-						comment
+                        <spring:message code="discussion.commmentstag.count.singular.message"/>
 					</c:when>
 					<c:otherwise>
-						comments
+                        <spring:message code="discussion.commmentstag.count.plural.message"/>
 					</c:otherwise>
 				</c:choose>
 			</h2>
