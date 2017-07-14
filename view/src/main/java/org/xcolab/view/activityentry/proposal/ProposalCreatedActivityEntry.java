@@ -13,7 +13,7 @@ public class ProposalCreatedActivityEntry extends ProposalBaseActivityEntry {
 
     @Override
     public String getBodyTemplate() {
-        return " activities.proposal.created.message";
+        return "activities.proposal.created.message";
     }
 
     @Override
