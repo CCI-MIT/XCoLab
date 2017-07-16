@@ -198,7 +198,7 @@
                     </h2>
                     <div>
                         <p style="color: #545454; margin-top: 5px;">
-                            <collab:message code="contests.proposal.voting.youjustvoted">
+                            <collab:message code="contests.proposal.voting.youjustvoted" contestType="${contestType}">
                                 <spring:argument>${proposal.name}</spring:argument>
                                 <spring:argument>${proposal.contest.contestName}</spring:argument>
                             </collab:message>
