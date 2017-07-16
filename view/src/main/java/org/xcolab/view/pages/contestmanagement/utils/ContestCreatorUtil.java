@@ -14,15 +14,10 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
 import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
-import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.PlanTemplateNotFoundException;
-import org.xcolab.client.proposals.pojo.group.Group_;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
-
-import java.util.Random;
-import java.util.UUID;
 
 public final class ContestCreatorUtil {
 
@@ -31,9 +26,6 @@ public final class ContestCreatorUtil {
     private static final String SEED_CONTEST_SCHEDULE_NAME = "Seed Contest Schedule";
     private static final String DEFAULT_SCHEDULE_NAME = "[DEFAULT] Contest schedule";
     private static final String DEFAULT_TEMPLATE_NAME = "[DEFAULT] Contest template";
-
-    private static final String DEFAULT_GROUP_DESCRIPTION = "Group working on contest %s";
-    private static final Random rand = new Random();
 
     private ContestCreatorUtil() { }
 
@@ -58,9 +50,6 @@ public final class ContestCreatorUtil {
         ContestScheduleChangeHelper
                 changeHelper = new ContestScheduleChangeHelper(contest.getContestPK(), contestScheduleId);
         changeHelper.changeScheduleForBlankContest();
-
-        setGroupForContest(contest);
-
 
         return contest;
     }
@@ -118,34 +107,6 @@ public final class ContestCreatorUtil {
                     .toObject(ContestSchedule.class, defaultContestScheduleId)
                     .fromObject(ConfigurationAttribute.class, "DEFAULT_CONTEST_SCHEDULE_ID");
         }
-    }
-
-    private static void setGroupForContest(Contest c) {
-
-        String groupName =
-                c.getContestName() + "_" + System.currentTimeMillis() + "_" + rand.nextLong();
-        Group_ group = new Group_();
-        group.setCompanyId(10112L);
-        group.setCreatorUserId(10144L);
-        group.setClassNameId(10009L);
-        group.setParentGroupId(0L);
-        group.setLiveGroupId(0L);
-        group.setName(groupName);
-        group.setDescription(String.format(DEFAULT_GROUP_DESCRIPTION, groupName));
-        group.setType_(2);
-        group.setFriendlyURL("/contest-" + c.getContestPK());
-        group.setActive_(true);
-        group.setSite(true);
-        group.setUuid_(UUID.randomUUID().toString());
-        group.setManualMembership(true);
-        group.setMembershipRestriction(0);
-        group.setRemoteStagingGroupCount(0);
-        group = ProposalClientUtil.createGroup(group);
-        group.setTreePath("/" + group.getGroupId() + "/");
-        group.setClassPK(group.getGroupId());
-        ProposalClientUtil.updateGroup(group);
-        c.setGroupId(group.getGroupId());
-        ContestClientUtil.updateContest(c);
     }
 
     public static void insertSeedDataToContestScheduleTableIfNotAvailable() {

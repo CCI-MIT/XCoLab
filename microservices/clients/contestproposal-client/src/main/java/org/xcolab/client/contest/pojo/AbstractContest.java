@@ -37,7 +37,6 @@ public abstract class AbstractContest {
     private Integer flag;
     private String flagtext;
     private String flagtooltip;
-    private Long groupid;
     private Long discussiongroupid;
     private Integer weight;
     private String resourcesurl;
@@ -94,7 +93,6 @@ public abstract class AbstractContest {
         this.flag = value.flag;
         this.flagtext = value.flagtext;
         this.flagtooltip = value.flagtooltip;
-        this.groupid = value.groupid;
         this.discussiongroupid = value.discussiongroupid;
         this.weight = value.weight;
         this.resourcesurl = value.resourcesurl;
@@ -127,13 +125,13 @@ public abstract class AbstractContest {
             String votequestiontemplatestring, Long focusareaid, Long contesttier,
             Long contestlogoid, Boolean featured_, Boolean plansopenbydefault, Long sponsorlogoid,
             String sponsortext, String sponsorlink, Integer flag, String flagtext,
-            String flagtooltip, Long groupid, Long discussiongroupid, Integer weight,
-            String resourcesurl, Boolean contestprivate, Boolean usepermissions,
-            String contestcreationstatus, Long defaultmodelid, String othermodels,
-            String defaultmodelsettings, Double points, Long defaultparentpointtype,
-            String pointdistributionstrategy, String emailtemplateurl, Boolean showInTileView,
-            Boolean showInListView, Boolean showInOutlineView, Boolean hideribbons,
-            Long resourcearticleid, Boolean issharedcontest, String sharedorigin) {
+            String flagtooltip, Long discussiongroupid, Integer weight, String resourcesurl,
+            Boolean contestprivate, Boolean usepermissions, String contestcreationstatus,
+            Long defaultmodelid, String othermodels, String defaultmodelsettings, Double points,
+            Long defaultparentpointtype, String pointdistributionstrategy, String emailtemplateurl,
+            Boolean showInTileView, Boolean showInListView, Boolean showInOutlineView,
+            Boolean hideribbons, Long resourcearticleid, Boolean issharedcontest,
+            String sharedorigin) {
         this.contestpk = contestpk;
         this.contesttypeid = contesttypeid;
         this.contestname = contestname;
@@ -165,7 +163,6 @@ public abstract class AbstractContest {
         this.flag = flag;
         this.flagtext = flagtext;
         this.flagtooltip = flagtooltip;
-        this.groupid = groupid;
         this.discussiongroupid = discussiongroupid;
         this.weight = weight;
         this.resourcesurl = resourcesurl;
@@ -413,14 +410,6 @@ public abstract class AbstractContest {
         this.flagtooltip = flagtooltip;
     }
 
-    public Long getGroupId() {
-        return this.groupid;
-    }
-
-    public void setGroupId(Long groupid) {
-        this.groupid = groupid;
-    }
-
     public Long getDiscussionGroupId() {
         return this.discussiongroupid;
     }
@@ -565,84 +554,6 @@ public abstract class AbstractContest {
         this.sharedorigin = sharedorigin;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(contestpk, contesttypeid, contestname, contestshortname, contesturlname,
-                contestyear, contestdescription, contestmodeldescription,
-                contestpositionsdescription, getCreated(), getUpdated(), authorid, contestactive,
-                plantemplateid, contestscheduleid, proposalcreationtemplatestring,
-                votetemplatestring, proposalvotetemplatestring,
-                proposalvoteconfirmationtemplatestring, votequestiontemplatestring, focusareaid,
-                contesttier, contestlogoid, getFeatured_(), plansopenbydefault, sponsorlogoid,
-                defaultproposallogoid, sponsortext, sponsorlink, getFlag(), flagtext, flagtooltip,
-                groupid, discussiongroupid, getWeight(), resourcesurl, contestprivate,
-                usepermissions, contestcreationstatus, defaultmodelid, othermodels,
-                defaultmodelsettings, getPoints(), defaultparentpointtype,
-                pointdistributionstrategy, emailtemplateurl, showInTileView, showInListView,
-                showInOutlineView, hideribbons, resourcearticleid, issharedcontest, sharedorigin);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof AbstractContest)) {
-            return false;
-        }
-        AbstractContest that = (AbstractContest) o;
-        return Objects.equals(contestpk, that.contestpk) && Objects
-                .equals(contesttypeid, that.contesttypeid) && Objects
-                .equals(contestname, that.contestname) && Objects
-                .equals(contestshortname, that.contestshortname) && Objects
-                .equals(contesturlname, that.contesturlname) && Objects
-                .equals(contestyear, that.contestyear) && Objects
-                .equals(contestdescription, that.contestdescription) && Objects
-                .equals(contestmodeldescription, that.contestmodeldescription) && Objects
-                .equals(contestpositionsdescription, that.contestpositionsdescription) && Objects
-                .equals(getCreated(), that.getCreated()) && Objects
-                .equals(getUpdated(), that.getUpdated()) && Objects.equals(authorid, that.authorid)
-                && Objects.equals(contestactive, that.contestactive) && Objects
-                .equals(plantemplateid, that.plantemplateid) && Objects
-                .equals(contestscheduleid, that.contestscheduleid) && Objects
-                .equals(proposalcreationtemplatestring, that.proposalcreationtemplatestring)
-                && Objects.equals(votetemplatestring, that.votetemplatestring) && Objects
-                .equals(proposalvotetemplatestring, that.proposalvotetemplatestring) && Objects
-                .equals(proposalvoteconfirmationtemplatestring,
-                        that.proposalvoteconfirmationtemplatestring) && Objects
-                .equals(votequestiontemplatestring, that.votequestiontemplatestring) && Objects
-                .equals(focusareaid, that.focusareaid) && Objects
-                .equals(contesttier, that.contesttier) && Objects
-                .equals(contestlogoid, that.contestlogoid) && Objects
-                .equals(getFeatured_(), that.getFeatured_()) && Objects
-                .equals(plansopenbydefault, that.plansopenbydefault) && Objects
-                .equals(sponsorlogoid, that.sponsorlogoid) && Objects
-                .equals(defaultproposallogoid, that.defaultproposallogoid) && Objects
-                .equals(sponsortext, that.sponsortext) && Objects
-                .equals(sponsorlink, that.sponsorlink) && Objects.equals(getFlag(), that.getFlag())
-                && Objects.equals(flagtext, that.flagtext) && Objects
-                .equals(flagtooltip, that.flagtooltip) && Objects.equals(groupid, that.groupid)
-                && Objects.equals(discussiongroupid, that.discussiongroupid) && Objects
-                .equals(getWeight(), that.getWeight()) && Objects
-                .equals(resourcesurl, that.resourcesurl) && Objects
-                .equals(contestprivate, that.contestprivate) && Objects
-                .equals(usepermissions, that.usepermissions) && Objects
-                .equals(contestcreationstatus, that.contestcreationstatus) && Objects
-                .equals(defaultmodelid, that.defaultmodelid) && Objects
-                .equals(othermodels, that.othermodels) && Objects
-                .equals(defaultmodelsettings, that.defaultmodelsettings) && Objects
-                .equals(getPoints(), that.getPoints()) && Objects
-                .equals(defaultparentpointtype, that.defaultparentpointtype) && Objects
-                .equals(pointdistributionstrategy, that.pointdistributionstrategy) && Objects
-                .equals(emailtemplateurl, that.emailtemplateurl) && Objects
-                .equals(showInTileView, that.showInTileView) && Objects
-                .equals(showInListView, that.showInListView) && Objects
-                .equals(showInOutlineView, that.showInOutlineView) && Objects
-                .equals(hideribbons, that.hideribbons) && Objects
-                .equals(resourcearticleid, that.resourcearticleid) && Objects
-                .equals(issharedcontest, that.issharedcontest) && Objects
-                .equals(sharedorigin, that.sharedorigin);
-    }
 
     public Timestamp getCreated() {
         return this.created;
@@ -693,6 +604,85 @@ public abstract class AbstractContest {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(contestpk, contesttypeid, contestname, contestshortname, contesturlname,
+                contestyear, contestdescription, contestmodeldescription,
+                contestpositionsdescription, getCreated(), getUpdated(), authorid, contestactive,
+                plantemplateid, contestscheduleid, proposalcreationtemplatestring,
+                votetemplatestring, proposalvotetemplatestring,
+                proposalvoteconfirmationtemplatestring, votequestiontemplatestring, focusareaid,
+                contesttier, contestlogoid, getFeatured_(), plansopenbydefault, sponsorlogoid,
+                defaultproposallogoid, sponsortext, sponsorlink, getFlag(), flagtext, flagtooltip,
+                discussiongroupid, getWeight(), resourcesurl, contestprivate,
+                usepermissions, contestcreationstatus, defaultmodelid, othermodels,
+                defaultmodelsettings, getPoints(), defaultparentpointtype,
+                pointdistributionstrategy, emailtemplateurl, showInTileView, showInListView,
+                showInOutlineView, hideribbons, resourcearticleid, issharedcontest, sharedorigin);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AbstractContest)) {
+            return false;
+        }
+        AbstractContest that = (AbstractContest) o;
+        return Objects.equals(contestpk, that.contestpk) && Objects
+                .equals(contesttypeid, that.contesttypeid) && Objects
+                .equals(contestname, that.contestname) && Objects
+                .equals(contestshortname, that.contestshortname) && Objects
+                .equals(contesturlname, that.contesturlname) && Objects
+                .equals(contestyear, that.contestyear) && Objects
+                .equals(contestdescription, that.contestdescription) && Objects
+                .equals(contestmodeldescription, that.contestmodeldescription) && Objects
+                .equals(contestpositionsdescription, that.contestpositionsdescription) && Objects
+                .equals(getCreated(), that.getCreated()) && Objects
+                .equals(getUpdated(), that.getUpdated()) && Objects.equals(authorid, that.authorid)
+                && Objects.equals(contestactive, that.contestactive) && Objects
+                .equals(plantemplateid, that.plantemplateid) && Objects
+                .equals(contestscheduleid, that.contestscheduleid) && Objects
+                .equals(proposalcreationtemplatestring, that.proposalcreationtemplatestring)
+                && Objects.equals(votetemplatestring, that.votetemplatestring) && Objects
+                .equals(proposalvotetemplatestring, that.proposalvotetemplatestring) && Objects
+                .equals(proposalvoteconfirmationtemplatestring,
+                        that.proposalvoteconfirmationtemplatestring) && Objects
+                .equals(votequestiontemplatestring, that.votequestiontemplatestring) && Objects
+                .equals(focusareaid, that.focusareaid) && Objects
+                .equals(contesttier, that.contesttier) && Objects
+                .equals(contestlogoid, that.contestlogoid) && Objects
+                .equals(getFeatured_(), that.getFeatured_()) && Objects
+                .equals(plansopenbydefault, that.plansopenbydefault) && Objects
+                .equals(sponsorlogoid, that.sponsorlogoid) && Objects
+                .equals(defaultproposallogoid, that.defaultproposallogoid) && Objects
+                .equals(sponsortext, that.sponsortext) && Objects
+                .equals(sponsorlink, that.sponsorlink) && Objects.equals(getFlag(), that.getFlag())
+                && Objects.equals(flagtext, that.flagtext) && Objects
+                .equals(flagtooltip, that.flagtooltip)
+                && Objects.equals(discussiongroupid, that.discussiongroupid) && Objects
+                .equals(getWeight(), that.getWeight()) && Objects
+                .equals(resourcesurl, that.resourcesurl) && Objects
+                .equals(contestprivate, that.contestprivate) && Objects
+                .equals(usepermissions, that.usepermissions) && Objects
+                .equals(contestcreationstatus, that.contestcreationstatus) && Objects
+                .equals(defaultmodelid, that.defaultmodelid) && Objects
+                .equals(othermodels, that.othermodels) && Objects
+                .equals(defaultmodelsettings, that.defaultmodelsettings) && Objects
+                .equals(getPoints(), that.getPoints()) && Objects
+                .equals(defaultparentpointtype, that.defaultparentpointtype) && Objects
+                .equals(pointdistributionstrategy, that.pointdistributionstrategy) && Objects
+                .equals(emailtemplateurl, that.emailtemplateurl) && Objects
+                .equals(showInTileView, that.showInTileView) && Objects
+                .equals(showInListView, that.showInListView) && Objects
+                .equals(showInOutlineView, that.showInOutlineView) && Objects
+                .equals(hideribbons, that.hideribbons) && Objects
+                .equals(resourcearticleid, that.resourcearticleid) && Objects
+                .equals(issharedcontest, that.issharedcontest) && Objects
+                .equals(sharedorigin, that.sharedorigin);
+    }
+
+    @Override
     public String toString() {
 
         return "Contest (" + contestpk + ", " + contesttypeid + ", " + contestname + ", "
@@ -705,8 +695,7 @@ public abstract class AbstractContest {
                 + votequestiontemplatestring + ", " + focusareaid + ", " + contesttier + ", "
                 + contestlogoid + ", " + featured_ + ", " + plansopenbydefault + ", "
                 + sponsorlogoid + ", " + sponsortext + ", " + sponsorlink + ", " + flag + ", "
-                + flagtext + ", " + flagtooltip + ", " + groupid + ", " + discussiongroupid + ", "
-                + weight + ", " + resourcesurl + ", " + contestprivate + ", " + usepermissions
+                + flagtext + ", " + flagtooltip + ", " + discussiongroupid + ", " + weight + ", " + resourcesurl + ", " + contestprivate + ", " + usepermissions
                 + ", " + contestcreationstatus + ", " + defaultmodelid + ", " + othermodels + ", "
                 + defaultmodelsettings + ", " + points + ", " + defaultparentpointtype + ", "
                 + pointdistributionstrategy + ", " + emailtemplateurl + ", " + showInTileView + ", "
