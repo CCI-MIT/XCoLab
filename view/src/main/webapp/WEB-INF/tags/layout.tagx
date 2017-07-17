@@ -13,6 +13,13 @@
     <jsp:directive.attribute name="meta1" type="java.lang.String" required="false" rtexprvalue="true" description="Social media meta info 1" />
     <jsp:directive.attribute name="meta2" type="java.lang.String" required="false" rtexprvalue="true" description="Social media meta info 2" />
 
+    <jsp:directive.attribute name="openGraphSiteName" type="java.lang.String" required="false" rtexprvalue="true" description="Open Graph site name override, if empty the defalt value in config variables will be used" />
+    <jsp:directive.attribute name="openGraphTitle" type="java.lang.String" required="false" rtexprvalue="true" description="Open Graph title override , if empty the default value in config variables will be used" />
+    <jsp:directive.attribute name="openGraphDescription" type="java.lang.String" required="false" rtexprvalue="true" description="Open Graph description override , if empty the default value in config variables will be used" />
+    <jsp:directive.attribute name="openGraphImage" type="java.lang.String" required="false" rtexprvalue="true" description="Open Graph image override , if empty the default value in config variables will be used" />
+
+
+
     <jsp:useBean id="_librariesToLoad" class="java.util.HashMap" scope="request"/>
 
     <!-- jsp variables -->
@@ -171,10 +178,10 @@
     <meta name="p:domain_verify" content="70e4477f0ab70225da1533151386c16f"/>
 
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="${_colabName}" />
-    <meta property="og:title" content="${_openGraphShareTitle}" />
-    <meta property="og:description" content="${_openGraphShareDescription}" />
-    <meta property="og:image" content="${_logoPathBig}" />
+    <meta property="og:site_name" content="${ not empty openGraphSiteName ? openGraphSiteName: _colabName}" />
+    <meta property="og:title" content="${ not empty openGraphTitle ? openGraphTitle: _openGraphShareTitle}" />
+    <meta property="og:description" content="${ not empty openGraphDescription ? openGraphDescription: _openGraphShareDescription}" />
+    <meta property="og:image" content="${_colabUrl}${not empty openGraphImage?openGraphImage:_logoPathBig}" />
 
     <link href="${_themeImageFolder}/favicon.ico" rel="Shortcut Icon" />
     <link rel="image_src" type="image/png" href="${_logoPathBig}" />
