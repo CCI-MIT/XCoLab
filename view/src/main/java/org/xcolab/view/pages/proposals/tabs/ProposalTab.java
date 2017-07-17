@@ -6,39 +6,47 @@ import org.xcolab.view.pages.proposals.tabs.access.ImpactAccessAlgorithm;
 import org.xcolab.view.pages.proposals.tabs.access.LegacyImpactAccessAlgorithm;
 import org.xcolab.view.pages.proposals.tabs.access.PointsAccessAlgorithm;
 import org.xcolab.view.pages.proposals.tabs.access.ScreeningAccessAlgorithm;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextWrapper;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 import javax.servlet.http.HttpServletRequest;
 
 public enum ProposalTab {
-    DESCRIPTION("Description", Type.NORMAL, ProposalTabAccess.ALWAYS, ProposalTabAccess.EDIT,
+    DESCRIPTION("Description", "contests.proposal.tabs.description",
+            Type.NORMAL, ProposalTabAccess.ALWAYS, ProposalTabAccess.EDIT,
             ProposalTabActivityCountAlgorithm.alwaysZero),
-    ACTIONS_IMPACTS("Model results", Type.NORMAL,
-            new LegacyImpactAccessAlgorithm(), ProposalTabAccess.NEVER,
+    ACTIONS_IMPACTS("Model results", "contests.proposal.tabs.modelresults",
+            Type.NORMAL, new LegacyImpactAccessAlgorithm(), ProposalTabAccess.NEVER,
             ProposalTabActivityCountAlgorithm.alwaysZero),
-    IMPACT("Impact", Type.NORMAL, ImpactAccessAlgorithm.view(), ImpactAccessAlgorithm.edit(),
+    IMPACT("Impact", "contests.proposal.tabs.impact",
+            Type.NORMAL, ImpactAccessAlgorithm.view(), ImpactAccessAlgorithm.edit(),
             ProposalTabActivityCountAlgorithm.alwaysZero),
-    TEAM("Contributors", Type.NORMAL, ProposalTabAccess.ALWAYS, ProposalTabAccess.NEVER,
+    TEAM("Contributors", "contests.proposal.tabs.contributors",
+            Type.NORMAL, ProposalTabAccess.ALWAYS, ProposalTabAccess.NEVER,
             ProposalTabActivityCountAlgorithm.membersCount),
-    COMMENTS("Comments", Type.NORMAL, ProposalTabAccess.ALWAYS, ProposalTabAccess.NEVER,
+    COMMENTS("Comments", "contests.proposal.tabs.comments",
+            Type.NORMAL, ProposalTabAccess.ALWAYS, ProposalTabAccess.NEVER,
             ProposalTabActivityCountAlgorithm.commentsCount),
-    SCREENING("Screening", Type.HIGHLIGHT, new ScreeningAccessAlgorithm(),
+    SCREENING("Screening", "contests.proposal.tabs.screening",
+            Type.HIGHLIGHT, new ScreeningAccessAlgorithm(),
             ProposalTabAccess.NEVER,
             ProposalTabActivityCountAlgorithm.alwaysZero),
-    ADVANCING("Advancing", Type.HIGHLIGHT, new AdvancingAccessAlgorithm(),
+    ADVANCING("Advancing", "contests.proposal.tabs.advancing",
+            Type.HIGHLIGHT, new AdvancingAccessAlgorithm(),
             ProposalTabAccess.NEVER,
             ProposalTabActivityCountAlgorithm.alwaysZero),
-    EVALUATION("Evaluation Results", Type.NORMAL, new EvaluationAccessAlgorithm(),
+    EVALUATION("Evaluation Results", "contests.proposal.tabs.evaluation",
+            Type.NORMAL, new EvaluationAccessAlgorithm(),
             ProposalTabAccess.NEVER,
             ProposalTabActivityCountAlgorithm.evaluationCommentsCount),
     //TODO: check if we still need this
 //    FELLOW_REVIEW("Fellow Review", Type.NORMAL, ProposalTabCanAccessAlgorithm.fellowReviewAccess,
 //            ProposalTabAccess.NEVER,
 //            ProposalTabActivityCountAlgorithm.fellowReviewCommentsCount),
-    ADMIN("Admin", Type.NORMAL, ProposalTabAccess.PROPOSAL_ADMIN, ProposalTabAccess.NEVER,
+    ADMIN("Admin", "contests.proposal.tabs.admin",
+            Type.NORMAL, ProposalTabAccess.PROPOSAL_ADMIN, ProposalTabAccess.NEVER,
             ProposalTabActivityCountAlgorithm.alwaysZero),
-    POINTS("Points", Type.NORMAL, PointsAccessAlgorithm.view(), PointsAccessAlgorithm.edit(),
+    POINTS("Points", "contests.proposal.tabs.points",
+            Type.NORMAL, PointsAccessAlgorithm.view(), PointsAccessAlgorithm.edit(),
             ProposalTabActivityCountAlgorithm.alwaysZero);
 
     private final String displayName;
@@ -46,12 +54,14 @@ public enum ProposalTab {
     private final ProposalTabCanAccessAlgorithm canAccessTabAlgorithm;
     private final ProposalTabCanAccessAlgorithm canEditAlgorithm;
     private final ProposalTabActivityCountAlgorithm activitiesCountAlgorithm;
+    private final String displayNameMessageCode;
 
-    ProposalTab(String displayName, Type tabType,
-            ProposalTabCanAccessAlgorithm canAccessAlgorithm,
+    ProposalTab(String displayName, String displayNameMessageCode,
+            Type tabType, ProposalTabCanAccessAlgorithm canAccessAlgorithm,
             ProposalTabCanAccessAlgorithm canEditAlgorithm,
             ProposalTabActivityCountAlgorithm activitiesCountAlgorithm) {
         this.displayName = displayName;
+        this.displayNameMessageCode = displayNameMessageCode;
         this.tabType = tabType;
         this.canAccessTabAlgorithm = canAccessAlgorithm;
         this.canEditAlgorithm = canEditAlgorithm;
@@ -66,20 +76,24 @@ public enum ProposalTab {
         return this.ordinal() == 0;
     }
 
-    public boolean getCanAccess(HttpServletRequest request) {
-        return canAccessTabAlgorithm.canAccess(new ProposalsContextWrapper(request));
+    public boolean getCanAccess(ProposalContext proposalContext) {
+        return canAccessTabAlgorithm.canAccess(proposalContext);
     }
 
-    public boolean getCanEdit(HttpServletRequest request) {
-        return canEditAlgorithm.canAccess(new ProposalsContextWrapper(request));
+    public boolean getCanEdit(ProposalContext proposalContext) {
+        return canEditAlgorithm.canAccess(proposalContext);
     }
 
-    public int getActivityCount(ProposalsContext context, HttpServletRequest request) {
+    public int getActivityCount(ProposalContext context, HttpServletRequest request) {
         return activitiesCountAlgorithm.getActivityCount(context, request);
     }
 
     public Type getTabType() {
         return tabType;
+    }
+
+    public String getDisplayNameMessageCode() {
+        return displayNameMessageCode;
     }
 
     public enum Type {

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
 import org.xcolab.client.members.legacy.enums.MessageType;
@@ -44,22 +44,16 @@ public class MessagingController {
         return ConfigurationAttributeKey.MEMBERS_CONTENT_ARTICLE_ID.get();
     }
 
-    @GetMapping("")
+    @GetMapping
     public String showMessagesDefault(HttpServletRequest request, HttpServletResponse response, Model model,
-            @RequestParam(required = false) Integer pageNumber, Member loggedInMember) {
-        if (pageNumber == null) {
-            pageNumber = 1;
-        }
+            @RequestParam(defaultValue = "1") Integer pageNumber, Member loggedInMember) {
         return showMessages(request, response, model, "INBOX" , pageNumber, loggedInMember);
 
     }
     @GetMapping("mailbox/{mailboxType}")
     public String showMessagesBoxType(HttpServletRequest request, HttpServletResponse response, Model model,
             @PathVariable String mailboxType,
-            @RequestParam(required = false) Integer pageNumber, Member loggedInMember) {
-        if (pageNumber == null) {
-            pageNumber = 1;
-        }
+            @RequestParam(defaultValue = "1") Integer pageNumber, Member loggedInMember) {
         return showMessages(request, response, model, mailboxType, pageNumber, loggedInMember);
     }
 

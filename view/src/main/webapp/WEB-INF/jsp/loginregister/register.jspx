@@ -8,7 +8,7 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
 <spring:message code="register.title.register" var="title"/>
-<xcolab:layout title="${title}">
+<xcolab:layout title="${title}" canonicalUrlRelative="/register">
 
     <!--@elvariable id="generateScreenName" type="java.lang.Boolean"-->
     <!--@elvariable id="colabName" type="java.lang.String"-->
@@ -21,7 +21,7 @@
     <div class="popupreg_form">
 
         <div class="popupreg_head">
-            <h1><spring:message code="register.header.joinmessage"/> ${_colabName}</h1>
+            <h1><collab:message code="register.header.joinmessage" /></h1>
         </div>
 
         <c:if test="${(_isFacebookSsoActive or _isGoogleSsoActive or _isSharedColab) and not isSsoLogin}">
@@ -129,7 +129,10 @@
                         <div class="reg_errors"><!--  -->
                             <form:errors cssClass="c-Alert c-Alert__error" path="password" />
                         </div></td>
-                    <td colspan="2" class="p-LoginRegister__signup__infofield"><b><spring:message code="register.form.fields.password.note"/></b> <spring:message code="register.form.fields.password.notemsg"/></td>
+                    <td colspan="2" class="p-LoginRegister__signup__infofield">
+                        <b><spring:message code="register.form.fields.password.note"/></b>
+                        <spring:message code="register.form.fields.password.notemsg"/>
+                    </td>
                 </tr>
 
 

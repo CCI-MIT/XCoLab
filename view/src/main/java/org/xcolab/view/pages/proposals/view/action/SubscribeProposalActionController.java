@@ -1,17 +1,15 @@
 package org.xcolab.view.pages.proposals.view.action;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 import java.io.IOException;
 
@@ -21,20 +19,17 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class SubscribeProposalActionController {
 
-    @Autowired
-    private ProposalsContext proposalsContext;
-
-
     @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/subscribeProposal")
-    public void handleAction(HttpServletRequest request, Model model, HttpServletResponse response)
+    public void handleAction(HttpServletRequest request, HttpServletResponse response, Model model,
+            ProposalContext proposalContext, Member currentMember)
             throws ProposalsAuthorizationException, IOException {
         
-        if (proposalsContext.getPermissions(request).getCanSubscribeProposal()) {
-            final Proposal proposal = proposalsContext.getProposal(request);
+        if (proposalContext.getPermissions().getCanSubscribeProposal()) {
+            final Proposal proposal = proposalContext.getProposal();
             long proposalId = proposal.getProposalId();
-            long memberId = proposalsContext.getMember(request).getUserId();
+            long memberId = currentMember.getId_();
             final ProposalClient proposalClient =
-                    ProposalsContextUtil.getClients(request).getProposalClient();
+                    proposalContext.getClients().getProposalClient();
             if (proposalClient
                     .isMemberSubscribedToProposal(proposalId, memberId)) {
                 proposalClient
@@ -44,7 +39,7 @@ public class SubscribeProposalActionController {
                 proposalClient
                         .subscribeMemberToProposal(proposalId, memberId);
             }
-            response.sendRedirect(proposal.getProposalLinkUrl(proposalsContext.getContest(request)));
+            response.sendRedirect(proposal.getProposalLinkUrl(proposalContext.getContest()));
         }
         else {
             throw new ProposalsAuthorizationException("User isn't allowed to subscribe proposal");

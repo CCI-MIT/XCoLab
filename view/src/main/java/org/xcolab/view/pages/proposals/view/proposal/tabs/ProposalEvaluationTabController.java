@@ -1,8 +1,5 @@
 package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +9,7 @@ import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
@@ -25,8 +23,7 @@ import org.xcolab.util.http.client.RestService;
 import org.xcolab.view.pages.proposals.discussion.ProposalDiscussionPermissions;
 import org.xcolab.view.pages.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.util.entity.enums.ColabConstants;
@@ -43,86 +40,85 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalEvaluationTabController extends BaseProposalTabController {
-    private final static Logger _log = LoggerFactory.getLogger(ProposalEvaluationTabController.class);
+
     private static final Long AVERAGE_RESULT_ROUND_FACTOR = 10L;
     private static final String EVALUATION_TAB_VIEW_NAME = "/proposals/proposalEvaluation";
 
-    private final ProposalsContext proposalsContext;
-
-    @Autowired
-    public ProposalEvaluationTabController(ProposalsContext proposalsContext) {
-        this.proposalsContext = proposalsContext;
-    }
-
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=EVALUATION")
-    public String showEvaluation(HttpServletRequest request, Model model) {
+    public String showEvaluation(HttpServletRequest request, Model model,
+            Member currentMember, ProposalContext proposalContext) {
 
-        boolean isFellowScreeningActive = proposalsContext.getContestPhase(request).getFellowScreeningActive();
-        boolean showEvaluationRatings = hasContestPassedAnyScreeningPhaseAlready(request);
+        boolean isFellowScreeningActive = proposalContext.getContestPhase().getFellowScreeningActive();
+        boolean showEvaluationRatings = hasContestPassedAnyScreeningPhaseAlready(proposalContext);
         boolean showPublicRatingForm = isFellowScreeningActive || showEvaluationRatings;
         showPublicRatingForm = false; // Remove once public rating is approved
         model.addAttribute("showPublicRatingForm", showPublicRatingForm);
         model.addAttribute("showEvaluation", showEvaluationRatings);
 
         if (showPublicRatingForm) {
-            model.addAttribute("judgeProposalFeedbackBean", getProposalRatingBean(request));
+            model.addAttribute("judgeProposalFeedbackBean",
+                    getProposalRatingBean(currentMember, proposalContext));
         }
 
         if (showEvaluationRatings) {
-            Proposal proposal = proposalsContext.getProposal(request);
-            Contest contest = proposalsContext.getContest(request);
+            Proposal proposal = proposalContext.getProposal();
+            Contest contest = proposalContext.getContest();
 
             long discussionId = proposal.getResultsDiscussionId();
             if (discussionId == 0) {
-                discussionId = createEvaluationThread(request);
+                discussionId = createEvaluationThread(proposalContext);
             }
 
-            ProposalDiscussionPermissions pdp = new ProposalDiscussionPermissions(request);
-            pdp.setProposalId(proposalsContext.getProposal(request).getProposalId(),proposalsContext.getContestPhase(request).getContestPhasePK());
+            ProposalDiscussionPermissions pdp = new ProposalDiscussionPermissions(request,
+                    proposalContext);
+            pdp.setProposalId(proposalContext.getProposal().getProposalId(),
+                    proposalContext.getContestPhase().getContestPhasePK());
             request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME,pdp);
 
 
             model.addAttribute("evaluationDiscussionId", discussionId);
-            model.addAttribute("averageRatingsPerPhase", getAverageRatingsForPastPhases(contest, proposal,
-                    request));
-            model.addAttribute("activeContestPhaseOpenForEdit", isActiveContestPhaseOpenForEdit(contest,request));
+            model.addAttribute("averageRatingsPerPhase", getAverageRatingsForPastPhases(
+                    proposalContext, contest, proposal));
+            model.addAttribute("activeContestPhaseOpenForEdit", isActiveContestPhaseOpenForEdit(
+                    proposalContext, contest));
             model.addAttribute("showEvaluation", true);
             model.addAttribute("isJudgeReadOnly", true);
             model.addAttribute("authorId", proposal.getAuthorId());
             model.addAttribute("proposalId", proposal.getProposalId());
         }
 
-        setCommonModelAndPageAttributes(request, model, ProposalTab.EVALUATION);
+        setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.EVALUATION);
         return EVALUATION_TAB_VIEW_NAME;
     }
 
-    private long createEvaluationThread(HttpServletRequest request) {
-        Proposal proposal = proposalsContext.getProposal(request);
-        final long discussionThreadId = createDiscussionThread(request, " results discussion", true);
+    private long createEvaluationThread(ProposalContext proposalContext) {
+        Proposal proposal = proposalContext.getProposal();
+        final long discussionThreadId = createDiscussionThread(proposalContext, " results discussion", true);
         proposal.setResultsDiscussionId(discussionThreadId);
 
-        ProposalsContextUtil.getClients(request).getProposalClient().updateProposal(proposal);
+        proposalContext.getClients().getProposalClient().updateProposal(proposal);
         return discussionThreadId;
     }
 
-    private JudgeProposalFeedbackBean getProposalRatingBean(HttpServletRequest request) {
+    private JudgeProposalFeedbackBean getProposalRatingBean(Member currentMember,
+            ProposalContext proposalContext) {
 
-        Proposal proposalWrapper = proposalsContext.getProposalWrapped(request);
+        Proposal proposal = proposalContext.getProposal();
         ProposalJudgeWrapper proposalJudgeWrapper =
-                new ProposalJudgeWrapper(proposalWrapper, proposalsContext.getMember(request));
+                new ProposalJudgeWrapper(proposal, currentMember);
         JudgeProposalFeedbackBean proposalRatingBean =
                 new JudgeProposalFeedbackBean(proposalJudgeWrapper);
 
-        Long contestPhaseId = proposalsContext.getContestPhase(request).getContestPhasePK();
+        Long contestPhaseId = proposalContext.getContestPhase().getContestPhasePK();
         proposalRatingBean.setContestPhaseId(contestPhaseId);
 
         return proposalRatingBean;
     }
 
-    private boolean hasContestPassedAnyScreeningPhaseAlready(HttpServletRequest request) {
+    private boolean hasContestPassedAnyScreeningPhaseAlready(ProposalContext proposalContext) {
         boolean hasContestPassedScreeningPhaseAlready = false;
 
-        Contest contest = proposalsContext.getContest(request);
+        Contest contest = proposalContext.getContest();
         RestService contestRestService = contest.getRestService();
         ContestPhase activeContestPhase = ContestClient.fromService(contestRestService).getActivePhase(contest.getContestPK());
         List<ContestPhase> allContestPhasesForCurrentContest = ContestClient.fromService(contestRestService).getAllContestPhases(contest.getContestPK());
@@ -141,26 +137,27 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         return hasContestPassedScreeningPhaseAlready;
     }
 
-    private boolean isActiveContestPhaseOpenForEdit(Contest contest, HttpServletRequest request) {
+    private boolean isActiveContestPhaseOpenForEdit(ProposalContext proposalContext, Contest contest) {
 
-        ContestPhase activeContestPhase = proposalsContext.getClients(request).getContestClient().getActivePhase(contest.getContestPK());
+        ContestPhase activeContestPhase = proposalContext.getClients().getContestClient().getActivePhase(contest.getContestPK());
         Long contestPhaseTypeId = activeContestPhase.getContestPhaseType();
-        return proposalsContext.getClients(request).getContestClient().getContestPhaseType(contestPhaseTypeId).getStatus().equalsIgnoreCase("OPEN_FOR_EDIT");
+        return proposalContext.getClients().getContestClient().getContestPhaseType(contestPhaseTypeId).getStatus().equalsIgnoreCase("OPEN_FOR_EDIT");
     }
 
-    private List<ProposalRatings> getAverageRatingsForPastPhases(Contest contest,
-            Proposal proposal, HttpServletRequest request) {
+    private List<ProposalRatings> getAverageRatingsForPastPhases(ProposalContext proposalContext,
+            Contest contest, Proposal proposal) {
+
 
         List<ProposalRatings> proposalRatings = new ArrayList<>();
-        List<ContestPhase> contestPhases = proposalsContext.getClients(request).getContestClient().getAllContestPhases(contest.getContestPK());
+        List<ContestPhase> contestPhases = proposalContext.getClients().getContestClient().getAllContestPhases(contest.getContestPK());
 
         for (ContestPhase contestPhase : contestPhases) {
             boolean isPhasePastScreeningPhase =
                     contestPhase.getFellowScreeningActive() && hasContestPhaseEnded(contestPhase);
             if (isPhasePastScreeningPhase) {
-                String contestPhaseName = proposalsContext.getClients(request).getContestClient().getContestPhaseName(contestPhase);
+                String contestPhaseName = proposalContext.getClients().getContestClient().getContestPhaseName(contestPhase);
                 List<ProposalRating> judgeRatingsForProposal =
-                        proposalsContext.getClients(request).getProposalJudgeRatingClient()
+                        proposalContext.getClients().getProposalJudgeRatingClient()
                         .getJudgeRatingsForProposal(proposal.getProposalId(), contestPhase.getContestPhasePK());
 
                 if (!judgeRatingsForProposal.isEmpty()) {
@@ -168,7 +165,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
                         ProposalJudgingCommentHelper commentHelper =
                                 new ProposalJudgingCommentHelper(proposal, contestPhase);
                         ProposalRatings proposalRating;
-                        if (wasProposalPromotedInContestPhase(proposal, contestPhase, request)) {
+                        if (wasProposalPromotedInContestPhase(proposalContext, proposal, contestPhase)) {
                             proposalRating = calculateAverageRating(judgeRatingsForProposal);
                         } else {
                             proposalRating = new ProposalRatings(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID);
@@ -192,10 +189,9 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
         return proposalRatings;
     }
 
-    private Boolean wasProposalPromotedInContestPhase(Proposal proposal, ContestPhase contestPhase,
-            HttpServletRequest request) {
+    private Boolean wasProposalPromotedInContestPhase(ProposalContext proposalContext, Proposal proposal, ContestPhase contestPhase) {
         final ProposalPhaseClient proposalPhaseClient =
-                proposalsContext.getClients(request).getProposalPhaseClient();
+                proposalContext.getClients().getProposalPhaseClient();
         ProposalContestPhaseAttribute judgingDecisionAttr =
                 proposalPhaseClient.getProposalContestPhaseAttribute(
                         proposal.getProposalId(), contestPhase.getContestPhasePK(),
@@ -233,7 +229,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
     private ProposalRatings calculateAverageRating(List<ProposalRating> judgeRatingsForProposal) {
 
         Map<Long, List<ProposalRating>> map = new HashMap<>();
-        map.put(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID, new ArrayList<ProposalRating>());
+        map.put(ColabConstants.CLIMATE_COLAB_TEAM_USER_ID, new ArrayList<>());
 
         Map<Long, List<Long>> averageRatingList = new HashMap<>();
         List<Long> judgeIds = new ArrayList<>();
@@ -243,7 +239,7 @@ public class ProposalEvaluationTabController extends BaseProposalTabController {
             }
             Long ratingAverageIndex = judgeRating.getRatingValueId() / 5L;
             if (!averageRatingList.containsKey(ratingAverageIndex)) {
-                averageRatingList.put(ratingAverageIndex, new ArrayList<Long>());
+                averageRatingList.put(ratingAverageIndex, new ArrayList<>());
             }
             Long currentRating = judgeRating.getRatingValueId();
             averageRatingList.get(ratingAverageIndex).add(currentRating);

@@ -1,7 +1,9 @@
 package org.xcolab.client.contest.pojo;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.ThreadClient;
 import org.xcolab.client.comment.pojo.CommentThread;
@@ -72,7 +74,7 @@ public class Contest extends AbstractContest implements Serializable {
     private static final long CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS = 3L;
     private static final String EMAIL_TEMPLATE_URL = "/resources/-/wiki/Main/Judging+Mail+Templates";
 
-    private Map<String, String> ontologyJoinedNames = new HashMap<>();
+    private final Map<String, String> ontologyJoinedNames = new HashMap<>();
     private List<ContestPhase> visiblePhases;
 
 
@@ -137,12 +139,12 @@ public class Contest extends AbstractContest implements Serializable {
         String link = "/";
 
         if (this.getIsSharedContestInForeignColab()) {
-            link += ContestClientUtil.getClient().getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get())
+            link += ContestTypeClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get())
                     .getFriendlyUrlStringContests();
         } else {
 
             if(this.getContestTypeId()!=null) {
-                link += contestClient.getContestType(this.getContestTypeId())
+                link += ContestTypeClient.getContestType(this.getContestTypeId())
                         .getFriendlyUrlStringContests();
             }else{
                 System.out.println(" > ContestID("+this.getContestPK()+")");
@@ -331,10 +333,8 @@ public class Contest extends AbstractContest implements Serializable {
                 faCache.put(fa.getId_(), fa);
             }
             List<OntologyTerm> terms = new ArrayList<>();
-            for (OntologyTerm t : ontologyClient
-                    .getOntologyTermsByFocusAreaOntologySpaceName(this.getFocusAreaId(),space)) {
-                    terms.add(t);
-            }
+            terms.addAll(ontologyClient
+                    .getOntologyTermsByFocusAreaOntologySpaceName(this.getFocusAreaId(), space));
             ontologySpaceCache.put(space, terms.isEmpty() ? null : terms);
         }
         return ontologySpaceCache.get(space);
@@ -437,7 +437,7 @@ public class Contest extends AbstractContest implements Serializable {
 
     public ContestType getContestType() {
         if (contestType == null) {
-            contestType = contestClient.getContestType(this.getContestTypeId());
+            contestType = ContestTypeClient.getContestType(this.getContestTypeId());
         }
         return contestType;
     }
@@ -739,13 +739,13 @@ public class Contest extends AbstractContest implements Serializable {
 
     public String getNewProposalLinkUrl() {
         if (getIsSharedContestInForeignColab()) {
-            final ContestType contestType = ContestClientUtil.getClient()
+            final ContestType contestType = ContestTypeClient
                     .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get());
-            final String portletUrl = contestType.getPortletUrl();
+            final String portletUrl = contestType.getContestBaseUrl();
             return String.format("%s/%s/%s/createProposal",
                     portletUrl, this.getContestYear(), this.getContestUrlName());
         } else {
-            final String portletUrl = getContestType().getPortletUrl();
+            final String portletUrl = getContestType().getContestBaseUrl();
             return String.format("%s/%s/%s/createProposal",
                     portletUrl, this.getContestYear(), this.getContestUrlName());
         }

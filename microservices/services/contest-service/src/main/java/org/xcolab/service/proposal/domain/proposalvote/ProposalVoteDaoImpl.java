@@ -16,12 +16,15 @@ import static org.xcolab.model.Tables.PROPOSAL_VOTE;
 
 @Repository
 public class ProposalVoteDaoImpl implements ProposalVoteDao {
+
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public ProposalVoteDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
 
-
-
-
+    @Override
     public ProposalVote create(ProposalVote proposalVote) {
 
         this.dslContext.insertInto(PROPOSAL_VOTE)
@@ -52,6 +55,7 @@ public class ProposalVoteDaoImpl implements ProposalVoteDao {
 
     }
 
+    @Override
     public boolean update(ProposalVote proposalVote) {
         return dslContext.update(PROPOSAL_VOTE)
                 .set(PROPOSAL_VOTE.CREATE_DATE, proposalVote.getCreateDate())

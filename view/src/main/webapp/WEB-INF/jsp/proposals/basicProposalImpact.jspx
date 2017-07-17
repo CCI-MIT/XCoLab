@@ -4,21 +4,23 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           version="2.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-    <xcolab:layout>
+
+    <jsp:directive.include file="./init_proposal_tab.jspx"/>
+
+    <xcolab:layout title="${proposal.name} - Impact">
         <!--@elvariable id="impactIterations" type="java.util.List<ImpactIteration>"-->
         <!--@elvariable id="impactSerieses" type="java.util.List<ImpactSeries>"-->
         <!--@elvariable id="regionTerms" type="java.util.List<OntologyTerm>"-->
-
-        <jsp:directive.include file="./init_proposal_tab.jspx"/>
 
         <jsp:directive.include file="./proposalDetails/header.jspx"/>
 
         <xcolab:requireLibrary name="spin.js" />
         <xcolab:requireLibrary name="handlebars.js" />
-        <!-- TODO: replace - we already have spin.js -->
-        <xcolab:script src="${_themeJsFolder}/proposals/jquery.spin.js"/>
 
-        <xcolab:script src="${_themeJsFolder}/proposals/jquery.scrolltable.js"/>
+        <!-- TODO: replace - we already have spin.js -->
+
+
+
         <xcolab:script src="${_themeJsFolder}/proposals/numeral.min.js"/>
 
         <c:set var="getRegionsUrl" value="${proposal.proposalUrl}/tab/IMPACT/proposalImpactGetRegions"/>
@@ -98,7 +100,7 @@
         </script>
 
         <script id="impactSeriesAuthorTemplate" type="text/x-handlebars-template">
-            <a href="/web/guest/member/-/member/userId/{{author.userId}}">{{author.name}}</a>
+            <a href="/members/profile/{{author.userId}}">{{author.name}}</a>
         </script>
 
 
@@ -315,22 +317,7 @@
 
         </div>
 
-        <c:choose>
-            <c:when test="${(not proposalsPermissions.canEdit) and (not proposalsPermissions.canFellowActions) and (not proposalsPermissions.canIAFActions)}">
-                <script>
-                    jQuery(function () {
-                        $('tr.impact-series-clickable').removeClass('impact-series-clickable');
-                    });
-                </script>
-            </c:when>
-            <c:otherwise>
-                <script>
-                    jQuery(function () {
-                        newSeriesRowClicked();
-                    });
-                </script>
-            </c:otherwise>
-        </c:choose>
+
 
         <script>
             // String constants
@@ -403,6 +390,9 @@
                  $('table#impact-summary div.st-body-scroll').append(sgrip);
                  */
             });
+
+
+
 
             function registerEventHandler() {
                 $('tr.impact-series-clickable').click(function () {
@@ -1044,10 +1034,19 @@
                 return getOverviewTableRowWithIndex(currentEditingRowIndex);
             }
 
-            var impactSeriesEditTableRowTemplate = Handlebars.compile($("#impactSeriesEditTableRowTemplate").html());
-            var impactSeriesSaveButtonTemplate = Handlebars.compile($("#impactSeriesSaveButtonTemplate").html());
-            var impactSeriesNewTableRowTemplate = Handlebars.compile($('#impactSeriesNewTableRowTemplate').html());
-            var impactSeriesAuthorTemplate = Handlebars.compile($('#impactSeriesAuthorTemplate').html());
+            var impactSeriesEditTableRowTemplate = null;
+            var impactSeriesSaveButtonTemplate = null;
+            var impactSeriesNewTableRowTemplate = null;
+            var impactSeriesAuthorTemplate = null;
+
+            jQuery(function () {
+
+                 impactSeriesEditTableRowTemplate = Handlebars.compile($("#impactSeriesEditTableRowTemplate").html());
+                 impactSeriesSaveButtonTemplate = Handlebars.compile($("#impactSeriesSaveButtonTemplate").html());
+                 impactSeriesNewTableRowTemplate = Handlebars.compile($('#impactSeriesNewTableRowTemplate').html());
+                 impactSeriesAuthorTemplate = Handlebars.compile($('#impactSeriesAuthorTemplate').html());
+
+            });
 
             function discardComment(){
                 disableDirtyCheck();
@@ -1104,11 +1103,32 @@
                 }
             }
 
+
         </script>
         <script type="text/javascript">
             jQuery(function() {
                 enableDirtyCheck();
             });
         </script>
+
+        <c:choose>
+            <c:when test="${(not proposalsPermissions.canEdit) and (not proposalsPermissions.canFellowActions) and (not proposalsPermissions.canIAFActions)}">
+                <script>
+                    jQuery(function () {
+                        $('tr.impact-series-clickable').removeClass('impact-series-clickable');
+                    });
+                </script>
+            </c:when>
+            <c:otherwise>
+                <script>
+                    jQuery(function () {
+
+                        newSeriesRowClicked();
+
+                    });
+                </script>
+            </c:otherwise>
+        </c:choose>
+
     </xcolab:layout>
 </jsp:root>

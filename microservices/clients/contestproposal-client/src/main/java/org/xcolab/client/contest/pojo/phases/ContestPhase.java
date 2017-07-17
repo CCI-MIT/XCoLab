@@ -2,6 +2,7 @@ package org.xcolab.client.contest.pojo.phases;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.enums.ContestStatus;
@@ -115,7 +116,7 @@ public class ContestPhase extends AbstractContestPhase {
         try {
             String link = "/";
             Contest contest = contestClient.getContest(this.getContestPK());
-            link += contestClient.getContestType(contest.getContestTypeId())
+            link += ContestTypeClient.getContestType(contest.getContestTypeId())
                     .getFriendlyUrlStringContests();
             link += "/%d/%s/phase/%d";
             return String.format(link, contest.getContestYear(), contest.getContestUrlName(),

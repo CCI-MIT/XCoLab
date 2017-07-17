@@ -10,13 +10,15 @@ import org.xcolab.service.contest.exceptions.NotFoundException;
 
 import static org.xcolab.model.Tables.IMPACT_TEMPLATE_FOCUS_AREA_LIST;
 
-
 @Repository
 public class ImpactTemplateFocusAreaListDaoImpl implements ImpactTemplateFocusAreaListDao {
 
-    @Autowired
-    private DSLContext dslContext;
+    private final DSLContext dslContext;
 
+    @Autowired
+    public ImpactTemplateFocusAreaListDaoImpl(DSLContext dslContext) {this.dslContext = dslContext;}
+
+    @Override
     public ImpactTemplateFocusAreaList get(Long focusAreaListId) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(IMPACT_TEMPLATE_FOCUS_AREA_LIST)

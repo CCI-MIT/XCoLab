@@ -1,6 +1,6 @@
 package org.xcolab.service.members.domain.messaginguserpreferences;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.model.tables.pojos.MessagingUserPreferences;
 
 public class DefaultMessagingUserPreferences extends MessagingUserPreferences {

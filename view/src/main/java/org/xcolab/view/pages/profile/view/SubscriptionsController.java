@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.errors.ErrorText;
@@ -66,7 +66,7 @@ public class SubscriptionsController {
 
             final long contestTypeId = ConfigurationAttributeKey
                     .DEFAULT_CONTEST_TYPE_ID.get();
-            final ContestType contestType = ContestClientUtil
+            final ContestType contestType = ContestTypeClient
                     .getContestType(contestTypeId);
             model.addAttribute("contestType", contestType);
 

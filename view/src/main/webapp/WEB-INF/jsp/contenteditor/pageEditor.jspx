@@ -87,7 +87,7 @@
             var saveContentPageURL = '${saveContentPageURL}';
             var moveArticleVersionURL = '${moveArticleVersionURL}';
             var createArticleFolderURL = '${createArticleFolderURL}';
-            var previewContentPageURL = '${previewContentPageURL}'
+            var previewContentPageURL = '${previewContentPageURL}';
             var ckEditor = null;
             var THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
 
@@ -177,9 +177,10 @@
                     $('#pageTitle').val("");
                     $('#mainContent').val(0);
                     $('#leftMenu').val(0);
+                    $('#metaDescription').val("");
 
                     $("#createdAtDate").html("Created at: - ");
-                    $("#article-view").unmask()
+                    $("#article-view").unmask();
                     $('#pageTitle').focus();
 
                 });
@@ -219,17 +220,17 @@
 
                 }
 
-                function loadPageContentResponse(response) {
-                    var responseData = JSON.parse(response);
-                    var data = responseData;
+                function loadPageContentResponse(data) {
                     var id = data.pageId;
                     var mainContentArticleId = data.contentArticleId;
                     var menuArticleId = data.menuArticleId;
-                    var pageTitle = data.pageTitle;
+                    var pageTitle = data.title;
+                    var metaDescription = data.metaDescription;
 
                     var input = $('#pageId').val(id);
 
                     $('#pageTitle').val(pageTitle);
+                    $('#metaDescription').val(metaDescription);
 
                     $('#mainContent').val(mainContentArticleId);
 
@@ -248,11 +249,10 @@
                     var pageTitle = $('#pageTitle').val();
 
                     if (pageTitle == "") {
-
                         noty({text: 'Title field is mandatory!', type: 'error'});
                         return false;
                     }
-                    if(!validateTitleStr(pageTitle)){
+                    if (!validateTitleStr(pageTitle)) {
                         noty({text: 'The title is invalid, it must contain only alphanumeric characters - or _. This title will be used to compose a url at /page/title!', type: 'error'});
                         return false;
                     }
@@ -260,49 +260,41 @@
 
                     var pageId = $('#pageId').val();
 
-
-
                     var mainContentArticleId = $('#mainContent').val();
-                    if(mainContentArticleId == 0){
+                    if (mainContentArticleId == 0) {
                         noty({text: 'Please select the main content article!', type: 'error'});
                         return;
                     }
 
                     var menuArticleId = $('#leftMenu').val();
+                    var metaDescription = $('#metaDescription').val();
 
                     var url = saveContentPageURL;
 
                     var parameters = {
                         pageId: pageId,
                         pageTitle: pageTitle,
-                        mainContentArticleId: mainContentArticleId
-                        ,
+                        metaDescription: metaDescription,
+                        mainContentArticleId: mainContentArticleId,
                         menuArticleId: menuArticleId
                     };
 
                     $.post(url, parameters, function (response) {
-                        var responseData = JSON.parse(response);
-                        var data = responseData;
                         noty({text: 'Page saved successfully', type: 'success'});
-
                         $("#article-view").unmask();
                         $('#tree-view').tree('reload');
                         var id = articleId + THRESHOLD_TO_AVOID_NODE_COLISION;
                         loadPageContent(id, folderName);
-
                     });
                 }
 
             });
-
-
 
             ]]>
         </script>
         <div class="contentEditor">
             <div class="contentBody">
                 <ul class="c-TabBar clearfix">
-
                     <li class="c-TabBar__tab--first"><a href="/content-editor/">Content Editor</a></li>
                     <li class="c-TabBar__tab active"><a href="/content-editor/pageEditor">Page Editor</a></li>
                     <li class="c-TabBar__tab"><a href="/content-editor/resourcePagesEditor">Resource pages</a></li>
@@ -330,7 +322,8 @@
                                 Page title: <input type="text" id="pageTitle"  maxcharacters="300"  />
                             </div>
                             <div id="createdAtDate"><!-- --></div>
-                            <div id="leftMenuContainer">Left menu:
+                            <div>
+                                <label for="leftMenu">Left menu:</label>
                                 <select id="leftMenu"  style="width: 527px;">>
                                         <option value="0">None</option>
                                     <c:forEach var="article" items="${allArticles}">
@@ -339,7 +332,8 @@
                                 </select>
                             </div>
 
-                            <div id="mainContentContainer">Main content:
+                            <div>
+                                <label for="mainContent">Main content:</label>
                                 <select id="mainContent" style="width: 508px;">
                                         <option value="0">Select an article</option>
                                     <c:forEach var="article" items="${allArticles}">
@@ -347,14 +341,21 @@
                                     </c:forEach>
                                 </select>
                             </div>
+
+                            <div>
+                                <label for="metaDescription">Description for search engines:</label>
+                                <textarea id="metaDescription" style="width: 508px;" maxcharacters="255" >
+                                    <!-- empty --></textarea>
+                            </div>
                             <br/>
-
-
-
                         </div>
                         <br/>
-                        <div class="floatRight outerVerticalCenter" id="previewContentPage" ><a  class="c-Button__primary" href="#">Preview</a></div>
-                        <div class="floatRight outerVerticalCenter" id="saveContentPage" ><a  class="c-Button__primary" href="#">Save</a></div>
+                        <div class="floatRight outerVerticalCenter" id="previewContentPage">
+                            <a class="c-Button__primary" href="#">Preview</a>
+                        </div>
+                        <div class="floatRight outerVerticalCenter" id="saveContentPage">
+                            <a class="c-Button__primary" href="#">Save</a>
+                        </div>
                     </div>
                 </div>
             </div>

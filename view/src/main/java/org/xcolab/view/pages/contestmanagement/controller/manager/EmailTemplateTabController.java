@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
-import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.util.html.LabelStringValue;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
-import org.xcolab.util.html.LabelStringValue;
 import org.xcolab.view.pages.contestmanagement.wrappers.EmailTemplateWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.util.ArrayList;
 import java.util.List;

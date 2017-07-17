@@ -80,7 +80,7 @@ public class ColabController {
 
                 }
             }
-        } catch (org.xcolab.client.sharedcolab.exceptions.MemberNotFoundException foreignNotFound) {
+        } catch (org.xcolab.client.sharedcolab.exceptions.MemberNotFoundException ignored) {
 
         }
         redirectUrl.replaceQueryParam("isSSOSigningIn", true);

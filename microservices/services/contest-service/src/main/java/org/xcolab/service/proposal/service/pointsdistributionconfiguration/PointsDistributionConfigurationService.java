@@ -92,9 +92,10 @@ public class PointsDistributionConfigurationService {
     }
 
     private void verifyTeamMemberships(long proposalId, long pointTypeId, List<PointsDistributionConfiguration> pdcs) {
-        Set<Long> memberIds = new HashSet<>();
-        Set<Long> missingMemberIds = new HashSet<>();
+
         try {
+            Set<Long> memberIds = new HashSet<>();
+            Set<Long> missingMemberIds = new HashSet<>();
             for (Member user : proposalService.getProposalMembers(proposalId)) {
                 memberIds.add(user.getUserId());
                 missingMemberIds.add(user.getUserId());

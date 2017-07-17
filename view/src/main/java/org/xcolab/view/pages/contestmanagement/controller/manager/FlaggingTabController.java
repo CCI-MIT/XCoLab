@@ -16,15 +16,15 @@ import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.exceptions.ReportTargetNotFoundException;
 import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.flagging.pojo.ReportTarget;
-import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.util.enums.flagging.ManagerAction;
+import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
-import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportTargetWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.ArrayList;

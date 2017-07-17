@@ -12,13 +12,15 @@ import java.util.List;
 
 import static org.xcolab.model.Tables.IMPACT_TEMPLATE_MAX_FOCUS_AREA;
 
-
 @Repository
 public class ImpactTemplateMaxFocusAreaDaoImpl implements ImpactTemplateMaxFocusAreaDao {
 
-    @Autowired
-    private DSLContext dslContext;
+    private final DSLContext dslContext;
 
+    @Autowired
+    public ImpactTemplateMaxFocusAreaDaoImpl(DSLContext dslContext) {this.dslContext = dslContext;}
+
+    @Override
     public ImpactTemplateMaxFocusArea getByFocusAreaListId(Long id_) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(IMPACT_TEMPLATE_MAX_FOCUS_AREA)
@@ -29,9 +31,9 @@ public class ImpactTemplateMaxFocusAreaDaoImpl implements ImpactTemplateMaxFocus
             throw new NotFoundException("ImpactTemplateMaxFocusArea with id " + id_ + " does not exist");
         }
         return record.into(ImpactTemplateMaxFocusArea.class);
-
     }
 
+    @Override
     public List<ImpactTemplateMaxFocusArea> findByGiven(Long focusAreaListId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(IMPACT_TEMPLATE_MAX_FOCUS_AREA).getQuery();

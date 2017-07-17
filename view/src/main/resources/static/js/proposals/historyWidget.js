@@ -1,6 +1,6 @@
 var itemsPerPage = 10;
 var defaultPhaseId = -1;
-var totalCount = 0
+var totalCount = 0;
 function loadHistory(page) {
     // Load the page with items of the current contest phase
     if (page == -1 && getPhaseId() != defaultPhaseId) {
@@ -40,7 +40,7 @@ function addVersionToTable(data, even){
     var dateObject = new Date(data.date); //read in as Date object
     var timeZoneIdentifier = String(String(dateObject).split("(")[1]).split(")")[0];  //get the timezone abbreviation
     var adjustedDateString = (dateObject.getMonth()+1)+"/"+dateObject.getDate()+"/"+dateObject.getFullYear()+" "+pad(dateObject.getHours(),2)+":"+pad(dateObject.getMinutes(),2)+" "+timeZoneIdentifier;
-    $('#versions').find('> div > div > table > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + (data.version == getVersion() ? ' ui-datatable-highlighted' : '') + '"><td style="width: 200px;"><a href="' + proposalUrl + '/version/' + data.version + '">' + /*dateTimeFormatter.dateTime(data.date)*/ adjustedDateString + '</a></td><td><em>by <a href="/web/guest/member/-/member/userId/'+ data.author.userId + '">' + data.author.screenName + '</a></em></td><td><em>in phase <a href="' + phaseUrl + '">' + data.contestPhase.name + '</a></em></td></tr>');
+    $('#versions').find('> div > div > table > tbody').append('<tr class="' + (even ? ' ui-datatable-even' : ' ui-datatable-odd') + (data.version == getVersion() ? ' ui-datatable-highlighted' : '') + '"><td style="width: 200px;"><a href="' + proposalUrl + '/version/' + data.version + '">' + /*dateTimeFormatter.dateTime(data.date)*/ adjustedDateString + '</a></td><td><em>by <a href="/members/profile/'+ data.author.userId + '">' + data.author.screenName + '</a></em></td><td><em>in phase <a href="' + phaseUrl + '">' + data.contestPhase.name + '</a></em></td></tr>');
 }
 
 function addPagination(prev,next,currentPage,totalPages){
@@ -52,7 +52,7 @@ function addPagination(prev,next,currentPage,totalPages){
     $('#versions').find('> div > div > table > tbody').append('<tr><td colspan="3" style="text-align:center !important; background-color: white;">' + output + '</td></tr>');
 }
 
-function triggerHistoryVisibility(){
+function triggerHistoryVisibility() {
     var $versions = $('#versions');
     if ($versions.hasClass('hidden')) {
         if (getVersion() != -1) {
@@ -61,13 +61,11 @@ function triggerHistoryVisibility(){
             loadHistory(-1);
         }
 
-        $('#versionContainerTrigger').text("Hide history");
-
-    }
-    else  {
+        $('#versionContainerTrigger').text(textHideHistory);
+    } else  {
         $versions.slideUp( "slow", function() {
             $('#versions').addClass('hidden');
-            $('#versionContainerTrigger').text("Show history");
+            $('#versionContainerTrigger').text(textShowHistory);
         });
     }
 }

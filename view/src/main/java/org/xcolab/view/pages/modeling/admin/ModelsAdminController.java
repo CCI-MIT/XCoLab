@@ -127,10 +127,7 @@ public class ModelsAdminController {
         for (ModelOutputDisplayItem output : display.getOutputs()) {
             outputs.add(output);
             if (output.getDisplayItemType() == ModelOutputDisplayItemType.INDEXED) {
-                for (ModelOutputDisplayItem serie : ((ModelOutputIndexedDisplayItem) output)
-                        .getSeries()) {
-                    outputs.add(serie);
-                }
+                outputs.addAll(((ModelOutputIndexedDisplayItem) output).getSeries());
             }
         }
         return outputs;

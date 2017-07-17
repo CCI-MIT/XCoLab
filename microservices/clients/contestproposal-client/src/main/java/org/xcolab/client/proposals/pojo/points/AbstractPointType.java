@@ -183,17 +183,11 @@ class AbstractPointType implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("PointType (");
+        String sb =
+                "PointType (" + id_ + ", " + parentpointtypeid + ", " + percentageofparent + ", "
+                        + distributionstrategy + ", " + receiverlimitationstrategy + ", " + name
+                        + ", " + sort + ")";
 
-        sb.append(id_);
-        sb.append(", ").append(parentpointtypeid);
-        sb.append(", ").append(percentageofparent);
-        sb.append(", ").append(distributionstrategy);
-        sb.append(", ").append(receiverlimitationstrategy);
-        sb.append(", ").append(name);
-        sb.append(", ").append(sort);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

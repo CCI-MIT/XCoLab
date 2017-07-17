@@ -224,19 +224,12 @@ class AbstractPointsDistributionConfiguration implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("PointsDistributionConfiguration (");
+        String sb =
+                "PointsDistributionConfiguration (" + id_ + ", " + proposalid + ", " + pointtypeid
+                        + ", " + targetuserid + ", " + targetsubproposalid + ", "
+                        + targetplansectiondefinitionid + ", " + percentage + ", " + creator + ", "
+                        + createdate + ")";
 
-        sb.append(id_);
-        sb.append(", ").append(proposalid);
-        sb.append(", ").append(pointtypeid);
-        sb.append(", ").append(targetuserid);
-        sb.append(", ").append(targetsubproposalid);
-        sb.append(", ").append(targetplansectiondefinitionid);
-        sb.append(", ").append(percentage);
-        sb.append(", ").append(creator);
-        sb.append(", ").append(createdate);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

@@ -1,6 +1,6 @@
 package org.xcolab.client.proposals.pojo;
 
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,7 @@ public class ContestTypeProposal {
     private final List<Proposal> proposals;
 
     public ContestTypeProposal(ContestType contestType) {
-        this(contestType, new ArrayList<Proposal>());
+        this(contestType, new ArrayList<>());
     }
 
     public ContestTypeProposal(ContestType contestType, List<Proposal> proposals) {

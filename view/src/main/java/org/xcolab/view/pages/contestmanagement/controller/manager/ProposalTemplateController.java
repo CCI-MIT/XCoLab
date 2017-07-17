@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
-import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.controller.AbstractProposalTemplateTabController;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
@@ -20,6 +19,7 @@ import org.xcolab.view.pages.contestmanagement.utils.ProposalTemplateLifecycleUt
 import org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.ProposalTemplateWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.List;
@@ -81,8 +81,8 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
     }
 
     @PostMapping("tab/PROPOSAL_TEMPLATES/create")
-    public String createNewProposalTemplateTabController(HttpServletRequest request, Model model,
-            HttpServletResponse response) throws IOException {
+    public String createNewProposalTemplateTabController(HttpServletRequest request,
+            HttpServletResponse response, Model model) throws IOException {
 
         if (!tabWrapper.getCanEdit()) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
@@ -93,9 +93,9 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
     }
 
     @PostMapping("tab/PROPOSAL_TEMPLATES/delete/{elementId}")
-    public String deleteProposalTemplateTabController(HttpServletRequest request, Model model,
-            @PathVariable Long elementId,
-            HttpServletResponse response) throws IOException {
+    public String deleteProposalTemplateTabController(HttpServletRequest request,
+            HttpServletResponse response, Model model,
+            @PathVariable Long elementId) throws IOException {
 
         if (!tabWrapper.getCanEdit()) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
@@ -106,8 +106,8 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
     }
 
     @PostMapping("tab/PROPOSAL_TEMPLATES/update")
-    public String updateProposalTemplatesTabController(HttpServletRequest request, Model model,
-            HttpServletResponse response,
+    public String updateProposalTemplatesTabController(HttpServletRequest request,
+            HttpServletResponse response, Model model,
             @ModelAttribute ProposalTemplateWrapper updatedProposalTemplateWrapper,
             BindingResult result) throws IOException {
 

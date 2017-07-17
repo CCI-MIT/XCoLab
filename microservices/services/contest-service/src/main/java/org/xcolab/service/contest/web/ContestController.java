@@ -12,15 +12,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.xcolab.model.tables.pojos.ContestCollectionCard;
 import org.xcolab.model.tables.pojos.Contest;
+import org.xcolab.model.tables.pojos.ContestCollectionCard;
 import org.xcolab.model.tables.pojos.ContestDiscussion;
 import org.xcolab.model.tables.pojos.ContestPhase;
-import org.xcolab.model.tables.pojos.ContestType;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestcollectioncard.ContestCollectionCardDao;
 import org.xcolab.service.contest.domain.contestdiscussion.ContestDiscussionDao;
-import org.xcolab.service.contest.domain.contesttype.ContestTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.collectioncard.CollectionCardService;
 import org.xcolab.service.contest.service.contest.ContestService;
@@ -35,7 +33,6 @@ import java.util.List;
 public class ContestController {
 
     private final ContestDao contestDao;
-    private final ContestTypeDao contestTypeDao;
     private final ContestDiscussionDao contestDiscussionDao;
     private final ContestCollectionCardDao contestCollectionCardDao;
 
@@ -46,13 +43,12 @@ public class ContestController {
     @Autowired
     public ContestController(ContestService contestService,
         CollectionCardService collectionCardService, ContestDao contestDao,
-        ContestCollectionCardDao contestCollectionCardDao, ContestTypeDao contestTypeDao,
+        ContestCollectionCardDao contestCollectionCardDao,
         ContestDiscussionDao contestDiscussionDao, OntologyService ontologyService) {
         this.contestService = contestService;
         this.collectionCardService = collectionCardService;
         this.contestDao = contestDao;
         this.contestCollectionCardDao = contestCollectionCardDao;
-        this.contestTypeDao = contestTypeDao;
         this.contestDiscussionDao = contestDiscussionDao;
         this.ontologyService = ontologyService;
     }
@@ -280,15 +276,4 @@ public class ContestController {
     public List<ContestPhase> getVisiblePhases(@PathVariable Long contestId) {
         return contestService.getVisiblePhases(contestId);
     }
-
-    @GetMapping(value = "/contestTypes/{contestTypeId}")
-    public ContestType getContestType(@PathVariable long contestTypeId) throws NotFoundException {
-        return contestTypeDao.get(contestTypeId).orElseThrow(NotFoundException::new);
-    }
-
-    @RequestMapping(value = "/contestTypes", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<ContestType> getContestTypes() {
-        return contestTypeDao.findByGiven();
-    }
-
 }

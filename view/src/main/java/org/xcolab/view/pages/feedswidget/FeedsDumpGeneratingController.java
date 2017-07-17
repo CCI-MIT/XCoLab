@@ -3,7 +3,6 @@ package org.xcolab.view.pages.feedswidget;
 import au.com.bytecode.opencsv.CSVWriter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
@@ -23,10 +22,11 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class FeedsDumpGeneratingController {
-	private DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+	private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
 	private byte[] generatedActivities = {};
-	private int activitiesInGeneratedDump = 0;
+	private int activitiesInGeneratedDump;
 
 	@GetMapping("/feedswidget/generateDump")
 	public void showFeed(HttpServletRequest request, HttpServletResponse response)
@@ -59,7 +59,8 @@ public class FeedsDumpGeneratingController {
 					try {
 
 						String body = activity.getActivityEntryBody();
-						if (body != null && body.trim().length() > 0) {
+						if (body != null && !body.trim().isEmpty()) {
+						    //TODO: this doesn't work post-liferay
 							body = body.replace("/web/guest",
 									"http://climatecolab.org/web/guest");
 						csvWriter.writeNext(new String[] {

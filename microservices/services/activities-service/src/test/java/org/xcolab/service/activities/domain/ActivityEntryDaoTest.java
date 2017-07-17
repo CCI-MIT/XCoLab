@@ -59,15 +59,14 @@ public class ActivityEntryDaoTest {
     public void shouldGetActivitiesAfterDate() throws Exception {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         Date dt = dateFormat.parse("2017-04-16 23:59:59");
-        assertTrue(activityEntryDao.getActivitiesAfter(dt).size()==12);;
-
+        assertTrue(activityEntryDao.getActivitiesAfter(dt).size()==12);
     }
 
     @Test
     public void shouldThrowExceptionOnGetActivityEntryNotFound() throws Exception {
 
         thrown.expect(NotFoundException.class);
-        activityEntryDao.get(-1l);
+        activityEntryDao.get(-1L);
     }
 
     @Test
@@ -76,7 +75,7 @@ public class ActivityEntryDaoTest {
         List<ActivityEntry>
             list = activityEntryDao.findByGiven(
             new PaginationHelper(0,Integer.MAX_VALUE,null),
-            2664477l,null);
+                2664477L,null);
         assertTrue(list.size()==9);
 
 

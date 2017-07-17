@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticleVersion;
-import org.xcolab.client.contents.pojo.ContentFolder;
-import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.PermissionsClient;
@@ -62,7 +60,7 @@ public class ContentEditorResourceController extends BaseContentEditor {
 
         JSONArray versions = new JSONArray();
         List<ContentArticleVersion> cavs = ContentsClient
-                .getContentArticleVersions(0,Integer.MAX_VALUE,null,articleId,null,null);
+                .getContentArticleVersions(0,Integer.MAX_VALUE,null,articleId,null,null, null);
 
         JSONObject articleVersion;
         for(ContentArticleVersion cav: cavs){
@@ -91,11 +89,11 @@ public class ContentEditorResourceController extends BaseContentEditor {
 
 
         JSONArray responseArray = new JSONArray();
-        Map<String, String> yearFolders = new LinkedHashMap<>();
 
 
         if (node == null || node.isEmpty()) {//root
             List<Contest> allContests = ContestClientUtil.getAllContests();
+            Map<String, String> yearFolders = new LinkedHashMap<>();
             for (Contest c : allContests) {
                 yearFolders.put(c.getContestYear().toString(), "");
 
@@ -109,11 +107,10 @@ public class ContentEditorResourceController extends BaseContentEditor {
                 responseArray.put(folderNode(year, year));
             }
         } else {//year
-            Integer year = 2016;
-            year = Integer.parseInt(node);//should be the year
+            Integer year = Integer.parseInt(node);//should be the year
             List<Contest> contestsInYear = ContestClientUtil.getAllContestsInYear(year);
             for (Contest c : contestsInYear) {
-                if (c.getResourceArticleId() != null && c.getResourceArticleId() != 0l) {
+                if (c.getResourceArticleId() != null && c.getResourceArticleId() != 0L) {
                     responseArray
                             .put(articleNode(c.getContestShortName(),
                                     c.getResourceArticleId()));

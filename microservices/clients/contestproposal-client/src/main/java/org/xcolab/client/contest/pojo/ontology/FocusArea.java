@@ -10,8 +10,8 @@ public class FocusArea extends AbstractFocusArea implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private List<OntologyTerm> ontologyTerms = new ArrayList<>();
-    private List<Long> ontologyTermsIds = new ArrayList<>();
+    private final List<OntologyTerm> ontologyTerms = new ArrayList<>();
+    private final List<Long> ontologyTermsIds = new ArrayList<>();
 
     public FocusArea() {}
 

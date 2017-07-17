@@ -1,6 +1,6 @@
 package org.xcolab.view.taglibs.xcolab.jspTags.discussion;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.members.PermissionsClient;
@@ -14,8 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 
 public class DiscussionPermissions {
 
+    private static final int EDIT_GRACE_PERIOD_IN_MINUTES = 15;
+
     public static final String REQUEST_ATTRIBUTE_NAME = "DISCUSSION_PERMISSIONS";
-    public static final int EDIT_GRACE_PERIOD_IN_MINUTES = 15;
 
     protected final long memberId;
     protected boolean isLoggedIn;

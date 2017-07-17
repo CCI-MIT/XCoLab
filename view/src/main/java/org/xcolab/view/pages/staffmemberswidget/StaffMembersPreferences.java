@@ -2,11 +2,8 @@ package org.xcolab.view.pages.staffmemberswidget;
 
 import org.json.JSONObject;
 
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.members.legacy.enums.CategoryRole;
-import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.entity.utils.WidgetPreference;
 import org.xcolab.util.attributes.AttributeGetter;
 
@@ -48,7 +45,7 @@ public class StaffMembersPreferences extends WidgetPreference implements Seriali
         categories.put(CategoryRole.VENDORS.getCategoryId(),"Project Staff: Vendors");
         categories.put(CategoryRole.ADVISORS_STAFF.getCategoryId(),"Project Staff: Advisors");
         categories.put(CategoryRole.ALUMNI.getCategoryId(),"Project Staff: Alumni");
-        categories.put(CategoryRole.RESARCH_COLAB.getCategoryId(),"Research Collaborator");
+        categories.put(CategoryRole.RESEARCH_COLAB.getCategoryId(),"Research Collaborator");
     }
 
     public static Map<Long, String> getCategories() {

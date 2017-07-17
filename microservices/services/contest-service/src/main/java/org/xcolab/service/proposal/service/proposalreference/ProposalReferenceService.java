@@ -47,7 +47,7 @@ public class ProposalReferenceService {
         for (ProposalReference existingReference : existingReferences) {
             proposalReferenceDao.delete(existingReference.getProposalId(), existingReference.getSubProposalId());
         }
-        populateTableWithProposal(proposal, new HashSet<Long>());
+        populateTableWithProposal(proposal, new HashSet<>());
     }
     private void populateTableWithProposal(Proposal proposal, Set<Long> processedProposals)  {
         if (processedProposals.contains(proposal.getProposalId())) {

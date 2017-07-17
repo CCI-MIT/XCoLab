@@ -2,8 +2,8 @@ package org.xcolab.view.pages.profile.wrappers;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.PermissionsClient;
@@ -19,13 +19,13 @@ import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
-import org.xcolab.view.util.entity.ActivityUtil;
-import org.xcolab.view.util.entity.EntityGroupingUtil;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.profile.beans.BadgeBean;
 import org.xcolab.view.pages.profile.beans.MessageBean;
 import org.xcolab.view.pages.profile.beans.UserBean;
 import org.xcolab.view.pages.profile.entity.Badge;
+import org.xcolab.view.util.entity.ActivityUtil;
+import org.xcolab.view.util.entity.EntityGroupingUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -120,13 +120,13 @@ public class UserProfileWrapper implements Serializable {
         List<Proposal> proposals = ProposalClientUtil.getMemberProposals(member.getId_());
         Map<ContestType, List<Proposal>> proposalsByContestType = EntityGroupingUtil
                 .groupByContestType(proposals);
-        for (ContestType contestType : ContestClientUtil.getActiveContestTypes()) {
+        for (ContestType contestType : ContestTypeClient.getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId
-                    .put(contestType.getId_(), new ContestTypeProposal(contestType));
+                    .put(contestType.getId(), new ContestTypeProposal(contestType));
             final List<Proposal> proposalsInContestType = proposalsByContestType
                     .get(contestType);
             for (Proposal p : proposalsInContestType) {
-                contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
+                contestTypeProposalWrappersByContestTypeId.get(contestType.getId())
                         .getProposals()
                         .add(p);
             }
@@ -341,7 +341,7 @@ public class UserProfileWrapper implements Serializable {
     public String getProposalsString() {
         if (proposalsString == null) {
             proposalsString =
-                    ContestClientUtil.getProposalNames(
+                    ContestTypeClient.getProposalNames(
                     new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.PLURAL.name(),
                     "or");
         }
@@ -350,7 +350,7 @@ public class UserProfileWrapper implements Serializable {
 
     public String getProposalString() {
         if (proposalString == null) {
-            proposalString = ContestClientUtil.getProposalNames(
+            proposalString = ContestTypeClient.getProposalNames(
                     new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.SINGULAR.name(),
                     "or");
         }

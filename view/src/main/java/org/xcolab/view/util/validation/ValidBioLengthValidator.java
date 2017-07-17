@@ -13,8 +13,12 @@ public class ValidBioLengthValidator implements
     private static final int BIO_MAX_LENGTH = 2000;
     private String bioProperty;
 
+    private final ResourceMessageResolver resourceMessageResolver;
+
     @Autowired
-    ResourceMessageResolver resourceMessageResolver;
+    public ValidBioLengthValidator(ResourceMessageResolver resourceMessageResolver) {
+        this.resourceMessageResolver = resourceMessageResolver;
+    }
 
     @Override
     public void initialize(ValidBioLength constraintAnnotation) {
@@ -42,7 +46,7 @@ public class ValidBioLengthValidator implements
             if (isDefaultMessage) {
                 context.disableDefaultConstraintViolation();
                 String message = resourceMessageResolver.getLocalizedMessage(
-                        "register.form.validation.biografy.message", new String[]{BIO_MAX_LENGTH+""});
+                        "register.form.validation.biography.message", new String[]{BIO_MAX_LENGTH+""});
                 ConstraintValidatorContext.ConstraintViolationBuilder violationBuilder = context
                         .buildConstraintViolationWithTemplate(message);
                 violationBuilder.addConstraintViolation();

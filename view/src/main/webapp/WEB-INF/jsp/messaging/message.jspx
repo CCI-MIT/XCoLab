@@ -1,22 +1,23 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0"
+          xmlns:spring="http://www.springframework.org/tags">
     <!--@elvariable id="messageBean" type="org.xcolab.view.pages.messaging.beans.MessageBean"-->
     <!--@elvariable id="user" type="org.xcolab.client.members.pojo.Member"-->
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-<xcolab:layout title="${messageBean.subject}">
+<xcolab:layout title="${messageBean.subject} - Messages">
     <collab:content articleId="${communityTopContentArticleId}" />
     <div id="content">
         <div id="bread" class="pro">
-            <a href="/members">Community</a>
+            <a href="/members"><spring:message code="colab.breadcrums.community"/></a>
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-            <a href="/members">Members</a>
+            <a href="/members"><spring:message code="colab.breadcrums.members"/></a>
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
             <collab:userLinkSimple userId="${user.userId}" text="${user.displayName}" />
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-            <a href="/messaging">Messages</a>
+            <a href="/messaging"><spring:message code="colab.breadcrums.messages"/></a>
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
             <a href="${messageBean.linkUrl}">${messageBean.subject}</a>
         </div>
@@ -24,9 +25,10 @@
         <h1>${messageBean.subject}</h1>
         <p>
             <strong>
-                message from <em>${messageBean.from.displayName}</em> to <em>${messageBean.to.get(0).displayName}</em>
+                <spring:message code="message.from.message" arguments="${messageBean.from.displayName},${messageBean.to.get(0).displayName}" argumentSeparator=","/>
+
                 <c:if test="${messageBean.to.size() > 1}">
-                    and ${messageBean.to.size() - 1} others
+                    <spring:message code="message.from.messageandothers" arguments="${messageBean.to.size() - 1}"/>
                 </c:if>
             </strong>
         </p>
@@ -36,7 +38,7 @@
         </p>
 
         <c:if test="${user.userId != messageBean.from.userId}">
-            <a class="c-Button__primary" data-toggle="modal" data-target="#sendMessageModal">Reply</a>
+            <a class="c-Button__primary" data-toggle="modal" data-target="#sendMessageModal"><spring:message code="message.reply.button"/></a>
             <xcolab:sendMessageModal replyToMessage="${messageBean}" />
         </c:if>
     </div>

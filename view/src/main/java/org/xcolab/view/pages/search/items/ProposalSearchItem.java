@@ -1,8 +1,8 @@
 package org.xcolab.view.pages.search.items;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
@@ -47,7 +47,7 @@ public class ProposalSearchItem extends AbstractSearchItem {
 
             final long contestTypeId =
                     ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
-            final ContestType contestType = ContestClientUtil
+            final ContestType contestType = ContestTypeClient
                     .getContestType(contestTypeId);
             return contestType.getProposalNamePlural();
 

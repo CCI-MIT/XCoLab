@@ -65,9 +65,8 @@ public class FocusAreaEditorController {
             @RequestParam(value = "ontologySpaces[]")String[] ontologySpaces
     ) throws IOException {
 
-
         FocusArea focusArea;
-        if (id != null && id != 0l) {
+        if (id != null && id != 0L) {
             focusArea = OntologyClientUtil.getFocusArea(id);
             focusArea.setName(name);
             focusArea.setOrder_(order);

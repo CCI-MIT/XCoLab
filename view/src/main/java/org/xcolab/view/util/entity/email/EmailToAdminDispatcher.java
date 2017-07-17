@@ -1,6 +1,6 @@
 package org.xcolab.view.util.entity.email;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.emails.EmailClient;
 
 import java.util.ArrayList;

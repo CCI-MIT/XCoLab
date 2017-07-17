@@ -7,9 +7,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
-import org.xcolab.client.contest.ContestClient;
+import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
@@ -18,7 +18,6 @@ import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.util.IdListUtil;
-import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.enums.Plurality;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 import org.xcolab.util.html.HtmlUtil;
@@ -334,27 +333,24 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
     }
 
     public String getProposalNames() {
-        RestService contestService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
-        return ContestClient.fromService(contestService)
+        return ContestTypeClient
                 .getProposalNames(getAllowedContestTypeIdsList(), Plurality.SINGULAR.name(), "or");
     }
 
 
     public String getProposalNamesPlural() {
-        RestService contestService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
-        return ContestClient.fromService(contestService)
+        return ContestTypeClient
                 .getProposalNames(getAllowedContestTypeIdsList(), Plurality.PLURAL.name(), "and");
     }
 
     public String getContestNames() {
-        RestService contestService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
-        return ContestClient.fromService(contestService)
+        return ContestTypeClient
                 .getContestNames(getAllowedContestTypeIdsList(), Plurality.SINGULAR.name(), "or");
     }
 
     public String getContestNamesPlural() {
-        RestService contestService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
-        return ContestClient.fromService(contestService).getContestNames(getAllowedContestTypeIdsList(), Plurality.PLURAL.name(), "or");
+        return ContestTypeClient
+                .getContestNames(getAllowedContestTypeIdsList(), Plurality.PLURAL.name(), "or");
     }
 
     public RestService getRestService() {

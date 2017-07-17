@@ -15,6 +15,17 @@ CREATE TABLE `activities_ActivityEntry` (
   KEY `activityEntry_createDate` (`createDate`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+create table admin_ContestTypeAttribute
+(
+	name varchar(75) not null,
+	additionalId bigint not null,
+	locale varchar(5) default '' not null,
+	numericValue bigint null,
+	stringValue longtext null,
+	realValue double null,
+	primary key (name, additionalId, locale)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `xcolab_ProposalVote` (
   `proposalId` bigint(20) DEFAULT NULL,
   `contestPhaseId` bigint(20) NOT NULL,
@@ -380,6 +391,7 @@ CREATE TABLE `xcolab_ContentArticleVersion` (
   `authorId` bigint(20) DEFAULT NULL,
   `createDate` datetime DEFAULT NULL,
   `title` varchar(555) DEFAULT NULL,
+  `lang` varchar(2) DEFAULT 'en',
   `content` longtext,
   PRIMARY KEY (`contentArticleVersionId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -630,6 +642,7 @@ CREATE TABLE `xcolab_ContestTeamMemberRole` (
 CREATE TABLE `xcolab_ContentPage` (
   `pageId` bigint(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `metaDescription` VARCHAR(255),
   `menuArticleId` bigint(11) DEFAULT NULL,
   `contentArticleId` bigint(11) NOT NULL,
   `createdDate` timestamp NULL DEFAULT NULL,
@@ -723,10 +736,11 @@ CREATE TABLE `xcolab_PlanTemplate` (
 CREATE TABLE `xcolab_ConfigurationAttribute` (
   `name` varchar(75) NOT NULL,
   `additionalId` bigint(20) NOT NULL,
+  `locale` VARCHAR(5) DEFAULT '' NOT NULL,
   `numericValue` bigint(20) DEFAULT NULL,
   `stringValue` longtext,
   `realValue` double DEFAULT NULL,
-  PRIMARY KEY (`name`,`additionalId`)
+  PRIMARY KEY (`name`, `additionalId`, `locale`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_TrackedVisitor2User` (

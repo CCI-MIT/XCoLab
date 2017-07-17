@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.comment.CommentClient;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.util.CommentClientUtil;
@@ -23,6 +23,7 @@ import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -90,7 +91,7 @@ public abstract class BaseDiscussionsActionController {
                 //read current ones
                 Map<String, String> targetParams = new HashMap<>();
                 URI uri = new URI(referrer);
-                for (NameValuePair nvp : URLEncodedUtils.parse(uri, "UTF-8")) {
+                for (NameValuePair nvp : URLEncodedUtils.parse(uri, Charset.forName("UTF-8"))) {
                     targetParams.put(nvp.getName(), nvp.getValue());
                 }
                 //set new parameters & overwrite current ones

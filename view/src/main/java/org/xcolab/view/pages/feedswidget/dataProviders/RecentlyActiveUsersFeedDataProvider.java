@@ -4,11 +4,11 @@ import org.springframework.ui.Model;
 
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.view.util.entity.ActivityUtil;
 import org.xcolab.view.pages.feedswidget.FeedTypeDataProvider;
 import org.xcolab.view.pages.feedswidget.FeedsPreferences;
 import org.xcolab.view.pages.feedswidget.wrappers.MemberWrapper;
 import org.xcolab.view.pages.feedswidget.wrappers.SocialActivityWrapper;
+import org.xcolab.view.util.entity.ActivityUtil;
 import org.xcolab.view.util.pagination.SortFilterPage;
 
 import java.util.ArrayList;

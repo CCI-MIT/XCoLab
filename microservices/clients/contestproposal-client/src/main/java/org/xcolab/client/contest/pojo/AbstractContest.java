@@ -1,62 +1,63 @@
 package org.xcolab.client.contest.pojo;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public abstract class AbstractContest {
 
-    private Long      contestpk;
-    private Long      contesttypeid;
-    private String    contestname;
-    private String    contestshortname;
-    private String    contesturlname;
-    private Long      contestyear;
-    private String    contestdescription;
-    private String    contestmodeldescription;
-    private String    contestpositionsdescription;
+    private Long contestpk;
+    private Long contesttypeid;
+    private String contestname;
+    private String contestshortname;
+    private String contesturlname;
+    private Long contestyear;
+    private String contestdescription;
+    private String contestmodeldescription;
+    private String contestpositionsdescription;
     private Timestamp created;
     private Timestamp updated;
-    private Long      authorid;
-    private Boolean   contestactive;
-    private Long      plantemplateid;
-    private Long      contestscheduleid;
-    private String    proposalcreationtemplatestring;
-    private String    votetemplatestring;
-    private String    proposalvotetemplatestring;
-    private String    proposalvoteconfirmationtemplatestring;
-    private String    votequestiontemplatestring;
-    private Long      focusareaid;
-    private Long      contesttier;
-    private Long      contestlogoid;
-    private Boolean   featured_;
-    private Boolean   plansopenbydefault;
-    private Long      sponsorlogoid;
-    private Long      defaultproposallogoid;
-    private String    sponsortext;
-    private String    sponsorlink;
-    private Integer   flag;
-    private String    flagtext;
-    private String    flagtooltip;
-    private Long      groupid;
-    private Long      discussiongroupid;
-    private Integer   weight;
-    private String    resourcesurl;
-    private Boolean   contestprivate;
-    private Boolean   usepermissions;
-    private String    contestcreationstatus;
-    private Long      defaultmodelid;
-    private String    othermodels;
-    private String    defaultmodelsettings;
-    private Double    points;
-    private Long      defaultparentpointtype;
-    private String    pointdistributionstrategy;
-    private String    emailtemplateurl;
-    private Boolean   showInTileView;
-    private Boolean   showInListView;
-    private Boolean   showInOutlineView;
-    private Boolean   hideribbons;
-    private Long      resourcearticleid;
-    private Boolean   issharedcontest;
-    private String    sharedorigin;
+    private Long authorid;
+    private Boolean contestactive;
+    private Long plantemplateid;
+    private Long contestscheduleid;
+    private String proposalcreationtemplatestring;
+    private String votetemplatestring;
+    private String proposalvotetemplatestring;
+    private String proposalvoteconfirmationtemplatestring;
+    private String votequestiontemplatestring;
+    private Long focusareaid;
+    private Long contesttier;
+    private Long contestlogoid;
+    private Boolean featured_;
+    private Boolean plansopenbydefault;
+    private Long sponsorlogoid;
+    private Long defaultproposallogoid;
+    private String sponsortext;
+    private String sponsorlink;
+    private Integer flag;
+    private String flagtext;
+    private String flagtooltip;
+    private Long groupid;
+    private Long discussiongroupid;
+    private Integer weight;
+    private String resourcesurl;
+    private Boolean contestprivate;
+    private Boolean usepermissions;
+    private String contestcreationstatus;
+    private Long defaultmodelid;
+    private String othermodels;
+    private String defaultmodelsettings;
+    private Double points;
+    private Long defaultparentpointtype;
+    private String pointdistributionstrategy;
+    private String emailtemplateurl;
+    private Boolean showInTileView;
+    private Boolean showInListView;
+    private Boolean showInOutlineView;
+    private Boolean hideribbons;
+    private Long resourcearticleid;
+    private Boolean issharedcontest;
+    private String sharedorigin;
 
     public AbstractContest() {}
 
@@ -116,60 +117,23 @@ public abstract class AbstractContest {
         this.sharedorigin = value.sharedorigin;
     }
 
-    public AbstractContest(
-            Long      contestpk,
-            Long      contesttypeid,
-            String    contestname,
-            String    contestshortname,
-            String    contesturlname,
-            Long      contestyear,
-            String    contestdescription,
-            String    contestmodeldescription,
-            String    contestpositionsdescription,
-            Timestamp created,
-            Timestamp updated,
-            Long      authorid,
-            Boolean   contestactive,
-            Long      plantemplateid,
-            Long      contestscheduleid,
-            String    proposalcreationtemplatestring,
-            String    votetemplatestring,
-            String    proposalvotetemplatestring,
-            String    proposalvoteconfirmationtemplatestring,
-            String    votequestiontemplatestring,
-            Long      focusareaid,
-            Long      contesttier,
-            Long      contestlogoid,
-            Boolean   featured_,
-            Boolean   plansopenbydefault,
-            Long      sponsorlogoid,
-            String    sponsortext,
-            String    sponsorlink,
-            Integer   flag,
-            String    flagtext,
-            String    flagtooltip,
-            Long      groupid,
-            Long      discussiongroupid,
-            Integer   weight,
-            String    resourcesurl,
-            Boolean   contestprivate,
-            Boolean   usepermissions,
-            String    contestcreationstatus,
-            Long      defaultmodelid,
-            String    othermodels,
-            String    defaultmodelsettings,
-            Double    points,
-            Long      defaultparentpointtype,
-            String    pointdistributionstrategy,
-            String    emailtemplateurl,
-            Boolean   showInTileView,
-            Boolean   showInListView,
-            Boolean   showInOutlineView,
-            Boolean   hideribbons,
-            Long      resourcearticleid,
-            Boolean   issharedcontest,
-            String   sharedorigin
-    ) {
+    public AbstractContest(Long contestpk, Long contesttypeid, String contestname,
+            String contestshortname, String contesturlname, Long contestyear,
+            String contestdescription, String contestmodeldescription,
+            String contestpositionsdescription, Timestamp created, Timestamp updated, Long authorid,
+            Boolean contestactive, Long plantemplateid, Long contestscheduleid,
+            String proposalcreationtemplatestring, String votetemplatestring,
+            String proposalvotetemplatestring, String proposalvoteconfirmationtemplatestring,
+            String votequestiontemplatestring, Long focusareaid, Long contesttier,
+            Long contestlogoid, Boolean featured_, Boolean plansopenbydefault, Long sponsorlogoid,
+            String sponsortext, String sponsorlink, Integer flag, String flagtext,
+            String flagtooltip, Long groupid, Long discussiongroupid, Integer weight,
+            String resourcesurl, Boolean contestprivate, Boolean usepermissions,
+            String contestcreationstatus, Long defaultmodelid, String othermodels,
+            String defaultmodelsettings, Double points, Long defaultparentpointtype,
+            String pointdistributionstrategy, String emailtemplateurl, Boolean showInTileView,
+            Boolean showInListView, Boolean showInOutlineView, Boolean hideribbons,
+            Long resourcearticleid, Boolean issharedcontest, String sharedorigin) {
         this.contestpk = contestpk;
         this.contesttypeid = contesttypeid;
         this.contestname = contestname;
@@ -296,22 +260,6 @@ public abstract class AbstractContest {
         this.contestpositionsdescription = contestpositionsdescription;
     }
 
-    public Timestamp getCreated() {
-        return this.created;
-    }
-
-    public void setCreated(Timestamp created) {
-        this.created = created;
-    }
-
-    public Timestamp getUpdated() {
-        return this.updated;
-    }
-
-    public void setUpdated(Timestamp updated) {
-        this.updated = updated;
-    }
-
     public Long getAuthorId() {
         return this.authorid;
     }
@@ -372,7 +320,8 @@ public abstract class AbstractContest {
         return this.proposalvoteconfirmationtemplatestring;
     }
 
-    public void setProposalVoteConfirmationTemplateString(String proposalvoteconfirmationtemplatestring) {
+    public void setProposalVoteConfirmationTemplateString(
+            String proposalvoteconfirmationtemplatestring) {
         this.proposalvoteconfirmationtemplatestring = proposalvoteconfirmationtemplatestring;
     }
 
@@ -408,14 +357,6 @@ public abstract class AbstractContest {
         this.contestlogoid = contestlogoid;
     }
 
-    public Boolean getFeatured_() {
-        return this.featured_;
-    }
-
-    public void setFeatured_(Boolean featured_) {
-        this.featured_ = featured_;
-    }
-
     public Boolean getPlansOpenByDefault() {
         return this.plansopenbydefault;
     }
@@ -428,7 +369,6 @@ public abstract class AbstractContest {
         return this.sponsorlogoid;
     }
 
-
     public void setSponsorLogoId(Long sponsorlogoid) {
         this.sponsorlogoid = sponsorlogoid;
     }
@@ -440,7 +380,6 @@ public abstract class AbstractContest {
     public void setDefaultProposalLogoId(Long defaultproposallogoid) {
         this.defaultproposallogoid = defaultproposallogoid;
     }
-
 
     public String getSponsorText() {
         return this.sponsortext;
@@ -456,14 +395,6 @@ public abstract class AbstractContest {
 
     public void setSponsorLink(String sponsorlink) {
         this.sponsorlink = sponsorlink;
-    }
-
-    public Integer getFlag() {
-        return this.flag;
-    }
-
-    public void setFlag(Integer flag) {
-        this.flag = flag;
     }
 
     public String getFlagText() {
@@ -496,14 +427,6 @@ public abstract class AbstractContest {
 
     public void setDiscussionGroupId(Long discussiongroupid) {
         this.discussiongroupid = discussiongroupid;
-    }
-
-    public Integer getWeight() {
-        return this.weight;
-    }
-
-    public void setWeight(Integer weight) {
-        this.weight = weight;
     }
 
     public String getResourcesUrl() {
@@ -560,14 +483,6 @@ public abstract class AbstractContest {
 
     public void setDefaultModelSettings(String defaultmodelsettings) {
         this.defaultmodelsettings = defaultmodelsettings;
-    }
-
-    public Double getPoints() {
-        return this.points;
-    }
-
-    public void setPoints(Double points) {
-        this.points = points;
     }
 
     public Long getDefaultParentPointType() {
@@ -651,540 +566,151 @@ public abstract class AbstractContest {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final AbstractContest other = (AbstractContest) obj;
-        if (contestpk == null) {
-            if (other.contestpk != null) {
-                return false;
-            }
-        }
-        else if (!contestpk.equals(other.contestpk)) {
-            return false;
-        }
-        if (contesttypeid == null) {
-            if (other.contesttypeid != null) {
-                return false;
-            }
-        }
-        else if (!contesttypeid.equals(other.contesttypeid)) {
-            return false;
-        }
-        if (contestname == null) {
-            if (other.contestname != null) {
-                return false;
-            }
-        }
-        else if (!contestname.equals(other.contestname)) {
-            return false;
-        }
-        if (contestshortname == null) {
-            if (other.contestshortname != null) {
-                return false;
-            }
-        }
-        else if (!contestshortname.equals(other.contestshortname)) {
-            return false;
-        }
-        if (contesturlname == null) {
-            if (other.contesturlname != null) {
-                return false;
-            }
-        }
-        else if (!contesturlname.equals(other.contesturlname)) {
-            return false;
-        }
-        if (contestyear == null) {
-            if (other.contestyear != null) {
-                return false;
-            }
-        }
-        else if (!contestyear.equals(other.contestyear)) {
-            return false;
-        }
-        if (contestdescription == null) {
-            if (other.contestdescription != null) {
-                return false;
-            }
-        }
-        else if (!contestdescription.equals(other.contestdescription)) {
-            return false;
-        }
-        if (contestmodeldescription == null) {
-            if (other.contestmodeldescription != null) {
-                return false;
-            }
-        }
-        else if (!contestmodeldescription.equals(other.contestmodeldescription)) {
-            return false;
-        }
-        if (contestpositionsdescription == null) {
-            if (other.contestpositionsdescription != null) {
-                return false;
-            }
-        }
-        else if (!contestpositionsdescription.equals(other.contestpositionsdescription)) {
-            return false;
-        }
-        if (created == null) {
-            if (other.created != null) {
-                return false;
-            }
-        }
-        else if (!created.equals(other.created)) {
-            return false;
-        }
-        if (updated == null) {
-            if (other.updated != null) {
-                return false;
-            }
-        }
-        else if (!updated.equals(other.updated)) {
-            return false;
-        }
-        if (authorid == null) {
-            if (other.authorid != null) {
-                return false;
-            }
-        }
-        else if (!authorid.equals(other.authorid)) {
-            return false;
-        }
-        if (contestactive == null) {
-            if (other.contestactive != null) {
-                return false;
-            }
-        }
-        else if (!contestactive.equals(other.contestactive)) {
-            return false;
-        }
-        if (plantemplateid == null) {
-            if (other.plantemplateid != null) {
-                return false;
-            }
-        }
-        else if (!plantemplateid.equals(other.plantemplateid)) {
-            return false;
-        }
-        if (contestscheduleid == null) {
-            if (other.contestscheduleid != null) {
-                return false;
-            }
-        }
-        else if (!contestscheduleid.equals(other.contestscheduleid)) {
-            return false;
-        }
-        if (proposalcreationtemplatestring == null) {
-            if (other.proposalcreationtemplatestring != null) {
-                return false;
-            }
-        }
-        else if (!proposalcreationtemplatestring.equals(other.proposalcreationtemplatestring)) {
-            return false;
-        }
-        if (votetemplatestring == null) {
-            if (other.votetemplatestring != null) {
-                return false;
-            }
-        }
-        else if (!votetemplatestring.equals(other.votetemplatestring)) {
-            return false;
-        }
-        if (proposalvotetemplatestring == null) {
-            if (other.proposalvotetemplatestring != null) {
-                return false;
-            }
-        }
-        else if (!proposalvotetemplatestring.equals(other.proposalvotetemplatestring)) {
-            return false;
-        }
-        if (proposalvoteconfirmationtemplatestring == null) {
-            if (other.proposalvoteconfirmationtemplatestring != null) {
-                return false;
-            }
-        }
-        else if (!proposalvoteconfirmationtemplatestring.equals(other.proposalvoteconfirmationtemplatestring)) {
-            return false;
-        }
-        if (votequestiontemplatestring == null) {
-            if (other.votequestiontemplatestring != null) {
-                return false;
-            }
-        }
-        else if (!votequestiontemplatestring.equals(other.votequestiontemplatestring)) {
-            return false;
-        }
-        if (focusareaid == null) {
-            if (other.focusareaid != null) {
-                return false;
-            }
-        }
-        else if (!focusareaid.equals(other.focusareaid)) {
-            return false;
-        }
-        if (contesttier == null) {
-            if (other.contesttier != null) {
-                return false;
-            }
-        }
-        else if (!contesttier.equals(other.contesttier)) {
-            return false;
-        }
-        if (contestlogoid == null) {
-            if (other.contestlogoid != null) {
-                return false;
-            }
-        }
-        else if (!contestlogoid.equals(other.contestlogoid)) {
-            return false;
-        }
-        if (featured_ == null) {
-            if (other.featured_ != null) {
-                return false;
-            }
-        }
-        else if (!featured_.equals(other.featured_)) {
-            return false;
-        }
-        if (plansopenbydefault == null) {
-            if (other.plansopenbydefault != null) {
-                return false;
-            }
-        }
-        else if (!plansopenbydefault.equals(other.plansopenbydefault)) {
-            return false;
-        }
-        if (sponsorlogoid == null) {
-            if (other.sponsorlogoid != null) {
-                return false;
-            }
-        }
-        else if (!sponsorlogoid.equals(other.sponsorlogoid)) {
-            return false;
-        }
-        if (sponsortext == null) {
-            if (other.sponsortext != null) {
-                return false;
-            }
-        }
-        else if (!sponsortext.equals(other.sponsortext)) {
-            return false;
-        }
-        if (sponsorlink == null) {
-            if (other.sponsorlink != null) {
-                return false;
-            }
-        }
-        else if (!sponsorlink.equals(other.sponsorlink)) {
-            return false;
-        }
-        if (flag == null) {
-            if (other.flag != null) {
-                return false;
-            }
-        }
-        else if (!flag.equals(other.flag)) {
-            return false;
-        }
-        if (flagtext == null) {
-            if (other.flagtext != null) {
-                return false;
-            }
-        }
-        else if (!flagtext.equals(other.flagtext)) {
-            return false;
-        }
-        if (flagtooltip == null) {
-            if (other.flagtooltip != null) {
-                return false;
-            }
-        }
-        else if (!flagtooltip.equals(other.flagtooltip)) {
-            return false;
-        }
-        if (groupid == null) {
-            if (other.groupid != null) {
-                return false;
-            }
-        }
-        else if (!groupid.equals(other.groupid)) {
-            return false;
-        }
-        if (discussiongroupid == null) {
-            if (other.discussiongroupid != null) {
-                return false;
-            }
-        }
-        else if (!discussiongroupid.equals(other.discussiongroupid)) {
-            return false;
-        }
-        if (weight == null) {
-            if (other.weight != null) {
-                return false;
-            }
-        }
-        else if (!weight.equals(other.weight)) {
-            return false;
-        }
-        if (resourcesurl == null) {
-            if (other.resourcesurl != null) {
-                return false;
-            }
-        }
-        else if (!resourcesurl.equals(other.resourcesurl)) {
-            return false;
-        }
-        if (contestprivate == null) {
-            if (other.contestprivate != null) {
-                return false;
-            }
-        }
-        else if (!contestprivate.equals(other.contestprivate)) {
-            return false;
-        }
-        if (usepermissions == null) {
-            if (other.usepermissions != null) {
-                return false;
-            }
-        }
-        else if (!usepermissions.equals(other.usepermissions)) {
-            return false;
-        }
-        if (contestcreationstatus == null) {
-            if (other.contestcreationstatus != null) {
-                return false;
-            }
-        }
-        else if (!contestcreationstatus.equals(other.contestcreationstatus)) {
-            return false;
-        }
-        if (defaultmodelid == null) {
-            if (other.defaultmodelid != null) {
-                return false;
-            }
-        }
-        else if (!defaultmodelid.equals(other.defaultmodelid)) {
-            return false;
-        }
-        if (othermodels == null) {
-            if (other.othermodels != null) {
-                return false;
-            }
-        }
-        else if (!othermodels.equals(other.othermodels)) {
-            return false;
-        }
-        if (defaultmodelsettings == null) {
-            if (other.defaultmodelsettings != null) {
-                return false;
-            }
-        }
-        else if (!defaultmodelsettings.equals(other.defaultmodelsettings)) {
-            return false;
-        }
-        if (points == null) {
-            if (other.points != null) {
-                return false;
-            }
-        }
-        else if (!points.equals(other.points)) {
-            return false;
-        }
-        if (defaultparentpointtype == null) {
-            if (other.defaultparentpointtype != null) {
-                return false;
-            }
-        }
-        else if (!defaultparentpointtype.equals(other.defaultparentpointtype)) {
-            return false;
-        }
-        if (pointdistributionstrategy == null) {
-            if (other.pointdistributionstrategy != null) {
-                return false;
-            }
-        }
-        else if (!pointdistributionstrategy.equals(other.pointdistributionstrategy)) {
-            return false;
-        }
-        if (emailtemplateurl == null) {
-            if (other.emailtemplateurl != null) {
-                return false;
-            }
-        }
-        else if (!emailtemplateurl.equals(other.emailtemplateurl)) {
-            return false;
-        }
-        if (showInTileView == null) {
-            if (other.showInTileView != null) {
-                return false;
-            }
-        }
-        else if (!showInTileView.equals(other.showInTileView)) {
-            return false;
-        }
-        if (showInListView == null) {
-            if (other.showInListView != null) {
-                return false;
-            }
-        }
-        else if (!showInListView.equals(other.showInListView)) {
-            return false;
-        }
-        if (showInOutlineView == null) {
-            if (other.showInOutlineView != null) {
-                return false;
-            }
-        }
-        else if (!showInOutlineView.equals(other.showInOutlineView)) {
-            return false;
-        }
-        if (hideribbons == null) {
-            if (other.hideribbons != null) {
-                return false;
-            }
-        }
-        else if (!hideribbons.equals(other.hideribbons)) {
-            return false;
-        }
-        if (resourcearticleid == null) {
-            if (other.resourcearticleid != null) {
-                return false;
-            }
-        }
-        else if (!resourcearticleid.equals(other.resourcearticleid)) {
-            return false;
-        }
-        if (issharedcontest == null) {
-            if (other.issharedcontest != null) {
-                return false;
-            }
-        }
-        else if (!issharedcontest.equals(other.issharedcontest)) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects.hash(contestpk, contesttypeid, contestname, contestshortname, contesturlname,
+                contestyear, contestdescription, contestmodeldescription,
+                contestpositionsdescription, getCreated(), getUpdated(), authorid, contestactive,
+                plantemplateid, contestscheduleid, proposalcreationtemplatestring,
+                votetemplatestring, proposalvotetemplatestring,
+                proposalvoteconfirmationtemplatestring, votequestiontemplatestring, focusareaid,
+                contesttier, contestlogoid, getFeatured_(), plansopenbydefault, sponsorlogoid,
+                defaultproposallogoid, sponsortext, sponsorlink, getFlag(), flagtext, flagtooltip,
+                groupid, discussiongroupid, getWeight(), resourcesurl, contestprivate,
+                usepermissions, contestcreationstatus, defaultmodelid, othermodels,
+                defaultmodelsettings, getPoints(), defaultparentpointtype,
+                pointdistributionstrategy, emailtemplateurl, showInTileView, showInListView,
+                showInOutlineView, hideribbons, resourcearticleid, issharedcontest, sharedorigin);
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((contestpk == null) ? 0 : contestpk.hashCode());
-        result = prime * result + ((contesttypeid == null) ? 0 : contesttypeid.hashCode());
-        result = prime * result + ((contestname == null) ? 0 : contestname.hashCode());
-        result = prime * result + ((contestshortname == null) ? 0 : contestshortname.hashCode());
-        result = prime * result + ((contesturlname == null) ? 0 : contesturlname.hashCode());
-        result = prime * result + ((contestyear == null) ? 0 : contestyear.hashCode());
-        result = prime * result + ((contestdescription == null) ? 0 : contestdescription.hashCode());
-        result = prime * result + ((contestmodeldescription == null) ? 0 : contestmodeldescription.hashCode());
-        result = prime * result + ((contestpositionsdescription == null) ? 0 : contestpositionsdescription.hashCode());
-        result = prime * result + ((created == null) ? 0 : created.hashCode());
-        result = prime * result + ((updated == null) ? 0 : updated.hashCode());
-        result = prime * result + ((authorid == null) ? 0 : authorid.hashCode());
-        result = prime * result + ((contestactive == null) ? 0 : contestactive.hashCode());
-        result = prime * result + ((plantemplateid == null) ? 0 : plantemplateid.hashCode());
-        result = prime * result + ((contestscheduleid == null) ? 0 : contestscheduleid.hashCode());
-        result = prime * result + ((proposalcreationtemplatestring == null) ? 0 : proposalcreationtemplatestring.hashCode());
-        result = prime * result + ((votetemplatestring == null) ? 0 : votetemplatestring.hashCode());
-        result = prime * result + ((proposalvotetemplatestring == null) ? 0 : proposalvotetemplatestring.hashCode());
-        result = prime * result + ((proposalvoteconfirmationtemplatestring == null) ? 0 : proposalvoteconfirmationtemplatestring.hashCode());
-        result = prime * result + ((votequestiontemplatestring == null) ? 0 : votequestiontemplatestring.hashCode());
-        result = prime * result + ((focusareaid == null) ? 0 : focusareaid.hashCode());
-        result = prime * result + ((contesttier == null) ? 0 : contesttier.hashCode());
-        result = prime * result + ((contestlogoid == null) ? 0 : contestlogoid.hashCode());
-        result = prime * result + ((featured_ == null) ? 0 : featured_.hashCode());
-        result = prime * result + ((plansopenbydefault == null) ? 0 : plansopenbydefault.hashCode());
-        result = prime * result + ((sponsorlogoid == null) ? 0 : sponsorlogoid.hashCode());
-        result = prime * result + ((sponsortext == null) ? 0 : sponsortext.hashCode());
-        result = prime * result + ((sponsorlink == null) ? 0 : sponsorlink.hashCode());
-        result = prime * result + ((flag == null) ? 0 : flag.hashCode());
-        result = prime * result + ((flagtext == null) ? 0 : flagtext.hashCode());
-        result = prime * result + ((flagtooltip == null) ? 0 : flagtooltip.hashCode());
-        result = prime * result + ((groupid == null) ? 0 : groupid.hashCode());
-        result = prime * result + ((discussiongroupid == null) ? 0 : discussiongroupid.hashCode());
-        result = prime * result + ((weight == null) ? 0 : weight.hashCode());
-        result = prime * result + ((resourcesurl == null) ? 0 : resourcesurl.hashCode());
-        result = prime * result + ((contestprivate == null) ? 0 : contestprivate.hashCode());
-        result = prime * result + ((usepermissions == null) ? 0 : usepermissions.hashCode());
-        result = prime * result + ((contestcreationstatus == null) ? 0 : contestcreationstatus.hashCode());
-        result = prime * result + ((defaultmodelid == null) ? 0 : defaultmodelid.hashCode());
-        result = prime * result + ((othermodels == null) ? 0 : othermodels.hashCode());
-        result = prime * result + ((defaultmodelsettings == null) ? 0 : defaultmodelsettings.hashCode());
-        result = prime * result + ((points == null) ? 0 : points.hashCode());
-        result = prime * result + ((defaultparentpointtype == null) ? 0 : defaultparentpointtype.hashCode());
-        result = prime * result + ((pointdistributionstrategy == null) ? 0 : pointdistributionstrategy.hashCode());
-        result = prime * result + ((emailtemplateurl == null) ? 0 : emailtemplateurl.hashCode());
-        result = prime * result + ((showInTileView == null) ? 0 : showInTileView.hashCode());
-        result = prime * result + ((showInListView == null) ? 0 : showInListView.hashCode());
-        result = prime * result + ((showInOutlineView == null) ? 0 : showInOutlineView.hashCode());
-        result = prime * result + ((hideribbons == null) ? 0 : hideribbons.hashCode());
-        result = prime * result + ((resourcearticleid == null) ? 0 : resourcearticleid.hashCode());
-        result = prime * result + ((issharedcontest == null) ? 0 : issharedcontest.hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AbstractContest)) {
+            return false;
+        }
+        AbstractContest that = (AbstractContest) o;
+        return Objects.equals(contestpk, that.contestpk) && Objects
+                .equals(contesttypeid, that.contesttypeid) && Objects
+                .equals(contestname, that.contestname) && Objects
+                .equals(contestshortname, that.contestshortname) && Objects
+                .equals(contesturlname, that.contesturlname) && Objects
+                .equals(contestyear, that.contestyear) && Objects
+                .equals(contestdescription, that.contestdescription) && Objects
+                .equals(contestmodeldescription, that.contestmodeldescription) && Objects
+                .equals(contestpositionsdescription, that.contestpositionsdescription) && Objects
+                .equals(getCreated(), that.getCreated()) && Objects
+                .equals(getUpdated(), that.getUpdated()) && Objects.equals(authorid, that.authorid)
+                && Objects.equals(contestactive, that.contestactive) && Objects
+                .equals(plantemplateid, that.plantemplateid) && Objects
+                .equals(contestscheduleid, that.contestscheduleid) && Objects
+                .equals(proposalcreationtemplatestring, that.proposalcreationtemplatestring)
+                && Objects.equals(votetemplatestring, that.votetemplatestring) && Objects
+                .equals(proposalvotetemplatestring, that.proposalvotetemplatestring) && Objects
+                .equals(proposalvoteconfirmationtemplatestring,
+                        that.proposalvoteconfirmationtemplatestring) && Objects
+                .equals(votequestiontemplatestring, that.votequestiontemplatestring) && Objects
+                .equals(focusareaid, that.focusareaid) && Objects
+                .equals(contesttier, that.contesttier) && Objects
+                .equals(contestlogoid, that.contestlogoid) && Objects
+                .equals(getFeatured_(), that.getFeatured_()) && Objects
+                .equals(plansopenbydefault, that.plansopenbydefault) && Objects
+                .equals(sponsorlogoid, that.sponsorlogoid) && Objects
+                .equals(defaultproposallogoid, that.defaultproposallogoid) && Objects
+                .equals(sponsortext, that.sponsortext) && Objects
+                .equals(sponsorlink, that.sponsorlink) && Objects.equals(getFlag(), that.getFlag())
+                && Objects.equals(flagtext, that.flagtext) && Objects
+                .equals(flagtooltip, that.flagtooltip) && Objects.equals(groupid, that.groupid)
+                && Objects.equals(discussiongroupid, that.discussiongroupid) && Objects
+                .equals(getWeight(), that.getWeight()) && Objects
+                .equals(resourcesurl, that.resourcesurl) && Objects
+                .equals(contestprivate, that.contestprivate) && Objects
+                .equals(usepermissions, that.usepermissions) && Objects
+                .equals(contestcreationstatus, that.contestcreationstatus) && Objects
+                .equals(defaultmodelid, that.defaultmodelid) && Objects
+                .equals(othermodels, that.othermodels) && Objects
+                .equals(defaultmodelsettings, that.defaultmodelsettings) && Objects
+                .equals(getPoints(), that.getPoints()) && Objects
+                .equals(defaultparentpointtype, that.defaultparentpointtype) && Objects
+                .equals(pointdistributionstrategy, that.pointdistributionstrategy) && Objects
+                .equals(emailtemplateurl, that.emailtemplateurl) && Objects
+                .equals(showInTileView, that.showInTileView) && Objects
+                .equals(showInListView, that.showInListView) && Objects
+                .equals(showInOutlineView, that.showInOutlineView) && Objects
+                .equals(hideribbons, that.hideribbons) && Objects
+                .equals(resourcearticleid, that.resourcearticleid) && Objects
+                .equals(issharedcontest, that.issharedcontest) && Objects
+                .equals(sharedorigin, that.sharedorigin);
+    }
+
+    public Timestamp getCreated() {
+        return this.created;
+    }
+
+    public void setCreated(Timestamp created) {
+        this.created = created;
+    }
+
+    public Timestamp getUpdated() {
+        return this.updated;
+    }
+
+    public void setUpdated(Timestamp updated) {
+        this.updated = updated;
+    }
+
+    public Boolean getFeatured_() {
+        return this.featured_;
+    }
+
+    public void setFeatured_(Boolean featured_) {
+        this.featured_ = featured_;
+    }
+
+    public Integer getFlag() {
+        return this.flag;
+    }
+
+    public void setFlag(Integer flag) {
+        this.flag = flag;
+    }
+
+    public Integer getWeight() {
+        return this.weight;
+    }
+
+    public void setWeight(Integer weight) {
+        this.weight = weight;
+    }
+
+    public Double getPoints() {
+        return this.points;
+    }
+
+    public void setPoints(Double points) {
+        this.points = points;
     }
 
     @Override
     public String toString() {
 
-        return "Contest (" + contestpk +
-                ", " + contesttypeid +
-                ", " + contestname +
-                ", " + contestshortname +
-                ", " + contesturlname +
-                ", " + contestyear +
-                ", " + contestdescription +
-                ", " + contestmodeldescription +
-                ", " + contestpositionsdescription +
-                ", " + created +
-                ", " + updated +
-                ", " + authorid +
-                ", " + contestactive +
-                ", " + plantemplateid +
-                ", " + contestscheduleid +
-                ", " + proposalcreationtemplatestring +
-                ", " + votetemplatestring +
-                ", " + proposalvotetemplatestring +
-                ", " + proposalvoteconfirmationtemplatestring +
-                ", " + votequestiontemplatestring +
-                ", " + focusareaid +
-                ", " + contesttier +
-                ", " + contestlogoid +
-                ", " + featured_ +
-                ", " + plansopenbydefault +
-                ", " + sponsorlogoid +
-                ", " + sponsortext +
-                ", " + sponsorlink +
-                ", " + flag +
-                ", " + flagtext +
-                ", " + flagtooltip +
-                ", " + groupid +
-                ", " + discussiongroupid +
-                ", " + weight +
-                ", " + resourcesurl +
-                ", " + contestprivate +
-                ", " + usepermissions +
-                ", " + contestcreationstatus +
-                ", " + defaultmodelid +
-                ", " + othermodels +
-                ", " + defaultmodelsettings +
-                ", " + points +
-                ", " + defaultparentpointtype +
-                ", " + pointdistributionstrategy +
-                ", " + emailtemplateurl +
-                ", " + showInTileView +
-                ", " + showInListView +
-                ", " + showInOutlineView +
-                ", " + hideribbons +
-                ", " + resourcearticleid +
-                ", " + issharedcontest +
-                ")";
+        return "Contest (" + contestpk + ", " + contesttypeid + ", " + contestname + ", "
+                + contestshortname + ", " + contesturlname + ", " + contestyear + ", "
+                + contestdescription + ", " + contestmodeldescription + ", "
+                + contestpositionsdescription + ", " + created + ", " + updated + ", " + authorid
+                + ", " + contestactive + ", " + plantemplateid + ", " + contestscheduleid + ", "
+                + proposalcreationtemplatestring + ", " + votetemplatestring + ", "
+                + proposalvotetemplatestring + ", " + proposalvoteconfirmationtemplatestring + ", "
+                + votequestiontemplatestring + ", " + focusareaid + ", " + contesttier + ", "
+                + contestlogoid + ", " + featured_ + ", " + plansopenbydefault + ", "
+                + sponsorlogoid + ", " + sponsortext + ", " + sponsorlink + ", " + flag + ", "
+                + flagtext + ", " + flagtooltip + ", " + groupid + ", " + discussiongroupid + ", "
+                + weight + ", " + resourcesurl + ", " + contestprivate + ", " + usepermissions
+                + ", " + contestcreationstatus + ", " + defaultmodelid + ", " + othermodels + ", "
+                + defaultmodelsettings + ", " + points + ", " + defaultparentpointtype + ", "
+                + pointdistributionstrategy + ", " + emailtemplateurl + ", " + showInTileView + ", "
+                + showInListView + ", " + showInOutlineView + ", " + hideribbons + ", "
+                + resourcearticleid + ", " + issharedcontest + ")";
     }
 }

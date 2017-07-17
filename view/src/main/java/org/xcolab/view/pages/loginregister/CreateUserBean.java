@@ -4,15 +4,17 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-import org.xcolab.view.util.validation.UniqueScreenNameAndEmail;
 import org.xcolab.view.util.validation.CompareStrings;
+import org.xcolab.view.util.validation.UniqueEmail;
+import org.xcolab.view.util.validation.UniqueScreenName;
 import org.xcolab.view.util.validation.ValidBioLength;
 import org.xcolab.view.util.validation.ValidScreenName;
 
 import java.io.Serializable;
 
 @CompareStrings(propertyNames = {"password,retypePassword", "email,retypeEmail"})
-@UniqueScreenNameAndEmail(emailProperty = "email", screenNameProperty = "screenName")
+@UniqueEmail(emailProperty = "email")
+@UniqueScreenName(screenNameProperty = "screenName")
 @ValidScreenName(screenNameProperty = "screenName")
 @ValidBioLength(bioProperty = "shortBio")
 public class CreateUserBean implements Serializable {
@@ -20,7 +22,6 @@ public class CreateUserBean implements Serializable {
     private static final long serialVersionUID = 1L;
     private static final String EMAIL_REGEX =
             "(?:[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-zA-Z0-9-]*[a-zA-Z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
-
 
     @NotBlank
     @Length(min = 3, max = 26)
@@ -51,12 +52,12 @@ public class CreateUserBean implements Serializable {
     private String shortBio;
 
     @NotBlank
-    @Length(min = 0, max = 300)
+    @Length(max = 300)
     private String country;
 
 
     @NotBlank(message = "register.form.validation.language")
-    @Length(min = 0, max = 300)
+    @Length(max = 300)
     private String language;
 
     private String recaptcha_response_field;

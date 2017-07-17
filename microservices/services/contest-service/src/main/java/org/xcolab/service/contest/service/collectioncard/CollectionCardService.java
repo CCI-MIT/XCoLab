@@ -33,10 +33,10 @@ public class CollectionCardService {
 
     public int getNumberOfContestsInCollectionCard(Long collectionCardId, Boolean getActive, String viewType, Boolean onlyFeatured) {
         int count = 0;
-        List<Long> contestList = new ArrayList<>();
-        List<Long> collectionCards = new ArrayList<>();
         try {
+            List<Long> collectionCards = new ArrayList<>();
             collectionCards.add(contestCollectionCardDao.get(collectionCardId).getId_());
+            List<Long> contestList = new ArrayList<>();
             while(!collectionCards.isEmpty()) {
                 for(Contest contest: contestService.getContestsByOntologyTerm(contestCollectionCardDao.get(collectionCards.get(0)).getOntology_term_to_load(), getActive, false)) {
                     if(!contestList.contains(contest.getContestPK())) {

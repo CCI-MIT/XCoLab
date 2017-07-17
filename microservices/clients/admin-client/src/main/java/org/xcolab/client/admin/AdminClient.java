@@ -44,10 +44,11 @@ public class AdminClient {
                 .execute();
     }
 
-    public static ConfigurationAttribute getConfigurationAttribute(String name) {
+    public static ConfigurationAttribute getConfigurationAttribute(String name, String locale) {
 
         try {
             return configurationAttributeResource.get(name)
+                    .optionalQueryParam("locale", locale)
                     .withCache(CacheName.CONFIGURATION)
                     .executeChecked();
         } catch (EntityNotFoundException e) {

@@ -18,19 +18,22 @@
                     <div class="votebox-top clearfix">
                         <div class="vote">
                             <img src="${_themeImageFolder}/icon-proposal-vote.png" width="22" height="18" alt="Vote" />
-                            <span>${proposal.votesCount}</span> votes
+                            <span>${proposal.votesCount}</span> <spring:message code="contests.votes" />
                             <c:if test="${proposalsPermissions.votingEnabled}">
                                 <c:set var="voteOnProposalURL" value="${proposal.proposalUrl}/voteOnProposalAction?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
 
                                 <a class="c-Button__primary" href="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }" onclick="if(!deferUntilLogin(this)) return false;">
-                                    <c:set var="voteForText" value="VOTE for ${contestType.proposalName}" />
-                                    ${proposalsDisplayPermissions.canSeeVoteButton ? voteForText  : 'RETRACT vote'}
+                                    <collab:message var="voteForText" code="contests.voting.vote" contestType="${contestType}" />
+                                    <spring:message var="retractVoteText" code="contests.voting.retract" />
+                                    ${proposalsDisplayPermissions.canSeeVoteButton ? voteForText  : retractVoteText}
                                 </a>
-                                <p style="margin:15px 0 15px 0;font-size:17px">You receive one vote per ${contestType.contestName}</p>
+                                <p style="margin:15px 0 15px 0;font-size:17px">
+                                    <collab:message code="contests.voting.onevote" contestType="${contestType}" />
+                                </p>
                             </c:if>
                         </div>
                         <div class="question">
-                            <a href="/web/guest/resources/-/wiki/Main/contest+rules#Voting" target="_blank">
+                            <a href="${contestType.rulesPageUrl}#Voting" target="_blank">
                                 <img src="${_themeImageFolder}/icon-proposal-question.png" width="23" height="23" alt="Question?" />
                             </a>
                         </div>
@@ -62,11 +65,12 @@
                 <span>
                     <img src="${_themeImageFolder}/icon-proposal-thumb.png" width="20" height="22" alt="Thumbs up" />
                     ${proposal.supportersCount}
-                </span> supporters
+                </span> <spring:message code="contests.supports" />
                     <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
                         <a class="c-Box__button boxColor--dark" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!handleOnClickAtSupportBtn(this)) return false;">
-                            <c:set var="supportText" value="Support ${contestType.proposalName}" />
-                            ${proposalsDisplayPermissions.canSeeSupportButton ? supportText : 'Retract support' }
+                            <collab:message var="supportText" code="contests.supports.support" contestType="${contestType}" />
+                            <spring:message var="retractText" code="contests.supports.retract" />
+                            ${proposalsDisplayPermissions.canSeeSupportButton ? supportText : retractText }
                         </a>
                     </c:if>
                 </div>
@@ -87,10 +91,10 @@
                         <a href="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }" onclick="if(!deferUntilLogin(this)) return false;" >
                             <c:choose>
                                 <c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
-                                    <img height="20" src="${_themeImageFolder}/subscribe.png" /> Subscribe
+                                    <img height="20" src="${_themeImageFolder}/subscribe.png" /> <spring:message code="contests.details.subscribe" />
                                 </c:when>
                                 <c:otherwise>
-                                    <img height="20" src="${_themeImageFolder}/unsubscribe.png" /> Unsubscribe
+                                    <img height="20" src="${_themeImageFolder}/unsubscribe.png" /> <spring:message code="contests.details.unsubscribe" />
                                 </c:otherwise>
                             </c:choose>
                         </a>
@@ -100,7 +104,7 @@
             <div class="c-Box messaging">
                 <div class="message-share-button">
                     <a href="javascript:;" onclick="if (! deferUntilLogin()) { return false; } else { jQuery('#sendMessageModal').modal(); }">
-                        <img src="${_themeImageFolder}/icon_new-message.png" width="31" height="29" /> Share via ${_colabShortName} messaging
+                        <img src="${_themeImageFolder}/icon_new-message.png" width="31" height="29" /> <collab:message code="contests.proposal.share.messaging" />
                     </a>
                 </div>
                 <c:if test="${proposalsPermissions.canReportProposal}">
@@ -129,7 +133,9 @@
                 </div>
             </c:if>
 
-            <h5 class="topbox">${contestType.proposalName} Summary</h5>
+            <h5 class="topbox">
+                <collab:message code="contests.proposal.summary" contestType="${contestType}" />
+            </h5>
 
             <div class="prop-title addprop">
                 ${proposal.name}
@@ -139,11 +145,10 @@
                 <div class="prop-settings">
                     <c:choose>
                         <c:when test="${proposal.open }">
-                            <strong>Public ${contestType.proposalName}:</strong> Anyone will be able to edit this ${contestType.proposalName}. The ${contestType.proposalName} owner can limit editing to team member using the ${contestType.proposalName}'s Admin tab. &#160;
+                            <collab:message code="contests.openness.open" contestType="${contestType}"/>
                         </c:when>
                         <c:otherwise>
-                            <strong>Team ${contestType.proposalName}:</strong> Only members listed on the ${contestType.proposalName}'s Contributors tab will be able to edit this ${contestType.proposalName}.
-                            Members can request to join the ${contestType.proposalName} team on the Contributors tab. The ${contestType.proposalName} owner can open this ${contestType.proposalName} for anyone to edit using the Admin tab. &#160;
+                            <collab:message code="contests.openness.team" contestType="${contestType}"/>
                         </c:otherwise>
                     </c:choose>
 

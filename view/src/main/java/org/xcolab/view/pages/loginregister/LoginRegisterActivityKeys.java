@@ -3,14 +3,14 @@ package org.xcolab.view.pages.loginregister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 
 public enum LoginRegisterActivityKeys {
     USER_REGISTERED(1, "New account created", "%s joined the %s community");
     private static final Logger _log = LoggerFactory.getLogger(LoginRegisterActivityKeys.class);
-    private static final String USER_PROFILE_PATH = "/web/guest/member/-/member/userId/";
+    private static final String USER_PROFILE_PATH = "/members/profile/";
 
     private final int type;
     private final String title;

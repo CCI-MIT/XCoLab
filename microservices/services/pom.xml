@@ -243,7 +243,7 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven-surefire-plugin.version}</version>
                     <configuration combine.self="override">
-                        <forkCount>3</forkCount>
+                        <forkCount>2</forkCount>
                         <reuseForks>true</reuseForks>
                         <argLine>-Xmx512m -Xms256m</argLine>
                         <includes>

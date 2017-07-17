@@ -75,7 +75,7 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $b-Typography__textColor__
   font-size: 14px;
   background-color: $t-Color__primary__grey--light;
   padding: 17px;
-  padding-bottom: 0px;
+  padding-bottom: 0;
   padding-left: 20px;
 
   span {
@@ -192,7 +192,7 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $b-Typography__textColor__
       color: white;
 
       border: solid 1px #4746ad;
-      box-shadow: 0px 0px 4px #3e3e3e;
+      box-shadow: 0 0 4px #3e3e3e;
       margin-top: -1px;
       margin-left: -1px;
     }
@@ -443,9 +443,8 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $b-Typography__textColor__
 }
 
 .prop {
-   display: inline;
+  display: inline;
   padding-right: 18px;
-  text-transform: lowercase;
 }
 
 .comm {

@@ -1,12 +1,12 @@
 package org.xcolab.view.pages.proposals.view.action;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
@@ -16,8 +16,7 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 import java.io.IOException;
 
@@ -28,35 +27,30 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ProposalRevertActionController {
 
-    @Autowired
-    private ProposalsContext proposalsContext;
-
     @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/proposalRevert")
-    public void showProposalRevert(HttpServletRequest request, HttpServletResponse response, Model model)
+    public void showProposalRevert(HttpServletRequest request, HttpServletResponse response,
+            Model model, ProposalContext proposalContext, Member currentMember)
             throws ProposalsAuthorizationException, IOException {
 
-        if (proposalsContext.getProposal(request) != null && !proposalsContext.getPermissions(request).getCanEdit()) {
+        if (proposalContext.getProposal() != null && !proposalContext.getPermissions().getCanEdit()) {
             throw new ProposalsAuthorizationException("User is not allowed to edit proposal, user: "
-                    + proposalsContext.getMember(request).getUserId() + ", proposal: "
-                    + proposalsContext.getProposal(request).getProposalId());
+                    + currentMember.getUserId() + ", proposal: "
+                    + proposalContext.getProposal().getProposalId());
         }
 
         long memberId = MemberAuthUtil.getMemberId(request);
 
-        if (proposalsContext.getProposal(request) != null) {
-            Proposal oldProposalVersionToBeBecomeCurrent = proposalsContext.getProposalWrapped(request);
+        if (proposalContext.getProposal() != null) {
+            Proposal oldProposalVersionToBeBecomeCurrent = proposalContext.getProposal();
             updateProposalSpecialAttributes(memberId, oldProposalVersionToBeBecomeCurrent);
 
-            updateProposalAttributes(request, memberId, oldProposalVersionToBeBecomeCurrent);
+            updateProposalAttributes(proposalContext, memberId, oldProposalVersionToBeBecomeCurrent);
 
-            proposalsContext.invalidateContext(request);
-
-            request.setAttribute("ACTION_REDIRECTING", true);
             response.sendRedirect(oldProposalVersionToBeBecomeCurrent.getProposalUrl());
         }
     }
 
-    private void updateProposalAttributes(HttpServletRequest request, long userId, Proposal oldProposalVersionToBeBecomeCurrent) {
+    private void updateProposalAttributes(ProposalContext proposalContext, long userId, Proposal oldProposalVersionToBeBecomeCurrent) {
         boolean updateProposalReferences = false;
         for (PlanSectionDefinition section: oldProposalVersionToBeBecomeCurrent.getSections()) {
             String newSectionValue = section.getStringValue();
@@ -112,13 +106,13 @@ public class ProposalRevertActionController {
 
         //this code was on the proposal add/update controller, if the user could edit and save , he might just want to revert
         // and leave it like that , so this code must be executed as well.
-        final Proposal2Phase p2p = proposalsContext.getProposal2Phase(request);
+        final Proposal2Phase p2p = proposalContext.getProposal2Phase();
         try {
             if (p2p != null && p2p.getVersionTo() != -1) {
                 // we are in a completed phase - need to adjust the end version
-                final Proposal updatedProposal = ProposalsContextUtil.getClients(request).getProposalClient().getProposal(oldProposalVersionToBeBecomeCurrent.getProposalId());
+                final Proposal updatedProposal = proposalContext.getClients().getProposalClient().getProposal(oldProposalVersionToBeBecomeCurrent.getProposalId());
                 p2p.setVersionTo(updatedProposal.getCurrentVersion());
-                proposalsContext.getClients(request).getProposalPhaseClient().updateProposal2Phase(p2p);
+                proposalContext.getClients().getProposalPhaseClient().updateProposal2Phase(p2p);
             }
             // extra check to reset dependencies from the old versions
             if (updateProposalReferences) {

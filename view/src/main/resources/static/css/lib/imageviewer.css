@@ -30,7 +30,7 @@
   cursor: pointer;
   text-align: center;
   overflow: hidden;
-  text-shadow: 0px 0px 3px #6d6d6d;
+  text-shadow: 0 0 3px #6d6d6d;
   -webkit-transition: all ease 200ms;
   -moz-transition: all ease 200ms;
   -o-transition: all ease 200ms;
@@ -115,9 +115,9 @@
   -ms-transform: translate3d(0, 0, 0);
   -o-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
-  -webkit-box-shadow: 0px 0px 0px 200px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 0px 0px 0px 200px rgba(0, 0, 0, 0.5);
-  box-shadow: 0px 0px 0px 200px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 0 200px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 0 0 200px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 200px rgba(0, 0, 0, 0.5);
 }
 
 /*** zoom slider ***/

@@ -95,28 +95,28 @@ if (typeof(XCoLab.modeling) == 'undefined')
                 instructions = "<p class='instructions'>" +
                     "The proposal author(s) have estimated the CO2 emission impacts of this proposal for the country/region through 2100 using " +
                     "regional versions of the " + model.modelName +" modeling tool, specifically adapted for this contest. " +
-                    "For more information, see <a href='/web/guest/resources/-/wiki/Main/Climate+CoLab+Regional+Modeling+Tools' target='_blank'>Climate CoLab Regional Modeling Tools.</a></p>";
+                    "For more information, see <a href='/wiki/Climate+CoLab+Regional+Modeling+Tools' target='_blank'>Climate CoLab Regional Modeling Tools.</a></p>";
             } else if (isModelEMF) {
                 instructions = "<p class='instructions'>" +
                     "The proposal author(s) have estimated the CO2 emission impacts of this proposal for the country/region through 2100 using the " + model.modelName + " modeling tool. " +
-                    "For more information, see <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs' target='_blank'>Stanford EMF.</a></p>";
+                    "For more information, see <a href='/wiki/EMF27+model+runs' target='_blank'>Stanford EMF.</a></p>";
             } else if (isModelEnRoads) {
                 instructions = "<p class='instructions'>" +
                     "The proposal author(s) have estimated the CO2 emission impacts of this proposal for the country/region through 2100 using the " + model.modelName + " modeling tool." +
-                    "For more information, see <a href='/web/guest/resources/-/wiki/Main/EnROADS+by+Climate+Interactive' target='_blank'>Climate Interactive EnROADS.</a></p> ";
+                    "For more information, see <a href='/wiki/EnROADS+by+Climate+Interactive' target='_blank'>Climate Interactive EnROADS.</a></p> ";
             }
         } else {
             if (isModelRegional) {
                 instructions = "<p class='instructions'>Regional version " + model.modelName + " modeling tool, specifically adapted for this contest, is available below. Enter inputs that correspond with the actions you propose and click \"Run the Model.\" The tool will project CO2 emissions for the country/region through 2100. " +
-                    "For more information, see <a href='/web/guest/resources/-/wiki/Main/Climate+CoLab+Regional+Modeling+Tools' target='_blank'>Climate CoLab Regional Modeling Tools.</a></p>";
+                    "For more information, see <a href='/wiki/Climate+CoLab+Regional+Modeling+Tools' target='_blank'>Climate CoLab Regional Modeling Tools.</a></p>";
             } else if (isModelEMF) {
                 instructions = "<p class='instructions'>" +
                     "The " + model.modelName + " modeling tool is available below. Enter inputs that correspond with the actions you propose and click \"Run the Model.\" The tool will project CO2 emissions for the country/region through 2100. " +
-                    "For more information, see <a href='/web/guest/resources/-/wiki/Main/EMF27+model+runs' target='_blank'>Stanford EMF.</a></p>";
+                    "For more information, see <a href='/wiki/EMF27+model+runs' target='_blank'>Stanford EMF.</a></p>";
             } else if (isModelEnRoads) {
                 instructions = "<p class='instructions'>" +
                     "The " + model.modelName + " modeling tool is available below. Enter inputs that correspond with the actions you propose and click \"Run the Model.\" The tool will project CO2 emissions for the country/region through 2100. " +
-                    "For more information, see <a href='/web/guest/resources/-/wiki/Main/EnROADS+by+Climate+Interactive' target='_blank'>Climate Interactive EnROADS.</a></p> ";
+                    "For more information, see <a href='/wiki/EnROADS+by+Climate+Interactive' target='_blank'>Climate Interactive EnROADS.</a></p> ";
             }
         }
 

@@ -3,6 +3,8 @@ package org.xcolab.view.util.validation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.xcolab.view.i18n.ResourceMessageResolver;
+
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -53,7 +55,6 @@ public abstract class ConstraintValidatorHelper {
         boolean ignoreCase = false;
         switch (comparisonMode) {
             case EQUAL_IGNORE_CASE:
-            case NOT_EQUAL_IGNORE_CASE:
                 ignoreCase = true;
         }
 
@@ -66,40 +67,22 @@ public abstract class ConstraintValidatorHelper {
             }
         }
 
-        switch (comparisonMode) {
-            case EQUAL:
-            case EQUAL_IGNORE_CASE:
-                Set<String> uniqueValues = new HashSet<>(values);
-                // support all nulls
-                return uniqueValues.size() == 1 || uniqueValues.isEmpty();
-            case NOT_EQUAL:
-            case NOT_EQUAL_IGNORE_CASE:
-                Set<String> allValues = new HashSet<>(values);
-                return allValues.size() == values.size();
-        }
-
-        return true;
+        Set<String> uniqueValues = new HashSet<>(values);
+        // support all nulls
+        return uniqueValues.size() == 1 || uniqueValues.isEmpty();
     }
 
-    public static String resolveMessage(String[] propertyNames, StringComparisonMode comparisonMode, String[] comparisonDict) {
+    public static String resolveMessage(String[] propertyNames,
+            ResourceMessageResolver messageResolver) {
         StringBuffer buffer = concatPropertyNames(propertyNames);
-        buffer.append(" "+comparisonDict[0]);
-        switch (comparisonMode) {
-            case EQUAL:
-            case EQUAL_IGNORE_CASE:
-                buffer.append(" "+comparisonDict[1]);
-                break;
-            case NOT_EQUAL:
-            case NOT_EQUAL_IGNORE_CASE:
-                buffer.append(" "+comparisonDict[2]);
-                break;
-        }
+        buffer.append(" ").append(messageResolver
+                .getLocalizedMessage("register.form.validation.equalfields"));
         buffer.append('.');
         return buffer.toString();
     }
 
     private static StringBuffer concatPropertyNames(String[] propertyNames) {
-        //TODO improve concating algorithm
+        //TODO improve concatenation
         StringBuffer buffer = new StringBuffer();
         buffer.append('[');
         for (String propertyName : propertyNames) {

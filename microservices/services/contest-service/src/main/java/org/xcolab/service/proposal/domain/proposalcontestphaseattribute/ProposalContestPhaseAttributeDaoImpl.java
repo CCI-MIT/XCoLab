@@ -16,9 +16,14 @@ import static org.xcolab.model.Tables.PROPOSAL_CONTEST_PHASE_ATTRIBUTE;
 @Repository
 public class ProposalContestPhaseAttributeDaoImpl implements ProposalContestPhaseAttributeDao {
 
-    @Autowired
-    private DSLContext dslContext;
+    private final DSLContext dslContext;
 
+    @Autowired
+    public ProposalContestPhaseAttributeDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
+
+    @Override
     public ProposalContestPhaseAttribute create(ProposalContestPhaseAttribute proposalContestPhaseAttribute) {
 
         ProposalContestPhaseAttributeRecord ret = this.dslContext.insertInto(PROPOSAL_CONTEST_PHASE_ATTRIBUTE)
@@ -40,6 +45,7 @@ public class ProposalContestPhaseAttributeDaoImpl implements ProposalContestPhas
 
     }
 
+    @Override
     public ProposalContestPhaseAttribute get(Long id_) throws NotFoundException {
 
         final Record record =  this.dslContext.selectFrom(PROPOSAL_CONTEST_PHASE_ATTRIBUTE)
@@ -53,6 +59,7 @@ public class ProposalContestPhaseAttributeDaoImpl implements ProposalContestPhas
 
     }
 
+    @Override
     public ProposalContestPhaseAttribute getByProposalIdContestPhaseIdName(Long proposalId, Long contestPhaseId, String name) throws NotFoundException {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_CONTEST_PHASE_ATTRIBUTE).getQuery();

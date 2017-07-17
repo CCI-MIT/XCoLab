@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
@@ -17,9 +18,9 @@ import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,10 @@ public class ContentEditorController extends BaseContentEditor{
     public String handleRenderRequest(HttpServletRequest request, HttpServletRequest response, Model model) {
         long memberId = MemberAuthUtil.getMemberId(request);
         if (PermissionsClient.canAdminAll(memberId)) {
+            if(ConfigurationAttributeKey.IS_I18N_ACTIVE.get()) {
+                model.addAttribute("i18nOptions", I18nUtils.getSelectList());
+            }
+            model.addAttribute("i18nActive", ConfigurationAttributeKey.IS_I18N_ACTIVE.get());
             return "contenteditor/editor";
         } else {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
@@ -53,7 +58,7 @@ public class ContentEditorController extends BaseContentEditor{
 
         if (contentFolders != null) {
             for (ContentFolder cf : contentFolders) {
-                if(cf.getContentFolderId().longValue() != ContentFolder.RESOURCE_FOLDER_ID) {
+                if(cf.getContentFolderId() != ContentFolder.RESOURCE_FOLDER_ID) {
                     responseArray.put(folderNode(cf.getContentFolderName(),
                             cf.getContentFolderId().toString()));
                 }
@@ -76,10 +81,20 @@ public class ContentEditorController extends BaseContentEditor{
 
     @GetMapping("/content-editor/contentEditorGetLatestArticleVersion")
     public void contentEditorGetLatestArticleVersion(HttpServletRequest request, HttpServletResponse response,
-                                                     @RequestParam(required = false) Long articleId)
+                                                     @RequestParam(required = false) Long articleId,
+                                                        @RequestParam(required = false) String encoding)
             throws IOException, ContentNotFoundException {
-
-        ContentArticleVersion contentArticleVersion = ContentsClient.getLatestContentArticleVersion(articleId);
+        String defaultEncoding =I18nUtils.DEFAULT_LOCALE.getLanguage();
+        if(encoding==null||encoding.isEmpty()){
+            encoding = defaultEncoding;
+        }
+        ContentArticleVersion contentArticleVersion = ContentsClient.getLatestVersionByArticleIdAndLanguage(articleId,encoding);
+        if(contentArticleVersion == null){
+            //if there is no content for the encoding passed, get the default from the database
+            contentArticleVersion = ContentsClient.getLatestVersionByArticleIdAndLanguage(articleId,defaultEncoding);
+            contentArticleVersion.setContentArticleVersionId(0L);
+            contentArticleVersion.setLang(encoding);
+        }
 
         JSONObject articleVersion = getContentArticleVersion(articleId, contentArticleVersion);
 
@@ -103,7 +118,7 @@ public class ContentEditorController extends BaseContentEditor{
 
         JSONArray versions = new JSONArray();
         List<ContentArticleVersion> cavs = ContentsClient
-                .getContentArticleVersions(0,Integer.MAX_VALUE,null,articleId,null,null);
+                .getContentArticleVersions(0,Integer.MAX_VALUE,null,articleId,null,null, contentArticleVersion.getLang());
 
         JSONObject articleVersion;
         for(ContentArticleVersion cav: cavs){
@@ -115,7 +130,7 @@ public class ContentEditorController extends BaseContentEditor{
         articleVersion = new JSONObject();
         ContentPage cp = ContentsClient.getContentPageByContentArticleId(contentArticleVersion.getContentArticleId());
 
-        if(cp!=null){
+        if (cp!=null) {
             articleVersion.put("contentUrl",cp.getTitle());
         }
         if (contentArticleVersion != null) {
@@ -123,6 +138,7 @@ public class ContentEditorController extends BaseContentEditor{
             articleVersion.put("folderId", contentArticleVersion.getFolderId());
             articleVersion.put("articleId", contentArticleVersion.getContentArticleId());
             articleVersion.put("content", contentArticleVersion.getContent());
+            articleVersion.put("lang", contentArticleVersion.getLang());
             articleVersion.put("createdDate",contentArticleVersion.getCreateDate());
             articleVersion.put("versions",versions);
 
@@ -195,13 +211,18 @@ public class ContentEditorController extends BaseContentEditor{
                                           @RequestParam(required = false) Long articleId,
                                           @RequestParam(required = false) String title,
                                           @RequestParam(required = false) Long folderId,
-                                          @RequestParam(required = false) String content
+                                          @RequestParam(required = false) String content,
+                                          @RequestParam(required = false) String lang
     ) throws IOException {
         long userId = MemberAuthUtil.getMemberId(request);
 
+        if(lang == null) {
+            lang = I18nUtils.DEFAULT_LOCALE.getLanguage();
+        }
         ContentArticleVersion contentArticleVersion = new ContentArticleVersion();
 
         contentArticleVersion.setContentArticleId(articleId);
+        contentArticleVersion.setLang(lang);
 
         contentArticleVersion.setAuthorId(userId);
         contentArticleVersion.setFolderId((folderId));

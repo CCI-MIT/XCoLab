@@ -1,12 +1,13 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.AbstractContest;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.html.LabelValue;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -14,7 +15,6 @@ import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
-import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.utils.MassActionUtil;
 
 import java.lang.reflect.InvocationTargetException;

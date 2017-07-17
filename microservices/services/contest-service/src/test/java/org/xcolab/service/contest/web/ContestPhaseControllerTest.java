@@ -10,8 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
@@ -24,9 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import org.xcolab.client.contest.pojo.AbstractContest;
 import org.xcolab.client.contest.pojo.phases.AbstractContestPhase;
-import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphaseribbontype.ContestPhaseRibbonTypeDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
@@ -99,13 +95,7 @@ public class ContestPhaseControllerTest {
         objectMapper.setSerializationInclusion(Include.NON_EMPTY);
 
         Mockito.when(contestPhaseDao.exists(Matchers.anyLong()))
-                .thenAnswer(new Answer<Boolean>() {
-                    @Override
-                    public Boolean answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        return true;
-                    }});
-
+                .thenAnswer(invocation -> true);
     }
 
     @Test
@@ -124,7 +114,7 @@ public class ContestPhaseControllerTest {
     public void shouldUpdateContestPhase() throws Exception {
 
         AbstractContestPhase contestPhase = new AbstractContestPhase(){};
-        contestPhase.setContestPhasePK(123l);
+        contestPhase.setContestPhasePK(123L);
 
         this.mockMvc.perform(put("/contestPhases/" + contestPhase.getContestPhasePK()).contentType(contentType)
                 .accept(contentType).content(objectMapper.writeValueAsString(contestPhase)))

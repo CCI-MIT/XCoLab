@@ -6,7 +6,7 @@
 <!--@elvariable id="contentPage" type="org.xcolab.client.contents.pojo.ContentPage"-->
 <!--@elvariable id="contentArticleId" type="java.lang.Long"-->
 <!--@elvariable id="menuArticleId" type="java.lang.Long"-->
-<xcolab:layout title="${contentPage.formattedTitle}">
+<xcolab:layout title="${contentPage.formattedTitle}" description="${contentPage.metaDescription}">
 
     <c:if test="${not empty menuArticleId}">
 

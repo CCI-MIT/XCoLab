@@ -1,26 +1,26 @@
 package org.xcolab.view.pages.proposals.tabs;
 
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextWrapper;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 import java.util.function.Predicate;
 
 public enum ProposalTabAccess implements ProposalTabCanAccessAlgorithm {
 
-    ALWAYS(contextWrapper -> true),
-    NEVER(contextWrapper -> false),
-    PROPOSAL_ADMIN(contextWrapper -> contextWrapper.getPermissions().getCanAdminProposal()),
-    ADMIN(contextWrapper -> contextWrapper.getPermissions().getCanAdminAll()),
-    EDIT(contextWrapper -> contextWrapper.getPermissions().getCanEdit())
+    ALWAYS(proposalContext -> true),
+    NEVER(proposalContext -> false),
+    PROPOSAL_ADMIN(proposalContext -> proposalContext.getPermissions().getCanAdminProposal()),
+    ADMIN(proposalContext -> proposalContext.getPermissions().getCanAdminAll()),
+    EDIT(proposalContext -> proposalContext.getPermissions().getCanEdit())
     ;
 
-    private final Predicate<ProposalsContextWrapper> predicate;
+    private final Predicate<ProposalContext> predicate;
 
-    ProposalTabAccess(Predicate<ProposalsContextWrapper> predicate) {
+    ProposalTabAccess(Predicate<ProposalContext> predicate) {
         this.predicate = predicate;
     }
 
     @Override
-    public boolean canAccess(ProposalsContextWrapper contextWrapper) {
-        return predicate.test(contextWrapper);
+    public boolean canAccess(ProposalContext proposalContext) {
+        return predicate.test(proposalContext);
     }
 }

@@ -7,16 +7,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
-import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.enums.points.DistributionStrategy;
 import org.xcolab.client.proposals.pojo.points.PointType;
-import org.xcolab.view.util.entity.enums.OntologySpaceEnum;
 import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.util.html.LabelStringValue;
 import org.xcolab.util.html.LabelValue;
@@ -25,6 +24,7 @@ import org.xcolab.view.pages.contestmanagement.wrappers.SectionDefinitionWrapper
 import org.xcolab.view.taglibs.xcolab.controller.BaseTabController;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
+import org.xcolab.view.util.entity.enums.OntologySpaceEnum;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,8 +75,8 @@ public abstract class AbstractProposalTemplateTabController extends BaseTabContr
 
     private List<LabelValue> getContestTypeSelectionItems() {
         List<LabelValue> selectItems = new ArrayList<>();
-        for (ContestType contestType : ContestClientUtil.getActiveContestTypes()) {
-            selectItems.add(new LabelValue(contestType.getId_(),
+        for (ContestType contestType : ContestTypeClient.getActiveContestTypes()) {
+            selectItems.add(new LabelValue(contestType.getId(),
                     contestType.getLabelName()));
         }
         return selectItems;

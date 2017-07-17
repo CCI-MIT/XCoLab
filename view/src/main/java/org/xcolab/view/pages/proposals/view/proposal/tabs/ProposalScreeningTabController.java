@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +23,7 @@ import org.xcolab.view.pages.proposals.judging.JudgingUtil;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.FellowProposalScreeningBean;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.wrappers.ProposalFellowWrapper;
 
 import java.io.IOException;
@@ -40,23 +39,16 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalScreeningTabController extends BaseProposalTabController {
 
-    private final ProposalsContext proposalsContext;
-
-    @Autowired
-    public ProposalScreeningTabController(ProposalsContext proposalsContext) {
-        this.proposalsContext = proposalsContext;
-    }
-
-
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=SCREENING")
-    public String showFellowsPanel(HttpServletRequest request, Model model) {
-        setCommonModelAndPageAttributes(request, model, ProposalTab.SCREENING);
+    public String showFellowsPanel(HttpServletRequest request, Model model,
+            ProposalContext proposalContext, Member currentMember) {
+        setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.SCREENING);
 
-        Proposal proposal = proposalsContext.getProposal(request);
-        ContestPhase contestPhase = proposalsContext.getContestPhase(request);
+        Proposal proposal = proposalContext.getProposal();
+        ContestPhase contestPhase = proposalContext.getContestPhase();
         Proposal proposalWrapper = new Proposal(proposal, contestPhase);
-        ProposalFellowWrapper proposalFellowWrapper = new ProposalFellowWrapper(
-                proposalWrapper, proposalsContext.getMember(request), request);
+        ProposalFellowWrapper proposalFellowWrapper = new ProposalFellowWrapper(proposalContext,
+                proposalWrapper, currentMember);
 
         boolean hasAlreadyBeenPromoted =
                 ProposalPhaseClientUtil.isProposalContestPhaseAttributeSetAndTrue(
@@ -79,18 +71,18 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
 
     @PostMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=SCREENING")
     public void saveScreening(HttpServletRequest request, HttpServletResponse response, Model model,
+            ProposalContext proposalContext, Member currentMember,
             @ModelAttribute FellowProposalScreeningBean fellowProposalScreeningBean)
             throws ProposalsAuthorizationException, IOException {
         try {
 
-            long proposalId = proposalsContext.getProposal(request).getProposalId();
+            long proposalId = proposalContext.getProposal().getProposalId();
             long contestPhaseId = fellowProposalScreeningBean.getContestPhaseId();
-            ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-            Member currentMember = proposalsContext.getMember(request);
+            ProposalsPermissions permissions = proposalContext.getPermissions();
 
             // Security handling
             if (!(permissions.getCanFellowActions()
-                    && proposalsContext.getProposalWrapped(request)
+                    && proposalContext.getProposal()
                     .isUserAmongFellows(currentMember.getUserId()))
                     && !permissions.getCanAdminAll()) {
                 return;
@@ -99,7 +91,7 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
             // save selection of judges
             if (fellowProposalScreeningBean.getFellowScreeningAction() == JudgingSystemActions
                     .FellowAction.PASS_TO_JUDGES.getAttributeValue()) {
-                proposalsContext.getClients(request).getProposalPhaseClient()
+                proposalContext.getClients().getProposalPhaseClient()
                         .persistSelectedJudgesAttribute(
                                 proposalId,
                                 contestPhaseId,
@@ -107,7 +99,7 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
                         );
             } else {
                 //clear selected judges attribute since the decision is not to pass the proposal.
-                proposalsContext.getClients(request).getProposalPhaseClient()
+                proposalContext.getClients().getProposalPhaseClient()
                         .persistSelectedJudgesAttribute(
                                 proposalId,
                                 contestPhaseId,
@@ -117,7 +109,7 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
 
             // save fellow action
             if (fellowProposalScreeningBean.getFellowScreeningAction() != 0) {
-                proposalsContext.getClients(request).getProposalPhaseClient()
+                proposalContext.getClients().getProposalPhaseClient()
                         .setProposalContestPhaseAttribute(
                                 proposalId,
                                 contestPhaseId,
@@ -128,7 +120,7 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
 
                 //save fellow action comment
                 ProposalJudgingCommentHelper commentHelper =
-                        new ProposalJudgingCommentHelper(proposalsContext.getProposal(request),
+                        new ProposalJudgingCommentHelper(proposalContext.getProposal(),
                                 ContestClientUtil
 
                                         .getContestPhase(contestPhaseId));
@@ -155,9 +147,9 @@ public class ProposalScreeningTabController extends BaseProposalTabController {
 
             JudgingUtil.saveRatings(existingRatings, fellowProposalScreeningBean, proposalId,
                     contestPhaseId, currentMember.getUserId(), false);
-            response.sendRedirect(proposalsContext.getProposal(request)
-                    .getProposalLinkUrl(proposalsContext.getContest(request),
-                            proposalsContext.getContestPhase(request).getContestPhasePK())
+            response.sendRedirect(proposalContext.getProposal()
+                    .getProposalLinkUrl(proposalContext.getContest(),
+                            proposalContext.getContestPhase().getContestPhasePK())
                     + "/tab/SCREENING");
         } catch (Exception e) {
             //TODO: do we still want this?

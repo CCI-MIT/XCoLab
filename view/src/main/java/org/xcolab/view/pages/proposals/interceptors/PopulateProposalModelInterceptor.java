@@ -2,6 +2,7 @@ package org.xcolab.view.pages.proposals.interceptors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -10,7 +11,8 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.view.pages.proposals.permissions.ProposalsDisplayPermissions;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContextImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,21 +20,20 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class PopulateProposalModelInterceptor extends HandlerInterceptorAdapter {
 
-    private static final String MODEL_ATTRIBUTE_PROPOSALS_PERMISSIONS = "proposalsPermissions";
-    private static final String MODEL_ATTRIBUTE_PROPOSAL_DISPLAY_PERMISSIONS =
+    private static final String MODEL_PROPOSALS_PERMISSIONS = "proposalsPermissions";
+    private static final String MODEL_PROPOSAL_DISPLAY_PERMISSIONS =
             "proposalsDisplayPermissions";
-    private static final String MODEL_ATTRIBUTE_CONTEST_PHASE = "contestPhase";
-    private static final String MODEL_ATTRIBUTE_PROPOSAL = "proposal";
-    private static final String MODEL_ATTRIBUTE_CONTEST = "contest";
-    private static final String MODEL_ATTRIBUTE_VIEW_CONTEST_PHASE_ID = "viewContestPhaseId";
-    private static final String MODEL_ATTRIBUTE_PROPOSALS_PREFERENCES = "preferences";
-    private static final String MODEL_ATTRIBUTE_CONTEST_TYPE = "contestType";
+    private static final String MODEL_CONTEST_PHASE = "contestPhase";
+    private static final String MODEL_PROPOSAL = "proposal";
+    private static final String MODEL_CONTEST = "contest";
+    private static final String MODEL_PROPOSALS_PREFERENCES = "preferences";
+    private static final String MODEL_CONTEST_TYPE = "contestType";
 
-    private final ProposalsContext proposalsContext;
+    private final LocaleResolver localeResolver;
 
     @Autowired
-    public PopulateProposalModelInterceptor(ProposalsContext proposalsContext) {
-        this.proposalsContext = proposalsContext;
+    public PopulateProposalModelInterceptor(LocaleResolver localeResolver) {
+        this.localeResolver = localeResolver;
     }
 
     @Override
@@ -40,37 +41,30 @@ public class PopulateProposalModelInterceptor extends HandlerInterceptorAdapter 
             Object handler, ModelAndView modelAndView) {
 
         if (modelAndView != null) {
-            Contest contest = proposalsContext.getContest(request);
-            ContestPhase contestPhase = proposalsContext.getContestPhase(request);
-            Proposal proposal = proposalsContext.getProposal(request);
-            ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+            ProposalContext proposalContext = new ProposalContextImpl(request, localeResolver);
+            Contest contest = proposalContext.getContest();
+            ContestPhase contestPhase = proposalContext.getContestPhase();
+            Proposal proposal = proposalContext.getProposal();
+            ProposalsPermissions permissions = proposalContext.getPermissions();
             ProposalsDisplayPermissions displayPermissions =
-                    proposalsContext.getDisplayPermissions(request);
+                    proposalContext.getDisplayPermissions();
 
             if (contest != null) {
-                modelAndView.addObject(MODEL_ATTRIBUTE_CONTEST,
-                        proposalsContext.getContestWrapped(request));
+                modelAndView.addObject(MODEL_CONTEST, proposalContext.getContest());
 
                 if (contestPhase != null) {
-                    modelAndView.addObject(MODEL_ATTRIBUTE_CONTEST_PHASE,
-                            proposalsContext.getContestPhaseWrapped(request));
+                    modelAndView.addObject(MODEL_CONTEST_PHASE, proposalContext.getContestPhase());
 
                     if (proposal != null) {
-                        modelAndView.addObject(MODEL_ATTRIBUTE_PROPOSAL,
-                                proposalsContext.getProposalWrapped(request));
+                        modelAndView.addObject(MODEL_PROPOSAL, proposalContext.getProposal());
                     }
                 }
             }
 
-            modelAndView.addObject(MODEL_ATTRIBUTE_PROPOSALS_PERMISSIONS, permissions);
-            modelAndView.addObject(MODEL_ATTRIBUTE_PROPOSAL_DISPLAY_PERMISSIONS,
-                    displayPermissions);
-            modelAndView.addObject(MODEL_ATTRIBUTE_VIEW_CONTEST_PHASE_ID,
-                    proposalsContext.getViewContestPhaseId(request));
-            modelAndView.addObject(MODEL_ATTRIBUTE_PROPOSALS_PREFERENCES,
-                    proposalsContext.getProposalsPreferences(request));
-            modelAndView.addObject(MODEL_ATTRIBUTE_CONTEST_TYPE,
-                    proposalsContext.getContestType(request));
+            modelAndView.addObject(MODEL_PROPOSALS_PERMISSIONS, permissions);
+            modelAndView.addObject(MODEL_PROPOSAL_DISPLAY_PERMISSIONS, displayPermissions);
+            modelAndView.addObject(MODEL_PROPOSALS_PREFERENCES, proposalContext.getPreferences());
+            modelAndView.addObject(MODEL_CONTEST_TYPE, proposalContext.getContestType());
         }
     }
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -115,6 +115,7 @@ public class MembersController {
         model.addAttribute("pointsActive", isPointsActive);
 
         model.addAttribute("permissions", membersPermissions);
+        model.addAttribute("isRegistrationOpen", ConfigurationAttributeKey.REGISTRATION_IS_OPEN.get());
 
         model.addAttribute("_activePageLink", "community");
         return "members/users";
@@ -178,12 +179,12 @@ public class MembersController {
         }
     }
     private List<Member>  removeDuplicates(List<Member> members) {
-        HashMap<String,Member> finalMembers = new HashMap<String,Member>();
+        HashMap<String,Member> finalMembers = new HashMap<>();
         for (Member temp : members) {
             if (!finalMembers.containsKey(temp.getScreenName())) {
                 finalMembers.put(temp.getScreenName(),temp);
             }
         }
-        return new ArrayList<Member>(finalMembers.values());
+        return new ArrayList<>(finalMembers.values());
     }
 }

@@ -3,7 +3,7 @@ package org.xcolab.view.seo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.enums.ServerEnvironment;
 
 import java.io.IOException;

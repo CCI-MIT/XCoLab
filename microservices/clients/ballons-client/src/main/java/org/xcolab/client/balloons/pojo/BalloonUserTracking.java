@@ -247,28 +247,13 @@ public class BalloonUserTracking implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("BalloonUserTracking (");
+        String sb =
+                "BalloonUserTracking (" + uuid_ + ", " + email + ", " + parent + ", " + ip + ", "
+                        + createdate + ", " + registrationdate + ", " + formfileddate + ", "
+                        + userid + ", " + balloontextid + ", " + referrer + ", " + latitude + ", "
+                        + longitude + ", " + city + ", " + country + ", " + extradata + ", "
+                        + balloonlinkuuid + ", " + balloonlinkcontext + ", " + useragent + ")";
 
-        sb.append(uuid_);
-        sb.append(", ").append(email);
-        sb.append(", ").append(parent);
-        sb.append(", ").append(ip);
-        sb.append(", ").append(createdate);
-        sb.append(", ").append(registrationdate);
-        sb.append(", ").append(formfileddate);
-        sb.append(", ").append(userid);
-        sb.append(", ").append(balloontextid);
-        sb.append(", ").append(referrer);
-        sb.append(", ").append(latitude);
-        sb.append(", ").append(longitude);
-        sb.append(", ").append(city);
-        sb.append(", ").append(country);
-        sb.append(", ").append(extradata);
-        sb.append(", ").append(balloonlinkuuid);
-        sb.append(", ").append(balloonlinkcontext);
-        sb.append(", ").append(useragent);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

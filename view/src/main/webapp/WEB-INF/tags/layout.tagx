@@ -5,6 +5,10 @@
           xmlns:spring="http://www.springframework.org/tags"
           version="2.0">
     <jsp:directive.attribute name="title" type="java.lang.String" required="false" rtexprvalue="true" description="Page title" />
+    <jsp:directive.attribute name="description" type="java.lang.String" required="false" rtexprvalue="true" description="Page description for meta tag" />
+
+    <jsp:directive.attribute name="canonicalUrlRelative" type="java.lang.String" required="false" rtexprvalue="true" description="Canonical url for this page (relative to root), if any" />
+
     <jsp:directive.attribute name="meta1" type="java.lang.String" required="false" rtexprvalue="true" description="Social media meta info 1" />
     <jsp:directive.attribute name="meta2" type="java.lang.String" required="false" rtexprvalue="true" description="Social media meta info 2" />
 
@@ -35,8 +39,9 @@
     <!--@elvariable id="_uploadedImageFolder" type="java.lang.String"-->
 
 
-    <!--@elvariable id="_contestPages" type="java.util.List<org.xcolab.client.contest.pojo.ContestType>"-->
+    <!--@elvariable id="_contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
     <!--@elvariable id="_colabName" type="java.lang.String"-->
+    <!--@elvariable id="_colabUrl" type="java.lang.String"-->
     <!--@elvariable id="_colabShortName" type="java.lang.String"-->
     <!--@elvariable id="_googleAnalyticsKey" type="java.lang.String"-->
     <!--@elvariable id="_betaRibbonShow" type="java.lang.Boolean"-->
@@ -74,8 +79,13 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <meta content="${_metaPageDescription}" lang="en-US" name="description" />
+    <meta content="${not empty description ? description : _metaPageDescription}"
+          lang="en-US" name="description" />
+
     <meta content="${_metaPageKeywords}" lang="en-US" name="keywords" />
+    <c:if test="${not empty canonicalUrlRelative}">
+        <link rel="canonical" href="${colabUrl}${canonicalUrlRelative}" />
+    </c:if>
 
     <title>${title}${(not empty title) ? ' - ' : ''}${_colabName}</title>
 
@@ -104,28 +114,14 @@
     <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet" type="text/css" />
 
     <!-- TODO: use cdnjs -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
     <xcolab:stylesheet href="${_themeCssFolder}/main.css" />
 
     <!-- ============ PRIORITY SCRIPTS ============ -->
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"><!-- empty --></script>
 
-    <script>
-        /* <![CDATA[ */
-        $.fn.modal.Constructor.prototype.enforceFocus = function() {
-            modal_this = this
-            $(document).on('focusin.modal', function (e) {
-                if (modal_this.$element[0] !== e.target && !modal_this.$element.has(e.target).length
-                        && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_select')
-                        && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_text')) {
-                    modal_this.$element.focus()
-                }
-            })
-        };
-        /* ]]> */
-    </script>
     <!-- moment (date and time formatting) -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.3.1/moment.min.js"><!-- empty --></script>
     <xcolab:script src="${_themeJsFolder}/dateTimeFormatter.js" />
@@ -224,12 +220,11 @@
                 <a href="/"><img src="${_logoPath}" alt="${_colabName}" height="42" /></a>
             </div>
             <ul id="c-Header__menu" class="${_isHomePage ? 'backgroundLight' : ''}">
-                <!-- TODO: mark current page with class 'isCurrent' -->
                 <li class="${_activePageLink == 'about' ? 'isCurrent' : ''}"><a href="/page/about"><spring:message code="homepage.menu.about" /></a></li>
                 <c:forEach var="_contestPage" items="${_contestPages}">
                     <c:if test="${_contestPage.menuItemName != ''}">
-                        <li class="${_activePageLink == _contestPage.portletName ? 'isCurrent' : ''}">
-                            <a href="${_contestPage.portletUrl}">${_contestPage.menuItemName}</a>
+                        <li class="${_activePageLink == _contestPage.identifier ? 'isCurrent' : ''}">
+                            <a href="${_contestPage.contestBaseUrl}">${_contestPage.menuItemName}</a>
                         </li>
                     </c:if>
                 </c:forEach>
@@ -258,7 +253,9 @@
                             </div>
                         </c:if>
                     </li>
-                    <li class="help"><a href="/wiki/Help">Help</a></li>
+                    <li class="help">
+                        <a href="/wiki/Help"><spring:message code="homepage.menu.help" /></a>
+                    </li>
                 </ul>
 
 
@@ -293,9 +290,15 @@
 
             <c:otherwise>
                 <ul id="c-Header__menu__right">
-                    <li class="register"><a href="/register?redirect=${_requestUri}"><spring:message code="homepage.menu.visitor.register" /></a></li>
-                    <li class="login" ><a  href="javascript:;" id="loginPopupTrigger"><spring:message code="homepage.menu.visitor.login" /></a></li>
-                    <li class="help"><a href="/wiki/Help"><spring:message code="homepage.menu.visitor.help" /></a></li>
+                    <li class="register">
+                        <a href="/register?redirect=${_requestUri}"><spring:message code="homepage.menu.visitor.register" /></a>
+                    </li>
+                    <li class="login" >
+                        <a  href="javascript:;" id="loginPopupTrigger"><spring:message code="homepage.menu.visitor.login" /></a>
+                    </li>
+                    <li class="help">
+                        <a href="/wiki/Help"><spring:message code="homepage.menu.help" /></a>
+                    </li>
                 </ul>
 
                 <!-- LOGIN POPUP -->
@@ -449,7 +452,7 @@
         <div class="c-Popup">
             <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_login').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a></div>
 
-            <h4><spring:message code="homepage.modals.login.message"/> ${_colabName}</h4>
+            <h4><collab:message code="homepage.modals.login.message" /> </h4>
             <c:choose>
                 <c:when test='${_authError != null}'>
                     <div class="c-Alert__error__message">${_authError.message}</div>
@@ -529,10 +532,20 @@
         <!-- Shared poupup login -->
         <div id="popup_SSO_login" class="c-Popup__wrapper small" style="display: none;">
             <div class="c-Popup">
-                <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_SSO_login').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a></div>
-                <div><img style="max-height:55px" src="${_themeImageFolder}/${_partnerColabLogo}" alt="${_partnerColabName}" /> </div>
-                <div style="margin-top: 15px;margin-bottom: 15px;"><spring:message code="homepage.modals.sso.message.phrase1" arguments="${_partnerColabName},${_colabName}" argumentSeparator=","/>  </div>
-                <div style="font-size: small;"><spring:message code="homepage.modals.sso.message.phrase2" arguments="${_partnerColabName},${_colabName}" argumentSeparator=","/>  </div>
+                <div class="closepopuplogin">
+                    <a href="javascript:;" onclick="jQuery('#popup_SSO_login').hide()">
+                        <img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" />
+                    </a>
+                </div>
+                <div>
+                    <img style="max-height:55px" src="${_themeImageFolder}/${_partnerColabLogo}" alt="${_partnerColabName}" />
+                </div>
+                <div style="margin-top: 15px;margin-bottom: 15px;">
+                    <collab:message code="homepage.modals.sso.message.phrase1" arguments="${_partnerColabName}" />
+                </div>
+                <div style="font-size: small;">
+                    <collab:message code="homepage.modals.sso.message.phrase2" arguments="${_partnerColabName}" />
+                </div>
                 <div class="clearfix"><!-- --></div>
                 <c:if test='${_showSsoPopup}'>
                     <div class="c-Alert__error__message"><p><spring:message code="homepage.modals.sso.message.error"/></p></div>
@@ -759,6 +772,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"
             integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"><!-- --></script>
 
+    <!-- CKEditor incompatibility with jquery and bootstrap -->
+    <script>
+        /* <![CDATA[ */
+        $.fn.modal.Constructor.prototype.enforceFocus = function() {
+            modal_this = this
+            $(document).on('focusin.modal', function (e) {
+                if (modal_this.$element[0] !== e.target && !modal_this.$element.has(e.target).length
+                        && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_select')
+                        && $(e.target.parentNode).hasClass('cke_contents cke_reset')
+                        && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_text')) {
+                    modal_this.$element.focus()
+                }
+            })
+        };
+
+        /* ]]> */
+    </script>
     <!-- Resolve widgets -->
     <xcolab:script src="${_themeJsFolder}/widgetLoader.js" />
 
@@ -788,6 +818,10 @@
 
     <!-- Spin.js -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['spin.js']}" src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js" />
+
+    <xcolab:script src="${_themeJsFolder}/proposals/jquery.spin.js"/>
+
+    <xcolab:script src="${_themeJsFolder}/proposals/jquery.scrolltable.js"/>
 
     <!-- AutoSuggest -->
     <!-- TODO: where is this used? -->

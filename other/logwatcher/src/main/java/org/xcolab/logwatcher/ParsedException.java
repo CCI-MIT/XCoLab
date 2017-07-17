@@ -4,12 +4,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by patrickhiesel on 25/10/14.
- */
 public class ParsedException implements Serializable{
-
-
 
     public String header;
     public List<String> stackTrace;
@@ -18,7 +13,6 @@ public class ParsedException implements Serializable{
         header = head;
         stackTrace = new LinkedList<String>();
     }
-
 
     public boolean equals(Object o){
         if (o instanceof ParsedException) {

@@ -1,16 +1,19 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          version="2.0">
+          version="2.0" xmlns:spring="http://www.springframework.org/tags">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-<xcolab:layout>
+
+<!--@elvariable id="thread" type="org.xcolab.client.comment.pojo.CommentThread"-->
+
+<xcolab:layout title="${thread.title} - ${thread.category.name}">
     <jsp:include page="init.jspx"/>
     <!--@elvariable id="isSubscribed" type="java.lang.Boolean"-->
     <div id="content">
         <div id="bread" class="pro">
-            <a href="/members">Community</a>&#160;
+            <a href="/members"><spring:message code="colab.breadcrums.community"/></a>&#160;
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
-            <a href="/discussion">Discussion</a>&#160;
+            <a href="/discussion"><spring:message code="colab.breadcrums.discussion"/></a>&#160;
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;
             <a href="${thread.category.linkUrl}">${thread.category.name}</a>&#160;
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />&#160;

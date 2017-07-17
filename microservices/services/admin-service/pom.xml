@@ -55,7 +55,7 @@
                 <configuration combine.self="append">
                     <generator>
                         <database>
-                            <includes>xcolab_ContestEmailTemplate|xcolab_ConfigurationAttribute</includes>
+                            <includes>xcolab_ContestEmailTemplate|xcolab_ConfigurationAttribute|admin_.+</includes>
                         </database>
                     </generator>
                 </configuration>

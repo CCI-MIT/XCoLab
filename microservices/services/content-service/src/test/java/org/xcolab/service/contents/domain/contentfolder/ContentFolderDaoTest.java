@@ -12,16 +12,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.xcolab.model.tables.pojos.ContentArticle;
 import org.xcolab.model.tables.pojos.ContentFolder;
 import org.xcolab.service.contents.domain.contentFolder.ContentFolderDao;
-import org.xcolab.service.contents.domain.contentarticle.ContentArticleDao;
-import org.xcolab.service.contents.exceptions.NotFoundException;
 import org.xcolab.service.utils.PaginationHelper;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @DataJpaTest
@@ -49,7 +45,7 @@ public class ContentFolderDaoTest {
         ContentFolder ae = new ContentFolder();
         ae.setContentFolderName("upper");
         ae.setContentFolderDescription("");
-        ae.setParentFolderId(0l);
+        ae.setParentFolderId(0L);
         ae = contentFolderDao.create(ae);
         assertNotNull(contentFolderDao.get(ae.getContentFolderId()));
 
@@ -58,12 +54,12 @@ public class ContentFolderDaoTest {
     @Test
     public void shouldGetContentFolder() throws Exception {
 
-        assertNotNull(contentFolderDao.get(02l));
+        assertNotNull(contentFolderDao.get(2L));
 
     }
     @Test
     public void shouldFindByAncestorFolderId() throws Exception {
-        assertEquals(1,contentFolderDao.findByAncestorFolderId(02l).size());
+        assertEquals(1,contentFolderDao.findByAncestorFolderId(2L).size());
     }
 
     @Test
@@ -71,7 +67,7 @@ public class ContentFolderDaoTest {
         ContentFolder ae = new ContentFolder();
         ae.setContentFolderName("nuper");
         ae.setContentFolderDescription("");
-        ae.setParentFolderId(0l);
+        ae.setParentFolderId(0L);
         ae = contentFolderDao.create(ae);
         ae.setContentFolderName("super");
         contentFolderDao.update(ae);
@@ -83,11 +79,11 @@ public class ContentFolderDaoTest {
     @Test
     public void shouldFindByParentFolderIdInAnyOrder() throws Exception {
 
-        assertEquals(contentFolderDao.findByGiven(new PaginationHelper(0,Integer.MAX_VALUE,"contentFolderName")
-                ,02l).size(),1);
-        assertEquals(contentFolderDao.findByGiven(new PaginationHelper(0,Integer.MAX_VALUE,"parentFolderId")
-                ,02l).size(),1);
-        assertEquals(contentFolderDao.findByGiven(new PaginationHelper(0,Integer.MAX_VALUE,"contentFolderId")
-                ,02l).size(),1);
+        assertEquals(contentFolderDao.findByGiven(new PaginationHelper(0,
+                Integer.MAX_VALUE,"contentFolderName"), 2L).size(),1);
+        assertEquals(contentFolderDao.findByGiven(new PaginationHelper(0,
+                Integer.MAX_VALUE,"parentFolderId"), 2L).size(),1);
+        assertEquals(contentFolderDao.findByGiven(new PaginationHelper(0,
+                Integer.MAX_VALUE,"contentFolderId"), 2L).size(),1);
     }
 }

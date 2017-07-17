@@ -4,8 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -80,27 +78,19 @@ public class ActivitiesServiceTest {
         Mockito.mock(Proposal.class);
 
         Mockito.when(ProposalClientUtil.getProposal(anyLong()))
-            .thenAnswer(new Answer<Proposal>() {
-                @Override
-                public Proposal answer(InvocationOnMock invocation)
-                    throws Throwable {
-                    Proposal proposal = Mockito.mock(Proposal.class);
-                    proposal.setDiscussionId(123456l);
-                    return proposal;
+            .thenAnswer(invocation -> {
+                Proposal proposal = Mockito.mock(Proposal.class);
+                proposal.setDiscussionId(123456L);
+                return proposal;
 
-                }
             });
 
         Mockito.when(ContestClientUtil.getContest(anyLong()))
-            .thenAnswer(new Answer<Contest>() {
-                @Override
-                public Contest answer(InvocationOnMock invocation)
-                    throws Throwable {
-                    Contest contest = Mockito.mock(Contest.class);
-                    contest.setDiscussionGroupId(123123l);
-                    return contest;
+            .thenAnswer(invocation -> {
+                Contest contest = Mockito.mock(Contest.class);
+                contest.setDiscussionGroupId(123123L);
+                return contest;
 
-                }
             });
     }
 
@@ -112,7 +102,7 @@ public class ActivitiesServiceTest {
             activitiesService.subscribe(1111, ActivityEntryType.DISCUSSION, 222, null);
 
         assertTrue(ActivitySubscriptionDao
-            .isSubscribed(1111, ActivityEntryType.DISCUSSION.getPrimaryTypeId(), 222l, 0, null));
+            .isSubscribed(1111, ActivityEntryType.DISCUSSION.getPrimaryTypeId(), 222L, 0, null));
 
     }
     @Test
@@ -142,7 +132,7 @@ public class ActivitiesServiceTest {
             activitiesService.unsubscribe(1111, ActivityEntryType.DISCUSSION, 222, null);
 
         assertTrue(ActivitySubscriptionDao
-            .isSubscribed(1111, ActivityEntryType.DISCUSSION.getPrimaryTypeId(), 222l, 0, null));
+            .isSubscribed(1111, ActivityEntryType.DISCUSSION.getPrimaryTypeId(), 222L, 0, null));
 
     }
 
@@ -156,7 +146,7 @@ public class ActivitiesServiceTest {
         activitiesService.unsubscribe(1111, ActivityEntryType.PROPOSAL, 222, null);
 
         assertTrue(ActivitySubscriptionDao
-            .isSubscribed(1111, ActivityEntryType.PROPOSAL.getPrimaryTypeId(), 222l, 0, null));
+            .isSubscribed(1111, ActivityEntryType.PROPOSAL.getPrimaryTypeId(), 222L, 0, null));
 
     }
     @Test
@@ -170,7 +160,7 @@ public class ActivitiesServiceTest {
 
 
         assertTrue(ActivitySubscriptionDao
-            .isSubscribed(1111, ActivityEntryType.CONTEST.getPrimaryTypeId(), 222l, 0, null));
+            .isSubscribed(1111, ActivityEntryType.CONTEST.getPrimaryTypeId(), 222L, 0, null));
 
     }
 }

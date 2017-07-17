@@ -3,7 +3,7 @@ package org.xcolab.view.pages.proposals.utils.voting;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
@@ -64,6 +64,10 @@ public class VoteValidator {
         if (isEmailBlacklisted()) {
             invalidateVote(vote);
             return ValidationResult.INVALID_BLACKLISTED;
+        }
+
+        if (remoteIp == null) {
+            return ValidationResult.VALID;
         }
 
         List<Member> usersWithSharedIP = MembersClient.findMembersByIp(remoteIp);

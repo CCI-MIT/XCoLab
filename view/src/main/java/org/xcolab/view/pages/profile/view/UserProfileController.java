@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
@@ -30,17 +30,17 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
-import org.xcolab.view.i18n.I18nUtils;
-import org.xcolab.view.util.entity.flash.AlertMessage;
-import org.xcolab.view.util.entity.flash.ErrorMessage;
 import org.xcolab.util.CountryUtil;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.errors.ErrorText;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.pages.profile.beans.MessageBean;
 import org.xcolab.view.pages.profile.beans.NewsletterBean;
 import org.xcolab.view.pages.profile.beans.UserBean;
 import org.xcolab.view.pages.profile.utils.UserProfilePermissions;
 import org.xcolab.view.pages.profile.wrappers.UserProfileWrapper;
+import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.view.util.entity.flash.ErrorMessage;
 
 import java.io.IOException;
 

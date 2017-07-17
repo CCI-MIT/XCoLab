@@ -1,10 +1,8 @@
 package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,10 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.flagging.FlaggingClient;
@@ -35,8 +34,7 @@ import org.xcolab.view.pages.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.view.proposal.AddUpdateProposalControllerUtil;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.view.util.entity.EntityGroupingUtil;
@@ -62,17 +60,10 @@ import javax.validation.Valid;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalDescriptionTabController extends BaseProposalTabController {
 
-    private final ProposalsContext proposalsContext;
-
-    @Autowired
-    public ProposalDescriptionTabController(ProposalsContext proposalsContext) {
-        Assert.notNull(proposalsContext, "ProposalsContext bean is required");
-        this.proposalsContext = proposalsContext;
-    }
-
     @GetMapping("c/{proposalUrlString}/{proposalId}")
     public String showProposalDetails(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable Long contestYear,
+            Model model, ProposalContext proposalContext, Member currentMember,
+            @PathVariable Long contestYear,
             @PathVariable String contestUrlName, @PathVariable Long proposalId,
             @RequestParam(defaultValue = "false") boolean voted,
             @RequestParam(defaultValue = "false") boolean edit,
@@ -81,15 +72,17 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             @RequestParam(required = false) String moveType,
             @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
             BindingResult bindingResult) {
-        return showProposalDetails(request, model, voted, edit, moveFromContestPhaseId, moveType);
+        return showProposalDetails(request, model, proposalContext, currentMember, voted,
+                edit, moveFromContestPhaseId, moveType);
     }
 
     private String showProposalDetails(HttpServletRequest request, Model model,
+            ProposalContext proposalContext, Member currentMember,
             boolean voted, boolean edit, Long moveFromContestPhaseId, String moveType) {
-        setCommonModelAndPageAttributes(request, model, ProposalTab.DESCRIPTION);
+        setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.DESCRIPTION);
 
         boolean editValidated = false;
-        final ProposalsPermissions proposalsPermissions = proposalsContext.getPermissions(request);
+        final ProposalsPermissions proposalsPermissions = proposalContext.getPermissions();
         if (edit && proposalsPermissions.getCanEdit()) {
             editValidated = true;
         }
@@ -100,16 +93,15 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         model.addAttribute("showOpennessStatus",
             ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get());
 
-        final Proposal proposal = proposalsContext.getProposal(request);
-        final Proposal proposalWrapped = proposalsContext.getProposalWrapped(request);
+        final Proposal proposal = proposalContext.getProposal();
 
-        final ClientHelper clients = ProposalsContextUtil.getClients(request);
+        final ClientHelper clients = proposalContext.getClients();
         final ProposalClient proposalClient = clients.getProposalClient();
         final Contest baseContest = proposalClient
                 .getCurrentContestForProposal(proposal.getProposalId());
 
         if (voted) {
-            setVotingDeadline(request, model, baseContest);
+            setVotingDeadline(model, proposalContext, baseContest);
         }
 
         final boolean isMove = moveFromContestPhaseId != null && moveType != null;
@@ -122,13 +114,13 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                     baseContest, baseContestPhase, null);
 
             UpdateProposalDetailsBean updateProposalDetailsBean = new UpdateProposalDetailsBean(
-                    proposalWrapped, baseProposalWrapped, true,
+                    proposal, baseProposalWrapped, true,
                     MoveType.valueOf(moveType, true));
             updateProposalDetailsBean.setMoveFromContestPhaseId(moveFromContestPhaseId);
             updateProposalDetailsBean.setMoveToContestId(baseContestPhase.getContestPhasePK());
 
             model.addAttribute("hasUnmappedSections",
-                    hasUnmappedSections(proposalWrapped, baseProposalWrapped));
+                    hasUnmappedSections(proposal, baseProposalWrapped));
             model.addAttribute("baseProposal", baseProposalWrapped);
             model.addAttribute("baseContest", baseContest);
             model.addAttribute("isMove", true);
@@ -138,7 +130,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             }
         } else if (!model.containsAttribute("updateProposalDetailsBean")) {
             model.addAttribute("updateProposalDetailsBean", new UpdateProposalDetailsBean(
-                    proposalWrapped));
+                    proposal));
         }
 
         if (editValidated || isMove) {
@@ -166,12 +158,12 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         }
 
         if (proposalsPermissions.getCanJudgeActions()) {
-            setJudgeProposalBean(model, request);
+            setJudgeProposalBean(model, proposalContext, currentMember);
         }
 
-        setLinkedProposals(request, model, proposal);
-        final Contest contest = proposalsContext.getContest(request);
-        populateMoveHistory(request, model, proposal, contest);
+        setLinkedProposals(model, proposalContext, proposal);
+        final Contest contest = proposalContext.getContest();
+        populateMoveHistory(model, proposalContext, proposal, contest);
 
         return "proposals/proposalDetails";
     }
@@ -191,10 +183,10 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                 .anyMatch(p -> PlanSectionTypeKeys.PROPOSAL_PICKER_SECTION_TYPES.contains(p.getType()));
     }
 
-    private void populateMoveHistory(HttpServletRequest request, Model model, Proposal proposal,
-            Contest contest) {
+    private void populateMoveHistory(Model model, ProposalContext proposalContext,
+            Proposal proposal, Contest contest) {
 
-        final ClientHelper clients = ProposalsContextUtil.getClients(request);
+        final ClientHelper clients = proposalContext.getClients();
         final ProposalMoveClient proposalMoveClient = clients.getProposalMoveClient();
         List<ProposalMoveHistory> sourceMoveHistories = proposalMoveClient
                         .getBySourceProposalIdContestId(proposal.getProposalId(),
@@ -209,8 +201,8 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         }
     }
 
-    private void setLinkedProposals(HttpServletRequest request, Model model, Proposal proposal) {
-        final ClientHelper clients = ProposalsContextUtil.getClients(request);
+    private void setLinkedProposals(Model model, ProposalContext proposalContext, Proposal proposal) {
+        final ClientHelper clients = proposalContext.getClients();
         final ProposalClient proposalClient = clients.getProposalClient();
         List<Proposal> linkedProposals = proposalClient
                         .getSubproposals(proposal.getProposalId(), true);
@@ -218,14 +210,14 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                 EntityGroupingUtil.groupByContestType(linkedProposals);
         Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
 
-        for (ContestType contestType : clients.getContestClient()
+        for (ContestType contestType : ContestTypeClient
                 .getActiveContestTypes()) {
-            contestTypeProposalWrappersByContestTypeId.put(contestType.getId_(),
+            contestTypeProposalWrappersByContestTypeId.put(contestType.getId(),
                     new ContestTypeProposal(contestType));
             final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
             if (proposalsInContestType != null) {
                 for (Proposal p : proposalsInContestType) {
-                    contestTypeProposalWrappersByContestTypeId.get(contestType.getId_())
+                    contestTypeProposalWrappersByContestTypeId.get(contestType.getId())
                             .getProposals().add((p));
                 }
             }
@@ -234,15 +226,14 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                 contestTypeProposalWrappersByContestTypeId);
     }
 
-    private void setJudgeProposalBean(Model model, HttpServletRequest request) {
+    private void setJudgeProposalBean(Model model, ProposalContext proposalContext, Member member) {
         final JudgeProposalFeedbackBean judgeProposalFeedbackBean =
                 (JudgeProposalFeedbackBean) model.asMap().get("judgeProposalFeedbackBean");
         if (judgeProposalFeedbackBean == null
                 || judgeProposalFeedbackBean.getContestPhaseId() == null) {
 
-            final Proposal proposal = proposalsContext.getProposalWrapped(request);
-            final Member member = proposalsContext.getMember(request);
-            final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
+            final Proposal proposal = proposalContext.getProposal();
+            final ContestPhase contestPhase = proposalContext.getContestPhase();
 
             ProposalJudgeWrapper proposalJudgeWrapper = new ProposalJudgeWrapper(proposal, member);
             JudgeProposalFeedbackBean judgeProposalBean =
@@ -253,8 +244,8 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         }
     }
 
-    private void setVotingDeadline(HttpServletRequest request, Model model, Contest baseContest) {
-        Date votingDeadline = getVotingDeadline(baseContest, request);
+    private void setVotingDeadline(Model model, ProposalContext proposalContext, Contest baseContest) {
+        Date votingDeadline = getVotingDeadline(proposalContext, baseContest);
         if (votingDeadline != null) {
             final DateFormat customDateFormat = new SimpleDateFormat("MMMM dd, YYYY", Locale.US);
             model.addAttribute("votingDeadline", customDateFormat.format(votingDeadline));
@@ -263,8 +254,8 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         }
     }
 
-    private Date getVotingDeadline(Contest contest, HttpServletRequest request) {
-        List<ContestPhase> contestPhases = proposalsContext.getClients(request).getContestClient()
+    private Date getVotingDeadline(ProposalContext proposalContext, Contest contest) {
+        List<ContestPhase> contestPhases = proposalContext.getClients().getContestClient()
                 .getAllContestPhases(contest.getContestPK());
         final ContestPhase activeVotingPhase = getActiveVotingPhase(contestPhases);
         if (activeVotingPhase != null) {
@@ -290,14 +281,15 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
     }
 
     @PostMapping("c/{proposalUrlString}/{proposalId}")
-    public String updateProposal(HttpServletRequest request, HttpServletResponse response, Model model,
+    public String updateProposal(HttpServletRequest request, HttpServletResponse response,
+            Model model, ProposalContext proposalContext, Member currentMember,
             @PathVariable String contestYear, @PathVariable String contestUrlName,
             @PathVariable String proposalUrlString, @PathVariable String proposalId,
             @Valid UpdateProposalDetailsBean updateProposalDetailsBean, BindingResult result)
             throws ProposalsAuthorizationException, IOException {
 
-        Proposal proposal = proposalsContext.getProposal(request);
-        final ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        Proposal proposal = proposalContext.getProposal();
+        final ProposalsPermissions permissions = proposalContext.getPermissions();
         if (proposal != null && !permissions.getCanEdit()) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
@@ -306,11 +298,12 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             AlertMessage.danger(
                     "Changes NOT saved. Please fix the errors before saving.")
                     .flash(request);
-            return showProposalDetails(request, model, false, true, null, null);
+            return showProposalDetails(request, model, proposalContext, currentMember,
+                    false, true, null, null);
         }
 
         return AddUpdateProposalControllerUtil
-                .createOrUpdateProposal(request, updateProposalDetailsBean, proposal, proposalsContext);
+                .createOrUpdateProposal(request, updateProposalDetailsBean, proposal, proposalContext);
     }
 
 }

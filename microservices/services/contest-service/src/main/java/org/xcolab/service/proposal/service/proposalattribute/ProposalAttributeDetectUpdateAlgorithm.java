@@ -10,22 +10,14 @@ import java.util.Map;
 
 public class ProposalAttributeDetectUpdateAlgorithm {
 
-    private final static ProposalAttributeDetectUpdateImpl PROPOSAL_IMPACT_ATTRIBUTE_UPDATE = new ProposalAttributeDetectUpdateImpl() {
+    private final static ProposalAttributeDetectUpdateImpl PROPOSAL_IMPACT_ATTRIBUTE_UPDATE =
+            (attribute, attributeName, additionalId, numericValue, realValue) ->
+                    attribute.getName().equals(attributeName) && attribute.getAdditionalId() == additionalId && attribute.getNumericValue() == numericValue
+                            && attribute.getRealValue() != realValue;
 
-        @Override
-        public boolean hasBeenUpdated(ProposalAttribute attribute, String attributeName, long additionalId, long numericValue, double realValue) {
-            return attribute.getName().equals(attributeName) && attribute.getAdditionalId() == additionalId && attribute.getNumericValue() == numericValue
-                    && attribute.getRealValue() != realValue;
-        }
-    };
-
-    private final static ProposalAttributeDetectUpdateImpl PROPOSAL_OTHER_ATTRIBUTE_UPDATE = new ProposalAttributeDetectUpdateImpl() {
-
-        @Override
-        public boolean hasBeenUpdated(ProposalAttribute attribute, String attributeName, long additionalId, long numericValue, double realValue) {
-            return attribute.getName().equals(attributeName) && attribute.getAdditionalId() == additionalId;
-        }
-    };
+    private final static ProposalAttributeDetectUpdateImpl PROPOSAL_OTHER_ATTRIBUTE_UPDATE =
+            (attribute, attributeName, additionalId, numericValue, realValue) ->
+                    attribute.getName().equals(attributeName) && attribute.getAdditionalId() == additionalId;
 
     private final ProposalAttribute proposalAttribute;
 

@@ -140,15 +140,9 @@ class AbstractProposalRatingValue implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("ProposalRatingValue (");
+        String sb = "ProposalRatingValue (" + id_ + ", " + ratingtypeid + ", " + value + ", " + name
+                + ", " + description + ")";
 
-        sb.append(id_);
-        sb.append(", ").append(ratingtypeid);
-        sb.append(", ").append(value);
-        sb.append(", ").append(name);
-        sb.append(", ").append(description);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

@@ -20,22 +20,21 @@ public class SessionHelper {
     }
 
     private static Map<String, Object> _getMap(HttpSession session, boolean createIfAbsent,String className) {
-        if(session == null) {
+        if (session == null) {
             return null;
         } else {
             Object map = null;
 
             try {
-                map = (Map)session.getAttribute(className);
+                map = session.getAttribute(className);
                 if(map == null && createIfAbsent) {
                     map = new LinkedHashMap();
                     session.setAttribute(className, map);
                 }
-            } catch (IllegalStateException var3) {
-                ;
+            } catch (IllegalStateException ignored) {
             }
 
-            return (Map)map;
+            return (Map<String, Object>) map;
         }
     }
     public static void clear(HttpSession session, String className) {

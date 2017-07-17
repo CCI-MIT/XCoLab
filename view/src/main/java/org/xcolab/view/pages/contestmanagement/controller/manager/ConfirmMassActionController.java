@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.view.pages.contestmanagement.wrappers.MassActionConfirmationWrapper;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

@@ -161,16 +161,10 @@ class AbstractProposal2Phase implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Proposal2Phase (");
+        String sb =
+                "Proposal2Phase (" + proposalid + ", " + contestphaseid + ", " + versionfrom + ", "
+                        + versionto + ", " + sortweight + ", " + autopromotecandidate + ")";
 
-        sb.append(proposalid);
-        sb.append(", ").append(contestphaseid);
-        sb.append(", ").append(versionfrom);
-        sb.append(", ").append(versionto);
-        sb.append(", ").append(sortweight);
-        sb.append(", ").append(autopromotecandidate);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

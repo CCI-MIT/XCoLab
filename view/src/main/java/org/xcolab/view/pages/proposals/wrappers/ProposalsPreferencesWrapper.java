@@ -1,24 +1,15 @@
 package org.xcolab.view.pages.proposals.wrappers;
 
-
-import org.json.JSONObject;
-
-import org.xcolab.client.admin.AdminClient;
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.pojo.ConfigurationAttribute;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
-import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.entity.utils.WidgetPreference;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
 import org.xcolab.util.attributes.AttributeGetter;
 
 import java.io.IOException;
-
-
-import javax.servlet.http.HttpServletRequest;
-
 
 public class ProposalsPreferencesWrapper extends WidgetPreference {
 
@@ -31,7 +22,7 @@ public class ProposalsPreferencesWrapper extends WidgetPreference {
     private String termsOfService;
     private String callToAction;
     private String contestTypeId;
-    private ContestType contestType;
+    private final ContestType contestType;
 
     private String title;
     private String allContestsUrl;
@@ -53,16 +44,15 @@ public class ProposalsPreferencesWrapper extends WidgetPreference {
     public ProposalsPreferencesWrapper() {
         this(null);
     }
+
     public ProposalsPreferencesWrapper(String preferenceId) {
         super(preferenceId);
-
-
 
         termsOfService = getTermsOfServiceTemplateWrapper().getHeader();
         callToAction = (prefs.has(CALL_TO_ACTION))?(prefs.getString(CALL_TO_ACTION)):(CALL_TO_ACTION_DEFAULT);
         contestTypeId = (prefs.has(CONTEST_TYPE_ID))?(prefs.getString(CONTEST_TYPE_ID)):("0");
 
-        contestType = ContestClientUtil.getContestType(Long.parseLong(contestTypeId));
+        contestType = ContestTypeClient.getContestType(Long.parseLong(contestTypeId));
 
         proposalIdsToBeMoved = "";
         moveFromContestId = -1;
@@ -159,5 +149,9 @@ public class ProposalsPreferencesWrapper extends WidgetPreference {
 
     public ContestType getContestType() {
         return contestType;
+    }
+
+    public ContestType getContestType(String language) {
+        return contestType.withLocale(language);
     }
 }

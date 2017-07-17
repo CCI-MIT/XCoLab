@@ -19,21 +19,18 @@ import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 public final class ProposalMoveUtil {
 
     private ProposalMoveUtil() {
     }
 
-    public static void moveProposal(@Valid UpdateProposalDetailsBean updateProposalSectionsBean,
-            Proposal proposal, ContestPhase contestPhase, Contest targetContest,
-            long memberId, HttpServletRequest request) {
+    public static void moveProposal(ProposalContext proposalContext,
+            UpdateProposalDetailsBean updateProposalSectionsBean, Proposal proposal,
+            ContestPhase contestPhase, Contest targetContest, long memberId) {
         try {
-            final ClientHelper clients = ProposalsContextUtil.getClients(request);
+            final ClientHelper clients = proposalContext.getClients();
             final ProposalClient proposalClient = clients.getProposalClient();
             final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
             final ProposalMoveClient proposalMoveClient = clients.getProposalMoveClient();

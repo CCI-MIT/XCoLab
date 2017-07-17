@@ -53,14 +53,13 @@ public class UsersGroupsDaoImpl implements UsersGroupsDao {
         return query.fetchInto(Users_Groups.class);
     }
 
+    @Override
     public int delete(Long userId, Long groupId) {
 
         return this.dslContext.deleteFrom(USERS_GROUPS)
                 .where(USERS_GROUPS.USER_ID.eq(userId))
                 .and(USERS_GROUPS.GROUP_ID.eq(groupId))
                 .execute();
-
-
     }
 
 }

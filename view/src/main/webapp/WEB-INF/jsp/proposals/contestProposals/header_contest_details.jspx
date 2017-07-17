@@ -4,6 +4,7 @@
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+          xmlns:spring="http://www.springframework.org/tags"
           version="2.0">
 
     <div class="p-ContestProposals__header">
@@ -76,7 +77,7 @@
                         <c:if test="${not empty contest.what}">
                             <div class="p-ContestProposals__header__ontology__term">
                                 <div class="p-ContestProposals__header__ontology__term__title--what">
-                                    What:
+                                    <spring:message code="contests.ontology.what" />:
                                 </div>
 
                                 <div class="p-ContestProposals__header__ontology__term__link">
@@ -87,7 +88,7 @@
                         <c:if test="${not empty contest.where}">
                             <div class="p-ContestProposals__header__ontology__term">
                                 <div class="p-ContestProposals__header__ontology__term__title--where">
-                                    Where:
+                                    <spring:message code="contests.ontology.where" />:
                                 </div>
 
                                 <div class="p-ContestProposals__header__ontology__term__link">
@@ -98,7 +99,7 @@
                         <c:if test="${not empty contest.who}">
                             <div class="p-ContestProposals__header__ontology__term">
                                 <div class="p-ContestProposals__header__ontology__term__title--who">
-                                    Who:
+                                    <spring:message code="contests.ontology.who" />:
                                 </div>
 
                                 <div class="p-ContestProposals__header__ontology__term__link">
@@ -109,7 +110,7 @@
                         <c:if test="${not empty contest.how}">
                             <div class="p-ContestProposals__header__ontology__term">
                                 <div class="p-ContestProposals__header__ontology__term__title--how">
-                                    How:
+                                    <spring:message code="contests.ontology.how" />:
                                 </div>
 
                                 <div class="p-ContestProposals__header__ontology__term__link">
@@ -160,13 +161,17 @@
 
                     <c:if test="${contest.resourceArticleId > 0 and contestType.showResourceLinks}">
                         <div class="p-ContestProposals__header__detailButton" >
-                            <a href="${contest.resourceArticleUrl}">Details</a>
+                            <a href="${contest.resourceArticleUrl}">
+                                <spring:message code="contests.details.details" />
+                            </a>
                         </div>
                     </c:if>
 
                     <c:if test="${contestType.hasDiscussion}">
                         <div class="p-ContestProposals__header__detailButton">
-                            <a href="${contest.contestUrl}/discussion">Discussion</a>
+                            <a href="${contest.contestUrl}/discussion">
+                                <spring:message code="contests.details.discussion" />
+                            </a>
                             <c:if test="${contest.commentsCount > 0}">
                                 <div class="p-ContestProposals__header__detailButton__count">
                                     ${contest.commentsCount}

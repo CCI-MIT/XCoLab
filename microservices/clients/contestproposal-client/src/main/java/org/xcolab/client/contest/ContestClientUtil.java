@@ -5,7 +5,6 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestCollectionCard;
 import org.xcolab.client.contest.pojo.ContestDiscussion;
 import org.xcolab.client.contest.pojo.ContestSchedule;
-import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
@@ -261,11 +260,6 @@ public final class ContestClientUtil {
         return contestClient.getContestPhasesByType(contestPhaseTypeId);
     }
 
-    public static String getContestNames(List<Long> contestTypeIds, String plurality,
-            String conjunction) {
-        return contestClient.getContestNames(contestTypeIds, plurality, conjunction);
-    }
-
     public static ContestPhase getContestPhase(Long contestPhaseId) {
         return contestClient.getContestPhase(contestPhaseId);
     }
@@ -276,22 +270,6 @@ public final class ContestClientUtil {
 
     public static String getContestStatusStr(Long contestPhaseId) {
         return contestClient.getContestStatusStr(contestPhaseId);
-    }
-
-    public static ContestType getContestType(long id) {
-        return contestClient.getContestType(id);
-    }
-
-    public static String getProposalNames(List<Long> contestTypeIds, String plurality,
-            String conjunction) {
-        return contestClient.getProposalNames(contestTypeIds, plurality, conjunction);
-    }
-    public static List<ContestType> getActiveContestTypes() {
-        return contestClient.getActiveContestTypes();
-    }
-
-    public static List<ContestType> getAllContestTypes() {
-        return contestClient.getAllContestTypes();
     }
 
     public static Integer countContestsByContestType(Long contestTypeId) {

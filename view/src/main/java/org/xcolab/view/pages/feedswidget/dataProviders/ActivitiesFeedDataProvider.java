@@ -8,10 +8,10 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
-import org.xcolab.view.util.entity.ActivityUtil;
 import org.xcolab.view.pages.feedswidget.FeedTypeDataProvider;
 import org.xcolab.view.pages.feedswidget.FeedsPreferences;
 import org.xcolab.view.pages.feedswidget.wrappers.SocialActivityWrapper;
+import org.xcolab.view.util.entity.ActivityUtil;
 import org.xcolab.view.util.pagination.SortFilterPage;
 
 import java.util.ArrayList;
@@ -50,13 +50,14 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
             } catch (Throwable ignored) {
             }
         }
-        List <Member> staffList;
-        List <Member> adminList;
         HashMap<Long, Long> idsToExclude = new HashMap<>();
-        if(feedsPreferences.getRemoveAdmin()){//STAFF
+        if (feedsPreferences.getRemoveAdmin()) {//STAFF
             final MemberCategory memberCategory = MembersClient.getMemberCategory(MemberRole.ADMINISTRATOR.getRoleId());
-            adminList = MembersClient.listMembers(memberCategory.getCategoryName(),null,null, null, true, 0, Integer.MAX_VALUE);
-            if(adminList!= null &&! adminList.isEmpty()) {
+
+            List<Member> adminList = MembersClient
+                    .listMembers(memberCategory.getCategoryName(), null, null, null, true, 0,
+                            Integer.MAX_VALUE);
+            if (adminList!= null &&! adminList.isEmpty()) {
                 for (Member m : adminList){
                     idsToExclude.put(m.getId_(),m.getUserId());
                 }
@@ -64,7 +65,10 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
         }
 
         final MemberCategory memberCategory = MembersClient.getMemberCategory(MemberRole.STAFF.getRoleId());
-        staffList = MembersClient.listMembers(memberCategory.getCategoryName(),null,null, null, true, 0, Integer.MAX_VALUE);
+
+        List<Member> staffList = MembersClient
+                .listMembers(memberCategory.getCategoryName(), null, null, null, true, 0,
+                        Integer.MAX_VALUE);
         if(staffList!= null &&! staffList.isEmpty()) {
             for (Member m : staffList){
                 idsToExclude.put(m.getId_(),m.getUserId());

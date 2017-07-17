@@ -22,10 +22,14 @@ import java.util.UUID;
 @RestController
 public class FilteringController {
 
-    @Autowired
-    private FilteredEntryDao filteredEntryDao;
+    private final FilteredEntryDao filteredEntryDao;
 
-    private EntryFilteringProcessor processor = new XColabFilteringProcessor();
+    private final EntryFilteringProcessor processor = new XColabFilteringProcessor();
+
+    @Autowired
+    public FilteringController(FilteredEntryDao filteredEntryDao) {
+        this.filteredEntryDao = filteredEntryDao;
+    }
 
     @RequestMapping(value = "/filteredEntries", method = RequestMethod.POST)
     public FilteredEntry filterEntry(@RequestBody FilteredEntry filteredEntry) {

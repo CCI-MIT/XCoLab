@@ -7,7 +7,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.SectionDefinitionWrapper;
 
@@ -109,16 +109,16 @@ public class ContestResourcesHtmlParserUtil {
     }
 
     private static String extractSectionContent(Element section) {
-        String parsedSectionContent = "";
+        StringBuilder parsedSectionContent = new StringBuilder();
         while (section.nextElementSibling() != null) {
             Element nextSibling = section.nextElementSibling();
             if (nextSibling.tagName().equals(SECTION_DELIMITER_TAG)) {
                 break;
             }
-            parsedSectionContent += nextSibling.toString();
+            parsedSectionContent.append(nextSibling.toString());
             section = nextSibling;
         }
-        return parsedSectionContent;
+        return parsedSectionContent.toString();
     }
 
     public HashMap<String, String> getBaseSections() {

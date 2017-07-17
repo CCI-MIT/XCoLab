@@ -31,7 +31,7 @@ public class ProposalRatings {
     }
 
     public ProposalRatings(long authorId) throws MemberNotFoundException {
-        this(MembersClient.getMember(authorId), Collections.<ProposalRating>emptyList());
+        this(MembersClient.getMember(authorId), Collections.emptyList());
     }
     public ProposalRatings(long authorId, List<ProposalRating> proposalRatings) {
         this(MembersClient.getMemberUnchecked(authorId), proposalRatings);
@@ -48,12 +48,7 @@ public class ProposalRatings {
         }
 
         //sort the list
-        Collections.sort(wrapped, new Comparator<ProposalRating>() {
-            @Override
-            public int compare(ProposalRating r1, ProposalRating r2) {
-                return r1.getRatingTypeId().compareTo(r2.getRatingTypeId());
-            }
-        });
+        wrapped.sort(Comparator.comparing(ProposalRating::getRatingTypeId));
 
         this.proposalRatings = wrapped;
         this.author = author;

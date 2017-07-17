@@ -11,7 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonLinkNotFoundException;
 import org.xcolab.client.balloons.exceptions.BalloonTextNotFoundException;

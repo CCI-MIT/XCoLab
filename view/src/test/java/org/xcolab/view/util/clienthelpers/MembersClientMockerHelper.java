@@ -1,8 +1,6 @@
 package org.xcolab.view.util.clienthelpers;
 
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 
 import org.xcolab.client.members.MembersClient;
@@ -20,43 +18,26 @@ public class MembersClientMockerHelper {
         member.setScreenName(TestUtil.createStringWithLength(10));
         member.setFirstName(TestUtil.createStringWithLength(10));
         member.setLastName(TestUtil.createStringWithLength(10));
-        member.setId_(100l);
+        member.setId_(100L);
         member.setHashedPassword(TestUtil.createStringWithLength(10));
         return member;
     }
+
     public static void mockMembersClient() throws Exception {
         PowerMockito.mockStatic(MembersClient.class);
         Mockito.when(MembersClient.findMemberByScreenNameNoRole(anyString()))
-                .thenAnswer(new Answer<Member>() {
-                    @Override
-                    public Member answer(InvocationOnMock invocation)
-                            throws Throwable {
-                           return getDefaultMember();
-
-                    }
-                });
+                .thenAnswer(invocation -> getDefaultMember());
 
         Mockito.when(MembersClient.findMemberByEmailAddress(anyString()))
-                .thenAnswer(new Answer<Member>() {
-                    @Override
-                    public Member answer(InvocationOnMock invocation)
-                            throws Throwable {
-
-                        return getDefaultMember();
-                    }
-                });
+                .thenAnswer(invocation -> getDefaultMember());
 
         Mockito.when(MembersClient.findMemberByScreenName(anyString()))
-                .thenAnswer(new Answer<Member>() {
-                    @Override
-                    public Member answer(InvocationOnMock invocation)
-                            throws Throwable {
+                .thenAnswer(invocation -> {
 
-                        if(invocation.getArguments()[0]== null || invocation.getArguments()[0].equals("")){
-                            throw new MemberNotFoundException("");
-                        }else {
-                            return getDefaultMember();
-                        }
+                    if (invocation.getArguments()[0] == null || invocation.getArguments()[0].equals("")){
+                        throw new MemberNotFoundException("");
+                    } else {
+                        return getDefaultMember();
                     }
                 });
         Mockito.when(MembersClient.login(anyLong(), anyString(), anyString(), anyString()))

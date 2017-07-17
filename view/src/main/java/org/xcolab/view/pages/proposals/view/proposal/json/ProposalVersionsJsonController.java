@@ -3,9 +3,7 @@ package org.xcolab.view.pages.proposals.view.proposal.json;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -22,7 +20,6 @@ import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.Objects;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -73,12 +70,13 @@ public class ProposalVersionsJsonController {
     @GetMapping("/api/proposals/{proposalId}/versions/{version}/index")
     public void getProposalVersionIndex(HttpServletRequest request, HttpServletResponse response,
             @PathVariable("version") Integer version, @PathVariable("proposalId") Long proposalId) throws IOException {
-        int index = 0;
+
 
         Contest c = ProposalClientUtil.getCurrentContestForProposal(proposalId);
 
         ClientHelper clientHelper = new ClientHelper(c);
-        index = clientHelper.getProposalClient().countProposalVersionsGroupedVersionsByContest(proposalId,c.getContestPK());
+        int index = clientHelper.getProposalClient()
+                .countProposalVersionsGroupedVersionsByContest(proposalId, c.getContestPK());
 
         final JsonObject json = Json.createObjectBuilder()
                 .add("index", index).build();

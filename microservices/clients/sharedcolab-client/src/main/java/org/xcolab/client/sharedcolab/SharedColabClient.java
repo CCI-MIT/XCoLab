@@ -1,6 +1,6 @@
 package org.xcolab.client.sharedcolab;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.sharedcolab.exceptions.MemberNotFoundException;
 import org.xcolab.client.sharedcolab.pojo.Member;
 import org.xcolab.client.sharedcolab.pojo.SharedContest;

@@ -10,18 +10,18 @@ public class ContestDaoQuery {
 
     private final ContestDao contestDao;
 
-    private PaginationHelper paginationHelper = null;
-    private String contestUrlName = null;
-    private Long contestYear = null;
-    private Boolean active = null;
-    private Boolean featured = null;
-    private List<Long> contestTiers = null;
-    private List<Long> focusAreaIds = null;
-    private Long contestScheduleId = null;
-    private Long planTemplateId = null;
-    private List<Long> contestTypeIds = null;
-    private Boolean contestPrivate = null;
-    private String searchTerm = null;
+    private PaginationHelper paginationHelper;
+    private String contestUrlName;
+    private Long contestYear;
+    private Boolean active;
+    private Boolean featured;
+    private List<Long> contestTiers;
+    private List<Long> focusAreaIds;
+    private Long contestScheduleId;
+    private Long planTemplateId;
+    private List<Long> contestTypeIds;
+    private Boolean contestPrivate;
+    private String searchTerm;
 
     private ContestDaoQuery(ContestDao contestDao) {
         this.contestDao = contestDao;

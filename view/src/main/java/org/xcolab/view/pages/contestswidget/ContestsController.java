@@ -7,7 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -88,7 +89,7 @@ public class ContestsController {
         model.addAttribute("contestPreferences", contestPreferences);
         //TODO: allow setting on a per-contest/per portlet basis
         model.addAttribute("contestType",
-                ContestClientUtil.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));
+                ContestTypeClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));
         return "contestswidget/showContests";
     }
 }

@@ -18,13 +18,17 @@ import java.util.List;
 
 import static org.xcolab.model.Tables.PROPOSAL_VERSION;
 
-
 @Repository
 public class ProposalVersionDaoImpl implements ProposalVersionDao {
 
-    @Autowired
-    private DSLContext dslContext;
+    private final DSLContext dslContext;
 
+    @Autowired
+    public ProposalVersionDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
+
+    @Override
     public ProposalVersion create(ProposalVersion proposalVersion) {
 
         this.dslContext.insertInto(PROPOSAL_VERSION)
@@ -53,6 +57,7 @@ public class ProposalVersionDaoImpl implements ProposalVersionDao {
         return query.fetchInto(ProposalVersion.class);
     }
 
+    @Override
     public ProposalVersion getByProposalIdVersion(Long proposalId, Integer version) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_VERSION).getQuery();
@@ -66,6 +71,7 @@ public class ProposalVersionDaoImpl implements ProposalVersionDao {
         return query.fetchOne().into(ProposalVersion.class);
     }
 
+    @Override
     public int countByGiven(Long proposalId) {
         final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
                 .from(PROPOSAL_VERSION)
@@ -76,6 +82,7 @@ public class ProposalVersionDaoImpl implements ProposalVersionDao {
     }
 
 
+    @Override
     public List<ProposalVersion> findByProposal2Phase(List<Proposal2Phase> proposal2Phases, Long proposalId) {
 
         final SelectQuery<Record> query = dslContext.selectDistinct()

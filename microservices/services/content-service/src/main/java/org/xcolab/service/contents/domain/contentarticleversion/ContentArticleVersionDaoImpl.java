@@ -1,5 +1,6 @@
 package org.xcolab.service.contents.domain.contentarticleversion;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SelectQuery;
@@ -24,14 +25,15 @@ import static org.xcolab.model.Tables.CONTENT_ARTICLE_VERSION;
 @Repository
 public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
 
+    public static final String DEFAULT_LANGUAGE = "en";
     private final DSLContext dslContext;
 
     private final ContentFolderDao contentFolderDao;
 
     @Autowired
     public ContentArticleVersionDaoImpl(DSLContext dslContext, ContentFolderDao contentFolderDao) {
-        Assert.notNull(dslContext);
-        Assert.notNull(contentFolderDao);
+        Assert.notNull(dslContext, "DSLContext is required");
+        Assert.notNull(contentFolderDao, "ContentFolderDao is required");
         this.dslContext = dslContext;
         this.contentFolderDao = contentFolderDao;
     }
@@ -45,6 +47,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                 .set(CONTENT_ARTICLE_VERSION.FOLDER_ID, contentArticleVersion.getFolderId())
                 .set(CONTENT_ARTICLE_VERSION.CONTENT, contentArticleVersion.getContent())
                 .set(CONTENT_ARTICLE_VERSION.TITLE, contentArticleVersion.getTitle())
+                .set(CONTENT_ARTICLE_VERSION.LANG, contentArticleVersion.getLang())
                 .returning(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID)
                 .fetchOne();
 
@@ -98,8 +101,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                     .and(CONTENT_ARTICLE.MAX_VERSION_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID))
                     .fetch()
                     .into(ContentArticleVersion.class);
-        }
-        else {
+        } else {
             return this.dslContext.select()
                     .from(CONTENT_ARTICLE_VERSION)
                     .join(CONTENT_ARTICLE).on(CONTENT_ARTICLE.CONTENT_ARTICLE_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID))
@@ -111,9 +113,26 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
     }
 
     @Override
+    public ContentArticleVersion getLatestVersionByArticleIdAndLanguage(Long articleId, String language)
+            throws NotFoundException {
+
+        final Record record = this.dslContext.select()
+                .from(CONTENT_ARTICLE_VERSION)
+                .where(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID.eq(articleId))
+                .and(CONTENT_ARTICLE_VERSION.LANG.eq(language))
+                .orderBy(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.desc())
+                .limit(0,1)
+                .fetchOne();
+        if (record == null) {
+            throw new NotFoundException();
+        }
+        return record.into(ContentArticleVersion.class);
+    }
+
+    @Override
     public List<ContentArticleVersion> findByGiven(PaginationHelper paginationHelper,
         Long contentArticleId, Long contentArticleVersion, Long folderId, Long ancestorFolderId,
-        String title) {
+        String title, String lang) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTENT_ARTICLE_VERSION)
                 .getQuery();
@@ -137,6 +156,15 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
             query.addConditions(CONTENT_ARTICLE_VERSION.TITLE.eq(title));
         }
 
+        if (lang != null) {
+            if (StringUtils.isEmpty(lang) || DEFAULT_LANGUAGE.equalsIgnoreCase(lang)) {
+                query.addConditions(CONTENT_ARTICLE_VERSION.LANG.eq(StringUtils.EMPTY)
+                        .or(CONTENT_ARTICLE_VERSION.LANG.equalIgnoreCase(DEFAULT_LANGUAGE)));
+            } else {
+                query.addConditions(CONTENT_ARTICLE_VERSION.LANG.equalIgnoreCase(lang));
+            }
+        }
+
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
             switch (sortColumn.getColumnName()) {
                 case "contentArticleId":
@@ -154,8 +182,8 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                             ? CONTENT_ARTICLE_VERSION.TITLE.asc()
                             : CONTENT_ARTICLE_VERSION.TITLE.desc());
                     break;
-                default:
                 case "contentArticleVersion":
+                default:
                     query.addOrderBy(sortColumn.isAscending()
                             ? CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.asc()
                             : CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.desc());

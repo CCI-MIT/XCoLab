@@ -231,48 +231,44 @@ public class CategoryController extends BaseDiscussionController {
 
     //TODO: move
     public static Comparator<CommentThread> getComparator(final ThreadSortColumn sortColumn, final boolean sortAscending) {
-        return new Comparator<CommentThread>() {
+        return (o1, o2) -> {
+            int ret;
 
-            @Override
-            public int compare(CommentThread o1, CommentThread o2) {
-                int ret;
-
-                switch (sortColumn) {
-                    case TITLE:
-                        ret = o1.getTitle().compareToIgnoreCase(o2.getTitle());
-                        break;
-                    case REPLIES:
-                        ret = o1.getCommentsCount() - o2.getCommentsCount();
-                        break;
-                    case LAST_COMMENTER:
-                        final long lastActivityAuthorId1 = ThreadClientUtil
-                                .getLastActivityAuthorId(o1.getThreadId());
-                        final long lastActivityAuthorId2 = ThreadClientUtil
-                                .getLastActivityAuthorId(o2.getThreadId());
-                        try {
-                            final Member lastActivityAuthor1 = MembersClient.getMember(
-                                    lastActivityAuthorId1);
-                            final Member lastActivityAuthor2 = MembersClient.getMember(
-                                    lastActivityAuthorId2);
-                            if (lastActivityAuthor1 != null && lastActivityAuthor2 != null) {
-                                ret = lastActivityAuthor1.getScreenName()
-                                        .compareToIgnoreCase(lastActivityAuthor2.getScreenName());
-                            } else {
-                                ret = (int) (lastActivityAuthorId1 - lastActivityAuthorId2);
-                            }
-                        } catch (MemberNotFoundException e) {
+            switch (sortColumn) {
+                case TITLE:
+                    ret = o1.getTitle().compareToIgnoreCase(o2.getTitle());
+                    break;
+                case REPLIES:
+                    ret = o1.getCommentsCount() - o2.getCommentsCount();
+                    break;
+                case LAST_COMMENTER:
+                    final long lastActivityAuthorId1 = ThreadClientUtil
+                            .getLastActivityAuthorId(o1.getThreadId());
+                    final long lastActivityAuthorId2 = ThreadClientUtil
+                            .getLastActivityAuthorId(o2.getThreadId());
+                    try {
+                        final Member lastActivityAuthor1 = MembersClient.getMember(
+                                lastActivityAuthorId1);
+                        final Member lastActivityAuthor2 = MembersClient.getMember(
+                                lastActivityAuthorId2);
+                        if (lastActivityAuthor1 != null && lastActivityAuthor2 != null) {
+                            ret = lastActivityAuthor1.getScreenName()
+                                    .compareToIgnoreCase(lastActivityAuthor2.getScreenName());
+                        } else {
                             ret = (int) (lastActivityAuthorId1 - lastActivityAuthorId2);
                         }
-                        break;
-                    case DATE:
-                    default:
-                        ret = ThreadClientUtil.getLastActivityDate(o1.getThreadId())
-                                .compareTo(ThreadClientUtil.getLastActivityDate(o2.getThreadId()));
-                        break;
-                }
-
-                return sortAscending ? -ret : ret;
+                    } catch (MemberNotFoundException e) {
+                        ret = (int) (lastActivityAuthorId1 - lastActivityAuthorId2);
+                    }
+                    break;
+                case DATE:
+                default:
+                    ret = ThreadClientUtil.getLastActivityDate(o1.getThreadId())
+                            .compareTo(ThreadClientUtil.getLastActivityDate(o2.getThreadId()));
+                    break;
             }
+
+            return sortAscending ? -ret : ret;
         };
     }
 }

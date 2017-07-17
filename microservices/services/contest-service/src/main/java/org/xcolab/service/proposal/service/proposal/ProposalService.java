@@ -5,13 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.members.MembersClient;
@@ -73,7 +74,7 @@ public class ProposalService {
 
             ContestPhase contestPhase = ContestClientUtil.getContestPhase(contestPhaseId);
             final Contest contest = ContestClientUtil.getContest(contestPhase.getContestPK());
-            ContestType contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
+            ContestType contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
 
             proposal = proposalDao.create(proposal);
             Long proposalId = proposal.getProposalId();
@@ -148,20 +149,20 @@ public class ProposalService {
     private Group_ createGroupAndSetUpPermissions(long authorId, long proposalId, Contest contest) {
 
         // create new group
-        final ContestType contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
+        final ContestType contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
 
         String groupName = contestType.getProposalName() + "_" + proposalId + "_" + new Date().getTime();
 
-        final ContestType contestTypeForLiferay = ContestClientUtil.getContestType(contestType.getId_());
+        final ContestType contestTypeForLiferay = ContestTypeClient.getContestType(contestType.getId());
         final String groupDescription = "Group working on " + contestTypeForLiferay.getProposalName();
 
         Group_ group = new Group_();
 
-        group.setCompanyId(10112l);
+        group.setCompanyId(10112L);
         group.setCreatorUserId(authorId);
-        group.setClassNameId(10009l);
-        group.setParentGroupId(0l);
-        group.setLiveGroupId(0l);
+        group.setClassNameId(10009L);
+        group.setParentGroupId(0L);
+        group.setLiveGroupId(0L);
         group.setName(groupName);
         group.setDescription(groupDescription);
         group.setType_(2);

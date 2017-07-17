@@ -2,6 +2,7 @@ DROP TABLE `xcolab_ConfigurationAttribute` IF EXISTS;
 CREATE TABLE  `xcolab_ConfigurationAttribute`  (
   `name` varchar(75) NOT NULL,
   `additionalId` bigint(20) NOT NULL,
+  locale varchar(5) default '' not null,
   `numericValue` bigint(20) DEFAULT NULL,
   `stringValue` longtext,
   `realValue` double DEFAULT NULL,

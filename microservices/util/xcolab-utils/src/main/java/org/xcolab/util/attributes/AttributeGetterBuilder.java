@@ -1,5 +1,9 @@
 package org.xcolab.util.attributes;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.xcolab.util.attributes.i18n.LocalizableAttributeGetter;
 import org.xcolab.util.attributes.wrappers.CachedAttribute;
 import org.xcolab.util.attributes.wrappers.OptionalAttribute;
 import org.xcolab.util.attributes.wrappers.TransformedAttribute;
@@ -13,6 +17,8 @@ import java.util.function.Function;
  */
 public class AttributeGetterBuilder<ValueT> {
 
+    private static final Logger log = LoggerFactory.getLogger(AttributeGetterBuilder.class);
+
     private AttributeGetter<ValueT> attributeGetter;
 
     public AttributeGetterBuilder(AttributeGetter<ValueT> attributeGetter) {
@@ -20,27 +26,39 @@ public class AttributeGetterBuilder<ValueT> {
     }
 
     public AttributeGetterBuilder<ValueT> withCache() {
-        attributeGetter = new CachedAttribute<>(attributeGetter);
+        attributeGetter = CachedAttribute.of(attributeGetter);
         return this;
     }
 
     public AttributeGetterBuilder<ValueT> defaultValue(ValueT defaultValue) {
-        attributeGetter = new OptionalAttribute<>(attributeGetter, defaultValue);
+        attributeGetter = OptionalAttribute.of(attributeGetter, defaultValue);
         return this;
     }
 
     public AttributeGetterBuilder<ValueT> defaultValue(AttributeGetter<ValueT> defaultValueGetter) {
-        attributeGetter = new OptionalAttribute<>(attributeGetter, defaultValueGetter);
+        attributeGetter = OptionalAttribute.of(attributeGetter, defaultValueGetter);
         return this;
     }
 
     public <ValueR> AttributeGetterBuilder<ValueR>  map(Function<ValueT, ValueR> transformation) {
         final TransformedAttribute<ValueT, ValueR> newAttributeGetter =
-                new TransformedAttribute<>(attributeGetter, transformation);
+                TransformedAttribute.of(attributeGetter, transformation);
         return new AttributeGetterBuilder<>(newAttributeGetter);
     }
 
     public AttributeGetter<ValueT> build() {
         return attributeGetter;
+    }
+
+    public LocalizableAttributeGetter<ValueT> buildLocalizable() {
+        if (! (attributeGetter instanceof LocalizableAttributeGetter)) {
+            final String message =
+                    "AttributeGetter " + attributeGetter.name() + " of class " + attributeGetter
+                            .getClass().getSimpleName() + " is not localizable.";
+            log.error(message);
+            //noinspection ProhibitedExceptionThrown
+            throw new ClassCastException(message);
+        }
+        return (LocalizableAttributeGetter<ValueT>) attributeGetter;
     }
 }

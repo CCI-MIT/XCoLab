@@ -18,6 +18,7 @@ CREATE TABLE `xcolab_ContentArticleVersion` (
   `authorId` bigint(20) DEFAULT NULL,
   `createDate` datetime DEFAULT NULL,
   `title` varchar(555) DEFAULT NULL,
+  `lang` varchar(2) DEFAULT 'en',
   `content` longtext,
   PRIMARY KEY (`contentArticleVersionId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4059 DEFAULT CHARSET=utf8;
@@ -46,6 +47,7 @@ DROP TABLE `xcolab_ContentPage` IF EXISTS ;
 CREATE TABLE `xcolab_ContentPage` (
   `pageId` bigint(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(100)  DEFAULT NULL,
+  `metaDescription` varchar(255),
   `menuArticleId` bigint(11) DEFAULT NULL,
   `contentArticleId` bigint(11) NOT NULL,
   `createdDate` timestamp NULL DEFAULT NULL,

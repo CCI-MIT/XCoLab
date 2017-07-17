@@ -75,11 +75,6 @@ public class CommentClient {
     }
 
     public static CommentClient fromService(RestService contestService) {
-        CommentClient client = instances.get(contestService);
-        if (client == null) {
-            client = new CommentClient(contestService);
-            instances.put(contestService, client);
-        }
-        return client;
+        return instances.computeIfAbsent(contestService, CommentClient::new);
     }
 }

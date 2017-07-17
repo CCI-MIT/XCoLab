@@ -16,10 +16,14 @@ import static org.xcolab.model.Tables.ROLE_GROUP_ROLES;
 
 @Repository
 public class RoleGroupDaoImpl implements RoleGroupDao {
+
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public RoleGroupDaoImpl(DSLContext dslContext) {this.dslContext = dslContext;}
 
     //    Create role group
+    @Override
     public RoleGroup create(RoleGroup roleGroup) {
         RoleGroupRecord ret = this.dslContext.insertInto(ROLE_GROUP)
                 .set(ROLE_GROUP.NAME, roleGroup.getName())
@@ -34,6 +38,7 @@ public class RoleGroupDaoImpl implements RoleGroupDao {
     }
 
     //    Add role to group
+    @Override
     public void addRoleToGroup(Long roleGroupId, Long roleId) {
 
         this.dslContext.insertInto(ROLE_GROUP_ROLES, ROLE_GROUP_ROLES.ROLE_GROUP_ID, ROLE_GROUP_ROLES.ROLE_ID)
@@ -42,16 +47,16 @@ public class RoleGroupDaoImpl implements RoleGroupDao {
     }
 
     //Remove role from group
+    @Override
     public void removeRoleFromGroup(Long roleGroupId, Long roleId) {
-
 
         this.dslContext.delete(ROLE_GROUP_ROLES)
                 .where(ROLE_GROUP_ROLES.ROLE_GROUP_ID.eq(roleGroupId))
                 .and(ROLE_GROUP_ROLES.ROLE_ID.eq(roleId));
-
     }
 
 
+    @Override
     public List<Role_> getAllRolesInGroup(Long groupId) {
         return this.dslContext.select()
                 .from(ROLE_GROUP_ROLES)
@@ -60,6 +65,7 @@ public class RoleGroupDaoImpl implements RoleGroupDao {
                 .fetchInto(Role_.class);
     }
 
+    @Override
     public boolean groupHasRole(Long roleGroupId, Long groupId) {
         Record record =  this.dslContext.select()
                 .from(ROLE_GROUP_ROLES)

@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.view.util.entity.email.EmailToAdminDispatcher;
 import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.util.entity.email.EmailToAdminDispatcher;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

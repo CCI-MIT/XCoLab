@@ -1,23 +1,17 @@
 package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 
 @Controller
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalFellowReviewTabController extends BaseProposalTabController {
 
-    @Autowired
-    private ProposalsContext proposalsContext;
-
     //TODO: check if we want to reactivate this
 //    @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=FELLOW_REVIEW")
 //    public String showFellowReview(HttpServletRequest request, Model model) {
 //
-//        final Proposal proposal = proposalsContext.getProposalWrapped(request);
+//        final Proposal proposal = proposalContext.getProposal());
 //
 //        long fellowDiscussionId = proposal.getFellowDiscussionId();
 //        if (fellowDiscussionId == 0) {
@@ -36,10 +30,10 @@ public class ProposalFellowReviewTabController extends BaseProposalTabController
 //    }
 //
 //    private long createFellowThread(HttpServletRequest request) {
-//        Proposal proposal = proposalsContext.getProposal(request);
+//        Proposal proposal = proposalContext.getProposal();
 //        final long discussionThreadId = createDiscussionThread(request, " fellow review", true);
 //        proposal.setFellowDiscussionId(discussionThreadId);
-//        ProposalsContextUtil.getClients(request).getProposalClient().updateProposal(proposal);
+//        proposalContext.getClients().getProposalClient().updateProposal(proposal);
 //        return discussionThreadId;
 //    }
 }

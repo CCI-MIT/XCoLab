@@ -14,7 +14,8 @@ import org.xcolab.utils.sitemonitor.PageChecker;
 public class InverseCheckResultChecker extends BasePageChecker {
 	private PageChecker subChecker; 
 
-	public boolean isPageValid(String page, HttpResponse response) {
+	@Override
+    public boolean isPageValid(String page, HttpResponse response) {
 		return ! subChecker.isPageValid(page, response);
 	}
 

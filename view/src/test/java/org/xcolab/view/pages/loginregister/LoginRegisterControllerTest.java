@@ -4,8 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -14,17 +12,12 @@ import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
-import org.xcolab.client.admin.AdminClient;
-import org.xcolab.client.admin.EmailTemplateClientUtil;
-import org.xcolab.client.admin.pojo.ConfigurationAttribute;
-import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
@@ -34,26 +27,18 @@ import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
-import org.xcolab.view.util.TestUtil;
 
 import java.util.ArrayList;
 
-
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.Matchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-
-
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Matchers.anyString;
 
 
 @RunWith(PowerMockRunner.class)
@@ -73,6 +58,7 @@ import static org.mockito.Matchers.anyString;
 
 @PrepareForTest({
         org.xcolab.client.admin.AdminClient.class,
+        org.xcolab.client.admin.ContestTypeClient.class,
         org.xcolab.client.contest.ContestClientUtil.class,
         org.xcolab.client.sharedcolab.SharedColabClient.class,
         org.xcolab.client.members.MembersClient.class,
@@ -91,11 +77,9 @@ public class LoginRegisterControllerTest {
     public void setup() throws Exception {
         ServiceRequestUtils.setInitialized(true);
 
-
-
         PowerMockito.mockStatic(ContestClientUtil.class);
         PowerMockito.mockStatic(SharedColabClient.class);
-
+        PowerMockito.mockStatic(ContestTypeClient.class);
 
         PowerMockito.mockStatic(EmailClient.class);
         PowerMockito.mockStatic(ActivityEntryHelper.class);
@@ -106,8 +90,8 @@ public class LoginRegisterControllerTest {
         AdminClientMockerHelper.mockAdminClient();
         EmailTemplateClientMockerHelper.mockEmailTemplateClient();
 
-        Mockito.when(ContestClientUtil.getAllContestTypes()).thenReturn(
-                new ArrayList()
+        Mockito.when(ContestTypeClient.getAllContestTypes()).thenReturn(
+                new ArrayList<>()
         );
     }
 
@@ -163,20 +147,13 @@ public class LoginRegisterControllerTest {
                 .param("shortBio", "shortbio"))
                 .andExpect(redirectedUrl("/"));
         PowerMockito.verifyStatic(Mockito.times(1));
-        MembersClient.login(100l,"username","127.0.0.1",null);
+        MembersClient.login(100L,"username","127.0.0.1",null);
 
     }
     @Test
     public void generateScreenName() throws Exception {
         Mockito.when(MembersClient.generateScreenName(anyString(),anyString()))
-                .thenAnswer(new Answer<String>() {
-                    @Override
-                    public String answer(InvocationOnMock invocation)
-                            throws Throwable {
-
-                        return "---";
-                    }
-                });
+                .thenAnswer(invocation -> "---");
 
 
         this.mockMvc.perform(post("/api/register/generateScreenName")

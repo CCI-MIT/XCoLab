@@ -2,6 +2,8 @@ package org.xcolab.client.proposals.pojo.attributes;
 
 import org.xcolab.util.attributes.AbstractAttribute;
 
+import java.util.Objects;
+
 class AbstractProposalAttribute extends AbstractAttribute {
 
     private static final long serialVersionUID = 1L;
@@ -24,7 +26,7 @@ class AbstractProposalAttribute extends AbstractAttribute {
     public AbstractProposalAttribute(Long id_, Long proposalid, Integer version,
             Integer versionwhencreated, String name, Long additionalid, Long numericvalue,
             String stringvalue, Double realvalue) {
-        super(name, additionalid, numericvalue, stringvalue, realvalue);
+        super(name, additionalid, null, numericvalue, stringvalue, realvalue);
         this.id_ = id_;
         this.proposalid = proposalid;
         this.version = version;
@@ -76,88 +78,26 @@ class AbstractProposalAttribute extends AbstractAttribute {
     }
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
-        result = prime * result + ((proposalid == null) ? 0 : proposalid.hashCode());
-        result = prime * result + ((version == null) ? 0 : version.hashCode());
-        result =
-                prime * result + ((versionwhencreated == null) ? 0 : versionwhencreated.hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AbstractProposalAttribute)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        AbstractProposalAttribute that = (AbstractProposalAttribute) o;
+        return Objects.equals(getId_(), that.getId_())
+                && Objects.equals(proposalid, that.proposalid)
+                && Objects.equals(getVersion(), that.getVersion())
+                && Objects.equals(versionwhencreated, that.versionwhencreated);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final AbstractProposalAttribute other = (AbstractProposalAttribute) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
-                return false;
-            }
-        } else if (!id_.equals(other.id_)) {
-            return false;
-        }
-        if (proposalid == null) {
-            if (other.proposalid != null) {
-                return false;
-            }
-        } else if (!proposalid.equals(other.proposalid)) {
-            return false;
-        }
-        if (version == null) {
-            if (other.version != null) {
-                return false;
-            }
-        } else if (!version.equals(other.version)) {
-            return false;
-        }
-        if (versionwhencreated == null) {
-            if (other.versionwhencreated != null) {
-                return false;
-            }
-        } else if (!versionwhencreated.equals(other.versionwhencreated)) {
-            return false;
-        }
-        if (getName() == null) {
-            if (other.getName() != null) {
-                return false;
-            }
-        } else if (!getName().equals(other.getName())) {
-            return false;
-        }
-        if (getAdditionalId() != other.getAdditionalId()) {
-            return false;
-        }
-        if (getNumericValue() == null) {
-            if (other.getNumericValue() != null) {
-                return false;
-            }
-        } else if (!getNumericValue().equals(other.getNumericValue())) {
-            return false;
-        }
-        if (getStringValue() == null) {
-            if (other.getStringValue() != null) {
-                return false;
-            }
-        } else if (!getStringValue().equals(other.getStringValue())) {
-            return false;
-        }
-        if (getRealValue() == null) {
-            if (other.getRealValue() != null) {
-                return false;
-            }
-        } else if (!getRealValue().equals(other.getRealValue())) {
-            return false;
-        }
-        return true;
+    public int hashCode() {
+        return Objects
+                .hash(super.hashCode(), getId_(), proposalid, getVersion(), versionwhencreated);
     }
 }

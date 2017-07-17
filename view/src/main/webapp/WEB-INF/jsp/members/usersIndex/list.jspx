@@ -1,7 +1,8 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-		  xmlns:jsp="http://java.sun.com/JSP/Page"
-		  xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-		  version="2.0" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt">
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+          version="2.0" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+          xmlns:spring="http://www.springframework.org/tags">
 
 	<!--@elvariable id="users" type="java.util.List<org.xcolab.view.pages.members.users.utils.MemberItem>"-->
 	<!--@elvariable id="sortFilterPage" type="org.xcolab.view.util.pagination.SortFilterPage"-->
@@ -16,7 +17,7 @@
 				<th class="c-Table__cell--title user">
 					<c:set var="sortURL" value="/members?sortColumn=USER_NAME&amp;sortAscending=${sortFilterPage.sortColumn == 'USER_NAME' ? not sortFilterPage.sortAscending : true }&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
 
-					<a class="js-Tooltip" title="click to sort by user name" href="${sortURL }">User</a>
+					<a class="js-Tooltip" title="click to sort by user name" href="${sortURL }"><spring:message code="community.page.members.table.order.user"/></a>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="USER_NAME" />
 				</th>
 				<c:if test="${pointsActive}">
@@ -26,31 +27,30 @@
 						<img class="js-Tooltip" data-tooltip-content="#js-Tooltip__content__points"
 							 style="width: 15px; height: 15px;" src="${_themeImageFolder}/icon-addprop-question-bar.png" />
 						<span id="js-Tooltip__content__points" class="c-Tooltip">
-							CoLab Points are awarded to all the members who contributed to a winning integrated proposal, as well as those who contributed to any sub-proposals it contains.
-							<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
+							<spring:message code="community.page.members.table.order.points.help"/>
 						</span>
 
-						<a class="js-Tooltip" title="click to sort by points" href="${sortURLPoints }"> Points</a>
+						<a class="js-Tooltip" title="click to sort by points" href="${sortURLPoints }"><spring:message code="community.page.members.table.order.points"/></a>
 						<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="POINTS" />
 					</th>
 				</c:if>
 				<th class="c-Table__cell--title activity">
 					<c:set var="sortURLActivity" value="/members?sortColumn=ACTIVITY&amp;sortAscending=${sortFilterPage.sortColumn == 'ACTIVITY' ? not sortFilterPage.sortAscending : false }&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
 
-					<a class="js-Tooltip" title="click to sort by activity" href="${sortURLActivity }"> Activity</a>
+					<a class="js-Tooltip" title="click to sort by activity" href="${sortURLActivity }"><spring:message code="community.page.members.table.order.activity"/></a>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="ACTIVITY" />
 				</th>
 				<th class="c-Table__cell--title category">
 					<c:set var="sortURLCategory" value="/members?sortColumn=CATEGORY&amp;sortAscending=${sortFilterPage.sortColumn == 'CATEGORY' ? not sortFilterPage.sortAscending : false }&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
 
-					<a class="js-Tooltip" title="click to sort by category" href="${sortURLCategory }"> Category</a>
+					<a class="js-Tooltip" title="click to sort by category" href="${sortURLCategory }"><spring:message code="community.page.members.table.order.category"/></a>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CATEGORY" />
 				</th>
 				<th class="c-Table__cell--title member-since">
 					<c:set var="sortAscending" value="${sortFilterPage.sortColumn == 'MEMBER_SINCE' ? not sortFilterPage.sortAscending : false }" />
 					<c:set var="sortURLSeniority" value="/members?sortColumn=MEMBER_SINCE&amp;sortAscending=${sortAscending}&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
 
-					<a class="js-Tooltip" title="click to sort by seniority" href="${sortURLSeniority }"> Member since</a>
+					<a class="js-Tooltip" title="click to sort by seniority" href="${sortURLSeniority }"><spring:message code="community.page.members.table.order.membersince"/></a>
 					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MEMBER_SINCE" />
 				</th>
 			</tr>
@@ -113,14 +113,14 @@
 
 							<c:set var="firstPageURL" value="/members?page=1&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;sortFilterPage.filter=${sortFilterPage.filter}" />
 
-								<a href="${firstPageURL}">First</a>&#160;
+								<a href="${firstPageURL}"><spring:message code="colab.pagination.first"/></a>&#160;
 							</span>
 
 							<span>
 
 							<c:set var="prevPageURL" value="/members?page=${startPage}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;sortFilterPage.filter=${sortFilterPage.filter}" />
 
-								<a href="${prevPageURL}">&lt; Prev</a>&#160;
+								<a href="${prevPageURL}">&lt; <spring:message code="colab.pagination.prev"/></a>&#160;
 							</span>
 
 							<c:forEach begin="${startPage}" end="${endPage}" var="p">
@@ -134,14 +134,14 @@
 							<span>
 							<c:set var="nextPageURL" value="/members?page=${endPage}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;sortFilterPage.filter=${sortFilterPage.filter}" />
 
-								<a href="${nextPageURL}">Next &gt;</a>&#160;
+								<a href="${nextPageURL}"><spring:message code="colab.pagination.next"/> &gt;</a>&#160;
 							</span>
 
 							<span>
 
 							<c:set var="lastPageURL" value="/members?page=${pagesCount}&amp;sortColumn=${sortFilterPage.sortColumn}&amp;sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}&amp;sortFilterPage.filter=${sortFilterPage.filter}" />
 
-								<a href="${lastPageURL}">Last</a>
+								<a href="${lastPageURL}"><spring:message code="colab.pagination.last"/></a>
 							</span>
 						</td>
 					</tr>
@@ -155,7 +155,7 @@
 	<div class="c-Message__column">
 
 		<div class="members comm_list">
-			<h2>Categories</h2>
+			<h2><spring:message code="community.page.members.categories"/> </h2>
 			<ul class="membersCategories">
 				<c:forEach var="category" items="${memberCategories }">
 					<li class="${memberCategory.displayName == category.displayName ? 'c' : ''}">
@@ -174,7 +174,7 @@
 		<c:if test="${permissions.canDownloadMemberList}">
 			<div class="b-Spacing--large" style="margin-top: 20px;">
 				<c:set value="/api/members/downloadMembersList" var="downloadMembersListUrl"/>
-				<a href="${downloadMembersListUrl}">Download members as CSV</a>
+				<a href="${downloadMembersListUrl}"><spring:message code="community.page.members.csv"/></a>
 			</div>
 		</c:if>
 	</div>

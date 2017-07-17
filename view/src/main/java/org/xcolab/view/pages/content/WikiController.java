@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
@@ -36,7 +36,7 @@ public class WikiController {
         if (folderId > 0 && PermissionsClient.canAdminAll(member)) {
             final List<ContentArticleVersion> contentArticleVersions = ContentsClient
                     .getContentArticleVersions(0, Integer.MAX_VALUE, folderId, null, null,
-                            null);
+                            null, null);
             model.addAttribute("contentArticleVersions", contentArticleVersions);
         }
         return "content/wikiList";

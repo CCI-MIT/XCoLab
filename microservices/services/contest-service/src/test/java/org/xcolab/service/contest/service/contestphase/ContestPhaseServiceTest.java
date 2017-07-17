@@ -1,14 +1,11 @@
 package org.xcolab.service.contest.service.contestphase;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -24,10 +21,8 @@ import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.service.contest.exceptions.NotFoundException;
-import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.ServiceRequestUtils;
 
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 
@@ -71,40 +66,28 @@ public class ContestPhaseServiceTest {
         PowerMockito.mockStatic(ProposalPhaseClientUtil.class);
         Mockito.when(ProposalPhaseClientUtil
                 .isProposalContestPhaseAttributeSetAndTrue(anyLong(),anyLong(),anyString()))
-                .thenAnswer(new Answer<Boolean>() {
-                    @Override
-                    public Boolean answer(InvocationOnMock invocation)
-                            throws Throwable {
-                       return false;
-
-                    }
-                });
+                .thenAnswer(invocation -> false);
 
         Mockito.when(ProposalClientUtil.getProposal(anyLong()))
-                .thenAnswer(new Answer<Proposal>() {
-                    @Override
-                    public Proposal answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        Proposal proposal = Mockito.mock(Proposal.class);
-                        proposal.setProposalId(1333850l);
-                        return proposal;
+                .thenAnswer(invocation -> {
+                    Proposal proposal = Mockito.mock(Proposal.class);
+                    proposal.setProposalId(1333850L);
+                    return proposal;
 
-                    }
                 });
     }
 
     @Test
-
     public void shouldForcePromotionOfProposalInPhase() throws Exception {
 
-        contestPhaseService.forcePromotionOfProposalInPhase(1333850l,1318613l);
+        contestPhaseService.forcePromotionOfProposalInPhase(1333850L, 1318613L);
     }
 
     @Test
     public void shouldFailPromotionOfProposalInPhaseOnPhaseNotFound() throws Exception {
 
         exception.expect(NotFoundException.class);
-        contestPhaseService.forcePromotionOfProposalInPhase(1333851l,1318614l);
+        contestPhaseService.forcePromotionOfProposalInPhase(1333851L, 1318614L);
 
     }
 }

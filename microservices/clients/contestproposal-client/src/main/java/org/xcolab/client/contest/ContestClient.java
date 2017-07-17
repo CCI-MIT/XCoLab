@@ -6,6 +6,7 @@ import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.exceptions.ContestPhaseNotFoundException;
 import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestCollectionCard;
@@ -15,8 +16,6 @@ import org.xcolab.client.contest.pojo.ContestDiscussionDto;
 import org.xcolab.client.contest.pojo.ContestDto;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.ContestScheduleDto;
-import org.xcolab.client.contest.pojo.ContestType;
-import org.xcolab.client.contest.pojo.ContestTypeDto;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseDto;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
@@ -26,7 +25,6 @@ import org.xcolab.client.contest.pojo.phases.ContestPhaseTypeDto;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.IdListUtil;
-import org.xcolab.util.enums.Plurality;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.ServiceRequestUtils;
 import org.xcolab.util.http.caching.CacheKeys;
@@ -43,7 +41,6 @@ import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +52,6 @@ public class ContestClient {
     private final RestService contestService;
 
     private final RestResource1<ContestDto, Long> contestResource;
-    private final RestResource<ContestTypeDto, Long> contestTypeResource;
     private final RestResource<ContestDiscussionDto, Long> contestDiscussionResource;
 
     private final RestResource2L<ContestDto, ContestPhaseDto> visiblePhasesResource;
@@ -73,8 +69,6 @@ public class ContestClient {
                 "contestPhaseRibbonTypes", ContestPhaseRibbonTypeDto.TYPES);
         contestScheduleResource = new RestResource1<>(this.contestService,
                 "contestSchedules", ContestScheduleDto.TYPES);
-        contestTypeResource = new RestResource1<>(this.contestService,
-                "contestTypes", ContestTypeDto.TYPES);
         contestPhaseTypesResource = new RestResource1<>(this.contestService,
                 "contestPhaseTypes", ContestPhaseTypeDto.TYPES);
         contestPhasesResource = new RestResource1<>(this.contestService,
@@ -585,8 +579,12 @@ public class ContestClient {
     }
 
     public ContestPhase getContestPhase(Long contestPhaseId) {
-        return contestPhasesResource.get(contestPhaseId)
-                .execute().toPojo(contestService);
+        try {
+            return contestPhasesResource.get(contestPhaseId)
+                    .execute().toPojo(contestService);
+        } catch (UncheckedEntityNotFoundException e) {
+            throw new ContestPhaseNotFoundException(contestPhaseId);
+        }
     }
 
     public List<ContestPhaseType> getAllContestPhaseTypes() {
@@ -598,30 +596,7 @@ public class ContestClient {
 		return getContestPhase(contestPhaseId).getContestStatusStr();
     }
 
-    public ContestType getContestType(long id) {
-        return contestTypeResource.get(id)
-                .withCache(CacheName.CONFIGURATION)
-                .execute().toPojo(contestService);
-    }
-
-    public List<ContestType> getActiveContestTypes() {
-        final List<ContestType> contestTypes = getAllContestTypes();
-        List<ContestType> activeContestTypes = new ArrayList<>();
-        for (ContestType contestType : contestTypes) {
-            if (countContestsByContestType(contestType.getId_()) > 0) {
-                activeContestTypes.add(contestType);
-            }
-        }
-        return activeContestTypes;
-    }
-
-    public List<ContestType> getAllContestTypes() {
-        return DtoUtil.toPojos(contestTypeResource.list()
-                .withCache(CacheName.CONFIGURATION)
-                .execute(), contestService);
-    }
-
-    public Integer countContestsByContestType(Long contestTypeId) {
+    public Integer countContestsByContestType(long contestTypeId) {
         return contestResource.service("countByContestType", Integer.class)
                 .queryParam("contestTypeId", contestTypeId)
                 .get();
@@ -659,47 +634,6 @@ public class ContestClient {
 
     public void unsubscribeMemberFromContest(long contestPK, long userId) {
         ActivitiesClientUtil.deleteSubscription(userId, ActivityEntryType.CONTEST, contestPK, "");
-    }
-
-    public String getProposalNames(List<Long> contestTypeIds, String plurality,
-            String conjunction) {
-        return getJoinedNameString(contestTypeIds, true, plurality, conjunction);
-    }
-
-    public String getContestNames(List<Long> contestTypeIds, String plurality, String conjunction) {
-        return getJoinedNameString(contestTypeIds, false, plurality, conjunction);
-    }
-
-    private String getJoinedNameString(List<Long> contestTypeIds, boolean isProposal,
-            String plurality, String conjuction) {
-        StringBuilder stringBuilder = new StringBuilder();
-        Iterator<Long> iterator = contestTypeIds.iterator();
-        int currentWord = 1, totalWords = contestTypeIds.size();
-        while (iterator.hasNext()) {
-            ContestType contestType = getContestType(iterator.next());
-            if (currentWord > 1) {
-                if (currentWord == totalWords) {
-                    stringBuilder.append(String.format(" %s ", conjuction));
-                } else {
-                    stringBuilder.append(", ");
-                }
-            }
-            if (isProposal) {
-                if (plurality.equals(Plurality.SINGULAR.name())) {
-                    stringBuilder.append(contestType.getProposalName());
-                } else {
-                    stringBuilder.append(contestType.getProposalNamePlural());
-                }
-            } else {
-                if (plurality.equals(Plurality.SINGULAR.name())) {
-                    stringBuilder.append(contestType.getContestName());
-                } else {
-                    stringBuilder.append(contestType.getContestNamePlural());
-                }
-            }
-            currentWord++;
-        }
-        return stringBuilder.toString();
     }
 
     public List<ContestCollectionCard> getSubContestCollectionCards(long parentCollectionCardId) {

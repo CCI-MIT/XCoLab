@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.comment.exceptions.CommentNotFoundException;
 import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.util.CommentClientUtil;
@@ -69,7 +69,7 @@ public class ActivitySubscriptionEmailHelper {
 
     private final static String USER_PROFILE_LINK_PLACEHOLDER = "USER_PROFILE_LINK";
 
-    private final static String USER_PROFILE_LINK_TEMPLATE = "DOMAIN_PLACEHOLDER/web/guest/member/-/member/userId/USER_ID";
+    private final static String USER_PROFILE_LINK_TEMPLATE = "DOMAIN_PLACEHOLDER/members/profile/USER_ID";
 
     private final static String USER_ID_PLACEHOLDER = "USER_ID";
 

@@ -2,7 +2,6 @@ package org.xcolab.service.contest.web;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,8 +9,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
@@ -23,24 +20,18 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.contest.ContestClient;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.AbstractContest;
-import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestDiscussion;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestcollectioncard.ContestCollectionCardDao;
 import org.xcolab.service.contest.domain.contestdiscussion.ContestDiscussionDao;
-import org.xcolab.service.contest.domain.contesttype.ContestTypeDao;
 import org.xcolab.service.contest.service.collectioncard.CollectionCardService;
 import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.contest.service.ontology.OntologyService;
 import org.xcolab.util.http.ServiceRequestUtils;
 
 import java.nio.charset.Charset;
-import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.Matchers.anyLong;
@@ -88,9 +79,6 @@ public class ContestControllerTest {
     private ContestDao contestDao;
 
     @Mock
-    private ContestTypeDao contestTypeDao;
-
-    @Mock
     private ContestDiscussionDao contestDiscussionDao;
 
     @Mock
@@ -118,27 +106,16 @@ public class ContestControllerTest {
 
 
         Mockito.when(contestDao.get(anyLong()))
-                .thenAnswer(new Answer<org.xcolab.model.tables.pojos.Contest>() {
-                    @Override
-                    public org.xcolab.model.tables.pojos.Contest answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        return new org.xcolab.model.tables.pojos.Contest();
-                    }
-                });
+                .thenAnswer(invocation -> new org.xcolab.model.tables.pojos.Contest());
 
         Mockito.when(contestDiscussionDao.get(anyLong()))
-                .thenAnswer(new Answer<Optional<org.xcolab.model.tables.pojos.ContestDiscussion>>() {
-                    @Override
-                    public Optional<org.xcolab.model.tables.pojos.ContestDiscussion> answer(InvocationOnMock invocation)
-                            throws Throwable {
-                        return Optional.of(new org.xcolab.model.tables.pojos.ContestDiscussion());
-                    }
-                });
+                .thenAnswer(
+                        invocation -> Optional.of(new org.xcolab.model.tables.pojos.ContestDiscussion()));
     }
 
     private static AbstractContest getContest() {
         AbstractContest contest = new AbstractContest() {};
-        contest.setAuthorId(01l);
+        contest.setAuthorId(1L);
         return contest;
     }
 
@@ -163,7 +140,6 @@ public class ContestControllerTest {
                 .param("contestScheduleId", "").param("planTemplateId", "")
                 //.param("focusAreaIds","")
                 //.param("ontologyTermIds","")
-                //.param("contestTypeIds","")
                 .param("contestPrivate", "").param("searchTerm", "")).andExpect(status().isOk());
 
         Mockito.verify(contestDao, Mockito.times(1))
@@ -194,7 +170,7 @@ public class ContestControllerTest {
     public void shouldUpdateContestPost() throws Exception {
 
         AbstractContest contest = getContest();
-        contest.setContestPK(10l);
+        contest.setContestPK(10L);
         this.mockMvc.perform(put("/contests/" + contest.getContestPK()).contentType(contentType)
                 .accept(contentType).content(objectMapper.writeValueAsString(contest)))
                 .andExpect(status().isOk());
@@ -216,7 +192,7 @@ public class ContestControllerTest {
     public void shouldUpdateContestDiscussion() throws Exception {
 
         ContestDiscussion contestDisc = new ContestDiscussion();
-        contestDisc.setDiscussionId(10l);
+        contestDisc.setDiscussionId(10L);
 
 
         this.mockMvc.perform(put("/contestDiscussions/"+contestDisc.getDiscussionId()).contentType(contentType).accept(contentType)

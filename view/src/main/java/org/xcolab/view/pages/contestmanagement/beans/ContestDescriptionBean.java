@@ -4,12 +4,13 @@ import org.hibernate.validator.constraints.Length;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.comment.exceptions.ThreadNotFoundException;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
 
@@ -82,7 +83,7 @@ public class ContestDescriptionBean implements Serializable {
         try {
             final CommentThread thread = ThreadClientUtil.getThread(contest.getDiscussionGroupId());
             ContestType contestType =
-                    ContestClientUtil.getContestType(contest.getContestTypeId());
+                    ContestTypeClient.getContestType(contest.getContestTypeId());
             thread.setTitle(String.format("%s %s",
                     contestType.getContestName(), contest.getContestShortName()));
             ThreadClientUtil.updateThread(thread);

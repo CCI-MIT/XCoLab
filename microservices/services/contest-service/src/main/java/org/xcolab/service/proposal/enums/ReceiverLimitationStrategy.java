@@ -160,15 +160,7 @@ public enum ReceiverLimitationStrategy {
         }
 
     }),
-	NONE(Type.OTHER, new ReceiverLimitationTargetsPickerAlgorithm() {
-
-		@Override
-		public List<PointsTarget> getPointTargets(Proposal proposal,
-				PointType pointType, DistributionStrategy distributionStrategy) {
-			return null;
-		}
-		
-	});
+	NONE(Type.OTHER, (proposal, pointType, distributionStrategy) -> null);
 
 	private final Type type;
 	private final ReceiverLimitationTargetsPickerAlgorithm targetsPickerAlgorithm;

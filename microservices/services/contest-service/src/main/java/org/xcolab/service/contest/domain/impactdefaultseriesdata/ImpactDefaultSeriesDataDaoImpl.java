@@ -13,11 +13,14 @@ import static org.xcolab.model.Tables.IMPACT_DEFAULT_SERIES_DATA;
 @Repository
 public class ImpactDefaultSeriesDataDaoImpl implements ImpactDefaultSeriesDataDao {
 
-
+    private final DSLContext dslContext;
 
     @Autowired
-    private DSLContext dslContext;
+    public ImpactDefaultSeriesDataDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
 
+    @Override
     public List<ImpactDefaultSeriesData> findByGiven(Long seriesId, Integer year) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(IMPACT_DEFAULT_SERIES_DATA).getQuery();

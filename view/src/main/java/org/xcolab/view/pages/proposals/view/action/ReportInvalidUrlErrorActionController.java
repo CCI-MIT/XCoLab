@@ -5,9 +5,9 @@ import org.springframework.ui.Model;
 
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.view.util.entity.email.EmailToAdminDispatcher;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.taglibs.xcolab.wrapper.SimpleExceptionErrorReportWrapper;
+import org.xcolab.view.util.entity.email.EmailToAdminDispatcher;
 
 import java.io.IOException;
 
@@ -65,12 +65,13 @@ public class ReportInvalidUrlErrorActionController {
     }
 
     private String getMessageBody(String url, SimpleExceptionErrorReportWrapper simpleExceptionErrorReportWrapper, Member user) {
-        String userScreenName = USER_SCREEN_NAME_PLACEHOLDER;
+
         String emailAddress = EMAIL_ADDRESS_PLACEHOLDER;
         if ((simpleExceptionErrorReportWrapper.getUserEmailAddress()!=null)) {
             emailAddress = simpleExceptionErrorReportWrapper.getUserEmailAddress();
         }
 
+        String userScreenName = USER_SCREEN_NAME_PLACEHOLDER;
         if ((user!=null)) {
             userScreenName = user.getScreenName();
             if ((emailAddress == null) || emailAddress.equals(EMAIL_ADDRESS_PLACEHOLDER)) {

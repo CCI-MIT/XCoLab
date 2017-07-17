@@ -4,10 +4,10 @@ package org.xcolab.service.activities.activityentry.proposal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
@@ -58,7 +58,7 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
 
             contest = ProposalClientUtil.getCurrentContestForProposal(rawProposal.getProposalId());
 
-            contestType = ContestClientUtil.getContestType(contest.getContestTypeId());
+            contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
 
             proposalName = ProposalAttributeClientUtil
                     .getProposalAttribute(rawProposal.getProposalId(), ProposalAttributeKeys.NAME,null).getStringValue();
@@ -91,8 +91,7 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
 
     @Override
     public String getTitle() {
-        String title = getTitleTemplate().replaceAll("<proposal/>", contestType.getProposalName());
-        return title;
+        return getTitleTemplate().replaceAll("<proposal/>", contestType.getProposalName());
     }
     @Override
     public String getName() {
@@ -115,21 +114,20 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
         return "<user removed>";
     }
     private String getProposalLink(){
-        String url = "<a href='" + rawProposal.getProposalLinkUrl(contest)+ "'>" + proposalName + "</a>";
-        return url;
+        return "<a href='" + rawProposal.getProposalLinkUrl(contest)+ "'>" + proposalName + "</a>";
     }
 
     public enum ProposalActivitySubType{
-        PROPOSAL_ATTRIBUTE_REMOVED(2l),
-        PROPOSAL_ATTRIBUTE_UPDATE(1l),
-        PROPOSAL_CREATED(0l),
-        PROPOSAL_MEMBER_ADDED(6l),
-        PROPOSAL_MEMBER_REMOVED(7l),
-        PROPOSAL_SUPPORTER_ADDED(8l),
-        PROPOSAL_SUPPORTER_REMOVED(9l),
-        PROPOSAL_VOTE(3l),
-        PROPOSAL_VOTE_RETRACT(4l),
-        PROPOSAL_VOTE_SWITCH(5l);
+        PROPOSAL_ATTRIBUTE_REMOVED(2L),
+        PROPOSAL_ATTRIBUTE_UPDATE(1L),
+        PROPOSAL_CREATED(0L),
+        PROPOSAL_MEMBER_ADDED(6L),
+        PROPOSAL_MEMBER_REMOVED(7L),
+        PROPOSAL_SUPPORTER_ADDED(8L),
+        PROPOSAL_SUPPORTER_REMOVED(9L),
+        PROPOSAL_VOTE(3L),
+        PROPOSAL_VOTE_RETRACT(4L),
+        PROPOSAL_VOTE_SWITCH(5L);
 
         private final Long secondaryTypeId;
         ProposalActivitySubType(Long type) {

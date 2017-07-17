@@ -83,6 +83,7 @@ public class CommentThread extends AbstractCommentThread {
 
     @JsonIgnore
     public String getLastActivityDateFormatted() {
+        //TODO: handle locale specific formatting
         return HumanTime.exactly(new Date().getTime() - getLastActivityDate().getTime());
     }
 

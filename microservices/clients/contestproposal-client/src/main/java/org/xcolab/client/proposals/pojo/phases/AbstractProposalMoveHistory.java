@@ -241,20 +241,10 @@ class AbstractProposalMoveHistory implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("ProposalMoveHistory (");
+        String sb = "ProposalMoveHistory (" + id_ + ", " + sourceproposalid + ", " + sourcecontestid
+                + ", " + sourcephaseid + ", " + targetproposalid + ", " + targetcontestid + ", "
+                + targetphaseid + ", " + movinguserid + ", " + movedate + ", " + movetype + ")";
 
-        sb.append(id_);
-        sb.append(", ").append(sourceproposalid);
-        sb.append(", ").append(sourcecontestid);
-        sb.append(", ").append(sourcephaseid);
-        sb.append(", ").append(targetproposalid);
-        sb.append(", ").append(targetcontestid);
-        sb.append(", ").append(targetphaseid);
-        sb.append(", ").append(movinguserid);
-        sb.append(", ").append(movedate);
-        sb.append(", ").append(movetype);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

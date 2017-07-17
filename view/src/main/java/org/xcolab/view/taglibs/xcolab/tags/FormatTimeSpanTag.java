@@ -55,8 +55,7 @@ public class FormatTimeSpanTag extends SimpleTagSupport {
         
         if (returnUnit) {
             getJspContext().getOut().append(unit.format(retVal));
-        }
-        else {
+        } else {
             getJspContext().getOut().append(String.valueOf(retVal));
         }
         
@@ -74,7 +73,7 @@ public class FormatTimeSpanTag extends SimpleTagSupport {
         private final String namePlural;
         
         
-        private TimeUnits(long miliseconds, String nameSingular, String namePlural) {
+        TimeUnits(long miliseconds, String nameSingular, String namePlural) {
             this.miliseconds = miliseconds;
             this.nameSingular = nameSingular;
             this.namePlural = namePlural;

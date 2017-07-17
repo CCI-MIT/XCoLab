@@ -5,9 +5,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.util.exceptions.DatabaseAccessException;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.taglibs.xcolab.controller.BaseTabController;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
@@ -16,7 +14,6 @@ import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-
 
 public abstract class AbstractTabController extends BaseTabController {
 
@@ -51,12 +48,8 @@ public abstract class AbstractTabController extends BaseTabController {
     }
 
     private void initContest(long contestId) {
-        try {
-            contest = ContestClientUtil.getContest(contestId);
-            contestWrapper = (contest);
-        } catch (ContestNotFoundException e) {
-            throw new DatabaseAccessException(e);
-        }
+        contest = ContestClientUtil.getContest(contestId);
+        contestWrapper = (contest);
     }
 
     public Long getContestPK() {

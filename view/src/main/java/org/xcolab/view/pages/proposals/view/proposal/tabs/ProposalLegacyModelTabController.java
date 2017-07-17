@@ -2,7 +2,6 @@ package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,8 +13,8 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.modeling.roma.RomaClientUtil;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,18 +28,11 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalLegacyModelTabController extends BaseProposalTabController {
 
-    private final ProposalsContext proposalsContext;
-
-    @Autowired
-    public ProposalLegacyModelTabController(ProposalsContext proposalsContext) {
-        this.proposalsContext = proposalsContext;
-    }
-
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ACTIONS_IMPACTS")
-    public String show(Model model, HttpServletRequest request,
+    public String show(HttpServletRequest request, Model model, ProposalContext proposalContext,
             @RequestParam(required = false) boolean edit) {
 
-        setCommonModelAndPageAttributes(request, model, ProposalTab.ACTIONS_IMPACTS);
+        setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.ACTIONS_IMPACTS);
         return "proposals/proposalModel";
     }
 

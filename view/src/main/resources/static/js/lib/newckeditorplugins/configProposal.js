@@ -85,10 +85,18 @@ CKEDITOR.on('dialogDefinition', function (e) {
             var editor = this.getParentEditor();
             var selectedContent = editor.getSelection().getSelectedText();
 
+            if($("<p>"+editor.getSelection().getNative().anchorNode.innerHTML+"</p>")) {
 
-            if($(editor.getSelection().getNative().anchorNode.innerHTML)) {
-                var urlTyped = $(editor.getSelection().getNative().anchorNode.innerHTML).attr(
-                        "data-cke-saved-href");
+                var allLinksInParagraph = $("<p>"+editor.getSelection().getNative().anchorNode.innerHTML+"</p>").find('a');
+                var currentHref= "";
+                for(var i=0; i < allLinksInParagraph.length ; i ++){
+                    if($(allLinksInParagraph[i]).html() == selectedContent){
+                        currentHref =  $(allLinksInParagraph[i]).attr(
+                                "data-cke-saved-href");
+                    }
+                }
+                var urlTyped = currentHref;
+
                 this.setValueOf('info','url',urlTyped);
             }
 

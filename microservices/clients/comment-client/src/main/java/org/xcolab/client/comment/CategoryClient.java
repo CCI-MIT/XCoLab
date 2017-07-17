@@ -51,12 +51,7 @@ public class CategoryClient {
     }
 
     public static CategoryClient fromService(RestService contestService) {
-        CategoryClient client = instances.get(contestService);
-        if (client == null) {
-            client = new CategoryClient(contestService);
-            instances.put(contestService, client);
-        }
-        return client;
+        return instances.computeIfAbsent(contestService, CategoryClient::new);
     }
 
 }

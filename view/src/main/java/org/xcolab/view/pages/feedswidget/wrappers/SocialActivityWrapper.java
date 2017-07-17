@@ -5,10 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.view.util.entity.activityEntry.DiscussionActivitySubType;
 import org.xcolab.view.util.entity.activityEntry.MemberSubActivityType;
 import org.xcolab.view.util.entity.activityEntry.ProposalActivitySubType;
-import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -133,7 +133,7 @@ public class SocialActivityWrapper implements Serializable {
 
         private final String[] classes;
         private final String displayName;
-        private final static Map<String, ActivityType> activityMap = new HashMap<String, ActivityType>();
+        private final static Map<String, ActivityType> activityMap = new HashMap<>();
         private final static ActivityType defaultType = COMMENT;
 
         static {

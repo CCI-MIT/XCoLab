@@ -27,12 +27,13 @@ public class ContentArticleVersion implements Serializable {
     private Timestamp createDate;
     private String title;
     private String content;
+    private String    lang;
 
     public ContentArticleVersion() {
     }
 
     public ContentArticleVersion(Long contentArticleVersionId, Long contentArticleId,
-            Long folderId, Long authorId, Timestamp createDate, String title, String content) {
+            Long folderId, Long authorId, Timestamp createDate, String title, String content,String lang) {
         this.contentArticleVersionId = contentArticleVersionId;
         this.contentArticleId = contentArticleId;
         this.folderId = folderId;
@@ -40,6 +41,7 @@ public class ContentArticleVersion implements Serializable {
         this.createDate = createDate;
         this.title = title;
         this.content = content;
+        this.lang = lang;
     }
 
     public Long getContentArticleVersionId() {
@@ -98,9 +100,17 @@ public class ContentArticleVersion implements Serializable {
         this.content = content;
     }
 
+    public String getLang() {
+        return this.lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
     @JsonIgnore
     public String getLinkUrl() {
-        return "/web/guest/wiki/-/wiki/page/" + title.replace(" ", "+");
+        return "/wiki/" + title.replace(" ", "+");
     }
 
     @Override

@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.proposals.view.proposal;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,11 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
@@ -28,8 +26,7 @@ import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.utils.edit.ProposalUpdateHelper;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
 import org.xcolab.view.util.entity.flash.AlertMessage;
@@ -41,45 +38,39 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class CreateProposalController extends BaseProposalsController {
-    
-    private final ProposalsContext proposalsContext;
-
-    @Autowired
-    public CreateProposalController(ProposalsContext proposalsContext) {
-        this.proposalsContext = proposalsContext;
-    }
 
     @GetMapping("createProposal/basedOn/{baseProposalId}/{baseProposalVersion}/{baseContestId}")
     public String createProposalsBasedOn(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member loggedInMember, @PathVariable Long baseProposalId,
+            Model model, ProposalContext proposalContext, Member loggedInMember,
+            @PathVariable Long baseProposalId,
             @PathVariable Integer baseProposalVersion, @PathVariable Long baseContestId) {
 
-        return showCreateProposal(request, response, model, loggedInMember, baseProposalId,
+        return showCreateProposal(request, response, model, proposalContext, loggedInMember, baseProposalId,
                 baseProposalVersion, baseContestId);
     }
 
     @GetMapping("createProposal")
     public String showCreateProposal(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member loggedInMember) {
+            Model model, ProposalContext proposalContext, Member loggedInMember) {
 
-        return showCreateProposal(request, response, model, loggedInMember, null, -1, null);
+        return showCreateProposal(request, response, model, proposalContext, loggedInMember, null, -1, null);
     }
 
     private String showCreateProposal(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member loggedInMember, Long baseProposalId,
+            Model model, ProposalContext proposalContext, Member loggedInMember, Long baseProposalId,
             int baseProposalVersion, Long baseContestId) {
 
-        if (!proposalsContext.getPermissions(request).getCanCreate()) {
+        if (!proposalContext.getPermissions().getCanCreate()) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
         long memberId = loggedInMember.getId_();
 
-        final ClientHelper clients = ProposalsContextUtil.getClients(request);
+        final ClientHelper clients = proposalContext.getClients();
         final ContestClient contestClient = clients.getContestClient();
         final ProposalClient proposalClient = clients.getProposalClient();
 
-        final Contest contest = proposalsContext.getContest(request);
+        final Contest contest = proposalContext.getContest();
         Proposal proposal;
 
         if (contest.getIsSharedContestInForeignColab()) {
@@ -97,7 +88,7 @@ public class CreateProposalController extends BaseProposalsController {
         proposal.setAuthorId(memberId);
 
 
-        final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
+        final ContestPhase contestPhase = proposalContext.getContestPhase();
 
         Proposal proposalWrapped = new Proposal(proposal, 0, contest, contestPhase, null);
         if (baseProposalId != null && baseProposalId > 0) {
@@ -142,10 +133,6 @@ public class CreateProposalController extends BaseProposalsController {
         model.addAttribute("proposalPickerDefaultTabIsContests",
                 ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS.get());
 
-        ContestType contestType = ProposalsContextUtil.getContestType(request);
-        final String seoText = "Create " + contestType.getProposalName() + " in " + contest.getContestShortName();
-        setSeoTexts(request, seoText, null, null);
-
         AnalyticsUtil.publishEvent(request, memberId, ProposalUpdateHelper.PROPOSAL_ANALYTICS_KEY + 1,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_CATEGORY,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_ACTION,
@@ -166,11 +153,12 @@ public class CreateProposalController extends BaseProposalsController {
 
     @PostMapping("createProposal")
     public String createProposal(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable String contestYear, @PathVariable String contestUrlName,
+            Model model, ProposalContext proposalContext,
+            @PathVariable String contestYear, @PathVariable String contestUrlName,
             @Valid UpdateProposalDetailsBean updateProposalDetailsBean, BindingResult result) {
 
-        Proposal proposal = proposalsContext.getProposal(request);
-        final ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        Proposal proposal = proposalContext.getProposal();
+        final ProposalsPermissions permissions = proposalContext.getPermissions();
         if (!permissions.getCanCreate()) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
@@ -180,10 +168,10 @@ public class CreateProposalController extends BaseProposalsController {
                     "Proposal NOT created. Please fix the errors before saving.")
                     .flash(request);
             final Member memberOrNull = MemberAuthUtil.getMemberOrNull(request);
-            return showCreateProposal(request, response, model, memberOrNull);
+            return showCreateProposal(request, response, model, proposalContext, memberOrNull);
         }
 
         return AddUpdateProposalControllerUtil
-                .createOrUpdateProposal(request, updateProposalDetailsBean, proposal, proposalsContext);
+                .createOrUpdateProposal(request, updateProposalDetailsBean, proposal, proposalContext);
     }
 }

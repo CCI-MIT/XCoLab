@@ -11,6 +11,7 @@ CKEDITOR.plugins.add( 'proposalLink', {
     			return;
     		}
     		var host = window.location.toString();
+    		//TODO: this doesn't work post-liferay
     		host = host.substring(0, host.indexOf("/web/guest"));
     		
     		var proposalLinkHtml = [];

@@ -4,8 +4,8 @@ import org.xcolab.client.activities.ActivitiesClient;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.filtering.FilteringClient;
@@ -18,7 +18,7 @@ import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.loginregister.SharedColabUtil;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.utils.edit.ProposalCreationUtil;
 import org.xcolab.view.pages.proposals.utils.edit.ProposalMoveUtil;
 import org.xcolab.view.pages.proposals.utils.edit.ProposalUpdateHelper;
@@ -34,36 +34,34 @@ public final class AddUpdateProposalControllerUtil {
 
     public static String createOrUpdateProposal(HttpServletRequest request,
             UpdateProposalDetailsBean updateProposalSectionsBean, Proposal proposal,
-            ProposalsContext proposalsContext) {
+            ProposalContext proposalContext) {
         long memberId = MemberAuthUtil.getMemberId(request);
-        final Contest contest = proposalsContext.getContest(request);
+        final Contest contest = proposalContext.getContest();
 
-        final ClientHelper clients = proposalsContext.getClients(request);
+        final ClientHelper clients = proposalContext.getClients();
 
-        Proposal proposalWrapper;
         boolean createNew = false;
-        final ContestPhase contestPhase = proposalsContext.getContestPhase(request);
+        final ContestPhase contestPhase = proposalContext.getContestPhase();
         if (proposal != null) {
-            proposalWrapper = proposalsContext.getProposalWrapped(request);
             if (updateProposalSectionsBean.getIsMove() && updateProposalSectionsBean.getMoveToContestId() > 0) {
-                ProposalMoveUtil.moveProposal(updateProposalSectionsBean,
-                        proposalWrapper, contestPhase, contest, memberId, request);
+                ProposalMoveUtil.moveProposal(proposalContext, updateProposalSectionsBean,
+                        proposal, contestPhase, contest, memberId);
             }
         } else {
             createNew = true;
-            proposalWrapper = ProposalCreationUtil
+            proposal = ProposalCreationUtil
                     .createProposal(memberId, updateProposalSectionsBean, contest, contestPhase);
         }
 
-        final Proposal2Phase p2p = proposalsContext.getProposal2Phase(request);
-        ProposalUpdateHelper proposalUpdateHelper = new ProposalUpdateHelper(
-                updateProposalSectionsBean, request, proposalWrapper, p2p, memberId);
+        final Proposal2Phase p2p = proposalContext.getProposal2Phase();
+        ProposalUpdateHelper proposalUpdateHelper = new ProposalUpdateHelper(request,
+                proposalContext, updateProposalSectionsBean, proposal, p2p, memberId);
         proposalUpdateHelper.updateProposal();
 
         final ActivitiesClient activitiesClient = clients.getActivitiesClient();
         if (createNew) {
-            ProposalCreationUtil.sendAuthorNotification(PlatformAttributeKey.PLATFORM_COLAB_URL.get(),
-                    proposalWrapper, contestPhase, request);
+            ProposalCreationUtil.sendAuthorNotification(proposalContext, PlatformAttributeKey.PLATFORM_COLAB_URL.get(),
+                    proposal, contestPhase);
 
             final List<ActivitySubscription> activitySubscriptions = activitiesClient
                     .getActivitySubscriptions(ActivityEntryType.CONTEST.getPrimaryTypeId(),
@@ -71,13 +69,14 @@ public final class AddUpdateProposalControllerUtil {
             for (ActivitySubscription activitySubscription : activitySubscriptions) {
                 final Long receiverId = activitySubscription.getReceiverId();
                 activitiesClient.addSubscription(receiverId, ActivityEntryType.PROPOSAL,
-                        proposalWrapper.getProposalId(), "");
+                        proposal.getProposalId(), "");
             }
 
-		 	ActivityEntryHelper.createActivityEntry(activitiesClient, memberId, contest.getContestPK() , proposalWrapper.getProposalId().toString(),
+		 	ActivityEntryHelper.createActivityEntry(activitiesClient, memberId,
+                    contest.getContestPK(), proposal.getProposalId().toString(),
                     ActivityProvidersType.ProposalCreatedActivityEntry.getType());
         } else {
-            ActivityEntryHelper.createActivityEntry(activitiesClient, memberId, proposalWrapper.getProposalId(), null,
+            ActivityEntryHelper.createActivityEntry(activitiesClient, memberId, proposal.getProposalId(), null,
                     ActivityProvidersType.ProposalAttributeUpdateActivityEntry.getType());
         }
         SharedColabUtil.checkTriggerForAutoUserCreationInContest(contest.getContestPK(), memberId);
@@ -86,15 +85,14 @@ public final class AddUpdateProposalControllerUtil {
             try {
                 FilteredEntry filteredEntry = FilteringClient
                         .getFilteredEntryByUuid(updateProposalSectionsBean.getUuid());
-                filteredEntry.setSourceId(proposalWrapper.getProposalId());
+                filteredEntry.setSourceId(proposal.getProposalId());
                 filteredEntry.setAuthorId(memberId);
                 FilteringClient.updateFilteredEntry(filteredEntry);
             } catch (FilteredEntryNotFoundException ignored) {
             }
         }
 
-        proposalsContext.invalidateContext(request);
-        return "redirect:" + proposalWrapper.getProposalUrl();
+        return "redirect:" + proposal.getProposalUrl();
     }
     
 }

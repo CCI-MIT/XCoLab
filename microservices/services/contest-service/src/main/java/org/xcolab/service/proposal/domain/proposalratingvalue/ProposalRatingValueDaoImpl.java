@@ -15,9 +15,14 @@ import static org.xcolab.model.Tables.PROPOSAL_RATING_VALUE;
 @Repository
 public class ProposalRatingValueDaoImpl implements ProposalRatingValueDao {
 
-    @Autowired
-    private DSLContext dslContext;
+    private final DSLContext dslContext;
 
+    @Autowired
+    public ProposalRatingValueDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
+
+    @Override
     public ProposalRatingValue get(Long id_) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(PROPOSAL_RATING_VALUE)

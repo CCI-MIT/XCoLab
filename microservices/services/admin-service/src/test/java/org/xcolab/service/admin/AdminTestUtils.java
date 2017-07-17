@@ -7,8 +7,9 @@ public class AdminTestUtils {
     public static ConfigurationAttribute getConfigurationAttribute(String nameComplement){
         ConfigurationAttribute ca = new ConfigurationAttribute();
         ca.setName("SUPER" + nameComplement);
-        ca.setNumericValue(0l);
-        ca.setAdditionalId(0l);
+        ca.setLocale("");
+        ca.setNumericValue(0L);
+        ca.setAdditionalId(0L);
         ca.setRealValue(0d);
         ca.setStringValue("DUPER");
         return ca;

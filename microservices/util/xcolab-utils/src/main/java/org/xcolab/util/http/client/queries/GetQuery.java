@@ -38,7 +38,10 @@ public class GetQuery<ElementT, IdT> implements CacheableQuery<ElementT, Element
             return ServiceRequestUtils.get(uriBuilder, entityType);
         } else {
             if (cacheKey == null) {
-                cacheKey = CacheKeys.of(entityType, id);
+                cacheKey = CacheKeys.withClass(entityType)
+                        .withParameter("id", id)
+                        .withParameter("query", uriBuilder.getParameterString())
+                        .build();
             }
             return ServiceRequestUtils.get(uriBuilder, entityType, cacheKey, cacheName);
         }

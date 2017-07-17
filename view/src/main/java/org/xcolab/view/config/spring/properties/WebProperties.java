@@ -46,6 +46,11 @@ public class WebProperties {
          */
         private boolean allowLogin = true;
 
+        /**
+         * If false, SSO is disabled;
+         */
+        private boolean allowSso = true;
+
         public boolean isAllowAll() {   
             return allowAll;
         }
@@ -76,6 +81,14 @@ public class WebProperties {
 
         public void setAllowLogin(boolean allowLogin) {
             this.allowLogin = allowLogin;
+        }
+
+        public boolean isAllowSso() {
+            return allowSso;
+        }
+
+        public void setAllowSso(boolean allowSso) {
+            this.allowSso = allowSso;
         }
     }
 

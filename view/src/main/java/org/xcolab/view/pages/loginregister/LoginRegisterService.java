@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFoundException;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;

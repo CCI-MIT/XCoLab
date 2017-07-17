@@ -1,11 +1,11 @@
-$c_ControlsOverlay__backgroundColor: rgba($t-Color__primary__grey--light, .9) !default;
+$c_ControlsOverlay__backgroundColor: rgba($t-Color__primary__grey--light, .95) !default;
 
 .c-ControlsOverlay {
-  background-color: rgba($c_ControlsOverlay__backgroundColor, .9);
+  background-color: $c_ControlsOverlay__backgroundColor;
 
   font-size: 20px;
   line-height: 29px;
-  border-top: 1px solid $t-Color__primary;
+  border-top: 2px solid $t-Color__primary;
 
   padding: 25px 15px;
   width: 100%;

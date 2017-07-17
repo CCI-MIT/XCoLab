@@ -199,24 +199,12 @@ public class Role_ implements Serializable {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("Role_ (");
+        String sb =
+                "Role_ (" + roleid + ", " + companyid + ", " + classnameid + ", " + classpk + ", "
+                        + name + ", " + title + ", " + description + ", " + type_ + ", " + subtype
+                        + ", " + uuid_ + ", " + userid + ", " + username + ", " + createdate + ", "
+                        + modifieddate + ")";
 
-		sb.append(roleid);
-		sb.append(", ").append(companyid);
-		sb.append(", ").append(classnameid);
-		sb.append(", ").append(classpk);
-		sb.append(", ").append(name);
-		sb.append(", ").append(title);
-		sb.append(", ").append(description);
-		sb.append(", ").append(type_);
-		sb.append(", ").append(subtype);
-		sb.append(", ").append(uuid_);
-		sb.append(", ").append(userid);
-		sb.append(", ").append(username);
-		sb.append(", ").append(createdate);
-		sb.append(", ").append(modifieddate);
-
-		sb.append(")");
-		return sb.toString();
+        return sb;
 	}
 }

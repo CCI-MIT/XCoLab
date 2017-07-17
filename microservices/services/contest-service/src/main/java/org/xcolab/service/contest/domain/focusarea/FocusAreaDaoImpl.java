@@ -16,9 +16,12 @@ import static org.xcolab.model.Tables.FOCUS_AREA;
 @Repository
 public class FocusAreaDaoImpl implements FocusAreaDao {
 
-    @Autowired
-    private DSLContext dslContext;
+    private final DSLContext dslContext;
 
+    @Autowired
+    public FocusAreaDaoImpl(DSLContext dslContext) {this.dslContext = dslContext;}
+
+    @Override
     public FocusArea get(Long id_) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(FOCUS_AREA)
@@ -29,10 +32,9 @@ public class FocusAreaDaoImpl implements FocusAreaDao {
             throw new NotFoundException("FocusArea with id " + id_ + " does not exist");
         }
         return record.into(FocusArea.class);
-
     }
 
-
+    @Override
     public FocusArea create(FocusArea focusArea) {
 
         FocusAreaRecord ret = this.dslContext.insertInto(FOCUS_AREA)
@@ -49,6 +51,7 @@ public class FocusAreaDaoImpl implements FocusAreaDao {
 
     }
 
+    @Override
     public boolean update(FocusArea focusArea) {
         return dslContext.update(FOCUS_AREA)
                 .set(FOCUS_AREA.NAME, focusArea.getName())

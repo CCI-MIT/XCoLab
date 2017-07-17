@@ -5,12 +5,13 @@ import org.jooq.Record;
 import org.jooq.SelectQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import org.xcolab.model.tables.pojos.ProposalReference;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 
-import static org.xcolab.model.Tables.PROPOSAL_REFERENCE;
-
 import java.util.List;
+
+import static org.xcolab.model.Tables.PROPOSAL_REFERENCE;
 
 @Repository
 public class ProposalReferenceDaoImpl implements ProposalReferenceDao {
@@ -33,6 +34,7 @@ public class ProposalReferenceDaoImpl implements ProposalReferenceDao {
         return query.fetchInto(ProposalReference.class);
     }
 
+    @Override
     public ProposalReference get(Long proposalId, Long subProposalId) throws NotFoundException {
 
         final Record record =  this.dslContext.selectFrom(PROPOSAL_REFERENCE)
@@ -47,6 +49,7 @@ public class ProposalReferenceDaoImpl implements ProposalReferenceDao {
 
     }
 
+    @Override
     public ProposalReference create(ProposalReference proposalReference) {
 
         this.dslContext.insertInto(PROPOSAL_REFERENCE)
@@ -58,6 +61,7 @@ public class ProposalReferenceDaoImpl implements ProposalReferenceDao {
 
     }
 
+    @Override
     public boolean update(ProposalReference proposalReference) {
         return dslContext.update(PROPOSAL_REFERENCE)
                 .set(PROPOSAL_REFERENCE.SECTION_ATTRIBUTE_ID, proposalReference.getSectionAttributeId())
@@ -65,6 +69,7 @@ public class ProposalReferenceDaoImpl implements ProposalReferenceDao {
                 .and(PROPOSAL_REFERENCE.SUB_PROPOSAL_ID.eq(proposalReference.getSubProposalId()))
                 .execute() > 0;
     }
+    @Override
     public int delete(Long proposalId, Long subproposalId) {
         return dslContext.deleteFrom(PROPOSAL_REFERENCE)
                 .where(PROPOSAL_REFERENCE.PROPOSAL_ID.eq(proposalId))

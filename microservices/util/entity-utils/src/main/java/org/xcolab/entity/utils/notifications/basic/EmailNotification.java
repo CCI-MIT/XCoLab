@@ -7,12 +7,12 @@ import org.jsoup.nodes.TextNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.xcolab.client.admin.enums.ConfigurationAttributeKey;
-import org.xcolab.client.admin.enums.PlatformAttributeKey;
+import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestType;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.pojo.Member;
@@ -275,7 +275,7 @@ public abstract class EmailNotification {
             final boolean hasProposal = contest != null && proposal != null;
 
             final ContestType contestType =
-                    contest != null ? ContestClientUtil.getContestType(contest.getContestTypeId())
+                    contest != null ? ContestTypeClient.getContestType(contest.getContestTypeId())
                             : null;
 
 

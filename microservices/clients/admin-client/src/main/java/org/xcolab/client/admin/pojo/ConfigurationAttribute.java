@@ -26,6 +26,6 @@ public class ConfigurationAttribute extends AbstractAttribute implements Seriali
 
     public ConfigurationAttribute(String name, long additionalId, Long numericValue,
             String stringValue, Double realValue) {
-        super(name, additionalId, numericValue, stringValue, realValue);
+        super(name, additionalId, null, numericValue, stringValue, realValue);
     }
 }

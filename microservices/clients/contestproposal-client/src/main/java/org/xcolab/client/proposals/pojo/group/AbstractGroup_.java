@@ -398,29 +398,12 @@ public class AbstractGroup_ implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Group_ (");
 
-        sb.append(groupid);
-        sb.append(", ").append(companyid);
-        sb.append(", ").append(creatoruserid);
-        sb.append(", ").append(classnameid);
-        sb.append(", ").append(classpk);
-        sb.append(", ").append(parentgroupid);
-        sb.append(", ").append(livegroupid);
-        sb.append(", ").append(name);
-        sb.append(", ").append(description);
-        sb.append(", ").append(type_);
-        sb.append(", ").append(typesettings);
-        sb.append(", ").append(friendlyurl);
-        sb.append(", ").append(active_);
-        sb.append(", ").append(site);
-        sb.append(", ").append(uuid_);
-        sb.append(", ").append(treepath);
-        sb.append(", ").append(manualmembership);
-        sb.append(", ").append(membershiprestriction);
-        sb.append(", ").append(remotestaginggroupcount);
-
-        sb.append(")");
-        return sb.toString();
+        return "Group_ (" + groupid + ", " + companyid + ", " + creatoruserid + ", " + classnameid
+                + ", " + classpk + ", " + parentgroupid + ", " + livegroupid + ", " + name
+                + ", " + description + ", " + type_ + ", " + typesettings + ", "
+                + friendlyurl + ", " + active_ + ", " + site + ", " + uuid_ + ", "
+                + treepath + ", " + manualmembership + ", " + membershiprestriction + ", "
+                + remotestaginggroupcount + ")";
     }
 }

@@ -10,19 +10,18 @@ import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 public class ProposalFellowWrapper extends Proposal {
 
-    public ProposalFellowWrapper(Proposal proposal, Member currentMember, HttpServletRequest request) {
+    public ProposalFellowWrapper(ProposalContext proposalContext,
+            Proposal proposal, Member currentMember) {
         super(proposal,proposal.getContestPhase());
         try {
             //find out contestPhase
-            Contest baseContest = ProposalsContextUtil.getClients(request).getProposalClient().getCurrentContestForProposal(proposal.getProposalId());
+            Contest baseContest = proposalContext.getClients().getProposalClient().getCurrentContestForProposal(proposal.getProposalId());
             ContestPhase contestPhase = ContestClientUtil.getActivePhase(baseContest.getContestPK());
 
             List<ProposalRating> list = ProposalJudgeRatingClientUtil.getFellowRatingForProposalAndUser(

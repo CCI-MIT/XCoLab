@@ -3,7 +3,7 @@
           xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
-<layout:layout>
+<layout:layout title="Login" canonicalUrlRelative="/login">
     <c:choose>
         <c:when test="${not _isLoggedIn}">
             <h2>Restricted access - login required</h2>

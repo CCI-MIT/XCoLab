@@ -40,7 +40,8 @@ public class ModelOutputErrorBehavior {
                 return createEmptyBehavior(TupleStatus.OUT_OF_RANGE);
             }
             String msg = item.getModelIndexRangeMessage();
-           return new ModelOutputErrorBehavior(status,ErrorPolicy.valueOf(policyName),msg);
+           return new ModelOutputErrorBehavior(TupleStatus.OUT_OF_RANGE,
+                   ErrorPolicy.valueOf(policyName), msg);
         } else if (status == TupleStatus.INVALID) {
             String policyName = item.getModelIndexErrorPolicy();
             if (policyName == null || policyName.trim().equals("")) {

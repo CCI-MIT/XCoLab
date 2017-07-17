@@ -26,7 +26,7 @@ public class SharedContestDaoImpl implements SharedContestDao {
         this.dslContext = dslContext;
     }
 
-
+    @Override
     public SharedContest create(SharedContest sharedContest) {
 
         SharedContestRecord ret = this.dslContext.insertInto(SHARED_CONTEST)
@@ -57,6 +57,7 @@ public class SharedContestDaoImpl implements SharedContestDao {
     }
 
 
+    @Override
     public boolean update(SharedContest sharedContest) {
         return dslContext.update(SHARED_CONTEST)
                 .set(SHARED_CONTEST.CONTEST_NAME, sharedContest.getContestName())
@@ -64,6 +65,7 @@ public class SharedContestDaoImpl implements SharedContestDao {
                 .execute() > 0;
     }
 
+    @Override
     public SharedContest get(Long sharedContestId) throws NotFoundException {
 
         final Record record =  this.dslContext.selectFrom(SHARED_CONTEST)

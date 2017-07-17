@@ -3,7 +3,9 @@
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
 	xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
 	xmlns:form="http://www.springframework.org/tags/form"
-	  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+    xmlns:spring="http://www.springframework.org/tags"
+          version="2.0">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
 <!--@elvariable id="permissions" type="org.xcolab.view.pages.profile.utils.UserProfilePermissions"-->
@@ -24,9 +26,9 @@
 	<!--</portlet:resourceURL>-->
 
 	<div id="bread" class="pro">
-		<a href="/members">Community</a>
+		<a href="/members"><spring:message code="colab.breadcrums.community"/></a>
 		<img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-		<a href="/members">Members</a>
+		<a href="/members"><spring:message code="colab.breadcrums.members"/></a>
 		<img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
 		<a href="/members/profile/${currentUserProfile.userId}">${userBean.displayName}</a>
 	</div>
@@ -87,24 +89,24 @@
 				<table border="0" cellpadding="0" cellspacing="0" class="colab members otherInfo profileTable" style="width:100%;">
 					<tbody>
 					<tr>
-						<td class="b" nowrap="nowrap" width="23%">Screen Name</td>
+						<td class="b" nowrap="nowrap" width="23%"><spring:message code="profile.show.screen.name"/></td>
 						<td width="23%">${userBean.screenName}</td>
-						<td class="b" width="43%">Activities</td>
+						<td class="b" width="43%"><spring:message code="profile.show.activities"/></td>
 						<td class="align_right">${currentUserProfile.userActivityCountFormatted}</td>
 					</tr>
 					<tr>
-						<td class="b" nowrap="nowrap" width="23%">Member Since</td>
+						<td class="b" nowrap="nowrap" width="23%"><spring:message code="profile.show.membersince"/></td>
 						<td width="23%">
 							<fmt:formatDate value="${currentUserProfile.joinDate}" type="date" dateStyle="short" timeZone="America/New_York" />
 						</td>
 						<c:if test="${pointsActive}">
 							<td class="b points_box left_border top_border" width="45%">
-								${_colabShortName} Points (actual)
+								<spring:message code="profile.show.pointsactual" arguments="${_colabShortName}"/>
 								<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="${_themeImageFolder}/icon-addprop-question.png" /></a>
 								<br />
 								<div style="display: none;" class="profilehelp">
-									${_colabShortName} Points are awarded to all the members who contributed to a winning integrated ${currentUserProfile.proposalString}, as well as those who contributed to any sub-${currentUserProfile.proposalsString} it contains.
-									<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
+                                    <spring:message code="profile.show.pointsdisclaimer" arguments="${_colabShortName},${currentUserProfile.proposalString},${currentUserProfile.proposalsString}" argumentSeparator=","/>
+									<a href="/wiki/Climate+CoLab+Points"><spring:message code="profile.show.seemore" /></a>
 								</div>
 								<div class="clearfix"><!-- --></div>
 							</td>
@@ -121,12 +123,12 @@
 						</td>
 						<c:if test="${pointsActive}">
 							<td class="b points_box left_border bottom_border" width="43%">
-								${_colabShortName} Points (max. potential)
+                                <spring:message code="profile.show.pointsactualMax" arguments="${_colabShortName}"/>
 								<a class="helpTrigger" href="javascript:;"><img height="15" width="15" src="${_themeImageFolder}/icon-addprop-question.png" /></a>
 								<br />
 								<div style="display: none;" class="profilehelp">
-									The maximum number of ${_colabShortName} Points this member could receive. This is a measure of how many times the member’s ${currentUserProfile.proposalsString} have been included in other ${currentUserProfile.proposalsString} and how important it is in those ${currentUserProfile.proposalsString}.
-									<a href="/web/guest/resources/-/wiki/Main/Climate+CoLab+Points">(See more)</a>
+                                    <spring:message code="profile.show.maximumnumber" arguments="${_colabShortName},${currentUserProfile.proposalsString},${currentUserProfile.proposalsString},${currentUserProfile.proposalsString}" argumentSeparator=","/>
+									<a href="/wiki/Climate+CoLab+Points"><spring:message code="profile.show.seemore" /></a>
 								</div>
 								<div class="clearfix"><!-- --></div>
 							</td>
@@ -136,12 +138,12 @@
 
 					<c:if test="${currentUserProfile.viewingOwnProfile}">
 						<tr>
-							<td class="b" width="23%">Email</td>
+							<td class="b" width="23%"><spring:message code="profile.show.email"/> </td>
 							<td colspan="3" style="white-space: nowrap;">
 								<a href="mailto:${userBean.email}">${userBean.emailStored}</a>
 
 								<c:if test="${currentUserProfile.displayEMailErrorMessage}">
-									<span class="iceMsgError portlet-msg-error Error form_error_messageError">Please update your email address. Only votes from members with valid email addresses will be counted. </span>
+									<span class="iceMsgError portlet-msg-error Error form_error_messageError"><spring:message code="profile.show.pleaseupdate" /></span>
 								</c:if>
 
 							</td>
@@ -153,7 +155,7 @@
 							<td colspan="4">
 								<a class="c-Button__primary"
 								   href="/members/profile/${currentUserProfile.userId}/edit">
-									Manage profile and settings
+									<spring:message code="profile.show.manageprofile.button"/>
 								</a>
 							</td>
 						</tr>
@@ -167,7 +169,7 @@
 		<c:if test="${currentUserProfile.canSeeSendMessageButton and not currentUserProfile.viewingOwnProfile }">
 			<a class="c-Button__primary" href="#"
 			   onclick="if (!deferUntilLogin()) { return false; } else { jQuery('#sendMessageModal').modal(); }">
-				Send <strong>${userBean.firstName}</strong> a Message
+                <spring:message code="profile.show.sendmessage" arguments="${userBean.firstName}"/>
 			</a>
 		</c:if>
 
@@ -179,7 +181,7 @@
 			<c:forEach var="contestTypeProposalWrapper" items="${currentUserProfile.contestTypeProposalWrappersByContestTypeId}">
 				<h2 style="margin-top: 20px;">${contestTypeProposalWrapper.contestType.proposalNamePlural}</h2>
 				<c:if test="${empty contestTypeProposalWrapper.proposals}">
-						${userBean.firstName} has not yet contributed to any <span class="lowercase">${contestTypeProposalWrapper.contestType.proposalNamePlural}</span>.
+                    <spring:message code="profile.show.noproposalcontribution" arguments="${userBean.firstName},${contestTypeProposalWrapper.contestType.proposalNamePlural}"/>
 				</c:if>
 
 				<table class="colab">
@@ -192,9 +194,9 @@
 				</table>
 			</c:forEach>
 
-			<h2 style="margin-top: 20px;">${currentUserProfile.proposalString} Links</h2>
+			<h2 style="margin-top: 20px;">${currentUserProfile.proposalString}<spring:message code="profile.show.proposallinks"/></h2>
 			<c:if test="${empty currentUserProfile.linkingProposals}">
-					There are no <span class="lowercase">${currentUserProfile.proposalsString}</span> linking to this member's <span class="lowercase">${currentUserProfile.proposalsString}</span> yet.
+                <spring:message code="profile.show.proposallinks.disclaimer" arguments="${currentUserProfile.proposalsString},${currentUserProfile.proposalsString}" argumentSeparator=","/>
 			</c:if>
 
 			<table class="colab">
@@ -208,9 +210,9 @@
 				</c:forEach>
 			</table>
 
-			<h2>Supporting</h2>
+			<h2><spring:message code="profile.show.supporting"/></h2>
 			<c:if test="${empty currentUserProfile.supportedProposals}">
-					${userBean.firstName} has not yet supported any <span class="lowercase">${currentUserProfile.proposalsString}</span>.
+                <spring:message code="profile.show.supported.disclaimer" arguments="${userBean.firstName},${currentUserProfile.proposalsString}" argumentSeparator=","/>
 			</c:if>
 
 			<table class="colab">
@@ -222,9 +224,9 @@
 				</c:forEach>
 			</table>
 
-			<h2 style="margin-top: 20px;">Activities</h2>
+			<h2 style="margin-top: 20px;"><spring:message code="profile.show.activities"/></h2>
 			<c:if test="${empty currentUserProfile.activities}">
-					${userBean.firstName} does not have any ${_colabName} activities yet.
+                <spring:message code="profile.show.activities.noyet" arguments="${userBean.firstName},${_colabName}" argumentSeparator=","/>
 			</c:if>
 
 			<table class="colab">
@@ -237,7 +239,7 @@
 			</table>
 
 			<c:if test="${not empty currentUserProfile.activities}">
-				<a class="c-Button__primary" href="/activities?userId=${currentUserProfile.userId}">SEE ALL</a>
+				<a class="c-Button__primary" href="/activities?userId=${currentUserProfile.userId}"><spring:message code="profile.show.activities.seeall"/></a>
 			</c:if>
 		</c:if>
 
@@ -251,10 +253,10 @@
 	<c:if test="${currentUserProfile.viewingOwnProfile}">
 		<div class="c-Message__column">
 			<div class="comm_rightcol">
-				<div class="comm_rightcol-title">INBOX</div>
+				<div class="comm_rightcol-title"><spring:message code="profile.show.inbox"/></div>
 
 				<c:if test="${empty currentUserProfile.messages}">
-					<p>No new messages.</p>
+					<p><spring:message code="profile.show.nonewmessages"/></p>
 				</c:if>
 
 				<c:forEach var="message" items="${currentUserProfile.messages}"> <!-- test="${not empty currentUserProfile.messages}" -->
@@ -262,13 +264,13 @@
 					<div class="comm_rightcol-time">
 						<c:choose>
 							<c:when test="${message.daysAgo == 0}">
-								Today
+                                <spring:message code="profile.show.today"/>
 							</c:when>
 							<c:when test="${message.daysAgo == 1}">
-								Yesterday
+								<spring:message code="profile.show.yesterday"/>
 							</c:when>
 							<c:when test="${message.daysAgo > 1}">
-									${message.daysAgo} days ago
+                                <spring:message code="profile.show.daysago" arguments="${message.daysAgo}" />
 							</c:when>
 						</c:choose>
 						&#160;
@@ -277,19 +279,19 @@
 
 					<div class="activityBody">
 						<collab:userLinkSimple text="${message.from.displayName}" userId="${message.from.userId}" />
-						sent you a message:&#160; <a
+						<spring:message code="profile.show.sentyouamessage"/> <a
 							href="/messaging/message/${message.messageId}">${message.subject}</a>
 					</div>
 
 				</c:forEach>
 
 				<div class="rounded_button brn">
-					<a href="#" data-toggle="modal" data-target="#sendMessageModal">COMPOSE</a>
+					<a href="#" data-toggle="modal" data-target="#sendMessageModal"><spring:message code="profile.show.compose.button"/></a>
 					<xcolab:sendMessageModal />
 				</div>
 
 				<div class="rounded_button brn">
-					<a href="/messaging">ALL MESSAGES</a>
+					<a href="/messaging"><spring:message code="profile.show.compose.allmessages"/></a>
 				</div>
 
 				<div class="clearfix"><!-- --></div>
@@ -297,10 +299,10 @@
 
 			<div class="comm_rightcol">
 				<form:form>
-					<div class="comm_rightcol-title">SUBSCRIBED ACTIVITY</div>
+					<div class="comm_rightcol-title"><spring:message code="profile.show.compose.subscribedactivity"/></div>
 
 					<c:if test="${empty currentUserProfile.subscribedActivities}">
-						<p>No new activities.</p>
+						<p><spring:message code="profile.show.compose.noactivties"/> </p>
 					</c:if>
 
 
@@ -309,13 +311,13 @@
 						<div class="comm_rightcol-time">
 							<c:choose>
 								<c:when test="${activity.daysAgo == 0}">
-									Today
+									<spring:message code="profile.show.today"/>
 								</c:when>
 								<c:when test="${activity.daysAgo == 1}">
-									Yesterday
+									<spring:message code="profile.show.yesterday"/>
 								</c:when>
 								<c:when test="${activity.daysAgo > 1}">
-									${activity.daysAgo} days ago
+                                    <spring:message code="profile.show.compose.daysago" arguments="${activity.daysAgo}"/>
 								</c:when>
 							</c:choose>
 							&#160;
@@ -329,12 +331,12 @@
 					</c:forEach>
 
 					<div class="rounded_button brn">
-						<a href="/members/profile/${currentUserProfile.userId}/subscriptions/manage">MANAGE</a>
+						<a href="/members/profile/${currentUserProfile.userId}/subscriptions/manage"><spring:message code="profile.show.manage"/></a>
 					</div>
 
 					<div class="rounded_button brn">
 						<c:if test="${not empty currentUserProfile.subscribedActivities}">
-							<a href="/members/profile/${currentUserProfile.userId}/subscriptions">SEE ALL</a>
+							<a href="/members/profile/${currentUserProfile.userId}/subscriptions"><spring:message code="profile.show.seeall"/></a>
 						</c:if>
 					</div>
 				</form:form>
@@ -345,7 +347,7 @@
 
 	</c:when>
 	<c:otherwise>
-		<h2>The requested user profile is disabled.</h2>
+		<h2><spring:message code="profile.show.userdisabled"/></h2>
 	</c:otherwise>
 	</c:choose>
 

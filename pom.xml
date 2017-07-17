@@ -11,6 +11,11 @@
 	<name>XCoLab Parent</name>
 	<packaging>pom</packaging>
 
+    <scm>
+        <connection>scm:git:https://github.com/CCI-MIT/XCoLab</connection>
+        <url>https://github.com/CCI-MIT/XCoLab</url>
+    </scm>
+
 	<modules>
 		<module>microservices</module>
 		<module>view</module>
@@ -20,17 +25,18 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <spring.version>4.3.7.RELEASE</spring.version>
-        <spring-boot.version>1.5.3.RELEASE</spring-boot.version>
+        <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
         <spring-cloud.version>1.2.5.RELEASE</spring-cloud.version>
 
         <!-- Database -->
         <jooq.version>3.9.2</jooq.version>
         <mysql-connector.version>5.1.42</mysql-connector.version>
-        <HikariCP.version>2.6.2</HikariCP.version>
+        <HikariCP.version>2.6.3</HikariCP.version>
         <commons-dbcp2.version>2.1.1</commons-dbcp2.version>
 
         <!-- Core -->
-        <commons-lang3.version>3.5</commons-lang3.version>
+        <commons-lang3.version>3.6</commons-lang3.version>
+        <commons-text.version>1.1</commons-text.version>
         <commons-collections4.version>4.1</commons-collections4.version>
         <rewrite.version>3.4.1.Final</rewrite.version>
         <rewrite-logging.version>1.0.5.Final</rewrite-logging.version>
@@ -41,7 +47,7 @@
         <httpclient.version>4.5.3</httpclient.version>
 
         <!-- JSON processing -->
-        <jackson-databind.version>2.8.8</jackson-databind.version>
+        <jackson-databind.version>2.8.9</jackson-databind.version>
         <javax.json-api.version>1.1</javax.json-api.version>
         <javax.json.version>1.1</javax.json.version>
 
@@ -49,23 +55,23 @@
         <roma-client.version>1.4</roma-client.version>
 
         <!-- Misc -->
-        <jsoup.version>1.10.2</jsoup.version>
+        <jsoup.version>1.10.3</jsoup.version>
         <json.version>20160212</json.version>
         <simple-java-mail.version>3.1.1</simple-java-mail.version>
         <google-api.version>1.22.0</google-api.version>
         <javax-mail.version>1.4.7</javax-mail.version>
 
         <!-- Assets -->
-        <sass-maven-plugin.version>2.23</sass-maven-plugin.version>
+        <sass-maven-plugin.version>2.25</sass-maven-plugin.version>
 
         <!-- Monitoring -->
-        <metrics.version>3.2.2</metrics.version>
-        <metrics-datadog.version>1.1.10</metrics-datadog.version>
+        <metrics.version>3.2.3</metrics.version>
+        <metrics-datadog.version>1.1.13</metrics-datadog.version>
 
         <!-- Test dependencies -->
         <junit.version>4.12</junit.version>
-        <powermock.version>1.7.0RC4</powermock.version>
-        <h2.version>1.4.195</h2.version>
+        <powermock.version>1.7.0</powermock.version>
+        <h2.version>1.4.196</h2.version>
         <maven-surefire-plugin.version>2.20</maven-surefire-plugin.version>
     </properties>
 
@@ -130,6 +136,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-text</artifactId>
+                <version>${commons-text.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -303,13 +314,46 @@
                 </plugin>
 
                 <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>buildnumber-maven-plugin</artifactId>
+                    <version>1.4</version>
+                    <executions>
+                        <execution>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>create</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <doCheck>false</doCheck>
+                        <doUpdate>false</doUpdate>
+                        <revisionOnScmFailure>unknown</revisionOnScmFailure>
+                    </configuration>
+                </plugin>
+
+                <plugin>
 					<artifactId>maven-war-plugin</artifactId>
 					<version>3.1.0</version>
+                    <configuration>
+                        <archive>
+                            <manifestEntries>
+                                <Git-Commit>${buildNumber}</Git-Commit>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
 				</plugin>
 
 				<plugin>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>3.0.2</version>
+                    <configuration>
+                        <archive>
+                            <manifestEntries>
+                                <Git-Commit>${buildNumber}</Git-Commit>
+                            </manifestEntries>
+                        </archive>
+                    </configuration>
 				</plugin>
 
 				<plugin>
@@ -346,6 +390,10 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+            </plugin>
 		</plugins>
 	</build>
 
@@ -354,6 +402,11 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
         </dependency>
     </dependencies>
 </project>
