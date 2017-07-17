@@ -89,8 +89,8 @@
                                 | xcolab_ImpactDefaultSeriesData | xcolab_ImpactTemplateMaxFocusArea
                                 | xcolab_ImpactTemplateFocusAreaList | xcolab_ImpactDefaultSeries
                                 | xcolab_ImpactTemplateSeries | xcolab_ImpactIteration
-                                | xcolab_ContestTeamMemberRole | xcolab_Contest |
-                                xcolab_ContestPhase
+                                | xcolab_Contest | xcolab_ContestTranslation
+                                | xcolab_ContestTeamMemberRole | xcolab_ContestPhase
                                 | xcolab_ContestPhaseType | xcolab_ContestPhaseRibbonType
                                 | xcolab_ContestSchedule | xcolab_ContestTeamMember
                                 | xcolab_ContestType | xcolab_OntologyTerm | xcolab_OntologySpace

@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.pojos.ContestPhase;
 import org.xcolab.model.tables.pojos.ContestPhaseType;
+import org.xcolab.model.tables.pojos.ContestTranslation;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contest.ContestDaoQuery;
 import org.xcolab.service.contest.domain.contestphase.ContestPhaseDao;
 import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
+import org.xcolab.service.contest.domain.contesttranslation.ContestTranslationDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.ontology.OntologyService;
 import org.xcolab.service.contest.utils.promotion.enums.ContestPhaseTypeValue;
@@ -34,15 +36,18 @@ public class ContestService {
     private static final Logger _log = LoggerFactory.getLogger(ContestService.class);
 
     private final ContestDao contestDao;
+    private final ContestTranslationDao contestTranslationDao;
     private final ContestPhaseDao contestPhaseDao;
     private final ContestPhaseTypeDao contestPhaseTypeDao;
     private final OntologyService ontologyService;
 
     @Autowired
-    public ContestService(ContestDao contestDao, ContestPhaseDao contestPhaseDao,
-            ContestPhaseTypeDao contestPhaseTypeDao, OntologyService ontologyService) {
+    public ContestService(ContestDao contestDao, ContestTranslationDao contestTranslationDao,
+            ContestPhaseDao contestPhaseDao, ContestPhaseTypeDao contestPhaseTypeDao,
+            OntologyService ontologyService) {
 
         this.contestDao = contestDao;
+        this.contestTranslationDao = contestTranslationDao;
         this.contestPhaseDao = contestPhaseDao;
         this.contestPhaseTypeDao = contestPhaseTypeDao;
         this.ontologyService = ontologyService;
@@ -161,6 +166,26 @@ public class ContestService {
         GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("US/Eastern"));
         calendar.setTime(date);
         return calendar.get(Calendar.YEAR);
+    }
+
+    public List<Contest> resolveTranslations(List<Contest> contests, String lang) {
+        return contests.stream()
+                .map(contest -> resolveTranslation(contest, lang))
+                .collect(Collectors.toList());
+    }
+
+    public Contest resolveTranslation(Contest contest, String lang) {
+        final Optional<ContestTranslation> contestTranslation =
+                contestTranslationDao.get(contest.getContestPK(), lang);
+        return contestTranslation
+                .map(translation -> {
+                    Contest ret = new Contest(contest);
+                    ret.setContestShortName(translation.getContestShortName());
+                    ret.setContestName(translation.getContestName());
+                    ret.setContestDescription(translation.getContestDescription());
+                    return ret;
+                })
+                .orElse(contest);
     }
 
     public void addContestYearSuffixToContest(Contest contest, boolean checkForCompleted) {

@@ -1069,8 +1069,8 @@ CREATE TABLE `Users_Roles` (
 CREATE TABLE `xcolab_Contest` (
   `ContestPK` bigint(20) NOT NULL,
   `contestTypeId` bigint(20) DEFAULT NULL,
-  `ContestName` varchar(1024) DEFAULT NULL,
-  `ContestShortName` varchar(512) DEFAULT NULL,
+  `ContestName` varchar(255) DEFAULT NULL,
+  `ContestShortName` varchar(128) DEFAULT NULL,
   `ContestUrlName` varchar(75) DEFAULT NULL,
   `ContestYear` bigint(20) DEFAULT NULL,
   `ContestDescription` longtext,
@@ -1139,6 +1139,18 @@ CREATE TABLE `xcolab_Contest` (
   KEY `IX_58A2B737` (`contestTier`,`contestTypeId`),
   KEY `IX_95122F5` (`contestTypeId`)/*,
   FULLTEXT KEY `ContestDescription_xcolab_Contest` (`ContestDescription`)*/
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `xcolab_ContestTranslation` (
+	contestId bigint(20) not null,
+	lang varchar(5) not null,
+	contestName varchar(255) null,
+	contestShortName varchar(128) null,
+	contestDescription longtext null,
+	createDate timestamp not null,
+	modifiedDate timestamp not null,
+	authorId bigint(20) not null,
+	primary key (contestId, lang)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_PlanTemplateSection` (

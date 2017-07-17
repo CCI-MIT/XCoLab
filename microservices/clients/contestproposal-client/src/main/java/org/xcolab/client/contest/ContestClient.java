@@ -16,6 +16,8 @@ import org.xcolab.client.contest.pojo.ContestDiscussionDto;
 import org.xcolab.client.contest.pojo.ContestDto;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.ContestScheduleDto;
+import org.xcolab.client.contest.pojo.ContestTranslation;
+import org.xcolab.client.contest.pojo.ContestTranslationDto;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseDto;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
@@ -31,6 +33,7 @@ import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
+import org.xcolab.util.http.client.RestResource2;
 import org.xcolab.util.http.client.RestResource2L;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.client.types.TypeProvider;
@@ -52,6 +55,7 @@ public class ContestClient {
     private final RestService contestService;
 
     private final RestResource1<ContestDto, Long> contestResource;
+    private final RestResource2<ContestDto, Long, ContestTranslationDto, String> contestTranslationResource;
     private final RestResource<ContestDiscussionDto, Long> contestDiscussionResource;
 
     private final RestResource2L<ContestDto, ContestPhaseDto> visiblePhasesResource;
@@ -87,6 +91,8 @@ public class ContestClient {
                 new ParameterizedTypeReference<List<Long>>() {
                 })
         );
+        contestTranslationResource = new RestResource2<>(contestResource,
+                "translations", ContestTranslationDto.TYPES);
     }
 
     public static ContestClient fromService(RestService contestService) {
@@ -216,6 +222,29 @@ public class ContestClient {
             return list.get(0).toPojo(contestService);
         }
         throw new ContestNotFoundException(contestUrlName, contestYear);
+    }
+
+    public List<ContestTranslation> getTranslationsForContestId(long contestId) {
+        final List<ContestTranslationDto> dtos =
+                contestTranslationResource.resolveParent(contestResource.id(contestId))
+                        .list()
+                        .queryParam("contestId", contestId)
+                        .execute();
+        return DtoUtil.toPojos(dtos, contestService);
+    }
+
+    public ContestTranslation addTranslation(ContestTranslation contestTranslation) {
+        return contestTranslationResource
+                .resolveParent(contestResource.id(contestTranslation.getContestId()))
+                .create(new ContestTranslationDto(contestTranslation))
+                .execute().toPojo(contestService);
+    }
+
+    public boolean updateTranslation(ContestTranslation contestTranslation) {
+        return contestTranslationResource
+                .resolveParent(contestResource.id(contestTranslation.getContestId()))
+                .update(new ContestTranslationDto(contestTranslation), contestTranslation.getLang())
+                .execute();
     }
 
     public boolean isContestShared(long contestId) {

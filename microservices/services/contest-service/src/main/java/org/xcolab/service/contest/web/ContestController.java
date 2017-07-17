@@ -1,5 +1,6 @@
 package org.xcolab.service.contest.web;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +17,11 @@ import org.xcolab.model.tables.pojos.Contest;
 import org.xcolab.model.tables.pojos.ContestCollectionCard;
 import org.xcolab.model.tables.pojos.ContestDiscussion;
 import org.xcolab.model.tables.pojos.ContestPhase;
+import org.xcolab.model.tables.pojos.ContestTranslation;
 import org.xcolab.service.contest.domain.contest.ContestDao;
 import org.xcolab.service.contest.domain.contestcollectioncard.ContestCollectionCardDao;
 import org.xcolab.service.contest.domain.contestdiscussion.ContestDiscussionDao;
+import org.xcolab.service.contest.domain.contesttranslation.ContestTranslationDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.collectioncard.CollectionCardService;
 import org.xcolab.service.contest.service.contest.ContestService;
@@ -33,6 +36,7 @@ import java.util.List;
 public class ContestController {
 
     private final ContestDao contestDao;
+    private final ContestTranslationDao contestTranslationDao;
     private final ContestDiscussionDao contestDiscussionDao;
     private final ContestCollectionCardDao contestCollectionCardDao;
 
@@ -41,10 +45,13 @@ public class ContestController {
     private final OntologyService ontologyService;
 
     @Autowired
-    public ContestController(ContestService contestService,
-        CollectionCardService collectionCardService, ContestDao contestDao,
-        ContestCollectionCardDao contestCollectionCardDao,
-        ContestDiscussionDao contestDiscussionDao, OntologyService ontologyService) {
+    public ContestController(ContestTranslationDao contestTranslationDao, ContestService contestService,
+            CollectionCardService collectionCardService, ContestDao contestDao,
+            ContestCollectionCardDao contestCollectionCardDao,
+            ContestDiscussionDao contestDiscussionDao, OntologyService ontologyService) {
+
+
+        this.contestTranslationDao = contestTranslationDao;
         this.contestService = contestService;
         this.collectionCardService = collectionCardService;
         this.contestDao = contestDao;
@@ -90,6 +97,7 @@ public class ContestController {
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String sort,
+            @RequestParam(required = false) String lang,
             @RequestParam(required = false) String contestUrlName,
             @RequestParam(required = false) Long contestYear,
             @RequestParam(required = false) Boolean active,
@@ -113,9 +121,14 @@ public class ContestController {
                 focusAreaIds = descendantFocusAreas;
             }
         }
-        return contestDao.findByGiven(paginationHelper, contestUrlName, contestYear, active,
-            featured, contestTiers, focusAreaIds, contestScheduleId, planTemplateId,
-            contestTypeIds, contestPrivate, searchTerm);
+        final List<Contest> contests = contestDao
+                .findByGiven(paginationHelper, contestUrlName, contestYear, active, featured,
+                        contestTiers, focusAreaIds, contestScheduleId, planTemplateId,
+                        contestTypeIds, contestPrivate, searchTerm);
+        if (StringUtils.isNotEmpty(lang) && !"en".equalsIgnoreCase(lang)) {
+            return contestService.resolveTranslations(contests, lang);
+        }
+        return contests;
     }
 
     @RequestMapping(value = "/contests/getContestMatchingOntologyTerms", method = {RequestMethod.GET, RequestMethod.HEAD})
@@ -171,33 +184,65 @@ public class ContestController {
         return contestService.getSubContestsByOntologySpaceId(contestId, ontologySpaceId);
     }
 
-    @PostMapping(value = "/contests")
+    @PostMapping("/contests")
     public Contest createContest(@RequestBody Contest contest) {
         contest.setCreated(new Timestamp(new Date().getTime()));
         contest.setUpdated(new Timestamp(new Date().getTime()));
         return this.contestDao.create(contest);
     }
 
-    @PutMapping(value = "/contests/{contestPK}")
-    public boolean updateContest(@RequestBody Contest contest,
-            @PathVariable long contestPK) throws NotFoundException {
+    @GetMapping("/contests/{contestId}")
+    public Contest getContest(@PathVariable long contestId,
+            @RequestParam(required = false) String lang) throws NotFoundException {
+        final Contest contest = contestDao.get(contestId);
+        if (StringUtils.isNotEmpty(lang) && !"en".equalsIgnoreCase(lang)) {
+            return contestService.resolveTranslation(contest, lang);
+        }
+        return contest;
+    }
 
-        if (contestDao.get(contestPK) == null) {
-            throw new NotFoundException("No Contest with id " + contestPK);
+    @PutMapping("/contests/{contestId}")
+    public boolean updateContest(@RequestBody Contest contest,
+            @PathVariable long contestId) throws NotFoundException {
+
+        if (contestDao.get(contestId) == null) {
+            throw new NotFoundException("No Contest with id " + contestId);
         } else {
             contest.setUpdated(new Timestamp(new Date().getTime()));
             return contestDao.update(contest);
         }
     }
 
-    @DeleteMapping(value = "/contests/{contestPK}")
-    public boolean deleteContest(@PathVariable long contestPK) throws NotFoundException {
-        if (contestDao.get(contestPK) == null) {
-            throw new NotFoundException("No Contest with id " + contestPK);
+    @DeleteMapping("/contests/{contestId}")
+    public boolean deleteContest(@PathVariable long contestId) throws NotFoundException {
+        if (contestDao.get(contestId) == null) {
+            throw new NotFoundException("No Contest with id " + contestId);
         } else {
             //TODO: currently deleting phases is handled client side - this should be moved here
-            return contestDao.delete(contestPK);
+            return contestDao.delete(contestId);
         }
+    }
+
+    @PostMapping("/contests/{contestId}/translations")
+    public ContestTranslation createTranslation(@RequestBody ContestTranslation contestTranslation,
+            @PathVariable long contestId) {
+        if (contestTranslation.getContestId() != contestId) {
+            throw new IllegalArgumentException("");
+        }
+        return contestTranslationDao.create(contestTranslation);
+    }
+
+    @PutMapping("/contests/{contestId}/translations/{lang}")
+    public boolean updateTranslation(@RequestBody ContestTranslation contestTranslation,
+            @PathVariable long contestId, @PathVariable String lang) {
+        contestTranslation.setContestId(contestId);
+        contestTranslation.setLang(lang);
+        return contestTranslationDao.update(contestTranslation);
+    }
+
+    @GetMapping("/contests/{contestId}/translations")
+    public List<ContestTranslation> getTranslations(@RequestParam long contestId) {
+        return contestTranslationDao.listByContestId(contestId);
     }
 
     @RequestMapping(value = "/contests/getContestByThreadId", method = RequestMethod.GET)
@@ -265,11 +310,6 @@ public class ContestController {
     @GetMapping("/contests/{contestId}/isShared")
     public boolean isContestShared(@PathVariable long contestId) {
         return contestDao.isShared(contestId);
-    }
-
-    @GetMapping("/contests/{contestId}")
-    public Contest getContest(@PathVariable long contestId) throws NotFoundException {
-        return contestDao.get(contestId);
     }
 
     @GetMapping("/contests/{contestId}/visiblePhases")

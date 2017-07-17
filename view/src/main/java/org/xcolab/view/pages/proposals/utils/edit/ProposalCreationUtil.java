@@ -94,7 +94,7 @@ public final class ProposalCreationUtil {
                     proposalContext.getClients().getProposalClient();
             Proposal updatedProposal = proposalClient.getProposal(proposalWrapper.getProposalId());
             Contest contestMicro = contestClient.getContest(contest.getContestPK());
-            new ProposalCreationNotification(updatedProposal, contestMicro, baseUrl).sendMessage();
+            new ProposalCreationNotification(updatedProposal, contestMicro).sendMessage();
         } catch (ContestNotFoundException | ProposalNotFoundException ignored) {
 
         }

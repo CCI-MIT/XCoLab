@@ -10,8 +10,7 @@ public class ProposalCreationNotification extends ProposalNotification {
 
     private static final String DEFAULT_TEMPLATE_STRING = "PROPOSAL_CREATION_DEFAULT";
 
-    public ProposalCreationNotification(Proposal createdProposal, Contest contest,
-                                        String baseUrl) {
+    public ProposalCreationNotification(Proposal createdProposal, Contest contest) {
         super(createdProposal, contest, MembersClient.getMemberUnchecked(createdProposal.getAuthorId()),
                 LinkUtils.getNonBlankStringOrDefault(contest.getProposalCreationTemplateString(),
                         DEFAULT_TEMPLATE_STRING));

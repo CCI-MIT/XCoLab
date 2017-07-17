@@ -131,6 +131,20 @@ CREATE TABLE `xcolab_Contest` (
   KEY `IX_95122F5` (`contestTypeId`),
   FULLTEXT KEY `ContestDescription_xcolab_Contest` (`ContestDescription`)*/
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE `xcolab_ContestTranslation` IF EXISTS;
+CREATE TABLE `xcolab_ContestTranslation` (
+	contestId bigint(20) not null,
+	lang varchar(5) not null,
+	contestName varchar(255) null,
+	contestShortName varchar(128) null,
+	contestDescription longtext null,
+	createDate timestamp not null,
+	modifiedDate timestamp not null,
+	authorId bigint(20) not null,
+	primary key (contestId, lang)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 DROP TABLE `xcolab_Proposal` IF EXISTS;
 CREATE TABLE `xcolab_Proposal` (
   `proposalId` bigint(20) NOT NULL AUTO_INCREMENT,
