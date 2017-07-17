@@ -1,16 +1,19 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-	xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
- version="2.0">
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+          version="2.0" xmlns:spring="http://www.springframework.org/tags">
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <c:if test="${not empty communityTopContentArticleId}">
 	<xcolab:layout>
 		<collab:content articleId="${communityTopContentArticleId}" />
 		<div id="content">
-			<div class="pro" id="bread"><a href="/members">Community</a>
-				<div class="memberActivitiesContainer" style="display: inline;"><img alt="" height="8" src="images/arrow.gif" width="8" />
-                    <a href="/members">Community</a> <img alt="" height="8" src="/images/arrow.gif" width="8" /> <a href="/activities">All activities</a></div>
+			<div class="pro" id="bread">
+				<div class="memberActivitiesContainer" style="display: inline;">
+                    <img alt="" height="8" src="images/arrow.gif" width="8" />
+                    <a href="/members"><spring:message code="colab.breadcrums.community"/> </a>
+                    <img alt="" height="8" src="/images/arrow.gif" width="8" />
+                    <a href="/activities"><spring:message code="colab.breadcrums.activities"/> </a></div>
 			</div>
 
 			<jsp:directive.include file="activities_common.jspx" />
