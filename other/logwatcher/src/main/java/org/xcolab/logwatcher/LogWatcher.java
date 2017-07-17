@@ -3,20 +3,30 @@ package org.xcolab.logwatcher;
 
 
 import com.atlassian.jira.rest.client.api.JiraRestClient;
-import com.atlassian.jira.rest.client.api.domain.Issue;
-import com.atlassian.jira.rest.client.api.domain.input.IssueInput;
 import com.atlassian.jira.rest.client.api.domain.input.IssueInputBuilder;
 import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Properties;
 
 public class LogWatcher {
 
-    private static Properties prop = new Properties();
-    private static List<ParsedException> knownExceptions = new LinkedList();
+    private static final Properties prop = new Properties();
+    private static final List<ParsedException> knownExceptions = new LinkedList<>();
 
     public static void main(String[] args) throws IOException, InterruptedException, URISyntaxException {
         parseConfigFile();
@@ -33,16 +43,20 @@ public class LogWatcher {
 
         String line;
 
-        List<ParsedException> newLogMessages= new LinkedList();
+        List<ParsedException> newLogMessages= new LinkedList<>();
         long lastActivity = System.currentTimeMillis();
 
         while((line=input.readLine()) != null) {
             //System.out.println(line);
-            if (line.length() < 5) continue;
+            if (line.length() < 5) {
+                continue;
+            }
             if (!line.contains("\tat ") && !line.contains("Caused by")){
                 newLogMessages.add(new ParsedException(line));
             } else {
-                if (newLogMessages.size() == 0) continue;
+                if (newLogMessages.size() == 0) {
+                    continue;
+                }
                 newLogMessages.get(newLogMessages.size()-1).stackTrace.add(line);
             }
             // Check if last log activity is more then 1 second in the past and trigger handling
@@ -58,7 +72,9 @@ public class LogWatcher {
                         // ignore known exceptions
                         boolean known = false;
                         for (ParsedException ex : knownExceptions){
-                            if(e.equals(ex)) known = true;
+                            if(e.equals(ex)) {
+                                known = true;
+                            }
                         }
                         if (!known) {
                             knownExceptions.add(e);
@@ -127,8 +143,9 @@ public class LogWatcher {
                 knownExceptions.add(obj);
             }
             ois.close();
-        } catch(EOFException e) {  }
-        catch(Exception e){
+        } catch(EOFException e) {
+
+        } catch(Exception e){
             e.printStackTrace();
         }
     }
@@ -136,7 +153,10 @@ public class LogWatcher {
     private static void parseConfigFile(){
         String path = System.getProperty("user.dir") + "/config.properties";
         File f = new File(path);
-        if(!f.exists()) path = System.getProperty("user.dir") + "/target/classes/config.properties"; /* local testing */
+        if(!f.exists()) {
+            path = System.getProperty("user.dir") + "/target/classes/config.properties"; /* local
+             testing */
+        }
 
         InputStream input = null;
         try {

@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.proposals.wrappers;
 
-
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
@@ -11,7 +10,6 @@ import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
 import org.xcolab.util.attributes.AttributeGetter;
 
 import java.io.IOException;
-
 
 public class ProposalsPreferencesWrapper extends WidgetPreference {
 
@@ -24,7 +22,7 @@ public class ProposalsPreferencesWrapper extends WidgetPreference {
     private String termsOfService;
     private String callToAction;
     private String contestTypeId;
-    private ContestType contestType;
+    private final ContestType contestType;
 
     private String title;
     private String allContestsUrl;
@@ -46,10 +44,9 @@ public class ProposalsPreferencesWrapper extends WidgetPreference {
     public ProposalsPreferencesWrapper() {
         this(null);
     }
+
     public ProposalsPreferencesWrapper(String preferenceId) {
         super(preferenceId);
-
-
 
         termsOfService = getTermsOfServiceTemplateWrapper().getHeader();
         callToAction = (prefs.has(CALL_TO_ACTION))?(prefs.getString(CALL_TO_ACTION)):(CALL_TO_ACTION_DEFAULT);
@@ -152,5 +149,9 @@ public class ProposalsPreferencesWrapper extends WidgetPreference {
 
     public ContestType getContestType() {
         return contestType;
+    }
+
+    public ContestType getContestType(String language) {
+        return contestType.withLocale(language);
     }
 }

@@ -137,23 +137,12 @@ class AbstractProposal implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Proposal (");
+        String sb = "Proposal (" + proposalid + ", " + createdate + ", " + updateddate + ", "
+                + currentversion + ", " + authorid + ", " + visible + ", " + discussionid + ", "
+                + resultsdiscussionid + ", " + judgediscussionid + ", " + fellowdiscussionid + ", "
+                + advisordiscussionid + ", " + groupid + ")";
 
-        sb.append(proposalid);
-        sb.append(", ").append(createdate);
-        sb.append(", ").append(updateddate);
-        sb.append(", ").append(currentversion);
-        sb.append(", ").append(authorid);
-        sb.append(", ").append(visible);
-        sb.append(", ").append(discussionid);
-        sb.append(", ").append(resultsdiscussionid);
-        sb.append(", ").append(judgediscussionid);
-        sb.append(", ").append(fellowdiscussionid);
-        sb.append(", ").append(advisordiscussionid);
-        sb.append(", ").append(groupid);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 
 }

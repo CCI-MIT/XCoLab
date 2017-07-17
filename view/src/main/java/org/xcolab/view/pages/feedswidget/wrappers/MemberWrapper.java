@@ -1,16 +1,16 @@
 package org.xcolab.view.pages.feedswidget.wrappers;
 
-import com.ocpsoft.pretty.time.PrettyTime;
-
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.util.time.DurationFormatter;
 
 import java.io.Serializable;
 import java.util.Date;
 
-public class MemberWrapper implements Serializable{
+public class MemberWrapper implements Serializable {
+
 	private static final long serialVersionUID = 1L;
     private Member user;
 
@@ -18,7 +18,6 @@ public class MemberWrapper implements Serializable{
     private ActivityEntry activity;
     private String lastActivityBody;
     private Date lastActivityDate;
-    private static final PrettyTime timeAgoConverter = new PrettyTime();
 
     public MemberWrapper(Member user, int activitiesCount) {
         this.user = user;
@@ -30,7 +29,6 @@ public class MemberWrapper implements Serializable{
         this.user = user;
         this.activity = activity;
         if (activity != null) {
-            lastActivityBody = activity.getActivityEntryBody();
             lastActivityDate = new Date(activity.getCreateDate().getTime());
         }
     }
@@ -38,7 +36,7 @@ public class MemberWrapper implements Serializable{
     public MemberWrapper(ActivityEntry activity) {
         this.activity = activity;
         if (activity != null) {
-            lastActivityBody = this.activity.getActivityEntryBody();
+
             lastActivityDate = new Date(activity.getCreateDate().getTime());
             try {
                 user = MembersClient.getMember(activity.getMemberId());
@@ -72,6 +70,6 @@ public class MemberWrapper implements Serializable{
     }
 
     public String getLastActivityDateAgo() {
-        return timeAgoConverter.format(lastActivityDate);
+        return DurationFormatter.forRequestLocale().format(lastActivityDate);
     }
 }

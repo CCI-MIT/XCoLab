@@ -9,11 +9,11 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
-import org.xcolab.view.util.entity.enums.MemberRole;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.view.util.entity.enums.MemberRole;
 
 import java.util.List;
 

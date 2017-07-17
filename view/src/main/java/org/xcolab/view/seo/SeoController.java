@@ -19,7 +19,7 @@ public class SeoController {
             throws IOException{
         StringBuilder sb = new StringBuilder();
         final ServerEnvironment serverEnvironment =
-                PlatformAttributeKey.PLATFORM_SERVER_ENVIRONMENT.get();
+                PlatformAttributeKey.SERVER_ENVIRONMENT.get();
         if (serverEnvironment == ServerEnvironment.PRODUCTION) {
             sb.append("User-agent: *\n");
             sb.append("Disallow: \n");

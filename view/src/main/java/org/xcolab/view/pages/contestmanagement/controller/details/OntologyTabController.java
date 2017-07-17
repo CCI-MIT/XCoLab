@@ -13,12 +13,12 @@ import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
-import org.xcolab.view.util.entity.enums.OntologySpaceEnum;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.OntologyWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
+import org.xcolab.view.util.entity.enums.OntologySpaceEnum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,10 +80,10 @@ public class OntologyTabController extends AbstractTabController {
 
         Contest contest = getContest();
         Long focusAreaId = contest.getFocusAreaId();
-        if (focusAreaId <= 0) {
+        if (focusAreaId == null) {
             FocusArea focusArea = new FocusArea();
 
-            focusArea.setName(" Focus area for " + contest.getContestShortName());
+            focusArea.setName("Focus area for " + contest.getContestShortName());
             focusArea.setOrder_(0);
             focusArea = OntologyClientUtil.createFocusArea(focusArea);
             focusAreaId = focusArea.getId();

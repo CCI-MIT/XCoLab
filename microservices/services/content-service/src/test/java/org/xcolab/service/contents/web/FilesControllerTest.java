@@ -69,7 +69,7 @@ public class FilesControllerTest {
     @Test
     public void shouldCreateNewFileEntryDao() throws Exception {
         FileEntry fileEntry = new FileEntry();
-        fileEntry.setFileEntryId(12l);
+        fileEntry.setFileEntryId(12L);
         this.mockMvc.perform(
                 post("/fileEntries")
                         .contentType(contentType).accept(contentType)
@@ -82,7 +82,7 @@ public class FilesControllerTest {
     @Test
     public void shouldGetFileEntryDao() throws Exception {
         FileEntry fileEntry = new FileEntry();
-        fileEntry.setFileEntryId(12l);
+        fileEntry.setFileEntryId(12L);
         this.mockMvc.perform(
                 get("/fileEntries/123")
                         .contentType(contentType).accept(contentType)

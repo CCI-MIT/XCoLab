@@ -8,9 +8,9 @@ import org.joda.time.format.DateTimeFormatter;
 
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.view.pages.contestmanagement.utils.ContestResourcesHtmlParserUtil;
@@ -137,8 +137,7 @@ public class ContestResourcesBean implements Serializable {
                 sections.subList(endOfAdditionalSections, sections.size());
         baseSections.addAll(baseSectionsTop);
         baseSections.addAll(baseSectionBottom);
-        int startOfAdditionalSections = START_INDEX_OF_BOTTOM_SECTIONS;
-        additionalSections = sections.subList(startOfAdditionalSections, endOfAdditionalSections);
+        additionalSections = sections.subList(START_INDEX_OF_BOTTOM_SECTIONS, endOfAdditionalSections);
     }
 
     public String getSectionsAsHtml() {
@@ -171,9 +170,7 @@ public class ContestResourcesBean implements Serializable {
             }
         }
 
-        for (SectionDefinitionWrapper removedSectionDefinition : removedSectionDefinitions) {
-            sections.remove(removedSectionDefinition);
-        }
+        sections.removeAll(removedSectionDefinitions);
     }
 
     private void incooperateNewSections() {

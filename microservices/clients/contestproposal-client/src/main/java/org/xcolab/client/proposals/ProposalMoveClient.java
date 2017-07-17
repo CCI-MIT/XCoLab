@@ -29,12 +29,7 @@ public final class ProposalMoveClient {
     }
 
     public static ProposalMoveClient fromService(RestService proposalService) {
-        ProposalMoveClient instance = instances.get(proposalService);
-        if (instance == null) {
-            instance = new ProposalMoveClient(proposalService);
-            instances.put(proposalService, instance);
-        }
-        return instance;
+        return instances.computeIfAbsent(proposalService, ProposalMoveClient::new);
     }
 
     public List<ProposalMoveHistory> getBySourceProposalIdContestId(Long sourceProposalId,

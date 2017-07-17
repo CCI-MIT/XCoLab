@@ -1,8 +1,6 @@
 package org.xcolab.view.util.clienthelpers;
 
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
@@ -15,19 +13,15 @@ public class EmailTemplateClientMockerHelper {
     public static void mockEmailTemplateClient(){
         PowerMockito.mockStatic(EmailTemplateClientUtil.class);
         Mockito.when(EmailTemplateClientUtil.getContestEmailTemplateByType(anyString()))
-                .thenAnswer(new Answer<ContestEmailTemplate>() {
-                    @Override
-                    public ContestEmailTemplate answer(InvocationOnMock invocation)
-                            throws Throwable {
+                .thenAnswer(invocation -> {
 
-                        ContestEmailTemplate contestEmailTemplate = new ContestEmailTemplate();
-                        contestEmailTemplate.setFooter(TestUtil.createStringWithLength(10));
-                        contestEmailTemplate.setHeader(TestUtil.createStringWithLength(10));
-                        contestEmailTemplate.setSubject(TestUtil.createStringWithLength(10));
-                        contestEmailTemplate.setType_(TestUtil.createStringWithLength(10));
+                    ContestEmailTemplate contestEmailTemplate = new ContestEmailTemplate();
+                    contestEmailTemplate.setFooter(TestUtil.createStringWithLength(10));
+                    contestEmailTemplate.setHeader(TestUtil.createStringWithLength(10));
+                    contestEmailTemplate.setSubject(TestUtil.createStringWithLength(10));
+                    contestEmailTemplate.setType_(TestUtil.createStringWithLength(10));
 
-                        return contestEmailTemplate;
-                    }
+                    return contestEmailTemplate;
                 });
         AdminClientMockerHelper.mockAdminClient();
     }

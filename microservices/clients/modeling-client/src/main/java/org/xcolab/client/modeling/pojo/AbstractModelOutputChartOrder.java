@@ -206,19 +206,11 @@ public abstract class AbstractModelOutputChartOrder implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("ModelOutputChartOrder (");
+        String sb = "ModelOutputChartOrder (" + modeloutputchartorderpk + ", " + modelid + ", "
+                + modeloutputlabel + ", " + modeloutputchartorder + ", " + modelindexrangepolicy
+                + ", " + modelindexrangemessage + ", " + modelindexerrorpolicy + ", "
+                + modelindexerrormessage + ", " + modelchartisvisible + ")";
 
-        sb.append(modeloutputchartorderpk);
-        sb.append(", ").append(modelid);
-        sb.append(", ").append(modeloutputlabel);
-        sb.append(", ").append(modeloutputchartorder);
-        sb.append(", ").append(modelindexrangepolicy);
-        sb.append(", ").append(modelindexrangemessage);
-        sb.append(", ").append(modelindexerrorpolicy);
-        sb.append(", ").append(modelindexerrormessage);
-        sb.append(", ").append(modelchartisvisible);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

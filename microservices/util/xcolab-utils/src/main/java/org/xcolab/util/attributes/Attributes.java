@@ -65,6 +65,6 @@ public final class Attributes {
 
     public static <T> AttributeGetterBuilder<T> newJsonAttribute(
             AttributeProvider<?> attributeProvider, Class<T> entityType) {
-        return new AttributeGetterBuilder<>(new JsonAttribute<T>(attributeProvider, entityType));
+        return new AttributeGetterBuilder<>(new JsonAttribute<>(attributeProvider, entityType));
     }
 }

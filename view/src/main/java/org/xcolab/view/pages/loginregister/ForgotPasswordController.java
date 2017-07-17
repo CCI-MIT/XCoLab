@@ -44,7 +44,7 @@ public class ForgotPasswordController {
         String referer = request.getHeader(HttpHeaders.REFERER);
         redirect = !StringUtils.isBlank(redirect) ? redirect : referer;
 
-        redirect = !StringUtils.isBlank(redirect) ? redirect : PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+        redirect = !StringUtils.isBlank(redirect) ? redirect : PlatformAttributeKey.COLAB_URL.get();
 
         redirect = Helper.removeParamFromRequestStr(redirect, "signinRegError");
         redirect = Helper.removeParamFromRequestStr(redirect, "isPasswordReminder");
@@ -62,7 +62,7 @@ public class ForgotPasswordController {
             }
 
             String token = MembersClient.createForgotPasswordToken(member.getUserId());
-            String colabUrl = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+            String colabUrl = PlatformAttributeKey.COLAB_URL.get();
             String passwordLink = colabUrl + FORGOT_PASSWORD_URL + token;
 
             sendEmailNotificationToForPasswordReset(request.getRemoteAddr(),

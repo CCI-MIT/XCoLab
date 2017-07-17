@@ -75,7 +75,7 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $b-Typography__textColor__
   font-size: 14px;
   background-color: $t-Color__primary__grey--light;
   padding: 17px;
-  padding-bottom: 0px;
+  padding-bottom: 0;
   padding-left: 20px;
 
   span {
@@ -176,7 +176,7 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $b-Typography__textColor__
   line-height: 34px;
   background: $t-Color__grey--lightest;
   border: solid 1px $t-Color__grey--medium;
-  @include border-radius(6px);
+  border-radius: 6px;
   margin-right: 16px;
   font-size: 12px;
   font-weight: $b-Typography__fontWeight--bold;
@@ -188,11 +188,11 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $b-Typography__textColor__
     padding-right: 6px;
 
     &.selected {
-      @include border-radius(5px);
+      border-radius: 5px;
       color: white;
 
       border: solid 1px #4746ad;
-      box-shadow: 0px 0px 4px #3e3e3e;
+      box-shadow: 0 0 4px #3e3e3e;
       margin-top: -1px;
       margin-left: -1px;
     }
@@ -371,8 +371,6 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $b-Typography__textColor__
 
 #priorActiveAllWidget {
   border: 1px solid $t-Color__primary;
-  -moz-box-shadow: 0 2px 2px #666;
-  -webkit-box-shadow: 0 2px 2px #666;
   box-shadow: 0 2px 2px #666;
   position: absolute;
   display: none;
@@ -443,9 +441,8 @@ $p-Contests__priorActiveAllWidget__a__color--isHover: $b-Typography__textColor__
 }
 
 .prop {
-   display: inline;
+  display: inline;
   padding-right: 18px;
-  text-transform: lowercase;
 }
 
 .comm {

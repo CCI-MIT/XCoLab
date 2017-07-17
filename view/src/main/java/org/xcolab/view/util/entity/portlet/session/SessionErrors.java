@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class SessionErrors {
 
-    private static  String _CLASS_NAME = "com.liferay.portal.kernel.servlet.";
+    private static final String _CLASS_NAME = "com.liferay.portal.kernel.servlet.";
 
     public static void add(HttpServletRequest servletRequest, String key){
         SessionHelper.add(servletRequest, key, _CLASS_NAME);

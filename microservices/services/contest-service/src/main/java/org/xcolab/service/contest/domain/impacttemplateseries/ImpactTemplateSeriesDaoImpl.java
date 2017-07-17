@@ -12,9 +12,12 @@ import static org.xcolab.model.Tables.IMPACT_TEMPLATE_SERIES;
 @Repository
 public class ImpactTemplateSeriesDaoImpl implements ImpactTemplateSeriesDao {
 
-    @Autowired
-    private DSLContext dslContext;
+    private final DSLContext dslContext;
 
+    @Autowired
+    public ImpactTemplateSeriesDaoImpl(DSLContext dslContext) {this.dslContext = dslContext;}
+
+    @Override
     public ImpactTemplateSeries get(Long seriesId) throws NotFoundException {
 
         final Record record =  this.dslContext.selectFrom(IMPACT_TEMPLATE_SERIES)

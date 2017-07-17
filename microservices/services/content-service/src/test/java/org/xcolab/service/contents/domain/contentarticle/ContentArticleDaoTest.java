@@ -1,6 +1,5 @@
 package org.xcolab.service.contents.domain.contentarticle;
 
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -36,19 +35,17 @@ import static org.junit.Assert.assertTrue;
 public class ContentArticleDaoTest {
 
     @Autowired
-    ContentArticleDao contentArticleDao;
+    private ContentArticleDao contentArticleDao;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-
     @Test
     public void shouldGetArticlesInFolder() throws Exception {
 
-        List<? extends ContentArticle> az = contentArticleDao.getArticlesInFolder(5l);
+        List<? extends ContentArticle> az = contentArticleDao.getArticlesInFolder(5L);
 
         assertEquals(2,az.size());
-
     }
 
     @Test
@@ -63,16 +60,14 @@ public class ContentArticleDaoTest {
         ContentArticle ae = new ContentArticle();
         ae = contentArticleDao.create(ae);
         assertNotNull(contentArticleDao.get(ae.getContentArticleId()));
-
     }
 
     @Test
     public void shouldGetContentArticle() throws Exception {
 
-        ContentArticle ae = contentArticleDao.get(02l);
+        ContentArticle ae = contentArticleDao.get(2L);
 
         assertNotNull(contentArticleDao.get(ae.getContentArticleId()));
-
     }
 
     @Test
@@ -83,15 +78,14 @@ public class ContentArticleDaoTest {
         assertTrue(contentArticleDao.delete(ae.getContentArticleId())==1);
         thrown.expect(NotFoundException.class);
         assertNotNull(contentArticleDao.get(ae.getContentArticleId()));
-
     }
 
     @Test
     public void shouldUpdateContentArticle() throws Exception {
         ContentArticle ae = new ContentArticle();
-        ae.setAuthorId(03l);
+        ae.setAuthorId(3L);
         ae = contentArticleDao.create(ae);
-        ae.setAuthorId(01l);
+        ae.setAuthorId(1L);
         contentArticleDao.update(ae);
         ContentArticle az = contentArticleDao.get(ae.getContentArticleId());
         assertEquals(az.getAuthorId(),ae.getAuthorId());

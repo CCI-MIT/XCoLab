@@ -5,15 +5,15 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.tabs.ProposalTabCanAccessAlgorithm;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextWrapper;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 public class ScreeningAccessAlgorithm implements ProposalTabCanAccessAlgorithm {
 
     @Override
-    public boolean canAccess(ProposalsContextWrapper contextWrapper) {
-        final ProposalsPermissions permissions = contextWrapper.getPermissions();
-        final ContestPhase contestPhase = contextWrapper.getContestPhase();
-        final Contest contest = contextWrapper.getContest();
+    public boolean canAccess(ProposalContext proposalContext) {
+        final ProposalsPermissions permissions = proposalContext.getPermissions();
+        final ContestPhase contestPhase = proposalContext.getContestPhase();
+        final Contest contest = proposalContext.getContest();
 
         final boolean isForeignContest = contest.getIsSharedContestInForeignColab();
         final boolean hasCorrectRole = permissions.getCanFellowActions()

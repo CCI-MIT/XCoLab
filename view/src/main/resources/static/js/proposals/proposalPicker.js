@@ -232,22 +232,17 @@ function selectProposal(proposalId, proposalName, contestName, proposalLinkUrl, 
 }
 
 /* Remove picked proposal from list or single field */
-function removePickedProposal(sectionId,proposalId,element, multipleProposals){
+function removePickedProposal(sectionId, proposalId, element, multipleProposals) {
     var inputField = $("input[name='sectionsContent[" + sectionId + "]']");
     if (multipleProposals){
         var proposalIds = inputField.val().split(',');
-        var output = "";
         proposalIds.splice( $.inArray(proposalId.toString(), proposalIds), 1 );
-        for (var i = 0; i < (proposalIds.length - 1); i++){
-            output +=  proposalIds[i] + ',';
-        }
-        inputField.val(output);
-        element.parent().parent().remove();
+        inputField.val(proposalIds.join(','));
+        element.parent().remove();
     } else{
         inputField.val('');
         element.parent().remove();
     }
-
 }
 
 function addToProposalPickerTable(data, even){
@@ -255,8 +250,7 @@ function addToProposalPickerTable(data, even){
     var inputField = $("input[name='sectionsContent[" + currentSectionId + "]']");
     var highlight = false;
     if (inputField.length > 0) {
-    	highlight = ($.inArray(data.id.toString(), inputField.val().split(','))>=0);
-    	
+    	highlight = ($.inArray(data.id.toString(), inputField.val().split(',')) >= 0);
     }
 
     var tableRow = jQuery(proposalPickerProposalEntryTemplate({data: data}));
@@ -398,21 +392,19 @@ $("#breadContestsList").click(function(event) {
 });
 
 
-$("#savePickedProposals").click(function(event) {
+function savePickedProposals() {
     var inputField = $("input[name='sectionsContent[" + currentSectionId + "]']");
     var proposalListContainer = inputField.siblings('ul');
     var proposalIds = [];
     proposalListContainer.empty();
-	for (var i = 0; i < pickedProposals.length; i++) {
-		var proposal = pickedProposals[i];
-		proposalIds.push(proposal.proposalId);
-		proposalListContainer.append('<li><a href="' + proposal.linkUrl + '">' + proposal.proposalName + '</a> (<a onclick="removePickedProposal(' + currentSectionId + ',' + proposal.proposalId + ', $(this), true);" href="javascript:;">remove</a>)</li>');
-	}
-	inputField.val(proposalIds.join(","));
+    for (var i = 0; i < pickedProposals.length; i++) {
+        var proposal = pickedProposals[i];
+        proposalIds.push(proposal.proposalId);
+        proposalListContainer.append('<li><a href="' + proposal.linkUrl + '">' + proposal.proposalName + '</a> (<a onclick="removePickedProposal(' + currentSectionId + ',' + proposal.proposalId + ', $(this), true);" href="javascript:;">remove</a>)</li>');
+    }
+    inputField.val(proposalIds.join(","));
     $("#proposalPickerModal").modal("hide");
-	event.preventDefault();
-	return false;
-});
+}
 
 $("#proposalPickerModal").find(".c-Table__cell--title a").click(function(event) {
 	event.preventDefault();

@@ -1,16 +1,17 @@
 package org.xcolab.service.search.enums;
 
 public enum SearchType {
-    FULL_SITE(0l, "FULL_SITE"),
-    CONTENT(1l, "CONTENT"),
-    BLOG(2l, "BLOG"),
-    MEMBER(10038l, "USER"),
-    DISCUSSION(39202l, "DISCUSSION"),
-    PROPOSAL(1368503l, "PROPOSAL"),
-    CONTEST(39701l, "CONTEST");
 
-    private Long id;
-    private String searchType;
+    FULL_SITE(0L, "FULL_SITE"),
+    CONTENT(1L, "CONTENT"),
+    BLOG(2L, "BLOG"),
+    MEMBER(10038L, "USER"),
+    DISCUSSION(39202L, "DISCUSSION"),
+    PROPOSAL(1368503L, "PROPOSAL"),
+    CONTEST(39701L, "CONTEST");
+
+    private final Long id;
+    private final String searchType;
 
     SearchType(Long id, String searchType) {
         this.id = id;

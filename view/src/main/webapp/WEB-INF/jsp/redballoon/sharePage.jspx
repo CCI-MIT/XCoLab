@@ -15,7 +15,7 @@
 	</script>
 
 	<div class="balloonContainer">
-        <input id="linkToCopy" type="text" value="${shareLink}" style="border: 1px solid #DDD;color: #8d8d8d;font-weight: 200;margin-bottom: 7px;font-size: 20px;width: 307px;margin: 10px 0px 10px 0px;" class="linkContainer balloonInput" />
+        <input id="linkToCopy" type="text" value="${shareLink}" style="border: 1px solid #DDD;color: #8d8d8d;font-weight: 200;font-size: 20px;width: 307px;margin: 10px 0 10px 0;" class="linkContainer balloonInput" />
         <div class="c-Button__primary">
             <a href="javascript:;" style="cursor:pointer" id="copyButton" data-clipboard-target="#linkToCopy"
                 data-clipboard-text="${shareLink}">Copy to clipboard</a>

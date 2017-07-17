@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,9 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.view.pages.proposals.discussion.ProposalDiscussionPermissions;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,20 +17,20 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalCommentsTabController extends BaseProposalTabController {
 
-    @Autowired
-    private ProposalsContext proposalsContext;
-
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=COMMENTS")
-    public String showComments(HttpServletRequest request, Model model) {
+    public String showComments(HttpServletRequest request, Model model,
+            ProposalContext proposalContext) {
 
-        final Proposal proposal = proposalsContext.getProposal(request);
+        final Proposal proposal = proposalContext.getProposal();
         long discussionId = proposal.getDiscussionId();
         if (discussionId == 0) {
-            discussionId = createCommentThread(request);
+            discussionId = createCommentThread(proposalContext);
         }
 
-        ProposalDiscussionPermissions pdp = new ProposalDiscussionPermissions(request);
-        pdp.setProposalId(proposalsContext.getProposal(request).getProposalId(),proposalsContext.getContestPhase(request).getContestPhasePK());
+        ProposalDiscussionPermissions pdp = new ProposalDiscussionPermissions(request,
+                proposalContext);
+        pdp.setProposalId(proposalContext.getProposal().getProposalId(),
+                proposalContext.getContestPhase().getContestPhasePK());
 
         request.setAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME,
                 pdp);
@@ -41,16 +39,16 @@ public class ProposalCommentsTabController extends BaseProposalTabController {
         model.addAttribute("authorId", proposal.getAuthorId());
         model.addAttribute("proposalId", proposal.getProposalId());
 
-        setCommonModelAndPageAttributes(request, model, ProposalTab.COMMENTS);
+        setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.COMMENTS);
 
         return "proposals/proposalComments";
     }
 
-    private long createCommentThread(HttpServletRequest request) {
-        Proposal proposal = proposalsContext.getProposal(request);
-        final long discussionThreadId = createDiscussionThread(request, " comments", false);
+    private long createCommentThread(ProposalContext proposalContext) {
+        Proposal proposal = proposalContext.getProposal();
+        final long discussionThreadId = createDiscussionThread(proposalContext, " comments", false);
         proposal.setDiscussionId(discussionThreadId);
-        ProposalsContextUtil.getClients(request).getProposalClient().updateProposal(proposal);
+        proposalContext.getClients().getProposalClient().updateProposal(proposal);
         return discussionThreadId;
     }
 }

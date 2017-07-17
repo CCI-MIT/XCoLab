@@ -277,6 +277,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.EMAIL_ADDRESS, member.getEmailAddress())
                 .set(MEMBER.IS_EMAIL_CONFIRMED, member.getIsEmailConfirmed())
                 .set(MEMBER.OPEN_ID, member.getOpenId())
+                .set(MEMBER.DEFAULT_LOCALE, member.getDefaultLocale())
                 .set(MEMBER.FIRST_NAME, member.getFirstName())
                 .set(MEMBER.LAST_NAME, member.getLastName())
                 .set(MEMBER.LOGIN_DATE, member.getLoginDate())
@@ -285,6 +286,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.GOOGLE_ID, member.getGoogleId())
                 .set(MEMBER.SHORT_BIO, member.getShortBio())
                 .set(MEMBER.AUTO_REGISTERED_MEMBER_STATUS, member.getAutoRegisteredMemberStatus())
+                .set(MEMBER.DEFAULT_LOCALE, member.getDefaultLocale())
                 .set(MEMBER.COUNTRY, member.getCountry())
                 .set(MEMBER.STATUS, member.getStatus())
                 .set(MEMBER.PORTRAIT_FILE_ENTRY_ID, member.getPortraitFileEntryId())
@@ -300,7 +302,7 @@ public class MemberDaoImpl implements MemberDao {
     @Override
     public void createMember(String screenName, String hashedPassword, String email,
             String firstName, String lastName, String shortBio, String country, Long facebookId,
-            String openId, Long imageId, Long liferayUserId, String googleId) {
+            String openId, Long imageId, Long liferayUserId, String googleId,String defaultLocale) {
         this.dslContext.insertInto(MEMBER)
                 .set(MEMBER.ID_, liferayUserId)
                 .set(MEMBER.SCREEN_NAME, screenName)
@@ -312,6 +314,7 @@ public class MemberDaoImpl implements MemberDao {
                 .set(MEMBER.GOOGLE_ID, googleId)
                 .set(MEMBER.OPEN_ID, openId)
                 .set(MEMBER.SHORT_BIO, shortBio)
+                .set(MEMBER.DEFAULT_LOCALE, defaultLocale)
                 .set(MEMBER.COUNTRY, country)
                 .set(MEMBER.PORTRAIT_FILE_ENTRY_ID, imageId)
                 .set(MEMBER.CREATE_DATE, new Timestamp(Instant.now().toEpochMilli()))

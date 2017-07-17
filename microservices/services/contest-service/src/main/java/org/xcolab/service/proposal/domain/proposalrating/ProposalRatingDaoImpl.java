@@ -72,6 +72,8 @@ public class ProposalRatingDaoImpl implements ProposalRatingDao {
         return record.into(ProposalRating.class);
 
     }
+
+    @Override
     public List<ProposalRating> findByProposalIdJudgeTypeJudgeIdContestPhaseId(Long proposalId, Integer judgeType, Long contestPhaseId, Long userId) {
 
 

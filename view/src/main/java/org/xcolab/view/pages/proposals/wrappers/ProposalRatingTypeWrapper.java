@@ -7,8 +7,8 @@ import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingValue;
 import java.util.List;
 
 public class ProposalRatingTypeWrapper {
-    private ProposalRatingType proposalRatingType;
 
+    private final ProposalRatingType proposalRatingType;
 
     public ProposalRatingTypeWrapper(ProposalRatingType proposalRatingType) {
         this.proposalRatingType = proposalRatingType;

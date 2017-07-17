@@ -12,9 +12,6 @@ import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
  */
 public class PhasePromotionHelper {
 
-
-
-
     public static ProposalContestPhaseAttribute createProposalContestPhasePromotionDoneAttribute(long proposalId, long currentPhaseId) {
         //save the information that the promotion has been done.
         if (currentPhaseId != 0) {
@@ -22,7 +19,7 @@ public class PhasePromotionHelper {
             proposalContestPhaseAttribute.setProposalId(proposalId);
             proposalContestPhaseAttribute.setContestPhaseId(currentPhaseId);
             proposalContestPhaseAttribute.setName(ProposalContestPhaseAttributeKeys.PROMOTE_DONE);
-            proposalContestPhaseAttribute.setAdditionalId(0l);
+            proposalContestPhaseAttribute.setAdditionalId(0L);
             proposalContestPhaseAttribute.setStringValue("true");
             return proposalContestPhaseAttribute;
 

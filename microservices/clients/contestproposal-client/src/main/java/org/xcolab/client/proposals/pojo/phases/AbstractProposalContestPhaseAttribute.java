@@ -200,18 +200,11 @@ class AbstractProposalContestPhaseAttribute implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("ProposalContestPhaseAttribute (");
+        String sb =
+                "ProposalContestPhaseAttribute (" + id_ + ", " + proposalid + ", " + contestphaseid
+                        + ", " + name + ", " + additionalid + ", " + numericvalue + ", "
+                        + stringvalue + ", " + realvalue + ")";
 
-        sb.append(id_);
-        sb.append(", ").append(proposalid);
-        sb.append(", ").append(contestphaseid);
-        sb.append(", ").append(name);
-        sb.append(", ").append(additionalid);
-        sb.append(", ").append(numericvalue);
-        sb.append(", ").append(stringvalue);
-        sb.append(", ").append(realvalue);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

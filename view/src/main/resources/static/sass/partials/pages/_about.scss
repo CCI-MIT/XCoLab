@@ -172,7 +172,7 @@ $p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !defaul
   font-weight: $b-Typography__fontWeight--bold;
   text-align: center;
   vertical-align: middle;
-  @include border-radius(12px);
+  border-radius: 12px;
 }
 
 .continue a img {
@@ -210,7 +210,7 @@ $p-About__approachIllustration__p__fontWeight: $b-Typography__fontWeight !defaul
   padding: 7px 12px 0;
   display: inline-block;
   margin-top: 6px;
-  @include border-radius(5px);
+  border-radius: 5px;
 }
 
 .two {

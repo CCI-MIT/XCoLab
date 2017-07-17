@@ -9,7 +9,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.util.time.HumanTime;
+import org.xcolab.util.time.DurationFormatter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 public class MessageBean implements Serializable {
+
     private static final long serialVersionUID = 1L;
     private List<Member> recipients = new ArrayList<>();
     private Message message;
@@ -44,7 +45,7 @@ public class MessageBean implements Serializable {
     }
 
     public String getCreateDateFormatted() {
-        return HumanTime.exactly(new Date().getTime() - getCreateDate().getTime());
+        return DurationFormatter.forRequestLocale().format(getCreateDate());
     }
 
     public Date getCreateDate() {

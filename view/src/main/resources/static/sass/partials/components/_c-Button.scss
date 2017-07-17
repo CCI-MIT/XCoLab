@@ -20,7 +20,7 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
   line-height: normal;
   text-transform: $c-Button__capitalization;
 
-  @include border-radius($c-Button__borderRadius);
+  border-radius: $c-Button__borderRadius;
 
   &.disabled {
     opacity: 0.4;

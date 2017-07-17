@@ -6,19 +6,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestCollectionCard;
-import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
 import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.pages.proposals.utils.ContestsColumn;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.view.proposal.BaseProposalsController;
 import org.xcolab.view.pages.proposals.wrappers.CollectionCardFilterBean;
 import org.xcolab.view.pages.proposals.wrappers.CollectionCardWrapper;
@@ -52,7 +54,8 @@ public class ContestsIndexController extends BaseProposalsController {
     private static final int BY_LOCATION_COLLECTION_CARD_ID = 3;
 
     @GetMapping("/contests")
-    public String showContestsIndex(HttpServletRequest request, HttpServletResponse response, Model model,
+    public String showContestsIndex(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member currentMember, ProposalContext proposalContext,
             @RequestParam(required = false) String preferenceId,
             @RequestParam(required = false) String viewType,
             @RequestParam(required = false, defaultValue="true") boolean showActiveContests,
@@ -95,7 +98,6 @@ public class ContestsIndexController extends BaseProposalsController {
         List<Contest> priorContests = ContestClientUtil.getContestsByActivePrivateType(false, false,
                 contestType.getId());
 
-        boolean showOnlyFeatured = false;
         List<Contest> contests = new ArrayList<>();
 
         /*--------------------------------*/
@@ -115,6 +117,7 @@ public class ContestsIndexController extends BaseProposalsController {
 
             Long ontologyTermToLoad;
             boolean showCollectionCards=true;
+            boolean showOnlyFeatured = false;
             if(sortFilterPage != null && sortFilterPage.getFilter() != null && !sortFilterPage.getFilter().isEmpty()) { //if search function was used
                 ontologyTermToLoad = null;
                 currentCollectionCardId = BY_TOPIC_COLLECTION_CARD_ID;
@@ -223,18 +226,18 @@ public class ContestsIndexController extends BaseProposalsController {
         	List<FocusArea> focusAreasRaw = OntologyClientUtil.getAllFocusAreas();
         	List<FocusAreaOntologyTerm> focusAreasOntologyTermsRaw = OntologyClientUtil.getAllFocusAreaOntologyTerms();
         	Map<Long, FocusArea> focusAreas = new TreeMap<>();
-        	Map<Long, OntologySpace> ontologySpaces = new HashMap<>();
-        	Map<Long, OntologyTerm> ontologyTerms = new TreeMap<>();
-        	
-        	for (FocusArea area: focusAreasRaw) {
+
+            for (FocusArea area: focusAreasRaw) {
         		focusAreas.put(area.getId_(), new FocusArea(area));
         	}
-        	
-        	for (OntologySpace space: ontologySpacesRaw) {
+
+            Map<Long, OntologySpace> ontologySpaces = new HashMap<>();
+            for (OntologySpace space: ontologySpacesRaw) {
         		ontologySpaces.put(space.getId_(), new OntologySpace(space));
         	}
-        	
-        	for (OntologyTerm term: ontologyTermsRaw) {
+
+            Map<Long, OntologyTerm> ontologyTerms = new TreeMap<>();
+            for (OntologyTerm term: ontologyTermsRaw) {
         		OntologyTerm termWrapped = new OntologyTerm(term);
         		ontologySpaces.get(term.getOntologySpaceId()).addTerm(termWrapped);
         		ontologyTerms.put(term.getId_(), termWrapped);
@@ -279,7 +282,7 @@ public class ContestsIndexController extends BaseProposalsController {
         }
 
         model.addAttribute("showCollectionCards", ConfigurationAttributeKey.COLAB_USES_CARDS.get());
-        boolean showContestManagementLink = PermissionsClient.canAdminAll(proposalsContext.getMemberId(request)) ;
+        boolean showContestManagementLink = PermissionsClient.canAdminAll(currentMember) ;
         model.addAttribute("showContestManagementLink", showContestManagementLink);
         model.addAttribute("priorContestsExist", !priorContests.isEmpty());
         model.addAttribute("contests", contests);
@@ -300,7 +303,7 @@ public class ContestsIndexController extends BaseProposalsController {
                 + ConfigurationAttributeKey.META_PAGE_DESCRIPTION_CONTESTS.get();
         model.addAttribute("pageDescription", description);
 
-        setBasePageAttributes(request, model);
+        setBasePageAttributes(proposalContext, model);
         return "/proposals/contestsIndex";
     }
 }

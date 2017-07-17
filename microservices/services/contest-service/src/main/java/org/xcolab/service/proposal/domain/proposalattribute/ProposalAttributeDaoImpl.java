@@ -92,6 +92,7 @@ public class ProposalAttributeDaoImpl implements ProposalAttributeDao {
         return query.fetchInto(ProposalAttribute.class);
     }
 
+    @Override
     public List<ProposalAttribute> findByProposalIdVersionAndImpact(Long proposalId, Integer version) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_ATTRIBUTE).getQuery();

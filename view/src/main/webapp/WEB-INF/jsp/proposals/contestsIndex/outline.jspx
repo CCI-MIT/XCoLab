@@ -1,9 +1,10 @@
-<jsp:root 
-xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-	version="2.0">
+<jsp:root
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:jsp="http://java.sun.com/JSP/Page"
+        xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+        xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+        xmlns:spring="http://www.springframework.org/tags"
+        version="2.0">
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 	<!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.ontology.OntologySpace>"-->
     <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
@@ -13,8 +14,12 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 	
     <div class="contest-outline-left">
         <div class="expand">
-        	<a href="#" class="showall" style="display: inline;">Expand All</a>
-        	<a href="#" class="hideall" style="display: none;">Collapse All</a>
+        	<a href="#" class="showall" style="display: inline;">
+                <spring:message code="contests.outline.expandall" />
+            </a>
+        	<a href="#" class="hideall" style="display: none;">
+                <spring:message code="contests.outline.collapseall" />
+            </a>
         </div>
         <div class="contest-count">${contestType.contestNamePlural} <span class="count">0</span></div>
         
@@ -163,7 +168,9 @@ xmlns:c="http://java.sun.com/jsp/jstl/core"
 		
 		function addContestToTermAndParents(level, contest, term, isOther) {
 			//console.log(" - ",level, contest, term, isOther)
-			if (term == null || typeof(term) != 'object') return;
+            if (term == null || typeof(term) != 'object') {
+                return;
+            }
 			// don't add contests to the space root if they have been associated with one of its children 
 			/*if (term.parent == null &amp;&amp; level &gt; 0) return;*/
 			if (! ('orderFromTerm' in contest)) {

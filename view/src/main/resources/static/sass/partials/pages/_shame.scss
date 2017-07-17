@@ -74,7 +74,7 @@ fieldset {
   color: #666;
   padding: 20px 15px;
   font-size: 0.9em;
-  @include border-radius(5px);
+  border-radius: 5px;
 }
 
 .right_col2 {

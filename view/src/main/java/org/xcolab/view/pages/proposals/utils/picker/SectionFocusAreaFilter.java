@@ -65,19 +65,23 @@ public class SectionFocusAreaFilter {
     private List<OntologyTerm> getOntologyTermsFromSectionAndContest(Long focusAreaId,
         Long contestFocusAreaId) {
         Long localContestFocusAreaId;
-        if (focusAreaId < 0) {
+        if (focusAreaId != null && focusAreaId < 0) {
             localContestFocusAreaId = contestFocusAreaId;
             focusAreaId = Math.abs(focusAreaId);
         } else {
-            localContestFocusAreaId = 0L;
+            localContestFocusAreaId = null;
         }
         List<OntologyTerm> terms = new ArrayList<>();
 
-        FocusArea focusArea = OntologyClientUtil.getFocusArea(focusAreaId);
-        addTermsInFocusArea(terms, focusArea);
-        FocusArea contestFocusArea =
-            OntologyClientUtil.getFocusArea(localContestFocusAreaId);
-        addTermsInFocusArea(terms, contestFocusArea);
+        if (focusAreaId != null) {
+            FocusArea focusArea = OntologyClientUtil.getFocusArea(focusAreaId);
+            addTermsInFocusArea(terms, focusArea);
+        }
+
+        if (localContestFocusAreaId != null) {
+            FocusArea contestFocusArea = OntologyClientUtil.getFocusArea(localContestFocusAreaId);
+            addTermsInFocusArea(terms, contestFocusArea);
+        }
 
         return terms;
     }
@@ -99,16 +103,18 @@ public class SectionFocusAreaFilter {
             if (filterExceptionContestIds.contains(contest.getContestPK())) {
                 continue;
             }
-            FocusArea focusArea = OntologyClientUtil.getFocusArea(contest.getFocusAreaId());
-            List<OntologyTerm> contestTerms =
-                OntologyClientUtil.getOntologyTermsForFocusArea(focusArea);
-            for (OntologyTerm requiredTerm : requiredTerms) {
-                List<OntologyTerm> requiredDescendantTerms =
-                    OntologyClientUtil.getAllOntologyTermDescendant(requiredTerm.getId_());
-                requiredDescendantTerms.add(requiredTerm);
-                if (!CollectionUtils.containsAny(requiredDescendantTerms, contestTerms)) {
-                    i.remove();
-                    break;
+            if (contest.getHasFocusArea()) {
+                FocusArea focusArea = OntologyClientUtil.getFocusArea(contest.getFocusAreaId());
+                List<OntologyTerm> contestTerms =
+                        OntologyClientUtil.getOntologyTermsForFocusArea(focusArea);
+                for (OntologyTerm requiredTerm : requiredTerms) {
+                    List<OntologyTerm> requiredDescendantTerms =
+                            OntologyClientUtil.getAllOntologyTermDescendant(requiredTerm.getId_());
+                    requiredDescendantTerms.add(requiredTerm);
+                    if (!CollectionUtils.containsAny(requiredDescendantTerms, contestTerms)) {
+                        i.remove();
+                        break;
+                    }
                 }
             }
 

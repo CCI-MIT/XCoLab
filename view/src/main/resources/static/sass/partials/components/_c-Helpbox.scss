@@ -18,7 +18,7 @@ $c-Helpbox__header__close__marginTop: -5px !default;
 .c-Helpbox {
   width: 970px;
   background: $c-Helpbox__backgroundColor;
-  @include border-radius($c-Helpbox__borderRadius);
+  border-radius: $c-Helpbox__borderRadius;
   border: 1px solid $c-Helpbox__borderColor;
   margin: 15px 0;
 }

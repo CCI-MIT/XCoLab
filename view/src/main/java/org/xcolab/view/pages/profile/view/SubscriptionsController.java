@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.profile.view;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.profile.beans.MessageBean;
 import org.xcolab.view.pages.profile.utils.UserProfilePermissions;
@@ -32,6 +34,9 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/members/profile/{memberId}/subscriptions")
 public class SubscriptionsController {
 
+    @Autowired
+    private ActivityEntryHelper activityEntryHelper;
+
     @GetMapping
     public String showUserProfileSubscriptions(HttpServletRequest request, HttpServletResponse response,
             Model model, @PathVariable long memberId, Member loggedInMember,
@@ -41,7 +46,7 @@ public class SubscriptionsController {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request);
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request,activityEntryHelper);
             populateUserWrapper(currentUserProfile, model);
             currentUserProfile.setSubscriptionsPaginationPageId(page);
             model.addAttribute("pageNavigation", new PageNavigation(
@@ -57,7 +62,7 @@ public class SubscriptionsController {
     public String showUserSubscriptionsManage(HttpServletRequest request, HttpServletResponse response,
             Model model, @PathVariable long memberId, @RequestParam(required = false) String typeFilter) {
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request);
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request,activityEntryHelper);
             populateUserWrapper(currentUserProfile, model);
             if (typeFilter != null) {
                 currentUserProfile.getUserSubscriptions().setFilterType(typeFilter);

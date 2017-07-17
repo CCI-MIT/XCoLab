@@ -19,13 +19,14 @@ import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
-import org.xcolab.view.util.entity.ActivityUtil;
-import org.xcolab.view.util.entity.EntityGroupingUtil;
+import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.profile.beans.BadgeBean;
 import org.xcolab.view.pages.profile.beans.MessageBean;
 import org.xcolab.view.pages.profile.beans.UserBean;
 import org.xcolab.view.pages.profile.entity.Badge;
+import org.xcolab.view.util.entity.ActivityUtil;
+import org.xcolab.view.util.entity.EntityGroupingUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -64,10 +65,11 @@ public class UserProfileWrapper implements Serializable {
     private List<UserActivityWrapper> subscribedActivities;
     private UserSubscriptionsWrapper userSubscriptions;
     private BadgeBean badges;
+    private ActivityEntryHelper activityEntryHelper;
 
     private boolean viewingOwnProfile;
 
-    public UserProfileWrapper(long userId, HttpServletRequest request)
+    public UserProfileWrapper(long userId, HttpServletRequest request, ActivityEntryHelper activityEntryHelper)
             throws MemberNotFoundException {
 
         member = MembersClient.getMember(userId);
@@ -111,7 +113,7 @@ public class UserProfileWrapper implements Serializable {
         for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClientUtil
                 .getActivityEntries(0, MAX_ACTIVITIES_COUNT, member.getId_(), null))) {
 
-            UserActivityWrapper a = new UserActivityWrapper(activity);
+            UserActivityWrapper a = new UserActivityWrapper(activity,activityEntryHelper);
             if (a.getBody() != null && !a.getBody().equals("")) {
                 userActivities.add(a);
             }
@@ -278,7 +280,7 @@ public class UserProfileWrapper implements Serializable {
             for (ActivityEntry activity : ActivityUtil.groupActivities(
                     ActivitiesClientUtil.getActivityEntries(0, 100, this.member.getId_(), null))) {
 
-                subscribedActivities.add(new UserActivityWrapper(activity));
+                subscribedActivities.add(new UserActivityWrapper(activity,activityEntryHelper));
             }
         }
         return subscribedActivities;

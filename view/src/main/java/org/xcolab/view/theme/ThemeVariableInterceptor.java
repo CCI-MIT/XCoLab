@@ -72,15 +72,15 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             }
 
             final ServerEnvironment serverEnvironment =
-                    PlatformAttributeKey.PLATFORM_SERVER_ENVIRONMENT.get();
-            modelAndView.addObject("_isProduction",
-                    serverEnvironment == ServerEnvironment.PRODUCTION);
+                    PlatformAttributeKey.SERVER_ENVIRONMENT.get();
+            final boolean isProductionEnvironment = serverEnvironment == ServerEnvironment.PRODUCTION;
+            modelAndView.addObject("_isProduction", isProductionEnvironment);
 
             ColabTheme activeTheme = ConfigurationAttributeKey.ACTIVE_THEME.get();
 
-            final String scriptDomain = PlatformAttributeKey.PLATFORM_SCRIPT_DOMAIN.get();
-            final String themeImageDomain = PlatformAttributeKey.PLATFORM_STATIC_IMAGE_DOMAIN.get();
-            final String userImageDomain = PlatformAttributeKey.PLATFORM_UPLOADED_IMAGE_DOMAIN.get();
+            final String scriptDomain = PlatformAttributeKey.SCRIPTS_DOMAIN.get();
+            final String themeImageDomain = PlatformAttributeKey.IMAGES_STATIC_DOMAIN.get();
+            final String userImageDomain = PlatformAttributeKey.IMAGES_UPLOADED_DOMAIN.get();
 
             modelAndView.addObject("_libCssFolder",
                     scriptDomain + "/css/lib");
@@ -106,11 +106,11 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
                             .map(contestType -> contestType.withLocale(locale.getLanguage()))
                             .collect(Collectors.toList()));
             modelAndView.addObject("_colabName", ConfigurationAttributeKey.COLAB_NAME.get());
-            modelAndView.addObject("_colabUrl", PlatformAttributeKey.PLATFORM_COLAB_URL.get());
+            modelAndView.addObject("_colabUrl", PlatformAttributeKey.COLAB_URL.get());
             modelAndView
                     .addObject("_colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
-            modelAndView.addObject("_googleAnalyticsKey",
-                    ConfigurationAttributeKey.GOOGLE_ANALYTICS_KEY.get());
+            final String googleAnalyticsKey = ConfigurationAttributeKey.GOOGLE_ANALYTICS_KEY.get();
+            modelAndView.addObject("_googleAnalyticsKey", googleAnalyticsKey);
 
             modelAndView
                     .addObject("_betaRibbonShow", ConfigurationAttributeKey.BETA_RIBBON_SHOW.get());

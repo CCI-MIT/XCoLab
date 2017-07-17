@@ -51,16 +51,15 @@ public class ContentArticleVersionDaoTest {
     @Test
     public void shouldGetContentArticleVersion() throws Exception {
 
-        assertNotNull(contentArticleVersionDao.get(1567l));
-
+        assertNotNull(contentArticleVersionDao.get(1567L));
     }
 
     @Test
     public void shouldGetByFolderId() throws Exception {
 
         ContentArticleVersion ae = new ContentArticleVersion();
-        ae.setContentArticleId(1000l);
-        ae.setFolderId(200l);
+        ae.setContentArticleId(1000L);
+        ae.setFolderId(200L);
         ae = contentArticleVersionDao.create(ae);
 
         assertNotNull(contentArticleVersionDao.getByFolderId(ae.getFolderId()));
@@ -73,15 +72,14 @@ public class ContentArticleVersionDaoTest {
 
     @Test
     public void shouldReturnEmptyForOnGetByFolderIdOnInexistentFolder() throws Exception {
-        assertNotNull(contentArticleVersionDao.getByFolderId(1233l));
+        assertNotNull(contentArticleVersionDao.getByFolderId(1233L));
     }
-
 
     @Test
     public void shouldDeleteContentArticleVersionByArticleId() throws Exception {
 
         ContentArticleVersion ae = new ContentArticleVersion();
-        ae.setContentArticleId(1000l);
+        ae.setContentArticleId(1000L);
         ae = contentArticleVersionDao.create(ae);
 
         assertTrue(contentArticleVersionDao.deleteByArticleId(ae.getContentArticleId())==1);
@@ -93,9 +91,9 @@ public class ContentArticleVersionDaoTest {
     @Test
     public void shouldUpdateContentArticle() throws Exception {
         ContentArticleVersion ae = new ContentArticleVersion();
-        ae.setAuthorId(03l);
+        ae.setAuthorId(3L);
         ae = contentArticleVersionDao.create(ae);
-        ae.setAuthorId(01l);
+        ae.setAuthorId(1L);
         contentArticleVersionDao.update(ae);
         ContentArticleVersion az = contentArticleVersionDao.get(ae.getContentArticleVersionId());
         assertEquals(az.getAuthorId(),ae.getAuthorId());

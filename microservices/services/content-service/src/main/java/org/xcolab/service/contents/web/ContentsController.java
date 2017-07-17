@@ -21,8 +21,6 @@ import org.xcolab.service.contents.domain.contentarticleversion.ContentArticleVe
 import org.xcolab.service.contents.domain.page.ContentPageDao;
 import org.xcolab.service.contents.exceptions.NotFoundException;
 import org.xcolab.service.contents.service.contentarticle.ContentArticleService;
-import org.xcolab.service.contents.service.contentarticleversion.ContentArticleVersionService;
-import org.xcolab.service.contents.service.contentfolder.ContentFolderService;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.sql.Timestamp;
@@ -33,12 +31,6 @@ public class ContentsController {
 
     @Autowired
     private ContentArticleService contentArticleService;
-
-    @Autowired
-    private ContentArticleVersionService contentArticleVersionService;
-
-    @Autowired
-    private ContentFolderService contentFolderService;
 
     @Autowired
     private ContentArticleDao contentArticleDao;
@@ -67,7 +59,7 @@ public class ContentsController {
         return contentArticleDao.getArticles();
     }
 
-    @RequestMapping(value = "/contentArticleVersions", method = RequestMethod.GET)
+    @GetMapping("/contentArticleVersions")
     public List<ContentArticleVersion> getContentArticles(
             @RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
@@ -79,8 +71,8 @@ public class ContentsController {
             @RequestParam(required = false) String sort) {
         final PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord,
                 sort);
-        return contentArticleVersionDao.findByGiven(paginationHelper, contentArticleId, contentArticleVersion,
-                folderId, null, title, lang);
+        return contentArticleVersionDao.findByGiven(paginationHelper, contentArticleId,
+                contentArticleVersion, folderId, null, title, lang);
     }
 
 
@@ -121,8 +113,7 @@ public class ContentsController {
         }
     }
 
-
-    @RequestMapping(value = "/contentArticleVersions", method = RequestMethod.POST)
+    @PostMapping("/contentArticleVersions")
     public ContentArticleVersion createContentArticleVersion(
             @RequestBody ContentArticleVersion contentArticleVersion) {
         java.util.Date date = new java.util.Date();
@@ -156,30 +147,16 @@ public class ContentsController {
         return contentArticleVersion;
     }
 
-    @RequestMapping(value = "/contentArticleVersions/{articleVersionId}", method = RequestMethod.GET)
-    public ContentArticleVersion getContentArticleVersion(
-            @PathVariable("articleVersionId") Long articleVersionId) throws NotFoundException {
-        if (articleVersionId == null || articleVersionId == 0) {
+    @GetMapping("/contentArticleVersions/{articleVersionId}")
+    public ContentArticleVersion getContentArticleVersion(@PathVariable long articleVersionId)
+            throws NotFoundException {
+        if (articleVersionId == 0) {
             throw new NotFoundException("No content article version with id given");
-        } else {
-            return this.contentArticleVersionDao.get(articleVersionId);
         }
+        return this.contentArticleVersionDao.get(articleVersionId);
     }
 
-    @RequestMapping(value = "/contentArticleVersions/getByArticleVersionLanguage", method = RequestMethod.GET)
-    public ContentArticleVersion getByArticleVersionLanguage(
-            @RequestParam("contentArticleId") Long contentArticleId,
-            @RequestParam("language") String language) throws NotFoundException {
-        if (contentArticleId == 0) {
-            contentArticleId = null;
-        }
-        if(language.isEmpty()){
-            language = "en";
-        }
-        return this.contentArticleVersionDao.getByArticleVersionLanguage(contentArticleId,language);
-
-    }
-    @RequestMapping(value = "/contentArticleVersions/{articleVersionId}", method = RequestMethod.PUT)
+    @PutMapping("/contentArticleVersions/{articleVersionId}")
     public boolean updateContentArticleVersion(
             @RequestBody ContentArticleVersion contentArticleVersion,
             @PathVariable("articleVersionId") Long articleVersionId) throws NotFoundException {
@@ -193,12 +170,12 @@ public class ContentsController {
         }
     }
 
-    @RequestMapping(value = "/contentFolders", method = RequestMethod.POST)
+    @PostMapping("/contentFolders")
     public ContentFolder createContentFolder(@RequestBody ContentFolder contentFolder) {
         return this.contentFolderDao.create(contentFolder);
     }
 
-    @RequestMapping(value = "/contentFolders/{contentFolderId}", method = RequestMethod.GET)
+    @GetMapping( "/contentFolders/{contentFolderId}")
     public ContentFolder getContentFolder(@PathVariable("contentFolderId") Long contentFolderId)
             throws NotFoundException {
         if (contentFolderId == null || contentFolderId == 0) {
@@ -208,7 +185,7 @@ public class ContentsController {
         }
     }
 
-    @RequestMapping(value = "/contentFolders/{contentFolderId}/contentArticleVersions", method = RequestMethod.GET)
+    @GetMapping(value = "/contentFolders/{contentFolderId}/contentArticleVersions")
     public List<ContentArticleVersion> getContentFolderArticleVersions(
             @PathVariable("contentFolderId") Long contentFolderId) throws NotFoundException {
         if (contentFolderId == 0) {
@@ -217,8 +194,6 @@ public class ContentsController {
         return this.contentArticleVersionDao.getByFolderId(contentFolderId);
 
     }
-
-
 
     @RequestMapping(value = "/contentFolders/{contentFolderId}", method = RequestMethod.PUT)
     public boolean updateContentFolder(@RequestBody ContentFolder contentFolder,
@@ -246,11 +221,11 @@ public class ContentsController {
     public ContentPage getContentPage(@PathVariable long pageId) throws NotFoundException {
         return contentPageDao.get(pageId).orElseThrow(NotFoundException::new);
     }
+
     @GetMapping("/contentPages/getByContentArticleId")
     public ContentPage getContentPageByContentArticleId(@RequestParam long contentArticleId) throws NotFoundException {
         return contentPageDao.getByContentArticleId(contentArticleId).orElseThrow(NotFoundException::new);
     }
-
 
     @PostMapping("/contentPages")
     public ContentPage createContentPage(@RequestBody ContentPage page) {

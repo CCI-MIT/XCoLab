@@ -41,6 +41,7 @@ public class MemberNotification extends EmailNotification {
         return templateWrapper;
     }
 
+    @Override
     protected Long getReferenceId(){
         return this.recipient.getId_();
     }

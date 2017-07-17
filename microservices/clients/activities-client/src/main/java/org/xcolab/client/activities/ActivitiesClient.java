@@ -41,9 +41,11 @@ public final class ActivitiesClient {
     public  ActivityEntry createActivityEntry(Long memberId,
                                                     Long classPrimaryKey,
                                                     String extraData,
-                                                    Integer providerType) {
+                                                    Long primaryType,
+                                                    Long secondaryType) {
         return activityEntryResource.service("createActivityEntry", ActivityEntry.class)
-                .queryParam("providerType", providerType)
+                .queryParam("primaryType", primaryType)
+                .queryParam("secondaryType", secondaryType)
                 .queryParam("memberId", memberId)
                 .queryParam("classPrimaryKey",classPrimaryKey)
                 .queryParam("extraData",extraData)

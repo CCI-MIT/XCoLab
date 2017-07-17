@@ -15,13 +15,17 @@ import static org.jooq.impl.DSL.countDistinct;
 
 import static org.xcolab.model.Tables.PROPOSAL_SUPPORTER;
 
-
 @Repository
 public class ProposalSupporterDaoImpl implements ProposalSupporterDao {
 
-    @Autowired
-    private DSLContext dslContext;
+    private final DSLContext dslContext;
 
+    @Autowired
+    public ProposalSupporterDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
+
+    @Override
     public ProposalSupporter create(ProposalSupporter proposalSupporter) {
 
         this.dslContext.insertInto(PROPOSAL_SUPPORTER)
@@ -32,9 +36,9 @@ public class ProposalSupporterDaoImpl implements ProposalSupporterDao {
                 .execute();
 
         return proposalSupporter;
-
     }
 
+    @Override
     public int delete(Long proposalId, Long userId) {
         return dslContext.deleteFrom(PROPOSAL_SUPPORTER)
                 .where(PROPOSAL_SUPPORTER.PROPOSAL_ID.eq(proposalId))
@@ -42,6 +46,7 @@ public class ProposalSupporterDaoImpl implements ProposalSupporterDao {
                 .execute();
     }
 
+    @Override
     public List<ProposalSupporter> findByGiven(Long proposalId, Long userId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(PROPOSAL_SUPPORTER).getQuery();
@@ -55,6 +60,7 @@ public class ProposalSupporterDaoImpl implements ProposalSupporterDao {
         return query.fetchInto(ProposalSupporter.class);
     }
 
+    @Override
     public Integer countByProposalId(Long proposalId) {
         final SelectQuery<Record1<Integer>> query = dslContext.select(countDistinct(PROPOSAL_SUPPORTER.USER_ID))
                 .from(PROPOSAL_SUPPORTER)

@@ -6,6 +6,7 @@ import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.exceptions.ContestPhaseNotFoundException;
 import org.xcolab.client.contest.exceptions.ContestScheduleNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestCollectionCard;
@@ -118,7 +119,7 @@ public class ContestClient {
         c.setProposalVoteConfirmationTemplateString("");
         c.setVoteQuestionTemplateString("");
         c.setVoteTemplateString("");
-        c.setFocusAreaId(0L);
+        c.setFocusAreaId(null);
         c.setContestTier(0L);
         c.setContestLogoId(0L);
         c.setFeatured_(false);
@@ -578,8 +579,12 @@ public class ContestClient {
     }
 
     public ContestPhase getContestPhase(Long contestPhaseId) {
-        return contestPhasesResource.get(contestPhaseId)
-                .execute().toPojo(contestService);
+        try {
+            return contestPhasesResource.get(contestPhaseId)
+                    .execute().toPojo(contestService);
+        } catch (UncheckedEntityNotFoundException e) {
+            throw new ContestPhaseNotFoundException(contestPhaseId);
+        }
     }
 
     public List<ContestPhaseType> getAllContestPhaseTypes() {

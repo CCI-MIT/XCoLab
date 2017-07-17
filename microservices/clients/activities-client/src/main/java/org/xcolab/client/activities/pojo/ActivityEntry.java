@@ -148,20 +148,11 @@ public class ActivityEntry implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("ActivityEntry (");
+        String sb = "ActivityEntry (" + activityentryid + ", " + memberid + ", " + createdate + ", "
+                + primarytype + ", " + secondarytype + ", " + classprimarykey + ", " + extradata
+                + ", " + activityentrytitle + ", " + activityentrybody + ", " + activityentryname
+                + ")";
 
-        sb.append(activityentryid);
-        sb.append(", ").append(memberid);
-        sb.append(", ").append(createdate);
-        sb.append(", ").append(primarytype);
-        sb.append(", ").append(secondarytype);
-        sb.append(", ").append(classprimarykey);
-        sb.append(", ").append(extradata);
-        sb.append(", ").append(activityentrytitle);
-        sb.append(", ").append(activityentrybody);
-        sb.append(", ").append(activityentryname);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

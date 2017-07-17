@@ -1,20 +1,20 @@
 package org.xcolab.view.pages.proposals.tabs;
 
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 import javax.servlet.http.HttpServletRequest;
 
 public interface ProposalTabActivityCountAlgorithm {
-    int getActivityCount(ProposalsContext context, HttpServletRequest request);
+    int getActivityCount(ProposalContext proposalContext, HttpServletRequest request);
     
-    ProposalTabActivityCountAlgorithm alwaysZero = (context, request) -> 0;
+    ProposalTabActivityCountAlgorithm alwaysZero = (proposalContext, request) -> 0;
 
     ProposalTabActivityCountAlgorithm evaluationCommentsCount =
-            (context, request) -> (int) context.getProposalWrapped(request).getEvaluationCommentsCount();
+            (proposalContext, request) -> (int) proposalContext.getProposal().getEvaluationCommentsCount();
 
     ProposalTabActivityCountAlgorithm commentsCount =
-            (context, request) -> (int) context.getProposalWrapped(request).getCommentsCount();
+            (proposalContext, request) -> (int) proposalContext.getProposal().getCommentsCount();
     
     ProposalTabActivityCountAlgorithm membersCount =
-            (context, request) -> context.getProposalWrapped(request).getMembers().size();
+            (proposalContext, request) -> proposalContext.getProposal().getMembers().size();
 }

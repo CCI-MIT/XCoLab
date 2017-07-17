@@ -113,7 +113,7 @@ public class ThreadController extends BaseDiscussionController {
 
             Comment comment = new Comment();
             comment.setThreadId(thread.getThreadId());
-            final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+            final String baseUri = PlatformAttributeKey.COLAB_URL.get();
             comment.setContent(HtmlUtil.cleanSome(body, baseUri));
             comment.setAuthorId(memberId);
             comment = CommentClientUtil.createComment(comment);

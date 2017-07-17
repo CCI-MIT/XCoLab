@@ -19,7 +19,7 @@ public final class TemplateReplacementUtilPlaceholder {
     public static String replacePlatformConstants(String text) {
         final String colabName = ConfigurationAttributeKey.COLAB_NAME.get();
         final String colabShortName = ConfigurationAttributeKey.COLAB_SHORT_NAME.get();
-        final String colabUrl = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+        final String colabUrl = PlatformAttributeKey.COLAB_URL.get();
         final String adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.get();
         final String adminFromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
 

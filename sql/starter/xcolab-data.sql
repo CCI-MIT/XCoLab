@@ -10,6 +10,9 @@ INSERT INTO sharedcolab_SharedMember (sharedMemberId, screenName, emailAddress, 
 
 INSERT INTO Users_Roles (userId, roleId) VALUES (10144, 10118), (10144, 10122), (10145, 10122);
 
+INSERT INTO admin_ContestTypeAttribute (name, additionalId, locale, numericValue, stringValue, realValue) VALUES ('CONTEST_NAME', 0, '', null, 'Contest', null);
+INSERT INTO admin_ContestTypeAttribute (name, additionalId, locale, numericValue, stringValue, realValue) VALUES ('PROPOSAL_NAME', 0, '', null, 'Proposal', null);
+
 INSERT INTO comment_Category (categoryId, groupId, authorId, name, description, createDate, deletedDate, sort, isQuiet) VALUES (12501, 701, 10144, 'General Discussion', 'This set of discussions is where Climate CoLab members can engage around any topics that interest them.', '2010-10-02 00:00:00', null, null, 0);
 INSERT INTO comment_Category (categoryId, groupId, authorId, name, description, createDate, deletedDate, sort, isQuiet) VALUES (12502, 701, 10144, 'Report bugs and request features', 'This group of discussions is where users can report bugs and suggest new features.', '2010-10-02 00:00:00', null, null, 0);
 
@@ -68,54 +71,25 @@ INSERT INTO Role_ (roleId, companyId, classNameId, classPK, name, title, descrip
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('ACTIVE_THEME', 0, 0, 'CLIMATE_COLAB', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('ADMIN_EMAIL', 0, 0, 'admin@my-xcolab.org', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('ADMIN_FROM_EMAIL', 0, 0, 'no-reply@my-xcolab.org', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('BETA_RIBBON_SHOW', 0, 0, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('BLOG_URL', 0, 0, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('COLAB_NAME', 0, 0, 'XCoLab', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('COLAB_SHORT_NAME', 0, 0, 'CoLab', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('COLAB_USES_CARDS', 0, 0, ' ', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('DAILY_DIGEST_TRIGGER_HOUR', 0, 1, ' ', 1);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('DEFAULT_CONTEST_SCHEDULE_ID', 0, 601, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('DEFAULT_CONTEST_TEMPLATE_ID', 0, 102, null, null);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('DEFAULT_CONTEST_TYPE_ID', 0, 0, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('DEFAULT_TIME_ZONE_ID', 0, 0, 'America/New_York', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('DISCUSSION_CONTENT_ARTICLE_ID', 0, 7, ' ', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('FACEBOOK_APPLICATION_ID', 0, 0, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('FACEBOOK_APPLICATION_SECRET', 0, 0, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('FACEBOOK_SSO_IS_ACTIVE', 0, 0, null, null);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('FACEBOOK_VERIFIED_REQUIRED', 0, 0, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('FILTER_PROFANITY', 0, 0, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('FLAGGING_ALLOW_MEMBERS', 0, 0, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('FOOTER_CONTENT_ARTICLE_ID', 0, 3, ' ', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('GENERATE_SCREEN_NAME', 0, 0, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('GOOGLE_ANALYTICS_KEY', 0, 0, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('GOOGLE_AUTH_CLIENT_ID', 0, 0, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('GOOGLE_AUTH_CLIENT_SECRET', 0, 0, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('GOOGLE_RECAPTCHA_IS_ACTIVE', 0, 0, null, null);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('GOOGLE_RECAPTCHA_SITE_KEY', 0, 0, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('GOOGLE_RECAPTCHA_SITE_SECRET_KEY', 0, 0, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('GOOGLE_SSO_IS_ACTIVE', 0, 0, null, null);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('IMAGE_UPLOAD_EXTERNAL_SERVICE_URL', 0, 0, 'http://imgur.com/MRfmcOs', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('IMAGE_UPLOAD_HELP_TEXT', 0, 0, '<h4>Image upload in IMGUR:</h4><h5>This process works best on Google Chrome or Safari:</h5><br /><ol><li>Click on Upload - This will take you to Imgur, an image hosting platform where you can host your image.</li><li>On Imgur, click "New Post" and "Upload images."</li><li>Drag and drop or browse to the image you would like to use.</li> <li>After the image is uploaded to Imgur, right click on it, and select "Copy image address."</li><li>Return to the Climate CoLab page and paste it into the URL field.</li><li>Verify the image in the preview.</li><li>Click OK to insert the image to the Climate CoLab.</li></ol>', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('IS_MY_EMMA_ACTIVE', 0, 0, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('IS_POINTS_ACTIVE', 0, 1, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('IS_SHARED_COLAB', 0, 0, '', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('LANDING_PAGE_BANNER_CONTENT_ARTICLE_ID', 0, 4, ' ', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('LANDING_PAGE_BOTTOM_CONTENT_ARTICLE_ID', 0, 5, ' ', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('MEMBERS_CONTENT_ARTICLE_ID', 0, 6, ' ', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('META_PAGE_DESCRIPTION', 0, null, 'The XCoLab is a generic version of the Climate CoLab, a platform to crowdsource solutions to climate change.', null);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('META_PAGE_KEYWORDS', 0, null, 'XCoLab, CoLab, open source, open innovation', null);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('OPEN_GRAPH_SHARE_DESCRIPTION', 0, 0, 'The XCoLab is a generic version of the Climate CoLab, a platform to crowdsource solutions to climate change.', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('OPEN_GRAPH_SHARE_TITLE', 0, 0, 'XCoLab', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PORTLET_CONTACT_FORM_PREFERENCES', 0, null, '{"preferences":{"default":{"EXPAND_LINK_TEXT":"Send feedback message","MESSAGE_SUBJECT":"[CoLab] USER_NAME sent a message using contact form","MESSAGE_FORMAT":"USER_NAME (USER_EMAIL) has sent message using contact form\\r\\nUSER_MESSAGE","RECIPIENTS":"pdeboer@mit.edu,lfi@mit.edu, annalyn@mit.edu, jperron@mit.edu,jobachhu@mit.edu"}}}', null);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PORTLET_CONTESTS_PREFERENCES', 0, null, '{"preferences":{"default":{"SELECTED_CONTESTS":"","ALL_CONTESTS_URL":"http:\\/\\/climatecolab.org\\/contests","CONTEST_FEED_SIZE":"2","CONTEST_TITLE":"Featured contests","ALL_CONTESTS_TITLE":"See all contests","SHOW_COUNTS":"true"}}}', null);
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PORTLET_CONTACT_FORM_PREFERENCES', 0, null, '{"preferences":{"default":{"EXPAND_LINK_TEXT":"Send feedback message","MESSAGE_SUBJECT":"[CoLab] USER_NAME sent a message using contact form","MESSAGE_FORMAT":"USER_NAME (USER_EMAIL) has sent message using contact form\\r\\nUSER_MESSAGE","RECIPIENTS":"admin@myxcolab.org"}}}', null);
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PORTLET_CONTESTS_PREFERENCES', 0, null, '{"preferences":{"default":{"SELECTED_CONTESTS":"","ALL_CONTESTS_URL":"https:\\/\\/myxcolab.org\\/contests","CONTEST_FEED_SIZE":"2","CONTEST_TITLE":"Featured contests","ALL_CONTESTS_TITLE":"See all contests","SHOW_COUNTS":"true"}}}', null);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PORTLET_DISCUSSION_PREFERENCES', 0, 0, '{}', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PORTLET_FEED_PREFERENCES', 0, null, '{"FEED_REMOVE_ADMIN":"false","FEED_SEE_MORE_LINK_SHOWN":"true","FEED_SIZE":"7","FEED_DISPLAY_STYLE":"SHORT","FEED_MAX_LENGTH":"0","FEED_TITLE":"Activities","PORTLET_TITLE":"Activities","FEED_TYPE":"ACTIVITIES"}', null);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PORTLET_PROPOSALS_PREFERENCES', 0, null, '{"preferences":{"default":{"CONTEST_TYPE_ID":"0","CALL_TO_ACTION":"New contests now open. "}}}', null);
+INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PORTLET_PROPOSALS_PREFERENCES', 0, null, '{"preferences":{"default":{"CONTEST_TYPE_ID":"0","CALL_TO_ACTION":""}}}', null);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PORTLET_RANDOM_PROPOSALS_PREFERENCES', 0, 0, '{ "SELECTED_PHASES_PREFERENCE": "", "FLAG_FILTER_PREFERENCE": "", "TITLE_PREFERENCE": "Interesting Proposals", "ALL_PROPOSALS_TITLE": "see all", "ALL_PROPOSALS_URL": "/contests", "FEED_SIZE_PREFERENCE": "3", "IS_COMPACT": "false"}', 0);
 INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PORTLET_STAFF_MEMBERS_PREFERENCES', 0, null, '{"preferences":{"default":{"CATEGORY_ID":"5","COLUMN_AMOUNT":"5","DISPLAY_URL":"true","DISPLAY_PHOTO":"true","PORTLET_TITLE":"Project team"},"advisors":{"CATEGORY_ID":"9","COLUMN_AMOUNT":"5","DISPLAY_URL":"false","DISPLAY_PHOTO":"true","PORTLET_TITLE":" Current and Past Advisors"},"judges":{"CATEGORY_ID":"10","COLUMN_AMOUNT":"5","DISPLAY_URL":"false","DISPLAY_PHOTO":"true","PORTLET_TITLE":"Judges"}}}', null);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('PUBLISH_JUDGING_RESULTS', 0, 1, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('SHOW_CONTESTS_DISPLAY_OPTIONS', 0, 1, '', 0);
-INSERT INTO xcolab_ConfigurationAttribute (name, additionalId, numericValue, stringValue, realValue) VALUES ('SHOW_CONTEST_COUNTDOWN', 0, 1, '', 0);
 
 INSERT INTO xcolab_ContentArticle (contentArticleId, authorId, createDate, maxVersionId, folderId, editRoleGroupId, viewRoleGroupId, visible) VALUES (1, 10144, '2016-05-11 09:21:08', 1, 2, null, null, 1);
 INSERT INTO xcolab_ContentArticle (contentArticleId, authorId, createDate, maxVersionId, folderId, editRoleGroupId, viewRoleGroupId, visible) VALUES (2, 10144, '2016-05-11 09:21:08', 2, 2, null, null, 1);
@@ -189,11 +163,7 @@ INSERT INTO xcolab_ContestTeamMemberRole (id_, role, sort) VALUES (193261, 'Fell
 INSERT INTO xcolab_ContestTeamMemberRole (id_, role, sort) VALUES (1251483, 'Judge', 1);
 INSERT INTO xcolab_ContestTeamMemberRole (id_, role, sort) VALUES (1975251, 'Impact Fellow', 3);
 
-INSERT INTO xcolab_ContestType (id_, contestName, contestNamePlural, proposalName, proposalNamePlural, portletName, portletUrl, friendlyUrlStringContests, friendlyUrlStringProposal, menuItemName, hasDiscussion, suggestionContestId, rulesPageName, rulesPageUrl, showProposalSummary, overrideCreationPrompt, pitchName, showTeamField, showResourceLinks)
-  VALUES (0, 'Contest', 'Contests', 'Proposal', 'Proposals', 'proposals', '/contests', 'contests', 'proposal', 'Contests', 1, 0, 'Contest rules', '/web/guest/resources/-/wiki/Main/Contest+rules', 1, null, 'Pitch', 1, 1);
-
-INSERT INTO xcolab_FocusArea (id_, name, order_) VALUES (0, 'any-any-any default', 0);
-INSERT INTO xcolab_FocusArea (id_, name, order_) VALUES (1, 'any-any-any', 0);
+INSERT INTO xcolab_FocusArea (id_, name, order_) VALUES (1, 'any-any-cement', 0);
 INSERT INTO xcolab_FocusArea (id_, name, order_) VALUES (2, 'any-any-any', 0);
 
 INSERT INTO xcolab_ImpactIteration (iterationId, year) VALUES (1, 2020);

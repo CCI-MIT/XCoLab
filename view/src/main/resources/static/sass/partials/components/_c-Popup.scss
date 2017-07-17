@@ -14,7 +14,7 @@ $c-Popup__close__background--hover: url(/images/x.png) no-repeat left bottom !de
   padding: 11px 10px;
   margin-left: -321px;
   background: $c-Popup__wrapper__background;
-  @include border-radius(5px);
+  border-radius: 5px;
 }
 
 #c-Popup__accept__TOS { //#acceptTosPopup .popup-wrap
@@ -46,7 +46,7 @@ $c-Popup__close__background--hover: url(/images/x.png) no-repeat left bottom !de
   position: relative;
   padding: 30px 30px 32px 30px;
   background: white;
-  @include border-radius(5px);
+  border-radius: 5px;
 
   p {  //.popup p
     margin-bottom: 20px;

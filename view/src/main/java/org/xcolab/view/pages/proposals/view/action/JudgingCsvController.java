@@ -3,10 +3,8 @@ package org.xcolab.view.pages.proposals.view.action;
 import au.com.bytecode.opencsv.CSVWriter;
 import com.google.common.collect.ImmutableSet;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -31,8 +29,7 @@ import org.xcolab.view.pages.proposals.judging.ProposalRatingWrapper;
 import org.xcolab.view.pages.proposals.judging.ProposalReview;
 import org.xcolab.view.pages.proposals.judging.ProposalReviewCsvExporter;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -51,32 +48,22 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class JudgingCsvController {
 
-    private final ProposalsContext proposalsContext;
-
-    @Autowired
-    public JudgingCsvController(ProposalsContext proposalsContext) {
-        Assert.notNull(proposalsContext);
-        this.proposalsContext = proposalsContext;
-    }
-
     @GetMapping({"phase/{phaseId}/{proposalUrlString}/{proposalId}/tab/ADVANCING/getJudgingCsv",
             "c/{proposalUrlString}/{proposalId}/tab/ADVANCING/getJudgingCsv"})
-    public void getJudgingCsv(HttpServletRequest request, HttpServletResponse response) {
+    public void getJudgingCsv(HttpServletRequest request, HttpServletResponse response,
+            ProposalContext proposalContext, Member currentMember) {
 
-        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
-        Member currentMember = proposalsContext.getMember(request);
+        ProposalsPermissions permissions = proposalContext.getPermissions();
         // Security handling
-        if (!(permissions.getCanFellowActions() && proposalsContext.getProposalWrapped(request).isUserAmongFellows(currentMember.getUserId())) &&
+        if (!(permissions.getCanFellowActions() && proposalContext.getProposal().isUserAmongFellows(currentMember.getUserId())) &&
                 !permissions.getCanAdminAll() && !permissions.getCanJudgeActions() && !permissions.getCanContestManagerActions()) {
             return;
         }
 
-
-
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            String csvPayload = getProposalJudgeReviewCsv(proposalsContext.getContest(request),
-                    proposalsContext.getContestPhase(request), request);
+            String csvPayload = getProposalJudgeReviewCsv(proposalContext.getContest(),
+                    proposalContext.getContestPhase(), proposalContext);
 
             String separatorIndicationForExcel =  "sep=" + CSVWriter.DEFAULT_SEPARATOR + CSVWriter.DEFAULT_LINE_END;
             csvPayload = separatorIndicationForExcel + csvPayload;
@@ -96,11 +83,11 @@ public class JudgingCsvController {
     }
 
     private String getProposalJudgeReviewCsv(Contest contest, ContestPhase currentPhase,
-            HttpServletRequest request)  {
+            ProposalContext proposalContext)  {
 
         Map<Proposal,List<ProposalReview>> proposalToProposalReviewsMap = new HashMap<>();
 
-        List<Proposal> stillActiveProposals = ProposalsContextUtil.getClients(request).getProposalClient().getActiveProposalsInContestPhase(currentPhase.getContestPhasePK());
+        List<Proposal> stillActiveProposals = proposalContext.getClients().getProposalClient().getActiveProposalsInContestPhase(currentPhase.getContestPhasePK());
         Set<ProposalRatingType> occurringRatingTypes = new HashSet<>();
         Set<Member> occurringJudges = new HashSet<>();
 
@@ -114,7 +101,7 @@ public class JudgingCsvController {
                                 ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
 
                 if(fellowActionAttribute!=null) {
-                    JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt((int) fellowActionAttribute.getNumericValue().intValue());
+                    JudgingSystemActions.FellowAction fellowAction = JudgingSystemActions.FellowAction.fromInt(fellowActionAttribute.getNumericValue().intValue());
                     // Ignore proposals that have not been passed to judge
                     if (fellowAction != JudgingSystemActions.FellowAction.PASS_TO_JUDGES
                             && judgingPhase.getFellowScreeningActive()) {
@@ -122,13 +109,12 @@ public class JudgingCsvController {
                     }
 
 
-                    final String proposalUrl = PlatformAttributeKey.PLATFORM_COLAB_URL.get() + proposal
+                    final String proposalUrl = PlatformAttributeKey.COLAB_URL.get() + proposal
                             .getProposalLinkUrl(contest, judgingPhase.getContestPhasePK());
                     final ProposalReview proposalReview =
                             new ProposalReview(proposal, judgingPhase, proposalUrl);
                     proposalReview.setReviewers(
-                            ImmutableSet.copyOf(getProposalReviewingJudges(proposal, judgingPhase,
-                                    request)));
+                            ImmutableSet.copyOf(getProposalReviewingJudges(proposal, judgingPhase, proposalContext)));
                     List<ProposalRating> ratings = ProposalJudgeRatingClientUtil
                             .getJudgeRatingsForProposal(proposal.getProposalId(),
                                     judgingPhase.getContestPhasePK());
@@ -168,9 +154,7 @@ public class JudgingCsvController {
                         proposalReview.addRatingAverage(key, avg);
                     }
 
-                    if ((proposalToProposalReviewsMap.get(proposal) == null)) {
-                        proposalToProposalReviewsMap.put(proposal, new ArrayList<>());
-                    }
+                    proposalToProposalReviewsMap.computeIfAbsent(proposal, k -> new ArrayList<>());
 
                     proposalToProposalReviewsMap.get(proposal).add(proposalReview);
                 }
@@ -184,11 +168,11 @@ public class JudgingCsvController {
     }
 
     private List<Member> getProposalReviewingJudges(Proposal proposal, ContestPhase judgingPhase,
-            HttpServletRequest request) {
+            ProposalContext proposalContext) {
         List<Member> selectedJudges = null;
 
         if (judgingPhase.getFellowScreeningActive()) {
-            final String judgeIdString = proposalsContext.getClients(request).getProposalPhaseClient().
+            final String judgeIdString = proposalContext.getClients().getProposalPhaseClient().
                     getProposalContestPhaseAttribute(proposal.getProposalId(), judgingPhase.getContestPhasePK(),
                             ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
 

@@ -3,6 +3,7 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
     xmlns:spring="http://www.springframework.org/tags"
+
     xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
 	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -42,9 +43,9 @@
 
     <c:set var="deleteProfileUrl" value="/members/profile/${userBean.userId}/delete" />
 
-	<h1>Edit Member Profile</h1>
+	<h1><spring:message code="profile.title.edit" /></h1>
 	<div class="is-required">
-		<span class="required-field"><!-- --></span> is a required field.
+		<span class="required-field"><!-- --></span> <spring:message code="profile.validation.mandatory" />.
 	</div>
 
 
@@ -74,7 +75,7 @@
 					<table border="0" cellpadding="0" cellspacing="0" class="colab nlpad">
 						<tr>
 							<th class="b m nowrap required-field" width="170">
-								First Name
+                                <spring:message code="profile.form.fields.firstname"/>
 							</th>
 							<td>
 								<form:input id="firstName" path="firstName" cssClass="profile_input"/>
@@ -85,7 +86,7 @@
 						</tr>
 						<tr>
 							<th class="b nowrap required-field">
-								Last Name
+                                <spring:message code="profile.form.fields.lastname"/>
 							</th>
 							<td>
 								<form:input id="lastName" path="lastName" cssClass="profile_input"/>
@@ -97,7 +98,7 @@
 
 						<tr>
 							<th class="b m required-field">
-								Country
+                                <spring:message code="profile.form.fields.country"/>
 							</th>
 							<td>
                                 <form:select cssClass="popupreg_input" path="countryCode">
@@ -112,7 +113,7 @@
                         <c:if test="${isI18NActive}">
                             <tr>
                                 <th class="b m required-field">
-                                    Language
+                                    <spring:message code="profile.form.fields.language"/>
                                 </th>
                                 <td>
                                     <form:select cssClass="popupreg_input" path="defaultLocale">
@@ -150,7 +151,7 @@
 				<table border="0" cellpadding="0" cellspacing="0" class="colab nlpad">
 					<tbody>
 						<tr>
-							<th class="b m" >Stored email
+							<th class="b m" ><spring:message code="profile.form.fields.email"/>
 							</th>
 							<td>
 								<form:input  id="emailStored" cssClass="profile_input" path="emailStored" readonly="true"/>
@@ -158,7 +159,7 @@
 						</tr>
 						<tr id="EmailRow">
 							<th class="b m" >
-								New email
+                                <spring:message code="profile.form.fields.newemail"/>
 							</th>
 							<td>
 								<form:input  id="email" cssClass="profile_input" path="email"/>
@@ -170,7 +171,7 @@
 
 						<tr id="retypeEmailRow" style="${emailError ? '' : 'display: none;'}">
 							<th class="b m required-field">
-								New email retype
+                                <spring:message code="profile.form.fields.retypeemail"/>
 							</th>
 							<td>
 								<form:input  id="retypeEmail" cssClass="profile_input" path="retypeEmail" autocomplete="off"/>
@@ -182,7 +183,7 @@
 
 						<tr>
 							<th class="b m nowrap">
-								Current password
+                                <spring:message code="profile.form.fields.password"/>
 							</th>
 							<td>
 								<form:password cssClass="profile_input" path="currentPassword" />
@@ -193,7 +194,7 @@
 						</tr>
 						<tr>
 							<th class="b m nowrap">
-								New password
+                                <spring:message code="profile.form.fields.newpassword"/>
 							</th>
 							<td>
 								<form:password cssClass="profile_input" path="password"/>
@@ -204,7 +205,7 @@
 						</tr>
 						<tr id="retypePasswordRow" style="${passwordError ? '' : 'display: none;'}">
 							<th class="b m nowrap required-field">
-								New password retype
+                                <spring:message code="profile.form.fields.retypepassword"/>
 							</th>
 							<td>
 								<form:password cssClass="profile_input" path="retypePassword" />
@@ -220,7 +221,7 @@
 					<a href="/impersonate?memberId=${currentUserProfile.userId}">Impersonate ${userBean.firstName}</a>
 				</c:if>
 
-				<div class="profile_about-head">Short bio</div>
+				<div class="profile_about-head"><spring:message code="profile.form.fields.shortbio"/></div>
 				<div class="userProfileAbout" >
 					<form:textarea
 						cssClass="rte-editorPlaceholder shortBioContent" path="shortBio" />
@@ -234,14 +235,14 @@
 					<div class="clearfix">&#160;</div>
 				</div>
 
-				<a class="c-Button__primary" href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();">Save</a>
-				<a class="c-Button__secondary" href="/members/profile/${currentUserProfile.userId}">Cancel</a>
+				<a class="c-Button__primary" href="javascript:;" onclick="updateTextarea();jQuery('#updateUserProfileForm').submit();"><spring:message code="profile.form.button.save"/></a>
+				<a class="c-Button__secondary" href="/members/profile/${currentUserProfile.userId}"><spring:message code="profile.form.button.cancel"/></a>
 			</div>
 		</div> <!-- /main -->
 
 		<div class="right_col v1">
 			<div class="comm_rightcol">
-				<div class="comm_rightcol-title2">Message Settings</div>
+				<div class="comm_rightcol-title2"><spring:message code="profile.message.settings.title"/></div>
 				<table border="0" cellpadding="0" cellspacing="0" class="colab">
 					<tr class="colabRow">
 						<td class="actionColumn">
@@ -250,7 +251,7 @@
 							<form:label path="sendEmailOnMessage"/>
 						</td>
 						<td class="profile_settings">
-							Send me an email copy of messages I receive.
+                            <spring:message code="profile.message.settings.emailreceive"/>
 						</td>
 					</tr>
 					<tr class="colabRow">
@@ -260,7 +261,7 @@
 							<form:label path="sendEmailOnActivity"/>
 						</td>
 						<td class="profile_settings">
-							Send me an email copy of activities that I'm subscribed to.
+                            <spring:message code="profile.message.settings.emailsubscription"/>
 						</td>
 					</tr>
 					<tr class="colabRow">
@@ -271,7 +272,7 @@
 							<form:label path="sendDailyEmailOnActivity"/>
 						</td>
 						<td class="profile_settings">
-							Only send me a daily summary of all activities I'm subscribed to.
+                            <spring:message code="profile.message.settings.emaildailydigest"/>
 						</td>
 					</tr>
 				</table>
@@ -283,7 +284,7 @@
 	<c:if test="${newsletterActive}">
 		<div class="right_col v1">
 			<div class="comm_rightcol">
-				<div class="comm_rightcol-title2">${_colabShortName} Newsletter Settings</div>
+				<div class="comm_rightcol-title2"><spring:message code="profile.newsletter.settings.title" arguments="${_colabShortName}" /></div>
 				<table border="0" cellpadding="0" cellspacing="0" class="colab">
 					<form:form commandName="newsletterBean">
 						<tr class="colabRow">
@@ -293,7 +294,7 @@
 								<form:label path="emailSubscribedToNewsletter"/>
 							</td>
 							<td>
-								Send me the ${_colabShortName} newsletter.
+                                <spring:message code="profile.newsletter.settings.sendme" arguments="${_colabShortName}"/>
 							</td>
 						</tr>
 					</form:form>
@@ -305,7 +306,7 @@
 
 	<div class="right_col v1">
 		<div class="comm_rightcol">
-			<div class="comm_rightcol-title2">SSO Settings</div>
+			<div class="comm_rightcol-title2"><spring:message code="profile.sso.settings.title"/></div>
 			<table border="0" cellpadding="0" cellspacing="0" class="colab">
 				<tr class="colabRow">
 					<td class="actionColumn">
@@ -322,7 +323,7 @@
 						<label for="hasFacebookId"></label>
 					</td>
 					<td>
-						Facebook account
+                        <spring:message code="profile.sso.settings.facebook"/>
 					</td>
 				</tr>
 				<tr class="colabRow">
@@ -340,7 +341,7 @@
 						<label for="hasOpenId"></label>
 					</td>
 					<td>
-						Google account
+                        <spring:message code="profile.sso.settings.google"/>
 					</td>
 				</tr>
 			</table>
@@ -350,16 +351,18 @@
 
 	<div class="right_col v1">
 		<div class="comm_rightcol">
-			<div class="comm_rightcol-title2">Account Actions</div>
+			<div class="comm_rightcol-title2"><spring:message code="profile.account.settings.title"/></div>
 			<table border="0" cellpadding="0" cellspacing="0" class="colab">
 				<tr class="colabRow">
 					<td class="actionColumn">
-						<form action="${deleteProfileUrl}" method="post" onsubmit="confirm('Are you sure you want to delete your ${_colabName} account?')">
-							<button type="submit" class="c-Button__secondary small">DELETE</button>
+                        <spring:message code="profile.account.delete.question" arguments="${_colabName}" var="deleteMsg"/>
+						<form action="${deleteProfileUrl}" method="post" onsubmit="confirm('${deleteMsg}')">
+							<button type="submit" class="c-Button__secondary small"><spring:message code="profile.account.delete.button"/></button>
 						</form>
 					</td>
                     <td>
-                        Delete your ${_colabName} account.
+                        <spring:message code="profile.account.delete.message" arguments="${_colabName}"/>
+
                     </td>
 				</tr>
 			</table>
@@ -370,7 +373,7 @@
     <c:if test="${permissions.canAdmin}">
         <div class="right_col v1">
             <div class="comm_rightcol">
-                <div class="comm_rightcol-title2">Roles</div>
+                <div class="comm_rightcol-title2"><spring:message code="profile.account.roles.title"/></div>
                 <table border="0" cellpadding="0" cellspacing="0" class="colab">
                     <c:forEach var="memberCategory" items="${memberCategories}">
                         <tr class="colabRow">
@@ -415,6 +418,13 @@
 		<!-- comment -->
 	</iframe>
 
+    <spring:message code="profile.message.settings.notification.successufull" var="messageSuccess"/>
+    <spring:message code="profile.message.settings.notification.failed" var="messageFailed"/>
+    <spring:message code="profile.newsletter.notification.successufull" var="newsletterSuccess"/>
+    <spring:message code="profile.newsletter.notification.failed" var="newsletterFailed"/>
+    <spring:message code="profile.sso.notification.successufull" var="ssoSuccess"/>
+    <spring:message code="profile.sso.notification.failed" var="ssoFailed"/>
+
 	<script type="text/javascript">
 
 		function updateUploadBtnOffset() {
@@ -456,13 +466,14 @@
 			}
 		});
 
+
 		function updateMessageSettingsOnServer(updateUrl, formData){
 			var deferred = jQuery.Deferred();
 				sendAjaxToServer(updateUrl, formData).done(function(response){
 					if (response) {
-                        noty({text: 'Successfully updated message settings!', type: 'success'});
+                        noty({text: '${messageSuccess}', type: 'success'});
 					} else {
-                        noty({text: 'Updating message settings failed!', type: 'error'});
+                        noty({text: '${messageFailed}', type: 'error'});
 					}
 				});
 			return deferred;
@@ -524,10 +535,10 @@
 				sendAjaxToServer(updateUrl).done(function(response) {
 					if (response) {
 						deferred.resolve(true);
-                        noty({text: 'Successfully updated Newsletter settings!', type: 'success'});
+                        noty({text: '${newsletterSuccess}', type: 'success'});
 					} else {
 						deferred.resolve(false);
-                        noty({text: 'Updating Newsletter settings failed!', type: 'error'});
+                        noty({text: '${newsletterFailed}', type: 'error'});
 					}
 				});
 			return deferred;
@@ -556,10 +567,10 @@
             sendAjaxToServer(updateUrl).done(function(response){
                 if (response) {
                     deferred.resolve(true);
-                    noty({text: 'Unlinking SSO successful!', type: 'success'});
+                    noty({text: '${ssoSuccess}', type: 'success'});
                 } else {
                     deferred.resolve(false);
-                    noty({text: 'Unlinking SSO failed!', type: 'error'});
+                    noty({text: '${ssoFailed}', type: 'error'});
                 }
             });
 			return deferred;

@@ -1,14 +1,14 @@
 package org.xcolab.view.pages.feedswidget.wrappers;
 
-import com.ocpsoft.pretty.time.PrettyTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.activities.pojo.ActivityEntry;
+import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.time.DurationFormatter;
 import org.xcolab.view.util.entity.activityEntry.DiscussionActivitySubType;
 import org.xcolab.view.util.entity.activityEntry.MemberSubActivityType;
 import org.xcolab.view.util.entity.activityEntry.ProposalActivitySubType;
-import org.xcolab.util.enums.activity.ActivityEntryType;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -21,7 +21,6 @@ public class SocialActivityWrapper implements Serializable {
 
     private final static Logger _log = LoggerFactory.getLogger(SocialActivityWrapper.class);
     private static final long serialVersionUID = 1L;
-    private static final PrettyTime timeAgoConverter = new PrettyTime();
     private static final int MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
     private final ActivityEntry activity;
@@ -31,7 +30,7 @@ public class SocialActivityWrapper implements Serializable {
     private String body;
     private final boolean odd;
 
-    public SocialActivityWrapper(ActivityEntry activity, int daysBetween, boolean indicateNewDate, boolean odd, HttpServletRequest request, int maxLength) {
+    public SocialActivityWrapper(ActivityEntry activity, int daysBetween, boolean indicateNewDate, boolean odd, int maxLength, String actBody) {
         this.activity = activity;
 
         this.daysBetween = daysBetween;
@@ -40,7 +39,7 @@ public class SocialActivityWrapper implements Serializable {
         long createDay = activity.getCreateDate().getTime() / MILLISECONDS_PER_DAY;
         long daysNow = new Date().getTime() / MILLISECONDS_PER_DAY;
         daysAgo = daysNow - createDay;
-        body = activity.getActivityEntryBody();
+        body = actBody;
         if (body != null) {
             body = body.replaceAll("c.my_sites[^\\\"]*", "web/guest/member/-/member/userId/" + activity.getMemberId());
         }
@@ -68,24 +67,7 @@ public class SocialActivityWrapper implements Serializable {
     public boolean getIndicateNewDate() {
         return indicateNewDate;
     }
-
-    public Boolean getIsEmpty() {
-       return isEmpty(activity);
-    }
     
-    public static Boolean isEmpty(ActivityEntry entry) {
-        String body = entry.getActivityEntryBody();
-        return body == null || body.trim().isEmpty();
-    }
-
-    public static Boolean isEmpty(ActivityEntry activity, HttpServletRequest request) {
-        try {
-            return isEmpty(activity);
-        } catch (Throwable e) {
-            _log.error("Some error interpreting activity: {}", e.getMessage());
-            return false;
-        }
-    }
 
     public void setDaysAgo(long daysAgo) {
         this.daysAgo = daysAgo;
@@ -96,7 +78,7 @@ public class SocialActivityWrapper implements Serializable {
     }
     
     public String getActivityDateAgo() {
-        return timeAgoConverter.format(new Date(activity.getCreateDate().getTime()));
+        return DurationFormatter.forRequestLocale().format(activity.getCreateDate());
     }
     
     public boolean isOdd() {
@@ -133,7 +115,7 @@ public class SocialActivityWrapper implements Serializable {
 
         private final String[] classes;
         private final String displayName;
-        private final static Map<String, ActivityType> activityMap = new HashMap<String, ActivityType>();
+        private final static Map<String, ActivityType> activityMap = new HashMap<>();
         private final static ActivityType defaultType = COMMENT;
 
         static {

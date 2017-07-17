@@ -91,7 +91,7 @@ public final class FacebookUtil {
     }
 
     public static String getAuthRedirectURL(HttpServletRequest request) {
-        return PlatformAttributeKey.PLATFORM_COLAB_URL.get() + SsoEndpoint.FACEBOOK_CALLBACK.getUrl();
+        return PlatformAttributeKey.COLAB_URL.get() + SsoEndpoint.FACEBOOK_CALLBACK.getUrl();
     }
 
     private static class FacebookResponseException extends RuntimeException {

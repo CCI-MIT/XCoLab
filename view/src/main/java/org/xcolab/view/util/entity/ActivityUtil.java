@@ -25,7 +25,7 @@ public class ActivityUtil {
         Map<String, List<ActivityEntry>> activitiesMap = new HashMap<>(10000);
         for (ActivityEntry a : activities) {
             if (!activitiesMap.containsKey(getSocialActivityKey(a))) {
-                activitiesMap.put(getSocialActivityKey(a), new LinkedList<ActivityEntry>());
+                activitiesMap.put(getSocialActivityKey(a), new LinkedList<>());
             }
             activitiesMap.get(getSocialActivityKey(a)).add(a);
         }
@@ -44,15 +44,11 @@ public class ActivityUtil {
     private static List<ActivityEntry> clusterActivities(Map<String, List<ActivityEntry>> activitiesMap) {
         //cluster
         List<ActivityEntry> aggregatedActivities = new LinkedList<>();
-        Comparator<ActivityEntry> sorter = new Comparator<ActivityEntry>() {
-            @Override
-            public int compare(ActivityEntry o1, ActivityEntry o2) {
-                return new Long(o1.getCreateDate().getTime()).compareTo(o2.getCreateDate().getTime());
-            }
-        };
+        Comparator<ActivityEntry> sorter =
+                (o1, o2) -> new Long(o1.getCreateDate().getTime()).compareTo(o2.getCreateDate().getTime());
         for (Collection<ActivityEntry> activitiesMapValue : activitiesMap.values()) {
             List<ActivityEntry> socialActivities = new ArrayList<>(activitiesMapValue); //convert to array for sorting
-            Collections.sort(socialActivities, sorter);
+            socialActivities.sort(sorter);
 
             ActivityEntry curMin = null;
             for (ActivityEntry socialActivity : socialActivities) {
@@ -67,7 +63,7 @@ public class ActivityUtil {
         }
 
         // Sort the activities in reverse order (sort by date DESC)
-        Collections.sort(aggregatedActivities, Collections.reverseOrder(sorter));
+        aggregatedActivities.sort(Collections.reverseOrder(sorter));
 
         return aggregatedActivities;
     }

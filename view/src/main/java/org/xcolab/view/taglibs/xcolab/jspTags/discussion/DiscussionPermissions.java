@@ -14,8 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 
 public class DiscussionPermissions {
 
+    private static final int EDIT_GRACE_PERIOD_IN_MINUTES = 15;
+
     public static final String REQUEST_ATTRIBUTE_NAME = "DISCUSSION_PERMISSIONS";
-    public static final int EDIT_GRACE_PERIOD_IN_MINUTES = 15;
 
     protected final long memberId;
     protected boolean isLoggedIn;

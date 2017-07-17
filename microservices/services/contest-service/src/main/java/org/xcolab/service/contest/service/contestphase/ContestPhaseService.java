@@ -31,7 +31,6 @@ import org.xcolab.service.contest.utils.promotion.enums.ContestPhaseTypeValue;
 import org.xcolab.service.contest.utils.promotion.enums.ContestStatus;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -67,12 +66,7 @@ public class ContestPhaseService {
     public ContestPhase getNextContestPhase(ContestPhase contestPhase) throws NotFoundException {
         // First sort by contest phase type (the list has to be initialized as modifiable..)
         List<ContestPhase> contestPhases = new ArrayList<>(contestService.getAllContestPhases(contestPhase.getContestPK()));
-        Collections.sort(contestPhases, new Comparator<ContestPhase>() {
-            @Override
-            public int compare(ContestPhase o1, ContestPhase o2) {
-                return o1.getPhaseStartDate().compareTo(o2.getPhaseStartDate());
-            }
-        });
+        contestPhases.sort(Comparator.comparing(ContestPhase::getPhaseStartDate));
 
         boolean currentFound = false;
         for (ContestPhase phase : contestPhases) {
@@ -127,7 +121,7 @@ public class ContestPhaseService {
 
                     org.xcolab.client.contest.pojo.Contest c = ContestClientUtil.getContest(contest.getContestPK());//THIS LOOKS UGLY as HELL
                     new ContestVoteNotification(member, c, proposals.get(0),
-                            PlatformAttributeKey.PLATFORM_COLAB_URL.get()).sendMessage();
+                            PlatformAttributeKey.COLAB_URL.get()).sendMessage();
                 }
                 // Send a notification to the user
                 else {
@@ -135,7 +129,7 @@ public class ContestPhaseService {
                         org.xcolab.client.contest.pojo.Contest contestMicro = ContestClientUtil
                                 .getContest(contest.getContestPK());//THIS LOOKS UGLY as HELL
                         new ContestVoteQuestionNotification(member, contestMicro, proposals,
-                                PlatformAttributeKey.PLATFORM_COLAB_URL.get() ).sendMessage();
+                                PlatformAttributeKey.COLAB_URL.get() ).sendMessage();
                     } catch (ContestNotFoundException ignored) {
 
                     }
@@ -152,23 +146,22 @@ public class ContestPhaseService {
 
         HashMap<Member, List<Proposal>> userToSupportsMap = new HashMap<>();
         // Generate a list of supporting proposals for each user
-        for(Proposal prop : proposalsInContest)
-        for (ProposalSupporter supporter : ProposalMemberRatingClientUtil.getProposalSupporters(prop.getProposalId())) {
-            try {
-                Member user = MembersClient.getMember(supporter.getUserId());
+        for(Proposal prop : proposalsInContest) {
+            for (ProposalSupporter supporter : ProposalMemberRatingClientUtil
+                    .getProposalSupporters(prop.getProposalId())) {
+                try {
+                    Member user = MembersClient.getMember(supporter.getUserId());
 
 
-                List<Proposal> proposals = userToSupportsMap.get(user);
-                if (proposals == null) {
-                    proposals = new ArrayList<>();
-                    userToSupportsMap.put(user, proposals);
+                    List<Proposal> proposals =
+                            userToSupportsMap.computeIfAbsent(user, k -> new ArrayList<>());
+
+                    proposals.add(ProposalClientUtil.getProposal(supporter.getProposalId()));
+
+                } catch (MemberNotFoundException | ProposalNotFoundException ignored) {
                 }
 
-                proposals.add(ProposalClientUtil.getProposal(supporter.getProposalId()));
-
-            }catch (MemberNotFoundException | ProposalNotFoundException ignored){
             }
-
         }
 
         return userToSupportsMap;
@@ -200,9 +193,11 @@ public class ContestPhaseService {
             _log.error("Could not send proposal promotion colab messaging notification", e);
         }*/
 
-            _log.info("done forcefully promoting proposal " + p.getProposalId() + " from phase " + phase.getContestPhasePK());
-        }catch(ProposalNotFoundException pnfe){
-            _log.error("could not find proposal :" + proposalId + " in promotion from phase " + phase.getContestPhasePK());
+            _log.info("done forcefully promoting proposal {} from phase {}", p.getProposalId(),
+                    phase.getContestPhasePK());
+        } catch(ProposalNotFoundException pnfe) {
+            _log.error("could not find proposal :{} in promotion from phase {}", proposalId,
+                    phase.getContestPhasePK());
         }
     }
 

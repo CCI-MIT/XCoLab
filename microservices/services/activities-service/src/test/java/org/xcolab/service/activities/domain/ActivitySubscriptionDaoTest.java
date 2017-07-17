@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.TestPropertySource;
@@ -45,36 +45,36 @@ public class ActivitySubscriptionDaoTest {
     @Test
     public void shouldGetEmptyForSubscriptionPKNotFound() throws Exception {
 
-        assertFalse(activitySubscriptionDao.get(-1l).isPresent());
+        assertFalse(activitySubscriptionDao.get(-1L).isPresent());
     }
 
     @Test
     public void shouldGetSubscription() throws Exception {
 
-        assertTrue(activitySubscriptionDao.get(1463904l).isPresent());
+        assertTrue(activitySubscriptionDao.get(1463904L).isPresent());
     }
 
 
     @Test
     public void shouldGetActivitySubscribersByReceiver() throws Exception {
-        assertTrue(activitySubscriptionDao.getActivitySubscribers(null,null,2664871l).size()==1);
+        assertTrue(activitySubscriptionDao.getActivitySubscribers(null,null, 2664871L).size()==1);
 
     }
 
     @Test
     public void shouldGetActivitySubscribersByClassNameClassPK() throws Exception {
-        assertTrue(activitySubscriptionDao.getActivitySubscribers(39202l,1366054l,null).size()==1);
+        assertTrue(activitySubscriptionDao.getActivitySubscribers(39202L, 1366054L,null).size()==1);
     }
 
 
     @Test
     public void shouldCheckIfIsSubscriber() throws Exception {
-        assertTrue(activitySubscriptionDao.isSubscribed(2664865l,1368503l,1333850l,0,null));
-        assertFalse(activitySubscriptionDao.isSubscribed(2694865l,1368503l,1333850l,0,null));
+        assertTrue(activitySubscriptionDao.isSubscribed(2664865L, 1368503L, 1333850L,0,null));
+        assertFalse(activitySubscriptionDao.isSubscribed(2694865L, 1368503L, 1333850L,0,null));
     }
     @Test
     public void shouldDeleteSubscription() throws Exception {
-        Long subscId = 1463902l;
+        Long subscId = 1463902L;
         assertTrue(activitySubscriptionDao.get(subscId).isPresent());
         assertTrue(activitySubscriptionDao.delete(subscId));
         assertFalse(activitySubscriptionDao.get(subscId).isPresent());
@@ -82,11 +82,11 @@ public class ActivitySubscriptionDaoTest {
 
     @Test
     public void shouldUpdateSubscription() throws Exception {
-        ActivitySubscription as = activitySubscriptionDao.get(1463904l).get();
+        ActivitySubscription as = activitySubscriptionDao.get(1463904L).get();
         String extraData = "-";
         as.setExtraData(extraData);
         assertTrue(activitySubscriptionDao.update(as));
-        assertTrue(activitySubscriptionDao.get(1463904l).get().getExtraData().equals(extraData));
+        assertTrue(activitySubscriptionDao.get(1463904L).get().getExtraData().equals(extraData));
     }
 
 

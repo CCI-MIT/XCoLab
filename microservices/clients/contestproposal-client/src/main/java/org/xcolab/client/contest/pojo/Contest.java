@@ -74,7 +74,7 @@ public class Contest extends AbstractContest implements Serializable {
     private static final long CONTEST_TIER_FOR_SHOWING_SUB_CONTESTS = 3L;
     private static final String EMAIL_TEMPLATE_URL = "/resources/-/wiki/Main/Judging+Mail+Templates";
 
-    private Map<String, String> ontologyJoinedNames = new HashMap<>();
+    private final Map<String, String> ontologyJoinedNames = new HashMap<>();
     private List<ContestPhase> visiblePhases;
 
 
@@ -179,7 +179,7 @@ public class Contest extends AbstractContest implements Serializable {
         } else {
             Long imgId = this.getSponsorLogoId();
             if (imgId != null) {
-                final String imageDomain = PlatformAttributeKey.PLATFORM_UPLOADED_IMAGE_DOMAIN.get();
+                final String imageDomain = PlatformAttributeKey.IMAGES_UPLOADED_DOMAIN.get();
                 return imageDomain + "/image/contest/" + imgId;
             }
             return "";
@@ -198,7 +198,7 @@ public class Contest extends AbstractContest implements Serializable {
         } else {
             Long imgId = this.getContestLogoId();
             if (imgId != null) {
-                final String imageDomain = PlatformAttributeKey.PLATFORM_UPLOADED_IMAGE_DOMAIN.get();
+                final String imageDomain = PlatformAttributeKey.IMAGES_UPLOADED_DOMAIN.get();
                 return imageDomain + "/image/contest/" + imgId;
             }
             return "";
@@ -322,10 +322,10 @@ public class Contest extends AbstractContest implements Serializable {
 
     protected List<OntologyTerm> getTermFromSpace(String space) {
 
-        if (!ontologySpaceCache.containsKey(space) && (getFocusAreaId() > 0)) {
-            if (!faCache.containsKey(this.getFocusAreaId())) {
-                FocusArea fa = ontologyClient.getFocusArea(this
-                        .getFocusAreaId());
+        if (!ontologySpaceCache.containsKey(space) && getHasFocusArea()) {
+            final Long focusAreaId = getFocusAreaId();
+            if (!faCache.containsKey(focusAreaId)) {
+                FocusArea fa = ontologyClient.getFocusArea(focusAreaId);
                 if (fa == null) {
                     ontologySpaceCache.put(space, null);
                     return null;
@@ -333,10 +333,8 @@ public class Contest extends AbstractContest implements Serializable {
                 faCache.put(fa.getId_(), fa);
             }
             List<OntologyTerm> terms = new ArrayList<>();
-            for (OntologyTerm t : ontologyClient
-                    .getOntologyTermsByFocusAreaOntologySpaceName(this.getFocusAreaId(),space)) {
-                    terms.add(t);
-            }
+            terms.addAll(ontologyClient
+                    .getOntologyTermsByFocusAreaOntologySpaceName(focusAreaId, space));
             ontologySpaceCache.put(space, terms.isEmpty() ? null : terms);
         }
         return ontologySpaceCache.get(space);
@@ -561,8 +559,12 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public Contest getParentContest() {
+        final Long focusAreaId = getFocusAreaId();
+        if (!getHasFocusArea()) {
+            return null;
+        }
         List<OntologyTerm> list = ontologyClient.getAllOntologyTermsFromFocusAreaWithOntologySpace(
-                ontologyClient.getFocusArea(this.getFocusAreaId()), ontologyClient.getOntologySpace(ONTOLOGY_SPACE_ID_WHERE));
+                ontologyClient.getFocusArea(focusAreaId), ontologyClient.getOntologySpace(ONTOLOGY_SPACE_ID_WHERE));
         List<Long> focusAreaOntologyTermIds = new ArrayList<>();
         for (OntologyTerm ot : list) {
             focusAreaOntologyTermIds.add(ot.getId_());
@@ -599,7 +601,7 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public boolean getHasFocusArea() {
-        return this.getFocusAreaId() > 0;
+        return getFocusAreaId() != null;
     }
 
     public boolean isUserAmongAdvisors(long memberId) {

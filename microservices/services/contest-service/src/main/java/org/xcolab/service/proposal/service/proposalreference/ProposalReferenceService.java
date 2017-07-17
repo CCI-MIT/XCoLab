@@ -33,8 +33,6 @@ public class ProposalReferenceService {
 
     private final ProposalAttributeDao proposalAttributeDao;
 
-
-
     @Autowired
     public ProposalReferenceService(ProposalReferenceDao proposalReferenceDao, ProposalDao proposalDao, ProposalAttributeDao proposalAttributeDao){
         this.proposalReferenceDao = proposalReferenceDao;
@@ -47,8 +45,9 @@ public class ProposalReferenceService {
         for (ProposalReference existingReference : existingReferences) {
             proposalReferenceDao.delete(existingReference.getProposalId(), existingReference.getSubProposalId());
         }
-        populateTableWithProposal(proposal, new HashSet<Long>());
+        populateTableWithProposal(proposal, new HashSet<>());
     }
+
     private void populateTableWithProposal(Proposal proposal, Set<Long> processedProposals)  {
         if (processedProposals.contains(proposal.getProposalId())) {
             return;
@@ -104,6 +103,7 @@ public class ProposalReferenceService {
 
         }
     }
+
     public static List<Long> getProposalIdsFromLinksInText(String text) {
         List<Long> proposalIds = new ArrayList<>();
         Pattern proposalLinkPattern = Pattern.compile(
@@ -120,6 +120,7 @@ public class ProposalReferenceService {
         proposalIds.addAll(getProposalIdsFromLegacyLinksInText(text));
         return proposalIds;
     }
+
     private static List<Long> getProposalIdsFromLegacyLinksInText(String text) {
         List<Long> proposalIds = new ArrayList<>();
         Pattern proposalLinkPattern = Pattern.compile(
@@ -134,15 +135,16 @@ public class ProposalReferenceService {
         }
         return proposalIds;
     }
+
     private void addProposalReference(long proposalId, long subProposalId, long sectionAttributeId)  {
         ProposalReference proposalReference = new ProposalReference();
         proposalReference.setProposalId(proposalId);
         proposalReference.setSubProposalId(subProposalId);
 
-        try{
+        try {
             proposalReferenceDao.get(proposalId, subProposalId);
 
-        }catch (NotFoundException notFound){
+        } catch (NotFoundException notFound) {
             proposalReference.setSectionAttributeId(sectionAttributeId);
             proposalReferenceDao.create(proposalReference);
         }

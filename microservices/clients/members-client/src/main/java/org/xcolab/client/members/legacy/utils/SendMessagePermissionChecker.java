@@ -80,11 +80,7 @@ public class SendMessagePermissionChecker {
             List<MemberRole> blacklist = blacklistedRolesMap.get(currentRole);
             if (blacklist != null) {
                 for (MemberRole mr : blacklist) {
-                    if (blacklistCountMap.get(mr) == null) {
-                        blacklistCountMap.put(mr, 1);
-                    } else {
-                        blacklistCountMap.put(mr, blacklistCountMap.get(mr) + 1);
-                    }
+                    blacklistCountMap.merge(mr, 1, (a, b) -> a + b);
                 }
             }
 

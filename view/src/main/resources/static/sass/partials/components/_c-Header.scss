@@ -95,7 +95,6 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 #c-Header__menu { //#menu
   float: left;
   width: 445px;
-  height: 67px;
 
   &.backgroundLight li:hover {
     background: $c-Header__background--hover;
@@ -112,6 +111,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   li {
     float: left;
     padding: 0;
+    height: 67px;
     margin-left: 0;
     list-style: none;
     background: none;
@@ -135,7 +135,6 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
       color: $c-Header__menu__li__a__textColor;
       font-weight: $c-Header__menu__li__a__fontWeight;
       display: inline-block;
-      box-sizing: content-box;
 
       &.search {
         background: $c-Header__menu__li__a__search__backgroundUrl no-repeat 24px 18px;
@@ -174,6 +173,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
   li {
     float: left;
+    height: 67px;
     list-style: none;
     font-family: $c-Header__menu__right__li__fontFamily;
 
@@ -267,16 +267,16 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   height: 30px;
   padding: 12px 0 0 12px;
   background: $c-Header__search__top__background;
-  @include border-top-left-radius(3px);
-  @include border-top-right-radius(3px);
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 }
 
 .c-Header__search__box { //.searchbox
   padding: 10px;
   background: $c-Header__search__box__background;
-  @include border-bottom-left-radius(3px);
-  @include border-bottom-right-radius(3px);
-  @include border-top-right-radius(3px);
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-top-right-radius: 3px;
 }
 
 .c-Header__search__term { //.search-term
@@ -300,7 +300,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   text-transform: uppercase;
   color: $c-Header__search__submit__textColor;
   cursor: pointer;
-  @include border-radius($c-Header__search__submit__borderRadius);
+  border-radius: $c-Header__search__submit__borderRadius;
 
   &:hover {
     background: hover-color($c-Header__search__submit__background);
@@ -322,8 +322,8 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   padding: 6px 3px 0 9px;
   margin-left: 242px;
   background: $c-Header__login__top__background;
-  @include border-top-left-radius(3px);
-  @include border-top-right-radius(3px);
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
 }
 
 .c-Header__login__box { //.loginbox
@@ -332,9 +332,9 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   font-size: 14px;
   color: $c-Header__login__box__textColor;
   font-weight: $b-Typography__fontWeight--bold;
-  @include border-bottom-left-radius(3px);
-  @include border-bottom-right-radius(3px);
-  @include border-top-left-radius(3px);
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-top-left-radius: 3px;
 
   span {
     font-weight: $b-Typography__fontWeight;
@@ -384,7 +384,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   margin-bottom: 8px;
   border: $c-Header__login__fields__border;
   font: $c-Header__login__fields__font;
-  @include border-radius(3px);
+  border-radius: 3px;
 }
 
 .c-Header__login__forgot { //.forgot
@@ -401,7 +401,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   font-weight: $b-Typography__fontWeight--bold;
   color: $c-Header__login__submit__textColor;
   text-align: center;
-  @include border-radius(3px);
+  border-radius: 3px;
   cursor: pointer;
 
   &:hover {
@@ -416,7 +416,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   color: $c-Header__user__notification__textColor;
   padding: 0 5px;
   margin-left: 5px;
-  @include border-radius(8px);
+  border-radius: 8px;
   position: absolute;
 }
 
@@ -445,8 +445,8 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   padding: 8px 0 0 8px;
   margin-left: 120px;
   background: $c-Header__user__top__background;
-  @include border-top-left-radius(4px);
-  @include border-top-right-radius(4px);
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 
   img {
     border: $c-Header__user__top__img__border;
@@ -461,9 +461,9 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   font-size: 14px;
   color: $c-Header__user__box__textColor;
   font-weight: $b-Typography__fontWeight--bold;
-  @include border-bottom-left-radius(4px);
-  @include border-bottom-right-radius(4px);
-  @include border-top-left-radius(4px);
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-top-left-radius: 4px;
 
   a {
     margin-top: 10px;

@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,7 +31,7 @@ import org.xcolab.view.pages.proposals.requests.JudgeProposalFeedbackBean;
 import org.xcolab.view.pages.proposals.requests.ProposalAdvancingBean;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
@@ -50,25 +49,19 @@ import javax.validation.Valid;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalAdvancingTabController extends BaseProposalTabController {
 
-    private final ProposalsContext proposalsContext;
-
-    @Autowired
-    public ProposalAdvancingTabController(ProposalsContext proposalsContext) {
-        this.proposalsContext = proposalsContext;
-    }
-
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ADVANCING")
-    public String showAdvancingTab(HttpServletRequest request, Model model) {
+    public String showAdvancingTab(HttpServletRequest request, Model model,
+            ProposalContext proposalContext) {
 
         final ProposalTab tab = ProposalTab.ADVANCING;
-        setCommonModelAndPageAttributes(request, model, tab);
+        setCommonModelAndPageAttributes(request, model, proposalContext, tab);
 
-        if (!tab.getCanAccess(request)) {
+        if (!tab.getCanAccess(proposalContext)) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
-        Proposal proposal = proposalsContext.getProposal(request);
-        ContestPhase contestPhase = proposalsContext.getContestPhase(request);
+        Proposal proposal = proposalContext.getProposal();
+        ContestPhase contestPhase = proposalContext.getContestPhase();
         Proposal proposalWrapper = new Proposal(proposal, contestPhase);
         ProposalAdvancingBean bean = new ProposalAdvancingBean(proposalWrapper);
 
@@ -138,32 +131,33 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
 
     @PostMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ADVANCING")
     public String saveAdvanceDetails(HttpServletRequest request, HttpServletResponse response,
-            Model model, @RequestParam(defaultValue = "false") boolean isForcePromotion,
+            Model model, ProposalContext proposalContext,
+            @RequestParam(defaultValue = "false") boolean isForcePromotion,
             @RequestParam(defaultValue = "false") boolean isFreeze,
             @RequestParam(defaultValue = "false") boolean isUnfreeze,
             @Valid ProposalAdvancingBean proposalAdvancingBean, BindingResult result)
             throws IOException {
 
-        Proposal proposal = proposalsContext.getProposal(request);
-        final Contest contest = proposalsContext.getContest(request);
+        Proposal proposal = proposalContext.getProposal();
+        final Contest contest = proposalContext.getContest();
         long proposalId = proposal.getProposalId();
-        ContestPhase contestPhase = proposalsContext.getContestPhase(request);
-        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        ContestPhase contestPhase = proposalContext.getContestPhase();
+        ProposalsPermissions permissions = proposalContext.getPermissions();
 
-        final ClientHelper clients = proposalsContext.getClients(request);
+        final ClientHelper clients = proposalContext.getClients();
         final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
 
         final Long phaseId = contestPhase.getContestPhasePK();
         boolean isFrozen = proposalPhaseClient.isProposalContestPhaseAttributeSetAndTrue(proposalId,
                 phaseId, ProposalContestPhaseAttributeKeys.FELLOW_ADVANCEMENT_FROZEN);
 
-        if (!(ProposalTab.ADVANCING.getCanAccess(request))
+        if (!(ProposalTab.ADVANCING.getCanAccess(proposalContext))
                 || (isFrozen && !permissions.getCanAdminAll())) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
         if (result.hasErrors()) {
-            return showAdvancingTab(request, model);
+            return showAdvancingTab(request, model, proposalContext);
         }
 
         boolean isUndecided = proposalAdvancingBean.getAdvanceDecision()
@@ -212,15 +206,16 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
 
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/ADVANCING/saveJudgingFeedback")
     public String saveJudgingFeedback(HttpServletRequest request, HttpServletResponse response,
-            Model model, @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
+            Model model, ProposalContext proposalContext,
+            @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
             BindingResult result, RedirectAttributes redirectAttributes, Member member)
             throws IOException {
 
-        final Contest contest = proposalsContext.getContest(request);
-        Proposal proposal = proposalsContext.getProposalWrapped(request);
+        final Contest contest = proposalContext.getContest();
+        Proposal proposal = proposalContext.getProposal();
         ContestPhase contestPhase =
                 ContestClientUtil.getContestPhase(judgeProposalFeedbackBean.getContestPhaseId());
-        ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        ProposalsPermissions permissions = proposalContext.getPermissions();
         Boolean isPublicRating = permissions.getCanPublicRating();
 
         if (judgeProposalFeedbackBean.getScreeningUserId() != null && permissions

@@ -19,7 +19,7 @@ public enum SearchItemType {
 //    CONTENT(1L, ContentSearchItem.class),
     DISCUSSION(39202L, DiscussionSearchItem.class);
 
-    private Long id;
+    private final Long id;
     private final Class<? extends AbstractSearchItem> searchItemClass;
 
     SearchItemType(Long id, Class<? extends AbstractSearchItem> searchItemClass) {

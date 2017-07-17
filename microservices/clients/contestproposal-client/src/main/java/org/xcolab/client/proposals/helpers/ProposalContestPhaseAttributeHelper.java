@@ -46,9 +46,8 @@ public class ProposalContestPhaseAttributeHelper {
 
     public ProposalContestPhaseAttribute getAttributeOrCreate(
             String attributeName, long additionalId) {
-        ProposalContestPhaseAttribute attribute = null;
-            attribute = getAttributeOrNull(attributeName, additionalId);
-            if (attribute != null) {
+        ProposalContestPhaseAttribute attribute = getAttributeOrNull(attributeName, additionalId);
+        if (attribute != null) {
                 return attribute;
             }
 

@@ -7,7 +7,7 @@
 	version="2.0">
 
 	<!--@elvariable id="edit" type="java.lang.Boolean"-->
-	<!--@elvariable id="tabs" type="java.util.List<org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper>"-->
+    <!--@elvariable id="tabs" type="java.util.List<org.xcolab.view.pages.proposals.tabs.ProposalTabWrapper>"-->
 	<!--@elvariable id="promptLoginWindow" type="java.lang.String"-->
 
 	<script>
@@ -30,17 +30,21 @@
 				</div>
 				<div class="proposal-title">
 					<div class="prop-description">
-						${contestType.proposalName} for
-						<collab:contestLink contest="${contest}" />
-						by
-						<c:choose>
-							<c:when test="${empty proposal.team}">
-								<proposalsPortlet:userLinkSimple userId="${proposal.authorId}" text="${proposal.author.screenName}" />
-							</c:when>
-							<c:otherwise>
-                        		${proposal.team}
-                        	</c:otherwise>
-                        </c:choose>
+                        <collab:message code="contests.proposal.header.caption" contestType="${contestType}">
+                            <spring:argument>
+                                <collab:contestLink contest="${contest}" />
+                            </spring:argument>
+                            <spring:argument>
+                                <c:choose>
+                                    <c:when test="${empty proposal.team}">
+                                        <proposalsPortlet:userLinkSimple userId="${proposal.authorId}" text="${proposal.author.screenName}" />
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${proposal.team}
+                                    </c:otherwise>
+                                </c:choose>
+                            </spring:argument>
+                        </collab:message>
 					</div>
 					<h1><a href="${proposal.proposalUrl}">${proposal.name}</a></h1>
 				</div>
@@ -72,7 +76,7 @@
                                 </c:otherwise>
                             </c:choose>
                             <a href="${proposalUrl }">
-                                ${singleTab.displayName}
+                                <spring:message code="${singleTab.displayNameMessageCode}" />
                                 <c:if test="${singleTab.activityCount > 0}">
                                     <span class="c-TabBar__tab__count">${singleTab.activityCount}</span>
                                 </c:if>

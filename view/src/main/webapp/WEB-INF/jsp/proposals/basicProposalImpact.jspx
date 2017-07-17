@@ -16,10 +16,11 @@
 
         <xcolab:requireLibrary name="spin.js" />
         <xcolab:requireLibrary name="handlebars.js" />
-        <!-- TODO: replace - we already have spin.js -->
-        <xcolab:script src="${_themeJsFolder}/proposals/jquery.spin.js"/>
 
-        <xcolab:script src="${_themeJsFolder}/proposals/jquery.scrolltable.js"/>
+        <!-- TODO: replace - we already have spin.js -->
+
+
+
         <xcolab:script src="${_themeJsFolder}/proposals/numeral.min.js"/>
 
         <c:set var="getRegionsUrl" value="${proposal.proposalUrl}/tab/IMPACT/proposalImpactGetRegions"/>
@@ -316,22 +317,7 @@
 
         </div>
 
-        <c:choose>
-            <c:when test="${(not proposalsPermissions.canEdit) and (not proposalsPermissions.canFellowActions) and (not proposalsPermissions.canIAFActions)}">
-                <script>
-                    jQuery(function () {
-                        $('tr.impact-series-clickable').removeClass('impact-series-clickable');
-                    });
-                </script>
-            </c:when>
-            <c:otherwise>
-                <script>
-                    jQuery(function () {
-                        newSeriesRowClicked();
-                    });
-                </script>
-            </c:otherwise>
-        </c:choose>
+
 
         <script>
             // String constants
@@ -404,6 +390,9 @@
                  $('table#impact-summary div.st-body-scroll').append(sgrip);
                  */
             });
+
+
+
 
             function registerEventHandler() {
                 $('tr.impact-series-clickable').click(function () {
@@ -1045,10 +1034,19 @@
                 return getOverviewTableRowWithIndex(currentEditingRowIndex);
             }
 
-            var impactSeriesEditTableRowTemplate = Handlebars.compile($("#impactSeriesEditTableRowTemplate").html());
-            var impactSeriesSaveButtonTemplate = Handlebars.compile($("#impactSeriesSaveButtonTemplate").html());
-            var impactSeriesNewTableRowTemplate = Handlebars.compile($('#impactSeriesNewTableRowTemplate').html());
-            var impactSeriesAuthorTemplate = Handlebars.compile($('#impactSeriesAuthorTemplate').html());
+            var impactSeriesEditTableRowTemplate = null;
+            var impactSeriesSaveButtonTemplate = null;
+            var impactSeriesNewTableRowTemplate = null;
+            var impactSeriesAuthorTemplate = null;
+
+            jQuery(function () {
+
+                 impactSeriesEditTableRowTemplate = Handlebars.compile($("#impactSeriesEditTableRowTemplate").html());
+                 impactSeriesSaveButtonTemplate = Handlebars.compile($("#impactSeriesSaveButtonTemplate").html());
+                 impactSeriesNewTableRowTemplate = Handlebars.compile($('#impactSeriesNewTableRowTemplate').html());
+                 impactSeriesAuthorTemplate = Handlebars.compile($('#impactSeriesAuthorTemplate').html());
+
+            });
 
             function discardComment(){
                 disableDirtyCheck();
@@ -1105,11 +1103,32 @@
                 }
             }
 
+
         </script>
         <script type="text/javascript">
             jQuery(function() {
                 enableDirtyCheck();
             });
         </script>
+
+        <c:choose>
+            <c:when test="${(not proposalsPermissions.canEdit) and (not proposalsPermissions.canFellowActions) and (not proposalsPermissions.canIAFActions)}">
+                <script>
+                    jQuery(function () {
+                        $('tr.impact-series-clickable').removeClass('impact-series-clickable');
+                    });
+                </script>
+            </c:when>
+            <c:otherwise>
+                <script>
+                    jQuery(function () {
+
+                        newSeriesRowClicked();
+
+                    });
+                </script>
+            </c:otherwise>
+        </c:choose>
+
     </xcolab:layout>
 </jsp:root>

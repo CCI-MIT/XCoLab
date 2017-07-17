@@ -60,7 +60,7 @@ public class GoogleController {
             throws IOException {
         HttpSession session = request.getSession();
 
-        final String callbackUrl = PlatformAttributeKey.PLATFORM_COLAB_URL.get()
+        final String callbackUrl = PlatformAttributeKey.COLAB_URL.get()
                 + SsoEndpoint.GOOGLE_CALLBACK.getUrl();
         GoogleAuthHelper helper = new GoogleAuthHelper(callbackUrl);
         String requestUrl = helper.buildLoginUrl();
@@ -100,7 +100,7 @@ public class GoogleController {
         String authCode = request.getParameter("code");
         if (authCode != null && stateToken != null && stateToken
                 .equals(session.getAttribute(GOOGLE_OAUTH_REQUEST_STATE_TOKEN))) {
-            final String callbackUrl = PlatformAttributeKey.PLATFORM_COLAB_URL.get()
+            final String callbackUrl = PlatformAttributeKey.COLAB_URL.get()
                     + SsoEndpoint.GOOGLE_CALLBACK.getUrl();
             JSONObject userInfo = new GoogleAuthHelper(callbackUrl).getUserInfoJson(authCode);
 

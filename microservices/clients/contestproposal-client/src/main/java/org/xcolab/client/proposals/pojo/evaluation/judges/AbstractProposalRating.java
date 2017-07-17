@@ -221,19 +221,11 @@ class AbstractProposalRating implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("ProposalRating (");
+        String sb =
+                "ProposalRating (" + id_ + ", " + proposalid + ", " + contestphaseid + ", " + userid
+                        + ", " + ratingvalueid + ", " + comment_ + ", " + commentenabled + ", "
+                        + otherdatastring + ", " + onlyforinternalusage + ")";
 
-        sb.append(id_);
-        sb.append(", ").append(proposalid);
-        sb.append(", ").append(contestphaseid);
-        sb.append(", ").append(userid);
-        sb.append(", ").append(ratingvalueid);
-        sb.append(", ").append(comment_);
-        sb.append(", ").append(commentenabled);
-        sb.append(", ").append(otherdatastring);
-        sb.append(", ").append(onlyforinternalusage);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

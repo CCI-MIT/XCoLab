@@ -5,6 +5,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.LocaleContextResolver;
 import org.springframework.web.servlet.i18n.AbstractLocaleContextResolver;
 
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.auth.AuthenticationService;
 
@@ -41,10 +42,11 @@ public class MemberLocaleResolver extends AbstractLocaleContextResolver {
     public void setLocaleContext(HttpServletRequest request, HttpServletResponse response,
             LocaleContext localeContext) {
         final Member realMember = authenticationService.getRealMemberOrNull();
-        if (realMember != null) {
-            realMember.setDefaultLocale(localeContext.getLocale().toString());
-        } else {
-            fallbackResolver.setLocaleContext(request, response, localeContext);
+        final String localeString = localeContext.getLocale().toString();
+        if (realMember != null && !localeString.equalsIgnoreCase(realMember.getDefaultLocale())) {
+            realMember.setDefaultLocale(localeString);
+            MembersClient.updateMember(realMember);
         }
+        fallbackResolver.setLocaleContext(request, response, localeContext);
     }
 }

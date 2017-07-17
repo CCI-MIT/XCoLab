@@ -53,7 +53,6 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
         return ConfigurationAttributeKey.PORTLET_FEED_PREFERENCES;
     }
 
-
     public FeedsPreferences() {
         this(null);
     }
@@ -63,46 +62,36 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
 
 
         feedSize = defaultFeedSize;
-        try
-
-        {
+        try {
             feedSize = Integer.parseInt(
                     (prefs.has(FEED_SIZE_PREF)) ? (prefs.getString(FEED_SIZE_PREF))
                             : (String.valueOf(defaultFeedSize)));
-        } catch (NumberFormatException e)
-
-        {
-            _log.warn("Could not parse feedSize: " + ((prefs.has(FEED_SIZE_PREF)) ? (prefs
-                    .getString(FEED_SIZE_PREF)) : (String.valueOf(defaultFeedSize))));
+        } catch (NumberFormatException e) {
+            _log.warn("Could not parse feedSize: {}",
+                    (prefs.has(FEED_SIZE_PREF)) ? (prefs.getString(FEED_SIZE_PREF))
+                            : (String.valueOf(defaultFeedSize)));
         }
 
         feedType = defaultFeedType;
-        try
-
-        {
+        try {
             feedType = FeedType.valueOf(
                     ((prefs.has(FEED_TYPE_PREF)) ? (prefs.getString(FEED_TYPE_PREF))
                             : (defaultFeedType.name())));
-        } catch (IllegalArgumentException e)
-
-        {
-            _log.warn("Could not parse feedType: " + ((prefs.has(FEED_TYPE_PREF)) ? (prefs
-                    .getString(FEED_TYPE_PREF)) : (defaultFeedType.name())));
+        } catch (IllegalArgumentException e) {
+            _log.warn("Could not parse feedType: {}",
+                    (prefs.has(FEED_TYPE_PREF)) ? (prefs.getString(FEED_TYPE_PREF))
+                            : (defaultFeedType.name()));
         }
 
         feedTitle = (prefs.has(FEED_TITLE_PREF)) ? (prefs.getString(FEED_TITLE_PREF))
                 : (defaultFeedTitle);
-        if (feedTitle == null)
-
-        {
+        if (feedTitle == null) {
             feedTitle = feedType.getDescription();
         }
 
         feedStyle = (prefs.has(FEED_DISPLAY_STYLE)) ? (prefs.getString(FEED_DISPLAY_STYLE))
                 : (defaultStyle);
-        if (feedStyle == null)
-
-        {
+        if (feedStyle == null) {
             feedStyle = defaultStyle;
         }
 

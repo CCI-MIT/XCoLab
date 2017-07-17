@@ -2,7 +2,6 @@ package org.xcolab.view.pages.proposals.view.proposal.tabs;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,15 +11,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.RequestMembershipBean;
 import org.xcolab.view.pages.proposals.requests.RequestMembershipInviteBean;
-import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextUtil;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
+import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
+import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -36,21 +34,14 @@ public class ProposalTeamTabController extends BaseProposalTabController {
 
     private static final Logger _log = LoggerFactory.getLogger(ProposalTeamTabController.class);
 
-    private final ProposalsContext proposalsContext;
-
-    @Autowired
-    public ProposalTeamTabController(ProposalsContext proposalsContext) {
-        this.proposalsContext = proposalsContext;
-    }
-
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=TEAM")
-    public String show(Model model, HttpServletRequest request) {
+    public String show(HttpServletRequest request, Model model, ProposalContext proposalContext) {
 
-        final Proposal proposal = proposalsContext.getProposal(request);
+        final Proposal proposal = proposalContext.getProposal();
 
-        setCommonModelAndPageAttributes(request, model, ProposalTab.TEAM);
+        setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.TEAM);
 
-        final ClientHelper clients = ProposalsContextUtil.getClients(request);
+        final ClientHelper clients = proposalContext.getClients();
         final ProposalClient proposalClient = clients.getProposalClient();
 
         model.addAttribute("requestMembershipBean", new RequestMembershipBean());
@@ -77,15 +68,16 @@ public class ProposalTeamTabController extends BaseProposalTabController {
     }
 
     @GetMapping("c/{proposalUrlString}/{proposalId}/tab/TEAM/removeUserFromTeam")
-    public void handleAction(HttpServletRequest request, Model model, HttpServletResponse response, @RequestParam("member") long memberId)
+    public void handleAction(HttpServletRequest request, HttpServletResponse response,
+            Model model, ProposalContext proposalContext, Member actingMember,
+            @RequestParam long memberId)
             throws ProposalsAuthorizationException, IOException {
 
-        final Proposal proposal = proposalsContext.getProposal(request);
-        final Member actingMember = proposalsContext.getMember(request);
+        final Proposal proposal = proposalContext.getProposal();
         final long proposalId = proposal.getProposalId();
         final long actingUserId = actingMember.getUserId();
 
-        final ProposalsPermissions permissions = proposalsContext.getPermissions(request);
+        final ProposalsPermissions permissions = proposalContext.getPermissions();
         if (!permissions.getCanManageUsers()) {
             final String errorMessage = String.format(
                     "User %d does not have the necessary permissions to remove a user from the team of proposal %d",
@@ -100,12 +92,12 @@ public class ProposalTeamTabController extends BaseProposalTabController {
             throw new ProposalsAuthorizationException(errorMessage);
         }
 
-        final ClientHelper clients = ProposalsContextUtil.getClients(request);
+        final ClientHelper clients = proposalContext.getClients();
         final ProposalClient proposalClient = clients.getProposalClient();
 
         proposalClient.removeUserFromProposalTeam(proposalId, memberId);
 
         AlertMessage.success("The member was removed from the proposal's team!").flash(request);
-        response.sendRedirect(proposal.getProposalLinkUrl(proposalsContext.getContest(request)) + "/tab/TEAM");
+        response.sendRedirect(proposal.getProposalLinkUrl(proposalContext.getContest()) + "/tab/TEAM");
     }
 }

@@ -6,7 +6,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.tabs.ProposalTabCanAccessAlgorithm;
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContextWrapper;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 import java.util.List;
 
@@ -27,16 +27,16 @@ public class ImpactAccessAlgorithm implements ProposalTabCanAccessAlgorithm {
     }
 
     @Override
-    public boolean canAccess(ProposalsContextWrapper contextWrapper) {
+    public boolean canAccess(ProposalContext proposalContext) {
         if (isEdit) {
-            return getCanEdit(contextWrapper);
+            return getCanEdit(proposalContext);
         }
-        return getCanView(contextWrapper);
+        return getCanView(proposalContext);
     }
 
-    private boolean getCanView(ProposalsContextWrapper contextWrapper) {
+    private boolean getCanView(ProposalContext proposalContext) {
         if (ConfigurationAttributeKey.IMPACT_TAB_IS_ACTIVE.get()) {
-            final Contest contest = contextWrapper.getContest();
+            final Contest contest = proposalContext.getContest();
 
             if (contest.getContestTier() != ContestTier.NONE.getTierType()
                     && contest.getContestTier() != ContestTier.REGION_SECTOR.getTierType()) {
@@ -63,9 +63,9 @@ public class ImpactAccessAlgorithm implements ProposalTabCanAccessAlgorithm {
         return false;
     }
 
-    private boolean getCanEdit(ProposalsContextWrapper contextWrapper) {
-        ProposalsPermissions permissions = contextWrapper.getPermissions();
-        Contest contest = contextWrapper.getContest();
+    private boolean getCanEdit(ProposalContext proposalContext) {
+        ProposalsPermissions permissions = proposalContext.getPermissions();
+        Contest contest = proposalContext.getContest();
 
         final boolean memberCanAccess = permissions.getIsTeamMember()
                 || permissions.getCanAdminProposal()

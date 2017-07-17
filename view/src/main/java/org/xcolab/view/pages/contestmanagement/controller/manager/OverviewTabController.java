@@ -11,10 +11,10 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
+import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
-import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
 import org.xcolab.view.pages.contestmanagement.wrappers.ContestOverviewWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.MassActionConfirmationWrapper;
@@ -50,15 +50,18 @@ public class OverviewTabController extends AbstractTabController {
 
     @ModelAttribute("senderListItems")
     public List<Member> populateSenderListItems(HttpServletRequest request) {
-        List<Member> staffList;
         final MemberCategory memberCategory = MembersClient.getMemberCategory(MemberRole.STAFF.getRoleId());
-        staffList = MembersClient.listMembers(memberCategory.getCategoryName(),null,null, null, true, 0, Integer.MAX_VALUE);
+
+        List<Member> staffList = MembersClient
+                .listMembers(memberCategory.getCategoryName(), null, null, null, true, 0,
+                        Integer.MAX_VALUE);
 
         ArrayList<String> matchList = new ArrayList<>(Arrays.asList("gary-olson","eduhaime","yiftach-nagar","YueHan","nvtaub"));
 
         for (int i = 0; i < staffList.size(); i++) {
-            if(matchList.contains(staffList.get(i).getScreenName()))
+            if (matchList.contains(staffList.get(i).getScreenName())) {
                 staffList.remove(i);
+            }
         }
         return staffList;
     }

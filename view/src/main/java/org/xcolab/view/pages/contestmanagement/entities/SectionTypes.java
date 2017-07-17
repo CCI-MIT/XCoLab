@@ -15,7 +15,7 @@ public enum SectionTypes {
     private final String displayName;
     private final String sectionType;
 
-    private SectionTypes(String sectionType, String displayName) {
+    SectionTypes(String sectionType, String displayName) {
         this.sectionType = sectionType;
         this.displayName = displayName;
     }

@@ -3,7 +3,6 @@ package org.xcolab.service.proposal.helper;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
-import org.xcolab.util.GroupingUtil;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -11,12 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class ProposalAttributeHelper {
+
     private final Proposal proposal;
     private final int version;
     private Map<String, Map<Long, ProposalAttribute>> attributesByNameAndAdditionalId;
-
 
     private ProposalAttributeDao proposalAttributeDao;
 

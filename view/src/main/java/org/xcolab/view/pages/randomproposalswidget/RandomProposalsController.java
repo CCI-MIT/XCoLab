@@ -28,7 +28,7 @@ public class RandomProposalsController {
 
 
         ProposalsModel proposalsModel = new ProposalsModel(getProposals(preferences), preferences
-    			, PlatformAttributeKey.PLATFORM_COLAB_URL+ "/proposal?img_id=");
+    			, PlatformAttributeKey.COLAB_URL + "/proposal?img_id=");
 
     	model.addAttribute("proposalsModel", proposalsModel);
 
@@ -57,13 +57,13 @@ public class RandomProposalsController {
 	}
 
 	private List<Proposal> getAvailableProposals(RandomProposalsPreferences preferences) {
-        List<Proposal> availableProposals = new ArrayList<>();
         Long[] selectedPhases = preferences.getSelectedPhases();
         if (selectedPhases == null) {
             return null;
         }
         Long[] flagFilters = preferences.getFlagFilters();
 
+        List<Proposal> availableProposals = new ArrayList<>();
         for (Long contestPhaseId : selectedPhases) {
             if (flagFilters == null || flagFilters.length == 0) {
                 availableProposals

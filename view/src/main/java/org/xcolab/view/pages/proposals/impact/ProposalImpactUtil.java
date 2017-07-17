@@ -45,11 +45,8 @@ public class ProposalImpactUtil {
                 OntologyTerm whatTerm = getWhatTerm(focusArea);
                 OntologyTerm whereTerm = getWhereTerm(focusArea);
 
-                List<OntologyTerm> whatTerms = ontologyTermMap.get(whereTerm);
-                if (whatTerms == null) {
-                    whatTerms = new ArrayList<>();
-                    ontologyTermMap.put(whereTerm, whatTerms);
-                }
+                List<OntologyTerm> whatTerms =
+                        ontologyTermMap.computeIfAbsent(whereTerm, k -> new ArrayList<>());
 
                 whatTerms.add(whatTerm);
             }

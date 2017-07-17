@@ -152,7 +152,7 @@ public class StaffMemberController {
         StaffMember sm = new StaffMember();
         sm.setUserId(member.getId_());
         sm.setCategoryId(categoryRole.getCategoryId());
-        final String userImageDomain = PlatformAttributeKey.PLATFORM_UPLOADED_IMAGE_DOMAIN.get();
+        final String userImageDomain = PlatformAttributeKey.IMAGES_UPLOADED_DOMAIN.get();
         sm.setPhotoUrl(userImageDomain + "/image/user_male_portrait?userId=" + member.getId_()
                 + "&portraitId=" + member.getPortraitId() + "");
         sm.setFirstNames(member.getFirstName());

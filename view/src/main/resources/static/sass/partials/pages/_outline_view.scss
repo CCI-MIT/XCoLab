@@ -6,7 +6,7 @@
   min-height: 600px;
   border-right: 1px solid $t-Color__grey--lightest;
   padding-bottom: 150px;
-  @include box-shadow(inset -14px 0 10px -10px #ccc);
+  box-shadow: inset -14px 0 10px -10px #ccc;
 }
 
 .contest-outline-right {
@@ -14,10 +14,6 @@
   padding-bottom: 150px;
   float: right;
   margin-left: 20px;
-}
-
-.contest-outline-left, .contest-outline-right div {
-  @include box-sizing(border-box);
 }
 
 .contest-outline-right div.ctest {
@@ -56,7 +52,6 @@
 #content .contest-outline-left ul li,
 .contest-outline-left li a {
   margin-bottom: 0;
-  @include box-sizing(border-box);
 }
 
 #content .contest-outline-left ul {
@@ -91,7 +86,7 @@
   display: inline-block;
   width: 100%;
   color: black;
-  @include box-shadow(inset -14px 0 10px -10px #ccc);
+  box-shadow: inset -14px 0 10px -10px #ccc;
 }
 
 .contest-outline-left li a:hover, .section-head.open {

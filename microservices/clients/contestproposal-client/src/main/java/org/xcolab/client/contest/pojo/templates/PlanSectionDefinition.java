@@ -107,7 +107,7 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
             //default text if available
             return ( !StringUtils.isEmpty(this.getDefaultText())) ? this.getDefaultText() : null;
         }
-        final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+        final String baseUri = PlatformAttributeKey.COLAB_URL.get();
         Document contentDocument = Jsoup.parse(content.trim(), baseUri);
         contentDocument = HtmlUtil.addNoFollowToLinkTagsInDocument(contentDocument);
 

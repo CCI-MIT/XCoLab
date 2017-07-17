@@ -10,7 +10,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.view.auth.resolver.RealMember;
+import org.xcolab.view.config.spring.resolvers.RealMember;
 import org.xcolab.view.pages.profile.utils.JSONHelper;
 
 import javax.servlet.http.HttpServletRequest;

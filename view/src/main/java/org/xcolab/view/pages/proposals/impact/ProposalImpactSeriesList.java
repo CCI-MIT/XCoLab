@@ -13,7 +13,6 @@ import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -88,18 +87,15 @@ public class ProposalImpactSeriesList {
             this.impactSerieses.add(new ProposalImpactSeries(contest, proposal, focusArea));
         }
 
-        Collections.sort(impactSerieses, new Comparator<ProposalImpactSeries>() {
-            // Sort by whatTerm name and whereTerm name
-            @Override
-            public int compare(ProposalImpactSeries o1, ProposalImpactSeries o2) {
-                int diff = o1.getWhatTerm().getName().compareTo(o2.getWhatTerm().getName());
+        // Sort by whatTerm name and whereTerm name
+        impactSerieses.sort((o1, o2) -> {
+            int diff = o1.getWhatTerm().getName().compareTo(o2.getWhatTerm().getName());
 
-                if (diff == 0) {
-                    return o1.getWhereTerm().getName().compareTo(o2.getWhereTerm().getName());
-                }
-
-                return diff;
+            if (diff == 0) {
+                return o1.getWhereTerm().getName().compareTo(o2.getWhereTerm().getName());
             }
+
+            return diff;
         });
     }
 

@@ -20,6 +20,7 @@ import org.xcolab.util.http.dto.DtoUtil;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -186,6 +187,9 @@ public class OntologyClient {
     }
 
     public List<FocusAreaOntologyTerm> getFocusAreaOntologyTermsByFocusArea(Long focusAreaId) {
+        if (focusAreaId == null) {
+            return Collections.emptyList();
+        }
         return DtoUtil.toPojos(focusAreaOntologyTermResource.list()
                 .queryParam("focusAreaId", focusAreaId)
                 .execute(), contestService);

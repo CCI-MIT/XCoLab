@@ -18,7 +18,7 @@ import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
-import org.xcolab.view.i18n.I18nUtils;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -88,11 +88,11 @@ public class ContentEditorController extends BaseContentEditor{
         if(encoding==null||encoding.isEmpty()){
             encoding = defaultEncoding;
         }
-        ContentArticleVersion contentArticleVersion = ContentsClient.getByArticleVersionLanguage(articleId,encoding);
+        ContentArticleVersion contentArticleVersion = ContentsClient.getLatestVersionByArticleIdAndLanguage(articleId,encoding);
         if(contentArticleVersion == null){
             //if there is no content for the encoding passed, get the default from the database
-            contentArticleVersion = ContentsClient.getByArticleVersionLanguage(articleId,defaultEncoding);
-            contentArticleVersion.setContentArticleVersionId(0l);
+            contentArticleVersion = ContentsClient.getLatestVersionByArticleIdAndLanguage(articleId,defaultEncoding);
+            contentArticleVersion.setContentArticleVersionId(0L);
             contentArticleVersion.setLang(encoding);
         }
 

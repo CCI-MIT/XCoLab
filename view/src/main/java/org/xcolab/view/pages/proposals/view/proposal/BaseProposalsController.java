@@ -1,20 +1,16 @@
 package org.xcolab.view.pages.proposals.view.proposal;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
-import org.xcolab.view.pages.proposals.utils.context.ProposalsContext;
+import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.util.MetaKeys;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Component
 public class BaseProposalsController {
-
-    @Autowired
-    protected ProposalsContext proposalsContext;
 
     public BaseProposalsController() {
         super();
@@ -27,8 +23,8 @@ public class BaseProposalsController {
         }
     }
 
-    protected void setBasePageAttributes(HttpServletRequest request, Model model) {
+    protected void setBasePageAttributes(ProposalContext proposalContext, Model model) {
         model.addAttribute("_activePageLink",
-                proposalsContext.getContestType(request).getIdentifier());
+                proposalContext.getContestType().getIdentifier());
     }
 }

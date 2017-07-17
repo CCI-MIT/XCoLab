@@ -34,12 +34,7 @@ public final class PointsClient {
     }
 
     public static PointsClient fromService(RestService proposalService) {
-        PointsClient instance = instances.get(proposalService);
-        if (instance == null) {
-            instance = new PointsClient(proposalService);
-            instances.put(proposalService, instance);
-        }
-        return instance;
+        return instances.computeIfAbsent(proposalService, PointsClient::new);
     }
 
     public PointsDistributionConfiguration createPointsDistributionConfiguration(

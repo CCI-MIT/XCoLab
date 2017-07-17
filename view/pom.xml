@@ -195,10 +195,6 @@
             <artifactId>opencsv</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.ocpsoft</groupId>
-            <artifactId>ocpsoft-pretty-time</artifactId>
-        </dependency>
-        <dependency>
             <groupId>edu.mit.cci.roma</groupId>
             <artifactId>client</artifactId>
         </dependency>

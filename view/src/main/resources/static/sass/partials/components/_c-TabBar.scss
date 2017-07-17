@@ -47,12 +47,12 @@ $c-TabBar__tab--first__margin--left: 0px !default;
   border-left: $c-TabBar__tab__borderLeft;
   float: left;
   list-style: none;
+  cursor: pointer;
   //height: 37px;
   margin-right: $b-TabBar__tab__marginRight;
 
   a { //.prop-tabs li a
     display: inline-block;
-    //height: 24px;
     padding-top: $c-TabBar__tab__paddingTop;
     padding-right: $c-TabBar__tab__paddingSides;
     padding-left: $c-TabBar__tab__paddingSides;
@@ -62,9 +62,8 @@ $c-TabBar__tab--first__margin--left: 0px !default;
     color: $c-TabBar__tab__textColor;
     text-transform: uppercase;
     font-weight: $c-TabBar__tab__fontWeight;
-    @include border-top-left-radius($c-TabBar__tab__borderRadius);
-    @include border-top-right-radius($c-TabBar__tab__borderRadius);
-    @include box-sizing(content-box);
+    border-top-left-radius: $c-TabBar__tab__borderRadius;
+    border-top-right-radius: $c-TabBar__tab__borderRadius;
   }
 
   a:hover { //.prop-tabs li a:hover
@@ -78,8 +77,8 @@ $c-TabBar__tab--first__margin--left: 0px !default;
       border-left: $c-TabBar__tab__active__border--right--left;
       border-right: $c-TabBar__tab__active__border--right--left;
     }
-    @include border-top-left-radius($c-TabBar__tab__borderRadius);
-    @include border-top-right-radius($c-TabBar__tab__borderRadius);
+    border-top-left-radius: $c-TabBar__tab__borderRadius;
+    border-top-right-radius: $c-TabBar__tab__borderRadius;
   }
 
   &.active a { //.prop-tabs li.c a
@@ -122,5 +121,5 @@ $c-TabBar__tab--first__margin--left: 0px !default;
   color: contrasting-color($c-TabBar__tab__count__background);
   padding: 0 5px;
   margin-left: 5px;
-  @include border-radius(8px);
+  border-radius: 8px;
 }

@@ -198,24 +198,13 @@ public class BalloonText implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("BalloonText (");
+        String sb =
+                "BalloonText (" + id_ + ", " + name + ", " + textbeforeform + ", " + textafterform
+                        + ", " + textbeforesharebuttons + ", " + textaftersharebuttons + ", "
+                        + accepttostext + ", " + emailtemplate + ", " + emailsubjecttemplate + ", "
+                        + twitterdescription + ", " + twittersubject + ", " + facebookdescription
+                        + ", " + facebooksubject + ", " + enabled + ")";
 
-        sb.append(id_);
-        sb.append(", ").append(name);
-        sb.append(", ").append(textbeforeform);
-        sb.append(", ").append(textafterform);
-        sb.append(", ").append(textbeforesharebuttons);
-        sb.append(", ").append(textaftersharebuttons);
-        sb.append(", ").append(accepttostext);
-        sb.append(", ").append(emailtemplate);
-        sb.append(", ").append(emailsubjecttemplate);
-        sb.append(", ").append(twitterdescription);
-        sb.append(", ").append(twittersubject);
-        sb.append(", ").append(facebookdescription);
-        sb.append(", ").append(facebooksubject);
-        sb.append(", ").append(enabled);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

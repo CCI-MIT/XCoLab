@@ -69,7 +69,7 @@ public class ProposalJudgingCommentHelper {
     public void setScreeningComment(String comment) {
         ProposalContestPhaseAttribute fellowActionAttribute = proposalPhaseClient.
                 getProposalContestPhaseAttribute(proposal.getProposalId(), contestPhase.getContestPhasePK(), ProposalContestPhaseAttributeKeys.FELLOW_ACTION);
-        FellowAction fellowAction = FellowAction.fromInt((int) fellowActionAttribute.getNumericValue().intValue());
+        FellowAction fellowAction = FellowAction.fromInt(fellowActionAttribute.getNumericValue().intValue());
 
         //save comment if the action is "incomplete" or "off-topic"
         if (fellowAction != FellowAction.NO_DECISION &&

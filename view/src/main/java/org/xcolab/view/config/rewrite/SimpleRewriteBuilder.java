@@ -31,7 +31,7 @@ public class SimpleRewriteBuilder {
     }
 
     public SimpleRewriteBuilder redirect(List<String> fromList, String to) {
-        Assert.notEmpty(fromList);
+        Assert.notEmpty(fromList, "fromList cannot be empty");
 
         Iterator<String> fromIt = fromList.iterator();
         ConditionBuilder condition = Path.matches(fromIt.next());

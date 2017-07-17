@@ -103,7 +103,7 @@ a.join {
   margin: 25px 0 25px;
   position: relative;
   border: 1px solid $t-Color__grey--light;
-  @include border-radius(6px);
+  border-radius: 6px;
 }
 
 .newsbox h3 {

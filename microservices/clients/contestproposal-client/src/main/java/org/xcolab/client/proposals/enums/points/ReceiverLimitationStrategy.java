@@ -15,149 +15,106 @@ import java.util.List;
 import java.util.Set;
 
 public enum ReceiverLimitationStrategy {
-    ANY_USER(Type.USER, new ReceiverLimitationTargetsPickerAlgorithm() {
-
-        @Override
-        public List<PointsTarget> getPointTargets(Proposal proposal, PointType pointType, DistributionStrategy distributionStrategy) {
-            // check if there is any configuration, if there is create appropriate targets
-            List<PointsTarget> targets = new ArrayList<>();
-            if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-                for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
-                    if (pdc.getTargetUserId() > 0) {
-                        PointsTarget target = new PointsTarget();
-                        target.setUserId(pdc.getTargetUserId());
-                        target.setPercentage(pdc.getPercentage());
-                        targets.add(target);
-                    }
+    ANY_USER(Type.USER, (proposal, pointType, distributionStrategy) -> {
+        // check if there is any configuration, if there is create appropriate targets
+        List<PointsTarget> targets = new ArrayList<>();
+        if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
+            for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
+                if (pdc.getTargetUserId() > 0) {
+                    PointsTarget target = new PointsTarget();
+                    target.setUserId(pdc.getTargetUserId());
+                    target.setPercentage(pdc.getPercentage());
+                    targets.add(target);
                 }
             }
-            return targets;
         }
-
+        return targets;
     }),
 
-    ANY_NON_TEAM_MEMBER(Type.USER, new ReceiverLimitationTargetsPickerAlgorithm() {
+    ANY_NON_TEAM_MEMBER(Type.USER, (proposal, pointType, distributionStrategy) -> {
+        List<PointsTarget> targets = new ArrayList<>();
 
-        @Override
-        public List<PointsTarget> getPointTargets(Proposal proposal,
-                                                  PointType pointType, DistributionStrategy distributionStrategy) {
-            List<PointsTarget> targets = new ArrayList<>();
-
-            if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-                for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
-                    if (pdc.getTargetUserId() > 0 && !ProposalClientUtil
-                            .isUserInProposalTeam(proposal.getProposalId(), pdc.getTargetUserId())) {
-                        PointsTarget target = new PointsTarget();
-                        target.setUserId(pdc.getTargetUserId());
-                        target.setPercentage(pdc.getPercentage());
-                        targets.add(target);
-                    }
+        if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
+            for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
+                if (pdc.getTargetUserId() > 0 && !ProposalClientUtil
+                        .isUserInProposalTeam(proposal.getProposalId(), pdc.getTargetUserId())) {
+                    PointsTarget target = new PointsTarget();
+                    target.setUserId(pdc.getTargetUserId());
+                    target.setPercentage(pdc.getPercentage());
+                    targets.add(target);
                 }
             }
-            return targets;
         }
-
+        return targets;
     }),
-    ANY_TEAM_MEMBER(Type.USER, new ReceiverLimitationTargetsPickerAlgorithm() {
+    ANY_TEAM_MEMBER(Type.USER, (proposal, pointType, distributionStrategy) -> {
+        List<PointsTarget> targets = new ArrayList<>();
 
-        @Override
-        public List<PointsTarget> getPointTargets(Proposal proposal,
-                                                  PointType pointType, DistributionStrategy distributionStrategy)  {
-            List<PointsTarget> targets = new ArrayList<>();
-
-            if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
-                for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
-                    if (pdc.getTargetUserId() > 0 && ProposalClientUtil
-                            .isUserInProposalTeam(proposal.getProposalId(), pdc.getTargetUserId())) {
-                        PointsTarget target = new PointsTarget();
-                        target.setUserId(pdc.getTargetUserId());
-                        target.setPercentage(pdc.getPercentage());
-                        targets.add(target);
-                    }
+        if (distributionStrategy == DistributionStrategy.USER_DEFINED) {
+            for (PointsDistributionConfiguration pdc: PointsClientUtil.getPointsDistributionByProposalIdPointTypeId(proposal.getProposalId(), pointType.getId_())) {
+                if (pdc.getTargetUserId() > 0 && ProposalClientUtil
+                        .isUserInProposalTeam(proposal.getProposalId(), pdc.getTargetUserId())) {
+                    PointsTarget target = new PointsTarget();
+                    target.setUserId(pdc.getTargetUserId());
+                    target.setPercentage(pdc.getPercentage());
+                    targets.add(target);
                 }
-                if (targets.isEmpty()) {
-                    return PointsDistributionUtil.distributeEquallyAmongContributors(proposal.getProposalId());
-                }
-            } else if (distributionStrategy == DistributionStrategy.EQUAL_DIVISION) {
+            }
+            if (targets.isEmpty()) {
                 return PointsDistributionUtil.distributeEquallyAmongContributors(proposal.getProposalId());
             }
-            return targets;
+        } else if (distributionStrategy == DistributionStrategy.EQUAL_DIVISION) {
+            return PointsDistributionUtil.distributeEquallyAmongContributors(proposal.getProposalId());
         }
-
+        return targets;
     }),
-    SUBPROPOSALS(Type.SUB_PROPOSAL, new ReceiverLimitationTargetsPickerAlgorithm() {
-
-        @Override
-        public List<PointsTarget> getPointTargets(Proposal proposal,
-                                                  PointType pointType, DistributionStrategy distributionStrategy) {
+    SUBPROPOSALS(Type.SUB_PROPOSAL, (proposal, pointType, distributionStrategy) -> {
+        List<Proposal> subProposals = ProposalClientUtil
+                .getSubproposals(proposal.getProposalId(), false);
+        Set<Long> subProposalIds = new HashSet<>();
+        for (Proposal subProposal : subProposals) {
+            subProposalIds.add(subProposal.getProposalId());
+        }
+        return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
+    }),
+    REGIONAL_SUBPROPOSALS(Type.SUB_PROPOSAL, (proposal, pointType, distributionStrategy) -> {
+        try {
             List<Proposal> subProposals = ProposalClientUtil
                     .getSubproposals(proposal.getProposalId(), false);
             Set<Long> subProposalIds = new HashSet<>();
             for (Proposal subProposal : subProposals) {
-                subProposalIds.add(subProposal.getProposalId());
-            }
-            return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
-        }
-
-    }),
-    REGIONAL_SUBPROPOSALS(Type.SUB_PROPOSAL, new ReceiverLimitationTargetsPickerAlgorithm() {
-
-        @Override
-        public List<PointsTarget> getPointTargets(Proposal proposal,
-                                                  PointType pointType, DistributionStrategy distributionStrategy) {
-            try {
-                List<Proposal> subProposals = ProposalClientUtil
-                        .getSubproposals(proposal.getProposalId(), false);
-                Set<Long> subProposalIds = new HashSet<>();
-                for (Proposal subProposal : subProposals) {
-                    final Contest latestProposalContest = ProposalClientUtil.getCurrentContestForProposal(subProposal.getProposalId());
-                    final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
-                    if (contestTier == ContestTier.REGION_AGGREGATE) {
-                        subProposalIds.add(subProposal.getProposalId());
-                    }
-                }
-                subProposalIds.remove(proposal.getProposalId());
-                return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
-            } catch (ContestNotFoundException ignored) {
-
-            }
-            return null;
-        }
-
-    }),
-    BASIC_SUBPROPOSALS(Type.SUB_PROPOSAL, new ReceiverLimitationTargetsPickerAlgorithm() {
-
-        @Override
-        public List<PointsTarget> getPointTargets(Proposal proposal,
-                                                  PointType pointType, DistributionStrategy distributionStrategy)  {
-            List<Proposal> subProposals = ProposalClientUtil
-                    .getSubproposals(proposal.getProposalId(), false);
-            Set<Long> subProposalIds = new HashSet<>();
-            for (Proposal subProposal : subProposals) {
-                try {
-                    final Contest latestProposalContest = ProposalClientUtil.getCurrentContestForProposal(subProposal.getProposalId());
-                    final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
-                    if (contestTier == ContestTier.BASIC || contestTier == ContestTier.NONE) {
-                        subProposalIds.add(subProposal.getProposalId());
-                    }
-                }catch (ContestNotFoundException ignored){
-
+                final Contest latestProposalContest = ProposalClientUtil.getCurrentContestForProposal(subProposal.getProposalId());
+                final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
+                if (contestTier == ContestTier.REGION_AGGREGATE) {
+                    subProposalIds.add(subProposal.getProposalId());
                 }
             }
             subProposalIds.remove(proposal.getProposalId());
             return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
-        }
+        } catch (ContestNotFoundException ignored) {
 
+        }
+        return null;
     }),
-    NONE(Type.OTHER, new ReceiverLimitationTargetsPickerAlgorithm() {
+    BASIC_SUBPROPOSALS(Type.SUB_PROPOSAL, (proposal, pointType, distributionStrategy) -> {
+        List<Proposal> subProposals = ProposalClientUtil
+                .getSubproposals(proposal.getProposalId(), false);
+        Set<Long> subProposalIds = new HashSet<>();
+        for (Proposal subProposal : subProposals) {
+            try {
+                final Contest latestProposalContest = ProposalClientUtil.getCurrentContestForProposal(subProposal.getProposalId());
+                final ContestTier contestTier = ContestTier.getContestTierByTierType(latestProposalContest.getContestTier());
+                if (contestTier == ContestTier.BASIC || contestTier == ContestTier.NONE) {
+                    subProposalIds.add(subProposal.getProposalId());
+                }
+            }catch (ContestNotFoundException ignored){
 
-        @Override
-        public List<PointsTarget> getPointTargets(Proposal proposal,
-                                                  PointType pointType, DistributionStrategy distributionStrategy) {
-            return null;
+            }
         }
-
-    });
+        subProposalIds.remove(proposal.getProposalId());
+        return PointsDistributionUtil.distributeAmongProposals(distributionStrategy, proposal, pointType, subProposalIds);
+    }),
+    NONE(Type.OTHER, (proposal, pointType, distributionStrategy) -> null);
 
     private final Type type;
     private final ReceiverLimitationTargetsPickerAlgorithm targetsPickerAlgorithm;

@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class CsvExportHelper {
 
-    private final static String URL_DOMAIN = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+    private final static String URL_DOMAIN = PlatformAttributeKey.COLAB_URL.get();
     private final List<String[]> records = new ArrayList<>();
 
     public CsvExportHelper() {
@@ -117,7 +117,7 @@ public class CsvExportHelper {
         String firstName = member.getFullName();
         String lastName = member.getLastName();
         String emailAddress = member.getEmailAddress();
-        String role = teamMember.getMemberType();
+        String role = teamMember.getMemberTypeForDisplay();
 
         return new String[]{contestTitle, proposalTitle, proposalLink, username, firstName,
                 lastName, emailAddress, role, lastPhaseTitle};

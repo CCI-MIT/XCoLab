@@ -242,20 +242,10 @@ class AbstractMembershipRequest implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("MembershipRequest (");
+        String sb = "MembershipRequest (" + membershiprequestid + ", " + companyid + ", " + userid
+                + ", " + createdate + ", " + groupid + ", " + comments + ", " + replycomments + ", "
+                + replydate + ", " + replieruserid + ", " + statusid + ")";
 
-        sb.append(membershiprequestid);
-        sb.append(", ").append(companyid);
-        sb.append(", ").append(userid);
-        sb.append(", ").append(createdate);
-        sb.append(", ").append(groupid);
-        sb.append(", ").append(comments);
-        sb.append(", ").append(replycomments);
-        sb.append(", ").append(replydate);
-        sb.append(", ").append(replieruserid);
-        sb.append(", ").append(statusid);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

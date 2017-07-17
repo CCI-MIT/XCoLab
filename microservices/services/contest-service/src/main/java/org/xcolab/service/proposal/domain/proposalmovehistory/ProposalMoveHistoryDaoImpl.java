@@ -16,9 +16,12 @@ import static org.xcolab.model.Tables.PROPOSAL_MOVE_HISTORY;
 @Repository
 public class ProposalMoveHistoryDaoImpl implements ProposalMoveHistoryDao {
 
-    @Autowired
-    private DSLContext dslContext;
+    private final DSLContext dslContext;
 
+    @Autowired
+    public ProposalMoveHistoryDaoImpl(DSLContext dslContext) {this.dslContext = dslContext;}
+
+    @Override
     public ProposalMoveHistory create(ProposalMoveHistory proposalMoveHistory) {
 
         ProposalMoveHistoryRecord ret = this.dslContext.insertInto(PROPOSAL_MOVE_HISTORY)
@@ -42,6 +45,7 @@ public class ProposalMoveHistoryDaoImpl implements ProposalMoveHistoryDao {
 
     }
 
+    @Override
     public ProposalMoveHistory get(Long id_) throws NotFoundException {
 
         final Record record = this.dslContext.selectFrom(PROPOSAL_MOVE_HISTORY)

@@ -30,6 +30,7 @@ public class ImpactDefaultSeriesDaoImpl implements ImpactDefaultSeriesDao {
         return record.into(ImpactDefaultSeries.class);
 
     }
+    @Override
     public List<ImpactDefaultSeries> findByGiven(Long focusAreaId, String name) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(IMPACT_DEFAULT_SERIES).getQuery();

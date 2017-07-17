@@ -4,7 +4,8 @@
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:subscriptions="urn:jsptagdir:/WEB-INF/tags"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0"
-          xmlns:collab="urn:jsptagdir:/WEB-INF/tags/collab">
+          xmlns:collab="urn:jsptagdir:/WEB-INF/tags/collab"
+          xmlns:spring="http://www.springframework.org/tags">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout title="Manage subscriptions">
 
@@ -17,20 +18,20 @@
            value="/members/profile/${currentUserProfile.userId}/subscriptions/remove"/>
 
     <div id="bread" class="pro">
-        <a href="/members">Community</a> <img
+        <a href="/members"><spring:message code="colab.breadcrums.community"/></a> <img
             src="${_themeImageFolder}/arrow.gif" width="8" height="8"/> <a
-            href="/members">Members</a> <img
+            href="/members"><spring:message code="colab.breadcrums.members"/></a> <img
             src="${_themeImageFolder}/arrow.gif" width="8" height="8"/>
         <collab:userLinkSimple userId="${currentUserProfile.userId}" text="${userBean.displayName}" />
-        <img src="${_themeImageFolder}/arrow.gif" width="8" height="8"/>Manage Subscriptions
+        <img src="${_themeImageFolder}/arrow.gif" width="8" height="8"/><spring:message code="colab.breadcrums.managesubscriptions"/>
     </div>
 
     <div class="main_long">
 
         <div class="comm_disc-head">
-            <h1>Subscribed activities</h1>
+            <h1><spring:message code="subscription.activities.subscribedactivities.title"/></h1>
             <div class="comm_info-left subscriptions">
-                <span>${currentUserProfile.userSubscriptions.subscriptionsCount}</span> Subscriptions
+                <span>${currentUserProfile.userSubscriptions.subscriptionsCount}</span> <spring:message code="subscription.activities.subscribedactivities.count"/>
             </div>
         </div>
 
@@ -40,9 +41,9 @@
                 <tr>
                     <th class="subscriptionSelect Hdr" style="width: 40px;"><input
                             type="checkbox" id="checkboxSelectAll"/></th>
-                    <th class="header Hdr">Subject</th>
-                    <th class="header Hdr" style="width: 100px;">Category</th>
-                    <th style="width: 160px;" class="Hdr">Updated</th>
+                    <th class="header Hdr"><spring:message code="subscription.activities.table.subject"/> </th>
+                    <th class="header Hdr" style="width: 100px;"><spring:message code="subscription.activities.table.category"/> </th>
+                    <th style="width: 160px;" class="Hdr"><spring:message code="subscription.activities.table.updated"/> </th>
                 </tr>
 
                 <c:forEach var="subscription" items="${userSubscriptions.subscriptions}"
@@ -64,9 +65,9 @@
 
             <div class="com-info bot">
                 <a class="c-Button__primary" href="javascript:;"
-                   onclick="selectAllSubscriptions()">SELECT ALL</a>
+                   onclick="selectAllSubscriptions()"><spring:message code="subscription.activities.table.selectall"/></a>
                 <a class="c-Button__primary" href="javascript:;"
-                   onclick="jQuery('#removeSubscriptionsForm').submit();">REMOVE SELECTED</a>
+                   onclick="jQuery('#removeSubscriptionsForm').submit();"><spring:message code="subscription.activities.table.removeselected"/></a>
             </div>
         </form:form>
 
@@ -74,7 +75,7 @@
 
     <div class="c-Message__column" style="margin-top: 49px!important;">
         <div class="comm_list">
-            <h3>Display</h3>
+            <h3><spring:message code="subscription.activities.table.display"/></h3>
             <ul>
                 <li class="${currentUserProfile.userSubscriptions.typeFilterName == null ? 'c' : ''}">
                     <subscriptions:subscriptionsPaginationFilterLink
@@ -92,10 +93,10 @@
                             text="${contestType.proposalNamePlural}"/>
                 </li>
             </ul>
-            <h3>Settings</h3>
+            <h3><spring:message code="subscription.activities.table.settings"/></h3>
             <ul>
                 <li>
-                    <a href="/members/profile/${currentUserProfile.userId}/edit">Manage your email notification settings</a>
+                    <a href="/members/profile/${currentUserProfile.userId}/edit"><spring:message code="subscription.activities.manage.settings"/></a>
                 </li>
             </ul>
         </div>

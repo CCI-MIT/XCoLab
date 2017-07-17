@@ -4,8 +4,9 @@
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:form="http://www.springframework.org/tags/form"
-          xmlns:pagination ="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+          xmlns:pagination="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0"
+          xmlns:spring="http://www.springframework.org/tags">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout title="Subscriptions">
 
@@ -13,27 +14,27 @@
     <jsp:directive.include file="./init.jspx" />
 
     <div id="bread" class="pro">
-    <a href="/members">Community</a> <img
+    <a href="/members"><spring:message code="colab.breadcrums.community"/></a> <img
           src="${_themeImageFolder}/arrow.gif" width="8" height="8" /> <a
-          href="/members">Members</a> <img
+          href="/members"><spring:message code="colab.breadcrums.members"/> </a> <img
           src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
         <collab:userLinkSimple userId="${currentUserProfile.userId}" text="${userBean.displayName}" />
-    <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />Subscriptions
+    <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" /><spring:message code="colab.breadcrums.subscription"/>
     </div>
 
     <div class="main_long clearfix">
         <h1>Subscribed activities</h1>
         <c:if test="${currentUserProfile.viewingOwnProfile}">
           <div class="profile_action">
-            <a class="c-Button__primary" href="/members/profile/${currentUserProfile.userId}/subscriptions/manage">MANAGE</a>
-            <a class="c-Button__secondary" href="/members/profile/${currentUserProfile.userId}">BACK TO PROFILE</a>
+            <a class="c-Button__primary" href="/members/profile/${currentUserProfile.userId}/subscriptions/manage"><spring:message code="subscription.manage.button"/></a>
+            <a class="c-Button__secondary" href="/members/profile/${currentUserProfile.userId}"><spring:message code="subscription.backtoprofile.button"/></a>
           </div>
         </c:if>
         <table id="activitiesTable" class="fullscreen colab">
         <thead class="portlet-section-header">
             <tr>
-              <th style="width: 585px" class="Hdr">Activity</th>
-              <th style="width: 160px" class="Hdr">Date</th>
+              <th style="width: 585px" class="Hdr"><spring:message code="subscription.activities.activity.title"/></th>
+              <th style="width: 160px" class="Hdr"><spring:message code="subscription.activities.date.title"/></th>
             </tr>
           </thead>
           <tbody>

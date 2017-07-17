@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
@@ -25,10 +25,10 @@ import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.contest.ContestTier;
+import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.ContestBatchBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestCSVBean;
-import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCreatorUtil;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 

@@ -115,7 +115,7 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
 
             checkPermissions(request, "User isn't allowed to add comment", 0L);
 
-            final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+            final String baseUri = PlatformAttributeKey.COLAB_URL.get();
             final String body = HtmlUtil.cleanSome(newMessage.getDescription(), baseUri);
 
             Comment comment = new Comment();

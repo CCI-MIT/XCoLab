@@ -27,7 +27,7 @@ import org.xcolab.client.tracking.pojo.Location;
 import org.xcolab.util.CountryUtil;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.i18n.I18nUtils;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 import org.xcolab.view.pages.loginregister.exception.UserLocationNotResolvableException;
 import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;
@@ -261,7 +261,7 @@ public class LoginRegisterController {
                 json.getJSONObject("bio").put("success", true);
                 if (StringUtils.isNotEmpty(bio)) {
                     if (bio.length() <= 2000) {
-                        final String baseUri = PlatformAttributeKey.PLATFORM_COLAB_URL.get();
+                        final String baseUri = PlatformAttributeKey.COLAB_URL.get();
                         loggedInMember.setShortBio(HtmlUtil.cleanSome(bio, baseUri));
                         MembersClient.updateMember(loggedInMember);
                     } else {

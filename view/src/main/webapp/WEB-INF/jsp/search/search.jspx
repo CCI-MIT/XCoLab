@@ -1,21 +1,25 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0"
+          xmlns:spring="http://www.springframework.org/tags">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout title="Search">
     <!--@elvariable id="searchBean" type="org.xcolab.view.pages.search.SearchBean"-->
 
-    <h1>Search
+    <h1>
         <c:if test="${not empty searchBean.searchPhrase}">
-            Results for ${searchBean.searchPhrase}
+            <spring:message code="search.title" arguments="${searchBean.searchPhrase}"/>
+        </c:if>
+        <c:if test="${empty searchBean.searchPhrase}">
+            <spring:message code="search.titleNoArg" />
         </c:if>
     </h1>
 
     <div class="searchFormContainer">
         <input value="${searchBean.searchPhrase}" class="searchPhrase" id="searchPhrase"/>
         <a class="c-Button__primary" href="javascript:;"
-           onclick="window.location = '/search?searchPhrase=' + encodeURI($('#searchPhrase').val())">Search</a>
+           onclick="window.location = '/search?searchPhrase=' + encodeURI($('#searchPhrase').val())"><spring:message code="search.button"/></a>
         <c:if test="${searchBean.showBlogReference and not empty searchBean.searchPhrase}">
             <collab:blogSearchLink searchPhrase="${searchBean.searchPhrase}" target="${searchBean.searchBlogURL}"/>
         </c:if>
@@ -25,7 +29,7 @@
         <div id="main" class="searchresults">
 
             <c:if test="${searchBean.dataPage.totalResults == 0 and not empty searchBean.searchPhrase}">
-                <p>Nothing has been found.</p>
+                <p><spring:message code="search.noresults" /></p>
             </c:if>
             <div class="searchTable">
                 <c:forEach var="item" items="${searchBean.items}" varStatus="loopStatus">
@@ -46,10 +50,10 @@
 
         <div class="right_col">
             <div class="comm_list">
-                Show results for:
+                <spring:message code="search.showresultsfor"/>
                 <ul>
                     <li class="${searchBean.searchLocation == '' ? 'c' : ''}">
-                        <a href="/search?searchPhrase=${searchBean.searchPhrase}">Full Site</a>
+                        <a href="/search?searchPhrase=${searchBean.searchPhrase}"><spring:message code="search.fullsite"/></a>
                     </li>
                     <c:forEach var="itemType" items="${searchBean.itemTypes}">
                         <li class="${searchBean.selectedItemType == itemType ? 'c' : ''}">

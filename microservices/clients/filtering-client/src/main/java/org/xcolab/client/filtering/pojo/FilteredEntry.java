@@ -151,20 +151,10 @@ public class FilteredEntry implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("FilteredEntry (");
+        String sb = "FilteredEntry (" + filteredentryid + ", " + source + ", " + sourceid + ", "
+                + authorid + ", " + fulltext + ", " + status + ", " + createdat + ", " + answeredat
+                + ", " + responsefulltext + ", " + uuid + ")";
 
-        sb.append(filteredentryid);
-        sb.append(", ").append(source);
-        sb.append(", ").append(sourceid);
-        sb.append(", ").append(authorid);
-        sb.append(", ").append(fulltext);
-        sb.append(", ").append(status);
-        sb.append(", ").append(createdat);
-        sb.append(", ").append(answeredat);
-        sb.append(", ").append(responsefulltext);
-        sb.append(", ").append(uuid);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

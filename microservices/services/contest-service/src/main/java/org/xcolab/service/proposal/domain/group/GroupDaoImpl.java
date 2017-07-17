@@ -14,6 +14,7 @@ public class GroupDaoImpl implements GroupDao {
     private DSLContext dslContext;
 
 
+    @Override
     public Group_ create(Group_ group_) {
 
         Group_Record ret = this.dslContext.insertInto(GROUP_)
@@ -47,7 +48,7 @@ public class GroupDaoImpl implements GroupDao {
 
     }
 
-
+    @Override
     public boolean update(Group_ group_) {
         return dslContext.update(GROUP_)
                 .set(GROUP_.COMPANY_ID, group_.getCompanyId())

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.messaging.MessageLimitExceededException;

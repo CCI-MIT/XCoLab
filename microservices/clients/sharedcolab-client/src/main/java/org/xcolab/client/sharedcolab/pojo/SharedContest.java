@@ -124,14 +124,10 @@ public class SharedContest implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("SharedContest (");
+        String sb =
+                "SharedContest (" + sharedcontestid + ", " + contestname + ", " + createdate + ", "
+                        + colaborigin + ")";
 
-        sb.append(sharedcontestid);
-        sb.append(", ").append(contestname);
-        sb.append(", ").append(createdate);
-        sb.append(", ").append(colaborigin);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

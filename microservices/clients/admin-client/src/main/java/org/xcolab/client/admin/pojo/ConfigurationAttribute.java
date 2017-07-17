@@ -18,6 +18,8 @@ public class ConfigurationAttribute extends AbstractAttribute implements Seriali
                     });
 
     public ConfigurationAttribute() {
+        setAdditionalId(0L);
+        setLocale("");
     }
 
     public ConfigurationAttribute(ConfigurationAttribute value) {

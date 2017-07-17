@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.admin.pojo.ContestType;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
@@ -125,7 +125,7 @@ public class ContestAdminTabController extends AbstractTabController {
             Member member)
             throws IOException {
 
-        String contestUrl = PlatformAttributeKey.PLATFORM_COLAB_URL.get()
+        String contestUrl = PlatformAttributeKey.COLAB_URL.get()
                 + "/admin/contest/details/contestId/" + contestId;
         if (!tab.isEmpty()) {
             contestUrl += "/tab/" + tab;

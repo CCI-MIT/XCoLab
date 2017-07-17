@@ -17,10 +17,14 @@ import static org.xcolab.model.Tables.ONTOLOGY_SPACE;
 @Repository
 public class OntologySpaceDaoImpl implements OntologySpaceDao {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public OntologySpaceDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
 
-
+    @Override
     public OntologySpace create(OntologySpace ontologySpace) {
 
         OntologySpaceRecord ret = this.dslContext.insertInto(ONTOLOGY_SPACE)
@@ -39,6 +43,7 @@ public class OntologySpaceDaoImpl implements OntologySpaceDao {
 
     }
 
+    @Override
     public OntologySpace get(Long id_) throws NotFoundException {
 
         final Record record =  this.dslContext.selectFrom(ONTOLOGY_SPACE)
@@ -52,6 +57,7 @@ public class OntologySpaceDaoImpl implements OntologySpaceDao {
 
     }
 
+    @Override
     public boolean update(OntologySpace ontologySpace) {
         return dslContext.update(ONTOLOGY_SPACE)
                 .set(ONTOLOGY_SPACE.ID_, ontologySpace.getId_())

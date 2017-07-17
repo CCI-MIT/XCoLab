@@ -70,7 +70,7 @@ public class MemberForgotPasswordNotification extends MemberNotification {
                 case PASSWORD_RESET_LINK_PLACEHOLDER:
                     return parseXmlNode(getPasswordLink());
                 case SYSTEM_LINK_PLACEHOLDER:
-                    return new TextNode(PlatformAttributeKey.PLATFORM_COLAB_URL.get(), "");
+                    return new TextNode(PlatformAttributeKey.COLAB_URL.get(), "");
                 default:
             }
             return null;

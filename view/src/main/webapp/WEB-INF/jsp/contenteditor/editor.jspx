@@ -29,9 +29,6 @@
             /*.selectedI18nTab{
                 background-color: red;
             }*/
-            .i18nOptions{
-                cursor:pointer;
-            }
             #articleVersions span:hover {
                 text-decoration:none;
                 cursor:pointer;
@@ -62,14 +59,8 @@
                 color: #fff;
                 text-transform: uppercase;
                 font-weight: 500;
-                -moz-border-radius-topleft: 5px;
-                -webkit-border-top-left-radius: 5px;
                 border-top-left-radius: 5px;
-                -moz-border-radius-topright: 5px;
-                -webkit-border-top-right-radius: 5px;
                 border-top-right-radius: 5px;
-                -moz-box-sizing: content-box;
-                -webkit-box-sizing: content-box;
                 box-sizing: content-box;
             }
             .selectedI18nTab span {
@@ -375,11 +366,8 @@
 
             }
 
-
-
             function loadContentArticleResponse(response) {
-                var responseData = JSON.parse(response);
-                var data = responseData;
+                var data = JSON.parse(response);
                 var id = data.articleId;
                 var textarea = $('#articleVersionContent');
 

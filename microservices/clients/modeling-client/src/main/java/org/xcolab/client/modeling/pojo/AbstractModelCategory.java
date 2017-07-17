@@ -111,14 +111,9 @@ public abstract class AbstractModelCategory implements Serializable {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("ModelCategory (");
+        String sb = "ModelCategory (" + modelcategorypk + ", " + modelcategoryname + ", "
+                + modelcategorydescription + ", " + modelcategorydisplayweight + ")";
 
-        sb.append(modelcategorypk);
-        sb.append(", ").append(modelcategoryname);
-        sb.append(", ").append(modelcategorydescription);
-        sb.append(", ").append(modelcategorydisplayweight);
-
-        sb.append(")");
-        return sb.toString();
+        return sb;
     }
 }

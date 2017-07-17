@@ -1,10 +1,9 @@
 package org.xcolab.service.contents.domain.contentarticleversion;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jooq.DSLContext;
-import org.jooq.Query;
 import org.jooq.Record;
 import org.jooq.SelectQuery;
-import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -26,14 +25,15 @@ import static org.xcolab.model.Tables.CONTENT_ARTICLE_VERSION;
 @Repository
 public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
 
+    public static final String DEFAULT_LANGUAGE = "en";
     private final DSLContext dslContext;
 
     private final ContentFolderDao contentFolderDao;
 
     @Autowired
     public ContentArticleVersionDaoImpl(DSLContext dslContext, ContentFolderDao contentFolderDao) {
-        Assert.notNull(dslContext);
-        Assert.notNull(contentFolderDao);
+        Assert.notNull(dslContext, "DSLContext is required");
+        Assert.notNull(contentFolderDao, "ContentFolderDao is required");
         this.dslContext = dslContext;
         this.contentFolderDao = contentFolderDao;
     }
@@ -101,8 +101,7 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                     .and(CONTENT_ARTICLE.MAX_VERSION_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID))
                     .fetch()
                     .into(ContentArticleVersion.class);
-        }
-        else {
+        } else {
             return this.dslContext.select()
                     .from(CONTENT_ARTICLE_VERSION)
                     .join(CONTENT_ARTICLE).on(CONTENT_ARTICLE.CONTENT_ARTICLE_ID.eq(CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_ID))
@@ -112,7 +111,10 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                     .into(ContentArticleVersion.class);
         }
     }
-    public ContentArticleVersion getByArticleVersionLanguage(Long articleId, String language) throws NotFoundException {
+
+    @Override
+    public ContentArticleVersion getLatestVersionByArticleIdAndLanguage(Long articleId, String language)
+            throws NotFoundException {
 
         final Record record = this.dslContext.select()
                 .from(CONTENT_ARTICLE_VERSION)
@@ -155,7 +157,12 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
         }
 
         if (lang != null) {
-            query.addConditions(CONTENT_ARTICLE_VERSION.LANG.eq(lang));
+            if (StringUtils.isEmpty(lang) || DEFAULT_LANGUAGE.equalsIgnoreCase(lang)) {
+                query.addConditions(CONTENT_ARTICLE_VERSION.LANG.eq(StringUtils.EMPTY)
+                        .or(CONTENT_ARTICLE_VERSION.LANG.equalIgnoreCase(DEFAULT_LANGUAGE)));
+            } else {
+                query.addConditions(CONTENT_ARTICLE_VERSION.LANG.equalIgnoreCase(lang));
+            }
         }
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
@@ -175,8 +182,8 @@ public class ContentArticleVersionDaoImpl implements ContentArticleVersionDao {
                             ? CONTENT_ARTICLE_VERSION.TITLE.asc()
                             : CONTENT_ARTICLE_VERSION.TITLE.desc());
                     break;
-                default:
                 case "contentArticleVersion":
+                default:
                     query.addOrderBy(sortColumn.isAscending()
                             ? CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.asc()
                             : CONTENT_ARTICLE_VERSION.CONTENT_ARTICLE_VERSION_ID.desc());

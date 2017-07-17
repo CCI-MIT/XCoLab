@@ -32,7 +32,7 @@ public class Helper {
         sb.append(locationAndQueryString[0]);
         sb.append("?");
 
-        if (locationAndQueryString.length > 1 && locationAndQueryString[1].length() > 0) {
+        if (locationAndQueryString.length > 1 && !locationAndQueryString[1].isEmpty()) {
             sb.append(locationAndQueryString[1]);
             sb.append("&");
         }

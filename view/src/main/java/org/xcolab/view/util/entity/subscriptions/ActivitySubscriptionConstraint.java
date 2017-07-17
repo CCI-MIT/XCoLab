@@ -1,7 +1,7 @@
 package org.xcolab.view.util.entity.subscriptions;
 
-import org.xcolab.view.util.entity.activityEntry.ProposalActivitySubType;
 import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.view.util.entity.activityEntry.ProposalActivitySubType;
 
 import java.util.ArrayList;
 import java.util.HashMap;

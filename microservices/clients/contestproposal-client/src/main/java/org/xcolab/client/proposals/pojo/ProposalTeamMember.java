@@ -26,7 +26,7 @@ public class ProposalTeamMember {
         return user.getUserId();
     }
     
-    public String getMemberType() {
+    public ProposalMemberType getMemberType() {
         if (memberType == null) {
             if (proposal.getAuthorId() == user.getUserId()) {
                 memberType = ProposalMemberType.OWNER;
@@ -34,10 +34,12 @@ public class ProposalTeamMember {
                 memberType = ProposalMemberType.MEMBER;
             }
         }
-        return memberType.getDescription();
+        return memberType;
     }
 
-    
+    public String getMemberTypeForDisplay() {
+        return getMemberType().getDescription();
+    }
     
     public enum ProposalMemberType {
         OWNER("Owner"),
