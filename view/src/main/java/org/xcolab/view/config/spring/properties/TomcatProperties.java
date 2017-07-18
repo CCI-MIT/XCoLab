@@ -5,29 +5,36 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("tomcat")
 public class TomcatProperties {
 
-    /**
-     * Enable tomcat AJP connector.
-     */
-    private boolean tomcatAjpEnabled = true;
+    private final Ajp ajp = new Ajp();
 
-    /**
-     * Change port for the AJP connector.
-     */
-    private int tomcatAjpPort = 18010;
-
-    public boolean isTomcatAjpEnabled() {
-        return tomcatAjpEnabled;
+    public Ajp getAjp() {
+        return ajp;
     }
 
-    public int getTomcatAjpPort() {
-        return tomcatAjpPort;
-    }
+    public static class Ajp {
+        /**
+         * Enable tomcat AJP connector.
+         */
+        private boolean enabled = true;
+        /**
+         * Change port for the AJP connector.
+         */
+        private int port = 18010;
 
-    public void setTomcatAjpEnabled(boolean tomcatAjpEnabled) {
-        this.tomcatAjpEnabled = tomcatAjpEnabled;
-    }
+        public boolean isEnabled() {
+            return enabled;
+        }
 
-    public void setTomcatAjpPort(int tomcatAjpPort) {
-        this.tomcatAjpPort = tomcatAjpPort;
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        public int getPort() {
+            return port;
+        }
+
+        public void setPort(int port) {
+            this.port = port;
+        }
     }
 }

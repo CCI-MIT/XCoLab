@@ -168,11 +168,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                         context.getResources().getCacheMaxSize() / 1024);
             }
         };
-        if (tomcatProperties.isTomcatAjpEnabled()) {
+        if (tomcatProperties.getAjp().isEnabled()) {
             final AjpConnector ajpConnector =
-                    new AjpConnector(tomcatProperties.getTomcatAjpPort());
+                    new AjpConnector(tomcatProperties.getAjp().getPort());
             tomcat.addAdditionalTomcatConnectors(ajpConnector);
-            log.info("Configured AJP connector on port {}", tomcatProperties.getTomcatAjpPort());
+            log.info("Configured AJP connector on port {}", tomcatProperties.getAjp().getPort());
         }
 
         return tomcat;
