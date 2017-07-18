@@ -15,6 +15,7 @@ import org.xcolab.util.http.client.types.TypeProvider;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
@@ -327,7 +328,11 @@ public class Member implements Serializable {
     }
 
     public String getUuid() {
-        return this.uuid;
+        if (uuid == null) {
+            uuid = UUID.randomUUID().toString();
+            MembersClient.updateMember(this);
+        }
+        return uuid;
     }
 
     public void setUuid(String uuid) {

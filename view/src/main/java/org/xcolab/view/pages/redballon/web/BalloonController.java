@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.redballon.web;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,7 +23,7 @@ import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.pages.redballon.utils.BalloonUtils;
+import org.xcolab.view.pages.redballon.utils.BalloonService;
 import org.xcolab.view.pages.redballon.web.beans.UserEmailBean;
 
 import java.io.IOException;
@@ -49,10 +50,17 @@ public class BalloonController {
 
     private static final String SNP_LINK_URL = "/snp/{context}/link/{linkUuid}";
 
+    private final BalloonService balloonService;
+
+    @Autowired
+    public BalloonController(BalloonService balloonService) {
+        this.balloonService = balloonService;
+    }
+
     @GetMapping("/snp/{context}")
     public String showBalloon(HttpServletRequest request,
             HttpServletResponse response, Model model, @PathVariable String context) {
-        BalloonUserTracking but = BalloonUtils.getBalloonUserTracking(request, response,
+        BalloonUserTracking but = balloonService.getBalloonUserTracking(request, response,
                 null, null, context);
         if (but.getBalloonTextId() != null && but.getBalloonTextId() > 0) {
             BalloonText text;
@@ -89,7 +97,8 @@ public class BalloonController {
             return showBalloon(request, response, model, context);
         }
 
-        BalloonUserTracking but = BalloonUtils.getBalloonUserTracking(request, response, null, null, null);
+        BalloonUserTracking but = balloonService
+                .getBalloonUserTracking(request, response, null, null, null);
 
         but.setEmail(userEmailBean.getEmail());
         but.setFormFiledDate(new Timestamp(new Date().getTime()));
@@ -154,7 +163,7 @@ public class BalloonController {
                 model.addAttribute("balloonLink", link);
 
                 // get user tracking information, if user is new, then owner of this link should be set as a parent
-                but = BalloonUtils.getBalloonUserTracking(request, response, link.getBalloonUserUuid(), linkUuid, context);
+                but = balloonService.getBalloonUserTracking(request, response, link.getBalloonUserUuid(), linkUuid, context);
                 link.setVisits(link.getVisits() + 1);
                 BalloonsClient.updateBalloonLink(link);
 
@@ -163,7 +172,7 @@ public class BalloonController {
 
         if (but == null) {
             // user wasn't following any link so we need to create new root of a reference tree
-            but = BalloonUtils.getBalloonUserTracking(request, response, null, null, null);
+            but = balloonService.getBalloonUserTracking(request, response, null, null, null);
         }
         if (but.getBalloonTextId() != null && but.getBalloonTextId() > 0) {
             BalloonText text;
