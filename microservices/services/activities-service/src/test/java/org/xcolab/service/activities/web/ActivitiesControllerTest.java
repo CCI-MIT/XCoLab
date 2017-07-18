@@ -109,11 +109,12 @@ public class ActivitiesControllerTest {
             post("/activityEntries/createActivityEntry")
             .param("memberId","123")
             .param("classPrimaryKey","123")
+            .param("primaryType","123")
+            .param("secondaryType","123")
             .param("extraData","")
-            .param("providerType","12")
             .contentType(contentType).accept(contentType))
             .andExpect(status().isOk());
-        Mockito.verify(activityEntryDao,Mockito.times(1));
+        Mockito.verify(activityEntryDao,Mockito.times(1)).create(anyObject());
     }
     @Test
     public void shouldGetActivityEntry() throws Exception {
