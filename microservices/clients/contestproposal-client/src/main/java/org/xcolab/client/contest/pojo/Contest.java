@@ -34,6 +34,7 @@ import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
 
@@ -185,7 +186,9 @@ public class Contest extends AbstractContest implements Serializable {
             return "";
         }
     }
-
+    public String getCleanContestDescription() {
+        return HtmlUtil.cleanAll(this.getContestDescription());
+    }
     public String getLogoPath() {
         if (this.getIsSharedContestInForeignColab()) {
 

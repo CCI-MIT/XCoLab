@@ -7,7 +7,12 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           version="2.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-    <xcolab:layout title="${contest.contestShortName}" description="${contest.contestName}">
+
+    <xcolab:layout title="${contest.contestShortName}" description="${contest.contestName}"
+                   openGraphImage="${contest.logoPath}"
+                   openGraphDescription="${contest.cleanContestDescription}"
+                   openGraphTitle="${contest.contestShortName} - ${_colabName}"
+    >
 
         <jsp:directive.include file="./init_contest.jspx"/>
 

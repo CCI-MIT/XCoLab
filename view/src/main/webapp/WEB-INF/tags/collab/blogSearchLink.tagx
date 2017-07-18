@@ -5,7 +5,7 @@
   <jsp:directive.attribute name="searchPhrase" type="java.lang.String" required="false" rtexprvalue="true" description="Search Phrase" />
 
   <div class="searchBlogLink">
-    <span><spring:message code="search.didnotfind"/></span>
+    <span><spring:message code="search.didnotfind"/></span>&#160;&#160;
     <b>
       <a href="${target}"><spring:message code="search.colabnews" arguments="${_colabName},${searchPhrase}" argumentSeparator=","/></a>
     </b>

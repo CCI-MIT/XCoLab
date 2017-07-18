@@ -3,6 +3,7 @@ package org.xcolab.view.pages.members.users;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.pages.members.users.utils.MemberItem;
 import org.xcolab.view.pages.members.users.utils.MemberListCsvConverter;
 import org.xcolab.view.pages.members.users.utils.MembersPermissions;
@@ -25,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -89,6 +92,9 @@ public class MembersController {
             users.add(memberItem);
         }
 
+        Locale locale = LocaleContextHolder.getLocale();
+
+
         int usersCount = MembersClient.countMembers(memberCategoryParam, filterParam);
         int pagesCount = (int) Math.ceil(usersCount / (double) USERS_PER_PAGE);
         int endPage = pagesCount;
@@ -96,13 +102,14 @@ public class MembersController {
             endPage = startPage + 10;
         }
 
+
         model.addAttribute("pageNumber", page);
         model.addAttribute("pagesCount", pagesCount);
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
         model.addAttribute("sortFilterPage", sortFilterPage);
         model.addAttribute("users", users);
-        model.addAttribute("usersCount", usersCount);
+        model.addAttribute("usersCount", I18nUtils.formatNumberDefaultLocale(locale,usersCount));
         if (StringUtils.isNotEmpty(memberCategoryParam)) {
             final MemberCategory memberCategory = MembersClient.getMemberCategory(memberCategoryParam);
             memberCategory.setDescription(TemplateReplacementUtil

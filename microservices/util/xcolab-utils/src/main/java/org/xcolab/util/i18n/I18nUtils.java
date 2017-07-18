@@ -3,6 +3,7 @@ package org.xcolab.util.i18n;
 import org.xcolab.util.html.LabelStringValue;
 
 import java.util.ArrayList;
+import java.text.NumberFormat;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -54,5 +55,10 @@ public final class I18nUtils {
             }
         }
         return false;
+    }
+    public static String formatNumberDefaultLocale(Locale locale, Integer values){
+        NumberFormat formatter = NumberFormat.getInstance(locale);
+        return formatter.format(values);
+
     }
 }
