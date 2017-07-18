@@ -2,6 +2,7 @@ package org.xcolab.client.contest;
 
 import edu.mit.cci.roma.client.Simulation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
@@ -100,8 +101,14 @@ public class ContestClient {
     }
 
     public Contest getContest(long contestId) {
+        final String lang = LocaleContextHolder.getLocale().getLanguage();
+        return getContest(contestId, lang);
+    }
+
+    public Contest getContest(long contestId, String lang) {
         try {
             return contestResource.get(contestId)
+                    .optionalQueryParam("lang", lang)
                     //.withCache(CacheName.CONTEST_DETAILS)
                     .executeChecked().toPojo(contestService);
         } catch (EntityNotFoundException e) {
@@ -213,9 +220,16 @@ public class ContestClient {
 
     public Contest getContest(String contestUrlName, long contestYear)
             throws ContestNotFoundException {
+        final String lang = LocaleContextHolder.getLocale().getLanguage();
+        return getContest(contestUrlName, contestYear, lang);
+    }
+
+    public Contest getContest(String contestUrlName, long contestYear, String lang)
+            throws ContestNotFoundException {
         List<ContestDto> list = contestResource.list()
                 .queryParam("contestUrlName", contestUrlName)
                 .queryParam("contestYear", contestYear)
+                .optionalQueryParam("lang", lang)
 //                .withCache(CacheName.CONTEST_DETAILS)
                 .execute();
         if (list != null && !list.isEmpty()) {
@@ -233,14 +247,7 @@ public class ContestClient {
         return DtoUtil.toPojos(dtos, contestService);
     }
 
-    public ContestTranslation addTranslation(ContestTranslation contestTranslation) {
-        return contestTranslationResource
-                .resolveParent(contestResource.id(contestTranslation.getContestId()))
-                .create(new ContestTranslationDto(contestTranslation))
-                .execute().toPojo(contestService);
-    }
-
-    public boolean updateTranslation(ContestTranslation contestTranslation) {
+    public boolean saveTranslation(ContestTranslation contestTranslation) {
         return contestTranslationResource
                 .resolveParent(contestResource.id(contestTranslation.getContestId()))
                 .update(new ContestTranslationDto(contestTranslation), contestTranslation.getLang())
@@ -257,15 +264,19 @@ public class ContestClient {
     }
 
     public List<Contest> findContestsByActiveFeatured(Boolean active, Boolean featured) {
+        String lang = LocaleContextHolder.getLocale().getLanguage();
         return DtoUtil.toPojos(contestResource.list()
                 .optionalQueryParam("active", active)
                 .optionalQueryParam("featured", featured)
+                .queryParam("lang", lang)
 //                .withCache(CacheName.CONTEST_LIST)
                 .execute(), contestService);
     }
 
     public List<Contest> findContestsByActive(boolean active) {
+        String lang = LocaleContextHolder.getLocale().getLanguage();
         return DtoUtil.toPojos(contestResource.list()
+                .queryParam("lang", lang)
                 .optionalQueryParam("active", active)
 //                .withCache(CacheName.CONTEST_LIST)
                 .execute(), contestService);
@@ -273,8 +284,10 @@ public class ContestClient {
 
     public List<Contest> findPublicContests(String contestName,
             List<Long> ontologyTermIds, List<Long> contestTypeIds, List<Long> contestTiers) {
+        String lang = LocaleContextHolder.getLocale().getLanguage();
         return DtoUtil.toPojos(contestResource.list()
                 .addRange(0, Integer.MAX_VALUE)
+                .queryParam("lang", lang)
                 .optionalQueryParam("searchTerm", contestName)
                 .optionalQueryParam("ontologyTermIds",  ontologyTermIds)
                 .optionalQueryParam("contestTypeIds",  contestTypeIds)
@@ -286,7 +299,9 @@ public class ContestClient {
 
     public List<Contest> findContestsByTierAndOntologyTermIds(Long contestTier,
             List<Long> focusAreaOntologyTerms) {
+        String lang = LocaleContextHolder.getLocale().getLanguage();
         return DtoUtil.toPojos(contestResource.list()
+                .queryParam("lang", lang)
                 .queryParam("contestTiers", contestTier)
                 .queryParam("focusAreaIds", focusAreaOntologyTerms.toArray())
 //                .withCache(CacheName.CONTEST_LIST)
@@ -396,16 +411,20 @@ public class ContestClient {
     }
 
     public List<Contest> getAllContests() {
+        String lang = LocaleContextHolder.getLocale().getLanguage();
         return DtoUtil.toPojos(contestResource.list()
                 .addRange(0, Integer.MAX_VALUE)
+                .queryParam("lang", lang)
                 .queryParam("sort", "weight")
                 .withCache(CacheName.CONTEST_LIST)
                 .execute(), contestService);
     }
 
     public List<Contest> getAllContestsInYear(Integer contestYear) {
+        String lang = LocaleContextHolder.getLocale().getLanguage();
         return DtoUtil.toPojos(contestResource.list()
                 .addRange(0, Integer.MAX_VALUE)
+                .queryParam("lang", lang)
                 .queryParam("contestYear",contestYear)
                 .queryParam("sort", "ContestShortName")
                 .withCache(CacheName.CONTEST_LIST)
@@ -446,22 +465,28 @@ public class ContestClient {
     }
 
     public List<Contest> getContestsByPlanTemplateId(Long planTemplateId) {
+        String lang = LocaleContextHolder.getLocale().getLanguage();
         return DtoUtil.toPojos(contestResource
                 .list()
+                .queryParam("lang", lang)
                 .queryParam("planTemplateId", planTemplateId)
                 .execute(), contestService);
     }
 
     public List<Contest> getContestsByContestScheduleId(Long contestScheduleId) {
+        String lang = LocaleContextHolder.getLocale().getLanguage();
         return DtoUtil.toPojos(contestResource
                 .list()
+                .queryParam("lang", lang)
                 .queryParam("contestScheduleId", contestScheduleId)
                 .execute(), contestService);
     }
 
     public List<Contest> getContestsByActivePrivate(boolean contestActive, boolean contestPrivate) {
+        String lang = LocaleContextHolder.getLocale().getLanguage();
         return DtoUtil.toPojos(contestResource
                 .list()
+                .queryParam("lang", lang)
                 .queryParam("active", contestActive)
                 .queryParam("contestPrivate", contestPrivate)
                 .execute(), contestService);
@@ -470,8 +495,10 @@ public class ContestClient {
 
     public List<Contest> getContestsByActivePrivateType(boolean contestActive,
             boolean contestPrivate, Long contestTypeId) {
+        String lang = LocaleContextHolder.getLocale().getLanguage();
         return DtoUtil.toPojos(contestResource.list()
                 .addRange(0, Integer.MAX_VALUE)
+                .queryParam("lang", lang)
                 .queryParam("active", contestActive)
                 .queryParam("contestPrivate", contestPrivate)
                 .queryParam("contestTypeIds", contestTypeId)
@@ -479,8 +506,10 @@ public class ContestClient {
     }
 
     public List<Contest> getContestsByContestTypeId(Long contestTypeId) {
+        String lang = LocaleContextHolder.getLocale().getLanguage();
         return DtoUtil.toPojos(contestResource
                 .list()
+                .queryParam("lang", lang)
                 .queryParam("contestTypeIds", contestTypeId)
                 .queryParam("limitRecord", Integer.MAX_VALUE)
                 .execute(), contestService);
@@ -632,8 +661,10 @@ public class ContestClient {
     }
 
     public List<Contest> getContestsByContestType(Long contestTypeId) {
+        String lang = LocaleContextHolder.getLocale().getLanguage();
         return DtoUtil.toPojos(contestResource.list()
                 .queryParam("contestTypeIds", contestTypeId)
+                .queryParam("lang", lang)
 //                .withCache(CacheName.CONTEST_LIST)
                 .execute(), contestService);
     }

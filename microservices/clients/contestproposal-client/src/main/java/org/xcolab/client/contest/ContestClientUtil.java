@@ -5,6 +5,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ContestCollectionCard;
 import org.xcolab.client.contest.pojo.ContestDiscussion;
 import org.xcolab.client.contest.pojo.ContestSchedule;
+import org.xcolab.client.contest.pojo.ContestTranslation;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
@@ -33,6 +34,10 @@ public final class ContestClientUtil {
         return contestClient.getContest(contestId);
     }
 
+    public static Contest getContest(long contestId, String lang) {
+        return contestClient.getContest(contestId, lang);
+    }
+
     public static Contest createContest(Long contestId, Long userId, String name) {
         return contestClient.createContest(contestId, userId, name);
     }
@@ -58,6 +63,19 @@ public final class ContestClientUtil {
     public static Contest getContest(String contestUrlName, long contestYear)
             throws ContestNotFoundException {
         return contestClient.getContest(contestUrlName, contestYear);
+    }
+
+    public static Contest getContest(String contestUrlName, long contestYear, String lang)
+            throws ContestNotFoundException {
+        return contestClient.getContest(contestUrlName, contestYear, lang);
+    }
+
+    public static List<ContestTranslation> getTranslationsForContestId(long contestId) {
+        return contestClient.getTranslationsForContestId(contestId);
+    }
+
+    public static boolean saveTranslation(ContestTranslation contestTranslation) {
+        return contestClient.saveTranslation(contestTranslation);
     }
 
     public static ContestDiscussion createContestDiscussion(long threadId, long contestId,

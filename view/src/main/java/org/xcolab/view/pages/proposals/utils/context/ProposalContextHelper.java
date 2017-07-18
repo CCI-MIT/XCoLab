@@ -36,13 +36,15 @@ public class ProposalContextHelper {
     private static final String CONTEST_PHASE_ID_PARAM = "phaseId";
     private static final String VERSION_PARAM = "version";
 
+    private final HttpServletRequest request;
+
     private final String givenContestUrlName;
     private final long givenContestYear;
     private final long givenContestId;
     private final long givenPhaseId;
     private final int givenVersion;
     private final long givenProposalId;
-    private final HttpServletRequest request;
+
     private final Contest contest;
     private final ClientHelper clientHelper;
 
