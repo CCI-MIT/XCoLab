@@ -223,21 +223,17 @@ public class ContestController {
         }
     }
 
-    @PostMapping("/contests/{contestId}/translations")
-    public ContestTranslation createTranslation(@RequestBody ContestTranslation contestTranslation,
-            @PathVariable long contestId) {
-        if (contestTranslation.getContestId() != contestId) {
-            throw new IllegalArgumentException("");
-        }
-        return contestTranslationDao.create(contestTranslation);
-    }
-
     @PutMapping("/contests/{contestId}/translations/{lang}")
     public boolean updateTranslation(@RequestBody ContestTranslation contestTranslation,
             @PathVariable long contestId, @PathVariable String lang) {
         contestTranslation.setContestId(contestId);
         contestTranslation.setLang(lang);
-        return contestTranslationDao.update(contestTranslation);
+        if (contestTranslationDao.exists(contestId, lang)) {
+            return contestTranslationDao.update(contestTranslation);
+        } else {
+            contestTranslationDao.create(contestTranslation);
+            return true;
+        }
     }
 
     @GetMapping("/contests/{contestId}/translations")

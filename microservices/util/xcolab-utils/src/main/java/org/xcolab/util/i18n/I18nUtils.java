@@ -2,6 +2,7 @@ package org.xcolab.util.i18n;
 
 import org.xcolab.util.html.LabelStringValue;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +14,10 @@ public final class I18nUtils {
 
     public static final String MEMBER_LOCALE_SESSION_IDENTIFIER = "memberLocale";
     public static final Locale DEFAULT_LOCALE = Locale.US;
+    public static final String DEFAULT_LANGUAGE = DEFAULT_LOCALE.getLanguage();
 
     private static final Map<String, String> codeToLocale = new HashMap<>();
+
     private static final List<LabelStringValue> selectOptions;
 
     static {
@@ -32,8 +35,12 @@ public final class I18nUtils {
     private I18nUtils() {
     }
 
-    public static List<LabelStringValue> getSelectList(){
+    public static List<LabelStringValue> getSelectList() {
         return selectOptions;
+    }
+
+    public static List<String> getAllLanguages() {
+        return new ArrayList<>(codeToLocale.keySet());
     }
 
     public static boolean hasCapitalNouns(Locale locale) {

@@ -13,6 +13,6 @@ public class ContestTranslation extends AbstractContestTranslation {
 
     public ContestTranslation(AbstractContestTranslation contestTranslation,
             RestService contestService) {
-
+        super(contestTranslation);
     }
 }

@@ -12,6 +12,8 @@ public enum ContestDetailsTabs implements TabEnum {
     DESCRIPTION("Homepage", "description",
             TabPermissionAlgorithm.contestDetailsViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),
+    TRANSLATIONS("Translations", "translation", TabPermissionAlgorithm.contestDetailsViewAndEdit,
+            TabActivityCountAlgorithm.alwaysZero),
     RESOURCES("Resources Page", "resources",
             TabPermissionAlgorithm.contestDetailsViewAndEdit,
             TabActivityCountAlgorithm.alwaysZero),

@@ -11,6 +11,8 @@ public interface ContestTranslationDao {
 
     boolean update(ContestTranslation translation);
 
+    boolean exists(long contestId, String lang);
+
     Optional<ContestTranslation> get(long contestId, String lang);
 
     List<ContestTranslation> listByContestId(long contestId);

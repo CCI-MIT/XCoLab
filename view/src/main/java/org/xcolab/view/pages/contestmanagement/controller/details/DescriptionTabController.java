@@ -1,7 +1,5 @@
 package org.xcolab.view.pages.contestmanagement.controller.details;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,10 +32,8 @@ import javax.validation.Valid;
 @RequestMapping("/admin/contest/details/contestId/{contestId}")
 public class DescriptionTabController extends AbstractTabController {
 
-    private final static Logger _log =
-            LoggerFactory.getLogger(DescriptionTabController.class);
-    static final private ContestDetailsTabs tab = ContestDetailsTabs.DESCRIPTION;
-    static final private String TAB_VIEW = "contestmanagement/details/descriptionTab";
+    private static final ContestDetailsTabs tab = ContestDetailsTabs.DESCRIPTION;
+    private static final String TAB_VIEW = "contestmanagement/details/descriptionTab";
 
     @ModelAttribute("proposalTemplateSelectionItems")
     public List<LabelValue> populateProposalTemplateSelectionItems() {

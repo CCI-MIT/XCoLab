@@ -52,6 +52,14 @@ public class ContestTranslationDaoImpl implements ContestTranslationDao {
     }
 
     @Override
+    public boolean exists(long contestId, String lang) {
+        return dslContext.fetchExists(DSL.select()
+                .from(CONTEST_TRANSLATION)
+                .where(CONTEST_TRANSLATION.CONTEST_ID.eq(contestId)
+                        .and(CONTEST_TRANSLATION.LANG.equalIgnoreCase(lang))));
+    }
+
+    @Override
     public Optional<ContestTranslation> get(long contestId, String lang) {
         final Record record = dslContext.select().from(CONTEST_TRANSLATION)
                 .where(CONTEST_TRANSLATION.CONTEST_ID.eq(contestId)

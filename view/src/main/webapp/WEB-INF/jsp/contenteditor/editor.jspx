@@ -26,9 +26,6 @@
             #saveArticle{cursor:pointer}
             #articleURL{overflow:hidden}
             #anchorArticleURL{display: block; width:0; white-space: nowrap;}
-            /*.selectedI18nTab{
-                background-color: red;
-            }*/
             #articleVersions span:hover {
                 text-decoration:none;
                 cursor:pointer;
@@ -47,26 +44,6 @@
                 cursor:pointer;
                 color:blue;
                 text-decoration:underline;
-            }
-            .i18nOptions span {
-                display: inline-block;
-                padding-top: 3px;
-                padding-right: 5px;
-                padding-left: 5px;
-                padding-bottom: 3px;
-                font-size: 12px;
-                background: #30a3fb;
-                color: #fff;
-                text-transform: uppercase;
-                font-weight: 500;
-                border-top-left-radius: 5px;
-                border-top-right-radius: 5px;
-                box-sizing: content-box;
-            }
-            .selectedI18nTab span {
-                color: #30a3fb;
-                background: white;
-                box-shadow: none;
             }
         </style>
         <xcolab:stylesheet href="${_libCssFolder}/jquery.loadmask.spin.css" />
@@ -114,19 +91,19 @@
             var moveArticleVersionURL = '${moveArticleVersionURL}';
             var createArticleFolderURL = '${createArticleFolderURL}';
             var getArticleVersionIdURL = '${getArticleVersionIdURL}';
-            var archiveContentArticleURL = '${archiveContentArticleURL}'
+            var archiveContentArticleURL = '${archiveContentArticleURL}';
             var ckEditor = null;
             var THRESHOLD_TO_AVOID_NODE_COLISION = 1000;
             function getFullTreePath(node){
                 if(node.parent){
-                    return  getFullTreePath(node.parent) + "/"+node.name;
+                    return getFullTreePath(node.parent) + "/" + node.name;
                 }else{
                     return  node.name
                 }
             }
             jQuery(function () {
 
-                $("#article-view").mask({'label':"Please click on an Article or create a new one clicking in the folder`s + article link!", spinner:false});
+                $("#article-view").mask({'label':"Please click on an article or create a new one clicking in the folder's + article link!", spinner:false});
 
                 var styles = $('link');
                 for(var i=0 ; i <styles.length ; i++){
@@ -284,9 +261,7 @@
                     $("#previewArticleForm").submit();
                 });
 
-                $(".i18nOptions span").click(function (event){
-
-
+                $('#i18nTabBar').find("a").click(function (event){
                     var enc = ($(event.target).parent().prop("id")).replace("changeToVersion_","");
                     //console.log(" Enc found: - "+enc);
 
@@ -375,11 +350,11 @@
                 CKEDITOR.instances['articleVersionContent'].setData(data.content);
 
                 var input = $('#contentArticleId');
-                input.attr("value",id);
+                input.attr("value", id);
 
                 //set the right tab
-                $(".i18nOptions").removeClass("selectedI18nTab");
-                $("#changeToVersion_"+data.lang).addClass("selectedI18nTab");
+                $("#i18nTabBar").find('.c-TabBar__tab').removeClass("active");
+                $("#changeToVersion_" + data.lang).addClass("active");
 
                 $("#lang").val(data.lang);
 
@@ -532,11 +507,11 @@
                                 <div id="createdAtDate"><!-- --></div>
                                <c:if test="${i18nActive}">
                                     <div>
-                                        <ul class="c-TabBar clearfix">
+                                        <ul id="i18nTabBar" class="c-TabBar clearfix">
 
                                             <c:forEach var="lang" items="${i18nOptions}">
-                                                <li class="c-TabBar__tab i18nOptions" id="changeToVersion_${lang['value']}">
-                                                   <span><spring:message code="${lang['lable']}"/></span>
+                                                <li class="c-TabBar__tab small" id="changeToVersion_${lang['value']}">
+                                                   <a><spring:message code="${lang['lable']}"/></a>
                                                 </li>
                                             </c:forEach>
 

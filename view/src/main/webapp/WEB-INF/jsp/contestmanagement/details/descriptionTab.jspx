@@ -13,7 +13,7 @@
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
 
-    <c:set var="updateContestDescriptionURL" value="/admin/contest/details/contestId/${contestWrapper.contestPK}/tab/DESCRIPTION" />
+    <c:set var="updateUrl" value="/admin/contest/details/contestId/${contestWrapper.contestPK}/tab/DESCRIPTION" />
 
     <xcolab:loadCkEditor />
 
@@ -22,7 +22,7 @@
             team, or your content may be lost.</p>
 
         <h2>Homepage content</h2>
-        <form:form action="${updateContestDescriptionURL }" commandName="contestDescriptionBean" cssClass="addpropform"
+        <form:form action="${updateUrl }" commandName="contestDescriptionBean" cssClass="addpropform"
                    id="editForm" method="post">
             <div class="reg_errors"><!--  -->
                 <form:errors cssClass="c-Alert c-Alert__error" path="*"/>
