@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="XCoLab" type="CompoundRunConfigurationType" factoryName="Compound Run Configuration">
+    <toRun type="CompoundRunConfigurationType" name="XCoLab Services" />
+    <toRun type="SpringBootApplicationConfigurationType" name="ColabViewApplication" />
+    <toRun type="SpringBootApplicationConfigurationType" name="EurekaServerApplication" />
+    <method />
+  </configuration>
+</component>

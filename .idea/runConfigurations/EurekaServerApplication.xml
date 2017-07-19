@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="EurekaServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="org.xcolab.cloud.eureka.EurekaServerApplication" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <module name="eureka-server" />
+    <envs />
+    <method />
+  </configuration>
+</component>

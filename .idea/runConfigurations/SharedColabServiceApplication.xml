@@ -1,0 +1,17 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SharedColabServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="org.xcolab.service.sharedcolab.SharedColabServiceApplication" />
+    <option name="ALTERNATIVE_JRE_PATH" />
+    <additionalParameters>
+      <param>
+        <option name="enabled" value="true" />
+        <option name="name" value="eureka.instance.hostname" />
+        <option name="value" value="localhost" />
+      </param>
+    </additionalParameters>
+    <module name="sharedcolab-service" />
+    <envs />
+    <method />
+  </configuration>
+</component>
