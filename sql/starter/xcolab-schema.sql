@@ -1099,7 +1099,6 @@ CREATE TABLE `xcolab_Contest` (
   `flag` int(11) DEFAULT NULL,
   `flagText` varchar(256) DEFAULT NULL,
   `flagTooltip` varchar(512) DEFAULT NULL,
-  `groupId` bigint(20) DEFAULT NULL,
   `discussionGroupId` bigint(20) DEFAULT NULL,
   `weight` int(11) DEFAULT NULL,
   `resourcesUrl` varchar(1024) DEFAULT NULL,
