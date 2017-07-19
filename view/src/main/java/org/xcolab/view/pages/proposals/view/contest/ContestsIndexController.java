@@ -285,6 +285,7 @@ public class ContestsIndexController extends BaseProposalsController {
         boolean showContestManagementLink = PermissionsClient.canAdminAll(currentMember) ;
         model.addAttribute("showContestManagementLink", showContestManagementLink);
         model.addAttribute("priorContestsExist", !priorContests.isEmpty());
+        model.addAttribute("priorContests", priorContests);
         model.addAttribute("contests", contests);
         //not taken into account if collection cards enabled
         model.addAttribute("showFilter", contests.size() >= MIN_SIZE_CONTEST_FILTER);
