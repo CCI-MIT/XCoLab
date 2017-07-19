@@ -1,10 +1,11 @@
 package org.xcolab.service.flagging.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.FilteredEntry;
@@ -12,7 +13,6 @@ import org.xcolab.service.flagging.domain.filteredentry.FilteredEntryDao;
 import org.xcolab.service.flagging.enums.FilteringStatus;
 import org.xcolab.service.flagging.exceptions.NotFoundException;
 import org.xcolab.service.flagging.utils.filteringprocessor.EntryFilteringProcessor;
-import org.xcolab.service.flagging.utils.filteringprocessor.XColabFilteringProcessor;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -24,14 +24,16 @@ public class FilteringController {
 
     private final FilteredEntryDao filteredEntryDao;
 
-    private final EntryFilteringProcessor processor = new XColabFilteringProcessor();
+    private final EntryFilteringProcessor processor;
 
     @Autowired
-    public FilteringController(FilteredEntryDao filteredEntryDao) {
+    public FilteringController(FilteredEntryDao filteredEntryDao, EntryFilteringProcessor
+            processor) {
         this.filteredEntryDao = filteredEntryDao;
+        this.processor = processor;
     }
 
-    @RequestMapping(value = "/filteredEntries", method = RequestMethod.POST)
+    @PostMapping("/filteredEntries")
     public FilteredEntry filterEntry(@RequestBody FilteredEntry filteredEntry) {
 
         filteredEntry.setStatus(FilteringStatus.CREATED.getId());
@@ -46,19 +48,12 @@ public class FilteringController {
 
     }
 
-    @RequestMapping(value = "/filteredEntries/{uuid}", method = RequestMethod.GET)
+    @GetMapping("/filteredEntries/{uuid}")
     public FilteredEntry getByUUID(@PathVariable String uuid) throws NotFoundException {
         return filteredEntryDao.getByUuid(uuid);
     }
 
-    /*
-    @RequestMapping(value = "/filteredEntries/{filterId}", method = RequestMethod.GET)
-    public FilteredEntry checkStatus(@PathVariable Long filterId) throws NotFoundException {
-        return filteredEntryDao.get(filterId);
-    }
-    */
-
-    @RequestMapping(value = "/filteredEntries/{filteredEntryId}", method = RequestMethod.PUT)
+    @PutMapping("/filteredEntries/{filteredEntryId}")
     public boolean updateProposal(@RequestBody FilteredEntry filteredEntry,
                                   @PathVariable("filteredEntryId") Long filteredEntryId) throws NotFoundException {
 
@@ -68,7 +63,8 @@ public class FilteringController {
             return filteredEntryDao.update(filteredEntry);
         }
     }
-    @RequestMapping(value = "/filteredEntries/processCreatedEntries", method = RequestMethod.GET)
+
+    @GetMapping("/filteredEntries/processCreatedEntries")
     public void processCreatedEntries() {
         List<FilteredEntry> entriesToProcess = filteredEntryDao.getByStatus(FilteringStatus.CREATED.getId());
         if (entriesToProcess != null) {

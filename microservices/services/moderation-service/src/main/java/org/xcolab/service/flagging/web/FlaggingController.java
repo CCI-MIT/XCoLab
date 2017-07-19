@@ -1,7 +1,11 @@
 package org.xcolab.service.flagging.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,14 +31,19 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class FlaggingController {
 
-    @Autowired
-    private ReportDao reportDao;
+    private final ReportDao reportDao;
+
+    private final ReportTargetDao reportTargetDao;
+
+    private final FlaggingService flaggingService;
 
     @Autowired
-    private ReportTargetDao reportTargetDao;
-
-    @Autowired
-    private FlaggingService flaggingService;
+    public FlaggingController(ReportDao reportDao, ReportTargetDao reportTargetDao,
+            FlaggingService flaggingService) {
+        this.reportDao = reportDao;
+        this.reportTargetDao = reportTargetDao;
+        this.flaggingService = flaggingService;
+    }
 
     @RequestMapping(value = "/reports", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Report> getReports(HttpServletResponse response,
@@ -76,7 +85,7 @@ public class FlaggingController {
                 managerMemberId, targetType, targetId, targetAdditionalId, managerAction);
     }
 
-    @RequestMapping(value = "/reports/{reportId}", method = RequestMethod.GET)
+    @GetMapping("/reports/{reportId}")
     public Report getReport(@PathVariable long reportId) throws NotFoundException {
         final Report report = reportDao.get(reportId);
         if (report == null) {
@@ -85,12 +94,12 @@ public class FlaggingController {
         return report;
     }
 
-    @RequestMapping(value = "/reports", method = RequestMethod.POST)
+    @PostMapping("/reports")
     public Report createReport(@RequestBody Report report){
         return flaggingService.createReport(report);
     }
 
-    @RequestMapping(value = "/reports/{reportId}", method = RequestMethod.PUT)
+    @PutMapping("/reports/{reportId}")
     public boolean updateReport(@PathVariable long reportId, @RequestBody Report report)
             throws NotFoundException  {
         if (reportDao.get(reportId) == null) {
@@ -110,7 +119,7 @@ public class FlaggingController {
         return reportTargetDao.findByGiven(paginationHelper, type);
     }
 
-    @RequestMapping(value = "/reportTargets/{reportTargetId}", method = RequestMethod.GET)
+    @GetMapping("/reportTargets/{reportTargetId}")
     public ReportTarget getReportTarget(@PathVariable long reportTargetId)
             throws NotFoundException {
         final ReportTarget reportTarget = reportTargetDao.get(reportTargetId);
@@ -120,12 +129,12 @@ public class FlaggingController {
         return reportTarget;
     }
 
-    @RequestMapping(value = "/reportTargets", method = RequestMethod.POST)
+    @PostMapping("/reportTargets")
     public ReportTarget createReportTarget(@RequestBody ReportTarget reportTarget){
         return reportTargetDao.create(reportTarget);
     }
 
-    @RequestMapping(value = "/reportTargets/{reportTargetId}", method = RequestMethod.PUT)
+    @PutMapping("/reportTargets/{reportTargetId}")
     public boolean updateReportTarget(@PathVariable long reportTargetId,
             @RequestBody ReportTarget reportTarget) throws NotFoundException {
         if (reportTargetDao.get(reportTargetId) == null) {
@@ -136,13 +145,13 @@ public class FlaggingController {
     }
 
 
-    @RequestMapping(value = "/reports/{reportId}/handle", method = RequestMethod.POST)
+    @PostMapping("/reports/{reportId}/handle")
     public boolean handleReport(@PathVariable long reportId, @RequestParam long managerMemberId,
             @RequestParam ManagerAction managerAction) {
         return flaggingService.handleReport(reportId, managerMemberId, managerAction);
     }
 
-    @RequestMapping(value = "/reportTargets/{reportTargetId}", method = RequestMethod.DELETE)
+    @DeleteMapping("/reportTargets/{reportTargetId}")
     public boolean deleteReportTarget(@PathVariable long reportTargetId) {
         return reportTargetDao.delete(reportTargetId);
     }
