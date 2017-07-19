@@ -70,43 +70,9 @@
             </div>
         </c:if>
 
-        <c:if test="${priorContestsExist}">
-            <div class="show">
-                <div class="show-active">
-                    <collab:message var="selectorTextActive" code="contests.selector.active" contestType="${contestType}" />
-                    <collab:message var="selectorTextPrior" code="contests.selector.prior" contestType="${contestType}" />
-                    <collab:message var="selectorTextAll" code="contests.selector.all" contestType="${contestType}" />
-                    <c:choose>
-                        <c:when test="${showActiveContests }">
-                            <a href="#" >${selectorTextActive}</a>
-                        </c:when>
-                        <c:when test="${not showActiveContests and not showAllContests }">
-                            <a href="#" >${selectorTextPrior}</a>
-                        </c:when>
-                        <c:otherwise>
-                            <a href="#" >${selectorTextAll}</a>
-                        </c:otherwise>
-                    </c:choose>
-                    <div id="priorActiveAllWidget">
-                        <ul>
-                            <li class="${showActiveContests ?  'active' : ''}">
-                                <a href="${contestType.contestBaseUrl}" >${selectorTextActive}</a>
-                            </li>
-                            <c:set var="showPrior" value="/contests?viewType=${viewType}&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false"/>
-                            <li class="${not showActiveContests and not showAllContests ?  'active' : ''}">
-                                <a href="${showPrior}" >${selectorTextPrior}</a>
-                            </li>
-                            <c:set var="showAll" value="/contests?viewType=${viewType}&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=${showActiveContests }&amp;showAllContests=true"/>
-                            <li class="${showAllContests ?  'active' : ''}">
-                                <a href="${showAll}" >${selectorTextAll}</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </c:if>
+
         <c:if test="${not empty suggestionContestLink}">
-            <div class="divider"><!--  --></div>
+
             <div class="show">
                 <a href="${suggestionContestLink}">
                     <collab:message code="contests.suggestnew" contestType="${contestType}" />
