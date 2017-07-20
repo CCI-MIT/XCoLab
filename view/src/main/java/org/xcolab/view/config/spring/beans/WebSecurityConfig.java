@@ -22,7 +22,6 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.session.web.http.SessionRepositoryFilter;
 
 import org.xcolab.util.autoconfigure.XCoLabProperties;
-import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.handlers.AuthenticationFailureHandler;
 import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.handlers.LogoutSuccessHandler;
@@ -46,19 +45,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final RememberMeServices rememberMeServices;
     private final MemberDetailsService memberDetailsService;
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
+
     private final WebProperties webProperties;
     private final XCoLabProperties xCoLabProperties;
-    private final AuthenticationService authenticationService;
 
     @Autowired
     public WebSecurityConfig(RememberMeServices rememberMeServices,
-            MemberDetailsService memberDetailsService, WebProperties webProperties,
-            XCoLabProperties xCoLabProperties, AuthenticationService authenticationService) {
+            MemberDetailsService memberDetailsService,
+            WebProperties webProperties, XCoLabProperties xCoLabProperties,
+            AuthenticationSuccessHandler authenticationSuccessHandler) {
         this.rememberMeServices = rememberMeServices;
         this.memberDetailsService = memberDetailsService;
         this.webProperties = webProperties;
         this.xCoLabProperties = xCoLabProperties;
-        this.authenticationService = authenticationService;
+        this.authenticationSuccessHandler = authenticationSuccessHandler;
     }
 
     @Override
@@ -99,8 +100,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/login")
                     .permitAll()
-                    .successHandler(new AuthenticationSuccessHandler(authenticationService,
-                            guestAccessProperties.isAllowLogin()))
+                    .successHandler(authenticationSuccessHandler)
                     .failureHandler(new AuthenticationFailureHandler())
                     .and()
                 .rememberMe()

@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import org.xcolab.client.activities.ActivitiesClientUtil;
@@ -24,13 +25,17 @@ import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotif
 import org.xcolab.entity.utils.notifications.member.MemberRegistrationNotification;
 import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.view.auth.AuthenticationService;
+import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;
+import org.xcolab.view.pages.redballon.utils.BalloonCookie;
 import org.xcolab.view.util.entity.HttpUtils;
 
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Optional;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -41,10 +46,13 @@ public class LoginRegisterService {
     private static final Logger _log = LoggerFactory.getLogger(LoginRegisterService.class);
 
     private final AuthenticationService authenticationService;
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Autowired
-    public  LoginRegisterService(AuthenticationService authenticationService) {
+    public  LoginRegisterService(AuthenticationService authenticationService,
+            AuthenticationSuccessHandler authenticationSuccessHandler) {
         this.authenticationService = authenticationService;
+        this.authenticationSuccessHandler = authenticationSuccessHandler;
     }
 
     /**
@@ -63,8 +71,6 @@ public class LoginRegisterService {
                 (String) session.getAttribute(SSOKeys.FACEBOOK_USER_ID);
         String googleId = (String) session.getAttribute(SSOKeys.SSO_GOOGLE_ID);
 
-        BalloonCookie balloonCookie = BalloonCookie.fromCookieArray(request.getCookies());
-
         final Member member = register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
                         newAccountBean.getEmail(), newAccountBean.getFirstName(), newAccountBean.getLastName(),
                         newAccountBean.getShortBio(), newAccountBean.getCountry(), fbIdString, googleId,
@@ -77,8 +83,9 @@ public class LoginRegisterService {
         if (googleId != null) {
             session.removeAttribute(SSOKeys.SSO_GOOGLE_ID);
         }
-
-        if (balloonCookie != null && StringUtils.isNotBlank(balloonCookie.getUuid())) {
+        Optional<BalloonCookie> balloonCookieOpt = BalloonCookie.from(request.getCookies());
+        if (balloonCookieOpt.isPresent()) {
+            BalloonCookie balloonCookie = balloonCookieOpt.get();
             try {
                 BalloonUserTracking but =
                         BalloonsClient.getBalloonUserTracking(balloonCookie.getUuid());
@@ -90,9 +97,12 @@ public class LoginRegisterService {
                         balloonCookie.getUuid());
             }
         }
+        //update user association for all BUTs under this email address
+        BalloonsClient.getBalloonUserTrackingByEmail(member.getEmailAddress())
+                .forEach(b -> b.updateUserIdIfEmpty(member.getId_()));
 
         try {
-            login(request, response, newAccountBean.getScreenName(), newAccountBean.getPassword(), redirect);
+            checkLogin(request, response, newAccountBean.getScreenName(), newAccountBean.getPassword(), redirect);
         } catch (MemberNotFoundException | PasswordLoginException | LockoutLoginException e) {
             throw new InternalException(e);
         }
@@ -173,12 +183,13 @@ public class LoginRegisterService {
         return member;
     }
 
-    public Member login(HttpServletRequest request, HttpServletResponse response, String login, String password)
+    public Member checkLogin(HttpServletRequest request, HttpServletResponse response, String login, String password)
             throws MemberNotFoundException, PasswordLoginException, LockoutLoginException {
-        return login(request, response, login, password, "");
+        return checkLogin(request, response, login, password, "");
     }
 
-    public Member login(HttpServletRequest request, HttpServletResponse response, String login, String password, String referer)
+    //TODO: rethink name and semantics
+    public Member checkLogin(HttpServletRequest request, HttpServletResponse response, String login, String password, String referer)
             throws MemberNotFoundException, PasswordLoginException, LockoutLoginException {
         if (StringUtils.isBlank(login)) {
             return null;
@@ -191,6 +202,17 @@ public class LoginRegisterService {
             authenticationService.authenticate(request, response, member);
         }
         return member;
+    }
+
+    public void logIn(HttpServletRequest request, HttpServletResponse response, Member member) {
+        try {
+            Authentication authentication = authenticationService
+                    .authenticate(request, response, member);
+            authenticationSuccessHandler.onAuthenticationSuccess(request, response, authentication);
+        } catch (ServletException | IOException e) {
+            authenticationService.logout(request, response);
+            throw new InternalException(e);
+        }
     }
 
     private String getScreenNameFromLogin(String login) throws MemberNotFoundException {

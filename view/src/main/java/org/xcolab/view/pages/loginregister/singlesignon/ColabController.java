@@ -50,7 +50,7 @@ public class ColabController {
         redirectUrl.replaceQueryParam("isSSOSigningIn");
 
         try {
-            loginRegisterService.login(request, response, login, password);
+            loginRegisterService.checkLogin(request, response, login, password);
             response.sendRedirect(redirectUrl.toUriString());
             return;
         } catch (MemberNotFoundException | LockoutLoginException | PasswordLoginException ignored) {
