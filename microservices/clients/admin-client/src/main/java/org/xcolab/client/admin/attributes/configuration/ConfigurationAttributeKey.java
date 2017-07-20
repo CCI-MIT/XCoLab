@@ -413,4 +413,14 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("IS_I18N_ACTIVE")
                     .defaultValue(false)
                     .build();
+
+    public static final AttributeGetter<Boolean> SNP_IS_ACTIVE =
+            ConfigurationAttributes.newBooleanAttribute("SNP_IS_ACTIVE")
+                    .defaultValue(false)
+                    .build();
+
+    public static final AttributeGetter<String> SNP_CONTEXT =
+            ConfigurationAttributes.newStringAttribute("SNP_IS_ACTIVE")
+                    .defaultValue("socialnetworkprize")
+                    .build();
 }

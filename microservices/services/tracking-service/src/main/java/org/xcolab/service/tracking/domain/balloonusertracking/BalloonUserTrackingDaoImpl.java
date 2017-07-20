@@ -2,6 +2,8 @@ package org.xcolab.service.tracking.domain.balloonusertracking;
 
 import org.jooq.DSLContext;
 import org.jooq.Record;
+import org.jooq.SelectQuery;
+import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -12,12 +14,15 @@ import java.util.List;
 
 import static org.xcolab.model.Tables.BALLOON_USER_TRACKING;
 
-
 @Repository
 public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public BalloonUserTrackingDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
 
     @Override
     public BalloonUserTracking getBalloonUserTrackingByUuid(String uuid) throws NotFoundException {
@@ -32,17 +37,19 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
     }
 
     @Override
-    public List<BalloonUserTracking> getAllBalloonUserTracking() {
-        return dslContext.select()
-                .from(BALLOON_USER_TRACKING)
-                .fetchInto(BalloonUserTracking.class);
-    }
+    public List<BalloonUserTracking> list(String email, String context) {
+        final SelectQuery<Record> query =
+                dslContext.select().from(BALLOON_USER_TRACKING).getQuery();
 
-    @Override
-    public List<BalloonUserTracking> getBallonUserTrackingByEmail(String email) throws NotFoundException {
-        return dslContext.select()
-                .from(BALLOON_USER_TRACKING)
-                .where(BALLOON_USER_TRACKING.EMAIL.eq(email)).fetchInto(BalloonUserTracking.class);
+        if (email != null) {
+            query.addConditions(BALLOON_USER_TRACKING.EMAIL.eq(email));
+        }
+
+        if (context != null) {
+            query.addConditions(BALLOON_USER_TRACKING.BALLOON_LINK_CONTEXT.eq(context));
+        }
+
+        return query.fetchInto(BalloonUserTracking.class);
 
     }
 
@@ -53,7 +60,6 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
                 .set(BALLOON_USER_TRACKING.EMAIL, balloonUserTracking.getEmail())
                 .set(BALLOON_USER_TRACKING.PARENT, balloonUserTracking.getParent())
                 .set(BALLOON_USER_TRACKING.IP, balloonUserTracking.getIp())
-                .set(BALLOON_USER_TRACKING.CREATE_DATE, balloonUserTracking.getCreateDate())
                 .set(BALLOON_USER_TRACKING.REGISTRATION_DATE, balloonUserTracking.getRegistrationDate())
                 .set(BALLOON_USER_TRACKING.FORM_FILED_DATE, balloonUserTracking.getFormFiledDate())
                 .set(BALLOON_USER_TRACKING.USER_ID, balloonUserTracking.getUserId())
@@ -77,7 +83,7 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
                 .set(BALLOON_USER_TRACKING.EMAIL, balloonUserTracking.getEmail())
                 .set(BALLOON_USER_TRACKING.PARENT, balloonUserTracking.getParent())
                 .set(BALLOON_USER_TRACKING.IP, balloonUserTracking.getIp())
-                .set(BALLOON_USER_TRACKING.CREATE_DATE, balloonUserTracking.getCreateDate())
+                .set(BALLOON_USER_TRACKING.CREATE_DATE, DSL.currentTimestamp())
                 .set(BALLOON_USER_TRACKING.REGISTRATION_DATE, balloonUserTracking.getRegistrationDate())
                 .set(BALLOON_USER_TRACKING.FORM_FILED_DATE, balloonUserTracking.getFormFiledDate())
                 .set(BALLOON_USER_TRACKING.USER_ID, balloonUserTracking.getUserId())

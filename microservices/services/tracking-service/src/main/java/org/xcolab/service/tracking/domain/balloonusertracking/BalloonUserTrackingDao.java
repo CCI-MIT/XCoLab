@@ -9,11 +9,10 @@ public interface BalloonUserTrackingDao {
 
     BalloonUserTracking getBalloonUserTrackingByUuid(String uuid) throws NotFoundException;
 
-    List<BalloonUserTracking> getBallonUserTrackingByEmail(String email) throws NotFoundException;
+    List<BalloonUserTracking> list(String email, String context);
 
     boolean update(BalloonUserTracking balloonUserTracking);
 
     BalloonUserTracking create(BalloonUserTracking balloonUserTracking);
 
-    List<BalloonUserTracking> getAllBalloonUserTracking();
 }

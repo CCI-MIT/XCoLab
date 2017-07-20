@@ -60,8 +60,13 @@ public class BalloonController {
     @GetMapping("/snp/{context}")
     public String showBalloon(HttpServletRequest request,
             HttpServletResponse response, Model model, @PathVariable String context) {
-        BalloonUserTracking but = balloonService.getBalloonUserTracking(request, response,
+        if (!context.equals(ConfigurationAttributeKey.SNP_CONTEXT.get())) {
+            return "redirect:/snp/" + ConfigurationAttributeKey.SNP_CONTEXT.get();
+        }
+
+        BalloonUserTracking but = balloonService.getOrCreateBalloonUserTracking(request, response,
                 null, null, context);
+
         if (but.getBalloonTextId() != null && but.getBalloonTextId() > 0) {
             BalloonText text;
             try {
@@ -73,7 +78,6 @@ public class BalloonController {
 
             model.addAttribute("balloonText", text);
         }
-
 
         if (!model.containsAttribute("userEmailBean")) {
             UserEmailBean ueb = new UserEmailBean();
@@ -88,17 +92,21 @@ public class BalloonController {
     }
 
     @PostMapping("/snp/{context}")
-    public String requestLik(HttpServletRequest request, HttpServletResponse response,
+    public String requestLink(HttpServletRequest request, HttpServletResponse response,
             Model model, @PathVariable String context,
             @Valid UserEmailBean userEmailBean, BindingResult bindingResult)
             throws IOException, AddressException {
+
+        if (!context.equals(ConfigurationAttributeKey.SNP_CONTEXT.get())) {
+            return "redirect:/snp/" + ConfigurationAttributeKey.SNP_CONTEXT.get();
+        }
 
         if (userEmailBean == null || bindingResult.hasErrors()) {
             return showBalloon(request, response, model, context);
         }
 
         BalloonUserTracking but = balloonService
-                .getBalloonUserTracking(request, response, null, null, null);
+                .getOrCreateBalloonUserTracking(request, response, null, null, null);
 
         but.setEmail(userEmailBean.getEmail());
         but.setFormFiledDate(new Timestamp(new Date().getTime()));
@@ -149,6 +157,10 @@ public class BalloonController {
             @PathVariable(required = false) String context)
             throws IOException, ParserConfigurationException {
 
+        if (!context.equals(ConfigurationAttributeKey.SNP_CONTEXT.get())) {
+            return "redirect:/snp/" + ConfigurationAttributeKey.SNP_CONTEXT.get();
+        }
+
         BalloonUserTracking but = null;
         if (linkUuid != null) {
 
@@ -163,7 +175,7 @@ public class BalloonController {
                 model.addAttribute("balloonLink", link);
 
                 // get user tracking information, if user is new, then owner of this link should be set as a parent
-                but = balloonService.getBalloonUserTracking(request, response, link.getBalloonUserUuid(), linkUuid, context);
+                but = balloonService.getOrCreateBalloonUserTracking(request, response, link.getBalloonUserUuid(), linkUuid, context);
                 link.setVisits(link.getVisits() + 1);
                 BalloonsClient.updateBalloonLink(link);
 
@@ -172,7 +184,7 @@ public class BalloonController {
 
         if (but == null) {
             // user wasn't following any link so we need to create new root of a reference tree
-            but = balloonService.getBalloonUserTracking(request, response, null, null, null);
+            but = balloonService.getOrCreateBalloonUserTracking(request, response, null, null, null);
         }
         if (but.getBalloonTextId() != null && but.getBalloonTextId() > 0) {
             BalloonText text;

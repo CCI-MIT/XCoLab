@@ -3,11 +3,13 @@ package org.xcolab.client.balloons.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BalloonUserTracking implements Serializable {
@@ -16,27 +18,26 @@ public class BalloonUserTracking implements Serializable {
 
     public static final TypeProvider<BalloonUserTracking> TYPES =
             new TypeProvider<>(BalloonUserTracking.class,
-                    new ParameterizedTypeReference<List<BalloonUserTracking>>() {
-                    });
+                    new ParameterizedTypeReference<List<BalloonUserTracking>>() {});
 
-    private String    uuid_;
-    private String    email;
-    private String    parent;
-    private String    ip;
+    private String uuid_;
+    private String email;
+    private String parent;
+    private String ip;
     private Timestamp createdate;
     private Timestamp registrationdate;
     private Timestamp formfileddate;
-    private Long      userid;
-    private Long      balloontextid;
-    private String    referrer;
-    private Double    latitude;
-    private Double    longitude;
-    private String    city;
-    private String    country;
-    private String    extradata;
-    private String    balloonlinkuuid;
-    private String    balloonlinkcontext;
-    private String    useragent;
+    private Long userid;
+    private Long balloontextid;
+    private String referrer;
+    private Double latitude;
+    private Double longitude;
+    private String city;
+    private String country;
+    private String extradata;
+    private String balloonlinkuuid;
+    private String balloonlinkcontext;
+    private String useragent;
 
     public BalloonUserTracking() {}
 
@@ -59,46 +60,6 @@ public class BalloonUserTracking implements Serializable {
         this.balloonlinkuuid = value.balloonlinkuuid;
         this.balloonlinkcontext = value.balloonlinkcontext;
         this.useragent = value.useragent;
-    }
-
-    public BalloonUserTracking(
-        String    uuid_,
-        String    email,
-        String    parent,
-        String    ip,
-        Timestamp createdate,
-        Timestamp registrationdate,
-        Timestamp formfileddate,
-        Long      userid,
-        Long      balloontextid,
-        String    referrer,
-        Double    latitude,
-        Double    longitude,
-        String    city,
-        String    country,
-        String    extradata,
-        String    balloonlinkuuid,
-        String    balloonlinkcontext,
-        String    useragent
-    ) {
-        this.uuid_ = uuid_;
-        this.email = email;
-        this.parent = parent;
-        this.ip = ip;
-        this.createdate = createdate;
-        this.registrationdate = registrationdate;
-        this.formfileddate = formfileddate;
-        this.userid = userid;
-        this.balloontextid = balloontextid;
-        this.referrer = referrer;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.city = city;
-        this.country = country;
-        this.extradata = extradata;
-        this.balloonlinkuuid = balloonlinkuuid;
-        this.balloonlinkcontext = balloonlinkcontext;
-        this.useragent = useragent;
     }
 
     public String getUuid_() {
@@ -245,15 +206,56 @@ public class BalloonUserTracking implements Serializable {
         this.useragent = useragent;
     }
 
+    public void updateUserIdIfEmpty(long memberId) {
+        if (getUserId() == null) {
+            setUserId(memberId);
+            BalloonsClient.updateBalloonUserTracking(this);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof BalloonUserTracking)) {
+            return false;
+        }
+        BalloonUserTracking that = (BalloonUserTracking) o;
+        return Objects.equals(getUuid_(), that.getUuid_())
+                && Objects.equals(getEmail(), that.getEmail())
+                && Objects.equals(getParent(), that.getParent())
+                && Objects.equals(getIp(), that.getIp())
+                && Objects.equals(createdate, that.createdate)
+                && Objects.equals(registrationdate, that.registrationdate)
+                && Objects.equals(formfileddate, that.formfileddate)
+                && Objects.equals(userid, that.userid)
+                && Objects.equals(balloontextid, that.balloontextid)
+                && Objects.equals(getReferrer(), that.getReferrer())
+                && Objects.equals(getLatitude(), that.getLatitude())
+                && Objects.equals(getLongitude(), that.getLongitude())
+                && Objects.equals(getCity(), that.getCity())
+                && Objects.equals(getCountry(), that.getCountry())
+                && Objects.equals(extradata, that.extradata)
+                && Objects.equals(balloonlinkuuid, that.balloonlinkuuid)
+                && Objects.equals(balloonlinkcontext, that.balloonlinkcontext)
+                && Objects.equals(useragent, that.useragent);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getUuid_(), getEmail(), getParent(), getIp(), createdate,
+                registrationdate, formfileddate, userid, balloontextid, getReferrer(),
+                getLatitude(), getLongitude(), getCity(), getCountry(), extradata,
+                balloonlinkuuid, balloonlinkcontext, useragent);
+    }
+
     @Override
     public String toString() {
-        String sb =
-                "BalloonUserTracking (" + uuid_ + ", " + email + ", " + parent + ", " + ip + ", "
-                        + createdate + ", " + registrationdate + ", " + formfileddate + ", "
-                        + userid + ", " + balloontextid + ", " + referrer + ", " + latitude + ", "
-                        + longitude + ", " + city + ", " + country + ", " + extradata + ", "
-                        + balloonlinkuuid + ", " + balloonlinkcontext + ", " + useragent + ")";
-
-        return sb;
+        return "BalloonUserTracking (" + uuid_ + ", " + email + ", " + parent + ", " + ip + ", "
+                + createdate + ", " + registrationdate + ", " + formfileddate + ", " + userid + ", "
+                + balloontextid + ", " + referrer + ", " + latitude + ", " + longitude + ", " + city
+                + ", " + country + ", " + extradata + ", " + balloonlinkuuid + ", "
+                + balloonlinkcontext + ", " + useragent + ")";
     }
 }
