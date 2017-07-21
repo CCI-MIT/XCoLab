@@ -13,6 +13,6 @@ CREATE TABLE `xcolab_ContestTranslation` (
 	contestDescription longtext null,
 	createDate timestamp not null,
 	modifiedDate timestamp not null,
-	authorId bigint(20) not null,
+	authorId bigint(20) null,
 	primary key (contestId, lang)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
