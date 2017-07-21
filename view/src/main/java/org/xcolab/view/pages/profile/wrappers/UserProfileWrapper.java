@@ -1,5 +1,7 @@
 package org.xcolab.view.pages.profile.wrappers;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.admin.ContestTypeClient;
@@ -65,12 +67,13 @@ public class UserProfileWrapper implements Serializable {
     private List<UserActivityWrapper> subscribedActivities;
     private UserSubscriptionsWrapper userSubscriptions;
     private BadgeBean badges;
-    private ActivityEntryHelper activityEntryHelper;
+    private final ActivityEntryHelper activityEntryHelper;
 
     private boolean viewingOwnProfile;
 
     public UserProfileWrapper(long userId, HttpServletRequest request, ActivityEntryHelper activityEntryHelper)
             throws MemberNotFoundException {
+        this.activityEntryHelper = activityEntryHelper;
 
         member = MembersClient.getMember(userId);
         if (member.isActive()) {
@@ -113,8 +116,8 @@ public class UserProfileWrapper implements Serializable {
         for (ActivityEntry activity : ActivityUtil.groupActivities(ActivitiesClientUtil
                 .getActivityEntries(0, MAX_ACTIVITIES_COUNT, member.getId_(), null))) {
 
-            UserActivityWrapper a = new UserActivityWrapper(activity,activityEntryHelper);
-            if (a.getBody() != null && !a.getBody().equals("")) {
+            UserActivityWrapper a = new UserActivityWrapper(activity, activityEntryHelper);
+            if (StringUtils.isNotBlank(a.getBody())) {
                 userActivities.add(a);
             }
         }
