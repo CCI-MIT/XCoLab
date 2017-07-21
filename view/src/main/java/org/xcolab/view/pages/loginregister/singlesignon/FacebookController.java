@@ -16,8 +16,8 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.exceptions.InternalException;
 import org.xcolab.view.auth.AuthenticationService;
+import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.auth.login.AuthenticationError;
 import org.xcolab.view.pages.loginregister.CreateUserBean;
 import org.xcolab.view.pages.loginregister.LoginRegisterController;
@@ -42,6 +42,7 @@ public class FacebookController {
 
     @Autowired
     public FacebookController(AuthenticationService authenticationService,
+            AuthenticationSuccessHandler authenticationSuccessHandler,
             LoginRegisterService loginRegisterService) {
         this.authenticationService = authenticationService;
         this.loginRegisterService = loginRegisterService;
@@ -140,13 +141,9 @@ public class FacebookController {
                     ImageUploadUtils.updateProfilePicture(path, liferayUser, realPictureURLString);
                 }*/
 
-                authenticationService.authenticate(request, response, member);
-                MembersClient.createLoginLog(member.getUserId(), request.getRemoteAddr(), redirectUrl);
-                response.sendRedirect(redirectUrl);
+                loginRegisterService.logIn(request, response, member);
                 return;
             } catch (MemberNotFoundException ignored) {
-            } catch (IOException e) {
-                throw new InternalException(e);
             }
         }
 
@@ -166,13 +163,9 @@ public class FacebookController {
 
                 updateUserAccountInformation(member, jsonObject);
 
-                authenticationService.authenticate(request, response, member);
-                MembersClient.createLoginLog(member.getUserId(), request.getRemoteAddr(), redirectUrl);
-                response.sendRedirect(redirectUrl);
+                loginRegisterService.logIn(request, response, member);
                 return;
             } catch (MemberNotFoundException ignored) {
-            } catch (IOException e) {
-                throw new InternalException(e);
             }
         }
 

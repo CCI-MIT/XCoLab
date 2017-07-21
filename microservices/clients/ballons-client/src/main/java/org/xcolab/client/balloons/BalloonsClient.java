@@ -65,9 +65,15 @@ public final class BalloonsClient {
         }
     }
 
-    public static List<BalloonUserTracking> getBalloonUserTrackingByEmail(String email)  {
+    public static List<BalloonUserTracking> getBalloonUserTrackingByEmail(String email) {
+        return getBalloonUserTrackingByEmail(email, null);
+    }
+
+    public static List<BalloonUserTracking> getBalloonUserTrackingByEmail(String email,
+            String context)  {
         return balloonUserTrackingResource.list()
                 .queryParam("email", email)
+                .optionalQueryParam("context", context)
                 .execute();
     }
 

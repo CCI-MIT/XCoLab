@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.TrackingClient;
+import org.xcolab.view.config.spring.resolvers.RealMember;
 
 import java.io.IOException;
 import java.util.Enumeration;
@@ -20,7 +21,7 @@ public class UserTrackingController {
 
     @PostMapping("/trackVisitor")
     protected ResponseJson trackVisitor(HttpServletRequest request, HttpServletResponse response,
-            Member loggedInMember)
+            @RealMember Member loggedInMember)
             throws ServletException, IOException {
         //get ip
         String ip = getClientIpAddress(request);

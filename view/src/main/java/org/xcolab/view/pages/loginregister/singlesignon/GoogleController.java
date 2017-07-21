@@ -18,7 +18,6 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.client.sharedcolab.pojo.SharedMember;
-import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.pages.loginregister.CreateUserBean;
 import org.xcolab.view.pages.loginregister.ImageUploadUtils;
 import org.xcolab.view.pages.loginregister.LoginRegisterController;
@@ -37,26 +36,27 @@ import javax.servlet.http.HttpSession;
 public class GoogleController {
 
     private static final String GOOGLE_OAUTH_REQUEST_STATE_TOKEN = "GOOGLE_OAUTH_REQUEST_STATE_TOKEN";
-    private final AuthenticationService authenticationService;
+
     private final LoginRegisterService loginRegisterService;
 
     @Autowired
-    public GoogleController(AuthenticationService authenticationService,
-            LoginRegisterService loginRegisterService) {
-        this.authenticationService = authenticationService;
+    public GoogleController(LoginRegisterService loginRegisterService) {
         this.loginRegisterService = loginRegisterService;
     }
 
     @GetMapping("register")
-    public void initiateOpenIdRegistration(HttpServletRequest request, Model model, HttpServletResponse HttpServletResponse)
+    public void initiateOpenIdRegistration(HttpServletRequest request,
+            HttpServletResponse HttpServletResponse, Model model)
             throws IOException {
         HttpSession session = request.getSession();
-        session.setAttribute(LoginRegisterController.SSO_TARGET_KEY, LoginRegisterController.SSO_TARGET_REGISTRATION);
+        session.setAttribute(LoginRegisterController.SSO_TARGET_KEY,
+                LoginRegisterController.SSO_TARGET_REGISTRATION);
 
         initiateOpenIdRequest(request, HttpServletResponse);
     }
 
-    private void initiateOpenIdRequest(HttpServletRequest request, HttpServletResponse HttpServletResponse)
+    private void initiateOpenIdRequest(HttpServletRequest request,
+            HttpServletResponse httpServletResponse)
             throws IOException {
         HttpSession session = request.getSession();
 
@@ -66,7 +66,7 @@ public class GoogleController {
         String requestUrl = helper.buildLoginUrl();
 
         session.setAttribute(GOOGLE_OAUTH_REQUEST_STATE_TOKEN, helper.getStateToken());
-        HttpServletResponse.sendRedirect(requestUrl);
+        httpServletResponse.sendRedirect(requestUrl);
 
         String referrer = request.getHeader(HttpHeaders.REFERER);
         session.setAttribute(LoginRegisterController.PRE_LOGIN_REFERRER_KEY, referrer);
@@ -117,11 +117,7 @@ public class GoogleController {
 
                 String path = session.getServletContext().getRealPath("/");
                 ImageUploadUtils.updateProfilePicture(path, registeredMember, profilePicURL);
-                authenticationService.authenticate(request, response, registeredMember);
-                MembersClient
-                        .createLoginLog(registeredMember.getUserId(), request.getRemoteAddr(), redirectUrl);
-
-                response.sendRedirect(redirectUrl);
+                loginRegisterService.logIn(request, response, registeredMember);
             } else {
                 registerMember(request, response, userInfo, country, redirectUrl);
             }

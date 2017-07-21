@@ -35,7 +35,7 @@
                                 Forgot your password?
                             </a>
                         </em></span>
-                        <input name="submit" type="submit" class="c-Header__login__submit" value="LOGIN" id="loginPopupTopSubmit" />
+                        <input name="submit" type="submit" class="c-Button__primary" value="LOGIN" id="loginPopupTopSubmit" />
                     </form>
                 </div>
             </td>

@@ -1,6 +1,8 @@
 package org.xcolab.view.auth.handlers;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
@@ -12,10 +14,10 @@ import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.auth.AuthenticationService;
-import org.xcolab.view.pages.loginregister.BalloonCookie;
+import org.xcolab.view.pages.redballon.utils.BalloonCookie;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,11 +25,12 @@ import javax.servlet.http.HttpServletResponse;
 
 public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthenticationSuccessHandler.class);
+
     private final AuthenticationService authenticationService;
     private final boolean allowLogin;
 
-    public AuthenticationSuccessHandler(AuthenticationService authenticationService,
-            boolean allowLogin) {
+    public AuthenticationSuccessHandler(AuthenticationService authenticationService, boolean allowLogin) {
         this.authenticationService = authenticationService;
         this.allowLogin = allowLogin;
         setDefaultTargetUrl("/");
@@ -45,27 +48,17 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
             return;
         }
 
-        BalloonCookie bc = BalloonCookie.fromCookieArray(request.getCookies());
-        if (StringUtils.isNotBlank(bc.getUuid())) {
-            // cookie is present, get BalloonUserTracking if it exists and update association to
-            // the current user
+        Optional<BalloonCookie> balloonCookieOpt = BalloonCookie.from(request.getCookies());
+        if (balloonCookieOpt.isPresent()) {
+            final BalloonCookie balloonCookie = balloonCookieOpt.get();
             try {
-                BalloonUserTracking but = BalloonsClient.getBalloonUserTracking(bc.getUuid());
-                if (but == null) {
-                    List<BalloonUserTracking> buts =
-                            BalloonsClient.getBalloonUserTrackingByEmail(member.getEmailAddress());
-                    if (!buts.isEmpty()) {
-                        but = buts.get(0);
-                    }
+                BalloonUserTracking but = BalloonsClient
+                        .getBalloonUserTracking(balloonCookie.getUuid());
+                if (but != null) {
+                    but.updateUserIdIfEmpty(member.getId_());
                 }
-
-                if (but != null && but.getUserId() != null && but.getUserId() != member
-                        .getUserId()) {
-                    but.setUserId(member.getUserId());
-                    BalloonsClient.updateBalloonUserTracking(but);
-
-                }
-            } catch (BalloonUserTrackingNotFoundException ignored) {
+            } catch (BalloonUserTrackingNotFoundException e) {
+                log.error("Invalid UUID: {}", balloonCookie);
             }
         }
 

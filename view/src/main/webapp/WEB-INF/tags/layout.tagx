@@ -341,7 +341,7 @@
                             <input id="header__remember-me" type="checkbox" name="remember-me" checked="true" /> <br/>
                             <input name="redirect" type="hidden" />
                             <span><em><a href="javascript:;" class="c-Header__login__forgot" onclick="showForgotPasswordPopup()"><spring:message code="homepage.popup.user.forgotyourpassword"/></a></em></span>
-                            <button type="submit" class="c-Header__login__submit" id="loginPopupTopSubmit"><spring:message code="homepage.popup.user.button.login"/></button>
+                            <button type="submit" class="c-Button__primary" id="loginPopupTopSubmit"><spring:message code="homepage.popup.user.button.login"/></button>
                         </form>
                     </div>
                 </div>
@@ -515,7 +515,7 @@
                             <span><em><a href="/register?redirect=${_requestUri}" class="c-Header__login__forgot" ><spring:message code="homepage.modals.login.register"/></a></em></span><br />
                             <div class="clearfix"><!-- --></div>
                         </div>
-                        <a href="javascript:;" class="c-Button__primary c-Header__login__submit" onclick="jQuery(this).parents('form').submit();" id="deferLoginPopupSubmit"><spring:message code="homepage.modals.login.buttons.login"/></a>
+                        <a href="javascript:;" class="c-Button__primary" onclick="jQuery(this).parents('form').submit();" id="deferLoginPopupSubmit"><spring:message code="homepage.modals.login.buttons.login"/></a>
                     </div>
                 </form>
             </div>
@@ -577,7 +577,7 @@
                         <input name="password" type="password" class="c-Header__login__password" onkeypress="return submitenter(this,event)" style="float: right;"/>
                         <input name="redirect" type="hidden" />
                         <div class="btns" style="margin-top: 26px;text-align: right;">
-                            <a href="javascript:;" class="c-Button__primary c-Header__login__submit" onclick="jQuery(this).parents('form').submit();" id=""><spring:message code="homepage.modals.sso.button.login"/></a>
+                            <a href="javascript:;" class="c-Button__primary" onclick="jQuery(this).parents('form').submit();" id=""><spring:message code="homepage.modals.sso.button.login"/></a>
                         </div>
                     </form>
                 </div>
@@ -596,8 +596,8 @@
                 <div class="login_popup_box">
                     <div class="btns" style="margin-top: 26px;text-align: right;">
 
-                        <a href="javascript:handleOkForSharedColabAutoReg();" class="c-Button__primary c-Header__login__submit"  id="yes_auto_reg" style="">OK</a>
-                        <a href="javascript:handleNoForSharedColabAutoReg();" class="c-Button__primary c-Header__login__submit"  id="no_auto_reg" >CANCEL</a>
+                        <a href="javascript:handleOkForSharedColabAutoReg();" class="c-Button__primary"  id="yes_auto_reg" style="">OK</a>
+                        <a href="javascript:handleNoForSharedColabAutoReg();" class="c-Button__primary"  id="no_auto_reg" >CANCEL</a>
 
                     </div>
                 </div>
@@ -629,7 +629,7 @@
                     <div class="clearfix"><!-- --></div>
                     <label>Comment:</label> <br />
                     <textarea name="comment" placeholder="Optional comment" style="width: 350px;"><!-- --></textarea> <br />
-                    <a href="javascript:;" class="c-Button__primary c-Header__login__submit" onclick="jQuery(this).parents('form').submit();">Report</a>
+                    <a href="javascript:;" class="c-Button__primary" onclick="jQuery(this).parents('form').submit();">Report</a>
                 </form>
             </div>
         </div>
@@ -675,7 +675,7 @@
                         <div class="login_popup_box">
                             <div class="clearfix"><!-- --></div>
                             <div class="btns">
-                                <a href="javascript:;" class="c-Button__primary c-Header__login__submit" onclick="jQuery('#popup_postRegistrationSSO').hide()" id="deferLoginPopupSubmit">Take me to ${_colabName}</a>
+                                <a href="javascript:;" class="c-Button__primary" onclick="jQuery('#popup_postRegistrationSSO').hide()" id="deferLoginPopupSubmit">Take me to ${_colabName}</a>
                             </div>
                         </div>
                     </div>
@@ -725,7 +725,7 @@
                                 <input name="redirect" type="hidden" id="redirect" value="" />
                                 <div class="clearfix"><!-- --></div>
                                 <div class="btns">
-                                    <a href="javascript:;" class="c-Button__primary c-Header__login__submit" onclick="submitForm()" id="deferLoginPopupSubmit">Finish</a>
+                                    <a href="javascript:;" class="c-Button__primary" onclick="submitForm()" id="deferLoginPopupSubmit">Finish</a>
                                 </div>
                             </form>
                         </div>

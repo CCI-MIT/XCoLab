@@ -55,7 +55,7 @@ public class SingleSignOnController {
 
         try {
             // Use local authentication API to check credentials
-            Member member = loginRegisterService.login(request, response, login, password);
+            Member member = loginRegisterService.checkLogin(request, response, login, password);
             // Do the linkage of OpenID or Facebook ID
             String fbIdString = (String) session.getAttribute(SSOKeys.FACEBOOK_USER_ID);
             String googleId = (String) session.getAttribute(SSOKeys.SSO_GOOGLE_ID);

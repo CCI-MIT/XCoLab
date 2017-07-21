@@ -58,7 +58,7 @@ public class AuthenticationService {
         return authenticationContext.getMemberOrThrow(request);
     }
 
-    public void authenticate(HttpServletRequest request, HttpServletResponse response,
+    public Authentication authenticate(HttpServletRequest request, HttpServletResponse response,
             Member member) {
         //initialize session if it doesn't exist
         request.getSession();
@@ -68,6 +68,7 @@ public class AuthenticationService {
                 memberDetails, null, memberDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         rememberMeServices.loginSuccess(request, response, authentication);
+        return authentication;
     }
 
     public void logout(HttpServletRequest request, HttpServletResponse response) {

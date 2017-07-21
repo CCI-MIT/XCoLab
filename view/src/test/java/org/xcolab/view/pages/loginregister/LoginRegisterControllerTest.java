@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.MembersClient;
@@ -39,7 +40,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @RunWith(PowerMockRunner.class)
 @PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
@@ -65,7 +65,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         org.xcolab.client.admin.EmailTemplateClientUtil.class,
         org.xcolab.client.emails.EmailClient.class,
         org.xcolab.client.activities.helper.ActivityEntryHelper.class,
-        org.xcolab.client.members.MessagingClient.class
+        org.xcolab.client.members.MessagingClient.class,
+        org.xcolab.client.balloons.BalloonsClient.class
 })
 
 public class LoginRegisterControllerTest {
@@ -85,6 +86,7 @@ public class LoginRegisterControllerTest {
         PowerMockito.mockStatic(ActivityEntryHelper.class);
 
         PowerMockito.mockStatic(MessagingClient.class);
+        PowerMockito.mockStatic(BalloonsClient.class);
 
         MembersClientMockerHelper.mockMembersClient();
         AdminClientMockerHelper.mockAdminClient();
@@ -147,12 +149,11 @@ public class LoginRegisterControllerTest {
                 .param("shortBio", "shortbio"))
                 .andExpect(redirectedUrl("/"));
         PowerMockito.verifyStatic(Mockito.times(1));
-        MembersClient.login(100L,"username","127.0.0.1",null);
-
     }
+
     @Test
     public void generateScreenName() throws Exception {
-        Mockito.when(MembersClient.generateScreenName(anyString(),anyString()))
+        Mockito.when(MembersClient.generateScreenName(anyString(), anyString()))
                 .thenAnswer(invocation -> "---");
 
 

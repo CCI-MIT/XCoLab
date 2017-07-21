@@ -392,23 +392,6 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   margin: 0 15px 0 5px;
 }
 
-.c-Header__login__submit { //.login-submit
-  height: 30px;
-  padding-top: 3px;
-  background: $c-Header__login__submit__background;
-  border: $c-Header__login__submit__border;
-  font-size: 15px;
-  font-weight: $b-Typography__fontWeight--bold;
-  color: $c-Header__login__submit__textColor;
-  text-align: center;
-  border-radius: 3px;
-  cursor: pointer;
-
-  &:hover {
-    background: $c-Header__login__submit--hover__background;
-  }
-}
-
 .c-Header__user__notification { //.user-notification
   display: inline;
   text-align: center;
