@@ -21,6 +21,7 @@ public class I18nBeanConfig {
                 "i18n/homepage",
                 "i18n/register",
                 "i18n/contests",
+                "i18n/contact",
                 "i18n/profile",
                 "i18n/message",
                 "i18n/colab",

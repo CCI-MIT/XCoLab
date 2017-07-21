@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.entity.utils.WidgetPreference;
 import org.xcolab.util.attributes.AttributeGetter;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -34,10 +35,10 @@ public class ContactPreferences extends WidgetPreference implements Serializable
 
 
     public ContactPreferences() {
-        this(null);
+        this(null, I18nUtils.DEFAULT_LANGUAGE);
     }
-    public ContactPreferences(String preferenceId) {
-        super(preferenceId);
+    public ContactPreferences(String preferenceId, String language) {
+        super(preferenceId, language);
         if (prefs.has(MESSAGE_FORMAT_PREF)) {
             messageFormat = prefs.getString(MESSAGE_FORMAT_PREF);
         } else {

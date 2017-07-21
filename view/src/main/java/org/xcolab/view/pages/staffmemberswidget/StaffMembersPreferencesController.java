@@ -20,8 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 public class StaffMembersPreferencesController {
 
     @GetMapping("/staffmemberswidget/editPreferences")
-    public String showStaffMembers(@RequestParam(required = false) String preferenceId, HttpServletRequest request, HttpServletResponse response, Model model) {
-    	model.addAttribute("staffMembersPreferences", new StaffMembersPreferences(preferenceId));
+    public String showStaffMembers(@RequestParam(required = false) String preferenceId,@RequestParam(required = false) String language, HttpServletRequest request, HttpServletResponse response, Model model) {
+    	model.addAttribute("staffMembersPreferences", new StaffMembersPreferences(preferenceId,language));
     	model.addAttribute("categories", StaffMembersPreferences.getCategories());
 
         long memberId = MemberAuthUtil.getMemberId(request);

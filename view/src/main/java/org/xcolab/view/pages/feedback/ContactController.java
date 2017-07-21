@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.feedback;
 
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -62,7 +64,8 @@ public class ContactController {
             @Valid ContactBean contactBean, BindingResult result,
             @RequestParam(required = false) String redirect) throws IOException {
 
-        ContactPreferences contactPreferences = new ContactPreferences();
+        Locale locale = LocaleContextHolder.getLocale();
+        ContactPreferences contactPreferences = new ContactPreferences(null,locale.getLanguage());
 
         String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
         boolean captchaValid = ReCaptchaUtils.verify(gRecaptchaResponse,

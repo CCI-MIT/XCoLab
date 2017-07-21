@@ -1,9 +1,9 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-		  xmlns:jsp="http://java.sun.com/JSP/Page"
-		  xmlns:form="http://www.springframework.org/tags/form"
-		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-		  xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-		  version="2.0">
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+          version="2.0" xmlns:spring="http://www.springframework.org/tags">
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 	<xcolab:layout title="Contact">
         <!--@elvariable id="_isAdmin" type="java.lang.Boolean"-->
@@ -29,7 +29,7 @@
 
 					<table class="reg">
 						<tr>
-							<th class="required" nowrap="nowrap">Your name</th>
+							<th class="required" nowrap="nowrap"><spring:message code="contact.form.fields.yourname" /></th>
 							<td>
 								<div class="reg_errors"><!--  -->
 									<form:errors cssClass="c-Alert c-Alert__error" path="name" />
@@ -38,7 +38,7 @@
 							</td>
 						</tr>
 						<tr>
-							<th class="required" nowrap="nowrap">Email (only for reply)</th>
+							<th class="required" nowrap="nowrap"><spring:message code="contact.form.fields.email" /></th>
 							<td>
 								<div class="reg_errors"><!--  -->
 									<form:errors cssClass="c-Alert c-Alert__error" path="email" />
@@ -48,7 +48,7 @@
 						</tr>
 
 						<tr>
-							<th class="required" nowrap="nowrap">Message</th>
+							<th class="required" nowrap="nowrap"><spring:message code="contact.form.fields.message" /></th>
 							<td>
 								<div class="reg_errors"><!--  -->
 									<form:errors cssClass="c-Alert c-Alert__error" path="message" />
@@ -58,7 +58,7 @@
 						</tr>
 
 						<tr>
-							<th class="required" nowrap="nowrap">Click on the box</th>
+							<th class="required" nowrap="nowrap"><spring:message code="contact.form.fields.clickthebox" /></th>
 							<td colspan="3">
 
 								<div class="g-recaptcha" data-sitekey="${recaptchaDataSiteKey}"><!-- --></div>
@@ -69,7 +69,7 @@
 						<tr>
 							<th></th>
 							<td colspan="3">
-								<a class="c-Button__primary" href="javascript:;" onclick="$('#contactFormForm').submit()">Send message</a>
+								<a class="c-Button__primary" href="javascript:;" onclick="$('#contactFormForm').submit()"><spring:message code="contact.form.buttons"/></a>
 							</td>
 						</tr>
 					</table>

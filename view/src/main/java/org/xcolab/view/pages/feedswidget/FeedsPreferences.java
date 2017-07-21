@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.entity.utils.WidgetPreference;
 import org.xcolab.util.attributes.AttributeGetter;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -54,11 +55,11 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
     }
 
     public FeedsPreferences() {
-        this(null);
+        this(null, I18nUtils.DEFAULT_LANGUAGE);
     }
 
-    public FeedsPreferences(String preferenceId) {
-        super(preferenceId);
+    public FeedsPreferences(String preferenceId, String language) {
+        super(preferenceId, language);
 
 
         feedSize = defaultFeedSize;

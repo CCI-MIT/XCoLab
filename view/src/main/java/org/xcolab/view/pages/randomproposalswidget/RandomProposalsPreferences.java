@@ -9,6 +9,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.entity.utils.WidgetPreference;
 import org.xcolab.util.attributes.AttributeGetter;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -51,7 +52,7 @@ public class RandomProposalsPreferences extends WidgetPreference {
 
 
     public RandomProposalsPreferences() {
-        this(null);
+        this(null, I18nUtils.DEFAULT_LANGUAGE);
     }
 
     @Override
@@ -59,8 +60,8 @@ public class RandomProposalsPreferences extends WidgetPreference {
         return ConfigurationAttributeKey.PORTLET_RANDOM_PROPOSALS_PREFERENCES;
     }
 
-    public RandomProposalsPreferences(String preferenceId) {
-        super(preferenceId);
+    public RandomProposalsPreferences(String preferenceId,String language) {
+        super(preferenceId,language);
 
         selectedPhases = convertStringsToLongs(((prefs.has(SELECTED_PHASES_PREFERENCE))?(prefs.getString(SELECTED_PHASES_PREFERENCE)):("")).split("-"));
         flagFiltersStr = (prefs.has(FLAG_FILTER_PREFERENCE))?(prefs.getString(FLAG_FILTER_PREFERENCE)):("");

@@ -89,7 +89,7 @@
 
         <c:if test="${seeMoreLinkShown}">
         <div class="alignright" style="margin-top:10px;">
-            <a href="/activities">View all activities</a>
+            <a href="/activities"><spring:message code="activities.page.pagination.showall" /> </a>
         </div>
         </c:if>
         <c:if test="${not empty filterUserId}">

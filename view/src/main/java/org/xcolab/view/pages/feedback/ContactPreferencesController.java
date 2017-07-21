@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.view.auth.MemberAuthUtil;
@@ -20,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 public class ContactPreferencesController {
 	
     @GetMapping("/feedback/editPreferences")
-    public String showFeed(HttpServletRequest request, HttpServletResponse response, Model model) {
-    	model.addAttribute("contactPreferences", new ContactPreferences());
+    public String showFeed(HttpServletRequest request , @RequestParam String language, HttpServletResponse response, Model model) {
+    	model.addAttribute("contactPreferences", new ContactPreferences(null,language));
 
         long memberId = MemberAuthUtil.getMemberId(request);
         if (!PermissionsClient.canAdminAll(memberId)) {
@@ -33,9 +34,12 @@ public class ContactPreferencesController {
 	
 
     @PostMapping("/feedback/savePreferences")
-    public String savePreferences(HttpServletRequest request, HttpServletResponse response,
+    public String savePreferences(HttpServletRequest request, @RequestParam String language, HttpServletResponse response,
             Model model, ContactPreferences preferences)
             throws  IOException {
+        if(language==null){
+
+        }
         preferences.save();
         AlertMessage.success("Feedback preferences has been saved.").flash(request);
         return "feedback/editPreferences";

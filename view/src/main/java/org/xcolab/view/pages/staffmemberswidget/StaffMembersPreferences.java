@@ -6,6 +6,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.members.legacy.enums.CategoryRole;
 import org.xcolab.entity.utils.WidgetPreference;
 import org.xcolab.util.attributes.AttributeGetter;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -64,10 +65,10 @@ public class StaffMembersPreferences extends WidgetPreference implements Seriali
         return ConfigurationAttributeKey.PORTLET_STAFF_MEMBERS_PREFERENCES;
     }
     public StaffMembersPreferences() {
-        this(null);
+        this(null, I18nUtils.DEFAULT_LANGUAGE);
     }
-    public StaffMembersPreferences(String preferenceId) {
-        super(preferenceId);
+    public StaffMembersPreferences(String preferenceId,String language) {
+        super(preferenceId,language);
 
 
         columnAmount = defaultColumnAmount;

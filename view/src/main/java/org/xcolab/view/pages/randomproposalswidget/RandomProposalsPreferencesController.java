@@ -21,13 +21,13 @@ import javax.servlet.http.HttpServletResponse;
 public class RandomProposalsPreferencesController {
 
     @GetMapping("/randomproposalswidget/editPreferences")
-    public String showPreferences(@RequestParam(required = false) String preferenceId, HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String showPreferences(@RequestParam(required = false) String preferenceId,@RequestParam(required = false) String language, HttpServletRequest request, HttpServletResponse response, Model model) {
 
         long memberId = MemberAuthUtil.getMemberId(request);
         if (!PermissionsClient.canAdminAll(memberId)) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
-    	model.addAttribute("preferences", new RandomProposalsPreferences(preferenceId));
+    	model.addAttribute("preferences", new RandomProposalsPreferences(preferenceId,language));
     	
         return "/randomproposalswidget/editPreferences";
     }

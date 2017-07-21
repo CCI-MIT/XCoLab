@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.pojo.ConfigurationAttribute;
 import org.xcolab.util.attributes.AttributeGetter;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +14,26 @@ public abstract class WidgetPreference {
 
     private final static String DEFAULT_ID = "default";
     private final static String PREFERENCES_JSON_OBJECT = "preferences";
+    private final static String UNDERSCOREDIVIDER = "_";
     private final List<String> allPreferenceIds = new ArrayList<>();
     protected String preferenceId;
+    protected String language;
+
+
     protected JSONObject prefs;
 
     public WidgetPreference() {
-        this(DEFAULT_ID);
+        this(DEFAULT_ID, I18nUtils.DEFAULT_LANGUAGE);
     }
 
-    public WidgetPreference(String id) {
+    public WidgetPreference(String id, String language) {
+
+        if(id==null){
+            id = DEFAULT_ID;
+        }
+        if (language != null) {
+            id += UNDERSCOREDIVIDER + language;
+        }
 
         prefs = new JSONObject(getConfigurationAttribute().get());
 
@@ -29,21 +41,21 @@ public abstract class WidgetPreference {
 
             JSONObject preferencesArray = prefs.getJSONObject(PREFERENCES_JSON_OBJECT);
             //preferencesArray.keySet().stream().forEach(s -> allPreferenceIds.add(s));
-            for(int i=0;i<preferencesArray.names().length();i++){
+            for (int i = 0; i < preferencesArray.names().length(); i++) {
                 allPreferenceIds.add(preferencesArray.names().get(i).toString());
             }
 
             if (id != null) {
                 preferenceId = id;
             } else {
-                preferenceId = DEFAULT_ID;
+                preferenceId = UNDERSCOREDIVIDER + language;
                 //allPreferenceIds.add(DEFAULT_ID);
             }
             if (preferencesArray.has(preferenceId)) {
                 prefs = preferencesArray.getJSONObject(preferenceId);
             } else {
                 prefs = preferencesArray.getJSONObject(DEFAULT_ID);
-                preferenceId = DEFAULT_ID;
+                preferenceId = DEFAULT_ID + UNDERSCOREDIVIDER + language;
             }
 
         } else {
@@ -101,6 +113,14 @@ public abstract class WidgetPreference {
 
     public List<String> getAllPreferenceIds() {
         return allPreferenceIds;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
 }

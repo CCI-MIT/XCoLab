@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.staffmemberswidget;
 
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +45,8 @@ public class StaffMemberController {
             @RequestParam(required = false) Boolean displayUrl) {
 
 
-        StaffMembersPreferences preferences = new StaffMembersPreferences(preferenceId);
+        Locale locale = LocaleContextHolder.getLocale();
+        StaffMembersPreferences preferences = new StaffMembersPreferences(preferenceId,locale.getLanguage());
 
 
         model.addAttribute("preferences",preferences);

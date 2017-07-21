@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.proposals.view.contest;
 
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -63,7 +65,8 @@ public class ContestsIndexController extends BaseProposalsController {
             @RequestParam(required = false, defaultValue = "" + FEATURED_COLLECTION_CARD_ID) long currentCollectionCardId,
             SortFilterPage sortFilterPage) {
 
-        ProposalsPreferencesWrapper preferences = new ProposalsPreferencesWrapper(preferenceId);
+        Locale locale = LocaleContextHolder.getLocale();
+        ProposalsPreferencesWrapper preferences = new ProposalsPreferencesWrapper(preferenceId,locale.getLanguage());
         ContestType contestType = preferences.getContestType();
 
         if (contestType.isSuggestionsActive()) {

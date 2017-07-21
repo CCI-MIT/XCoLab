@@ -8,6 +8,7 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.entity.utils.WidgetPreference;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
 import org.xcolab.util.attributes.AttributeGetter;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.IOException;
 
@@ -42,11 +43,11 @@ public class ProposalsPreferencesWrapper extends WidgetPreference {
     }
 
     public ProposalsPreferencesWrapper() {
-        this(null);
+        this(null, I18nUtils.DEFAULT_LANGUAGE);
     }
 
-    public ProposalsPreferencesWrapper(String preferenceId) {
-        super(preferenceId);
+    public ProposalsPreferencesWrapper(String preferenceId, String language) {
+        super(preferenceId,language);
 
         termsOfService = getTermsOfServiceTemplateWrapper().getHeader();
         callToAction = (prefs.has(CALL_TO_ACTION))?(prefs.getString(CALL_TO_ACTION)):(CALL_TO_ACTION_DEFAULT);

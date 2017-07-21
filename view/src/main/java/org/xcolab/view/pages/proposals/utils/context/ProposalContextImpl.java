@@ -80,7 +80,7 @@ public class ProposalContextImpl implements ProposalContext {
                     new ProposalsDisplayPermissions(permissions, proposal, contestPhase,
                             clientHelper, MemberAuthUtil.getMemberId(request));
 
-            preferences = new ProposalsPreferencesWrapper(request.getParameter("preferenceId"));
+            preferences = new ProposalsPreferencesWrapper(request.getParameter("preferenceId"),localeResolver.resolveLocale(request).getLanguage());
 
             if (contestType == null) {
                 contestType = preferences.getContestType(language);

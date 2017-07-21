@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.util.entity.flash.AlertMessage;
@@ -29,7 +31,7 @@ public class FeedsPreferencesController {
 			return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
 		}
 
-		model.addAttribute("feedsPreferences", new FeedsPreferences(preferenceId));
+		model.addAttribute("feedsPreferences", new FeedsPreferences(preferenceId,null));
         
     	// populate feed types
     	Map<String, String> feedTypes = new HashMap<>();
@@ -42,6 +44,7 @@ public class FeedsPreferencesController {
     	feedDisplayStyles.put("FULL", "FULL");
     	feedDisplayStyles.put("SHORT", "SHORT");
     	model.addAttribute("feedDisplayStyles", feedDisplayStyles);
+
     	
         return "/feedswidget/editPreferences";
     }
@@ -51,6 +54,8 @@ public class FeedsPreferencesController {
     public void savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, FeedsPreferences preferences) throws  IOException {
     	preferences.store();
 		AlertMessage.success("Feeds widget preferences has been saved.").flash(request);
+
+		model.addAttribute("feedsPreferences", new FeedsPreferences(preferences.getPreferenceId(),null));
 
         response.sendRedirect("/feedswidget/editPreferences?preferenceId="+preferences.getPreferenceId());
 	}

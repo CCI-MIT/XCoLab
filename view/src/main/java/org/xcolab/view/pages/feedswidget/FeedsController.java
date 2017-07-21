@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.feedswidget;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.view.util.pagination.SortFilterPage;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +40,8 @@ public class FeedsController {
 	private String showFeed(HttpServletRequest request, HttpServletResponse response,
 			SortFilterPage sortFilterPage, Model model, Boolean isWidget) {
 
-		FeedsPreferences preferences = new FeedsPreferences("fullfeed");
+        Locale locale = LocaleContextHolder.getLocale();
+		FeedsPreferences preferences = new FeedsPreferences("fullfeed",locale.getLanguage());
         if (!isWidget) {
             preferences.setFeedStyle("FULL");
             preferences.setFeedMaxLength(25);

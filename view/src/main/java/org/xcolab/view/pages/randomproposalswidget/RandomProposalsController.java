@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.randomproposalswidget;
 
 
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +26,8 @@ public class RandomProposalsController {
     @GetMapping("/randomproposalswidget")
     public String showRandomProposals(@RequestParam(required = false) String preferenceId, HttpServletRequest request, HttpServletResponse response, Model model) {
 
-        RandomProposalsPreferences preferences = new RandomProposalsPreferences(preferenceId);
+        Locale locale = LocaleContextHolder.getLocale();
+        RandomProposalsPreferences preferences = new RandomProposalsPreferences(preferenceId,locale.getLanguage());
 
 
         ProposalsModel proposalsModel = new ProposalsModel(getProposals(preferences), preferences

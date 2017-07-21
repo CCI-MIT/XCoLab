@@ -58,8 +58,8 @@ public class ProposalsPreferencesController {
 
     @GetMapping("/proposals/editPreferences")
     public String showPreferences(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, @RequestParam(required = false) String preferenceId) {
-        model.addAttribute("preferences", new ProposalsPreferencesWrapper(preferenceId));
+            Model model, ProposalContext proposalContext, @RequestParam(required = false) String preferenceId,@RequestParam(required = false) String language) {
+        model.addAttribute("preferences", new ProposalsPreferencesWrapper(preferenceId,language));
 
         long memberId = MemberAuthUtil.getMemberId(request);
         if (!PermissionsClient.canAdminAll(memberId)) {

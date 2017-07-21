@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.entity.utils.WidgetPreference;
 import org.xcolab.util.attributes.AttributeGetter;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.IOException;
 
@@ -22,10 +23,10 @@ public class DiscussionPreferences extends WidgetPreference {
     }
 
     public DiscussionPreferences() {
-        this(null);
+        this(null, I18nUtils.DEFAULT_LANGUAGE);
     }
-    public DiscussionPreferences(String preferenceId) {
-        super(preferenceId);
+    public DiscussionPreferences(String preferenceId, String language) {
+        super(preferenceId, language);
 
         try {
             categoryGroupId = Integer.parseInt((prefs.has(CATEGORY_GROUP_ID_PREFERENCE)) ? (prefs

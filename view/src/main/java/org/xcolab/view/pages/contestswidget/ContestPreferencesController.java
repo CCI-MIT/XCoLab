@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.util.entity.flash.AlertMessage;
@@ -20,14 +21,18 @@ import javax.servlet.http.HttpServletResponse;
 public class ContestPreferencesController {
 	
     @GetMapping("contestswidget/editPreferences")
-    public String showPreferences(@RequestParam(required = false) String preferenceId, HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String showPreferences(@RequestParam(required = false) String preferenceId,@RequestParam(required = false) String language, HttpServletRequest request, HttpServletResponse response, Model model) {
 
+        if(language!=null && language.isEmpty()){
+            language = I18nUtils.DEFAULT_LANGUAGE;
+        }
         long memberId = MemberAuthUtil.getMemberId(request);
         if (!PermissionsClient.canAdminAll(memberId)) {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
 
-    	model.addAttribute("contestPreferences", new ContestPreferences(preferenceId));
+
+    	model.addAttribute("contestPreferences", new ContestPreferences(preferenceId,language));
         return "contestswidget/editPreferences";
     }
 	

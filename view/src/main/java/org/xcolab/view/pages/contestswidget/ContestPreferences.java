@@ -14,6 +14,7 @@ import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.IOException;
 import java.util.Date;
@@ -60,10 +61,10 @@ public class ContestPreferences extends WidgetPreference{
     }
 
     public ContestPreferences() {
-        this(null);
+        this(null, I18nUtils.DEFAULT_LANGUAGE);
     }
-    public ContestPreferences(String preferenceId) {
-        super(preferenceId);
+    public ContestPreferences(String preferenceId, String locale) {
+        super(preferenceId, locale);
 
         selectedContests = IdListUtil
                 .getIdsFromString((prefs.has(SELECTED_CONTESTS_PREFERENCE))?(prefs.getString(SELECTED_CONTESTS_PREFERENCE)):(""));
