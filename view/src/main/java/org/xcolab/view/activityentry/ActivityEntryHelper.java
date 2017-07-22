@@ -11,17 +11,21 @@ import java.util.List;
 @Component
 public class ActivityEntryHelper {
 
+    private final List<ActivityEntryContentProvider> providerList;
+
     @Autowired
-    private List<ActivityEntryContentProvider> providerList;
+    public ActivityEntryHelper(List<ActivityEntryContentProvider> providerList) {
+        this.providerList = providerList;
+    }
 
-    public String getActivityBody(ActivityEntry ae){
+    public String getActivityBody(ActivityEntry entry) {
 
-        for (ActivityEntryContentProvider dir : providerList) {
+        for (ActivityEntryContentProvider provider : providerList) {
 
-            if(dir.getPrimaryType().longValue() == ae.getPrimaryType().longValue() &&
-                    dir.getSecondaryType().longValue() == ae.getSecondaryType().longValue()){
-                dir.setActivityEntry(ae);
-                return dir.getBody();
+            if (provider.getPrimaryType() == entry.getPrimaryType().longValue()
+                    && provider.getSecondaryType() == entry.getSecondaryType().longValue()) {
+                provider.setActivityEntry(entry);
+                return provider.getBody();
             }
         }
         return "";

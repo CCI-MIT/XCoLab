@@ -178,6 +178,7 @@
     <meta name="p:domain_verify" content="70e4477f0ab70225da1533151386c16f"/>
 
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="${pageContext.request.requestURL}"/>
     <meta property="og:site_name" content="${ not empty openGraphSiteName ? openGraphSiteName: _colabName}" />
     <meta property="og:title" content="${ not empty openGraphTitle ? openGraphTitle: _openGraphShareTitle}" />
     <meta property="og:description" content="${ not empty openGraphDescription ? openGraphDescription: _openGraphShareDescription}" />
