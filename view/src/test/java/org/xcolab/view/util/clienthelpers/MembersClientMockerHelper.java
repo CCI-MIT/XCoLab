@@ -45,5 +45,9 @@ public class MembersClientMockerHelper {
 
         Mockito.when(MembersClient.getMemberUnchecked(anyLong()))
                 .thenAnswer(invocationOnMock-> getDefaultMember());
+        Mockito.when(MembersClient.getMember(anyLong()))
+                .thenAnswer(invocationOnMock-> getDefaultMember());
+        Mockito.when(MembersClient.getMemberOrNull(anyLong()))
+                .thenAnswer(invocationOnMock-> getDefaultMember());
     }
 }
