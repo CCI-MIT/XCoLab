@@ -400,7 +400,10 @@ function savePickedProposals() {
     for (var i = 0; i < pickedProposals.length; i++) {
         var proposal = pickedProposals[i];
         proposalIds.push(proposal.proposalId);
-        proposalListContainer.append('<li><a href="' + proposal.linkUrl + '">' + proposal.proposalName + '</a> (<a onclick="removePickedProposal(' + currentSectionId + ',' + proposal.proposalId + ', $(this), true);" href="javascript:;">remove</a>)</li>');
+        proposalListContainer.append('<li><a href="' + proposal.linkUrl + '"'
+                + ' data-proposal-id="' + proposal.proposalId + '"'
+                + ' data-contest-id="' + proposal.contestId + '"'
+                + '>' + proposal.proposalName + '</a> (<a onclick="removePickedProposal(' + currentSectionId + ',' + proposal.proposalId + ', $(this), true);" href="javascript:;">remove</a>)</li>');
     }
     inputField.val(proposalIds.join(","));
     $("#proposalPickerModal").modal("hide");
