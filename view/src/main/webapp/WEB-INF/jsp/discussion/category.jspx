@@ -63,8 +63,7 @@
                         </div>
                         <div class="p-Discussion__right border-bottom">
                             <c:set var="subscribeUrl" value="/discussion/subscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
-
-                            <c:set var="unsubscribeUrl" value="/dicussion/unsubscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
+                            <c:set var="unsubscribeUrl" value="/discussion/unsubscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
                             <a class="subscribeLinkSmall" href="${isSubscribed ? unsubscribeUrl : subscribeUrl}"
                                onclick="if(!deferUntilLogin(this)) {return false;
 }">
