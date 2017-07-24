@@ -19,6 +19,7 @@ import org.xcolab.util.time.DurationFormatter;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class ContestPhase extends AbstractContestPhase {
 
@@ -182,6 +183,11 @@ public class ContestPhase extends AbstractContestPhase {
 
     public String getDurationTillEnd() {
         return DurationFormatter.forRequestLocale().formatDifference(getPhaseEndDate());
+    }
+
+    public long getDaysTillEnd() {
+        long diff = getPhaseEndDateDt().getTime() - new Date().getTime();
+        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 
     public String getDurationTillEndFormatted() {
