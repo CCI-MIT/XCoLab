@@ -182,12 +182,7 @@ public class ContestPhase extends AbstractContestPhase {
     }
 
     public String getDurationTillEnd() {
-        return DurationFormatter.forRequestLocale().formatDifference(getPhaseEndDate());
-    }
-
-    public long getDaysTillEnd() {
-        long diff = getPhaseEndDateDt().getTime() - new Date().getTime();
-        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        return DurationFormatter.forRequestLocale().formatDifferenceAsDays(getPhaseEndDate());
     }
 
     public String getDurationTillEndFormatted() {
