@@ -57,13 +57,14 @@ public class UserProfileController {
     private static final String SHOW_PROFILE_VIEW = "profile/showUserProfile";
     private static final String EDIT_PROFILE_VIEW = "profile/editUserProfile";
 
-    @Autowired
-    private ActivityEntryHelper activityEntryHelper;
+    private final ActivityEntryHelper activityEntryHelper;
+
+    private final SmartValidator validator;
 
     @Autowired
-    private SmartValidator validator;
-
-    public UserProfileController() {
+    public UserProfileController(ActivityEntryHelper activityEntryHelper, SmartValidator validator) {
+        this.activityEntryHelper = activityEntryHelper;
+        this.validator = validator;
     }
 
     @InitBinder("userBean")
@@ -89,7 +90,7 @@ public class UserProfileController {
             UserProfilePermissions permissions = new UserProfilePermissions(member);
             model.addAttribute("permissions", permissions);
             model.addAttribute("_activePageLink", "community");
-            populateUserWrapper(new UserProfileWrapper(memberId, request,activityEntryHelper), model);
+            populateUserWrapper(new UserProfileWrapper(memberId, request, activityEntryHelper), model);
             model.addAttribute("pointsActive",
                     ConfigurationAttributeKey.IS_POINTS_ACTIVE.get());
             return SHOW_PROFILE_VIEW;
@@ -116,7 +117,8 @@ public class UserProfileController {
         model.addAttribute("_activePageLink", "community");
 
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request,activityEntryHelper);
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request,
+                    activityEntryHelper);
             populateUserWrapper(currentUserProfile, model);
 
             model.addAttribute("newsletterBean",
@@ -150,7 +152,8 @@ public class UserProfileController {
             model.addAttribute("passwordError", true);
         }
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request,activityEntryHelper);
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request,
+                    activityEntryHelper);
             if (permissions.getCanEditMemberProfile(memberId)) {
                 model.addAttribute("newsletterBean",
                         new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
@@ -183,7 +186,8 @@ public class UserProfileController {
                 || memberId != updatedUserBean.getUserId()) {
             return ErrorText.NOT_FOUND.flashAndReturnView(request);
         }
-        UserProfileWrapper currentUserProfile = new UserProfileWrapper(updatedUserBean.getUserId(), request,activityEntryHelper);
+        UserProfileWrapper currentUserProfile = new UserProfileWrapper(updatedUserBean.getUserId(),
+                request, activityEntryHelper);
         model.addAttribute("currentUserProfile", currentUserProfile);
 
         model.addAttribute("messageBean", new MessageBean());

@@ -1,6 +1,7 @@
 package org.xcolab.service.proposal.service.proposalreference;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +10,10 @@ import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalAttribute;
 import org.xcolab.model.tables.pojos.ProposalReference;
+import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposalattribute.ProposalAttributeDao;
 import org.xcolab.service.proposal.domain.proposalreference.ProposalReferenceDao;
-import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.proposal.helper.ProposalAttributeHelper;
 import org.xcolab.service.proposal.service.proposalattribute.ProposalAttributeKeys;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
@@ -23,6 +24,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ProposalReferenceService {
@@ -76,13 +79,12 @@ public class ProposalReferenceService {
                         break;
                     }
                     case PROPOSAL_LIST_REFERENCE: {
-                        if ((attribute.getStringValue() == null)) {
-                            break;
-                        }
-                        String[] referencedProposals = attribute.getStringValue().split(",");
-                        for (String referencedProposal : referencedProposals) {
-                            final long subProposalId = Long.parseLong(referencedProposal);
-                            subProposalIds.add(subProposalId);
+                        if ((attribute.getStringValue() != null)) {
+                            final String[] stringIds = attribute.getStringValue().split(",");
+                            subProposalIds = Stream.of(stringIds)
+                                    .filter(NumberUtils::isParsable)
+                                    .map(Long::parseLong)
+                                    .collect(Collectors.toSet());
                         }
                         break;
                     }

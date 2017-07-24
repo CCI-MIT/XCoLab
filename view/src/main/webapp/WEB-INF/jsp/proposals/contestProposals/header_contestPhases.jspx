@@ -6,7 +6,7 @@
 	
 <span>
 	<c:choose>
-		<c:when test="${not empty contest.phases}">
+		<c:when test="${not empty contest.visiblePhases}">
 			<c:forEach var="phase" items="${contest.visiblePhases }" varStatus="status">
 				<div class="${status.last ? 'c-TitleBar__element' : 'c-TitleBar__element--withSeparator'} ${phase.active ? 'active' : ''} ${not phase.alreadyStarted ? 'future' : ''}">
 					<span class="js-Tooltip" data-tooltip-content="#js-Tooltip__content__phase${status.index}">

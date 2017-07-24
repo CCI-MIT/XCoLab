@@ -194,9 +194,9 @@
 				</table>
 			</c:forEach>
 
-			<h2 style="margin-top: 20px;">${currentUserProfile.proposalString}<spring:message code="profile.show.proposallinks"/></h2>
+			<h2 style="margin-top: 20px;">${currentUserProfile.proposalString} <spring:message code="profile.show.proposallinks"/></h2>
 			<c:if test="${empty currentUserProfile.linkingProposals}">
-                <spring:message code="profile.show.proposallinks.disclaimer" arguments="${currentUserProfile.proposalsString},${currentUserProfile.proposalsString}" argumentSeparator=","/>
+                <spring:message code="profile.show.proposallinks.disclaimer" arguments="${currentUserProfile.proposalsString}" argumentSeparator=","/>
 			</c:if>
 
 			<table class="colab">

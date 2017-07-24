@@ -34,8 +34,12 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/members/profile/{memberId}/subscriptions")
 public class SubscriptionsController {
 
+    private final ActivityEntryHelper activityEntryHelper;
+
     @Autowired
-    private ActivityEntryHelper activityEntryHelper;
+    public SubscriptionsController(ActivityEntryHelper activityEntryHelper) {
+        this.activityEntryHelper = activityEntryHelper;
+    }
 
     @GetMapping
     public String showUserProfileSubscriptions(HttpServletRequest request, HttpServletResponse response,
@@ -46,7 +50,8 @@ public class SubscriptionsController {
             return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
         }
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request,activityEntryHelper);
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request,
+                    activityEntryHelper);
             populateUserWrapper(currentUserProfile, model);
             currentUserProfile.setSubscriptionsPaginationPageId(page);
             model.addAttribute("pageNavigation", new PageNavigation(
@@ -62,7 +67,8 @@ public class SubscriptionsController {
     public String showUserSubscriptionsManage(HttpServletRequest request, HttpServletResponse response,
             Model model, @PathVariable long memberId, @RequestParam(required = false) String typeFilter) {
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request,activityEntryHelper);
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request,
+                    activityEntryHelper);
             populateUserWrapper(currentUserProfile, model);
             if (typeFilter != null) {
                 currentUserProfile.getUserSubscriptions().setFilterType(typeFilter);

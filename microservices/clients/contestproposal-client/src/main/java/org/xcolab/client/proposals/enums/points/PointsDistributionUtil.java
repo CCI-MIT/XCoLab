@@ -48,7 +48,10 @@ public class PointsDistributionUtil {
                 final long planSectionDefinitionId = referenceSectionProposalAttribute.getAdditionalId();
 
                 PointsDistributionConfiguration pdc = PointsClientUtil.getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(planSectionDefinitionId);
-                targets.add(PointsTarget.forProposal(subProposalId, pdc.getPercentage()));
+                //TODO: do we need to do anything else if it's null?
+                if (pdc != null) {
+                    targets.add(PointsTarget.forProposal(subProposalId, pdc.getPercentage()));
+                }
             } catch (ProposalAttributeNotFoundException  ignored) {
             }
         }

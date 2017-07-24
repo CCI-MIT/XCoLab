@@ -557,7 +557,7 @@ public class ContestClient {
                 .withCache(CacheKeys.withClass(ContestPhaseDto.class)
                                 .withParameter("contestId", contestId)
                                 .withParameter("visible", true).asList(),
-                        CacheName.MISC_MEDIUM)
+                        CacheName.CONTEST_DETAILS)
                 .execute(), contestService);
     }
 

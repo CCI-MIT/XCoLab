@@ -19,11 +19,6 @@
 		var filterKey = 'ACCEPTALL';
 	</script>
 
-    <xcolab:requireLibrary name="spin.js" />
-    <xcolab:requireLibrary name="handlebars.js" />
-    <xcolab:script src="${_themeJsFolder}/proposals/findAndReplaceDOMText.js" />
-    <xcolab:script src="${_themeJsFolder}/proposals/proposalPicker.js" />
-
     <div id="proposalPickerModal" class="modal bs-Modal fade" tab-index="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -160,6 +155,9 @@
         <div class="clearfix"><!-- --></div>
     </div>
 
+    <!-- Handlebars scripts -->
+
+    <!-- Proposal list template -->
 	<script id="proposalPickerProposalEntryTemplate"
 		type="text/x-handlebars-template">
 		<tr class="c-Table__row {{#if data.featured }}featured{{/if}}">
@@ -207,6 +205,7 @@
         </tr>
 	</script>
 
+    <!-- Contest list template -->
 	<script id="proposalPickerContestEntryTemplate"
 		type="text/x-handlebars-template">
 		<tr class="c-Table__row" data-contestPK="{{contest.contestPK}}">
@@ -236,4 +235,14 @@
                 </td>
             </tr>
 	</script>
+
+    <!-- Proposal picker scripts -->
+
+    <!-- Libraries -->
+    <xcolab:requireLibrary name="spin.js" />
+    <xcolab:requireLibrary name="handlebars.js" />
+    <xcolab:script src="${_themeJsFolder}/proposals/findAndReplaceDOMText.js" />
+
+    <!-- Custom JS -->
+    <xcolab:script src="${_themeJsFolder}/proposals/proposalPicker.js" />
 </jsp:root>

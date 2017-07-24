@@ -24,47 +24,29 @@ public class MemberDetails implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     private final long memberId;
-    transient private Member member;
     transient private Set<GrantedAuthority> authorities;
 
     public MemberDetails(Member member) {
         Assert.notNull(member, "Member cannot be null");
         memberId = member.getId_();
-        init(member);
     }
 
-    private void init() {
-        if (member == null) {
-            try {
-                member = MembersClient.getMember(memberId);
-            } catch (MemberNotFoundException e) {
-                throw new IllegalStateException("Member with id " + memberId + " does not exist");
-            }
-            init(member);
+    public Member getMember() {
+        try {
+            return MembersClient.getMember(memberId);
+        } catch (MemberNotFoundException e) {
+            throw new IllegalStateException("Member with id " + memberId + " does not exist");
         }
-    }
-
-    private void init(Member member) {
-        this.member = member;
-        authorities = Collections.unmodifiableSet(getAuthoritiesForMember(member.getId_()));
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        init();
-        return authorities;
     }
 
     @Override
     public String getPassword() {
-        init();
-        return member.getHashedPassword();
+        return getMember().getHashedPassword();
     }
 
     @Override
     public String getUsername() {
-        init();
-        return member.getScreenName();
+        return getMember().getScreenName();
     }
 
     @Override
@@ -74,8 +56,7 @@ public class MemberDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        init();
-        return member.isActive();
+        return getMember().isActive();
     }
 
     @Override
@@ -86,6 +67,14 @@ public class MemberDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (authorities == null) {
+            authorities = Collections.unmodifiableSet(getAuthoritiesForMember(memberId));
+        }
+        return authorities;
     }
 
     private static SortedSet<GrantedAuthority> getAuthoritiesForMember(long memberId) {
@@ -123,11 +112,6 @@ public class MemberDetails implements UserDetails {
 
             return g1.getAuthority().compareTo(g2.getAuthority());
         }
-    }
-
-    public Member getMember() {
-        init();
-        return new Member(member);
     }
 
     @Override
