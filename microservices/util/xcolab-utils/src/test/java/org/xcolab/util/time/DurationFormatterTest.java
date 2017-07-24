@@ -14,6 +14,10 @@ public class DurationFormatterTest {
 
     private final DurationFormatter durationFormatter = DurationFormatter.forLocale(Locale.ENGLISH);
 
+    private static Instant inTwentySeconds;
+    private static Instant twentySecondsAgo;
+    private static Instant inTwoMinutes;
+    private static Instant twoMinutesAgo;
     private static Instant inTwoHours;
     private static Instant twoHoursAgo;
     private static Instant inTwoDays;
@@ -24,6 +28,10 @@ public class DurationFormatterTest {
     @BeforeClass
     public static void setUp() {
         final Instant now = Instant.now();
+        inTwentySeconds = now.plus(20, ChronoUnit.SECONDS);
+        twentySecondsAgo = now.minus(20, ChronoUnit.SECONDS);
+        inTwoMinutes = now.plus(2, ChronoUnit.MINUTES);
+        twoMinutesAgo = now.minus(2, ChronoUnit.MINUTES);
         inTwoHours = now.plus(2, ChronoUnit.HOURS);
         twoHoursAgo = now.minus(2, ChronoUnit.HOURS);
         inTwoDays = now.plus(2, ChronoUnit.DAYS);
@@ -34,6 +42,10 @@ public class DurationFormatterTest {
 
     @AfterClass
     public static void tearDown() {
+        inTwentySeconds = null;
+        twentySecondsAgo = null;
+        inTwoMinutes = null;
+        twoMinutesAgo = null;
         inTwoHours = null;
         twoHoursAgo = null;
         inTwoDays = null;
@@ -44,6 +56,14 @@ public class DurationFormatterTest {
 
     @Test
     public void format__givenDate__shouldFormatInLargestUnit() {
+        assertEquals("Future format for seconds wrong",
+                "1 minute from now", durationFormatter.format(inTwentySeconds));
+        assertEquals("Past format for seconds wrong",
+                "1 minute ago", durationFormatter.format(twentySecondsAgo));
+        assertEquals("Future format for minutes wrong",
+                "2 minutes from now", durationFormatter.format(inTwoMinutes));
+        assertEquals("Past format for minutes wrong",
+                "2 minutes ago", durationFormatter.format(twoMinutesAgo));
         assertEquals("Future format for hours wrong",
                 "2 hours from now", durationFormatter.format(inTwoHours));
         assertEquals("Past format for hours wrong",
@@ -68,6 +88,10 @@ public class DurationFormatterTest {
 
     @Test
     public void formatDifference__givenDate__shouldFormatInLargestUnit() {
+        assertEquals("Future format for seconds wrong",
+                "1 minute", durationFormatter.formatDifference(inTwentySeconds));
+        assertEquals("Future format for minutes wrong",
+                "2 minutes", durationFormatter.formatDifference(inTwoMinutes));
         assertEquals("Future format for hours wrong",
                 "2 hours", durationFormatter.formatDifference(inTwoHours));
         assertEquals("Future format for days wrong",

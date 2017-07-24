@@ -5,8 +5,9 @@ import org.ocpsoft.prettytime.impl.ResourcesTimeFormat;
 import org.ocpsoft.prettytime.impl.ResourcesTimeUnit;
 import org.ocpsoft.prettytime.units.Day;
 import org.ocpsoft.prettytime.units.Hour;
-import org.ocpsoft.prettytime.units.JustNow;
+import org.ocpsoft.prettytime.units.Minute;
 import org.ocpsoft.prettytime.units.Month;
+import org.ocpsoft.prettytime.units.Second;
 import org.ocpsoft.prettytime.units.Week;
 import org.ocpsoft.prettytime.units.Year;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -27,10 +28,10 @@ public class DurationFormatter {
     private static final Map<Locale, DurationFormatter> instances = new HashMap<>();
 
     private static final List<ResourcesTimeUnit> ALL_UNITS =
-            Arrays.asList(new JustNow(), new Hour(), new Day(), new Week(), new Month(),
-                    new Year());
+            Arrays.asList(new Minute(), new Hour(), new Day(),
+                    new Week(), new Month(), new Year());
     private static final List<ResourcesTimeUnit> DAY_UNITS =
-            Arrays.asList(new JustNow(), new Hour(), new Day());
+            Arrays.asList(new Minute(), new Hour(), new Day());
 
     private final PrettyTime prettyTime;
     private final PrettyTime prettyTimeDays;
