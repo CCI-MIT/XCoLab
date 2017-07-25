@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ContestTypeClient {
+public final class ContestTypeClient {
 
     private static final RestService adminService = new RestService(CoLabService.ADMIN,
             ServiceRequestUtils.getNamespace());
@@ -24,6 +24,9 @@ public class ContestTypeClient {
     private static final RestResource<ContestTypeAttribute, String> contestTypeAttributeResource =
             new RestResource1<>(adminService, "contestTypeAttributes",
                     ContestTypeAttribute.TYPES);
+
+    private ContestTypeClient() {
+    }
 
     public static ContestTypeAttribute getContestTypeAttribute(String name,
             long contestTypeId, String locale) {
@@ -35,7 +38,7 @@ public class ContestTypeClient {
                     .withCache(CacheName.CONFIGURATION)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
-            throw new ContestTypeAttributeNotFoundException(name);
+            throw new ContestTypeAttributeNotFoundException(name, contestTypeId, locale);
         }
     }
 

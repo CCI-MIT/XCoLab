@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.WordUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
@@ -116,11 +117,10 @@ public class Member implements Serializable {
     @JsonIgnore
     public String getDisplayName() {
 
-        if(ConfigurationAttributeKey.DISPLAY_FIRST_NAME_LAST_NAME.get()){
-            return this.getFullName();
-        }
-        else {
-            return this.screenName;
+        if (ConfigurationAttributeKey.DISPLAY_FIRST_NAME_LAST_NAME.get()) {
+            return getFullName();
+        } else {
+            return screenName;
         }
     }
 
@@ -284,7 +284,12 @@ public class Member implements Serializable {
 
     @JsonIgnore
     public String getFullName() {
-        return StringUtils.capitalize(this.getFirstName()) + " " + StringUtils.capitalize(this.getLastName());
+        final String fullName = WordUtils
+                .capitalizeFully(this.getFirstName()+ " " + this.getLastName());
+        if (StringUtils.isNotBlank(fullName)) {
+            return fullName;
+        }
+        return screenName;
     }
 
     @JsonIgnore
