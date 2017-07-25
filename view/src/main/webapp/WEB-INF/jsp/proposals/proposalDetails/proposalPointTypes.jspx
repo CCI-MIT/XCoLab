@@ -14,8 +14,8 @@
     <!--@elvariable id="currentTabWrapped" type="org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper"-->
     <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
     <!--@elvariable id="subProposals" type="java.util.List<org.xcolab.client.proposals.pojo.Proposal>"-->
-    ${pageContext.response.locale}
-    <fmt:setLocale value = "${pageContext.response.locale}"/>
+
+        <fmt:setLocale value = "en_US"/>
     <c:set var="childrenSize" value="${pointType.children.size()}" scope="request"/>
     <c:set var="parentPercentageOfTotalPoints">
     <c:out value="${percentageOfTotalPoints}"/></c:set>
@@ -313,7 +313,8 @@
                                             </c:when>
                                             <c:otherwise>
                                                 <span class="input" data-value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][member.id_]}">
-                                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][member.id_]}"/>%
+                                                    ${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][member.id_]}
+                                                    <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value=""/>%
                                                 </span>
                                             </c:otherwise>
                                         </c:choose>
@@ -334,7 +335,8 @@
                             <strong class="name">
                                 Total
                                 <c:if test="${currentTabWrapped.canEdit}">
-                                    (should be <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value="${percentageToDistribute}"/>%)
+                                    ${percentageToDistribute}
+                                    (should be <fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="2" value=""/>%)
                                 </c:if>
                             </strong>
                         </p>
