@@ -35,7 +35,7 @@ public class ContestTypeClient {
                     .withCache(CacheName.CONFIGURATION)
                     .executeChecked();
         } catch (EntityNotFoundException e) {
-            throw new ContestTypeAttributeNotFoundException(name);
+            throw new ContestTypeAttributeNotFoundException(name, contestTypeId, locale);
         }
     }
 

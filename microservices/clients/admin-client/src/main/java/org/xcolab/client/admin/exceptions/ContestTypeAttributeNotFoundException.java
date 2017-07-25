@@ -4,8 +4,9 @@ import org.xcolab.util.attributes.exceptions.AttributeNotFoundException;
 
 public class ContestTypeAttributeNotFoundException extends AttributeNotFoundException {
 
-    public ContestTypeAttributeNotFoundException(String name) {
-        super("ContestTypeAttribute " + name + " could not be found");
+    public ContestTypeAttributeNotFoundException(String name, long additionalId, String locale) {
+        super("ContestTypeAttribute '" + name + "' and additionalId '" + additionalId
+                + "' could not be found (lang was '" + locale + "')");
     }
 
 }
