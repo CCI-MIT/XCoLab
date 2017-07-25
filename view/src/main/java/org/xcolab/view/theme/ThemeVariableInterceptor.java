@@ -26,7 +26,6 @@ import org.xcolab.view.util.entity.flash.AnalyticsAttribute;
 import org.xcolab.view.util.entity.flash.ErrorMessage;
 import org.xcolab.view.util.entity.flash.InfoMessage;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
@@ -148,15 +147,14 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
 
             modelAndView.addObject("_adminEmail", ConfigurationAttributeKey.ADMIN_EMAIL.get());
 
-            List<ContestType> contestTypes = ContestTypeClient.getAllContestTypes().stream()
-                    .map(contestType -> contestType.withLocale(locale.getLanguage()))
-                    .collect(Collectors.toList());
-            if (!contestTypes.isEmpty()) {
-                modelAndView.addObject("_contestNameLowerCase",
-                        contestTypes.get(contestTypes.size() - 1).getContestName().toLowerCase());
-                modelAndView.addObject("_proposalNameLowerCase",
-                        contestTypes.get(contestTypes.size() - 1).getProposalName().toLowerCase());
-            }
+            final Long defaultContestTypeId =
+                    ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
+            final ContestType defaultContestType = ContestTypeClient
+                    .getContestType(defaultContestTypeId, locale.getLanguage());
+            modelAndView.addObject("_contestNameLowerCase",
+                    defaultContestType.getContestName().toLowerCase());
+            modelAndView.addObject("_proposalNameLowerCase",
+                    defaultContestType.getProposalName().toLowerCase());
 
             final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.get();
             modelAndView.addObject("_mitHeaderBarShow", mitHeaderBarShow);
