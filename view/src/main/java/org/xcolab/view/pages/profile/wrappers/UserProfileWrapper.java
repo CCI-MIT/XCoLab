@@ -92,7 +92,7 @@ public class UserProfileWrapper implements Serializable {
     private void init() {
 
         userBean = new UserBean(member);
-        realName = getName(member.getFullName(), member.getScreenName());
+        realName = member.getFullName();
 
         String firstPart = realName.substring(0, realName.length() / 2).trim();
         String secondPart = realName.substring(realName.length() / 2).trim();
@@ -136,13 +136,6 @@ public class UserProfileWrapper implements Serializable {
                         .add(p);
             }
         }
-    }
-
-    private String getName(String name, String defaultName) {
-        if (name == null || name.trim().equals("")) {
-            return defaultName;
-        }
-        return name;
     }
 
     public boolean isStaffMemberProfile() {
