@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.ContestTypeClient;
+import org.xcolab.client.admin.pojo.MockContestType;
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.emails.EmailClient;
@@ -32,6 +33,7 @@ import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
 import java.util.ArrayList;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -92,9 +94,13 @@ public class LoginRegisterControllerTest {
         AdminClientMockerHelper.mockAdminClient();
         EmailTemplateClientMockerHelper.mockEmailTemplateClient();
 
-        Mockito.when(ContestTypeClient.getAllContestTypes()).thenReturn(
-                new ArrayList<>()
-        );
+        Mockito.when(ContestTypeClient.getAllContestTypes())
+                .thenReturn(new ArrayList<>());
+
+        Mockito.when(ContestTypeClient.getContestType(anyLong()))
+                .thenReturn(new MockContestType(0));
+        Mockito.when(ContestTypeClient.getContestType(anyLong(), anyString()))
+                .thenReturn(new MockContestType(0, "en"));
     }
 
     @Test
@@ -108,7 +114,6 @@ public class LoginRegisterControllerTest {
 
     @Test
     public void registrationFailsWhenInvalidDataPostedAndSendsUserBackToForm() throws Exception {
-
 
         this.mockMvc.perform(post("/register")
                 .param("screenName", "")
