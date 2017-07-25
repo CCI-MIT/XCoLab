@@ -14,7 +14,8 @@
     <!--@elvariable id="currentTabWrapped" type="org.xcolab.portlets.proposals.wrappers.ProposalTabWrapper"-->
     <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
     <!--@elvariable id="subProposals" type="java.util.List<org.xcolab.client.proposals.pojo.Proposal>"-->
-
+    ${pageContext.response.locale}
+    <fmt:setLocale value = "${pageContext.response.locale}"/>
     <c:set var="childrenSize" value="${pointType.children.size()}" scope="request"/>
     <c:set var="parentPercentageOfTotalPoints">
     <c:out value="${percentageOfTotalPoints}"/></c:set>
