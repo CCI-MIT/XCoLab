@@ -157,25 +157,7 @@ public class ContestsIndexController extends BaseProposalsController {
             model.addAttribute("currentCollectionCardId", currentCollectionCardId);
             model.addAttribute("collectionHierarchy", collectionHierarchy);
 
-            for (Contest contest : ContestClientUtil.getContestByOntologyTerm(ontologyTermToLoad, getActive)) {
-                if (! contest.getContestPrivate()) {
-                    if(contest.getIsSharedContestInForeignColab()){
-                        ClientHelper ch = new ClientHelper(contest);
-                        try {
-                            Contest foreignContest =
-                                    ch.getContestClient().getContest(contest.getContestPK());
-							foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
-                            contests.add(foreignContest);
 
-                        }catch (ContestNotFoundException notFound){
-
-                        }
-                    }else {
-                        contests.add((contest));
-                    }
-
-                }
-            }
             model.addAttribute("showOnlyFeatured", showOnlyFeatured);
 
             //if only featured
@@ -201,25 +183,8 @@ public class ContestsIndexController extends BaseProposalsController {
 
             priorContests = ContestClientUtil.getContestsByActivePrivateType(false, false, contestType.getId());
 
-            for (Contest contest: contestsToWrap) {
-                if (! contest.getContestPrivate()) {
-                    if(contest.getIsSharedContestInForeignColab()){
-                        ClientHelper ch = new ClientHelper(contest);
-                        try {
-                            Contest foreignContest =
-                                    ch.getContestClient().getContest(contest.getContestPK());
-                            foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
-                            contests.add(foreignContest);
+            contests = wrapContests(contestsToWrap);
 
-                        }catch (ContestNotFoundException notFound){
-
-                        }
-                    }else {
-                        contests.add((contest));
-                    }
-
-                }
-            }
         }
 
         if (viewType.equals(VIEW_TYPE_OUTLINE)) {
@@ -288,7 +253,7 @@ public class ContestsIndexController extends BaseProposalsController {
         boolean showContestManagementLink = PermissionsClient.canAdminAll(currentMember) ;
         model.addAttribute("showContestManagementLink", showContestManagementLink);
         model.addAttribute("priorContestsExist", !priorContests.isEmpty());
-        model.addAttribute("priorContests", priorContests);
+        model.addAttribute("priorContests", wrapContests(priorContests));
         model.addAttribute("contests", contests);
         //not taken into account if collection cards enabled
         model.addAttribute("showFilter", contests.size() >= MIN_SIZE_CONTEST_FILTER);
@@ -309,5 +274,29 @@ public class ContestsIndexController extends BaseProposalsController {
 
         setBasePageAttributes(proposalContext, model);
         return "/proposals/contestsIndex";
+    }
+
+    private List<Contest> wrapContests(List<Contest> contests){
+        List<Contest> contestsToReturn = new ArrayList<>();
+        for (Contest contest: contests) {
+            if (! contest.getContestPrivate()) {
+                if(contest.getIsSharedContestInForeignColab()){
+                    ClientHelper ch = new ClientHelper(contest);
+                    try {
+                        Contest foreignContest =
+                                ch.getContestClient().getContest(contest.getContestPK());
+                        foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
+                        contestsToReturn.add(foreignContest);
+
+                    }catch (ContestNotFoundException notFound){
+
+                    }
+                }else {
+                    contestsToReturn.add((contest));
+                }
+
+            }
+        }
+        return contestsToReturn;
     }
 }
