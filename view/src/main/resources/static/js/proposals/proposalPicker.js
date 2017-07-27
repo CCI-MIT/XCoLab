@@ -225,7 +225,8 @@ function selectProposal(proposalId, proposalName, contestName, proposalLinkUrl, 
     } else {
         if (inputField.val()) inputField.next().remove();
         inputField.val(proposalId);
-        inputField.after('<span><a href="'+proposalLinkUrl+'">' + proposalName + '</a> (<a onclick="removePickedProposal(' + currentSectionId + ',' + proposalId + ', $(this), false);" href="javascript:;">remove</a>)</span>');
+
+        inputField.after('<table><tr><td class="proposalLink"><a href="'+proposalLinkUrl+'">' + proposalName + '</a></td><td>(<a onclick="removePickedProposal(' + currentSectionId + ',' + proposalId + ', $(this), false);" href="javascript:;">remove</a>)</td></tr></table>');
         var popupProposalPicker = $("#proposalPickerModal");
         popupProposalPicker.modal("hide");
     }

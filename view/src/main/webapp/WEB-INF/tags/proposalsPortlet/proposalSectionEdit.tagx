@@ -83,8 +83,12 @@
                     </c:when>
                     <c:otherwise>
                         <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${p.proposalId }" />
-                        <span><collab:proposalLink proposal="${p}" />
-                        (<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), false);">remove</a>)</span><br />
+                        <table>
+                            <tr>
+                                <td class="proposalLink"><collab:proposalLink proposal="${p}" /></td>
+                                <td>(<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), false);">remove</a>)</td>
+                            </tr>
+                        </table>
                     </c:otherwise>
                 </c:choose>
                 <a class="c-Button__primary" href="javascript:;" onclick="pickProposal(${section.sectionDefinitionId},

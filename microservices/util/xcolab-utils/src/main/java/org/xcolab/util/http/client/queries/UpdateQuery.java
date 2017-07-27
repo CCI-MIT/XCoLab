@@ -33,10 +33,7 @@ public class UpdateQuery<ElementT, IdT> implements Query<ElementT, Boolean> {
             }
         } else {
             if (cacheKey == null) {
-                cacheKey = CacheKeys.withClass(entityType)
-                        .withParameter("id", id)
-                        .withParameter("query", uriBuilder.getParameterString())
-                        .build();
+                cacheKey = CacheKeys.of(entityType, id);
             }
             return ServiceRequestUtils.put(uriBuilder, pojo, cacheKey, cacheName);
         }
