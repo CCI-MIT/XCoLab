@@ -65,6 +65,7 @@ public class AdminClient {
             ConfigurationAttribute configurationAttribute) {
         return configurationAttributeResource.update(configurationAttribute,
                 configurationAttribute.getName())
+                .optionalQueryParam("locale", configurationAttribute.getLocale())
                 .cacheName(CacheName.CONFIGURATION)
                 .execute();
     }

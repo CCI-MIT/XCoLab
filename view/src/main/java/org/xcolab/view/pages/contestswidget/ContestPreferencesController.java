@@ -23,7 +23,7 @@ public class ContestPreferencesController {
     @GetMapping("contestswidget/editPreferences")
     public String showPreferences(@RequestParam(required = false) String preferenceId,@RequestParam(required = false) String language, HttpServletRequest request, HttpServletResponse response, Model model) {
 
-        if(language!=null && language.isEmpty()){
+        if(language==null || language.isEmpty()){
             language = I18nUtils.DEFAULT_LANGUAGE;
         }
         long memberId = MemberAuthUtil.getMemberId(request);
@@ -41,6 +41,7 @@ public class ContestPreferencesController {
     public void savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, ContestPreferences contestPreferences)
             throws  IOException {
         contestPreferences.submit();
+
         AlertMessage.success("Contest widget preferences has been saved.").flash(request);
         response.sendRedirect("/contestswidget/editPreferences?preferenceId="+contestPreferences.getPreferenceId());
 
