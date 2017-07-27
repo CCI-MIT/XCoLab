@@ -244,10 +244,11 @@ public class GoogleController {
 
     private String getCountryFromLocaleObject(String localeCountryString) throws UserLocationNotResolvableException {
         if (StringUtils.isNotEmpty(localeCountryString)) {
-            Locale locale = LocaleUtils.toLocale(localeCountryString);
+            Locale locale = LocaleUtils.toLocale(localeCountryString.replace("-", "_"));
             return locale.getCountry();
         }
 
         throw new UserLocationNotResolvableException("Could not retrieve country from Google locale");
     }
+
 }

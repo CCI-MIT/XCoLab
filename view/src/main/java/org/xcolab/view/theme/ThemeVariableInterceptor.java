@@ -97,6 +97,7 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
                     themeImageDomain + activeTheme.getLogoPath());
             modelAndView.addObject("_logoPathSocial",
                     themeImageDomain + activeTheme.getLogoPathSocial());
+
             modelAndView.addObject("_logoPathBig",
                     themeImageDomain + activeTheme.getLogoPathBig());
 
