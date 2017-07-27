@@ -273,7 +273,7 @@ public class FacebookController {
 
         final String localeString = response.optString("locale");
         if (StringUtils.isNotEmpty(localeString)) {
-            Locale locale = LocaleUtils.toLocale(localeString);
+            Locale locale = LocaleUtils.toLocale(localeString.replace("-", "_"));
             return locale.getCountry();
         }
 
