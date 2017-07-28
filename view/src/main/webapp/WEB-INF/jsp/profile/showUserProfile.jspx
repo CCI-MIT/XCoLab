@@ -169,7 +169,7 @@
 		<c:if test="${currentUserProfile.canSeeSendMessageButton and not currentUserProfile.viewingOwnProfile }">
 			<a class="c-Button__primary" href="#"
 			   onclick="if (!deferUntilLogin()) { return false; } else { jQuery('#sendMessageModal').modal(); }">
-                <spring:message code="profile.show.sendmessage" arguments="${userBean.firstName}"/>
+                <spring:message code="profile.show.sendmessage" arguments="${userBean.displayNameShort}"/>
 			</a>
 		</c:if>
 
@@ -181,7 +181,7 @@
 			<c:forEach var="contestTypeProposalWrapper" items="${currentUserProfile.contestTypeProposalWrappersByContestTypeId}">
 				<h2 style="margin-top: 20px;">${contestTypeProposalWrapper.contestType.proposalNamePlural}</h2>
 				<c:if test="${empty contestTypeProposalWrapper.proposals}">
-                    <spring:message code="profile.show.noproposalcontribution" arguments="${userBean.firstName},${contestTypeProposalWrapper.contestType.proposalNamePlural}"/>
+                    <spring:message code="profile.show.noproposalcontribution" arguments="${userBean.displayNameShort},${contestTypeProposalWrapper.contestType.proposalNamePlural}"/>
 				</c:if>
 
 				<table class="colab">
@@ -212,7 +212,7 @@
 
 			<h2><spring:message code="profile.show.supporting"/></h2>
 			<c:if test="${empty currentUserProfile.supportedProposals}">
-                <spring:message code="profile.show.supported.disclaimer" arguments="${userBean.firstName},${currentUserProfile.proposalsString}" argumentSeparator=","/>
+                <spring:message code="profile.show.supported.disclaimer" arguments="${userBean.displayNameShort},${currentUserProfile.proposalsString}" argumentSeparator=","/>
 			</c:if>
 
 			<table class="colab">
@@ -226,7 +226,7 @@
 
 			<h2 style="margin-top: 20px;"><spring:message code="profile.show.activities"/></h2>
 			<c:if test="${empty currentUserProfile.activities}">
-                <spring:message code="profile.show.activities.noyet" arguments="${userBean.firstName},${_colabName}" argumentSeparator=","/>
+                <spring:message code="profile.show.activities.noyet" arguments="${userBean.displayNameShort},${_colabName}" argumentSeparator=","/>
 			</c:if>
 
 			<table class="colab">
