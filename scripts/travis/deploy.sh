@@ -11,7 +11,7 @@ if [ ${BUILD_TYPE} == 'deploy' ]; then
     rsync -r --delete-after --quiet binaries ${DEPLOY_SERVER}:${DEPLOY_FOLDER}
 
     # Temporarily copy files to second server
-    DEPLOY_FOLDER2=xcolab/${TRAVIS_BRANCH}
+    DEPLOY_FOLDER2=${TRAVIS_BRANCH}
     DEPLOY_SERVER2=travis@cognosis.mit.edu
     echo "Copying binaries to ${DEPLOY_SERVER2}:${DEPLOY_FOLDER2} ..."
     rsync -r --delete-after --quiet binaries ${DEPLOY_SERVER2}:${DEPLOY_FOLDER2}
