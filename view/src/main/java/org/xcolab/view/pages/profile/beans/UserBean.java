@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.profile.beans;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -28,6 +29,7 @@ public class UserBean implements Serializable {
     private String screenName;
 
     private String displayName;
+    private String displayNameShort;
 
     @NotBlank(groups = {UserBean.EmailChanged.class})
     @Email(regexp = EMAIL_REGEX, groups = {UserBean.EmailChanged.class},message = "Please write a valid email!")
@@ -79,9 +81,10 @@ public class UserBean implements Serializable {
     public UserBean(Member member) {
         userId = member.getId_();
         screenName = member.getScreenName();
-        displayName = member.getDisplayName();
         firstName = member.getFirstName();
         lastName = member.getLastName();
+        displayName = member.getDisplayName();
+        displayNameShort = StringUtils.isNotBlank(firstName) ? firstName : screenName;
         emailStored = member.getEmailAddress();
         countryCode = member.getCountry();
         shortBio = member.getShortBio();
@@ -265,6 +268,10 @@ public class UserBean implements Serializable {
 
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
+    }
+
+    public String getDisplayNameShort() {
+        return displayNameShort;
     }
 
 
