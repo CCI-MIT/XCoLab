@@ -22,7 +22,7 @@ before_install:
 - scripts/travis/before_script.sh
 
 addons:
-  ssh_known_hosts: cognosis.mit.edu
+  ssh_known_hosts: cognosis2.mit.edu
 
 install: true
 
