@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class SectionDefinitionWrapper implements Serializable {
+public class SectionDefinitionWrapper implements Serializable,Comparable{
 
     private Long id;
     private String type = "";
@@ -575,5 +575,13 @@ public class SectionDefinitionWrapper implements Serializable {
                 .append(other.getPointType(), this.getPointType())
                 .append(other.getPointPercentage(), this.getPointPercentage())
                 .append(other.getAllowedValues(), this.getAllowedValues()).isEquals();
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(o instanceof SectionDefinitionWrapper ){
+            return this.weight - ((SectionDefinitionWrapper) o).getWeight();
+        }
+        return 0;
     }
 }
