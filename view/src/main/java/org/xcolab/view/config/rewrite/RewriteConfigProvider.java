@@ -11,6 +11,7 @@ import org.xcolab.view.config.rewrite.rules.legacy.LegacyContentRewriteRules;
 import org.xcolab.view.config.rewrite.rules.legacy.LegacyDiscussionRewriteRules;
 import org.xcolab.view.config.rewrite.rules.legacy.LegacyMembersRewriteRules;
 import org.xcolab.view.config.rewrite.rules.legacy.LegacyNewsRewriteRules;
+import org.xcolab.view.config.rewrite.rules.legacy.LegacyPlatformRewriteRules;
 import org.xcolab.view.config.rewrite.rules.legacy.LegacyProposalRewriteRules;
 import org.xcolab.view.config.rewrite.rules.legacy.LegacyRegistrationRewriteRules;
 import org.xcolab.view.config.rewrite.rules.legacy.LegacyThemeRewriteRules;
@@ -28,6 +29,7 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
         ruleProviders.add(new ProposalRewriteRules());
         ruleProviders.add(new ContentRewriteRules());
 
+        ruleProviders.add(new LegacyPlatformRewriteRules());
         ruleProviders.add(new LegacyContentRewriteRules());
         ruleProviders.add(new LegacyDiscussionRewriteRules());
         ruleProviders.add(new LegacyMembersRewriteRules());
