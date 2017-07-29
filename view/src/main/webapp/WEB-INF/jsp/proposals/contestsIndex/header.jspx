@@ -77,19 +77,19 @@
                     <collab:message var="selectorTextPrior" code="contests.selector.prior" contestType="${contestType}" />
                     <collab:message var="selectorTextAll" code="contests.selector.all" contestType="${contestType}" />
                     <c:choose>
-                        <c:when test="${showActiveContests }">
-                            <a href="#" >${selectorTextActive}</a>
+                        <c:when test="${showAllContests}">
+                            <a href="#" >${selectorTextAll}</a>
                         </c:when>
-                        <c:when test="${not showActiveContests and not showAllContests }">
+                        <c:when test="${not showActiveContests}">
                             <a href="#" >${selectorTextPrior}</a>
                         </c:when>
                         <c:otherwise>
-                            <a href="#" >${selectorTextAll}</a>
+                            <a href="#" >${selectorTextActive}</a>
                         </c:otherwise>
                     </c:choose>
                     <div id="priorActiveAllWidget">
                         <ul>
-                            <li class="${showActiveContests ?  'active' : ''}">
+                            <li class="${not showAllContests and showActiveContests ?  'active' : ''}">
                                 <a href="${contestType.contestBaseUrl}" >${selectorTextActive}</a>
                             </li>
                             <c:set var="showPrior" value="/contests?viewType=${viewType}&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=false"/>
