@@ -1,6 +1,9 @@
 package org.xcolab.view.config.rewrite.rules.legacy;
 
 import org.ocpsoft.rewrite.config.ConfigurationBuilder;
+import org.ocpsoft.rewrite.config.Direction;
+import org.ocpsoft.rewrite.servlet.config.Path;
+import org.ocpsoft.rewrite.servlet.config.Redirect;
 
 import org.xcolab.view.config.rewrite.SimpleRewriteBuilder;
 import org.xcolab.view.config.rewrite.rules.RewriteRuleProvider;
@@ -436,6 +439,12 @@ public class LegacyNewsRewriteRules implements RewriteRuleProvider {
                     .toContentPage("news-improve-your-chance-to-win-a-prize")
                 .fromLiferayUrlTitle("winners-announced")
                     .toContentPage("news-winners-announced");
+
+        // Legacy url that shows up in search results
+        configurationBuilder
+                .addRule()
+                    .when(Direction.isInbound().and(Path.matches("/community/-/blogs/2338554")))
+                    .perform(Redirect.permanent("http://news.climatecolab.com/2015/09/2015-winners-announced-by-mit-climate-colab/"));
     }
 
     private static class BlogRewriteBuilder {
