@@ -28,35 +28,35 @@
             </c:forEach>
         </div>
 
-        <c:if test="${priorContestsExist}">
-            <div id="seeAllContestsTrigger" style="text-align: center;font-weight: 700;cursor: pointer;text-decoration: underline;font-size: 18px;">
-                <collab:message  code="contests.selector.seeall" contestType="${contestType}" />
-            </div>
-            <div id="priorContestsContainer" style="display: none;">
-                <div class="contest-featured-seperator" id="climateactionplans">&#160;</div>
-                <c:forEach var="contest" items="${priorContests}" varStatus="status">
-                    <c:if test="${contest.showInTileView}">
-                        <proposalsPortlet:contestGridElement contest="${contest }" index="${status.index}" />
-                    </c:if>
-                </c:forEach>
-            </div>
-        </c:if>
+        <!-- TODO: uncomment when COLAB-1996 approved -->
+        <!--<c:if test="${priorContestsExist}">-->
+            <!--<div id="seeAllContestsTrigger" style="text-align: center;font-weight: 700;cursor: pointer;text-decoration: underline;font-size: 18px;">-->
+                <!--<collab:message  code="contests.selector.seeall" contestType="${contestType}" />-->
+            <!--</div>-->
+            <!--<div id="priorContestsContainer" style="display: none;">-->
+                <!--<div class="contest-featured-seperator" id="climateactionplans">&#160;</div>-->
+                <!--<c:forEach var="contest" items="${priorContests}" varStatus="status">-->
+                    <!--<c:if test="${contest.showInTileView}">-->
+                        <!--<proposalsPortlet:contestGridElement contest="${contest }" index="${status.index}" />-->
+                    <!--</c:if>-->
+                <!--</c:forEach>-->
+            <!--</div>-->
+        <!--</c:if>-->
     </div>
 
 
 
     <script>
-
         <![CDATA[
-        jQuery(function() {
-            jQuery("#seeAllContestsTrigger").click(function(){
-                jQuery("#priorContestsContainer").fadeIn();
-                jQuery("#seeAllContestsTrigger").fadeOut();
-            });
-
-        });
-
+//        TODO: uncomment when COLAB-1996 approved
+//        TODO: Load via ajax instead
+//        jQuery(function() {
+//            jQuery("#seeAllContestsTrigger").click(function() {
+//                jQuery("#priorContestsContainer").fadeIn();
+//                jQuery("#seeAllContestsTrigger").fadeOut();
+//            });
+//
+//        });
         ]]>
-
     </script>
 </jsp:root>
