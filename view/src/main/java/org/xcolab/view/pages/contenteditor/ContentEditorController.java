@@ -16,9 +16,10 @@ import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
 import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.i18n.I18nUtils;
+import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.errors.AccessDeniedPage;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,16 +32,16 @@ public class ContentEditorController extends BaseContentEditor{
 
 
     @GetMapping("/content-editor")
-    public String handleRenderRequest(HttpServletRequest request, HttpServletRequest response, Model model) {
-        long memberId = MemberAuthUtil.getMemberId(request);
-        if (PermissionsClient.canAdminAll(memberId)) {
+    public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member loggedInMember) {
+        if (PermissionsClient.canAdminAll(loggedInMember)) {
             if(ConfigurationAttributeKey.IS_I18N_ACTIVE.get()) {
                 model.addAttribute("i18nOptions", I18nUtils.getSelectList());
             }
             model.addAttribute("i18nActive", ConfigurationAttributeKey.IS_I18N_ACTIVE.get());
             return "contenteditor/editor";
         } else {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
     }
 
@@ -189,34 +190,33 @@ public class ContentEditorController extends BaseContentEditor{
         defaultOperationReturnMessage(true, "Article moved successfully","", response);
     }
 
-
-
-
     @PostMapping("/content-editor/previewArticle")
     public String previewArticle(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(required = false) String content, Model model
+            @RequestParam(required = false) String content, Model model, Member member
     ) throws IOException {
-        long memberId = MemberAuthUtil.getMemberId(request);
-        if (PermissionsClient.canAdminAll(memberId)) {
-
-            model.addAttribute("content", content);
-            return "contenteditor/previewArticleContent";
-        } else {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        if (!PermissionsClient.canAdminAll(member)) {
+            return new AccessDeniedPage(member).toViewName(response);
         }
-
+        model.addAttribute("content", content);
+        return "contenteditor/previewArticleContent";
     }
+
     @PostMapping("/content-editor/saveContentArticleVersion")
     public void saveContentArticleVersion(HttpServletRequest request, HttpServletResponse response,
-                                          @RequestParam(required = false) Long articleId,
-                                          @RequestParam(required = false) String title,
-                                          @RequestParam(required = false) Long folderId,
-                                          @RequestParam(required = false) String content,
-                                          @RequestParam(required = false) String lang
+            Member member,
+            @RequestParam(required = false) Long articleId,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) Long folderId,
+            @RequestParam(required = false) String content,
+            @RequestParam(required = false) String lang
     ) throws IOException {
-        long userId = MemberAuthUtil.getMemberId(request);
 
-        if(lang == null) {
+        if (!PermissionsClient.canAdminAll(member)) {
+            defaultOperationReturnMessage(false, "Not allowed to save article", "", response);
+        }
+
+
+        if (lang == null) {
             lang = I18nUtils.DEFAULT_LOCALE.getLanguage();
         }
         ContentArticleVersion contentArticleVersion = new ContentArticleVersion();
@@ -224,7 +224,7 @@ public class ContentEditorController extends BaseContentEditor{
         contentArticleVersion.setContentArticleId(articleId);
         contentArticleVersion.setLang(lang);
 
-        contentArticleVersion.setAuthorId(userId);
+        contentArticleVersion.setAuthorId(member.getId_());
         contentArticleVersion.setFolderId((folderId));
         contentArticleVersion.setTitle(title);
         contentArticleVersion.setContent(content);

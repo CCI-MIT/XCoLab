@@ -13,8 +13,8 @@ import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.errors.AccessDeniedPage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,14 +30,12 @@ import javax.servlet.http.HttpServletResponse;
 public class ContentEditorResourceController extends BaseContentEditor {
 
     @GetMapping("/content-editor/resourcePagesEditor")
-    public String handleRenderRequest(HttpServletRequest request, HttpServletRequest response,
-            Model model) {
-        long memberId = MemberAuthUtil.getMemberId(request);
-        if (PermissionsClient.canAdminAll(memberId)) {
-            return "contenteditor/resourcePagesEditor";
-        } else {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+    public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member) {
+        if (!PermissionsClient.canAdminAll(member)) {
+            return new AccessDeniedPage(member).toViewName(response);
         }
+        return "contenteditor/resourcePagesEditor";
     }
 
     @GetMapping("/content-editor/contentEditorGetLatestResourceArticleVersion")
@@ -55,6 +53,7 @@ public class ContentEditorResourceController extends BaseContentEditor {
 
         response.getOutputStream().write(articleVersion.toString().getBytes());
     }
+
     private JSONObject getContentArticleVersion(Long articleId,
             ContentArticleVersion contentArticleVersion, String contestURL, String contestArticleUrl) {
 
@@ -82,6 +81,7 @@ public class ContentEditorResourceController extends BaseContentEditor {
         }
         return articleVersion;
     }
+
     @GetMapping("/content-editor/resourcePagesListFolder")
     public void contentEditorListFolder(HttpServletRequest request, HttpServletResponse response,
             @RequestParam(required = false) String node)
