@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
@@ -20,24 +20,32 @@ import javax.servlet.http.HttpServletResponse;
 public class StaffMembersPreferencesController {
 
     @GetMapping("/staffmemberswidget/editPreferences")
-    public String showStaffMembers(@RequestParam(required = false) String preferenceId,@RequestParam(required = false) String language, HttpServletRequest request, HttpServletResponse response, Model model) {
-    	model.addAttribute("staffMembersPreferences", new StaffMembersPreferences(preferenceId,language));
-    	model.addAttribute("categories", StaffMembersPreferences.getCategories());
-
-        long memberId = MemberAuthUtil.getMemberId(request);
-        if (!PermissionsClient.canAdminAll(memberId)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+    public String showStaffMembers(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member, @RequestParam(required = false) String preferenceId,
+            @RequestParam(required = false) String language) {
+        if (!PermissionsClient.canAdminAll(member)) {
+            return new AccessDeniedPage(member).toViewName(response);
         }
+
+        model.addAttribute("staffMembersPreferences", new StaffMembersPreferences(preferenceId,language));
+        model.addAttribute("categories", StaffMembersPreferences.getCategories());
+
         return "/staffmemberswidget/editPreferences";
     }
 
 
     @PostMapping("/staffmemberswidget/savePreferences")
-    public void savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, StaffMembersPreferences preferences) throws  IOException {
-    	preferences.store();
-        AlertMessage.success("Staff members widget preferences has been saved.").flash(request);
+    public String savePreferences(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member, StaffMembersPreferences preferences) throws  IOException {
+        if (!PermissionsClient.canAdminAll(member)) {
+            return new AccessDeniedPage(member).toViewName(response);
+        }
 
-        response.sendRedirect("/staffmemberswidget/editPreferences?preferenceId="+preferences.getPreferenceId());
+    	preferences.store();
+
+        AlertMessage.success("Staff members widget preferences has been saved.").flash(request);
+        return "redirect:/staffmemberswidget/editPreferences?preferenceId="
+                + preferences.getPreferenceId();
 	}
 
 }

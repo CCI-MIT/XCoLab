@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.html.LabelValue;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.beans.ContestDescriptionBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
@@ -80,10 +81,10 @@ public class DescriptionTabController extends AbstractTabController {
 
     @GetMapping(value = {"", "tab/DESCRIPTION"})
     public String showDescriptionTab(HttpServletRequest request, HttpServletResponse response,
-            Model model) {
+            Model model, Member member) {
 
         if (!tabWrapper.getCanView()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
         setPageAttributes(request, model, tab);
         if (!model.containsAttribute("contestDescriptionBean")) {
@@ -95,21 +96,21 @@ public class DescriptionTabController extends AbstractTabController {
 
     @PostMapping("tab/DESCRIPTION")
     public String updateDescription(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable long contestId,
+            Model model, Member member, @PathVariable long contestId,
             @Valid ContestDescriptionBean contestDescriptionBean, BindingResult result) {
 
         if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         if (result.hasErrors()) {
             AlertMessage.danger("Error while updating.").flash(request);
-            return showDescriptionTab(request, response, model);
+            return showDescriptionTab(request, response, model, member);
         }
 
         final Contest contest = getContest();
 
         contestDescriptionBean.persist(contest);
-        return showDescriptionTab(request, response, model);
+        return showDescriptionTab(request, response, model, member);
     }
 }

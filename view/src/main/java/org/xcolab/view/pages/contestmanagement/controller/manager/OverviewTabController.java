@@ -12,7 +12,7 @@ import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.util.html.LabelValue;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
@@ -85,9 +85,9 @@ public class OverviewTabController extends AbstractTabController {
 
     @GetMapping({"", "manager"})
     public String showAdminTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model) {
+            Model model, Member member) {
         if (!tabWrapper.getCanView()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
         setPageAttributes(request, model, tab);
         model.addAttribute("contestOverviewWrapper", new ContestOverviewWrapper(request));
@@ -95,12 +95,12 @@ public class OverviewTabController extends AbstractTabController {
     }
 
     @PostMapping("manager/update")
-    public String updateContestOverviewTabController(HttpServletRequest request, Model model,
-            @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper,
-            HttpServletResponse response)
+    public String updateContestOverviewTabController(HttpServletRequest request,
+            HttpServletResponse response, Model model, Member member,
+            @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper)
             throws IOException, InvocationTargetException, IllegalAccessException {
         if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
         try {
             updateContestOverviewWrapper.executeMassAction(request, response);

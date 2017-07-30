@@ -13,8 +13,8 @@ import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.errors.AccessDeniedPage;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,14 +28,13 @@ public class OntologyEditorController {
     private static final Integer THRESHOLD_TO_AVOID_NODE_COLLISION = 1000;
 
     @GetMapping("/ontology-editor")
-    public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response, Model model) {
-        long memberId = MemberAuthUtil.getMemberId(request);
+    public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member) {
 
-        if (PermissionsClient.canAdminAll(memberId)) {
-            return "/ontology-editor/ontologyEditor";
-        } else {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        if (!PermissionsClient.canAdminAll(member)) {
+            return new AccessDeniedPage(member).toViewName(response);
         }
+        return "/ontology-editor/ontologyEditor";
     }
 
 

@@ -6,11 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.util.i18n.I18nUtils;
-import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
@@ -24,11 +22,11 @@ import javax.servlet.http.HttpServletResponse;
 public class FeedsPreferencesController {
 	
     @GetMapping("/feedswidget/editPreferences")
-    public String showFeed(@RequestParam(required = false) String preferenceId,HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String showFeed(HttpServletRequest request, HttpServletResponse response, Model model,
+            Member member, @RequestParam(required = false) String preferenceId) {
 
-		long memberId = MemberAuthUtil.getMemberId(request);
-		if (!PermissionsClient.canAdminAll(memberId)) {
-			return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+		if (!PermissionsClient.canAdminAll(member)) {
+            return new AccessDeniedPage(member).toViewName(response);
 		}
 
 		model.addAttribute("feedsPreferences", new FeedsPreferences(preferenceId,null));

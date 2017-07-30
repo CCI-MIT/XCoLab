@@ -24,8 +24,7 @@ import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.view.util.entity.EntityIdListUtil;
@@ -58,12 +57,13 @@ public class ProposalsPreferencesController {
 
     @GetMapping("/proposals/editPreferences")
     public String showPreferences(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, @RequestParam(required = false) String preferenceId,@RequestParam(required = false) String language) {
+            Model model, Member member, ProposalContext proposalContext,
+            @RequestParam(required = false) String preferenceId,
+            @RequestParam(required = false) String language) {
         model.addAttribute("preferences", new ProposalsPreferencesWrapper(preferenceId,language));
 
-        long memberId = MemberAuthUtil.getMemberId(request);
-        if (!PermissionsClient.canAdminAll(memberId)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        if (!PermissionsClient.canAdminAll(member)) {
+            return new AccessDeniedPage(member).toViewName(response);
         }
         //get all contests
         List<Contest> contests = ContestClientUtil.getContestsByActivePrivate(true,true);

@@ -22,7 +22,7 @@ import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.util.html.LabelStringValue;
 import org.xcolab.util.html.LabelValue;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.beans.ContestAdminBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
@@ -93,11 +93,10 @@ public class ContestAdminTabController extends AbstractTabController {
 
     @GetMapping
     public String showAdminTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model,
-            @RequestParam(required = false) Long contestId) {
+            Model model, Member member, @RequestParam(required = false) Long contestId) {
 
         if (!tabWrapper.getCanView()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         setPageAttributes(request, model, tab);
@@ -107,11 +106,11 @@ public class ContestAdminTabController extends AbstractTabController {
 
     @PostMapping("update")
     public String updateAdminTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model, @ModelAttribute ContestAdminBean updateContestAdminBean,
+            Model model, Member member, @ModelAttribute ContestAdminBean updateContestAdminBean,
             @PathVariable long contestId) {
 
         if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         Contest c = getContest();

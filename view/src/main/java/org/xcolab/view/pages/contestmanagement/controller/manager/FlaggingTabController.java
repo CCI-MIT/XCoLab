@@ -16,10 +16,11 @@ import org.xcolab.client.flagging.FlaggingClient;
 import org.xcolab.client.flagging.exceptions.ReportTargetNotFoundException;
 import org.xcolab.client.flagging.pojo.AggregatedReport;
 import org.xcolab.client.flagging.pojo.ReportTarget;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.flagging.ManagerAction;
 import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportTargetWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.FlaggingReportWrapper;
@@ -52,10 +53,10 @@ public class FlaggingTabController extends AbstractTabController {
 
     @GetMapping("tab/FLAGGING")
     public String showFlaggingTab(HttpServletRequest request, HttpServletResponse response,
-            Model model,
-            @RequestParam(required = false) Long elementId) throws ReportTargetNotFoundException {
+            Model model, Member member, @RequestParam(required = false) Long elementId)
+            throws ReportTargetNotFoundException {
         if (!tabWrapper.getCanView()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         long reportTargetId = elementId != null ? elementId : getFirstReportTargetId();
@@ -98,11 +99,11 @@ public class FlaggingTabController extends AbstractTabController {
 
     @PostMapping("tab/FLAGGING/handle/{reportId}/{managerAction}")
     public String approveContent(HttpServletRequest request, HttpServletResponse response,
-            Model model,
+            Model model, Member member,
             @PathVariable long reportId, @PathVariable ManagerAction managerAction)
             throws IOException {
         if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
         long memberId = MemberAuthUtil.getMemberId(request);
         FlaggingClient.handleReport(memberId, managerAction, reportId);
@@ -112,10 +113,10 @@ public class FlaggingTabController extends AbstractTabController {
 
     @PostMapping("tab/FLAGGING/update")
     public String updateEmailTemplateTabController(HttpServletRequest request, Model model,
-            @ModelAttribute FlaggingReportTargetWrapper reportTargetWrapper,
+            Member member, @ModelAttribute FlaggingReportTargetWrapper reportTargetWrapper,
             BindingResult result, HttpServletResponse response) {
         if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         if (result.hasErrors()) {
@@ -130,10 +131,10 @@ public class FlaggingTabController extends AbstractTabController {
 
     @PostMapping("tab/FLAGGING/delete/{reportTargetId}")
     public String deleteEmailTemplateTabController(HttpServletRequest request,
-            HttpServletResponse response,
-            Model model, @PathVariable long reportTargetId) throws IOException {
+            HttpServletResponse response, Model model, Member member,
+            @PathVariable long reportTargetId) throws IOException {
         if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
         final boolean success = FlaggingClient.deleteReportTarget(reportTargetId);
         if (success) {

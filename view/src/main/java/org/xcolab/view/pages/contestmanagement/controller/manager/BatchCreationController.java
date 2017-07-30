@@ -26,7 +26,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.contest.ContestTier;
 import org.xcolab.util.html.LabelValue;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.beans.ContestBatchBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestCSVBean;
 import org.xcolab.view.pages.contestmanagement.utils.ContestCreatorUtil;
@@ -115,7 +115,7 @@ public class BatchCreationController {
             HttpServletResponse response, Member member) {
 
         if (!PermissionsClient.canAdminAll(member)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         model.addAttribute("contestBatchBean", new ContestBatchBean());
@@ -123,12 +123,13 @@ public class BatchCreationController {
     }
 
     @PostMapping("manager/batchCreateContest")
-    public String createBatchContestController(HttpServletRequest request, Model model,
-            @Valid ContestBatchBean contestBatchBean, BindingResult result, Member member)
+    public String createBatchContestController(HttpServletRequest request,
+            HttpServletResponse response, Model model, Member member,
+            @Valid ContestBatchBean contestBatchBean, BindingResult result)
             throws IOException {
 
         if (!PermissionsClient.canAdminAll(member)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         Map<String, String> contestLinks = new LinkedHashMap<>();

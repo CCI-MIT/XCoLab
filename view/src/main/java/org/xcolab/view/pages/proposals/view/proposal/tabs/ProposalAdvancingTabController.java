@@ -24,7 +24,7 @@ import org.xcolab.client.proposals.pojo.proposals.ProposalRatings;
 import org.xcolab.entity.utils.helper.ProposalJudgingCommentHelper;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.util.enums.promotion.JudgingSystemActions;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.judging.JudgingUtil;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.JudgeProposalFeedbackBean;
@@ -50,14 +50,14 @@ import javax.validation.Valid;
 public class ProposalAdvancingTabController extends BaseProposalTabController {
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ADVANCING")
-    public String showAdvancingTab(HttpServletRequest request, Model model,
-            ProposalContext proposalContext) {
+    public String showAdvancingTab(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member, ProposalContext proposalContext) {
 
         final ProposalTab tab = ProposalTab.ADVANCING;
         setCommonModelAndPageAttributes(request, model, proposalContext, tab);
 
         if (!tab.getCanAccess(proposalContext)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         Proposal proposal = proposalContext.getProposal();
@@ -131,7 +131,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
 
     @PostMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=ADVANCING")
     public String saveAdvanceDetails(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext,
+            Model model, Member member, ProposalContext proposalContext,
             @RequestParam(defaultValue = "false") boolean isForcePromotion,
             @RequestParam(defaultValue = "false") boolean isFreeze,
             @RequestParam(defaultValue = "false") boolean isUnfreeze,
@@ -153,11 +153,11 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
 
         if (!(ProposalTab.ADVANCING.getCanAccess(proposalContext))
                 || (isFrozen && !permissions.getCanAdminAll())) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         if (result.hasErrors()) {
-            return showAdvancingTab(request, model, proposalContext);
+            return showAdvancingTab(request, response, model, member, proposalContext);
         }
 
         boolean isUndecided = proposalAdvancingBean.getAdvanceDecision()
@@ -206,9 +206,9 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
 
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/ADVANCING/saveJudgingFeedback")
     public String saveJudgingFeedback(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext,
+            Model model, Member member, ProposalContext proposalContext,
             @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
-            BindingResult result, RedirectAttributes redirectAttributes, Member member)
+            BindingResult result, RedirectAttributes redirectAttributes)
             throws IOException {
 
         final Contest contest = proposalContext.getContest();
@@ -227,7 +227,7 @@ public class ProposalAdvancingTabController extends BaseProposalTabController {
         // Security handling
         if (!(permissions.getCanJudgeActions() && proposal.isUserAmongSelectedJudge(member)
                 || isPublicRating)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnRedirect(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         final String redirectUrl = proposal.getWrapped().getProposalLinkUrl(contest,
