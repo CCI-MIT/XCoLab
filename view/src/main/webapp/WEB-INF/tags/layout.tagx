@@ -160,9 +160,7 @@
 
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 
-    <!-- Addthis -->
-    <script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
-    <script type="text/javascript" src="//s7.addthis.com/js/250/addthis_widget.js#username=climatecolab"><!-- empty --></script>
+
 
     <!-- TODO: move to bottom -->
     <!-- Common init script -->
@@ -183,6 +181,9 @@
     <meta property="og:title" content="${ not empty openGraphTitle ? openGraphTitle: _openGraphShareTitle}" />
     <meta property="og:description" content="${ not empty openGraphDescription ? openGraphDescription: _openGraphShareDescription}" />
     <meta property="og:image" content="${_colabUrl}${not empty openGraphImage?openGraphImage:_logoPathBig}" />
+
+    <meta name="twitter:image" content="${_colabUrl}${not empty openGraphImage?openGraphImage:_logoPathTwitter}"/>
+
     <c:if test="${not empty _facebookId}">
         <meta property="fb:app_id" content="_facebookId"/>
     </c:if>
@@ -389,11 +390,9 @@
                     </c:otherwise>
                 </c:choose>
             </ul>
-            <ul id="c-Footer__menu__right" class="addthis_toolbox addthis_default_style addthis_32x32_style">
-                <a class="addthis_button_facebook" id="addThisButton1" addthis:title="" addthis:description=""><!--  --></a>
-                <a class="addthis_button_twitter" id="addThisButton2" addthis:title="" addthis:description=""><!--  --></a>
-                <a class="addthis_button_email" id="addThisButton3" addthis:title="" addthis:description=""><!--  --></a>
-                <a class="addthis_button_linkedin" id="addThisButton4" addthis:title="" addthis:description=""><!--  --></a>
+            <ul id="c-Footer__menu__right" class="">
+                <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                <div class="addthis_inline_follow_toolbox"><!-- --></div>
             </ul>
         </div> <!-- #c-Footer__menu -->
 
@@ -867,6 +866,10 @@
     <!-- ============ DEFERRED SCRIPTS ============ -->
     <xcolab:script src="${_themeJsFolder}/messageNotification.js" defer="true" />
     <xcolab:script src="${_themeJsFolder}/usertracking.js" defer="true"/>
+
+    <!-- Add this -->
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-597f702bfab33060"><!-- --></script>
 </body>
 </html>
 </jsp:root>

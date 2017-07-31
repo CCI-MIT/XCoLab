@@ -101,6 +101,10 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject("_logoPathBig",
                     themeImageDomain + activeTheme.getLogoPathBig());
 
+            modelAndView.addObject("_logoPathTwitter",
+                    themeImageDomain + activeTheme.getTwitterLogo());
+
+
             modelAndView.addObject("_contestPages", ContestTypeClient
                     .getActiveContestTypes().stream()
                             .map(contestType -> contestType.withLocale(locale.getLanguage()))

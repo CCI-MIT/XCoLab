@@ -60,6 +60,17 @@
   width: 100%;
   margin-bottom: 4px;
 }
+.addpropInputContainer table {
+  margin-bottom: 8px;
+}
+.addpropInputContainer td{
+  font-size: 13px;
+}
+.addpropInputContainer .proposalLink {
+  display: block;
+  width:390px;
+  padding-left: 12px;
+}
 .addpropInputContainer input[type='checkbox']{
   width: 30px;
   float: left;

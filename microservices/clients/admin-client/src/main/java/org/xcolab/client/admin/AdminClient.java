@@ -63,9 +63,11 @@ public class AdminClient {
 
     public static boolean updateConfigurationAttribute(
             ConfigurationAttribute configurationAttribute) {
-        return configurationAttributeResource.update(configurationAttribute,
-                configurationAttribute.getName())
-                .cacheName(CacheName.CONFIGURATION)
-                .execute();
+        final Boolean result = configurationAttributeResource
+                .update(configurationAttribute, configurationAttribute.getName())
+                .cacheName(CacheName.CONFIGURATION).execute();
+        //TODO: more fine grained cache control
+        ServiceRequestUtils.clearCache(CacheName.CONFIGURATION);
+        return result;
     }
 }

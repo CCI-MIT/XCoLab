@@ -33,6 +33,9 @@ public enum ColabTheme {
     public String getLogoPathBig() {
         return getImagePath() + "/" + themeName + "-logo-big.png";
     }
+    public String getTwitterLogo() {
+        return getImagePath() + "/" + themeName + "-logo-twitter.png";
+    }
 
     public String getCssPath() {
         return "/css/themes/" + themeName;

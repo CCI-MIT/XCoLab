@@ -360,7 +360,6 @@ public final class ConfigurationAttributeKey {
                     .build();
 
     //Portlet preferences config
-    //TODO: allow localizing portlet preferences
     public static final AttributeGetter<String> PORTLET_CONTACT_FORM_PREFERENCES =
             ConfigurationAttributes.newStringAttribute("PORTLET_CONTACT_FORM_PREFERENCES")
                     .build();
