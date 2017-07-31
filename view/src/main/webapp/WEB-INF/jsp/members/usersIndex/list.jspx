@@ -23,10 +23,11 @@
 				<c:if test="${pointsActive}">
 					<th class="c-Table__cell--title points">
 						<c:set var="sortURLPoints" value="/members?sortColumn=POINTS&amp;sortAscending=${sortFilterPage.sortColumn == 'POINTS' ? not sortFilterPage.sortAscending : false }&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
-
+                        <a href="/wiki/Climate+CoLab+Points">
 						<img class="js-Tooltip" data-tooltip-content="#js-Tooltip__content__points"
 							 style="width: 15px; height: 15px;" src="${_themeImageFolder}/icon-addprop-question-bar.png" />
-						<span id="js-Tooltip__content__points" class="c-Tooltip">
+                        </a>
+						<span id="js-Tooltip__content__points" style="display:none">
 							<spring:message code="community.page.members.table.order.points.help"/>
 						</span>
 
