@@ -15,7 +15,9 @@ body {
   position: relative;
   padding-top: 7px;
 }
-
+#c-Footer__menu__right p {
+  margin: 0 0 0 0;
+}
 .inner:after {
   content: ".";
   display: block;
