@@ -27,8 +27,8 @@ import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.contest.ContestService;
 import org.xcolab.service.contest.utils.promotion.PhasePromotionHelper;
-import org.xcolab.service.contest.utils.promotion.enums.ContestPhaseTypeValue;
 import org.xcolab.service.contest.utils.promotion.enums.ContestStatus;
+import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 
 import java.util.ArrayList;
 import java.util.Comparator;

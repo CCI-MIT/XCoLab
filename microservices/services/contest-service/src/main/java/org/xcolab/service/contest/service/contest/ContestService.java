@@ -1,6 +1,5 @@
 package org.xcolab.service.contest.service.contest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import org.xcolab.service.contest.domain.contestphasetype.ContestPhaseTypeDao;
 import org.xcolab.service.contest.domain.contesttranslation.ContestTranslationDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
 import org.xcolab.service.contest.service.ontology.OntologyService;
-import org.xcolab.service.contest.utils.promotion.enums.ContestPhaseTypeValue;
 import org.xcolab.service.utils.PaginationHelper;
 
 import java.util.ArrayList;
@@ -188,39 +186,6 @@ public class ContestService {
                 .orElse(contest);
     }
 
-    public void addContestYearSuffixToContest(Contest contest, boolean checkForCompleted) {
-        ContestPhase latestPhase = getActiveOrLastPhase(contest.getContestPK());
-        String[] contestNameParts = contest.getContestShortName().split(" ");
-        _log.info("addContestYearSuffixToContest: {}", contest.getContestPK());
-        // Is in completed phase and inactive? - or is flag set to false?
-        boolean isCompleted = ((contestNameParts).length>0 &&
-                (latestPhase.getContestPhaseType() == ContestPhaseTypeValue.COMPLETED.getTypeId() ||
-                        latestPhase.getContestPhaseType() == ContestPhaseTypeValue.WINNERS_AWARDED.getTypeId()));
-        if (!checkForCompleted || isCompleted) {
-            _log.info("Contest phase type : {}", latestPhase.getContestPhaseType());
 
-            String lastNamePart = contestNameParts[contestNameParts.length - 1];
-            Integer phaseEndYear = getYearFromDate(latestPhase.getPhaseStartDate());
-
-            String newContestShortName;
-            try {
-                final int suffixYear = Integer.parseInt(lastNamePart);
-
-                // Same year suffix detected - skip contest
-                if (suffixYear == phaseEndYear) {
-                    return;
-                }
-
-                // Unlikely event that a suffix has been created but the phase end date has changed - adapt to new suffix
-                contestNameParts[contestNameParts.length - 1] = phaseEndYear.toString();
-                newContestShortName = StringUtils.join(contestNameParts, " ");
-            } catch (NumberFormatException e) {
-                // No year suffix detected - add new one
-                newContestShortName = contest.getContestShortName() + " " + phaseEndYear;
-            }
-            contest.setContestShortName(newContestShortName);
-            contestDao.update(contest);
-        }
-    }
 
 }
