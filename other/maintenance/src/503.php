@@ -35,7 +35,7 @@ $logoPath = $config['logoPath'];
         <h1>Oh Snap!</h1>
         <p style="text-align: justify;">
             Looks like you caught us at a bad time - the <?= $colabName ?> is not available right now.
-            Our engineers have been notified and are working on getting the page back up.
+            Our engineers are working on getting the page back up.
             Please try again in a few minutes.
         </p>
         <p>
