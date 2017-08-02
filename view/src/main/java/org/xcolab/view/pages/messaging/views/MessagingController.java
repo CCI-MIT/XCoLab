@@ -22,7 +22,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.html.HtmlUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.messaging.beans.MessageBean;
 import org.xcolab.view.pages.messaging.beans.MessagingBean;
 import org.xcolab.view.pages.messaging.beans.SendMessageBean;
@@ -61,7 +61,7 @@ public class MessagingController {
              String mailboxType, Integer pageNumber, Member loggedInMember) {
 
         if (loggedInMember == null) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(null).toViewName(response);
         }
 
         final MessagingBean messagingBean = new MessagingBean(loggedInMember,
@@ -83,7 +83,7 @@ public class MessagingController {
                 new MessagingPermissions(loggedInMember, messageBean);
 
         if (!messagingPermissions.getCanViewMessage()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
         if (messagingPermissions.isRecipient()) {
@@ -105,7 +105,7 @@ public class MessagingController {
             throws MessageNotFoundException, IOException {
 
         if (loggedInMember == null) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(null).toViewName(response);
         }
 
         if (messagingBean.getDataPage() != null) {
@@ -128,7 +128,7 @@ public class MessagingController {
             throws IOException {
 
         if (loggedInMember == null ) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(null).toViewName(response);
         }
 
         final MessagingPermissions messagingPermissions = new MessagingPermissions(loggedInMember);

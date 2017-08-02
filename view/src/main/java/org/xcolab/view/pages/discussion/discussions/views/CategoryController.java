@@ -19,7 +19,7 @@ import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
@@ -122,20 +122,16 @@ public class CategoryController extends BaseDiscussionController {
     }
 
     // @RenderMapping(params = "action=createCategory")
-    public String createCategory(HttpServletRequest request, HttpServletResponse response, Model model,
-                               @RequestParam long categoryId)
+    public String createCategory(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member, @RequestParam long categoryId)
             throws DiscussionAuthorizationException {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
         if (!getCanEdit(discussionPermissions, categoryGroup, 0L)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
-
-        // should not be reached
-        checkCanEdit(request, "User does not have the necessary permissions to create a category",
-                categoryGroup, 0L);
 
         model.addAttribute("_activePageLink", "community");
         return "/discussion/category_add";
@@ -143,26 +139,23 @@ public class CategoryController extends BaseDiscussionController {
 
     // @ActionMapping(params = "action=createCategory")
     public String createCategoryAction(HttpServletRequest request, HttpServletResponse response,
-                                   @RequestParam String title, @RequestParam String description)
+            Member member, @RequestParam String title, @RequestParam String description)
             throws IOException, DiscussionAuthorizationException, OperationNotSupportedException {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
         if (!getCanEdit(discussionPermissions, categoryGroup, 0L)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
-
-        // should not be reached
-        checkCanEdit(request, "User does not have the necessary permissions to create a category",
-                categoryGroup, 0L);
 
         throw new OperationNotSupportedException("Not implemented");
     }
 
 
     @GetMapping("/discussion/subscribeCategory")
-    public String subscribeCategory(HttpServletRequest request, HttpServletResponse response, @RequestParam long categoryId)
+    public String subscribeCategory(HttpServletRequest request, HttpServletResponse response,
+            Member member, @RequestParam long categoryId)
             throws DiscussionAuthorizationException, IOException {
 
         long memberId = MemberAuthUtil.getMemberId(request);
@@ -170,12 +163,8 @@ public class CategoryController extends BaseDiscussionController {
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
         if (!getCanView(discussionPermissions, categoryGroup, 0L)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
-
-        // should not be reached
-        checkCanView(request, "You do not have permissions to view this category",
-                categoryGroup, 0L);
 
         if (memberId > 0) {
             if (categoryId > 0) {
@@ -191,7 +180,8 @@ public class CategoryController extends BaseDiscussionController {
 
 
     @GetMapping("/discussion/unsubscribeCategory")
-    public String unsubscribeCategory(HttpServletRequest request, HttpServletResponse response, @RequestParam long categoryId)
+    public String unsubscribeCategory(HttpServletRequest request, HttpServletResponse response,
+            Member member, @RequestParam long categoryId)
             throws DiscussionAuthorizationException, IOException {
 
         long memberId = MemberAuthUtil.getMemberId(request);
@@ -199,11 +189,8 @@ public class CategoryController extends BaseDiscussionController {
 
         DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
         if (!getCanView(discussionPermissions, categoryGroup, 0L)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
-
-        // should not be reached
-        checkCanView(request, "You do not have permissions to view this category", categoryGroup, 0L);
 
         if (memberId > 0) {
             if (categoryId > 0) {

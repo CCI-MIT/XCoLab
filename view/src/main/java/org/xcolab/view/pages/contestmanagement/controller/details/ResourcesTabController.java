@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.beans.ContestResourcesBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.WikiPageWrapper;
@@ -42,10 +43,10 @@ public class ResourcesTabController extends AbstractTabController {
 
     @GetMapping
     public String showResourcesTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model) {
+            HttpServletResponse response, Model model, Member member) {
 
         if (!tabWrapper.getCanView()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         long memberId = MemberAuthUtil.getMemberId(request);
@@ -57,12 +58,13 @@ public class ResourcesTabController extends AbstractTabController {
 
     @PostMapping("update")
     public String updateResourcesTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, @PathVariable long contestId,
+            HttpServletResponse response, Model model, Member member,
+            @PathVariable long contestId,
             @ModelAttribute ContestResourcesBean updatedContestResourcesBean,
             BindingResult result) throws UnsupportedEncodingException, ParseException {
 
         if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         if (result.hasErrors()) {

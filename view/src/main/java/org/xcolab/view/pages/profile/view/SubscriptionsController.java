@@ -17,6 +17,7 @@ import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.profile.beans.MessageBean;
 import org.xcolab.view.pages.profile.utils.UserProfilePermissions;
@@ -43,12 +44,13 @@ public class SubscriptionsController {
 
     @GetMapping
     public String showUserProfileSubscriptions(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable long memberId, Member loggedInMember,
+            Model model, Member loggedInMember, @PathVariable long memberId,
             @RequestParam(required = false, defaultValue = "1") int page) {
         UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
         if (!permissions.getCanAdminProfile(memberId)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
+
         try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request,
                     activityEntryHelper);
@@ -64,8 +66,9 @@ public class SubscriptionsController {
     }
 
     @GetMapping("manage")
-    public String showUserSubscriptionsManage(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable long memberId, @RequestParam(required = false) String typeFilter) {
+    public String showUserSubscriptionsManage(HttpServletRequest request,
+            HttpServletResponse response, Model model, Member loggedInMember,
+            @PathVariable long memberId, @RequestParam(required = false) String typeFilter) {
         try {
             UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request,
                     activityEntryHelper);
@@ -82,7 +85,7 @@ public class SubscriptionsController {
             model.addAttribute("contestType", contestType);
 
             if (!currentUserProfile.isViewingOwnProfile()) {
-                return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+                return new AccessDeniedPage(loggedInMember).toViewName(response);
             }
             return "profile/showUserSubscriptionsManage";
         } catch ( MemberNotFoundException e) {

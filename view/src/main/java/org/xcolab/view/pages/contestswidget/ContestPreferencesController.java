@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.PermissionsClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.i18n.I18nUtils;
-import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
@@ -21,18 +21,19 @@ import javax.servlet.http.HttpServletResponse;
 public class ContestPreferencesController {
 	
     @GetMapping("contestswidget/editPreferences")
-    public String showPreferences(@RequestParam(required = false) String preferenceId,@RequestParam(required = false) String language, HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String showPreferences(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member, @RequestParam(required = false) String preferenceId,
+            @RequestParam(required = false) String language) {
 
-        if(language==null || language.isEmpty()){
+        if (!PermissionsClient.canAdminAll(member)) {
+            return new AccessDeniedPage(member).toViewName(response);
+        }
+
+        if (language == null || language.isEmpty()) {
             language = I18nUtils.DEFAULT_LANGUAGE;
         }
-        long memberId = MemberAuthUtil.getMemberId(request);
-        if (!PermissionsClient.canAdminAll(memberId)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
-        }
 
-
-    	model.addAttribute("contestPreferences", new ContestPreferences(preferenceId,language));
+    	model.addAttribute("contestPreferences", new ContestPreferences(preferenceId, language));
         return "contestswidget/editPreferences";
     }
 	

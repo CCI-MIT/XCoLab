@@ -12,6 +12,7 @@ import org.xcolab.client.contents.exceptions.ContentNotFoundException;
 import org.xcolab.client.contents.pojo.ContentArticle;
 import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
 
 import java.io.IOException;
@@ -34,8 +35,7 @@ public class ContentController {
                     .getContentArticle(contentPage.getContentArticleId());
 
             if (!contentArticle.canView(member)) {
-                response.setStatus(HttpStatus.FORBIDDEN.value());
-                return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+                return new AccessDeniedPage(member).toViewName(response);
             }
 
             model.addAttribute("contentArticleId", contentPage.getContentArticleId());

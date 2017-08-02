@@ -23,6 +23,9 @@
 .idea/dynamic.xml
 .idea/uiDesigner.xml
 
+# Plugins
+.idea/sonarlint
+
 # Gradle:
 .idea/gradle.xml
 .idea/libraries

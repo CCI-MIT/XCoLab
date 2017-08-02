@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.i18n.I18nUtils;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.beans.ContestTranslationBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
@@ -38,10 +39,10 @@ public class TranslationTabController extends AbstractTabController {
 
     @GetMapping("tab/TRANSLATIONS")
     public String showTranslationTab(HttpServletRequest request, HttpServletResponse response,
-            Model model) {
+            Model model, Member member) {
 
         if (!tabWrapper.getCanView()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
         setPageAttributes(request, model, tab);
         if (!model.containsAttribute("contestTranslationBean")) {
@@ -54,21 +55,21 @@ public class TranslationTabController extends AbstractTabController {
 
     @PostMapping("tab/TRANSLATIONS")
     public String update(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable long contestId,
+            Model model, Member member, @PathVariable long contestId,
             @Valid ContestTranslationBean contestTranslationBean, BindingResult result) {
 
         if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         if (result.hasErrors()) {
             AlertMessage.danger("Error while updating.").flash(request);
-            return showTranslationTab(request, response, model);
+            return showTranslationTab(request, response, model, member);
         }
 
         final Contest contest = getContest();
 
         contestTranslationBean.persist(contest);
-        return showTranslationTab(request, response, model);
+        return showTranslationTab(request, response, model, member);
     }
 }

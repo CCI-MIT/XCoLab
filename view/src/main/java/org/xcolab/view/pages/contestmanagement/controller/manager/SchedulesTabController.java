@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.ContestSchedule;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.promotion.ContestPhasePromoteType;
 import org.xcolab.util.html.LabelStringValue;
 import org.xcolab.util.html.LabelValue;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.utils.schedule.ContestScheduleLifecycleUtil;
 import org.xcolab.view.pages.contestmanagement.wrappers.ContestScheduleBean;
@@ -83,10 +84,10 @@ public class SchedulesTabController extends AbstractTabController {
 
     @GetMapping("tab/SCHEDULES")
     public String showScheduleTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model,
+            HttpServletResponse response, Model model, Member member,
             @RequestParam(value = "elementId", required = false) Long elementId) {
         if (!tabWrapper.getCanView()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         Long scheduleId = elementId != null ? elementId : getFirstScheduleId();
@@ -111,39 +112,41 @@ public class SchedulesTabController extends AbstractTabController {
 
     @PostMapping("tab/SCHEDULES")
     public String performAction(HttpServletRequest request, HttpServletResponse response,
-            Model model, Action action, @RequestParam(required = false) Long elementId,
+            Model model, Member member, Action action,
+            @RequestParam(required = false) Long elementId,
             @ModelAttribute ContestScheduleBean contestScheduleBean, BindingResult result) {
 
         if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         switch (action) {
             case CREATE:
-                return createSchedule(request, response, model);
+                return createSchedule(request, response, model, member);
             case UPDATE:
-                return updateSchedule(request, response, model, contestScheduleBean, result);
+                return updateSchedule(request, response, model, member,
+                        contestScheduleBean, result);
             case DELETE:
                 if (elementId == null) {
                     throw new IllegalArgumentException("Schedule id missing");
                 }
-                return deleteSchedule(request, response, model, elementId);
+                return deleteSchedule(request, response, model, member, elementId);
             default:
                 throw new IllegalArgumentException("unknown action");
         }
     }
 
     private String createSchedule(HttpServletRequest request, HttpServletResponse response,
-            Model model) {
+            Model model, Member member) {
         ContestSchedule newContestSchedule = ContestScheduleLifecycleUtil.createNewSchedule();
 
         AlertMessage.CREATED.flash(request);
         model.asMap().remove(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY);
-        return showScheduleTabController(request, response, model, newContestSchedule.getId_());
+        return showScheduleTabController(request, response, model, member, newContestSchedule.getId_());
     }
 
     private String updateSchedule(HttpServletRequest request, HttpServletResponse response,
-            Model model, ContestScheduleBean contestScheduleBean, BindingResult result) {
+            Model model, Member member, ContestScheduleBean contestScheduleBean, BindingResult result) {
 
         if (!contestScheduleBean.areContestsCompatibleWithSchedule()) {
             result.reject(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY, SCHEDULE_CHANGE_ERROR_MESSAGE);
@@ -151,7 +154,7 @@ public class SchedulesTabController extends AbstractTabController {
 
         if (result.hasErrors()) {
             AlertMessage.NOT_SAVED.flash(request);
-            return showScheduleTabController(request, response, model,
+            return showScheduleTabController(request, response, model, member,
                     contestScheduleBean.getScheduleId());
         }
 
@@ -159,18 +162,18 @@ public class SchedulesTabController extends AbstractTabController {
 
         AlertMessage.CHANGES_SAVED.flash(request);
         model.asMap().remove(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY);
-        return showScheduleTabController(request, response, model,
+        return showScheduleTabController(request, response, model, member,
                 contestScheduleBean.getScheduleId());
     }
 
     private String deleteSchedule(HttpServletRequest request, HttpServletResponse response,
-            Model model, Long scheduleId) {
+            Model model, Member member, Long scheduleId) {
 
         ContestScheduleLifecycleUtil.deleteContestSchedule(scheduleId);
 
         AlertMessage.DELETED.flash(request);
         model.asMap().remove(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY);
-        return showScheduleTabController(request, response, model, null);
+        return showScheduleTabController(request, response, model, member, null);
     }
 
     private enum Action {

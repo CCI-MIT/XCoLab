@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.controller.AbstractProposalTemplateTabController;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.utils.ProposalTemplateLifecycleUtil;
@@ -49,11 +50,11 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
 
     @GetMapping("tab/PROPOSAL_TEMPLATES")
     public String showProposalTemplatesTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model,
+            HttpServletResponse response, Model model, Member member,
             @RequestParam(required = false) Long elementId) {
 
         if (!tabWrapper.getCanView()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         Long planTemplateId = elementId != null ? elementId : getFirstPlanTemplateId();
@@ -82,10 +83,11 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
 
     @PostMapping("tab/PROPOSAL_TEMPLATES/create")
     public String createNewProposalTemplateTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model) throws IOException {
+            HttpServletResponse response, Model model, Member member)
+            throws IOException {
 
         if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         PlanTemplate newTemplate = ProposalTemplateLifecycleUtil.create();
@@ -94,11 +96,11 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
 
     @PostMapping("tab/PROPOSAL_TEMPLATES/delete/{elementId}")
     public String deleteProposalTemplateTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model,
+            HttpServletResponse response, Model model, Member member,
             @PathVariable Long elementId) throws IOException {
 
         if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
         ProposalTemplateLifecycleUtil.delete(elementId);
         AlertMessage.DELETED.flash(request);
@@ -107,12 +109,12 @@ public class ProposalTemplateController extends AbstractProposalTemplateTabContr
 
     @PostMapping("tab/PROPOSAL_TEMPLATES/update")
     public String updateProposalTemplatesTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model,
+            HttpServletResponse response, Model model, Member member,
             @ModelAttribute ProposalTemplateWrapper updatedProposalTemplateWrapper,
             BindingResult result) throws IOException {
 
         if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         if (result.hasErrors()) {

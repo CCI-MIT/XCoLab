@@ -28,7 +28,7 @@ import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.enums.proposal.MoveType;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.JudgeProposalFeedbackBean;
@@ -291,7 +291,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         Proposal proposal = proposalContext.getProposal();
         final ProposalsPermissions permissions = proposalContext.getPermissions();
         if (proposal != null && !permissions.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(currentMember).toViewName(response);
         }
 
         if (result.hasErrors()) {

@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
@@ -21,12 +21,12 @@ import javax.servlet.http.HttpServletResponse;
 public class ContactPreferencesController {
 	
     @GetMapping("/feedback/editPreferences")
-    public String showFeed(HttpServletRequest request , @RequestParam String language, HttpServletResponse response, Model model) {
+    public String showFeed(HttpServletRequest request, HttpServletResponse response, Model model,
+            Member member, @RequestParam String language) {
     	model.addAttribute("contactPreferences", new ContactPreferences(null,language));
 
-        long memberId = MemberAuthUtil.getMemberId(request);
-        if (!PermissionsClient.canAdminAll(memberId)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        if (!PermissionsClient.canAdminAll(member)) {
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         return "feedback/editPreferences";
@@ -34,9 +34,14 @@ public class ContactPreferencesController {
 	
 
     @PostMapping("/feedback/savePreferences")
-    public String savePreferences(HttpServletRequest request, @RequestParam String language, HttpServletResponse response,
-            Model model, ContactPreferences preferences)
+    public String savePreferences(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member, @RequestParam String language,
+            ContactPreferences preferences)
             throws  IOException {
+        if (!PermissionsClient.canAdminAll(member)) {
+            return new AccessDeniedPage(member).toViewName(response);
+        }
+
         if(language==null){
 
         }

@@ -21,7 +21,7 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.html.LabelValue;
-import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.contestmanagement.beans.VotingReportBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
@@ -99,9 +99,9 @@ public class AdminTabController extends AbstractTabController {
 
     @GetMapping("tab/ADMIN")
     public String showAdminTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model) {
+            Model model, Member member) {
         if (!tabWrapper.getCanView()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
         setPageAttributes(request, model, tab);
         model.addAttribute("votingReportBean", new VotingReportBean());
@@ -190,7 +190,7 @@ public class AdminTabController extends AbstractTabController {
             throws IOException {
 
         if (!PermissionsClient.canAdminAll(loggedInMember)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
         AdminClient.deleteNotifications(notificationId);
@@ -201,13 +201,12 @@ public class AdminTabController extends AbstractTabController {
 
     @PostMapping("tab/ADMIN/notificationMessageCreate")
     public String saveNotification(HttpServletRequest request,
-            HttpServletResponse response, @RequestParam String notificationText,
+            HttpServletResponse response, Member member, @RequestParam String notificationText,
             @RequestParam String expiretime)
             throws IOException, ParseException {
 
-        long memberId = MemberAuthUtil.getMemberId(request);
-        if (!PermissionsClient.canAdminAll(memberId)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        if (!PermissionsClient.canAdminAll(member)) {
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

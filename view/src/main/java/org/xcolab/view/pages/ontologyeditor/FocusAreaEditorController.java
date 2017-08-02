@@ -14,8 +14,8 @@ import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologySpace;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.errors.AccessDeniedPage;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,14 +37,13 @@ public class FocusAreaEditorController {
     }
 
     @GetMapping("/ontology-editor/focusAreaEditor")
-    public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member) {
 
-        long memberId = MemberAuthUtil.getMemberId(request);
-        if (PermissionsClient.canAdminAll(memberId)) {
-            return "/ontology-editor/focusAreaEditor";
-        } else {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        if (!PermissionsClient.canAdminAll(member)) {
+            return new AccessDeniedPage(member).toViewName(response);
         }
+        return "/ontology-editor/focusAreaEditor";
     }
 
     private void defaultOperationReturnMessage(boolean success, String message,

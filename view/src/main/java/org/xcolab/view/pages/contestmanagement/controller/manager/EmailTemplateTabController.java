@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.html.LabelStringValue;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.EmailTemplateWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
@@ -42,10 +43,9 @@ public class EmailTemplateTabController extends AbstractTabController {
 
     @GetMapping("tab/EMAIL_TEMPLATES")
     public String showEmailTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model,
-            @RequestParam(required = false) String elementId) {
+            Model model, Member member, @RequestParam(required = false) String elementId) {
         if (!tabWrapper.getCanView()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         String templateType = elementId != null ? elementId : getFirstTemplateName();
@@ -77,10 +77,10 @@ public class EmailTemplateTabController extends AbstractTabController {
 
     @PostMapping("tab/EMAIL_TEMPLATES/update")
     public String updateEmailTemplateTabController(HttpServletRequest request, Model model,
-            @ModelAttribute EmailTemplateWrapper updateEmailTemplateWrapper,
+            Member member, @ModelAttribute EmailTemplateWrapper updateEmailTemplateWrapper,
             BindingResult result, HttpServletResponse response) {
         if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         if (result.hasErrors()) {

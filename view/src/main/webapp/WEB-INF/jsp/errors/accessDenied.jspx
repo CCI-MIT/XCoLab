@@ -1,0 +1,33 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+
+<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+<xcolab:layout>
+
+    <h2>
+        ${_isLoggedIn ? 'Access denied' : 'Login required'}
+    </h2>
+    <br />
+
+    <c:choose>
+        <c:when test="${not _isLoggedIn}">
+            <div class="c-Alert c-Alert__info__message">
+                The page you are trying to access requires you to be logged in.
+                If you already have an account, you can <a href="javascript:deferUntilLogin();">log in here</a>.
+                If you don't have an account, you can create a ${_colabName} account <a href="/register?redirect=${_requestUri}">here</a>.
+                <br /><br />
+                Please note that you may be automatically logged out of your account after 2 hours (120 minutes).
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="c-Alert c-Alert__error__message">
+                You do not have the correct permissions to view this page.
+                If you think this was an error, please feel free to <a href="/feedback">contact us</a>.
+            </div>
+        </c:otherwise>
+    </c:choose>
+
+</xcolab:layout>
+
+</jsp:root>
