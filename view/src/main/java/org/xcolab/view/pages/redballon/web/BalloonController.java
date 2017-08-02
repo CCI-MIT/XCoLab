@@ -2,6 +2,7 @@ package org.xcolab.view.pages.redballon.web;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,14 +27,12 @@ import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.redballon.utils.BalloonService;
 import org.xcolab.view.pages.redballon.web.beans.UserEmailBean;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -94,12 +93,13 @@ public class BalloonController {
     @PostMapping("/snp/{context}")
     public String requestLink(HttpServletRequest request, HttpServletResponse response,
             Model model, @PathVariable String context,
-            @Valid UserEmailBean userEmailBean, BindingResult bindingResult)
-            throws IOException, AddressException {
+            @Valid UserEmailBean userEmailBean, BindingResult bindingResult) {
 
         if (!context.equals(ConfigurationAttributeKey.SNP_CONTEXT.get())) {
             return "redirect:/snp/" + ConfigurationAttributeKey.SNP_CONTEXT.get();
         }
+
+        populateModelWithModalTexts(model);
 
         if (userEmailBean == null || bindingResult.hasErrors()) {
             return showBalloon(request, response, model, context);
@@ -155,11 +155,13 @@ public class BalloonController {
     public String showLink(HttpServletRequest request, HttpServletResponse response, Model model,
             @PathVariable(required = false) String linkUuid,
             @PathVariable(required = false) String context)
-            throws IOException, ParserConfigurationException {
+            throws ParserConfigurationException {
 
         if (!context.equals(ConfigurationAttributeKey.SNP_CONTEXT.get())) {
             return "redirect:/snp/" + ConfigurationAttributeKey.SNP_CONTEXT.get();
         }
+
+        populateModelWithModalTexts(model);
 
         BalloonUserTracking but = null;
         if (linkUuid != null) {
@@ -201,13 +203,13 @@ public class BalloonController {
             Element element = doc.createElement("meta");
 
             element.setAttribute("property", "og:title");
-            element.setAttribute("content", text != null ? text.getFacebookSubject() : "");
+            element.setAttribute("content", text != null ? text.getShareTitle() : "");
 
 
             model.addAttribute("meta1", element);
             element = doc.createElement("meta");
             element.setAttribute("property", "og:description");
-            element.setAttribute("content", text != null ? text.getFacebookDescription() : "");
+            element.setAttribute("content", text != null ? text.getShareDescription() : "");
 
 
             model.addAttribute("meta2", element);
@@ -225,5 +227,14 @@ public class BalloonController {
         }
 
         return showBalloon(request, response, model, context);
+    }
+
+    private void populateModelWithModalTexts(Model model) {
+        final String lang = LocaleContextHolder.getLocale().getLanguage();
+
+        final String consentFormText = ConfigurationAttributeKey.SNP_CONSENT_FORM_TEXT.get(lang);
+        final String exampleText = ConfigurationAttributeKey.SNP_EXAMPLE_TEXT.get(lang);
+        model.addAttribute("consentFormText", consentFormText);
+        model.addAttribute("exampleText", exampleText);
     }
 }

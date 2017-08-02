@@ -7,30 +7,24 @@ import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BalloonText implements Serializable {
 
+    public static final TypeProvider<BalloonText> TYPES = new TypeProvider<>(BalloonText.class,
+            new ParameterizedTypeReference<List<BalloonText>>() {});
+
     private static final long serialVersionUID = 669206607;
 
-    public static final TypeProvider<BalloonText> TYPES =
-            new TypeProvider<>(BalloonText.class,
-                    new ParameterizedTypeReference<List<BalloonText>>() {
-                    });
-
-    private Long    id_;
-    private String  name;
-    private String  textbeforeform;
-    private String  textafterform;
-    private String  textbeforesharebuttons;
-    private String  textaftersharebuttons;
-    private String  accepttostext;
-    private String  emailtemplate;
-    private String  emailsubjecttemplate;
-    private String  twitterdescription;
-    private String  twittersubject;
-    private String  facebookdescription;
-    private String  facebooksubject;
+    private Long id_;
+    private String name;
+    private String textbeforeform;
+    private String textbeforesharebuttons;
+    private String emailtemplate;
+    private String emailsubjecttemplate;
+    private String shareTitle;
+    private String shareDescription;
     private Boolean enabled;
 
     public BalloonText() {}
@@ -39,49 +33,12 @@ public class BalloonText implements Serializable {
         this.id_ = value.id_;
         this.name = value.name;
         this.textbeforeform = value.textbeforeform;
-        this.textafterform = value.textafterform;
         this.textbeforesharebuttons = value.textbeforesharebuttons;
-        this.textaftersharebuttons = value.textaftersharebuttons;
-        this.accepttostext = value.accepttostext;
         this.emailtemplate = value.emailtemplate;
         this.emailsubjecttemplate = value.emailsubjecttemplate;
-        this.twitterdescription = value.twitterdescription;
-        this.twittersubject = value.twittersubject;
-        this.facebookdescription = value.facebookdescription;
-        this.facebooksubject = value.facebooksubject;
+        this.shareTitle = value.shareTitle;
+        this.shareDescription = value.shareDescription;
         this.enabled = value.enabled;
-    }
-
-    public BalloonText(
-        Long    id_,
-        String  name,
-        String  textbeforeform,
-        String  textafterform,
-        String  textbeforesharebuttons,
-        String  textaftersharebuttons,
-        String  accepttostext,
-        String  emailtemplate,
-        String  emailsubjecttemplate,
-        String  twitterdescription,
-        String  twittersubject,
-        String  facebookdescription,
-        String  facebooksubject,
-        Boolean enabled
-    ) {
-        this.id_ = id_;
-        this.name = name;
-        this.textbeforeform = textbeforeform;
-        this.textafterform = textafterform;
-        this.textbeforesharebuttons = textbeforesharebuttons;
-        this.textaftersharebuttons = textaftersharebuttons;
-        this.accepttostext = accepttostext;
-        this.emailtemplate = emailtemplate;
-        this.emailsubjecttemplate = emailsubjecttemplate;
-        this.twitterdescription = twitterdescription;
-        this.twittersubject = twittersubject;
-        this.facebookdescription = facebookdescription;
-        this.facebooksubject = facebooksubject;
-        this.enabled = enabled;
     }
 
     public Long getId_() {
@@ -108,36 +65,12 @@ public class BalloonText implements Serializable {
         this.textbeforeform = textbeforeform;
     }
 
-    public String getTextAfterForm() {
-        return this.textafterform;
-    }
-
-    public void setTextAfterForm(String textafterform) {
-        this.textafterform = textafterform;
-    }
-
     public String getTextBeforeShareButtons() {
         return this.textbeforesharebuttons;
     }
 
     public void setTextBeforeShareButtons(String textbeforesharebuttons) {
         this.textbeforesharebuttons = textbeforesharebuttons;
-    }
-
-    public String getTextAfterShareButtons() {
-        return this.textaftersharebuttons;
-    }
-
-    public void setTextAfterShareButtons(String textaftersharebuttons) {
-        this.textaftersharebuttons = textaftersharebuttons;
-    }
-
-    public String getAcceptTosText() {
-        return this.accepttostext;
-    }
-
-    public void setAcceptTosText(String accepttostext) {
-        this.accepttostext = accepttostext;
     }
 
     public String getEmailTemplate() {
@@ -156,38 +89,6 @@ public class BalloonText implements Serializable {
         this.emailsubjecttemplate = emailsubjecttemplate;
     }
 
-    public String getTwitterDescription() {
-        return this.twitterdescription;
-    }
-
-    public void setTwitterDescription(String twitterdescription) {
-        this.twitterdescription = twitterdescription;
-    }
-
-    public String getTwitterSubject() {
-        return this.twittersubject;
-    }
-
-    public void setTwitterSubject(String twittersubject) {
-        this.twittersubject = twittersubject;
-    }
-
-    public String getFacebookDescription() {
-        return this.facebookdescription;
-    }
-
-    public void setFacebookDescription(String facebookdescription) {
-        this.facebookdescription = facebookdescription;
-    }
-
-    public String getFacebookSubject() {
-        return this.facebooksubject;
-    }
-
-    public void setFacebookSubject(String facebooksubject) {
-        this.facebooksubject = facebooksubject;
-    }
-
     public Boolean getEnabled() {
         return this.enabled;
     }
@@ -196,15 +97,55 @@ public class BalloonText implements Serializable {
         this.enabled = enabled;
     }
 
+    public String getShareTitle() {
+        return shareTitle;
+    }
+
+    public void setShareTitle(String shareTitle) {
+        this.shareTitle = shareTitle;
+    }
+
+    public String getShareDescription() {
+        return shareDescription;
+    }
+
+    public void setShareDescription(String shareDescription) {
+        this.shareDescription = shareDescription;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof BalloonText)) {
+            return false;
+        }
+        BalloonText that = (BalloonText) o;
+        return Objects.equals(getId_(), that.getId_())
+                && Objects.equals(getName(), that.getName())
+                && Objects.equals(textbeforeform, that.textbeforeform)
+                && Objects.equals(textbeforesharebuttons, that.textbeforesharebuttons)
+                && Objects.equals(emailtemplate, that.emailtemplate)
+                && Objects.equals(emailsubjecttemplate, that.emailsubjecttemplate)
+                && Objects.equals(getShareTitle(), that.getShareTitle())
+                && Objects.equals(getShareDescription(), that.getShareDescription())
+                && Objects.equals(getEnabled(), that.getEnabled());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects
+                .hash(getId_(), getName(), textbeforeform, textbeforesharebuttons, emailtemplate,
+                        emailsubjecttemplate, getShareTitle(), getShareDescription(), getEnabled());
+    }
+
     @Override
     public String toString() {
-        String sb =
-                "BalloonText (" + id_ + ", " + name + ", " + textbeforeform + ", " + textafterform
-                        + ", " + textbeforesharebuttons + ", " + textaftersharebuttons + ", "
-                        + accepttostext + ", " + emailtemplate + ", " + emailsubjecttemplate + ", "
-                        + twitterdescription + ", " + twittersubject + ", " + facebookdescription
-                        + ", " + facebooksubject + ", " + enabled + ")";
-
-        return sb;
+        return "BalloonText{" + "id_=" + id_ + ", name='" + name + '\'' + ", textbeforeform='"
+                + textbeforeform + '\'' + ", textbeforesharebuttons='" + textbeforesharebuttons
+                + '\'' + ", emailtemplate='" + emailtemplate + '\'' + ", emailsubjecttemplate='"
+                + emailsubjecttemplate + '\'' + ", shareTitle='" + shareTitle + '\''
+                + ", shareDescription='" + shareDescription + '\'' + ", enabled=" + enabled + '}';
     }
 }

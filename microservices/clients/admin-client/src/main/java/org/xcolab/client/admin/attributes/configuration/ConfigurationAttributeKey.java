@@ -422,4 +422,12 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newStringAttribute("SNP_IS_ACTIVE")
                     .defaultValue("socialnetworkprize")
                     .build();
+
+    public static final LocalizableAttributeGetter<String> SNP_CONSENT_FORM_TEXT =
+            ConfigurationAttributes.newLocalizedStringAttribute("SNP_CONSENT_FORM_TEXT")
+                    .buildLocalizable();
+
+    public static final LocalizableAttributeGetter<String> SNP_EXAMPLE_TEXT =
+            ConfigurationAttributes.newLocalizedStringAttribute("SNP_EXAMPLE_TEXT")
+                    .buildLocalizable();
 }

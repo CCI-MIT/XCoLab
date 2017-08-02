@@ -7,24 +7,37 @@
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 	<xcolab:layout meta1="${meta1}" meta2="${meta2}" title="Social Network Prize">
 		<div class="balloonContainer">
-		${balloonText.textBeforeForm }
 
-		<form:form modelAttribute="userEmailBean" id="sendUserEmailForm" method="post">
+            ${balloonText.textBeforeForm}
 
-			<div>
-				<form:checkbox path="acceptTos" />${balloonText.acceptTosText }<br />
-				<form:errors path="acceptTos" class="c-Alert c-Alert__error"/>
-			</div>
+            <c:if test="${not _isLoggedIn}">
+                <p>
+                    You don’t have to be a ${_colabName} member to win the Social Network Prize,
+                    but if you are a member, <a href="javascript:deferUntilLogin();">log in</a> first
+                    so we can display your link on your profile page.
+                </p>
+            </c:if>
 
-			<form:input path="email" id="email" style="border: 1px solid #DDD;color: #8d8d8d;font-weight: 200;margin-bottom: 7px;font-size: 20px;width: 307px;margin: 10px 0px 10px 0px;"  cssClass="text profileInput balloonInput" required="true" placeholder="Please enter your e-Mail address" />
-			<div class="c-Button__primary">
-				<a href="#" onclick="javascript:jQuery('#sendUserEmailForm').submit();">Request your unique link</a>
-			</div><br />
-			<form:errors path="email" class="c-Alert c-Alert__error"/>
-		</form:form>
+            <form:form modelAttribute="userEmailBean" id="sendUserEmailForm" method="post">
+                <div class="checkbox">
+                    <form:errors path="acceptTos" class="c-Alert c-Alert__error"/>
+                    <label>
+                        <form:checkbox path="acceptTos" required="true" />
+                        Yes, I have read and I agree to the terms of the <a href="" data-toggle="modal" data-target="#snpConsentFormModal">Consent Form</a>
+                    </label>
+                </div>
 
-		${balloonText.textAfterForm }
+                <form:errors path="email" class="c-Alert c-Alert__error"/>
+                <form:input path="email" required="true" placeholder="Please enter your email address"
+                            cssClass="form-control bs-form-control-inline bs-form-control--medium" />
+                <button type="submit" class="c-Button__primary c-Button--form" href="#">
+                    Request your unique links
+                </button>
+
+            </form:form>
 
 		</div>
+        <jsp:include page="exampleModal.jspx" />
+        <jsp:include page="consentForm.jspx" />
 	</xcolab:layout>
 </jsp:root>
