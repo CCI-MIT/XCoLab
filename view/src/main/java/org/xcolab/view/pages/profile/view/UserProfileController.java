@@ -33,6 +33,7 @@ import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.CountryUtil;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.pages.profile.beans.MessageBean;
@@ -75,12 +76,11 @@ public class UserProfileController {
     @GetMapping
     public String showProfile(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member) throws IOException {
-        if (member != null) {
-            response.sendRedirect("/members/profile/" + member.getId_());
-            return ErrorMessage.ERROR_VIEW;
-        } else {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        if (member == null) {
+            return new AccessDeniedPage(null).toViewName(response);
         }
+        response.sendRedirect("/members/profile/" + member.getId_());
+        return ErrorMessage.ERROR_VIEW;
     }
 
     @GetMapping("{memberId}")
@@ -111,7 +111,7 @@ public class UserProfileController {
 
         UserProfilePermissions permissions = new UserProfilePermissions(member);
         if (!permissions.getCanEditMemberProfile(memberId)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
         model.addAttribute("permissions", permissions);
         model.addAttribute("_activePageLink", "community");

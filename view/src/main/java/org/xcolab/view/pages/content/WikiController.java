@@ -17,6 +17,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
 
 import java.io.IOException;
@@ -56,7 +57,7 @@ public class WikiController {
                         .getContentArticle(contentArticleVersion.getContentArticleId());
 
                 if (!contentArticle.canView(member)) {
-                    return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+                    return new AccessDeniedPage(member).toViewName(response);
                 }
                 model.addAttribute("contentArticleVersion", contentArticleVersion);
             } catch (ContentNotFoundException e) {

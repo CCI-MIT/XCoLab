@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.CollectionCardWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.OntologyTermWrapper;
@@ -48,10 +49,10 @@ public class CollectionCardTabController extends AbstractTabController {
 
     @GetMapping("tab/COLLECTION_CARDS")
     public String showCollectionCardTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model,
+            HttpServletResponse response, Model model, Member member,
             @RequestParam(required = false) String elementId) {
         if (!tabWrapper.getCanView()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         model.addAttribute("collectionCardWrapperWhat",
@@ -76,10 +77,10 @@ public class CollectionCardTabController extends AbstractTabController {
 
     @PostMapping("tab/COLLECTION_CARDS/update")
     public String updateCollectionCardController(HttpServletRequest request, Model model,
-            @ModelAttribute CollectionCardWrapper collectionCardWrapper,
+            Member member, @ModelAttribute CollectionCardWrapper collectionCardWrapper,
             BindingResult result, HttpServletResponse response) {
         if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         if (result.hasErrors()) {
@@ -91,10 +92,10 @@ public class CollectionCardTabController extends AbstractTabController {
     }
 
     @PostMapping("tab/COLLECTION_CARDS/delete")
-    public String deleteCollectionCardController(HttpServletRequest request,
+    public String deleteCollectionCardController(HttpServletRequest request, Member member,
             @RequestParam long collectionCardId, HttpServletResponse response) {
         if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
         ContestClientUtil.deleteContestCollectionCard(collectionCardId);
         return "redirect:" + tab.getTabUrl();

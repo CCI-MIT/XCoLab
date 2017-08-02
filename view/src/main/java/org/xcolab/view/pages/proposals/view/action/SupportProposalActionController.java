@@ -11,7 +11,7 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.loginregister.SharedColabUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
@@ -33,12 +33,12 @@ public class SupportProposalActionController {
 
     @GetMapping("supportProposalAction")
     public String handleAction(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member currentMember,
+            Model model, Member currentMember, ProposalContext proposalContext,
             @RequestParam(required = false) String forwardToTab)
             throws ProposalsAuthorizationException, IOException {
 
         if (!proposalContext.getPermissions().getCanSupportProposal()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(currentMember).toViewName(response);
         }
         long memberId = currentMember.getUserId();
         long proposalId = proposalContext.getProposal().getProposalId();

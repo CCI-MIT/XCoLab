@@ -10,7 +10,6 @@ import org.xcolab.client.comment.util.CategoryClientUtil;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.view.pages.discussion.discussions.DiscussionPreferences;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
-import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,32 +24,6 @@ public abstract class BaseDiscussionController {
         } catch (CategoryGroupNotFoundException e) {
             throw ReferenceResolutionException
                     .toObject(CategoryGroup.class, preferences.getCategoryGroupId()).build();
-        }
-    }
-
-    protected void checkCanView(HttpServletRequest request, String accessDeniedMessage,
-            CategoryGroup categoryGroup, long additionalId)
-            throws DiscussionAuthorizationException {
-        checkPermissions(request, accessDeniedMessage, categoryGroup, additionalId, false);
-    }
-
-    protected void checkCanEdit(HttpServletRequest request, String accessDeniedMessage,
-            CategoryGroup categoryGroup, long additionalId)
-            throws DiscussionAuthorizationException {
-        checkPermissions(request, accessDeniedMessage, categoryGroup, additionalId, true);
-    }
-
-    private void checkPermissions(HttpServletRequest request, String accessDeniedMessage,
-            CategoryGroup categoryGroup,
-            long additionalId, boolean checkEditPermissions)
-            throws DiscussionAuthorizationException {
-        DiscussionPermissions permissions = new DiscussionPermissions(request);
-
-        if (additionalId > 0 && !getCanView(permissions, categoryGroup, additionalId)) {
-            throw new DiscussionAuthorizationException(accessDeniedMessage);
-        }
-        if (checkEditPermissions && !getCanEdit(permissions, categoryGroup, additionalId)) {
-            throw new DiscussionAuthorizationException(accessDeniedMessage);
         }
     }
 

@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
@@ -21,11 +21,12 @@ import javax.servlet.http.HttpServletResponse;
 public class RandomProposalsPreferencesController {
 
     @GetMapping("/randomproposalswidget/editPreferences")
-    public String showPreferences(@RequestParam(required = false) String preferenceId,@RequestParam(required = false) String language, HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String showPreferences(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member, @RequestParam(required = false) String preferenceId,
+            @RequestParam(required = false) String language) {
 
-        long memberId = MemberAuthUtil.getMemberId(request);
-        if (!PermissionsClient.canAdminAll(memberId)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        if (!PermissionsClient.canAdminAll(member)) {
+            return new AccessDeniedPage(member).toViewName(response);
         }
     	model.addAttribute("preferences", new RandomProposalsPreferences(preferenceId,language));
     	
@@ -34,12 +35,18 @@ public class RandomProposalsPreferencesController {
 	
 
     @PostMapping("/randomproposalswidget/savePreferences")
-    public void savePreferences(HttpServletRequest request, HttpServletResponse response, Model model,
-            RandomProposalsPreferences preferences)
+    public String savePreferences(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member, RandomProposalsPreferences preferences)
             throws IOException {
+        if (!PermissionsClient.canAdminAll(member)) {
+            return new AccessDeniedPage(member).toViewName(response);
+        }
+
     	preferences.submit();
+
         AlertMessage.success("Random proposals widget preferences has been saved.").flash(request);
-        response.sendRedirect("/randomproposalswidget/editPreferences?preferenceId="+preferences.getPreferenceId());
+        return "redirect:/randomproposalswidget/editPreferences?preferenceId="
+                + preferences.getPreferenceId();
     }
 
 }

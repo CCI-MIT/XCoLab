@@ -22,7 +22,7 @@ import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
 import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
@@ -61,7 +61,7 @@ public class CreateProposalController extends BaseProposalsController {
             int baseProposalVersion, Long baseContestId) {
 
         if (!proposalContext.getPermissions().getCanCreate()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
 
         long memberId = loggedInMember.getId_();
@@ -159,7 +159,7 @@ public class CreateProposalController extends BaseProposalsController {
         Proposal proposal = proposalContext.getProposal();
         final ProposalsPermissions permissions = proposalContext.getPermissions();
         if (!permissions.getCanCreate()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(permissions.getMember()).toViewName(response);
         }
 
         if (result.hasErrors()) {

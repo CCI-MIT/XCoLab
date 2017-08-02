@@ -18,9 +18,10 @@ import org.xcolab.client.comment.pojo.Comment;
 import org.xcolab.client.comment.pojo.CommentThread;
 import org.xcolab.client.comment.util.CommentClientUtil;
 import org.xcolab.client.comment.util.ThreadClientUtil;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions.DiscussionAuthorizationException;
 
@@ -35,7 +36,7 @@ public class ThreadController extends BaseDiscussionController {
 
     @GetMapping("/discussion/thread/{threadId}")
     public String showThread(HttpServletRequest request, HttpServletResponse response, Model model,
-                             @PathVariable Long threadId)
+            Member member, @PathVariable Long threadId)
             throws DiscussionAuthorizationException, ThreadNotFoundException {
 
         CategoryGroup categoryGroup = getCategoryGroup(request);
@@ -43,14 +44,8 @@ public class ThreadController extends BaseDiscussionController {
 
         DiscussionPermissions permissions = new DiscussionPermissions(request);
         if (!getCanView(permissions, categoryGroup, threadId)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
-
-        // should not be reached
-        checkCanView(request,
-                String.format("Thread %d is not in the configured category group %d",
-                        threadId, categoryGroup.getGroupId()),
-                categoryGroup, threadId);
 
         model.addAttribute("thread", thread);
         model.addAttribute("isSubscribed", false); //threadWrapper.isSubscribed(themeDisplay.getUserId()));
@@ -60,7 +55,8 @@ public class ThreadController extends BaseDiscussionController {
     }
 
     @GetMapping("/discussion/threads/create")
-    public String createThread(HttpServletRequest request, HttpServletResponse response, Model model)
+    public String createThread(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member)
             throws DiscussionAuthorizationException {
 
 
@@ -68,12 +64,8 @@ public class ThreadController extends BaseDiscussionController {
 
         DiscussionPermissions permissions = new DiscussionPermissions(request);
         if (!getCanEdit(permissions, categoryGroup, 0L)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
-
-        // should not be reached
-        checkCanEdit(request, "User does not have the necessary permissions to create a thread ",
-                categoryGroup, 0L);
 
         List<Category> categories = categoryGroup.getCategories();
 
@@ -86,7 +78,7 @@ public class ThreadController extends BaseDiscussionController {
 
     @PostMapping("/discussion/thread/create")
     public String createThreadAction(HttpServletRequest request, HttpServletResponse response,
-            Model model, @RequestParam long categoryId, @RequestParam String title,
+            Model model, Member member, @RequestParam long categoryId, @RequestParam String title,
             @RequestParam String body)
             throws IOException, DiscussionAuthorizationException {
 
@@ -94,12 +86,8 @@ public class ThreadController extends BaseDiscussionController {
 
         DiscussionPermissions permissions = new DiscussionPermissions(request);
         if (!getCanEdit(permissions, categoryGroup, 0L)) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
-
-        // should not be reached
-        checkCanEdit(request, "User does not have the necessary permissions to create a thread ",
-                categoryGroup, 0L);
 
         long memberId = MemberAuthUtil.getMemberId(request);
 
@@ -125,7 +113,7 @@ public class ThreadController extends BaseDiscussionController {
 
             return "redirect:" + thread.getLinkUrl();
         } else {
-            return createThread(request, response, model);
+            return createThread(request, response, model, member);
         }
     }
 

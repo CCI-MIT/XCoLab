@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.beans.ContestTeamBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.ContestTeamWrapper;
@@ -38,10 +39,10 @@ public class TeamTabController extends AbstractTabController {
 
     @GetMapping
     public String showTeamTabController(HttpServletRequest request, HttpServletResponse response,
-            Model model, @RequestParam(required = false) Long contestId) {
+            Model model, Member member, @RequestParam(required = false) Long contestId) {
 
         if (!tabWrapper.getCanView()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         setPageAttributes(request, model, ContestDetailsTabs.TEAM);
@@ -51,10 +52,11 @@ public class TeamTabController extends AbstractTabController {
 
     @PostMapping("update")
     public String updateTeamTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, @PathVariable long contestId) {
+            HttpServletResponse response, Model model, Member member,
+            @PathVariable long contestId) {
 
         if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         ContestTeamBean contestTeamBeam = new ContestTeamBean(request, getContest());

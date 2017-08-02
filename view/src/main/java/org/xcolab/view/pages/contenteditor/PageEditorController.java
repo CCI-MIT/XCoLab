@@ -13,8 +13,8 @@ import org.xcolab.client.contents.pojo.ContentArticleVersion;
 import org.xcolab.client.contents.pojo.ContentFolder;
 import org.xcolab.client.contents.pojo.ContentPage;
 import org.xcolab.client.members.PermissionsClient;
-import org.xcolab.view.auth.MemberAuthUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.errors.AccessDeniedPage;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -28,19 +28,16 @@ import javax.servlet.http.HttpServletResponse;
 public class PageEditorController extends BaseContentEditor {
 
     @GetMapping("/content-editor/pageEditor")
-    public String handleRenderRequest(HttpServletRequest request, HttpServletRequest response,
-            Model model) {
-        long memberId = MemberAuthUtil.getMemberId(request);
-        if (PermissionsClient.canAdminAll(memberId)) {
-
-            Map<String, String> map = new LinkedHashMap<>();
-            map = getArticles(1L, "", map);
-
-            model.addAttribute("allArticles", map);
-            return "contenteditor/pageEditor";
-        } else {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+    public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member) {
+        if (!PermissionsClient.canAdminAll(member)) {
+            return new AccessDeniedPage(member).toViewName(response);
         }
+        Map<String, String> map = new LinkedHashMap<>();
+        map = getArticles(1L, "", map);
+
+        model.addAttribute("allArticles", map);
+        return "contenteditor/pageEditor";
     }
 
     //var parameters={pageId : pageId, pageTitle: pageTitle, mainContentArticleId:
@@ -49,34 +46,37 @@ public class PageEditorController extends BaseContentEditor {
 
     @GetMapping("/content-editor/previewContentPage")
     public String previewContentPage(HttpServletRequest request, HttpServletResponse response,
+            Member member,
             @RequestParam(required = false) Long mainContentArticleId,
             @RequestParam(required = false) Long menuArticleId,
             Model model
     ) throws IOException {
 
-
-        long memberId = MemberAuthUtil.getMemberId(request);
-        if (PermissionsClient.canAdminAll(memberId)) {
-
-            model.addAttribute("contentArticleId", mainContentArticleId);
-
-            if (menuArticleId != null) {
-                model.addAttribute("menuArticleId", menuArticleId);
-            }
-            return "content/contentPage";
-        } else {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+        if (!PermissionsClient.canAdminAll(member)) {
+            return new AccessDeniedPage(member).toViewName(response);
         }
+
+        model.addAttribute("contentArticleId", mainContentArticleId);
+
+        if (menuArticleId != null) {
+            model.addAttribute("menuArticleId", menuArticleId);
+        }
+        return "content/contentPage";
     }
 
     @PostMapping("/content-editor/saveContentPage")
     public void saveContentArticleVersion(HttpServletRequest request, HttpServletResponse response,
+            Member member,
             @RequestParam(required = false) Long pageId,
             @RequestParam(required = false) String pageTitle,
             @RequestParam(required = false) Long mainContentArticleId,
             @RequestParam(required = false) Long menuArticleId,
             @RequestParam(required = false) String metaDescription
     ) throws IOException {
+
+        if (!PermissionsClient.canAdminAll(member)) {
+            defaultOperationReturnMessage(false, "Not allowed to save page","", response);
+        }
 
         ContentPage contentPage;
         if (pageId != 0) {

@@ -13,8 +13,9 @@ import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.FocusAreaOntologyTerm;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.IdListUtil;
-import org.xcolab.view.errors.ErrorText;
+import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestDetailsTabs;
 import org.xcolab.view.pages.contestmanagement.wrappers.OntologyWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
@@ -52,10 +53,10 @@ public class OntologyTabController extends AbstractTabController {
 
     @GetMapping
     public String showOntologyTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model) {
+            HttpServletResponse response, Model model, Member member) {
 
         if (!tabWrapper.getCanView()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         OntologyWrapper ontologyWrapper = new OntologyWrapper();
@@ -69,10 +70,11 @@ public class OntologyTabController extends AbstractTabController {
 
     @PostMapping("update")
     public String updateOntologyTabController(HttpServletRequest request,
-            HttpServletResponse response, Model model, @PathVariable long contestId) {
+            HttpServletResponse response, Model model, Member member,
+            @PathVariable long contestId) {
 
         if (!tabWrapper.getCanEdit()) {
-            return ErrorText.ACCESS_DENIED.flashAndReturnView(request);
+            return new AccessDeniedPage(member).toViewName(response);
         }
 
         List<Long> selectedOntologyTerms =
