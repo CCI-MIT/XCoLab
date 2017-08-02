@@ -863,13 +863,12 @@
     <!-- TODO: only used in proposalJuding.jspx - replace? -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['ddslick']}" src="${_libJsFolder}/jquery.ddslick.min.js" />
 
+    <!-- Add this -->
+    <script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-597f702bfab33060"><!-- --></script>
+
     <!-- ============ DEFERRED SCRIPTS ============ -->
     <xcolab:script src="${_themeJsFolder}/messageNotification.js" defer="true" />
     <xcolab:script src="${_themeJsFolder}/usertracking.js" defer="true"/>
-
-    <!-- Add this -->
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-597f702bfab33060"><!-- --></script>
 </body>
 </html>
 </jsp:root>
