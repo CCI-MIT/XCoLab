@@ -9,7 +9,7 @@
 	${balloonText.textBeforeShareButtons }
 
 	<div class="balloonContainer">
-        <input type="text" value="${shareLink}" readonly="readonly"
+        <input id="linkToCopy" type="text" value="${shareLink}" readonly="readonly"
                     class="form-control" />
         <button class="c-Button__primary c-Button--form" id="copyButton"
                 data-clipboard-target="#linkToCopy" data-clipboard-text="${shareLink}">

@@ -19,19 +19,28 @@
             </c:if>
 
             <form:form modelAttribute="userEmailBean" id="sendUserEmailForm" method="post">
+                <form:errors path="acceptTos" class="c-Alert c-Alert__error"/>
                 <div class="checkbox">
-                    <form:errors path="acceptTos" class="c-Alert c-Alert__error"/>
                     <label>
-                        <form:checkbox path="acceptTos" required="true" />
+                        <form:checkbox path="acceptTos" />
                         Yes, I have read and I agree to the terms of the <a href="" data-toggle="modal" data-target="#snpConsentFormModal">Consent Form</a>
                     </label>
                 </div>
+                <c:choose>
+                    <c:when test="${not _isLoggedIn}">
+                        <div>
+                            <form:errors path="email" class="c-Alert c-Alert__error" />
+                        </div>
+                        <form:input path="email" placeholder="Please enter your email address"
+                                    cssClass="form-control bs-form-control-inline bs-form-control--medium" />
+                    </c:when>
+                    <c:otherwise>
+                        <form:hidden path="email" />
+                    </c:otherwise>
+                </c:choose>
 
-                <form:errors path="email" class="c-Alert c-Alert__error"/>
-                <form:input path="email" required="true" placeholder="Please enter your email address"
-                            cssClass="form-control bs-form-control-inline bs-form-control--medium" />
                 <button type="submit" class="c-Button__primary c-Button--form" href="#">
-                    Request your unique links
+                    Request your unique link
                 </button>
 
             </form:form>

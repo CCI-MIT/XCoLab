@@ -23,7 +23,6 @@ import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.LinkUtils;
-import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.redballon.utils.BalloonService;
 import org.xcolab.view.pages.redballon.web.beans.UserEmailBean;
 
@@ -57,8 +56,8 @@ public class BalloonController {
     }
 
     @GetMapping("/snp/{context}")
-    public String showBalloon(HttpServletRequest request,
-            HttpServletResponse response, Model model, @PathVariable String context) {
+    public String showBalloon(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member, @PathVariable String context) {
         if (!context.equals(ConfigurationAttributeKey.SNP_CONTEXT.get())) {
             return "redirect:/snp/" + ConfigurationAttributeKey.SNP_CONTEXT.get();
         }
@@ -81,7 +80,6 @@ public class BalloonController {
         if (!model.containsAttribute("userEmailBean")) {
             UserEmailBean ueb = new UserEmailBean();
 
-            Member member = MemberAuthUtil.getMemberOrNull(request);
             if (member != null && member.getId_() > 0) {
                 ueb.setEmail(member.getEmailAddress());
             }
@@ -92,7 +90,7 @@ public class BalloonController {
 
     @PostMapping("/snp/{context}")
     public String requestLink(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable String context,
+            Model model, Member member, @PathVariable String context,
             @Valid UserEmailBean userEmailBean, BindingResult bindingResult) {
 
         if (!context.equals(ConfigurationAttributeKey.SNP_CONTEXT.get())) {
@@ -102,7 +100,7 @@ public class BalloonController {
         populateModelWithModalTexts(model);
 
         if (userEmailBean == null || bindingResult.hasErrors()) {
-            return showBalloon(request, response, model, context);
+            return showBalloon(request, response, model, member, context);
         }
 
         BalloonUserTracking but = balloonService
@@ -152,7 +150,8 @@ public class BalloonController {
     }
 
     @GetMapping(SNP_LINK_URL)
-    public String showLink(HttpServletRequest request, HttpServletResponse response, Model model,
+    public String showLink(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member,
             @PathVariable(required = false) String linkUuid,
             @PathVariable(required = false) String context)
             throws ParserConfigurationException {
@@ -226,7 +225,7 @@ public class BalloonController {
             }
         }
 
-        return showBalloon(request, response, model, context);
+        return showBalloon(request, response, model, member, context);
     }
 
     private void populateModelWithModalTexts(Model model) {
