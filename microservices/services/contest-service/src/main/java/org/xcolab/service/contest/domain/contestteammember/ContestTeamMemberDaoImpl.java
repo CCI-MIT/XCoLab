@@ -92,12 +92,18 @@ public class ContestTeamMemberDaoImpl implements ContestTeamMemberDao{
     }
 
     @Override
-    public List<ContestTeamMember> findByGiven(Long contestId) {
+    public List<ContestTeamMember> findByGiven(Long contestId, Long memberId, Long roleId) {
         final SelectQuery<Record> query = dslContext.select()
                 .from(CONTEST_TEAM_MEMBER).getQuery();
 
         if (contestId != null) {
             query.addConditions(CONTEST_TEAM_MEMBER.CONTEST_ID.eq(contestId));
+        }
+        if (memberId != null) {
+            query.addConditions(CONTEST_TEAM_MEMBER.USER_ID.eq(memberId));
+        }
+        if (roleId != null) {
+            query.addConditions(CONTEST_TEAM_MEMBER.ROLE_ID.eq(roleId));
         }
         return query.fetchInto(ContestTeamMember.class);
     }

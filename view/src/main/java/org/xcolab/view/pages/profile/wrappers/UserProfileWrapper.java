@@ -6,6 +6,11 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.ContestTeamMemberClientUtil;
+import org.xcolab.client.contest.exceptions.ContestNotFoundException;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
 import org.xcolab.client.members.PermissionsClient;
@@ -56,13 +61,16 @@ public class UserProfileWrapper implements Serializable {
     private int subscriptionsPageSize = 20;
     private int subscriptionsPaginationPageId;
     private String proposalsString;
+    private String contestString;
     private String proposalString;
 
     private SendMessagePermissionChecker messagePermissionChecker;
     private List<MessageBean> messages;
     private final List<SupportedProposalWrapper> supportedProposals = new ArrayList<>();
-    private final Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId = new HashMap<>();
+    private final Map<Long, ContestTypeProposal> contestTypeProposalWrappersByContestTypeId =
+            new HashMap<>();
     private List<Proposal> linkingProposals;
+    private List<Contest> contestsJudgedByUser;
     private final ArrayList<UserActivityWrapper> userActivities = new ArrayList<>();
     private List<UserActivityWrapper> subscribedActivities;
     private UserSubscriptionsWrapper userSubscriptions;
@@ -71,8 +79,8 @@ public class UserProfileWrapper implements Serializable {
 
     private boolean viewingOwnProfile;
 
-    public UserProfileWrapper(long userId, HttpServletRequest request, ActivityEntryHelper activityEntryHelper)
-            throws MemberNotFoundException {
+    public UserProfileWrapper(long userId, HttpServletRequest request,
+            ActivityEntryHelper activityEntryHelper) throws MemberNotFoundException {
         this.activityEntryHelper = activityEntryHelper;
 
         member = MembersClient.getMember(userId);
@@ -109,7 +117,8 @@ public class UserProfileWrapper implements Serializable {
         userSubscriptions = new UserSubscriptionsWrapper(member);
         supportedProposals.clear();
         userActivities.clear();
-        for (ProposalSupporter ps : ProposalMemberRatingClientUtil.getProposalSupportersByUserId(member.getId_())) {
+        for (ProposalSupporter ps : ProposalMemberRatingClientUtil
+                .getProposalSupportersByUserId(member.getId_())) {
             supportedProposals.add(new SupportedProposalWrapper(ps));
         }
 
@@ -123,16 +132,14 @@ public class UserProfileWrapper implements Serializable {
         }
 
         List<Proposal> proposals = ProposalClientUtil.getMemberProposals(member.getId_());
-        Map<ContestType, List<Proposal>> proposalsByContestType = EntityGroupingUtil
-                .groupByContestType(proposals);
+        Map<ContestType, List<Proposal>> proposalsByContestType =
+                EntityGroupingUtil.groupByContestType(proposals);
         for (ContestType contestType : ContestTypeClient.getActiveContestTypes()) {
             contestTypeProposalWrappersByContestTypeId
                     .put(contestType.getId(), new ContestTypeProposal(contestType));
-            final List<Proposal> proposalsInContestType = proposalsByContestType
-                    .get(contestType);
+            final List<Proposal> proposalsInContestType = proposalsByContestType.get(contestType);
             for (Proposal p : proposalsInContestType) {
-                contestTypeProposalWrappersByContestTypeId.get(contestType.getId())
-                        .getProposals()
+                contestTypeProposalWrappersByContestTypeId.get(contestType.getId()).getProposals()
                         .add(p);
             }
         }
@@ -263,7 +270,8 @@ public class UserProfileWrapper implements Serializable {
     public List<MessageBean> getMessages() {
         if (messages == null) {
             messages = new ArrayList<>();
-            for (Message msg : MessagingClient.getMessages(this.member.getId_(), 0, 2, MessageType.INBOX)) {
+            for (Message msg : MessagingClient
+                    .getMessages(this.member.getId_(), 0, 2, MessageType.INBOX)) {
                 messages.add(new MessageBean(msg));
             }
         }
@@ -276,7 +284,7 @@ public class UserProfileWrapper implements Serializable {
             for (ActivityEntry activity : ActivityUtil.groupActivities(
                     ActivitiesClientUtil.getActivityEntries(0, 100, this.member.getId_(), null))) {
 
-                subscribedActivities.add(new UserActivityWrapper(activity,activityEntryHelper));
+                subscribedActivities.add(new UserActivityWrapper(activity, activityEntryHelper));
             }
         }
         return subscribedActivities;
@@ -303,7 +311,7 @@ public class UserProfileWrapper implements Serializable {
     }
 
     public long getUserActivityCount() {
-            return ActivitiesClientUtil.countActivities(getUserId(),null);
+        return ActivitiesClientUtil.countActivities(getUserId(), null);
     }
 
     public Long getUserId() {
@@ -336,12 +344,39 @@ public class UserProfileWrapper implements Serializable {
         return linkingProposals;
     }
 
+    public List<Contest> getContestsJudgedByUser() {
+        if (contestsJudgedByUser != null) {
+            return contestsJudgedByUser;
+        } else {
+            contestsJudgedByUser = new ArrayList<>();
+            List<Long> contestIds =
+                    ContestTeamMemberClientUtil.getContestsForJudge(this.getUserId());
+            for (Long contestId : contestIds) {
+                try {
+                    Contest c = ContestClientUtil.getContest(contestId);
+                    contestsJudgedByUser.add(c);
+                } catch (ContestNotFoundException i) {
+
+                }
+
+            }
+            return contestsJudgedByUser;
+        }
+    }
+
+    public String getContestString(){
+    if (contestString == null) {
+        contestString = ContestTypeClient.getContestNames(
+                new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()),
+                Plurality.PLURAL.name(), "or").toLowerCase();
+    }
+        return contestString;
+}
     public String getProposalsString() {
         if (proposalsString == null) {
-            proposalsString =
-                    ContestTypeClient.getProposalNames(
-                    new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.PLURAL.name(),
-                    "or");
+            proposalsString = ContestTypeClient.getProposalNames(
+                    new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()),
+                    Plurality.PLURAL.name(), "or");
         }
         return proposalsString;
     }
@@ -349,8 +384,8 @@ public class UserProfileWrapper implements Serializable {
     public String getProposalString() {
         if (proposalString == null) {
             proposalString = ContestTypeClient.getProposalNames(
-                    new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()), Plurality.SINGULAR.name(),
-                    "or");
+                    new ArrayList<>(contestTypeProposalWrappersByContestTypeId.keySet()),
+                    Plurality.SINGULAR.name(), "or");
         }
         return proposalString;
     }

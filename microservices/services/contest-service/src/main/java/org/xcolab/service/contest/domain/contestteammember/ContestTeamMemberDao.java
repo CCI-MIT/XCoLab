@@ -17,7 +17,7 @@ public interface ContestTeamMemberDao {
 
     boolean update(ContestTeamMember contestTeamMember);
 
-    List<ContestTeamMember> findByGiven(Long contestId);
+    List<ContestTeamMember> findByGiven(Long contestId, Long memberId, Long roleId);
 
     ContestTeamMember findOneBy(Long memberId, Long contestId, Long roleId);
 

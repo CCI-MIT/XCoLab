@@ -194,6 +194,18 @@
 				</table>
 			</c:forEach>
 
+            <c:if test="${not empty currentUserProfile.contestsJudgedByUser}">
+                <h2 style="margin-top: 20px;"><spring:message code="profile.show.contestsjudegedbyuser" arguments="${currentUserProfile.contestString}" /> </h2>
+                <table class="colab">
+                    <c:forEach var="contestJudged" items="${currentUserProfile.contestsJudgedByUser}">
+                        <c:if test="${not contestJudged.contestPrivate}">
+                            <tr class="colabRow">
+                                <td> <collab:contestLink contest="${contestJudged}" /></td>
+                            </tr>
+                        </c:if>
+                    </c:forEach>
+                </table>
+            </c:if>
 			<h2 style="margin-top: 20px;">${currentUserProfile.proposalString} <spring:message code="profile.show.proposallinks"/></h2>
 			<c:if test="${empty currentUserProfile.linkingProposals}">
                 <spring:message code="profile.show.proposallinks.disclaimer" arguments="${currentUserProfile.proposalsString}" argumentSeparator=","/>

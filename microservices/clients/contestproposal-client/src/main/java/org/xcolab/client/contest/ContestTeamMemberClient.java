@@ -29,10 +29,11 @@ public class ContestTeamMemberClient {
 
     private ContestTeamMemberClient(RestService contestService) {
         this.contestService = contestService;
-        contestTeamMemberResource = new RestResource1<>(this.contestService,
-                "contestTeamMembers", ContestTeamMemberDto.TYPES);
-        contestTeamMemberRoleResource = new RestResource1<>(this.contestService,
-                "contestTeamMemberRoles", ContestTeamMemberRoleDto.TYPES);
+        contestTeamMemberResource = new RestResource1<>(this.contestService, "contestTeamMembers",
+                ContestTeamMemberDto.TYPES);
+        contestTeamMemberRoleResource =
+                new RestResource1<>(this.contestService, "contestTeamMemberRoles",
+                        ContestTeamMemberRoleDto.TYPES);
     }
 
     public static ContestTeamMemberClient fromService(RestService contestService) {
@@ -56,13 +57,21 @@ public class ContestTeamMemberClient {
     }
 
     public ContestTeamMemberRole getContestTeamMemberRole(long id) {
-        return contestTeamMemberRoleResource.get(id)
-                .withCache(CacheName.CONTEST_DETAILS)
-                .execute().toPojo(contestService);
+        return contestTeamMemberRoleResource.get(id).withCache(CacheName.CONTEST_DETAILS).execute()
+                .toPojo(contestService);
     }
 
     public List<Long> getAdvisorsForContest(Long contestId) {
         return getRoleForContestTeam(contestId, MemberRole.ADVISOR.getRoleId());
+    }
+
+    public List<Long> getContestsForJudge(Long userId) {
+        List<ContestTeamMember> ctm = getTeamsMemberWasJudge(userId);
+        List<Long> contests = new ArrayList<>();
+        for (ContestTeamMember ct : ctm) {
+            contests.add(ct.getContestId());
+        }
+        return contests;
     }
 
     public List<Long> getJudgesForContest(Long contestId) {
@@ -102,20 +111,24 @@ public class ContestTeamMemberClient {
         return teamRoleToUsersMap;
     }
 
+    public List<ContestTeamMember> getTeamsMemberWasJudge(Long memberId) {
+        return DtoUtil.toPojos(
+                contestTeamMemberResource.list().optionalQueryParam("memberId", memberId)
+                        .optionalQueryParam("roleId", MemberRole.JUDGE.getRoleId())
+                        .withCache(CacheName.CONTEST_DETAILS).execute(), contestService);
+    }
+
     public List<ContestTeamMember> getTeamMembers(Long contestId) {
-        return DtoUtil.toPojos(contestTeamMemberResource.list()
-                .optionalQueryParam("contestId", contestId)
-                .withCache(CacheName.CONTEST_DETAILS)
-                .execute(), contestService);
+        return DtoUtil.toPojos(
+                contestTeamMemberResource.list().optionalQueryParam("contestId", contestId)
+                        .withCache(CacheName.CONTEST_DETAILS).execute(), contestService);
     }
+
     public List<ContestTeamMember> getTeamMembers(Long categoryId, Long contestYear) {
-        return DtoUtil.toPojos(contestTeamMemberResource.service("getByContestYear",ContestTeamMemberDto.TYPES.getTypeReference())
+        return DtoUtil.toPojos(contestTeamMemberResource
+                .service("getByContestYear", ContestTeamMemberDto.TYPES.getTypeReference())
                 .optionalQueryParam("categoryId", categoryId)
-                .optionalQueryParam("contestYear", contestYear)
-                .getList(), contestService);
+                .optionalQueryParam("contestYear", contestYear).getList(), contestService);
     }
-
-
-
 
 }
