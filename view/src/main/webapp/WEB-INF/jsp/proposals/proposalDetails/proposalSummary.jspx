@@ -2,7 +2,6 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-	xmlns:addthis="http://www.addthis.com/help/api-spec"
 	xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
     xmlns:spring="http://www.springframework.org/tags"
     xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
@@ -77,13 +76,11 @@
             </div> <!-- /c-Box -->
             <div class="c-Box boxColor--light clearfix">
                 <c:if test="${showShareButtons}">
-                    <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="float: left;">
-                        <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
-                        <a class="addthis_button_twitter" id="addThisButton2" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
-                        <a class="addthis_button_email" id="addThisButton3" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
-                        <a class="addthis_button_linkedin" id="addThisButton4" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
-
-                    </div>
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <div class="addthis_inline_share_toolbox" data-url="${shareLink}"
+                         data-title="${proposal.name}"
+                         data-description="${proposal.pitch}">
+                        <!-- --></div>
                 </c:if>
                 <c:if test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton || proposalsDisplayPermissions.canSeeUnsubscribeProposalButton}">
 
@@ -113,11 +110,6 @@
                         <a href="javascript:;" onclick="reportProposal(${proposal.proposalId})">Report</a>
                     </div>
                 </c:if>
-                <script type="text/javascript">
-                    if (typeof(addthis) != 'undefined') {
-                        addthis.toolbox("#shareProposalToolbox");
-                    }
-                </script>
                 <div class="clear"><!--  --></div>
             </div>
             </c:if>
@@ -215,7 +207,7 @@
 
             <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_ID') }">
                 <h5 class="toppad">Model Results Summary</h5>
-                <div class="div3"></div>
+                <div class="div3"><!-- --></div>
                 <div class="prop-results">
                     <c:if test="${proposal.proposalAttributeHelper.hasAttribute('SCENARIO_CO2_CONCENTRATION')}">
                         <div><strong>CO2 concentration</strong><br />${proposal.proposalAttributeHelper.attributeString('SCENARIO_CO2_CONCENTRATION')} ppm in 2100</div>
@@ -232,23 +224,6 @@
                 </div>
             </c:if>
         </div>
-        <script type="text/javascript">
-            // Addthis: Alert a message when the user shares somewhere
-            function shareEventHandler(evt) {
-                if (evt.type == 'addthis.menu.share') {
-                    var service = evt.data.service;
-
-                    try {
-                        pageTracker._trackEvent('User', 'ShareProposalViaSocialMedia', service, 1);
-                    }
-                    catch (error) {
-                    }
-                }
-            }
-
-            // Listen for the share event
-            addthis.addEventListener('addthis.menu.share', shareEventHandler);
-        </script>
 
         <script type="text/javascript">
             jQuery(function() {

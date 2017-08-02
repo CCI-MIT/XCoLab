@@ -3,7 +3,6 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-          xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:spring="http://www.springframework.org/tags"
           version="2.0">
@@ -225,12 +224,10 @@
                         <h4 style="color: #30a3fb;">
                             <spring:message code="contests.proposal.voting.share" />
                         </h4>
-                        <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="width: 205px;">
-                            <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
-                            <a class="addthis_button_twitter" id="addThisButton2" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
-                            <a class="addthis_button_email" id="addThisButton3" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
-                            <a class="addthis_button_linkedin" id="addThisButton4" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
-                        </div>
+                        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                        <div class="addthis_inline_share_toolbox" data-url="${proposal.absoluteProposalUrl}"
+                             data-title="${proposal.name}" data-description="${proposal.pitch}">
+                            <!-- --></div>
                     </div>
                     <div class="clearfix"><!-- --></div>
                 </div>

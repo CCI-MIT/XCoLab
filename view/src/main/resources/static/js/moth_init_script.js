@@ -290,8 +290,6 @@ function closePopup(obj) {
 	jQuery(".c-Popup__wrapper").hide();
 }
 
-
-
 jQuery(function() {
 	initSearchUpperBox();
 	initLoginPopupUpper();
@@ -423,28 +421,6 @@ jQuery(function() {
     }
 });
 
-function initSelectbox() {
-	if (jQuery('.Form__selectbox__new, .selectbox1-dis-dis').length > 0) {
-		var selectboxOnChange = jQuery('.Form__selectbox__new').get(0).getAttribute("onchange");
-
-		jQuery('.Form__selectbox__new').selectbox({
-			inputClass: 'c-Form__selectbox',
-			onChangeCallback: function () {
-				jQuery(".Form__selectbox__new").change();
-				
-				}
-		});
-	}
-}
-
-function onBeforeRegister() {
-	jQuery('#createAccountForm').append(jQuery('<input type="hidden" value="' + window.location.toString() + '" name="redirect" />'));
-}
-
-function onBeforeLogin(formId) {
-	jQuery('#' + formId).append(jQuery('<input type="hidden" value="' + window.location.toString() + '" name="redirect" />'));
-}
-
 function addRedirectBeforeSubmit(formId) {
 	jQuery('#' + formId).append(jQuery('<input type="hidden" value="' + window.location.toString() + '" name="redirect" />'));
 }
@@ -456,19 +432,7 @@ function processForgotPasswordForm(formId) {
 	}
 }
 
-
-function updateBreadcrumb(placeholder, items) {
-    var breadcrumb = [];
-    for (var i = 0; i < items.length; i++) {
-    	var item = items[i];
-        breadcrumb[2*i] = '<img width="8" height="8" alt="" src="/climatecolab-theme/images/arrow.gif" /> ';
-        breadcrumb[2*i + 1] = '<a href="' + item.href + '" onclick="' + item.onclick + '; return false;">' + item.text + '</a>';
-    }
-
-    jQuery(placeholder).html(breadcrumb.join(''));
-}
-
-	function submitenter(myfield,e)	{
+function submitenter(myfield,e)	{
 		var keycode;
 		if (window.event) keycode = window.event.keyCode;
 		else if (e) keycode = e.which;
@@ -488,17 +452,3 @@ $(function() {
         contentAsHtml: true
     });
 });
-
-function updateShareThisUrls(selector) {
-	jQuery(selector).each(function() {
-		var self = jQuery(this);
-		var currentUrl = self.attr('addthis:url');
-		if (currentUrl == null) {
-			currentUrl = window.location;
-		}
-		else if (currentUrl.startsWith("/")) {
-			currentUrl = window.document.location.protocol + "//" + window.document.location.host + currentUrl;
-		}
-		self.attr('addthis:url', window.document.location.protocol + "//" + window.document.location.host + '?redirect_to=' + escape(currentUrl));
-	});
-}

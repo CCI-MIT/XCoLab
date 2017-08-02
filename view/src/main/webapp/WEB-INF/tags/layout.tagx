@@ -3,7 +3,6 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:spring="http://www.springframework.org/tags"
-          xmlns:addthis="http://www.addthis.com/help/api-spec"
           version="2.0">
     <jsp:directive.attribute name="title" type="java.lang.String" required="false" rtexprvalue="true" description="Page title" />
     <jsp:directive.attribute name="description" type="java.lang.String" required="false" rtexprvalue="true" description="Page description for meta tag" />
@@ -496,7 +495,7 @@
             </div>
             <div class="clearfix"><!-- --></div>
             <div class="login_popup_box">
-                <form id="signInForm_form" method="post" action="/login" onsubmit="addRedirectBeforeSubmit('signInFormPopup'); return true;" >
+                <form id="signInForm_form" method="post" action="/login">
                     <div>
                         <label for="username"><spring:message code="homepage.modals.login.field.username"/></label>
                         <input id="username" name="username" type="text" class="c-Header__login__username"

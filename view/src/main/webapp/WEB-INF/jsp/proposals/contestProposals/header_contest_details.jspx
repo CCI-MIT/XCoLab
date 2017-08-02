@@ -183,6 +183,7 @@
             </div>
 
             <c:if test="${showShareButtons}">
+                <!-- TODO: migrate to new addthis toolbox -->
                 <div class="p-ContestProposals__header__shareButtons">
                     <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox"
                          style="float: left;">
@@ -205,14 +206,6 @@
         </div>
     </div>
     <script type="text/javascript">
-        // Addthis: Alert a message when the user shares somewhere
-        function shareEventHandler(evt) {
-            if (evt.type == 'addthis.menu.share') {
-                var service = evt.data.service;
-
-                pageTracker._trackEvent('User', 'ShareContestViaSocialMedia', service, 1);
-            }
-        }
 
         jQuery(function () {
             var readMoreLink = document.querySelector("#readMoreLink");
@@ -224,7 +217,5 @@
 
         });
 
-        // Listen for the share event
-        addthis.addEventListener('addthis.menu.share', shareEventHandler);
     </script>
 </jsp:root>
