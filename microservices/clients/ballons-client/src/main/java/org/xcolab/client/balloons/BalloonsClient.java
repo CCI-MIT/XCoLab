@@ -81,6 +81,10 @@ public final class BalloonsClient {
         return balloonUserTrackingResource.list().execute();
     }
 
+    public static boolean deleteBalloonUserTracking(String uuid) {
+        return balloonUserTrackingResource.delete(uuid).execute();
+    }
+
     public static BalloonUserTracking createBalloonUserTracking(
             BalloonUserTracking balloonUserTracking) {
         return balloonUserTrackingResource.create(balloonUserTracking).execute();

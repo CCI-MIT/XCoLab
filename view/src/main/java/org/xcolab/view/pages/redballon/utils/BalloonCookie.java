@@ -21,9 +21,11 @@ public class BalloonCookie implements Serializable {
     private static final String COOKIE_PREFIX = "Balloon-";
 
     private static final long serialVersionUID = 1L;
-    private String uuid;
+    private final String uuid;
 
-    public BalloonCookie() { }
+    private BalloonCookie(String uuid) {
+        this.uuid = uuid;
+    }
 
     public static Optional<BalloonCookie> from(Cookie[] cookies) {
         if (cookies != null) {
@@ -31,26 +33,21 @@ public class BalloonCookie implements Serializable {
             final Optional<Cookie> cookieOptional =
                     Arrays.stream(cookies).filter(c -> c.getName().equals(cookieName)).findFirst();
             if (cookieOptional.isPresent()) {
-                BalloonCookie bc = new BalloonCookie();
                 String stringUuid = decodeValue(cookieOptional.get().getValue());
                 if (StringUtils.isNotEmpty(stringUuid)) {
-                    bc.uuid = stringUuid;
-                    return Optional.of(bc);
+                    return Optional.of(new BalloonCookie(stringUuid));
                 }
             }
         }
         return Optional.empty();
     }
 
-    public String getUuid() {
-        return uuid;
+    public static BalloonCookie of(String uuid) {
+        return new BalloonCookie(uuid);
     }
 
-    public void setUuid(String uuid) {
-        if (StringUtils.isBlank(uuid)) {
-            throw new IllegalArgumentException("UUID cannot be blank: " + uuid);
-        }
-        this.uuid = uuid;
+    public String getUuid() {
+        return uuid;
     }
 
     public Cookie getHttpCookie() {

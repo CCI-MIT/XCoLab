@@ -15,4 +15,6 @@ public interface BalloonUserTrackingDao {
 
     BalloonUserTracking create(BalloonUserTracking balloonUserTracking);
 
+    boolean delete(String uuid);
+
 }

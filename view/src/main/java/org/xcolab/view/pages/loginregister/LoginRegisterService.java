@@ -99,7 +99,7 @@ public class LoginRegisterService {
         }
         //update user association for all BUTs under this email address
         BalloonsClient.getBalloonUserTrackingByEmail(member.getEmailAddress())
-                .forEach(b -> b.updateUserIdIfEmpty(member.getId_()));
+                .forEach(b -> b.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress()));
 
         try {
             checkLogin(request, response, newAccountBean.getScreenName(), newAccountBean.getPassword(), redirect);

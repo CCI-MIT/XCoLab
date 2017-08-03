@@ -21,6 +21,7 @@ import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.LinkUtils;
+import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.view.pages.redballon.utils.BalloonService;
 import org.xcolab.view.pages.redballon.web.beans.UserEmailBean;
 
@@ -32,6 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import static org.xcolab.util.http.exceptions.ExceptionUtils.getOptional;
 
 @Controller
 public class BalloonController {
@@ -124,10 +127,8 @@ public class BalloonController {
     }
 
     @GetMapping(BalloonService.SNP_LINK_URL)
-    public String showLink(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member,
-            @PathVariable(required = false) String linkUuid,
-            @PathVariable(required = false) String context)
+    public String showLink(HttpServletRequest request, HttpServletResponse response, Model model,
+            Member member, @PathVariable String context, @PathVariable String linkUuid)
             throws ParserConfigurationException {
 
         if (!context.equals(ConfigurationAttributeKey.SNP_CONTEXT.get())) {
@@ -136,28 +137,18 @@ public class BalloonController {
 
         populateModelWithModalTexts(model);
 
-        BalloonUserTracking but = null;
-        if (linkUuid != null) {
+        BalloonLink link = getBalloonLink(linkUuid);
 
-            BalloonLink link;
-            try {
-                link = BalloonsClient.getBalloonLink(linkUuid);
-            } catch (BalloonLinkNotFoundException e) {
-                link = null;
-            }
+        model.addAttribute("balloonLink", link);
 
-            if (link != null) {
-                model.addAttribute("balloonLink", link);
+        // get user tracking information, if user is new, then owner of this link should be set as a parent
 
-                // get user tracking information, if user is new, then owner of this link should be set as a parent
-                but = balloonService.getOrCreateBalloonUserTracking(request, response, link.getBalloonUserUuid(), linkUuid,
-                        context);
+        BalloonUserTracking but = balloonService
+                .getOrCreateBalloonUserTracking(request, response, link.getBalloonUserUuid(),
+                        linkUuid, context);
 
-                link.setVisits(link.getVisits() + 1);
-                BalloonsClient.updateBalloonLink(link);
-
-            }
-        }
+        link.setVisits(link.getVisits() + 1);
+        BalloonsClient.updateBalloonLink(link);
 
         if (but == null) {
             // user wasn't following any link so we need to create new root of a reference tree
@@ -203,6 +194,12 @@ public class BalloonController {
         }
 
         return showBalloon(request, response, model, member, context);
+    }
+
+    private BalloonLink getBalloonLink(@PathVariable String linkUuid) {
+        return getOptional(() -> BalloonsClient.getBalloonLink(linkUuid))
+                    .orElseThrow(() -> ReferenceResolutionException
+                            .toObject(BalloonLink.class, linkUuid).build());
     }
 
     private void populateModelWithModalTexts(Model model) {

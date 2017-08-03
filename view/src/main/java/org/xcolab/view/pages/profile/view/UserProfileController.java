@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.balloons.BalloonsClient;
-import org.xcolab.client.balloons.pojo.BalloonLink;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.files.FilesClient;
@@ -48,12 +46,11 @@ import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.view.util.entity.flash.ErrorMessage;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static org.xcolab.util.http.exceptions.ExceptionUtils.getOrNull;
 
 @Controller
 @RequestMapping("/members/profile")
@@ -100,19 +97,22 @@ public class UserProfileController {
             model.addAttribute("permissions", permissions);
             model.addAttribute("_activePageLink", "community");
 
+            final UserProfileWrapper currentUserProfile =
+                    new UserProfileWrapper(memberId, loggedInMember, activityEntryHelper);
+            populateUserWrapper(currentUserProfile, model);
+
             final Boolean isSnpActive = ConfigurationAttributeKey.SNP_IS_ACTIVE.get();
             model.addAttribute("isSnpActive", isSnpActive);
-            if (isSnpActive) {
-                final BalloonUserTracking but = balloonService
-                        .getOrCreateBalloonUserTracking(request, response, null, null, null);
-                BalloonLink balloonLink = getOrNull(
-                        () -> BalloonsClient.getLinkByBalloonUserTrackingUuid(but.getUuid_()));
-                model.addAttribute("balloonLink", balloonLink);
-                model.addAttribute("balloonText", but.getBalloonText());
+            if (isSnpActive && currentUserProfile.isViewingOwnProfile()) {
+                String consentFormText = ConfigurationAttributeKey.SNP_CONSENT_FORM_TEXT.get();
+                model.addAttribute("consentFormText", consentFormText);
+                final Optional<BalloonUserTracking> butOpt = balloonService
+                        .getBalloonUserTracking(request, response);
+                if (butOpt.isPresent()) {
+                    model.addAttribute("balloonLink", butOpt.get().getBalloonLink());
+                    model.addAttribute("balloonText", butOpt.get().getBalloonText());
+                }
             }
-
-            populateUserWrapper(new UserProfileWrapper(memberId,
-                    loggedInMember, activityEntryHelper), model);
             model.addAttribute("pointsActive", ConfigurationAttributeKey.IS_POINTS_ACTIVE.get());
             return SHOW_PROFILE_VIEW;
         } catch (MemberNotFoundException e) {

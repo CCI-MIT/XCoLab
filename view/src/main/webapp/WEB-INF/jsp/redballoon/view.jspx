@@ -18,7 +18,8 @@
                 </p>
             </c:if>
 
-            <form:form modelAttribute="userEmailBean" id="sendUserEmailForm" method="post">
+            <form:form modelAttribute="userEmailBean" id="sendUserEmailForm"
+                       action="/snp/socialnetworkprize" method="post">
                 <form:errors path="acceptTos" class="c-Alert c-Alert__error"/>
                 <div class="checkbox">
                     <label>

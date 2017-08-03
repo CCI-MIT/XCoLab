@@ -1,6 +1,8 @@
 package org.xcolab.client.balloons.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.balloons.BalloonsClient;
@@ -212,11 +214,30 @@ public class BalloonUserTracking implements Serializable {
         this.useragent = useragent;
     }
 
-    public void updateUserIdIfEmpty(long memberId) {
-        if (getUserId() == null) {
+    public void updateUserIdAndEmailIfEmpty(long memberId, String email) {
+        final boolean isUserIdEmpty = getUserId() == null;
+        if (isUserIdEmpty) {
             setUserId(memberId);
+        }
+
+        final boolean isEmailBlank = StringUtils.isBlank(getEmail());
+        if (isEmailBlank) {
+            setEmail(email);
+        }
+
+        if (isUserIdEmpty || isEmailBlank) {
             BalloonsClient.updateBalloonUserTracking(this);
         }
+    }
+
+    @JsonIgnore
+    public BalloonLink getBalloonLink() {
+        return getOrNull(() -> BalloonsClient.getLinkByBalloonUserTrackingUuid(getUuid_()));
+    }
+
+    @JsonIgnore
+    public boolean isUsed() {
+        return getParent() != null || getBalloonLink() != null;
     }
 
     @Override
