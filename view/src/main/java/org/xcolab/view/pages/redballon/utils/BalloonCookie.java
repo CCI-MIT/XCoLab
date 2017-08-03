@@ -17,7 +17,7 @@ public class BalloonCookie implements Serializable {
 
     private static final int YEAR_IN_SECONDS = 31_536_000;
 
-    private static final String COOKIE_NAME = "BalloonTrackingUuid";
+    private static final String COOKIE_NAME = "balloonTrackingUuid";
 
     private static final long serialVersionUID = 1L;
     private final String uuid;
