@@ -11,6 +11,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
 
+import static org.xcolab.util.http.exceptions.ExceptionUtils.getOrNull;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BalloonUserTracking implements Serializable {
 
@@ -128,6 +130,10 @@ public class BalloonUserTracking implements Serializable {
 
     public Long getBalloonTextId() {
         return this.balloontextid;
+    }
+
+    public BalloonText getBalloonText() {
+        return getOrNull(() -> BalloonsClient.getBalloonText(getBalloonTextId()));
     }
 
     public void setBalloonTextId(Long balloontextid) {

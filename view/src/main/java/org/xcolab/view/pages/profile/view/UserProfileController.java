@@ -108,6 +108,7 @@ public class UserProfileController {
                 BalloonLink balloonLink = getOrNull(
                         () -> BalloonsClient.getLinkByBalloonUserTrackingUuid(but.getUuid_()));
                 model.addAttribute("balloonLink", balloonLink);
+                model.addAttribute("balloonText", but.getBalloonText());
             }
 
             populateUserWrapper(new UserProfileWrapper(memberId,
