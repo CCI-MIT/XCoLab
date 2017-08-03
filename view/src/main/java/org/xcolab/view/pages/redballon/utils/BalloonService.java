@@ -39,7 +39,7 @@ public class BalloonService {
 
     private static final String URL_PLACEHOLDER = "URLPLACEHOLDER";
 
-    public static final String SNP_LINK_URL = "/snp/{context}/link/{linkUuid}";
+    public static final String SNP_LINK_URL = "/snp/socialnetworkprize/link/{linkUuid}";
     private static final String NEW_BALLOON_USER_TRACKING_ATTRIBUTE =
             "org.xcolab.snp.newBalloonUserTracking";
 
@@ -50,15 +50,14 @@ public class BalloonService {
         this.authenticationService = authenticationService;
     }
 
-    public BalloonLink createBalloonLink(String context, String email,
-            BalloonUserTracking but)
+    public BalloonLink createBalloonLink(String email, BalloonUserTracking but)
             throws BalloonTextNotFoundException {
 
         BalloonLink link = new BalloonLink();
         link.setUuid_(UUID.randomUUID().toString());
         link.setBalloonUserUuid(but.getUuid_());
         link.setCreateDate(new Timestamp(new Date().getTime()));
-        link.setTargetUrl(getSnpLinkUrl(context, link.getUuid_()));
+        link.setTargetUrl(getSnpLinkUrl(link.getUuid_()));
         link = BalloonsClient.createBalloonLink(link);
 
         BalloonText text = BalloonsClient.getBalloonText(but.getBalloonTextId());
@@ -72,9 +71,8 @@ public class BalloonService {
         return link;
     }
 
-    private String getSnpLinkUrl(String context, String linkUuid) {
+    private String getSnpLinkUrl(String linkUuid) {
         Map<String, String> uriVariables = new HashMap<>();
-        uriVariables.put("context", context);
         uriVariables.put("linkUuid", linkUuid);
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(SNP_LINK_URL);
         return uriBuilder.buildAndExpand(uriVariables).toUriString();
@@ -117,7 +115,7 @@ public class BalloonService {
     }
 
     public BalloonUserTracking getOrCreateBalloonUserTracking(HttpServletRequest request,
-            HttpServletResponse response, String parent, String linkUuid, String context) {
+            HttpServletResponse response, String parent, String linkUuid) {
 
         final Optional<BalloonUserTracking> butOpt = getBalloonUserTracking(request, response);
         if (butOpt.isPresent()) {
@@ -136,7 +134,7 @@ public class BalloonService {
         response.addCookie(BalloonCookie.of(uuid).getHttpCookie());
 
         final BalloonUserTracking but =
-                createBalloonUserTracking(uuid, parent, linkUuid, context, member,
+                createBalloonUserTracking(uuid, parent, linkUuid, member,
                         request.getRemoteAddr(), request.getHeader(HttpHeaders.REFERER),
                         request.getHeader(HttpHeaders.USER_AGENT));
         request.setAttribute(NEW_BALLOON_USER_TRACKING_ATTRIBUTE, but);
@@ -151,13 +149,11 @@ public class BalloonService {
     }
 
     private BalloonUserTracking createBalloonUserTracking(String uuid, String parent,
-            String linkUuid, String context, Member member,
-            String remoteIp, String referrer, String userAgent) {
+            String linkUuid, Member member, String remoteIp, String referrer, String userAgent) {
         BalloonUserTracking but = new BalloonUserTracking();
         but.setUuid_(uuid);
         but.setIp(remoteIp);
         but.setParent(parent);
-        but.setBalloonLinkContext(context);
         but.setBalloonLinkUuid(linkUuid);
         but.setReferrer(referrer);
         but.setUserAgent(userAgent);
@@ -191,9 +187,8 @@ public class BalloonService {
         try {
             return BalloonsClient.getBalloonUserTracking(member.getUuid());
         } catch (BalloonUserTrackingNotFoundException ignored) {
-            final String context = ConfigurationAttributeKey.SNP_CONTEXT.get();
             List<BalloonUserTracking> buts = BalloonsClient
-                    .getBalloonUserTrackingByEmail(member.getEmailAddress(), context);
+                    .getBalloonUserTrackingByEmail(member.getEmailAddress());
 
             return buts.stream().findFirst().orElse(null);
         }

@@ -49,15 +49,12 @@ public class BalloonController {
         this.balloonService = balloonService;
     }
 
-    @GetMapping("/snp/{context}")
+    @GetMapping("/snp/socialnetworkprize")
     public String showBalloon(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @PathVariable String context) {
-        if (!context.equals(ConfigurationAttributeKey.SNP_CONTEXT.get())) {
-            return "redirect:/snp/" + ConfigurationAttributeKey.SNP_CONTEXT.get();
-        }
+            Model model, Member member) {
 
         BalloonUserTracking but = balloonService.getOrCreateBalloonUserTracking(request, response,
-                null, null, context);
+                null, null);
         try {
             BalloonLink balloonLink = BalloonsClient.getLinkByBalloonUserTrackingUuid(but.getUuid_());
             return "redirect:" + balloonLink.getTargetUrl();
@@ -88,24 +85,20 @@ public class BalloonController {
         return HOME_VIEW;
     }
 
-    @PostMapping("/snp/{context}")
+    @PostMapping("/snp/socialnetworkprize")
     public String requestLink(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, @PathVariable String context,
+            Model model, Member member,
             @Valid UserEmailBean userEmailBean, BindingResult bindingResult)
             throws BalloonTextNotFoundException {
-
-        if (!context.equals(ConfigurationAttributeKey.SNP_CONTEXT.get())) {
-            return "redirect:/snp/" + ConfigurationAttributeKey.SNP_CONTEXT.get();
-        }
 
         populateModelWithModalTexts(model);
 
         if (userEmailBean == null || bindingResult.hasErrors()) {
-            return showBalloon(request, response, model, member, context);
+            return showBalloon(request, response, model, member);
         }
 
         BalloonUserTracking but = balloonService
-                .getOrCreateBalloonUserTracking(request, response, null, null, context);
+                .getOrCreateBalloonUserTracking(request, response, null, null);
 
         try {
             BalloonLink balloonLink = BalloonsClient.getLinkByBalloonUserTrackingUuid(but.getUuid_());
@@ -121,19 +114,15 @@ public class BalloonController {
 
         // create link to be used by user
         final BalloonLink link = balloonService
-                .createBalloonLink(context, userEmailBean.getEmail(), but);
+                .createBalloonLink(userEmailBean.getEmail(), but);
 
         return "redirect:" + link.getTargetUrl();
     }
 
     @GetMapping(BalloonService.SNP_LINK_URL)
     public String showLink(HttpServletRequest request, HttpServletResponse response, Model model,
-            Member member, @PathVariable String context, @PathVariable String linkUuid)
+            Member member, @PathVariable String linkUuid)
             throws ParserConfigurationException {
-
-        if (!context.equals(ConfigurationAttributeKey.SNP_CONTEXT.get())) {
-            return "redirect:/snp/" + ConfigurationAttributeKey.SNP_CONTEXT.get();
-        }
 
         populateModelWithModalTexts(model);
 
@@ -145,15 +134,14 @@ public class BalloonController {
 
         BalloonUserTracking but = balloonService
                 .getOrCreateBalloonUserTracking(request, response, link.getBalloonUserUuid(),
-                        linkUuid, context);
+                        linkUuid);
 
         link.setVisits(link.getVisits() + 1);
         BalloonsClient.updateBalloonLink(link);
 
         if (but == null) {
             // user wasn't following any link so we need to create new root of a reference tree
-            but = balloonService.getOrCreateBalloonUserTracking(request, response, null, null,
-                    context);
+            but = balloonService.getOrCreateBalloonUserTracking(request, response, null, null);
         }
         if (but.getBalloonTextId() != null && but.getBalloonTextId() > 0) {
             BalloonText text;
@@ -193,7 +181,7 @@ public class BalloonController {
             }
         }
 
-        return showBalloon(request, response, model, member, context);
+        return showBalloon(request, response, model, member);
     }
 
     private BalloonLink getBalloonLink(@PathVariable String linkUuid) {
