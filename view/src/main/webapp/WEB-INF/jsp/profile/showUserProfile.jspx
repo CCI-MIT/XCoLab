@@ -164,7 +164,7 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="clearfix">&#160;</div>
+            <div class="clearfix"><!-- --></div>
 		</div>
 		<c:if test="${currentUserProfile.canSeeSendMessageButton and not currentUserProfile.viewingOwnProfile }">
 			<a class="c-Button__primary" href="#"
@@ -252,6 +252,49 @@
 
 	<c:if test="${currentUserProfile.viewingOwnProfile}">
 		<div class="c-Message__column">
+            <c:if test="${isSnpActive}">
+                <div class="comm_rightcol">
+                    <div class="comm_rightcol-title">
+                        <label for="snpLink">
+                            <spring:message code="profile.show.referralLink"/>
+                            &#160;
+                            <a href="/snp/socialnetworkprize" target="_blank" class="js-Tooltip"
+                                    title="Click to learn more about the Social Network Prize">
+                                <img src="/images/icon-addprop-question.png" width="15" height="15" />
+                            </a>
+                        </label>
+                    </div>
+                    <c:choose>
+                        <!--@elvariable id="balloonLink" type="org.xcolab.client.balloons.pojo.BalloonLink"-->
+                        <c:when test="${not empty balloonLink}">
+                            <input id="snpLink" readonly="true" value="${_colabUrl}${balloonLink.targetUrl}" class="form-control" />
+                            <button class="c-Button__primary c-Button--form" id="copyButton"
+                                    data-clipboard-target="#snpLink">
+                                Copy link
+                            </button>
+                            <xcolab:requireLibrary name="clipboard.js" />
+                            <script>
+                                jQuery(function() {
+                                    new Clipboard('#copyButton');
+                                });
+                            </script>
+                        </c:when>
+                        <c:otherwise>
+                            <form action="/snp/socialnetworkprize" method="post">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="acceptTos" />
+                                        Yes, I have read and I agree to the terms of the <a href="" data-toggle="modal" data-target="#snpConsentFormModal">Consent Form</a>
+                                    </label>
+                                </div>
+                                <input type="hidden" name="email" value="${userBean.emailStored}" />
+                                <button type="submit" class="c-Button__primary small">Generate link</button>
+                            </form>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </c:if>
+
 			<div class="comm_rightcol">
 				<div class="comm_rightcol-title"><spring:message code="profile.show.inbox"/></div>
 
@@ -354,6 +397,10 @@
 	<c:if test="${currentUserProfile.canSeeSendMessageButton and not currentUserProfile.viewingOwnProfile }">
 		<xcolab:sendMessageModal recipient="${currentUserProfile.user}" />
 	</c:if>
+
+    <c:if test="${isSnpActive}">
+        <jsp:include page="../redballoon/consentForm.jspx" />
+    </c:if>
 
 	<xcolab:loadCkEditor />
 

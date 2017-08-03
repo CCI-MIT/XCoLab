@@ -17,6 +17,9 @@ public final class ConfigurationAttributeKey {
 
     private static final Pattern SCHEME_REGEX = Pattern.compile("^https?://");
 
+    private ConfigurationAttributeKey() {
+    }
+
     //Main CoLab configuration
     public static final AttributeGetter<String> ADMIN_EMAIL =
             ConfigurationAttributes.newStringAttribute("ADMIN_EMAIL")
@@ -419,7 +422,7 @@ public final class ConfigurationAttributeKey {
                     .build();
 
     public static final AttributeGetter<String> SNP_CONTEXT =
-            ConfigurationAttributes.newStringAttribute("SNP_IS_ACTIVE")
+            ConfigurationAttributes.newStringAttribute("SNP_CONTEXT")
                     .defaultValue("socialnetworkprize")
                     .build();
 

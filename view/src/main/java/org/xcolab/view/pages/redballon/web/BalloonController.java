@@ -9,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.util.UriComponentsBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -20,7 +19,6 @@ import org.xcolab.client.balloons.exceptions.BalloonTextNotFoundException;
 import org.xcolab.client.balloons.pojo.BalloonLink;
 import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
-import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.view.pages.redballon.utils.BalloonService;
@@ -28,9 +26,6 @@ import org.xcolab.view.pages.redballon.web.beans.UserEmailBean;
 
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,10 +38,6 @@ public class BalloonController {
 
     private static final String HOME_VIEW = "redballoon/view";
     private static final String SHARE_VIEW = "redballoon/sharePage";
-
-    private static final String URL_PLACEHOLDER = "URLPLACEHOLDER";
-
-    private static final String SNP_LINK_URL = "/snp/{context}/link/{linkUuid}";
 
     private final BalloonService balloonService;
 
@@ -64,6 +55,12 @@ public class BalloonController {
 
         BalloonUserTracking but = balloonService.getOrCreateBalloonUserTracking(request, response,
                 null, null, context);
+        try {
+            BalloonLink balloonLink = BalloonsClient.getLinkByBalloonUserTrackingUuid(but.getUuid_());
+            return "redirect:" + balloonLink.getTargetUrl();
+        } catch (BalloonLinkNotFoundException e) {
+            // user has no link -> continue and show page
+        }
 
         if (but.getBalloonTextId() != null && but.getBalloonTextId() > 0) {
             BalloonText text;
@@ -91,7 +88,8 @@ public class BalloonController {
     @PostMapping("/snp/{context}")
     public String requestLink(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member, @PathVariable String context,
-            @Valid UserEmailBean userEmailBean, BindingResult bindingResult) {
+            @Valid UserEmailBean userEmailBean, BindingResult bindingResult)
+            throws BalloonTextNotFoundException {
 
         if (!context.equals(ConfigurationAttributeKey.SNP_CONTEXT.get())) {
             return "redirect:/snp/" + ConfigurationAttributeKey.SNP_CONTEXT.get();
@@ -104,7 +102,14 @@ public class BalloonController {
         }
 
         BalloonUserTracking but = balloonService
-                .getOrCreateBalloonUserTracking(request, response, null, null, null);
+                .getOrCreateBalloonUserTracking(request, response, null, null, context);
+
+        try {
+            BalloonLink balloonLink = BalloonsClient.getLinkByBalloonUserTrackingUuid(but.getUuid_());
+            return "redirect:" + balloonLink.getTargetUrl();
+        } catch (BalloonLinkNotFoundException e) {
+            // user has no link -> continue and create one
+        }
 
         but.setEmail(userEmailBean.getEmail());
         but.setFormFiledDate(new Timestamp(new Date().getTime()));
@@ -112,44 +117,13 @@ public class BalloonController {
         BalloonsClient.updateBalloonUserTracking(but);
 
         // create link to be used by user
-        BalloonLink link = new BalloonLink();
-        link.setUuid_(UUID.randomUUID().toString());
+        final BalloonLink link = balloonService
+                .createBalloonLink(context, userEmailBean.getEmail(), but);
 
-        link.setBalloonUserUuid(but.getUuid_());
-        link.setCreateDate(new Timestamp(new Date().getTime()));
-        final String linkUrl = getSnpLinkUrl(context, link.getUuid_());
-        link.setTargetUrl(linkUrl);
-
-        BalloonsClient.createBalloonLink(link);
-
-        if (but.getBalloonTextId() > 0) {
-            try {
-                BalloonText text = BalloonsClient.getBalloonText(but.getBalloonTextId());
-                String messageSubject = text.getEmailSubjectTemplate();
-                String messageBody = text.getEmailTemplate()
-                        .replaceAll(URL_PLACEHOLDER, LinkUtils.getAbsoluteUrl(link.getTargetUrl()));
-
-                final String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
-                EmailClient.sendEmail(fromEmail, userEmailBean.getEmail(), messageSubject, messageBody,
-                        true, fromEmail, but.getBalloonTextId());
-
-            } catch (BalloonTextNotFoundException ignored) {
-
-            }
-        }
-
-        return "redirect:" + linkUrl;
+        return "redirect:" + link.getTargetUrl();
     }
 
-    private String getSnpLinkUrl(String context, String linkUuid) {
-        Map<String, String> uriVariables = new HashMap<>();
-        uriVariables.put("context", context);
-        uriVariables.put("linkUuid", linkUuid);
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(SNP_LINK_URL);
-        return uriBuilder.buildAndExpand(uriVariables).toUriString();
-    }
-
-    @GetMapping(SNP_LINK_URL)
+    @GetMapping(BalloonService.SNP_LINK_URL)
     public String showLink(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member,
             @PathVariable(required = false) String linkUuid,
@@ -176,7 +150,9 @@ public class BalloonController {
                 model.addAttribute("balloonLink", link);
 
                 // get user tracking information, if user is new, then owner of this link should be set as a parent
-                but = balloonService.getOrCreateBalloonUserTracking(request, response, link.getBalloonUserUuid(), linkUuid, context);
+                but = balloonService.getOrCreateBalloonUserTracking(request, response, link.getBalloonUserUuid(), linkUuid,
+                        context);
+
                 link.setVisits(link.getVisits() + 1);
                 BalloonsClient.updateBalloonLink(link);
 
@@ -185,7 +161,8 @@ public class BalloonController {
 
         if (but == null) {
             // user wasn't following any link so we need to create new root of a reference tree
-            but = balloonService.getOrCreateBalloonUserTracking(request, response, null, null, null);
+            but = balloonService.getOrCreateBalloonUserTracking(request, response, null, null,
+                    context);
         }
         if (but.getBalloonTextId() != null && but.getBalloonTextId() > 0) {
             BalloonText text;
@@ -216,7 +193,7 @@ public class BalloonController {
 
         if (StringUtils.isNotBlank(but.getEmail())) {
             try {
-                BalloonLink bl = BalloonsClient.getBalloonLinkByMemberUuid(but.getUuid_());
+                BalloonLink bl = BalloonsClient.getLinkByBalloonUserTrackingUuid(but.getUuid_());
                 model.addAttribute("shareLink", LinkUtils.getAbsoluteUrl(bl.getTargetUrl()));
                 model.addAttribute("balloonLink", bl);
                 return SHARE_VIEW;

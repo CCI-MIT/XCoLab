@@ -12,7 +12,7 @@
         <input id="linkToCopy" type="text" value="${shareLink}" readonly="readonly"
                     class="form-control" />
         <button class="c-Button__primary c-Button--form" id="copyButton"
-                data-clipboard-target="#linkToCopy" data-clipboard-text="${shareLink}">
+                data-clipboard-target="#linkToCopy">
             Copy link
         </button>
         <br/>
@@ -23,10 +23,12 @@
             <!-- --></div>
 	</div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"><!-- --></script>
+    <xcolab:requireLibrary name="clipboard.js" />
 
     <script>
-        new Clipboard('#copyButton');
+        jQuery(function() {
+            new Clipboard('#copyButton');
+        });
     </script>
     <jsp:include page="exampleModal.jspx" />
 </xcolab:layout>
