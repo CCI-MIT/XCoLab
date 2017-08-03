@@ -19,7 +19,7 @@
 		var filterKey = 'ACCEPTALL';
 	</script>
 
-    <div id="proposalPickerModal" class="modal bs-Modal fade" tab-index="-1" role="dialog">
+    <div id="proposalPickerModal" class="modal bs-modal fade" tab-index="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">

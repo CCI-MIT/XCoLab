@@ -103,4 +103,11 @@ public class BalloonUserTrackingDaoImpl implements BalloonUserTrackingDao {
 
     }
 
+    @Override
+    public boolean delete(String uuid) {
+        return dslContext.deleteFrom(BALLOON_USER_TRACKING)
+                .where(BALLOON_USER_TRACKING.UUID_.eq(uuid))
+                .execute() > 0;
+    }
+
 }

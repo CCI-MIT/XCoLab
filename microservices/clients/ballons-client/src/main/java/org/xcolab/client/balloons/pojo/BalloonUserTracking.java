@@ -1,6 +1,8 @@
 package org.xcolab.client.balloons.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
 import org.xcolab.client.balloons.BalloonsClient;
@@ -10,6 +12,8 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
+
+import static org.xcolab.util.http.exceptions.ExceptionUtils.getOrNull;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BalloonUserTracking implements Serializable {
@@ -130,6 +134,10 @@ public class BalloonUserTracking implements Serializable {
         return this.balloontextid;
     }
 
+    public BalloonText getBalloonText() {
+        return getOrNull(() -> BalloonsClient.getBalloonText(getBalloonTextId()));
+    }
+
     public void setBalloonTextId(Long balloontextid) {
         this.balloontextid = balloontextid;
     }
@@ -206,11 +214,30 @@ public class BalloonUserTracking implements Serializable {
         this.useragent = useragent;
     }
 
-    public void updateUserIdIfEmpty(long memberId) {
-        if (getUserId() == null) {
+    public void updateUserIdAndEmailIfEmpty(long memberId, String email) {
+        final boolean isUserIdEmpty = getUserId() == null;
+        if (isUserIdEmpty) {
             setUserId(memberId);
+        }
+
+        final boolean isEmailBlank = StringUtils.isBlank(getEmail());
+        if (isEmailBlank) {
+            setEmail(email);
+        }
+
+        if (isUserIdEmpty || isEmailBlank) {
             BalloonsClient.updateBalloonUserTracking(this);
         }
+    }
+
+    @JsonIgnore
+    public BalloonLink getBalloonLink() {
+        return getOrNull(() -> BalloonsClient.getLinkByBalloonUserTrackingUuid(getUuid_()));
+    }
+
+    @JsonIgnore
+    public boolean isUsed() {
+        return getParent() != null || getBalloonLink() != null;
     }
 
     @Override

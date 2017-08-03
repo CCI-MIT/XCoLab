@@ -1,0 +1,22 @@
+.bs-form-control-inline {
+
+  @media (min-width: 768px) {
+    &.form-control {
+      display: inline-block;
+      width: auto;
+      vertical-align: middle;
+    }
+
+    &.bs-form-control--small {
+      width: 200px;
+    }
+
+    &.bs-form-control--medium {
+      width: 300px;
+    }
+
+    &.bs-form-control--large {
+      width: 400px;
+    }
+  }
+}

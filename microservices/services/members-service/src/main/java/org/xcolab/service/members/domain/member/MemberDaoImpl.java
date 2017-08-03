@@ -271,6 +271,7 @@ public class MemberDaoImpl implements MemberDao {
     public boolean updateMember(Member member) {
 
         return this.dslContext.update(MEMBER)
+                .set(MEMBER.UUID, member.getUuid())
                 .set(MEMBER.CREATE_DATE, member.getCreateDate())
                 .set(MEMBER.MODIFIED_DATE, DSL.currentTimestamp())
                 .set(MEMBER.SCREEN_NAME, member.getScreenName())

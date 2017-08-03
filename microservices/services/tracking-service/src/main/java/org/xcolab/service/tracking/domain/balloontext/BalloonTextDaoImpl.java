@@ -16,8 +16,12 @@ import static org.xcolab.model.Tables.BALLOON_TEXT;
 @Repository
 public class BalloonTextDaoImpl implements BalloonTextDao {
 
+    private final DSLContext dslContext;
+
     @Autowired
-    private DSLContext dslContext;
+    public BalloonTextDaoImpl(DSLContext dslContext) {
+        this.dslContext = dslContext;
+    }
 
     @Override
     public BalloonText getBalloonText(Long id) throws NotFoundException {
@@ -45,16 +49,11 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
                 .set(BALLOON_TEXT.ID_, balloonText.getId_())
                 .set(BALLOON_TEXT.NAME, balloonText.getName())
                 .set(BALLOON_TEXT.TEXT_BEFORE_FORM, balloonText.getTextBeforeForm())
-                .set(BALLOON_TEXT.TEXT_AFTER_FORM, balloonText.getTextAfterForm())
                 .set(BALLOON_TEXT.TEXT_BEFORE_SHARE_BUTTONS, balloonText.getTextBeforeShareButtons())
-                .set(BALLOON_TEXT.TEXT_AFTER_SHARE_BUTTONS, balloonText.getTextAfterShareButtons())
-                .set(BALLOON_TEXT.ACCEPT_TOS_TEXT, balloonText.getAcceptTosText())
                 .set(BALLOON_TEXT.EMAIL_TEMPLATE, balloonText.getEmailTemplate())
                 .set(BALLOON_TEXT.EMAIL_SUBJECT_TEMPLATE, balloonText.getEmailSubjectTemplate())
-                .set(BALLOON_TEXT.TWITTER_DESCRIPTION, balloonText.getTwitterDescription())
-                .set(BALLOON_TEXT.TWITTER_SUBJECT, balloonText.getTwitterSubject())
-                .set(BALLOON_TEXT.FACEBOOK_DESCRIPTION, balloonText.getFacebookDescription())
-                .set(BALLOON_TEXT.FACEBOOK_SUBJECT, balloonText.getFacebookSubject())
+                .set(BALLOON_TEXT.SHARE_TITLE, balloonText.getShareTitle())
+                .set(BALLOON_TEXT.SHARE_DESCRIPTION, balloonText.getShareDescription())
                 .set(BALLOON_TEXT.ENABLED, balloonText.getEnabled())
                 .where(BALLOON_TEXT.ID_.eq(balloonText.getId_()))
                 .execute() > 0;
@@ -65,16 +64,11 @@ public class BalloonTextDaoImpl implements BalloonTextDao {
         BalloonTextRecord ret = this.dslContext.insertInto(BALLOON_TEXT)
                 .set(BALLOON_TEXT.NAME, balloonText.getName())
                 .set(BALLOON_TEXT.TEXT_BEFORE_FORM, balloonText.getTextBeforeForm())
-                .set(BALLOON_TEXT.TEXT_AFTER_FORM, balloonText.getTextAfterForm())
                 .set(BALLOON_TEXT.TEXT_BEFORE_SHARE_BUTTONS, balloonText.getTextBeforeShareButtons())
-                .set(BALLOON_TEXT.TEXT_AFTER_SHARE_BUTTONS, balloonText.getTextAfterShareButtons())
-                .set(BALLOON_TEXT.ACCEPT_TOS_TEXT, balloonText.getAcceptTosText())
                 .set(BALLOON_TEXT.EMAIL_TEMPLATE, balloonText.getEmailTemplate())
                 .set(BALLOON_TEXT.EMAIL_SUBJECT_TEMPLATE, balloonText.getEmailSubjectTemplate())
-                .set(BALLOON_TEXT.TWITTER_DESCRIPTION, balloonText.getTwitterDescription())
-                .set(BALLOON_TEXT.TWITTER_SUBJECT, balloonText.getTwitterSubject())
-                .set(BALLOON_TEXT.FACEBOOK_DESCRIPTION, balloonText.getFacebookDescription())
-                .set(BALLOON_TEXT.FACEBOOK_SUBJECT, balloonText.getFacebookSubject())
+                .set(BALLOON_TEXT.SHARE_TITLE, balloonText.getShareTitle())
+                .set(BALLOON_TEXT.SHARE_DESCRIPTION, balloonText.getShareDescription())
                 .set(BALLOON_TEXT.ENABLED, balloonText.getEnabled())
 
                 .returning(BALLOON_TEXT.ID_)
