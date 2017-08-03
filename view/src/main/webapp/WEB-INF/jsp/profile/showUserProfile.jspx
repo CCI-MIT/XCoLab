@@ -257,15 +257,15 @@
                     <div class="comm_rightcol-title">
                         <label for="snpLink">
                             <spring:message code="profile.show.referralLink"/>
-                            <a href="/snp/socialnetworkprize" target="_blank" class="js-Tooltip"
-                                    style="margin-left: 5px;"
-                                    title="Click to learn more about the Social Network Prize">
-                                <img src="/images/icon-addprop-question.png" width="15" height="15" />
-                            </a>
                         </label>
                     </div>
                     <p>
                         <spring:message code="profile.show.referralText" />
+                        <a href="/snp/socialnetworkprize" target="_blank" class="js-Tooltip"
+                           style="margin-left: 5px;"
+                           title="Click to learn more about the Social Network Prize">
+                            <img src="/images/icon-addprop-question.png" width="15" height="15" />
+                        </a>
                     </p>
                     <c:choose>
                         <!--@elvariable id="balloonLink" type="org.xcolab.client.balloons.pojo.BalloonLink"-->
