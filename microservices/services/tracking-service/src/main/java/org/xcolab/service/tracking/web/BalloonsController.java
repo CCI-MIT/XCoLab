@@ -89,8 +89,13 @@ public class BalloonsController {
 
     @PutMapping("/balloonUserTrackings/{uuid}")
     public boolean updateBalloonUserTracking(@RequestBody BalloonUserTracking balloonUserTracking,
-            @PathVariable String uuid) throws NotFoundException {
+            @PathVariable String uuid) {
         return balloonUserTrackingDao.update(balloonUserTracking);
+    }
+
+    @DeleteMapping("/balloonUserTrackings/{uuid}")
+    public boolean deleteBalloonUserTracking(@PathVariable String uuid) {
+        return balloonUserTrackingDao.delete(uuid);
     }
 
     @GetMapping("/balloonTexts/{id}")

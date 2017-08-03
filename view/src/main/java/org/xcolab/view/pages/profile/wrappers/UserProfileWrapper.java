@@ -22,7 +22,6 @@ import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
-import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.profile.beans.BadgeBean;
 import org.xcolab.view.pages.profile.beans.MessageBean;
 import org.xcolab.view.pages.profile.beans.UserBean;
@@ -37,8 +36,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 public class UserProfileWrapper implements Serializable {
 
@@ -67,17 +64,19 @@ public class UserProfileWrapper implements Serializable {
     private List<UserActivityWrapper> subscribedActivities;
     private UserSubscriptionsWrapper userSubscriptions;
     private BadgeBean badges;
+
     private final ActivityEntryHelper activityEntryHelper;
 
     private boolean viewingOwnProfile;
 
-    public UserProfileWrapper(long userId, HttpServletRequest request, ActivityEntryHelper activityEntryHelper)
+    public UserProfileWrapper(long userId, Member loggedInMember,
+            ActivityEntryHelper activityEntryHelper)
             throws MemberNotFoundException {
         this.activityEntryHelper = activityEntryHelper;
 
         member = MembersClient.getMember(userId);
+
         if (member.isActive()) {
-            Member loggedInMember = MemberAuthUtil.getMemberOrNull(request);
             if (loggedInMember != null) {
                 Member logUser = MembersClient.getMember(loggedInMember.getUserId());
                 messagePermissionChecker = new SendMessagePermissionChecker(logUser);

@@ -55,7 +55,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
                 BalloonUserTracking but = BalloonsClient
                         .getBalloonUserTracking(balloonCookie.getUuid());
                 if (but != null) {
-                    but.updateUserIdIfEmpty(member.getId_());
+                    but.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress());
                 }
             } catch (BalloonUserTrackingNotFoundException e) {
                 log.error("Invalid UUID: {}", balloonCookie);

@@ -17,6 +17,9 @@ public final class ConfigurationAttributeKey {
 
     private static final Pattern SCHEME_REGEX = Pattern.compile("^https?://");
 
+    private ConfigurationAttributeKey() {
+    }
+
     //Main CoLab configuration
     public static final AttributeGetter<String> ADMIN_EMAIL =
             ConfigurationAttributes.newStringAttribute("ADMIN_EMAIL")
@@ -418,8 +421,11 @@ public final class ConfigurationAttributeKey {
                     .defaultValue(false)
                     .build();
 
-    public static final AttributeGetter<String> SNP_CONTEXT =
-            ConfigurationAttributes.newStringAttribute("SNP_IS_ACTIVE")
-                    .defaultValue("socialnetworkprize")
-                    .build();
+    public static final LocalizableAttributeGetter<String> SNP_CONSENT_FORM_TEXT =
+            ConfigurationAttributes.newLocalizedStringAttribute("SNP_CONSENT_FORM_TEXT")
+                    .buildLocalizable();
+
+    public static final LocalizableAttributeGetter<String> SNP_EXAMPLE_TEXT =
+            ConfigurationAttributes.newLocalizedStringAttribute("SNP_EXAMPLE_TEXT")
+                    .buildLocalizable();
 }
