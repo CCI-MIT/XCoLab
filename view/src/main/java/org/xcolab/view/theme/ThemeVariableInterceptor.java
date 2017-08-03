@@ -18,6 +18,7 @@ import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.theme.ColabTheme;
 import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.login.AuthenticationError;
 import org.xcolab.view.util.MetaKeys;
@@ -149,6 +150,11 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
                 modelAndView.addObject("_partnerColabLogo", partnerColabImgsAndClasses +
                         "PartnerLogo.png");
             }
+
+            modelAndView.addObject("_isI18NActive",ConfigurationAttributeKey.IS_I18N_ACTIVE.get());
+            modelAndView.addObject("_currentLocale",locale.getLanguage());
+            modelAndView.addObject("_languageSelectItems", I18nUtils.getSelectList());
+
 
             modelAndView.addObject("_adminEmail", ConfigurationAttributeKey.ADMIN_EMAIL.get());
 
