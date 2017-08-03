@@ -89,9 +89,11 @@ public class LoginRegisterService {
             try {
                 BalloonUserTracking but =
                         BalloonsClient.getBalloonUserTracking(balloonCookie.getUuid());
-                but.setRegistrationDate(new Timestamp(new Date().getTime()));
-                but.setUserId(member.getId_());
-                BalloonsClient.updateBalloonUserTracking(but);
+                if (but.getUserId() == null) {
+                    but.setRegistrationDate(new Timestamp(new Date().getTime()));
+                    but.setUserId(member.getId_());
+                    BalloonsClient.updateBalloonUserTracking(but);
+                }
             } catch (BalloonUserTrackingNotFoundException e) {
                 _log.error("Can't find balloon user tracking for uuid: {}",
                         balloonCookie.getUuid());
