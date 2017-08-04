@@ -6,6 +6,7 @@ import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.filtering.FilteringClient;
@@ -44,8 +45,9 @@ public final class AddUpdateProposalControllerUtil {
         final ContestPhase contestPhase = proposalContext.getContestPhase();
         if (proposal != null) {
             if (updateProposalSectionsBean.getIsMove() && updateProposalSectionsBean.getMoveToContestId() > 0) {
+                Contest moveToContest = ContestClientUtil.getContest(updateProposalSectionsBean.getMoveToContestId());
                 ProposalMoveUtil.moveProposal(proposalContext, updateProposalSectionsBean,
-                        proposal, contestPhase, contest, memberId);
+                        proposal, contestPhase, moveToContest, memberId);
             }
         } else {
             createNew = true;
@@ -94,7 +96,7 @@ public final class AddUpdateProposalControllerUtil {
             }
         }
 
-        return "redirect:" + proposal.getProposalUrl();
+        return "redirect:" + proposal.getProposalLinkUrl(contest);
     }
     
 }

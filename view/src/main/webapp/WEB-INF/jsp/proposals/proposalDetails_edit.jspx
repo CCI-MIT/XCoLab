@@ -56,8 +56,6 @@
     </c:if>
 
     <div class="prop-left">
-        <c:set var="updateProposalSectionsURL"
-               value="${proposal.proposalId > 0 ? proposal.proposalUrl : contest.newProposalLinkUrl}"/>
 
         <div class="c-Headline addprop">
             <c:choose>
@@ -99,7 +97,7 @@
         </form>
 
 
-        <form:form action="${updateProposalSectionsURL }" commandName="updateProposalDetailsBean"
+        <form:form action="${saveUrl}" commandName="updateProposalDetailsBean"
                    id="editForm"
                    cssClass="addpropform ${contestType.showProposalSummary ? '' : 'full-wdith'}" >
             <form:hidden path="baseProposalId" />
