@@ -96,7 +96,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
 #c-Header__menu { //#menu
   float: left;
-  width: 370px;
+  width: 380px;
 
   &.backgroundLight li:hover {
     background: $c-Header__background--hover;
@@ -372,6 +372,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   }
   li {
     margin-left: 0px;
+    cursor:pointer;
   }
 }
 .c-Header__login__box { //.loginbox

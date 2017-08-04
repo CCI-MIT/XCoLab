@@ -3,6 +3,7 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:spring="http://www.springframework.org/tags"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           version="2.0">
     <jsp:directive.attribute name="title" type="java.lang.String" required="false" rtexprvalue="true" description="Page title" />
     <jsp:directive.attribute name="description" type="java.lang.String" required="false" rtexprvalue="true" description="Page description for meta tag" />
@@ -333,13 +334,13 @@
 
                                 <c:forEach var="lang" items="${_languageSelectItems}">
                                     <c:if test="${_currentLocale == lang['value'] }">
-                                        <li><input name="lang" type="radio" checked="checked">&#160;<a href="/?lang=${lang['value']}"><spring:message code="${lang['lable']}"/> - ${lang['value']}</a></input></li>
+                                        <li><input name="lang" type="radio" checked="checked">&#160;<spring:message code="${lang['lable']}"/> - ${fn:toUpperCase(lang['value'])}</input></li>
                                     </c:if>
                                 </c:forEach>
                                 <li class="divider">_____________</li>
                                 <c:forEach var="lang" items="${_languageSelectItems}">
                                     <c:if test="${ _currentLocale != lang['value']}">
-                                        <li><input name="lang" type="radio" onclick="window.location='/?lang=${lang['value']}';">&#160;<a href="/?lang=${lang['value']}"><spring:message code="${lang['lable']}"/> - ${lang['value']}</a></input></li>
+                                        <li onclick="window.location='/?lang=${lang['value']}';" ><input name="lang" type="radio" >&#160;<spring:message code="${lang['lable']}"/> - ${fn:toUpperCase(lang['value'])}</input></li>
                                     </c:if>
                                 </c:forEach>
                             </ul>
