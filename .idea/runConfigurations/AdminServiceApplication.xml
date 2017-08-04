@@ -2,7 +2,6 @@
   <configuration default="false" name="AdminServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="org.xcolab.service.admin.AdminServiceApplication" />
-    <option name="SHOW_IN_DASHBOARD" value="true" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <additionalParameters>
       <param>

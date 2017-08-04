@@ -45,7 +45,23 @@ function initSearchUpperBox() {
 	});
 		
 }
-
+function initLanguagePopupUpper() {
+    jQuery("#languagePopupTrigger").click(function() {
+        jQuery("#languagePopupContainer").fadeIn("fast");
+    });
+    function hideIfLanguageNotUsed() {
+        if (! jQuery('#languagePopupContainer').hasClass('mouseover')) {
+            jQuery("#languagePopupContainer").fadeOut("fast");
+        }
+    }
+    jQuery("#languagePopupContainer").mouseenter(function() {
+        jQuery("#languagePopupContainer").addClass('mouseover');
+    });
+    jQuery("#languagePopupContainer").mouseleave(function() {
+        jQuery("#languagePopupContainer").removeClass('mouseover');
+        setTimeout(hideIfLanguageNotUsed, 10);
+    });
+}
 function initLoginPopupUpper() {
 	jQuery("#loginPopupTrigger").click(function() {
 		jQuery("#loginPopupContainer").fadeIn("fast");
@@ -295,7 +311,7 @@ jQuery(function() {
 	initLoginPopupUpper();
 	initUserInfoPopup();
 	initTreeWithDynatree();
-	
+    initLanguagePopupUpper();
 	jQuery(".popup .close").click(function() {
 		
 		closePopup(this);

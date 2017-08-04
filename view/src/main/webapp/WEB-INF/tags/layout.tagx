@@ -31,6 +31,8 @@
     <!--@elvariable id="_isProduction" type="java.lang.Boolean"-->
 
     <!--@elvariable id="_showImpersonationBar" type="java.lang.Boolean"-->
+    <!--@elvariable id="_isI18NActive" type="java.lang.Boolean"-->
+
     <!--@elvariable id="_realMember" type="org.xcolab.client.members.pojo.Member"-->
     <!--@elvariable id="_member" type="org.xcolab.client.members.pojo.Member"-->
     <!--@elvariable id="_unreadMessages" type="java.lang.Integer"-->
@@ -40,6 +42,8 @@
     <!--@elvariable id="_themeJsFolder" type="java.lang.String"-->
     <!--@elvariable id="_libJsFolder" type="java.lang.String"-->
     <!--@elvariable id="_themeImageFolder" type="java.lang.String"-->
+    <!--@elvariable id="_languageSelectItems" type="java.lang.String"-->
+
     <!--@elvariable id="_logoPath" type="java.lang.String"-->
     <!--@elvariable id="_logoPathSocial" type="java.lang.String"-->
     <!--@elvariable id="_logoPathBig" type="java.lang.String"-->
@@ -308,10 +312,41 @@
                     <li class="login" >
                         <a  href="javascript:;" id="loginPopupTrigger"><spring:message code="homepage.menu.visitor.login" /></a>
                     </li>
+                    <c:if test="${_isI18NActive}">
+                        <li class="language" >
+                            <a  href="javascript:;" id="languagePopupTrigger"><spring:message code="homepage.menu.visitor.language" /></a>
+                        </li>
+                    </c:if>
                     <li class="help">
                         <a href="/wiki/Help"><spring:message code="homepage.menu.help" /></a>
                     </li>
                 </ul>
+
+                <c:if test="${_isI18NActive}">
+                    <!-- LANGUAGE POPUP -->
+                    <div class="c-Header__language__pop" id="languagePopupContainer">
+                        <div class="c-Header__language__top">
+                            <img src="${_themeImageFolder}/earth-grid-select-language-button3.png" />
+                        </div>
+                        <div class="c-Header__language__box">
+                            <ul>
+
+                                <c:forEach var="lang" items="${_languageSelectItems}">
+                                    <c:if test="${_currentLocale == lang['value'] }">
+                                        <li><input name="lang" type="radio" checked="checked">&#160;<a href="/?lang=${lang['value']}"><spring:message code="${lang['lable']}"/> - ${lang['value']}</a></input></li>
+                                    </c:if>
+                                </c:forEach>
+                                <li class="divider">_____________</li>
+                                <c:forEach var="lang" items="${_languageSelectItems}">
+                                    <c:if test="${ _currentLocale != lang['value']}">
+                                        <li><input name="lang" type="radio" onclick="window.location='/?lang=${lang['value']}';">&#160;<a href="/?lang=${lang['value']}"><spring:message code="${lang['lable']}"/> - ${lang['value']}</a></input></li>
+                                    </c:if>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /LANGUAGE POPUP -->
+                </c:if>
 
                 <!-- LOGIN POPUP -->
                 <div class="c-Header__login__pop" id="loginPopupContainer">
