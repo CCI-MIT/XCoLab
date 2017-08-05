@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -87,7 +88,7 @@ public class BalloonController {
 
     @PostMapping("/snp/socialnetworkprize")
     public String requestLink(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member,
+            Model model, Member member, @RequestParam(required = false) String redirect,
             @Valid UserEmailBean userEmailBean, BindingResult bindingResult)
             throws BalloonTextNotFoundException {
 
@@ -116,7 +117,8 @@ public class BalloonController {
         final BalloonLink link = balloonService
                 .createBalloonLink(userEmailBean.getEmail(), but);
 
-        return "redirect:" + link.getTargetUrl();
+        final String redirectUrl = StringUtils.isEmpty(redirect) ? link.getTargetUrl() : redirect;
+        return "redirect:" + redirectUrl;
     }
 
     @GetMapping(BalloonService.SNP_LINK_URL)
