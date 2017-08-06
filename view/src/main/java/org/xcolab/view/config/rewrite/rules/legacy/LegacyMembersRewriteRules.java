@@ -13,21 +13,26 @@ public class LegacyMembersRewriteRules implements RewriteRuleProvider {
     public void configure(ConfigurationBuilder configurationBuilder) {
         configurationBuilder
                 .addRule()
-                .when(Direction.isInbound().and(
-                        Path.matches("/web/guest/member/-/member/userId/{memberId}")))
-                .perform(Redirect.permanent("/members/profile/{memberId}"))
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/member/-/member/userId/{memberId}")
+                                .or(Path.matches("/member/-/member/userId/{memberId}"))))
+                    .perform(Redirect.permanent("/members/profile/{memberId}"))
                 .addRule()
-                .when(Direction.isInbound().and(
-                        Path.matches("/web/guest/member/-/member/userId/{memberId}/page/edit")))
-                .perform(Redirect.permanent("/members/profile/{memberId}/edit"))
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/member/-/member/userId/{memberId}/page/edit")
+                                .or(Path.matches("/member/-/member/userId/{memberId}/page/edit"))))
+                    .perform(Redirect.permanent("/members/profile/{memberId}/edit"))
                 .addRule()
-                .when(Direction.isInbound().and(
-                        Path.matches("/web/guest/member/-/member/userId/{memberId}/page/subscriptions")))
-                .perform((Redirect.permanent("/members/profile/{memberId}/subscriptions")))
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/member/-/member/userId/{memberId}/page/subscriptions")
+                                .or(Path.matches("/member/-/member/userId/{memberId}/page/subscriptions"))
+                    ))
+                    .perform((Redirect.permanent("/members/profile/{memberId}/subscriptions")))
                 .addRule()
-                .when(Direction.isInbound().and(
-                        Path.matches("/web/guest/member/-/member/userId/{memberId}/page/subscriptionsManage")))
-                .perform((Redirect.permanent("/members/profile/{memberId}/subscriptions/manage")));
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/member/-/member/userId/{memberId}/page/subscriptionsManage")
+                                .or(Path.matches("/member/-/member/userId/{memberId}/page/subscriptionsManage"))))
+                    .perform((Redirect.permanent("/members/profile/{memberId}/subscriptions/manage")));
 
         configurationBuilder
                 .addRule()

@@ -35,31 +35,44 @@ public class LegacyProposalRewriteRules implements RewriteRuleProvider {
         // legacy urls
         configurationBuilder
                 .addRule()
-                    .when(Direction.isInbound()
-                            .and(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}")))
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}")
+                                    .or(Path.matches("/{portletName}/-/plans/contestId/{contestId}"))
+                                    .or(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/page/{pageName}"))
+                                    .or(Path.matches("/{portletName}/-/plans/contestId/{contestId}/page/{pageName}"))))
                     .perform(Forward.to("/contests/legacy/contest/{contestId}"))
                     .where("portletName").matches("(plans|dialogues|challenges|trends)")
                 .addRule()
                     .when(Direction.isInbound().and(
-                            Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phase/{phaseId}")))
-                    .perform(Forward.to("/contests/legacy/contest/{contestId}?phaseId={phaseId}"))
+                            Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phase/{phaseId}")
+                                .or(Path.matches("/{portletName}/-/plans/contestId/{contestId}/phase/{phaseId}"))))
+                    .perform(Forward.to("/contests/legacy/contest/{contestId}"))
                     .where("portletName").matches("(plans|dialogues|challenges|trends)")
                 .addRule()
                     .when(Direction.isInbound().and(
                             Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/planId/{proposalId}")
-                                    .or(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/planId/{proposalId}/{path}"))))
+                                    .or(Path.matches("/{portletName}/-/plans/contestId/{contestId}/planId/{proposalId}"))
+                                    .or(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/planId/{proposalId}/{path}"))
+                                    .or(Path.matches("/{portletName}/-/plans/contestId/{contestId}/planId/{proposalId}/{path}"))
+                    ))
                     .perform(Forward.to("/contests/legacy/contest/{contestId}/proposal/{proposalId}"))
                     .where("portletName").matches("(plans|dialogues|challenges|trends)")
                     .where("path").matches(".*")
                 .addRule()
                     .when(Direction.isInbound().and(
                             Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phaseId/{phaseId}/planId/{proposalId}")
-                                    .or(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phaseId/{phaseId}/planId/{proposalId}/{path}"))))
+                                    .or(Path.matches("/{portletName}/-/plans/contestId/{contestId}/phaseId/{phaseId}/planId/{proposalId}"))
+                                    .or(Path.matches("/web/guest/{portletName}/-/plans/contestId/{contestId}/phaseId/{phaseId}/planId/{proposalId}/{path}"))
+                                    .or(Path.matches("/{portletName}/-/plans/contestId/{contestId}/phaseId/{phaseId}/planId/{proposalId}/{path}"))
+                    ))
                     .perform(Forward.to("/contests/legacy/contest/{contestId}/proposal/{proposalId}?phaseId={phaseId}"))
                     .where("portletName").matches("(plans|dialogues|challenges|trends)")
                     .where("path").matches(".*")
                 .addRule()
-                    .when(Direction.isInbound().and(Path.matches("/plans/-/plans/contests{path}")))
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/plans/-/plans/contests{path}")
+                                .or(Path.matches("/plans/-/plans/contests{path}"))
+                    ))
                     .perform(Redirect.permanent("/contests{path}"))
                     .where("path").matches(".*");
     }
