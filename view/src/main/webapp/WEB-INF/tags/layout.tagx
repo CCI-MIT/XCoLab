@@ -19,7 +19,6 @@
     <jsp:directive.attribute name="openGraphImage" type="java.lang.String" required="false" rtexprvalue="true" description="Open Graph image override , if empty the default value in config variables will be used" />
 
 
-
     <jsp:useBean id="_librariesToLoad" class="java.util.HashMap" scope="request"/>
 
     <!-- jsp variables -->
@@ -48,12 +47,14 @@
     <!--@elvariable id="_logoPath" type="java.lang.String"-->
     <!--@elvariable id="_logoPathSocial" type="java.lang.String"-->
     <!--@elvariable id="_logoPathBig" type="java.lang.String"-->
+    <!--@elvariable id="_logoPathSquare" type="java.lang.String"-->
     <!--@elvariable id="_uploadedImageFolder" type="java.lang.String"-->
 
 
     <!--@elvariable id="_contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
     <!--@elvariable id="_colabName" type="java.lang.String"-->
     <!--@elvariable id="_colabUrl" type="java.lang.String"-->
+    <!--@elvariable id="_colabLongName" type="java.lang.String"-->
     <!--@elvariable id="_colabShortName" type="java.lang.String"-->
     <!--@elvariable id="_googleAnalyticsKey" type="java.lang.String"-->
     <!--@elvariable id="_betaRibbonShow" type="java.lang.Boolean"-->
@@ -184,10 +185,10 @@
     <meta property="og:description" content="${ not empty openGraphDescription ? openGraphDescription: _openGraphShareDescription}" />
     <meta property="og:image" content="${_colabUrl}${not empty openGraphImage?openGraphImage:_logoPathBig}" />
 
-    <meta name="twitter:image" content="${_colabUrl}${not empty openGraphImage?openGraphImage:_logoPathTwitter}"/>
+    <meta name="twitter:image" content="${_colabUrl}${not empty openGraphImage?openGraphImage:_logoPathSquare}"/>
 
     <c:if test="${not empty _facebookId}">
-        <meta property="fb:app_id" content="_facebookId"/>
+        <meta property="fb:app_id" content="${_facebookId}"/>
     </c:if>
 
     <link href="${_themeImageFolder}/favicon.ico" rel="Shortcut Icon" />
@@ -904,6 +905,35 @@
     <!-- ============ DEFERRED SCRIPTS ============ -->
     <xcolab:script src="${_themeJsFolder}/messageNotification.js" defer="true" />
     <xcolab:script src="${_themeJsFolder}/usertracking.js" defer="true"/>
+
+
+    <!-- Structured data for search engines -->
+    <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "WebSite",
+          "name": "${_colabName}",
+          "alternateName": "${_colabLongName}",
+          "url": "${_colabUrl}"
+        }
+    </script>
+
+    <!--suppress CheckValidXmlInScriptTagBody -->
+    <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "Organization",
+          "name": "${_colabName}",
+          "url": "${_colabUrl}",
+          "logo": "${_colabUrl}${_logoPathSquare}",
+          "sameAs": [
+            <c:forEach var="socialMediaUrl" items="${_socialMediaUrls}" varStatus="status">
+                "${socialMediaUrl}"${status.last ? '' : ','}
+            </c:forEach>
+          ]
+        }
+    </script>
+
 </body>
 </html>
 </jsp:root>

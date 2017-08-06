@@ -30,6 +30,11 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> COLAB_NAME =
             ConfigurationAttributes.newStringAttribute("COLAB_NAME")
                     .withCache().build();
+    public static final AttributeGetter<String> COLAB_LONG_NAME =
+            ConfigurationAttributes.newStringAttribute("COLAB_LONG_NAME")
+                    .withCache()
+                    .defaultValue(COLAB_NAME)
+                    .build();
     public static final AttributeGetter<String> COLAB_SHORT_NAME =
             ConfigurationAttributes.newStringAttribute("COLAB_SHORT_NAME")
                     .withCache().build();
@@ -73,14 +78,19 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newStringAttribute("DEFAULT_TIME_ZONE_ID")
                     .defaultValue(TimeZone.getDefault().getDisplayName())
                     .build();
+
     public static final AttributeGetter<String> GOOGLE_ANALYTICS_KEY =
             ConfigurationAttributes.newStringAttribute("GOOGLE_ANALYTICS_KEY")
                     .withCache()
                     .defaultValue("")
                     .build();
 
+    // Social media configuration
+    public static final AttributeGetter<String> GOOGLE_URL =
+            ConfigurationAttributes.newStringAttribute("GOOGLE_URL")
+                    .defaultValue("")
+                    .build();
 
-    //SSO Configuration
     public static final AttributeGetter<String> GOOGLE_AUTH_CLIENT_ID =
             ConfigurationAttributes.newStringAttribute("GOOGLE_AUTH_CLIENT_ID")
                     .defaultValue("")
@@ -105,6 +115,10 @@ public final class ConfigurationAttributeKey {
                     .defaultValue(TransformedAttribute.of(GOOGLE_RECAPTCHA_SITE_KEY, StringUtils::isNotEmpty))
                     .build();
 
+    public static final AttributeGetter<String> FACEBOOK_URL =
+            ConfigurationAttributes.newStringAttribute("FACEBOOK_URL")
+                    .defaultValue("")
+                    .build();
     public static final AttributeGetter<String> FACEBOOK_APPLICATION_ID =
             ConfigurationAttributes.newStringAttribute("FACEBOOK_APPLICATION_ID")
                     .defaultValue("")
@@ -119,6 +133,26 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<Boolean> FACEBOOK_VERIFIED_REQUIRED =
             ConfigurationAttributes.newBooleanAttribute("FACEBOOK_VERIFIED_REQUIRED")
                     .defaultValue(false)
+                    .build();
+
+    public static final AttributeGetter<String> TWITTER_URL =
+            ConfigurationAttributes.newStringAttribute("TWITTER_URL")
+                    .defaultValue("")
+                    .build();
+
+    public static final AttributeGetter<String> YOUTUBE_URL =
+            ConfigurationAttributes.newStringAttribute("YOUTUBE_URL")
+                    .defaultValue("")
+                    .build();
+
+    public static final AttributeGetter<String> LINKEDIN_URL =
+            ConfigurationAttributes.newStringAttribute("LINKEDIN_URL")
+                    .defaultValue("")
+                    .build();
+
+    public static final AttributeGetter<String> STORIFY_URL =
+            ConfigurationAttributes.newStringAttribute("STORIFY_URL")
+                    .defaultValue("")
                     .build();
 
 
