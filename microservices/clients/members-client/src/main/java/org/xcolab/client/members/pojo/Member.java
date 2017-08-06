@@ -395,14 +395,12 @@ public class Member implements Serializable {
         if (this.getId_() <= 0) {
             return "";
         }
-        return "<a href='" + generateUserHref(this.getId_())+ "'>" + this.getDisplayName()+ "</a>";
+        return "<a href='" + getProfileLinkUrl()+ "'>" + this.getDisplayName()+ "</a>";
     }
 
-    private  String generateUserHref(long userId)  {
-        if (userId <= 0) {
-            return "";
-        }
-        return USER_PROFILE_PATH + userId;
+    @JsonIgnore
+    public String getProfileLinkUrl()  {
+        return USER_PROFILE_PATH + getId_();
     }
 
     @JsonIgnore

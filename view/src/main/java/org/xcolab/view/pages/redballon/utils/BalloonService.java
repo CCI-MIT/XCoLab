@@ -95,10 +95,16 @@ public class BalloonService {
         Optional<BalloonCookie> cookieOpt = BalloonCookie.from(request.getCookies());
         if (cookieOpt.isPresent()) {
             BalloonUserTracking but = getBalloonUserTrackingFromCookie(cookieOpt.get());
-            if (member != null) {
-                but.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress());
+            if (member == null) {
+                return Optional.of(but);
             }
-            return Optional.of(but);
+
+            final boolean butLinkedToOtherMember = but.getUserId() != null
+                    && but.getUserId() != member.getId_();
+            if (!butLinkedToOtherMember) {
+                but.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress());
+                return Optional.of(but);
+            }
         }
 
         if (member != null) {

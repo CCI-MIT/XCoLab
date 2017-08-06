@@ -11,6 +11,12 @@
 <!--@elvariable id="permissions" type="org.xcolab.view.pages.profile.utils.UserProfilePermissions"-->
 <!--@elvariable id="userBean" type="org.xcolab.view.pages.profile.beans.UserBean"-->
 <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
+
+<!-- SNP -->
+<!--@elvariable id="isSnpActive" type="java.lang.Boolean"-->
+<!--@elvariable id="balloonLink" type="org.xcolab.client.balloons.pojo.BalloonLink"-->
+<!--@elvariable id="balloonText" type="org.xcolab.client.balloons.pojo.BalloonText"-->
+
 <xcolab:layout title="${currentUserProfile.realName}'s Profile">
 
     <jsp:directive.include file="./init.jspx" />
@@ -257,23 +263,21 @@
                     <div class="comm_rightcol-title">
                         <label for="snpLink">
                             <spring:message code="profile.show.referralLink"/>
-                            <a href="/snp/socialnetworkprize" target="_blank" class="js-Tooltip"
-                                    style="margin-left: 5px;"
-                                    title="Click to learn more about the Social Network Prize">
-                                <img src="/images/icon-addprop-question.png" width="15" height="15" />
-                            </a>
                         </label>
                     </div>
                     <p>
                         <spring:message code="profile.show.referralText" />
+                        <a href="/snp/socialnetworkprize" target="_blank" class="js-Tooltip"
+                           style="margin-left: 5px;"
+                           title="Click to learn more about the Social Network Prize">
+                            <img src="/images/icon-addprop-question.png" width="15" height="15" />
+                        </a>
                     </p>
                     <c:choose>
-                        <!--@elvariable id="balloonLink" type="org.xcolab.client.balloons.pojo.BalloonLink"-->
-                        <!--@elvariable id="balloonText" type="org.xcolab.client.balloons.pojo.BalloonText"-->
                         <c:when test="${not empty balloonLink}">
                             <c:set var="shareLink" value="${_colabUrl}${balloonLink.targetUrl}" />
                             <c:if test="${not empty balloonText}" >
-                                <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                                <!-- See "Inline share buttons (small)" at www.addthis.com/dashboard -->
                                 <div class="addthis_inline_share_toolbox_j4be text-center" data-url="${shareLink}"
                                      data-title="${balloonText.shareTitle}"
                                      data-description="${balloonText.shareDescription}">
@@ -296,9 +300,10 @@
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" name="acceptTos" />
-                                        Yes, I have read and I agree to the terms of the <a href="" data-toggle="modal" data-target="#snpConsentFormModal">Consent Form</a>
+                                        Yes, I have read and I agree to the terms of the <a href="" data-toggle="modal" data-target="#snpConsentFormModal">consent form</a>.
                                     </label>
                                 </div>
+                                <input type="hidden" name="redirect" value="${currentUserProfile.user.profileLinkUrl}" />
                                 <input type="hidden" name="email" value="${userBean.emailStored}" />
                                 <button type="submit" class="c-Button__primary small">Generate link</button>
                             </form>
@@ -410,7 +415,7 @@
 		<xcolab:sendMessageModal recipient="${currentUserProfile.user}" />
 	</c:if>
 
-    <c:if test="${isSnpActive}">
+    <c:if test="${isSnpActive and empty balloonLink}">
         <jsp:include page="../redballoon/consentForm.jspx" />
     </c:if>
 
