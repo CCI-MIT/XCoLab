@@ -125,20 +125,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
-                <configuration>
-                    <forkCount>2</forkCount>
-                    <reuseForks>true</reuseForks>
-                    <argLine>-Xmx512m -Xms256m</argLine>
-                    <excludes>
-                        <exclude>**/*ControllerTest.java</exclude>
-                        <exclude>**/*DaoTest.java</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>properties-maven-plugin</artifactId>
                 <version>1.0.0</version>
@@ -232,29 +218,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>integration-tests</id>
-            <build>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>${maven-surefire-plugin.version}</version>
-                    <configuration combine.self="override">
-                        <forkCount>2</forkCount>
-                        <reuseForks>true</reuseForks>
-                        <argLine>-Xmx512m -Xms256m</argLine>
-                        <includes>
-                            <include>**/*ControllerTest.java</include>
-                            <include>**/*DaoTest.java</include>
-                        </includes>
-                    </configuration>
-                </plugin>
-            </plugins>
-            </build>
-        </profile>
-    </profiles>
 
 </project>

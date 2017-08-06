@@ -11,8 +11,8 @@ cache:
   - $HOME/.m2
 
 env:
-  - RUN_INTEGRATION_TESTS=false
-  - RUN_INTEGRATION_TESTS=true
+  - RUN_SLOW_TESTS=false
+  - RUN_SLOW_TESTS=true
 
 before_install:
 - gem install dpl --source http://rubygems.org
