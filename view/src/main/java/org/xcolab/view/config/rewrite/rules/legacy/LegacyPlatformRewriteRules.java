@@ -36,6 +36,7 @@ public class LegacyPlatformRewriteRules implements RewriteRuleProvider {
         addWildcardRewrite(configurationBuilder, "fi");
         addWildcardRewrite(configurationBuilder, "pt");
         addWildcardRewrite(configurationBuilder, "tr");
+        addWildcardRewrite(configurationBuilder, "nl");
     }
 
     private void addWildcardRewrite(ConfigurationBuilder configurationBuilder, String lang) {

@@ -15,6 +15,7 @@ import org.xcolab.view.config.rewrite.rules.legacy.LegacyPlatformRewriteRules;
 import org.xcolab.view.config.rewrite.rules.legacy.LegacyProposalRewriteRules;
 import org.xcolab.view.config.rewrite.rules.legacy.LegacyRegistrationRewriteRules;
 import org.xcolab.view.config.rewrite.rules.legacy.LegacyThemeRewriteRules;
+import org.xcolab.view.config.rewrite.rules.legacy.MiscLegacyRewriteRules;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
         ruleProviders.add(new LegacyProposalRewriteRules());
         ruleProviders.add(new LegacyRegistrationRewriteRules());
         ruleProviders.add(new LegacyThemeRewriteRules());
+        ruleProviders.add(new MiscLegacyRewriteRules());
     }
 
     @Override
