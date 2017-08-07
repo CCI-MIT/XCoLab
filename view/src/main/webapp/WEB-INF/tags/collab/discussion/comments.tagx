@@ -69,10 +69,10 @@
 				<span>${thread.commentsCount}</span>
 				<c:choose>
 					<c:when test="${thread.commentsCount == 1 }">
-                        <spring:message code="discussion.commmentstag.count.singular.message"/>
+                        &#160;<spring:message code="discussion.commmentstag.count.singular.message"/>
 					</c:when>
 					<c:otherwise>
-                        <spring:message code="discussion.commmentstag.count.plural.message"/>
+                        &#160;<spring:message code="discussion.commmentstag.count.plural.message"/>
 					</c:otherwise>
 				</c:choose>
 			</h2>
@@ -136,16 +136,32 @@
 									</div>
 
 									<br /><br />
-									<a href="#_message_${message.commentId}">
-										<span class="com_num messageLink" rel="${message.commentId}">${status.index + 1} </span>
-									</a>
-									|
-									<a href="http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact message_add_this"
+                                    <div style="display: inline">
+                                        <div style="float: left;padding-top:4px;padding-right: 4px;">
+                                            <a href="#_message_${message.commentId}">
+                                                <span class="com_num messageLink" rel="${message.commentId}">${status.index + 1} </span>
+                                            </a>
+                                            |
+                                        </div>
+                                        <!--  http://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab -->
+                                        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                                        <div style="float: left">
+                                            <div  class="addthis_inline_share_toolbox_n86t message_add_this"
+                                                  addthis:title="${shareTitle}" addthis:description="${message.contentPlain}"
+                                                  addthis:url="${shareUrl}"
+                                                  data-hash="#_message_${message.commentId}"
+                                                  ><!-- --></div>
+                                        </div>
+
+                                    </div>
+									<!-- This is the old fashioned way of displaying items with a menu
+									    <a href="" class="addthis_button_compact message_add_this"
+
 									   addthis:title="${shareTitle}" addthis:description="${message.contentPlain}"
 									   addthis:url="${shareUrl}"
 									   data-hash="#_message_${message.commentId}">
 										<span><spring:message code="discussion.commmentstag.sharesmall"/> </span>
-									</a>
+									</a -->
 								</td>
 								<td class="c-Comment ${discussionPermissions.canAdminSpamReports and message.spamReportCount > 0 ? 'spam' : ''}">
 									<c:choose>
@@ -236,6 +252,26 @@
 				</div>
 			</div>
 		</c:if>
+
+        <script>
+            jQuery(function() {
+
+
+                $(".c-Comment img").each(function(index, value){
+                    var width = $(value).css("width");
+                    if(width >= 650) {
+                        $(value).attr("style", "");
+                    }
+                    $(value).css('cursor', 'pointer');
+                });
+
+                $('.c-Comment img').click(function () {
+                    var viewer = ImageViewer();
+                    var imgSrc = this.src, highResolutionImage = $(this).attr('src');
+                    viewer.show(imgSrc, highResolutionImage);
+                });
+            });
+        </script>
 
 		<script type="text/javascript">
 			jQuery(function() {

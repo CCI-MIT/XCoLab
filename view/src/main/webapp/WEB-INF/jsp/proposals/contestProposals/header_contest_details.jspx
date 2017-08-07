@@ -186,19 +186,9 @@
                 <!-- TODO: migrate to new addthis toolbox -->
                 <div class="p-ContestProposals__header__shareButtons">
                     <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox"
-                         style="float: left;">
-                        <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${contest.contestShortName}"
-                           addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
-                        <span class="clearfix"><!-- --></span>
-                        <a class="addthis_button_twitter" id="addThisButton2" addthis:title="${contest.contestShortName}"
-                           addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
-                        <span class="clearfix"><!-- --></span>
-                        <a class="addthis_button_email" id="addThisButton3" addthis:title="${contest.contestShortName}"
-                           addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
-                        <span class="clearfix"><!-- --></span>
-                        <a class="addthis_button_linkedin" id="addThisButton4" addthis:title="${contest.contestShortName}"
-                           addthis:description="${contest.contestName}" style="margin-bottom:2px;"><!--  --></a>
-                        <span class="clearfix"><!-- --></span>
+                         style="float: left;width: 35px;">
+                        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                        <div class="addthis_inline_share_toolbox"><!-- --></div>
                     </div>
                 </div>
             </c:if>
