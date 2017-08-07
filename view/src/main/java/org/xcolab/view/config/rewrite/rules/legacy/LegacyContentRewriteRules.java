@@ -170,6 +170,7 @@ public class LegacyContentRewriteRules implements RewriteRuleProvider {
                                     .or(Path.matches("/resources/-/wiki/Main/{page}"))
                                     .or(Path.matches("/resources/-/wiki/main/{page}"))
                                     .or(Path.matches("/web/guest/wiki/-/wiki/page/{page}"))
+                                    .or(Path.matches("/wiki/-/wiki/page/{page}"))
                     ))
                     .perform(Redirect.permanent("/wiki/{page}"))
                     .where("page").matches(".*")
