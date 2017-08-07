@@ -198,7 +198,6 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
     &.language {
       background: $c-Header__menu__right__li__language__backgroundUrl no-repeat center 15px;
-      padding-right: 7px;
 
       &:hover {
         background: $c-Header__menu__right__li__language--hover__backgroundUrl no-repeat center 15px;
@@ -274,7 +273,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 }
 
 .c-Header__search__top { //.searchtop
-  width: 33px;
+  width: 42px;
   height: 30px;
   padding: 12px 0 0 12px;
   background: $c-Header__search__top__background;
@@ -331,7 +330,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
   position: absolute;
   top: 9px;
-  left: 740px;
+  left: 738px;
   width: 172px;
   z-index: 11;
 }

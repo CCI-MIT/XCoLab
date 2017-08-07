@@ -3,7 +3,8 @@ function initSearchUpperBox() {
 		jQuery("#searchPopupContainer").fadeIn("fast");
 		jQuery("#searchinput").focus();
 	});
-	
+
+    alignPopUpToTrigger("#searchPopupTrigger", "#searchPopupContainer",-125,10);
 	function hideIfSearchNotUsed() {
 		if (! jQuery('#searchinput').hasClass('focus') && ! jQuery('#searchPopupContainer').hasClass('mouseover')) {
 			jQuery("#searchPopupContainer").fadeOut("fast");
@@ -45,10 +46,28 @@ function initSearchUpperBox() {
 	});
 		
 }
+
+function alignPopUpToTrigger(triggerRef, popupRef,leftAdjust,topAdjust){
+    //align item to its trigger
+    var trigger = jQuery(triggerRef)
+    var topAlign = trigger.offset().top;
+    var leftAlign = trigger.offset().left;
+
+    var topPosAlign = trigger.position().top;
+    var leftPosAlign = trigger.position().left;
+    console.log(" top align offset: " + topAlign);
+    console.log(" left align offset: " + leftAlign);
+    console.log(" top align position: " + topPosAlign);
+    console.log(" left align position: " + leftPosAlign);
+
+    jQuery(popupRef).css({ left: leftAlign + leftAdjust, top: topAlign + topAdjust , position: "absolute"});
+}
 function initLanguagePopupUpper() {
     jQuery("#languagePopupTrigger").click(function() {
         jQuery("#languagePopupContainer").fadeIn("fast");
     });
+    alignPopUpToTrigger("#languagePopupTrigger", "#languagePopupContainer",-272,10);
+
     function hideIfLanguageNotUsed() {
         if (! jQuery('#languagePopupContainer').hasClass('mouseover')) {
             jQuery("#languagePopupContainer").fadeOut("fast");
@@ -67,7 +86,8 @@ function initLoginPopupUpper() {
 		jQuery("#loginPopupContainer").fadeIn("fast");
 		jQuery("#loginPopupContainer .c-Header__login__username").focus();
 	});
-	
+
+    alignPopUpToTrigger("#loginPopupTrigger", "#loginPopupContainer",-378,10);
 	function hideIfLoginNotUsed() {
 		if (! jQuery('#loginPopupContainer').hasClass('mouseover') && jQuery('#loginPopupContainer .focus').length == 0) {
 			jQuery("#loginPopupContainer").fadeOut("fast");
