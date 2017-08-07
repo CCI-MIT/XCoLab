@@ -83,6 +83,7 @@ public class BalloonController {
             }
             model.addAttribute("userEmailBean", ueb);
         }
+        populateModelWithModalTexts(model);
         return HOME_VIEW;
     }
 
