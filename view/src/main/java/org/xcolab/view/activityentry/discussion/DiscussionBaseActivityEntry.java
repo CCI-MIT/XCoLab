@@ -1,8 +1,7 @@
 package org.xcolab.view.activityentry.discussion;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
@@ -29,7 +28,6 @@ import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.view.activityentry.provider.ActivityEntryContentProvider;
 import org.xcolab.view.i18n.ResourceMessageResolver;
-
 
 public abstract class DiscussionBaseActivityEntry implements ActivityEntryContentProvider {
 
@@ -117,19 +115,19 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
     }
 
     protected String getThreadLink() {
-        if(thread!=null) {
+        if (thread != null) {
             return String.format(HYPERLINK_FORMAT, StringEscapeUtils.escapeHtml4(thread.getLinkUrl()),
                     thread.getTitle());
-        }else{
+        } else {
             return "&#160;";
         }
     }
 
     protected String getCategoryLink() {
-        if(category!=null) {
+        if (category != null) {
             return String.format(HYPERLINK_FORMAT, StringEscapeUtils.escapeHtml4(category.getLinkUrl()),
                     category.getName());
-        }else{
+        } else {
             return "&#160;";
         }
     }

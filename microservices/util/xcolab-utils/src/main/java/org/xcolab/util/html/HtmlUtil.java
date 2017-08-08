@@ -1,6 +1,7 @@
 package org.xcolab.util.html;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -78,7 +79,7 @@ public final class HtmlUtil {
      * @return unescaped text for emails
      */
     public static String decodeHTMLEntitiesForEmail(String body){
-        return org.apache.commons.lang3.StringEscapeUtils.unescapeHtml4(body).replace("&apos;","'");
+        return StringEscapeUtils.unescapeHtml4(body).replace("&apos;","'");
 
     }
 
