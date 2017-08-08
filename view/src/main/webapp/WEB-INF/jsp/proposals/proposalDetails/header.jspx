@@ -101,7 +101,6 @@
 			</div>
 		</div>
 	</c:if>
-
     <c:if test="${promptLoginWindow == 'true' }">
         <script>
             jQuery(function() {

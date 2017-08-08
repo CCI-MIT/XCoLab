@@ -50,15 +50,16 @@ function initSearchUpperBox() {
 function alignPopUpToTrigger(triggerRef, popupRef,leftAdjust,topAdjust){
     //align item to its trigger
     var trigger = jQuery(triggerRef)
+    if(!trigger.length) return;
     var topAlign = trigger.offset().top;
     var leftAlign = trigger.offset().left;
 
     var topPosAlign = trigger.position().top;
     var leftPosAlign = trigger.position().left;
-    console.log(" top align offset: " + topAlign);
-    console.log(" left align offset: " + leftAlign);
-    console.log(" top align position: " + topPosAlign);
-    console.log(" left align position: " + leftPosAlign);
+    //console.log(" top align offset: " + topAlign);
+    //console.log(" left align offset: " + leftAlign);
+    //console.log(" top align position: " + topPosAlign);
+    //console.log(" left align position: " + leftPosAlign);
 
     jQuery(popupRef).css({ left: leftAlign + leftAdjust, top: topAlign + topAdjust , position: "absolute"});
 }

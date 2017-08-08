@@ -16,10 +16,24 @@
         </c:otherwise>
     </c:choose>
 
+    <c:set var="breadcrumbs">
+        {
+        "@context": "http://schema.org",
+        "@type":"ItemPage",
+        "name":"${proposal.name} - ${contest.contestName} - ${_colabName}",
+        "description":"${proposal.pitch}",
+        "identifier": "${proposal.absoluteProposalUrl}",
+        "url":"${proposal.absoluteProposalUrl}"
+        <c:if test='${proposal.imageId > 0}'>
+            ,"image": "${_colabUrl}${contest.proposalLogoPath}image/proposal?img_id=${proposal.imageId}"
+        </c:if>
+        }
+    </c:set>
     <xcolab:layout title="${proposal.name}" description="${proposal.pitch}"
                    openGraphImage="${proposalOpenGraphImage}"
                    openGraphDescription="${proposal.cleanPitch}"
-                   openGraphTitle="${proposal.name} - ${contest.contestShortName} - ${_colabName}">
+                   openGraphTitle="${proposal.name} - ${contest.contestShortName} - ${_colabName}"
+                   breadcrumbs="${breadcrumbs}">
         <!--@elvariable id="voted" type="java.lang.Boolean"-->
         <!--@elvariable id="votingDeadline" type="java.lang.String"-->
         <!--@elvariable id="targetMoveHistory" type="org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory"-->
@@ -233,6 +247,7 @@
                 </div>
             </div>
         </c:if>
+
         <script>
             var currentProposal = {
                     proposalId: ${proposal.proposalId},
