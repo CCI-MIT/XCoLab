@@ -96,7 +96,6 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
 #c-Header__menu { //#menu
   float: left;
-  width: 380px;
 
   &.backgroundLight li:hover {
     background: $c-Header__background--hover;
@@ -169,7 +168,6 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
 #c-Header__menu__right { //#menu-right
   float: right;
-  min-width: 180px;
   height: 67px;
   position: relative;
 
@@ -260,7 +258,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
 .c-Header__menu__right__displayName {
   display: inline-block;
-  max-width: 150px;
+  max-width: 200px;
   text-align: right;
   vertical-align: middle;
 }

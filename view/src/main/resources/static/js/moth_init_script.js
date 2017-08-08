@@ -326,18 +326,29 @@ function closePopup(obj) {
 	jQuery(".c-Popup__wrapper").hide();
 }
 
+// Start in separate init functions to isolate failure
 jQuery(function() {
-	initSearchUpperBox();
-	initLoginPopupUpper();
-	initUserInfoPopup();
-	initTreeWithDynatree();
-    initLanguagePopupUpper();
-	jQuery(".popup .close").click(function() {
-		
-		closePopup(this);
-	});
-	
-	
+    initSearchUpperBox();
+});
+
+if (_isLoggedIn) {
+    jQuery(function() {
+        initUserInfoPopup();
+    });
+} else {
+    jQuery(function() {
+        initLoginPopupUpper();
+    });
+    jQuery(function() {
+        initLanguagePopupUpper();
+    });
+}
+
+jQuery(function() {
+    initTreeWithDynatree();
+});
+
+jQuery(function() {
 	if (jQuery(".hp_boxwin").length > 0) {
 		jQuery('.hp_boxwin').cycle({
 		    fx:      'custom',
