@@ -8,7 +8,6 @@ public class AjpConnector extends Connector {
 
     public AjpConnector(int port) {
         super(AJP_PROTOCOL);
-        setProtocol(AJP_PROTOCOL);
         setPort(port);
         setSecure(false);
         setAllowTrace(false);

@@ -19,7 +19,7 @@ public class FilesController {
 
     @Autowired
     public FilesController(FileEntryDao fileEntryDao) {
-        Assert.notNull(fileEntryDao);
+        Assert.notNull(fileEntryDao, "FileEntryDao is required");
         this.fileEntryDao = fileEntryDao;
     }
 

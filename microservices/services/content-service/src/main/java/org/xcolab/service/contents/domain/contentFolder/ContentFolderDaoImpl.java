@@ -25,7 +25,7 @@ public class ContentFolderDaoImpl implements ContentFolderDao {
 
     @Autowired
     public ContentFolderDaoImpl(DSLContext dslContext) {
-        Assert.notNull(dslContext);
+        Assert.notNull(dslContext, "DSLContext is required");
         this.dslContext = dslContext;
     }
 

@@ -19,7 +19,7 @@ public class FileEntryDaoImpl implements FileEntryDao {
 
     @Autowired
     public FileEntryDaoImpl(DSLContext dslContext) {
-        Assert.notNull(dslContext);
+        Assert.notNull(dslContext, "DSLContext is required");
         this.dslContext = dslContext;
     }
 

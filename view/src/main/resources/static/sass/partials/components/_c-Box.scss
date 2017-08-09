@@ -24,7 +24,7 @@ $c-Box__button__boxColor--dark__backgroundColor--hover: null !default;
 $c-Box__button__boxColor--light__backgroundColor--hover: null !default;
 
 .c-Box {
-  padding: 15px;
+  padding: 15px 10px;
 
   &.boxColor--primary {
     background: $c-Box__background--primary;

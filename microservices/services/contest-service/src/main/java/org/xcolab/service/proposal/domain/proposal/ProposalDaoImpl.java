@@ -36,7 +36,7 @@ public class ProposalDaoImpl implements ProposalDao {
 
     @Autowired
     public ProposalDaoImpl(DSLContext dslContext) {
-        Assert.notNull(dslContext);
+        Assert.notNull(dslContext, "DSLContext is required");
         this.dslContext = dslContext;
     }
 

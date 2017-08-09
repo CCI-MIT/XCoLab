@@ -1,6 +1,6 @@
 package org.xcolab.client.members;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import org.xcolab.client.members.exceptions.MessageNotFoundException;
 import org.xcolab.client.members.legacy.enums.MessageType;

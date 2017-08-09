@@ -1,7 +1,7 @@
 package org.xcolab.view.pages.proposals.view.proposal.json.picker;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.proposals.ProposalRibbon;
@@ -54,8 +54,7 @@ public class ProposalsResult {
 
             this.id = proposal.getProposalId();
             this.proposalName = StringUtils.abbreviate(
-                StringEscapeUtils
-                    .unescapeXml(proposal.getName()), MAX_CHARS_FOR_NAMES);
+                StringEscapeUtils.unescapeXml(proposal.getName()), MAX_CHARS_FOR_NAMES);
             this.contestName = StringUtils.abbreviate(proposal
                 .getContest().getContestShortName(), MAX_CHARS_FOR_NAMES);
             this.linkUrl = proposal.getProposalUrl();

@@ -17,7 +17,7 @@ public class ProposalRibbon {
     private final ContestPhaseRibbonType contestPhaseRibbonType;
 
     public ProposalRibbon(Proposal proposal, RestService proposalService) {
-        Assert.notNull(proposal);
+        Assert.notNull(proposal, "Proposal is required");
         if (proposalService != null) {
             this.contestPhaseRibbonType = fetchRibbonType(proposal, proposalService);
         } else {
