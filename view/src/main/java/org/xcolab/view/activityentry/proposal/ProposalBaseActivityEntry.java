@@ -1,10 +1,8 @@
 package org.xcolab.view.activityentry.proposal;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.admin.ContestTypeClient;
@@ -23,14 +21,11 @@ import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.view.activityentry.provider.ActivityEntryContentProvider;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
-
 public abstract class ProposalBaseActivityEntry implements ActivityEntryContentProvider {
 
-    protected ActivityEntry activityEntry;
-
-    protected static final String DEFAULT_FEED_ENTRY_PATTERN = "%s %s %s";
-
     private static final Logger _log = LoggerFactory.getLogger(ProposalBaseActivityEntry.class);
+
+    protected ActivityEntry activityEntry;
 
     private Proposal rawProposal;
 
@@ -40,8 +35,11 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
 
     private String proposalName;
 
-    @Autowired
-    private ResourceMessageResolver resourceMessageResolver;
+    private final ResourceMessageResolver resourceMessageResolver;
+
+    public ProposalBaseActivityEntry(ResourceMessageResolver resourceMessageResolver) {
+        this.resourceMessageResolver = resourceMessageResolver;
+    }
 
     @Override
     public void setActivityEntry(ActivityEntry activityEntry) {
@@ -65,7 +63,8 @@ public abstract class ProposalBaseActivityEntry implements ActivityEntryContentP
 
             contest = ProposalClientUtil.getCurrentContestForProposal(rawProposal.getProposalId());
 
-            contestType = ContestTypeClient.getContestType(contest.getContestTypeId());
+            contestType = ContestTypeClient.getContestType(contest.getContestTypeId(),
+                    LocaleContextHolder.getLocale().getLanguage());
 
             proposalName = ProposalAttributeClientUtil
                     .getProposalAttribute(rawProposal.getProposalId(), ProposalAttributeKeys.NAME,null).getStringValue();
