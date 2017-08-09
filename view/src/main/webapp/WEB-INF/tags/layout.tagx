@@ -342,7 +342,9 @@
                                 <li class="divider">_____________</li>
                                 <c:forEach var="lang" items="${_languageSelectItems}">
                                     <c:if test="${ _currentLocale != lang['value']}">
-                                        <li onclick="insertParamAndGo('lang',${lang['value']}');" ><input name="lang" type="radio" >&#160;<spring:message code="${lang['lable']}"/> - ${fn:toUpperCase(lang['value'])}</input></li>
+
+                                        <li class="languagePicker" data-src="${lang['value']}" ><input name="lang" type="radio" >&#160;<spring:message code="${lang['lable']}"/> - ${fn:toUpperCase(lang['value'])}</input></li>
+
                                     </c:if>
                                 </c:forEach>
                             </ul>
@@ -391,6 +393,31 @@
             </c:otherwise>
             </c:choose>
 
+            <c:if test="${_isI18NActive}">
+                <!-- LANGUAGE POPUP -->
+                <div class="c-Footer__language__pop" id="languageFooterPopupContainer">
+                    <div class="c-Footer__language__box">
+                        <ul>
+
+                            <c:forEach var="lang" items="${_languageSelectItems}">
+                                <c:if test="${_currentLocale == lang['value'] }">
+                                    <li><input name="lang" type="radio" checked="checked">&#160;<spring:message code="${lang['lable']}"/> - ${fn:toUpperCase(lang['value'])}</input></li>
+                                </c:if>
+                            </c:forEach>
+                            <li class="divider">_____________</li>
+                            <c:forEach var="lang" items="${_languageSelectItems}">
+                                <c:if test="${ _currentLocale != lang['value']}">
+
+                                    <li class="languagePickerFooter" data-src="${lang['value']}" ><input name="lang" type="radio" >&#160;<spring:message code="${lang['lable']}"/> - ${fn:toUpperCase(lang['value'])}</input></li>
+
+                                </c:if>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /LANGUAGE POPUP -->
+            </c:if>
+
             <!-- SEARCH POPUP -->
             <div class="c-Header__search__pop" id="searchPopupContainer">
                 <div class="c-Header__search__top"><img src="${_themeImageFolder}/icon-menu-search2.png" width="20" height="19" /></div>
@@ -429,7 +456,14 @@
             </ul>
             <ul id="c-Footer__menu__right" class="">
                 <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                <div class="addthis_inline_follow_toolbox"><!-- --></div>
+                <li style="margin-top: -6px;">
+                    <div class="addthis_inline_follow_toolbox"><!-- --></div>
+                </li>
+                <c:if test="${_isI18NActive}">
+                    <li id="footerLanguageTrigger">
+                        <img src="${_themeImageFolder}/footer-language-button.png"/>&#160;<a href="javascript:void(0);"><spring:message code="homepage.menu.visitor.language" /></a>
+                    </li>
+                </c:if>
             </ul>
         </div> <!-- #c-Footer__menu -->
 

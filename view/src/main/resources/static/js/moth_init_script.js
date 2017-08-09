@@ -1,10 +1,11 @@
 function initSearchUpperBox() {
 	jQuery("#searchPopupTrigger").click(function() {
+        alignPopUpToTrigger("#searchPopupTrigger", "#searchPopupContainer",-125,10);
 		jQuery("#searchPopupContainer").fadeIn("fast");
 		jQuery("#searchinput").focus();
 	});
 
-    alignPopUpToTrigger("#searchPopupTrigger", "#searchPopupContainer",-125,10);
+
 	function hideIfSearchNotUsed() {
 		if (! jQuery('#searchinput').hasClass('focus') && ! jQuery('#searchPopupContainer').hasClass('mouseover')) {
 			jQuery("#searchPopupContainer").fadeOut("fast");
@@ -47,42 +48,70 @@ function initSearchUpperBox() {
 		
 }
 
+
+
 function insertParamAndGo(key, value) {
-    key = encodeURI(key); value = encodeURI(value);
+    key = encodeURI(key), value =  encodeURI(value);
+    var loc = window.location;
 
-    var kvp = document.location.search.substr(1).split('&');
+    var finalUrl = loc.protocol + "//" + loc.host + loc.pathname;
+    var paramstr = loc.search.replace("?","");
+    var params = paramstr.split("&");
+    var finalParams = [];
 
-    var i=kvp.length; var x; while(i--)
-{
-    x = kvp[i].split('=');
-
-    if (x[0]==key)
-    {
-        x[1] = value;
-        kvp[i] = x.join('=');
-        break;
+    for(var param in params){
+        if(params[param].indexOf(key+"=")==-1){
+            finalParams.push(params[param]);
+        }
     }
-}
+    finalParams.push(key+"="+value);
+    var allParams = "";
+    for(var param in finalParams){
+        allParams += ((param==0)?("?"):("&")) + finalParams[param];
+    }
+    finalUrl = finalUrl + allParams;
+    window.location.href =finalUrl + loc.hash;
 
-    if(i<0) {kvp[kvp.length] = [key,value].join('=');}
-
-    //this will reload the page, it's likely better to store this until finished
-    document.location.search = kvp.join('&');
 }
 function alignPopUpToTrigger(triggerRef, popupRef,leftAdjust,topAdjust){
     //align item to its trigger
-    var trigger = jQuery(triggerRef)
+    var trigger = jQuery(triggerRef);
     if(!trigger.length) return;
     var topAlign = trigger.offset().top;
     var leftAlign = trigger.offset().left;
-
+    console.log("topAlign: "+topAlign)
+    console.log("leftAlign: "+leftAlign)
     jQuery(popupRef).css({ left: leftAlign + leftAdjust, top: topAlign + topAdjust , position: "absolute"});
+}
+function initLanguagePopupFooter(){
+    jQuery("#footerLanguageTrigger").click(function() {
+        alignPopUpToTrigger("#footerLanguageTrigger", "#languageFooterPopupContainer",-151,-106);
+        jQuery("#languageFooterPopupContainer").fadeIn("fast");
+    });
+
+
+    function hideIfLanguageFooterNotUsed() {
+        if (! jQuery('#languageFooterPopupContainer').hasClass('mouseover')) {
+            jQuery("#languageFooterPopupContainer").fadeOut("fast");
+        }
+    }
+    jQuery("#languageFooterPopupContainer").mouseenter(function() {
+        jQuery("#languageFooterPopupContainer").addClass('mouseover');
+    });
+    jQuery("#languageFooterPopupContainer").mouseleave(function() {
+        jQuery("#languageFooterPopupContainer").removeClass('mouseover');
+        setTimeout(hideIfLanguageFooterNotUsed, 10);
+    });
+    jQuery(".languagePickerFooter").click(function(){
+        insertParamAndGo("lang", jQuery(this).attr("data-src"));
+    });
 }
 function initLanguagePopupUpper() {
     jQuery("#languagePopupTrigger").click(function() {
+        alignPopUpToTrigger("#languagePopupTrigger", "#languagePopupContainer",-272,10);
         jQuery("#languagePopupContainer").fadeIn("fast");
     });
-    alignPopUpToTrigger("#languagePopupTrigger", "#languagePopupContainer",-272,10);
+
 
     function hideIfLanguageNotUsed() {
         if (! jQuery('#languagePopupContainer').hasClass('mouseover')) {
@@ -96,14 +125,19 @@ function initLanguagePopupUpper() {
         jQuery("#languagePopupContainer").removeClass('mouseover');
         setTimeout(hideIfLanguageNotUsed, 10);
     });
+    jQuery(".languagePicker").click(function(){
+        insertParamAndGo("lang", jQuery(this).attr("data-src"));
+    });
+
 }
 function initLoginPopupUpper() {
 	jQuery("#loginPopupTrigger").click(function() {
+        alignPopUpToTrigger("#loginPopupTrigger", "#loginPopupContainer",-378,10);
 		jQuery("#loginPopupContainer").fadeIn("fast");
 		jQuery("#loginPopupContainer .c-Header__login__username").focus();
 	});
 
-    alignPopUpToTrigger("#loginPopupTrigger", "#loginPopupContainer",-378,10);
+
 	function hideIfLoginNotUsed() {
 		if (! jQuery('#loginPopupContainer').hasClass('mouseover') && jQuery('#loginPopupContainer .focus').length == 0) {
 			jQuery("#loginPopupContainer").fadeOut("fast");
@@ -351,6 +385,7 @@ if (_isLoggedIn) {
     jQuery(function() {
         initUserInfoPopup();
     });
+
 } else {
     jQuery(function() {
         initLoginPopupUpper();
@@ -359,6 +394,10 @@ if (_isLoggedIn) {
         initLanguagePopupUpper();
     });
 }
+
+jQuery(function() {
+    initLanguagePopupFooter();
+});
 
 jQuery(function() {
     initTreeWithDynatree();
