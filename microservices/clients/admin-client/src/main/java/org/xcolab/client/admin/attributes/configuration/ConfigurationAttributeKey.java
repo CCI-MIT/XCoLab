@@ -320,6 +320,17 @@ public final class ConfigurationAttributeKey {
                     .defaultValue(true)
                     .build();
 
+    // Points
+    public static final AttributeGetter<Boolean> POINTS_IS_ACTIVE =
+            ConfigurationAttributes.newBooleanAttribute("POINTS_IS_ACTIVE")
+                    .defaultValue(false)
+                    .build();
+
+    public static final LocalizableAttributeGetter<String> POINTS_HELP_TEXT =
+            ConfigurationAttributes.newLocalizedStringAttribute("POINTS_HELP_TEXT")
+                    .defaultValue("")
+                    .buildLocalizable();
+
     //Misc feature flags
     public static final AttributeGetter<Boolean> BETA_RIBBON_SHOW =
             ConfigurationAttributes.newBooleanAttribute("BETA_RIBBON_SHOW")
@@ -337,10 +348,7 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("PUBLISH_JUDGING_RESULTS")
                     .defaultValue(true)
                     .build();
-    public static final AttributeGetter<Boolean> IS_POINTS_ACTIVE =
-            ConfigurationAttributes.newBooleanAttribute("IS_POINTS_ACTIVE")
-                    .defaultValue(true)
-                    .build();
+
     public static final AttributeGetter<Boolean> CONTESTS_ALLOW_OPEN_PROPOSALS =
         ConfigurationAttributes.newBooleanAttribute("CONTESTS_ALLOW_OPEN_PROPOSALS")
                     .defaultValue(true)

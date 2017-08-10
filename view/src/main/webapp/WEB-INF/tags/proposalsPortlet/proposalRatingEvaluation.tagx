@@ -1,6 +1,8 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0">
+          xmlns:liferay-theme="http://liferay.com/tld/theme" version="2.0"
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
 
 
     <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
@@ -17,11 +19,14 @@
                 ${wrapper.contestPhase}
             </c:if>
             <c:if test="${showRating and wrapper.ratings != null and wrapper.ratings.size() > 0}">
-                <strong>Judges' Ratings <a href="${contestType.rulesPageUrl}#Howwillproposalsbejudged" target="_blank">
-                    <span class="js-Tooltip" title="Click here to see how ${contestType.proposalNamePlural} have been judged.">
-                        <img src="${_themeImageFolder}/icon_question-chk-qm.png" height="15px" />
-                    </span>
-                </a></strong>
+                <h3><spring:message code="contests.proposal.evaluation.judgesratings" />
+                    <collab:message code="contests.proposal.evaluation.helptooltip"
+                                    contestType="${contestType}" var="helpTooltip" />
+                    <a href="${contestType.rulesPageUrl}#Howwillproposalsbejudged" target="_blank"
+                       class="js-Tooltip" style="margin-left: 5px;" title="${helpTooltip}">
+                        <img src="/images/icon-addprop-question.png" width="15" height="15" />
+                    </a>
+                </h3>
                 <table>
                     <c:forEach var="rating" items="${wrapper.ratings}">
                         <c:if test="${rating.isActive}">
@@ -52,7 +57,7 @@
                 <br/>
             </c:if>
             <p>
-                <strong>Judges' Comments</strong><br/>
+                <h3><spring:message code="contests.proposal.evaluation.judgescomments" /> </h3><br/>
                 <c:if test="${showShouldAdvance}">
                     <div>
                         <strong>Would you like to see this proposal advance to the next round?</strong>

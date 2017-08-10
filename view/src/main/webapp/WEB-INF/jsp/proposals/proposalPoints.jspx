@@ -4,12 +4,14 @@
           xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-           version="2.0">
+          version="2.0" xmlns:spring="http://www.springframework.org/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
         <xcolab:layout  title="${proposal.name} - Points"
                         description="Points distribution for ${contestType.proposalName} '${proposal.name}' in ${contestType.contestName} '${contest.contestShortName}'">
         <!--@elvariable id="linkingProposals" type="java.util.List<org.xcolab.portlets.proposals.wrappers.ProposalWrapper>"-->
-            <xcolab:script src="${_themeJsFolder}/proposals/proposalPoints.js" />
+
+        <xcolab:script src="${_themeJsFolder}/proposals/proposalPoints.js" />
         <jsp:directive.include file="./init_proposal_tab.jspx" />
 
         <jsp:directive.include file="./proposalDetails/header.jspx" />
@@ -19,20 +21,19 @@
 
         <div id="content">
             <h1 class="pointsHeadline">
-                Points Distribution
+                <spring:message code="contests.proposal.points.heading" />
                 <c:if test="${proposalsPermissions.canAdminAll and not empty totalPoints}">
-                    (${totalPoints} points received)
+                    (<spring:message code="contests.proposal.points.heading.received" arguments="${totalPoints}" />)
                 </c:if>
-                <a id="expand-help-text">?</a>
+                <c:if test="${not empty pointsHelpText}">
+                    <a id="expand-help-text">?</a>
+                </c:if>
             </h1>
-            <div id="help-text">
-                <p>
-                    In 2014, the ${_colabName} launched its first ${contestType.contestName} seeking <a href="/wiki/Integrated+proposals">integrated proposals</a> which allow members to combine proposals from other ${contestType.contestNamePlural} into a larger whole. Other ${_colabName} proposals used in these integrated proposals are called sub-proposals.
-                </p>
-                <p style="margin-bottom:0">
-                    Good integrated ${contestType.proposalNamePlural} include ideas from the people who contributed to the sub-${contestType.proposalNamePlural}, not just those who created the integrated ${contestType.proposalName} itself. To recognize all these contributions, a winning integrated ${contestType.proposalName} receives CoLab Points that are distributed among all these people. Each ${contestType.proposalName} will show how points are divided among the project team and other contributors, and each community member’s profile will show points he or she has received For more information, see <a href="/resources/-/wiki/Main/Climate+CoLab+Points">${_colabName} Points</a>.
-                </p>
-            </div>
+            <c:if test="${not empty pointsHelpText}">
+                <div id="help-text">
+                    ${pointsHelpText}
+                </div>
+            </c:if>
             <c:set var="savePointsAssignmentsURL" value="${proposalUrl}/savePointAssignments"/>
 
             <form:form id="assignPointsForm" action="${savePointsAssignmentsURL}" method="post" commandName="assignPointsBean">
@@ -44,7 +45,7 @@
                     </div>
                 </c:if>
             </form:form>
-            <h3 class="colab">${contestType.proposalNamePlural} that include this ${fn:toLowerCase(contestType.proposalName)}</h3>
+            <h3><collab:message code="contests.proposal.points.linkedproposals" contestType="${contestType}" /> </h3>
             <table class="colab">
                 <tbody>
                 <c:forEach var="linkingProposal" items="${linkingProposals}">
@@ -62,13 +63,8 @@
             <script type="text/javascript">
 
                 jQuery(function() {
-
                     initUserAssignmentInputs();
                 });
-
-
-
-
 
                 $("#expand-help-text").click(function() {
                     var $helpTextElement = $("#help-text");

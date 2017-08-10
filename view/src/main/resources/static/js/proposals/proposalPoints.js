@@ -206,7 +206,7 @@ function initUserAutocomplete(idPostfix, canEdit) {
                         jQuery("#userDistributionInputs" + idPostfix).append(htmlTemplate);
                         distributeEvenly(jQuery("#userDistributionInputs" + idPostfix));
                         recalculateTotalPercentages();
-                    };
+                    }
                     this.value = "";
                     initUserAssignmentInputs();
                     return false;

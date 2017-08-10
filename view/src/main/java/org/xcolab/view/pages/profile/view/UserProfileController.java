@@ -113,7 +113,7 @@ public class UserProfileController {
                     model.addAttribute("balloonText", butOpt.get().getBalloonText());
                 }
             }
-            model.addAttribute("pointsActive", ConfigurationAttributeKey.IS_POINTS_ACTIVE.get());
+            model.addAttribute("pointsActive", ConfigurationAttributeKey.POINTS_IS_ACTIVE.get());
             return SHOW_PROFILE_VIEW;
         } catch (MemberNotFoundException e) {
             return ErrorMessage.error("User profile not found").flashAndReturnView(request);
