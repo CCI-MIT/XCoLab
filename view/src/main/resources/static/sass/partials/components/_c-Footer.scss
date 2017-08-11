@@ -54,6 +54,11 @@ $c-Footer__link__textColor--hover: $t-Color__accent !default;
   position: absolute;
   display: block;
   width: 175px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+
+}
+.c-Footer__language__box{
   @if $c-Footer__menu__background__isSimple {
     background: $c-Footer__menu__backgroundColor;
   } @else {
@@ -61,8 +66,6 @@ $c-Footer__link__textColor--hover: $t-Color__accent !default;
   }
   color: white;
   list-style: none;
-  padding-bottom: 10px;
-  padding-top: 10px;
   ul {
     list-style: none;
     margin-left: 5px;

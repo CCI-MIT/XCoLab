@@ -1,6 +1,6 @@
 function initSearchUpperBox() {
 	jQuery("#searchPopupTrigger").click(function() {
-        alignPopUpToTrigger("#searchPopupTrigger", "#searchPopupContainer",-125,10);
+        //alignPopUpToTrigger("#searchPopupTrigger", "#searchPopupContainer",-125,10);
 		jQuery("#searchPopupContainer").fadeIn("fast");
 		jQuery("#searchinput").focus();
 	});
@@ -132,7 +132,7 @@ function initLanguagePopupUpper() {
 }
 function initLoginPopupUpper() {
 	jQuery("#loginPopupTrigger").click(function() {
-        alignPopUpToTrigger("#loginPopupTrigger", "#loginPopupContainer",-378,10);
+        //alignPopUpToTrigger("#loginPopupTrigger", "#loginPopupContainer",-378,10);
 		jQuery("#loginPopupContainer").fadeIn("fast");
 		jQuery("#loginPopupContainer .c-Header__login__username").focus();
 	});
