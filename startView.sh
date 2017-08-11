@@ -18,7 +18,7 @@ else
     cd ${BINARY_DIR}
     OUT_FILE="${VIEW}.out"
     rm ${OUT_FILE} > /dev/null 2>&1
-    exec java -Xmx4G -Xms1G -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 \
+    exec java -Xmx4G -Xms512M -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 \
         -jar ${VIEW}-1.0-SNAPSHOT.war > ${OUT_FILE}  & echo $! > ${PID_FILE}
     cd ${SAVED_DIR}
 fi
