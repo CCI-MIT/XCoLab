@@ -143,6 +143,15 @@ public class ContestController {
     }
 
 
+
+
+
+    @RequestMapping(value = "/contests/isContestNameYearUnique", method = {RequestMethod.GET)
+    public List<Contest> isContestNameYearUnique(
+            @RequestParam(required = false) Long focusAreaOntologyTerm, @RequestParam(required = false) Boolean getActive, @RequestParam(required = false) Boolean onlyPrivate){
+        return contestService.getContestsByOntologyTerm(focusAreaOntologyTerm, getActive, onlyPrivate);
+    }
+
     @RequestMapping(value = "/contests/getContestsByOntologyTerm", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<Contest> getContestsByOntologyTerm(
             @RequestParam(required = false) Long focusAreaOntologyTerm, @RequestParam(required = false) Boolean getActive, @RequestParam(required = false) Boolean onlyPrivate){

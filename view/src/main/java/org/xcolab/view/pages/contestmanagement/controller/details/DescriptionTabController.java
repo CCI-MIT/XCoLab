@@ -102,6 +102,8 @@ public class DescriptionTabController extends AbstractTabController {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
+        //check for contest name year uniqueness
+
 
         if (result.hasErrors()) {
             AlertMessage.danger("Error while updating.").flash(request);
