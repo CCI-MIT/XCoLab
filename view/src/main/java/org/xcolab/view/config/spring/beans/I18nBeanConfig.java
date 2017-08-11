@@ -7,9 +7,11 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.util.i18n.I18nUtils;
+import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.i18n.MemberLocaleResolver;
+
+import java.util.Locale;
 
 @Configuration
 public class I18nBeanConfig {
@@ -38,6 +40,7 @@ public class I18nBeanConfig {
     @Bean
     public LocaleResolver localeResolver(AuthenticationService authenticationService) {
         SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
+        sessionLocaleResolver.setDefaultLocale(Locale.US);
         sessionLocaleResolver.setLocaleAttributeName(I18nUtils.MEMBER_LOCALE_SESSION_IDENTIFIER);
         return new MemberLocaleResolver(authenticationService, sessionLocaleResolver);
     }
