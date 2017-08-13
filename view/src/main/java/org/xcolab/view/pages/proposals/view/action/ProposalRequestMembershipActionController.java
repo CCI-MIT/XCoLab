@@ -126,7 +126,7 @@ public class ProposalRequestMembershipActionController {
             return;
         }
 
-        AlertMessage.success("The member has been invited to join this proposal's team!")
+        AlertMessage.success("The member has been invited to join this proposal`s team!")
                 .flash(request);
         response.sendRedirect(tabUrl);
     }

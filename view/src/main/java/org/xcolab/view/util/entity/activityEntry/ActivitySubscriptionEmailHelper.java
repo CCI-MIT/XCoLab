@@ -303,7 +303,10 @@ public class ActivitySubscriptionEmailHelper {
     }
 
     private String clearLinksInSubject(String activityEntryTitle) {
-        return activityEntryTitle.replaceAll("\\<[^>]*>","");
+        if(activityEntryTitle!=null) {
+            return activityEntryTitle.replaceAll("\\<[^>]*>", "");
+        }
+        return "";
     }
 
     private void sendEmailMessage(Member recipient, String subject, String body, String unregisterFooter, String portalBaseUrl, Long referenceId) {
