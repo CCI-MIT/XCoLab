@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib
+        xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1">
+
+    <display-name>Custom xcolab Functions</display-name>
+
+    <tlib-version>2.0</tlib-version>
+    <short-name>xcolabfunctions</short-name>
+    <uri>http://climatecolab.org/tags/xcolabescape_2.0</uri>
+
+    <function>
+        <name>escapeStringForJavascript</name>
+        <function-class>org.xcolab.view.taglibs.xcolab.functions.StringEscapeTagFunctions</function-class>
+        <function-signature>java.lang.String escapeStringForJavascript(java.lang.String)</function-signature>
+    </function>
+</taglib>

@@ -4,6 +4,7 @@
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:xcolabfunctions="urn:jsptld:/WEB-INF/tlds/xcolab-escaping.tld"
           version="2.0">
     <jsp:directive.attribute name="title" type="java.lang.String" required="false" rtexprvalue="true" description="Page title" />
     <jsp:directive.attribute name="description" type="java.lang.String" required="false" rtexprvalue="true" description="Page description for meta tag" />
@@ -12,7 +13,6 @@
 
     <jsp:directive.attribute name="meta1" type="java.lang.String" required="false" rtexprvalue="true" description="Social media meta info 1" />
     <jsp:directive.attribute name="meta2" type="java.lang.String" required="false" rtexprvalue="true" description="Social media meta info 2" />
-    <jsp:directive.attribute name="breadcrumbs" type="java.lang.String" required="false" rtexprvalue="true" description="BreadCrumbs for search engines"/>
     <jsp:directive.attribute name="openGraphSiteName" type="java.lang.String" required="false" rtexprvalue="true" description="Open Graph site name override, if empty the defalt value in config variables will be used" />
     <jsp:directive.attribute name="openGraphTitle" type="java.lang.String" required="false" rtexprvalue="true" description="Open Graph title override , if empty the default value in config variables will be used" />
     <jsp:directive.attribute name="openGraphDescription" type="java.lang.String" required="false" rtexprvalue="true" description="Open Graph description override , if empty the default value in config variables will be used" />
@@ -818,7 +818,7 @@
     <!-- Display messages -->
     <c:if test="${not empty __alertMessage}">
         <script type="text/javascript">
-            noty({text: '${__alertMessage.message}', type: '${__alertMessage.type.notyType}'});
+            noty({text: '${xcolabfunctions:escapeStringForJavascript(__alertMessage.message)}', type: '${__alertMessage.type.notyType}'});
         </script>
     </c:if>
 
@@ -943,37 +943,34 @@
     <xcolab:script src="${_themeJsFolder}/messageNotification.js" defer="true" />
     <xcolab:script src="${_themeJsFolder}/usertracking.js" defer="true"/>
 
-
     <!-- Structured data for search engines -->
+    <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "WebSite",
+          "name": "${_colabName}",
+          "alternateName": "${_colabLongName}",
+          "url": "${_colabUrl}"
+        }
+    </script>
 
-    <c:choose>
-        <c:when test="${not empty breadcrumbs}">
-            <script type="application/ld+json">
-            ${breadcrumbs}
-            </script>
-        </c:when>
-        <c:otherwise>
-            <c:set var="socialMediaSamAs">
-                <c:forEach var="socialMediaUrl" items="${_socialMediaUrls}" varStatus="status">
-                    "${socialMediaUrl}"${status.last ? '' : ','}
-                </c:forEach>
-            </c:set>
-        <script type="application/ld+json">
-            {
-            "@context": "http://schema.org",
-            "@type": "WebSite",
-            "name": "${_colabName}",
-            "alternateName": "${_colabLongName}",
-            "url": "${_colabUrl}",
-            "logo": "${_colabUrl}${_logoPathSquare}",
-          "sameAs": [${socialMediaSamAs}]
-            }
-        </script>
-        </c:otherwise>
-    </c:choose>
+    <c:set var="socialMediaSamAs">
+        <c:forEach var="socialMediaUrl" items="${_socialMediaUrls}" varStatus="status">
+            "${socialMediaUrl}"${status.last ? '' : ','}
+        </c:forEach>
+    </c:set>
+
     <!--suppress CheckValidXmlInScriptTagBody -->
-
-
+    <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "Organization",
+          "name": "${_colabName}",
+          "url": "${_colabUrl}",
+          "logo": "${_colabUrl}${_logoPathSquare}",
+          "sameAs": [${socialMediaSamAs}]
+        }
+    </script>
 </body>
 </html>
 </jsp:root>

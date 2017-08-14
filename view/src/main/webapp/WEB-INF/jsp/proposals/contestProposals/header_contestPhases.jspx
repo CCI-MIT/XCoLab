@@ -3,8 +3,8 @@
 	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 	version="2.0">
-	
 <span>
+
 	<c:choose>
 		<c:when test="${not empty contest.visiblePhases}">
 			<c:forEach var="phase" items="${contest.visiblePhases }" varStatus="status">
@@ -50,5 +50,5 @@
 		</c:otherwise>
 	</c:choose>        
 </span>
-
 </jsp:root>
+
