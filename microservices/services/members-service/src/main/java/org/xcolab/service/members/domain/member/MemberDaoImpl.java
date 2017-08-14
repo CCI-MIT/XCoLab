@@ -155,6 +155,7 @@ public class MemberDaoImpl implements MemberDao {
                 .from(MEMBER)
                 .where(MEMBER.SCREEN_NAME.like("%"+name+"%"))
                 .or(MEMBER.FIRST_NAME.like("%"+name+"%"))
+                .and(MEMBER.STATUS.eq(0))
                 .orderBy(MEMBER.SCREEN_NAME)
                 .getQuery();
         return query.fetchInto(Member.class);
