@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.client.files.FilesClient;
 import org.xcolab.util.http.client.types.TypeProvider;
 
+import java.io.File;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
@@ -83,6 +85,16 @@ public class FileEntry implements Serializable {
 
     public void setFileEntrySize(Integer fileentrysize) {
         this.fileentrysize = fileentrysize;
+    }
+
+    @JsonIgnore
+    public File getImageFile(String basePath) {
+        String filePath = FilesClient.getFilePathFromFinalDestination(this, basePath);
+        File file = new File(filePath);
+        if (file.exists() && !file.isDirectory()) {
+            return file;
+        }
+        return null;
     }
 
     @Override

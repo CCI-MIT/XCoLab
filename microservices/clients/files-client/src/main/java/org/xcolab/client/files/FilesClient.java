@@ -1,6 +1,5 @@
 package org.xcolab.client.files;
 
-import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
 import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.client.files.providers.FileSystemPersistenceProvider;
 import org.xcolab.client.files.providers.PersistenceProvider;
@@ -12,6 +11,8 @@ import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.EntityNotFoundException;
+
+import java.util.Optional;
 
 public final class FilesClient {
 
@@ -35,13 +36,13 @@ public final class FilesClient {
         return persistenceProvider.getFilePathFromFinalDestination(fe, path);
     }
 
-    public static FileEntry getFileEntry(Long fileEntryId) throws FileEntryNotFoundException {
+    public static Optional<FileEntry> getFileEntry(Long fileEntryId) {
         try {
-            return fileEntryResource.get(fileEntryId)
+            return Optional.of(fileEntryResource.get(fileEntryId)
                     .withCache(CacheKeys.of(FileEntry.class, fileEntryId), CacheName.MISC_LONG)
-                    .executeChecked();
+                    .executeChecked());
         } catch (EntityNotFoundException e) {
-            throw new FileEntryNotFoundException(fileEntryId);
+            return Optional.empty();
         }
     }
 }

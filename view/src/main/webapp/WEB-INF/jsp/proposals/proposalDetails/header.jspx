@@ -19,14 +19,9 @@
 		<div class="inner">
 			<div class="c-Headline">
 				<div class="proposal-image">
-					<c:choose>
-						<c:when test='${proposal.imageId > 0}'>
-							<img src="${contest.proposalLogoPath}image/proposal?img_id=${proposal.imageId}" width="52" height="52" alt="${proposal.name }" />
-						</c:when>
-						<c:otherwise>
-							<img src="${_themeImageFolder}/proposal_default.png" width="52" height="52" alt="${proposal.name}" />
-						</c:otherwise>
-					</c:choose>
+                    <img src="${contest.proposalLogoPath}image/proposal/${proposal.imageId}"
+                         width="52" height="52" alt="${contestType.proposalName} image" title="${proposal.name}" />
+
 				</div>
 				<div class="proposal-title">
 					<div class="prop-description">

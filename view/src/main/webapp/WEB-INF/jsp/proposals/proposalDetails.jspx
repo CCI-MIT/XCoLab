@@ -10,7 +10,7 @@
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <c:choose>
         <c:when test='${proposal.imageId > 0}'>
-            <c:set var="proposalOpenGraphImage" value="${contest.proposalLogoPath}image/proposal?img_id=${proposal.imageId}"/>
+            <c:set var="proposalOpenGraphImage" value="${contest.proposalLogoPath}image/proposal/${proposal.imageId}"/>
         </c:when>
         <c:otherwise>
             <c:set var="proposalOpenGraphImage" value=""/>
@@ -311,7 +311,7 @@
               "@id": "${proposal.absoluteProposalUrl}",
               "name": "${xcolabfunctions:escapeStringForJavascript(proposal.name)}"
               <c:if test='${proposal.imageId > 0}'>
-            ,"image": "${_colabUrl}${contest.proposalLogoPath}image/proposal?img_id=${proposal.imageId}"
+            ,"image": "${_colabUrl}${contest.proposalLogoPath}image/proposal/${proposal.imageId}"
              </c:if>
             }
           }

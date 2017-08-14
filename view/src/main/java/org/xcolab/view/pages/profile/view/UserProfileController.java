@@ -23,7 +23,6 @@ import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.files.FilesClient;
-import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
 import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
@@ -359,17 +358,12 @@ public class UserProfileController {
         if (newImageId != currentUserProfile.getUserBean().getImageId()) {
 
             if (newImageId > 0) {
-                try {
-                    FileEntry fe = FilesClient.getFileEntry(newImageId);
-                    if (fe != null) {
-                        currentUserProfile.getUser().setPortraitFileEntryId(fe.getFileEntryId());
-                        changedMember = true;
-                    }
-                } catch (FileEntryNotFoundException e) {
-                    throw new IllegalStateException(
-                            "No file entry found for imageId " + newImageId + " for member " +
-                                    updatedUserBean.getUserId());
-                }
+                FileEntry fe = FilesClient.getFileEntry(newImageId).orElseThrow(
+                        () -> new IllegalStateException(
+                                "No file entry found for imageId " + newImageId + " for member " +
+                                        updatedUserBean.getUserId()));
+                currentUserProfile.getUser().setPortraitFileEntryId(fe.getFileEntryId());
+                changedMember = true;
             } else {
                 currentUserProfile.getUser().setPortraitFileEntryId(0L);
                 changedMember = true;
