@@ -199,9 +199,9 @@ public class ContestDaoImpl implements ContestDao {
         query.addConditions(CONTEST.CONTEST_SHORT_NAME.eq(contestShortName));
         query.addConditions(CONTEST.CONTEST_YEAR.eq(year));
         if (currentContestId != null) {
-            query.addConditions(CONTEST.CONTEST_PK.eq(currentContestId));
+            query.addConditions(CONTEST.CONTEST_PK.notEqual(currentContestId));
         }
-        return query.fetchOne().into(Integer.class) > 0;
+        return query.fetchOne().into(Integer.class) == 0;
     }
 
     @Override
