@@ -264,7 +264,7 @@ public class ContestClient {
     }
 
 
-    public boolean isContestNameYearUnique(String contestShortName, String year,Long currentContestId) {
+    public boolean isContestNameYearUnique(String contestShortName, Long year,Long currentContestId) {
 
         return contestResource.service("isContestNameYearUnique", Boolean.class)
                 .queryParam("contestShortName", contestShortName)

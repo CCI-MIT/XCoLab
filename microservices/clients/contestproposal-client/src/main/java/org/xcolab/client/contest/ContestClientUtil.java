@@ -326,6 +326,9 @@ public final class ContestClientUtil {
         contestClient.unsubscribeMemberFromContest(contestPK, userId);
     }
 
+    public static boolean isContestNameYearUnique(String contestShortName, Long year,Long currentContestId) {
+        return contestClient.isContestNameYearUnique(contestShortName, year, currentContestId);
+    }
     public static ContestClient fromService(RestService contestService) {
         return ContestClient.fromService(contestService);
     }
