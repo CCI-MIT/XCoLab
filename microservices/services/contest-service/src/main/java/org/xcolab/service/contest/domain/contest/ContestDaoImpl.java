@@ -201,7 +201,7 @@ public class ContestDaoImpl implements ContestDao {
         if (currentContestId != null) {
             query.addConditions(CONTEST.CONTEST_PK.notEqual(currentContestId));
         }
-        return query.fetchOne().into(Integer.class) == 0;
+        return query.fetchOne().into(Integer.class).intValue() == 0;
     }
 
     @Override
