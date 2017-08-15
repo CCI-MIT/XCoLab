@@ -1,3 +1,20 @@
 .bs-modal .modal-content {
   border: 10px solid rgba(0,0,0,.6);
 }
+
+// Adding an extra, in-between size (md) and shifting higher sizes up
+@media (min-width: 768px) {
+  .bs-modal .modal-md {
+    width: 450px;
+  }
+
+  .bs-modal .modal-lg {
+    width: 600px;
+  }
+}
+
+@media (min-width: 992px) {
+  .bs-modal .modal-xl {
+    width: 900px;
+  }
+}

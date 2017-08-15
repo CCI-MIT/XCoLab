@@ -240,7 +240,7 @@
 
             function reportProposal(proposalId) {
                 jQuery('#popup_flagging_form_targetId').attr('value', proposalId);
-                jQuery('#popup_flagging').show();
+                jQuery('#flaggingModal').modal();
             }
         </script>
     </c:if>

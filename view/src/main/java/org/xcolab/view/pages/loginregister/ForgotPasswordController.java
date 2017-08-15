@@ -38,7 +38,8 @@ public class ForgotPasswordController {
     }
 
     @PostMapping("/login/resetPassword")
-    public void sendPassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void sendPassword(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam String screenNameOrEmail) throws IOException {
 
         String redirect = request.getParameter("redirect");
         String referer = request.getHeader(HttpHeaders.REFERER);
@@ -52,13 +53,11 @@ public class ForgotPasswordController {
         redirect = Helper.removeParamFromRequestStr(redirect, "isRegistering");
 
         try {
-            String userNameEmail = request.getParameter("screenName");
-
             Member member;
-            if (userNameEmail!= null && userNameEmail.contains("@")) {
-                member = MembersClient.findMemberByEmailAddress(userNameEmail);
+            if (screenNameOrEmail!= null && screenNameOrEmail.contains("@")) {
+                member = MembersClient.findMemberByEmailAddress(screenNameOrEmail);
             } else {
-                member = MembersClient.findMemberByScreenName(userNameEmail);
+                member = MembersClient.findMemberByScreenName(screenNameOrEmail);
             }
 
             String token = MembersClient.createForgotPasswordToken(member.getUserId());

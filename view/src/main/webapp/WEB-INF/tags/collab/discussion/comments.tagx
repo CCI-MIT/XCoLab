@@ -288,7 +288,7 @@
 
             function reportComment(commentId) {
                 jQuery('#popup_flagging_form_targetId').attr('value', commentId);
-                jQuery('#popup_flagging').show();
+                jQuery('#flaggingModal').modal();
             }
 		</script>
 

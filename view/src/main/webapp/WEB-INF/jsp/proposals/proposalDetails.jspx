@@ -201,39 +201,36 @@
             </div>
         </div>
         <c:if test="${voted}">
-            <div id="popup_justVoted" class="c-Popup__wrapper small" style="">
-                <div class="c-Popup">
-                    <div class="closepopuplogin">
-                        <a href="javascript:;" onclick="jQuery('#popup_justVoted').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a>
-                    </div>
-                    <h2 style="color: #66b035;">
-                        <spring:message code="contests.proposal.voting.thankyou" />
-                    </h2>
-                    <div>
-                        <p style="color: #545454; margin-top: 5px;">
-                            <collab:message code="contests.proposal.voting.youjustvoted" contestType="${contestType}">
-                                <spring:argument>${proposal.name}</spring:argument>
-                                <spring:argument>${proposal.contest.contestName}</spring:argument>
+            <spring:message code="contests.proposal.voting.thankyou" var="justVotedModalTitle" />
+            <xcolab:modal modalId="justVotedModal" title="${justVotedModalTitle}">
+                <div class="modal-body">
+                    <p style="color: #545454; margin-top: 5px;">
+                        <collab:message code="contests.proposal.voting.youjustvoted" contestType="${contestType}">
+                            <spring:argument>${proposal.name}</spring:argument>
+                            <spring:argument>${proposal.contest.contestName}</spring:argument>
+                        </collab:message>
+                        <br/><br/>
+                        <c:if test="${not empty votingDeadline}">
+                            <collab:message code="contests.proposal.voting.youcanvote" contestType="${contestType}">
+                                <spring:argument>${votingDeadline}</spring:argument>
                             </collab:message>
-                            <br/><br/>
-                            <c:if test="${not empty votingDeadline}">
-                                <collab:message code="contests.proposal.voting.youcanvote" contestType="${contestType}">
-                                    <spring:argument>${votingDeadline}</spring:argument>
-                                </collab:message>
-                                <br/>
-                            </c:if>
-                        </p>
-                        <h4 style="color: #30a3fb;">
-                            <spring:message code="contests.proposal.voting.share" />
-                        </h4>
-                        <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                        <div class="addthis_inline_share_toolbox" data-url="${proposal.absoluteProposalUrl}"
-                             data-title="${proposal.name}" data-description="${proposal.pitch}">
-                            <!-- --></div>
-                    </div>
-                    <div class="clearfix"><!-- --></div>
+                            <br/>
+                        </c:if>
+                    </p>
+                    <h4 style="color: #30a3fb;">
+                        <spring:message code="contests.proposal.voting.share" />
+                    </h4>
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <div class="addthis_inline_share_toolbox" data-url="${proposal.absoluteProposalUrl}"
+                         data-title="${proposal.name}" data-description="${proposal.pitch}">
+                        <!-- --></div>
                 </div>
-            </div>
+            </xcolab:modal>
+            <script>
+                jQuery(function() {
+                   jQuery('#justVotedModal').modal();
+                });
+            </script>
         </c:if>
 
         <script>

@@ -51,6 +51,7 @@ public class ColabController {
 
         try {
             loginRegisterService.checkLogin(request, response, login, password);
+            //TODO: what should happen here?
             response.sendRedirect(redirectUrl.toUriString());
             return;
         } catch (MemberNotFoundException | LockoutLoginException | PasswordLoginException ignored) {

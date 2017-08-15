@@ -127,7 +127,6 @@
     <!-- Required font -->
     <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet" type="text/css" />
 
-    <!-- TODO: use cdnjs -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
     <xcolab:stylesheet href="${_themeCssFolder}/main.css" />
@@ -375,21 +374,21 @@
 
                         <c:if test="${_isFacebookSsoActive or _isGoogleSsoActive}">
                             <div class="c-Header__login__with__del"><!-- --></div>
-                            <div class="c-Header__login__with__or"><spring:message code="homepage.popup.user.or"/></div>
+                            <div class="c-Header__login__with__or"><spring:message code="homepage.login.or"/></div>
                             <div class="c-Header__login__with__del"><!-- --></div>
                         </c:if>
                         
                         <div class="clearfix"><!-- --></div><!-- homepage.popup.user.usernameoremail -->
                         <form id="signInFormPopup" method="post" action="/login" style="margin-top: 10px;">
-                            <spring:message code="homepage.popup.user.usernameoremail" var="usernameplaceholder"/>
+                            <spring:message code="homepage.login.usernameoremail" var="usernameplaceholder"/>
                             <input name="username" type="text" class="c-Header__login__username" placeholder="${usernameplaceholder}"  />
-                            <spring:message code="homepage.popup.user.password" var="passwordplaceholder"/>
+                            <spring:message code="homepage.login.password" var="passwordplaceholder"/>
                             <input name="password" type="password" class="c-Header__login__password" placeholder="${passwordplaceholder}" />
-                            <label for="header__remember-me"><spring:message code="homepage.popup.user.rememberme"/> :</label> &#160;
+                            <label for="header__remember-me"><spring:message code="homepage.login.rememberme"/> :</label> &#160;
                             <input id="header__remember-me" type="checkbox" name="remember-me" checked="true" /> <br/>
                             <input name="redirect" type="hidden" />
-                            <span><em><a href="javascript:;" class="c-Header__login__forgot" onclick="showForgotPasswordPopup()"><spring:message code="homepage.popup.user.forgotyourpassword"/></a></em></span>
-                            <button type="submit" class="c-Button__primary" id="loginPopupTopSubmit"><spring:message code="homepage.popup.user.button.login"/></button>
+                            <span><em><a href="javascript:;" class="c-Header__login__forgot" onclick="showForgotPasswordPopup()"><spring:message code="homepage.login.forgotyourpassword"/></a></em></span>
+                            <button type="submit" class="c-Button__primary" id="loginPopupTopSubmit"><spring:message code="homepage.login.button"/></button>
                         </form>
                     </div>
                 </div>
@@ -454,7 +453,7 @@
                     </c:when>
                     <c:otherwise>
                         <li><a href="/register" class="openreg"><spring:message code="homepage.bottom.menu.register"/></a></li>
-                        <li><a href="javascript:return false;" onclick="deferUntilLogin();"><spring:message code="homepage.bottom.menu.signin"/></a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#loginModal"><spring:message code="homepage.bottom.menu.signin"/></a></li>
                     </c:otherwise>
                 </c:choose>
                 <c:if test="${_isI18NActive}">
@@ -517,201 +516,209 @@
 
     <!-- jsadditions -->
 
-    <c:if test='${_showLoginPopup and !_isLoggedIn}'>
-        <script type="text/javascript">
-            jQuery(function() {
-                jQuery("#popup_login").show();
-            });
-        </script>
+    <c:if test="${!_isLoggedIn}">
+        <c:if test='${_showLoginPopup}'>
+            <script type="text/javascript">
+                jQuery(function() {
+                    $('#loginModal').modal();
+                });
+            </script>
+        </c:if>
+
+        <c:if test='${_showSsoPopup}'>
+            <script type="text/javascript">
+                jQuery(function() {
+                    jQuery('#ssoLoginModal').modal();
+                });
+            </script>
+        </c:if>
+
+        <c:if test='${_showPasswordResetPopup}'>
+            <script type="text/javascript">
+                jQuery(function() {
+                    jQuery('#forgotPasswordModal').modal();
+                });
+            </script>
+        </c:if>
     </c:if>
 
-    <c:if test='${_showPasswordResetPopup and !_isLoggedIn}'>
-        <script type="text/javascript">
-            jQuery(function() {
-                jQuery('#popup_forgotpassword').show();
-            });
-        </script>
-    </c:if>
+    <c:if test="${!_isLoggedIn}">
+        <!-- login modal -->
+        <collab:message code="homepage.modals.login.message" var="loginModalTitle" />
+        <xcolab:modal modalId="loginModal" title="${loginModalTitle}">
+            <form id="signInForm_form" method="post" action="/login">
+                <div class="modal-body">
+                    <c:choose>
+                        <c:when test='${_authError != null}'>
+                            <div class="c-Alert__error__message">${_authError.message}</div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="c-Alert__info__message">
+                                <spring:message code="homepage.modals.login.welcome"/>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
 
-    <c:if test='${_showSsoPopup and !_isLoggedIn}'>
-        <script type="text/javascript">
-            jQuery(function() {
-                jQuery('#popup_SSO_login').show();
-            });
-        </script>
-    </c:if>
-
-    <!-- sign in popup -->
-    <div id="popup_login" class="c-Popup__wrapper small" style="display: none;">
-        <div class="c-Popup">
-            <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_login').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a></div>
-
-            <h4><collab:message code="homepage.modals.login.message" /> </h4>
-            <c:choose>
-                <c:when test='${_authError != null}'>
-                    <div class="c-Alert__error__message">${_authError.message}</div>
-                </c:when>
-                <c:otherwise>
-                    <div class="c-Alert__info__message">
-                        <spring:message code="homepage.modals.login.welcome"/>
-
-                    </div>
-                </c:otherwise>
-            </c:choose>
-
-            <div class="c-Header__login__with">
-                <div class="c-Header__login__with">
-                    <c:if test="${_isFacebookSsoActive}">
-                        <a href="/sso/facebook/register" class="sketchy-icon sketchy-black facebook-sketchy"><span>Facebook</span></a>
-                    </c:if>
-                    <c:if test="${_isGoogleSsoActive}">
-                        <a href="/sso/google/register" class="sketchy-icon sketchy-black google-sketchy"><span>Google</span></a>
-                    </c:if>
-                </div>
-            </div>
-            <div class="clearfix"><!-- --></div>
-            <div class="login_popup_box">
-                <form id="signInForm_form" method="post" action="/login">
-                    <div>
-                        <label for="username"><spring:message code="homepage.modals.login.field.username"/></label>
-                        <input id="username" name="username" type="text" class="c-Header__login__username"
-                               onkeypress="return submitenter(this,event)" style="float: right;" />
-                        <div class="clearfix"><!-- --></div>
-                        <label for="password"><spring:message code="homepage.modals.login.field.password"/></label> &#160;
-                        <input id="password" name="password" type="password" class="c-Header__login__password"
-                               onkeypress="return submitenter(this,event)" style="float: right;" />
-                        <div class="clearfix"><!-- --></div>
-                    </div>
-                    <div>
-                        <label for="remember-me"><spring:message code="homepage.modals.login.rememberme"/></label> &#160;
-                        <input type="checkbox" id="remember-me" name="remember-me" checked="true" />
-                    </div>
-                    <input name="redirect" type="hidden" />
-                    <div class="btns">
-                        <div style="float: left;">
-                            <span><em><a href="javascript:;" class="c-Header__login__forgot" style="color:#900;" onclick="showForgotPasswordPopup()"><spring:message code="homepage.modals.login.forgot"/></a></em></span><br />
-                            <span><em><a href="/register?redirect=${_requestUri}" class="c-Header__login__forgot" ><spring:message code="homepage.modals.login.register"/></a></em></span><br />
-                            <div class="clearfix"><!-- --></div>
+                    <div class="form-group clearfix">
+                        <div class="c-Header__login__with">
+                            <div class="c-Header__login__with">
+                                <c:if test="${_isFacebookSsoActive}">
+                                    <a href="/sso/facebook/register" class="sketchy-icon sketchy-black facebook-sketchy"><span>Facebook</span></a>
+                                </c:if>
+                                <c:if test="${_isGoogleSsoActive}">
+                                    <a href="/sso/google/register" class="sketchy-icon sketchy-black google-sketchy"><span>Google</span></a>
+                                </c:if>
+                            </div>
                         </div>
-                        <a href="javascript:;" class="c-Button__primary" onclick="jQuery(this).parents('form').submit();" id="deferLoginPopupSubmit"><spring:message code="homepage.modals.login.buttons.login"/></a>
                     </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- /popup login -->
 
-    <div id="popup_forgotpassword" class="c-Popup__wrapper small" style="display: none;">
-        <div class="c-Popup">
-            <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_forgotpassword').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a></div>
-
-            <h4>Password recovery</h4>
-            <div class="c-Alert__info__message"><p>Enter your email or screen name to get new password</p></div>
-            <div class="login_popup_box">
-                <form id="forgotPasswordForm" method="post" action="/login/resetPassword"
-                      onsubmit="addRedirectBeforeSubmit('forgotPasswordForm'); processForgotPasswordForm('forgotPasswordForm');" >
-                    <label>Username/email:</label>
-                    <input name="screenName" type="text" class="c-Header__login__username screenName" placeholder="username/email" onkeypress="return submitenter(this,event)" />
-
-                    <div class="btns">
-                        <a class="c-Button__primary" href="javascript:;" onclick="jQuery(this).parents('form').submit(); " >Request new password</a>
+                    <div class="form-group">
+                        <spring:message code="homepage.login.usernameoremail" var="usernamePlaceholder"/>
+                        <input name="username" type="text" class="form-control"
+                               placeholder="${usernamePlaceholder}"
+                               onkeypress="return submitenter(this,event)"/>
                     </div>
-                </form>
+                    <div class="form-group">
+                        <spring:message code="homepage.login.password" var="passwordPlaceholder"/>
+                        <input name="password" type="password" class="form-control"
+                               placeholder="${passwordPlaceholder}"
+                               onkeypress="return submitenter(this,event)" />
+                    </div>
+
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="remember-me" checked="true" />
+                            <spring:message code="homepage.login.rememberme"/>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div style="float: left;">
+                        <em><a href="javascript:;" class="c-Header__login__forgot" style="color:#900;" onclick="showForgotPasswordPopup()"><spring:message code="homepage.login.forgotyourpassword"/></a></em><br />
+                        <em><a href="/register?redirect=${_requestUri}" class="c-Header__login__forgot" ><spring:message code="homepage.login.notregisteredyet"/></a></em><br />
+                        <div class="clearfix"><!-- --></div>
+                    </div>
+                    <button type="submit" class="c-Button__primary">
+                        <spring:message code="homepage.login.button"/>
+                    </button>
+                </div>
+            </form>
+        </xcolab:modal>
+        <!-- /login modal -->
+    </c:if>
+
+    <!-- forgotPasswordModal -->
+    <!-- TODO: internationalize -->
+    <xcolab:modal modalId="forgotPasswordModal" title="Password recovery">
+        <form id="forgotPasswordForm" method="post" action="/login/resetPassword">
+            <div class="modal-body">
+                <div class="c-Alert__info__message">
+                    <p>Enter your email or screen name to get new password</p>
+                </div>
+                <spring:message var="screenNameOrEmailPlaceholder" code="homepage.login.usernameoremail" />
+                <input name="screenNameOrEmail" type="text" class="form-control"
+                        placeholder="${screenNameOrEmailPlaceholder}"
+                       onkeypress="return submitenter(this,event)" />
+
             </div>
-        </div>
-    </div>
-    <!-- /popup forgotpassword -->
+            <div class="modal-footer">
+                <button type="submit" class="c-Button__primary">
+                    Request new password
+                </button>
+            </div>
+            <input type="hidden" name="redirect" value="${_requestUri}" />
+        </form>
+    </xcolab:modal>
+    <!-- /forgotPasswordModal -->
 
     <c:if test="${_isSharedColab}">
         <!-- Shared poupup login -->
-        <div id="popup_SSO_login" class="c-Popup__wrapper small" style="display: none;">
-            <div class="c-Popup">
-                <div class="closepopuplogin">
-                    <a href="javascript:;" onclick="jQuery('#popup_SSO_login').hide()">
-                        <img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" />
-                    </a>
-                </div>
-                <div>
-                    <img style="max-height:55px" src="${_themeImageFolder}/${_partnerColabLogo}" alt="${_partnerColabName}" />
-                </div>
-                <div style="margin-top: 15px;margin-bottom: 15px;">
-                    <collab:message code="homepage.modals.sso.message.phrase1" arguments="${_partnerColabName}" />
-                </div>
-                <div style="font-size: small;">
-                    <collab:message code="homepage.modals.sso.message.phrase2" arguments="${_partnerColabName}" />
-                </div>
-                <div class="clearfix"><!-- --></div>
-                <c:if test='${_showSsoPopup}'>
-                    <div class="c-Alert__error__message"><p><spring:message code="homepage.modals.sso.message.error"/></p></div>
-                </c:if>
-                <div class="login_popup_box">
-                    <form id="signInSSOForm_form" method="post" action="/sso/colab"
-                          onsubmit="addRedirectBeforeSubmit('signInSSOForm_form'); return true;" >
+        <xcolab:modal modalId="ssoLoginModal">
+            <form method="post" action="/sso/colab">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <img style="max-height:55px" src="${_themeImageFolder}/${_partnerColabLogo}" alt="${_partnerColabName}" />
+                    </div>
+                    <div style="margin-top: 15px; margin-bottom: 15px;">
+                        <collab:message code="homepage.modals.sso.message.phrase1" arguments="${_partnerColabName}" />
+                    </div>
+                    <div style="font-size: small; margin-bottom: 15px;">
+                        <collab:message code="homepage.modals.sso.message.phrase2" arguments="${_partnerColabName}" />
+                    </div>
+                    <div class="clearfix"><!-- --></div>
+                    <!-- TODO: this variable name is confusing -->
+                    <c:if test='${_showSsoPopup}'>
+                        <div class="c-Alert__error__message"><p><spring:message code="homepage.modals.sso.message.error"/></p></div>
+                    </c:if>
 
-                        <label><spring:message code="homepage.modals.sso.field.username"/></label>
-                        <input name="login" type="text" class="c-Header__login__username" onkeypress="return submitenter(this,event)" style="float: right;"/>
-                        <div class="clearfix"><!-- --></div>
-                        <label><spring:message code="homepage.modals.sso.field.password"/></label> &#160;
-                        <input name="password" type="password" class="c-Header__login__password" onkeypress="return submitenter(this,event)" style="float: right;"/>
-                        <input name="redirect" type="hidden" />
-                        <div class="btns" style="margin-top: 26px;text-align: right;">
-                            <a href="javascript:;" class="c-Button__primary" onclick="jQuery(this).parents('form').submit();" id=""><spring:message code="homepage.modals.sso.button.login"/></a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+                    <div class="form-group">
+                        <spring:message var="screenNameOrEmailPlaceholder" code="homepage.login.usernameoremail"/>
+                        <input name="login" type="text" class="form-control"
+                               placeholder="${screenNameOrEmailPlaceholder}"
+                               onkeypress="return submitenter(this,event)"/>
+                    </div>
 
-        <div id="popup_SSO_autoreg" class="c-Popup__wrapper small" style="display: none;width: 473px;">
-            <div class="c-Popup">
-                <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_SSO_autoreg').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a></div>
+                    <div class="form-group">
+                        <spring:message var="passwordPlaceholder" code="homepage.login.password"/>
+                        <input name="password" type="password" class="form-control"
+                               placeholder="${passwordPlaceholder}"
+                               onkeypress="return submitenter(this,event)"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="c-Button__secondary">
+                        <spring:message code="homepage.modal.close"/>
+                    </button>
+                    <button type="submit" class="c-Button__primary">
+                        <spring:message code="homepage.login.button"/>
+                    </button>
+                </div>
+                <input name="redirect" type="hidden" value="${_requestUri}" />
+            </form>
+        </xcolab:modal>
+
+        <xcolab:modal modalId="autoRegistrationModal">
+            <div class="modal-body">
                 <div><img style="max-height:55px;margin-right: 10px;" src="${_logoPath}"/> <img style="max-height:55px" src="${_themeImageFolder}/${_partnerColabLogo}"/> </div>
                 <div style="margin-top: 15px;margin-bottom: 15px;">${_colabName} has teamed up with ${_partnerColabName} to run this ${_contestNameLowerCase}. To participate, click "OK" below.
                     When you save your ${_proposalNameLowerCase}, you'll be able to see and make changes to it on either site – all edits and comments will be synced between the two platforms.
                     We'll even create a linked account so you can log into ${_partnerColabName} with your ${_colabName} username and password.  It's easy!</div>
                 <div style="font-size: small;">${_partnerColabName} will receive your ${_colabName} public profile and email address. Questions? Contact ${_adminEmail}.</div>
                 <div class="clearfix"><!-- --></div>
-                <div class="login_popup_box">
-                    <div class="btns" style="margin-top: 26px;text-align: right;">
-
-                        <a href="javascript:handleOkForSharedColabAutoReg();" class="c-Button__primary"  id="yes_auto_reg" style="">OK</a>
-                        <a href="javascript:handleNoForSharedColabAutoReg();" class="c-Button__primary"  id="no_auto_reg" >CANCEL</a>
-
-                    </div>
-                </div>
             </div>
-        </div>
-        <!-- Shared poupup login -->
+            <div class="modal-footer">
+                <a href="javascript:handleOkForSharedColabAutoReg();" class="c-Button__primary">OK</a>
+                <a href="javascript:handleNoForSharedColabAutoReg();" class="c-Button__secondary">CANCEL</a>
+            </div>
+        </xcolab:modal>
     </c:if>
 
     <!-- report popup -->
-    <div id="popup_flagging" class="c-Popup__wrapper small" style="display: none;">
-        <div class="c-Popup">
-            <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_flagging').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a></div>
-
-            <h4>Why do you want to report this content?</h4>
-
-            <div class="c-Alert__info__message">
-                This content will be reviewed by moderators if it is reported by enough users.
-                Please review the reporting guidelines for more information and to avoid false reports.
+    <xcolab:modal modalId="flaggingModal" title="Why do you want to report this content?">
+        <form method="post" action="/flagging/report" id="popup_flagging_form">
+            <div class="modal-body">
+                <div class="c-Alert__info__message">
+                    This content will be reviewed by moderators if it is reported by enough users.
+                    Please review the reporting guidelines for more information and to avoid false reports.
+                </div>
+                <div class="clearfix"><!-- --></div>
+                <div class="login_popup_box">
+                        <input type="hidden" name="targetType" id="popup_flagging_form_targetType"/>
+                        <input type="hidden" name="targetId" id="popup_flagging_form_targetId"/>
+                        <input type="hidden" name="targetAdditionalId"
+                               value="0" id="popup_flagging_form_targetAdditionalId"/>
+                        <label>Reason:</label> <br />
+                        <select name="reason" id="popup_flagging_reasons" style="width: 350px;"><!-- --></select>
+                        <div class="clearfix"><!-- --></div>
+                        <label>Comment:</label> <br />
+                        <textarea name="comment" placeholder="Optional comment" style="width: 350px;"><!-- --></textarea> <br />
+                </div>
             </div>
-            <div class="clearfix"><!-- --></div>
-            <div class="login_popup_box">
-                <form id="popup_flagging_form" method="post" action="/flagging/report">
-                    <input type="hidden" name="targetType" id="popup_flagging_form_targetType"/>
-                    <input type="hidden" name="targetId" id="popup_flagging_form_targetId"/>
-                    <input type="hidden" name="targetAdditionalId"
-                           value="0" id="popup_flagging_form_targetAdditionalId"/>
-                    <label>Reason:</label> <br />
-                    <select name="reason" id="popup_flagging_reasons" style="width: 350px;"><!-- --></select>
-                    <div class="clearfix"><!-- --></div>
-                    <label>Comment:</label> <br />
-                    <textarea name="comment" placeholder="Optional comment" style="width: 350px;"><!-- --></textarea> <br />
-                    <a href="javascript:;" class="c-Button__primary" onclick="jQuery(this).parents('form').submit();">Report</a>
-                </form>
+            <div class="modal-footer">
+                <button type="submit" class="c-Button__primary">Report</button>
             </div>
-        </div>
-    </div>
+        </form>
+    </xcolab:modal>
     <!-- /report popup -->
 
     <script type="text/javascript">
@@ -727,10 +734,10 @@
                 success: function(data)
                 {
                     if (data.success) {
-                        jQuery('#popup_flagging').hide();
+                        jQuery('#flaggingModal').modal('hide');
                         noty({text: 'SUCCESS', type: 'success'});
                     } else {
-                        jQuery('#popup_flagging').hide();
+                        jQuery('#flaggingModal').modal('hide');
                         noty({text: 'ERROR', type: 'error'});
                     }
                 }
@@ -740,41 +747,28 @@
         });
     </script>
 
+    <!-- TODO: rework as part of SSO improvements -->
+    <!-- TODO: internationalize -->
     <!-- post registration popup -->
     <c:if test='${request.getParameter("postRegistration")}'>
         <c:choose>
             <c:when test="${_isSharedColab}">
-                <div id="popup_postRegistrationSSO" class="c-Popup__wrapper small">
-                    <div class="c-Popup">
-                        <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_postRegistrationSSO').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a></div>
-
-                        <h3 style="margin-bottom: 30px;">You're all set!</h3>
+                <xcolab:modal modalId="postRegistrationSsoModal" title="You're all set!">
+                    <div class="modal-body">
                         <p>Welcome to the  ${_colabName} community. Now you can log into this site using your ${_partnerColabName} username and password.</p>
-                        <div class="login_popup_box">
-                            <div class="clearfix"><!-- --></div>
-                            <div class="btns">
-                                <a href="javascript:;" class="c-Button__primary" onclick="jQuery('#popup_postRegistrationSSO').hide()" id="deferLoginPopupSubmit">Take me to ${_colabName}</a>
-                            </div>
-                        </div>
                     </div>
-                </div>
-                <script>
-                    jQuery(function (){
-                        jQuery('#popup_postRegistrationSSO').show();
-                    });
-                </script>
+                    <div class="modal-footer">
+                        <button class="c-Button__primary" data-dismiss="modal">Take me to ${_colabName}</button>
+                    </div>
+                </xcolab:modal>
             </c:when>
             <c:otherwise>
                 <xcolab:script src="${_themeJsFolder}/postRegistration.js" />
-                <div id="popup_postRegistration" class="c-Popup__wrapper small">
-                    <div class="c-Popup">
-                        <div class="closepopuplogin"><a href="javascript:;" onclick="jQuery('#popup_postRegistration').hide()"><img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X" /></a></div>
-
-                        <h3 style="margin-bottom: 30px;">You're all set!</h3>
+                <xcolab:modal modalId="postRegistrationModal" title="You're all set!" size="lg">
+                    <div class="modal-body">
                         <p>Now you can choose your username (or use the one we created for you) and complete a short bio to tell the ${_colabName} community about yourself.</p>
                         <div class="login_popup_box">
-                            <form id="postRegister_form" method="post" action="/register/finalize"
-                                  onsubmit="addRedirectBeforeSubmit('signInFormPopup'); return true;" >
+                            <form id="postRegister_form" method="post" action="/register/finalize">
 
                                 <div id="error" class="popup-message" style="display: none;">
                                     Your user name must only contain alphabetical or numerical characters and your bio must not exceed 2000 characters.
@@ -790,7 +784,7 @@
                                 <div class="clearfix"><!-- --></div>
                                 <label>Bio:</label>
                                 <br/>
-                                <textarea name="bio" type="text" id="reg_bio" onkeypress="return submitenter(this,event)" rows="6" cols="40" style="padding: 5px; float:right;"><!-- --></textarea>
+                                <textarea name="bio" id="reg_bio" onkeypress="return submitenter(this,event)" rows="6" cols="40" style="padding: 5px; float:right;"><!-- --></textarea>
                                 <div class="clearfix"><!-- --></div>
                                 <div class="inputLimitContainer" style="margin-bottom: 20px; float:right;">
                                     <span class="limit_characterCount"><!--  --></span>/&#160;
@@ -800,7 +794,7 @@
                                     <div class="clearfix"><!-- --></div>
                                     <div class="c-Alert__error__message">Your bio text is too long.</div>
                                 </div>
-                                <input name="redirect" type="hidden" id="redirect" value="" />
+                                <input name="redirect" type="hidden" value="${_requestUri}" />
                                 <div class="clearfix"><!-- --></div>
                                 <div class="btns">
                                     <a href="javascript:;" class="c-Button__primary" onclick="submitForm()" id="deferLoginPopupSubmit">Finish</a>
@@ -808,7 +802,7 @@
                             </form>
                         </div>
                     </div>
-                </div>
+                </xcolab:modal>
 
                 <xcolab:loadCkEditor />
             </c:otherwise>

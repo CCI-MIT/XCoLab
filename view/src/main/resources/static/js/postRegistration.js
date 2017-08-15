@@ -1,7 +1,6 @@
 jQuery(function() {
     console.log("ready");
     var $postRegisterForm = $('#postRegister_form');
-    $postRegisterForm.find('#redirect').val(document.URL);
     $postRegisterForm.find('#reg_username').bind('keyup click blur focus change paste', validateInput);
     $postRegisterForm.find('#reg_bio').bind('keyup click blur focus change paste', validateInput);
 });
@@ -45,7 +44,7 @@ function submitForm() {
             }
 
             if (success) {
-                jQuery('#popup_postRegistration').hide();
+                jQuery('#postRegistrationModal').modal('hide');
                 var url = document.URL;
                 url = url.replace("postRegistration=true", "");
                 window.location.href = url;

@@ -12,7 +12,7 @@
             </p>
             <script type="text/javascript">
                 jQuery(function() {
-                    jQuery("#popup_login").show();
+                    $('#loginModal').modal();
                 });
             </script>
         </c:when>

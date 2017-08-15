@@ -19,7 +19,6 @@ function initSearchUpperBox() {
 		jQuery("#searchPopupContainer").addClass('mouseover');
 	});
 	
-	
 	jQuery("#searchinput").focus(function() {
 		jQuery(this).addClass("focus");
 	});
@@ -279,7 +278,7 @@ function deferUntilLogin(source) {
             var $source = $(source);
             jQuery("#signInForm_form input[name=redirect]").val($source.attr('href'));
         }
-        jQuery('#popup_login').show();
+        $('#loginModal').modal();
     }
 }
 
@@ -291,7 +290,7 @@ function deferUntilLoginTargeted(targetLocation) {
         if (targetLocation != null) {
             jQuery("#signInForm_form input[name=redirect]").val(targetLocation);
         }
-        jQuery('#popup_login').show();
+        $('#loginModal').modal();
     }
 }
 
@@ -300,9 +299,8 @@ function showSharedColabLogin(fn) {
 	if (_isLoggedIn) {
 		return true;
 	} else {
-		jQuery('#popup_login').hide();
-		jQuery('#popup_SSO_login').show();
-		jQuery("#signInSSOForm_form input[name=redirect]").val(location.toString());
+		jQuery('#loginModal').modal('hide');
+		jQuery('#ssoLoginModal').modal();
 	}
 }
 var sharedContestAutoRegContestId = null;
@@ -322,10 +320,10 @@ function showSharedContestAutoRegPopUp(fn, contestId) {
 		sharedContestAutoRegCallbackFunction = fn;
 		sharedContestAutoRegContestId = contestId;
 
-		jQuery('#popup_login').hide();
-		jQuery('#popup_SSO_autoreg').show();
+		jQuery('#loinModal').modal('hide');
+		jQuery('#autoRegistrationModal').modal();
 		return false;
-	}else{
+	} else {
 		return deferUntilLogin();
 	}
 }
@@ -337,45 +335,14 @@ function handleOkForSharedColabAutoReg() {
 	}
 }
 function handleNoForSharedColabAutoReg() {
-	jQuery('#popup_SSO_autoreg').hide();
+	jQuery('#autoRegistrationModal').modal('hide');
 }
 
 
 function showForgotPasswordPopup() {
-	jQuery('#popup_login').hide();
-	jQuery('#popup_forgotpassword').show();
+	jQuery('#loginModal').modal('hide');
+	jQuery('#forgotPasswordModal').modal();
 }
-
-function insertParam(key, value) {
-    key = escape(key);
-    value = escape(value);
-
-    var kvp = document.location.search.substr(1).split('&');
-
-    if (kvp.length==1 && kvp[0].length==0) {
-      kvp=[];
-    }
-    var i=kvp.length; var x; while(i--)
-    {
-        x = kvp[i].split('=');
-
-        if (x[0]==key)
-        {
-                x[1] = value;
-                kvp[i] = x.join('=');
-                break;
-        }
-    }
-
-    if(i<0) {kvp[kvp.length] = [key,value].join('=');}
-    //this will reload the page, it's likely better to store this until finished
-    document.location.search = kvp.length>1?kvp.join('&'):kvp[0];
-}
-
-function closePopup(obj) {
-	jQuery(".c-Popup__wrapper").hide();
-}
-
 // Start in separate init functions to isolate failure
 jQuery(function() {
     initSearchUpperBox();
@@ -435,51 +402,9 @@ jQuery(function() {
 		        });
 		
 	}
-	
 
-	//jQuery('.popup_reg').hide();  
-		jQuery('.openreg').click(function() {  
-			jQuery('.popup_reg').fadeIn(300);
-			jQuery('#content').fadeOut(300);
-			jQuery('#foot_wrap').fadeOut(300);
-			jQuery('.hp_box').fadeOut(300);
-		}); 
-		jQuery('.closereg').click(function() {  
-			jQuery('.popup_reg').fadeOut(300);  
-			jQuery('#content').fadeIn(300);
-			jQuery('#foot_wrap').fadeIn(300);
-			jQuery('.hp_box').fadeIn(300);
-		});
-	
 	var footer = jQuery("#c-Footer__menu").next();
 	footer.appendTo(jQuery("#foot_wrap"));
-	
-	jQuery('.close').click(function() { 
-		jQuery('.chooseround li:eq(0) a').triggerHandler('click'); 
-		return false; 
-	});
-
-    setTimeout(function() {
-      jQuery("div.contestPhaseInfo:first .details h3").text("Round 1 completed, voting begins Nov. 1  (29 final proposals)");  
-    },1000);
-    
-    
-    jQuery(".closepopuplogin a").click(function() {
-    	jQuery(".popup_login_form .c-Alert__error__message").remove();
-    	jQuery(".popup_login_form .popup_login-message").show();
-    	jQuery('.popup_login, .popup_forgotpassword').hide();
-    });
-    
-    
-    jQuery("#loginPopupCreateAccount").click(function() {
-    	jQuery('.popup_login').hide();
-    	
-    	/* show registration form */
-		jQuery('.popup_reg').fadeIn(300);
-		jQuery('#content').fadeOut(300);
-		jQuery('#foot_wrap').fadeOut(300);
-		jQuery('.hp_box').fadeOut(300);
-    });
     
     jQuery("#hdr_signin").mouseover(function() {
     	jQuery("#hdr_signin").show();
@@ -523,30 +448,19 @@ jQuery(function() {
     }
 });
 
-function addRedirectBeforeSubmit(formId) {
-	jQuery('#' + formId).append(jQuery('<input type="hidden" value="' + window.location.toString() + '" name="redirect" />'));
-}
-
-function processForgotPasswordForm(formId) {
-	var screenName = jQuery('#' + formId + ' .screenName').val();
-	if (screenName.indexOf('@') > 0) {
-		jQuery('#' + formId).append('<input type="hidden" value="' + screenName + '" name="emailAddress" />');
-	}
-}
-
 function submitenter(myfield,e)	{
-		var keycode;
-		if (window.event) keycode = window.event.keyCode;
-		else if (e) keycode = e.which;
-		else return true;
+    var keycode;
+    if (window.event) keycode = window.event.keyCode;
+    else if (e) keycode = e.which;
+    else return true;
 
-		if (keycode == 13) {
-			jQuery(myfield.form).submit();
-			return false;
-		}
-		else
-			return true;
-	}
+    if (keycode == 13) {
+        jQuery(myfield.form).submit();
+        return false;
+    } else {
+        return true;
+    }
+}
 
 $(function() {
     $('.js-Tooltip').tooltipster({
