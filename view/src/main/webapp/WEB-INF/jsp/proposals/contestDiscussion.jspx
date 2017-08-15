@@ -15,7 +15,8 @@
 			<div class="inner">
 				<div class='c-Headline'>
 					<div class="contest-image">
-						<img src="${contest.logoPath}" width="52" height="52" alt="Contest Image" />
+						<img src="${contest.logoPath}" width="52" height="52"
+                             alt="${contestType.contestName} image" title="${contest.contestShortName}"/>
 					</div>
 					<div class='proposal-title'>
 						<h1>Discussion <proposalsPortlet:contestLink contest="${contest}" text="${contest.contestShortName} " /></h1>

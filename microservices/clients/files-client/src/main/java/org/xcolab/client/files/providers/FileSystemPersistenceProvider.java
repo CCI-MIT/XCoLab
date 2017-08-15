@@ -1,9 +1,6 @@
 package org.xcolab.client.files.providers;
 
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 
 import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.util.exceptions.InternalException;
@@ -17,7 +14,6 @@ public class FileSystemPersistenceProvider implements PersistenceProvider {
     private static final String LOCAL_FOLDER_NAME = "fileEntriesDataFolder";
 
     private static final int LOCAL_FOLDER_MAX_AMOUNT_OF_FILES = 300;
-
 
     @Override
     public boolean saveFileToFinalDestination(byte[] imgBArr, FileEntry fileEntry, String path) {

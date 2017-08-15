@@ -1,7 +1,10 @@
 package org.xcolab.view.files;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,7 +14,6 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.enums.ServerEnvironment;
 import org.xcolab.client.files.FilesClient;
-import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
 import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -21,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletContext;
@@ -30,8 +33,10 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class ImageDisplayController {
 
+    private static final Logger log = LoggerFactory.getLogger(ImageDisplayController.class);
+
     private final boolean isProduction;
-    private final String path = PlatformAttributeKey.FILES_UPLOAD_DIR.get();
+    private final String basePath = PlatformAttributeKey.FILES_UPLOAD_DIR.get();
 
     public ImageDisplayController() {
         final ServerEnvironment serverEnvironment =
@@ -70,8 +75,7 @@ public class ImageDisplayController {
             imageId = imgId;
         } else if (userId != null) {
             try {
-                Member member =
-                        MembersClient.getMember(Long.parseLong(request.getParameter("userId")));
+                Member member = MembersClient.getMember(userId);
                 if (member.getPortraitFileEntryId() != null) {
                     imageId = member.getPortraitFileEntryId();
                 }
@@ -84,29 +88,22 @@ public class ImageDisplayController {
         }
 
         if (imageId != null && imageId > 0) {
-            try {
-                FileEntry fileEntry = FilesClient.getFileEntry(imageId);
-                String filePath = FilesClient.getFilePathFromFinalDestination(fileEntry, path);
-                if (filePath != null) {
-                    //check if file exists
-                    File f = new File(filePath);
-                    if (f.exists() && !f.isDirectory()) {
-                        sendImageToResponse(request, response, filePath);
+            final Optional<FileEntry> fileEntryOpt = FilesClient.getFileEntry(imageId);
+            if (fileEntryOpt.isPresent()) {
+                FileEntry fileEntry = fileEntryOpt.get();
+                File imageFile = fileEntry.getImageFile(basePath);
+                if (imageFile != null) {
+                    final boolean success = sendImageToResponse(request, response, imageFile);
+                    if (success) {
                         return;
-                    } else {
-                        if (!isProduction) {
-                            response.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT);
-                            String newURL =
-                                    ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get() + request
-                                            .getRequestURI() + "?" + request.getQueryString();
-                            response.setHeader("Location", newURL);
-                            return;
-                        }
                     }
+                } else if (!isProduction) {
+                    String newURL = ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get()
+                            + request.getRequestURI() + "?" + request.getQueryString();
+
+                    response.sendRedirect(newURL);
+                    return;
                 }
-            } catch (FileEntryNotFoundException ignored) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
             }
         }
 
@@ -118,25 +115,24 @@ public class ImageDisplayController {
             response.sendRedirect(defaultImage.getImagePath());
             return;
         }
-        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
     }
 
-    private void sendImageToResponse(HttpServletRequest request, HttpServletResponse response,
-            String filePath) {
+    private boolean sendImageToResponse(HttpServletRequest request, HttpServletResponse response,
+            File imageFile) {
 
         try {
             ServletContext servletContext = request.getSession().getServletContext();
-            String mime = servletContext.getMimeType(filePath);
+            String mime = servletContext.getMimeType(imageFile.getAbsolutePath());
             if (mime == null) {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                return;
+                log.error("Could not retrieve mime typ for image {}", imageFile.getAbsolutePath());
+                return false;
             }
 
             response.setContentType(mime);
-            File file = new File(filePath);
-            response.setContentLength((int) file.length());
+            response.setContentLength((int) imageFile.length());
 
-            FileInputStream in = new FileInputStream(file);
+            FileInputStream in = new FileInputStream(imageFile);
             OutputStream out = response.getOutputStream();
 
             // Copy the contents of the file to the output stream
@@ -148,15 +144,14 @@ public class ImageDisplayController {
             out.close();
             in.close();
             response.setHeader(HttpHeaders.CACHE_CONTROL,
-                    CacheControl.maxAge(7, TimeUnit.DAYS).getHeaderValue());
-            return;
-        } catch (IOException ignored) {
-
-        }
-        try {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } catch (IOException ignored) {
-
+                    CacheControl.maxAge(7, TimeUnit.DAYS)
+                            .staleWhileRevalidate(90, TimeUnit.DAYS)
+                            .getHeaderValue());
+            return true;
+        } catch (IOException e) {
+            log.error("Error while sending image {} to response: {}",
+                    imageFile.getAbsolutePath(), e.getMessage());
+            return false;
         }
     }
 
