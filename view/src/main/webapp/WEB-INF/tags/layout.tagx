@@ -54,6 +54,7 @@
     <!--@elvariable id="_contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
     <!--@elvariable id="_colabName" type="java.lang.String"-->
     <!--@elvariable id="_colabUrl" type="java.lang.String"-->
+    <!--@elvariable id="_blogAdminUrl" type="java.lang.String"-->
     <!--@elvariable id="_colabLongName" type="java.lang.String"-->
     <!--@elvariable id="_colabShortName" type="java.lang.String"-->
     <!--@elvariable id="_googleAnalyticsKey" type="java.lang.String"-->
@@ -294,7 +295,10 @@
                             </li>
                             <c:if test="${_isAdmin}">
                                 <li>
-                                    <a href="/admin/contest"><spring:message code="homepage.menu.user.contestmanager" /></a>
+                                    <a href="/admin/contest">Contest Manager</a>
+                                    <c:if test="${not empty _blogAdminUrl}">
+                                        <a href="${_blogAdminUrl}" target="_blank">Blog (Admin)</a>
+                                    </c:if>
                                 </li>
                             </c:if>
                             <li>

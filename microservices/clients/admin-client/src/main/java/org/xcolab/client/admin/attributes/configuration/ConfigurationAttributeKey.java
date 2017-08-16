@@ -47,6 +47,10 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newStringAttribute("BLOG_URL")
                     .defaultValue("")
                     .build();
+    public static final AttributeGetter<String> BLOG_ADMIN_URL =
+            ConfigurationAttributes.newStringAttribute("BLOG_ADMIN_URL")
+                    .defaultValue("")
+                    .build();
     public static final AttributeGetter<ColabTheme> ACTIVE_THEME =
             ConfigurationAttributes.newEnumAttribute("ACTIVE_THEME", ColabTheme.class)
                     .withCache()

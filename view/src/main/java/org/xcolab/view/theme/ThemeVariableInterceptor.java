@@ -111,13 +111,17 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
                     .getActiveContestTypes().stream()
                             .map(contestType -> contestType.withLocale(locale.getLanguage()))
                             .collect(Collectors.toList()));
-            modelAndView.addObject("_colabName",
-                    ConfigurationAttributeKey.COLAB_NAME.get());
-            modelAndView.addObject("_colabLongName",
-                    ConfigurationAttributeKey.COLAB_LONG_NAME.get());
+
+            final String colabName = ConfigurationAttributeKey.COLAB_NAME.get();
+            final String colabLongName = ConfigurationAttributeKey.COLAB_LONG_NAME.get();
+            final String colabShortName = ConfigurationAttributeKey.COLAB_SHORT_NAME.get();
+            modelAndView.addObject("_colabName", colabName);
+            modelAndView.addObject("_colabLongName", colabLongName);
+            modelAndView.addObject("_colabShortName", colabShortName);
+
             modelAndView.addObject("_colabUrl", PlatformAttributeKey.COLAB_URL.get());
-            modelAndView
-                    .addObject("_colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
+            modelAndView.addObject("_blogAdminUrl", ConfigurationAttributeKey.BLOG_ADMIN_URL.get());
+
             final String googleAnalyticsKey = ConfigurationAttributeKey.GOOGLE_ANALYTICS_KEY.get();
             modelAndView.addObject("_googleAnalyticsKey", googleAnalyticsKey);
 
