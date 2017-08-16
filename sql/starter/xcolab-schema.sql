@@ -799,21 +799,15 @@ CREATE TABLE `comment_Category` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `xcolab_BalloonText` (
-  `id_` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(75) DEFAULT NULL,
-  `textBeforeForm` longtext,
-  `textAfterForm` longtext,
-  `textBeforeShareButtons` longtext,
-  `textAfterShareButtons` longtext,
-  `acceptTosText` longtext,
-  `emailTemplate` longtext,
-  `emailSubjectTemplate` longtext,
-  `twitterDescription` longtext,
-  `twitterSubject` longtext,
-  `facebookDescription` longtext,
-  `facebookSubject` longtext,
-  `enabled` tinyint(4) DEFAULT NULL,
-  PRIMARY KEY (`id_`),
+  id_ bigint auto_increment primary key,
+	name varchar(75) null,
+	textBeforeForm longtext null,
+	textBeforeShareButtons longtext null,
+	emailTemplate longtext null,
+	emailSubjectTemplate varchar(255) null,
+	shareTitle varchar(255) null,
+	shareDescription text null,
+	enabled tinyint null,
   KEY `IX_CE6BAAA5` (`enabled`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

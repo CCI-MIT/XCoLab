@@ -392,6 +392,10 @@ public class Proposal extends AbstractProposal {
         return this.getProposalLinkUrl(contest);
     }
 
+    public String getAbsoluteProposalUrl() {
+        return ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get() + getProposalUrl();
+    }
+
     public String getProposalDiscussionUrl() {
         return this.getProposalLinkUrl(contest) + "/tab/COMMENTS";
     }

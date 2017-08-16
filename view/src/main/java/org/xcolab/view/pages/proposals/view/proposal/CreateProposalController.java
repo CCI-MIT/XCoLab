@@ -131,6 +131,7 @@ public class CreateProposalController extends BaseProposalsController {
                 ConfigurationAttributeKey.PROPOSALS_SAVE_HELP_TEXT.get());
         model.addAttribute("proposalPickerDefaultTabIsContests",
                 ConfigurationAttributeKey.PROPOSALS_PICKER_DEFAULT_TAB_CONTESTS.get());
+        model.addAttribute("saveUrl", contest.getNewProposalLinkUrl());
 
         AnalyticsUtil.publishEvent(request, memberId, ProposalUpdateHelper.PROPOSAL_ANALYTICS_KEY + 1,
                 ProposalUpdateHelper.PROPOSAL_ANALYTICS_CATEGORY,

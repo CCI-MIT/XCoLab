@@ -5,14 +5,15 @@
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          version="2.0">
+          xmlns:xcolabfunctions="urn:jsptld:/WEB-INF/tlds/xcolab-escaping.tld"
+          version="2.0"
+>
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
     <xcolab:layout title="${contest.contestShortName}" description="${contest.contestName}"
                    openGraphImage="${contest.logoPath}"
                    openGraphDescription="${contest.cleanContestDescription}"
-                   openGraphTitle="${contest.contestShortName} - ${_colabName}"
-    >
+                   openGraphTitle="${contest.contestShortName} - ${_colabName}">
 
         <jsp:directive.include file="./init_contest.jspx"/>
 
@@ -209,5 +210,42 @@
         <xcolab:requireLibrary name="autoSuggest" />
         <xcolab:requireLibrary name="jQuery UI" />
         <xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>
+        <c:set var="contestPageBreadcumbs" >
+            <c:forEach var="_contestPage" items="${_contestPages}" varStatus="status">
+                <c:if test="${_contestPage.menuItemName != ''}">
+                    {
+                    "@type": "ListItem",
+                    "position": ${status.count + 1},
+                    "item": {
+                    "@id": "${_colabUrl}${_contestPage.contestBaseUrl}",
+                    "name": "${xcolabfunctions:escapeStringForJavascript(_contestPage.menuItemName)}"
+                    }
+                    }<c:if test="${!status.last}">,</c:if>
+                </c:if>
+            </c:forEach>
+        </c:set>
+        <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [{
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@id": "${_colabUrl}",
+              "name": "Colab Home"
+            }
+          },${contestPageBreadcumbs},
+          {
+            "@type": "ListItem",
+            "position": ${fn:length(_contestPages) + 2},
+            "item": {
+              "@id": "${_colabUrl}${contest.contestUrl}",
+              "name": "${xcolabfunctions:escapeStringForJavascript(contest.contestName)}",
+              "image": "${_colabUrl}${contest.logoPath}"
+            }
+          }]
+        }
+        </script>
     </xcolab:layout>
 </jsp:root>

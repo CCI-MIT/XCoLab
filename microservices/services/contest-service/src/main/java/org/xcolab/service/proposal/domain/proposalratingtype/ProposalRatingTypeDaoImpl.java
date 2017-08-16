@@ -20,7 +20,7 @@ public class ProposalRatingTypeDaoImpl implements ProposalRatingTypeDao {
 
     @Autowired
     public ProposalRatingTypeDaoImpl(DSLContext dslContext) {
-        Assert.notNull(dslContext);
+        Assert.notNull(dslContext, "DSLContext is required");
         this.dslContext = dslContext;
     }
 

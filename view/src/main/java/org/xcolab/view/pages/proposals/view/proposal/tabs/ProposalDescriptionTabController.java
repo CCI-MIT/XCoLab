@@ -93,6 +93,10 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
         model.addAttribute("showOpennessStatus",
             ConfigurationAttributeKey.CONTESTS_ALLOW_OPEN_PROPOSALS.get());
 
+        // make sure it's in the right contest,
+        // which might not be the proposal's contests (e.g. when moving)
+        model.addAttribute("saveUrl", proposalContext.getProposal().getProposalLinkUrl(proposalContext.getContest()));
+
         final Proposal proposal = proposalContext.getProposal();
 
         final ClientHelper clients = proposalContext.getClients();
@@ -117,7 +121,7 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
                     proposal, baseProposalWrapped, true,
                     MoveType.valueOf(moveType, true));
             updateProposalDetailsBean.setMoveFromContestPhaseId(moveFromContestPhaseId);
-            updateProposalDetailsBean.setMoveToContestId(baseContestPhase.getContestPhasePK());
+            updateProposalDetailsBean.setMoveToContestId(proposalContext.getContest().getContestPK());
 
             model.addAttribute("hasUnmappedSections",
                     hasUnmappedSections(proposal, baseProposalWrapped));

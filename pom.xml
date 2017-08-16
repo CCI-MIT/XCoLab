@@ -25,7 +25,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <spring.version>4.3.7.RELEASE</spring.version>
-        <spring-boot.version>1.5.4.RELEASE</spring-boot.version>
+        <spring-boot.version>1.5.6.RELEASE</spring-boot.version>
         <spring-cloud.version>1.2.5.RELEASE</spring-cloud.version>
 
         <!-- Database -->
@@ -57,7 +57,7 @@
         <!-- Misc -->
         <jsoup.version>1.10.3</jsoup.version>
         <json.version>20160212</json.version>
-        <prettytime.version>3.2.7.Final</prettytime.version>
+        <prettytime.version>4.0.1.Final</prettytime.version>
         <simple-java-mail.version>3.1.1</simple-java-mail.version>
         <google-api.version>1.22.0</google-api.version>
         <javax-mail.version>1.4.7</javax-mail.version>
@@ -311,7 +311,7 @@
                 </plugin>
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.6.1</version>
+					<version>3.6.2</version>
 				</plugin>
 
                 <plugin>
@@ -400,8 +400,47 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>buildnumber-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <forkCount>2</forkCount>
+                    <reuseForks>true</reuseForks>
+                    <excludes>
+                        <exclude>**/*ControllerTest.java</exclude>
+                        <exclude>**/*ServiceTest.java</exclude>
+                        <exclude>**/*DaoTest.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
+
+    <profiles>
+        <profile>
+            <id>slow-tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${maven-surefire-plugin.version}</version>
+                        <configuration combine.self="override">
+                            <forkCount>2</forkCount>
+                            <reuseForks>true</reuseForks>
+                            <argLine>-Xmx512m -Xms256m</argLine>
+                            <includes>
+                                <include>**/*ControllerTest.java</include>
+                                <include>**/*ServiceTest.java</include>
+                                <include>**/*DaoTest.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <dependencies>
         <!--common dependencies-->
@@ -415,4 +454,5 @@
             <artifactId>commons-text</artifactId>
         </dependency>
     </dependencies>
+
 </project>

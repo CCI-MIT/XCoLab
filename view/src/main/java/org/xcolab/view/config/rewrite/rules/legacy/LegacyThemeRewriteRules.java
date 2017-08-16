@@ -13,10 +13,10 @@ public class LegacyThemeRewriteRules implements RewriteRuleProvider {
     public void configure(ConfigurationBuilder configurationBuilder) {
         configurationBuilder
                 .addRule()
-                .when(Direction.isInbound().and(
-                        Path.matches("/{colabName}-theme/images/{path}")))
-                .perform(Forward.to("/images/{path}"))
-                .where("path").matches(".*")
-                .where("colabName").matches("(climatecolab|fow|solve|rd)");
+                    .when(Direction.isInbound().and(
+                            Path.matches("/{colabName}-theme/images/{path}")))
+                    .perform(Forward.to("/images/{path}"))
+                    .where("path").matches(".*")
+                    .where("colabName").matches("(climatecolab|fow|solve|rd)");
     }
 }

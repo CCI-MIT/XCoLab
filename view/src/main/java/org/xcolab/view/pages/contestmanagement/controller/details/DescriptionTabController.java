@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.templates.PlanTemplate;
@@ -46,8 +47,7 @@ public class DescriptionTabController extends AbstractTabController {
         //TODO: why do we need this? and why is hard coded?
         List<Long> excludedList =
                 Arrays.asList(1L, 2L, 106L, 201L, 202L, 301L, 401L, 1000401L, 1000501L, 1300104L,
-                        1300201L, 1300302L,
-                        1300401L, 1300601L, 1300602L);
+                        1300201L, 1300302L, 1300401L, 1300601L, 1300602L);
         for (PlanTemplate proposalTemplate : PlanTemplateClientUtil.getPlanTemplates()) {
             if (!excludedList.contains(proposalTemplate.getId_())) {
                 selectItems
@@ -102,13 +102,23 @@ public class DescriptionTabController extends AbstractTabController {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
+        //check for contest name year uniqueness
+        final Contest contest = getContest();
+        if (!ContestClientUtil
+                .isContestNameYearUnique(contestDescriptionBean.getContestShortName(), contest.getContestYear(),
+                        contest.getContestPK())) {
+            AlertMessage
+                    .danger("Contest name and year must be unique, a contest with the given name "
+                            + "already exists for this year.")
+                    .flash(request);
+            return showDescriptionTab(request, response, model, member);
+        }
 
         if (result.hasErrors()) {
             AlertMessage.danger("Error while updating.").flash(request);
             return showDescriptionTab(request, response, model, member);
         }
 
-        final Contest contest = getContest();
 
         contestDescriptionBean.persist(contest);
         return showDescriptionTab(request, response, model, member);

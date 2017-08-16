@@ -3,14 +3,14 @@
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-          xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:spring="http://www.springframework.org/tags"
+          xmlns:xcolabfunctions="urn:jsptld:/WEB-INF/tlds/xcolab-escaping.tld"
           version="2.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <c:choose>
         <c:when test='${proposal.imageId > 0}'>
-            <c:set var="proposalOpenGraphImage" value="${contest.proposalLogoPath}image/proposal?img_id=${proposal.imageId}"/>
+            <c:set var="proposalOpenGraphImage" value="${contest.proposalLogoPath}image/proposal/${proposal.imageId}"/>
         </c:when>
         <c:otherwise>
             <c:set var="proposalOpenGraphImage" value=""/>
@@ -20,7 +20,8 @@
     <xcolab:layout title="${proposal.name}" description="${proposal.pitch}"
                    openGraphImage="${proposalOpenGraphImage}"
                    openGraphDescription="${proposal.cleanPitch}"
-                   openGraphTitle="${proposal.name} - ${contest.contestShortName} - ${_colabName}">
+                   openGraphTitle="${proposal.name} - ${contest.contestShortName} - ${_colabName}"
+    >
         <!--@elvariable id="voted" type="java.lang.Boolean"-->
         <!--@elvariable id="votingDeadline" type="java.lang.String"-->
         <!--@elvariable id="targetMoveHistory" type="org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory"-->
@@ -225,17 +226,16 @@
                         <h4 style="color: #30a3fb;">
                             <spring:message code="contests.proposal.voting.share" />
                         </h4>
-                        <div class="addthis_toolbox addthis_default_style addthis_32x32_style" id="shareProposalToolbox" style="width: 205px;">
-                            <a class="addthis_button_facebook" id="addThisButton1" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
-                            <a class="addthis_button_twitter" id="addThisButton2" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
-                            <a class="addthis_button_email" id="addThisButton3" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
-                            <a class="addthis_button_linkedin" id="addThisButton4" addthis:title="${proposal.name}" addthis:description="${proposal.pitch}"><!--  --></a>
-                        </div>
+                        <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                        <div class="addthis_inline_share_toolbox" data-url="${proposal.absoluteProposalUrl}"
+                             data-title="${proposal.name}" data-description="${proposal.pitch}">
+                            <!-- --></div>
                     </div>
                     <div class="clearfix"><!-- --></div>
                 </div>
             </div>
         </c:if>
+
         <script>
             var currentProposal = {
                     proposalId: ${proposal.proposalId},
@@ -267,5 +267,56 @@
                 <!--enableDirtyCheck();-->
             <!--});-->
         <!--</script>-->
+
+        <c:set var="contestPageBreadcumbs" >
+            <c:forEach var="_contestPage" items="${_contestPages}" varStatus="status">
+                <c:if test="${_contestPage.menuItemName != ''}">
+                    {
+                    "@type": "ListItem",
+                    "position": ${status.count + 1},
+                    "item": {
+                    "@id": "${_colabUrl}${_contestPage.contestBaseUrl}",
+                    "name": "${xcolabfunctions:escapeStringForJavascript(_contestPage.menuItemName)}"
+                    }
+                    }<c:if test="${!status.last}">,</c:if>
+                </c:if>
+            </c:forEach>
+        </c:set>
+        <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [{
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@id": "${_colabUrl}",
+              "name": "Colab Home"
+            }
+          },${contestPageBreadcumbs},
+          {
+            "@type": "ListItem",
+            "position": ${fn:length(_contestPages) + 2},
+            "item": {
+              "@id": "${_colabUrl}${contest.contestUrl}",
+              "name": "${xcolabfunctions:escapeStringForJavascript(contest.contestName)}",
+              "image": "${_colabUrl}${contest.logoPath}"
+            }
+          }
+          ,
+          {
+            "@type": "ListItem",
+            "position": ${fn:length(_contestPages) + 3},
+            "item": {
+              "@id": "${proposal.absoluteProposalUrl}",
+              "name": "${xcolabfunctions:escapeStringForJavascript(proposal.name)}"
+              <c:if test='${proposal.imageId > 0}'>
+            ,"image": "${_colabUrl}${contest.proposalLogoPath}image/proposal/${proposal.imageId}"
+             </c:if>
+            }
+          }
+          ]
+        }
+    </script>
     </xcolab:layout>
 </jsp:root>

@@ -27,6 +27,8 @@ public interface ContestDao {
 
     boolean isShared(long contestId);
 
+    boolean isContestNameYearUnique(String contestShortName, Long year, Long currentContestId);
+
     boolean existsWithScheduleId(long contestScheduleId);
 
     Contest getByResourceId(Long resourceId) throws NotFoundException;

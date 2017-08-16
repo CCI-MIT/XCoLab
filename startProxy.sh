@@ -18,7 +18,7 @@ else
     cd ${DEPLOY_DIR}
     OUT_FILE="${SERVER}.out"
     rm ${OUT_FILE} > /dev/null 2>&1
-    exec java -Xmx512M -Xms128M -jar ${SERVER}-1.0-SNAPSHOT.jar > ${OUT_FILE}  & echo $! > ${PID_FILE}
+    exec java -Xmx256M -Xms128M -jar ${SERVER}-1.0-SNAPSHOT.jar > ${OUT_FILE}  & echo $! > ${PID_FILE}
     cd ${SAVED_DIR}
 fi
 

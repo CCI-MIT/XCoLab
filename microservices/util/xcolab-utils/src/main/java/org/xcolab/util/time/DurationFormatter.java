@@ -7,7 +7,6 @@ import org.ocpsoft.prettytime.units.Day;
 import org.ocpsoft.prettytime.units.Hour;
 import org.ocpsoft.prettytime.units.Minute;
 import org.ocpsoft.prettytime.units.Month;
-import org.ocpsoft.prettytime.units.Second;
 import org.ocpsoft.prettytime.units.Week;
 import org.ocpsoft.prettytime.units.Year;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -103,7 +102,7 @@ public class DurationFormatter {
     }
 
     public String formatDifference(Date date) {
-        return prettyTime.formatApproximateDuration(date);
+        return prettyTime.formatDuration(date);
     }
 
     /**
@@ -119,7 +118,7 @@ public class DurationFormatter {
     }
 
     public String formatDifferenceAsDays(Date date) {
-        return prettyTimeDays.formatApproximateDuration(date);
+        return prettyTimeDays.formatDuration(date);
     }
 
     private static PrettyTime createPrettyTime(Locale locale, List<ResourcesTimeUnit> units) {

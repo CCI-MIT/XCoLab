@@ -25,6 +25,9 @@ $c-Comment__threads__list__tr__border--bottom: 1px solid $t-Color__grey--light !
   p {
     margin: 0 0 10px 0;
   }
+  img {
+    max-width: 650px;
+  }
 }
 
 .c-Comment__new { //#thecomment

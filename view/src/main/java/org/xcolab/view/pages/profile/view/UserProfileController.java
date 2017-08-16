@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
+import org.xcolab.client.balloons.pojo.BalloonUserTracking;
 import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.files.FilesClient;
-import org.xcolab.client.files.exceptions.FileEntryNotFoundException;
 import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
@@ -32,19 +32,21 @@ import org.xcolab.client.members.pojo.MessagingUserPreferences;
 import org.xcolab.entity.utils.TemplateReplacementUtil;
 import org.xcolab.util.CountryUtil;
 import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
-import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.pages.profile.beans.MessageBean;
 import org.xcolab.view.pages.profile.beans.NewsletterBean;
 import org.xcolab.view.pages.profile.beans.UserBean;
 import org.xcolab.view.pages.profile.utils.UserProfilePermissions;
 import org.xcolab.view.pages.profile.wrappers.UserProfileWrapper;
+import org.xcolab.view.pages.redballon.utils.BalloonService;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 import org.xcolab.view.util.entity.flash.ErrorMessage;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
@@ -54,17 +56,20 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/members/profile")
 public class UserProfileController {
 
-    private final static Logger _log = LoggerFactory.getLogger(UserProfileController.class);
+    private static final Logger _log = LoggerFactory.getLogger(UserProfileController.class);
     private static final String SHOW_PROFILE_VIEW = "profile/showUserProfile";
     private static final String EDIT_PROFILE_VIEW = "profile/editUserProfile";
 
     private final ActivityEntryHelper activityEntryHelper;
+    private final BalloonService balloonService;
 
     private final SmartValidator validator;
 
     @Autowired
-    public UserProfileController(ActivityEntryHelper activityEntryHelper, SmartValidator validator) {
+    public UserProfileController(ActivityEntryHelper activityEntryHelper,
+            BalloonService balloonService, SmartValidator validator) {
         this.activityEntryHelper = activityEntryHelper;
+        this.balloonService = balloonService;
         this.validator = validator;
     }
 
@@ -76,23 +81,38 @@ public class UserProfileController {
     @GetMapping
     public String showProfile(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member) throws IOException {
-        if (member == null) {
-            return new AccessDeniedPage(null).toViewName(response);
+        if (member != null) {
+            return "redirect:/members/profile/" + member.getId_();
         }
-        response.sendRedirect("/members/profile/" + member.getId_());
-        return ErrorMessage.ERROR_VIEW;
+        return new AccessDeniedPage(null).toViewName(response);
     }
 
     @GetMapping("{memberId}")
-    public String showUserProfileView(HttpServletRequest request, Model model,
-            @PathVariable long memberId, Member member) {
+    public String showUserProfileView(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member loggedInMember, @PathVariable long memberId,
+            @RequestParam(defaultValue = "false") boolean generateReferralLink) {
         try {
-            UserProfilePermissions permissions = new UserProfilePermissions(member);
+            UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
             model.addAttribute("permissions", permissions);
             model.addAttribute("_activePageLink", "community");
-            populateUserWrapper(new UserProfileWrapper(memberId, request, activityEntryHelper), model);
-            model.addAttribute("pointsActive",
-                    ConfigurationAttributeKey.IS_POINTS_ACTIVE.get());
+
+            final UserProfileWrapper currentUserProfile =
+                    new UserProfileWrapper(memberId, loggedInMember, activityEntryHelper);
+            populateUserWrapper(currentUserProfile, model);
+
+            final Boolean isSnpActive = ConfigurationAttributeKey.SNP_IS_ACTIVE.get();
+            model.addAttribute("isSnpActive", isSnpActive);
+            if (isSnpActive && currentUserProfile.isViewingOwnProfile()) {
+                String consentFormText = ConfigurationAttributeKey.SNP_CONSENT_FORM_TEXT.get();
+                model.addAttribute("consentFormText", consentFormText);
+                final Optional<BalloonUserTracking> butOpt = balloonService
+                        .getBalloonUserTracking(request, response);
+                if (butOpt.isPresent()) {
+                    model.addAttribute("balloonLink", butOpt.get().getBalloonLink());
+                    model.addAttribute("balloonText", butOpt.get().getBalloonText());
+                }
+            }
+            model.addAttribute("pointsActive", ConfigurationAttributeKey.POINTS_IS_ACTIVE.get());
             return SHOW_PROFILE_VIEW;
         } catch (MemberNotFoundException e) {
             return ErrorMessage.error("User profile not found").flashAndReturnView(request);
@@ -107,18 +127,18 @@ public class UserProfileController {
 
     @GetMapping("{memberId}/edit")
     public String showUserProfileEdit(HttpServletRequest request, HttpServletResponse response,
-            Model model, @PathVariable long memberId, Member member) {
+            Model model, Member loggedInMember, @PathVariable long memberId) {
 
-        UserProfilePermissions permissions = new UserProfilePermissions(member);
+        UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
         if (!permissions.getCanEditMemberProfile(memberId)) {
-            return new AccessDeniedPage(member).toViewName(response);
+            return new AccessDeniedPage(loggedInMember).toViewName(response);
         }
         model.addAttribute("permissions", permissions);
         model.addAttribute("_activePageLink", "community");
 
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request,
-                    activityEntryHelper);
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId,
+                    loggedInMember, activityEntryHelper);
             populateUserWrapper(currentUserProfile, model);
 
             model.addAttribute("newsletterBean",
@@ -138,10 +158,11 @@ public class UserProfileController {
     }
 
     @RequestMapping(params = "updateError=true")
-    public String updateProfileError(HttpServletRequest request, Model model,
-                                     @RequestParam(required = false) boolean emailError,
-                                     @RequestParam(required = false) boolean passwordError,
-                                     @RequestParam Long memberId, Member loggedInMember) {
+    public String updateProfileError(HttpServletRequest request,
+            Model model, Member loggedInMember,
+            @RequestParam(required = false) boolean emailError,
+            @RequestParam(required = false) boolean passwordError,
+            @RequestParam Long memberId) {
         UserProfilePermissions permissions = new UserProfilePermissions(loggedInMember);
         model.addAttribute("permissions", permissions);
         model.addAttribute("updateError", true);
@@ -152,8 +173,8 @@ public class UserProfileController {
             model.addAttribute("passwordError", true);
         }
         try {
-            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId, request,
-                    activityEntryHelper);
+            UserProfileWrapper currentUserProfile = new UserProfileWrapper(memberId,
+                    loggedInMember, activityEntryHelper);
             if (permissions.getCanEditMemberProfile(memberId)) {
                 model.addAttribute("newsletterBean",
                         new NewsletterBean(currentUserProfile.getUserBean().getUserId()));
@@ -187,7 +208,7 @@ public class UserProfileController {
             return ErrorText.NOT_FOUND.flashAndReturnView(request);
         }
         UserProfileWrapper currentUserProfile = new UserProfileWrapper(updatedUserBean.getUserId(),
-                request, activityEntryHelper);
+                loggedInMember, activityEntryHelper);
         model.addAttribute("currentUserProfile", currentUserProfile);
 
         model.addAttribute("messageBean", new MessageBean());
@@ -337,17 +358,12 @@ public class UserProfileController {
         if (newImageId != currentUserProfile.getUserBean().getImageId()) {
 
             if (newImageId > 0) {
-                try {
-                    FileEntry fe = FilesClient.getFileEntry(newImageId);
-                    if (fe != null) {
-                        currentUserProfile.getUser().setPortraitFileEntryId(fe.getFileEntryId());
-                        changedMember = true;
-                    }
-                } catch (FileEntryNotFoundException e) {
-                    throw new IllegalStateException(
-                            "No file entry found for imageId " + newImageId + " for member " +
-                                    updatedUserBean.getUserId());
-                }
+                FileEntry fe = FilesClient.getFileEntry(newImageId).orElseThrow(
+                        () -> new IllegalStateException(
+                                "No file entry found for imageId " + newImageId + " for member " +
+                                        updatedUserBean.getUserId()));
+                currentUserProfile.getUser().setPortraitFileEntryId(fe.getFileEntryId());
+                changedMember = true;
             } else {
                 currentUserProfile.getUser().setPortraitFileEntryId(0L);
                 changedMember = true;

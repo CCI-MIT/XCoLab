@@ -17,6 +17,9 @@ public final class ConfigurationAttributeKey {
 
     private static final Pattern SCHEME_REGEX = Pattern.compile("^https?://");
 
+    private ConfigurationAttributeKey() {
+    }
+
     //Main CoLab configuration
     public static final AttributeGetter<String> ADMIN_EMAIL =
             ConfigurationAttributes.newStringAttribute("ADMIN_EMAIL")
@@ -27,6 +30,11 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> COLAB_NAME =
             ConfigurationAttributes.newStringAttribute("COLAB_NAME")
                     .withCache().build();
+    public static final AttributeGetter<String> COLAB_LONG_NAME =
+            ConfigurationAttributes.newStringAttribute("COLAB_LONG_NAME")
+                    .withCache()
+                    .defaultValue(COLAB_NAME)
+                    .build();
     public static final AttributeGetter<String> COLAB_SHORT_NAME =
             ConfigurationAttributes.newStringAttribute("COLAB_SHORT_NAME")
                     .withCache().build();
@@ -70,14 +78,19 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newStringAttribute("DEFAULT_TIME_ZONE_ID")
                     .defaultValue(TimeZone.getDefault().getDisplayName())
                     .build();
+
     public static final AttributeGetter<String> GOOGLE_ANALYTICS_KEY =
             ConfigurationAttributes.newStringAttribute("GOOGLE_ANALYTICS_KEY")
                     .withCache()
                     .defaultValue("")
                     .build();
 
+    // Social media configuration
+    public static final AttributeGetter<String> GOOGLE_URL =
+            ConfigurationAttributes.newStringAttribute("GOOGLE_URL")
+                    .defaultValue("")
+                    .build();
 
-    //SSO Configuration
     public static final AttributeGetter<String> GOOGLE_AUTH_CLIENT_ID =
             ConfigurationAttributes.newStringAttribute("GOOGLE_AUTH_CLIENT_ID")
                     .defaultValue("")
@@ -102,6 +115,10 @@ public final class ConfigurationAttributeKey {
                     .defaultValue(TransformedAttribute.of(GOOGLE_RECAPTCHA_SITE_KEY, StringUtils::isNotEmpty))
                     .build();
 
+    public static final AttributeGetter<String> FACEBOOK_URL =
+            ConfigurationAttributes.newStringAttribute("FACEBOOK_URL")
+                    .defaultValue("")
+                    .build();
     public static final AttributeGetter<String> FACEBOOK_APPLICATION_ID =
             ConfigurationAttributes.newStringAttribute("FACEBOOK_APPLICATION_ID")
                     .defaultValue("")
@@ -116,6 +133,26 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<Boolean> FACEBOOK_VERIFIED_REQUIRED =
             ConfigurationAttributes.newBooleanAttribute("FACEBOOK_VERIFIED_REQUIRED")
                     .defaultValue(false)
+                    .build();
+
+    public static final AttributeGetter<String> TWITTER_URL =
+            ConfigurationAttributes.newStringAttribute("TWITTER_URL")
+                    .defaultValue("")
+                    .build();
+
+    public static final AttributeGetter<String> YOUTUBE_URL =
+            ConfigurationAttributes.newStringAttribute("YOUTUBE_URL")
+                    .defaultValue("")
+                    .build();
+
+    public static final AttributeGetter<String> LINKEDIN_URL =
+            ConfigurationAttributes.newStringAttribute("LINKEDIN_URL")
+                    .defaultValue("")
+                    .build();
+
+    public static final AttributeGetter<String> STORIFY_URL =
+            ConfigurationAttributes.newStringAttribute("STORIFY_URL")
+                    .defaultValue("")
                     .build();
 
 
@@ -283,6 +320,17 @@ public final class ConfigurationAttributeKey {
                     .defaultValue(true)
                     .build();
 
+    // Points
+    public static final AttributeGetter<Boolean> POINTS_IS_ACTIVE =
+            ConfigurationAttributes.newBooleanAttribute("POINTS_IS_ACTIVE")
+                    .defaultValue(false)
+                    .build();
+
+    public static final LocalizableAttributeGetter<String> POINTS_HELP_TEXT =
+            ConfigurationAttributes.newLocalizedStringAttribute("POINTS_HELP_TEXT")
+                    .defaultValue("")
+                    .buildLocalizable();
+
     //Misc feature flags
     public static final AttributeGetter<Boolean> BETA_RIBBON_SHOW =
             ConfigurationAttributes.newBooleanAttribute("BETA_RIBBON_SHOW")
@@ -300,10 +348,7 @@ public final class ConfigurationAttributeKey {
             ConfigurationAttributes.newBooleanAttribute("PUBLISH_JUDGING_RESULTS")
                     .defaultValue(true)
                     .build();
-    public static final AttributeGetter<Boolean> IS_POINTS_ACTIVE =
-            ConfigurationAttributes.newBooleanAttribute("IS_POINTS_ACTIVE")
-                    .defaultValue(true)
-                    .build();
+
     public static final AttributeGetter<Boolean> CONTESTS_ALLOW_OPEN_PROPOSALS =
         ConfigurationAttributes.newBooleanAttribute("CONTESTS_ALLOW_OPEN_PROPOSALS")
                     .defaultValue(true)
@@ -418,8 +463,11 @@ public final class ConfigurationAttributeKey {
                     .defaultValue(false)
                     .build();
 
-    public static final AttributeGetter<String> SNP_CONTEXT =
-            ConfigurationAttributes.newStringAttribute("SNP_IS_ACTIVE")
-                    .defaultValue("socialnetworkprize")
-                    .build();
+    public static final LocalizableAttributeGetter<String> SNP_CONSENT_FORM_TEXT =
+            ConfigurationAttributes.newLocalizedStringAttribute("SNP_CONSENT_FORM_TEXT")
+                    .buildLocalizable();
+
+    public static final LocalizableAttributeGetter<String> SNP_EXAMPLE_TEXT =
+            ConfigurationAttributes.newLocalizedStringAttribute("SNP_EXAMPLE_TEXT")
+                    .buildLocalizable();
 }

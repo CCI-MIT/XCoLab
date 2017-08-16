@@ -33,8 +33,7 @@ public class ContestDaoImpl implements ContestDao {
     @Override
     public Contest create(Contest contest) {
 
-        this.dslContext.insertInto(CONTEST)
-                .set(CONTEST.CONTEST_PK, contest.getContestPK())
+        this.dslContext.insertInto(CONTEST).set(CONTEST.CONTEST_PK, contest.getContestPK())
                 .set(CONTEST.CONTEST_TYPE_ID, contest.getContestTypeId())
                 .set(CONTEST.CONTEST_NAME, contest.getContestName())
                 .set(CONTEST.CONTEST_SHORT_NAME, contest.getContestShortName())
@@ -42,17 +41,20 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.CONTEST_YEAR, contest.getContestYear())
                 .set(CONTEST.CONTEST_DESCRIPTION, contest.getContestDescription())
                 .set(CONTEST.CONTEST_MODEL_DESCRIPTION, contest.getContestModelDescription())
-                .set(CONTEST.CONTEST_POSITIONS_DESCRIPTION, contest.getContestPositionsDescription())
+                .set(CONTEST.CONTEST_POSITIONS_DESCRIPTION,
+                        contest.getContestPositionsDescription())
                 .set(CONTEST.CREATED, contest.getCreated())
                 .set(CONTEST.UPDATED, contest.getUpdated())
                 .set(CONTEST.AUTHOR_ID, contest.getAuthorId())
                 .set(CONTEST.CONTEST_ACTIVE, contest.getContestActive())
                 .set(CONTEST.PLAN_TEMPLATE_ID, contest.getPlanTemplateId())
                 .set(CONTEST.CONTEST_SCHEDULE_ID, contest.getContestScheduleId())
-                .set(CONTEST.PROPOSAL_CREATION_TEMPLATE_STRING, contest.getProposalCreationTemplateString())
+                .set(CONTEST.PROPOSAL_CREATION_TEMPLATE_STRING,
+                        contest.getProposalCreationTemplateString())
                 .set(CONTEST.VOTE_TEMPLATE_STRING, contest.getVoteTemplateString())
                 .set(CONTEST.PROPOSAL_VOTE_TEMPLATE_STRING, contest.getProposalVoteTemplateString())
-                .set(CONTEST.PROPOSAL_VOTE_CONFIRMATION_TEMPLATE_STRING, contest.getProposalVoteConfirmationTemplateString())
+                .set(CONTEST.PROPOSAL_VOTE_CONFIRMATION_TEMPLATE_STRING,
+                        contest.getProposalVoteConfirmationTemplateString())
                 .set(CONTEST.VOTE_QUESTION_TEMPLATE_STRING, contest.getVoteQuestionTemplateString())
                 .set(CONTEST.FOCUS_AREA_ID, contest.getFocusAreaId())
                 .set(CONTEST.CONTEST_TIER, contest.getContestTier())
@@ -63,8 +65,7 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.SPONSOR_LOGO_ID, contest.getSponsorLogoId())
                 .set(CONTEST.SPONSOR_TEXT, contest.getSponsorText())
                 .set(CONTEST.SPONSOR_LINK, contest.getSponsorLink())
-                .set(CONTEST.FLAG, contest.getFlag())
-                .set(CONTEST.FLAG_TEXT, contest.getFlagText())
+                .set(CONTEST.FLAG, contest.getFlag()).set(CONTEST.FLAG_TEXT, contest.getFlagText())
                 .set(CONTEST.FLAG_TOOLTIP, contest.getFlagTooltip())
                 .set(CONTEST.DISCUSSION_GROUP_ID, contest.getDiscussionGroupId())
                 .set(CONTEST.WEIGHT, contest.getWeight())
@@ -85,17 +86,15 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.HIDE_RIBBONS, contest.getHideRibbons())
                 .set(CONTEST.RESOURCE_ARTICLE_ID, contest.getResourceArticleId())
                 .set(CONTEST.IS_SHARED_CONTEST, contest.getIsSharedContest())
-                .set(CONTEST.SHARED_ORIGIN, contest.getSharedOrigin())
-                .execute();
+                .set(CONTEST.SHARED_ORIGIN, contest.getSharedOrigin()).execute();
 
-            return contest;
+        return contest;
 
     }
 
     @Override
     public boolean update(Contest contest) {
-        return dslContext.update(CONTEST)
-                .set(CONTEST.CONTEST_PK, contest.getContestPK())
+        return dslContext.update(CONTEST).set(CONTEST.CONTEST_PK, contest.getContestPK())
                 .set(CONTEST.CONTEST_TYPE_ID, contest.getContestTypeId())
                 .set(CONTEST.CONTEST_NAME, contest.getContestName())
                 .set(CONTEST.CONTEST_SHORT_NAME, contest.getContestShortName())
@@ -103,17 +102,20 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.CONTEST_YEAR, contest.getContestYear())
                 .set(CONTEST.CONTEST_DESCRIPTION, contest.getContestDescription())
                 .set(CONTEST.CONTEST_MODEL_DESCRIPTION, contest.getContestModelDescription())
-                .set(CONTEST.CONTEST_POSITIONS_DESCRIPTION, contest.getContestPositionsDescription())
+                .set(CONTEST.CONTEST_POSITIONS_DESCRIPTION,
+                        contest.getContestPositionsDescription())
                 .set(CONTEST.CREATED, contest.getCreated())
                 .set(CONTEST.UPDATED, contest.getUpdated())
                 .set(CONTEST.AUTHOR_ID, contest.getAuthorId())
                 .set(CONTEST.CONTEST_ACTIVE, contest.getContestActive())
                 .set(CONTEST.PLAN_TEMPLATE_ID, contest.getPlanTemplateId())
                 .set(CONTEST.CONTEST_SCHEDULE_ID, contest.getContestScheduleId())
-                .set(CONTEST.PROPOSAL_CREATION_TEMPLATE_STRING, contest.getProposalCreationTemplateString())
+                .set(CONTEST.PROPOSAL_CREATION_TEMPLATE_STRING,
+                        contest.getProposalCreationTemplateString())
                 .set(CONTEST.VOTE_TEMPLATE_STRING, contest.getVoteTemplateString())
                 .set(CONTEST.PROPOSAL_VOTE_TEMPLATE_STRING, contest.getProposalVoteTemplateString())
-                .set(CONTEST.PROPOSAL_VOTE_CONFIRMATION_TEMPLATE_STRING, contest.getProposalVoteConfirmationTemplateString())
+                .set(CONTEST.PROPOSAL_VOTE_CONFIRMATION_TEMPLATE_STRING,
+                        contest.getProposalVoteConfirmationTemplateString())
                 .set(CONTEST.VOTE_QUESTION_TEMPLATE_STRING, contest.getVoteQuestionTemplateString())
                 .set(CONTEST.FOCUS_AREA_ID, contest.getFocusAreaId())
                 .set(CONTEST.CONTEST_TIER, contest.getContestTier())
@@ -124,8 +126,7 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.DEFAULT_PROPOSAL_LOGO_ID, contest.getDefaultProposalLogoId())
                 .set(CONTEST.SPONSOR_TEXT, contest.getSponsorText())
                 .set(CONTEST.SPONSOR_LINK, contest.getSponsorLink())
-                .set(CONTEST.FLAG, contest.getFlag())
-                .set(CONTEST.FLAG_TEXT, contest.getFlagText())
+                .set(CONTEST.FLAG, contest.getFlag()).set(CONTEST.FLAG_TEXT, contest.getFlagText())
                 .set(CONTEST.FLAG_TOOLTIP, contest.getFlagTooltip())
                 .set(CONTEST.DISCUSSION_GROUP_ID, contest.getDiscussionGroupId())
                 .set(CONTEST.WEIGHT, contest.getWeight())
@@ -147,25 +148,21 @@ public class ContestDaoImpl implements ContestDao {
                 .set(CONTEST.RESOURCE_ARTICLE_ID, contest.getResourceArticleId())
                 .set(CONTEST.IS_SHARED_CONTEST, contest.getIsSharedContest())
                 .set(CONTEST.SHARED_ORIGIN, contest.getSharedOrigin())
-                .where(CONTEST.CONTEST_PK.eq(contest.getContestPK()))
-                .execute() > 0;
+                .where(CONTEST.CONTEST_PK.eq(contest.getContestPK())).execute() > 0;
     }
 
     @Override
     public boolean isShared(long contestId) {
-        final Record1<Boolean> record = dslContext.select(CONTEST.IS_SHARED_CONTEST)
-                .from(CONTEST)
-                .where(CONTEST.CONTEST_PK.eq(contestId))
-                .fetchOne();
+        final Record1<Boolean> record = dslContext.select(CONTEST.IS_SHARED_CONTEST).from(CONTEST)
+                .where(CONTEST.CONTEST_PK.eq(contestId)).fetchOne();
         return record != null && record.into(Boolean.class);
     }
 
     @Override
     public Contest get(Long contestId) throws NotFoundException {
-        final Record record = dslContext.select()
-                .from(CONTEST)
-                .where(CONTEST.CONTEST_PK.eq(contestId))
-                .fetchOne();
+        final Record record =
+                dslContext.select().from(CONTEST).where(CONTEST.CONTEST_PK.eq(contestId))
+                        .fetchOne();
         if (record == null) {
             throw new NotFoundException("Contest with id " + contestId + " was not found");
         }
@@ -175,10 +172,9 @@ public class ContestDaoImpl implements ContestDao {
 
     @Override
     public Contest getByThreadId(Long threadId) throws NotFoundException {
-        final Record record = dslContext.select()
-                .from(CONTEST)
-                .where(CONTEST.DISCUSSION_GROUP_ID.eq(threadId))
-                .fetchOne();
+        final Record record =
+                dslContext.select().from(CONTEST).where(CONTEST.DISCUSSION_GROUP_ID.eq(threadId))
+                        .fetchOne();
         if (record == null) {
             throw new NotFoundException("Contest with thread id " + threadId + " was not found");
         }
@@ -187,14 +183,25 @@ public class ContestDaoImpl implements ContestDao {
 
     @Override
     public Contest getByResourceId(Long resourceId) throws NotFoundException {
-        final Record record = dslContext.select()
-                .from(CONTEST)
-                .where(CONTEST.RESOURCE_ARTICLE_ID.eq(resourceId))
-                .fetchOne();
+        final Record record =
+                dslContext.select().from(CONTEST).where(CONTEST.RESOURCE_ARTICLE_ID.eq(resourceId))
+                        .fetchOne();
         if (record == null) {
-            throw new NotFoundException("Contest with resource id " + resourceId + " was not found");
+            throw new NotFoundException(
+                    "Contest with resource id " + resourceId + " was not found");
         }
         return record.into(Contest.class);
+    }
+
+    @Override
+    public boolean isContestNameYearUnique(String contestShortName, Long year, Long currentContestId) {
+        final SelectQuery<Record1<Integer>> query = dslContext.selectCount().from(CONTEST).getQuery();
+        query.addConditions(CONTEST.CONTEST_SHORT_NAME.eq(contestShortName));
+        query.addConditions(CONTEST.CONTEST_YEAR.eq(year));
+        if (currentContestId != null) {
+            query.addConditions(CONTEST.CONTEST_PK.notEqual(currentContestId));
+        }
+        return query.fetchOne().into(Integer.class) == 0;
     }
 
     @Override
@@ -202,10 +209,9 @@ public class ContestDaoImpl implements ContestDao {
             Long contestYear, Boolean active, Boolean featured, List<Long> contestTiers,
             List<Long> focusAreaIds, Long contestScheduleId, Long planTemplateId,
             List<Long> contestTypeIds, Boolean contestPrivate, String searchTerm) {
-        final SelectQuery<Record> query = dslContext.select()
-                .from(CONTEST).getQuery();
+        final SelectQuery<Record> query = dslContext.select().from(CONTEST).getQuery();
 
-        if(contestPrivate != null){
+        if (contestPrivate != null) {
             query.addConditions(CONTEST.CONTEST_PRIVATE.eq(contestPrivate));
         }
         if (contestTiers != null) {
@@ -220,7 +226,7 @@ public class ContestDaoImpl implements ContestDao {
         if (searchTerm != null && !searchTerm.isEmpty()) {
             //TODO: replace wild card search with match...against
             query.addConditions(CONTEST.CONTEST_NAME.like("%" + searchTerm + "%")
-                .or(CONTEST.CONTEST_SHORT_NAME.like("%" + searchTerm + "%")));
+                    .or(CONTEST.CONTEST_SHORT_NAME.like("%" + searchTerm + "%")));
         }
         if (!CollectionUtils.isEmpty(focusAreaIds)) {
             query.addConditions(CONTEST.FOCUS_AREA_ID.in(focusAreaIds));
@@ -244,16 +250,16 @@ public class ContestDaoImpl implements ContestDao {
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
             switch (sortColumn.getColumnName()) {
                 case "createDate":
-                    query.addOrderBy(sortColumn.isAscending()
-                            ? CONTEST.CREATED.asc() : CONTEST.CREATED.desc());
+                    query.addOrderBy(sortColumn.isAscending() ? CONTEST.CREATED.asc()
+                            : CONTEST.CREATED.desc());
                     break;
                 case "ContestShortName":
-                    query.addOrderBy(sortColumn.isAscending()
-                            ? CONTEST.CONTEST_SHORT_NAME.asc() : CONTEST.CONTEST_SHORT_NAME.desc());
+                    query.addOrderBy(sortColumn.isAscending() ? CONTEST.CONTEST_SHORT_NAME.asc()
+                            : CONTEST.CONTEST_SHORT_NAME.desc());
                     break;
                 case "weight":
-                    query.addOrderBy(sortColumn.isAscending()
-                            ? CONTEST.WEIGHT.asc() : CONTEST.WEIGHT.desc());
+                    query.addOrderBy(sortColumn.isAscending() ? CONTEST.WEIGHT.asc()
+                            : CONTEST.WEIGHT.desc());
                     break;
 
                 default:
@@ -264,11 +270,14 @@ public class ContestDaoImpl implements ContestDao {
     }
 
     @Override
-    public Integer countByGiven(String contestUrlName, Long contestYear, Boolean active, Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms, Long contestScheduleId, Long planTemplateId, Long contestTypeId, Boolean contestPrivate) {
-        final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
-                .from(CONTEST).getQuery();
+    public Integer countByGiven(String contestUrlName, Long contestYear, Boolean active,
+            Boolean featured, Long contestTier, List<Long> focusAreaOntologyTerms,
+            Long contestScheduleId, Long planTemplateId, Long contestTypeId,
+            Boolean contestPrivate) {
+        final SelectQuery<Record1<Integer>> query =
+                dslContext.selectCount().from(CONTEST).getQuery();
 
-        if(contestPrivate != null){
+        if (contestPrivate != null) {
             query.addConditions(CONTEST.CONTEST_PRIVATE.eq(contestPrivate));
         }
 
@@ -288,7 +297,7 @@ public class ContestDaoImpl implements ContestDao {
             query.addConditions(CONTEST.FOCUS_AREA_ID.in(focusAreaOntologyTerms));
         }
 
-        if (contestTypeId != null ) {
+        if (contestTypeId != null) {
             query.addConditions(CONTEST.CONTEST_TYPE_ID.eq(contestTypeId));
         }
 
@@ -311,24 +320,21 @@ public class ContestDaoImpl implements ContestDao {
     @Override
     public List<Long> getContestYears() {
         //select ContestYear from xcolab_Contest group by ContestYear order by ContestYear desc;
-        final SelectQuery<Record1<Long>> query = dslContext.select(CONTEST.CONTEST_YEAR)
-                .from(CONTEST).getQuery();
-            query.addGroupBy(CONTEST.CONTEST_YEAR);
-            query.addOrderBy(CONTEST.CONTEST_YEAR.desc());
+        final SelectQuery<Record1<Long>> query =
+                dslContext.select(CONTEST.CONTEST_YEAR).from(CONTEST).getQuery();
+        query.addGroupBy(CONTEST.CONTEST_YEAR);
+        query.addOrderBy(CONTEST.CONTEST_YEAR.desc());
         return query.fetchInto(Long.class);
     }
 
     @Override
     public boolean existsWithScheduleId(long contestScheduleId) {
-        return dslContext.fetchExists(DSL.select()
-                .from(CONTEST)
+        return dslContext.fetchExists(DSL.select().from(CONTEST)
                 .where(CONTEST.CONTEST_SCHEDULE_ID.eq(contestScheduleId)));
     }
 
     @Override
     public boolean delete(long contestPK) {
-        return dslContext.deleteFrom(CONTEST)
-                .where(CONTEST.CONTEST_PK.eq(contestPK))
-                .execute() > 0;
+        return dslContext.deleteFrom(CONTEST).where(CONTEST.CONTEST_PK.eq(contestPK)).execute() > 0;
     }
 }

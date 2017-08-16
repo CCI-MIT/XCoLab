@@ -28,6 +28,8 @@ $c-Header__menu__right__li__help__border--left: 1px solid $t-Color__grey--light 
 $c-Header__menu__right__li__help--hover__backgroundUrl: url(/images/icon-menu-help2.png) !default;
 $c-Header__menu__right__li__login__backgroundUrl: url(/images/icon-menu-login.png) !default;
 $c-Header__menu__right__li__login--hover__backgroundUrl: url(/images/icon-menu-login2.png) !default;
+$c-Header__menu__right__li__language__backgroundUrl: url(/images/earth-grid-select-language-button.png) !default;
+$c-Header__menu__right__li__language--hover__backgroundUrl: url(/images/earth-grid-select-language-button2.png) !default;
 $c-Header__menu__right__li__user__backgroundUrl: url(/images/arrow-blue_down.png) !default;
 $c-Header__menu__right__li__user__a__textColor: $t-Color__primary !default;
 $c-Header__menu__right__li__user__a--hover__textColor: #333 !default;
@@ -94,7 +96,6 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
 #c-Header__menu { //#menu
   float: left;
-  width: 445px;
 
   &.backgroundLight li:hover {
     background: $c-Header__background--hover;
@@ -167,7 +168,6 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
 #c-Header__menu__right { //#menu-right
   float: right;
-  min-width: 180px;
   height: 67px;
   position: relative;
 
@@ -191,6 +191,14 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
       &:hover {
         background: $c-Header__menu__right__li__login--hover__backgroundUrl no-repeat center 15px;
+      }
+    }
+
+    &.language {
+      background: $c-Header__menu__right__li__language__backgroundUrl no-repeat center 15px;
+
+      &:hover {
+        background: $c-Header__menu__right__li__language--hover__backgroundUrl no-repeat center 15px;
       }
     }
 
@@ -250,7 +258,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 
 .c-Header__menu__right__displayName {
   display: inline-block;
-  max-width: 150px;
+  max-width: 200px;
   text-align: right;
   vertical-align: middle;
 }
@@ -263,7 +271,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 }
 
 .c-Header__search__top { //.searchtop
-  width: 33px;
+  width: 42px;
   height: 30px;
   padding: 12px 0 0 12px;
   background: $c-Header__search__top__background;
@@ -316,8 +324,17 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   z-index: 11;
 }
 
+.c-Header__language__pop { //.languagepop
+
+  position: absolute;
+  top: 9px;
+  left: 738px;
+  width: 172px;
+  z-index: 11;
+}
+
 .c-Header__login__top { //.logintop
-  width: 33px;
+  width: 45px;
   height: 30px;
   padding: 6px 3px 0 9px;
   margin-left: 242px;
@@ -326,6 +343,35 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   border-top-right-radius: 3px;
 }
 
+.c-Header__language__top { //.logintop
+  width: 45px;
+  height: 30px;
+  padding: 6px 3px 0 9px;
+  margin-left: 127px;
+  background: $c-Header__login__top__background;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.c-Header__language__box { //.loginbox
+  padding: 10px 15px;
+  background: $c-Header__login__box__background;
+  font-size: 14px;
+  color: $c-Header__login__box__textColor;
+  font-weight: $b-Typography__fontWeight--bold;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-top-left-radius: 3px;
+
+  ul {
+    list-style-type: none;
+    margin-bottom: 5px;
+  }
+  li {
+    margin-left: 0px;
+    cursor:pointer;
+  }
+}
 .c-Header__login__box { //.loginbox
   padding: 10px 15px;
   background: $c-Header__login__box__background;
@@ -471,6 +517,6 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
     list-style: none;
     background: none;
     padding: 0;
-    margin-left: 0;
+    margin-left: 10px;
   }
 }

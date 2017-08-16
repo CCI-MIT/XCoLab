@@ -1,0 +1,16 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          version="2.0">
+    <div id="snpExampleModal" class="modal bs-modal fade" tab-index="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    ${exampleText}
+                </div>
+                <div class="modal-footer">
+                    <button type="close" class="c-Button__secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</jsp:root>

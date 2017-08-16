@@ -70,7 +70,7 @@ public class MembersController {
             sortFilterPage.setFilter(filterParam);
         }
 
-        final boolean isPointsActive = ConfigurationAttributeKey.IS_POINTS_ACTIVE.get();
+        final boolean isPointsActive = ConfigurationAttributeKey.POINTS_IS_ACTIVE.get();
         if (StringUtils.isEmpty(sortFilterPage.getSortColumn())) {
             String sortColumn = ConfigurationAttributeKey.MEMBERS_DEFAULT_SORT_COLUMN.get();
             if (StringUtils.isEmpty(sortColumn)) {

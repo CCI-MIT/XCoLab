@@ -50,6 +50,28 @@ $c-Footer__link__textColor--hover: $t-Color__accent !default;
   }
 }
 
+.c-Footer__language__pop{
+  position: absolute;
+  display: block;
+  width: 175px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+
+}
+.c-Footer__language__box{
+  @if $c-Footer__menu__background__isSimple {
+    background: $c-Footer__menu__backgroundColor;
+  } @else {
+    @include background(url(/images/bg-noise.png), $c-Footer__menu__backgroundColor);
+  }
+  color: white;
+  list-style: none;
+  ul {
+    list-style: none;
+    margin-left: 5px;
+    cursor:pointer;
+  }
+}
 //TODO: unused in source code - verify if used elsewhere
 #footleft {
   float: left;

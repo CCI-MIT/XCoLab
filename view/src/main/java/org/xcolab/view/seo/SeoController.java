@@ -16,7 +16,7 @@ public class SeoController {
 
     @GetMapping("/robots.txt")
     public void handleRenderRequest(HttpServletRequest request, HttpServletResponse response)
-            throws IOException{
+            throws IOException {
         StringBuilder sb = new StringBuilder();
         final ServerEnvironment serverEnvironment =
                 PlatformAttributeKey.SERVER_ENVIRONMENT.get();

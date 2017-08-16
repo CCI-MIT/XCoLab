@@ -18,6 +18,7 @@ import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.enums.theme.ColabTheme;
 import org.xcolab.util.html.HtmlUtil;
+import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.login.AuthenticationError;
 import org.xcolab.view.util.MetaKeys;
@@ -28,6 +29,7 @@ import org.xcolab.view.util.entity.flash.InfoMessage;
 
 import java.util.Locale;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -101,15 +103,18 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject("_logoPathBig",
                     themeImageDomain + activeTheme.getLogoPathBig());
 
-            modelAndView.addObject("_logoPathTwitter",
-                    themeImageDomain + activeTheme.getTwitterLogo());
+            modelAndView.addObject("_logoPathSquare",
+                    themeImageDomain + activeTheme.getLogoPathSquare());
 
 
             modelAndView.addObject("_contestPages", ContestTypeClient
                     .getActiveContestTypes().stream()
                             .map(contestType -> contestType.withLocale(locale.getLanguage()))
                             .collect(Collectors.toList()));
-            modelAndView.addObject("_colabName", ConfigurationAttributeKey.COLAB_NAME.get());
+            modelAndView.addObject("_colabName",
+                    ConfigurationAttributeKey.COLAB_NAME.get());
+            modelAndView.addObject("_colabLongName",
+                    ConfigurationAttributeKey.COLAB_LONG_NAME.get());
             modelAndView.addObject("_colabUrl", PlatformAttributeKey.COLAB_URL.get());
             modelAndView
                     .addObject("_colabShortName", ConfigurationAttributeKey.COLAB_SHORT_NAME.get());
@@ -149,6 +154,11 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
                 modelAndView.addObject("_partnerColabLogo", partnerColabImgsAndClasses +
                         "PartnerLogo.png");
             }
+
+            modelAndView.addObject("_isI18NActive",ConfigurationAttributeKey.IS_I18N_ACTIVE.get());
+            modelAndView.addObject("_currentLocale",locale.getLanguage());
+            modelAndView.addObject("_languageSelectItems", I18nUtils.getSelectList());
+
 
             modelAndView.addObject("_adminEmail", ConfigurationAttributeKey.ADMIN_EMAIL.get());
 
@@ -196,6 +206,16 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject("__analyticsAttribute", AnalyticsAttribute.extract(request));
             modelAndView.addObject("__errorMessage", ErrorMessage.extract(request));
             modelAndView.addObject("__infoMessage", InfoMessage.extract(request));
+
+            modelAndView.addObject("_socialMediaUrls",
+                    Stream.of(ConfigurationAttributeKey.FACEBOOK_URL.get(),
+                            ConfigurationAttributeKey.TWITTER_URL.get(),
+                            ConfigurationAttributeKey.YOUTUBE_URL.get(),
+                            ConfigurationAttributeKey.LINKEDIN_URL.get(),
+                            ConfigurationAttributeKey.GOOGLE_URL.get(),
+                            ConfigurationAttributeKey.STORIFY_URL.get())
+                    .filter(StringUtils::isNotEmpty)
+                    .collect(Collectors.toList()));
         }
     }
 

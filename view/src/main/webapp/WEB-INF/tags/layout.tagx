@@ -3,7 +3,8 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:spring="http://www.springframework.org/tags"
-          xmlns:addthis="http://www.addthis.com/help/api-spec"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:xcolabfunctions="urn:jsptld:/WEB-INF/tlds/xcolab-escaping.tld"
           version="2.0">
     <jsp:directive.attribute name="title" type="java.lang.String" required="false" rtexprvalue="true" description="Page title" />
     <jsp:directive.attribute name="description" type="java.lang.String" required="false" rtexprvalue="true" description="Page description for meta tag" />
@@ -12,12 +13,10 @@
 
     <jsp:directive.attribute name="meta1" type="java.lang.String" required="false" rtexprvalue="true" description="Social media meta info 1" />
     <jsp:directive.attribute name="meta2" type="java.lang.String" required="false" rtexprvalue="true" description="Social media meta info 2" />
-
     <jsp:directive.attribute name="openGraphSiteName" type="java.lang.String" required="false" rtexprvalue="true" description="Open Graph site name override, if empty the defalt value in config variables will be used" />
     <jsp:directive.attribute name="openGraphTitle" type="java.lang.String" required="false" rtexprvalue="true" description="Open Graph title override , if empty the default value in config variables will be used" />
     <jsp:directive.attribute name="openGraphDescription" type="java.lang.String" required="false" rtexprvalue="true" description="Open Graph description override , if empty the default value in config variables will be used" />
     <jsp:directive.attribute name="openGraphImage" type="java.lang.String" required="false" rtexprvalue="true" description="Open Graph image override , if empty the default value in config variables will be used" />
-
 
 
     <jsp:useBean id="_librariesToLoad" class="java.util.HashMap" scope="request"/>
@@ -32,6 +31,8 @@
     <!--@elvariable id="_isProduction" type="java.lang.Boolean"-->
 
     <!--@elvariable id="_showImpersonationBar" type="java.lang.Boolean"-->
+    <!--@elvariable id="_isI18NActive" type="java.lang.Boolean"-->
+
     <!--@elvariable id="_realMember" type="org.xcolab.client.members.pojo.Member"-->
     <!--@elvariable id="_member" type="org.xcolab.client.members.pojo.Member"-->
     <!--@elvariable id="_unreadMessages" type="java.lang.Integer"-->
@@ -41,15 +42,19 @@
     <!--@elvariable id="_themeJsFolder" type="java.lang.String"-->
     <!--@elvariable id="_libJsFolder" type="java.lang.String"-->
     <!--@elvariable id="_themeImageFolder" type="java.lang.String"-->
+    <!--@elvariable id="_languageSelectItems" type="java.lang.String"-->
+
     <!--@elvariable id="_logoPath" type="java.lang.String"-->
     <!--@elvariable id="_logoPathSocial" type="java.lang.String"-->
     <!--@elvariable id="_logoPathBig" type="java.lang.String"-->
+    <!--@elvariable id="_logoPathSquare" type="java.lang.String"-->
     <!--@elvariable id="_uploadedImageFolder" type="java.lang.String"-->
 
 
     <!--@elvariable id="_contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
     <!--@elvariable id="_colabName" type="java.lang.String"-->
     <!--@elvariable id="_colabUrl" type="java.lang.String"-->
+    <!--@elvariable id="_colabLongName" type="java.lang.String"-->
     <!--@elvariable id="_colabShortName" type="java.lang.String"-->
     <!--@elvariable id="_googleAnalyticsKey" type="java.lang.String"-->
     <!--@elvariable id="_betaRibbonShow" type="java.lang.Boolean"-->
@@ -160,17 +165,18 @@
 
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 
-
-
     <!-- TODO: move to bottom -->
     <!-- Common init script -->
     <xcolab:script src="${_themeJsFolder}/moth_init_script.js" />
 
     <!-- ============ META CONTENT ============ -->
 
-    <c:if test="${_isProduction}">
+    <c:if test="${!_isProduction}">
         <!-- Prevent indexing of non-production sites -->
         <meta name="robots" content="noindex, nofollow" />
+        <script>
+            console.warn("Running non-Production system... Search engine indexing disabled!");
+        </script>
     </c:if>
 
     <meta name="p:domain_verify" content="70e4477f0ab70225da1533151386c16f"/>
@@ -181,9 +187,11 @@
     <meta property="og:title" content="${ not empty openGraphTitle ? openGraphTitle: _openGraphShareTitle}" />
     <meta property="og:description" content="${ not empty openGraphDescription ? openGraphDescription: _openGraphShareDescription}" />
     <meta property="og:image" content="${_colabUrl}${not empty openGraphImage?openGraphImage:_logoPathBig}" />
-    <meta name="twitter:image" content="${_colabUrl}${not empty openGraphImage?openGraphImage:_logoPathTwitter}"/>
+
+    <meta name="twitter:image" content="${_colabUrl}${not empty openGraphImage?openGraphImage:_logoPathSquare}"/>
+
     <c:if test="${not empty _facebookId}">
-        <meta property="fb:app_id" content="_facebookId"/>
+        <meta property="fb:app_id" content="${_facebookId}"/>
     </c:if>
 
     <link href="${_themeImageFolder}/favicon.ico" rel="Shortcut Icon" />
@@ -307,10 +315,43 @@
                     <li class="login" >
                         <a  href="javascript:;" id="loginPopupTrigger"><spring:message code="homepage.menu.visitor.login" /></a>
                     </li>
+                    <c:if test="${_isI18NActive}">
+                        <li class="language" >
+                            <a  href="javascript:;" id="languagePopupTrigger"><spring:message code="homepage.menu.visitor.language" /></a>
+                        </li>
+                    </c:if>
                     <li class="help">
                         <a href="/wiki/Help"><spring:message code="homepage.menu.help" /></a>
                     </li>
                 </ul>
+
+                <c:if test="${_isI18NActive}">
+                    <!-- LANGUAGE POPUP -->
+                    <div class="c-Header__language__pop" id="languagePopupContainer">
+                        <div class="c-Header__language__top">
+                            <img src="${_themeImageFolder}/earth-grid-select-language-button3.png" />
+                        </div>
+                        <div class="c-Header__language__box">
+                            <ul>
+
+                                <c:forEach var="lang" items="${_languageSelectItems}">
+                                    <c:if test="${_currentLocale == lang['value'] }">
+                                        <li><input name="lang_top" type="radio" checked="checked">&#160;<spring:message code="${lang['lable']}"/> - ${fn:toUpperCase(lang['value'])}</input></li>
+                                    </c:if>
+                                </c:forEach>
+                                <li class="divider">_____________</li>
+                                <c:forEach var="lang" items="${_languageSelectItems}">
+                                    <c:if test="${ _currentLocale != lang['value']}">
+
+                                        <li class="languagePicker" data-src="${lang['value']}" ><input name="lang_top" type="radio" >&#160;<spring:message code="${lang['lable']}"/> - ${fn:toUpperCase(lang['value'])}</input></li>
+
+                                    </c:if>
+                                </c:forEach>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /LANGUAGE POPUP -->
+                </c:if>
 
                 <!-- LOGIN POPUP -->
                 <div class="c-Header__login__pop" id="loginPopupContainer">
@@ -352,6 +393,31 @@
             </c:otherwise>
             </c:choose>
 
+            <c:if test="${_isI18NActive}">
+                <!-- LANGUAGE POPUP -->
+                <div class="c-Footer__language__pop" id="languageFooterPopupContainer">
+                    <div class="c-Footer__language__box">
+                        <ul>
+
+                            <c:forEach var="lang" items="${_languageSelectItems}">
+                                <c:if test="${_currentLocale == lang['value'] }">
+                                    <li><input name="lang_bot" type="radio" checked="checked">&#160;<spring:message code="${lang['lable']}"/> - ${fn:toUpperCase(lang['value'])}</input></li>
+                                </c:if>
+                            </c:forEach>
+                            <li class="divider">_____________</li>
+                            <c:forEach var="lang" items="${_languageSelectItems}">
+                                <c:if test="${ _currentLocale != lang['value']}">
+
+                                    <li class="languagePickerFooter" data-src="${lang['value']}" ><input name="lang_bot" type="radio" >&#160;<spring:message code="${lang['lable']}"/> - ${fn:toUpperCase(lang['value'])}</input></li>
+
+                                </c:if>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                </div>
+                <!-- /LANGUAGE POPUP -->
+            </c:if>
+
             <!-- SEARCH POPUP -->
             <div class="c-Header__search__pop" id="searchPopupContainer">
                 <div class="c-Header__search__top"><img src="${_themeImageFolder}/icon-menu-search2.png" width="20" height="19" /></div>
@@ -387,10 +453,17 @@
                         <li><a href="javascript:return false;" onclick="deferUntilLogin();"><spring:message code="homepage.bottom.menu.signin"/></a></li>
                     </c:otherwise>
                 </c:choose>
+                <c:if test="${_isI18NActive}">
+                    <li id="footerLanguageTrigger">
+                        <img src="${_themeImageFolder}/footer-language-button.png"/>&#160;<a href="javascript:void(0);"><spring:message code="homepage.menu.visitor.language" /></a>
+                    </li>
+                </c:if>
             </ul>
             <ul id="c-Footer__menu__right" class="">
                 <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                <div class="addthis_inline_follow_toolbox"><!-- --></div>
+                <li style="margin-top: -6px;">
+                    <div class="addthis_inline_follow_toolbox"><!-- --></div>
+                </li>
             </ul>
         </div> <!-- #c-Footer__menu -->
 
@@ -494,7 +567,7 @@
             </div>
             <div class="clearfix"><!-- --></div>
             <div class="login_popup_box">
-                <form id="signInForm_form" method="post" action="/login" onsubmit="addRedirectBeforeSubmit('signInFormPopup'); return true;" >
+                <form id="signInForm_form" method="post" action="/login">
                     <div>
                         <label for="username"><spring:message code="homepage.modals.login.field.username"/></label>
                         <input id="username" name="username" type="text" class="c-Header__login__username"
@@ -745,7 +818,7 @@
     <!-- Display messages -->
     <c:if test="${not empty __alertMessage}">
         <script type="text/javascript">
-            noty({text: '${__alertMessage.message}', type: '${__alertMessage.type.notyType}'});
+            noty({text: '${xcolabfunctions:escapeStringForJavascript(__alertMessage.message)}', type: '${__alertMessage.type.notyType}'});
         </script>
     </c:if>
 
@@ -861,13 +934,43 @@
     <!-- TODO: only used in proposalJuding.jspx - replace? -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['ddslick']}" src="${_libJsFolder}/jquery.ddslick.min.js" />
 
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['clipboard.js']}" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js" />
+
+    <!-- Add this -->
+    <script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-597f702bfab33060"><!-- --></script>
+
     <!-- ============ DEFERRED SCRIPTS ============ -->
     <xcolab:script src="${_themeJsFolder}/messageNotification.js" defer="true" />
     <xcolab:script src="${_themeJsFolder}/usertracking.js" defer="true"/>
 
-    <!-- Add this -->
-    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-597f702bfab33060"><!-- --></script>
+    <!-- Structured data for search engines -->
+    <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "WebSite",
+          "name": "${_colabName}",
+          "alternateName": "${_colabLongName}",
+          "url": "${_colabUrl}"
+        }
+    </script>
+
+    <c:set var="socialMediaSamAs">
+        <c:forEach var="socialMediaUrl" items="${_socialMediaUrls}" varStatus="status">
+            "${socialMediaUrl}"${status.last ? '' : ','}
+        </c:forEach>
+    </c:set>
+
+    <!--suppress CheckValidXmlInScriptTagBody -->
+    <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "Organization",
+          "name": "${_colabName}",
+          "url": "${_colabUrl}",
+          "logo": "${_colabUrl}${_logoPathSquare}",
+          "sameAs": [${socialMediaSamAs}]
+        }
+    </script>
 </body>
 </html>
 </jsp:root>

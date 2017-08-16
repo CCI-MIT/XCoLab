@@ -13,10 +13,10 @@ public class LegacyRegistrationRewriteRules implements RewriteRuleProvider {
     public void configure(ConfigurationBuilder configurationBuilder) {
         configurationBuilder
                 .addRule()
-                .when(Direction.isInbound().and(
-                        Path.matches("/web/guest/loginregister{path}")
-                                .or(Path.matches("/loginregister{path}"))))
-                .perform(Redirect.permanent("/register"))
-                .where("path").matches(".*");
+                    .when(Direction.isInbound().and(
+                            Path.matches("/web/guest/loginregister{path}")
+                                    .or(Path.matches("/loginregister{path}"))))
+                    .perform(Redirect.permanent("/register"))
+                    .where("path").matches(".*");
     }
 }

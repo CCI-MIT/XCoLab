@@ -43,14 +43,14 @@ public final class BalloonsClient {
         return balloonLinkResource.update(balloonLink, balloonLink.getUuid_()).execute();
     }
 
-    public static BalloonLink getBalloonLinkByMemberUuid(String memberUuid)
+    public static BalloonLink getLinkByBalloonUserTrackingUuid(String butUuid)
             throws BalloonLinkNotFoundException {
         final BalloonLink balloonLink = balloonLinkResource.list()
-                .queryParam("memberUuid", memberUuid)
+                .queryParam("memberUuid", butUuid)
                 .executeWithResult().getFirstIfExists();
         if (balloonLink == null) {
             throw new BalloonLinkNotFoundException(
-                    "BalloonLink with memberUuid " + memberUuid + " does not exist");
+                    "BalloonLink with butUuid " + butUuid + " does not exist");
         }
         return balloonLink;
     }
@@ -81,6 +81,10 @@ public final class BalloonsClient {
         return balloonUserTrackingResource.list().execute();
     }
 
+    public static boolean deleteBalloonUserTracking(String uuid) {
+        return balloonUserTrackingResource.delete(uuid).execute();
+    }
+
     public static BalloonUserTracking createBalloonUserTracking(
             BalloonUserTracking balloonUserTracking) {
         return balloonUserTrackingResource.create(balloonUserTracking).execute();
@@ -94,8 +98,7 @@ public final class BalloonsClient {
         try {
             return balloonTextResource.get(id).executeChecked();
         } catch (EntityNotFoundException e) {
-            throw new BalloonTextNotFoundException(
-                    "BalloonText " + id + " does not exist");
+            throw new BalloonTextNotFoundException(id);
         }
     }
 

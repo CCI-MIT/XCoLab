@@ -31,7 +31,7 @@ public class RandomProposalsController {
 
 
         ProposalsModel proposalsModel = new ProposalsModel(getProposals(preferences), preferences
-    			, PlatformAttributeKey.COLAB_URL + "/proposal?img_id=");
+    			, PlatformAttributeKey.COLAB_URL + "/proposal/");
 
     	model.addAttribute("proposalsModel", proposalsModel);
 

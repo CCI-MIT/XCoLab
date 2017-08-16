@@ -62,7 +62,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 })
 
-public class ForgotPasswordTest {
+public class ForgotPasswordControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -95,8 +95,6 @@ public class ForgotPasswordTest {
         this.mockMvc.perform(post("/login/resetPassword")
         );
 
-
-
         PowerMockito.verifyStatic(Mockito.never());
         EmailTemplateClientUtil.getContestEmailTemplateByType("MEMBER_RESET_PASSWORD_DEFAULT");
     }
@@ -110,8 +108,6 @@ public class ForgotPasswordTest {
 
         PowerMockito.verifyStatic(Mockito.times(1));
         EmailTemplateClientUtil.getContestEmailTemplateByType("MEMBER_RESET_PASSWORD_DEFAULT");
-
-
     }
 
 }

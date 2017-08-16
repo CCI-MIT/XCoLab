@@ -100,6 +100,9 @@ public class ContestService {
         }
     }
 
+    public boolean isContestNameYearUnique(String contestShortName, Long year, Long currentContestId){
+        return contestDao.isContestNameYearUnique(contestShortName, year,currentContestId);
+    }
 
     public List<Contest> getContestsByOntologyTerm(Long ontologyTerm, Boolean active, Boolean onlyPrivate) {
 

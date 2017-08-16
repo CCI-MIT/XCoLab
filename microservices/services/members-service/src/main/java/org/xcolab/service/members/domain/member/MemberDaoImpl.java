@@ -155,6 +155,7 @@ public class MemberDaoImpl implements MemberDao {
                 .from(MEMBER)
                 .where(MEMBER.SCREEN_NAME.like("%"+name+"%"))
                 .or(MEMBER.FIRST_NAME.like("%"+name+"%"))
+                .and(MEMBER.STATUS.eq(0))
                 .orderBy(MEMBER.SCREEN_NAME)
                 .getQuery();
         return query.fetchInto(Member.class);
@@ -271,6 +272,7 @@ public class MemberDaoImpl implements MemberDao {
     public boolean updateMember(Member member) {
 
         return this.dslContext.update(MEMBER)
+                .set(MEMBER.UUID, member.getUuid())
                 .set(MEMBER.CREATE_DATE, member.getCreateDate())
                 .set(MEMBER.MODIFIED_DATE, DSL.currentTimestamp())
                 .set(MEMBER.SCREEN_NAME, member.getScreenName())

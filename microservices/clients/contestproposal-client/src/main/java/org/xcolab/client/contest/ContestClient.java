@@ -263,6 +263,15 @@ public class ContestClient {
                 .get();
     }
 
+
+    public boolean isContestNameYearUnique(String contestShortName, Long year,Long currentContestId) {
+
+        return contestResource.service("isContestNameYearUnique", Boolean.class)
+                .queryParam("contestShortName", contestShortName)
+                .queryParam("year",year)
+                .queryParam("currentContestId",currentContestId)
+                .execute();
+    }
     public List<Contest> findContestsByActiveFeatured(Boolean active, Boolean featured) {
         String lang = LocaleContextHolder.getLocale().getLanguage();
         return DtoUtil.toPojos(contestResource.list()

@@ -4,28 +4,44 @@ import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.balloons.BalloonsClient;
+import org.xcolab.client.balloons.exceptions.BalloonTextNotFoundException;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFoundException;
+import org.xcolab.client.balloons.pojo.BalloonLink;
 import org.xcolab.client.balloons.pojo.BalloonText;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
+import org.xcolab.client.emails.EmailClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.client.tracking.pojo.Location;
+import org.xcolab.entity.utils.LinkUtils;
 import org.xcolab.util.exceptions.ReferenceResolutionException;
 import org.xcolab.view.auth.AuthenticationService;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static org.xcolab.util.http.exceptions.ExceptionUtils.getOptional;
+
 @Service
 public class BalloonService {
+
+    private static final String URL_PLACEHOLDER = "URLPLACEHOLDER";
+
+    public static final String SNP_LINK_URL = "/snp/socialnetworkprize/link/{linkUuid}";
+    private static final String NEW_BALLOON_USER_TRACKING_ATTRIBUTE =
+            "org.xcolab.snp.newBalloonUserTracking";
 
     private final AuthenticationService authenticationService;
 
@@ -34,56 +50,122 @@ public class BalloonService {
         this.authenticationService = authenticationService;
     }
 
-    public BalloonUserTracking getOrCreateBalloonUserTracking(HttpServletRequest request,
-			HttpServletResponse response, String parent, String linkUuid, String context) {
+    public BalloonLink createBalloonLink(String email, BalloonUserTracking but)
+            throws BalloonTextNotFoundException {
+
+        BalloonLink link = new BalloonLink();
+        link.setUuid_(UUID.randomUUID().toString());
+        link.setBalloonUserUuid(but.getUuid_());
+        link.setCreateDate(new Timestamp(new Date().getTime()));
+        link.setTargetUrl(getSnpLinkUrl(link.getUuid_()));
+        link = BalloonsClient.createBalloonLink(link);
+
+        BalloonText text = BalloonsClient.getBalloonText(but.getBalloonTextId());
+        String messageSubject = text.getEmailSubjectTemplate();
+        String messageBody = text.getEmailTemplate()
+                .replaceAll(URL_PLACEHOLDER, LinkUtils.getAbsoluteUrl(link.getTargetUrl()));
+
+        final String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
+        EmailClient.sendEmail(fromEmail, email, messageSubject, messageBody,
+                true, fromEmail, but.getBalloonTextId());
+        return link;
+    }
+
+    private String getSnpLinkUrl(String linkUuid) {
+        Map<String, String> uriVariables = new HashMap<>();
+        uriVariables.put("linkUuid", linkUuid);
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromUriString(SNP_LINK_URL);
+        return uriBuilder.buildAndExpand(uriVariables).toUriString();
+    }
+
+    public Optional<BalloonUserTracking> getBalloonUserTracking(HttpServletRequest request,
+            HttpServletResponse response) {
+
+        // a new tracking created earlier in this request won't show up in the cookies
+        // it's saved in an attribute so we can use that instead
+        final BalloonUserTracking createdBut = (BalloonUserTracking) request
+                .getAttribute(NEW_BALLOON_USER_TRACKING_ATTRIBUTE);
+        if (createdBut != null) {
+            return Optional.of(createdBut);
+        }
 
         //make sure we always track the correct user, even when impersonating
         Member member = authenticationService.getRealMemberOrNull();
 
-		BalloonCookie cookie = BalloonCookie.from(request.getCookies())
-                .orElseGet(BalloonCookie::new);
-		if (cookie.getUuid() != null) {
-            try {
-                final BalloonUserTracking but =
-                        BalloonsClient.getBalloonUserTracking(cookie.getUuid());
-                if (member != null) {
-                    but.updateUserIdIfEmpty(member.getId_());
-                }
-                return but;
-            } catch (BalloonUserTrackingNotFoundException e) {
-                throw ReferenceResolutionException
-                        .toObject(BalloonUserTracking.class, cookie.getUuid())
-                        .fromObject(BalloonCookie.class, "");
+        Optional<BalloonCookie> cookieOpt = BalloonCookie.from(request.getCookies());
+        if (cookieOpt.isPresent()) {
+            BalloonUserTracking but = getBalloonUserTrackingFromCookie(cookieOpt.get());
+            if (member == null) {
+                return Optional.of(but);
+            }
+
+            final boolean butLinkedToOtherMember = but.getUserId() != null
+                    && but.getUserId() != member.getId_();
+            if (!butLinkedToOtherMember) {
+                but.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress());
+                return Optional.of(but);
             }
         }
 
         if (member != null) {
             BalloonUserTracking but = getBalloonUserTrackingForMember(member);
             if (but != null) {
-                but.updateUserIdIfEmpty(member.getId_());
-                return but;
+                but.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress());
+                BalloonCookie cookie = BalloonCookie.of(but.getUuid_());
+                response.addCookie(cookie.getHttpCookie());
+                return Optional.of(but);
             }
         }
 
-        if (member != null) {
-            cookie.setUuid(member.getUuid());
-        } else {
-            cookie.setUuid(UUID.randomUUID().toString());
-        }
-        response.addCookie(cookie.getHttpCookie());
+        return Optional.empty();
+    }
 
+    public BalloonUserTracking getOrCreateBalloonUserTracking(HttpServletRequest request,
+            HttpServletResponse response, String parent, String linkUuid) {
+
+        final Optional<BalloonUserTracking> butOpt = getBalloonUserTracking(request, response);
+        if (butOpt.isPresent()) {
+            return butOpt.get();
+        }
+
+        //make sure we always track the correct user, even when impersonating
+        Member member = authenticationService.getRealMemberOrNull();
+
+        String uuid;
+        if (member != null) {
+            uuid = member.getUuid();
+        } else {
+            uuid = UUID.randomUUID().toString();
+        }
+        response.addCookie(BalloonCookie.of(uuid).getHttpCookie());
+
+        final BalloonUserTracking but =
+                createBalloonUserTracking(uuid, parent, linkUuid, member,
+                        request.getRemoteAddr(), request.getHeader(HttpHeaders.REFERER),
+                        request.getHeader(HttpHeaders.USER_AGENT));
+        request.setAttribute(NEW_BALLOON_USER_TRACKING_ATTRIBUTE, but);
+        return but;
+	}
+
+    private BalloonUserTracking getBalloonUserTrackingFromCookie(BalloonCookie cookie) {
+        return getOptional(() -> BalloonsClient.getBalloonUserTracking(cookie.getUuid()))
+        .orElseThrow(() -> ReferenceResolutionException
+                .toObject(BalloonUserTracking.class, cookie.getUuid())
+                .fromObject(BalloonCookie.class, ""));
+    }
+
+    private BalloonUserTracking createBalloonUserTracking(String uuid, String parent,
+            String linkUuid, Member member, String remoteIp, String referrer, String userAgent) {
         BalloonUserTracking but = new BalloonUserTracking();
-        but.setUuid_(cookie.getUuid());
-        but.setCreateDate(new Timestamp(new Date().getTime()));
-        but.setIp(request.getRemoteAddr());
+        but.setUuid_(uuid);
+        but.setIp(remoteIp);
         but.setParent(parent);
-        but.setBalloonLinkContext(context);
         but.setBalloonLinkUuid(linkUuid);
-        but.setReferrer(request.getHeader(HttpHeaders.REFERER));
-        but.setUserAgent(request.getHeader(HttpHeaders.USER_AGENT));
+        but.setReferrer(referrer);
+        but.setUserAgent(userAgent);
 
         // populate GeoLocation data
-        Location location = TrackingClient.getLocationForIp(request.getRemoteAddr());
+        Location location = TrackingClient.getLocationForIp(remoteIp);
         if (location != null) {
             but.setCity(location.getCity());
             but.setCountry(location.getCountry());
@@ -105,15 +187,14 @@ public class BalloonService {
 
         BalloonsClient.createBalloonUserTracking(but);
         return but;
-	}
+    }
 
-    private BalloonUserTracking getBalloonUserTrackingForMember(Member member) {
+    private static BalloonUserTracking getBalloonUserTrackingForMember(Member member) {
         try {
             return BalloonsClient.getBalloonUserTracking(member.getUuid());
         } catch (BalloonUserTrackingNotFoundException ignored) {
-            final String context = ConfigurationAttributeKey.SNP_CONTEXT.get();
             List<BalloonUserTracking> buts = BalloonsClient
-                    .getBalloonUserTrackingByEmail(member.getEmailAddress(), context);
+                    .getBalloonUserTrackingByEmail(member.getEmailAddress());
 
             return buts.stream().findFirst().orElse(null);
         }

@@ -16,6 +16,8 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
   display: inline-block;
   padding: $c-Button__padding;
   margin-left: 5px;
+  vertical-align: middle;
+
   font-weight: $c-Button__fontWeight;
   line-height: normal;
   text-transform: $c-Button__capitalization;
@@ -37,6 +39,14 @@ $c-Button__grey__borderColor: $t-Color__grey--dark !default;
   }
   &.margins {
     margin: 5px;
+  }
+
+  &.c-Button--form {
+    margin-bottom: 7px;
+  }
+
+  &.c-Button--noMargins {
+    margin: 0;
   }
 }
 

@@ -89,9 +89,11 @@ public class LoginRegisterService {
             try {
                 BalloonUserTracking but =
                         BalloonsClient.getBalloonUserTracking(balloonCookie.getUuid());
-                but.setRegistrationDate(new Timestamp(new Date().getTime()));
-                but.setUserId(member.getId_());
-                BalloonsClient.updateBalloonUserTracking(but);
+                if (but.getUserId() == null) {
+                    but.setRegistrationDate(new Timestamp(new Date().getTime()));
+                    but.setUserId(member.getId_());
+                    BalloonsClient.updateBalloonUserTracking(but);
+                }
             } catch (BalloonUserTrackingNotFoundException e) {
                 _log.error("Can't find balloon user tracking for uuid: {}",
                         balloonCookie.getUuid());
@@ -99,7 +101,7 @@ public class LoginRegisterService {
         }
         //update user association for all BUTs under this email address
         BalloonsClient.getBalloonUserTrackingByEmail(member.getEmailAddress())
-                .forEach(b -> b.updateUserIdIfEmpty(member.getId_()));
+                .forEach(b -> b.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress()));
 
         try {
             checkLogin(request, response, newAccountBean.getScreenName(), newAccountBean.getPassword(), redirect);

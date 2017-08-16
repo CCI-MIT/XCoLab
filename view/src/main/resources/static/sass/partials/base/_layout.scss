@@ -10,10 +10,9 @@ body {
 
 #c-Footer__menu__right { //#menu-right
   float: right;
-  min-width: 300px;
+  min-width: 500px;
   height: 44px;
   position: relative;
-  padding-top: 7px;
 }
 #c-Footer__menu__right p {
   margin: 0 0 0 0;
@@ -72,7 +71,7 @@ ol, ul {
   margin-left: 0;
 }
 
-.cke_editable ol, ul {
+.cke_editable ol, .cke_editable ul {
   margin-left: 15px;
 }
 

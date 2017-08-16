@@ -18,11 +18,13 @@ public class LegacyDiscussionRewriteRules implements RewriteRuleProvider {
                 .addRule()
                     .when(Direction.isInbound().and(
                             Path.matches("/web/guest/discussion/-/discussion/thread/{threadId}")
+                                .or(Path.matches("/discussion/-/discussion/thread/{threadId}"))
                                 .or(Path.matches("/web/guest/discussion/thread/{threadId}"))))
                     .perform(Redirect.permanent("/discussion/thread/{threadId}"))
                 .addRule()
                     .when(Direction.isInbound().and(
                             Path.matches("/web/guest/discussion/-/discussion/category/{categoryId}")
+                                 .or(Path.matches("/discussion/-/discussion/category/{categoryId}"))
                                  .or(Path.matches("/web/guest/discussion/category/{categoryId}"))))
                     .perform(Redirect.permanent("/discussion/category/{categoryId}"));
     }

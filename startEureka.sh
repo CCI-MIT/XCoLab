@@ -18,7 +18,7 @@ else
     cd ${BINARY_DIR}
     OUT_FILE="${EUREKA}.out"
     rm ${OUT_FILE} > /dev/null 2>&1
-    exec java -Xmx1G -Xms256M -jar ${EUREKA}-1.0-SNAPSHOT.jar > ${OUT_FILE}  & echo $! > ${PID_FILE}
+    exec java -Xmx256M -Xms128M -jar ${EUREKA}-1.0-SNAPSHOT.jar > ${OUT_FILE}  & echo $! > ${PID_FILE}
     cd ${SAVED_DIR}
 fi
 

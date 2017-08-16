@@ -1,9 +1,11 @@
 function initSearchUpperBox() {
 	jQuery("#searchPopupTrigger").click(function() {
+        //alignPopUpToTrigger("#searchPopupTrigger", "#searchPopupContainer",-125,10);
 		jQuery("#searchPopupContainer").fadeIn("fast");
 		jQuery("#searchinput").focus();
 	});
-	
+
+
 	function hideIfSearchNotUsed() {
 		if (! jQuery('#searchinput').hasClass('focus') && ! jQuery('#searchPopupContainer').hasClass('mouseover')) {
 			jQuery("#searchPopupContainer").fadeOut("fast");
@@ -46,12 +48,96 @@ function initSearchUpperBox() {
 		
 }
 
+
+
+function insertParamAndGo(key, value) {
+    key = encodeURI(key), value =  encodeURI(value);
+    var loc = window.location;
+
+    var finalUrl = loc.protocol + "//" + loc.host + loc.pathname;
+    var paramstr = loc.search.replace("?","");
+    var params = paramstr.split("&");
+    var finalParams = [];
+
+    for(var param in params){
+        if(params[param].indexOf(key+"=")==-1){
+            finalParams.push(params[param]);
+        }
+    }
+    finalParams.push(key+"="+value);
+    var allParams = "";
+    for(var param in finalParams){
+        allParams += ((param==0)?("?"):("&")) + finalParams[param];
+    }
+    finalUrl = finalUrl + allParams;
+    window.location.href =finalUrl + loc.hash;
+
+}
+function alignPopUpToTrigger(triggerRef, popupRef,leftAdjust,topAdjust){
+    //align item to its trigger
+    var trigger = jQuery(triggerRef);
+    if(!trigger.length) return;
+    var topAlign = trigger.offset().top;
+    var leftAlign = trigger.offset().left;
+    console.log("topAlign: "+topAlign)
+    console.log("leftAlign: "+leftAlign)
+    jQuery(popupRef).css({ left: leftAlign + leftAdjust, top: topAlign + topAdjust , position: "absolute"});
+}
+function initLanguagePopupFooter(){
+    jQuery("#footerLanguageTrigger").click(function() {
+        alignPopUpToTrigger("#footerLanguageTrigger", "#languageFooterPopupContainer",-151,-106);
+        jQuery("#languageFooterPopupContainer").fadeIn("fast");
+    });
+
+
+    function hideIfLanguageFooterNotUsed() {
+        if (! jQuery('#languageFooterPopupContainer').hasClass('mouseover')) {
+            jQuery("#languageFooterPopupContainer").fadeOut("fast");
+        }
+    }
+    jQuery("#languageFooterPopupContainer").mouseenter(function() {
+        jQuery("#languageFooterPopupContainer").addClass('mouseover');
+    });
+    jQuery("#languageFooterPopupContainer").mouseleave(function() {
+        jQuery("#languageFooterPopupContainer").removeClass('mouseover');
+        setTimeout(hideIfLanguageFooterNotUsed, 10);
+    });
+    jQuery(".languagePickerFooter").click(function(){
+        insertParamAndGo("lang", jQuery(this).attr("data-src"));
+    });
+}
+function initLanguagePopupUpper() {
+    jQuery("#languagePopupTrigger").click(function() {
+        alignPopUpToTrigger("#languagePopupTrigger", "#languagePopupContainer",-272,10);
+        jQuery("#languagePopupContainer").fadeIn("fast");
+    });
+
+
+    function hideIfLanguageNotUsed() {
+        if (! jQuery('#languagePopupContainer').hasClass('mouseover')) {
+            jQuery("#languagePopupContainer").fadeOut("fast");
+        }
+    }
+    jQuery("#languagePopupContainer").mouseenter(function() {
+        jQuery("#languagePopupContainer").addClass('mouseover');
+    });
+    jQuery("#languagePopupContainer").mouseleave(function() {
+        jQuery("#languagePopupContainer").removeClass('mouseover');
+        setTimeout(hideIfLanguageNotUsed, 10);
+    });
+    jQuery(".languagePicker").click(function(){
+        insertParamAndGo("lang", jQuery(this).attr("data-src"));
+    });
+
+}
 function initLoginPopupUpper() {
 	jQuery("#loginPopupTrigger").click(function() {
+        //alignPopUpToTrigger("#loginPopupTrigger", "#loginPopupContainer",-378,10);
 		jQuery("#loginPopupContainer").fadeIn("fast");
 		jQuery("#loginPopupContainer .c-Header__login__username").focus();
 	});
-	
+
+
 	function hideIfLoginNotUsed() {
 		if (! jQuery('#loginPopupContainer').hasClass('mouseover') && jQuery('#loginPopupContainer .focus').length == 0) {
 			jQuery("#loginPopupContainer").fadeOut("fast");
@@ -290,20 +376,34 @@ function closePopup(obj) {
 	jQuery(".c-Popup__wrapper").hide();
 }
 
+// Start in separate init functions to isolate failure
+jQuery(function() {
+    initSearchUpperBox();
+});
 
+if (_isLoggedIn) {
+    jQuery(function() {
+        initUserInfoPopup();
+    });
+
+} else {
+    jQuery(function() {
+        initLoginPopupUpper();
+    });
+    jQuery(function() {
+        initLanguagePopupUpper();
+    });
+}
 
 jQuery(function() {
-	initSearchUpperBox();
-	initLoginPopupUpper();
-	initUserInfoPopup();
-	initTreeWithDynatree();
-	
-	jQuery(".popup .close").click(function() {
-		
-		closePopup(this);
-	});
-	
-	
+    initLanguagePopupFooter();
+});
+
+jQuery(function() {
+    initTreeWithDynatree();
+});
+
+jQuery(function() {
 	if (jQuery(".hp_boxwin").length > 0) {
 		jQuery('.hp_boxwin').cycle({
 		    fx:      'custom',
@@ -423,28 +523,6 @@ jQuery(function() {
     }
 });
 
-function initSelectbox() {
-	if (jQuery('.Form__selectbox__new, .selectbox1-dis-dis').length > 0) {
-		var selectboxOnChange = jQuery('.Form__selectbox__new').get(0).getAttribute("onchange");
-
-		jQuery('.Form__selectbox__new').selectbox({
-			inputClass: 'c-Form__selectbox',
-			onChangeCallback: function () {
-				jQuery(".Form__selectbox__new").change();
-				
-				}
-		});
-	}
-}
-
-function onBeforeRegister() {
-	jQuery('#createAccountForm').append(jQuery('<input type="hidden" value="' + window.location.toString() + '" name="redirect" />'));
-}
-
-function onBeforeLogin(formId) {
-	jQuery('#' + formId).append(jQuery('<input type="hidden" value="' + window.location.toString() + '" name="redirect" />'));
-}
-
 function addRedirectBeforeSubmit(formId) {
 	jQuery('#' + formId).append(jQuery('<input type="hidden" value="' + window.location.toString() + '" name="redirect" />'));
 }
@@ -456,19 +534,7 @@ function processForgotPasswordForm(formId) {
 	}
 }
 
-
-function updateBreadcrumb(placeholder, items) {
-    var breadcrumb = [];
-    for (var i = 0; i < items.length; i++) {
-    	var item = items[i];
-        breadcrumb[2*i] = '<img width="8" height="8" alt="" src="/climatecolab-theme/images/arrow.gif" /> ';
-        breadcrumb[2*i + 1] = '<a href="' + item.href + '" onclick="' + item.onclick + '; return false;">' + item.text + '</a>';
-    }
-
-    jQuery(placeholder).html(breadcrumb.join(''));
-}
-
-	function submitenter(myfield,e)	{
+function submitenter(myfield,e)	{
 		var keycode;
 		if (window.event) keycode = window.event.keyCode;
 		else if (e) keycode = e.which;
@@ -488,17 +554,3 @@ $(function() {
         contentAsHtml: true
     });
 });
-
-function updateShareThisUrls(selector) {
-	jQuery(selector).each(function() {
-		var self = jQuery(this);
-		var currentUrl = self.attr('addthis:url');
-		if (currentUrl == null) {
-			currentUrl = window.location;
-		}
-		else if (currentUrl.startsWith("/")) {
-			currentUrl = window.document.location.protocol + "//" + window.document.location.host + currentUrl;
-		}
-		self.attr('addthis:url', window.document.location.protocol + "//" + window.document.location.host + '?redirect_to=' + escape(currentUrl));
-	});
-}
