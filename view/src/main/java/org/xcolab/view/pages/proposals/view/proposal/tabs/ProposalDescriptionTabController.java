@@ -24,6 +24,7 @@ import org.xcolab.client.proposals.ProposalMoveClient;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.ProposalMoveHistory;
+import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.enums.flagging.TargetType;
 import org.xcolab.util.enums.proposal.MoveType;
 import org.xcolab.util.enums.proposal.PlanSectionTypeKeys;
@@ -38,7 +39,6 @@ import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.view.proposal.AddUpdateProposalControllerUtil;
 import org.xcolab.view.pages.proposals.wrappers.ProposalJudgeWrapper;
 import org.xcolab.view.util.entity.EntityGroupingUtil;
-import org.xcolab.view.util.entity.enums.ContestPhaseTypeValue;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;

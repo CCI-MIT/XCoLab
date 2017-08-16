@@ -19,6 +19,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
+import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
@@ -28,7 +29,6 @@ import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvConverter;
 import org.xcolab.view.pages.contestmanagement.utils.VoteCsvConverter;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
-import org.xcolab.view.util.entity.enums.ContestPhaseTypeValue;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;

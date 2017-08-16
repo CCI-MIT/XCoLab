@@ -23,12 +23,12 @@ import org.xcolab.client.proposals.pojo.ProposalVersion;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.util.IdListUtil;
+import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.view.util.entity.EntityIdListUtil;
-import org.xcolab.view.util.entity.enums.ContestPhaseTypeValue;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;

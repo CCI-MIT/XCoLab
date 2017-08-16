@@ -34,9 +34,11 @@ import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.util.clients.CoLabService;
+import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
+import org.xcolab.util.time.DateUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -254,6 +256,15 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
 
+    public String getContestShortName() {
+        if(isContestCompleted()){
+            ContestPhase activePhase = getActivePhase();
+            Integer phaseEndYear = DateUtil.getYearFromDate(activePhase.getPhaseStartDate());
+            return super.getContestShortName() + " " + phaseEndYear;
+        }else {
+            return super.getContestShortName();
+        }
+    }
 
     public boolean isContestActive() {
         return this.getContestActive();
@@ -270,6 +281,14 @@ public class Contest extends AbstractContest implements Serializable {
 
     }
 
+    public boolean isContestCompleted(){
+
+        ContestPhase activePhase = getActivePhase();
+        return
+                (activePhase.getContestPhaseType() == ContestPhaseTypeValue.COMPLETED.getTypeId() ||
+                        activePhase.getContestPhaseType() == ContestPhaseTypeValue.WINNERS_AWARDED.getTypeId());
+
+    }
 
     public boolean isFeatured() {
         return this.getFeatured_();

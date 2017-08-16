@@ -7,7 +7,6 @@
       </pattern>
     </extension>
     <option name="SPRING_BOOT_MAIN_CLASS" value="org.xcolab.view.ColabViewApplication" />
-    <option name="SHOW_IN_DASHBOARD" value="true" />
     <option name="ALTERNATIVE_JRE_PATH" />
     <additionalParameters>
       <param>

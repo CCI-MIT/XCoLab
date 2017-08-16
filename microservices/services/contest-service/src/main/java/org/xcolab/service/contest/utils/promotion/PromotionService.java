@@ -122,8 +122,6 @@ public class PromotionService {
                         contestPhaseService.transferSupportsToVote(contest);
                     }
 
-                    // Add contest year suffix, if contest has been completed
-                    contestService.addContestYearSuffixToContest(contest, true);
 
                     _log.info("done promoting phase {}", phase.getContestPhasePK());
                 } catch (NotFoundException e) {
@@ -201,8 +199,6 @@ public class PromotionService {
                         phase.setContestPhaseAutopromote("PROMOTE_DONE");
                         contestPhaseDao.update(phase);
 
-                        // Add contest year suffix, if contest has been completed
-                        contestService.addContestYearSuffixToContest(contest, true);
 
                         _log.info("done promoting phase {}", phase.getContestPhasePK());
                     } else {
@@ -316,8 +312,7 @@ public class PromotionService {
                     phase.setContestPhaseAutopromote("PROMOTE_DONE");
                     contestPhaseDao.update(phase);
 
-                    // Add contest year suffix, if contest has been completed
-                    contestService.addContestYearSuffixToContest(contest, true);
+
 
                     _log.info("done promoting phase {}", phase.getContestPhasePK());
                 } catch (NotFoundException e) {
