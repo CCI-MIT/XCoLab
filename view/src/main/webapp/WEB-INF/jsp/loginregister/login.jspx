@@ -8,7 +8,7 @@
         <c:when test="${not _isLoggedIn}">
             <h2>Restricted access - login required</h2>
             <p>
-                Use popup to login or click <a href="javascript:deferUntilLogin();">here</a>.
+                Use popup to login or click <a rel="nofollow" href="javascript:deferUntilLogin();">here</a>.
             </p>
             <script type="text/javascript">
                 jQuery(function() {

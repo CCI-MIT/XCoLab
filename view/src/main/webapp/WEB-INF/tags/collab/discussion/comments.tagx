@@ -78,8 +78,8 @@
 			</h2>
 			<div class="c-Comment__button">
 				<c:if test="${discussionPermissions.canSeeAddCommentButton}">
-					<a href="javascript:;" onclick='if(!deferUntilLogin()) {return false;
-} jQuery(".c-Comment__new")[0].scrollIntoView(); return false;'>
+					<a href="javascript:;" rel="nofollow"
+                       onclick='if(!deferUntilLogin()) {return false;} jQuery(".c-Comment__new")[0].scrollIntoView(); return false;'>
                         <spring:message code="discussion.commmentstag.addacomment" var="addAComment"/>
                         <img src="${_themeImageFolder}/icon-add-comment.png" id="addcomment_button1" width="24" height="22" alt="${addAComment}" /><spring:message code="discussion.commmentstag.jumptocomment"/>
                     </a>

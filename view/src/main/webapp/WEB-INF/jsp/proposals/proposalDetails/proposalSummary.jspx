@@ -21,7 +21,8 @@
                             <c:if test="${proposalsPermissions.votingEnabled}">
                                 <c:set var="voteOnProposalURL" value="${proposal.proposalUrl}/voteOnProposalAction?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
 
-                                <a class="c-Button__primary" href="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }" onclick="if(!deferUntilLogin(this)) return false;">
+                                <a class="c-Button__primary" href="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }"
+                                        rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;">
                                     <collab:message var="voteForText" code="contests.voting.vote" contestType="${contestType}" />
                                     <spring:message var="retractVoteText" code="contests.voting.retract" />
                                     ${proposalsDisplayPermissions.canSeeVoteButton ? voteForText  : retractVoteText}
@@ -66,7 +67,8 @@
                     ${proposal.supportersCount}
                 </span> <spring:message code="contests.supports" />
                     <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
-                        <a class="c-Box__button boxColor--dark" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!handleOnClickAtSupportBtn(this)) return false;">
+                        <a class="c-Box__button boxColor--dark" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
+                           rel="nofollow" onclick="if(!handleOnClickAtSupportBtn(this)) return false;">
                             <collab:message var="supportText" code="contests.supports.support" contestType="${contestType}" />
                             <spring:message var="retractText" code="contests.supports.retract" />
                             ${proposalsDisplayPermissions.canSeeSupportButton ? supportText : retractText }
@@ -86,7 +88,8 @@
 
                     <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
                     <div class="p-Proposal__subscribe" style="float: right;">
-                        <a href="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }" onclick="if(!deferUntilLogin(this)) return false;" >
+                        <a href="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }"
+                                rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;" >
                             <c:choose>
                                 <c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
                                     <img height="20" src="${_themeImageFolder}/subscribe.png" /> <spring:message code="contests.details.subscribe" />
@@ -101,13 +104,13 @@
             </div>
             <div class="c-Box messaging">
                 <div class="message-share-button">
-                    <a href="javascript:;" onclick="if (! deferUntilLogin()) { return false; } else { jQuery('#sendMessageModal').modal(); }">
+                    <a href="javascript:;" rel="nofollow" onclick="if (! deferUntilLogin()) { return false; } else { jQuery('#sendMessageModal').modal(); }">
                         <img src="${_themeImageFolder}/icon_new-message.png" width="31" height="29" /> <collab:message code="contests.proposal.share.messaging" />
                     </a>
                 </div>
                 <c:if test="${proposalsPermissions.canReportProposal}">
                     <div class="message-share-button">
-                        <a href="javascript:;" onclick="reportProposal(${proposal.proposalId})">Report</a>
+                        <a rel="nofollow" href="javascript:;" onclick="reportProposal(${proposal.proposalId})">Report</a>
                     </div>
                 </c:if>
                 <div class="clear"><!--  --></div>

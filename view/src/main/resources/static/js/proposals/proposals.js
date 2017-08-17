@@ -144,7 +144,7 @@ function hideInviteForm(animate) {
         var $requestButtons = $('#requestButtons');
         $requestButtons.empty();
         $requestButtons.append(
-            '<a href="javascript:;" class="c-Button__primary" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a>');
+            '<a href="javascript:;" class="c-Button__primary" rel="nofollow" onclick="if(deferUntilLogin()) inviteMember();">Invite team member</a>');
     });
     $('#invite-recipient').slideUp('slow');
 }

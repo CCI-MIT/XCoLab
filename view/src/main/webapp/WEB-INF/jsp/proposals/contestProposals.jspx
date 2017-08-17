@@ -77,7 +77,7 @@
 
                 <div class="right">
                     <c:if test="${proposalsPermissions.isCreationAllowedByPhase }">
-                        <a class="c-Button__primary large" href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
+                        <a class="c-Button__primary large" rel="nofollow" href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
                            onclick="if(!handleOnClickAtSupportBtn()) return false;">
                             ${contestType.creationPrompt}
                         </a>

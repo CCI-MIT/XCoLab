@@ -41,7 +41,7 @@
                                 <form:errors cssClass="c-Alert c-Alert__error" path="requestComment" />
                                 <div id="requestButtons">
                                     <a href="javascript:;" class="c-Button__primary requestMembershipSubmitButton"
-                                       onclick="if(deferUntilLogin()) {requestMembership();}">
+                                            rel="nofollow" onclick="if(deferUntilLogin()) {requestMembership();}">
                                         <spring:message code="contests.proposal.team.request" />
                                     </a>
                                 </div>
@@ -64,7 +64,7 @@
                                 <!--<form:errors cssClass="c-Alert c-Alert__error" path="requestComment" />-->
                                 <div id="requestButtons">
                                     <a href="javascript:;" class="c-Button__primary requestMembershipSubmitButton"
-                                       onclick="if(deferUntilLogin()) {inviteMember();}">
+                                            rel="nofollow" onclick="if(deferUntilLogin()) {inviteMember();}">
                                         <spring:message code="contests.proposal.team.invite" />
                                     </a>
                                 </div>
@@ -110,7 +110,8 @@
                     <div class="prop-butt">
                         <img src="${_themeImageFolder}/icon-proposal-thumb.png" width="20" height="22" alt="support ${contestType.proposalName}" />
 
-                        <a class="c-Button__primary" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }" onclick="if(!deferUntilLogin(this)) {return false;}">
+                        <a class="c-Button__primary" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
+                                rel="nofollow" onclick="if(!deferUntilLogin(this)) {return false;}">
                             <c:choose>
                                 <c:when test="${proposalsDisplayPermissions.canSeeSupportButton}">
                                     <collab:message code="contests.supports.support" contestType="${contestType}"/>

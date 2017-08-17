@@ -14,7 +14,7 @@
         <c:when test="${not _isLoggedIn}">
             <div class="c-Alert c-Alert__info__message">
                 The page you are trying to access requires you to be logged in.
-                If you already have an account, you can <a href="javascript:deferUntilLogin();">log in here</a>.
+                If you already have an account, you can <a rel="nofollow" href="javascript:deferUntilLogin();">log in here</a>.
                 If you don't have an account, you can create a ${_colabName} account <a href="/register?redirect=${_requestUri}">here</a>.
                 <br /><br />
                 Please note that you may be automatically logged out of your account after 2 hours (120 minutes).

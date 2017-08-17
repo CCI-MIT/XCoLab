@@ -113,7 +113,7 @@
 				<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
 					<strong>Move ${contestType.proposalName} to different ${contestType.contestName}</strong>
 					<div>
-						<a class="c-Button__primary" href="javascript:;"
+						<a class="c-Button__primary" href="javascript:;" rel="nofollow"
 						   onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup('MOVE_PERMANENTLY')">
 							<span>Move</span> this ${contestType.proposalName}
 						</a>
@@ -126,7 +126,7 @@
 					<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
 						<strong>Reopen ${contestType.proposalName} in different ${contestType.contestName}</strong>
 						<div>
-							<a class="c-Button__primary" href="javascript:;"
+							<a class="c-Button__primary" href="javascript:;" rel="nofollow"
 							   onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup('COPY')">
 								<span>Reopen</span> this ${contestType.proposalName}
 							</a>
@@ -139,7 +139,7 @@
 				<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
 					<strong>Fork ${contestType.proposalName} in different ${contestType.contestName}</strong>
 					<div>
-						<a class="c-Button__primary" href="javascript:;"
+						<a class="c-Button__primary" href="javascript:;" rel="nofollow"
 						   onclick="if(!deferUntilLogin()) return false; showCopyProposalPopup('FORK')">
 							<span>Fork</span> this ${contestType.proposalName}
 						</a>

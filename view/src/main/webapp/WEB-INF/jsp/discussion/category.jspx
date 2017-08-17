@@ -47,8 +47,8 @@
 
                                 <span class="c-Count"><span class="c-Count__number">${threads.size()}</span>&#160;<spring:message code="discussion.categorypage.count"/></span>
 
-                                <a onclick="if(!deferUntilLogin(this)) {return false;
-}" class="b-Spacing__inline--large" href="/discussion/threads/create">
+                                <a class="b-Spacing__inline--large" href="/discussion/threads/create"
+                                        rel="nofollow" onclick="if(!deferUntilLogin(this)) {return false;}">
                                     <img style="vertical-align: middle;" height="30"
                                          src="${_themeImageFolder}/icon_new-topic.png" />&#160;<spring:message code="discussion.categorypage.newdiscussion"/>
                                 </a>
@@ -65,8 +65,7 @@
                             <c:set var="subscribeUrl" value="/discussion/subscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
                             <c:set var="unsubscribeUrl" value="/discussion/unsubscribeCategory?categoryId=${not empty currentCategory ? currentCategory.categoryId : '0'}"/>
                             <a class="subscribeLinkSmall" href="${isSubscribed ? unsubscribeUrl : subscribeUrl}"
-                               onclick="if(!deferUntilLogin(this)) {return false;
-}">
+                                    rel="nofollow" onclick="if(!deferUntilLogin(this)) {return false;}">
                                 <img src="${_themeImageFolder}/subscribe_small_2.png" /> ${isSubscribed ? 'Unsubscribe' : 'Subscribe'}
                             </a>
                         </div>

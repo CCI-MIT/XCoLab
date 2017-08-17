@@ -173,7 +173,7 @@
             <div class="clearfix"><!-- --></div>
 		</div>
 		<c:if test="${currentUserProfile.canSeeSendMessageButton and not currentUserProfile.viewingOwnProfile }">
-			<a class="c-Button__primary" href="#"
+			<a class="c-Button__primary" href="#" rel="nofollow"
 			   onclick="if (!deferUntilLogin()) { return false; } else { jQuery('#sendMessageModal').modal(); }">
                 <spring:message code="profile.show.sendmessage" arguments="${userBean.displayNameShort}"/>
 			</a>

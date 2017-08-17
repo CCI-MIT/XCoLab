@@ -13,7 +13,7 @@
             <c:if test="${not _isLoggedIn}">
                 <p>
                     (You don’t have to be a ${_colabName} member to win the Social Network Prize,
-                    but if you are a member, <a href="javascript:deferUntilLogin();">log in</a> first
+                    but if you are a member, <a rel="nofollow" href="javascript:deferUntilLogin();">log in</a> first
                     so we can display your link on your profile page.)
                 </p>
             </c:if>
