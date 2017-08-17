@@ -295,10 +295,12 @@
                             <c:if test="${_isAdmin}">
                                 <li>
                                     <a href="/admin/contest">Contest Manager</a>
-                                    <c:if test="${not empty _blogAdminUrl}">
-                                        <a href="${_blogAdminUrl}" target="_blank">Blog (Admin)</a>
-                                    </c:if>
                                 </li>
+                                <c:if test="${not empty _blogAdminUrl}">
+                                    <li>
+                                        <a href="${_blogAdminUrl}" target="_blank">Blog (Admin)</a>
+                                    </li>
+                                </c:if>
                             </c:if>
                             <li>
                                 <a href="/members/profile/${_member.userId}/subscriptions"><spring:message code="homepage.menu.user.mysubscriptions" /></a>

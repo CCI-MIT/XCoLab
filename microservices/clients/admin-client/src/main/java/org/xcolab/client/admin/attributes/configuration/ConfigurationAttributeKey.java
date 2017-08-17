@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.attributes.i18n.LocalizableAttributeGetter;
+import org.xcolab.util.attributes.transformers.AttributeTransformers;
 import org.xcolab.util.attributes.wrappers.TransformedAttribute;
 import org.xcolab.util.enums.theme.ColabTheme;
 
@@ -14,8 +15,6 @@ import java.util.TimeZone;
 import java.util.regex.Pattern;
 
 public final class ConfigurationAttributeKey {
-
-    private static final Pattern SCHEME_REGEX = Pattern.compile("^https?://");
 
     private ConfigurationAttributeKey() {
     }
@@ -41,14 +40,17 @@ public final class ConfigurationAttributeKey {
 
     public static final AttributeGetter<String> COLAB_URL_PRODUCTION =
             ConfigurationAttributes.newStringAttribute("COLAB_URL_PRODUCTION")
+                    .map(AttributeTransformers.addDefaultScheme())
                     .defaultValue(PlatformAttributeKey.COLAB_URL)
                     .build();
     public static final AttributeGetter<String> BLOG_URL =
             ConfigurationAttributes.newStringAttribute("BLOG_URL")
+                    .map(AttributeTransformers.addDefaultScheme())
                     .defaultValue("")
                     .build();
     public static final AttributeGetter<String> BLOG_ADMIN_URL =
             ConfigurationAttributes.newStringAttribute("BLOG_ADMIN_URL")
+                    .map(AttributeTransformers.addDefaultScheme())
                     .defaultValue("")
                     .build();
     public static final AttributeGetter<ColabTheme> ACTIVE_THEME =
@@ -258,7 +260,7 @@ public final class ConfigurationAttributeKey {
                     .build();
     public static final AttributeGetter<String> PARTNER_COLAB_ADDRESS =
             ConfigurationAttributes.newStringAttribute("PARTNER_COLAB_ADDRESS")
-                    .map(url -> SCHEME_REGEX.matcher(url).matches() ? url : "http://" + url)
+                    .map(AttributeTransformers.addDefaultScheme())
                     .build();
 
 
