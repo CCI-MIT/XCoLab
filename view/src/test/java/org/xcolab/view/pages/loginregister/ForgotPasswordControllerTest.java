@@ -104,7 +104,7 @@ public class ForgotPasswordControllerTest {
 
 
         this.mockMvc.perform(post("/login/resetPassword")
-                .param("screenName", "superuser"));
+                .param("screenNameOrEmail", "superuser"));
 
         PowerMockito.verifyStatic(Mockito.times(1));
         EmailTemplateClientUtil.getContestEmailTemplateByType("MEMBER_RESET_PASSWORD_DEFAULT");
