@@ -3,6 +3,8 @@ package org.xcolab.util.attributes;
 import org.xcolab.util.attributes.exceptions.AttributeNotFoundException;
 import org.xcolab.util.attributes.wrappers.OptionalAttribute;
 
+import java.util.Optional;
+
 /**
  * Classes that implement this interface represent a wrapper around a certain {@link Attribute},
  * which extracts the value of a specified type.
@@ -14,6 +16,22 @@ public interface AttributeGetter<ValueT> {
     ValueT get();
 
     ValueT get(long additionalId);
+
+    default Optional<ValueT> getOpt() {
+        try {
+            return Optional.of(get());
+        } catch (AttributeNotFoundException e) {
+            return Optional.empty();
+        }
+    }
+
+    default Optional<ValueT> getOpt(long additionalId) {
+        try {
+            return Optional.of(get(additionalId));
+        } catch (AttributeNotFoundException e) {
+            return Optional.empty();
+        }
+    }
 
     String name();
 
