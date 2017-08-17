@@ -612,20 +612,29 @@
     <!-- forgotPasswordModal -->
     <!-- TODO: internationalize -->
     <xcolab:modal modalId="forgotPasswordModal" title="Password recovery">
-        <form id="forgotPasswordForm" method="post" action="/login/resetPassword">
+        <form method="post" action="/login/resetPassword">
             <div class="modal-body">
-                <div class="c-Alert__info__message">
-                    <p>Enter your email or screen name to get new password</p>
-                </div>
-                <spring:message var="screenNameOrEmailPlaceholder" code="homepage.login.usernameoremail" />
-                <input name="screenNameOrEmail" type="text" class="form-control"
-                        placeholder="${screenNameOrEmailPlaceholder}"
-                       onkeypress="return submitenter(this,event)" />
-
+                <c:choose>
+                    <c:when test="${_isLoggedIn}">
+                        <div class="c-Alert c-Alert__info__message">
+                            <spring:message code="homepage.modals.forgotpassword.resettext" />
+                        </div>
+                        <input name="screenNameOrEmail" type="hidden" value="${_member.screenName}" />
+                    </c:when>
+                    <c:otherwise>
+                        <div class="c-Alert c-Alert__info__message">
+                            <spring:message code="homepage.modals.forgotpassword.text" />
+                        </div>
+                        <spring:message var="screenNameOrEmailPlaceholder" code="homepage.login.usernameoremail" />
+                        <input name="screenNameOrEmail" type="text" class="form-control"
+                               placeholder="${screenNameOrEmailPlaceholder}"
+                               onkeypress="return submitenter(this,event)" />
+                    </c:otherwise>
+                </c:choose>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="c-Button__primary">
-                    Request new password
+                    <spring:message code="homepage.modals.forgotpassword.requestnewpassword" />
                 </button>
             </div>
             <input type="hidden" name="redirect" value="${_requestUri}" />

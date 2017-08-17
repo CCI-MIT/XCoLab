@@ -181,39 +181,56 @@
 							</td>
 						</tr>
 
-						<tr>
-							<th class="b m nowrap">
-                                <spring:message code="profile.form.fields.password"/>
-							</th>
-							<td>
-								<form:password cssClass="profile_input" path="currentPassword" />
-								<div class="reg_errors">
-									<form:errors cssClass="c-Alert c-Alert__error" path="currentPassword" />
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<th class="b m nowrap">
-                                <spring:message code="profile.form.fields.newpassword"/>
-							</th>
-							<td>
-								<form:password cssClass="profile_input" path="password"/>
-								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="c-Alert c-Alert__error" path="password" />
-								</div>
-							</td>
-						</tr>
-						<tr id="retypePasswordRow" style="${passwordError ? '' : 'display: none;'}">
-							<th class="b m nowrap required-field">
-                                <spring:message code="profile.form.fields.retypepassword"/>
-							</th>
-							<td>
-								<form:password cssClass="profile_input" path="retypePassword" />
-								<div class="reg_errors"><!--  -->
-									<form:errors cssClass="c-Alert c-Alert__error" path="retypePassword" />
-								</div>
-							</td>
-						</tr>
+                        <c:choose>
+                            <c:when test="${currentUserProfile.viewingOwnProfile and empty currentUserProfile.user.hashedPassword}">
+                                <!-- User has no password yet - allow sending reset link -->
+                                <tr>
+                                    <th class="b m nowrap">
+                                        <spring:message code="profile.form.fields.newpassword"/>
+                                    </th>
+                                    <td>
+                                        <button type="button" data-toggle="modal" data-target="#forgotPasswordModal" class="c-Button__primary">
+                                            <spring:message code="profile.form.button.setpassword"/>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </c:when>
+                            <c:otherwise>
+                                <tr>
+                                    <th class="b m nowrap">
+                                        <spring:message code="profile.form.fields.password"/>
+                                    </th>
+                                    <td>
+                                        <form:password cssClass="profile_input" path="currentPassword" />
+                                        <div class="reg_errors">
+                                            <form:errors cssClass="c-Alert c-Alert__error" path="currentPassword" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="b m nowrap">
+                                        <spring:message code="profile.form.fields.newpassword"/>
+                                    </th>
+                                    <td>
+                                        <form:password cssClass="profile_input" path="password"/>
+                                        <div class="reg_errors"><!--  -->
+                                            <form:errors cssClass="c-Alert c-Alert__error" path="password" />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="retypePasswordRow" style="${passwordError ? '' : 'display: none;'}">
+                                    <th class="b m nowrap required-field">
+                                        <spring:message code="profile.form.fields.retypepassword"/>
+                                    </th>
+                                    <td>
+                                        <form:password cssClass="profile_input" path="retypePassword" />
+                                        <div class="reg_errors"><!--  -->
+                                            <form:errors cssClass="c-Alert c-Alert__error" path="retypePassword" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </c:otherwise>
+                        </c:choose>
 					</tbody>
 				</table>
 
