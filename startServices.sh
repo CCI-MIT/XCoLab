@@ -21,7 +21,7 @@ function startService {
             cd ${SERVICE_DIR}
             OUT_FILE=${service}.out
             rm ${OUT_FILE} > /dev/null 2>&1
-            exec java -Xmx256M -Xms128M -jar ${service}-1.0-SNAPSHOT.jar > ${OUT_FILE} & echo $! > ${PID_FILE}
+            exec java -Xmx512M -Xms128M -jar ${service}-1.0-SNAPSHOT.jar > ${OUT_FILE} & echo $! > ${PID_FILE}
             cd ${SAVED_DIR}
         fi
     fi
