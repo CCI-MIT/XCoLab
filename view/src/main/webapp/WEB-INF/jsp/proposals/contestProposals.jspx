@@ -215,7 +215,7 @@
                 <c:if test="${_contestPage.menuItemName != ''}">
                     {
                     "@type": "ListItem",
-                    "position": ${status.count + 1},
+                    "position": ${status.count},
                     "item": {
                     "@id": "${_colabUrl}${_contestPage.contestBaseUrl}",
                     "name": "${xcolabfunctions:escapeStringForJavascript(_contestPage.menuItemName)}"
@@ -228,20 +228,13 @@
         {
           "@context": "http://schema.org",
           "@type": "BreadcrumbList",
-          "itemListElement": [{
-            "@type": "ListItem",
-            "position": 1,
-            "item": {
-              "@id": "${_colabUrl}",
-              "name": "Colab Home"
-            }
-          },${contestPageBreadcumbs},
+          "itemListElement": [${contestPageBreadcumbs},
           {
             "@type": "ListItem",
-            "position": ${fn:length(_contestPages) + 2},
+            "position": ${fn:length(_contestPages) + 1},
             "item": {
               "@id": "${_colabUrl}${contest.contestUrl}",
-              "name": "${xcolabfunctions:escapeStringForJavascript(contest.contestName)}",
+              "name": "${xcolabfunctions:escapeStringForJavascript(contest.contestShortName)}",
               "image": "${_colabUrl}${contest.logoPath}"
             }
           }]
