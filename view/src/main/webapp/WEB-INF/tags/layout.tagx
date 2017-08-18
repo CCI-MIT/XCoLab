@@ -237,14 +237,70 @@
             </div>
         </div>
     </c:if>
+    <nav class="navbar navbar-default navbar-static-top navbar-custom">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="/">
+                        <img src="${_logoPath}" alt="${_colabName}" height="42" />
+                    </a>
+                </a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse navbar-left">
+                <ul class="nav navbar-nav">
+                    <li class="${_activePageLink == 'about' ? 'active' : ''}">
+                        <a href="/page/about"><spring:message code="homepage.menu.about" /></a>
+                    </li>
 
+                    <c:forEach var="_contestPage" items="${_contestPages}">
+                        <c:if test="${_contestPage.menuItemName != ''}">
+                            <li class="${_activePageLink == _contestPage.identifier ? 'active' : ''}">
+                                <a href="${_contestPage.contestBaseUrl}">${_contestPage.menuItemName}</a>
+                            </li>
+                        </c:if>
+                    </c:forEach>
+                    <li class="${_activePageLink == 'community' ? 'active' : ''}" ><a href="/members"><spring:message code="homepage.menu.community" /></a></li>
+                    <c:if test="${_showSearchMenuItem}">
+                        <!--#if ($pageName == 'search') isCurrent #end-->
+                        <li class="${_activePageLink == 'search' ? 'active' : ''}">
+                            <a href="javascript:;" class="search" id="searchPopupTrigger" ><spring:message code="homepage.menu.search" /></a>
+                        </li>
+                    </c:if>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="register">
+                        <a href="/register?redirect=${_requestUri}"><spring:message code="homepage.menu.visitor.register" /></a>
+                    </li>
+                    <li class="login" >
+                        <a  href="javascript:;" id="loginPopupTrigger"><spring:message code="homepage.menu.visitor.login" /></a>
+                    </li>
+                    <c:if test="${_isI18NActive}">
+                        <li class="language" >
+                            <a  href="javascript:;" id="languagePopupTrigger"><spring:message code="homepage.menu.visitor.language" /></a>
+                        </li>
+                    </c:if>
+                    <li class="help">
+                        <a href="/wiki/Help"><spring:message code="homepage.menu.help" /></a>
+                    </li>
+
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
     <div id="c-Header" class="${_isHomePage ? 'backgroundLight' : ''}">
         <div class="inner">
             <div id="c-Header__logo">
                 <a href="/"><img src="${_logoPath}" alt="${_colabName}" height="42" /></a>
             </div>
             <ul id="c-Header__menu" class="${_isHomePage ? 'backgroundLight' : ''}">
-                <li class="${_activePageLink == 'about' ? 'isCurrent' : ''}"><a href="/page/about"><spring:message code="homepage.menu.about" /></a></li>
+                <li class="${_activePageLink == 'about' ? 'isCurrent' : ''}">
+                    <a href="/page/about"><spring:message code="homepage.menu.about" /></a>
+                </li>
                 <c:forEach var="_contestPage" items="${_contestPages}">
                     <c:if test="${_contestPage.menuItemName != ''}">
                         <li class="${_activePageLink == _contestPage.identifier ? 'isCurrent' : ''}">
@@ -254,8 +310,11 @@
                 </c:forEach>
                 <li class="${_activePageLink == 'community' ? 'isCurrent' : ''}" ><a href="/members"><spring:message code="homepage.menu.community" /></a></li>
                 <c:if test="${_showSearchMenuItem}">
-                    <li class="${_activePageLink == 'search' ? 'isCurrent' : ''}">
+                    <li class="${_activePageLink == 'search' ? 'isCurrent' : ''} dropdown">
                         <a href="javascript:;" class="search" id="searchPopupTrigger" ><spring:message code="homepage.menu.search" /></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">search</a></li>
+                        </ul>
                     </li>
                 </c:if>
             </ul>
