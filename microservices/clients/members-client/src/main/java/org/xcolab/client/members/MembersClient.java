@@ -67,6 +67,14 @@ public final class MembersClient {
         return listMembers(null, null, null, null, true, 0, Integer.MAX_VALUE);
     }
 
+    public static List<Member> listMembersWithRoles(List<Long> roleIds) {
+        return memberResource.list()
+                .addRange(0, Integer.MAX_VALUE)
+                .queryParam("roleIds", roleIds)
+                .withCache(CacheName.MEMBER_LIST)
+                .execute();
+    }
+
     public static List<Member> listMembers(String categoryFilterValue,
             String screenNameFilterValue, String emailFilterValue, String sortField,
             boolean ascOrder, int firstMember, int lastMember) {

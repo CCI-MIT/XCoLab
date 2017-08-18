@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import org.apache.commons.text.WordUtils;
 import org.springframework.core.ParameterizedTypeReference;
 
+import org.xcolab.client.contents.ContentsClient;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
@@ -41,6 +42,10 @@ public class ContentPage implements Serializable {
         this.contentArticleId = value.contentArticleId;
         this.createDate = value.createDate;
         this.modifiedDate = value.modifiedDate;
+    }
+
+    public static ContentPage forId(long pageId) {
+        return ContentsClient.getContentPage(pageId);
     }
 
     public Long getPageId() {

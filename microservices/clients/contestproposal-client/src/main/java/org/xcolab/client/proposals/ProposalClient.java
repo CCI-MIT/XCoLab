@@ -108,6 +108,27 @@ public final class ProposalClient {
             null, visible, contestPhaseId, ribbon);
     }
 
+    public List<Proposal> listProposalsInActiveContests() {
+        return DtoUtil.toPojos(proposalResource.list()
+                .addRange(0, Integer.MAX_VALUE)
+                .queryParam("visible", true)
+                .queryParam("contestPrivate", false)
+                .queryParam("contestActive", true)
+                .withCache(CacheName.PROPOSAL_LIST)
+                .execute(), proposalService);
+    }
+
+    public List<Proposal> listProposalsInCompletedContests(List<Integer> ribbons) {
+        return DtoUtil.toPojos(proposalResource.list()
+                .addRange(0, Integer.MAX_VALUE)
+                .queryParam("visible", true)
+                .queryParam("contestPrivate", false)
+                .queryParam("contestActive", false)
+                .optionalQueryParam("ribbon", ribbons)
+                .withCache(CacheName.PROPOSAL_LIST_CLOSED)
+                .execute(), proposalService);
+    }
+
     public List<Proposal> listProposals(int start, int limit, String filterText, Long contestId,
         List<Long> contestTypeIds, List<Long> contestTierIds, Boolean visible, Long contestPhaseId,
         Integer ribbon) {

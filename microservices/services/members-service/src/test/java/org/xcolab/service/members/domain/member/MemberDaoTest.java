@@ -37,7 +37,7 @@ public class MemberDaoTest {
     public void testFindByGiven__shouldReturnRightCount() {
         final List<Member> members =
                 memberDao.findByGiven(PaginationHelper.EVERYTHING, null, null,
-                        null, null, null, null, null);
+                        null, null, null, null, null, null);
         assertEquals("Wrong number of members", 2, members.size());
     }
 
@@ -45,7 +45,7 @@ public class MemberDaoTest {
     public void testFindByNameGiven() {
         final List<Member> members =
                 memberDao.findByGiven(PaginationHelper.EVERYTHING, "admin", null,
-                        null, null, null, null, null);
+                        null, null, null, null, null, null);
         assertEquals("Wrong number of members with name:admin", 1, members.size());
     }
 

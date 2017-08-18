@@ -77,15 +77,18 @@ public class ProposalsController {
             @RequestParam(required = false) List<Long> contestIds,
             @RequestParam(required = false) List<Long> contestTierIds,
             @RequestParam(required = false) List<Long> contestTypeIds,
+            @RequestParam(required = false) Boolean contestActive,
+            @RequestParam(required = false) Boolean contestPrivate,
             @RequestParam(required = false) Boolean visible,
             @RequestParam(required = false) Long contestPhaseId,
-            @RequestParam(required = false) Integer ribbon,
+            @RequestParam(required = false) List<Integer> ribbon,
             @RequestParam(required = false) Long threadId,
             @RequestParam(required = false) String sort) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
         return proposalDao.findByGiven(paginationHelper, filterText, contestIds, visible,
-                    contestPhaseId, ribbon, contestTypeIds, contestTierIds, threadId);
+                    contestPhaseId, ribbon, contestTypeIds, contestTierIds, contestActive,
+                contestPrivate, threadId);
     }
 
     @RequestMapping(value = "/proposals/{proposalId}", method = RequestMethod.GET)
@@ -158,7 +161,8 @@ public class ProposalsController {
         PaginationHelper paginationHelper = new PaginationHelper(0, Integer.MAX_VALUE, null);
 
         List<Proposal> proposals = proposalDao.findByGiven(paginationHelper, null,
-            null, null, contestPhaseId, null, null, null, null);
+            null, null, contestPhaseId, null, null, null,
+                null, null, null);
         int counter = 0;
         for (Proposal p : proposals) {
             ProposalContestPhaseAttribute pcpa = proposalContestPhaseAttributeDao.getByProposalIdContestPhaseIdName(p.getProposalId(), contestPhaseId, ProposalContestPhaseAttributeKeys.SELECTED_JUDGES);

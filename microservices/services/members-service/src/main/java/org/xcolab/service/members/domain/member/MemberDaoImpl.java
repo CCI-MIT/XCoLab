@@ -42,14 +42,16 @@ public class MemberDaoImpl implements MemberDao {
     @Override
     public List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
             String partialEmail, String roleName, String email, String screenName, Long facebookId,
-            String googleId) {
+            String googleId, List<Long> roleIds) {
         final SelectQuery<Record> query = dslContext.selectDistinct(MEMBER.fields())
                 .from(MEMBER)
                 .where(MEMBER.STATUS.eq(0))
                 .getQuery();
 
-        if (roleName != null) {
+        if (roleName != null || roleIds != null) {
             query.addJoin(USERS_ROLES, MEMBER.ID_.equal(USERS_ROLES.USER_ID));
+        }
+        if (roleName != null) {
             query.addJoin(MEMBER_CATEGORY, MEMBER_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID));
         }
 
@@ -58,6 +60,9 @@ public class MemberDaoImpl implements MemberDao {
         }
         if (roleName != null) {
             query.addConditions(MEMBER_CATEGORY.DISPLAY_NAME.eq(roleName));
+        }
+        if (roleIds != null) {
+            query.addConditions(USERS_ROLES.ROLE_ID.in(roleIds));
         }
         if (screenName != null) {
             query.addConditions(MEMBER.SCREEN_NAME.eq(screenName));

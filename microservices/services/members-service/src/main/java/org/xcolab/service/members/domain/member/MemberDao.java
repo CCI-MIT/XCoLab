@@ -10,7 +10,7 @@ public interface MemberDao {
 
     List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
             String partialEmail, String roleName, String email, String screenName, Long facebookId,
-            String googleId);
+            String googleId, List<Long> roleIds);
     int countByGiven(String partialName, String partialEmail, String roleName);
 
     Optional<Member> getMember(long memberId);

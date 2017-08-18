@@ -54,36 +54,45 @@ public class ProposalDaoImpl implements ProposalDao {
 
     @Override
     public List<Proposal> findByGiven(PaginationHelper paginationHelper, String filterText,
-            List<Long> contestIds, Boolean visible, Long contestPhaseId, Integer ribbon,
-            List<Long> contestTypeIds, List<Long> contestTierIds, Long threadId) {
+            List<Long> contestIds, Boolean visible, Long contestPhaseId, List<Integer> ribbon,
+            List<Long> contestTypeIds, List<Long> contestTierIds, Boolean contestActive,
+            Boolean contestPrivate, Long threadId) {
         final SelectQuery<Record> query = dslContext.selectDistinct(PROPOSAL.fields())
                 .from(PROPOSAL)
                 .getQuery();
 
-        if (contestIds != null || contestTypeIds != null || contestTierIds != null
-                || contestPhaseId != null || ribbon != null || (visible != null && visible)) {
+        boolean requiresContest = contestTypeIds != null || contestTierIds != null
+                || contestActive != null || contestPrivate != null;
+
+        boolean requiresPhase = requiresContest || contestIds != null || contestPhaseId != null
+                || ribbon != null || (visible != null && visible);
+
+        if (requiresPhase) {
             //TODO: these joins causes duplicate entries
             query.addJoin(PROPOSAL_2_PHASE, PROPOSAL.PROPOSAL_ID.eq(PROPOSAL_2_PHASE.PROPOSAL_ID));
             query.addJoin(CONTEST_PHASE,
                     CONTEST_PHASE.CONTEST_PHASE_PK.eq(PROPOSAL_2_PHASE.CONTEST_PHASE_ID));
         }
 
-        if (contestTypeIds != null || contestTierIds != null) {
+        if (requiresContest) {
             query.addJoin(CONTEST, CONTEST.CONTEST_PK.eq(CONTEST_PHASE.CONTEST_PK));
         }
 
         if (ribbon != null) {
             final ProposalContestPhaseAttributeTable ribbonAttribute =
                     PROPOSAL_CONTEST_PHASE_ATTRIBUTE.as("ribbonAttribute");
-            query.addJoin(ribbonAttribute,
+            query.addJoin(ribbonAttribute, JoinType.LEFT_OUTER_JOIN,
                     ribbonAttribute.PROPOSAL_ID.eq(PROPOSAL.PROPOSAL_ID)
                             .and(ribbonAttribute.CONTEST_PHASE_ID
                                     .eq(CONTEST_PHASE.CONTEST_PHASE_PK)));
-            query.addJoin(CONTEST_PHASE_RIBBON_TYPE,
-                    ribbonAttribute.NAME.eq(
-                            ProposalContestPhaseAttributeKeys.RIBBON)
-                            .and(CONTEST_PHASE_RIBBON_TYPE.ID_
-                                    .eq(ribbonAttribute.NUMERIC_VALUE)));
+            if (ribbon.contains(0)) {
+                query.addConditions(ribbonAttribute.ID_.isNull());
+            } else {
+                query.addJoin(CONTEST_PHASE_RIBBON_TYPE, ribbonAttribute.NAME.eq(
+                        ProposalContestPhaseAttributeKeys.RIBBON)
+                        .and(CONTEST_PHASE_RIBBON_TYPE.ID_.eq(ribbonAttribute.NUMERIC_VALUE)));
+                query.addConditions(CONTEST_PHASE_RIBBON_TYPE.RIBBON.in(ribbon));
+            }
         }
 
         if (contestPhaseId != null) {
@@ -116,6 +125,12 @@ public class ProposalDaoImpl implements ProposalDao {
         }
         if (contestTierIds != null) {
             query.addConditions(CONTEST.CONTEST_TIER.in(contestTierIds));
+        }
+        if (contestActive != null) {
+            query.addConditions(CONTEST.CONTEST_ACTIVE.eq(contestActive));
+        }
+        if (contestPrivate != null) {
+            query.addConditions(CONTEST.CONTEST_PRIVATE.eq(contestPrivate));
         }
 
         query.addLimit(paginationHelper.getStartRecord(), paginationHelper.getCount());

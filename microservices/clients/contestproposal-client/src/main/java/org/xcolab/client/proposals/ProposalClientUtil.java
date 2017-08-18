@@ -64,6 +64,14 @@ public final class ProposalClientUtil {
         return client.getAllProposals();
     }
 
+    public static List<Proposal> listProposalsInActiveContests() {
+        return client.listProposalsInActiveContests();
+    }
+
+    public static List<Proposal> listProposalsInCompletedContests(List<Integer> ribbons) {
+        return client.listProposalsInCompletedContests(ribbons);
+    }
+
     public static List<Proposal> getProposalsInContest(
             Long contestPK) {
         return client.getProposalsInContest(contestPK);

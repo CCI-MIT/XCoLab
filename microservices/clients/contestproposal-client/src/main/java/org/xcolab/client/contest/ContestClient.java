@@ -495,6 +495,7 @@ public class ContestClient {
         String lang = LocaleContextHolder.getLocale().getLanguage();
         return DtoUtil.toPojos(contestResource
                 .list()
+                .addRange(0, Integer.MAX_VALUE)
                 .queryParam("lang", lang)
                 .queryParam("active", contestActive)
                 .queryParam("contestPrivate", contestPrivate)

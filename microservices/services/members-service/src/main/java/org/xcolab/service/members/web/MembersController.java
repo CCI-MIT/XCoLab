@@ -51,6 +51,7 @@ public class MembersController {
             @RequestParam(required = false) String partialName,
             @RequestParam(required = false) String partialEmail,
             @RequestParam(required = false) String roleName,
+            @RequestParam(required = false) List<Long> roleIds,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String screenName,
             @RequestParam(required = false) Long facebookId,
@@ -61,7 +62,7 @@ public class MembersController {
                 Integer.toString(memberDao.countByGiven(partialName, partialEmail, roleName)));
 
         return memberDao.findByGiven(paginationHelper, partialName, partialEmail,
-                roleName, email, screenName, facebookId, googleId);
+                roleName, email, screenName, facebookId, googleId, roleIds);
     }
 
     @GetMapping("findByIp")
