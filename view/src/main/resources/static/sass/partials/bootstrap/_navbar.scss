@@ -6,8 +6,8 @@ $dropDown: false;
 .navbar-custom {
   background-color: $bgDefault;
   border-color: $bgHighlight;
-  display: inline-block;
-  float: none;//to centralize it all
+  //display: inline-block;
+  //float: none;//to centralize it all
 
   .navbar-brand {
     color: $colDefault;

@@ -250,8 +250,8 @@
                     </a>
                 </a>
             </div>
-            <div id="navbar" class="navbar-collapse collapse navbar-left">
-                <ul class="nav navbar-nav">
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-left">
                     <li class="${_activePageLink == 'about' ? 'active' : ''}">
                         <a href="/page/about"><spring:message code="homepage.menu.about" /></a>
                     </li>
@@ -266,26 +266,83 @@
                     <li class="${_activePageLink == 'community' ? 'active' : ''}" ><a href="/members"><spring:message code="homepage.menu.community" /></a></li>
                     <c:if test="${_showSearchMenuItem}">
                         <!--#if ($pageName == 'search') isCurrent #end-->
-                        <li class="${_activePageLink == 'search' ? 'active' : ''}">
-                            <a href="javascript:;" class="search" id="searchPopupTrigger" ><spring:message code="homepage.menu.search" /></a>
+                        <li class="${_activePageLink == 'search' ? 'active' : ''} dropdown" data-toggle="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown"  ><spring:message code="homepage.menu.search" /></a>
+                            <ul class="dropdown-menu"><!-- searchPopupTrigger -->
+                                <li class="c-Header__search__box">
+                                    <input name="c-Header__search__term" type="text" class="c-Header__search__term" value="" id="searchinput" />
+                                    <a class="c-Header__search__submit" id="searchsubmit"><spring:message code="homepage.search.button" /></a>
+                                </li>
+                            </ul>
                         </li>
                     </c:if>
 
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
+                <ul class="nav navbar-nav navbar-right c-Header__menu__icon_menuItem ">
                     <li class="register">
-                        <a href="/register?redirect=${_requestUri}"><spring:message code="homepage.menu.visitor.register" /></a>
+                        <a href="/register?redirect=${_requestUri}" class="c-Header__menu__text"><spring:message code="homepage.menu.visitor.register" /></a>
                     </li>
-                    <li class="login" >
-                        <a  href="javascript:;" id="loginPopupTrigger"><spring:message code="homepage.menu.visitor.login" /></a>
+                    <li class="login dropdown" data-toggle="dropdown" >
+                        <a  class="dropdown-toggle c-Header__menu__text" data-toggle="dropdown" ><spring:message code="homepage.menu.visitor.login" /></a>
+                        <ul id="" class="dropdown-menu c-Header__login__box" >
+                            <li>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="social-buttons">
+                                            <c:if test="${_isFacebookSsoActive}">
+                                                <a href="/sso/facebook/login" class="sketchy-icon facebook-sketchy"><span>Facebook</span></a>
+                                            </c:if>
+                                            <c:if test="${_isGoogleSsoActive}">
+                                                <a href="/sso/google/login" class="sketchy-icon google-sketchy"><span>Google</span></a>
+                                            </c:if>
+                                        </div>
+                                        <c:if test="${_isFacebookSsoActive or _isGoogleSsoActive}">
+                                            <div class="c-Header__login__with__del"><!-- --></div>
+                                            <div class="c-Header__login__with__or"><spring:message code="homepage.popup.user.or"/></div>
+                                            <div class="c-Header__login__with__del"><!-- --></div>
+
+                                        </c:if>
+
+                                        <form class="form" role="form" id="signInFormPopup" method="post" action="/login" accept-charset="UTF-8" >
+                                            <div class="form-group">
+                                                <spring:message code="homepage.popup.user.usernameoremail" var="usernameplaceholder"/>
+                                                <input name="username" type="text" class="c-Header__login__username form-control" placeholder="${usernameplaceholder}"  />
+                                            </div>
+                                            <div class="form-group">
+                                                <spring:message code="homepage.popup.user.password" var="passwordplaceholder"/>
+                                                <input name="password" type="password" class="c-Header__login__password form-control" placeholder="${passwordplaceholder}" />
+
+
+
+                                            </div>
+                                            <div class="checkbox">
+                                                <label for="header__remember-me"><spring:message code="homepage.popup.user.rememberme"/> :</label> &#160;
+                                                <input id="header__remember-me" type="checkbox" name="remember-me" checked="true" /> <br/>
+                                                <input name="redirect" type="hidden" />
+                                                <span>
+                            					<em>
+                            						<a href="javascript:;" class="c-Header__login__forgot" onclick="showForgotPasswordPopup()"><spring:message code="homepage.popup.user.forgotyourpassword"/></a>
+                            					</em>
+                            				</span>
+
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="c-Button__primary" id="loginPopupTopSubmit"><spring:message code="homepage.popup.user.button.login"/></button><!-- btn btn-primary btn-block -->
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </li>
                     <c:if test="${_isI18NActive}">
                         <li class="language" >
-                            <a  href="javascript:;" id="languagePopupTrigger"><spring:message code="homepage.menu.visitor.language" /></a>
+                            <a  href="javascript:;" id="languagePopupTrigger" class="c-Header__menu__text"><spring:message code="homepage.menu.visitor.language" /></a>
                         </li>
                     </c:if>
                     <li class="help">
-                        <a href="/wiki/Help"><spring:message code="homepage.menu.help" /></a>
+                        <a href="/wiki/Help" class="c-Header__menu__text"><spring:message code="homepage.menu.help" /></a>
                     </li>
 
                 </ul>
@@ -313,7 +370,10 @@
                     <li class="${_activePageLink == 'search' ? 'isCurrent' : ''} dropdown">
                         <a href="javascript:;" class="search" id="searchPopupTrigger" ><spring:message code="homepage.menu.search" /></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#">search</a></li>
+                            <li class="c-Header__search__box">
+                                <input name="c-Header__search__term" type="text" class="c-Header__search__term" value="" id="searchinput" />
+                                <a class="c-Header__search__submit" id="searchsubmit"><spring:message code="homepage.search.button" /></a>
+                            </li>
                         </ul>
                     </li>
                 </c:if>
