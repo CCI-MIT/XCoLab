@@ -56,9 +56,9 @@
                         </td>
                         <td>${subscription.name}</td>
                         <td>${subscription.type.printName}</td>
-                        <td><fmt:formatDate value="${subscription.updated}" type="both"
-                                            timeStyle="short" dateStyle="medium"
-                                            timeZone="America/New_York"/></td>
+                        <td>
+                            <xcolab:formatDateTime millis="${subscription.updated.time}" />
+                        </td>
                     </tr>
                 </c:forEach>
             </table>

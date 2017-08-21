@@ -103,7 +103,7 @@
 					<tr>
 						<td class="b" nowrap="nowrap" width="23%"><spring:message code="profile.show.membersince"/></td>
 						<td width="23%">
-							<fmt:formatDate value="${currentUserProfile.joinDate}" type="date" dateStyle="short" timeZone="America/New_York" />
+                            <xcolab:formatDateTime millis="${currentUserProfile.joinDate.time}" type="date" zoneDisplay="none" />
 						</td>
 						<c:if test="${pointsActive}">
 							<td class="b points_box left_border top_border" width="45%">
@@ -194,7 +194,9 @@
 					<c:forEach var="userProposal" items="${contestTypeProposalWrapper.proposals}">
 						<tr class="colabRow">
 							<td> <collab:proposalLink proposal="${userProposal}" /> </td>
-							<td style="text-align: right;"><fmt:formatDate value="${userProposal.createDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+							<td style="text-align: right;">
+                                <xcolab:formatDateTime millis="${userProposal.createDate.time}" type="date"/>
+                            </td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -210,7 +212,9 @@
 					<c:if test="${linkingProposal.visible}">
 						<tr class="colabRow">
 							<td> <collab:proposalLink proposal="${linkingProposal}" /> </td>
-							<td style="text-align: right;"><fmt:formatDate value="${linkingProposal.lastModifiedDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+							<td style="text-align: right;">
+                                <xcolab:formatDateTime millis="${linkingProposal.lastModifiedDate.time}" type="date"/>
+                            </td>
 						</tr>
 					</c:if>
 				</c:forEach>
@@ -225,7 +229,9 @@
 				<c:forEach var="supportedProposal" items="${currentUserProfile.supportedProposals}">
 					<tr class="colabRow">
 						<td> <collab:proposalLink proposal="${supportedProposal.proposalWrapper}" /> </td>
-						<td style="text-align: right;"><fmt:formatDate value="${supportedProposal.supportedSinceDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+						<td style="text-align: right;">
+                            <xcolab:formatDateTime millis="${supportedProposal.supportedSinceDate.time}" type="date"/>
+                        </td>
 					</tr>
 				</c:forEach>
 			</table>
@@ -239,7 +245,9 @@
 				<c:forEach var="activity" items="${currentUserProfile.activities}">
 					<tr class="colabRow">
 						<td>${activity.body}</td>
-						<td style="text-align: right;"><fmt:formatDate value="${activity.createdDate}" type="date" dateStyle="short" timeZone="America/New_York" /></td>
+						<td style="text-align: right;">
+                            <xcolab:formatDateTime millis="${activity.createdDate.time}" type="date"/>
+                        </td>
 					</tr>
 				</c:forEach>
 			</table>
@@ -333,8 +341,8 @@
                                 <spring:message code="profile.show.daysago" arguments="${message.daysAgo}" />
 							</c:when>
 						</c:choose>
-						&#160;
-						<fmt:formatDate value="${message.createDate}" type="time" timeStyle="medium" timeZone="America/New_York" />
+						<br/>
+                        <xcolab:formatDateTime millis="${message.createDate.time}" type="time"/>
 					</div>
 
 					<div class="activityBody">
@@ -381,7 +389,7 @@
 								</c:when>
 							</c:choose>
 							&#160;
-							<fmt:formatDate value="${activity.createdDate}" type="time" timeStyle="medium" timeZone="America/New_York" />
+                            <xcolab:formatDateTime millis="${activity.createdDate.time}" type="time"/>
 						</div>
 
 						<div class="activityBody">

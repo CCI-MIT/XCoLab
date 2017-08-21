@@ -3,6 +3,8 @@
           version="2.0">
     <jsp:directive.attribute name="locale" type="java.lang.String" required="false" rtexprvalue="true" description="Current locale" />
 
+    <!-- Note: requires tooltipster -->
+
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"><!-- empty --></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone-with-data-2012-2022.min.js"><!-- empty --></script>
 
@@ -10,7 +12,7 @@
         var _userTimeZone = moment.tz.guess();
     </script>
 
-    <c:if test="${not empty locale and not locale eq 'en' and not locale eq 'en-US'}">
+    <c:if test="${not empty locale and locale ne 'en' and locale ne 'en-US'}">
         <!--suppress JSUnresolvedLibraryURL -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/locale/${locale}.js"><!-- empty --></script>
         <script>
@@ -20,47 +22,51 @@
 
     <script>
 
-        jQuery(function() {
-            jQuery(".js-DateFormat").each(function() {
-                var $this = jQuery(this);
-                var millis = $this.data('millis');
-                var type = $this.data('type');
-                var zoneDisplay = $this.data('zoneDisplay') || 'tooltip';
+        var dateTimeFormatter = {
+            TYPE_DATE: 'date',
+            TYPE_TIME: 'time',
+            TYPE_DATETIME: 'datetime',
+            formatDate: function(date, type, includeZone) {
 
-                var timestamp = millis / 1000;
-                var date = moment.unix(timestamp).tz(_userTimeZone);
-
+                var zone = includeZone ? ' ' + date.zoneAbbr() : '';
                 switch (type) {
-                    case 'time':
-                        $this.html(date.format('LT'));
-                        break;
-                    case 'date':
-                        $this.html(date.format('ll'));
-                        break;
-                    case 'datetime':
-                        $this.html(date.format('lll'));
-                        break;
+                    case dateTimeFormatter.TYPE_TIME:
+                        return date.format('LT') + zone;
+                    case dateTimeFormatter.TYPE_DATE:
+                        return date.format('ll') + zone;
+                    case dateTimeFormatter.TYPE_DATETIME:
+                        return date.format('lll') + zone;
 
                     default: console.error("Unknown date format type: " + type);
                 }
+            },
+            formatMillis: function(millis, type, includeZone) {
+                var date = dateTimeFormatter.parseEpoch(millis);
+                return dateTimeFormatter.formatDate(date, type, includeZone);
+            },
+            parseEpoch: function(millis) {
+                var timestamp = millis / 1000;
+                return moment.unix(timestamp).tz(_userTimeZone);
+            }
+        };
 
-                switch (zoneDisplay) {
-                    case 'tooltip':
-                        if (type != 'date') {
-                            $this.attr('title', date.format('LTS') + ' ' + date.zoneAbbr());
-                        } else {
-                            $this.attr('title', date.format('llll') + ' ' + date.zoneAbbr());
-                        }
-                        $this.tooltipster();
-                        break;
-                    case 'print':
-                        $this.append(' ' + date.zoneAbbr());
-                        break;
-                    case 'none': break;
-                    default:
-                        console.error("Unknown timezone display type");
+        jQuery(".js-DateFormat").each(function() {
+            var $this = jQuery(this);
+            var millis = $this.data('millis');
+            var type = $this.data('type');
+            var zoneDisplay = $this.data('zoneDisplay') || 'tooltip';
+
+            var date = dateTimeFormatter.parseEpoch(millis);
+            $this.html(dateTimeFormatter.formatDate(date, type, zoneDisplay == 'print'));
+
+            if (zoneDisplay == 'tooltip') {
+                if (type != 'date') {
+                    $this.attr('title', date.format('LTS') + ' ' + date.zoneAbbr());
+                } else {
+                    $this.attr('title', date.format('llll') + ' ' + date.zoneAbbr());
                 }
-            });
+                $this.tooltipster();
+            }
         });
     </script>
 

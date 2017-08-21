@@ -54,7 +54,7 @@
                             <a href="${linkingProposal.proposalUrl}">${linkingProposal.name}</a>
                         </td>
                         <td style="text-align: right;">
-                            <fmt:formatDate value="${linkingProposal.lastModifiedDate}" type="date" dateStyle="short" timeZone="America/New_York" />
+                            <xcolab:formatDateTime millis="${linkingProposal.lastModifiedDate.time}" type="date" />
                         </td>
                     </tr>
                 </c:forEach>

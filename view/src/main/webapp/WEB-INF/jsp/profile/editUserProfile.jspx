@@ -130,16 +130,6 @@
                                 </td>
                             </tr>
                         </c:if>
-
-						<!--
-						<tr>
-							<th class="b">Member Since</th>
-							<td class="l">
-								&#160;
-								<fmt:formatDate value="${currentUserProfile.joinDate}" type="date" dateStyle="medium" timeZone="America/New_York" />
-							</td>
-						</tr>
-						-->
 					</table>
 
 				</div>

@@ -27,6 +27,7 @@
 
     <!-- interceptor variables -->
     <!--@elvariable id="_lang" type="java.lang.String"-->
+    <!--@elvariable id="_locale" type="java.lang.String"-->
     <!--@elvariable id="_isLoggedIn" type="java.lang.Boolean"-->
     <!--@elvariable id="_isAdmin" type="java.lang.Boolean"-->
 
@@ -912,7 +913,7 @@
                            integrity="sha256-vpKTO4Ob1M4bZ8RAvZvYMtinMz1XjH0QYdAO2861V9M="/>
 
     <!-- moment js library and initialization (date and time formatting) -->
-    <xcolab:moment locale="${_lang}"/>
+    <xcolab:moment locale="${_locale}"/>
 
     <!-- File upload -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['fileupload']}" src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-load-image/2.10.0/load-image.all.min.js"/>

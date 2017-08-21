@@ -14,13 +14,13 @@
     <span class="js-DateFormat" data-type="${type}" data-millis="${millis}" data-zone-display="${zoneDisplay}">
         <c:choose>
             <c:when test="${type == 'date'}">
-                <fmt:formatDate value="${date}" pattern="MM/dd/yy zz" />
+                <fmt:formatDate value="${date}" pattern="MMM d, yyyy${zoneDisplay eq 'print' ? ' zz' : ''}" />
             </c:when>
             <c:when test="${type == 'time'}">
-                <fmt:formatDate value="${date}" pattern="hh:ss zz" />
+                <fmt:formatDate value="${date}" pattern="hh:ss${zoneDisplay eq 'print' ? ' zz' : ''}" />
             </c:when>
             <c:when test="${type == 'datetime'}">
-                <fmt:formatDate value="${date}" pattern="MM/dd/yy hh:ss zz" />
+                <fmt:formatDate value="${date}" pattern="MMM d, yyyy hh:ss${zoneDisplay eq 'print' ? ' zz' : ''}" />
             </c:when>
         </c:choose>
     </span>
