@@ -168,12 +168,6 @@
     </tag-file>
 
     <tag-file>
-        <description>Date and Time Formatter</description>
-        <name>dateTime</name>
-        <path>/WEB-INF/tags/collab/dateTime.tagx</path>
-    </tag-file>
-
-    <tag-file>
         <description>User Link Simple</description>
         <name>userLinkSimple</name>
         <path>/WEB-INF/tags/collab/userLinkSimple.tagx</path>

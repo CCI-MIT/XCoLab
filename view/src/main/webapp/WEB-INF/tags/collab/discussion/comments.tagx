@@ -123,8 +123,8 @@
 									<br />
 									<collab:userLinkSimple text="${message.author.displayName}" userId="${message.author.userId}" /> <br />
 									<br />
-									<collab:dateTime epoch="${message.createDate.time}" format="dateText" /><br />
-									<collab:dateTime epoch="${message.createDate.time}" format="time" /><br />
+									<xcolab:formatDateTime millis="${message.createDate.time}" type="date" zoneDisplay="none" /><br />
+									<xcolab:formatDateTime millis="${message.createDate.time}" type="time" /><br />
 
 									<br />
 									<div class="role-indicator">

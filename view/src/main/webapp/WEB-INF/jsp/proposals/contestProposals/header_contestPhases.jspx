@@ -1,8 +1,8 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-	version="2.0">
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+          version="2.0" xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 <span>
 
 	<c:choose>
@@ -28,16 +28,9 @@
                             ${phase.phaseStatusDescription }
                         </c:if>
 						<c:if test="${not empty phase.phaseStartDate }">
-							<span class="dateInfo">
-								<fmt:setLocale value="en_US" />
-								<fmt:setTimeZone value="${defaultTimeZoneId}" />
-								<fmt:formatDate value="${phase.phaseStartDate}" type="date" dateStyle="SHORT" pattern="MM/dd/yy hh:ss zz" />
-							</span>
+                            <xcolab:formatDateTime millis="${phase.phaseStartDate.time}" type="date" zoneDisplay="print"/>
 							<c:if test="${not empty phase.phaseEndDate }">
-								-
-								<span class="dateInfo">
-									<fmt:formatDate value="${phase.phaseEndDate}" type="date" dateStyle="SHORT" pattern="MM/dd/yy hh:ss zz" />
-								</span>
+								- <xcolab:formatDateTime millis="${phase.phaseEndDate.time}" type="date" zoneDisplay="print"/>
 							</c:if>
 						</c:if>
 						</span>

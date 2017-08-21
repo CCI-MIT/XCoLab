@@ -53,6 +53,10 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             Object handler, ModelAndView modelAndView) {
         if (modelAndView != null && !isRedirectView(modelAndView)) {
             final Locale locale = localeResolver.resolveLocale(request);
+            modelAndView.addObject("_lang", locale.getLanguage());
+            modelAndView.addObject("_locale", locale.toLanguageTag());
+            final String defaultTimeZone = ConfigurationAttributeKey.DEFAULT_TIME_ZONE_ID.get();
+            modelAndView.addObject("_defaultTimeZone", defaultTimeZone);
             final boolean isLoggedIn = authenticationService.isLoggedIn();
             modelAndView.addObject("_isLoggedIn", isLoggedIn);
 

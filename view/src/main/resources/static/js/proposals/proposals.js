@@ -26,7 +26,6 @@ jQuery(function() {
 });
 
 function initializeJavaScript(){
-    evaluateTime();
     jQuery(".addpropform .helpTrigger").click(function() {
         var trigger = jQuery(this);
         trigger.parent().parent().find(".addprophelp").slideToggle("fast");
@@ -41,16 +40,6 @@ function initializeJavaScript(){
     jQuery("#contestsFilterClear").click(function() {
         jQuery("#contestFilterInput").val("");
         jQuery("#filterContestsForm").submit();
-    });
-}
-
-function evaluateTime() {
-    $(".dateInfo").each(function() {
-        var adjustedDate = new Date(Date.parse($(this).html()));
-        var timeZoneIdentifier = String(String(new Date).split("(")[1]).split(")")[0];  //get the timezone abbreviation
-        //add +1 to month since the enumeration starts with 0
-        $(this).html((adjustedDate.getMonth()+1)+"/"+adjustedDate.getDate()+"/"+adjustedDate.getFullYear()+" "+timeZoneIdentifier);
-        $(this).removeClass("dateInfo");
     });
 }
 

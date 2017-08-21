@@ -4,6 +4,7 @@
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
           xmlns:xcolabfunctions="urn:jsptld:/WEB-INF/tlds/xcolab-escaping.tld"
           version="2.0">
     <jsp:directive.attribute name="title" type="java.lang.String" required="false" rtexprvalue="true" description="Page title" />
@@ -25,6 +26,7 @@
     <!--@elvariable id="request" type="javax.servlet.http.HttpServletRequest"-->
 
     <!-- interceptor variables -->
+    <!--@elvariable id="_lang" type="java.lang.String"-->
     <!--@elvariable id="_isLoggedIn" type="java.lang.Boolean"-->
     <!--@elvariable id="_isAdmin" type="java.lang.Boolean"-->
 
@@ -89,6 +91,9 @@
     <!--@elvariable id="__alertMessage" type="org.xcolab.view.util.entity.flash.AlertMessage"-->
     <!--@elvariable id="__analyticsAttribute" type="org.xcolab.view.util.entity.flash.AnalyticsAttribute"-->
 
+    <fmt:setLocale value="${_locale}" />
+    <fmt:setTimeZone value="${_defaultTimeZone}" />
+
 <![CDATA[<!DOCTYPE html>]]>
 <html>
 <head>
@@ -135,11 +140,8 @@
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"><!-- empty --></script>
 
-    <!-- moment (date and time formatting) -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.3.1/moment.min.js"><!-- empty --></script>
-    <xcolab:script src="${_themeJsFolder}/dateTimeFormatter.js" />
-
     <!-- noty (alerts) -->
+    <!-- TODO: we can probably move this to the bottom as well -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.0/packaged/jquery.noty.packaged.min.js"><!-- empty --></script>
     <script type="text/javascript">
         // noty configuration
@@ -900,6 +902,7 @@
             integrity="sha256-NjbogQqosWgor0UBdCURR5dzcvAgHnfUZMcZ8RCwkk8=" crossorigin="anonymous"><!-- --></script>
 
     <!-- ============ ON DEMAND SCRIPTS ============ -->
+    <!-- TODO: what are we using this for? Do we really need it on all pages? -->
     <xcolab:requireLibrary name="jQuery UI" />
 
     <!-- jQuery UI -->
@@ -908,6 +911,10 @@
     <xcolab:loadStylesheet shouldLoad="${_librariesToLoad['jQuery UI']}" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css"
                            integrity="sha256-vpKTO4Ob1M4bZ8RAvZvYMtinMz1XjH0QYdAO2861V9M="/>
 
+    <!-- moment js library and initialization (date and time formatting) -->
+    <xcolab:moment locale="${_lang}"/>
+
+    <!-- File upload -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['fileupload']}" src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-load-image/2.10.0/load-image.all.min.js"/>
     <xcolab:loadScript shouldLoad="${_librariesToLoad['fileupload']}" src="https://cdnjs.cloudflare.com/ajax/libs/javascript-canvas-to-blob/3.6.0/js/canvas-to-blob.min.js"/>
     <xcolab:loadScript shouldLoad="${_librariesToLoad['fileupload']}" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.iframe-transport/1.0.1/jquery.iframe-transport.min.js"/>

@@ -1,0 +1,28 @@
+<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+          version="2.0" >
+
+    <jsp:directive.attribute name="millis" type="java.lang.Long" required="true" rtexprvalue="true" description="Milliseconds to be formatted." />
+    <jsp:directive.attribute name="type" type="java.lang.String" required="false" rtexprvalue="true" description="The format type: datetime (default), date, or time." />
+    <jsp:directive.attribute name="zoneDisplay" type="java.lang.String" required="false" rtexprvalue="true" description="How to display the time zone: tooltip (default), print, or none." />
+    <c:set var="type" value="${not empty type ? type : 'datetime'}" />
+
+    <jsp:useBean id="date" class="java.util.Date"/>
+    <c:set target="${date}" property="time" value="${millis}"/>
+
+    <span class="js-DateFormat" data-type="${type}" data-millis="${millis}" data-zone-display="${zoneDisplay}">
+        <c:choose>
+            <c:when test="${type == 'date'}">
+                <fmt:formatDate value="${date}" pattern="MM/dd/yy zz" />
+            </c:when>
+            <c:when test="${type == 'time'}">
+                <fmt:formatDate value="${date}" pattern="hh:ss zz" />
+            </c:when>
+            <c:when test="${type == 'datetime'}">
+                <fmt:formatDate value="${date}" pattern="MM/dd/yy hh:ss zz" />
+            </c:when>
+        </c:choose>
+    </span>
+
+</jsp:root>
