@@ -213,38 +213,33 @@
         <c:set var="contestPageBreadcumbs" >
             <c:forEach var="_contestPage" items="${_contestPages}" varStatus="status">
                 <c:if test="${_contestPage.menuItemName != ''}">
-                    {
-                    "@type": "ListItem",
-                    "position": ${status.count + 1},
-                    "item": {
-                    "@id": "${_colabUrl}${_contestPage.contestBaseUrl}",
-                    "name": "${xcolabfunctions:escapeStringForJavascript(_contestPage.menuItemName)}"
-                    }
-                    }<c:if test="${!status.last}">,</c:if>
+                    <c:if test="${!status.last}">,</c:if>
                 </c:if>
             </c:forEach>
         </c:set>
         <script type="application/ld+json">
         {
-          "@context": "http://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": [{
-            "@type": "ListItem",
-            "position": 1,
-            "item": {
-              "@id": "${_colabUrl}",
-              "name": "Colab Home"
-            }
-          },${contestPageBreadcumbs},
-          {
-            "@type": "ListItem",
-            "position": ${fn:length(_contestPages) + 2},
-            "item": {
-              "@id": "${_colabUrl}${contest.contestUrl}",
-              "name": "${xcolabfunctions:escapeStringForJavascript(contest.contestName)}",
-              "image": "${_colabUrl}${contest.logoPath}"
-            }
-          }]
+            "@context": "http://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "item": {
+                    "@id": "${_colabUrl}${contestType.contestBaseUrl}",
+                    "name": "${xcolabfunctions:escapeStringForJavascript(contestType.menuItemName)}"
+                    }
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "item": {
+                      "@id": "${_colabUrl}${contest.contestUrl}",
+                      "name": "${xcolabfunctions:escapeStringForJavascript(contest.contestShortName)}",
+                      "image": "${_colabUrl}${contest.logoPath}"
+                    }
+                }
+            ]
         }
         </script>
     </xcolab:layout>

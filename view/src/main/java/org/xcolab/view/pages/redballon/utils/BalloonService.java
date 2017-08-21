@@ -66,8 +66,8 @@ public class BalloonService {
                 .replaceAll(URL_PLACEHOLDER, LinkUtils.getAbsoluteUrl(link.getTargetUrl()));
 
         final String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
-        EmailClient.sendEmail(fromEmail, email, messageSubject, messageBody,
-                true, fromEmail, but.getBalloonTextId());
+        EmailClient.sendEmail(fromEmail, email, messageSubject, messageBody, true, fromEmail,
+                but.getBalloonTextId());
         return link;
     }
 
@@ -83,8 +83,8 @@ public class BalloonService {
 
         // a new tracking created earlier in this request won't show up in the cookies
         // it's saved in an attribute so we can use that instead
-        final BalloonUserTracking createdBut = (BalloonUserTracking) request
-                .getAttribute(NEW_BALLOON_USER_TRACKING_ATTRIBUTE);
+        final BalloonUserTracking createdBut =
+                (BalloonUserTracking) request.getAttribute(NEW_BALLOON_USER_TRACKING_ATTRIBUTE);
         if (createdBut != null) {
             return Optional.of(createdBut);
         }
@@ -94,16 +94,21 @@ public class BalloonService {
 
         Optional<BalloonCookie> cookieOpt = BalloonCookie.from(request.getCookies());
         if (cookieOpt.isPresent()) {
-            BalloonUserTracking but = getBalloonUserTrackingFromCookie(cookieOpt.get());
-            if (member == null) {
-                return Optional.of(but);
-            }
+            try {
+                BalloonUserTracking but = getBalloonUserTrackingFromCookie(cookieOpt.get());
 
-            final boolean butLinkedToOtherMember = but.getUserId() != null
-                    && but.getUserId() != member.getId_();
-            if (!butLinkedToOtherMember) {
-                but.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress());
-                return Optional.of(but);
+                if (member == null) {
+                    return Optional.of(but);
+                }
+
+                final boolean butLinkedToOtherMember =
+                        but.getUserId() != null && but.getUserId() != member.getId_();
+                if (!butLinkedToOtherMember) {
+                    but.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress());
+                    return Optional.of(but);
+                }
+            } catch (ReferenceResolutionException rre) {
+                return Optional.empty();
             }
         }
 
@@ -140,18 +145,18 @@ public class BalloonService {
         response.addCookie(BalloonCookie.of(uuid).getHttpCookie());
 
         final BalloonUserTracking but =
-                createBalloonUserTracking(uuid, parent, linkUuid, member,
-                        request.getRemoteAddr(), request.getHeader(HttpHeaders.REFERER),
+                createBalloonUserTracking(uuid, parent, linkUuid, member, request.getRemoteAddr(),
+                        request.getHeader(HttpHeaders.REFERER),
                         request.getHeader(HttpHeaders.USER_AGENT));
         request.setAttribute(NEW_BALLOON_USER_TRACKING_ATTRIBUTE, but);
         return but;
-	}
+    }
 
     private BalloonUserTracking getBalloonUserTrackingFromCookie(BalloonCookie cookie) {
         return getOptional(() -> BalloonsClient.getBalloonUserTracking(cookie.getUuid()))
-        .orElseThrow(() -> ReferenceResolutionException
-                .toObject(BalloonUserTracking.class, cookie.getUuid())
-                .fromObject(BalloonCookie.class, ""));
+                .orElseThrow(() -> ReferenceResolutionException
+                        .toObject(BalloonUserTracking.class, cookie.getUuid())
+                        .fromObject(BalloonCookie.class, ""));
     }
 
     private BalloonUserTracking createBalloonUserTracking(String uuid, String parent,
@@ -193,8 +198,8 @@ public class BalloonService {
         try {
             return BalloonsClient.getBalloonUserTracking(member.getUuid());
         } catch (BalloonUserTrackingNotFoundException ignored) {
-            List<BalloonUserTracking> buts = BalloonsClient
-                    .getBalloonUserTrackingByEmail(member.getEmailAddress());
+            List<BalloonUserTracking> buts =
+                    BalloonsClient.getBalloonUserTrackingByEmail(member.getEmailAddress());
 
             return buts.stream().findFirst().orElse(null);
         }
