@@ -1,18 +1,19 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" xmlns="http://www.w3.org/1999/xhtml"
-          version="2.0" xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:spring="http://www.springframework.org/tags">
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          version="2.0">
 
-    <!-- TODO: internationalize -->
-    <xcolab:modal modalId="postRegistrationSsoModal" title="You're all set!">
+    <collab:message code="homepage.modals.sso.post.title" var="modalTitle"/>
+    <xcolab:modal modalId="postRegistrationSsoModal" title="${modalTitle}">
         <div class="modal-body">
             <p>
-                Welcome to the  ${_colabName} community. Now you can log into this site using your ${_partnerColabName} username and password.
+                <collab:message code="homepage.modals.sso.post.message" />
             </p>
         </div>
         <div class="modal-footer">
             <button class="c-Button__primary" data-dismiss="modal">
-                Take me to ${_colabName}
+                <collab:message code="homepage.modals.sso.post.button" />
             </button>
         </div>
     </xcolab:modal>

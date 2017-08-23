@@ -3,11 +3,11 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:spring="http://www.springframework.org/tags">
 
-    <jsp:directive.attribute name="showFacebookSso" type="java.lang.Boolean" required="false" rtexprvalue="true" description="If true, Facebook SSO is shown" />
-    <jsp:directive.attribute name="showGoogleSso" type="java.lang.Boolean" required="false" rtexprvalue="true" description="If true, Google SSO is shown" />
-    <jsp:directive.attribute name="redirect" type="java.lang.String" required="false" rtexprvalue="true" description="Redirect URL for registration link" />
-    <jsp:directive.attribute name="show" type="java.lang.Boolean" required="false" rtexprvalue="true" description="If true, modal will be shown on load" />
-    <jsp:directive.attribute name="authError" type="org.xcolab.view.util.entity.flash.ErrorMessage" required="false" rtexprvalue="true" description="Auth error, if any" />
+    <jsp:directive.attribute name="showFacebookSso" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, Facebook SSO is shown" />
+    <jsp:directive.attribute name="showGoogleSso" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, Google SSO is shown" />
+    <jsp:directive.attribute name="redirect" type="java.lang.String" required="true" rtexprvalue="true" description="Redirect URL for registration link" />
+    <jsp:directive.attribute name="show" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, modal will be shown on load" />
+    <jsp:directive.attribute name="authError" type="org.xcolab.view.auth.login.AuthenticationError" required="false" rtexprvalue="true" description="Auth error, if any" />
 
     <collab:message code="homepage.modals.login.message" var="loginModalTitle" />
     <xcolab:modal modalId="loginModal" title="${loginModalTitle}">

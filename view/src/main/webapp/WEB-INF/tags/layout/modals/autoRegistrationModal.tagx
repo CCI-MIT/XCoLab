@@ -2,11 +2,12 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:spring="http://www.springframework.org/tags"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           version="2.0">
 
-    <jsp:directive.attribute name="logoPath" type="java.lang.String" required="false" rtexprvalue="true" description="Path to the CoLab's logo" />
-    <jsp:directive.attribute name="partnerLogoPath" type="java.lang.String" required="false" rtexprvalue="true" description="Path to the partner CoLab's logo" />
-    <jsp:directive.attribute name="contestType" type="org.xcolab.client.admin.pojo.ContestType" required="false" rtexprvalue="true" description="ContestType for contest and proposal names" />
+    <jsp:directive.attribute name="logoPath" type="java.lang.String" required="true" rtexprvalue="true" description="Path to the CoLab's logo" />
+    <jsp:directive.attribute name="partnerLogoPath" type="java.lang.String" required="true" rtexprvalue="true" description="Path to the partner CoLab's logo" />
+    <jsp:directive.attribute name="contestType" type="org.xcolab.client.admin.pojo.ContestType" required="true" rtexprvalue="true" description="ContestType for contest and proposal names" />
 
     <xcolab:modal modalId="autoRegistrationModal">
         <div class="modal-body">
@@ -15,20 +16,18 @@
                 <img style="max-height:55px" src="${partnerLogoPath}"/>
             </div>
             <div style="margin-top: 15px;margin-bottom: 15px;">
-                ${_colabName} has teamed up with ${_partnerColabName} to run this ${contestType.contestNameLowercase}. To participate, click "OK" below.
-                When you save your ${contestType.proposalNameLowercase}, you'll be able to see and make changes to it on either site – all edits and comments will be synced between the two platforms.
-                We'll even create a linked account so you can log into ${_partnerColabName} with your ${_colabName} username and password.  It's easy!
+                <collab:message code="homepage.modals.sso.autoreg.message" contestType="${contestType}" />
             </div>
             <div style="font-size: small;">
-                ${_partnerColabName} will receive your ${_colabName} public profile and email address. Questions? Contact ${contactEmail}.
+                <collab:message code="homepage.modals.sso.message.disclaimer" />
             </div>
         </div>
         <div class="modal-footer">
             <button onclick="handleOkForSharedColabAutoReg();" class="c-Button__primary">
-                OK
+                <spring:message code="homepage.modals.sso.autoreg.button.ok" />
             </button>
             <button onclick="handleNoForSharedColabAutoReg();" class="c-Button__secondary">
-                CANCEL
+                <spring:message code="homepage.modals.sso.autoreg.button.cancel" />
             </button>
         </div>
     </xcolab:modal>

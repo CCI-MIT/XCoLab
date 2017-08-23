@@ -532,10 +532,10 @@
             screenName="${_isLoggedIn ? _member.screenName : null}"/>
 
     <c:if test="${_isSharedColab}">
-        <xcolab-modals:ssoLoginModal partnerLogoPath="${_themeImageFolder}${_partnerColabLogo}"
+        <xcolab-modals:ssoLoginModal partnerLogoPath="${_themeImageFolder}/${_partnerColabLogo}"
                 show="${_showSsoPopup}" redirect="${_requestUri}"/>
         <xcolab-modals:autoRegistrationModal logoPath="${_logoPath}"
-                partnerLogoPath="${_themeImageFolder}${_partnerColabLogo}"
+                partnerLogoPath="${_themeImageFolder}/${_partnerColabLogo}"
                 contestType="${_defaultContestType}"/>
     </c:if>
 

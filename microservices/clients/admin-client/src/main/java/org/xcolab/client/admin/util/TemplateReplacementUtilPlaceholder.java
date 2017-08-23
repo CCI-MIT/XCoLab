@@ -10,6 +10,8 @@ public final class TemplateReplacementUtilPlaceholder {
     private final static String COLAB_SHORT_NAME_PLACEHOLDER = "<colab-short-name/>";
     private final static String COLAB_URL = "<colab-url/>";
 
+    private final static String PARTNER_COLAB_NAME_PLACEHOLDER = "<partner-colab-name/>";
+
     private final static String ADMIN_EMAIL_PLACEHOLDER = "<admin-email/>";
     private final static String ADMIN_FROM_EMAIL_PLACEHOLDER = "<admin-from-email/>";
 
@@ -22,12 +24,14 @@ public final class TemplateReplacementUtilPlaceholder {
         final String colabUrl = PlatformAttributeKey.COLAB_URL.get();
         final String adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.get();
         final String adminFromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
+        final String partnerColabName = ConfigurationAttributeKey.PARTNER_COLAB_NAME.get();
 
         return text.replaceAll(COLAB_NAME_PLACEHOLDER, colabName)
                 .replaceAll(COLAB_SHORT_NAME_PLACEHOLDER, colabShortName)
                 .replaceAll(COLAB_URL, colabUrl)
                 .replaceAll(ADMIN_EMAIL_PLACEHOLDER, adminEmail)
-                .replaceAll(ADMIN_FROM_EMAIL_PLACEHOLDER, adminFromEmail);
+                .replaceAll(ADMIN_FROM_EMAIL_PLACEHOLDER, adminFromEmail)
+                .replaceAll(PARTNER_COLAB_NAME_PLACEHOLDER, partnerColabName);
     }
 
     public static String getAdminFromEmail() {
