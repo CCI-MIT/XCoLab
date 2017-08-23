@@ -39,11 +39,10 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}/phase/{phaseId}")
     public String showContestProposalsWithContestPhaseId(HttpServletRequest request,
-            HttpServletResponse response, ProposalContext proposalContext,
-            @PathVariable String contestYear,
-            @PathVariable String contestUrlName,
-            @PathVariable String phaseId,
-            final SortFilterPage sortFilterPage, Model model, Member loggedInMember) {
+            HttpServletResponse response, Model model, Member loggedInMember,
+            ProposalContext proposalContext, @PathVariable String contestYear,
+            @PathVariable String contestUrlName, @PathVariable String phaseId,
+            final SortFilterPage sortFilterPage) {
         setBasePageAttributes(proposalContext, model);
         return showContestProposalsPage(model, proposalContext,
                 sortFilterPage, loggedInMember);
@@ -51,18 +50,15 @@ public class ContestProposalsController extends BaseProposalsController {
 
     @GetMapping("/contests/{contestYear}/{contestUrlName}")
     public String showContestProposals(HttpServletRequest request, HttpServletResponse response,
-            ProposalContext proposalContext,
-            @PathVariable String contestYear,
-            @PathVariable String contestUrlName,
-            final SortFilterPage sortFilterPage, Model model, Member loggedInMember) {
+            Model model, Member loggedInMember, ProposalContext proposalContext,
+            @PathVariable String contestYear, @PathVariable String contestUrlName,
+            final SortFilterPage sortFilterPage) {
         setBasePageAttributes(proposalContext, model);
-        return showContestProposalsPage(model, proposalContext,
-                sortFilterPage, loggedInMember);
+        return showContestProposalsPage(model, proposalContext, sortFilterPage, loggedInMember);
     }
 
     private String showContestProposalsPage(Model model, ProposalContext proposalContext,
             final SortFilterPage sortFilterPage, Member loggedInMember) {
-
 
         ContestPhase contestPhase = proposalContext.getContestPhase();
         Contest contest = proposalContext.getContest();
