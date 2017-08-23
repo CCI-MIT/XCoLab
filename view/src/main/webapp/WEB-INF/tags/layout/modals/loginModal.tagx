@@ -1,0 +1,80 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" xmlns="http://www.w3.org/1999/xhtml"
+          version="2.0" xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:spring="http://www.springframework.org/tags">
+
+    <jsp:directive.attribute name="showFacebookSso" type="java.lang.Boolean" required="false" rtexprvalue="true" description="If true, Facebook SSO is shown" />
+    <jsp:directive.attribute name="showGoogleSso" type="java.lang.Boolean" required="false" rtexprvalue="true" description="If true, Google SSO is shown" />
+    <jsp:directive.attribute name="redirect" type="java.lang.String" required="false" rtexprvalue="true" description="Redirect URL for registration link" />
+    <jsp:directive.attribute name="show" type="java.lang.Boolean" required="false" rtexprvalue="true" description="If true, modal will be shown on load" />
+    <jsp:directive.attribute name="authError" type="org.xcolab.view.util.entity.flash.ErrorMessage" required="false" rtexprvalue="true" description="Auth error, if any" />
+
+    <collab:message code="homepage.modals.login.message" var="loginModalTitle" />
+    <xcolab:modal modalId="loginModal" title="${loginModalTitle}">
+        <form id="signInForm_form" method="post" action="/login">
+            <div class="modal-body">
+                <c:choose>
+                    <c:when test='${authError != null}'>
+                        <div class="c-Alert__error__message">${authError.message}</div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="c-Alert__info__message">
+                            <spring:message code="homepage.modals.login.welcome"/>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+
+                <div class="form-group clearfix">
+                    <div class="c-Header__login__with">
+                        <div class="c-Header__login__with">
+                            <c:if test="${showFacebookSso}">
+                                <a href="/sso/facebook/register" class="sketchy-icon sketchy-black facebook-sketchy"><span>Facebook</span></a>
+                            </c:if>
+                            <c:if test="${showGoogleSso}">
+                                <a href="/sso/google/register" class="sketchy-icon sketchy-black google-sketchy"><span>Google</span></a>
+                            </c:if>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <spring:message code="homepage.login.usernameoremail" var="usernamePlaceholder"/>
+                    <input name="username" type="text" class="form-control"
+                           placeholder="${usernamePlaceholder}"
+                           onkeypress="return submitenter(this,event)"/>
+                </div>
+                <div class="form-group">
+                    <spring:message code="homepage.login.password" var="passwordPlaceholder"/>
+                    <input name="password" type="password" class="form-control"
+                           placeholder="${passwordPlaceholder}"
+                           onkeypress="return submitenter(this,event)" />
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="remember-me" checked="checked" />
+                        <spring:message code="homepage.login.rememberme"/>
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div style="float: left;">
+                    <em><a href="javascript:;" class="c-Header__login__forgot" style="color:#900;" onclick="showForgotPasswordPopup()"><spring:message code="homepage.login.forgotyourpassword"/></a></em><br />
+                    <em><a href="/register?redirect=${redirect}" class="c-Header__login__forgot" ><spring:message code="homepage.login.notregisteredyet"/></a></em><br />
+                    <div class="clearfix"><!-- --></div>
+                </div>
+                <button type="submit" class="c-Button__primary">
+                    <spring:message code="homepage.login.button"/>
+                </button>
+            </div>
+        </form>
+    </xcolab:modal>
+
+    <c:if test='${show}'>
+        <script type="text/javascript">
+            jQuery(function() {
+                $('#loginModal').modal();
+            });
+        </script>
+    </c:if>
+</jsp:root>

@@ -170,10 +170,7 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
                     ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
             final ContestType defaultContestType = ContestTypeClient
                     .getContestType(defaultContestTypeId, locale.getLanguage());
-            modelAndView.addObject("_contestNameLowerCase",
-                    defaultContestType.getContestNameLowercase());
-            modelAndView.addObject("_proposalNameLowerCase",
-                    defaultContestType.getProposalNameLowercase());
+            modelAndView.addObject("_defaultContestType", defaultContestType);
 
             final boolean mitHeaderBarShow = ConfigurationAttributeKey.MIT_HEADER_BAR_SHOW.get();
             modelAndView.addObject("_mitHeaderBarShow", mitHeaderBarShow);

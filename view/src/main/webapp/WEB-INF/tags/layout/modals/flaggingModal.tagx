@@ -1,0 +1,62 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" xmlns="http://www.w3.org/1999/xhtml"
+          version="2.0" xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:spring="http://www.springframework.org/tags">
+
+    <!-- report popup -->
+    <xcolab:modal modalId="flaggingModal" title="Why do you want to report this content?">
+        <form method="post" action="/flagging/report" id="popup_flagging_form">
+            <div class="modal-body">
+                <div class="c-Alert__info__message">
+                    This content will be reviewed by moderators if it is reported by enough users.
+                    Please review the reporting guidelines for more information and to avoid false reports.
+                </div>
+                <div class="login_popup_box">
+                    <div class="form-group">
+                        <label for="popup_flagging_reasons">Reason:</label>
+                        <select class="form-control" name="reason" id="popup_flagging_reasons"><!-- --></select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="flaggingModal_comment">Comment: </label>
+                        <textarea class="form-control" id="flaggingModal_comment" name="comment" placeholder="Optional comment"><!-- --></textarea> <br />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="c-Button__primary">Report</button>
+            </div>
+            <input type="hidden" name="targetType" id="popup_flagging_form_targetType"/>
+            <input type="hidden" name="targetId" id="popup_flagging_form_targetId"/>
+            <input type="hidden" name="targetAdditionalId"
+                   value="0" id="popup_flagging_form_targetAdditionalId"/>
+        </form>
+    </xcolab:modal>
+    <!-- /report popup -->
+
+    <script type="text/javascript">
+        jQuery("#popup_flagging_form").submit(function(e) {
+
+            var $popupFlaggingForm = jQuery("#popup_flagging_form");
+            var url = $popupFlaggingForm.attr("action");
+
+            jQuery.ajax({
+                type: "POST",
+                url: url,
+                data: $popupFlaggingForm.serialize(),
+                success: function(data)
+                {
+                    if (data.success) {
+                        jQuery('#flaggingModal').modal('hide');
+                        noty({text: 'SUCCESS', type: 'success'});
+                    } else {
+                        jQuery('#flaggingModal').modal('hide');
+                        noty({text: 'ERROR', type: 'error'});
+                    }
+                }
+            });
+
+            e.preventDefault();
+        });
+    </script>
+</jsp:root>
