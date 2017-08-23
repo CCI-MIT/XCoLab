@@ -50,7 +50,6 @@ public final class HtmlUtil {
         whitelist.addAttributes("img", "style");
         whitelist.addAttributes("a", "name");
         whitelist.addAttributes("a", "class");
-        whitelist.preserveRelativeLinks(true);
         return clean(text, whitelist, baseUri);
     }
 

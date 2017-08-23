@@ -11,6 +11,7 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.enums.ActivityProvidersType;
 import org.xcolab.client.activities.helper.ActivityEntryHelper;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.balloons.BalloonsClient;
 import org.xcolab.client.balloons.exceptions.BalloonUserTrackingNotFoundException;
 import org.xcolab.client.balloons.pojo.BalloonUserTracking;
@@ -24,6 +25,7 @@ import org.xcolab.client.sharedcolab.SharedColabClient;
 import org.xcolab.entity.utils.notifications.member.MemberBatchRegistrationNotification;
 import org.xcolab.entity.utils.notifications.member.MemberRegistrationNotification;
 import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.auth.AuthenticationService;
 import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;
@@ -162,7 +164,8 @@ public class LoginRegisterService {
         } catch (NumberFormatException ignored) {
         }
 
-        member.setShortBio(shortBio);
+        final String baseUri = PlatformAttributeKey.COLAB_URL.get();
+        member.setShortBio(HtmlUtil.cleanSome(shortBio, baseUri));
         member.setCountry(country);
         member.setPortraitFileEntryId(0L);
         MembersClient.register(member);
