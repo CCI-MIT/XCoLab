@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.proposals.utils.picker;
 
-import org.xcolab.client.contest.pojo.AbstractContest;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.proposals.pojo.Proposal;
 
@@ -19,7 +18,7 @@ public class ProposalPickerSortingUtil {
             Comparator<Contest> comparator;
             switch (sortColumn.toLowerCase()) {
                 case "name":
-                    comparator = Comparator.comparing(AbstractContest::getContestShortName);
+                    comparator = Comparator.comparing(Contest::getContestShortNameWithEndYear);
                     break;
                 case "comments":
                     comparator = Comparator.comparing(Contest::getTotalCommentsCount);

@@ -101,7 +101,7 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
     protected String getContestLink() {
         String url = "&#160;";
         if (contest!= null) {
-            url = "<a href='" +contest.getContestUrl()+ "/discussion" + "'>" +  contest.getContestShortName()+ "</a>";
+            url = "<a href='" +contest.getContestUrl()+ "/discussion" + "'>" +  contest.getContestShortNameWithEndYear()+ "</a>";
         }
         return url;
     }

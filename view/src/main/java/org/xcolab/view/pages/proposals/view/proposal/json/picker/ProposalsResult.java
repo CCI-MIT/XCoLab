@@ -56,7 +56,7 @@ public class ProposalsResult {
             this.proposalName = StringUtils.abbreviate(
                 StringEscapeUtils.unescapeXml(proposal.getName()), MAX_CHARS_FOR_NAMES);
             this.contestName = StringUtils.abbreviate(proposal
-                .getContest().getContestShortName(), MAX_CHARS_FOR_NAMES);
+                .getContest().getContestShortNameWithEndYear(), MAX_CHARS_FOR_NAMES);
             this.linkUrl = proposal.getProposalUrl();
             this.contestId = proposal.getContestPK();
             this.team = proposal.getTeam();

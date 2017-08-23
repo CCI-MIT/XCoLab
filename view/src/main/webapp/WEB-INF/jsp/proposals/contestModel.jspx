@@ -7,7 +7,7 @@
 	<!--@elvariable id="availableModels" type="java.util.Map<java.lang.Long, java.lang.String>"-->
 	<!--@elvariable id="modelId" type="java.lang.Long"-->
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-<xcolab:layout title="${contest.contestShortName} - Model">
+<xcolab:layout title="${contest.contestShortNameWithEndYear} - Model">
 
 	<jsp:directive.include file="./init_contest.jspx" />
 	
@@ -18,7 +18,7 @@
 					<img src="${contest.logoPath}" width="52" height="52" alt="Contest Image" />
 				</div>
 				<div class='proposal-title'>
-					<h1>Model <proposalsPortlet:contestLink contest="${contest}" text="${contest.contestShortName} " /></h1>
+					<h1>Model <proposalsPortlet:contestLink contest="${contest}" text="${contest.contestShortNameWithEndYear} " /></h1>
 				</div>
 			</div>
 		</div>

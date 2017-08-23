@@ -9,5 +9,5 @@
   <jsp:directive.attribute name="cssClass" type="java.lang.String" required="false" rtexprvalue="true" description="Css class" />
   <jsp:directive.attribute name="target" type="java.lang.String" required="false" rtexprvalue="true" description="HTML target value" />
 
-  <a class="${cssClass}" href="${contest.contestUrl}${empty hashString ? '' : '#'}${hashString}" target="${target}" id="${linkId}"><c:out value="${empty text ? contest.contestShortName : text}" escapeXml="${escape ? true : false }" /></a>
+  <a class="${cssClass}" href="${contest.contestUrl}${empty hashString ? '' : '#'}${hashString}" target="${target}" id="${linkId}"><c:out value="${empty text ? contest.contestShortNameWithEndYear : text}" escapeXml="${escape ? true : false }" /></a>
 </jsp:root>

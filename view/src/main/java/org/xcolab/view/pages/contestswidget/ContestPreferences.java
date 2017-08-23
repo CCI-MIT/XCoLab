@@ -123,7 +123,7 @@ public class ContestPreferences extends WidgetPreference{
                         String.format("%d [%s] %s",
                                 c.getContestPK(),
                                 phaseName,
-                                c.getContestShortName()
+                                c.getContestShortNameWithEndYear()
                         ));
             }
 

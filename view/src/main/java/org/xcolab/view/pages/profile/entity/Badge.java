@@ -64,7 +64,7 @@ public class Badge implements Serializable {
     }
 
     public String getContestName() {
-        return contest.getContestShortName();
+        return contest.getContestShortNameWithEndYear();
     }
 
     public String getProposalLinkUrl() {

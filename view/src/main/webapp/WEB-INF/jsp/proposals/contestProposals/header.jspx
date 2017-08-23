@@ -10,7 +10,7 @@
 		<div class="contest-image">
 			<img src="${contest.logoPath}" width="52" height="52" alt="Contest Image" />
 		</div>
-		<h1>${contest.contestShortName}</h1>
+		<h1>${contest.contestShortNameWithEndYear}</h1>
 		<c:if test="${contestPhase.active and not empty contestPhase.phaseEndDate and showCountdown}">
 			<div class="days-left">
                 <spring:message code="contests.untilphaseends">

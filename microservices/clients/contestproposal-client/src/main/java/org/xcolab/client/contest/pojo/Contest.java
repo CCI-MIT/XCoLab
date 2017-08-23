@@ -34,7 +34,6 @@ import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.util.clients.CoLabService;
-import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.http.exceptions.UncheckedEntityNotFoundException;
@@ -255,15 +254,18 @@ public class Contest extends AbstractContest implements Serializable {
         contestClient.updateContest(this);
     }
 
-
-    public String getContestShortName() {
-        if(isContestCompleted()){
+    public String getContestShortNameWithEndYear() {
+        final String contestShortName = getContestShortName();
+        final char lastCharOfName = contestShortName.charAt(contestShortName.length() - 1);
+        final boolean nameEndsInNumber = Character.isDigit(lastCharOfName);
+        if (isContestCompleted() && !nameEndsInNumber) {
             ContestPhase activePhase = getActivePhase();
-            Integer phaseEndYear = DateUtil.getYearFromDate(activePhase.getPhaseStartDate());
-            return super.getContestShortName() + " " + phaseEndYear;
-        }else {
-            return super.getContestShortName();
+            if (activePhase != null) {
+                int phaseEndYear = DateUtil.getYearFromDate(activePhase.getPhaseStartDate());
+                return contestShortName + " " + phaseEndYear;
+            }
         }
+        return contestShortName;
     }
 
     public boolean isContestActive() {
@@ -282,12 +284,11 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public boolean isContestCompleted(){
-
         ContestPhase activePhase = getActivePhase();
-        return
-                (activePhase.getContestPhaseType() == ContestPhaseTypeValue.COMPLETED.getTypeId() ||
-                        activePhase.getContestPhaseType() == ContestPhaseTypeValue.WINNERS_AWARDED.getTypeId());
-
+        if (activePhase != null) {
+            return activePhase.isCompleted();
+        }
+        return getLastPhase().isEnded();
     }
 
     public boolean isFeatured() {

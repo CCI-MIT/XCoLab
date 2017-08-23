@@ -56,7 +56,7 @@ public class ActivitySubscriptionNameGenerator {
     private static String getNameForContestSubscription(ActivitySubscription subscription){
         Contest contest = ContestClientUtil.getContest(subscription.getClassPK());
         final String contestNameString = contest.getContestType().getContestName();
-        return contest.getContestShortName() + " " + StringUtils.uncapitalize(contestNameString);
+        return contest.getContestShortNameWithEndYear() + " " + StringUtils.uncapitalize(contestNameString);
     }
 
     private static String getNameForDiscussionSubscription(ActivitySubscription subscription) {

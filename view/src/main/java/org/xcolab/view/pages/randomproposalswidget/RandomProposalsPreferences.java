@@ -113,7 +113,7 @@ public class RandomProposalsPreferences extends WidgetPreference {
                         String.format("%d %s %s - %d %s",
                                 c.getContestPK(),
                                 prefix,
-                                c.getContestShortName(),
+                                c.getContestShortNameWithEndYear(),
                                 cp.getContestPhasePK(),
                                 cp.getContestStatusStr()
                         ));

@@ -30,8 +30,11 @@ public class ContestsSortFilterBean {
             filteredContests = new ArrayList<>();
             for (Contest contest: contests) {
 
-                if (contest.getContestName().toLowerCase().contains(filterString) ||
-                        contest.getContestShortName().toLowerCase().contains(filterString)) {
+                final String contestNameLc = contest.getContestName().toLowerCase();
+                final String contestShortNameLc = contest.getContestShortNameWithEndYear()
+                        .toLowerCase();
+                if (contestNameLc.contains(filterString)
+                        || contestShortNameLc.contains(filterString)) {
                     filteredContests.add(contest);
                 }
             }

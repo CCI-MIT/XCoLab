@@ -4,15 +4,13 @@
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
            version="2.0">
 
-
-
-
-    <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
-
-    <jsp:directive.attribute name="contests" type="java.util.ArrayList" required="true" rtexprvalue="true" description="Contests to be shown" />
+    <jsp:directive.attribute name="contests" type="java.util.List" required="true" rtexprvalue="true" description="Contests to be shown" />
     <jsp:directive.attribute name="featured" type="java.lang.Boolean" required="true" rtexprvalue="true" description="whether the contests are featured" />
 
-    <c:forEach var="contest" items="${contests }">
+    <!--@elvariable id="proposalsPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsPermissions"-->
+    <!--@elvariable id="contests" type="java.util.List<org.xcolab.client.contest.pojo.Contest>"-->
+
+    <c:forEach var="contest" items="${contests}">
         <c:if test="${contest.showInListView}">
             <tr class="c-Table__row ${featured ? 'featured' : ''}">
                 <td class="c-Table__cell">
@@ -20,7 +18,7 @@
                         <c:if test="${not empty contest.flagText }">
                             <span class="${not empty contest.flagTooltip ? 'js-Tooltip' : ''}" title="${contest.flagTooltip}">${contest.flagText}:&#160;</span>
                         </c:if>
-                        <collab:contestLink contest="${contest}" text="${contest.contestShortName}:" />
+                        <collab:contestLink contest="${contest}" text="${contest.contestShortNameWithEndYear}:" />
                         ${contest.contestName}
                     </div>
                 </td>

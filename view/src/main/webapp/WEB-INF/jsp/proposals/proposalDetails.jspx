@@ -20,7 +20,7 @@
     <xcolab:layout title="${proposal.name}" description="${proposal.pitch}"
                    openGraphImage="${proposalOpenGraphImage}"
                    openGraphDescription="${proposal.cleanPitch}"
-                   openGraphTitle="${proposal.name} - ${contest.contestShortName} - ${_colabName}"
+                   openGraphTitle="${proposal.name} - ${contest.contestShortNameWithEndYear} - ${_colabName}"
     >
         <!--@elvariable id="voted" type="java.lang.Boolean"-->
         <!--@elvariable id="votingDeadline" type="java.lang.String"-->

@@ -19,7 +19,6 @@ import org.xcolab.util.time.DurationFormatter;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class ContestPhase extends AbstractContestPhase {
 

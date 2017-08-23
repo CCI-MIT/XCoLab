@@ -175,10 +175,10 @@
 
 									<c:choose>
 										<c:when test="${not contestWrapper.isSharedContestInForeignColab}">
-											<a href="/admin/contest/details/contestId/${contestWrapper.contestPK}"> ${contestWrapper.contestShortName}</a>
+											<a href="/admin/contest/details/contestId/${contestWrapper.contestPK}"> ${contestWrapper.contestShortNameWithEndYear}</a>
 										</c:when>
 										<c:otherwise>
-											<a>${contestWrapper.contestShortName}</a>
+											<a>${contestWrapper.contestShortNameWithEndYear}</a>
 										</c:otherwise>
 									</c:choose>
 

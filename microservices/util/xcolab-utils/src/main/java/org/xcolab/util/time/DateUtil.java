@@ -6,11 +6,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 public final class DateUtil {
 
@@ -39,10 +36,8 @@ public final class DateUtil {
     }
 
 
-    public static Integer getYearFromDate(Date date) {
-        GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("US/Eastern"));
-        calendar.setTime(date);
-        return calendar.get(Calendar.YEAR);
+    public static int getYearFromDate(Date date) {
+        return toLocalDateTime(date).atZone(ZoneId.systemDefault()).getYear();
     }
 
     public static LocalDateTime earliest(LocalDateTime... dateTimes) {

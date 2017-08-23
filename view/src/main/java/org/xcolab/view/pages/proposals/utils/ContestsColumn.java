@@ -6,7 +6,7 @@ import org.xcolab.client.contest.pojo.Contest;
 import java.util.Comparator;
 
 public enum ContestsColumn {
-    CONTEST_NAME (Comparator.comparing(o -> o.getContestShortName().toLowerCase())),
+    CONTEST_NAME (Comparator.comparing(o -> o.getContestShortNameWithEndYear().toLowerCase())),
     PROPOSALS_COUNT((o1, o2) -> (int) (o1.getProposalsCount() - o2.getProposalsCount())),
     COMMENTS_COUNT((o1, o2) -> (int) (o1.getCommentsCount() - o2.getCommentsCount())),
     VOTES_COUNT((o1, o2) -> (int) (o1.getVotesCount() - o2.getVotesCount())),
