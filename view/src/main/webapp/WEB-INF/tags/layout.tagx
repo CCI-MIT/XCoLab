@@ -7,8 +7,10 @@
           xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
           xmlns:xcolab-modals="urn:jsptagdir:/WEB-INF/tags/layout/modals"
           xmlns:xcolabfunctions="urn:jsptld:/WEB-INF/tlds/xcolab-escaping.tld"
-          version="2.0" xmlns:xcolab-layout="urn:jsptagdir:/WEB-INF/tags/layout"
-          xmlns:xcolab-dropdowns="urn:jsptagdir:/WEB-INF/tags/layout/dropdowns">
+          xmlns:xcolab-layout="urn:jsptagdir:/WEB-INF/tags/layout"
+          xmlns:xcolab-dropdowns="urn:jsptagdir:/WEB-INF/tags/layout/dropdowns"
+          version="2.0">
+>>>>>>> [COLAB-2162] Reworked navbar and dropdowns to use bootstrap classes
     <jsp:directive.attribute name="title" type="java.lang.String" required="false" rtexprvalue="true" description="Page title" />
     <jsp:directive.attribute name="description" type="java.lang.String" required="false" rtexprvalue="true" description="Page description for meta tag" />
 
