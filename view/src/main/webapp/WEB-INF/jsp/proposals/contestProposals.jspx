@@ -50,7 +50,8 @@
                     </c:choose>
                 </h2>
 
-                <c:if test="${proposalsPermissions.isCreationAllowedByPhase }">
+                <c:set var="isProposalCreationAllowed" value="${proposalsPermissions.isCreationAllowedByPhase || _isAdmin}" />
+                <c:if test="${isProposalCreationAllowed}">
                     <c:set var="createProposalURL" value="${contest.newProposalLinkUrl}"/>
                 </c:if>
                 <c:choose>
@@ -76,7 +77,7 @@
                 </c:choose>
 
                 <div class="right">
-                    <c:if test="${proposalsPermissions.isCreationAllowedByPhase }">
+                    <c:if test="${isProposalCreationAllowed}">
                         <a class="c-Button__primary large" rel="nofollow" href="${proposalsPermissions.canCreate ? createProposalURL : '#'}"
                            onclick="if(!handleOnClickAtSupportBtn()) return false;">
                             ${contestType.creationPrompt}
