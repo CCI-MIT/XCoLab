@@ -4,7 +4,16 @@
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld" version="2.0">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
-    <div>
+    <div class="c-CarouselWrapper">
         <h2>${carouselPreferences.title}</h2>
+        <div class="c-CarouselBox">
+            <c:forEach var="logo" items="${carouselPreferences.logos}">
+                <div class="c-CarouselLogo">
+                    <a href="${logo.linkUrl}">
+                        <img src="${logo.imageUrl}" alt="${logo.altText}" />
+                    </a>
+                </div>
+            </c:forEach>
+        </div>
     </div>
 </jsp:root>
