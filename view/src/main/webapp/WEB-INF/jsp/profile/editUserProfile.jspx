@@ -57,7 +57,7 @@
 		<div id="main" class="userprofile">
 			<form:hidden path="userId"/>
 			<div class="reg_errors"><!--  --></div>
-			<form:errors cssClass="c-Alert c-Alert__error" path="*" />
+			<form:errors cssClass="c-Alert c-Alert__error" path="*" htmlEscape="false" />
 
 			<!-- use these fields to prevent chrome from wrongly filling in country and current password automatically -->
 			<input type="text" style="display:none" />
