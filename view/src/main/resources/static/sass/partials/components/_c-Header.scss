@@ -257,8 +257,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 }
 
 
-
-.c-Header__menu__icon_menuItem li {
+.c-Header__navItem {
   &.register {
     background: $c-Header__menu__right__li__register__backgroundUrl no-repeat center 13px;
     &:hover {
@@ -270,7 +269,11 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
     padding-right: 7px;
 
     &:hover {
-      background: $c-Header__menu__right__li__login--hover__backgroundUrl no-repeat center 15px;
+      background-image: $c-Header__menu__right__li__login--hover__backgroundUrl;
+    }
+
+    &.open {
+      background-image: url(/images/icon-menu-login3.png);
     }
   }
 
@@ -280,17 +283,51 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
     &:hover {
       background: $c-Header__menu__right__li__language--hover__backgroundUrl no-repeat center 15px;
     }
+
+    &.open {
+    background-image: url(/images/earth-grid-select-language-button3.png)
+    }
   }
 
   &.help {
-    background: $c-Header__menu__right__li__help__backgroundUrl no-repeat 20px 15px;
+    background: $c-Header__menu__right__li__help__backgroundUrl no-repeat center 15px;
     padding-left: 7px;
     border-left: $c-Header__menu__right__li__help__border--left;
 
     &:hover {
-      background: $c-Header__menu__right__li__help--hover__backgroundUrl no-repeat 20px 15px;
+      background: $c-Header__menu__right__li__help--hover__backgroundUrl no-repeat center 15px;
+    }
+  }
+
+  &.search {
+    background: $c-Header__menu__li__a__search__backgroundUrl no-repeat center 18px;
+
+    &.open {
+      background-image: url(/images/icon-menu-search2.png);
+    }
+  }
+}
+
+.c-Header__socialButtons {
+
+  text-align: center;
+
+  > a {
+    margin: 0 10px;
+
+    &:hover {
+      border-bottom: none !important;
     }
 
+    > span:hover {
+      border-bottom: 1px dashed #fff;
+    }
+
+    > img {
+      width: 32px;
+      height: 32px;
+      margin-right: 5px;
+    }
   }
 }
 
@@ -463,8 +500,9 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 .c-Header__login__with__or { //.loginwith-or
   width: 23px;
   float: left;
-  margin-top:10px;
-  margin-bottom:10px;
+  font-weight: 700;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 //TODO: unused in source code - verify if used elsewhere

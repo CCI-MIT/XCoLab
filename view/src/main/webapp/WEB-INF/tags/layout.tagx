@@ -7,7 +7,8 @@
           xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
           xmlns:xcolab-modals="urn:jsptagdir:/WEB-INF/tags/layout/modals"
           xmlns:xcolabfunctions="urn:jsptld:/WEB-INF/tlds/xcolab-escaping.tld"
-          version="2.0">
+          version="2.0" xmlns:xcolab-layout="urn:jsptagdir:/WEB-INF/tags/layout"
+          xmlns:xcolab-dropdowns="urn:jsptagdir:/WEB-INF/tags/layout/dropdowns">
     <jsp:directive.attribute name="title" type="java.lang.String" required="false" rtexprvalue="true" description="Page title" />
     <jsp:directive.attribute name="description" type="java.lang.String" required="false" rtexprvalue="true" description="Page description for meta tag" />
 
@@ -47,6 +48,7 @@
     <!--@elvariable id="_libJsFolder" type="java.lang.String"-->
     <!--@elvariable id="_themeImageFolder" type="java.lang.String"-->
     <!--@elvariable id="_languageSelectItems" type="java.lang.String"-->
+    <!--@elvariable id="_activePageLink" type="java.lang.String"-->
 
     <!--@elvariable id="_logoPath" type="java.lang.String"-->
     <!--@elvariable id="_logoPathSocial" type="java.lang.String"-->
@@ -237,327 +239,15 @@
             </div>
         </div>
     </c:if>
-    <nav class="navbar navbar-default navbar-static-top navbar-custom">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">
-                    <a class="navbar-brand" href="/">
-                        <img src="${_logoPath}" alt="${_colabName}" height="42" />
-                    </a>
-                </a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-left">
-                    <li class="${_activePageLink == 'about' ? 'active' : ''}">
-                        <a href="/page/about"><spring:message code="homepage.menu.about" /></a>
-                    </li>
 
-                    <c:forEach var="_contestPage" items="${_contestPages}">
-                        <c:if test="${_contestPage.menuItemName != ''}">
-                            <li class="${_activePageLink == _contestPage.identifier ? 'active' : ''}">
-                                <a href="${_contestPage.contestBaseUrl}">${_contestPage.menuItemName}</a>
-                            </li>
-                        </c:if>
-                    </c:forEach>
-                    <li class="${_activePageLink == 'community' ? 'active' : ''}" ><a href="/members"><spring:message code="homepage.menu.community" /></a></li>
-                    <c:if test="${_showSearchMenuItem}">
-                        <!--#if ($pageName == 'search') isCurrent #end-->
-                        <li class="${_activePageLink == 'search' ? 'active' : ''} dropdown" data-toggle="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown"  ><spring:message code="homepage.menu.search" /></a>
-                            <ul class="dropdown-menu"><!-- searchPopupTrigger -->
-                                <li class="c-Header__search__box">
-                                    <input name="c-Header__search__term" type="text" class="c-Header__search__term" value="" id="searchinput" />
-                                    <a class="c-Header__search__submit" id="searchsubmit"><spring:message code="homepage.search.button" /></a>
-                                </li>
-                            </ul>
-                        </li>
-                    </c:if>
-
-                </ul>
-                <ul class="nav navbar-nav navbar-right c-Header__menu__icon_menuItem ">
-                    <li class="register">
-                        <a href="/register?redirect=${_requestUri}" class="c-Header__menu__text"><spring:message code="homepage.menu.visitor.register" /></a>
-                    </li>
-                    <li class="login dropdown" data-toggle="dropdown" >
-                        <a  class="dropdown-toggle c-Header__menu__text" data-toggle="dropdown" ><spring:message code="homepage.menu.visitor.login" /></a>
-                        <ul id="" class="dropdown-menu c-Header__login__box" >
-                            <li>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="social-buttons">
-                                            <c:if test="${_isFacebookSsoActive}">
-                                                <a href="/sso/facebook/login" class="sketchy-icon facebook-sketchy"><span>Facebook</span></a>
-                                            </c:if>
-                                            <c:if test="${_isGoogleSsoActive}">
-                                                <a href="/sso/google/login" class="sketchy-icon google-sketchy"><span>Google</span></a>
-                                            </c:if>
-                                        </div>
-                                        <c:if test="${_isFacebookSsoActive or _isGoogleSsoActive}">
-                                            <div class="c-Header__login__with__del"><!-- --></div>
-                                            <div class="c-Header__login__with__or"><spring:message code="homepage.login.or"/></div>
-                                            <div class="c-Header__login__with__del"><!-- --></div>
-
-                                        </c:if>
-
-                                        <form class="form" role="form" id="signInFormPopup" method="post" action="/login" accept-charset="UTF-8" >
-                                            <div class="form-group">
-                                                <spring:message code="homepage.login.usernameoremail" var="usernameplaceholder"/>
-                                                <input name="username" type="text" class="c-Header__login__username form-control" placeholder="${usernameplaceholder}"  />
-                                            </div>
-                                            <div class="form-group">
-                                                <spring:message code="homepage.login.password" var="passwordplaceholder"/>
-                                                <input name="password" type="password" class="c-Header__login__password form-control" placeholder="${passwordplaceholder}" />
-
-
-
-                                            </div>
-                                            <div class="checkbox">
-                                                <label for="header__remember-me"><spring:message code="homepage.login.rememberme"/> :</label> &#160;
-                                                <input id="header__remember-me" type="checkbox" name="remember-me" checked="true" /> <br/>
-                                                <input name="redirect" type="hidden" />
-                                                <span>
-                            					<em>
-                            						<a href="javascript:;" class="c-Header__login__forgot" onclick="showForgotPasswordPopup()"><spring:message code="homepage.login.forgotyourpassword"/></a>
-                            					</em>
-                            				</span>
-
-                                            </div>
-                                            <div class="form-group">
-                                                <button type="submit" class="c-Button__primary" id="loginPopupTopSubmit"><spring:message code="homepage.login.button"/></button><!-- btn btn-primary btn-block -->
-                                            </div>
-
-                                        </form>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                    <c:if test="${_isI18NActive}">
-                        <li class="language" >
-                            <a  href="javascript:;" id="languagePopupTrigger" class="c-Header__menu__text"><spring:message code="homepage.menu.visitor.language" /></a>
-                        </li>
-                    </c:if>
-                    <li class="help">
-                        <a href="/wiki/Help" class="c-Header__menu__text"><spring:message code="homepage.menu.help" /></a>
-                    </li>
-
-                </ul>
-            </div><!--/.nav-collapse -->
-        </div>
-    </nav>
-    <div id="c-Header" class="${_isHomePage ? 'backgroundLight' : ''}">
-        <div class="inner">
-            <div id="c-Header__logo">
-                <a href="/"><img src="${_logoPath}" alt="${_colabName}" height="42" /></a>
-            </div>
-            <ul id="c-Header__menu" class="${_isHomePage ? 'backgroundLight' : ''}">
-                <li class="${_activePageLink == 'about' ? 'isCurrent' : ''}">
-                    <a href="/page/about"><spring:message code="homepage.menu.about" /></a>
-                </li>
-                <c:forEach var="_contestPage" items="${_contestPages}">
-                    <c:if test="${_contestPage.menuItemName != ''}">
-                        <li class="${_activePageLink == _contestPage.identifier ? 'isCurrent' : ''}">
-                            <a href="${_contestPage.contestBaseUrl}">${_contestPage.menuItemName}</a>
-                        </li>
-                    </c:if>
-                </c:forEach>
-                <li class="${_activePageLink == 'community' ? 'isCurrent' : ''}" ><a href="/members"><spring:message code="homepage.menu.community" /></a></li>
-                <c:if test="${_showSearchMenuItem}">
-                    <li class="${_activePageLink == 'search' ? 'isCurrent' : ''} dropdown">
-                        <a href="javascript:;" class="search" id="searchPopupTrigger" ><spring:message code="homepage.menu.search" /></a>
-                        <ul class="dropdown-menu">
-                            <li class="c-Header__search__box">
-                                <input name="c-Header__search__term" type="text" class="c-Header__search__term" value="" id="searchinput" />
-                                <a class="c-Header__search__submit" id="searchsubmit"><spring:message code="homepage.search.button" /></a>
-                            </li>
-                        </ul>
-                    </li>
-                </c:if>
-            </ul>
-
-            <c:choose>
-            <c:when test="${_isLoggedIn}">
-                <ul id="c-Header__menu__right">
-                    <li class="user ${_member.screenName.length() > 22 ? 'small' : ''}">
-                        <a href="javascript:;" id="userPopupTrigger" >
-                            <span class="c-Header__menu__right__displayName">
-                                ${_member.displayName}
-                            </span>
-                            <img src="${_uploadedImageFolder}/user_male_portrait?userId=${_member.userId}&amp;screenName=${_member.screenName}&amp;portraitId=${_member.portraitId}" width="24" height="25" alt="${_member.screenName}" />
-                        </a>
-                        <c:if test="${_unreadMessages > 0}">
-                            <div class="c-Header__user__notification c-Header__user__notification__top">
-                                ${_unreadMessages}
-                            </div>
-                        </c:if>
-                    </li>
-                    <li class="help">
-                        <a href="/wiki/Help"><spring:message code="homepage.menu.help" /></a>
-                    </li>
-                </ul>
-
-
-                <!-- USER POPUP -->
-                <div class="c-Header__user__pop" id="userPopupContainer">
-                    <div class="c-Header__user__top"><img src="${_uploadedImageFolder}/user_male_portrait?userId=${_member.userId}&amp;screenName=${_member.screenName}&amp;portraitId=${_member.portraitFileEntryId}" width="24" height="25" alt="${_member.screenName}" /></div>
-                    <div class="c-Header__user__box">
-                        <ul>
-                            <li><a href="/members/profile/${_member.userId}"><spring:message code="homepage.menu.user.myprofile" /></a></li>
-                            <li>
-                                <a href="/messaging"><spring:message code="homepage.menu.user.mymessages" /></a>
-                                <c:if test="${_unreadMessages > 0}">
-                                    <div class="c-Header__user__notification c-Header__user__notification__message">
-                                        ${_unreadMessages}
-                                    </div>
-                                </c:if>
-                            </li>
-                            <c:if test="${_isAdmin}">
-                                <li>
-                                    <a href="/admin/contest">Contest Manager</a>
-                                </li>
-                                <c:if test="${not empty _blogAdminUrl}">
-                                    <li>
-                                        <a href="${_blogAdminUrl}" target="_blank">Blog (Admin)</a>
-                                    </li>
-                                </c:if>
-                            </c:if>
-                            <li>
-                                <a href="/members/profile/${_member.userId}/subscriptions"><spring:message code="homepage.menu.user.mysubscriptions" /></a>
-                            </li>
-                            <li><a href="/logout"><spring:message code="homepage.menu.user.logout" /></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /USER POPUP -->
-            </c:when>
-
-            <c:otherwise>
-                <ul id="c-Header__menu__right">
-                    <li class="register">
-                        <a href="/register?redirect=${_requestUri}"><spring:message code="homepage.menu.visitor.register" /></a>
-                    </li>
-                    <li class="login" >
-                        <a  href="javascript:;" id="loginPopupTrigger"><spring:message code="homepage.menu.visitor.login" /></a>
-                    </li>
-                    <c:if test="${_isI18NActive}">
-                        <li class="language" >
-                            <a  href="javascript:;" id="languagePopupTrigger"><spring:message code="homepage.menu.visitor.language" /></a>
-                        </li>
-                    </c:if>
-                    <li class="help">
-                        <a href="/wiki/Help"><spring:message code="homepage.menu.help" /></a>
-                    </li>
-                </ul>
-
-                <c:if test="${_isI18NActive}">
-                    <!-- LANGUAGE POPUP -->
-                    <div class="c-Header__language__pop" id="languagePopupContainer">
-                        <div class="c-Header__language__top">
-                            <img src="${_themeImageFolder}/earth-grid-select-language-button3.png" />
-                        </div>
-                        <div class="c-Header__language__box">
-                            <ul>
-
-                                <c:forEach var="lang" items="${_languageSelectItems}">
-                                    <c:if test="${_currentLocale == lang['value'] }">
-                                        <li><input name="lang_top" type="radio" checked="checked">&#160;<spring:message code="${lang['lable']}"/> - ${fn:toUpperCase(lang['value'])}</input></li>
-                                    </c:if>
-                                </c:forEach>
-                                <li class="divider">_____________</li>
-                                <c:forEach var="lang" items="${_languageSelectItems}">
-                                    <c:if test="${ _currentLocale != lang['value']}">
-
-                                        <li class="languagePicker" data-src="${lang['value']}" ><input name="lang_top" type="radio" >&#160;<spring:message code="${lang['lable']}"/> - ${fn:toUpperCase(lang['value'])}</input></li>
-
-                                    </c:if>
-                                </c:forEach>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- /LANGUAGE POPUP -->
-                </c:if>
-
-                <!-- LOGIN POPUP -->
-                <div class="c-Header__login__pop" id="loginPopupContainer">
-                    <div class="c-Header__login__top">
-                        <img src="${_themeImageFolder}/icon-menu-login3.png" />
-                    </div>
-                    <div class="c-Header__login__box">
-
-                        <div class="c-Header__login__with">
-                            <c:if test="${_isFacebookSsoActive}">
-                                <a href="/sso/facebook/login" class="sketchy-icon facebook-sketchy"><span>Facebook</span></a>
-                            </c:if>
-                            <c:if test="${_isGoogleSsoActive}">
-                                <a href="/sso/google/login" class="sketchy-icon google-sketchy"><span>Google</span></a>
-                            </c:if>
-                        </div>
-
-                        <c:if test="${_isFacebookSsoActive or _isGoogleSsoActive}">
-                            <div class="c-Header__login__with__del"><!-- --></div>
-                            <div class="c-Header__login__with__or"><spring:message code="homepage.login.or"/></div>
-                            <div class="c-Header__login__with__del"><!-- --></div>
-                        </c:if>
-                        
-                        <div class="clearfix"><!-- --></div><!-- homepage.popup.user.usernameoremail -->
-                        <form id="signInFormPopup" method="post" action="/login" style="margin-top: 10px;">
-                            <spring:message code="homepage.login.usernameoremail" var="usernameplaceholder"/>
-                            <input name="username" type="text" class="c-Header__login__username" placeholder="${usernameplaceholder}"  />
-                            <spring:message code="homepage.login.password" var="passwordplaceholder"/>
-                            <input name="password" type="password" class="c-Header__login__password" placeholder="${passwordplaceholder}" />
-                            <label for="header__remember-me"><spring:message code="homepage.login.rememberme"/> :</label> &#160;
-                            <input id="header__remember-me" type="checkbox" name="remember-me" checked="true" /> <br/>
-                            <input name="redirect" type="hidden" />
-                            <span><em><a href="javascript:;" class="c-Header__login__forgot" onclick="showForgotPasswordPopup()"><spring:message code="homepage.login.forgotyourpassword"/></a></em></span>
-                            <button type="submit" class="c-Button__primary" id="loginPopupTopSubmit"><spring:message code="homepage.login.button"/></button>
-                        </form>
-                    </div>
-                </div>
-                <!-- /LOGIN POPUP -->
-            </c:otherwise>
-            </c:choose>
-
-            <c:if test="${_isI18NActive}">
-                <!-- LANGUAGE POPUP -->
-                <div class="c-Footer__language__pop" id="languageFooterPopupContainer">
-                    <div class="c-Footer__language__box">
-                        <ul>
-
-                            <c:forEach var="lang" items="${_languageSelectItems}">
-                                <c:if test="${_currentLocale == lang['value'] }">
-                                    <li><input name="lang_bot" type="radio" checked="checked">&#160;<spring:message code="${lang['lable']}"/> - ${fn:toUpperCase(lang['value'])}</input></li>
-                                </c:if>
-                            </c:forEach>
-                            <li class="divider">_____________</li>
-                            <c:forEach var="lang" items="${_languageSelectItems}">
-                                <c:if test="${ _currentLocale != lang['value']}">
-
-                                    <li class="languagePickerFooter" data-src="${lang['value']}" ><input name="lang_bot" type="radio" >&#160;<spring:message code="${lang['lable']}"/> - ${fn:toUpperCase(lang['value'])}</input></li>
-
-                                </c:if>
-                            </c:forEach>
-                        </ul>
-                    </div>
-                </div>
-                <!-- /LANGUAGE POPUP -->
-            </c:if>
-
-            <!-- SEARCH POPUP -->
-            <div class="c-Header__search__pop" id="searchPopupContainer">
-                <div class="c-Header__search__top"><img src="${_themeImageFolder}/icon-menu-search2.png" width="20" height="19" /></div>
-                <div class="c-Header__search__box">
-                    <input name="c-Header__search__term" type="text" class="c-Header__search__term" value="" id="searchinput" />
-                    <a class="c-Header__search__submit" id="searchsubmit"><spring:message code="homepage.search.button" /></a>
-                </div>
-            </div>
-            <!-- /SEARCH POPUP -->
-
-        </div>
-    </div> <!-- /header -->
+    <xcolab-layout:navbar colabName="${_colabName}" logoPath="${_logoPath}" redirect="${_requestUri}"
+                          activePageLink="${_activePageLink}" contestPages="${_contestPages}"
+                          member="${_isLoggedIn ? _member : null}" isWhiteBackgound="${_isHomePage}"
+                          uploadedImageFolder="${_uploadedImageFolder}"
+                          unreadMessages="${_unreadMessages}" blogAdminUrl="${_blogAdminUrl}"
+                          showLanguage="${_isI18NActive}" showSearch="${_showSearchMenuItem}"
+                          languageSelectItems="${_languageSelectItems}" currentLocale="${_currentLocale}"
+                          showGoogleSso="${_isGoogleSsoActive}" showFacebookSso="${_isFacebookSsoActive}" />
 
     <!-- Content -->
     <div id="content">
@@ -582,8 +272,14 @@
                     </c:otherwise>
                 </c:choose>
                 <c:if test="${_isI18NActive}">
-                    <li id="footerLanguageTrigger">
-                        <img src="${_themeImageFolder}/footer-language-button.png"/>&#160;<a href="javascript:void(0);"><spring:message code="homepage.menu.visitor.language" /></a>
+                    <li class="dropup bs-dropdown--dark">
+                        <a data-toggle="dropdown" class="dropdown-trigger">
+                            <img src="${_themeImageFolder}/footer-language-button.png"/>&#160;
+                            <spring:message code="homepage.menu.visitor.language" />
+                            <span class="caret"><!-- --></span>
+                        </a>
+                        <xcolab-dropdowns:languageDropdown currentLanguage="${_lang}"
+                                                           languageSelectItems="${_languageSelectItems}"/>
                     </li>
                 </c:if>
             </ul>

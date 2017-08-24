@@ -1,7 +1,9 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" xmlns="http://www.w3.org/1999/xhtml"
-          version="2.0" xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:spring="http://www.springframework.org/tags">
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:spring="http://www.springframework.org/tags"
+          version="2.0">
 
     <jsp:directive.attribute name="showFacebookSso" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, Facebook SSO is shown" />
     <jsp:directive.attribute name="showGoogleSso" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, Google SSO is shown" />
@@ -26,12 +28,18 @@
 
                 <div class="form-group clearfix">
                     <div class="c-Header__login__with">
-                        <div class="c-Header__login__with">
+                        <div class="c-Header__socialButtons">
                             <c:if test="${showFacebookSso}">
-                                <a href="/sso/facebook/register" class="sketchy-icon sketchy-black facebook-sketchy"><span>Facebook</span></a>
+                                <a href="/sso/facebook/register" style="color: black;">
+                                    <img src="/images/facebook-logo.svg" />
+                                    <span>Facebook</span>
+                                </a>
                             </c:if>
                             <c:if test="${showGoogleSso}">
-                                <a href="/sso/google/register" class="sketchy-icon sketchy-black google-sketchy"><span>Google</span></a>
+                                <a href="/sso/google/register" style="color: black;">
+                                    <img src="/images/google-logo.svg" />
+                                    <span>Google</span>
+                                </a>
                             </c:if>
                         </div>
                     </div>

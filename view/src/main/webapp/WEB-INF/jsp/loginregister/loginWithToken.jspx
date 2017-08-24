@@ -23,7 +23,7 @@
                             <img src="/images/icon-addprop-question-bar.png" class="js-Tooltip" style="vertical-align: middle;"
                                  title="If this box is checked, you will stay logged into the site automatically for one month." />:
                         </label> &#160;
-                        <input type="checkbox" id="remember-me" name="remember-me" checked="true" />
+                        <input type="checkbox" id="remember-me" name="remember-me" checked="checked" />
                     </div>
                     <div>
                         <label for="invalidate-link">
