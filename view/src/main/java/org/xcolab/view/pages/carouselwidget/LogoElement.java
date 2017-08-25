@@ -1,9 +1,9 @@
 package org.xcolab.view.pages.carouselwidget;
 
 public class LogoElement {
-    private String imageUrl;
-    private String linkUrl;
-    private String altText;
+    private final String imageUrl;
+    private final String linkUrl;
+    private final String altText;
 
     public String getImageUrl() {
         return imageUrl;
