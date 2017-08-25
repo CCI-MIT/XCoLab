@@ -13,7 +13,7 @@
             <c:forEach var="logo" items="${carouselPreferences.logos}">
                 <div class="c-CarouselLogo">
                     <c:choose>
-                        <c:when test="${logo.linkUrl != null}">
+                        <c:when test="${logo.linkUrl != null and !logo.linkUrl.isEmpty()}">
                             <a href="${logo.linkUrl}">
                                 <img src="${logo.imageUrl}" alt="${logo.altText}" />
                             </a>
