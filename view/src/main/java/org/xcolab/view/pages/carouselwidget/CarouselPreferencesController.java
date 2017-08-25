@@ -33,18 +33,18 @@ public class CarouselPreferencesController {
             language = I18nUtils.DEFAULT_LANGUAGE;
         }
 
-        model.addAttribute("contestPreferences", new CarouselPreferences(preferenceId, language));
+        model.addAttribute("carouselPreferences", new CarouselPreferences(preferenceId, language));
         return "carouselwidget/editPreferences";
     }
 
 
     @PostMapping("carouselwidget/savePreferences")
-    public void savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, CarouselPreferences contestPreferences)
+    public void savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, CarouselPreferences carouselPreferences)
             throws IOException {
-        contestPreferences.submit();
+        carouselPreferences.submit();
 
         AlertMessage.success("Carousel widget preferences has been saved.").flash(request);
-        response.sendRedirect("/carouselwidget/editPreferences?preferenceId="+contestPreferences.getPreferenceId());
+        response.sendRedirect("/carouselwidget/editPreferences?preferenceId="+carouselPreferences.getPreferenceId());
 
     }
 
