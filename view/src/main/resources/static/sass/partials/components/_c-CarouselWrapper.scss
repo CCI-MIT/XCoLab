@@ -9,6 +9,7 @@ $carousel-margin-bottom: 18px;
   text-align: center;
   margin-bottom: 0 !important;
 }
+
 /* Lines left and right of heading */
 
 .c-CarouselWrapper h2:before,
@@ -21,10 +22,12 @@ $carousel-margin-bottom: 18px;
   vertical-align: middle;
   width: 50%;
 }
+
 .c-CarouselWrapper h2:before {
   right: $carousel-heading-line-distance;
   margin-left: -50%;
 }
+
 .c-CarouselWrapper h2:after {
   left: $carousel-heading-line-distance;
   margin-right: -50%;
