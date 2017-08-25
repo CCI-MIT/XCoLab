@@ -36,14 +36,17 @@ $colHighlight: #404040;
     > li {
       border-left: 1px solid #bababa;
 
-      &:hover {
-        background-image: $c-Header__background--hover;
-      }
+      .bs-navitem-text {
 
-      &.active {
-        background-color: white;
-        color: black;
-        border-bottom: 1px solid white;
+        &:hover {
+          background-image: $c-Header__background--hover;
+        }
+
+        &.active {
+          background-color: white;
+          color: black;
+          border-bottom: 1px solid white;
+        }
       }
     }
   }
@@ -68,6 +71,13 @@ $colHighlight: #404040;
     }
 
     .bs-navitem-icon {
+
+      &.bs-dropdown--dark.open {
+        > a, > a:hover, > a:focus {
+          color: white;
+          background: none;
+        }
+      }
       > a {
         height: 67px;
         padding: 45px 7px 0 7px;
@@ -82,7 +92,7 @@ $colHighlight: #404040;
 
     .bs-navitem-image {
 
-      .badge {
+      > .badge, > a > .badge {
         position: absolute;
         top: 14px;
         right: 10px;

@@ -260,6 +260,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
 .c-Header__navItem {
   &.register {
     background: $c-Header__menu__right__li__register__backgroundUrl no-repeat center 13px;
+
     &:hover {
       background: $c-Header__menu__right__li__register--hover__backgroundUrl no-repeat center 13px;
     }
@@ -272,7 +273,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
       background-image: $c-Header__menu__right__li__login--hover__backgroundUrl;
     }
 
-    &.open {
+    &.open, &.open:hover {
       background-image: url(/images/icon-menu-login3.png);
     }
   }
@@ -284,8 +285,8 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
       background: $c-Header__menu__right__li__language--hover__backgroundUrl no-repeat center 15px;
     }
 
-    &.open {
-    background-image: url(/images/earth-grid-select-language-button3.png)
+    &.open, &.open:hover {
+      background-image: url(/images/earth-grid-select-language-button3.png)
     }
   }
 
@@ -302,7 +303,7 @@ $c-Header__user__box__a--hover__border--bottom: 1px dashed white !default;
   &.search {
     background: $c-Header__menu__li__a__search__backgroundUrl no-repeat center 18px;
 
-    &.open {
+    &.open, &.open:hover {
       background-image: url(/images/icon-menu-search2.png);
     }
   }
