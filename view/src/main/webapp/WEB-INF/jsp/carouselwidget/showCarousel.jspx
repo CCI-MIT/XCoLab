@@ -9,9 +9,16 @@
         <div class="c-CarouselBox">
             <c:forEach var="logo" items="${carouselPreferences.logos}">
                 <div class="c-CarouselLogo">
-                    <a href="${logo.linkUrl}">
-                        <img src="${logo.imageUrl}" alt="${logo.altText}" />
-                    </a>
+                    <c:choose>
+                        <c:when test="${logo.linkUrl != null}">
+                            <a href="${logo.linkUrl}">
+                                <img src="${logo.imageUrl}" alt="${logo.altText}" />
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <img src="${logo.imageUrl}" alt="${logo.altText}" />
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </c:forEach>
         </div>
