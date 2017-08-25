@@ -50,8 +50,6 @@ public class CarouselPreferences extends WidgetPreference {
     public CarouselPreferences(String preferenceId, String locale) {
         super(preferenceId, locale);
 
-//        prefs.getJSONArray()
-
         if (prefs.has(TITLE_PREFERENCE)) {
             title = prefs.getString(TITLE_PREFERENCE);
         } else {
