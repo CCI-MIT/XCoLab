@@ -13,6 +13,8 @@ import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,18 +35,27 @@ public class CarouselPreferencesController {
             language = I18nUtils.DEFAULT_LANGUAGE;
         }
 
-        model.addAttribute("carouselPreferences", new CarouselPreferences(preferenceId, language));
+        CarouselPreferences carouselPreferences = new CarouselPreferences(preferenceId, language);
+        model.addAttribute("carouselPreferences", carouselPreferences);
         return "carouselwidget/editPreferences";
     }
 
 
     @PostMapping("carouselwidget/savePreferences")
-    public void savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, CarouselPreferences carouselPreferences)
-            throws IOException {
+    public void savePreferences(HttpServletRequest request, HttpServletResponse response,
+            Model model, CarouselPreferences carouselPreferences) throws IOException {
+        ArrayList<LogoElement> logos = new ArrayList<>();
+        for (LogoElement logoElement : carouselPreferences.getLogos()) {
+            if (!logoElement.getImageUrl().isEmpty() && !logoElement.getRemove()) {
+                logos.add(logoElement);
+            }
+        }
+        carouselPreferences.setLogos(logos);
         carouselPreferences.submit();
 
         AlertMessage.success("Carousel widget preferences has been saved.").flash(request);
-        response.sendRedirect("/carouselwidget/editPreferences?preferenceId="+carouselPreferences.getPreferenceId());
+        response.sendRedirect("/carouselwidget/editPreferences?preferenceId=" + carouselPreferences
+                .getPreferenceId());
 
     }
 
