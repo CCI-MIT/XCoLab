@@ -23,13 +23,10 @@
 				<c:if test="${pointsActive}">
 					<th class="c-Table__cell--title points">
 						<c:set var="sortURLPoints" value="/members?sortColumn=POINTS&amp;sortAscending=${sortFilterPage.sortColumn == 'POINTS' ? not sortFilterPage.sortAscending : false }&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
-                        <a href="/wiki/Climate+CoLab+Points">
+
 						<img class="js-Tooltip" data-tooltip-content="#js-Tooltip__content__points"
 							 style="width: 15px; height: 15px;" src="${_themeImageFolder}/icon-addprop-question-bar.png" />
-                        </a>
-						<span id="js-Tooltip__content__points" style="display:none">
-							<spring:message code="community.page.members.table.order.points.help"/>
-						</span>
+                        <!--<a href="/wiki/Climate+CoLab+Points"></a>-->
 
 						<a class="js-Tooltip" title="click to sort by points" href="${sortURLPoints }"><spring:message code="community.page.members.table.order.points"/></a>
 						<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="POINTS" />
@@ -178,6 +175,11 @@
 				<a href="${downloadMembersListUrl}"><spring:message code="community.page.members.csv"/></a>
 			</div>
 		</c:if>
+        <c:if test="${pointsActive}">
+            <span id="js-Tooltip__content__points" style="">
+                    <spring:message code="community.page.members.table.order.points.help"/>
+            </span>
+        </c:if>
 	</div>
 
 </jsp:root>
