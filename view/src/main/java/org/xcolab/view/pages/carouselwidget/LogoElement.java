@@ -9,6 +9,8 @@ public class LogoElement {
     private String linkUrl;
     private String altText;
 
+    private Boolean remove;
+
     public String getImageUrl() {
         return imageUrl;
     }
@@ -25,6 +27,14 @@ public class LogoElement {
         this.linkUrl = linkUrl;
     }
 
+    public Boolean getRemove() {
+        return remove;
+    }
+
+    public void setRemove(Boolean remove) {
+        this.remove = remove;
+    }
+
     public String getAltText() {
         return altText;
     }
@@ -39,8 +49,10 @@ public class LogoElement {
         this.imageUrl = imageUrl;
         this.linkUrl = linkUrl;
         this.altText = altText;
+        this.remove = false;
     }
 
     public LogoElement() {
+        this.remove = false;
     }
 }
