@@ -22,6 +22,7 @@ public class CarouselPreferences extends WidgetPreference {
 
     private String title;
     private List<LogoElement> logos;
+    private Integer logosCount;
 
     public String getTitle() {
         return title;
@@ -37,6 +38,14 @@ public class CarouselPreferences extends WidgetPreference {
 
     public void setLogos(List<LogoElement> logos) {
         this.logos = logos;
+    }
+
+    public Integer getLogosCount() {
+        return logosCount;
+    }
+
+    public void setLogosCount(Integer logosCount) {
+        this.logosCount = logosCount;
     }
 
     @Override
