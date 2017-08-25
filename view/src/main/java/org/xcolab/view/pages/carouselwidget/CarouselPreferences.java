@@ -64,36 +64,6 @@ public class CarouselPreferences extends WidgetPreference {
             } catch (IOException ignored) {
             }
         }
-
-
-//        prefs.
-
-//        title = (prefs.has(TITLE_PREFERENCE))?(prefs.getString(TITLE_PREFERENCE)):( "Featured contests");
-//        this.title = "News Features";
-//        String testLogoUrl = "http://i.imgur.com/Q1PTZxN.png";
-//        String testLinkUrl = "https://www.google.com";
-//        String testAltText = "Thomson Reuters";
-//        LogoElement logo = new LogoElement(testLogoUrl, testLinkUrl, testAltText);
-//        this.logos = new ArrayList<>();
-//        this.logos.add(new LogoElement("http://www.topinfopost.com/wp-content/uploads/2013/06/forbes-logo.png", null, null));
-//        this.logos.add(new LogoElement("http://logodatabases.com/wp-content/uploads/2012/01/national-geographic-logo.png", null, null));
-//        this.logos.add(new LogoElement("https://cf.press.discovery.com/ugc/logos/2009/10/22/DSC_DIGITAL_MEDIApos_4c___.jpg", null, null));
-//        this.logos.add(logo);
-//        this.logos.add(new LogoElement("https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Vox_logo.svg/2000px-Vox_logo.svg.png", null, null));
-//
-//
-//        JSONArray test = new JSONArray(logos);
-//        ObjectMapper mapper = new ObjectMapper();
-//        List<LogoElement> logoArray = null;
-//        try {
-//            logoArray = mapper.readValue(test.toString(), new TypeReference<List<LogoElement>>() {});
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        System.out.println(logoArray.toString());
-//
-//        System.out.println(test.toString());
     }
 
     public void submit() {
