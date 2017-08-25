@@ -1,13 +1,16 @@
 $carousel-heading-line-distance: 0.5em;
 $carousel-heading-line-height: 1px;
-$carousel-logo-max-height: 120px;
-$carousel-logo-max-width: 150px;
+$carousel-heading-margin-bottom: 10px;
+$carousel-logo-box-max-height: 120px;
+$carousel-logo-box-padding: 50px;
+$carousel-logo-img-max-height: 80%;
+$carousel-logo-img-max-width: 170px;
 $carousel-margin-bottom: 18px;
 
 .c-CarouselWrapper h2 {
   overflow: hidden;
   text-align: center;
-  margin-bottom: 0 !important;
+  margin-bottom: $carousel-heading-margin-bottom !important;
 }
 
 /* Lines left and right of heading */
@@ -49,15 +52,15 @@ $carousel-margin-bottom: 18px;
 }
 
 .c-CarouselLogo {
-  height: $carousel-logo-max-height;
-  line-height: $carousel-logo-max-height;
+  height: $carousel-logo-box-max-height;
+  line-height: $carousel-logo-box-max-height;
   display: inline-block;
-  padding-right: 50px;
+  padding-right: $carousel-logo-box-padding;
 }
 
 .c-CarouselLogo img {
-  max-height: 100%;
-  max-width: $carousel-logo-max-width;
+  max-height: $carousel-logo-img-max-height;
+  max-width: $carousel-logo-img-max-width;
   height: auto;
   width: auto;
   vertical-align: middle;
