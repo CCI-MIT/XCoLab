@@ -7,6 +7,12 @@
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout>
         <form:form action="/carouselwidget/savePreferences" commandName="carouselPreferences">
+            <input type="hidden" id="logosCount" value="${carouselPreferences.logos.size()}" />
+
+            <c:forEach var="logo" items="${carouselPreferences.logos}" varStatus="status">
+                <form:hidden id="remove${status.index}" path="logos[${status.index}].remove" />
+            </c:forEach>
+
             <table>
                 <tr>
                     <td>
@@ -43,6 +49,27 @@
                                     }
                                 });
 
+                                var $prototype_row = $('#prototype-row');
+                                var logosCount = parseInt($('#logosCount').val());
+
+                                $('.table-add').click(function () {
+                                    var $clone = $prototype_row.clone(true).removeClass('hide');
+                                    $(this).parents('tr').before($clone);
+                                    $clone.removeAttr('id');
+                                    $clone.addClass(String(logosCount));
+                                    $clone.find('#imageUrl').attr('name', 'logos[' + logosCount + '].imageUrl');
+                                    $clone.find('#linkUrl').attr('name', 'logos[' + logosCount + '].linkUrl');
+                                    $clone.find('#altText').attr('name', 'logos[' + logosCount + '].altText');
+                                    logosCount++;
+                                });
+
+                                $('.table-remove').click(function () {
+                                    var parentRow = $(this).parents('tr');
+                                    var logoIndex = parentRow.attr('class');
+                                    $('#remove' + logoIndex).val('true');
+                                    parentRow.addClass('hide');
+                                    logosCount--;
+                                });
                             });
                         </script>
                     </td>
@@ -55,28 +82,43 @@
                         <form:input path="title" style="width:100%;"/>
                     </td>
                 </tr>
+            </table>
+
+            <table class="table" id="logotable">
                 <tr>
-                    <td style="width:30%">
-                        Enter logos
-                    </td>
-                    <td style="width:70%;padding-right:10px;">
-                        <!--<form:input path="logos[0].imageUrl" style="width:100%;" class="form-control"/>-->
-                        <c:forEach var="logo" items="${carouselPreferences.logos}" varStatus="status">
-                            <form:input path="logos[${status.index}].imageUrl" name="imageUrl" id="imageUrl" style="width:100%;"/>
-                            <form:input path="logos[${status.index}].linkUrl" name="linkUrl" id="linkUrl" style="width:100%;"/>
-                            <form:input path="logos[${status.index}].altText" name="altText" id="altText" style="width:100%;"/>
-                        </c:forEach>
+                    <th>Image URL</th>
+                    <th>Link URL</th>
+                    <th>Alt Text</th>
+                    <th />
+                </tr>
+                <c:forEach var="logo" items="${carouselPreferences.logos}" varStatus="status">
+                    <tr class="${status.index}">
+                        <td><form:input path="logos[${status.index}].imageUrl" name="imageUrl" id="imageUrl" style="width:100%;"/></td>
+                        <td><form:input path="logos[${status.index}].linkUrl" name="linkUrl" id="linkUrl" style="width:100%;"/></td>
+                        <td><form:input path="logos[${status.index}].altText" name="altText" id="altText" style="width:100%;"/></td>
+                        <td>
+                            <a href="javascript:void(0)"><span class="table-remove glyphicon glyphicon-remove" /></a>
+                        </td>
+                    </tr>
+                </c:forEach>
+
+                <tr>
+                    <td />
+                    <td />
+                    <td />
+                    <td>
+                        <a href="javascript:void(0)"><span class="table-add glyphicon glyphicon-plus" /></a>
                     </td>
                 </tr>
 
-                <!--<tr>-->
-                    <!--<td>-->
-                        <!--Enter feed size-->
-                    <!--</td>-->
-                    <!--<td>-->
-                        <!--<form:input path="feedSize" />-->
-                    <!--</td>-->
-                <!--</tr>-->
+                <tr id="prototype-row" class="hide">
+                    <td><input id="imageUrl" name="" style="width:100%;" type="text" value="" /></td>
+                    <td><input id="linkUrl" name="" style="width:100%;" type="text" value="" /></td>
+                    <td><input id="altText" name="" style="width:100%;" type="text" value="" /></td>
+                    <td>
+                        <a href="javascript:void(0)"><span class="table-remove glyphicon glyphicon-remove" /></a>
+                    </td>
+                </tr>
             </table>
             <a href="/" >Return to home </a>
             <br/>
