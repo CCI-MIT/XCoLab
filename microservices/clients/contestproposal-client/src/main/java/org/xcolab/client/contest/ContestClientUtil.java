@@ -286,10 +286,6 @@ public final class ContestClientUtil {
         return contestClient.getAllContestPhaseTypes();
     }
 
-    public static String getContestStatusStr(Long contestPhaseId) {
-        return contestClient.getContestStatusStr(contestPhaseId);
-    }
-
     public static Integer countContestsByContestType(Long contestTypeId) {
         return contestClient.countContestsByContestType(contestTypeId);
     }

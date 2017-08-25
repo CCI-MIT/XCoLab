@@ -160,8 +160,8 @@ public class ContestPhase extends AbstractContestPhase {
 
     public ContestStatus getStatus() {
         if (status == null) {
-            String statusStr = contestClient.getContestStatusStr(this.getContestPhasePK());
-            if (statusStr != null) {
+            String statusStr = getContestStatusStr();
+            if (StringUtils.isNotEmpty(statusStr)) {
                 status = ContestStatus.valueOf(statusStr);
             }
         }

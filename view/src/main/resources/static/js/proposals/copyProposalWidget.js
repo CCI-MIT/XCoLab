@@ -75,7 +75,7 @@ function loadProposalSections() {
 			var copyFromSectionId = jQuery(this).attr('data-section-id');
 
 			CKEDITOR.instances['sectionsContent' + targetSectionId].insertHtml(availableSections[copyFromSectionId].content);
-			jQuery("#copyProposalContainer").hide();
+			jQuery('#copyProposalModal').modal('show');
 		});
 
 		$copyProposalContestsElement.find("a.toggleContent").click(function() {
@@ -89,23 +89,24 @@ function loadProposalSections() {
 }
 
 function updatePopupSize() {
+    //TODO: do we need this for the new copyProposalModal? Otherwise remove
 	var container = jQuery("#copyProposalContainer");
 	container.find("#copyProposalPopup").css({top: "20px"});
 	var availableHeight = jQuery(window).height();
-	container.find(".c-Popup").css({height: (availableHeight - 200), "overflow-x": "auto"});
+	container.find(".c-Popup").css({height: (availableHeight - 200), });
 }
 
 jQuery(function() {
 	jQuery(".copyFromBaseProposalTrigger").click(function() {
 		targetSectionId = jQuery(this).attr('data-section-id');
 		loadProposalSections();
-		jQuery("#copyProposalContainer").show();
+        jQuery('#copyProposalModal').modal('show');
 		updatePopupSize();
 	});
 });
 
 function showCopyProposalPopup(moveType) {
 	proposalCopy_loadContests(moveType);
-	jQuery("#copyProposalContainer").show();
+    jQuery('#copyProposalModal').modal('show');
 	updatePopupSize();
 }

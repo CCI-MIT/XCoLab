@@ -201,25 +201,17 @@
 			</div>
 		</div>
 
-		<div id="copyProposalContainer" style="display: none;">
-			<div class="c-Popup__wrapper p1" id="copyProposalPopup">
-				<div class="c-Popup">
-					<div class="closepopuplogin">
-						<a href="javascript:;" onclick="jQuery('#copyProposalContainer').hide()">
-							<img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X"/>
-						</a>
-					</div>
-
-					<h4>Please choose ${contestType.contestName} to which you'd like to copy this ${contestType.proposalName}</h4>
-					<div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
-						<div id="copyProposalContests"><!--  --></div>
-						<center>
-							<a class="c-Button__primary" href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a>
-						</center>
-					</div>
-				</div>
-			</div>
-		</div>
+        <xcolab:modal modalId="copyProposalModal" size="lg"
+                      title="Choose section from base ${contestType.proposalNameLowercase}, which content you want to copy">
+            <div class="modal-body">
+                <div id="copyProposalPopupContent" style="overflow: auto; height: 50vh">
+                    <div id="copyProposalContests"><!--  --></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="close" data-dismiss="modal" class="c-Button__secondary">Cancel</button>
+            </div>
+        </xcolab:modal>
 		<script>
 			var currentProposal = {
 					proposalId: ${proposal.proposalId},

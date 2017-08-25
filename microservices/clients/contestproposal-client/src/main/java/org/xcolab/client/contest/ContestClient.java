@@ -660,10 +660,6 @@ public class ContestClient {
                 .execute(), contestService);
     }
 
-    public String getContestStatusStr(Long contestPhaseId) {
-		return getContestPhase(contestPhaseId).getContestStatusStr();
-    }
-
     public Integer countContestsByContestType(long contestTypeId) {
         return contestResource.service("countByContestType", Integer.class)
                 .queryParam("contestTypeId", contestTypeId)

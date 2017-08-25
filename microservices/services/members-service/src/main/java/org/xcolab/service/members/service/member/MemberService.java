@@ -99,7 +99,7 @@ public class MemberService {
     public Member register(String screenName, String password, String email, String firstName,
             String lastName, String shortBio, String country, Long facebookId, String openId,
             Long imageId, Long liferayUserId, String googleId, String defaultLocale) {
-        memberDao.createMember(screenName, hashPassword(password), email, firstName, lastName,
+        memberDao.createMember(screenName, ((password.isEmpty())?(null):(hashPassword(password))), email, firstName, lastName,
                 shortBio, country, facebookId, openId, imageId, liferayUserId, googleId,defaultLocale);
         final Member member = memberDao.findOneByScreenName(screenName)
                 .orElseThrow(IllegalStateException::new);

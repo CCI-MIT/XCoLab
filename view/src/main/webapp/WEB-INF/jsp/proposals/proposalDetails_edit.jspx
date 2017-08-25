@@ -17,9 +17,30 @@
     <script type="text/javascript">
         var EXTERNAL_IMAGE_UPLOAD_URL = '${requestScope.imageUploadServiceUrl}';
         var IMAGE_UPLOAD_HELP_TEXT = '${requestScope.imageUploadHelpText}';
-
-
     </script>
+
+    <script>
+        var currentProposal = {
+            proposalId: ${proposal.proposalId},
+            version: ${proposal.version}
+        }
+    </script>
+
+    <c:if test="${not empty baseProposal}">
+        <script>
+            var baseProposal = {
+                proposalId: ${baseProposal.proposalId},
+                version: ${baseProposal.version}
+            }
+        </script>
+    </c:if>
+    <c:if test="${not empty baseContest}">
+        <script>
+            var baseContest = {
+                contestPK: ${baseContest.contestPK}
+            }
+        </script>
+    </c:if>
 
     <jsp:directive.include file="./proposalDetails/header.jspx" />
 
@@ -225,36 +246,32 @@
     </div>
     <jsp:directive.include file="./proposalDetails/proposalSummary.jspx" />
 
-    <div id="c-Popup__accept__TOS" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none;">
-        <div class="c-Popup__wrapper p1" id="c-Popup__accept__TOS">
-            <div class="c-Popup">
-                <h4>By saving your ${fn:toLowerCase(contestType.proposalName)} you are entering the ${_colabName} ${contestType.contestName} and agree to the
-                    <a href="/wiki/Terms+of+use" target="_blank">Terms of Use</a>
-                    and <a href="${contestType.rulesPageUrl}">${contestType.rulesPageName}</a>.</h4>
-
-                <h5>${fn:toUpperCase(contestType.rulesPageName)}:</h5>
-                <div id="termsScroll" class="terms">
-                        ${preferences.termsOfService}
-                </div>
-                <div class="btns">
-                    <a class="c-Button__primary cp1-1" href="javascript:;" id="tosAccepted">ACCEPT</a>
-                    <a class="c-Button__secondary cp1-2" href="javascript:;" id="closeAcceptTos">DO NOT Accept</a>
-                </div>
+    <c:set var="acceptTosModalTitle">
+        By saving your ${fn:toLowerCase(contestType.proposalName)} you are entering the ${_colabName} ${contestType.contestName} and agree to the
+        <a href="/wiki/Terms+of+use" target="_blank">Terms of Use</a>
+        and <a href="${contestType.rulesPageUrl}">${contestType.rulesPageName}</a>.
+    </c:set>
+    <xcolab:modal modalId="acceptTosModal" title="${acceptTosModalTitle}" size="lg">
+        <div class="modal-body">
+            <h5>${fn:toUpperCase(contestType.rulesPageName)}:</h5>
+            <div style="overflow: auto; height:260px;">
+                ${preferences.termsOfService}
             </div>
         </div>
-    </div>
-
-    <div id="invalidFieldsPopupContainer" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: 100; display: none; ">
-        <div class="c-Popup__wrapper p1" id="invalidFieldsPopup">
-            <div class="c-Popup">
-                <h4>The following sections have too many characters:</h4>
-                <ul id="invalidFieldsList"><!--  --></ul>
-                <div class="btns">
-                    <a class="c-Button__primary cp1-1" href="javascript:;" onclick="jQuery('#invalidFieldsPopupContainer').fadeOut('fast')">CLOSE</a>
-                </div>
-            </div>
+        <div class="modal-footer">
+            <button class="c-Button__primary" id="tosAccepted">ACCEPT</button>
+            <button class="c-Button__secondary" id="closeAcceptTos">DO NOT Accept</button>
         </div>
-    </div>
+    </xcolab:modal>
+
+    <xcolab:modal modalId="invalidFieldsModal" title="The following sections have too many characters:">
+        <div class="modal-body">
+            <ul id="invalidFieldsList"><!--  --></ul>
+        </div>
+        <div class="modal-footer">
+            <button type="close" data-dismiss="modal" class="c-Button__secondary">CLOSE</button>
+        </div>
+    </xcolab:modal>
 
     <div class="c-ControlsOverlay">
         <div class="inner">
@@ -334,15 +351,15 @@
         }
 
         function showAcceptTosPopup() {
-            jQuery("#c-Popup__accept__TOS").fadeIn("fast");
+            jQuery('#acceptTosModal').modal('show');
         }
 
         function closeAcceptTosPopup() {
-            jQuery("#c-Popup__accept__TOS").fadeOut("fast");
+            jQuery('#acceptTosModal').modal('hide');
             noty({text: acceptTosNotificationText,
                 buttons: [
                     {
-                        addClass: 'general-button red', text: 'ACCEPT', onClick: function($noty)
+                        addClass: 'c-Button__primary', text: 'ACCEPT', onClick: function($noty)
                     {
                         tosAcceptedSave();
                         $noty.close();
@@ -353,7 +370,7 @@
         }
 
         function tosAcceptedSave() {
-            jQuery("#c-Popup__accept__TOS").fadeOut("fast");
+            jQuery('#acceptTosModal').modal('hide');
             disableButtons(true);
             saveIfValid();
         }
@@ -401,7 +418,7 @@
             $(window).resize(updateUploadBtnOffset);
 
             jQuery("#saveChangesButton").click(function() {
-                if (${proposal.proposalId > 0}) {
+                if (currentProposal.proposalId > 0) {
                     disableButtons(true);
                     saveIfValid();
                 }
@@ -433,48 +450,17 @@
         }
     </script>
 
-    <div id="copyProposalContainer" style="display: none;">
-        <div class="c-Popup__wrapper p1" id="copyProposalPopup">
-            <div class="c-Popup">
-                <div class="closepopuplogin">
-                    <a href="javascript:;" onclick="jQuery('#copyProposalContainer').hide()">
-                        <img src="${_themeImageFolder}/help_close.png" width="20" height="20" alt="X"/>
-                    </a>
-                </div>
-
-                <h4>Choose section from base ${fn:toLowerCase(contestType.proposalName)}, which content you want to copy</h4>
-                <div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
-                    <div id="copyProposalContests"><!--  --></div>
-                    <center>
-                        <a class="c-Button__primary" href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a>
-                    </center>
-                </div>
+    <xcolab:modal modalId="copyProposalModal" size="lg"
+                  title="Choose section from base ${contestType.proposalNameLowercase}, which content you want to copy">
+        <div class="modal-body">
+            <div id="copyProposalPopupContent" style="overflow: auto; height: 50vh">
+                <div id="copyProposalContests"><!--  --></div>
             </div>
         </div>
-    </div>
-
-    <script>
-        var currentProposal = {
-            proposalId: ${proposal.proposalId},
-            version: ${proposal.version}
-        }
-    </script>
-
-    <c:if test="${not empty baseProposal}">
-        <script>
-            var baseProposal = {
-                proposalId: ${baseProposal.proposalId},
-                version: ${baseProposal.version}
-            }
-        </script>
-    </c:if>
-    <c:if test="${not empty baseContest}">
-        <script>
-            var baseContest = {
-                contestPK: ${baseContest.contestPK}
-            }
-        </script>
-    </c:if>
+        <div class="modal-footer">
+            <button type="close" data-dismiss="modal" class="c-Button__secondary">Cancel</button>
+        </div>
+    </xcolab:modal>
 
     <c:choose>
     <c:when test="${mustFilterContent}">
