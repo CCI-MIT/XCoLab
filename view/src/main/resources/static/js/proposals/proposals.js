@@ -61,7 +61,7 @@ function validatePlanEditForm() {
         isValid = false;   
     });
     if (!isValid) {
-        jQuery("#invalidFieldsPopupContainer").show();
+        jQuery('#invalidFieldsModal').modal('show');
     }
     for (var ckInstanceId in CKEDITOR.instances) {
         if (document.getElementById(ckInstanceId)) {

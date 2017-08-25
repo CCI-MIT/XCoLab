@@ -189,17 +189,6 @@
             </div>
             <jsp:directive.include file="./proposalDetails/proposalSummary.jspx"/>
         </div>
-        <div id="copyProposalContainer" style="display: none;">
-            <div class="c-Popup__wrapper p1" id="copyProposalPopup">
-                <div class="c-Popup">
-                    <h4>Please choose the ${contestType.contestName} to which you'd like to copy this ${contestType.proposalName}</h4>
-                    <div class="lrContentPlaceholder lfr-column " id="copyProposalPopupContent">
-                        <div id="copyProposalContests"><!--  --></div>
-                            <a class="c-Button__primary" href="javascript:;" onclick="$('#copyProposalContainer').hide();">Cancel</a>
-                    </div>
-                </div>
-            </div>
-        </div>
         <c:if test="${voted}">
             <spring:message code="contests.proposal.voting.thankyou" var="justVotedModalTitle" />
             <xcolab:modal modalId="justVotedModal" title="${justVotedModalTitle}">
