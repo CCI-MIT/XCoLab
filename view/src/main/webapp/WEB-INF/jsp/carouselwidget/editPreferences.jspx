@@ -7,7 +7,7 @@
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout>
         <form:form action="/carouselwidget/savePreferences" commandName="carouselPreferences">
-            <input type="hidden" id="logosCount" value="${carouselPreferences.logos.size()}" />
+            <form:hidden path="logosCount" id="logosCount" value="${carouselPreferences.logos.size()}" />
 
             <c:forEach var="logo" items="${carouselPreferences.logos}" varStatus="status">
                 <form:hidden id="remove${status.index}" path="logos[${status.index}].remove" />
@@ -50,7 +50,8 @@
                                 });
 
                                 var $prototype_row = $('#prototype-row');
-                                var logosCount = parseInt($('#logosCount').val());
+                                var $logosCount = $('#logosCount');
+                                var logosCount = parseInt($logosCount.val());
 
                                 $('.table-add').click(function () {
                                     var $clone = $prototype_row.clone(true).removeClass('hide');
@@ -61,6 +62,7 @@
                                     $clone.find('#linkUrl').attr('name', 'logos[' + logosCount + '].linkUrl');
                                     $clone.find('#altText').attr('name', 'logos[' + logosCount + '].altText');
                                     logosCount++;
+                                    $logosCount.val(logosCount);
                                 });
 
                                 $('.table-remove').click(function () {
@@ -69,6 +71,8 @@
                                     $('#remove' + logoIndex).val('true');
                                     parentRow.addClass('hide');
                                     logosCount--;
+                                    $logosCount.val(logosCount);
+
                                 });
                             });
                         </script>

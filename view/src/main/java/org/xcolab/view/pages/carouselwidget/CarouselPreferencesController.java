@@ -36,6 +36,7 @@ public class CarouselPreferencesController {
         }
 
         CarouselPreferences carouselPreferences = new CarouselPreferences(preferenceId, language);
+        carouselPreferences.setLogosCount(carouselPreferences.getLogos().size());
         model.addAttribute("carouselPreferences", carouselPreferences);
         return "carouselwidget/editPreferences";
     }
@@ -44,11 +45,14 @@ public class CarouselPreferencesController {
     @PostMapping("carouselwidget/savePreferences")
     public void savePreferences(HttpServletRequest request, HttpServletResponse response,
             Model model, CarouselPreferences carouselPreferences) throws IOException {
-        ArrayList<LogoElement> logos = new ArrayList<>();
+        List<LogoElement> logos = new ArrayList<>();
         for (LogoElement logoElement : carouselPreferences.getLogos()) {
             if (!logoElement.getImageUrl().isEmpty() && !logoElement.getRemove()) {
                 logos.add(logoElement);
             }
+        }
+        if (logos.size() > carouselPreferences.getLogosCount()) {
+            logos = logos.subList(0, carouselPreferences.getLogosCount());
         }
         carouselPreferences.setLogos(logos);
         carouselPreferences.submit();
