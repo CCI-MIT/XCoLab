@@ -28,14 +28,16 @@ public class CarouselPreferences extends WidgetPreference {
         this(null, I18nUtils.DEFAULT_LANGUAGE);
     }
     public CarouselPreferences(String preferenceId, String locale) {
-        this.title = "LOLOLOL";
-        String testLogoUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Thomson_Reuters_logo.svg/2000px-Thomson_Reuters_logo.svg.png";
+        this.title = "News Features";
+        String testLogoUrl = "http://i.imgur.com/Q1PTZxN.png";
         String testLinkUrl = "https://www.google.com";
         String testAltText = "Thomson Reuters";
         LogoElement logo = new LogoElement(testLogoUrl, testLinkUrl, testAltText);
         this.logos = new ArrayList<>();
+        this.logos.add(new LogoElement("http://www.topinfopost.com/wp-content/uploads/2013/06/forbes-logo.png", null, null));
+        this.logos.add(new LogoElement("http://logodatabases.com/wp-content/uploads/2012/01/national-geographic-logo.png", null, null));
+        this.logos.add(new LogoElement("https://cf.press.discovery.com/ugc/logos/2009/10/22/DSC_DIGITAL_MEDIApos_4c___.jpg", null, null));
         this.logos.add(logo);
-        this.logos.add(logo);
-        this.logos.add(logo);
+        this.logos.add(new LogoElement("https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Vox_logo.svg/2000px-Vox_logo.svg.png", null, null));
     }
 }
