@@ -5,20 +5,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class LogoElement {
 
-    private final String imageUrl;
-    private final String linkUrl;
-    private final String altText;
+    private String imageUrl;
+    private String linkUrl;
+    private String altText;
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getLinkUrl() {
         return linkUrl;
     }
 
+    public void setLinkUrl(String linkUrl) {
+        this.linkUrl = linkUrl;
+    }
+
     public String getAltText() {
         return altText;
+    }
+
+    public void setAltText(String altText) {
+        this.altText = altText;
     }
 
     @JsonCreator
@@ -27,5 +39,8 @@ public class LogoElement {
         this.imageUrl = imageUrl;
         this.linkUrl = linkUrl;
         this.altText = altText;
+    }
+
+    public LogoElement() {
     }
 }
