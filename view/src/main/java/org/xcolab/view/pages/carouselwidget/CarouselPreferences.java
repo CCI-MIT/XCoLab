@@ -2,6 +2,7 @@ package org.xcolab.view.pages.carouselwidget;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,18 +12,44 @@ import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CarouselPreferences extends WidgetPreference {
+
     private final static String TITLE_PREFERENCE = "CAROUSEL_TITLE";
     private final static String LOGOS_PREFERENCE = "CAROUSEL_LOGOS";
 
     private final static String DEFAULT_TITLE = "Logo Carousel Widget";
 
+    private static final ObjectReader logoListReader =
+            new ObjectMapper().readerFor(new TypeReference<List<LogoElement>>() {});
+
     private String title;
     private List<LogoElement> logos;
-    private Integer logosCount;
+    private int logosCount;
+
+    public CarouselPreferences() {
+        this(null, I18nUtils.DEFAULT_LANGUAGE);
+    }
+
+    public CarouselPreferences(String preferenceId, String locale) {
+        super(preferenceId, locale);
+
+        if (prefs.has(TITLE_PREFERENCE)) {
+            title = prefs.getString(TITLE_PREFERENCE);
+        } else {
+            title = DEFAULT_TITLE;
+        }
+
+        if (prefs.has(LOGOS_PREFERENCE)) {
+            JSONArray logosArray = prefs.getJSONArray(LOGOS_PREFERENCE);
+            try {
+                logos = logoListReader.readValue(logosArray.toString());
+            } catch (IOException exception) {
+                throw new IllegalStateException(exception);
+            }
+        }
+    }
 
     public String getTitle() {
         return title;
@@ -50,29 +77,7 @@ public class CarouselPreferences extends WidgetPreference {
 
     @Override
     public AttributeGetter<String> getConfigurationAttribute() {
-        return ConfigurationAttributeKey.PORTLET_CONTESTS_PREFERENCES;
-    }
-
-    public CarouselPreferences() {
-        this(null, I18nUtils.DEFAULT_LANGUAGE);
-    }
-    public CarouselPreferences(String preferenceId, String locale) {
-        super(preferenceId, locale);
-
-        if (prefs.has(TITLE_PREFERENCE)) {
-            title = prefs.getString(TITLE_PREFERENCE);
-        } else {
-            title = DEFAULT_TITLE;
-        }
-
-        if (prefs.has(LOGOS_PREFERENCE)) {
-            JSONArray logosArray = prefs.getJSONArray(LOGOS_PREFERENCE);
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                logos = mapper.readValue(logosArray.toString(), new TypeReference<List<LogoElement>>() {});
-            } catch (IOException ignored) {
-            }
-        }
+        return ConfigurationAttributeKey.PORTLET_CAROUSEL_PREFERENCES_PREFERENCES;
     }
 
     public void submit() {
