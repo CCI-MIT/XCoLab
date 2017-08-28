@@ -11,6 +11,10 @@ public class LogoElement {
 
     private Boolean remove;
 
+    public LogoElement() {
+        this.remove = false;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }
@@ -41,18 +45,5 @@ public class LogoElement {
 
     public void setAltText(String altText) {
         this.altText = altText;
-    }
-
-    @JsonCreator
-    public LogoElement(@JsonProperty("imageUrl") String imageUrl,
-            @JsonProperty("linkUrl") String linkUrl, @JsonProperty("altText") String altText) {
-        this.imageUrl = imageUrl;
-        this.linkUrl = linkUrl;
-        this.altText = altText;
-        this.remove = false;
-    }
-
-    public LogoElement() {
-        this.remove = false;
     }
 }
