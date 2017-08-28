@@ -77,7 +77,7 @@ public class CarouselPreferences extends WidgetPreference {
 
     @Override
     public AttributeGetter<String> getConfigurationAttribute() {
-        return ConfigurationAttributeKey.PORTLET_CAROUSEL_PREFERENCES_PREFERENCES;
+        return ConfigurationAttributeKey.PORTLET_CAROUSEL_PREFERENCES;
     }
 
     public void submit() {
