@@ -16,15 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class CarouselController {
 
-    private static final Logger _log = LoggerFactory.getLogger(CarouselController.class);
-
-    public CarouselController() {
-    }
-
     @GetMapping("/carouselwidget")
-    public String showCarousel(@RequestParam(required = false) String preferenceId, HttpServletRequest request, HttpServletResponse response, Model model)  {
+    public String showCarousel(HttpServletRequest request, HttpServletResponse response,
+            Model model, @RequestParam(required = false) String preferenceId) {
         Locale locale = LocaleContextHolder.getLocale();
-        CarouselPreferences carouselPreferences = new CarouselPreferences(preferenceId,locale.getLanguage());
+        CarouselPreferences carouselPreferences =
+                new CarouselPreferences(preferenceId, locale.getLanguage());
 
         model.addAttribute("carouselPreferences", carouselPreferences);
         return "carouselwidget/showCarousel";
