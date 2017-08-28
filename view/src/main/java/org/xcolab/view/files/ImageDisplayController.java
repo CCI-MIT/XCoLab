@@ -56,10 +56,10 @@ public class ImageDisplayController {
         serveImage(request, response, imageId, null, null, DefaultImage.PROPOSAL);
     }
 
-    @GetMapping("/image/member/{memberId}")
+    @GetMapping("/image/member/{imageId}")
     public void serveMemberImage(HttpServletRequest request, HttpServletResponse response,
-            @PathVariable long memberId) throws IOException {
-        serveImage(request, response, null, null, memberId, DefaultImage.MEMBER);
+            @PathVariable long imageId) throws IOException {
+        serveImage(request, response, imageId, null, null, DefaultImage.MEMBER);
     }
 
     @GetMapping({"/image/{whatever}", "/image"})
