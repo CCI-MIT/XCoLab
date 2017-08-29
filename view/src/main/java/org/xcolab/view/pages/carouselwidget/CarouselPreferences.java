@@ -12,6 +12,7 @@ import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CarouselPreferences extends WidgetPreference {
@@ -48,7 +49,10 @@ public class CarouselPreferences extends WidgetPreference {
             } catch (IOException exception) {
                 throw new IllegalStateException(exception);
             }
+        } else {
+            logos = new ArrayList<>();
         }
+        logosCount = logos.size();
     }
 
     public String getTitle() {

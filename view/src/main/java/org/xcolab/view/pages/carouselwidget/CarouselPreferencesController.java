@@ -36,7 +36,6 @@ public class CarouselPreferencesController {
         }
 
         CarouselPreferences carouselPreferences = new CarouselPreferences(preferenceId, language);
-        carouselPreferences.setLogosCount(carouselPreferences.getLogos().size());
         model.addAttribute("carouselPreferences", carouselPreferences);
         return "carouselwidget/editPreferences";
     }
