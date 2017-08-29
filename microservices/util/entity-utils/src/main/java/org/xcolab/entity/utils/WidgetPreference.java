@@ -31,7 +31,7 @@ public abstract class WidgetPreference {
         if(id==null){
             id = DEFAULT_ID;
         }
-        if (id==null && language != null) {
+        if (language != null) {
             id += UNDERSCOREDIVIDER + language;
         }
 
