@@ -41,11 +41,14 @@ public class MemberLocaleResolver extends AbstractLocaleContextResolver {
     @Override
     public void setLocaleContext(HttpServletRequest request, HttpServletResponse response,
             LocaleContext localeContext) {
-        final Member realMember = authenticationService.getRealMemberOrNull();
-        final String localeString = localeContext.getLocale().toString();
-        if (realMember != null && !localeString.equalsIgnoreCase(realMember.getDefaultLocale())) {
-            realMember.setDefaultLocale(localeString);
-            MembersClient.updateMember(realMember);
+        if(localeContext!=null) {
+            final Member realMember = authenticationService.getRealMemberOrNull();
+
+            final String localeString = localeContext.getLocale().toString();
+            if (realMember != null && !localeString.equalsIgnoreCase(realMember.getDefaultLocale())) {
+                realMember.setDefaultLocale(localeString);
+                MembersClient.updateMember(realMember);
+            }
         }
         fallbackResolver.setLocaleContext(request, response, localeContext);
     }

@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class Contest extends AbstractContest implements Serializable {
 
@@ -321,10 +322,33 @@ public class Contest extends AbstractContest implements Serializable {
         return 0L;
     }
 
+    private long getProposalsCommentsCount() {
+        try {
+            ContestPhase cp = contestClient.getActivePhase(this.getContestPK());
+            if (cp != null) {
+
+                RestService proposalService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
+
+
+                return ProposalClient.fromService(proposalService)
+                        .getProposalsInContestPhase(cp.getContestPhasePK())
+                        .stream()
+                        .collect(Collectors.summingLong(proposal -> proposal.getCommentsCount()));
+
+            }
+        } catch (UncheckedEntityNotFoundException e) {
+            //fall through - return 0
+        }
+        return 0L;
+    }
+
 
     public long getCommentsCount() {
-        //TODO: get each proposal comment count.
-        return commentClient.countComments(this.getDiscussionGroupId());
+
+        Integer totalCommentsCount =  commentClient.countComments(this.getDiscussionGroupId());
+
+
+        return totalCommentsCount + getProposalsCommentsCount();
     }
 
     public List<OntologyTerm> getWho() {
