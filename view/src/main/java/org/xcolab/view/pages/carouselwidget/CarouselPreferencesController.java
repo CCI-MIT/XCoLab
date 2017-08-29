@@ -25,12 +25,13 @@ public class CarouselPreferencesController {
     @GetMapping("carouselwidget/editPreferences")
     public String showPreferences(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member, @RequestParam(required = false) String preferenceId,
-            @RequestParam(required = false) String language) {
+            @RequestParam(required = false) String languageParam) {
 
         if (!PermissionsClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
+        String language = languageParam;
         if (language == null || language.isEmpty()) {
             language = I18nUtils.DEFAULT_LANGUAGE;
         }
