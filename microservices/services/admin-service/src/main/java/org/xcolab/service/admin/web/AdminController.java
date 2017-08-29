@@ -19,6 +19,7 @@ import org.xcolab.service.admin.pojo.Notification;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class AdminController {
@@ -78,7 +79,16 @@ public class AdminController {
     public boolean updateConfigurationAttribute(@RequestBody ConfigurationAttribute pojo,
             @PathVariable String attributeName)
             throws NotFoundException {
-        return configurationAttributeDao.update(pojo);
+        Optional<ConfigurationAttribute> configurationAttribute =
+                configurationAttributeDao.getConfigurationAttribute(attributeName, null);
+        boolean isUpdated;
+        if (configurationAttribute.isPresent()) {
+            isUpdated = configurationAttributeDao.update(pojo);
+        } else {
+            configurationAttributeDao.create(pojo);
+            isUpdated = true;
+        }
+        return isUpdated;
     }
 
     @GetMapping("/contestTypeAttributes")
