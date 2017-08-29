@@ -81,14 +81,10 @@ public class AdminController {
             throws NotFoundException {
         Optional<ConfigurationAttribute> configurationAttribute =
                 configurationAttributeDao.getConfigurationAttribute(attributeName, null);
-        boolean isUpdated;
-        if (configurationAttribute.isPresent()) {
-            isUpdated = configurationAttributeDao.update(pojo);
-        } else {
+        if (!configurationAttribute.isPresent()) {
             configurationAttributeDao.create(pojo);
-            isUpdated = true;
         }
-        return isUpdated;
+        return configurationAttributeDao.update(pojo);
     }
 
     @GetMapping("/contestTypeAttributes")
