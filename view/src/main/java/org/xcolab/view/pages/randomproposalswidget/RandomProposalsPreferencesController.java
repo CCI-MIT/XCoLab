@@ -28,25 +28,24 @@ public class RandomProposalsPreferencesController {
         if (!PermissionsClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
-    	model.addAttribute("preferences", new RandomProposalsPreferences(preferenceId,language));
-    	
+        model.addAttribute("preferences", new RandomProposalsPreferences(preferenceId, language));
+
         return "/randomproposalswidget/editPreferences";
     }
-	
+
 
     @PostMapping("/randomproposalswidget/savePreferences")
     public String savePreferences(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, RandomProposalsPreferences preferences)
-            throws IOException {
+            Model model, Member member, RandomProposalsPreferences preferences) throws IOException {
         if (!PermissionsClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-    	preferences.submit();
+        preferences.submit();
 
         AlertMessage.success("Random proposals widget preferences has been saved.").flash(request);
-        return "redirect:/randomproposalswidget/editPreferences?preferenceId="
-                + preferences.getPreferenceId();
+        return "redirect:/randomproposalswidget/editPreferences?preferenceId=" + preferences
+                .getPreferenceId();
     }
 
 }

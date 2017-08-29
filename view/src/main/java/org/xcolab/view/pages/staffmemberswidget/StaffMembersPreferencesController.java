@@ -27,7 +27,8 @@ public class StaffMembersPreferencesController {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-        model.addAttribute("staffMembersPreferences", new StaffMembersPreferences(preferenceId,language));
+        model.addAttribute("staffMembersPreferences",
+                new StaffMembersPreferences(preferenceId, language));
         model.addAttribute("categories", StaffMembersPreferences.getCategories());
 
         return "/staffmemberswidget/editPreferences";
@@ -36,16 +37,16 @@ public class StaffMembersPreferencesController {
 
     @PostMapping("/staffmemberswidget/savePreferences")
     public String savePreferences(HttpServletRequest request, HttpServletResponse response,
-            Model model, Member member, StaffMembersPreferences preferences) throws  IOException {
+            Model model, Member member, StaffMembersPreferences preferences) throws IOException {
         if (!PermissionsClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
 
-    	preferences.store();
+        preferences.store();
 
         AlertMessage.success("Staff members widget preferences has been saved.").flash(request);
-        return "redirect:/staffmemberswidget/editPreferences?preferenceId="
-                + preferences.getPreferenceId();
-	}
+        return "redirect:/staffmemberswidget/editPreferences?preferenceId=" + preferences
+                .getPreferenceId();
+    }
 
 }

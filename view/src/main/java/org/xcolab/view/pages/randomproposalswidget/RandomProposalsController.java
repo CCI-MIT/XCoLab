@@ -24,42 +24,43 @@ import javax.servlet.http.HttpServletResponse;
 public class RandomProposalsController {
 
     @GetMapping("/randomproposalswidget")
-    public String showRandomProposals(@RequestParam(required = false) String preferenceId, HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String showRandomProposals(HttpServletRequest request, HttpServletResponse response,
+            Model model, @RequestParam(required = false) String preferenceId) {
 
         Locale locale = LocaleContextHolder.getLocale();
-        RandomProposalsPreferences preferences = new RandomProposalsPreferences(preferenceId,locale.getLanguage());
+        RandomProposalsPreferences preferences =
+                new RandomProposalsPreferences(preferenceId, locale.getLanguage());
 
 
-        ProposalsModel proposalsModel = new ProposalsModel(getProposals(preferences), preferences
-    			, PlatformAttributeKey.COLAB_URL + "/proposal/");
+        ProposalsModel proposalsModel = new ProposalsModel(getProposals(preferences), preferences,
+                PlatformAttributeKey.COLAB_URL + "/proposal/");
 
-    	model.addAttribute("proposalsModel", proposalsModel);
+        model.addAttribute("proposalsModel", proposalsModel);
 
-    	return "/randomproposalswidget/showProposals";
+        return "/randomproposalswidget/showProposals";
     }
 
     private List<Proposal> getProposals(RandomProposalsPreferences preferences) {
 
         List<Proposal> ret = new ArrayList<>();
-		List<Proposal> proposals = getAvailableProposals(preferences);
+        List<Proposal> proposals = getAvailableProposals(preferences);
 
         //TODO LR: remove loop and use micro service pojo
         if (proposals != null) {
             Collections.shuffle(proposals);
             for (int i = 0; i < proposals.size() && i < preferences.getFeedSize(); ++i) {
                 try {
-                    ret.add((
-                            ProposalClientUtil.getProposal(proposals.get(i).getProposalId())));
-                } catch (ProposalNotFoundException  e) {
+                    ret.add((ProposalClientUtil.getProposal(proposals.get(i).getProposalId())));
+                } catch (ProposalNotFoundException e) {
                     //ignored for now, will be removed after LR
                 }
             }
         }
 
-		return ret;
-	}
+        return ret;
+    }
 
-	private List<Proposal> getAvailableProposals(RandomProposalsPreferences preferences) {
+    private List<Proposal> getAvailableProposals(RandomProposalsPreferences preferences) {
         Long[] selectedPhases = preferences.getSelectedPhases();
         if (selectedPhases == null) {
             return null;
@@ -69,15 +70,13 @@ public class RandomProposalsController {
         List<Proposal> availableProposals = new ArrayList<>();
         for (Long contestPhaseId : selectedPhases) {
             if (flagFilters == null || flagFilters.length == 0) {
-                availableProposals
-                        .addAll(ProposalClientUtil.listProposals(0, Integer.MAX_VALUE, null, true,
-                        contestPhaseId, null));
+                availableProposals.addAll(ProposalClientUtil
+                        .listProposals(0, Integer.MAX_VALUE, null, true, contestPhaseId, null));
             } else {
                 for (Long flagFilter : flagFilters) {
-                    availableProposals
-                            .addAll(ProposalClientUtil
-                                    .listProposals(0, Integer.MAX_VALUE, null, true,
-                            contestPhaseId, flagFilter.intValue()));
+                    availableProposals.addAll(ProposalClientUtil
+                            .listProposals(0, Integer.MAX_VALUE, null, true, contestPhaseId,
+                                    flagFilter.intValue()));
                 }
             }
         }

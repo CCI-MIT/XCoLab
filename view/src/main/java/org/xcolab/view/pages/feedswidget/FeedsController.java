@@ -19,29 +19,29 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class FeedsController {
 
+    private final List<FeedTypeDataProvider> dataProviderList;
+
     @Autowired
-    private List<FeedTypeDataProvider> dataProviderList;
+    public FeedsController(List<FeedTypeDataProvider> dataProviderList) {
+        this.dataProviderList = dataProviderList;
+    }
 
-	@GetMapping("/activities")
-	public String showFeedActivities(HttpServletRequest request, HttpServletResponse response,
-			SortFilterPage sortFilterPage, Model model, @RequestParam(required = false, defaultValue = "0") Integer page) {
+    @GetMapping("/activities")
+    public String showFeedActivities(HttpServletRequest request, HttpServletResponse response,
+            SortFilterPage sortFilterPage, Model model,
+            @RequestParam(required = false, defaultValue = "0") Integer page) {
         sortFilterPage.setPage(page);
-		model.addAttribute("communityTopContentArticleId", ConfigurationAttributeKey.MEMBERS_CONTENT_ARTICLE_ID.get());
+        model.addAttribute("communityTopContentArticleId",
+                ConfigurationAttributeKey.MEMBERS_CONTENT_ARTICLE_ID.get());
 
-		return showFeed(request, response, sortFilterPage, model,false);
-	}
+        return showFeed(request, response, sortFilterPage, model, false);
+    }
 
-    @GetMapping("/feedswidget")
-    public String showFeedWidget(HttpServletRequest request, HttpServletResponse response,
-			SortFilterPage sortFilterPage, Model model) {
-		return showFeed(request, response, sortFilterPage, model, true);
-	}
-
-	private String showFeed(HttpServletRequest request, HttpServletResponse response,
-			SortFilterPage sortFilterPage, Model model, Boolean isWidget) {
+    private String showFeed(HttpServletRequest request, HttpServletResponse response,
+            SortFilterPage sortFilterPage, Model model, Boolean isWidget) {
 
         Locale locale = LocaleContextHolder.getLocale();
-		FeedsPreferences preferences = new FeedsPreferences("fullfeed",locale.getLanguage());
+        FeedsPreferences preferences = new FeedsPreferences("fullfeed", locale.getLanguage());
         if (!isWidget) {
             preferences.setFeedStyle("FULL");
             preferences.setFeedMaxLength(25);
@@ -49,15 +49,21 @@ public class FeedsController {
             preferences.setSeeMoreLinkShown(false);
         }
 
-		model.addAttribute("feedType", preferences.getFeedType());
-		model.addAttribute("feedStyle", preferences.getFeedStyle());
-		model.addAttribute("portletTitle", preferences.getPortletTitle());
-		model.addAttribute("seeMoreLinkShown", preferences.getSeeMoreLinkShown());
-		for(FeedTypeDataProvider ftpdp : dataProviderList){
-		    if(ftpdp.getFeedTypeName().equals(preferences.getFeedType().getDescription())){
-		        return ftpdp.populateModel(request, response, sortFilterPage, preferences, model);
+        model.addAttribute("feedType", preferences.getFeedType());
+        model.addAttribute("feedStyle", preferences.getFeedStyle());
+        model.addAttribute("portletTitle", preferences.getPortletTitle());
+        model.addAttribute("seeMoreLinkShown", preferences.getSeeMoreLinkShown());
+        for (FeedTypeDataProvider ftpdp : dataProviderList) {
+            if (ftpdp.getFeedTypeName().equals(preferences.getFeedType().getDescription())) {
+                return ftpdp.populateModel(request, response, sortFilterPage, preferences, model);
             }
         }
         return null;
-	}
+    }
+
+    @GetMapping("/feedswidget")
+    public String showFeedWidget(HttpServletRequest request, HttpServletResponse response,
+            SortFilterPage sortFilterPage, Model model) {
+        return showFeed(request, response, sortFilterPage, model, true);
+    }
 }

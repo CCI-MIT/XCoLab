@@ -36,8 +36,7 @@ public class StaffMemberController {
 
     @GetMapping
     public String showStaffMembers(HttpServletRequest request, HttpServletResponse response,
-            Model model,
-            @RequestParam(required = false) String preferenceId,
+            Model model, @RequestParam(required = false) String preferenceId,
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) Integer columnAmount,
@@ -46,17 +45,22 @@ public class StaffMemberController {
 
 
         Locale locale = LocaleContextHolder.getLocale();
-        StaffMembersPreferences preferences = new StaffMembersPreferences(preferenceId,locale.getLanguage());
+        StaffMembersPreferences preferences =
+                new StaffMembersPreferences(preferenceId, locale.getLanguage());
 
 
-        model.addAttribute("preferences",preferences);
+        model.addAttribute("preferences", preferences);
 
-        categoryId = (categoryId!=null)?(categoryId):(preferences.getCategoryId());
+        categoryId = (categoryId != null) ? (categoryId) : (preferences.getCategoryId());
 
-        model.addAttribute("widgetTitle", ((title!=null)?(title):(preferences.getPortletTitle())));
-        model.addAttribute("columnAmount", ((columnAmount != null)?(columnAmount):(preferences.getColumnAmount())));
-        model.addAttribute("displayPhoto", ((displayPhoto != null)?(displayPhoto):(preferences.isDisplayPhoto())));
-        model.addAttribute("displayUrl", ((displayUrl!=null)?(displayUrl):(preferences.isDisplayUrl())));
+        model.addAttribute("widgetTitle",
+                ((title != null) ? (title) : (preferences.getPortletTitle())));
+        model.addAttribute("columnAmount",
+                ((columnAmount != null) ? (columnAmount) : (preferences.getColumnAmount())));
+        model.addAttribute("displayPhoto",
+                ((displayPhoto != null) ? (displayPhoto) : (preferences.isDisplayPhoto())));
+        model.addAttribute("displayUrl",
+                ((displayUrl != null) ? (displayUrl) : (preferences.isDisplayUrl())));
         CategoryRole categoryRole;
         try {
             categoryRole = CategoryRole.fromCategoryId(categoryId);
@@ -121,10 +125,9 @@ public class StaffMemberController {
                 return "staffmemberswidget/staffmembersGroupedByYear";
             } else {
 
-                List<Member> allMembersWithRole =
-                        MembersClient.listMembers(categoryRole.getRole().name(), null,
-                                null, null, true,
-                                0, Integer.MAX_VALUE);
+                List<Member> allMembersWithRole = MembersClient
+                        .listMembers(categoryRole.getRole().name(), null, null, null, true, 0,
+                                Integer.MAX_VALUE);
                 staffMembersOverrides = getStaffMembers(categoryId);
 
                 for (Member member : allMembersWithRole) {
@@ -141,8 +144,7 @@ public class StaffMemberController {
                         staffMembersOverrides.add(getNewStaffMember(member, categoryRole));
                     }
                 }
-                staffMembersOverrides
-                        .sort(Comparator.comparing(StaffMemberWrapper::getLastName));
+                staffMembersOverrides.sort(Comparator.comparing(StaffMemberWrapper::getLastName));
                 model.addAttribute("staffMembers", staffMembersOverrides);
                 return "staffmemberswidget/staffmembers";
             }
