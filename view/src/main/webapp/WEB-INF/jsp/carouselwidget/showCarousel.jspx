@@ -16,7 +16,7 @@
                 <div class="c-CarouselLogo">
                     <c:choose>
                         <c:when test="${logo.linkUrl != null and !logo.linkUrl.isEmpty()}">
-                            <a href="${logo.linkUrl}">
+                            <a href="${logo.linkUrl}" target="_blank">
                                 <img src="${logo.imageUrl}" alt="${logo.altText}" />
                             </a>
                         </c:when>
