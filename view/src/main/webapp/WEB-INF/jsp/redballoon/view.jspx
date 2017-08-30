@@ -40,7 +40,7 @@
                     </c:otherwise>
                 </c:choose>
 
-                <button type="submit" class="c-Button__primary c-Button--form" href="#">
+                <button type="submit" class="c-Button__primary" href="#">
                     Request your unique link
                 </button>
 

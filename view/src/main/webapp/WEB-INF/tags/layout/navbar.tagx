@@ -56,7 +56,7 @@
                             <form action="/search" method="get">
                                 <input class="form-control bs-form-control-inline bs-form-control--small"
                                        type="text" name="searchPhrase"/>
-                                <button type="submit" class="c-Button__primary c-Button--form">
+                                <button type="submit" class="c-Button__primary">
                                     <spring:message code="homepage.search.button" />
                                 </button>
                             </form>
@@ -100,22 +100,12 @@
                                 <a href="/messaging">
                                     <spring:message code="homepage.menu.user.mymessages" />
                                     <c:if test="${unreadMessages > 0}">
-                                        <span class="badge">
+                                        <span class="badge b-Spacing__marginLeft">
                                             ${unreadMessages}
                                         </span>
                                     </c:if>
                                 </a>
                             </li>
-                            <c:if test="${member.isAdmin}">
-                                <li>
-                                    <a href="/admin/contest">Contest Manager</a>
-                                </li>
-                                <c:if test="${not empty blogAdminUrl}">
-                                    <li>
-                                        <a href="${blogAdminUrl}" target="_blank">Blog (Admin)</a>
-                                    </li>
-                                </c:if>
-                            </c:if>
                             <li>
                                 <a href="/members/profile/${member.userId}/subscriptions">
                                     <spring:message code="homepage.menu.user.mysubscriptions" />
@@ -126,6 +116,17 @@
                                     <spring:message code="homepage.menu.user.logout" />
                                 </a>
                             </li>
+                            <c:if test="${member.isAdmin}">
+                                <li class="dropdown-header">Admin</li>
+                                <li>
+                                    <a href="/admin/contest">Contest manager</a>
+                                </li>
+                                <c:if test="${not empty blogAdminUrl}">
+                                    <li>
+                                        <a href="${blogAdminUrl}" target="_blank">Blog (Admin)</a>
+                                    </li>
+                                </c:if>
+                            </c:if>
                         </ul>
                     </li>
                 </c:when>
@@ -192,7 +193,7 @@
                     </li>
                     <c:if test="${showLanguage}">
                         <li class="c-Header__navItem language bs-navitem-icon dropdown bs-dropdown--dark" >
-                            <a class="dropdown-trigger" data-toggle="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown">
                                 <spring:message code="homepage.menu.visitor.language" />
                             </a>
 
