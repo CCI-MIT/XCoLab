@@ -61,6 +61,7 @@
         <simple-java-mail.version>3.1.1</simple-java-mail.version>
         <google-api.version>1.22.0</google-api.version>
         <javax-mail.version>1.4.7</javax-mail.version>
+        <autolink.version>0.6.0</autolink.version>
 
         <!-- Assets -->
         <sass-maven-plugin.version>2.25</sass-maven-plugin.version>
@@ -297,6 +298,11 @@
                 <groupId>org.glassfish</groupId>
                 <artifactId>javax.json</artifactId>
                 <version>${javax.json.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.nibor.autolink</groupId>
+                <artifactId>autolink</artifactId>
+                <version>${autolink.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
