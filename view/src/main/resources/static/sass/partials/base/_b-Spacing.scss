@@ -59,3 +59,7 @@ $b-Spacing__separatorColor: $t-Color__grey--light !default;
   @extend %b-Spacing;
   padding: $b-Spacing__spacing__horizontal $b-Spacing__spacing__vertical;
 }
+
+.b-Spacing__marginLeft {
+  margin-left: 5px;
+}

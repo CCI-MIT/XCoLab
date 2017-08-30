@@ -1,6 +1,7 @@
 package org.xcolab.view.i18n;
 
 import org.springframework.context.i18n.LocaleContext;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.LocaleContextResolver;
 import org.springframework.web.servlet.i18n.AbstractLocaleContextResolver;
@@ -41,7 +42,7 @@ public class MemberLocaleResolver extends AbstractLocaleContextResolver {
     @Override
     public void setLocaleContext(HttpServletRequest request, HttpServletResponse response,
             LocaleContext localeContext) {
-        if(localeContext!=null) {
+        if (localeContext != null) {
             final Member realMember = authenticationService.getRealMemberOrNull();
 
             final String localeString = localeContext.getLocale().toString();
@@ -51,5 +52,7 @@ public class MemberLocaleResolver extends AbstractLocaleContextResolver {
             }
         }
         fallbackResolver.setLocaleContext(request, response, localeContext);
+        // Propagate the update to the LocaleContextHolder, as it was initialized earlier
+        LocaleContextHolder.setLocaleContext(localeContext);
     }
 }
