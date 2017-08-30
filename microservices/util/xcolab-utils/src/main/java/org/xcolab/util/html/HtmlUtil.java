@@ -151,10 +151,8 @@ public final class HtmlUtil {
             int startIndex = existingLinksMatcher.start();
             int endIndex = existingLinksMatcher.end();
 
-            if (lastIndex < startIndex) {
-                String beforeText = content.substring(lastIndex, startIndex);
-                result.append(linkifyUrlsInText(beforeText));
-            }
+            String beforeText = content.substring(lastIndex, startIndex);
+            result.append(linkifyUrlsInText(beforeText));
             String existingLink = content.substring(startIndex, endIndex);
             result.append(existingLink);
 
