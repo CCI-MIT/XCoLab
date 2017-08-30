@@ -11,7 +11,7 @@
 	<div class="balloonContainer">
         <input id="linkToCopy" type="text" value="${shareLink}" readonly="readonly"
                     class="form-control" />
-        <button class="c-Button__primary c-Button--form" id="copyButton"
+        <button class="c-Button__primary" id="copyButton"
                 data-clipboard-target="#linkToCopy">
             Copy link
         </button>

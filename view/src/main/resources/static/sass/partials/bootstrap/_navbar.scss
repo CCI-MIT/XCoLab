@@ -1,0 +1,155 @@
+$bgDefault: #ffffff;
+$bgHighlight: #ffffff;
+$colDefault: #30a3fb;
+$colHighlight: #404040;
+
+.bs-navbar {
+  border-bottom: $c-Header__border--bottom;
+  margin-bottom: 0;
+
+  &.bs-navbar-white {
+    background-color: #ffffff;
+    background-image: none;
+  }
+
+  &.bs-navbar-gray {
+    background: $c-Header__background;
+    box-shadow: $c-Header__box-shadow;
+  }
+
+  .navbar-brand {
+    line-height: 67px;
+    height: initial;
+    padding: 0 15px;
+
+    > img {
+      display: inline-block;
+    }
+  }
+
+  .nav > li > a:focus, .nav > li > a:hover {
+    text-decoration: none;
+    background: none;
+  }
+
+  .navbar-left {
+    > li {
+      border-left: 1px solid #bababa;
+
+      &.bs-navitem-text {
+
+        &:hover {
+          background-image: $c-Header__background--hover;
+        }
+
+        &.bs-navitem--active {
+          background-color: white;
+          color: black;
+          border-bottom: 1px solid white;
+        }
+      }
+    }
+  }
+
+  .navbar-nav {
+    height: 67px;
+
+    > li {
+      margin: 0;
+
+      > a {
+        color: $colDefault;
+        line-height: 67px;
+        width: auto;
+        text-align: left;
+        padding: 0 15px;
+        font-weight: 700;
+        &:hover, &:focus {
+          color: $colHighlight;
+        }
+      }
+    }
+
+    .bs-navitem-icon {
+
+      &.bs-dropdown--dark.open {
+        > a, > a:hover, > a:focus {
+          color: white;
+          background: none;
+        }
+      }
+      > a {
+        height: 67px;
+        padding: 45px 7px 0 7px;
+        font-size: 10px;
+        font-weight: 700;
+        color: #575757;
+        display: inline-block;
+        text-transform: uppercase;
+        line-height: initial;
+      }
+    }
+
+    .bs-navitem-image {
+
+      > .badge, > a > .badge {
+        position: absolute;
+        top: 14px;
+        right: 10px;
+        padding: 2px 5px;
+        font-weight: 400;
+      }
+
+      > img, > a > img {
+        border: 1px solid #888;
+      }
+    }
+
+    .bs-navitem-merge-right {
+      > a {
+        padding-right: 3px;
+      }
+    }
+  }
+
+  .navbar-toggle {
+    border-color: $bgHighlight;
+    &:hover, &:focus {
+      background-color: $bgHighlight;
+    }
+    .icon-bar {
+      background-color: $colDefault;
+    }
+  }
+  .navbar-collapse,
+  .navbar-form {
+    border-color: $colDefault;
+  }
+  .navbar-link {
+    color: $colDefault;
+    &:hover {
+      color: $colHighlight;
+    }
+  }
+}
+
+.bs-navbar-unresponsive {
+  .nav > li,
+  .navbar-header {
+    float: left;
+  }
+
+  .navbar-nav {
+    float: left;
+    margin: 0;
+  }
+
+  .navbar-left {
+    float: left!important;
+  }
+
+  .navbar-right {
+    float: right!important;
+    margin-right: -15px;
+  }
+}

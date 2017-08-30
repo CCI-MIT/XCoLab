@@ -292,7 +292,7 @@
                                     <!-- --></div>
                             </c:if>
                             <input id="snpLink" readonly="true" value="${shareLink}" class="form-control" />
-                            <button class="c-Button__primary c-Button--form" id="copyButton"
+                            <button class="c-Button__primary" id="copyButton"
                                     data-clipboard-target="#snpLink">
                                 Copy link
                             </button>

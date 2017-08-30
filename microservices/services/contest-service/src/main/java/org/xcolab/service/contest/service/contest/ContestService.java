@@ -1,5 +1,6 @@
 package org.xcolab.service.contest.service.contest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -181,9 +182,15 @@ public class ContestService {
         return contestTranslation
                 .map(translation -> {
                     Contest ret = new Contest(contest);
-                    ret.setContestShortName(translation.getContestShortName());
-                    ret.setContestName(translation.getContestName());
-                    ret.setContestDescription(translation.getContestDescription());
+                    if (StringUtils.isNotBlank(translation.getContestShortName())) {
+                        ret.setContestShortName(translation.getContestShortName());
+                    }
+                    if (StringUtils.isNotBlank(translation.getContestName())) {
+                        ret.setContestName(translation.getContestName());
+                    }
+                    if (StringUtils.isNotBlank(translation.getContestDescription())) {
+                        ret.setContestDescription(translation.getContestDescription());
+                    }
                     return ret;
                 })
                 .orElse(contest);

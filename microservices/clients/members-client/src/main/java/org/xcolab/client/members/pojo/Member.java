@@ -11,6 +11,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.util.http.client.types.TypeProvider;
 
 import java.io.Serializable;
@@ -306,6 +307,11 @@ public class Member implements Serializable {
     public boolean hasLinkedSocialAccount() {
         return facebookId != null || StringUtils.isNotEmpty(googleId)
                 || StringUtils.isNotEmpty(openId);
+    }
+
+    @JsonIgnore
+    public boolean getIsAdmin() {
+        return PermissionsClient.canAdminAll(this);
     }
 
     public String getHashedPassword() {

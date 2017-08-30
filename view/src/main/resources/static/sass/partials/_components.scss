@@ -1,6 +1,5 @@
 @import 'base/b-typography';
 @import "base/b-Spacing";
-@import "base/b-Input";
 @import 'base/layout';
 
 //components
@@ -58,5 +57,8 @@
 @import "pages/shame";
 
 // bootstrap components
+@import "bootstrap/base";
 @import "bootstrap/modal";
 @import "bootstrap/form";
+@import "bootstrap/navbar";
+@import "bootstrap/dropdown";

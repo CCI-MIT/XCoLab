@@ -109,6 +109,7 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
         }
         final String baseUri = PlatformAttributeKey.COLAB_URL.get();
         Document contentDocument = Jsoup.parse(content.trim(), baseUri);
+        // TODO: do we need this? this should already happen in HtmlUtil#cleanX
         contentDocument = HtmlUtil.addNoFollowToLinkTagsInDocument(contentDocument);
 
         for (Element aTagElements : contentDocument.select("a")) {
