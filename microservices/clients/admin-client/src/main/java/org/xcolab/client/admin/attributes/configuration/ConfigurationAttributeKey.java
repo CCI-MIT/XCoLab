@@ -16,6 +16,8 @@ import java.util.regex.Pattern;
 
 public final class ConfigurationAttributeKey {
 
+    private static final String EMPTY_JAVASCRIPT_OBJECT = "{}";
+
     private ConfigurationAttributeKey() {
     }
 
@@ -418,6 +420,10 @@ public final class ConfigurationAttributeKey {
     public static final AttributeGetter<String> PORTLET_CONTESTS_PREFERENCES =
             ConfigurationAttributes.newStringAttribute("PORTLET_CONTESTS_PREFERENCES")
                     .build();
+
+    public static final AttributeGetter<String> PORTLET_CAROUSEL_PREFERENCES =
+            ConfigurationAttributes.newStringAttribute("PORTLET_CAROUSEL_PREFERENCES")
+                    .defaultValue(EMPTY_JAVASCRIPT_OBJECT).build();
 
     public static final AttributeGetter<String> PORTLET_FEED_PREFERENCES =
             ConfigurationAttributes.newStringAttribute("PORTLET_FEED_PREFERENCES")

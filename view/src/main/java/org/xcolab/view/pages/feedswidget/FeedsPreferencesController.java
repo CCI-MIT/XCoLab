@@ -20,42 +20,45 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class FeedsPreferencesController {
-	
+
     @GetMapping("/feedswidget/editPreferences")
     public String showFeed(HttpServletRequest request, HttpServletResponse response, Model model,
             Member member, @RequestParam(required = false) String preferenceId) {
 
-		if (!PermissionsClient.canAdminAll(member)) {
+        if (!PermissionsClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
-		}
+        }
 
-		model.addAttribute("feedsPreferences", new FeedsPreferences(preferenceId,null));
-        
-    	// populate feed types
-    	Map<String, String> feedTypes = new HashMap<>();
-    	for (FeedType feedType: FeedType.values()) {
-    		feedTypes.put(feedType.name(), feedType.name());
-    	}
-    	model.addAttribute("feedTypes", feedTypes);
+        model.addAttribute("feedsPreferences", new FeedsPreferences(preferenceId, null));
 
-    	Map<String, String> feedDisplayStyles = new HashMap<>();
-    	feedDisplayStyles.put("FULL", "FULL");
-    	feedDisplayStyles.put("SHORT", "SHORT");
-    	model.addAttribute("feedDisplayStyles", feedDisplayStyles);
+        // populate feed types
+        Map<String, String> feedTypes = new HashMap<>();
+        for (FeedType feedType : FeedType.values()) {
+            feedTypes.put(feedType.name(), feedType.name());
+        }
+        model.addAttribute("feedTypes", feedTypes);
 
-    	
+        Map<String, String> feedDisplayStyles = new HashMap<>();
+        feedDisplayStyles.put("FULL", "FULL");
+        feedDisplayStyles.put("SHORT", "SHORT");
+        model.addAttribute("feedDisplayStyles", feedDisplayStyles);
+
+
         return "/feedswidget/editPreferences";
     }
-	
+
 
     @PostMapping("/feedswidget/savePreferences")
-    public void savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, FeedsPreferences preferences) throws  IOException {
-    	preferences.store();
-		AlertMessage.success("Feeds widget preferences has been saved.").flash(request);
+    public void savePreferences(HttpServletRequest request, HttpServletResponse response,
+            Model model, FeedsPreferences preferences) throws IOException {
+        preferences.store();
+        AlertMessage.success("Feeds widget preferences has been saved.").flash(request);
 
-		model.addAttribute("feedsPreferences", new FeedsPreferences(preferences.getPreferenceId(),null));
+        model.addAttribute("feedsPreferences",
+                new FeedsPreferences(preferences.getPreferenceId(), null));
 
-        response.sendRedirect("/feedswidget/editPreferences?preferenceId="+preferences.getPreferenceId());
-	}
+        response.sendRedirect(
+                "/feedswidget/editPreferences?preferenceId=" + preferences.getPreferenceId());
+    }
 
 }

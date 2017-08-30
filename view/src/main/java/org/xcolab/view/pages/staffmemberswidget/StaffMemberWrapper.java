@@ -39,18 +39,10 @@ public class StaffMemberWrapper implements Serializable {
         }
     }
 
-    private static String nl2br(String string) {
-        if (string != null) {
-            //allow line breaks in the string and render them as html
-            return string.replaceAll("\n", "<br />\n");
-        } else {
-            return null;
-        }
-    }
-
-    public Member getMember(){
+    public Member getMember() {
         return this.colabMember;
     }
+
     public String getName() {
         if (colabMember != null) {
             return colabMember.getFullName();
@@ -60,7 +52,7 @@ public class StaffMemberWrapper implements Serializable {
     }
 
     public String getLastName() {
-        if (this.staffMember.getLastName() != null &&! staffMember.getLastName().isEmpty()) {
+        if (this.staffMember.getLastName() != null && !staffMember.getLastName().isEmpty()) {
             return this.staffMember.getLastName();
         } else {
             return this.colabMember.getLastName();
@@ -68,7 +60,7 @@ public class StaffMemberWrapper implements Serializable {
     }
 
     public Integer getSort() {
-        if(this.staffMember.getSort() != null){
+        if (this.staffMember.getSort() != null) {
             return this.staffMember.getSort();
         } else {
             return 0;
@@ -95,6 +87,15 @@ public class StaffMemberWrapper implements Serializable {
 
     public String getRole() {
         return nl2br(staffMember.getRole());
+    }
+
+    private static String nl2br(String string) {
+        if (string != null) {
+            //allow line breaks in the string and render them as html
+            return string.replaceAll("\n", "<br />\n");
+        } else {
+            return null;
+        }
     }
 
     public String getOrganization() {

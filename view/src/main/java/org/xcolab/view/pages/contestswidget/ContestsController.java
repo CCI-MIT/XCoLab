@@ -30,15 +30,17 @@ import javax.servlet.http.HttpServletResponse;
 public class ContestsController {
 
     private static final Logger _log = LoggerFactory.getLogger(ContestsController.class);
-    
+
     public ContestsController() {
     }
 
     @GetMapping("/contestswidget")
-    public String showContests(@RequestParam(required = false) String preferenceId, HttpServletRequest request, HttpServletResponse response, Model model)  {
+    public String showContests(HttpServletRequest request, HttpServletResponse response,
+            Model model, @RequestParam(required = false) String preferenceId) {
 
         Locale locale = LocaleContextHolder.getLocale();
-        ContestPreferences contestPreferences = new ContestPreferences(preferenceId,locale.getLanguage());
+        ContestPreferences contestPreferences =
+                new ContestPreferences(preferenceId, locale.getLanguage());
 
         List<Contest> contestWrappers = new ArrayList<>();
         final List<Long> selectedContests = contestPreferences.getSelectedContests();
@@ -53,9 +55,9 @@ public class ContestsController {
                 if (!contest.getContestPrivate()) {
                     if (contest.getIsSharedContestInForeignColab()) {
                         RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
-                                ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
-                        );
-                        Contest foreignContest = ContestClient.fromService(contestService).getContest(contest.getContestPK());
+                                ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
+                        Contest foreignContest = ContestClient.fromService(contestService)
+                                .getContest(contest.getContestPK());
                         foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
                         contestWrappers.add(foreignContest);
                     } else {
@@ -71,14 +73,14 @@ public class ContestsController {
                 }
                 try {
                     Contest c = ContestClientUtil.getContest(contestId);
-                    if(c.getIsSharedContestInForeignColab()){
+                    if (c.getIsSharedContestInForeignColab()) {
                         RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
-                                ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
-                        );
-                        Contest foreignContest = ContestClient.fromService(contestService).getContest(contestId);
+                                ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
+                        Contest foreignContest =
+                                ContestClient.fromService(contestService).getContest(contestId);
                         foreignContest.setUpForeignContestVisualConfigsFromLocal(c);
                         contestWrappers.add(foreignContest);
-                    }else {
+                    } else {
                         contestWrappers.add(c);
                     }
                 } catch (ContestNotFoundException e) {
@@ -87,12 +89,11 @@ public class ContestsController {
             }
         }
 
-
         model.addAttribute("contests", contestWrappers);
         model.addAttribute("contestPreferences", contestPreferences);
         //TODO: allow setting on a per-contest/per portlet basis
-        model.addAttribute("contestType",
-                ContestTypeClient.getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));
+        model.addAttribute("contestType", ContestTypeClient
+                .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));
         return "contestswidget/showContests";
     }
 }

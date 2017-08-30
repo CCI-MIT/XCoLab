@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class StaffMembersPreferences extends WidgetPreference implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private final static String PORTLET_TITLE = "PORTLET_TITLE";
     private final static String COLUMN_AMOUNT = "COLUMN_AMOUNT";
@@ -31,26 +31,22 @@ public class StaffMembersPreferences extends WidgetPreference implements Seriali
     private final static String defaultPortletTitle = "";
 
     private static final Map<Long, String> categories;
-    static
-    {
+
+    static {
         categories = new HashMap<>();
 
-        categories.put(CategoryRole.ADVISOR.getCategoryId(),"Advisors");
-        categories.put(CategoryRole.JUDGE.getCategoryId(),"Judges");
-        categories.put(CategoryRole.FELLOW.getCategoryId(),"Fellows");
-        categories.put(CategoryRole.IMPACT_FELLOW.getCategoryId(),"Impact Fellows");
-        categories.put(CategoryRole.CATALYST.getCategoryId(),"Catalyst");
-        categories.put(CategoryRole.EXPERT_ADVISORY.getCategoryId(),"Expert Advisors");
-        categories.put(CategoryRole.EXPERT_COUNCIL.getCategoryId(),"Expert Council");
-        categories.put(CategoryRole.TEAM.getCategoryId(),"Project Staff: Team");
-        categories.put(CategoryRole.VENDORS.getCategoryId(),"Project Staff: Vendors");
-        categories.put(CategoryRole.ADVISORS_STAFF.getCategoryId(),"Project Staff: Advisors");
-        categories.put(CategoryRole.ALUMNI.getCategoryId(),"Project Staff: Alumni");
-        categories.put(CategoryRole.RESEARCH_COLAB.getCategoryId(),"Research Collaborator");
-    }
-
-    public static Map<Long, String> getCategories() {
-        return categories;
+        categories.put(CategoryRole.ADVISOR.getCategoryId(), "Advisors");
+        categories.put(CategoryRole.JUDGE.getCategoryId(), "Judges");
+        categories.put(CategoryRole.FELLOW.getCategoryId(), "Fellows");
+        categories.put(CategoryRole.IMPACT_FELLOW.getCategoryId(), "Impact Fellows");
+        categories.put(CategoryRole.CATALYST.getCategoryId(), "Catalyst");
+        categories.put(CategoryRole.EXPERT_ADVISORY.getCategoryId(), "Expert Advisors");
+        categories.put(CategoryRole.EXPERT_COUNCIL.getCategoryId(), "Expert Council");
+        categories.put(CategoryRole.TEAM.getCategoryId(), "Project Staff: Team");
+        categories.put(CategoryRole.VENDORS.getCategoryId(), "Project Staff: Vendors");
+        categories.put(CategoryRole.ADVISORS_STAFF.getCategoryId(), "Project Staff: Advisors");
+        categories.put(CategoryRole.ALUMNI.getCategoryId(), "Project Staff: Alumni");
+        categories.put(CategoryRole.RESEARCH_COLAB.getCategoryId(), "Research Collaborator");
     }
 
     private String portletTitle;
@@ -58,65 +54,76 @@ public class StaffMembersPreferences extends WidgetPreference implements Seriali
     private boolean displayPhoto;
     private boolean displayUrl;
     private int categoryId;
+    public StaffMembersPreferences() {
+        this(null, I18nUtils.DEFAULT_LANGUAGE);
+    }
 
+
+    public StaffMembersPreferences(String preferenceId, String language) {
+        super(preferenceId, language);
+
+
+        columnAmount = defaultColumnAmount;
+        try {
+            columnAmount = Integer.parseInt(
+                    (prefs.has(COLUMN_AMOUNT)) ? (prefs.getString(COLUMN_AMOUNT))
+                            : (String.valueOf(defaultColumnAmount)));
+        } catch (NumberFormatException e) {
+            // ignore
+        }
+
+        categoryId = defaultCategoryId;
+        try {
+            categoryId = Integer.parseInt((prefs.has(CATEGORY_ID)) ? (prefs.getString(CATEGORY_ID))
+                    : (String.valueOf(defaultCategoryId)));
+        } catch (Exception e) {
+            // ignore
+        }
+
+        try {
+            portletTitle = (prefs.has(PORTLET_TITLE)) ? (prefs.getString(PORTLET_TITLE))
+                    : (defaultPortletTitle);
+        } catch (Exception e) {
+            // ignore
+        }
+
+        displayPhoto = Boolean.parseBoolean(
+                (prefs.has(DISPLAY_PHOTO)) ? (prefs.getString(DISPLAY_PHOTO))
+                        : (String.valueOf(defaultDisplayPhoto)));
+        displayUrl = Boolean.parseBoolean((prefs.has(DISPLAY_URL)) ? (prefs.getString(DISPLAY_URL))
+                : (String.valueOf(defaultDisplayUrl)));
+    }
+
+    public static Map<Long, String> getCategories() {
+        return categories;
+    }
 
     @Override
     public AttributeGetter<String> getConfigurationAttribute() {
         return ConfigurationAttributeKey.PORTLET_STAFF_MEMBERS_PREFERENCES;
     }
-    public StaffMembersPreferences() {
-        this(null, I18nUtils.DEFAULT_LANGUAGE);
-    }
-    public StaffMembersPreferences(String preferenceId,String language) {
-        super(preferenceId,language);
 
-
-        columnAmount = defaultColumnAmount;
-        try {
-            columnAmount = Integer.parseInt((prefs.has(COLUMN_AMOUNT))?(prefs.getString(COLUMN_AMOUNT)):(String.valueOf(defaultColumnAmount)));
-        }
-        catch (NumberFormatException e) {
-            // ignore
-        }
-        
-        categoryId = defaultCategoryId;
-        try {
-            categoryId = Integer.parseInt((prefs.has(CATEGORY_ID))?(prefs.getString(CATEGORY_ID)):( String.valueOf(defaultCategoryId)));
-        } catch (Exception e) {
-            // ignore
-        }
-
-        try {
-            portletTitle = (prefs.has(PORTLET_TITLE))?(prefs.getString(PORTLET_TITLE)):(defaultPortletTitle);
-        } catch (Exception e) {
-            // ignore
-        }
-
-        displayPhoto = Boolean.parseBoolean((prefs.has(DISPLAY_PHOTO))?(prefs.getString(DISPLAY_PHOTO)):(String.valueOf(defaultDisplayPhoto)));
-        displayUrl = Boolean.parseBoolean((prefs.has(DISPLAY_URL))?(prefs.getString(DISPLAY_URL)):( String.valueOf(defaultDisplayUrl)));
-    }
-    
-    public String store() throws  IOException {
+    public String store() throws IOException {
         JSONObject prefs = new JSONObject();
 
         prefs.put(COLUMN_AMOUNT, String.valueOf(columnAmount));
         prefs.put(CATEGORY_ID, String.valueOf(categoryId));
         prefs.put(DISPLAY_PHOTO, String.valueOf(displayPhoto));
-        prefs.put(DISPLAY_URL,String.valueOf(displayUrl));
-		prefs.put(PORTLET_TITLE, String.valueOf(portletTitle));
+        prefs.put(DISPLAY_URL, String.valueOf(displayUrl));
+        prefs.put(PORTLET_TITLE, String.valueOf(portletTitle));
 
-        savePreferences(prefs,preferenceId);
-        
+        savePreferences(prefs, preferenceId);
+
         return null;
     }
 
-	public String getPortletTitle() {
+    public String getPortletTitle() {
         return portletTitle;
-	}
+    }
 
-	public void setPortletTitle(String portletTitle) {
+    public void setPortletTitle(String portletTitle) {
         this.portletTitle = portletTitle;
-	}
+    }
 
     public int getColumnAmount() {
         return columnAmount;

@@ -18,6 +18,25 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private static final String PORTLET_TITLE = "PORTLET_TITLE";
+    private static final String FEED_SIZE_PREF = "FEED_SIZE";
+    private static final String FEED_TITLE_PREF = "FEED_TITLE";
+    private static final String FEED_TYPE_PREF = "FEED_TYPE";
+    private static final String FEED_REMOVE_ADMIN = "FEED_REMOVE_ADMIN";
+    private static final String FEED_DISPLAY_STYLE = "FEED_DISPLAY_STYLE";
+    private static final String FEED_SEE_MORE_LINK_SHOWN = "FEED_SEE_MORE_LINK_SHOWN";
+    private static final String FEED_MAX_LENGTH = "FEED_MAX_LENGTH";
+    private static final String FEED_STYLE_LONG = "LONG";
+
+    private static final int DEFAULT_FEED_SIZE = 20;
+    private static final String DEFAULT_FEED_TITLE = null;
+    private static final FeedType DEFAULT_FEED_TYPE = FeedType.ACTIVITIES;
+    private static final String DEFAULT_STYLE = FEED_STYLE_LONG;
+    private static final Boolean DEFAULT_REMOVE_ADMIN = false;
+    private static final String DEFAULT_PORTLET_TITLE = "";
+    private static final Boolean DEFAULT_SEE_MORE_SHOWN = false;
+    private static final Integer DEFAULT_FEED_MAX_LENGTH = 0;
+
     private String portletTitle;
     private int feedSize;
     private FeedType feedType;
@@ -25,34 +44,7 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
     private Boolean removeAdmin;
     private String feedStyle;
     private Boolean seeMoreLinkShown;
-
     private int feedMaxLength;
-
-    private final static String PORTLET_TITLE = "PORTLET_TITLE";
-    private final static String FEED_SIZE_PREF = "FEED_SIZE";
-    private final static String FEED_TITLE_PREF = "FEED_TITLE";
-    private final static String FEED_TYPE_PREF = "FEED_TYPE";
-    private final static String FEED_REMOVE_ADMIN = "FEED_REMOVE_ADMIN";
-    private final static String FEED_DISPLAY_STYLE = "FEED_DISPLAY_STYLE";
-    private final static String FEED_SEE_MORE_LINK_SHOWN = "FEED_SEE_MORE_LINK_SHOWN";
-    private final static String FEED_MAX_LENGTH = "FEED_MAX_LENGTH";
-
-
-    private final static String LONG = "LONG";
-
-    private final static int defaultFeedSize = 20;
-    private final static String defaultFeedTitle = null;
-    private final static FeedType defaultFeedType = FeedType.ACTIVITIES;
-    private final static String defaultStyle = LONG;
-    private final static Boolean defaultRemoveAdmin = false;
-    private final static String defaultPortletTitle = "";
-    private final static Boolean defaultSeeMoreShown = false;
-    private final static Integer defaultFeedMaxLength = 0;
-
-    @Override
-    public AttributeGetter<String> getConfigurationAttribute() {
-        return ConfigurationAttributeKey.PORTLET_FEED_PREFERENCES;
-    }
 
     public FeedsPreferences() {
         this(null, I18nUtils.DEFAULT_LANGUAGE);
@@ -62,54 +54,58 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
         super(preferenceId, language);
 
 
-        feedSize = defaultFeedSize;
+        feedSize = DEFAULT_FEED_SIZE;
         try {
             feedSize = Integer.parseInt(
                     (prefs.has(FEED_SIZE_PREF)) ? (prefs.getString(FEED_SIZE_PREF))
-                            : (String.valueOf(defaultFeedSize)));
+                            : (String.valueOf(DEFAULT_FEED_SIZE)));
         } catch (NumberFormatException e) {
             _log.warn("Could not parse feedSize: {}",
                     (prefs.has(FEED_SIZE_PREF)) ? (prefs.getString(FEED_SIZE_PREF))
-                            : (String.valueOf(defaultFeedSize)));
+                            : (String.valueOf(DEFAULT_FEED_SIZE)));
         }
 
-        feedType = defaultFeedType;
+        feedType = DEFAULT_FEED_TYPE;
         try {
             feedType = FeedType.valueOf(
                     ((prefs.has(FEED_TYPE_PREF)) ? (prefs.getString(FEED_TYPE_PREF))
-                            : (defaultFeedType.name())));
+                            : (DEFAULT_FEED_TYPE.name())));
         } catch (IllegalArgumentException e) {
             _log.warn("Could not parse feedType: {}",
                     (prefs.has(FEED_TYPE_PREF)) ? (prefs.getString(FEED_TYPE_PREF))
-                            : (defaultFeedType.name()));
+                            : (DEFAULT_FEED_TYPE.name()));
         }
 
         feedTitle = (prefs.has(FEED_TITLE_PREF)) ? (prefs.getString(FEED_TITLE_PREF))
-                : (defaultFeedTitle);
+                : (DEFAULT_FEED_TITLE);
         if (feedTitle == null) {
             feedTitle = feedType.getDescription();
         }
 
         feedStyle = (prefs.has(FEED_DISPLAY_STYLE)) ? (prefs.getString(FEED_DISPLAY_STYLE))
-                : (defaultStyle);
+                : (DEFAULT_STYLE);
         if (feedStyle == null) {
-            feedStyle = defaultStyle;
+            feedStyle = DEFAULT_STYLE;
         }
 
         portletTitle = (prefs.has(PORTLET_TITLE)) ? (prefs.getString(PORTLET_TITLE))
-                : (defaultPortletTitle);
+                : (DEFAULT_PORTLET_TITLE);
 
         removeAdmin = Boolean.parseBoolean(
                 (prefs.has(FEED_REMOVE_ADMIN)) ? (prefs.getString(FEED_REMOVE_ADMIN))
-                        : (String.valueOf(defaultRemoveAdmin)));
+                        : (String.valueOf(DEFAULT_REMOVE_ADMIN)));
         seeMoreLinkShown = Boolean.parseBoolean(
                 (prefs.has(FEED_REMOVE_ADMIN)) ? (prefs.getString(FEED_SEE_MORE_LINK_SHOWN))
-                        : (String.valueOf(defaultSeeMoreShown)));
+                        : (String.valueOf(DEFAULT_SEE_MORE_SHOWN)));
         feedMaxLength = Integer.parseInt(
                 (prefs.has(FEED_REMOVE_ADMIN)) ? (prefs.getString(FEED_MAX_LENGTH))
-                        : (String.valueOf(defaultFeedMaxLength)));
+                        : (String.valueOf(DEFAULT_FEED_MAX_LENGTH)));
     }
 
+    @Override
+    public AttributeGetter<String> getConfigurationAttribute() {
+        return ConfigurationAttributeKey.PORTLET_FEED_PREFERENCES;
+    }
 
     public String store() throws IOException {
         JSONObject prefs = new JSONObject();
@@ -133,26 +129,21 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
         return feedSize;
     }
 
+    public void setFeedSize(int feedSize) {
+        this.feedSize = feedSize;
+    }
 
     public FeedType getFeedType() {
         return feedType;
     }
 
-
-    public String getFeedTitle() {
-        return feedTitle;
-    }
-
-
-    public void setFeedSize(int feedSize) {
-        this.feedSize = feedSize;
-    }
-
-
     public void setFeedType(FeedType feedType) {
         this.feedType = feedType;
     }
 
+    public String getFeedTitle() {
+        return feedTitle;
+    }
 
     public void setFeedTitle(String feedTitle) {
         this.feedTitle = feedTitle;
@@ -162,12 +153,12 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
         return removeAdmin;
     }
 
-    public String getFeedStyle() {
-        return feedStyle;
-    }
-
     public void setRemoveAdmin(Boolean removeAdmin) {
         this.removeAdmin = removeAdmin;
+    }
+
+    public String getFeedStyle() {
+        return feedStyle;
     }
 
     public void setFeedStyle(String feedStyle) {
