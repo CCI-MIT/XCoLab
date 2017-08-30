@@ -8,16 +8,22 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Entities;
 import org.jsoup.safety.Cleaner;
 import org.jsoup.safety.Whitelist;
+import org.nibor.autolink.LinkExtractor;
+import org.nibor.autolink.LinkSpan;
+import org.nibor.autolink.LinkType;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.EnumSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 /**
  * Utility class to sanitize and format HTML inputs.
  */
 public final class HtmlUtil {
+
+    private static final String EXISTING_LINKS_REGEX = "(<a[^>]*>[^<]*</a>|<img[^>]*>|<a[^>]*>)";
+    private static final Pattern existingLinksPattern = Pattern.compile(EXISTING_LINKS_REGEX);
 
     private HtmlUtil() { }
 
@@ -102,49 +108,63 @@ public final class HtmlUtil {
         if (! content.contains("<br")) {
             tmp = addHtmlLineBreaks(tmp);
         }
-        tmp = linkifyUrls(tmp);
+        tmp = linkifyUrlsInHtml(tmp);
         tmp = tmp.replaceAll("\"", "'");
 
         return tmp;
     }
 
-    public static String linkifyUrls(String content) {
-        Pattern existingLinksPattern = Pattern.compile("(<a[^>]*>[^<]*</a>|<img[^>]*>|<a[^>]*>)");
-        Matcher existingLinksMatcher = existingLinksPattern.matcher(content);
+    public static String linkifyUrlsInText(String content) {
 
-        List<Integer[]> linksBeginEnd = new ArrayList<>();
-        while (existingLinksMatcher.find()) {
-            linksBeginEnd.add(new Integer[] {existingLinksMatcher.start(), existingLinksMatcher.end()});
-        }
+        LinkExtractor linkExtractor = LinkExtractor.builder()
+                .linkTypes(EnumSet.of(LinkType.URL, LinkType.WWW))
+                .build();
 
-        Pattern pattern = Pattern.compile("(http://|https://|www\\.)([{\\w-]*\\.)+\\w{1,4}([^\\s]*)");
-        Matcher matcher = pattern.matcher(content);
-        StringBuilder strBuilder = new StringBuilder();
+        StringBuilder result = new StringBuilder();
 
         int lastIndex = 0;
-        while (matcher.find()) {
-            // check if this link isn't already part of existing <a href=...
-            boolean partOfAnchor = false;
-            for (Integer[] linkStartEnd: linksBeginEnd) {
-                if (matcher.start() > linkStartEnd[0] && matcher.start() < linkStartEnd[1]) {
-                    partOfAnchor = true;
-                    break;
-                }
-            }
-            if (partOfAnchor) {
-                continue;
-            }
+        for (LinkSpan link : linkExtractor.extractLinks(content)) {
+            int startIndex = link.getBeginIndex();
+            int endIndex = link.getEndIndex();
 
-            strBuilder.append(content.substring(lastIndex, matcher.start()));
-            String url = content.substring(matcher.start(), matcher.end());
-            strBuilder.append(createLink(url, url));
+            String textBeforeLink = content.substring(lastIndex, startIndex);
+            result.append(textBeforeLink);
+            String url = content.substring(startIndex, endIndex);
+            result.append(createLink(url, url));
 
-            strBuilder.append(content.substring(matcher.end(), matcher.end()));
-            lastIndex = matcher.end();
+            lastIndex = endIndex;
         }
 
-        strBuilder.append(content.substring(lastIndex));
-        return strBuilder.toString();
+        String textAfterLastLink = content.substring(lastIndex);
+        result.append(textAfterLastLink);
+
+        return result.toString();
+    }
+
+    public static String linkifyUrlsInHtml(String content) {
+        Matcher existingLinksMatcher = existingLinksPattern.matcher(content);
+
+        StringBuilder result = new StringBuilder();
+
+        int lastIndex = 0;
+        while (existingLinksMatcher.find()) {
+            int startIndex = existingLinksMatcher.start();
+            int endIndex = existingLinksMatcher.end();
+
+            if (lastIndex < startIndex) {
+                String beforeText = content.substring(lastIndex, startIndex);
+                result.append(linkifyUrlsInText(beforeText));
+            }
+            String existingLink = content.substring(startIndex, endIndex);
+            result.append(existingLink);
+
+            lastIndex = endIndex;
+        }
+
+        String afterText = content.substring(lastIndex, content.length());
+        result.append(linkifyUrlsInText(afterText));
+
+        return result.toString();
     }
 
     public static Document addNoFollowToLinkTagsInDocument(Document document){
