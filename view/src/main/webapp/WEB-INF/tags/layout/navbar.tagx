@@ -26,7 +26,7 @@
     <!--@elvariable id="contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
     <!--@elvariable id="languageSelectItems" type="java.util.List<org.xcolab.util.html.LabelStringValue>"-->
 
-    <nav class="bs-navbar navbar ${isWhiteBackgound ? 'bs-navbar-white' : 'bs-navbar-gray'}">
+    <nav class="bs-navbar navbar bs-navbar-unresponsive ${isWhiteBackgound ? 'bs-navbar-white' : 'bs-navbar-gray'}">
         <div class="bs-container-fixed">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">
@@ -34,21 +34,21 @@
                 </a>
             </div>
             <ul class="nav navbar-nav navbar-left">
-                <li class="bs-navitem-text ${activePageLink == 'about' ? 'active' : ''}">
+                <li class="bs-navitem-text ${activePageLink == 'about' ? 'bs-navitem--active' : ''}">
                     <a href="/page/about"><spring:message code="homepage.menu.about" /></a>
                 </li>
 
                 <c:forEach var="_contestPage" items="${contestPages}">
                     <c:if test="${_contestPage.menuItemName != ''}">
-                        <li class="bs-navitem-text ${activePageLink == _contestPage.identifier ? 'active' : ''}">
+                        <li class="bs-navitem-text ${activePageLink == _contestPage.identifier ? 'bs-navitem--active' : ''}">
                             <a href="${_contestPage.contestBaseUrl}">${_contestPage.menuItemName}</a>
                         </li>
                     </c:if>
                 </c:forEach>
-                <li class="bs-navitem-text ${activePageLink == 'community' ? 'active' : ''}" ><a href="/members"><spring:message code="homepage.menu.community" /></a></li>
+                <li class="bs-navitem-text ${activePageLink == 'community' ? 'bs-navitem--active' : ''}" ><a href="/members"><spring:message code="homepage.menu.community" /></a></li>
                 <c:if test="${showSearch}">
                     <!--#if ($pageName == 'search') isCurrent #end-->
-                    <li class="bs-navitem-text ${activePageLink == 'search' ? 'active' : ''} bs-navitem-icon c-Header__navItem search dropdown bs-dropdown--dark" data-toggle="dropdown">
+                    <li class="bs-navitem-text ${activePageLink == 'search' ? 'bs-navitem--active' : ''} bs-navitem-icon c-Header__navItem search dropdown bs-dropdown--dark" data-toggle="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown">
                             <spring:message code="homepage.menu.search" />
                         </a>

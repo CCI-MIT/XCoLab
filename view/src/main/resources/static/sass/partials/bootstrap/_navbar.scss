@@ -36,13 +36,13 @@ $colHighlight: #404040;
     > li {
       border-left: 1px solid #bababa;
 
-      .bs-navitem-text {
+      &.bs-navitem-text {
 
         &:hover {
           background-image: $c-Header__background--hover;
         }
 
-        &.active {
+        &.bs-navitem--active {
           background-color: white;
           color: black;
           border-bottom: 1px solid white;
@@ -133,19 +133,23 @@ $colHighlight: #404040;
   }
 }
 
-//@media (max-width: 767px) {
-//  .bs-navbar .navbar-nav .open .dropdown-menu {
-//    > li > a {
-//      color: $colDefault;
-//      &:hover, &:focus {
-//        color: $colHighlight;
-//      }
-//    }
-//    > .active {
-//      > a, > a:hover, > a:focus {
-//        color: $colHighlight;
-//        background-color: $bgHighlight;
-//      }
-//    }
-//  }
-//}
+.bs-navbar-unresponsive {
+  .nav > li,
+  .navbar-header {
+    float: left;
+  }
+
+  .navbar-nav {
+    float: left;
+    margin: 0;
+  }
+
+  .navbar-left {
+    float: left!important;
+  }
+
+  .navbar-right {
+    float: right!important;
+    margin-right: -15px;
+  }
+}
