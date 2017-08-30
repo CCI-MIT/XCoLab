@@ -86,12 +86,12 @@
 				</c:if>
 				<c:if test="${discussionPermissions.canSeeShareButtons}">
 					<div class="c-Comment__share">
-						<a href="https://www.addthis.com/bookmark.php?v=250&amp;username=climatecolab" class="addthis_button_compact discussion_share"
-						   addthis:title="${shareTitle}"
-						   addthis:description="${shareTitle}">
 							<img src="${_themeImageFolder}/share.png" width="24" height="24" alt="Share" class="c-Comment__share" />
-							<spring:message code="discussion.commmentstag.share"/>
-						</a>
+							<spring:message code="discussion.commmentstag.share"/>:
+                            <div  class="addthis_inline_share_toolbox_n86t message_add_this"
+                                  addthis:title="${shareTitle}" addthis:description="${shareTitle}"
+                                  addthis:url="${shareUrl}"
+                            ><!-- --></div>
 					</div>
 				</c:if>
 
