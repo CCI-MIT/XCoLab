@@ -322,33 +322,9 @@ public class Contest extends AbstractContest implements Serializable {
         return 0L;
     }
 
-    private long getProposalsCommentsCount() {
-        try {
-            ContestPhase cp = contestClient.getActivePhase(this.getContestPK());
-            if (cp != null) {
-
-                RestService proposalService =  restService.withServiceName(CoLabService.CONTEST.getServiceName());
-
-
-                return ProposalClient.fromService(proposalService)
-                        .getProposalsInContestPhase(cp.getContestPhasePK())
-                        .stream()
-                        .collect(Collectors.summingLong(proposal -> proposal.getCommentsCount()));
-
-            }
-        } catch (UncheckedEntityNotFoundException e) {
-            //fall through - return 0
-        }
-        return 0L;
-    }
-
-
     public long getCommentsCount() {
 
-        Integer totalCommentsCount =  commentClient.countComments(this.getDiscussionGroupId());
-
-
-        return totalCommentsCount + getProposalsCommentsCount();
+        return commentClient.countComments(this.getDiscussionGroupId());
     }
 
     public List<OntologyTerm> getWho() {
