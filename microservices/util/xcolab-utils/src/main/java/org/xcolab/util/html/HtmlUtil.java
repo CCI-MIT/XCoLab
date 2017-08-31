@@ -88,32 +88,11 @@ public final class HtmlUtil {
 
     }
 
-    public static String makeRelativeLinksAbsolute(String html, String baseUrl) {
-        return html.replaceAll("(href=[\"\'])/", "$1" +  baseUrl + "/");
-    }
-
-    public static String createLink(String url, String desc) {
-        if (! url.contains("http://") && ! url.contains("https://")) {
-            url = "http://" + url;
-        }
-        return "<a rel='nofollow' href='" + url + "'>" + desc + "</a>";
-    }
-
-    public static String addHtmlLineBreaks(String content) {
-        return content.replaceAll("\n", " <br />\n");
-    }
-
-    public static String filterAndFormatContent(String content) {
-        String tmp = content;
-        if (! content.contains("<br")) {
-            tmp = addHtmlLineBreaks(tmp);
-        }
-        tmp = linkifyUrlsInHtml(tmp);
-        tmp = tmp.replaceAll("\"", "'");
-
-        return tmp;
-    }
-
+    /**
+     * Converts all detected URLs to HTML links (anchor tags).
+     * @param content The input text.
+     * @return Input text with URLs converted to HTML links.
+     */
     public static String linkifyUrlsInText(String content) {
 
         LinkExtractor linkExtractor = LinkExtractor.builder()
@@ -141,6 +120,12 @@ public final class HtmlUtil {
         return result.toString();
     }
 
+    /**
+     * Converts detected URLs to HTML links (anchor tags), except for those that are part of an
+     * HTML anchor or img tag.
+     * @param content The input HTML string.
+     * @return Input HTML string with URLs converted to HTML links.
+     */
     public static String linkifyUrlsInHtml(String content) {
         Matcher existingLinksMatcher = existingLinksPattern.matcher(content);
 
@@ -163,6 +148,32 @@ public final class HtmlUtil {
         result.append(linkifyUrlsInText(afterText));
 
         return result.toString();
+    }
+
+    public static String makeRelativeLinksAbsolute(String html, String baseUrl) {
+        return html.replaceAll("(href=[\"\'])/", "$1" +  baseUrl + "/");
+    }
+
+    public static String createLink(String url, String desc) {
+        if (! url.contains("http://") && ! url.contains("https://")) {
+            url = "http://" + url;
+        }
+        return "<a rel='nofollow' href='" + url + "'>" + desc + "</a>";
+    }
+
+    public static String addHtmlLineBreaks(String content) {
+        return content.replaceAll("\n", " <br />\n");
+    }
+
+    public static String filterAndFormatContent(String content) {
+        String tmp = content;
+        if (! content.contains("<br")) {
+            tmp = addHtmlLineBreaks(tmp);
+        }
+        tmp = linkifyUrlsInHtml(tmp);
+        tmp = tmp.replaceAll("\"", "'");
+
+        return tmp;
     }
 
     public static Document addNoFollowToLinkTagsInDocument(Document document){
