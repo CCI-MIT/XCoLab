@@ -28,6 +28,8 @@ public class ContestBatchBean {
 
     private Long sponsorLogoId;
 
+    private String sponsorLink;
+
     private List<ContestCSVBean> contestCSVs;
 
     public List<ContestCSVBean> getContestCSVs() {
@@ -44,6 +46,14 @@ public class ContestBatchBean {
 
     public void setSponsorLogoId(Long sponsorLogoId) {
         this.sponsorLogoId = sponsorLogoId;
+    }
+
+    public String getSponsorLink() {
+        return sponsorLink;
+    }
+
+    public void setSponsorLink(String sponsorLink) {
+        this.sponsorLink = sponsorLink;
     }
 
 

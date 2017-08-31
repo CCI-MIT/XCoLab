@@ -146,6 +146,8 @@ public class BatchCreationController {
                                 : (contestBatchBean.getContestLogoId())),
                         ((contestBatchBean.getSponsorLogoId() == null) ? (0L)
                                 : (contestBatchBean.getSponsorLogoId())),
+                        ((contestBatchBean.getSponsorLink() == null) ? ("")
+                                : (contestBatchBean.getSponsorLink())),
                         contestBatchBean.getPlanTemplateId(),
                         contestBatchBean.getScheduleTemplateId(),
                         contestBatchBean.getContestTier(),
@@ -227,6 +229,7 @@ public class BatchCreationController {
             String contestQuestion,
             Long contestLogoId,
             Long sponsorLogoId,
+            String sponsorLink,
             Long planTemplateId,
             Long contestScheduleId,
             Long contestTierId,
@@ -238,6 +241,7 @@ public class BatchCreationController {
         contest.setContestName(contestQuestion);
         contest.setContestLogoId(contestLogoId);
         contest.setSponsorLogoId(sponsorLogoId);
+        contest.setSponsorLink(sponsorLink);
         contest.setContestYear((long) DateTime.now().getYear());
         contest.setContestPrivate(true);
         contest.setShow_in_tile_view(true);
