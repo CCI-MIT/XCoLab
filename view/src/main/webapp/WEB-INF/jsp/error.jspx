@@ -28,6 +28,7 @@
             <!--@elvariable id="message" type="java.lang.String"-->
             <!--@elvariable id="path" type="java.lang.String"-->
             <!--@elvariable id="trace" type="java.lang.String"-->
+            <!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.ontology.OntologySpace>"-->
 
             <c:set var="trace" value="${fn:escapeXml(trace)}"/>
             <c:choose>
@@ -44,6 +45,7 @@
                 <c:otherwise>
                     <div class="login_popup_box" style="margin: 0 8px 0 0;padding: 0;">
                         <form id="signInForm_form" method="post" action="/reportError">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                             <input name="url" type="hidden" />
                             <input id="stackTrackeInput" name="stackTrace" type="hidden" value="${trace}"/>
                             <input name="referer" type="hidden" value="${header.get('referer')}"/>
