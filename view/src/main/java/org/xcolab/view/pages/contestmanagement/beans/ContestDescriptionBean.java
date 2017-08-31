@@ -29,7 +29,7 @@ public class ContestDescriptionBean implements Serializable {
     private Long ContestPK;
     private Long contestLogoId;
     private Long sponsorLogoId;
-    @Length(max = 2000, message = "The sponsor link URL must not be longer than 2000 characters.")
+    @Length(max = 500, message = "The sponsor link URL must not be longer than 500 characters.")
     private String sponsorLink;
     private Long defaultproposallogoid;
 
