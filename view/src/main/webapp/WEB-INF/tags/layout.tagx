@@ -165,6 +165,17 @@
         jQuery.noty.defaults.animation.speed = 700;
     </script>
 
+    <!-- Include CSRF tokens in AJAX calls. -->
+    <script type="text/javascript">
+        $.ajaxSetup({
+            beforeSend: function(xhr) {
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+                xhr.setRequestHeader(header, token);
+            }
+        })
+    </script>
+
     <!-- Typekit (fonts) -->
     <c:choose>
         <c:when test='${request.serverName == "localhost"}'>
