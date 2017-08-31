@@ -11,6 +11,7 @@
 <xcolab:layout  title="${proposal.name} - Edit">
     <!--@elvariable id="isMove" type="java.lang.Boolean"-->
     <!--@elvariable id="hasUnmappedSections" type="java.lang.Boolean"-->
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <jsp:directive.include file="./init_proposal.jspx"/>
 
@@ -114,6 +115,7 @@
 
 
         <form action="${contest.proposalLogoPath}images/upload" method="post" enctype="multipart/form-data" target="_fileUploadFrame" id="fileUploadForm">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <input type="file" name="file" id="fileUploadInput" />
         </form>
 

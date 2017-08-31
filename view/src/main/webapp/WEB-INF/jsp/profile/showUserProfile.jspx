@@ -11,6 +11,7 @@
 <!--@elvariable id="permissions" type="org.xcolab.view.pages.profile.utils.UserProfilePermissions"-->
 <!--@elvariable id="userBean" type="org.xcolab.view.pages.profile.beans.UserBean"-->
 <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
+<!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
 <!-- SNP -->
 <!--@elvariable id="isSnpActive" type="java.lang.Boolean"-->
@@ -305,6 +306,7 @@
                         </c:when>
                         <c:otherwise>
                             <form action="/snp/socialnetworkprize" method="post">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" name="acceptTos" />

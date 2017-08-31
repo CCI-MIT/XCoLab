@@ -10,6 +10,7 @@
 		<xcolab:script src="${_themeJsFolder}/proposals/copyProposalWidget.js"/>
 
 		<!--@elvariable id="availableRibbons" type="java.util.List<org.xcolab.client.contest.pojo.phases.ContestPhaseRibbonType>"-->
+        <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
 		<jsp:directive.include file="./init_proposal_tab.jspx" />
 
@@ -34,6 +35,7 @@
 								<input type='radio' value='true' name='planOpen' ${proposal.open ? "checked='checked'" : ''} />Anyone<br />
 							]]>
 
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                 <a class="c-Button__primary" href="javascript:;" onclick="jQuery(this).parents('form').submit();">
                                     Save
                                 </a>
@@ -52,6 +54,7 @@
 
 
 						<form action="${assignRibbonURL }" method="post">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							<select name="ribbon" style="width: 374px;">
 								<option value="-1">no ribbon</option>
 								<c:forEach var="ribbon" items="${availableRibbons }">
@@ -81,6 +84,7 @@
 						<c:set var="deleteProposalURL" value="${proposal.proposalUrl}/tab/ADMIN/deleteProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }&amp;delete=true" />
 
 						<form action="${deleteProposalURL }" method="post" id="deleteProposalForm">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							<a class="c-Button__primary" href="javascript:;" onclick="if(!confirm('Are you sure you want to proceed with removal?')){ return false; } jQuery('#deleteProposalForm').submit();">
 								DELETE ${contestType.proposalName}
 							</a>
@@ -97,6 +101,7 @@
 				<c:set var="promoteProposalURL" value="${proposal.proposalUrl}/tab/ADMIN/promoteProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }&amp;contestPhaseId=${proposal.contestPhase.contestPhasePK}" />
 
 				<form action="${promoteProposalURL }" method="post">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 					<div class="addpropbox ${addBlueClass ? 'blue' : '' }">
 						<strong>Promote ${contestType.proposalName} to latest ${contestType.contestName} phase</strong>
 						<div>
@@ -161,7 +166,8 @@
 					<c:set var="count" value="1" scope="page" />
 						<c:forEach items="${proposal.membershipRequests}" var="request">
 							<form action="${replyToMembershipRequest }" method="post" style="padding: 10px 0; ${count lt fn:length(proposal.membershipRequests) ? 'border-bottom: 1px solid gray;' :''}">
-								<proposalsPortlet:userLinkSimple userId="${request.requestUser.userId}" text="${request.requestUser.firstName} ${request.requestUser.lastName} (${request.requestUser.screenName})" />
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <proposalsPortlet:userLinkSimple userId="${request.requestUser.userId}" text="${request.requestUser.firstName} ${request.requestUser.lastName} (${request.requestUser.screenName})" />
 								<div>${request.membershipRequest.comments }</div>
 								<input type="hidden" name="requestId" value="${request.membershipRequest.membershipRequestId}" />
 								<div style="margin-top: 10px;">

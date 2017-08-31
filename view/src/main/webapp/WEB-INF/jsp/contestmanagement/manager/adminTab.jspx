@@ -12,6 +12,7 @@
     <!--@elvariable id="ontologyTermsWhere" type="java.util.List<org.xcolab.portlets.contestmanagement.wrappers.OntologyTermWrapper>"-->
     <!--@elvariable id="section" type="java.lang.Integer"-->
     <!--@elvariable id="level" type="java.lang.Integer"-->
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
@@ -49,6 +50,7 @@
         <div class="addpropbox">
             <h2>Server administration</h2>
             <form action="/admin/caching/clear" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <button type="submit" class="c-Button__primary">Clear cache</button>
             </form>
         </div>
@@ -82,6 +84,7 @@
 
                 <form action="/admin/contest/manager/tab/ADMIN/notificationMessageDelete"
                       id="deleteNotificationForm" method="post" style="visibility: hidden;" >
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="hidden" id = "notificationId" name="notificationId"/>
                 </form>
 
@@ -151,6 +154,7 @@
         <div class="addpropbox">
             <h2>Activities CSV export</h2>
             <form action="/admin/contest/manager/tab/ADMIN/exportActivities" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <button type="submit" class="c-Button__primary">Export activities</button>
             </form>
         </div>
@@ -158,6 +162,7 @@
         <div class="addpropbox">
             <h2>Batch register members</h2>
             <form action="/admin/contest/manager/tab/ADMIN/batchRegister" method="post">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <div class="c-Alert__info__message" for="batchRegisterMembersList">
                     Each member will receive an email with a link that allows them to sign in.
                     Enter one member per line in the following format:<br/>

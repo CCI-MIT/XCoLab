@@ -8,15 +8,19 @@
     <jsp:directive.attribute name="elementId" type="java.lang.String" required="false" rtexprvalue="true" description="Element id" />
     <jsp:directive.attribute name="dirtyCheck" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Whether the dirty check is enabled" />
 
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
+
     <c:set var="createNewElementFormURL" value="${baseUrl}/create" />
     <c:set var="updateElementFormURL" value="${baseUrl}/update" />
     <c:set var="deleteElementFormURL" value="${baseUrl}/delete/${elementId}" />
 
     <form action="${deleteElementFormURL}" id="deleteElementForm" method="post" style="visibility: hidden;" >
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <!-- -->
     </form>
 
     <form action="${createNewElementFormURL}" id="createNewElementForm" method="post" style="visibility: hidden;" >
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <!-- -->
     </form>
 

@@ -4,10 +4,13 @@
           xmlns:spring="http://www.springframework.org/tags"
           version="2.0">
 
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
+
     <!-- report popup -->
     <spring:message code="homepage.modals.flagging.title" var="modalTitle" />
     <xcolab:modal modalId="flaggingModal" title="${modalTitle}">
         <form method="post" action="/flagging/report" id="popup_flagging_form">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="modal-body">
                 <div class="c-Alert__info__message">
                     <spring:message code="homepage.modals.flagging.message" />

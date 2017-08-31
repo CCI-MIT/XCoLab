@@ -16,6 +16,7 @@
 	<!--@elvariable id="permissions" type="org.xcolab.portlets.userprofile.utils.UserProfilePermissions"-->
     <!--@elvariable id="currentUserProfile" type="org.xcolab.view.pages.profile.wrappers.UserProfileWrapper"-->
     <!--@elvariable id="memberCategories" type="java.util.List<org.xcolab.client.members.pojo.MemberCategory>"-->
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
 	<c:if test="${updateError}">
 		<script type="text/javascript" >
@@ -364,6 +365,7 @@
 					<td class="actionColumn">
                         <spring:message code="profile.account.delete.question" arguments="${_colabName}" var="deleteMsg"/>
 						<form action="${deleteProfileUrl}" method="post" onsubmit="confirm('${deleteMsg}')">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 							<button type="submit" class="c-Button__secondary small"><spring:message code="profile.account.delete.button"/></button>
 						</form>
 					</td>

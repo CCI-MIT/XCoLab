@@ -7,6 +7,7 @@
 	 version="2.0">
 
     <!--@elvariable id="memberCategory" type="org.xcolab.client.members.pojo.MemberCategory"-->
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
     
 	<div id="bread" class="pro">
 		<a href="/members"><spring:message code="colab.breadcrums.community"/> </a>&#160; <img
@@ -55,6 +56,7 @@
 				<c:set var="filterURL" value="/members?sortFilterPage.sortColumn=${sortFilterPage.sortColumn}&amp;sortFilterPage.sortAscending=${sortFilterPage.sortAscending}&amp;memberCategory=${memberCategoryParam}" />
 
 				<form action="${filterURL }" id="filterUsersForm" method="post">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <spring:message code="community.page.members.search.placeholder" var="placeHolder"/>
 					<input class="comm_search" type="text" value="${sortFilterPage.filter }" placeholder="${placeHolder}" name="filter" />
 					<button type="submit" class="c-Button__primary"><spring:message code="community.page.members.search.button.search"/></button>

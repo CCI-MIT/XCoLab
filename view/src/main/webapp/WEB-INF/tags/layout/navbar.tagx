@@ -25,6 +25,7 @@
     <jsp:directive.attribute name="redirect" type="java.lang.String" required="true" rtexprvalue="true" description="Redirect URL for registration link" />
     <!--@elvariable id="contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
     <!--@elvariable id="languageSelectItems" type="java.util.List<org.xcolab.util.html.LabelStringValue>"-->
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <nav class="bs-navbar navbar bs-navbar-unresponsive ${isWhiteBackgound ? 'bs-navbar-white' : 'bs-navbar-gray'}">
         <div class="bs-container-fixed">
@@ -164,6 +165,7 @@
                                     </c:if>
 
                                     <form class="form" role="form" id="signInFormPopup" method="post" action="/login" accept-charset="UTF-8" >
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                                         <div class="form-group">
                                             <spring:message code="homepage.login.usernameoremail" var="usernameplaceholder"/>
                                             <input name="username" type="text" class="c-Header__login__username form-control" placeholder="${usernameplaceholder}"  />
