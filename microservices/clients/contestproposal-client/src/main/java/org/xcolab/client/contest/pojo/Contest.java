@@ -1,5 +1,7 @@
 package org.xcolab.client.contest.pojo;
 
+import org.apache.commons.lang3.StringUtils;
+
 import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
@@ -302,7 +304,7 @@ public class Contest extends AbstractContest implements Serializable {
 
 
     public boolean getSponsorLinkAvailable() {
-        return !this.getSponsorLink().isEmpty();
+        return !StringUtils.isEmpty(this.getSponsorLink());
     }
 
 
