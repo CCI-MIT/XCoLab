@@ -302,7 +302,7 @@ public class Contest extends AbstractContest implements Serializable {
 
 
     public boolean getSponsorLinkAvailable() {
-        return !this.getSponsorLink().equals("");
+        return !this.getSponsorLink().isEmpty();
     }
 
 
