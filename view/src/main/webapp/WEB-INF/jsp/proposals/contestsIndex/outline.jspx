@@ -180,8 +180,10 @@
 				contest.orderFromTerm[term.space.id] = [];
 			}
 			contest.orderFromTerm[term.space.id].push(term.order);
-			
+
+
 			if (isOther) {
+                console.log(level,contest.id,contest.name,term.name);
 				for (var i = 0 ; i &lt; term.otherContests.length; i++) {
 					if (term.otherContests[i].id == contest.id) return;
 				}
@@ -203,7 +205,17 @@
 			}
 			
 		}
+
+		function addOtherContestsToSpace(space,contest){
+
+            for (var i = 0 ; i &lt; space.otherContests.length; i++) {
+                if (space.otherContests[i].id == contest.id) return;
+            }
+            space.otherContests.push(contest);
+        }
+
 		var contestsCount = 0;
+
 		<c:forEach var="contest" items="${contestsSorted.contests}">
             <c:if test="${contest.showInOutlineView}">
                 contest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId},
@@ -214,7 +226,7 @@
 
                 focusArea = focusAreas[${contest.focusAreaId}];
                 if(focusAreas[${contest.focusAreaId}] != null) {
-                    console.log("undefined: " + ${contest.focusAreaId})
+                    //console.log("undefined: " + ${contest.focusAreaId})
 
                     for (var idx in focusArea.terms) {
                         addContestToTermAndParents(0, contest, ontologyTerms[focusArea.terms[idx]]);
@@ -231,11 +243,13 @@
                 otherContests[${contest.contestPK}] = otherContest;
                 focusArea = focusAreas[${contest.focusAreaId}];
                 if(focusAreas[${contest.focusAreaId}] != null) {
-                    console.log("undefined: " + ${contest.focusAreaId})
+                    //console.log("undefined: " + ${contest.focusAreaId})
                     for (var idx in focusArea.terms) {
+
                         addContestToTermAndParents(0, otherContest, ontologyTerms[focusArea.terms[idx]],
                                 true);
-                        ontologyTerms[focusArea.terms[idx]].space.otherContests.push(contest);
+                        //otherContests.push(otherContest);
+
                     }
                 }
             </c:if>
@@ -250,7 +264,9 @@
 
                 for (var idx in focusArea.terms) {
                     addContestToTermAndParents(otherContest, ontologyTerms[focusArea.terms[idx]], true);
+                    addOtherContestsToSpace(ontologyTerms[focusArea.terms[idx]].space,otherContest);
                 }
+
             </c:if>
 		</c:forEach>
 		</script>
@@ -266,7 +282,6 @@
 					self.removeClass("zero");
 				else 
 					self.addClass("zero");
-				
 				self.text(ontologyTerms[termId].contests.length);
 			});
 		}
@@ -467,7 +482,7 @@
 				otherContestsInfoContainer.find(".otherContestsCount").show().removeClass("plural singular")
                         .addClass(currentSpace.otherContests.length == 1 ? "singular" : "plural");
 			}
-
+            console.log("refreshInactiveContestDisplay call 470 - " + spaceId);
             refreshInactiveContestDisplay(currentSpace.otherContests);
 			
 			renderBreadcrumbSections([currentSpace]);
@@ -510,7 +525,7 @@
 			else {
 				otherContestsInfoContainer.find(".otherContestsCount").hide();
 			}
-
+            console.log("refreshInactiveContestDisplay call 513");
             refreshInactiveContestDisplay(currentTerm.otherContests);
 			
 			var termAndParents = [];
@@ -536,6 +551,7 @@
             jQuery(".other-contest-count").removeClass("singular plural")
                     .addClass(contests.length == 1 ? "singular" : "plural");
             jQuery(".other-contest-count .count").text(contests.length);
+
 
             if (!showAllContests) {
                 var countContainer = jQuery(".section-contest-count-container .contest-count");
