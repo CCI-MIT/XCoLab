@@ -28,7 +28,7 @@
             <!--@elvariable id="message" type="java.lang.String"-->
             <!--@elvariable id="path" type="java.lang.String"-->
             <!--@elvariable id="trace" type="java.lang.String"-->
-            <!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.ontology.OntologySpace>"-->
+            <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
             <c:set var="trace" value="${fn:escapeXml(trace)}"/>
             <c:choose>
