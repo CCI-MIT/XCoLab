@@ -72,7 +72,7 @@ public class ContestDescriptionBean implements Serializable {
             scheduleTemplateId = contest.getContestScheduleId();
             contestLogoId = contest.getContestLogoId();
             sponsorLogoId = contest.getSponsorLogoId();
-            sponsorLink= contest.getSponsorLink();
+            sponsorLink = contest.getSponsorLink();
             defaultproposallogoid = contest.getDefaultProposalLogoId();
             shouldUpdateContestUrlName = !contest.getContestActive();
             isSharedContest = contest.getIsSharedContest();
