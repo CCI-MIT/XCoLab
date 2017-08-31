@@ -97,6 +97,8 @@
     <!--@elvariable id="__alertMessage" type="org.xcolab.view.util.entity.flash.AlertMessage"-->
     <!--@elvariable id="__analyticsAttribute" type="org.xcolab.view.util.entity.flash.AnalyticsAttribute"-->
 
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
+
     <fmt:setLocale value="${_locale}" />
     <fmt:setTimeZone value="${_defaultTimeZone}" />
 
@@ -108,6 +110,10 @@
           lang="en-US" name="description" />
 
     <meta content="${_metaPageKeywords}" lang="en-US" name="keywords" />
+
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+
     <c:if test="${not empty canonicalUrlRelative}">
         <link rel="canonical" href="${colabUrl}${canonicalUrlRelative}" />
     </c:if>
