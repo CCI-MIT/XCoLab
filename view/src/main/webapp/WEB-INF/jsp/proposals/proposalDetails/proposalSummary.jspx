@@ -5,6 +5,7 @@
 	xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
     xmlns:spring="http://www.springframework.org/tags"
     xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+    xmlns:form="http://www.springframework.org/tags/form"
 	 version="2.0">
 
     <!--@elvariable id="linkedProposalContestTypeProposalWrappersByContestTypeId" type="java.util.Map<java.lang.Long, org.xcolab.wrappers.ContestTypeProposalWrapper>"-->
@@ -88,17 +89,19 @@
 
                     <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
                     <div class="p-Proposal__subscribe" style="float: right;">
-                        <a href="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }"
-                                rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;" >
-                            <c:choose>
-                                <c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
-                                    <img height="20" src="${_themeImageFolder}/subscribe.png" /> <spring:message code="contests.details.subscribe" />
-                                </c:when>
-                                <c:otherwise>
-                                    <img height="20" src="${_themeImageFolder}/unsubscribe.png" /> <spring:message code="contests.details.unsubscribe" />
-                                </c:otherwise>
-                            </c:choose>
-                        </a>
+                        <form:form action="${subscribeProposalURL}" method="post">
+                            <a href="javascript:void(0);"
+                                    rel="nofollow" onclick="if(deferUntilLogin(this)) $(this).parent().submit();" >
+                                <c:choose>
+                                    <c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
+                                        <img height="20" src="${_themeImageFolder}/subscribe.png" /> <spring:message code="contests.details.subscribe" />
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img height="20" src="${_themeImageFolder}/unsubscribe.png" /> <spring:message code="contests.details.unsubscribe" />
+                                    </c:otherwise>
+                                </c:choose>
+                            </a>
+                        </form:form>
                     </div>
                 </c:if>
             </div>
