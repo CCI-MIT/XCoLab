@@ -12,6 +12,8 @@
         <xcolab:requireLibrary name="CKEditor" />
         <xcolab:script src="${_libJsFolder}/jquery.loadmask.spin.js" />
 
+        <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
+
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqtree/1.3.6/jqtree.min.css"><!-- --></link>
         <!-- link rel="stylesheet" href="${pageContext.request.contextPath}/js/ckeditor/contents.css"></link -->
@@ -535,6 +537,7 @@
                 </div>
             </div>
             <form target="_blank" action="${previewArticleURL}" method="post" id="previewArticleForm">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <input type="hidden" id="htmlContent" name="content" />
             </form>
         </div>

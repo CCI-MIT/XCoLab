@@ -11,9 +11,12 @@
     <jsp:directive.attribute name="show" type="java.lang.Boolean" required="true" rtexprvalue="true" description="If true, modal will be shown on load" />
     <jsp:directive.attribute name="authError" type="org.xcolab.view.auth.login.AuthenticationError" required="false" rtexprvalue="true" description="Auth error, if any" />
 
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
+
     <collab:message code="homepage.modals.login.message" var="loginModalTitle" />
     <xcolab:modal modalId="loginModal" title="${loginModalTitle}">
         <form id="signInForm_form" method="post" action="/login">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="modal-body">
                 <c:choose>
                     <c:when test='${authError != null}'>

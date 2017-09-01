@@ -7,6 +7,7 @@
     <!--@elvariable id="templateType" type="java.lang.String"-->
     <!--@elvariable id="emailTemplateWrapper" type="org.xcolab.portlets.contestmanagement.wrappers.EmailTemplateWrapper"-->
     <!--@elvariable id="templateSelectionItems" type="java.util.List<org.xcolab.portlets.contestmanagement.entities.LabelStringValue>"-->
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
@@ -17,11 +18,12 @@
     <c:set var="deleteEmailTemplateUrl" value="/admin/contest/manager/tab/EMAIL_TEMPLATES/delete/${emailTemplateWrapper.type}" />
 
     <form action="${deleteEmailTemplateUrl}" id="deleteTemplateForm" method="post" style="visibility: hidden;">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <!-- -->
     </form>
 
     <form action="${createEmailTemplateUrl}" id="createTemplateForm" method="post" style="visibility: hidden;">
-
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <!-- -->
     </form>
 

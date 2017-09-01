@@ -9,8 +9,11 @@
     <jsp:directive.attribute name="partnerLogoPath" type="java.lang.String" required="true" rtexprvalue="true" description="Path to the partner CoLab's logo" />
     <jsp:directive.attribute name="show" type="java.lang.Boolean" required="false" rtexprvalue="true" description="If true, modal will be shown on load" />
 
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
+
     <xcolab:modal modalId="ssoLoginModal">
         <form method="post" action="/sso/colab">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="modal-body">
                 <div class="text-center">
                     <img style="max-height:55px" src="${partnerLogoPath}" alt="Partner CoLab" />

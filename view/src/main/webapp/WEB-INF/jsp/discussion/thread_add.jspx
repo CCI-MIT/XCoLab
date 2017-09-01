@@ -6,6 +6,7 @@
 <xcolab:layout>
     <jsp:directive.include file="init.jspx"/>
     <!--@elvariable id="categories" type="java.util.List<org.xcolab.client.comment.pojo.Category>"-->
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <div id="content">
         <div id="bread" class="pro">
@@ -21,6 +22,7 @@
             <div class="c-Comment__new">
                 <c:set var="addThreadUrl" value="/discussion/thread/create" />
                 <form id="addThreadForm" action="${addThreadUrl }" method="post">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div>
                         <label class="portlet-form-label"><spring:message code="discussion.threadadd.table.category" /><br />
                             <select class="portlet-form-field" name="categoryId">

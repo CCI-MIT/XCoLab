@@ -97,6 +97,8 @@
     <!--@elvariable id="__alertMessage" type="org.xcolab.view.util.entity.flash.AlertMessage"-->
     <!--@elvariable id="__analyticsAttribute" type="org.xcolab.view.util.entity.flash.AnalyticsAttribute"-->
 
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
+
     <fmt:setLocale value="${_locale}" />
     <fmt:setTimeZone value="${_defaultTimeZone}" />
 
@@ -108,6 +110,10 @@
           lang="en-US" name="description" />
 
     <meta content="${_metaPageKeywords}" lang="en-US" name="keywords" />
+
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
+
     <c:if test="${not empty canonicalUrlRelative}">
         <link rel="canonical" href="${colabUrl}${canonicalUrlRelative}" />
     </c:if>
@@ -157,6 +163,17 @@
         jQuery.noty.defaults.animation.open = {opacity: 1.0, height: 'toggle'};
         jQuery.noty.defaults.animation.close = {opacity: 0.0, height: 'toggle'};
         jQuery.noty.defaults.animation.speed = 700;
+    </script>
+
+    <!-- Include CSRF tokens in AJAX calls. -->
+    <script type="text/javascript">
+        $.ajaxSetup({
+            beforeSend: function(xhr) {
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+                xhr.setRequestHeader(header, token);
+            }
+        })
     </script>
 
     <!-- Typekit (fonts) -->

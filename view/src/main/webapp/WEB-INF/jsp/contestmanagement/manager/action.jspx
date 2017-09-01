@@ -2,6 +2,7 @@
 		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
 
 	<!--@elvariable id="elementId" type="java.lang.Long"-->
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
 	<portlet:actionURL var="createNewElementFormURL">
 		<portlet:param name="tab" value="${param.tab}" />
@@ -26,10 +27,12 @@
 
 
 	<form action="${deleteElementFormURL}" id="deleteElementForm" method="post" style="visibility: hidden;" >
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<!-- -->
 	</form>
 
 	<form action="${createNewElementFormURL}" id="createNewElementForm" method="post" style="visibility: hidden;" >
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<!-- -->
 	</form>
 

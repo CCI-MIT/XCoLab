@@ -28,7 +28,10 @@ import org.xcolab.view.util.clienthelpers.AdminClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.EmailTemplateClientMockerHelper;
 import org.xcolab.view.util.clienthelpers.MembersClientMockerHelper;
 
+import static org.springframework.security.test.web.servlet.request
+        .SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
 
 
 @RunWith(PowerMockRunner.class)
@@ -93,6 +96,7 @@ public class ForgotPasswordControllerTest {
     public void passwordUpdateFailsWhenScreenNameNotPassed() throws Exception {
 
         this.mockMvc.perform(post("/login/resetPassword")
+                .with(csrf())
         );
 
         PowerMockito.verifyStatic(Mockito.never());
@@ -104,6 +108,7 @@ public class ForgotPasswordControllerTest {
 
 
         this.mockMvc.perform(post("/login/resetPassword")
+                .with(csrf())
                 .param("screenNameOrEmail", "superuser"));
 
         PowerMockito.verifyStatic(Mockito.times(1));
