@@ -220,7 +220,7 @@
                 </div>
 
                 <div class="c-TitleBar__element c-TitleBar__actionButton right">
-                    <a href="/impersonate/logout">Stop impersonating</a>
+                    <a href="javascript:void(0);" id="impersonateLogout">Stop impersonating</a>
                 </div>
             </div>
         </div>
@@ -398,6 +398,8 @@
             var usertracking_hash = '${_member.uuid}';
         </script>
     </c:if>
+
+    <xcolab:script src="${_themeJsFolder}/impersonate.js"/>
 
     <script type="text/javascript">
         function enableDirtyCheck() {
