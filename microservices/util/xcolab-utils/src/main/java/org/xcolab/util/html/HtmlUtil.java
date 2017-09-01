@@ -24,6 +24,9 @@ public final class HtmlUtil {
 
     private static final String EXISTING_LINKS_REGEX = "(<a[^>]*>.*?</a>|<img[^>]*>|<a[^>]*>)";
     private static final Pattern existingLinksPattern = Pattern.compile(EXISTING_LINKS_REGEX);
+    private static final LinkExtractor linkExtractor = LinkExtractor.builder()
+            .linkTypes(EnumSet.of(LinkType.URL, LinkType.WWW))
+            .build();
 
     private HtmlUtil() { }
 
@@ -94,10 +97,6 @@ public final class HtmlUtil {
      * @return Input text with URLs converted to HTML links.
      */
     public static String linkifyUrlsInText(String content) {
-
-        LinkExtractor linkExtractor = LinkExtractor.builder()
-                .linkTypes(EnumSet.of(LinkType.URL, LinkType.WWW))
-                .build();
 
         StringBuilder result = new StringBuilder();
 
