@@ -22,7 +22,7 @@ import java.util.regex.Pattern;
  */
 public final class HtmlUtil {
 
-    private static final String EXISTING_LINKS_REGEX = "(<a[^>]*>[^<]*</a>|<img[^>]*>|<a[^>]*>)";
+    private static final String EXISTING_LINKS_REGEX = "(<a[^>]*>.*?</a>|<img[^>]*>|<a[^>]*>)";
     private static final Pattern existingLinksPattern = Pattern.compile(EXISTING_LINKS_REGEX);
 
     private HtmlUtil() { }
