@@ -75,7 +75,7 @@
             </div>
             <div class="addpropbox">
                 <label>
-                    <strong>Organization/company logo</strong>
+                    <strong>Sponsor logo</strong>
                 </label>
 
                 <div class="addprophelp">If available, it is preferred to use a version of the logo that is horizontal
@@ -85,6 +85,17 @@
                 <form:hidden path="sponsorLogoId" id="logoImageId"/>
                 <collab:imageUpload uniqueName="logoImage" imageIdInput="logoImageId" compactView="true"
                                     defaultImage="CONTEST" defaultImageId="${contestWrapper.sponsorLogoId}" />
+            </div>
+            <div class="addpropbox">
+                <label>
+                    <strong>Sponsor link</strong>
+                </label>
+
+                <div class="addprophelp">
+                    An optional link that it opened when a user clicks on the sponsor logo.
+                </div>
+
+                <form:input path="sponsorLink" id="sponsorLink"/>
             </div>
             <div class="addpropbox blue">
                 <label>

@@ -14,7 +14,7 @@
                     <c:if test="${contest.sponsorLogoId > 0}">
                         <c:choose>
                             <c:when test="${contest.sponsorLinkAvailable}">
-                                <a href="//${contest.sponsorLink}">
+                                <a href="${contest.sponsorLink}" target="_blank">
                                     <img src="${contest.sponsorLogoPath}"
                                             alt="Sponsor Logo"
                                             class="p-ContestProposals__header__sponsorLogo"/>
