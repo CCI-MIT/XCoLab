@@ -119,7 +119,6 @@
         <dependency>
             <groupId>org.nibor.autolink</groupId>
             <artifactId>autolink</artifactId>
-            <version>${autolink.version}</version>
         </dependency>
 
     </dependencies>
