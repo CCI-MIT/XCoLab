@@ -48,7 +48,7 @@
                         <script>
                             function handleOnClickAtSupportBtn(event){
                                 return showSharedContestAutoRegPopUp(function(ref){
-                                    window.location = "${supportProposalActionURL}";
+                                    supportProposal();
                                 },${contest.contestPK });
                             }
                         </script>
@@ -56,7 +56,11 @@
                     <c:otherwise>
                         <script>
                             function handleOnClickAtSupportBtn(){
-                                return deferUntilLogin();
+                                if (deferUntilLogin()) {
+                                    supportProposal();
+                                    return true;
+                                }
+                                return false;
                             }
                         </script>
                     </c:otherwise>
@@ -68,8 +72,8 @@
                     ${proposal.supportersCount}
                 </span> <spring:message code="contests.supports" />
                     <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
-                        <a class="c-Box__button boxColor--dark" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
-                           rel="nofollow" onclick="if(!handleOnClickAtSupportBtn(this)) return false;">
+                        <a class="c-Box__button boxColor--dark" href="javascript:void(0);"
+                           rel="nofollow" onclick="if(handleOnClickAtSupportBtn(this)) return false;">
                             <collab:message var="supportText" code="contests.supports.support" contestType="${contestType}" />
                             <spring:message var="retractText" code="contests.supports.retract" />
                             ${proposalsDisplayPermissions.canSeeSupportButton ? supportText : retractText }
@@ -247,6 +251,12 @@
             function reportProposal(proposalId) {
                 jQuery('#popup_flagging_form_targetId').attr('value', proposalId);
                 jQuery('#flaggingModal').modal();
+            }
+
+            function supportProposal() {
+                $.post("${supportProposalActionURL}", null, function() {
+                    location.reload();
+                });
             }
         </script>
     </c:if>
