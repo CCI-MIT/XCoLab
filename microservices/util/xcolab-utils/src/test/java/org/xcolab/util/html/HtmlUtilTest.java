@@ -62,4 +62,12 @@ public class HtmlUtilTest {
         String message = "Multiple URLs are not linkifed correctly.";
         assertEquals(message, expected, HtmlUtil.linkifyUrlsInHtml(input));
     }
+
+    @Test
+    public void testLinkifyUrls__nestedTag() {
+        String input = "<a href=\"www.google.com\"><b>www.google.com</b></a>";
+        String expected = "<a href=\"www.google.com\"><b>www.google.com</b></a>";
+        String message = "Nested tags break the linkification exception.";
+        assertEquals(message, expected, HtmlUtil.linkifyUrlsInHtml(input));
+    }
 }
