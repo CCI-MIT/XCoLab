@@ -70,4 +70,12 @@ public class HtmlUtilTest {
         String message = "Nested tags break the linkification exception.";
         assertEquals(message, expected, HtmlUtil.linkifyUrlsInHtml(input));
     }
+
+    @Test
+    public void testLinkifyUrls__query() {
+        String input = "Here's an interesting URL with query strings: http://picklemorty.com?key=value&key2=value2";
+        String expected = "Here's an interesting URL with query strings: <a rel='nofollow' href='http://picklemorty.com?key=value&key2=value2'>http://picklemorty.com?key=value&key2=value2</a>";
+        String message = "Linkification does not work correctly with query strings in the URL.";
+        assertEquals(message, expected, HtmlUtil.linkifyUrlsInHtml(input));
+    }
 }
