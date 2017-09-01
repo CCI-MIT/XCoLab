@@ -8,7 +8,7 @@ import java.util.Comparator;
 public enum ContestsColumn {
     CONTEST_NAME (Comparator.comparing(o -> o.getContestShortNameWithEndYear().toLowerCase())),
     PROPOSALS_COUNT((o1, o2) -> (int) (o1.getProposalsCount() - o2.getProposalsCount())),
-    COMMENTS_COUNT((o1, o2) -> (int) (o1.getCommentsCount() - o2.getCommentsCount())),
+    COMMENTS_COUNT((o1, o2) -> (int) (o1.getTotalCommentsCount() - o2.getTotalCommentsCount())),
     VOTES_COUNT((o1, o2) -> (int) (o1.getVotesCount() - o2.getVotesCount())),
     WHAT((o1, o2) -> {
         String s1 = o1.getWhatName();
