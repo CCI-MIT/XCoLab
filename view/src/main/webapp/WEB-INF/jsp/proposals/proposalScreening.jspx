@@ -62,7 +62,7 @@
                                             <br/>
                                             <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}">
                                                 <proposalsPortlet:userLinkSimple userId="${judge.userId}"
-                                                                                 text="${judge.fullName} (${proposalCount})"/>
+                                                                                 text="${judge.fullName} (${proposalAlreadyJudgedCount}/${proposalCount})"/>
 
                                             </judging:judgeAssignedProposalCount>
                                             <br/>

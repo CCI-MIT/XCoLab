@@ -34,8 +34,11 @@ public class JudgeAssignedProposalCountTag extends BodyTagSupport {
         int judgeAssignedProposalCount = ProposalClientUtil
                 .getNumberOfProposalsForJudge(userId, contestPhaseId);
 
+        int judgeJudgedProposalCount = ProposalClientUtil
+                .getNumberOfProposalsAlreadyJudgedForJudge(userId, contestPhaseId);
 
         pageContext.setAttribute("proposalCount", judgeAssignedProposalCount);
+        pageContext.setAttribute("proposalAlreadyJudgedCount", judgeJudgedProposalCount);
 
         return EVAL_BODY_INCLUDE; 
     }

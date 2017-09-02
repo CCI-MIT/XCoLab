@@ -328,6 +328,14 @@ public final class ProposalClient {
         return proposalResource.service(proposalId, "materializedPoints", Integer.class).get();
     }
 
+
+    public Integer getNumberOfProposalsAlreadyJudgedForJudge(Long userId, Long contestPhaseId) {
+        return proposalResource.service("numberOfProposalsAlreadyJudgedForJudge", Integer.class)
+                .queryParam("userId", userId)
+                .queryParam("contestPhaseId", contestPhaseId)
+                .get();
+
+    }
     public Integer getNumberOfProposalsForJudge(Long userId, Long contestPhaseId) {
         return proposalResource.service("numberOfProposalsForJudge", Integer.class)
                 .queryParam("userId", userId)
