@@ -2,6 +2,7 @@ package org.xcolab.view.pages.proposals.permissions;
 
 
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.team.MembershipRequest;
 import org.xcolab.util.enums.activity.ActivityEntryType;
@@ -17,6 +18,8 @@ public class ProposalsDisplayPermissions {
     private final Proposal proposal;
     private final ContestPhase contestPhase;
     private final long memberId;
+    private final boolean isGuest;
+    private final boolean isLoggedIn;
 
     public ProposalsDisplayPermissions(ProposalsPermissions proposalsPermissions, Proposal proposal,
             ContestPhase contestPhase, ClientHelper clientHelper, long memberId) {
@@ -24,11 +27,19 @@ public class ProposalsDisplayPermissions {
         this.proposal = proposal;
         this.contestPhase = contestPhase;
         this.memberId = memberId;
+        this.isLoggedIn = memberId > 0;
+        this.isGuest = PermissionsClient.isGuest(memberId);
         this.clientHelper = clientHelper;
     }
 
+    public boolean getCanSeeCreateProposalButton() {
+        final boolean canSeeCreateProposalButton = !isGuest
+                && proposalsPermissions.getIsCreationAllowedByPhase();
+        return canSeeCreateProposalButton || proposalsPermissions.getCanAdminAll();
+    }
+
     public boolean getCanSeeRequestMembershipButton() {
-        return !proposalsPermissions.getIsTeamMember()
+        return !isGuest && !proposalsPermissions.getIsTeamMember()
                 && !getUserHasOpenMembershipRequest();
     }
 
@@ -46,7 +57,7 @@ public class ProposalsDisplayPermissions {
     }
 
     public boolean getCanSeeVoteButton() {
-        return memberId == 0 || !hasVotedOnThisProposal();
+        return !isLoggedIn || (!isGuest && !hasVotedOnThisProposal());
     }
 
     private boolean hasVotedOnThisProposal() {
@@ -56,7 +67,7 @@ public class ProposalsDisplayPermissions {
     }
 
     public boolean getCanSeeUnsubscribeProposalButton() {
-        return memberId > 0 && isSubscribedToProposal();
+        return isLoggedIn && isSubscribedToProposal();
     }
 
     private boolean isSubscribedToProposal() {
@@ -66,28 +77,26 @@ public class ProposalsDisplayPermissions {
     }
 
     public boolean getCanSeeUnsubscribeContestButton() {
-        return memberId > 0 && isSubscribedToContest();
+        return isLoggedIn && isSubscribedToContest();
     }
 
     private boolean isSubscribedToContest() {
-
         return contestPhase != null
-                &&
-                clientHelper.getActivitiesClient().isSubscribedToActivity(memberId,
+                && clientHelper.getActivitiesClient().isSubscribedToActivity(memberId,
                         ActivityEntryType.CONTEST.getPrimaryTypeId(), contestPhase.getContestPK(),
                         0, "");
     }
 
     public boolean getCanSeeSubscribeProposalButton() {
-        return memberId == 0 || !isSubscribedToProposal();
+        return !isLoggedIn || !isSubscribedToProposal();
     }
 
     public boolean getCanSeeSubscribeContestButton() {
-        return memberId == 0 || !isSubscribedToContest();
+        return !isLoggedIn || !isSubscribedToContest();
     }
 
     public boolean getCanSeeUnsupportButton() {
-        return (memberId > 0 && isSupporter())
+        return (isLoggedIn && isSupporter())
                 && !proposalsPermissions.isVotingEnabled();
     }
 
@@ -98,7 +107,7 @@ public class ProposalsDisplayPermissions {
     }
 
     public boolean getCanSeeSupportButton() {
-        return (memberId == 0 || !isSupporter())
+        return (!isLoggedIn || !isSupporter())
                 && !proposalsPermissions.isVotingEnabled();
     }
 

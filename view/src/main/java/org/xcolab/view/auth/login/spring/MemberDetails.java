@@ -83,7 +83,11 @@ public class MemberDetails implements UserDetails {
         SortedSet<GrantedAuthority> sortedAuthorities = new TreeSet<>(
                 new AuthorityComparator());
 
-        sortedAuthorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
+        if (PermissionsClient.isMember(memberId)) {
+            sortedAuthorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
+        } else if (PermissionsClient.isGuest(memberId)) {
+            sortedAuthorities.add(new SimpleGrantedAuthority("ROLE_GUEST"));
+        }
 
         if (PermissionsClient.canAdminAll(memberId)) {
             sortedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
