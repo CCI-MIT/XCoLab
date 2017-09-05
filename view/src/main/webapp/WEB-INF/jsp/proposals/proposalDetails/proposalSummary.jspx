@@ -21,7 +21,7 @@
                             <c:if test="${proposalsPermissions.votingEnabled}">
                                 <c:set var="voteOnProposalURL" value="${proposal.proposalUrl}/voteOnProposalAction?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
 
-                                <a class="c-Button__primary" href="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }"
+                                <a class="c-Button__primary js-PostLink" href="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }"
                                         rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;">
                                     <collab:message var="voteForText" code="contests.voting.vote" contestType="${contestType}" />
                                     <spring:message var="retractVoteText" code="contests.voting.retract" />
