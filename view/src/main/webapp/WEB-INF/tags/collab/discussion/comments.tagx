@@ -197,7 +197,7 @@
                                             <spring:message code="discussion.commmentstag.confirmdelete" var="confirmDelete"/>
 											<a style="margin-left: 10px;" href="${deleteMessageURL }"
 											   class="js-Tooltip js-PostLink" title="${canDeleteMsg}"
-                                               data-confirm="Yo R u sure dawg??">
+                                               data-confirm="${confirmDelete}">
 												<spring:message code="discussion.commmentstag.delete.button"/>
 											</a>
 										</c:if>
