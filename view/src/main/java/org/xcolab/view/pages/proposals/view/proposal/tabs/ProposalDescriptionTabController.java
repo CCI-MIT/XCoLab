@@ -68,12 +68,21 @@ public class ProposalDescriptionTabController extends BaseProposalTabController 
             @RequestParam(defaultValue = "false") boolean voted,
             @RequestParam(defaultValue = "false") boolean edit,
             @RequestParam(required = false) Integer version,
-            @RequestParam(required = false) Long moveFromContestPhaseId,
-            @RequestParam(required = false) String moveType,
             @Valid JudgeProposalFeedbackBean judgeProposalFeedbackBean,
             BindingResult bindingResult) {
         return showProposalDetails(request, model, proposalContext, currentMember, voted,
-                edit, moveFromContestPhaseId, moveType);
+                edit, null, null);
+    }
+
+    @PostMapping("c/{proposalUrlString}/{proposalId}/moveFromContestPhaseId/{moveFromContestPhaseId}/move/{moveType}")
+    public String moveProposal(HttpServletRequest request, HttpServletResponse response,
+            Model model, ProposalContext proposalContext, Member currentMember,
+            @PathVariable Long contestYear,
+            @PathVariable String contestUrlName, @PathVariable Long proposalId,
+            @PathVariable Long moveFromContestPhaseId,
+            @PathVariable String moveType) {
+        return showProposalDetails(request, model, proposalContext, currentMember, false,
+                false, moveFromContestPhaseId, moveType);
     }
 
     private String showProposalDetails(HttpServletRequest request, Model model,
