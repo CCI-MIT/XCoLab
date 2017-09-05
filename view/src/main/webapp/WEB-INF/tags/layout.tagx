@@ -400,6 +400,7 @@
     </c:if>
 
     <xcolab:script src="${_themeJsFolder}/impersonate.js"/>
+    <xcolab:script src="${_themeJsFolder}/postLinkHandler.js"/>
 
     <script type="text/javascript">
         function enableDirtyCheck() {
