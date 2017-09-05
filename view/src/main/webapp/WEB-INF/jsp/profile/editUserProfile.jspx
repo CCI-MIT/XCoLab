@@ -225,7 +225,7 @@
 				</table>
 
 				<c:if test="${permissions.canAdmin}">
-					<a href="javascript:void(0);" id="impersonate">Impersonate ${userBean.firstName}</a>
+					<a href="/impersonate?memberId=${currentUserProfile.userId}" class="js-PostLink">Impersonate ${userBean.firstName}</a>
 				</c:if>
 
 				<div class="profile_about-head"><spring:message code="profile.form.fields.shortbio"/></div>
@@ -472,10 +472,6 @@
 				$dailyEmailsToggleElement.removeAttr("disabled");
 			}
 		});
-
-		$("#impersonate").click(function () {
-		    impersonate('${userBean.userId}');
-        });
 
 
 		function updateMessageSettingsOnServer(updateUrl, formData){

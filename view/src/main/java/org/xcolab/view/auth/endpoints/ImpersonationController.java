@@ -30,6 +30,7 @@ public class ImpersonationController {
                     Long.toString(memberId));
             cookie.setPath("/");
             response.addCookie(cookie);
+            response.sendRedirect("/");
         } catch (MemberNotFoundException e) {
             response.sendError(404, "Member to impersonate does not exist");
         }
@@ -41,5 +42,6 @@ public class ImpersonationController {
         cookie.setMaxAge(0);
         cookie.setPath("/");
         response.addCookie(cookie);
+        response.sendRedirect("/");
     }
 }

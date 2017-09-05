@@ -220,7 +220,7 @@
                 </div>
 
                 <div class="c-TitleBar__element c-TitleBar__actionButton right">
-                    <a href="javascript:void(0);" id="impersonateLogout">Stop impersonating</a>
+                    <a href="/impersonate/logout" class="js-PostLink">Stop impersonating</a>
                 </div>
             </div>
         </div>
@@ -399,7 +399,6 @@
         </script>
     </c:if>
 
-    <xcolab:script src="${_themeJsFolder}/impersonate.js"/>
     <xcolab:script src="${_themeJsFolder}/postLinkHandler.js"/>
 
     <script type="text/javascript">
