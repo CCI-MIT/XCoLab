@@ -15,9 +15,7 @@
 	<div class="c-ContentBox">
 		<div style="margin-bottom: 40px;display:inline">
 			<div class="floatRight outerVerticalCenter">
-                <form:form action="/admin/contest/manager/createContest" method="post">
-                    <input type="submit" class="c-Button__primary innerVerticalCenter" value="Create new Contest"/>
-                </form:form>
+				<a class="c-Button__primary innerVerticalCenter js-PostLink" href="/admin/contest/manager/createContest" target="_blank">Create new Contest</a>
 			</div>
 		</div>
 
