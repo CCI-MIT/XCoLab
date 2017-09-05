@@ -93,7 +93,7 @@
                     <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
                     <div class="p-Proposal__subscribe" style="float: right;">
                         <a href="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }"
-                                rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;" >
+                                rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;" class="js-PostLink">
                             <c:choose>
                                 <c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
                                     <img height="20" src="${_themeImageFolder}/subscribe.png" /> <spring:message code="contests.details.subscribe" />
