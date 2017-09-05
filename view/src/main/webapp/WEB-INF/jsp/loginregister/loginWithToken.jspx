@@ -3,6 +3,8 @@
           xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
+<!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
+
 <layout:layout title="Login link">
     <h2>Login with unique link</h2>
     <c:if test="${_isLoggedIn}">
@@ -16,6 +18,7 @@
                 </div>
 
                 <form action="/login/token/${tokenId}" method="post">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="hidden" name="tokenKey" value="${tokenKey}" />
                     <div>
                         <label for="remember-me">
@@ -41,6 +44,7 @@
                     Your login link has expired!
                 </div>
                 <form action="/login/token/${tokenId}" method="post">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="hidden" name="tokenKey" value="${tokenKey}" />
                     <button type="submit" class="c-Button__primary">Send new link</button>
                 </form>

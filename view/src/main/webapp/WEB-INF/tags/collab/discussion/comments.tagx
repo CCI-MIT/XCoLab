@@ -23,6 +23,8 @@
         <!--@elvariable id="shareTitle" type="java.lang.String"-->
         <!--@elvariable id="shareUrl" type="java.lang.String"-->
         <!--@elvariable id="reportTargets" type="java.util.List<org.xcolab.client.flagging.pojo.ReportTarget>"-->
+        <!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.ontology.OntologySpace>"-->
+        <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
 		<xcolab:loadCkEditor />
 
@@ -229,6 +231,7 @@
 				<div class="c-Comment__new">
 					<c:set var="addCommentURL" value="/discussions/addDiscussionMessage?proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
 					<form id="addCommentForm" action="${addCommentURL }#addCommentForm" method="post">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" id="_csrf"/>
                         <input name="threadId" class="title text hidden" maxlength="255" value="${thread.threadId}" />
 						<input type="hidden" name="uuid" id="filtering_uuid"/>
 						<textarea id="messageContent" name="description"  class="rte-editorPlaceholder c-Comment__box commentContent"><!-- --></textarea>

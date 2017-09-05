@@ -12,6 +12,7 @@
     <!--@elvariable id="elementSelectIdWrapper" type="org.xcolab.view.pages.contestmanagement.wrappers.ElementSelectIdWrapper"-->
     <!--@elvariable id="contestPhaseTypesSelectionItems" type="java.util.List<org.xcolab.util.html.LabelValue>"-->
     <!--@elvariable id="contestPhaseAutopromoteSelectionItems" type="java.util.List<org.xcolab.util.html.LabelValue>"-->
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
     <jsp:directive.include file="../init.jspx"/>
     <jsp:directive.include file="./header.jspx"/>
@@ -24,10 +25,12 @@
 
     <form action="${updateContestScheduleUrl}?elementId=${contestScheduleBean.scheduleId}"
           id="deleteScheduleForm" method="post" style="visibility: hidden;">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="action" value="DELETE"/>
     </form>
 
     <form action="${updateContestScheduleUrl}" id="createScheduleForm" method="post" style="visibility: hidden;">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="hidden" name="action" value="CREATE"/>
     </form>
 

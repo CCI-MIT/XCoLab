@@ -7,6 +7,7 @@
 
 	<!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.Contest"-->
     <!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.ontology.OntologySpace>"-->
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
 	<jsp:directive.include file="../init.jspx" />
 	<jsp:directive.include file="./header.jspx"/>
@@ -19,6 +20,7 @@
 
 		<form action="${updateContestOntologyURL }" id="editForm" method="post">
 			<input type="hidden" name="selectedOntologyTerms" id="selectedOntologyTerms"/>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		</form>
 
 		<h2>Contest ontology</h2>

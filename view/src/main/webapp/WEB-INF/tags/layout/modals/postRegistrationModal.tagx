@@ -8,6 +8,8 @@
     <jsp:directive.attribute name="redirect" type="java.lang.String" required="true" rtexprvalue="true" description="URL to redirect to" />
     <jsp:directive.attribute name="member" type="org.xcolab.client.members.pojo.Member" required="false" rtexprvalue="true" description="Regigstered member" />
 
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
+
     <spring:message code="homepage.modals.postreg.title" var="modalTitle"/>
     <xcolab:modal modalId="postRegistrationModal" title="${modalTitle}" size="lg">
         <div class="modal-body">
@@ -16,6 +18,7 @@
             </p>
             <div class="login_popup_box">
                 <form id="postRegister_form" method="post" action="/register/finalize">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                     <div id="error" class="popup-message" style="display: none;">
                         Your user name must only contain alphabetical or numerical characters and your bio must not exceed 2000 characters.

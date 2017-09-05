@@ -112,8 +112,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                     .logoutSuccessHandler(new LogoutSuccessHandler())
                     .and()
-                .csrf()
-                    .disable()
                 .headers()
                     .defaultsDisabled()
                     .addHeaderWriter(

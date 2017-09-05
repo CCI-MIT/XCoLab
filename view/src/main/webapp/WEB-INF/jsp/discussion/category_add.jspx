@@ -3,6 +3,9 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           version="2.0" xmlns:spring="http://www.springframework.org/tags">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
+
     <xcolab:layout>
         <jsp:directive.include file="init.jspx"/>
      <div id="content">
@@ -20,6 +23,7 @@
             <div class="c-Comment__new">
                 <c:set var="addCategoryUrl" value="/discussion/category/createCategory" />
                 <form id="addThreadForm" action="${addCategoryUrl }" method="post">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div>
                         <label class="portlet-form-label"><spring:message code="discussion.categoryadd.form.title"/><br />
                             <input class="portlet-form-input-field input_long" name="title" maxlength="255" style="width:660px;" type="text" value="" />

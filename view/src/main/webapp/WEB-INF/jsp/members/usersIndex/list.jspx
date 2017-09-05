@@ -26,7 +26,11 @@
 
 						<img class="js-Tooltip" data-tooltip-content="#js-Tooltip__content__points"
 							 style="width: 15px; height: 15px;" src="${_themeImageFolder}/icon-addprop-question-bar.png" />
-                        <!--<a href="/wiki/Climate+CoLab+Points"></a>-->
+                        <div class="hidden">
+                            <span id="js-Tooltip__content__points">
+                                <spring:message code="community.page.members.table.order.points.help"/>
+                            </span>
+                        </div>
 
 						<a class="js-Tooltip" title="click to sort by points" href="${sortURLPoints }"><spring:message code="community.page.members.table.order.points"/></a>
 						<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="POINTS" />
@@ -175,11 +179,6 @@
 				<a href="${downloadMembersListUrl}"><spring:message code="community.page.members.csv"/></a>
 			</div>
 		</c:if>
-        <c:if test="${pointsActive}">
-            <span id="js-Tooltip__content__points" style="">
-                    <spring:message code="community.page.members.table.order.points.help"/>
-            </span>
-        </c:if>
 	</div>
 
 </jsp:root>

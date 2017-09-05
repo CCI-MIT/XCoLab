@@ -10,6 +10,8 @@
     <jsp:directive.attribute name="subject" type="java.lang.String" required="false" rtexprvalue="true" description="Pre-filled subject"/>
     <jsp:directive.attribute name="content" type="java.lang.String" required="false" rtexprvalue="true" description="Pre-filled content"/>
 
+    <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
+
     <c:set var="showRecipients" value="${empty recipient and empty replyToMessage}"/>
 
     <spring:message var="sendMessageModalTitle" code="message.modal.sendUserMessage" arguments="${recipient.fullName}"/>
@@ -18,6 +20,7 @@
                   title="${not empty recipient ? sendMessageModalTitle : ''}">
         <form method="post" id="messageForm" action="/messaging/sendMessage"
               onSubmit="checkMessageForm(${showRecipients});">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <div class="modal-body">
                 <c:choose>
                     <c:when test="${not empty recipient}">

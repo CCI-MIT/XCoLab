@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
+import static org.springframework.security.test.web.servlet.request
+        .SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -116,6 +118,7 @@ public class LoginRegisterControllerTest {
     public void registrationFailsWhenInvalidDataPostedAndSendsUserBackToForm() throws Exception {
 
         this.mockMvc.perform(post("/register")
+                .with(csrf())
                 .param("screenName", "")
                 .param("email", "")
                 .param("imageId", "")
@@ -140,6 +143,7 @@ public class LoginRegisterControllerTest {
     public void registrationWorksAndDoLoginAndUserRedirectedToHome() throws Exception {
 
         this.mockMvc.perform(post("/register")
+                .with(csrf())
                 .param("screenName", "username")
                 .param("email", "username@gmail.com")
                 .param("imageId", "")
@@ -163,6 +167,7 @@ public class LoginRegisterControllerTest {
 
 
         this.mockMvc.perform(post("/api/register/generateScreenName")
+                .with(csrf())
                 .param("firstName", "User")
                 .param("lastName", "Name"))
                 .andExpect(content().string(containsString("screenName")));
