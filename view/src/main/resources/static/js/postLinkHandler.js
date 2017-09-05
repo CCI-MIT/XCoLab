@@ -1,5 +1,5 @@
 $(function() {
-    $(".js-PostLink").click(function (eventObject) {
+    $(document).on("click", "a.js-PostLink", function (eventObject) {
         var confirmText = $(this).data('confirm');
         if (confirmText && !confirm(confirmText)) {
             return false;
