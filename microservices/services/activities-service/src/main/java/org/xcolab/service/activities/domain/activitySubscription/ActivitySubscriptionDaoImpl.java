@@ -36,8 +36,7 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
                 .set(ACTIVITY_SUBSCRIPTION.RECEIVER_ID, activitySubscription.getReceiverId())
                 .set(ACTIVITY_SUBSCRIPTION.CREATE_DATE, activitySubscription.getCreateDate())
                 .set(ACTIVITY_SUBSCRIPTION.MODIFIED_DATE, activitySubscription.getModifiedDate())
-                .returning(ACTIVITY_SUBSCRIPTION.PK)
-                .fetchOne();
+                .returning(ACTIVITY_SUBSCRIPTION.PK).fetchOne();
         if (ret != null) {
             activitySubscription.setPk(ret.getValue(ACTIVITY_SUBSCRIPTION.PK));
             return activitySubscription;
@@ -50,8 +49,7 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
     @Override
     public Optional<ActivitySubscription> get(Long activitySubscriptionId) {
         final Record record = this.dslContext.selectFrom(ACTIVITY_SUBSCRIPTION)
-                .where(ACTIVITY_SUBSCRIPTION.PK.eq(activitySubscriptionId))
-                .fetchOne();
+                .where(ACTIVITY_SUBSCRIPTION.PK.eq(activitySubscriptionId)).fetchOne();
         if (record == null) {
             return Optional.empty();
         }
@@ -62,27 +60,26 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
     public Optional<ActivitySubscription> get(Long receiverId, Long classNameId, Long classPK,
             String extraInfo) {
         //
-            SelectQuery<Record> subscriptionsQuery =
-            dslContext.select()
-                .from(ACTIVITY_SUBSCRIPTION)
+        SelectQuery<Record> subscriptionsQuery = dslContext.select().from(ACTIVITY_SUBSCRIPTION)
                 .where(ACTIVITY_SUBSCRIPTION.RECEIVER_ID.eq(receiverId))
                 .and(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID.eq(classNameId))
-                .and(ACTIVITY_SUBSCRIPTION.CLASS_PK.eq(classPK))
-                .getQuery();
+                .and(ACTIVITY_SUBSCRIPTION.CLASS_PK.eq(classPK)).getQuery();
 
         if (extraInfo != null) {
             subscriptionsQuery.addConditions((ACTIVITY_SUBSCRIPTION.EXTRA_DATA.eq(extraInfo)));
         }
 
-        final List<ActivitySubscription> subscriptions =  subscriptionsQuery.fetch().into(ActivitySubscription.class);
+        final List<ActivitySubscription> subscriptions =
+                subscriptionsQuery.fetch().into(ActivitySubscription.class);
 
         if (subscriptions.isEmpty()) {
             return Optional.empty();
         }
         if (subscriptions.size() > 1) {
             throw new IllegalStateException(String.format("Duplicate activity subscription: "
-                    + "[receiverId=%d, classNameId=%d, classPK=%d, extraInfo=%s]",
-                    receiverId, classNameId, classPK, extraInfo));
+                            + "[receiverId=%d, classNameId=%d, classPK=%d, extraInfo=%s]",
+                    receiverId,
+                    classNameId, classPK, extraInfo));
         }
         return Optional.of(subscriptions.get(0));
     }
@@ -99,8 +96,7 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
                 .set(ACTIVITY_SUBSCRIPTION.RECEIVER_ID, activitySubscription.getReceiverId())
                 .set(ACTIVITY_SUBSCRIPTION.CREATE_DATE, activitySubscription.getCreateDate())
                 .set(ACTIVITY_SUBSCRIPTION.MODIFIED_DATE, activitySubscription.getModifiedDate())
-                .where(ACTIVITY_SUBSCRIPTION.PK.eq(activitySubscription.getPk()))
-                .execute() > 0;
+                .where(ACTIVITY_SUBSCRIPTION.PK.eq(activitySubscription.getPk())).execute() > 0;
     }
 
     @Override
@@ -110,14 +106,12 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
 
     @Override
     public boolean delete(Long pk) {
-        return getDeleteQuery(pk)
-                .execute() > 0;
+        return getDeleteQuery(pk).execute() > 0;
     }
 
     @Override
     public DeleteFinalStep<ActivitySubscriptionRecord> getDeleteQuery(Long pk) {
-        return dslContext.delete(ACTIVITY_SUBSCRIPTION)
-                .where(ACTIVITY_SUBSCRIPTION.PK.eq(pk));
+        return dslContext.delete(ACTIVITY_SUBSCRIPTION).where(ACTIVITY_SUBSCRIPTION.PK.eq(pk));
     }
 
     @Override
@@ -128,27 +122,33 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
     @Override
     public DeleteFinalStep<ActivitySubscriptionRecord> getDeleteQuery(Long receiverId,
             Long classNameId, Long classPK, String extraInfo) {
-        return dslContext
-                .delete(ACTIVITY_SUBSCRIPTION)
+        if (extraInfo == null) {
+        return dslContext.delete(ACTIVITY_SUBSCRIPTION)
                 .where(ACTIVITY_SUBSCRIPTION.RECEIVER_ID.eq(receiverId))
                 .and(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID.eq(classNameId))
                 .and(ACTIVITY_SUBSCRIPTION.CLASS_PK.eq(classPK))
-                .and(ACTIVITY_SUBSCRIPTION.EXTRA_DATA.eq(extraInfo));
+                .and(ACTIVITY_SUBSCRIPTION.EXTRA_DATA.isNull());
+        } else {
+            return dslContext.delete(ACTIVITY_SUBSCRIPTION)
+                    .where(ACTIVITY_SUBSCRIPTION.RECEIVER_ID.eq(receiverId))
+                    .and(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID.eq(classNameId))
+                    .and(ACTIVITY_SUBSCRIPTION.CLASS_PK.eq(classPK))
+                    .and(ACTIVITY_SUBSCRIPTION.EXTRA_DATA.eq(extraInfo));
+        }
     }
 
     @Override
     public boolean isSubscribed(long receiverId, long classNameId, Long classPK, int type,
             String extraInfo) {
 
-        final SelectQuery<Record1<Integer>> query = dslContext.selectCount()
-                .from(ACTIVITY_SUBSCRIPTION)
-                .where(ACTIVITY_SUBSCRIPTION.RECEIVER_ID.eq(receiverId)
-                        .and(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID.eq(classNameId))
-                        .and(ACTIVITY_SUBSCRIPTION.CLASS_PK.eq(classPK))
-                        .and(ACTIVITY_SUBSCRIPTION.TYPE_.eq(type)))
-                .getQuery();
+        final SelectQuery<Record1<Integer>> query =
+                dslContext.selectCount().from(ACTIVITY_SUBSCRIPTION)
+                        .where(ACTIVITY_SUBSCRIPTION.RECEIVER_ID.eq(receiverId)
+                                .and(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID.eq(classNameId))
+                                .and(ACTIVITY_SUBSCRIPTION.CLASS_PK.eq(classPK))
+                                .and(ACTIVITY_SUBSCRIPTION.TYPE_.eq(type))).getQuery();
 
-        if (extraInfo != null) {
+        if (extraInfo != null && !extraInfo.isEmpty()) {
             query.addConditions((ACTIVITY_SUBSCRIPTION.EXTRA_DATA.eq(extraInfo)));
         }
 
@@ -159,14 +159,12 @@ public class ActivitySubscriptionDaoImpl implements ActivitySubscriptionDao {
     public List<ActivitySubscription> getActivitySubscribers(Long classNameId, Long classPK,
             Long receiverId) {
         if (receiverId == null || receiverId == 0) {
-            return this.dslContext.select()
-                    .from(ACTIVITY_SUBSCRIPTION)
+            return this.dslContext.select().from(ACTIVITY_SUBSCRIPTION)
                     .where(ACTIVITY_SUBSCRIPTION.CLASS_NAME_ID.eq(classNameId))
                     .and(ACTIVITY_SUBSCRIPTION.CLASS_PK.eq(classPK))
                     .fetchInto(ActivitySubscription.class);
         } else {
-            return this.dslContext.select()
-                    .from(ACTIVITY_SUBSCRIPTION)
+            return this.dslContext.select().from(ACTIVITY_SUBSCRIPTION)
                     .where(ACTIVITY_SUBSCRIPTION.RECEIVER_ID.eq(receiverId))
                     .fetchInto(ActivitySubscription.class);
         }
