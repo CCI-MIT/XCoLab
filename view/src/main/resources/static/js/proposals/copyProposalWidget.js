@@ -9,7 +9,7 @@ function proposalCopy_loadContests(moveType) {
 			html.push(obj.contestName);
 			html.push("</td>");
 			html.push("<td>");
-			html.push('<div class="c-Button__primary"><a class="js-PostLink" href="/contests/'+ obj.contestYear +'/' + obj.contestUrlName);
+			html.push('<div class="c-Button__primary"><a href="/contests/'+ obj.contestYear +'/' + obj.contestUrlName);
 
 			if (moveType == "FORK") {
 				html.push('/createProposal/basedOn/');

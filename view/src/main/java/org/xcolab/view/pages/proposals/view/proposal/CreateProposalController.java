@@ -39,7 +39,7 @@ import javax.validation.Valid;
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class CreateProposalController extends BaseProposalsController {
 
-    @PostMapping("createProposal/basedOn/{baseProposalId}/{baseProposalVersion}/{baseContestId}")
+    @GetMapping("createProposal/basedOn/{baseProposalId}/{baseProposalVersion}/{baseContestId}")
     public String createProposalsBasedOn(HttpServletRequest request, HttpServletResponse response,
             Model model, ProposalContext proposalContext, Member loggedInMember,
             @PathVariable Long baseProposalId,
