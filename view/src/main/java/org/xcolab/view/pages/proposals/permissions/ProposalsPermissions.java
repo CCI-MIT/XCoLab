@@ -26,6 +26,7 @@ public class ProposalsPermissions {
     private final long memberId;
     private final Member member;
     private final boolean isLoggedIn;
+    private final boolean isGuest;
 
     private final Proposal proposal;
     private final ContestPhase contestPhase;
@@ -63,6 +64,7 @@ public class ProposalsPermissions {
         }
         this.memberId = member != null ? member.getId_() : 0;
         this.isLoggedIn = this.memberId > 0;
+        this.isGuest = PermissionsClient.isGuest(memberId);
         this.contestPhase = contestPhase;
         this.proposal = proposal;
     }
@@ -72,7 +74,7 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanReport() {
-        return ConfigurationAttributeKey.FLAGGING_ALLOW_MEMBERS.get()
+        return (ConfigurationAttributeKey.FLAGGING_ALLOW_MEMBERS.get() && isLoggedIn && !isGuest)
                 || getCanAdminAll();
     }
 
@@ -86,19 +88,19 @@ public class ProposalsPermissions {
      * @return true if user is allowed to edit a proposal, false otherwise
      */
     public boolean getCanEdit() {
-        return isLoggedIn
+        return isLoggedIn && !isGuest
                 && (getCanAdminAll() || planIsEditable
                 && (isProposalOpen() || isProposalMember())
         );
     }
 
     public boolean getCanDelete() {
-        return isLoggedIn
+        return isLoggedIn && !isGuest
                 && (getCanAdminAll() || planIsEditable && isProposalMember());
     }
 
     public boolean getCanCreate() {
-        return isLoggedIn && getIsCreationAllowedByPhase()
+        return isLoggedIn && !isGuest && getIsCreationAllowedByPhase()
                 || getCanAdminAll();
     }
 
@@ -111,11 +113,11 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanAssignRibbon() {
-        return isLoggedIn && getCanAdminAll();
+        return isLoggedIn && !isGuest && getCanAdminAll();
     }
 
     public boolean getCanPublicRating() {
-        return isLoggedIn; // && !getCanJudgeActions() && !getIsTeamMember();
+        return isLoggedIn && !isGuest; // && !getCanJudgeActions() && !getIsTeamMember();
     }
 
     public boolean getCanManageUsers() {
@@ -123,7 +125,7 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanSupportProposal() {
-        return isLoggedIn && !isVotingEnabled();
+        return isLoggedIn && !isGuest && !isVotingEnabled();
     }
 
     public boolean getCanSubscribeContest() {
@@ -140,7 +142,7 @@ public class ProposalsPermissions {
     }
 
     public boolean getCanVote() {
-        return isLoggedIn && isVotingEnabled()
+        return isLoggedIn && !isGuest && isVotingEnabled()
                 && (proposal != null && proposal.getProposalId() > 0);
     }
 
