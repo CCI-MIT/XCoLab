@@ -53,27 +53,12 @@ $b-Typography__fontFamily: Arial, Helvetica, sans-serif;
 $b-Typography__fontFamily__h1: Arial, Helvetica, sans-serif;
 
 $c-Header__background: white;
-$c-Header__box-shadow: 0px 6px 5px #D7D9DA;
-$c-Header__menu__li__a__textAlign: center;
+$bs-navbar__hasBoxShadow: true;
 $c-Header__menu__li__a__fontWeight: 400;
-$c-Header__menu__li__isCurrent__boxShadow: inset 0 -8px 0px $t-Color__primary !default;
-$c-Header__menu__right__li__register__backgroundUrl: none;
-$c-Header__menu__right__li__register--hover__backgroundUrl: none;
-$c-Header__menu__right__li__help__backgroundUrl: none;
+$bs-navbar-navitem--active__hasBoxShadow: true;
 $c-Header__menu__right__li__help__border--left: none;
-$c-Header__menu__right__li__help--hover__backgroundUrl: none;
-$c-Header__menu__right__li__login__backgroundUrl: none;
-$c-Header__menu__right__li__login--hover__backgroundUrl: none;
-$c-Header__menu__right__li__language__backgroundUrl: none;
-$c-Header__menu__right__li__language--hover__backgroundUrl: none;
-
-$c-Header__menu__right__li__a__paddingTop: 30px;
 $c-Header__menu__li__a__textColor: $t-Color__primary;
-$c-Header__search__submit__borderRadius: 0;
-$c-Header__search__pop__positionLeft: 502px;
 $c-Header__background--hover: none;
-$c-Header__menu__right__li__a--hover__textColor: $t-Color__primary;
-$c-Header__menu__li__a__search__textColor--hover: $t-Color__primary;
 
 $c-Headline__days-left__span__textColor: white;
 $c-Headline__h2__span__fontSize: 27px;

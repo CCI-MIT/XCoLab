@@ -32,6 +32,18 @@ ul.dropdown-menu li {
       border-bottom-right-radius: 3px;
 
       color: $dropdownText--open;
+
+      &.bs-dropdown-box--sm {
+        width: 150px;
+      }
+
+      &.bs-dropdown-box--md {
+        width: 225px;
+      }
+
+      &.bs-dropdown-box--lg {
+        width: 300px;
+      }
     }
 
     a {

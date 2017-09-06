@@ -1,15 +1,13 @@
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:spring="http://www.springframework.org/tags"
-          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:xcolab-dropdowns="urn:jsptagdir:/WEB-INF/tags/layout/dropdowns"
           version="2.0">
 
     <jsp:directive.attribute name="logoPath" type="java.lang.String" required="true" rtexprvalue="true" description="The path to the logo of this CoLab" />
     <jsp:directive.attribute name="blogAdminUrl" type="java.lang.String" required="true" rtexprvalue="true" description="Admin URL for the blog" />
     <jsp:directive.attribute name="isWhiteBackgound" type="java.lang.Boolean" required="true" rtexprvalue="true" description="Whether the background should be white"/>
+    <jsp:directive.attribute name="isShowIcons" type="java.lang.Boolean" required="true" rtexprvalue="true" description="Whether the icons on the right menu should be displayed"/>
     <jsp:directive.attribute name="currentLocale" type="java.lang.String" required="true" rtexprvalue="true" description="The currently active locale" />
     <jsp:directive.attribute name="languageSelectItems" type="java.util.List" required="true" rtexprvalue="true" description="The currently active locale" />
     <jsp:directive.attribute name="unreadMessages" type="java.lang.Integer" required="true" rtexprvalue="true" description="Number of unread messages" />
@@ -26,7 +24,7 @@
     <!--@elvariable id="contestPages" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
     <!--@elvariable id="languageSelectItems" type="java.util.List<org.xcolab.util.html.LabelStringValue>"-->
 
-    <nav class="bs-navbar navbar bs-navbar-unresponsive ${isWhiteBackgound ? 'bs-navbar-white' : 'bs-navbar-gray'}">
+    <nav class="bs-navbar navbar bs-navbar-unresponsive ${isWhiteBackgound ? 'bs-navbar-white' : 'bs-navbar-default'}">
         <div class="bs-container-fixed">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">
@@ -45,10 +43,13 @@
                         </li>
                     </c:if>
                 </c:forEach>
-                <li class="bs-navitem-text ${activePageLink == 'community' ? 'bs-navitem--active' : ''}" ><a href="/members"><spring:message code="homepage.menu.community" /></a></li>
+                <li class="bs-navitem-text ${activePageLink == 'community' ? 'bs-navitem--active' : ''}" >
+                    <a href="/members"><spring:message code="homepage.menu.community" /></a>
+                </li>
                 <c:if test="${showSearch}">
                     <!--#if ($pageName == 'search') isCurrent #end-->
-                    <li class="bs-navitem-text ${activePageLink == 'search' ? 'bs-navitem--active' : ''} bs-navitem-icon c-Header__navItem search dropdown bs-dropdown--dark" data-toggle="dropdown">
+                    <c:set var="navbarSearchActive" value="${activePageLink == 'search' ? 'bs-navitem--active' : ''}" />
+                    <li class="bs-navitem-icon c-Header__navItem search dropdown bs-dropdown--dark ${navbarSearchActive}" data-toggle="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown">
                             <spring:message code="homepage.menu.search" />
                         </a>
@@ -131,16 +132,17 @@
                     </li>
                 </c:when>
                 <c:otherwise>
-                    <li class="c-Header__navItem register bs-navitem-icon">
+                    <c:set var="navItemRightClass" value="${isShowIcons ? 'bs-navitem-icon' : 'bs-navitem-text bs-navitem--small'}" />
+                    <li class="c-Header__navItem register ${navItemRightClass}">
                         <a href="/register?redirect=${redirect}" class="c-Header__menu__text">
                             <spring:message code="homepage.menu.visitor.register" />
                         </a>
                     </li>
-                    <li class="c-Header__navItem login bs-navitem-icon dropdown bs-dropdown--dark"  >
+                    <li class="c-Header__navItem login dropdown bs-dropdown--dark ${navItemRightClass}">
                         <a class="dropdown-toggle c-Header__menu__text" data-toggle="dropdown" >
                             <spring:message code="homepage.menu.visitor.login" />
                         </a>
-                        <div class="dropdown-menu bs-dropdown-box">
+                        <div class="dropdown-menu bs-dropdown-box bs-dropdown-box--lg">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="c-Header__socialButtons">
@@ -166,11 +168,11 @@
                                     <form class="form" role="form" id="signInFormPopup" method="post" action="/login" accept-charset="UTF-8" >
                                         <div class="form-group">
                                             <spring:message code="homepage.login.usernameoremail" var="usernameplaceholder"/>
-                                            <input name="username" type="text" class="c-Header__login__username form-control" placeholder="${usernameplaceholder}"  />
+                                            <input name="username" type="text" class="form-control" placeholder="${usernameplaceholder}"  />
                                         </div>
                                         <div class="form-group">
                                             <spring:message code="homepage.login.password" var="passwordplaceholder"/>
-                                            <input name="password" type="password" class="c-Header__login__password form-control" placeholder="${passwordplaceholder}" />
+                                            <input name="password" type="password" class="form-control" placeholder="${passwordplaceholder}" />
                                         </div>
                                         <div class="checkbox">
                                             <label>
@@ -192,7 +194,7 @@
                         </div>
                     </li>
                     <c:if test="${showLanguage}">
-                        <li class="c-Header__navItem language bs-navitem-icon dropdown bs-dropdown--dark" >
+                        <li class="c-Header__navItem language dropdown bs-dropdown--dark ${navItemRightClass}">
                             <a class="dropdown-toggle" data-toggle="dropdown">
                                 <spring:message code="homepage.menu.visitor.language" />
                             </a>
@@ -203,8 +205,10 @@
                     </c:if>
                 </c:otherwise>
                 </c:choose>
-                <li class="c-Header__navItem help bs-navitem-icon">
-                    <a href="/wiki/Help" class="c-Header__menu__text"><spring:message code="homepage.menu.help" /></a>
+                <li class="c-Header__navItem help ${navItemRightClass}">
+                    <a href="/wiki/Help" class="c-Header__menu__text">
+                        <spring:message code="homepage.menu.help" />
+                    </a>
                 </li>
 
             </ul>

@@ -83,16 +83,12 @@ $b-Typography__fontWeight__h5: $b-Typography__fontWeight--light;
 $b-Typography__fontWeight--bold: $b-Typography__fontWeight--medium;
 
 $c-Header__background: white;
-$c-Header__box-shadow: 0px 6px 5px #D7D9DA;
+$bs-navbar__hasBoxShadow: true;
 $c-Header__menu__li__a__fontWeight: $b-Typography__fontWeight--regular;
-$c-Header__menu__li__a__textAlign: center;
-$c-Header__menu__li__isCurrent__boxShadow: inset 0 -8px 0px $t-Color__red;
+$bs-navbar-navitem--active__hasBoxShadow: true;
 $c-Header__menu__right__li__a__fontWeight: $b-Typography__fontWeight--regular;
 $c-Header__menu__li__a__textColor: $t-Color__grey--medium;
 $c-Header__menu__li__hoverColor: $t-Color__red;
-$c-Header__search__submit__borderRadius: 0;
-$c-Header__search__submit__fontWeight: $b-Typography__fontWeight--light;
-$c-Header__search__pop__positionLeft: 474px;
 
 $c-Headline__days-left__span__textColor: $t-Color__red;
 $c-Headline__h2__span__textColor: $t-Color__red;
