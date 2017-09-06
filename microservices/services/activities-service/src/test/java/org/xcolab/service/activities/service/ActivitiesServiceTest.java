@@ -26,6 +26,7 @@ import org.xcolab.util.enums.activity.ActivityEntryType;
 import org.xcolab.util.http.ServiceRequestUtils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyLong;
 
@@ -131,7 +132,7 @@ public class ActivitiesServiceTest {
             activitiesService.subscribe(1111, ActivityEntryType.DISCUSSION, 222, null);
             activitiesService.unsubscribe(1111, ActivityEntryType.DISCUSSION, 222, null);
 
-        assertTrue(ActivitySubscriptionDao
+        assertFalse(ActivitySubscriptionDao
             .isSubscribed(1111, ActivityEntryType.DISCUSSION.getPrimaryTypeId(), 222L, 0, null));
 
     }
@@ -145,7 +146,7 @@ public class ActivitiesServiceTest {
 
         activitiesService.unsubscribe(1111, ActivityEntryType.PROPOSAL, 222, null);
 
-        assertTrue(ActivitySubscriptionDao
+        assertFalse(ActivitySubscriptionDao
             .isSubscribed(1111, ActivityEntryType.PROPOSAL.getPrimaryTypeId(), 222L, 0, null));
 
     }
@@ -159,7 +160,7 @@ public class ActivitiesServiceTest {
         activitiesService.unsubscribe(1111, ActivityEntryType.CONTEST, 222, null);
 
 
-        assertTrue(ActivitySubscriptionDao
+        assertFalse(ActivitySubscriptionDao
             .isSubscribed(1111, ActivityEntryType.CONTEST.getPrimaryTypeId(), 222L, 0, null));
 
     }
