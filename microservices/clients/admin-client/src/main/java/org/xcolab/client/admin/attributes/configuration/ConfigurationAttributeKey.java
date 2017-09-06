@@ -482,4 +482,9 @@ public final class ConfigurationAttributeKey {
     public static final LocalizableAttributeGetter<String> SNP_EXAMPLE_TEXT =
             ConfigurationAttributes.newLocalizedStringAttribute("SNP_EXAMPLE_TEXT")
                     .buildLocalizable();
+
+    public static final AttributeGetter<Boolean> NAVBAR_SHOW_ICONS =
+            ConfigurationAttributes.newBooleanAttribute("NAVBAR_SHOW_ICONS")
+                    .defaultValue(true)
+                    .build();
 }
