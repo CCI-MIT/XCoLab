@@ -10,6 +10,7 @@ import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
+import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.dto.DtoUtil;
 
 import java.util.ArrayList;
@@ -93,7 +94,7 @@ public class ContestTeamMemberClient {
 
     public Map<Long, List<Long>> getContestTeamMembersByRole(Long contestId) {
         Map<Long, List<Long>> teamRoleToUsersMap = new TreeMap<>();
-        for (ContestTeamMember ctm : getTeamMembers(contestId)) {
+        for (ContestTeamMember ctm : getTeamMembers(null, contestId, null)) {
             List<Long> roleUsers =
                     teamRoleToUsersMap.computeIfAbsent(ctm.getRoleId(), k -> new ArrayList<>());
 
@@ -102,11 +103,18 @@ public class ContestTeamMemberClient {
         return teamRoleToUsersMap;
     }
 
-    public List<ContestTeamMember> getTeamMembers(Long contestId) {
-        return DtoUtil.toPojos(contestTeamMemberResource.list()
-                .optionalQueryParam("contestId", contestId)
-                .withCache(CacheName.CONTEST_DETAILS)
-                .execute(), contestService);
+    public List<ContestTeamMember> getTeamMembers(Long userId, Long contestId, Long roleId) {
+        ListQuery<ContestTeamMemberDto> query = contestTeamMemberResource.list();
+        if (userId != null) {
+            query = query.optionalQueryParam("userId", userId);
+        }
+        if (contestId != null) {
+            query = query.optionalQueryParam("contestId", contestId);
+        }
+        if (roleId != null) {
+            query = query.optionalQueryParam("roleId", roleId);
+        }
+        return DtoUtil.toPojos(query.execute(), contestService);
     }
     public List<ContestTeamMember> getTeamMembers(Long categoryId, Long contestYear) {
         return DtoUtil.toPojos(contestTeamMemberResource.service("getByContestYear",ContestTeamMemberDto.TYPES.getTypeReference())
