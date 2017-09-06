@@ -195,7 +195,7 @@
 
                                             <spring:message code="discussion.commmentstag.candeletemsg" var="canDeleteMsg"/>
                                             <spring:message code="discussion.commmentstag.confirmdelete" var="confirmDelete"/>
-											<a style="margin-left: 10px;" href="${deleteMessageURL }"
+											<a style="margin-left: 10px;" data-url="${deleteMessageURL }"
 											   class="js-Tooltip js-PostLink" title="${canDeleteMsg}"
                                                data-confirm="${confirmDelete}">
 												<spring:message code="discussion.commmentstag.delete.button"/>

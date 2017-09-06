@@ -237,7 +237,7 @@
                 </div>
 
                 <div class="c-TitleBar__element c-TitleBar__actionButton right">
-                    <a href="/impersonate/logout" class="js-PostLink">Stop impersonating</a>
+                    <a data-url="/impersonate/logout" class="js-PostLink">Stop impersonating</a>
                 </div>
             </div>
         </div>

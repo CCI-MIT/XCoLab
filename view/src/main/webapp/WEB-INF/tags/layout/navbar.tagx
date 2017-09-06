@@ -114,7 +114,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="/logout" class="js-PostLink">
+                                <a data-url="/logout" class="js-PostLink">
                                     <spring:message code="homepage.menu.user.logout" />
                                 </a>
                             </li>

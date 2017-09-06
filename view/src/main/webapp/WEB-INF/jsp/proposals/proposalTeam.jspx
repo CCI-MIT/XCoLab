@@ -88,7 +88,7 @@
                                 <c:if test="${member.memberType != 'OWNER'}">
                                     <c:set var="removeUserFromTeam" value="${proposal.proposalUrl}/tab/TEAM/removeUserFromTeam?memberId=${member.userId}" />
 
-                                    <a href="${removeUserFromTeam }" class="js-PostLink">
+                                    <a data-url="${removeUserFromTeam }" class="js-PostLink">
                                         <spring:message code="contests.proposal.team.remove" />
                                     </a>
                                 </c:if>

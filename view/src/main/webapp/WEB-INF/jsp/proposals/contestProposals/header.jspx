@@ -31,7 +31,7 @@
 
                 <collab:message code="contests.details.subscribe.tooltip" var="tooltipSubscribe" contestType="${contestType}" />
 				<span class="js-Tooltip" title="${tooltipSubscribe}">
-					<a href="${proposalsPermissions.canSubscribeContest ? subscribeContestURL : '#' }"
+					<a data-url="${proposalsPermissions.canSubscribeContest ? subscribeContestURL : '#' }"
                             rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;" class="js-PostLink">
 						<c:choose>
 							<c:when test="${proposalsDisplayPermissions.canSeeSubscribeContestButton }">

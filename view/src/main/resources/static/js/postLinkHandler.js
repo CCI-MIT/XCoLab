@@ -13,7 +13,7 @@ $(function() {
         // Create a new POST form element.
         var form = document.createElement("form");
         form.method = "POST";
-        form.action = this.href;
+        form.action = $(this).data('url');
 
         // Add a CSRF token as an input field to the form.
         var csrfInput = document.createElement("input");
