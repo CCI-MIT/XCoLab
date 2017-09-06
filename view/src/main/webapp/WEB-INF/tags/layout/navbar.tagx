@@ -114,10 +114,7 @@
                                 </a>
                             </li>
                             <li>
-                                <form:form id="logoutForm" action="/logout" method="post">
-                                    <!-- empty -->
-                                </form:form>
-                                <a href="#" onclick="jQuery('#logoutForm').submit();">
+                                <a href="/logout" class="js-PostLink">
                                     <spring:message code="homepage.menu.user.logout" />
                                 </a>
 
