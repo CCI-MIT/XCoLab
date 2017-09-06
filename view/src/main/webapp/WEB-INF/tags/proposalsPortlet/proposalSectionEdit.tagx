@@ -116,7 +116,10 @@
             </c:when>
 
 			<c:otherwise>
-				<form:textarea cssClass="rte-editorPlaceholder" data-section-type="${section.type }" data-section-id="${section.sectionDefinitionId }" cols="54" rows="7" path="sectionsContent[${section.sectionDefinitionId}]" />
+				<form:textarea cssClass="rte-editorPlaceholder" data-section-type="${section.type }" data-section-id="${section.sectionDefinitionId }" cols="54" rows="7" path="sectionsContent[${section.sectionDefinitionId}]"
+                               data-section-placeholder="${section.defaultText}"/>
+
+
 				<c:if test="${section.type == 'PROPOSAL_LIST_TEXT_REFERENCE'}">
 					<script type="text/javascript">
 						if (!sectionContestTypeNames) { var sectionContestTypeNames = {}; }
