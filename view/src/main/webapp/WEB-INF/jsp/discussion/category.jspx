@@ -10,7 +10,7 @@
     <!--@elvariable id="sortAscending" type="java.lang.Boolean"-->
     <!--@elvariable id="sortColumn" type="java.lang.String"-->
     <!--@elvariable id="isSubscribed" type="java.lang.Boolean"-->
-    <!--@elvariable id="discussionPermission" type="org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions"-->
+    <!--@elvariable id="discussionPermissions" type="org.xcolab.view.taglibs.xcolab.jspTags.discussion.DiscussionPermissions"-->
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout title="${currentCategory.name}">
@@ -48,7 +48,7 @@
 
                                 <span class="c-Count"><span class="c-Count__number">${threads.size()}</span>&#160;<spring:message code="discussion.categorypage.count"/></span>
 
-                                <c:if test="${discussionPermission.canSeeAddThreadButton}">
+                                <c:if test="${discussionPermissions.canSeeAddThreadButton}">
                                     <a class="b-Spacing__inline--large" href="/discussion/threads/create"
                                        rel="nofollow" onclick="if(!deferUntilLogin(this)) {return false;}">
                                         <img style="vertical-align: middle;" height="30"
