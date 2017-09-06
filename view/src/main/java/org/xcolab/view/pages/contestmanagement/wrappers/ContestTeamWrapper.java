@@ -53,15 +53,14 @@ public class ContestTeamWrapper {
     }
 
     private void assignMemberRoleToUser(MemberRole memberRole, List<Long> userIds) {
+        Long roleId = memberRole.getRoleId();
         for (Long userId : userIds) {
-            Long roleId = memberRole.getRoleId();
             MembersClient.assignMemberRole(userId, roleId);
         }
     }
 
     private void assignMembersToContestWithRole(List<Long> userIds, MemberRole memberRole) {
         for (Long userId : userIds) {
-
             ContestTeamMember contestTeamMember = new ContestTeamMember();
             contestTeamMember.setContestId(contestId);
             contestTeamMember.setUserId(userId);
