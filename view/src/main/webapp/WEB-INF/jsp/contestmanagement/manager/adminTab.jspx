@@ -172,6 +172,15 @@
                 <textarea id="batchRegisterMembersList" name="members"
                           placeholder="Enter members..." style="width: 100%;"><!-- --></textarea>
                 </div>
+                <div class="checkbox">
+                    <label>
+                        <!-- TODO COLAB-2204: remove style attribute once input float rule is removed -->
+                        <input type="checkbox" name="asGuests" style="float: none; height: initial;"/>
+                        <span class="js-Tooltip" title="Guests cannot create proposals or participate in dicussions">
+                            Register as guests
+                        </span>
+                    </label>
+                </div>
                 <button type="submit" class="c-Button__primary">Register members</button>
             </form>
         </div>
