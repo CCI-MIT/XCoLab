@@ -261,7 +261,7 @@
     <xcolab-layout:navbar colabName="${_colabName}" logoPath="${_logoPath}" redirect="${_requestUri}"
                           activePageLink="${_activePageLink}" contestPages="${_contestPages}"
                           member="${_isLoggedIn ? _member : null}" isWhiteBackgound="${_isHomePage}"
-                          uploadedImageFolder="${_uploadedImageFolder}"
+                          isShowIcons="${_navbarShowIcons}" uploadedImageFolder="${_uploadedImageFolder}"
                           unreadMessages="${_unreadMessages}" blogAdminUrl="${_blogAdminUrl}"
                           showLanguage="${_isI18NActive}" showSearch="${_showSearchMenuItem}"
                           languageSelectItems="${_languageSelectItems}" currentLocale="${_currentLocale}"

@@ -19,15 +19,17 @@ public class DiscussionPermissions {
     public static final String REQUEST_ATTRIBUTE_NAME = "DISCUSSION_PERMISSIONS";
 
     protected final long memberId;
+    private final boolean isGuest;
     protected boolean isLoggedIn;
 
     public DiscussionPermissions(HttpServletRequest request) {
         memberId = MemberAuthUtil.getMemberId(request);
         isLoggedIn = memberId > 0;
+        this.isGuest = PermissionsClient.isGuest(memberId);
     }
 
     public boolean getCanReport() {
-        return ConfigurationAttributeKey.FLAGGING_ALLOW_MEMBERS.get()
+        return (ConfigurationAttributeKey.FLAGGING_ALLOW_MEMBERS.get() && isLoggedIn && !isGuest)
                 || getCanAdminMessages();
     }
 
@@ -41,12 +43,16 @@ public class DiscussionPermissions {
                 comment.getCommentId(), null, null) == 0;
     }
 
+    public boolean getCanSeeAddThreadButton() {
+        return !isGuest;
+    }
+
     public boolean getCanSeeAddCommentButton() {
-        return true;
+        return !isGuest;
     }
 
     public boolean getCanAddComment() {
-        return isLoggedIn;
+        return isLoggedIn && !isGuest;
     }
 
     public boolean getCanAdminMessages() {
@@ -54,13 +60,15 @@ public class DiscussionPermissions {
     }
 
     public boolean getCanAdminMessage(Comment comment) {
-        return getCanAdminAll()
-                || (isAuthor(comment) && isRecent(comment, EDIT_GRACE_PERIOD_IN_MINUTES + 5));
+        final boolean canAdminMessage = isAuthor(comment)
+                && isRecent(comment, EDIT_GRACE_PERIOD_IN_MINUTES + 5);
+        return canAdminMessage || getCanAdminAll();
     }
 
     public boolean getCanViewAdminMessage(Comment comment) {
-        return getCanAdminAll()
-                || (isAuthor(comment) && isRecent(comment, EDIT_GRACE_PERIOD_IN_MINUTES));
+        final boolean canViewAdminMessage = isAuthor(comment)
+                && isRecent(comment, EDIT_GRACE_PERIOD_IN_MINUTES);
+        return canViewAdminMessage || getCanAdminAll();
     }
 
     private boolean isAuthor(Comment comment) {

@@ -73,25 +73,12 @@ $b-Typography__textColor__a--isHover: $t-Color__blue--hover;
 $b-Typography__textDecoration__a--hover: underline;
 
 $c-Header__background: white;
-$c-Header__box-shadow: 0px 6px 5px #D7D9DA;
+$bs-navbar__hasBoxShadow: true;
 $c-Header__menu__li__a__fontWeight: $b-Typography__fontWeight--regular;
-$c-Header__menu__li__a__textAlign: center;
-$c-Header__menu__li__isCurrent__boxShadow: inset 0 -8px 0px $t-Color__blue !default;
-$c-Header__menu__right__li__register__backgroundUrl: none;
-$c-Header__menu__right__li__register--hover__backgroundUrl: none;
-$c-Header__menu__right__li__help__backgroundUrl: none;
+$bs-navbar-navitem--active__hasBoxShadow: true;
 $c-Header__menu__right__li__help__border--left: none;
-$c-Header__menu__right__li__help--hover__backgroundUrl: none;
-$c-Header__menu__right__li__login__backgroundUrl: none;
-$c-Header__menu__right__li__login--hover__backgroundUrl: none;
-$c-Header__menu__right__li__a__paddingTop: 30px;
 $c-Header__menu__right__li__a__fontWeight: $b-Typography__fontWeight--regular;
 $c-Header__menu__li__a__textColor: $t-Color__primary;
-$c-Header__menu__li__isCurrent__a__textColor: black;
-$c-Header__menu__highlightedTextColor: black;
-$c-Header__search__submit__borderRadius: 0;
-$c-Header__search__submit__fontWeight: $b-Typography__fontWeight--light;
-$c-Header__search__pop__positionLeft: 502px;
 
 $c-Headline__days-left__span__textColor: white;
 $c-Headline__h2__span__textColor: black;
@@ -350,9 +337,7 @@ $p-Homepage__homespot__background__backgroundSize: cover;
 
 $c-Header__background--hover: none;
 $c-Footer__link__textColor--hover: $t-Color__primary;
-$c-Header__menu__right__li__a--hover__textColor: $t-Color__primary;
 $c-ContestBox__text__title__textColor--hover: $t-Color__primary;
-$c-Header__menu__li__a__search__textColor--hover: $t-Color__primary;
 $p-ContestProposals__header__paddingTop: 30px;
 $c-Headline__h2__span__fontSize: 27px;
 $c-Headline__days-left__span__padding: 7px 12px;

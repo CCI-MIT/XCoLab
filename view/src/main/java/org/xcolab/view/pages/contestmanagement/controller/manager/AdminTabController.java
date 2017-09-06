@@ -16,6 +16,7 @@ import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.pojo.Notification;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
@@ -29,6 +30,7 @@ import org.xcolab.view.pages.contestmanagement.utils.ActivityCsvConverter;
 import org.xcolab.view.pages.contestmanagement.utils.VoteCsvConverter;
 import org.xcolab.view.pages.loginregister.LoginRegisterService;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
+import org.xcolab.view.util.entity.enums.MemberRole;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
@@ -168,7 +170,7 @@ public class AdminTabController extends AbstractTabController {
 
     @PostMapping("tab/ADMIN/batchRegister")
     public String batchRegisterMembers(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam String members) {
+            @RequestParam String members, @RequestParam Boolean asGuests) {
         final String[] memberStrings = members.split("\\r\\n|\\n|\\r");
         for (String memberString : memberStrings) {
             final String[] values = memberString.split(";");
@@ -178,7 +180,11 @@ public class AdminTabController extends AbstractTabController {
             String email = values[0];
             String firstName = values[1];
             String lastName = values[2];
-            loginRegisterService.autoRegister(email, firstName, lastName);
+            Member member = loginRegisterService.autoRegister(email, firstName, lastName);
+            if (asGuests) {
+                MembersClient.assignMemberRole(member.getId_(), MemberRole.GUEST.getRoleId());
+                MembersClient.removeMemberRole(member.getId_(), MemberRole.MEMBER.getRoleId());
+            }
         }
         AlertMessage.CHANGES_SAVED.flash(request);
         return "redirect:" + tab.getTabUrl();

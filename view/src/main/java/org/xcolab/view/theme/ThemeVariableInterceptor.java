@@ -181,6 +181,9 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
                         ConfigurationAttributeKey.MIT_HEADER_BAR_LINK_URL.get());
             }
 
+            final Boolean navbarShowIcons = ConfigurationAttributeKey.NAVBAR_SHOW_ICONS.get();
+            modelAndView.addObject("_navbarShowIcons", navbarShowIcons);
+
             boolean isSigningIn = readBooleanParameter(request, "isSigningIn");
             boolean isPasswordReminder = readBooleanParameter(request, "isPasswordReminder");
             boolean isSSOSigningIn = readBooleanParameter(request, "isSSOSigningIn");
