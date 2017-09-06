@@ -93,8 +93,10 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("threads", currentCategory.getThreads(threadSortColumn, sortAscending));
         model.addAttribute("sortColumn", threadSortColumn.name());
         model.addAttribute("sortAscending", sortAscending);
+
         model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(memberId,
-                ActivityEntryType.DISCUSSION.getPrimaryTypeId(), categoryGroup.getGroupId(),0,Long.toString(categoryId) ));
+                ActivityEntryType.DISCUSSION.getPrimaryTypeId(), currentCategory.getCategoryId(),0,null ));
+
 
         model.addAttribute("_activePageLink", "community");
         return "/discussion/category";
@@ -170,9 +172,11 @@ public class CategoryController extends BaseDiscussionController {
             if (categoryId > 0) {
                 ActivitiesClientUtil.addSubscription(memberId,
                         ActivityEntryType.DISCUSSION, categoryId, Long.toString(categoryId));
+                return "redirect:/discussion/category/"+categoryId;
             } else {
                 ActivitiesClientUtil.addSubscription(memberId,
                         ActivityEntryType.DISCUSSION, categoryGroup.getGroupId(), "");
+                return "redirect:/discussion";
             }
         }
         return "redirect:/discussion";
@@ -195,12 +199,13 @@ public class CategoryController extends BaseDiscussionController {
         if (memberId > 0) {
             if (categoryId > 0) {
                 ActivitiesClientUtil.deleteSubscription(memberId,
-                        ActivityEntryType.DISCUSSION, categoryGroup.getGroupId(),
-                        Long.toString(categoryId));
+                        ActivityEntryType.DISCUSSION,categoryId,null);
+                return "redirect:/discussion/category/"+categoryId;
 
             } else {
                 ActivitiesClientUtil.deleteSubscription(memberId,
                         ActivityEntryType.DISCUSSION, categoryGroup.getGroupId(), "");
+                return "redirect:/discussion";
             }
         }
         return "redirect:/discussion";

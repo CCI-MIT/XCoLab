@@ -22,9 +22,6 @@ public class ScreeningAccessAlgorithm implements ProposalTabCanAccessAlgorithm {
             return false;
         }
 
-        ContestPhasePromoteType phasePromoteType = ContestPhasePromoteType
-                .getPromoteType(contestPhase.getContestPhaseAutopromote());
-        final boolean isJudged = phasePromoteType == ContestPhasePromoteType.PROMOTE_JUDGED;
-        return isJudged && contestPhase.getFellowScreeningActive();
+        return  contestPhase.getFellowScreeningActive();
     }
 }
