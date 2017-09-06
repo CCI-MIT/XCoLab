@@ -40,7 +40,7 @@
                             <div class="judgingForm">
                                 <div>
                                     <c:forEach var="judge" items="${contest.contestJudges}">
-                                        <div class="judge-review-status">
+                                        <div class="judge-review-status js-Tooltip tooltipstered" data-tooltip-content="#js-Tooltip__content__judgedata_${judge.userId}">
 
                                             <div class="review-status-container">
                                                 <proposalsPortlet:userPortrait screenName="${judge.screenName}"
@@ -60,11 +60,18 @@
                                                 </judging:judgeReviewStatus>
                                             </div>
                                             <br/>
-                                            <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}">
-                                                <proposalsPortlet:userLinkSimple userId="${judge.userId}"
-                                                                                 text="${judge.fullName} (${proposalAlreadyJudgedCount}/${proposalCount})"/>
+                                                <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}">
 
-                                            </judging:judgeAssignedProposalCount>
+
+                                                        <proposalsPortlet:userLinkSimple userId="${judge.userId}"
+                                                                                     text="${judge.fullName} (${proposalCount})"/>
+                                                        <div class="hidden">
+                                                            <span id="js-Tooltip__content__judgedata_${judge.userId}">
+                                                                    Proposals assigned to judge: ${proposalCount}<br/>
+                                                                    Proposals already completed : ${proposalAlreadyJudgedCount}
+                                                            </span>
+                                                        </div>
+                                                </judging:judgeAssignedProposalCount>
                                             <br/>
                                             <form:checkbox path="selectedJudges" value="${judge.userId}"/>
                                         </div>
