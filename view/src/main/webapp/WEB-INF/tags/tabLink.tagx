@@ -1,36 +1,36 @@
-<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
-  xmlns:jsp="http://java.sun.com/JSP/Page">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
 
-  <jsp:directive.attribute name="defaultTab" type="java.lang.Boolean" required="true" rtexprvalue="true" description="it this the default tab" />
-  <jsp:directive.attribute name="tabName" type="java.lang.String" required="true" rtexprvalue="true" description="Tab display name" />
-  <jsp:directive.attribute name="tabDisplayName" type="java.lang.String" required="true" rtexprvalue="true" description="Tab display name" />
-  <jsp:directive.attribute name="contestId" type="java.lang.Long" required="true" rtexprvalue="true" description="Contest id" />
-  <jsp:directive.attribute name="activityCount" type="java.lang.Integer" required="true" rtexprvalue="true" description="Link text" />
-  <jsp:directive.attribute name="managerTab" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Manger tab link" />
+    <jsp:directive.attribute name="defaultTab" type="java.lang.Boolean" required="true" rtexprvalue="true" description="it this the default tab" />
+    <jsp:directive.attribute name="tabName" type="java.lang.String" required="true" rtexprvalue="true" description="Tab display name" />
+    <jsp:directive.attribute name="tabDisplayName" type="java.lang.String" required="true" rtexprvalue="true" description="Tab display name" />
+    <jsp:directive.attribute name="contestId" type="java.lang.Long" required="true" rtexprvalue="true" description="Contest id" />
+    <jsp:directive.attribute name="activityCount" type="java.lang.Integer" required="true" rtexprvalue="true" description="Link text" />
+    <jsp:directive.attribute name="managerTab" type="java.lang.Boolean" required="false" rtexprvalue="true" description="Manger tab link" />
 
-  <c:choose>
-    <c:when test="${managerTab}">
-      <c:set var="proposalUrlPrefix" value="/admin/contest/manager" />
-    </c:when>
-    <c:otherwise>
-      <c:set var="proposalUrlPrefix" value="/admin/contest/details/contestId/${contestId}" />
-    </c:otherwise>
-  </c:choose>
+    <c:choose>
+        <c:when test="${managerTab}">
+            <c:set var="proposalUrlPrefix" value="/admin/contest/manager" />
+        </c:when>
+        <c:otherwise>
+            <c:set var="proposalUrlPrefix" value="/admin/contest/details/contestId/${contestId}" />
+        </c:otherwise>
+    </c:choose>
 
-  <c:choose>
-    <c:when test="${defaultTab}">
-      <c:set var="proposalUrl" value="${proposalUrlPrefix}" />
-    </c:when>
-    <c:otherwise>
-      <c:set var="proposalUrl" value="${proposalUrlPrefix}/tab/${tabName}" />
-    </c:otherwise>
-  </c:choose>
+    <c:choose>
+        <c:when test="${defaultTab}">
+            <c:set var="proposalUrl" value="${proposalUrlPrefix}" />
+        </c:when>
+        <c:otherwise>
+            <c:set var="proposalUrl" value="${proposalUrlPrefix}/tab/${tabName}" />
+        </c:otherwise>
+    </c:choose>
 
-  <a href="${proposalUrl}">
-    ${tabDisplayName}
-    <c:if test="${activityCount > 0}">
-      <div> ${activityCount} </div>
-    </c:if>
-  </a>
+    <a href="${proposalUrl}">
+        ${tabDisplayName}
+        <c:if test="${activityCount > 0}">
+            <div>${activityCount}</div>
+        </c:if>
+    </a>
 
 </jsp:root>

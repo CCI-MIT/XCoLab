@@ -1,7 +1,7 @@
-<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
-        xmlns:jsp="http://java.sun.com/JSP/Page"
-        xmlns:spring="http://www.springframework.org/tags"
-        xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <!--@elvariable id="contestType" type="org.xcolab.client.admin.pojo.ContestType"-->
 

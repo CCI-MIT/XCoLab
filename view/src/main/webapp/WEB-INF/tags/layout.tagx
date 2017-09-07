@@ -396,10 +396,12 @@
     </c:if>
 
     <!-- Custom user tracking -->
-    <script>
-        var usertracking_userId = ${member.userId};
-        var usertracking_hash = '${member.uuid}';
-    </script>
+    <c:if test="${_isLoggedIn}">
+        <script>
+            var usertracking_userId = ${_member.userId};
+            var usertracking_hash = '${_member.uuid}';
+        </script>
+    </c:if>
     <xcolab:script src="${_themeJsFolder}/usertracking.js" defer="true"/>
 
 

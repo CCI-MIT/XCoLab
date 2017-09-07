@@ -1,7 +1,6 @@
 <jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:cms="urn:jsptagdir:/WEB-INF/tags"
-	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
 	<div class="proposal-head">
 		<div class="inner">
@@ -24,9 +23,9 @@
 			<ul class="c-TabBar clearfix">
 				<c:forEach var="singleTab" items="${tabs}" varStatus="loopStatus">
 					<li class="${!loopStatus.last ? (!loopStatus.first ? 'c-TabBar__tab' : 'c-TabBar__tab--first') : 'c-TabBar__tab--last'} ${currentTabWrapped.name == singleTab.tab ? 'active' : ''}">
-						<cms:tabLink defaultTab="${singleTab.isDefault}" tabName="${singleTab.name}"
-									 tabDisplayName="${singleTab.displayName}" contestId="${contestWrapper.contestPK}"
-									 activityCount="${singleTab.activityCount}"/>
+						<xcolab:tabLink defaultTab="${singleTab.isDefault}" tabName="${singleTab.name}"
+                                        tabDisplayName="${singleTab.displayName}" contestId="${contestWrapper.contestPK}"
+                                        activityCount="${singleTab.activityCount}"/>
 					</li>
 				</c:forEach>
 			</ul>

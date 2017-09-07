@@ -1,11 +1,9 @@
-<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:form="http://www.springframework.org/tags/form"
-	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-    xmlns:spring="http://www.springframework.org/tags"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
-    xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout title="Edit Profile">
     <jsp:directive.include file="./init.jspx" />

@@ -1,6 +1,6 @@
-<jsp:root version="2.1"
-	xmlns:jsp="http://java.sun.com/JSP/Page" 
->
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
+
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <jsp:useBean id="contestType" scope="request" type="org.xcolab.client.admin.pojo.ContestType" />
+
 </jsp:root>

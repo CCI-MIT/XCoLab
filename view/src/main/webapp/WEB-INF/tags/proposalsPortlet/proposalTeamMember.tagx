@@ -1,5 +1,4 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
 	<jsp:directive.attribute name="member" type="org.xcolab.client.proposals.pojo.ProposalTeamMember" required="true" rtexprvalue="true" description="Member to be shown" />
@@ -7,4 +6,5 @@
 	<xcolab:userPortrait portraitId="${member.userId }" memberId="${member.userId}"
                          width="42" height="42"/>
 	<xcolab:userLinkSimple memberId="${member.userId }" text="${member.screenName }" />
+
 </jsp:root>

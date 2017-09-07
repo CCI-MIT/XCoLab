@@ -1,9 +1,9 @@
-<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-         >
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
 	<!--@elvariable id="availableModels" type="java.util.Map<java.lang.Long, java.lang.String>"-->
 	<!--@elvariable id="modelId" type="java.lang.Long"-->
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>

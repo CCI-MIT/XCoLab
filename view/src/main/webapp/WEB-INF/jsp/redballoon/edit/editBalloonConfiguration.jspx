@@ -6,7 +6,10 @@
 	xmlns:form="http://www.springframework.org/tags/form"
 	xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
 	xmlns:portlet="http://java.sun.com/portlet_2_0">
-	<h1>Configure balloon</h1>
+
+    <!-- TODO: this is not currently used and still uses liferay functions -->
+
+    <h1>Configure balloon</h1>
 	
 	<portlet:renderURL var="addEditBalloonText">
 		<portlet:param name="balloonTextId" value="0"/>

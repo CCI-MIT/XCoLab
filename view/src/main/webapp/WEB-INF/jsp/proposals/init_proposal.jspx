@@ -1,5 +1,4 @@
-<jsp:root version="2.1"
-	xmlns:jsp="http://java.sun.com/JSP/Page">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
 
 	<jsp:directive.include file="./init_contest.jspx" />
 

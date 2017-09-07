@@ -1,7 +1,6 @@
 <jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:form="http://www.springframework.org/tags/form"
-          xmlns:contestmanagementPortlet="urn:jsptagdir:/WEB-INF/tags"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
@@ -43,11 +42,11 @@
         <h3 class="collectionCard-category">
             ANY ACTION:
         </h3>
-            <contestmanagementPortlet:collectionCardWithChildren collectionCard="${collectionCardWrapperWhat}" section="${section + 1 }" level="${level + 1 }" />
+            <xcolab:collectionCardWithChildren collectionCard="${collectionCardWrapperWhat}" section="${section + 1 }" level="${level + 1 }" />
         <h3 class="collectionCard-category">
             ANYWHERE:
         </h3>
-            <contestmanagementPortlet:collectionCardWithChildren collectionCard="${collectionCardWrapperWhere}" section="${section + 1 }" level="${level + 1 }" />
+            <xcolab:collectionCardWithChildren collectionCard="${collectionCardWrapperWhere}" section="${section + 1 }" level="${level + 1 }" />
     </div>
 
     <div class="collectionCard-outline-right" style="display:none;">
@@ -140,7 +139,7 @@
                             <span>${ontologyTerm.name}</span>
                         </a>
                         <c:if test="${not empty ontologyTerm.children }">
-                            <contestmanagementPortlet:ontologyTermWithChildren ontologyTerm="${ontologyTerm}" section="${section + 1 }" level="1" />
+                            <xcolab:ontologyTermWithChildren ontologyTerm="${ontologyTerm}" section="${section + 1 }" level="1" />
                         </c:if>
                     </li>
                 </c:forEach>
@@ -156,7 +155,7 @@
                             <span>${ontologyTerm.name}</span>
                         </a>
                         <c:if test="${not empty ontologyTerm.children }">
-                            <contestmanagementPortlet:ontologyTermWithChildren ontologyTerm="${ontologyTerm}" section="${section + 1 }" level="1" />
+                            <xcolab:ontologyTermWithChildren ontologyTerm="${ontologyTerm}" section="${section + 1 }" level="1" />
                         </c:if>
                     </li>
                 </c:forEach>

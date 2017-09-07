@@ -1,7 +1,6 @@
-<jsp:root version="2.1"
-	xmlns:c="http://java.sun.com/jsp/jstl/core" 
-	xmlns:jsp="http://java.sun.com/JSP/Page"
->
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+
 	<jsp:directive.attribute name="ontologyTerms" type="java.util.ArrayList" required="true" rtexprvalue="true" description="Ontology terms" />
     <c:set var="ontologyBaseUrl" value="/contests?contestsType=all&amp;viewType=OUTLINE#term=" />
 	<c:forEach var="item" items="${ontologyTerms }" varStatus="status">
@@ -10,4 +9,5 @@
             jQuery('#ontologyTerm_${item.id}').attr('href', encodeURI('${ontologyBaseUrl}${item.id}_${item.name}'));
         </script>
 	</c:forEach>
+
 </jsp:root>

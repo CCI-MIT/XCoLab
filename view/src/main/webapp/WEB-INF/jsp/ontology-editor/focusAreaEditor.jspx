@@ -1,9 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xsi:schemaLocation="http://java.sun.com/portlet_2_0 "
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
-         >
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"><!-- --></script>

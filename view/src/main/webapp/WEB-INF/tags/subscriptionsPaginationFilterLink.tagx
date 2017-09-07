@@ -1,6 +1,8 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
+
 	<jsp:directive.attribute name="userId" type="java.lang.Long" required="true" rtexprvalue="true" description="User id" />
 	<jsp:directive.attribute name="typeFilter" type="java.lang.String" required="true" rtexprvalue="true" description="Type filter" />
 	<jsp:directive.attribute name="text" type="java.lang.String" required="true" rtexprvalue="true" description="Link text" />
+
 	<a href="/members/profile/${userId }/subscriptions/manage?typeFilter=${typeFilter}">${text}</a>
 </jsp:root>

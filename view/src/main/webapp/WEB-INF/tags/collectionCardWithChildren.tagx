@@ -1,10 +1,11 @@
-<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:contestmanagementPortlet="urn:jsptagdir:/WEB-INF/tags"
->
-	<jsp:directive.attribute name="collectionCard" type="org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper" required="true" rtexprvalue="true" description="Current Collection card" />
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
+	<jsp:directive.attribute name="collectionCard" type="org.xcolab.view.pages.contestmanagement.wrappers.CollectionCardWrapper" required="true" rtexprvalue="true" description="Current Collection card" />
 	<jsp:directive.attribute name="section" type="java.lang.Integer" required="true" rtexprvalue="true" description="Section" />
 	<jsp:directive.attribute name="level" type="java.lang.Integer" required="true" rtexprvalue="true" description="Level" />
+
 	<c:if test="${not empty collectionCard }">
 		<ul class="level-${level }">
 			<c:forEach var="collectionCard" items="${collectionCard.children }">
@@ -22,12 +23,11 @@
 						</span>
 					</a>
 					<c:if test="${not empty collectionCard.children }">
-						<contestmanagementPortlet:collectionCardWithChildren collectionCard="${collectionCard}" section="${section + 1 }" level="${level + 1 }" />
+						<xcolab:collectionCardWithChildren collectionCard="${collectionCard}" section="${section + 1 }" level="${level + 1 }" />
 					</c:if>
 				</li>
 			</c:forEach>
 		</ul>
 	</c:if>
-
 	
 </jsp:root>

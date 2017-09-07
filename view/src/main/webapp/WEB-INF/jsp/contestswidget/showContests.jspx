@@ -1,7 +1,6 @@
-<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-    xmlns:spring="http://www.springframework.org/tags"
-    xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
     <!--@elvariable id="contestPreferences" type="org.xcolab.portlets.contests.ContestPreferences"-->
@@ -12,7 +11,7 @@
             <a href="/contestswidget/editPreferences?preferenceId=${contestPreferences.preferenceId}" class="c-Button__admin">Edit contestPreferences</a><br/>
         </c:if>
         <h2> ${contestPreferences.title} <span><a href="${contestPreferences.allContestsUrl}">${contestPreferences.allContestsTitle}</a></span></h2>
-        <c:forEach var="contest" items="${contests }">
+        <c:forEach var="contest" items="${contests}">
             <div class="c-ContestBox backgroundLight">
                 <div class="c-ContestBox__image">
                     <a href="${contest.contestUrl}">

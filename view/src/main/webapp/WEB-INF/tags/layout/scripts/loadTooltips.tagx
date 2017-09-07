@@ -4,7 +4,7 @@
     <xcolab:stylesheet href="${_libCssFolder}/tooltipster-4.1.8.bundle.min.css" />
     <xcolab:script src="${_libJsFolder}/tooltipster-4.1.8.bundle.min.js" />
     <script>
-        findAndInitializeTooltips(jQuery);
+        initializeTooltips(jQuery('.js-Tooltip'));
 
         function initializeTooltips($tooltips) {
             $tooltips.tooltipster({

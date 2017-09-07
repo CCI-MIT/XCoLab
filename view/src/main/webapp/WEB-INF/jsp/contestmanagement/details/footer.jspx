@@ -1,4 +1,4 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
 
 	<script type="text/javascript">
 		jQuery(function() {

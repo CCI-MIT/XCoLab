@@ -1,6 +1,6 @@
-<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
-         >
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core">
+
     <jsp:directive.attribute name="name" type="java.lang.String" required="true" rtexprvalue="true" description="Name of the required library." />
 
     <c:set target="${_librariesToLoad}" property="${name}" value="true" />
