@@ -406,15 +406,17 @@
             var selectedMassAction = $('#selectedMassAction');
             var selectedMassActionIndex = selectedMassAction.val();
             selectedMassAction.val(0);
-            $.ajax(editForm.attr("action"), {
+            $.ajax("/admin/contest/manager/updateOrder", {
                 method: 'POST',
                 data: editForm.serialize(),
                 beforeSend: function (jqXHR, textStatus) {
                     noty({text: "Updating order...", type: 'information', timeout: false});
                 },
                 success: function (data, textStatus, jqXHR) {
-                    console.log("Result!");
-                    noty({text:"Order updated.", type:'success', killer: true});
+                    noty({text: "Order updated.", type: 'success', killer: true});
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    noty({text: "Order update failed.", type: 'error', killer: true});
                 }
             });
             selectedMassAction.val(selectedMassActionIndex);
