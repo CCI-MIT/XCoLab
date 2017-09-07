@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
@@ -126,7 +127,7 @@ public class ContestProposalsController extends BaseProposalsController {
         return "/proposals/contestProposals";
     }
 
-    @GetMapping("/contests/subscribeContest")
+    @PostMapping("/contests/subscribeContest")
     public void handleAction(HttpServletRequest request, HttpServletResponse response,
             Model model, Member currentMember, ProposalContext proposalContext)
             throws ProposalsAuthorizationException, IOException {

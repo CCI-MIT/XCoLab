@@ -21,7 +21,7 @@
                             <c:if test="${proposalsPermissions.votingEnabled}">
                                 <c:set var="voteOnProposalURL" value="${proposal.proposalUrl}/voteOnProposalAction?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
 
-                                <a class="c-Button__primary" href="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }"
+                                <a class="c-Button__primary js-PostLink" data-url="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }"
                                         rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;">
                                     <collab:message var="voteForText" code="contests.voting.vote" contestType="${contestType}" />
                                     <spring:message var="retractVoteText" code="contests.voting.retract" />
@@ -47,7 +47,6 @@
                         <script>
                             function handleOnClickAtSupportBtn(event){
                                 return showSharedContestAutoRegPopUp(function(ref){
-                                    window.location = "${supportProposalActionURL}";
                                 },${contest.contestPK });
                             }
                         </script>
@@ -67,7 +66,7 @@
                     ${proposal.supportersCount}
                 </span> <spring:message code="contests.supports" />
                     <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
-                        <a class="c-Box__button boxColor--dark" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
+                        <a class="c-Box__button boxColor--dark js-PostLink" data-url="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
                            rel="nofollow" onclick="if(!handleOnClickAtSupportBtn(this)) return false;">
                             <collab:message var="supportText" code="contests.supports.support" contestType="${contestType}" />
                             <spring:message var="retractText" code="contests.supports.retract" />
@@ -88,8 +87,8 @@
 
                     <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
                     <div class="p-Proposal__subscribe" style="float: right;">
-                        <a href="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }"
-                                rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;" >
+                        <a data-url="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }"
+                                rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;" class="js-PostLink">
                             <c:choose>
                                 <c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
                                     <img height="20" src="${_themeImageFolder}/subscribe.png" /> <spring:message code="contests.details.subscribe" />

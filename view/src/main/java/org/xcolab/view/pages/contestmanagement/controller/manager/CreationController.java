@@ -2,7 +2,7 @@ package org.xcolab.view.pages.contestmanagement.controller.manager;
 
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.Contest;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/admin/contest/manager")
 public class CreationController {
 
-    @GetMapping("createContest")
+    @PostMapping("createContest")
     public String createContestController(HttpServletRequest request,
             HttpServletResponse response, Member member) {
         if (!PermissionsClient.canAdminAll(member)) {

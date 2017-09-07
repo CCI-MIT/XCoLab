@@ -15,7 +15,7 @@
 	<div class="c-ContentBox">
 		<div style="margin-bottom: 40px;display:inline">
 			<div class="floatRight outerVerticalCenter">
-				<a class="c-Button__primary innerVerticalCenter" href="/admin/contest/manager/createContest" target="_blank">Create new Contest</a>
+				<a class="c-Button__primary innerVerticalCenter js-PostLink" data-url="/admin/contest/manager/createContest" target="_blank">Create new Contest</a>
 			</div>
 		</div>
 

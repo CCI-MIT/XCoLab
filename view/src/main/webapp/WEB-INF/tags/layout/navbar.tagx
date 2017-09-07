@@ -114,13 +114,9 @@
                                 </a>
                             </li>
                             <li>
-                                <form:form id="logoutForm" action="/logout" method="post">
-                                    <!-- empty -->
-                                </form:form>
-                                <a href="#" onclick="jQuery('#logoutForm').submit();">
+                                <a data-url="/logout" class="js-PostLink">
                                     <spring:message code="homepage.menu.user.logout" />
                                 </a>
-
                             </li>
                             <c:if test="${member.isAdmin}">
                                 <li class="dropdown-header">Admin</li>

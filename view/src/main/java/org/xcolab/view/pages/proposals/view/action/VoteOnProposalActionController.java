@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
@@ -37,7 +38,7 @@ public class VoteOnProposalActionController {
     private final static String VOTE_ANALYTICS_ACTION = "Vote contest entry";
     private final static String VOTE_ANALYTICS_LABEL = "";
 
-    @GetMapping("c/{proposalUrlString}/{proposalId}/voteOnProposalAction")
+    @PostMapping("c/{proposalUrlString}/{proposalId}/voteOnProposalAction")
     public void handleAction(HttpServletRequest request, HttpServletResponse response, Model model,
             ProposalContext proposalContext, Member member)
             throws ProposalsAuthorizationException, IOException {

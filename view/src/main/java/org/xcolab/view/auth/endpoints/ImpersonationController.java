@@ -1,7 +1,7 @@
 package org.xcolab.view.auth.endpoints;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,7 +20,7 @@ import static org.xcolab.view.auth.AuthenticationContext.IMPERSONATE_MEMBER_ID_C
 @RequestMapping("/impersonate")
 public class ImpersonationController {
 
-    @GetMapping
+    @PostMapping
     public void impersonate(HttpServletRequest request, HttpServletResponse response,
             @RequestParam long memberId)
             throws IOException {
@@ -36,7 +36,7 @@ public class ImpersonationController {
         }
     }
 
-    @GetMapping("logout")
+    @PostMapping("logout")
     public void logout(HttpServletResponse response) throws IOException {
         Cookie cookie = new Cookie(IMPERSONATE_MEMBER_ID_COOKIE_NAME, "");
         cookie.setMaxAge(0);
