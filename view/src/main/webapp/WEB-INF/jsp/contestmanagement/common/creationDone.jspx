@@ -1,6 +1,6 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
-	version="2.0">
+>
 
 	<!--@elvariable id="success" type="java.lang.Boolean"-->
     <!--@elvariable id="contestEditLinks" type="java.util.Map<java.lang.String, java.lang.String>"-->

@@ -1,10 +1,10 @@
-<jsp:root
+<jsp:root version="2.1"
         xmlns:c="http://java.sun.com/jsp/jstl/core"
         xmlns:jsp="http://java.sun.com/JSP/Page"
         xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
         xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
         xmlns:spring="http://www.springframework.org/tags"
-        version="2.0">
+       >
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 	<!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.ontology.OntologySpace>"-->
     <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->

@@ -2,8 +2,8 @@
 <taglib xmlns="http://java.sun.com/xml/ns/javaee" 
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-      http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd" 
-      version="2.1">
+      http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+     >
       
     <description>XCoLab JSP tags</description>
     <display-name>XCoLab JSP tags</display-name>
@@ -20,7 +20,7 @@
         <body-content>JSP</body-content>
         <attribute>
             <description>
-                A ContestType argument to resolve ContestType-specific placeholdesr.
+                A ContestType argument to resolve ContestType-specific placeholder.
                 If none is given, the tag tries to use a model attribute named contestType instead.
             </description>
             <name>contestType</name>

@@ -1,7 +1,7 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-	version="2.0">
+>
 	<!--@elvariable id="tabs" type="java.util.List<java.util.List<org.xcolab.wrapper.TabWrapper>"-->
 	<!--@elvariable id="currentTabWrapped" type="org.xcolab.wrapper.TabWrapper"-->
 	<!--@elvariable id="contestWrapper" type="org.xcolab.client.contest.pojo.Contest"-->

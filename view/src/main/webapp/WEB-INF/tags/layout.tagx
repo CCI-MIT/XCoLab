@@ -1,4 +1,4 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
@@ -7,7 +7,7 @@
           xmlns:xcolabfunctions="urn:jsptld:/WEB-INF/tlds/xcolab-escaping.tld"
           xmlns:xcolab-layout="urn:jsptagdir:/WEB-INF/tags/layout"
           xmlns:xcolab-scripts="urn:jsptagdir:/WEB-INF/tags/layout/scripts"
-          version="2.0">
+         >
 
     <jsp:directive.attribute name="title" type="java.lang.String" required="false" rtexprvalue="true" description="Page title" />
     <jsp:directive.attribute name="description" type="java.lang.String" required="false" rtexprvalue="true" description="Page description for meta tag" />
@@ -107,7 +107,6 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 
     <title>${title}${(not empty title) ? ' - ' : ''}${_colabName}</title>
-
 
     <!-- ============ Globals ============ -->
 

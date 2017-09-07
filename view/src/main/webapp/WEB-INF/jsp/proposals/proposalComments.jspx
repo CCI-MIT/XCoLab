@@ -1,8 +1,8 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/evaluations"
 		  xmlns:c="http://java.sun.com/jsp/jstl/core"
 		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-	version="2.0">
+>
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 	<xcolab:layout  title="${proposal.name} - Comments"
                     description="Comments for ${contestType.proposalName} '${proposal.name}' in ${contestType.contestName} '${contest.contestShortNameWithEndYear}'">

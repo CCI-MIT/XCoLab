@@ -1,8 +1,8 @@
-<jsp:root 
+<jsp:root version="2.1"
 	xmlns:c="http://java.sun.com/jsp/jstl/core" 
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-	version="2.0">
+>
 	<jsp:directive.attribute name="section" type="org.xcolab.client.contest.pojo.templates.PlanSectionDefinition"
 		required="true" rtexprvalue="true" description="Section which content should be displayed" />
 	

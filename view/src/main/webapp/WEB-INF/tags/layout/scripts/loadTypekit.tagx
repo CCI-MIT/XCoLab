@@ -1,4 +1,4 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
 
     <jsp:directive.attribute name="kitId" type="java.lang.String" required="true"
                              rtexprvalue="true" description="The Typekit Kit ID to load" />

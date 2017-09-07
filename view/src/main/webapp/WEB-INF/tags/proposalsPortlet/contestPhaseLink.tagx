@@ -1,7 +1,7 @@
-<jsp:root
+<jsp:root version="2.1"
 	xmlns:jsp="http://java.sun.com/JSP/Page"  
 
-	version="2.0">
+>
 	<jsp:directive.attribute name="contestPhase" type="org.xcolab.client.contest.pojo.phases.ContestPhase" required="true" rtexprvalue="true" description="Contest Phase" />
 	<jsp:directive.attribute name="text" type="java.lang.String" required="false" rtexprvalue="true" description="Link text" />
 	

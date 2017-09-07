@@ -1,7 +1,7 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-	 version="2.0">
+	>
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <!--@elvariable id="showOnlyFeatured" type="java.lang.Boolean"-->
     <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->

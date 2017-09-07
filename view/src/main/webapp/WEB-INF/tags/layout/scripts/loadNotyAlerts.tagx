@@ -1,4 +1,4 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.0/packaged/jquery.noty.packaged.min.js"><!-- empty --></script>
 

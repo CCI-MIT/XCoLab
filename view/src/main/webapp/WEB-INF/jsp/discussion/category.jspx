@@ -1,8 +1,8 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          version="2.0" xmlns:spring="http://www.springframework.org/tags">
+          xmlns:spring="http://www.springframework.org/tags">
 
     <!--@elvariable id="currentCategory" type="org.xcolab.client.comment.pojo.Category"-->
     <!--@elvariable id="categories" type="java.util.List<org.xcolab.client.comment.pojo.Category>"-->

@@ -1,9 +1,9 @@
-<jsp:root xmlns="" xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns="" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:xcolab-dropdowns="urn:jsptagdir:/WEB-INF/tags/layout/dropdowns"
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
-          version="2.0">
+         >
 
     <jsp:directive.attribute name="currentLanguage" type="java.lang.String" required="true" rtexprvalue="true" description="The currently active locale" />
     <jsp:directive.attribute name="languageSelectItems" type="java.util.List" required="true" rtexprvalue="true" description="Language selection items" />

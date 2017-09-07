@@ -1,7 +1,7 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:contestmanagementPortlet="urn:jsptagdir:/WEB-INF/tags"
-	version="2.0">
+>
 	<jsp:directive.attribute name="collectionCard" type="org.xcolab.portlets.contestmanagement.wrappers.CollectionCardWrapper" required="true" rtexprvalue="true" description="Current Collection card" />
 	<jsp:directive.attribute name="section" type="java.lang.Integer" required="true" rtexprvalue="true" description="Section" />
 	<jsp:directive.attribute name="level" type="java.lang.Integer" required="true" rtexprvalue="true" description="Level" />

@@ -1,4 +1,4 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <xcolab:stylesheet href="${_libCssFolder}/tooltipster-4.1.8.bundle.min.css" />

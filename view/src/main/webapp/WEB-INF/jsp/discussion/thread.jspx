@@ -1,7 +1,7 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          version="2.0" xmlns:spring="http://www.springframework.org/tags">
+          xmlns:spring="http://www.springframework.org/tags">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
 <!--@elvariable id="thread" type="org.xcolab.client.comment.pojo.CommentThread"-->
