@@ -529,6 +529,7 @@ CREATE TABLE `xcolab_ContestPhaseType` (
   `invisible` tinyint(4) DEFAULT NULL,
   `pointsAccessible` int(11) DEFAULT NULL,
   `defaultPromotionType` varchar(75) DEFAULT NULL,
+  `defaultFlagText` varchar(1024) DEFAULT NULL,
   PRIMARY KEY (`id_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
