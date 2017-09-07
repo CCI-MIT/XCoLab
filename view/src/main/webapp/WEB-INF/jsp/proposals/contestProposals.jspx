@@ -4,9 +4,8 @@
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:xcolabfunctions="urn:jsptld:/WEB-INF/tlds/xcolab-escaping.tld">
-    
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
     <xcolab:layout title="${contest.contestShortNameWithEndYear}" description="${contest.contestName}"
@@ -216,6 +215,9 @@
                 </c:if>
             </c:forEach>
         </c:set>
+
+        <spring:message var="menuItemName" text="${contestType.menuItemName}" javaScriptEscape="true" />
+        <spring:message var="contestShortName" text="${contest.contestShortName}" javaScriptEscape="true" />
         <script type="application/ld+json">
         {
             "@context": "http://schema.org",
@@ -226,7 +228,7 @@
                     "position": 1,
                     "item": {
                     "@id": "${_colabUrl}${contestType.contestBaseUrl}",
-                    "name": "${xcolabfunctions:escapeStringForJavascript(contestType.menuItemName)}"
+                    "name": "${menuItemName}"
                     }
                 },
                 {
@@ -234,7 +236,7 @@
                     "position": 2,
                     "item": {
                       "@id": "${_colabUrl}${contest.contestUrl}",
-                      "name": "${xcolabfunctions:escapeStringForJavascript(contest.contestShortName)}",
+                      "name": "${contestShortName}",
                       "image": "${_colabUrl}${contest.logoPath}"
                     }
                 }

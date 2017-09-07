@@ -1,13 +1,11 @@
 <jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
           xmlns:xcolab-modals="urn:jsptagdir:/WEB-INF/tags/layout/modals"
-          xmlns:xcolabfunctions="urn:jsptld:/WEB-INF/tlds/xcolab-escaping.tld"
           xmlns:xcolab-layout="urn:jsptagdir:/WEB-INF/tags/layout"
           xmlns:xcolab-scripts="urn:jsptagdir:/WEB-INF/tags/layout/scripts"
-         >
+          xmlns:spring="http://www.springframework.org/tags">
 
     <jsp:directive.attribute name="title" type="java.lang.String" required="false" rtexprvalue="true" description="Page title" />
     <jsp:directive.attribute name="description" type="java.lang.String" required="false" rtexprvalue="true" description="Page description for meta tag" />
@@ -306,8 +304,9 @@
 
     <xcolab-scripts:loadNotyAlerts />
     <c:if test="${not empty __alertMessage}">
+        <spring:message var="notyMessage" text="${__alertMessage.message}" javaScriptEscape="true" />
         <script type="text/javascript">
-            noty({text: '${xcolabfunctions:escapeStringForJavascript(__alertMessage.message)}', type: '${__alertMessage.type.notyType}'});
+            noty({text: '${notyMessage}', type: '${__alertMessage.type.notyType}'});
         </script>
     </c:if>
 

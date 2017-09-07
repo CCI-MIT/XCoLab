@@ -4,8 +4,7 @@
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:spring="http://www.springframework.org/tags"
-          xmlns:xcolabfunctions="urn:jsptld:/WEB-INF/tlds/xcolab-escaping.tld">
+          xmlns:spring="http://www.springframework.org/tags">
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <c:choose>
@@ -261,6 +260,10 @@
                 </c:if>
             </c:forEach>
         </c:set>
+
+        <spring:message var="menuItemName" text="${contestType.menuItemName}" javaScriptEscape="true" />
+        <spring:message var="contestShortName" text="${contest.contestShortName}" javaScriptEscape="true" />
+        <spring:message var="proposalName" text="${proposal.name}" javaScriptEscape="true" />
         <script type="application/ld+json">
         {
           "@context": "http://schema.org",
@@ -271,7 +274,7 @@
             "position": 1,
             "item": {
                 "@id": "${_colabUrl}${contestType.contestBaseUrl}",
-                "name": "${xcolabfunctions:escapeStringForJavascript(contestType.menuItemName)}"
+                "name": "${menuItemName}"
             }
           },
           {
@@ -279,7 +282,7 @@
             "position": 2,
             "item": {
               "@id": "${_colabUrl}${contest.contestUrl}",
-              "name": "${xcolabfunctions:escapeStringForJavascript(contest.contestShortName)}",
+              "name": "${contestShortName}",
               "image": "${_colabUrl}${contest.logoPath}"
             }
           }
@@ -289,7 +292,7 @@
             "position": 3,
             "item": {
               "@id": "${proposal.absoluteProposalUrl}",
-              "name": "${xcolabfunctions:escapeStringForJavascript(proposal.name)}"
+              "name": "${proposalName}"
               <c:if test='${proposal.imageId > 0}'>
             ,"image": "${_colabUrl}${contest.proposalLogoPath}image/proposal/${proposal.imageId}"
              </c:if>
