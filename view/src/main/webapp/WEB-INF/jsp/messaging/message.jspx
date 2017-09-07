@@ -8,14 +8,14 @@
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout title="${messageBean.subject} - Messages">
-    <collab:content articleId="${communityTopContentArticleId}" />
+    <xcolab:content articleId="${communityTopContentArticleId}" />
     <div id="content">
         <div id="bread" class="pro">
             <a href="/members"><spring:message code="colab.breadcrums.community"/></a>
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
             <a href="/members"><spring:message code="colab.breadcrums.members"/></a>
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-            <collab:userLinkSimple userId="${user.userId}" text="${user.displayName}" />
+            <xcolab:userLinkSimple memberId="${user.userId}" text="${user.displayName}" />
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
             <a href="/messaging"><spring:message code="colab.breadcrums.messages"/></a>
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />

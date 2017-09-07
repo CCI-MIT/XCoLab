@@ -85,7 +85,7 @@
                         <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${p.proposalId }" />
                         <table>
                             <tr>
-                                <td class="proposalLink"><collab:proposalLink proposal="${p}" /></td>
+                                <td class="proposalLink"><xcolab:proposalLink proposal="${p}" /></td>
                                 <td>(<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), false);">remove</a>)</td>
                             </tr>
                         </table>
@@ -103,7 +103,7 @@
                 <ul>
                     <c:forEach var="p" items="${pl}">
                         <li>
-                			<collab:proposalLink proposal="${p}" />
+                			<xcolab:proposalLink proposal="${p}" />
                 			(<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), true);">remove</a>)
                         </li>
                 	</c:forEach>

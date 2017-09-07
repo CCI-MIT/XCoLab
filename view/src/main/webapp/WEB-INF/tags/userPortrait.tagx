@@ -1,9 +1,9 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
+
 	<jsp:directive.attribute name="portraitId" type="java.lang.Long" required="true" rtexprvalue="true" description="Portrait id" />
-	<jsp:directive.attribute name="screenName" type="java.lang.String" required="true" rtexprvalue="true" description="User screen name" />
 	<jsp:directive.attribute name="width" type="java.lang.Integer" required="true" rtexprvalue="true" description="Width" />
 	<jsp:directive.attribute name="height" type="java.lang.Integer" required="true" rtexprvalue="true" description="Height" />
-	<jsp:directive.attribute name="userId" type="java.lang.Long" required="true" rtexprvalue="true" description="UserId" />
-	
-	<img src="${_uploadedImageFolder}/user_male_portrait?screenName=${screenName}&amp;companyId=10112&amp;portraitId=${portraitId}&amp;userId=${userId}" width="${width}" height="${height}" />
+	<jsp:directive.attribute name="memberId" type="java.lang.Long" required="true" rtexprvalue="true" description="UserId" />
+
+	<img src="${_uploadedImageFolder}/member/${portraitId}" width="${width}" height="${height}" />
 </jsp:root>

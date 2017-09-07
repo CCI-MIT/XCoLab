@@ -68,7 +68,7 @@
 				<div class="comm_member-photo">
 					<div style="float: right">
                         <form:hidden id="userPortraitInput" path="imageId" />
-                        <collab:imageUpload uniqueName="userPortraitUpload" imageIdInput="userPortraitInput"
+                        <xcolab:imageUpload uniqueName="userPortraitUpload" imageIdInput="userPortraitInput"
                                             defaultImage="MEMBER" />
 					</div>
 				</div>

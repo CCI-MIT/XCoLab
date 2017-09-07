@@ -5,5 +5,5 @@
          >
     <xcolab:script src="${_themeJsFolder}/proposals/discussionComments.js"/>
     <xcolab:script src="${_themeJsFolder}/discussion/main.js"/>
-    <collab:content articleId="${communityTopContentArticleId}" />
+    <xcolab:content articleId="${communityTopContentArticleId}" />
     </jsp:root>

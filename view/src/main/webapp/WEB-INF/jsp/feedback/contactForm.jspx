@@ -12,11 +12,11 @@
         <!--@elvariable id="hasError" type="java.lang.Boolean"-->
 
 		<div class="about-left">
-			<collab:content articleId="${feedbackPage.menuArticleId}" />
+			<xcolab:content articleId="${feedbackPage.menuArticleId}" />
 		</div>
 
 		<div class="about-right">
-            <collab:content articleId="${feedbackPage.contentArticleId}" />
+            <xcolab:content articleId="${feedbackPage.contentArticleId}" />
 
 			<script src='https://www.google.com/recaptcha/api.js'><!-- --></script>
 			<c:if test="${_isAdmin}">

@@ -18,7 +18,7 @@
 					<img src="${contest.logoPath}" width="52" height="52" alt="Contest Image" />
 				</div>
 				<div class='proposal-title'>
-					<h1>Model <proposalsPortlet:contestLink contest="${contest}" text="${contest.contestShortNameWithEndYear} " /></h1>
+					<h1>Model <xcolab:contestLink contest="${contest}" text="${contest.contestShortNameWithEndYear} " /></h1>
 				</div>
 			</div>
 		</div>

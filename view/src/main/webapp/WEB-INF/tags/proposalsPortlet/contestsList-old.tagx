@@ -20,7 +20,7 @@
 						<c:if test="${not empty contest.flagText }">
 							<span class="${not empty contest.flagTooltip ? 'js-Tooltip' : ''}" title="${contest.flagTooltip}">${contest.flagText}:&#160;</span>
 						</c:if>
-						<collab:contestLink contest="${contest}" text="${contest.contestShortName}:" />
+						<xcolab:contestLink contest="${contest}" text="${contest.contestShortName}:" />
 						${contest.contestName}
 					</div>
 				</td>

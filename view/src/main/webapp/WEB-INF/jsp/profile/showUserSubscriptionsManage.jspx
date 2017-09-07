@@ -22,7 +22,7 @@
             src="${_themeImageFolder}/arrow.gif" width="8" height="8"/> <a
             href="/members"><spring:message code="colab.breadcrums.members"/></a> <img
             src="${_themeImageFolder}/arrow.gif" width="8" height="8"/>
-        <collab:userLinkSimple userId="${currentUserProfile.userId}" text="${userBean.displayName}" />
+        <xcolab:userLinkSimple memberId="${currentUserProfile.userId}" text="${userBean.displayName}" />
         <img src="${_themeImageFolder}/arrow.gif" width="8" height="8"/><spring:message code="colab.breadcrums.managesubscriptions"/>
     </div>
 

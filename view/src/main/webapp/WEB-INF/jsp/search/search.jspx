@@ -21,7 +21,14 @@
         <a class="c-Button__primary" href="javascript:;"
            onclick="window.location = '/search?searchPhrase=' + encodeURI($('#searchPhrase').val())"><spring:message code="search.button"/></a>
         <c:if test="${searchBean.showBlogReference and not empty searchBean.searchPhrase}">
-            <collab:blogSearchLink searchPhrase="${searchBean.searchPhrase}" target="${searchBean.searchBlogURL}"/>
+            <div class="searchBlogLink">
+                <span><spring:message code="search.didnotfind"/></span>&#160;&#160;
+                <b>
+                    <a href="${searchBean.searchBlogURL}">
+                        <collab:message code="search.colabnews" arguments="${searchBean.searchPhrase}"/>
+                    </a>
+                </b>
+            </div>
         </c:if>
     </div>
 

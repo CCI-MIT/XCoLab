@@ -28,7 +28,7 @@
                 </div>
                 <div class="c-ContestBox__text">
                     <h3 class="c-ContestBox__text__title">
-                        <collab:contestLink contest="${contest}"/>
+                        <xcolab:contestLink contest="${contest}"/>
                     </h3>
                     ${contest.contestName}
                 </div>

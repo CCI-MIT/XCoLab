@@ -183,7 +183,7 @@
 									</c:choose>
 
 
-									<!--<collab:contestLink contest="${contestWrapper}" />-->
+									<!--<xcolab:contestLink contest="${contestWrapper}" />-->
 								</td>
 								<td >${contestWrapper.activePhase.name}</td>
 								<td><form:checkbox path="contestWrappers[${x.index}].contestActive" disabled="false" onclick="processCheckBox()"/></td>

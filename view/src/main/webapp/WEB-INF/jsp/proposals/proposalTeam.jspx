@@ -128,10 +128,10 @@
                 <table class="contributors">
                     <c:forEach var="supporter" items="${proposal.supporters }" varStatus="status" step="2">
                         <tr class="${(status.index / 2) mod 2 > 0 ? 'even' : 'odd'}">
-                            <td><proposalsPortlet:userLinkSimple userId="${supporter.userId}" text="${supporter.displayName}" /></td>
+                            <td><xcolab:userLinkSimple memberId="${supporter.userId}" text="${supporter.displayName}" /></td>
                             <td>
                                 <c:if test="${fn:length(proposal.supporters) > status.index}">
-                                    <proposalsPortlet:userLinkSimple userId="${proposal.supporters[status.index+1].userId}" text="${proposal.supporters[status.index+1].displayName}" />
+                                    <xcolab:userLinkSimple memberId="${proposal.supporters[status.index+1].userId}" text="${proposal.supporters[status.index+1].displayName}" />
                                 </c:if>
                             </td>
                         </tr>
@@ -166,7 +166,7 @@
                                 <table class="contributors2">
 
                                     <c:forEach var="contributingMember" items="${contributingProposals.value}" varStatus="statusMember">
-                                        <proposalsPortlet:userLinkSimple userId="${contributingMember.userId}" text="${contributingMember.screenName}" />
+                                        <xcolab:userLinkSimple memberId="${contributingMember.userId}" text="${contributingMember.screenName}" />
                                         <c:if test="${fn:length(contributingProposals.value) != 1 and statusMember.index+1 != fn:length(contributingProposals.value)}">, </c:if>
                                     </c:forEach>
 

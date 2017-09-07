@@ -49,7 +49,7 @@
 
         <div class="inner">
             <!-- footer content -->
-            <collab:content articleId="${footerArticleId}"/>
+            <xcolab:content articleId="${footerArticleId}"/>
         </div> <!-- .inner -->
     </div> <!-- #c-Footer -->
 </jsp:root>

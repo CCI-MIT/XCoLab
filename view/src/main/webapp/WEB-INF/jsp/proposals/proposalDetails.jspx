@@ -45,7 +45,7 @@
                         <div style="display:inline-block; width: 616px;">
                             <c:if test="${not proposal.isLatestVersion and proposal.wasMovedToContest == null}">
                                 <div class="edit-prop-butts" style="line-height: normal;">
-                                    <collab:proposalLink proposal="${proposal}" text="Go to current" />
+                                    <xcolab:proposalLink proposal="${proposal}" text="Go to current" />
                                 </div>
                             </c:if>
 
@@ -69,7 +69,7 @@
                             <c:if test="${proposal.wasMovedToContest != null}">
                                 <div>
                                     <collab:message code="contests.proposal.moving.movedto" contestType="${contestType}">
-                                        <spring:argument><collab:contestLink contest="${proposal.wasMovedToContest}" /></spring:argument>
+                                        <spring:argument><xcolab:contestLink contest="${proposal.wasMovedToContest}" /></spring:argument>
                                     </collab:message>
                                 </div>
                             </c:if>
@@ -79,23 +79,23 @@
                                     <c:choose>
                                         <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'MOVE_PERMANENTLY'}">
                                             <collab:message code="contests.proposal.moving.movedfrom" contestType="${contestType}">
-                                                <spring:argument><collab:contestLink contest="${targetMoveHistory.sourceContest}"/></spring:argument>
+                                                <spring:argument><xcolab:contestLink contest="${targetMoveHistory.sourceContest}"/></spring:argument>
                                             </collab:message>
                                         </c:when>
                                         <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'COPY'}">
                                             <collab:message code="contests.proposal.moving.reopened" contestType="${contestType}">
-                                                <spring:argument><collab:contestLink contest="${targetMoveHistory.sourceContest}"/></spring:argument>
+                                                <spring:argument><xcolab:contestLink contest="${targetMoveHistory.sourceContest}"/></spring:argument>
                                             </collab:message>
                                         </c:when>
                                         <c:when test="${targetMoveHistory.moveTypeEnum.name() == 'FORK'}">
                                             <collab:message code="contests.proposal.moving.forked" contestType="${contestType}">
-                                                <spring:argument><collab:proposalLink proposal="${targetMoveHistory.sourceProposal}"/></spring:argument>
-                                                <spring:argument><collab:contestLink contest="${targetMoveHistory.sourceContest}"/></spring:argument>
+                                                <spring:argument><xcolab:proposalLink proposal="${targetMoveHistory.sourceProposal}"/></spring:argument>
+                                                <spring:argument><xcolab:contestLink contest="${targetMoveHistory.sourceContest}"/></spring:argument>
                                             </collab:message>
                                         </c:when>
                                     </c:choose>
                                     <c:if test="${proposalsPermissions.canAdminAll}">
-                                        by <collab:userLinkSimple userId="${targetMoveHistory.movingUser.userId}" text="${targetMoveHistory.movingUser.screenName}"/>
+                                        by <xcolab:userLinkSimple memberId="${targetMoveHistory.movingUser.userId}" text="${targetMoveHistory.movingUser.screenName}"/>
                                     </c:if>
                                 </div>
                             </c:if>
@@ -108,11 +108,11 @@
                                         <div>
                                             <collab:message code="contests.proposal.moving.reopenedin" contestType="${contestType}">
                                                 <spring:argument>
-                                                    <collab:contestLink contest="${sourceMoveHistory.sourceContest}"/>
+                                                    <xcolab:contestLink contest="${sourceMoveHistory.sourceContest}"/>
                                                 </spring:argument>
                                             </collab:message>
                                             <c:if test="${proposalsPermissions.canAdminAll}">
-                                                by <collab:userLinkSimple userId="${sourceMoveHistory.movingUser.userId}" text="${sourceMoveHistory.movingUser.screenName}"/>
+                                                by <xcolab:userLinkSimple memberId="${sourceMoveHistory.movingUser.userId}" text="${sourceMoveHistory.movingUser.screenName}"/>
                                             </c:if>
                                         </div>
                                     </c:when>
@@ -127,8 +127,8 @@
                                         triggerHistoryVisibility();
                                     </script>
                                     by
-                                    <proposalsPortlet:userLinkSimple userId="${proposal.selectedVersion.authorId}"
-                                                                     text="${proposal.userForSelectedVersion.screenName}"/>
+                                    <xcolab:userLinkSimple memberId="${proposal.selectedVersion.authorId}"
+                                                           text="${proposal.userForSelectedVersion.screenName}"/>
                                 </div>
                             </c:if>
 

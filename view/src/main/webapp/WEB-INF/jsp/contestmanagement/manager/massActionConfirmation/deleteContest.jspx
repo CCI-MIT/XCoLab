@@ -60,7 +60,7 @@
                             <form:checkbox path="selectedContest[${x.index}]" />
                         </td>
                         <td>
-                            <collab:contestLink contest="${contestWrapper}" />
+                            <xcolab:contestLink contest="${contestWrapper}" />
                         </td>
                         <td>
                             <c:forEach var="contestPhaseWrapper" items="${contestWrapper.phases}" varStatus="y">

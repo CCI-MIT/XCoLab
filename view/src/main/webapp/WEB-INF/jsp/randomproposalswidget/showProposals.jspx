@@ -27,7 +27,7 @@
                     </div>
                 </c:if>
                 <div class="${not proposalsModel.compact ? 'c-ContestBox__text' : 'c-ContestBox__text--compact'}">
-                    <h3 class="c-ContestBox__text__title"><collab:proposalLink proposal="${proposal}" /></h3>
+                    <h3 class="c-ContestBox__text__title"><xcolab:proposalLink proposal="${proposal}" /></h3>
                     ${proposalsModel.compact ? proposal.author.fullName : proposal.pitch}
                 </div>
             </div> 

@@ -27,12 +27,12 @@
 					<div class="prop-description">
                         <collab:message code="contests.proposal.header.caption" contestType="${contestType}">
                             <spring:argument>
-                                <collab:contestLink contest="${contest}" />
+                                <xcolab:contestLink contest="${contest}" />
                             </spring:argument>
                             <spring:argument>
                                 <c:choose>
                                     <c:when test="${empty proposal.team}">
-                                        <proposalsPortlet:userLinkSimple userId="${proposal.authorId}" text="${proposal.author.screenName}" />
+                                        <xcolab:userLinkSimple memberId="${proposal.authorId}" text="${proposal.author.screenName}" />
                                     </c:when>
                                     <c:otherwise>
                                         ${proposal.team}
@@ -90,7 +90,7 @@
 			<div class="inner">
 				<div class="edit-prop">
 					<div class="edit-prop-butts">
-						<collab:proposalLink proposal="${proposal}" text="Edit" edit="true" tab="${currentTab == 'DESCRIPTION' ? null : currentTab }"/>
+						<xcolab:proposalLink proposal="${proposal}" text="Edit" edit="true" tab="${currentTab == 'DESCRIPTION' ? null : currentTab }"/>
 					</div>
 				</div>
 			</div>

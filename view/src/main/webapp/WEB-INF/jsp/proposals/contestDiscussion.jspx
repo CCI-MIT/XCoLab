@@ -17,7 +17,7 @@
                              alt="${contestType.contestName} image" title="${contest.contestShortNameWithEndYear}"/>
 					</div>
 					<div class='proposal-title'>
-						<h1>Discussion <proposalsPortlet:contestLink contest="${contest}" text="${contest.contestShortNameWithEndYear} " /></h1>
+						<h1>Discussion <xcolab:contestLink contest="${contest}" text="${contest.contestShortNameWithEndYear} " /></h1>
 					</div>
 				</div>
 			</div>

@@ -83,17 +83,17 @@
                 <c:when test="${isMove }">
                     <p>
                         You're about to move a ${fn:toLowerCase(contestType.proposalName)}
-                        <collab:proposalLink proposal="${baseProposal}" escape="true" />
+                        <xcolab:proposalLink proposal="${baseProposal}" escape="true" />
                         from ${contestType.contestName}
-                        <collab:contestLink contest="${baseContest}" />
+                        <xcolab:contestLink contest="${baseContest}" />
                         to ${contestType.contestName}
-                        <collab:contestLink contest="${contest}" />.
+                        <xcolab:contestLink contest="${contest}" />.
                     </p>
                 </c:when>
                 <c:when test="${not empty baseProposal}">
                     <p>
                         You're about to create a ${fn:toLowerCase(contestType.proposalName)} that will be based on
-                        <collab:proposalLink proposal="${baseProposal}" escape="true" />.
+                        <xcolab:proposalLink proposal="${baseProposal}" escape="true" />.
                     </p>
                 </c:when>
             </c:choose>
@@ -210,7 +210,7 @@
                     </label>
 
                     <form:hidden path="imageId" id="proposalImageId" />
-                    <collab:imageUpload uniqueName="proposalImageUpload" imageIdInput="proposalImageId"
+                    <xcolab:imageUpload uniqueName="proposalImageUpload" imageIdInput="proposalImageId"
                                         compactView="true" defaultImageId="${contest.defaultProposalLogoId}" defaultImage="PROPOSAL" buttonText="Upload an image" />
                 </div>
             </c:if>
@@ -302,12 +302,12 @@
                 <a class="c-Button__primary" href="javascript:void(0)" id="saveChangesButton">${saveButtonText}</a>
                 <c:choose>
                     <c:when test="${proposal.currentVersion > 0 }">
-                        <collab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
+                        <xcolab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
                                              linkId="discardChangesButton" text="DISCARD changes" />
                     </c:when>
                     <c:otherwise>
                         <!--  proposal creation, return to contest proposals page on discard -->
-                        <collab:contestLink contest="${contest}" cssClass="c-Button__secondary"
+                        <xcolab:contestLink contest="${contest}" cssClass="c-Button__secondary"
                                             linkId="discardChangesButton" text="DISCARD changes" />
                     </c:otherwise>
                 </c:choose>

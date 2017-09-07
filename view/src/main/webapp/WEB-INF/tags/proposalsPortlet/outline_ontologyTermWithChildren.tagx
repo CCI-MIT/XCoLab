@@ -2,6 +2,8 @@
 	xmlns:jsp="http://java.sun.com/JSP/Page"
 	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
 >
+
+    <!-- TODO: merge with other tag of same name -->
 	<jsp:directive.attribute name="terms" type="java.util.Collection" required="true" rtexprvalue="true" description="Ontology terms" />
 	<jsp:directive.attribute name="section" type="java.lang.Integer" required="true" rtexprvalue="true" description="Section" />
 	<jsp:directive.attribute name="level" type="java.lang.Integer" required="true" rtexprvalue="true" description="Level" />

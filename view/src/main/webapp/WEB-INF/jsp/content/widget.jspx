@@ -3,6 +3,6 @@
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
          >
 
-    <collab:content articleId="${articleId}"/>
+    <xcolab:content articleId="${articleId}"/>
 
 </jsp:root>

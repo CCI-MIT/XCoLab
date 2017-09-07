@@ -86,7 +86,7 @@
                     <td rowspan="4">
                         <div style="float: right">
                             <form:hidden id="userRegistrationImageId" path="imageId" />
-                            <collab:imageUpload uniqueName="profileImage" imageIdInput="userRegistrationImageId"
+                            <xcolab:imageUpload uniqueName="profileImage" imageIdInput="userRegistrationImageId"
                                                 defaultImage="MEMBER" defaultImageId="${createUserBean.imageId}" />
                         </div>
                     </td>

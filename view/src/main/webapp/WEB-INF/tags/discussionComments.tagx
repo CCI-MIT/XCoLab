@@ -118,12 +118,11 @@
 							<tr class="${status.index mod 2 == 0 ? 'odd' : 'even'}">
 								<td class="c-Comment__commentor">
 									<a id="_message_${message.commentId}"><!-- empty --></a>
-									<collab:userPortrait screenName="${message.author.displayName}"
-														 portraitId="${message.author.portraitId}"
-														 userId="${message.author.userId}"
-														 width="59" height="59" />
+									<xcolab:userPortrait portraitId="${message.author.portraitId}"
+                                                         memberId="${message.author.userId}"
+                                                         width="59" height="59" />
 									<br />
-									<collab:userLinkSimple text="${message.author.displayName}" userId="${message.author.userId}" /> <br />
+									<xcolab:userLinkSimple text="${message.author.displayName}" memberId="${message.author.userId}" /> <br />
 									<br />
 									<xcolab:formatDateTime millis="${message.createDate.time}" type="date" zoneDisplay="none" /><br />
 									<xcolab:formatDateTime millis="${message.createDate.time}" type="time" /><br />

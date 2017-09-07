@@ -11,11 +11,11 @@
     <c:if test="${not empty menuArticleId}">
 
         <div class="about-left">
-            <collab:content articleId="${menuArticleId}" />
+            <xcolab:content articleId="${menuArticleId}" />
         </div>
     </c:if>
     <div class="${not empty menuArticleId ? 'about-right' : ''}">
-        <collab:content articleId="${contentArticleId}" />
+        <xcolab:content articleId="${contentArticleId}" />
     </div>
 </xcolab:layout>
 

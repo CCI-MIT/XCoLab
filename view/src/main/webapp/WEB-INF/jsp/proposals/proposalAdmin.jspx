@@ -167,7 +167,7 @@
 						<c:forEach items="${proposal.membershipRequests}" var="request">
 							<form action="${replyToMembershipRequest }" method="post" style="padding: 10px 0; ${count lt fn:length(proposal.membershipRequests) ? 'border-bottom: 1px solid gray;' :''}">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <proposalsPortlet:userLinkSimple userId="${request.requestUser.userId}" text="${request.requestUser.firstName} ${request.requestUser.lastName} (${request.requestUser.screenName})" />
+                                <xcolab:userLinkSimple memberId="${request.requestUser.userId}" text="${request.requestUser.firstName} ${request.requestUser.lastName} (${request.requestUser.screenName})" />
 								<div>${request.membershipRequest.comments }</div>
 								<input type="hidden" name="requestId" value="${request.membershipRequest.membershipRequestId}" />
 								<div style="margin-top: 10px;">

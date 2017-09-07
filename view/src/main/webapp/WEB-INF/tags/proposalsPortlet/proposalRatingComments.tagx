@@ -2,7 +2,8 @@
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:discussions="urn:jsptld:/WEB-INF/tlds/xcolab-discussions.tld"
-          >
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+>
 
 
 
@@ -19,9 +20,10 @@
                 <!--@elvariable id="role" type="org.xcolab.view.util.entity.enums.MemberRole"-->
                 <div class="comment">
                     <div class="c-Comment__commentor">
-                        <proposalsPortlet:userPortrait  screenName="${wrapper.author.displayName}" portraitId="${wrapper.author.portraitId}" userId="${wrapper.author.userId}" width="59" height="59" />
+                        <xcolab:userPortrait portraitId="${wrapper.author.portraitId}"
+                                             memberId="${wrapper.author.userId}" width="59" height="59" />
                         <br />
-                        <proposalsPortlet:userLinkSimple text="${wrapper.author.displayName}" userId="${wrapper.author.userId}" /> <br />
+                        <xcolab:userLinkSimple text="${wrapper.author.displayName}" memberId="${wrapper.author.userId}" /> <br />
                         <br />
 
                         <div class="role-indicator">

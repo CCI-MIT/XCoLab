@@ -105,7 +105,7 @@
                 </div>
 
                 <form:hidden path="contestLogoId" id="contestImageId"/>
-                <collab:imageUpload uniqueName="contestImage" imageIdInput="contestImageId" compactView="true"
+                <xcolab:imageUpload uniqueName="contestImage" imageIdInput="contestImageId" compactView="true"
                                     defaultImage="CONTEST" defaultImageId="${contestWrapper.contestLogoId}" />
             </div>
 
@@ -119,7 +119,7 @@
                 </div>
 
                 <form:hidden path="sponsorLogoId" id="logoImageId"/>
-                <collab:imageUpload uniqueName="logoImage" imageIdInput="logoImageId" compactView="true"
+                <xcolab:imageUpload uniqueName="logoImage" imageIdInput="logoImageId" compactView="true"
                                     defaultImage="CONTEST" defaultImageId="${contestWrapper.sponsorLogoId}" />
             </div>
 
@@ -146,7 +146,7 @@
                 </div>
 
                 <form:hidden path="defaultProposalLogoId" id="defaultProposalLogoId"/>
-                <collab:imageUpload uniqueName="defaultProposalLogo" imageIdInput="defaultProposalLogoId" compactView="true"
+                <xcolab:imageUpload uniqueName="defaultProposalLogo" imageIdInput="defaultProposalLogoId" compactView="true"
                                     defaultImage="PROPOSAL" defaultImageId="${contestWrapper.defaultProposalLogoId}" />
             </div>
 

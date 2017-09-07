@@ -262,7 +262,7 @@
 				<c:forEach items="${contestProposalTemplateWrapper.contestsUsingTemplate}" var="contestWrapper" varStatus="x">
 					<tr>
 						<td data-form-name="index">${x.index + 1}</td>
-						<td ><collab:contestLink contest="${contestWrapper}" /></td>
+						<td ><xcolab:contestLink contest="${contestWrapper}" /></td>
 						<td>Tier ${contestWrapper.contestTier}</td>
 						<td>
 							<a class="c-Button__primary innerVerticalCenter" href="/admin/contest/details/contestId/${contestWrapper.contestPK}" target="_blank">EDIT</a>

@@ -7,7 +7,7 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <spring:message code="message.messages.title" var="title"/>
 <xcolab:layout title="${title}">
-    <collab:content articleId="${communityTopContentArticleId}" />
+    <xcolab:content articleId="${communityTopContentArticleId}" />
     <!--@elvariable id="messagingBean" type="org.xcolab.view.pages.messaging.beans.MessagingBean"-->
     <div id="content">
     <div id="bread" class="pro">
@@ -15,7 +15,7 @@
         <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
         <a href="/members">Members</a>
         <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-        <collab:userLinkSimple userId="${messagingBean.user.userId}" text="${messagingBean.user.displayName}" />
+        <xcolab:userLinkSimple memberId="${messagingBean.user.userId}" text="${messagingBean.user.displayName}" />
         <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
         <a href="/messaging">Messages</a>
     </div>
@@ -74,13 +74,13 @@
                                     <td class="c-Table__cell">
                                         <c:choose>
                                             <c:when test="${messagingBean.type == 'SENT'}">
-                                                <collab:userLinkSimple userId="${message.to.get(0).id_}" text="${message.to.get(0).displayName}" />
+                                                <xcolab:userLinkSimple memberId="${message.to.get(0).id_}" text="${message.to.get(0).displayName}" />
                                                 <c:if test="${message.to.size() > 1}">
                                                     + ${message.to.size() - 1}
                                                 </c:if>
                                             </c:when>
                                             <c:when test="${messagingBean.type != 'SENT'}">
-                                                <collab:userLinkSimple userId="${message.from.userId}" text="${message.from.displayName}" />
+                                                <xcolab:userLinkSimple memberId="${message.from.userId}" text="${message.from.displayName}" />
                                             </c:when>
                                         </c:choose>
 

@@ -5,8 +5,8 @@
 <layout:layout>
     <!--@elvariable id="homeSpotContentArticleVersion" type="org.xcolab.client.contents.pojo.ContentArticleVersion"-->
 
-    <collab:content articleId="${homeSpotContentArticleId}" />
-    <collab:content articleId="${homeBottomContentArticleId}" />
+    <xcolab:content articleId="${homeSpotContentArticleId}" />
+    <xcolab:content articleId="${homeBottomContentArticleId}" />
 
 </layout:layout>
 
