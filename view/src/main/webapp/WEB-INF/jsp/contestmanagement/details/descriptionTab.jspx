@@ -15,7 +15,7 @@
 
     <c:set var="updateUrl" value="/admin/contest/details/contestId/${contestWrapper.contestPK}/tab/DESCRIPTION" />
 
-    <xcolab:loadCkEditor />
+    <xcolab:requireLibrary name="CKEditor" />
 
     <div class="c-ContentBox">
         <p>*Be sure to click <strong>SAVE changes</strong> before exiting a tab or submitting a comment for the contest

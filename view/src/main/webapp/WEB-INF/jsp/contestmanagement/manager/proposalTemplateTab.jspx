@@ -29,7 +29,7 @@
 
 	<c:set var="changeElementUrl" value="/admin/contest/manager/tab/PROPOSAL_TEMPLATES?elementId=" />
 
-	<xcolab:loadCkEditor/>
+	<xcolab:requireLibrary name="CKEditor" />
 
 	<!--<jsp:directive.include file="action.jspx"/>-->
     <xcolab:editButtons elementName="template" baseUrl="/admin/contest/manager/tab/PROPOSAL_TEMPLATES" elementId="${planTemplateId}" />

@@ -26,7 +26,7 @@
         <!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.ontology.OntologySpace>"-->
         <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
-		<xcolab:loadCkEditor />
+		<xcolab:requireLibrary name="CKEditor" />
 
 		<c:if test="${discussionPermissions.mustFilterContent}">
 		<script>

@@ -58,5 +58,5 @@
         </div>
     </xcolab:modal>
 
-    <xcolab:loadCkEditor />
+    <xcolab:requireLibrary name="CKEditor" />
 </jsp:root>

@@ -17,7 +17,7 @@
 
 	<c:set var="updateContestAdminURL" value="/admin/contest/details/contestId/${contestWrapper.contestPK}/tab/ADMIN/update" />
 
-    <xcolab:loadCkEditor />
+    <xcolab:requireLibrary name="CKEditor" />
 
 	<div class="c-ContentBox">
 

@@ -76,7 +76,7 @@
         </form:form>
     </div>
 
-    <xcolab:loadCkEditor />
+    <xcolab:requireLibrary name="CKEditor" />
 
     <jsp:directive.include file="./footer.jspx"/>
 

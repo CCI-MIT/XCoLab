@@ -429,7 +429,7 @@
         <jsp:include page="../redballoon/consentForm.jspx" />
     </c:if>
 
-	<xcolab:loadCkEditor />
+	<xcolab:requireLibrary name="CKEditor" />
 
 </xcolab:layout>
 </jsp:root>

@@ -104,7 +104,7 @@
         </script>
     </c:if>
 
-    <xcolab:loadCkEditor />
+    <xcolab:requireLibrary name="CKEditor" />
     <xcolab:requireLibrary name="autoSuggest" />
     <xcolab:requireLibrary name="jQuery UI" />
     <xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>

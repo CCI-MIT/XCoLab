@@ -481,7 +481,7 @@
     </c:otherwise>
     </c:choose>
 
-    <xcolab:loadCkEditor />
+    <xcolab:requireLibrary name="CKEditor" />
 
     <c:if test="${isMove}">
         <xcolab:script src="${_themeJsFolder}/proposals/copyProposalWidget.js"/>

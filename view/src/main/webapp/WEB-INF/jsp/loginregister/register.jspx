@@ -223,7 +223,7 @@
             </div>
         </form:form>
 
-        <xcolab:loadCkEditor/>
+        <xcolab:requireLibrary name="CKEditor" />
         <script>
             function updateTextarea() {
                 for ( var instance in CKEDITOR.instances) {

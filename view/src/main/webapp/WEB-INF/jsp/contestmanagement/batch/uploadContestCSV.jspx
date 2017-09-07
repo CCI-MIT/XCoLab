@@ -380,7 +380,7 @@
             <div class="outerVerticalCenter"><a  class="c-Button__primary  innerVerticalCenter" href="#" id="createAllContestsAbove">Create all contests above</a></div>
         </form:form>
     </div>
-    <xcolab:loadCkEditor />
+    <xcolab:requireLibrary name="CKEditor" />
     <xcolab:script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js" />
 </xcolab:layout>
 </jsp:root>

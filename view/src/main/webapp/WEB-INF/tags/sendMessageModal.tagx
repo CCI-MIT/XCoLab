@@ -113,6 +113,6 @@
         ]]>
     </script>
 
-    <xcolab:loadCkEditor />
+    <xcolab:requireLibrary name="CKEditor" />
 
 </jsp:root>
