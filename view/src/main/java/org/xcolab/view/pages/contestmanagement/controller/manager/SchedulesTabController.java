@@ -41,6 +41,9 @@ public class SchedulesTabController extends AbstractTabController {
     private static final String SCHEDULE_CHANGE_ERROR_MESSAGE =
             "This schedule is used in at least one contest that has already started. "
                     + "Please make sure you only change future phases.";
+    private static final String SCHEDULE_CHANGE_INVALID_MESSAGE =
+            "This schedule is invalid. "
+                    + "Please make sure there is no gap or overlap between two adjacent phases";
 
     @ModelAttribute("currentTabWrapped")
     @Override
@@ -150,6 +153,10 @@ public class SchedulesTabController extends AbstractTabController {
 
         if (!contestScheduleBean.areContestsCompatibleWithSchedule()) {
             result.reject(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY, SCHEDULE_CHANGE_ERROR_MESSAGE);
+        }
+
+        if (!contestScheduleBean.isValidSchedule()) {
+            result.reject(CONTEST_SCHEDULE_BEAN_ATTRIBUTE_KEY, SCHEDULE_CHANGE_INVALID_MESSAGE);
         }
 
         if (result.hasErrors()) {

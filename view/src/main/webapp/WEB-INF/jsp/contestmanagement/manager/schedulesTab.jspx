@@ -181,7 +181,7 @@
                                                 data-index-attribute="${dateTimePickerIndex + 1}"
                                                 data-select-attribute="datetimepicker"
                                                 data-form-name="phaseEndDateFormatted"
-                                                readonly="${contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.ended}"
+                                                readonly="true"
                                             />
 
                                 </td>
@@ -307,20 +307,22 @@
                 weeks: true,
                 format: 'm/d/Y H:i',
                 onChangeDateTime: function (dateTimePickerDateString, inst) {
-                    var dateTimePickerIndex = inst[0].getAttribute("data-index-attribute");
-                    var nexDateTimePickerIndex = parseInt(dateTimePickerIndex) + 1;
-                    var nextDateTimePicker = document.querySelectorAll('[data-index-attribute="' + nexDateTimePickerIndex + '"]');
-                    nextDateTimePicker = nextDateTimePicker[0];
-                    if (nextDateTimePicker.value != undefined) {
+                    var dateTimePickerIndex = parseInt(inst[0].getAttribute("data-index-attribute"));
+                    var nextDateTimePicker = $('[data-index-attribute="' + (dateTimePickerIndex + 1) + '"]');
+                    if (nextDateTimePicker.val() != undefined) {
                         try {
-                            var nextDateTimePickerDate = new Date(nextDateTimePicker.value);
+                            var nextDateTimePickerDate = new Date(nextDateTimePicker.val());
                             var dateTimePickerDate = new Date(dateTimePickerDateString);
                             if (dateTimePickerDate > nextDateTimePickerDate) {
-                                nextDateTimePicker.value = inst.val();
+                                nextDateTimePicker.attr("value", inst.val());
                             }
                         } catch (e) {
                             console.log("Couldn't parse nextDateTimePickerDate", e);
                         }
+                    }
+                    if (dateTimePickerIndex > 0 && dateTimePickerIndex % 2 === 0) {
+                        var prevDateTimePicker = $('[data-index-attribute="' + (dateTimePickerIndex - 1) + '"]');
+                        prevDateTimePicker.attr("value", inst.val());
                     }
                 }
             });
