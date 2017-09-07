@@ -15,6 +15,7 @@ abstract class AbstractContestPhaseType implements Serializable {
     private Boolean invisible;
     private Integer pointsaccessible;
     private String defaultpromotiontype;
+    private String defaultflagtext;
 
     public AbstractContestPhaseType() {}
 
@@ -28,12 +29,13 @@ abstract class AbstractContestPhaseType implements Serializable {
         this.invisible = value.invisible;
         this.pointsaccessible = value.pointsaccessible;
         this.defaultpromotiontype = value.defaultpromotiontype;
+        this.defaultflagtext = value.defaultflagtext;
     }
 
     public AbstractContestPhaseType(Long id_, String name, String description,
             String status, Boolean fellowscreeningactivedefault,
             String contestphaseautopromotedefault, Boolean invisible,
-            Integer pointsaccessible, String defaultpromotiontype) {
+            Integer pointsaccessible, String defaultpromotiontype, String defaultflagtext) {
         this.id_ = id_;
         this.name = name;
         this.description = description;
@@ -43,6 +45,7 @@ abstract class AbstractContestPhaseType implements Serializable {
         this.invisible = invisible;
         this.pointsaccessible = pointsaccessible;
         this.defaultpromotiontype = defaultpromotiontype;
+        this.defaultflagtext = defaultflagtext;
     }
 
     public Long getId_() {
@@ -117,6 +120,14 @@ abstract class AbstractContestPhaseType implements Serializable {
         this.defaultpromotiontype = defaultpromotiontype;
     }
 
+    public String getDefaultFlagText() {
+        return this.defaultflagtext;
+    }
+
+    public void setDefaultFlagText(String defaultflagtext) {
+        this.defaultflagtext = defaultflagtext;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -133,6 +144,7 @@ abstract class AbstractContestPhaseType implements Serializable {
         result = prime * result + ((pointsaccessible == null) ? 0 : pointsaccessible.hashCode());
         result = prime * result + ((defaultpromotiontype == null) ? 0
                 : defaultpromotiontype.hashCode());
+        result = prime * result + ((defaultflagtext == null) ? 0 : defaultflagtext.hashCode());
         return result;
     }
 
@@ -211,6 +223,13 @@ abstract class AbstractContestPhaseType implements Serializable {
         } else if (!defaultpromotiontype.equals(other.defaultpromotiontype)) {
             return false;
         }
+        if (defaultflagtext == null) {
+            if (other.defaultflagtext != null) {
+                return false;
+            }
+        } else if (!defaultflagtext.equals(other.defaultflagtext)) {
+            return false;
+        }
         return true;
     }
 
@@ -226,6 +245,7 @@ abstract class AbstractContestPhaseType implements Serializable {
                 ", " + invisible +
                 ", " + pointsaccessible +
                 ", " + defaultpromotiontype +
+                ", " + defaultflagtext +
                 ")";
     }
 }

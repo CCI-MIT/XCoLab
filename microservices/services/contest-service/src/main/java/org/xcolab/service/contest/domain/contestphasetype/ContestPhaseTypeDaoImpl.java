@@ -32,6 +32,7 @@ public class ContestPhaseTypeDaoImpl implements ContestPhaseTypeDao{
                 .set(CONTEST_PHASE_TYPE.INVISIBLE, contestPhaseType.getInvisible())
                 .set(CONTEST_PHASE_TYPE.POINTS_ACCESSIBLE, contestPhaseType.getPointsAccessible())
                 .set(CONTEST_PHASE_TYPE.DEFAULT_PROMOTION_TYPE, contestPhaseType.getDefaultPromotionType())
+                .set(CONTEST_PHASE_TYPE.DEFAULT_FLAG_TEXT, contestPhaseType.getDefaultFlagText())
                 .returning(CONTEST_PHASE_TYPE.ID_)
                 .fetchOne();
         if (ret != null) {
@@ -66,6 +67,7 @@ public class ContestPhaseTypeDaoImpl implements ContestPhaseTypeDao{
                 .set(CONTEST_PHASE_TYPE.INVISIBLE, contestPhaseType.getInvisible())
                 .set(CONTEST_PHASE_TYPE.POINTS_ACCESSIBLE, contestPhaseType.getPointsAccessible())
                 .set(CONTEST_PHASE_TYPE.DEFAULT_PROMOTION_TYPE, contestPhaseType.getDefaultPromotionType())
+                .set(CONTEST_PHASE_TYPE.DEFAULT_FLAG_TEXT, contestPhaseType.getDefaultFlagText())
                 .where(CONTEST_PHASE_TYPE.ID_.eq(contestPhaseType.getId_()))
                 .execute() > 0;
     }
