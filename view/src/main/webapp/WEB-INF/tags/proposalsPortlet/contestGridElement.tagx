@@ -79,7 +79,7 @@
                         <div class="c-ContestBox__meta__flag--grey" style="font-size: 13px;"> Winners to be announced </div>
                     </c:when>
                     <c:when test='${not empty contest.activePhase.status}'>
-                        <div class="c-ContestBox__meta__flag--${contestPhaseClosed ? 'grey' : 'color'}"> ${contest.activePhase.name} </div>
+                        <div class="c-ContestBox__meta__flag--${contestPhaseClosed ? 'grey' : 'color'}"> ${contest.activePhase.flagText} </div>
                     </c:when>
                 </c:choose>
             </c:if>
