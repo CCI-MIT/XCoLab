@@ -59,11 +59,11 @@ public class ContestTeamMembersController {
 
     @RequestMapping(value = "/contestTeamMembers", method = {RequestMethod.GET, RequestMethod.HEAD})
     public List<ContestTeamMember> getContestTeamMembers(
-            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) Long memberId,
             @RequestParam(required = false) Long contestId,
             @RequestParam(required = false) Long roleId
     ) {
-        return contestTeamMemberDao.findByGiven(userId, contestId, roleId);
+        return contestTeamMemberDao.findByGiven(memberId, contestId, roleId);
     }
 
     @RequestMapping(value = "/contestTeamMembers/getByContestYear", method = {RequestMethod.GET, RequestMethod.HEAD})

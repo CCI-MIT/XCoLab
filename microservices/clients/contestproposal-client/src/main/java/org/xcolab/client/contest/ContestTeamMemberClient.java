@@ -10,7 +10,6 @@ import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource;
 import org.xcolab.util.http.client.RestResource1;
 import org.xcolab.util.http.client.RestService;
-import org.xcolab.util.http.client.queries.ListQuery;
 import org.xcolab.util.http.dto.DtoUtil;
 
 import java.util.ArrayList;
@@ -103,9 +102,9 @@ public class ContestTeamMemberClient {
         return teamRoleToUsersMap;
     }
 
-    public List<ContestTeamMember> getTeamMembers(Long userId, Long contestId, Long roleId) {
+    public List<ContestTeamMember> getTeamMembers(Long memberId, Long contestId, Long roleId) {
         return DtoUtil.toPojos(contestTeamMemberResource.list()
-                .optionalQueryParam("userId", userId)
+                .optionalQueryParam("memberId", memberId)
                 .optionalQueryParam("contestId", contestId)
                 .optionalQueryParam("roleId", roleId)
                 .withCache(CacheName.CONTEST_DETAILS)

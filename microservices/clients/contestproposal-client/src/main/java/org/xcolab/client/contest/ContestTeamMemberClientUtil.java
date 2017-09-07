@@ -50,8 +50,8 @@ public final class ContestTeamMemberClientUtil {
         return client.getContestTeamMembersByRole(contestId);
     }
 
-    public static List<ContestTeamMember> getTeamMembers(Long userId, Long contestId, Long roleId) {
-        return client.getTeamMembers(userId, contestId, roleId);
+    public static List<ContestTeamMember> getTeamMembers(Long memberId, Long contestId, Long roleId) {
+        return client.getTeamMembers(memberId, contestId, roleId);
     }
     public static List<ContestTeamMember> getTeamMembers(Long categoryId, Long contestYear) {
         return client.getTeamMembers(categoryId, contestYear);
