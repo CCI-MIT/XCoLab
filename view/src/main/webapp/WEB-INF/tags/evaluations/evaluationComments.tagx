@@ -1,8 +1,0 @@
-<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
->
-
-	<jsp:directive.attribute name="threadId" type="java.lang.Long" required="true" rtexprvalue="true" description="Thread id" />
-	<jsp:directive.attribute name="sharedColabId" type="java.lang.Long" required="false" rtexprvalue="true" description="ContestId id" />
-	<collab:discussionComments threadId="${threadId}" sharedColabId="${sharedColabId}"/>
-</jsp:root>

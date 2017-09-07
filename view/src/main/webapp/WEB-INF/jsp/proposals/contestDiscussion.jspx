@@ -1,9 +1,7 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-	xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/evaluations"
-		  xmlns:c="http://java.sun.com/jsp/jstl/core"
-		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
->
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
+		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 	<xcolab:layout title="${contest.contestShortNameWithEndYear} - Discussion">
@@ -29,10 +27,10 @@
 		<div id="content">
 			<c:choose>
 				<c:when test="${contest.isSharedContestInForeignColab}">
-					<discussionsTagFiles:evaluationComments threadId="${discussionId }" sharedColabId="${contest.contestPK}" />
+					<xcolab:discussionComments threadId="${discussionId }" sharedColabId="${contest.contestPK}" />
 				</c:when>
 				<c:otherwise>
-					<discussionsTagFiles:evaluationComments threadId="${discussionId }"  />
+                    <xcolab:discussionComments threadId="${discussionId }"  />
 				</c:otherwise>
 			</c:choose>
 		</div>

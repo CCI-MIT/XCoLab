@@ -132,12 +132,6 @@
     </tag-file>
 
     <tag-file>
-        <description>Discussion Comments</description>
-        <name>discussionComments</name>
-        <path>/WEB-INF/tags/collab/discussion/comments.tagx</path>
-    </tag-file>
-
-    <tag-file>
         <description>Image upload</description>
         <name>imageUpload</name>
         <path>/WEB-INF/tags/collab/imageUpload.tagx</path>

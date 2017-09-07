@@ -1,10 +1,10 @@
-<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:evaluationTagFiles="urn:jsptagdir:/WEB-INF/tags/evaluations"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0">
+
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
     <jsp:directive.include file="./init_proposal_tab.jspx" />
@@ -63,10 +63,10 @@
                     </c:if>
                     <c:choose>
                         <c:when test="${contest.isSharedContestInForeignColab}">
-                            <evaluationTagFiles:evaluationComments threadId="${evaluationDiscussionId }" sharedColabId="${contest.contestPK}" />
+                            <xcolab:discussionComments threadId="${evaluationDiscussionId }" sharedColabId="${contest.contestPK}" />
                         </c:when>
                         <c:otherwise>
-                            <evaluationTagFiles:evaluationComments threadId="${evaluationDiscussionId}"  />
+                            <xcolab:discussionComments threadId="${evaluationDiscussionId}"  />
                         </c:otherwise>
                     </c:choose>
                 </c:when>
