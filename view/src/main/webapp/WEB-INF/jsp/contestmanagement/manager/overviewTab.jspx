@@ -403,9 +403,6 @@
 
 		function updateOrder() {
             var editForm = $('#editForm');
-            var selectedMassAction = $('#selectedMassAction');
-            var selectedMassActionIndex = selectedMassAction.val();
-            selectedMassAction.val(0);
             $.ajax("/admin/contest/manager/updateOrder", {
                 method: 'POST',
                 data: editForm.serialize(),
@@ -419,7 +416,6 @@
                     noty({text: "Order update failed.", type: 'error', killer: true});
                 }
             });
-            selectedMassAction.val(selectedMassActionIndex);
         }
 
 		//}());

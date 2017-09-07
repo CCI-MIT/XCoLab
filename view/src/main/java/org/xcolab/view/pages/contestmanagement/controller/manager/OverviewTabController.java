@@ -131,7 +131,7 @@ public class OverviewTabController extends AbstractTabController {
             HttpServletResponse response, Model model, Member member,
             @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper)
             throws IOException, InvocationTargetException, IllegalAccessException {
-        if (tabWrapper.getCanEdit()) {
+        if (!tabWrapper.getCanEdit()) {
             response.sendError(403);
         }
         updateContestOverviewWrapper.setSelectedMassAction((long) ContestMassActions.ORDER.ordinal());
