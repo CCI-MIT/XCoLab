@@ -12,8 +12,6 @@
     <!--@elvariable id="contestTypes" type="java.util.List<org.xcolab.client.admin.pojo.ContestType>"-->
     <!--@elvariable id="proposal" type="org.xcolab.client.proposals.pojo.Proposal"-->
 
-    <xcolab:script src="${_themeJsFolder}/proposals/admin-portlet-preferences.js"/>
-
     <div>
         <div id="portlet-preferences">
             <h1>Proposals preferences</h1>
@@ -215,5 +213,7 @@
     });
 
     </script>
+
+    <xcolab:script src="${_themeJsFolder}/proposals/proposalPreferences.js"/>
 </xcolab:layout>
 </jsp:root>

@@ -1,0 +1,20 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
+    <xcolab:stylesheet href="${_libCssFolder}/tooltipster-4.1.8.bundle.min.css" />
+    <xcolab:script src="${_libJsFolder}/tooltipster-4.1.8.bundle.min.js" />
+    <script>
+        findAndInitializeTooltips(jQuery);
+
+        function initializeTooltips($tooltips) {
+            $tooltips.tooltipster({
+                interactive: true,
+                contentAsHtml: true
+            });
+        }
+
+        function findAndInitializeTooltips($html) {
+            initializeTooltips($html.find('.js-Tooltip'));
+        }
+    </script>
+</jsp:root>

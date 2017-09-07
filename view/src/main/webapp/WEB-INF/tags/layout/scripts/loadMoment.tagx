@@ -1,6 +1,6 @@
 <jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
-          version="2.0">
+          version="2.0" xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
     <jsp:directive.attribute name="locale" type="java.lang.String" required="false" rtexprvalue="true" description="Current locale" />
 
     <!-- Note: requires tooltipster -->
@@ -65,7 +65,7 @@
                 } else {
                     $this.attr('title', date.format('llll') + ' ' + date.zoneAbbr());
                 }
-                $this.tooltipster();
+                initializeTooltips($this);
             }
         });
     </script>

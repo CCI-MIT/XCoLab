@@ -186,7 +186,7 @@
                                                 <spring:message code="homepage.login.rememberme"/>
                                             </label>
                                         </div>
-                                        <a href="javascript:;" onclick="showForgotPasswordPopup()">
+                                        <a href="javascript:;" onclick="showForgotPasswordModal()">
                                             <em><spring:message code="homepage.login.forgotyourpassword"/></em>
                                         </a>
                                         <button type="submit" class="c-Button__primary pull-right" id="loginPopupTopSubmit">

@@ -1,0 +1,11 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+
+    <jsp:directive.attribute name="kitId" type="java.lang.String" required="true"
+                             rtexprvalue="true" description="The Typekit Kit ID to load" />
+
+    <!--suppress JSUnresolvedLibraryURL -->
+    <script type="text/javascript" src="https://use.typekit.com/${kitId}.js"><!-- empty --></script>
+
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+</jsp:root>

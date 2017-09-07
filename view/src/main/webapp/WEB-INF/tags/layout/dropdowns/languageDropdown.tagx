@@ -2,11 +2,14 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-          version="2.0" xmlns:form="http://www.springframework.org/tags/form">
+          version="2.0" xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <jsp:directive.attribute name="currentLanguage" type="java.lang.String" required="true" rtexprvalue="true" description="The currently active locale" />
     <jsp:directive.attribute name="languageSelectItems" type="java.util.List" required="true" rtexprvalue="true" description="The currently active locale" />
     <!--@elvariable id="languageSelectItems" type="java.util.List<org.xcolab.util.html.LabelStringValue>"-->
+
+    <xcolab:requireLibrary  name="i18n"/>
 
     <ul class="dropdown-menu bs-dropdown-box bs-dropdown-nowrap">
 
@@ -33,7 +36,7 @@
                         <label>
                             <c:set var="languageCode" value="${lang['value']}" />
                             <input name="lang_top" type="radio" value="${lang['value']}"
-                                    onchange="insertParamAndGo('lang', '${languageCode}');"/>
+                                    onchange="setLanguage('${languageCode}');"/>
                             <spring:message code="${lang['lable']}"/> - ${fn:toUpperCase(lang['value'])}
                         </label>
                     </div>

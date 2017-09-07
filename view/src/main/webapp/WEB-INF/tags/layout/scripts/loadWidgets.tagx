@@ -1,0 +1,23 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <script>
+        (function() {
+            initializeWidgets(jQuery('.js-Widget, .colabwidget'));
+
+            function initializeWidgets($widgets) {
+                $widgets.each(function () {
+                    var $this = jQuery(this);
+
+                    var articleId = $this.data("article-id");
+                    var url = articleId ? "/contentwidget?contentArticleId=" + articleId
+                            : $this.data("url");
+
+                    $this.load(url, function () {
+                        var $children = $this.children();
+                        findAndInitializeTooltips($children);
+                        initializeWidgets($children.find('.js-Widget'));
+                    });
+                });
+            }
+        })();
+    </script>
+</jsp:root>

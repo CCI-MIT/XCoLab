@@ -1,0 +1,87 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          version="2.0">
+
+    <jsp:directive.attribute name="googleAnalyticsKey" type="java.lang.String" required="false"
+                             rtexprvalue="true" description="The key for Google Analytics" />
+    <jsp:directive.attribute name="pingdomRumId" type="java.lang.String" required="false"
+                             rtexprvalue="true" description="Pingdom Real User Monitoring ID" />
+
+    <jsp:directive.attribute name="analyticsAttribute" type="org.xcolab.view.util.entity.flash.AnalyticsAttribute"
+                             required="false" rtexprvalue="true" description="Analytics attributes to send to GA" />
+    <jsp:directive.attribute name="httpSession" type="javax.servlet.http.HttpSession" required="true"
+                             rtexprvalue="true" description="The HttpSession for this request" />
+    <jsp:directive.attribute name="member" type="org.xcolab.client.members.pojo.Member" required="true"
+                             rtexprvalue="true" description="Logged in member" />
+
+    <script>
+        var _googleAnalyticsKey = '${googleAnalyticsKey}';
+        var _prumId = '${pingdomRumId}';
+    </script>
+
+    <!-- Google Analytics -->
+    <c:if test="${not empty googleAnalyticsKey}">
+        <script>
+            /* <![CDATA[ */
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function()
+            { (i[r].q=i[r].q||[]).push(arguments)}
+                    ,i[r].l=1*_firstByteDate;a=s.createElement(o),
+                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+            ga('create', _googleAnalyticsKey, 'auto');
+            ga('send', 'pageview');
+            /* ]]> */
+        </script>
+    </c:if>
+
+
+    <!-- Pingdom Real User Monitoring -->
+    <c:if test="${not empty pingdomRumId}">
+        <script>
+            var _prum = [['id', _prumId],
+                ['mark', 'firstbyte', _firstByteDate.getTime()]];
+            (function() {
+                var s = document.getElementsByTagName('script')[0]
+                        , p = document.createElement('script');
+                p.async = 'async';
+                p.src = 'https://rum-static.pingdom.net/prum.min.js';
+                s.parentNode.insertBefore(p, s);
+            })();
+        </script>
+    </c:if>
+
+    <!-- Misc analytics scripts -->
+    <!-- TODO: move to backend? -->
+
+    <c:if test="${not empty googleAnalyticsKey}">
+        <c:if test="${httpSession.getAttribute('collab_user_has_registered')}">
+            <script type="text/javascript">
+                // disabled in test env
+                try {
+                    pageTracker._trackPageview('/colab/${member.screenName}/registered');
+                    pageTracker._trackEvent('Users', 'registered', '', 1);
+                } catch(e) {}
+            </script>
+            ${httpSession.removeAttribute("collab_user_has_registered")}
+        </c:if>
+
+        <c:if test='${httpSession.getAttribute("user_from_landing_page")}'>
+            <script type="text/javascript">
+                try {
+                    pageTracker._trackPageview("${request.session.getAttribute('user_from_landing_page')");
+                } catch(e) {}
+            </script>
+            ${httpSession.removeAttribute("user_from_landing_page")}
+        </c:if>
+
+        <c:if test='${not empty analyticsAttribute}'>
+            <c:forEach var="event" items='${analyticsAttribute.events}'>
+                <script type="text/javascript">
+                    /* <![CDATA[ */
+                    pageTracker._trackEvent('${event.category}', '$event.action', '$event.label', $event.value);
+                    /* ]]> */
+                </script>
+            </c:forEach>
+        </c:if>
+    </c:if>
+</jsp:root>
