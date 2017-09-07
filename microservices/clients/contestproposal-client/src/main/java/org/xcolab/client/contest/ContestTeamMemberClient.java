@@ -104,17 +104,12 @@ public class ContestTeamMemberClient {
     }
 
     public List<ContestTeamMember> getTeamMembers(Long userId, Long contestId, Long roleId) {
-        ListQuery<ContestTeamMemberDto> query = contestTeamMemberResource.list();
-        if (userId != null) {
-            query = query.optionalQueryParam("userId", userId);
-        }
-        if (contestId != null) {
-            query = query.optionalQueryParam("contestId", contestId);
-        }
-        if (roleId != null) {
-            query = query.optionalQueryParam("roleId", roleId);
-        }
-        return DtoUtil.toPojos(query.execute(), contestService);
+        return DtoUtil.toPojos(contestTeamMemberResource.list()
+                .optionalQueryParam("userId", userId)
+                .optionalQueryParam("contestId", contestId)
+                .optionalQueryParam("roleId", roleId)
+                .withCache(CacheName.CONTEST_DETAILS)
+                .execute(), contestService);
     }
     public List<ContestTeamMember> getTeamMembers(Long categoryId, Long contestYear) {
         return DtoUtil.toPojos(contestTeamMemberResource.service("getByContestYear",ContestTeamMemberDto.TYPES.getTypeReference())
