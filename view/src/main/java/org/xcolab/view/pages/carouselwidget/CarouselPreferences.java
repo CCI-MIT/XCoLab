@@ -87,7 +87,10 @@ public class CarouselPreferences extends WidgetPreference {
     public void submit() {
         JSONObject prefsToSave = new JSONObject();
         prefsToSave.put(TITLE_PREFERENCE, title);
-        prefsToSave.put(LOGOS_PREFERENCE, logos);
+        JSONArray ja = new JSONArray();
+
+        logos.forEach(logo -> ja.put(logo.toJson()));
+        prefsToSave.put(LOGOS_PREFERENCE, ja);
 
         savePreferences(prefsToSave, preferenceId);
 
