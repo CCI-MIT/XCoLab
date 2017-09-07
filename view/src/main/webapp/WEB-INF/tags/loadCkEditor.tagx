@@ -66,6 +66,13 @@
                     return;
                 }
 
+                if($element.attr("data-section-placeholder")){
+                    console.log("...." + $element.attr("data-section-placeholder") + "....")
+                    if($element.val()== "") {
+                        $element.val($element.attr("data-section-placeholder"));
+                    }
+                }
+
                 var limitCharactersMax = $element.parent().find(".limit_charactersMax");
                 var limitCharacterCount = $element.parent().find(".limit_characterCount");
 

@@ -1,5 +1,7 @@
 package org.xcolab.view.pages.carouselwidget;
 
+import org.json.JSONObject;
+
 public class LogoElement {
 
     private String imageUrl;
@@ -42,5 +44,13 @@ public class LogoElement {
 
     public void setAltText(String altText) {
         this.altText = altText;
+    }
+
+    public JSONObject toJson(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("imageUrl", imageUrl);
+        jsonObject.put("linkUrl", linkUrl);
+        jsonObject.put("altText", altText);
+        return  jsonObject;
     }
 }
