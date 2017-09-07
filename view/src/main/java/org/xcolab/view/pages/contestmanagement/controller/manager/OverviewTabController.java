@@ -126,6 +126,18 @@ public class OverviewTabController extends AbstractTabController {
         }
     }
 
+    @PostMapping("manager/updateOrder")
+    public void updateContestOrder(HttpServletRequest request,
+            HttpServletResponse response, Model model, Member member,
+            @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper)
+            throws IOException, InvocationTargetException, IllegalAccessException {
+        if (!tabWrapper.getCanEdit()) {
+            response.sendError(403);
+        }
+        updateContestOverviewWrapper.setSelectedMassAction((long) ContestMassActions.ORDER.ordinal());
+        updateContestOverviewWrapper.executeMassAction(request, response);
+    }
+
     @PostMapping("api/massAction")
     public void getExportController(HttpServletRequest request, Model model,
             @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper,

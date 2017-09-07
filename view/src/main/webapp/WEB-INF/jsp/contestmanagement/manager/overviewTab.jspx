@@ -382,6 +382,7 @@
 			reCalculateWeights();
 			event.stopPropagation(); // Stops some browsers from redirecting.
 			event.preventDefault();
+			updateOrder();
 			return false;
 		}
 
@@ -399,6 +400,23 @@
 				}
 			} while (nextElementInList = nextElementInList.nextSibling)
 		}
+
+		function updateOrder() {
+            var editForm = $('#editForm');
+            $.ajax("/admin/contest/manager/updateOrder", {
+                method: 'POST',
+                data: editForm.serialize(),
+                beforeSend: function (jqXHR, textStatus) {
+                    noty({text: "Updating order...", type: 'information', timeout: false});
+                },
+                success: function (data, textStatus, jqXHR) {
+                    noty({text: "Order updated.", type: 'success', killer: true});
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    noty({text: "Order update failed.", type: 'error', killer: true});
+                }
+            });
+        }
 
 		//}());
 		]]>
