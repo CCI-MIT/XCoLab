@@ -69,6 +69,7 @@
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
+                <c:set var="navItemRightClass" value="${isShowIcons ? 'bs-navitem-icon' : 'bs-navitem-text bs-navitem--small'}" />
                 <c:choose>
                 <c:when test="${member != null}">
                     <li class="bs-navitem-merge-right">
@@ -127,7 +128,6 @@
                     </li>
                 </c:when>
                 <c:otherwise>
-                    <c:set var="navItemRightClass" value="${isShowIcons ? 'bs-navitem-icon' : 'bs-navitem-text bs-navitem--small'}" />
                     <li class="c-Header__navItem register ${navItemRightClass}">
                         <a href="/register?redirect=${redirect}" class="c-Header__menu__text">
                             <spring:message code="homepage.menu.visitor.register" />
