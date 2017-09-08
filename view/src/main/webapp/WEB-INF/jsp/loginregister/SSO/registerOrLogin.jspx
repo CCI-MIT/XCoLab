@@ -1,7 +1,6 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-        xmlns:jsp="http://java.sun.com/JSP/Page"
-        xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-        version="2.0">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
     <!--@elvariable id="_colabName" type="java.lang.String"-->
@@ -34,7 +33,7 @@
                         <input name="login" type="text" class="c-Header__login__username" placeholder="username or email address" />
                         <input name="password" type="password" class="c-Header__login__password" placeholder="password" />
                         <span><em>
-                            <a href="javascript:;" onclick="showForgotPasswordPopup()">
+                            <a href="javascript:;" onclick="showForgotPasswordModal()">
                                 Forgot your password?
                             </a>
                         </em></span>

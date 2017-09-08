@@ -1,10 +1,8 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:discussions="urn:jsptld:/WEB-INF/tlds/xcolab-discussions.tld"
-           version="2.0">
-
-
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.portlets.proposals.permissions.ProposalsPermissions"-->
 
@@ -19,9 +17,10 @@
                 <!--@elvariable id="role" type="org.xcolab.view.util.entity.enums.MemberRole"-->
                 <div class="comment">
                     <div class="c-Comment__commentor">
-                        <proposalsPortlet:userPortrait  screenName="${wrapper.author.displayName}" portraitId="${wrapper.author.portraitId}" userId="${wrapper.author.userId}" width="59" height="59" />
+                        <xcolab:userPortrait portraitId="${wrapper.author.portraitId}"
+                                             memberId="${wrapper.author.userId}" width="59" height="59" />
                         <br />
-                        <proposalsPortlet:userLinkSimple text="${wrapper.author.displayName}" userId="${wrapper.author.userId}" /> <br />
+                        <xcolab:userLinkSimple text="${wrapper.author.displayName}" memberId="${wrapper.author.userId}" /> <br />
                         <br />
 
                         <div class="role-indicator">

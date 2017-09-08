@@ -1,6 +1,6 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:form="http://www.springframework.org/tags/form"
-          version="2.0">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:form="http://www.springframework.org/tags/form">
+
     <form:select cssClass="profile_input" path="countryCode">
         <form:option value="" label="Select country"/>
         <form:option value="AF" label="Afghanistan"/>

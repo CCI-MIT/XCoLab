@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<taglib xmlns="http://java.sun.com/xml/ns/javaee" 
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-      xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-      http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd" 
-      version="2.1">
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                            http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1">
       
     <description>XCoLab JSP tags</description>
     <display-name>XCoLab JSP tags</display-name>
     <tlib-version>1.0</tlib-version>
-    <short-name>xcolab</short-name>
+    <short-name>xcolab-support</short-name>
     <uri>http://climatecolab.org/tags/xcolab_1.0</uri>
 
     <tag>
@@ -20,7 +20,7 @@
         <body-content>JSP</body-content>
         <attribute>
             <description>
-                A ContestType argument to resolve ContestType-specific placeholdesr.
+                A ContestType argument to resolve ContestType-specific placeholder.
                 If none is given, the tag tries to use a model attribute named contestType instead.
             </description>
             <name>contestType</name>
@@ -114,74 +114,4 @@
         </attribute>
     </tag>
 
-    <tag-file>
-        <name>content</name>
-        <path>/WEB-INF/tags/collab/content.tagx</path>
-    </tag-file>
-
-    <tag-file>
-        <description>Contest link</description>
-        <name>contestLink</name>
-        <path>/WEB-INF/tags/collab/contestLink.tagx</path>
-    </tag-file>
-
-    <tag-file>
-        <description>Blog Search Link</description>
-        <name>blogSearchLink</name>
-        <path>/WEB-INF/tags/collab/blogSearchLink.tagx</path>
-    </tag-file>
-
-    <tag-file>
-        <description>Discussion Comments</description>
-        <name>discussionComments</name>
-        <path>/WEB-INF/tags/collab/discussion/comments.tagx</path>
-    </tag-file>
-
-    <tag-file>
-        <description>Image upload</description>
-        <name>imageUpload</name>
-        <path>/WEB-INF/tags/collab/imageUpload.tagx</path>
-    </tag-file>
-
-    <tag-file>
-        <description>outline_ontologyTermWithChildren</description>
-        <name>outline_ontologyTermWithChildren</name>
-        <path>/WEB-INF/tags/collab/outline_ontologyTermWithChildren.tagx</path>
-    </tag-file>
-
-    <tag-file>
-        <description>Team Box</description>
-        <name>teamBox</name>
-        <path>/WEB-INF/tags/collab/teamBox.tagx</path>
-    </tag-file>
-
-      <tag-file>
-        <description>Sort arrow</description>
-        <name>sortArrow</name>
-        <path>/WEB-INF/tags/collab/sortArrow.tagx</path>
-      </tag-file>
-
-    <tag-file>
-        <description>Proposal Link</description>
-        <name>proposalLink</name>
-        <path>/WEB-INF/tags/collab/proposalLink.tagx</path>
-    </tag-file>
-
-    <tag-file>
-        <description>User Link Simple</description>
-        <name>userLinkSimple</name>
-        <path>/WEB-INF/tags/collab/userLinkSimple.tagx</path>
-    </tag-file>
-
-    <tag-file>
-        <description>User Portrait</description>
-        <name>userPortrait</name>
-        <path>/WEB-INF/tags/collab/userPortrait.tagx</path>
-    </tag-file>
-
-    <tag-file>
-        <description>User Portrait Select Option</description>
-        <name>userPortraitSelectOption</name>
-        <path>/WEB-INF/tags/collab/userPortraitSelectOption.tagx</path>
-    </tag-file>
 </taglib>  

@@ -1,8 +1,8 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:xcolab-dropdowns="urn:jsptagdir:/WEB-INF/tags/layout/dropdowns"
-          version="2.0" xmlns:form="http://www.springframework.org/tags/form">
+          xmlns:form="http://www.springframework.org/tags/form">
 
     <jsp:directive.attribute name="logoPath" type="java.lang.String" required="true" rtexprvalue="true" description="The path to the logo of this CoLab" />
     <jsp:directive.attribute name="blogAdminUrl" type="java.lang.String" required="true" rtexprvalue="true" description="Admin URL for the blog" />
@@ -72,15 +72,9 @@
                 <c:choose>
                 <c:when test="${member != null}">
                     <li class="bs-navitem-merge-right">
-                        <a id="user-dropdown-trigger" class="dropdown-toggle">
+                        <a class="dropdown-toggle js-DropdownToggle" data-target="#user-dropdown">
                             ${member.displayName}
                         </a>
-                        <script>
-                            $("#user-dropdown-trigger").click(function(ev) {
-                                $("#user-dropdown").dropdown("toggle");
-                                return false;
-                            });
-                        </script>
                     </li>
                     <li class="bs-navitem-image c-Header__navItem user dropdown bs-dropdown--dark">
                         <a id="user-dropdown" class="dropdown-toggle" data-toggle="dropdown">
@@ -182,7 +176,7 @@
                                                 <spring:message code="homepage.login.rememberme"/>
                                             </label>
                                         </div>
-                                        <a href="javascript:;" onclick="showForgotPasswordPopup()">
+                                        <a href="javascript:;" onclick="showForgotPasswordModal()">
                                             <em><spring:message code="homepage.login.forgotyourpassword"/></em>
                                         </a>
                                         <button type="submit" class="c-Button__primary pull-right" id="loginPopupTopSubmit">

@@ -1,10 +1,8 @@
-<jsp:root
-        xmlns:c="http://java.sun.com/jsp/jstl/core"
-        xmlns:jsp="http://java.sun.com/JSP/Page"
-        xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-        xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-        xmlns:spring="http://www.springframework.org/tags"
-        version="2.0">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:spring="http://www.springframework.org/tags">
+
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 	<!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.ontology.OntologySpace>"-->
     <!--@elvariable id="showActiveContests" type="java.lang.Boolean"-->
@@ -31,7 +29,7 @@
         			<h2>${ontologySpace.name } <span>${ontologySpace.description}</span></h2>
         			<span class="section-icon"><!--  --></span>
         		</a>
-				<proposalsPortlet:outline_ontologyTermWithChildren terms="${ontologySpace.rootTerms }" section="${status.index+1 }" level="1" />
+				<xcolab:outline_ontologyTermWithChildren terms="${ontologySpace.rootTerms }" section="${status.index+1 }" level="1" isEditable="false" />
         	</li>
         </c:forEach> 
                          
@@ -219,7 +217,7 @@
 		<c:forEach var="contest" items="${contestsSorted.contests}">
             <c:if test="${contest.showInOutlineView}">
                 contest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId},
-                        proposalsCount: ${contest.proposalsCount}, contestLink: '<collab:contestLink contest="${contest}" text="visit" />',
+                        proposalsCount: ${contest.proposalsCount}, contestLink: '<xcolab:contestLink contest="${contest}" text="visit" />',
                         contestUrl: '${contest.contestUrl}', created: ${contest.createdTime}, active: ${contest.contestActive}};
                 contests[${contest.contestPK}] = contest;
                 contestsCount++;
@@ -239,7 +237,7 @@
 		<c:forEach var="contest" items="${otherContests}">
             <c:if test="${contest.showInOutlineView}">
                 otherContest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId},
-                        proposalsCount: ${contest.proposalsCount}, contestLink: '<collab:contestLink contest="${contest}" text="visit" />'};
+                        proposalsCount: ${contest.proposalsCount}, contestLink: '<xcolab:contestLink contest="${contest}" text="visit" />'};
                 otherContests[${contest.contestPK}] = otherContest;
                 focusArea = focusAreas[${contest.focusAreaId}];
                 if(focusAreas[${contest.focusAreaId}] != null) {
@@ -258,7 +256,7 @@
 		<c:forEach var="contest" items="${otherContests}">
             <c:if test="${contest.showInOutlineView}">
                 otherContest = {id: ${contest.contestPK}, name: "${contest.contestShortName}", description: "${contest.contestName }", focusAreaId: ${contest.focusAreaId},
-                        proposalsCount: ${contest.proposalsCount}, contestLink: '<collab:contestLink contest="${contest}" text="visit" />'};
+                        proposalsCount: ${contest.proposalsCount}, contestLink: '<xcolab:contestLink contest="${contest}" text="visit" />'};
                 otherContests[${contest.contestPK}] = otherContest;
                 focusArea = focusAreas[${contest.focusAreaId}];
 

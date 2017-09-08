@@ -1,0 +1,36 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
+	<jsp:directive.attribute name="terms" type="java.util.Collection" required="true" rtexprvalue="true" description="Ontology terms" />
+	<jsp:directive.attribute name="section" type="java.lang.Integer" required="true" rtexprvalue="true" description="Section" />
+    <jsp:directive.attribute name="level" type="java.lang.Integer" required="true" rtexprvalue="true" description="Level" />
+    <jsp:directive.attribute name="isEditable" type="java.lang.Boolean" required="true" rtexprvalue="true"
+                             description="Indicate whether the ontology term is editable. If true, a checkbox is shown for each term, otherwise a count of children will be shown." />
+
+	<c:if test="${not empty terms }">
+		<ul class="level${level }">
+			<c:forEach var="term" items="${terms }">
+				<li class="${empty term.children ? 'no-child last-child' : 'trigger' }" id="ontologyTerm_${term.id }">
+					<a href="#"  data-term-id="${term.id }">
+						<span>${term.name }</span>
+						<span class="count">
+                            <c:choose>
+                                <c:when test="${isEditable}">
+                                    <input type="checkbox" name="${term.name}" class="selectOntologyTerm" />
+                                </c:when>
+                                <c:otherwise>
+                                    0
+                                </c:otherwise>
+                            </c:choose>
+						</span>
+					</a>
+					<c:if test="${not empty term.children }">
+						<xcolab:outline_ontologyTermWithChildren terms="${term.children }" section="${section + 1 }" level="${level + 1 }" isEditable="${isEditable}" />
+					</c:if>
+				</li>
+			</c:forEach>
+		</ul>
+	</c:if>
+
+</jsp:root>

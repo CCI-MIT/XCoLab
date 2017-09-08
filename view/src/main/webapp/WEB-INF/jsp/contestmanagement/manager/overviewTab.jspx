@@ -1,9 +1,9 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
     xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:form="http://www.springframework.org/tags/form"
-	xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-    xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+    xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
     <!--@elvariable id="massActionsItems" type="java.util.List<org.xcolab.util.html.LabelValue>"-->
@@ -183,7 +183,7 @@
 									</c:choose>
 
 
-									<!--<collab:contestLink contest="${contestWrapper}" />-->
+									<!--<xcolab:contestLink contest="${contestWrapper}" />-->
 								</td>
 								<td >${contestWrapper.activePhase.name}</td>
 								<td><form:checkbox path="contestWrappers[${x.index}].contestActive" disabled="false" onclick="processCheckBox()"/></td>

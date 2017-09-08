@@ -1,13 +1,11 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:xcolabfunctions="urn:jsptld:/WEB-INF/tlds/xcolab-escaping.tld"
-          version="2.0"
->
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
     <xcolab:layout title="${contest.contestShortNameWithEndYear}" description="${contest.contestName}"
@@ -95,7 +93,7 @@
                                 <a href="${sortURL }">
                                     <collab:message code="contests.details.proposalname" contestType="${contestType}" />
                                 </a>
-                                <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="NAME" />
+                                <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="NAME" />
                             </span>
                             /&#160;
                             <spring:message var="tooltipAuthors"
@@ -105,7 +103,7 @@
                                 <a href="${sortURL }">
                                     <spring:message code="contests.details.authors" />
                                 </a>
-                                <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="AUTHOR" />
+                                <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="AUTHOR" />
                             </span>
                         </th>
                         <c:if test="${contestPhase.canVote or (contestPhase.completed and not contest.hideRibbons)}">
@@ -116,7 +114,7 @@
                                 <a href="${sortURL }">
                                     <img src="${_themeImageFolder}/icon-proposal-vote.png" />
                                 </a>
-                                <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="VOTES" />
+                                <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="VOTES" />
                             </th>
                         </c:if>
                         <c:if test="${not contestPhase.canVote}">
@@ -127,7 +125,7 @@
                                 <a href="${sortURL }">
                                     <img src="${_themeImageFolder}/icon-proposal-thumb.png" />
                                 </a>
-                                <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SUPPORTERS" />
+                                <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SUPPORTERS" />
                             </th>
                         </c:if>
                         <spring:message var="tooltipComments"
@@ -137,7 +135,7 @@
                             <a href="${sortURL }">
                                 <img src="${_themeImageFolder}/icon-list-comment.png" />
                             </a>
-                            <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="COMMENTS" />
+                            <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="COMMENTS" />
                         </th>
                         <c:if test="${not contestPhase.completed}">
                             <spring:message var="tooltipModified"
@@ -147,7 +145,7 @@
                                 <a href="${sortURL }" class="js-Tooltip" title="${tooltipModified}">
                                     <spring:message code="contests.details.modified" />
                                 </a>
-                                <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MODIFIED" />
+                                <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MODIFIED" />
                             </th>
                             <c:if test="${showContributorsColumn}">
                                 <spring:message var="tooltipContributors"
@@ -157,7 +155,7 @@
                                     <a href="${sortURL }" class="js-Tooltip" title="${tooltipContributors}">
                                         <spring:message code="contests.details.contributors" />
                                     </a>
-                                    <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTRIBUTORS" />
+                                    <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CONTRIBUTORS" />
                                 </th>
                             </c:if>
                         </c:if>
@@ -172,7 +170,7 @@
                                     <a href="${sortURL }" class="js-Tooltip" title="status of the fellows' screening decision" style="padding-left: 5px;">
                                         Fellows
                                     </a>
-                                    <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SCREENINGSTATUS" />
+                                    <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="SCREENINGSTATUS" />
 
                                     <!-- IAF status-->
                                     <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=IAFSTATUS&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'IAFSTATUS' ? not sortFilterPage.sortAscending : true }" />
@@ -180,7 +178,7 @@
                                     <a href="${sortURL }" class="js-Tooltip" title="status of the impact assessment" style="padding-left: 5px;">
                                         IAF
                                     </a>
-                                    <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="IAFSTATUS" />
+                                    <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="IAFSTATUS" />
                                 </c:if>
                                 <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=JUDGESTATUS&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'JUDGESTATUS' ? not sortFilterPage.sortAscending : true }" />
                                 <!-- Sorting by judges -->
@@ -188,14 +186,14 @@
                                 <a href="${sortURL }" class="js-Tooltip" title="status of the judges' ratings">
                                     Judges
                                 </a>
-                                <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="JUDGESTATUS" />
+                                <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="JUDGESTATUS" />
 
                                 <!-- Sorting by Overall -->
                                 <c:set var="sortURL" value="/contests/${contest.contestYear}/${contest.contestUrlName}/?sortColumn=OVERALLSTATUS&amp;phaseId=${contestPhase.contestPhasePK }&amp;sortAscending=${sortFilterPage.sortColumn == 'OVERALLSTATUS' ? not sortFilterPage.sortAscending : true }" />
                                 <a href="${sortURL }" class="js-Tooltip" title="state of the final advancing decision">
                                     Overall
                                 </a>
-                                <collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="OVERALLSTATUS" />
+                                <xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="OVERALLSTATUS" />
                             </th>
                         </c:if>
                     </tr>
@@ -217,6 +215,9 @@
                 </c:if>
             </c:forEach>
         </c:set>
+
+        <spring:message var="menuItemName" text="${contestType.menuItemName}" javaScriptEscape="true" />
+        <spring:message var="contestShortName" text="${contest.contestShortName}" javaScriptEscape="true" />
         <script type="application/ld+json">
         {
             "@context": "http://schema.org",
@@ -227,7 +228,7 @@
                     "position": 1,
                     "item": {
                     "@id": "${_colabUrl}${contestType.contestBaseUrl}",
-                    "name": "${xcolabfunctions:escapeStringForJavascript(contestType.menuItemName)}"
+                    "name": "${menuItemName}"
                     }
                 },
                 {
@@ -235,7 +236,7 @@
                     "position": 2,
                     "item": {
                       "@id": "${_colabUrl}${contest.contestUrl}",
-                      "name": "${xcolabfunctions:escapeStringForJavascript(contest.contestShortName)}",
+                      "name": "${contestShortName}",
                       "image": "${_colabUrl}${contest.logoPath}"
                     }
                 }

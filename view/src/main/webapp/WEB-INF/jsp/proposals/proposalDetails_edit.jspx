@@ -1,12 +1,11 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          version="2.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:spring="http://www.springframework.org/tags">
+
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout  title="${proposal.name} - Edit">
     <!--@elvariable id="isMove" type="java.lang.Boolean"-->
@@ -84,17 +83,17 @@
                 <c:when test="${isMove }">
                     <p>
                         You're about to move a ${fn:toLowerCase(contestType.proposalName)}
-                        <collab:proposalLink proposal="${baseProposal}" escape="true" />
+                        <xcolab:proposalLink proposal="${baseProposal}" escape="true" />
                         from ${contestType.contestName}
-                        <collab:contestLink contest="${baseContest}" />
+                        <xcolab:contestLink contest="${baseContest}" />
                         to ${contestType.contestName}
-                        <collab:contestLink contest="${contest}" />.
+                        <xcolab:contestLink contest="${contest}" />.
                     </p>
                 </c:when>
                 <c:when test="${not empty baseProposal}">
                     <p>
                         You're about to create a ${fn:toLowerCase(contestType.proposalName)} that will be based on
-                        <collab:proposalLink proposal="${baseProposal}" escape="true" />.
+                        <xcolab:proposalLink proposal="${baseProposal}" escape="true" />.
                     </p>
                 </c:when>
             </c:choose>
@@ -211,7 +210,7 @@
                     </label>
 
                     <form:hidden path="imageId" id="proposalImageId" />
-                    <collab:imageUpload uniqueName="proposalImageUpload" imageIdInput="proposalImageId"
+                    <xcolab:imageUpload uniqueName="proposalImageUpload" imageIdInput="proposalImageId"
                                         compactView="true" defaultImageId="${contest.defaultProposalLogoId}" defaultImage="PROPOSAL" buttonText="Upload an image" />
                 </div>
             </c:if>
@@ -303,12 +302,12 @@
                 <a class="c-Button__primary" href="javascript:void(0)" id="saveChangesButton">${saveButtonText}</a>
                 <c:choose>
                     <c:when test="${proposal.currentVersion > 0 }">
-                        <collab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
+                        <xcolab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
                                              linkId="discardChangesButton" text="DISCARD changes" />
                     </c:when>
                     <c:otherwise>
                         <!--  proposal creation, return to contest proposals page on discard -->
-                        <collab:contestLink contest="${contest}" cssClass="c-Button__secondary"
+                        <xcolab:contestLink contest="${contest}" cssClass="c-Button__secondary"
                                             linkId="discardChangesButton" text="DISCARD changes" />
                     </c:otherwise>
                 </c:choose>
@@ -481,7 +480,7 @@
     </c:otherwise>
     </c:choose>
 
-    <xcolab:loadCkEditor />
+    <xcolab:requireLibrary name="CKEditor" />
 
     <c:if test="${isMove}">
         <xcolab:script src="${_themeJsFolder}/proposals/copyProposalWidget.js"/>

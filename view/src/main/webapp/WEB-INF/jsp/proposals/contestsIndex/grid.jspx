@@ -1,9 +1,6 @@
-<jsp:root
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
         xmlns:c="http://java.sun.com/jsp/jstl/core"
-        xmlns:jsp="http://java.sun.com/JSP/Page"
-        xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-        xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
-        version="2.0">
+        xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet">
 
     <!--@elvariable id="contestsSorted" type="org.xcolab.portlets.proposals.wrappers.ContestsSortFilterBean"-->
 

@@ -1,12 +1,12 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
-          xmlns:spring="http://www.springframework.org/tags"
-          version="2.0">
+          xmlns:spring="http://www.springframework.org/tags">
+
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout title="${proposal.name} - Team"
                    description="Contributors for ${contestType.proposalName} '${proposal.name}' in ${contestType.contestName} '${contest.contestShortNameWithEndYear}'">
@@ -128,10 +128,10 @@
                 <table class="contributors">
                     <c:forEach var="supporter" items="${proposal.supporters }" varStatus="status" step="2">
                         <tr class="${(status.index / 2) mod 2 > 0 ? 'even' : 'odd'}">
-                            <td><proposalsPortlet:userLinkSimple userId="${supporter.userId}" text="${supporter.displayName}" /></td>
+                            <td><xcolab:userLinkSimple memberId="${supporter.userId}" text="${supporter.displayName}" /></td>
                             <td>
                                 <c:if test="${fn:length(proposal.supporters) > status.index}">
-                                    <proposalsPortlet:userLinkSimple userId="${proposal.supporters[status.index+1].userId}" text="${proposal.supporters[status.index+1].displayName}" />
+                                    <xcolab:userLinkSimple memberId="${proposal.supporters[status.index+1].userId}" text="${proposal.supporters[status.index+1].displayName}" />
                                 </c:if>
                             </td>
                         </tr>
@@ -166,7 +166,7 @@
                                 <table class="contributors2">
 
                                     <c:forEach var="contributingMember" items="${contributingProposals.value}" varStatus="statusMember">
-                                        <proposalsPortlet:userLinkSimple userId="${contributingMember.userId}" text="${contributingMember.screenName}" />
+                                        <xcolab:userLinkSimple memberId="${contributingMember.userId}" text="${contributingMember.screenName}" />
                                         <c:if test="${fn:length(contributingProposals.value) != 1 and statusMember.index+1 != fn:length(contributingProposals.value)}">, </c:if>
                                     </c:forEach>
 

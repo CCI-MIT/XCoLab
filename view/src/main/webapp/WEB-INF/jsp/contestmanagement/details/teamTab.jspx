@@ -1,8 +1,8 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
 		  xmlns:c="http://java.sun.com/jsp/jstl/core"
 		  xmlns:form="http://www.springframework.org/tags/form"
-		  xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
 
@@ -27,12 +27,12 @@
 			<h2>Contest team</h2>
 		<form:form action="${updateContestTeamURL }" commandName="contestTeamBean" id="editForm" method="post">
 			<div class="teamTabContainer">
-				<collab:teamBox title="IAFellows" list="${contestWrapper.contestImpactAssessmentFellows}"/>
-				<collab:teamBox title="Advisors" list="${contestWrapper.contestAdvisors}"/>
-				<collab:teamBox title="Fellows" list="${contestWrapper.contestFellows}"/>
-				<collab:teamBox title="Judges" list="${contestWrapper.contestJudges}"/>
+				<xcolab:teamBox title="IAFellows" list="${contestWrapper.contestImpactAssessmentFellows}"/>
+				<xcolab:teamBox title="Advisors" list="${contestWrapper.contestAdvisors}"/>
+				<xcolab:teamBox title="Fellows" list="${contestWrapper.contestFellows}"/>
+				<xcolab:teamBox title="Judges" list="${contestWrapper.contestJudges}"/>
 
-				<!-- <collab:teamBox title="Managers" list="${contestWrapper.contestManager}"/> -->
+				<!-- <xcolab:teamBox title="Managers" list="${contestWrapper.contestManager}"/> -->
 			</div>
 		</form:form>
 		<div class="clear"><!-- --></div>

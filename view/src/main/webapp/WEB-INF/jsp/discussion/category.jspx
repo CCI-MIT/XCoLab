@@ -1,8 +1,7 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          version="2.0" xmlns:spring="http://www.springframework.org/tags">
+          xmlns:spring="http://www.springframework.org/tags">
 
     <!--@elvariable id="currentCategory" type="org.xcolab.client.comment.pojo.Category"-->
     <!--@elvariable id="categories" type="java.util.List<org.xcolab.client.comment.pojo.Category>"-->
@@ -25,7 +24,7 @@
                 window.location = '/discussion/' + newUrl;
             }
         </script>
-        <collab:content articleId="${communityTopContentArticleId}" />
+        <xcolab:content articleId="${communityTopContentArticleId}" />
         <div id="content">
             <div id="bread" class="pro">
                 <a href="/members"><spring:message code="colab.breadcrums.community"/></a>&#160;
@@ -84,28 +83,28 @@
                                 <c:set var="sortURL" value="${baseUrl}?sortColumn=TITLE&amp;sortAscending=${!sortAscending}" />
 
                                 <a class="js-Tooltip" title="click to sort by title" href="${sortURL }"><spring:message code="discussion.categorypage.table.title"/></a>
-                                <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="TITLE" />
+                                <xcolab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="TITLE" />
                             </th>
 
                             <th class="c-Table__cell--title">
                                 <c:set var="sortURL" value="${baseUrl}?sortColumn=REPLIES&amp;sortAscending=${!sortAscending}" />
 
                                 <a class="js-Tooltip" title="click to sort by replies" href="${sortURL }"><spring:message code="discussion.categorypage.table.replies"/></a>
-                                <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="REPLIES" />
+                                <xcolab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="REPLIES" />
                             </th>
 
                             <th class="c-Table__cell--title">
                                 <c:set var="sortURL" value="${baseUrl}?sortColumn=LAST_COMMENTER&amp;sortAscending=${!sortAscending}" />
 
                                 <a class="js-Tooltip" title="click to sort by last commenter" href="${sortURL }"><spring:message code="discussion.categorypage.table.lastcommenter"/></a>
-                                <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="LAST_COMMENTER" />
+                                <xcolab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="LAST_COMMENTER" />
                             </th>
 
                             <th class="c-Table__cell--title">
                                 <c:set var="sortURL" value="${baseUrl}?sortColumn=DATE&amp;sortAscending=${!sortAscending}" />
 
                                 <a class="js-Tooltip" title="click to sort by date" href="${sortURL }"><spring:message code="discussion.categorypage.table.date" /></a>
-                                <collab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="DATE" />
+                                <xcolab:sortArrow sortAscending="${sortAscending}" sortColumn="${sortColumn}" currentColumn="DATE" />
                             </th>
                         </tr>
                         </thead>
@@ -113,7 +112,7 @@
                             <tr class="c-Table__row">
                                 <td class="c-Table__cell"><a href="${thread.linkUrl}">${thread.title}</a></td>
                                 <td class="c-Table__cell">${thread.commentsCount}</td>
-                                <td class="c-Table__cell"><collab:userLinkSimple userId="${thread.lastActivityAuthor.userId}" text="${thread.lastActivityAuthor.displayName}"/></td>
+                                <td class="c-Table__cell"><xcolab:userLinkSimple memberId="${thread.lastActivityAuthor.userId}" text="${thread.lastActivityAuthor.displayName}"/></td>
                                 <td class="c-Table__cell">${thread.lastActivityDateFormatted}</td>
                             </tr>
                         </c:forEach>

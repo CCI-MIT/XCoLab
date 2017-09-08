@@ -1,8 +1,9 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:spring="http://www.springframework.org/tags">
+
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout title="Search">
     <!--@elvariable id="searchBean" type="org.xcolab.view.pages.search.SearchBean"-->
@@ -21,7 +22,14 @@
         <a class="c-Button__primary" href="javascript:;"
            onclick="window.location = '/search?searchPhrase=' + encodeURI($('#searchPhrase').val())"><spring:message code="search.button"/></a>
         <c:if test="${searchBean.showBlogReference and not empty searchBean.searchPhrase}">
-            <collab:blogSearchLink searchPhrase="${searchBean.searchPhrase}" target="${searchBean.searchBlogURL}"/>
+            <div class="searchBlogLink">
+                <span><spring:message code="search.didnotfind"/></span>&#160;&#160;
+                <b>
+                    <a href="${searchBean.searchBlogURL}">
+                        <collab:message code="search.colabnews" arguments="${searchBean.searchPhrase}"/>
+                    </a>
+                </b>
+            </div>
         </c:if>
     </div>
 

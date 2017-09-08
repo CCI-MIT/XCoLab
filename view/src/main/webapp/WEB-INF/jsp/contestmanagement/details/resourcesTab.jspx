@@ -1,8 +1,9 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:form="http://www.springframework.org/tags/form"
-		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:form="http://www.springframework.org/tags/form"
+		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
 
@@ -14,7 +15,7 @@
 
     <c:set var="updateContestResourcesURL" value="/admin/contest/details/contestId/${contestWrapper.contestPK}/tab/RESOURCES/update" />
 
-    <xcolab:loadCkEditor />
+    <xcolab:requireLibrary name="CKEditor" />
 
 	<div class="c-ContentBox">
 

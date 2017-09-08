@@ -1,4 +1,3 @@
-//PORTLET PREFERENCES: move proposals
 
 function setupProposalMove(){
     if ($("#portlet-preferences").length == 0) {
@@ -44,8 +43,8 @@ function setupProposalMove(){
         $("#proposalContainer").hide();
         $("#proposalIdsToBeMoved").val("");
 
-        $("#selectProposal option").each(clearOptions);
-        $("#selectTargetContestPhase option").each(clearOptions);
+        $("#selectProposal").find("option").each(clearOptions);
+        $("#selectTargetContestPhase").find("option").each(clearOptions);
 
         if (id == -1) {
             return;
@@ -78,4 +77,4 @@ function setupProposalMove(){
         }
 
     });
-};
+}

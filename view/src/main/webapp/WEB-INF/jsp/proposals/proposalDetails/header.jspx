@@ -1,10 +1,8 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-    xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-    xmlns:spring="http://www.springframework.org/tags"
-	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-	version="2.0">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
 	<!--@elvariable id="edit" type="java.lang.Boolean"-->
     <!--@elvariable id="tabs" type="java.util.List<org.xcolab.view.pages.proposals.tabs.ProposalTabWrapper>"-->
@@ -27,12 +25,12 @@
 					<div class="prop-description">
                         <collab:message code="contests.proposal.header.caption" contestType="${contestType}">
                             <spring:argument>
-                                <collab:contestLink contest="${contest}" />
+                                <xcolab:contestLink contest="${contest}" />
                             </spring:argument>
                             <spring:argument>
                                 <c:choose>
                                     <c:when test="${empty proposal.team}">
-                                        <proposalsPortlet:userLinkSimple userId="${proposal.authorId}" text="${proposal.author.screenName}" />
+                                        <xcolab:userLinkSimple memberId="${proposal.authorId}" text="${proposal.author.screenName}" />
                                     </c:when>
                                     <c:otherwise>
                                         ${proposal.team}
@@ -90,7 +88,7 @@
 			<div class="inner">
 				<div class="edit-prop">
 					<div class="edit-prop-butts">
-						<collab:proposalLink proposal="${proposal}" text="Edit" edit="true" tab="${currentTab == 'DESCRIPTION' ? null : currentTab }"/>
+						<xcolab:proposalLink proposal="${proposal}" text="Edit" edit="true" tab="${currentTab == 'DESCRIPTION' ? null : currentTab }"/>
 					</div>
 				</div>
 			</div>
@@ -104,7 +102,7 @@
         </script>
     </c:if>
 
-    <xcolab:loadCkEditor />
+    <xcolab:requireLibrary name="CKEditor" />
     <xcolab:requireLibrary name="autoSuggest" />
     <xcolab:requireLibrary name="jQuery UI" />
     <xcolab:script src="${_themeJsFolder}/proposals/proposals.js"/>

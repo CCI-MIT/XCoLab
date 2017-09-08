@@ -1,21 +1,20 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:spring="http://www.springframework.org/tags">
     <!--@elvariable id="messageBean" type="org.xcolab.view.pages.messaging.beans.MessageBean"-->
     <!--@elvariable id="user" type="org.xcolab.client.members.pojo.Member"-->
 
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout title="${messageBean.subject} - Messages">
-    <collab:content articleId="${communityTopContentArticleId}" />
+    <xcolab:content articleId="${communityTopContentArticleId}" />
     <div id="content">
         <div id="bread" class="pro">
             <a href="/members"><spring:message code="colab.breadcrums.community"/></a>
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
             <a href="/members"><spring:message code="colab.breadcrums.members"/></a>
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
-            <collab:userLinkSimple userId="${user.userId}" text="${user.displayName}" />
+            <xcolab:userLinkSimple memberId="${user.userId}" text="${user.displayName}" />
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />
             <a href="/messaging"><spring:message code="colab.breadcrums.messages"/></a>
             <img src="${_themeImageFolder}/arrow.gif" width="8" height="8" />

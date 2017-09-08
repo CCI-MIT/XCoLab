@@ -1,10 +1,7 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          version="2.0">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <!--@elvariable id="proposalsPermissions" type="org.xcolab.view.pages.proposals.permissions.ProposalsPermissions"-->
     <!--@elvariable id="contest" type="org.xcolab.client.contest.pojo.Contest"-->
@@ -45,17 +42,17 @@
                     </div>
                 </c:if>
                 <h4>
-                    <collab:proposalLink proposal="${proposal}" phase="${contestPhase}" escape="false" />
+                    <xcolab:proposalLink proposal="${proposal}" phase="${contestPhase}" escape="false" />
                     /&#160;
                     <c:choose>
                         <c:when test="${not empty proposal.team}">
-                            <collab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.team}"/>
+                            <xcolab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.team}"/>
                         </c:when>
                         <c:when test="${proposal.members.size() > 1}">
-                            <collab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.author.displayName} and ${proposal.members.size() - 1} ${proposal.members.size() > 2 ? 'others' : 'other'}"/>
+                            <xcolab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.author.displayName} and ${proposal.members.size() - 1} ${proposal.members.size() > 2 ? 'others' : 'other'}"/>
                         </c:when>
                         <c:otherwise>
-                            <collab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.author.displayName}"/>
+                            <xcolab:proposalLink proposal="${proposal}" tab="TEAM" text="${proposal.author.displayName}"/>
                         </c:otherwise>
                     </c:choose>
                 </h4>
@@ -64,7 +61,7 @@
                 <td class="c-Table__cell b-layout__center votes no-border">
                     <div class="highlight">
                         <img src="${_themeImageFolder}/icon-proposal-vote-small.png" />
-                        <collab:proposalLink proposal="${proposal}" text="${proposal.votesCountFromCache}" />
+                        <xcolab:proposalLink proposal="${proposal}" text="${proposal.votesCountFromCache}" />
                     </div>
                 </td>
             </c:if>
@@ -72,14 +69,14 @@
                 <td class="c-Table__cell b-layout__center supporters no-border">
                     <div class="highlight">
                         <img src="${_themeImageFolder}/icon-proposal-support.png" />
-                        <collab:proposalLink proposal="${proposal}" text="${proposal.supportersCountCached}" tab="TEAM"/>
+                        <xcolab:proposalLink proposal="${proposal}" text="${proposal.supportersCountCached}" tab="TEAM"/>
                     </div>
                 </td>
             </c:if>
             <td class="c-Table__cell b-layout__center comments no-border">
                 <div class="highlight">
                     <img src="${_themeImageFolder}/icon-proposal-comments.png" />
-                    <collab:proposalLink proposal="${proposal}" text="${proposal.commentsCount}" tab="COMMENTS" />
+                    <xcolab:proposalLink proposal="${proposal}" text="${proposal.commentsCount}" tab="COMMENTS" />
                 </div>
             </td>
             <c:if test="${not contestPhase.completed}">

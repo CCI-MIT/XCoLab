@@ -1,6 +1,4 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
-    xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-	version="2.0">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
 
 	<script type="text/javascript">
 		jQuery(function() {
@@ -14,6 +12,6 @@
 	<div class="c-ContentBox">
 		<h1>Ask your questions here: </h1>
 		<!-- TODO: re-enable comments -->
-		<!--<collab:discussionComments threadId="${currentTabWrapped.discussionId}" />-->
+		<!--<xcolab:discussionComments threadId="${currentTabWrapped.discussionId}" />-->
 	</div>
 </jsp:root>
