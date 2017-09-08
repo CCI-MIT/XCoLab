@@ -5,7 +5,7 @@
     <jsp:directive.attribute name="sortColumn" type="java.lang.String" required="true" rtexprvalue="true" description="Sort column" />
     <jsp:directive.attribute name="currentColumn" type="java.lang.String" required="true" rtexprvalue="true" description="Current column" />
 
-    <!-- TODO: use bootstrap caret class instead of images -->
+    <!-- TODO COLAB-2217: use bootstrap caret class instead of images -->
     <c:if test="${sortColumn == currentColumn }">
         <div class="c-Table__sortArrow">
             <c:choose>

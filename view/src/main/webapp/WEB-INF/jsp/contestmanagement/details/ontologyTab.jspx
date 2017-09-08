@@ -37,7 +37,7 @@
 							<h2>${ontologySpace.name } <span>${ontologySpace.description}</span></h2>
 							<span class="section-icon"><!--  --></span>
 						</a>
-						<xcolab:outline_ontologyTermWithChildren terms="${ontologySpace.rootTerms }" section="${status.index+1 }" level="1" />
+						<xcolab:outline_ontologyTermWithChildren terms="${ontologySpace.rootTerms }" section="${status.index+1 }" level="1" isEditable="true" />
 					</li>
 				</c:forEach>
 			</ul>
