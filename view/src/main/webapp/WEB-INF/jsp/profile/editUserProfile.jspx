@@ -410,13 +410,17 @@
     </c:if>
 
 	<xcolab:requireLibrary name="CKEditor" />
+    <!-- TODO COLAB-1191: also used in register -->
 	<script>
+        jQuery(function() {
+            updateTextarea();
+        });
+
 		function updateTextarea() {
 			for ( var instance in CKEDITOR.instances) {
 				CKEDITOR.instances[instance].updateElement();
 			}
 		}
-		updateTextarea();
 	</script>
 
 

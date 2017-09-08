@@ -353,7 +353,7 @@
 
     <!-- CkEditor -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['CKEditor']}" src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/ckeditor.js" />
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['CKEditor']}" src="${_themeJsFolder}/configureCkEditor" />
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['CKEditor']}" src="${_themeJsFolder}/configureCkEditor.js" />
 
     <!-- i18n scripts -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['i18n']}" src="${_themeJsFolder}/i18n.js" />

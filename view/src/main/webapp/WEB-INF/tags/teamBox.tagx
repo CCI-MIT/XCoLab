@@ -61,16 +61,11 @@
             var memberList = "${memberList}";
             var currentUserMap = {};
 
-        <
-            c:forEach
-            var =
-            "member"
-            items = "${list}" >
-                    memberIds.push("" + ${member.id_});
+        <c:forEach var="member" items = "${list}">
+            memberIds.push("" + ${member.id_});
             members.push(${member.id_});
             initialMembers.push(${member.id_});
-        <
-            /c:forEach>
+        </c:forEach>
 
             function updateMemberList() {
                 jQuery("#" + memberList).val(memberIds);
