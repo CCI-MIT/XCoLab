@@ -31,6 +31,7 @@
     <!--@elvariable id="_isLoggedIn" type="java.lang.Boolean"-->
     <!--@elvariable id="_isAdmin" type="java.lang.Boolean"-->
 
+    <!--@elvariable id="_serverEnvironment" type="org.xcolab.client.admin.enums.ServerEnvironment"-->
     <!--@elvariable id="_isProduction" type="java.lang.Boolean"-->
 
     <!--@elvariable id="_showImpersonationBar" type="java.lang.Boolean"-->
@@ -61,7 +62,12 @@
     <!--@elvariable id="_blogAdminUrl" type="java.lang.String"-->
     <!--@elvariable id="_colabLongName" type="java.lang.String"-->
     <!--@elvariable id="_colabShortName" type="java.lang.String"-->
+
     <!--@elvariable id="_googleAnalyticsKey" type="java.lang.String"-->
+    <!--@elvariable id="_pingdomRumId" type="java.lang.String"-->
+    <!--@elvariable id="_typekitId" type="java.lang.String"-->
+    <!--@elvariable id="_typekitIdLocal" type="java.lang.String"-->
+
     <!--@elvariable id="_betaRibbonShow" type="java.lang.Boolean"-->
     <!--@elvariable id="_showSearchMenuItem" type="java.lang.Boolean"-->
     <!--@elvariable id="_openGraphShareTitle" type="java.lang.String"-->
@@ -118,21 +124,14 @@
 
     <!-- ============ Fonts ============ -->
 
-    <!-- TODO: move to typekit? -->
+    <!-- TODO COLAB-2218: move to typekit? -->
     <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet" type="text/css" />
 
     <!-- Typekit (fonts) -->
-    <!-- TODO: make kit id configurable via attribute -->
-    <c:choose>
-        <c:when test='${request.serverName == "localhost"}'>
-            <!-- local typekit -->
-            <xcolab-scripts:loadTypekit kitId="uvv6okq" />
-        </c:when>
-        <c:otherwise>
-            <!-- production typekit -->
-            <xcolab-scripts:loadTypekit kitId="bmu2xym" />
-        </c:otherwise>
-    </c:choose>
+    <c:if test="${not empty _typekitId}">
+        <c:set var="typekitId" value="${_serverEnvironment eq 'LOCAL' ? _typekitIdLocal :_typekitId}" />
+        <xcolab-scripts:loadTypekit kitId="${typekitId}" />
+    </c:if>
 
 
     <!-- ============ Stylesheets ============ -->
@@ -387,9 +386,8 @@
     <!-- ============ Analytics and tracking ============ -->
 
     <c:if test="${_isProduction}">
-        <!-- TODO: make prumId configurable -->
         <xcolab-scripts:analyticsScripts googleAnalyticsKey="${_googleAnalyticsKey}"
-                                         pingdomRumId="581356d2a2291ebc638212ff"
+                                         pingdomRumId="${_pingdomRumId}"
                                          analyticsAttribute="${__analyticsAttribute}"
                                          httpSession="${request.session}" member="${_member}" />
     </c:if>

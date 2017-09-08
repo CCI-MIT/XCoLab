@@ -74,6 +74,7 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
 
             final ServerEnvironment serverEnvironment =
                     PlatformAttributeKey.SERVER_ENVIRONMENT.get();
+            modelAndView.addObject("_serverEnvironment", serverEnvironment);
             final boolean isProductionEnvironment = serverEnvironment == ServerEnvironment.PRODUCTION;
             modelAndView.addObject("_isProduction", isProductionEnvironment);
 
@@ -124,6 +125,15 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
 
             final String googleAnalyticsKey = ConfigurationAttributeKey.GOOGLE_ANALYTICS_KEY.get();
             modelAndView.addObject("_googleAnalyticsKey", googleAnalyticsKey);
+
+            final String pingdomRumId = ConfigurationAttributeKey.PINGDOM_RUM_ID.get();
+            modelAndView.addObject("_pingdomRumId", pingdomRumId);
+
+            final String typekitId = ConfigurationAttributeKey.TYPEKIT_KIT_ID.get();
+            modelAndView.addObject("_typekitId", typekitId);
+
+            final String typekitIdLocal = ConfigurationAttributeKey.TYPEKIT_KIT_ID_LOCALHOST.get();
+            modelAndView.addObject("_typekitIdLocal", typekitIdLocal);
 
             modelAndView
                     .addObject("_betaRibbonShow", ConfigurationAttributeKey.BETA_RIBBON_SHOW.get());
