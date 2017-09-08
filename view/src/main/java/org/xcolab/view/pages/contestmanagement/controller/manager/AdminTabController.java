@@ -170,7 +170,7 @@ public class AdminTabController extends AbstractTabController {
 
     @PostMapping("tab/ADMIN/batchRegister")
     public String batchRegisterMembers(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam String members, @RequestParam Boolean asGuests) {
+            @RequestParam String members, @RequestParam(defaultValue = "false") Boolean asGuests) {
         final String[] memberStrings = members.split("\\r\\n|\\n|\\r");
         for (String memberString : memberStrings) {
             final String[] values = memberString.split(";");
