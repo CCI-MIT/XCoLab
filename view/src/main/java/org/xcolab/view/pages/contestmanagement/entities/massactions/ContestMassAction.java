@@ -9,7 +9,6 @@ public abstract class ContestMassAction {
 
     private String displayName;
     private String reverseDisplayName;
-    private Boolean hasReverseAction = false;
 
     abstract void execute(HttpServletRequest request, HttpServletResponse response,
             ContestOverviewWrapper contestOverviewWrapper);
@@ -20,9 +19,5 @@ public abstract class ContestMassAction {
 
     public String getReverseDisplayName() {
         return reverseDisplayName;
-    }
-
-    public Boolean getHasReverseAction() {
-        return hasReverseAction;
     }
 }
