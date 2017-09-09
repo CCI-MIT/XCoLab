@@ -11,7 +11,6 @@ import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.widgets.WidgetPreference;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -92,19 +91,20 @@ public class RandomProposalsPreferences extends WidgetPreference {
         return ConfigurationAttributeKey.PORTLET_RANDOM_PROPOSALS_PREFERENCES;
     }
 
-    public void submit() throws IOException {
-        JSONObject prefsz = new JSONObject();
+    @Override
+    public void savePreferences() {
+        JSONObject preferences = new JSONObject();
 
-        prefsz.put(SELECTED_PHASES_PREFERENCE,
+        preferences.put(SELECTED_PHASES_PREFERENCE,
                 StringUtils.join(convertLongsToStrings(selectedPhases), "-"));
-        prefsz.put(FLAG_FILTER_PREFERENCE, flagFiltersStr);
-        prefsz.put(TITLE_PREFERENCE, title);
-        prefsz.put(FEED_SIZE_PREFERENCE, feedSize + "");
-        prefsz.put(ALL_PROPOSALS_TITLE, allProposalsTitle);
-        prefsz.put(ALL_PROPOSALS_URL, allProposalsUrl);
-        prefsz.put(IS_COMPACT, Boolean.toString(isCompact));
+        preferences.put(FLAG_FILTER_PREFERENCE, flagFiltersStr);
+        preferences.put(TITLE_PREFERENCE, title);
+        preferences.put(FEED_SIZE_PREFERENCE, feedSize + "");
+        preferences.put(ALL_PROPOSALS_TITLE, allProposalsTitle);
+        preferences.put(ALL_PROPOSALS_URL, allProposalsUrl);
+        preferences.put(IS_COMPACT, Boolean.toString(isCompact));
 
-        savePreferences(prefsz, preferenceId);
+        savePreferencesInternal(preferences, preferenceId);
 
     }
 

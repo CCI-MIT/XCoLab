@@ -43,7 +43,7 @@ public class DiscussionPreferences extends WidgetPreference {
 
         prefs.put(CATEGORY_GROUP_ID_PREFERENCE, categoryGroupId + "");
 
-        savePreferences(prefs,null);
+        savePreferencesInternal(prefs,null);
 
         return null;
     }

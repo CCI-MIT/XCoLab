@@ -61,7 +61,9 @@ public abstract class WidgetPreference {
 
     public abstract AttributeGetter<String> getConfigurationAttribute();
 
-    protected void savePreferences(JSONObject prefsToSave, String id) {
+    public abstract void savePreferences();
+
+    protected void savePreferencesInternal(JSONObject prefsToSave, String id) {
         final String preferenceId = (id != null ? id : DEFAULT_ID);
 
         JSONObject currentPreferences = new JSONObject(getConfigurationAttribute().get());
@@ -116,6 +118,11 @@ public abstract class WidgetPreference {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+
+    public interface Supplier<T extends WidgetPreference> {
+        T get(String id, String language);
     }
 
 }

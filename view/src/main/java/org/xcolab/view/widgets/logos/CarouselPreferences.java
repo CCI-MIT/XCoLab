@@ -80,7 +80,8 @@ public class CarouselPreferences extends WidgetPreference {
         return ConfigurationAttributeKey.PORTLET_CAROUSEL_PREFERENCES;
     }
 
-    public void submit() {
+    @Override
+    public void savePreferences() {
         JSONObject prefsToSave = new JSONObject();
         prefsToSave.put(TITLE_PREFERENCE, title);
         JSONArray ja = new JSONArray();
@@ -88,7 +89,7 @@ public class CarouselPreferences extends WidgetPreference {
         logos.forEach(logo -> ja.put(logo.toJson()));
         prefsToSave.put(LOGOS_PREFERENCE, ja);
 
-        savePreferences(prefsToSave, preferenceId);
+        savePreferencesInternal(prefsToSave, preferenceId);
 
     }
 }

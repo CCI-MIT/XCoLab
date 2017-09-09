@@ -8,7 +8,6 @@ import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.widgets.WidgetPreference;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,7 +79,8 @@ public class StaffMembersPreferences extends WidgetPreference implements Seriali
         return ConfigurationAttributeKey.PORTLET_STAFF_MEMBERS_PREFERENCES;
     }
 
-    public String store() throws IOException {
+    @Override
+    public void savePreferences() {
         JSONObject prefs = new JSONObject();
 
         prefs.put(COLUMN_AMOUNT, String.valueOf(columnAmount));
@@ -89,9 +89,7 @@ public class StaffMembersPreferences extends WidgetPreference implements Seriali
         prefs.put(DISPLAY_URL, String.valueOf(displayUrl));
         prefs.put(PORTLET_TITLE, String.valueOf(portletTitle));
 
-        savePreferences(prefs, preferenceId);
-
-        return null;
+        savePreferencesInternal(prefs, preferenceId);
     }
 
     public String getPortletTitle() {

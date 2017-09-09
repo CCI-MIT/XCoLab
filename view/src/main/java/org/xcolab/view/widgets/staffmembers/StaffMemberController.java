@@ -1,9 +1,9 @@
 package org.xcolab.view.widgets.staffmembers;
 
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,37 +18,55 @@ import org.xcolab.client.members.legacy.enums.CategoryRole;
 import org.xcolab.client.members.legacy.enums.CategoryRole.NoSuchCategoryRoleException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.StaffMember;
+import org.xcolab.view.widgets.AbstractWidgetController;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-@RequestMapping("/staffmemberswidget")
-public class StaffMemberController {
+//@RequestMapping("/staffmemberswidget")
+@RequestMapping(StaffMemberController.BASE_URL)
+public class StaffMemberController extends AbstractWidgetController<StaffMembersPreferences> {
+
+    public static final String BASE_URL = "/widgets/staffmembers";
+
+    protected StaffMemberController() {
+        super(BASE_URL, StaffMembersPreferences::new);
+    }
+
+    @GetMapping(AbstractWidgetController.PREFERENCES_URL_PATH)
+    public String showPreferences(HttpServletResponse response, Model model, Member member,
+            @RequestParam(required = false) String preferenceId,
+            @RequestParam(required = false) String language) {
+        model.addAttribute("categories", StaffMembersPreferences.getCategories());
+        return showPreferencesInternal(response, model,  member, preferenceId, language,
+                "/staffmemberswidget/editPreferences");
+    }
+
+
+    @PostMapping(AbstractWidgetController.PREFERENCES_URL_PATH)
+    public String savePreferences(HttpServletRequest request, HttpServletResponse response,
+            Member member, StaffMembersPreferences preferences) {
+        return savePreferencesInternal(request, response, member, preferences);
+    }
 
     @GetMapping
-    public String showStaffMembers(HttpServletRequest request, HttpServletResponse response,
-            Model model, @RequestParam(required = false) String preferenceId,
+    public String show(Model model,
+            @RequestParam(required = false) String preferenceId,
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) Integer columnAmount,
             @RequestParam(required = false) Boolean displayPhoto,
             @RequestParam(required = false) Boolean displayUrl) {
 
-
-        Locale locale = LocaleContextHolder.getLocale();
-        StaffMembersPreferences preferences =
-                new StaffMembersPreferences(preferenceId, locale.getLanguage());
-
-
+        StaffMembersPreferences preferences = getPreferences(preferenceId);
         model.addAttribute("preferences", preferences);
 
         categoryId = (categoryId != null) ? (categoryId) : (preferences.getCategoryId());
@@ -72,7 +90,7 @@ public class StaffMemberController {
 
         if (categoryRole == null || categoryRole.getRole() == null) {
 
-            if (categoryId == CategoryRole.ALUMNI.getCategoryId()) {
+            if (categoryId == CategoryRole.ALUMNI.getCategoryId().longValue()) {
                 staffMembersOverrides.sort(Comparator.comparing(StaffMemberWrapper::getLastName));
             } else {
                 staffMembersOverrides.sort(Comparator.comparing(StaffMemberWrapper::getSort));
@@ -158,15 +176,14 @@ public class StaffMemberController {
         sm.setUserId(member.getId_());
         sm.setCategoryId(categoryRole.getCategoryId());
         final String userImageDomain = PlatformAttributeKey.IMAGES_UPLOADED_DOMAIN.get();
-        sm.setPhotoUrl(userImageDomain + "/image/user_male_portrait?userId=" + member.getId_()
-                + "&portraitId=" + member.getPortraitId() + "");
+        sm.setPhotoUrl(userImageDomain + "/image/member/" + member.getPortraitId());
         sm.setFirstNames(member.getFirstName());
         sm.setLastName(member.getLastName());
         sm.setSort(0);
         return new StaffMemberWrapper(sm);
     }
 
-    private List<StaffMemberWrapper> getStaffMembers(@RequestParam long categoryId) {
+    private List<StaffMemberWrapper> getStaffMembers(long categoryId) {
 
         List<StaffMemberWrapper> staffMembers = new ArrayList<>();
 

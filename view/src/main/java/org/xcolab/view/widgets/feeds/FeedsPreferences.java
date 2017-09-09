@@ -7,7 +7,6 @@ import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.widgets.WidgetPreference;
 
-import java.io.IOException;
 import java.io.Serializable;
 
 public class FeedsPreferences extends WidgetPreference implements Serializable {
@@ -73,7 +72,8 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
         return ConfigurationAttributeKey.PORTLET_FEED_PREFERENCES;
     }
 
-    public String store() throws IOException {
+    @Override
+    public void savePreferences() {
         JSONObject prefs = new JSONObject();
 
         prefs.put(FEED_SIZE_PREF, String.valueOf(feedSize));
@@ -85,9 +85,7 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
         prefs.put(FEED_SEE_MORE_LINK_SHOWN, String.valueOf(seeMoreLinkShown));
         prefs.put(FEED_MAX_LENGTH, String.valueOf(feedMaxLength));
 
-        savePreferences(prefs, preferenceId);
-
-        return null;
+        savePreferencesInternal(prefs, preferenceId);
     }
 
 

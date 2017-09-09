@@ -80,7 +80,7 @@ public class ProposalsPreferencesWrapper extends WidgetPreference {
         jsonPreferences.put(CONTEST_TYPE_ID, contestTypeId);
 
 
-        savePreferences(jsonPreferences,preferenceId);
+        savePreferencesInternal(jsonPreferences,preferenceId);
     }
 
     public String getTitle(){

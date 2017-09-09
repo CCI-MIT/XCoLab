@@ -1,16 +1,19 @@
 package org.xcolab.view.widgets.proposals;
 
-
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.view.widgets.AbstractWidgetController;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,9 +24,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-public class RandomProposalsController {
+//@GetMapping("/randomproposalswidget")
+@RequestMapping(RandomProposalsController.BASE_URL)
+public class RandomProposalsController extends AbstractWidgetController<RandomProposalsPreferences> {
 
-    @GetMapping("/randomproposalswidget")
+    public static final String BASE_URL = "/widgets/proposals";
+
+    protected RandomProposalsController() {
+        super(BASE_URL, RandomProposalsPreferences::new);
+    }
+
+    @GetMapping(AbstractWidgetController.PREFERENCES_URL_PATH)
+    public String showPreferences(HttpServletResponse response, Model model, Member member,
+            @RequestParam(required = false) String preferenceId,
+            @RequestParam(required = false) String language) {
+        return showPreferencesInternal(response, model,  member, preferenceId, language,
+                "/randomproposalswidget/editPreferences");
+    }
+
+
+    @PostMapping(AbstractWidgetController.PREFERENCES_URL_PATH)
+    public String savePreferences(HttpServletRequest request, HttpServletResponse response,
+            Member member, RandomProposalsPreferences preferences) {
+        return savePreferencesInternal(request, response, member, preferences);
+    }
+
+    @GetMapping
     public String showRandomProposals(HttpServletRequest request, HttpServletResponse response,
             Model model, @RequestParam(required = false) String preferenceId) {
 
@@ -45,7 +71,7 @@ public class RandomProposalsController {
         List<Proposal> ret = new ArrayList<>();
         List<Proposal> proposals = getAvailableProposals(preferences);
 
-        //TODO LR: remove loop and use micro service pojo
+        //TODO: remove loop and use micro service pojo
         if (proposals != null) {
             Collections.shuffle(proposals);
             for (int i = 0; i < proposals.size() && i < preferences.getFeedSize(); ++i) {

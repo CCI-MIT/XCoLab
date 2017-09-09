@@ -5,25 +5,61 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.view.util.pagination.SortFilterPage;
+import org.xcolab.view.widgets.AbstractWidgetController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-public class FeedsController {
+public class FeedsController extends AbstractWidgetController<FeedsPreferences> {
+
+    public static final String BASE_URL = "/widgets/feeds";
 
     private final List<FeedTypeDataProvider> dataProviderList;
 
     @Autowired
-    public FeedsController(List<FeedTypeDataProvider> dataProviderList) {
+    protected FeedsController(List<FeedTypeDataProvider> dataProviderList) {
+        super(BASE_URL, FeedsPreferences::new);
         this.dataProviderList = dataProviderList;
+    }
+
+    @GetMapping(BASE_URL + AbstractWidgetController.PREFERENCES_URL_PATH)
+    public String showPreferences(HttpServletResponse response, Model model, Member member,
+            @RequestParam(required = false) String preferenceId,
+            @RequestParam(required = false) String language) {
+
+        // populate feed types
+        Map<String, String> feedTypes = new HashMap<>();
+        for (FeedType feedType : FeedType.values()) {
+            feedTypes.put(feedType.name(), feedType.name());
+        }
+        model.addAttribute("feedTypes", feedTypes);
+
+        Map<String, String> feedDisplayStyles = new HashMap<>();
+        feedDisplayStyles.put("FULL", "FULL");
+        feedDisplayStyles.put("SHORT", "SHORT");
+        model.addAttribute("feedDisplayStyles", feedDisplayStyles);
+
+        return showPreferencesInternal(response, model,  member, preferenceId, language,
+                "/feedswidget/editPreferences");
+    }
+
+
+    @PostMapping(BASE_URL + AbstractWidgetController.PREFERENCES_URL_PATH)
+    public String savePreferences(HttpServletRequest request, HttpServletResponse response,
+            Member member, FeedsPreferences preferences) {
+        return savePreferencesInternal(request, response, member, preferences);
     }
 
     @GetMapping("/activities")
@@ -58,10 +94,11 @@ public class FeedsController {
                 return ftpdp.populateModel(request, response, sortFilterPage, preferences, model);
             }
         }
+        //TODO: error handling!
         return null;
     }
 
-    @GetMapping("/feedswidget")
+    @GetMapping(BASE_URL)
     public String showFeedWidget(HttpServletRequest request, HttpServletResponse response,
             SortFilterPage sortFilterPage, Model model) {
         return showFeed(request, response, sortFilterPage, model, true);

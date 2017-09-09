@@ -75,7 +75,7 @@ public class ContestPreferences extends WidgetPreference {
         return ConfigurationAttributeKey.PORTLET_CONTESTS_PREFERENCES;
     }
 
-    public void submit() throws IOException {
+    public void savePreferences() throws IOException {
         JSONObject prefsToSave = new JSONObject();
 
         prefsToSave
@@ -86,7 +86,7 @@ public class ContestPreferences extends WidgetPreference {
         prefsToSave.put(SHOW_COUNTS, Boolean.toString(showCounts));
         prefsToSave.put(ALL_CONTESTS_URL, allContestsUrl);
 
-        savePreferences(prefsToSave, this.preferenceId);
+        savePreferencesInternal(prefsToSave, this.preferenceId);
     }
 
     public List<Long> getSelectedContests() {
