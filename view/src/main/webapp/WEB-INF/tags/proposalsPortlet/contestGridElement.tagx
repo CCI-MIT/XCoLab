@@ -11,6 +11,7 @@
     <div class="c-ContestBox" style="${ (index) ? 'margin-right: 25px;' : ''}">
 		<div class="c-ContestBox__image">
         	<a href="${contest.contestUrl}">
+                
             	<img src="${contest.logoPath}" width="151" height="151" alt="${contest.contestShortNameWithEndYear }" />
             </a>
         </div>
