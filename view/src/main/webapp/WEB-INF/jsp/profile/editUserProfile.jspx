@@ -43,8 +43,10 @@
     <c:set var="deleteProfileUrl" value="/members/profile/${userBean.userId}/delete" />
 
 	<h1><spring:message code="profile.title.edit" /></h1>
-	<div class="is-required">
-		<span class="required-field"><!-- --></span> <spring:message code="profile.validation.mandatory" />.
+	<div class="text-muted">
+		<em>
+            <span class="required-field"><!-- --></span> <spring:message code="profile.validation.mandatory" />.
+        </em>
 	</div>
 
 
@@ -77,7 +79,7 @@
                                 <spring:message code="profile.form.fields.firstname"/>
 							</th>
 							<td>
-								<form:input id="firstName" path="firstName" cssClass="profile_input"/>
+								<form:input id="firstName" path="firstName" cssClass="form-control"/>
 								<div class="reg_errors"><!--  -->
 									<form:errors cssClass="c-Alert c-Alert__error" path="firstName" />
 								</div>
@@ -88,7 +90,7 @@
                                 <spring:message code="profile.form.fields.lastname"/>
 							</th>
 							<td>
-								<form:input id="lastName" path="lastName" cssClass="profile_input"/>
+								<form:input id="lastName" path="lastName" cssClass="form-control"/>
 								<div class="reg_errors"><!--  -->
 									<form:errors cssClass="c-Alert c-Alert__error" path="lastName" />
 								</div>
@@ -100,7 +102,7 @@
                                 <spring:message code="profile.form.fields.country"/>
 							</th>
 							<td>
-                                <form:select cssClass="popupreg_input" path="countryCode">
+                                <form:select cssClass="form-control" path="countryCode">
                                     <form:option value="" label="Select country"/>
                                     <form:options items="${countrySelectItems}" itemValue="value" itemLabel="lable"/>
                                 </form:select>
@@ -115,7 +117,7 @@
                                     <spring:message code="profile.form.fields.language"/>
                                 </th>
                                 <td>
-                                    <form:select cssClass="popupreg_input" path="defaultLocale">
+                                    <form:select cssClass="form-control" path="defaultLocale">
                                         <form:option value="" label="Select language"/>
                                         <c:forEach var="lang" items="${languageSelectItems}">
                                             <form:option value="${lang['value']}" >
@@ -143,7 +145,7 @@
 							<th class="b m" ><spring:message code="profile.form.fields.email"/>
 							</th>
 							<td>
-								<form:input  id="emailStored" cssClass="profile_input" path="emailStored" readonly="true"/>
+								<form:input id="emailStored" cssClass="form-control" path="emailStored" readonly="true"/>
 							</td>
 						</tr>
 						<tr id="EmailRow">
@@ -151,7 +153,7 @@
                                 <spring:message code="profile.form.fields.newemail"/>
 							</th>
 							<td>
-								<form:input  id="email" cssClass="profile_input" path="email"/>
+								<form:input  id="email" cssClass="form-control" path="email"/>
 								<div class="reg_errors"><!--  -->
 									<form:errors cssClass="c-Alert c-Alert__error" path="email" />
 								</div>
@@ -163,7 +165,7 @@
                                 <spring:message code="profile.form.fields.retypeemail"/>
 							</th>
 							<td>
-								<form:input  id="retypeEmail" cssClass="profile_input" path="retypeEmail" autocomplete="off"/>
+								<form:input  id="retypeEmail" cssClass="form-control" path="retypeEmail" autocomplete="off"/>
 								<div class="reg_errors"><!--  -->
 									<form:errors cssClass="c-Alert c-Alert__error" path="retypeEmail" />
 								</div>
@@ -190,7 +192,7 @@
                                         <spring:message code="profile.form.fields.password"/>
                                     </th>
                                     <td>
-                                        <form:password cssClass="profile_input" path="currentPassword" />
+                                        <form:password cssClass="form-control" path="currentPassword" />
                                         <div class="reg_errors">
                                             <form:errors cssClass="c-Alert c-Alert__error" path="currentPassword" />
                                         </div>
@@ -201,7 +203,7 @@
                                         <spring:message code="profile.form.fields.newpassword"/>
                                     </th>
                                     <td>
-                                        <form:password cssClass="profile_input" path="password"/>
+                                        <form:password cssClass="form-control" path="password"/>
                                         <div class="reg_errors"><!--  -->
                                             <form:errors cssClass="c-Alert c-Alert__error" path="password" />
                                         </div>
@@ -212,7 +214,7 @@
                                         <spring:message code="profile.form.fields.retypepassword"/>
                                     </th>
                                     <td>
-                                        <form:password cssClass="profile_input" path="retypePassword" />
+                                        <form:password cssClass="form-control" path="retypePassword" />
                                         <div class="reg_errors"><!--  -->
                                             <form:errors cssClass="c-Alert c-Alert__error" path="retypePassword" />
                                         </div>
@@ -228,9 +230,9 @@
 				</c:if>
 
 				<div class="profile_about-head"><spring:message code="profile.form.fields.shortbio"/></div>
-				<div class="userProfileAbout" >
+				<div class="userProfileAbout">
 					<form:textarea
-						cssClass="rte-editorPlaceholder shortBioContent" path="shortBio" />
+						cssClass="rte-editorPlaceholder form-control" path="shortBio" />
 					<div class="inputLimitContainer" style="margin-top: 10px; float:right; ">
 						<span class="limit_characterCount"><!--  --></span>/&#160;
 						<span class="limit_charactersMax">2000</span> characters
@@ -326,7 +328,7 @@
 									   disabled="true" />
 							</c:otherwise>
 						</c:choose>
-						<label for="hasFacebookId"></label>
+						<label for="hasFacebookId"><!-- --></label>
 					</td>
 					<td>
                         <spring:message code="profile.sso.settings.facebook"/>
@@ -344,7 +346,7 @@
 									   disabled="true" />
 							</c:otherwise>
 						</c:choose>
-						<label for="hasOpenId"></label>
+						<label for="hasOpenId"><!-- --></label>
 					</td>
 					<td>
                         <spring:message code="profile.sso.settings.google"/>

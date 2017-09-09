@@ -56,7 +56,7 @@
                         </a>
                         <div class="dropdown-menu bs-dropdown-box bs-dropdown-nowrap">
                             <form action="/search" method="get">
-                                <input class="form-control bs-form-control-inline bs-form-control--small"
+                                <input class="form-control bs-form-control-inline bs-form-control--sm"
                                        type="text" name="searchPhrase"/>
                                 <button type="submit" class="c-Button__primary">
                                     <spring:message code="homepage.search.button" />

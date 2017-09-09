@@ -69,34 +69,34 @@
                 <input id="id" name="id"  type="hidden" value=""/>
                 <div class="addpropbox">
                     <strong class="inputTitleLeft">Ontologyterm to load</strong>
-                    <form:select path="ontologyTermToLoad" id="ontologyTermToLoad" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.ontologyTerms}" />
+                    <form:select path="ontologyTermToLoad" id="ontologyTermToLoad" cssClass="form-control" items="${collectionCardWrapperWhat.ontologyTerms}" />
                     <button onclick="openOntologyPicker('ontologyTermToLoad');" type="button"> Change</button>
                     <br/>
                     <strong class="inputTitleLeft">Display Ontologyterm</strong>
-                    <form:select path="bigOntologyTerm" id="bigOntologyTerm" cssClass="wideLargeInput"  items="${collectionCardWrapperWhat.ontologyTerms}" />
+                    <form:select path="bigOntologyTerm" id="bigOntologyTerm" cssClass="form-control"  items="${collectionCardWrapperWhat.ontologyTerms}" />
                     <button onclick="openOntologyPicker('bigOntologyTerm');" type="button">Change</button>
                     <br/>
                     <strong class="inputTitleLeft">Display Name</strong>
-                    <input id="shortName" name="shortName" class="wideLargeInput" type="text" value="" validatelength="false"/>
+                    <input id="shortName" name="shortName" class="form-control" type="text" value="" validatelength="false"/>
                     <br/>
                     <strong class="inputTitleLeft">Description Text</strong>
-                    <input id="description" name="Description" class="wideLargeInput" type="text" value="" validatelength="false"/>
+                    <input id="description" name="Description" class="form-control" type="text" value="" validatelength="false"/>
                     <br/>
                     <strong class="inputTitleLeft">Parent Collectioncard</strong>
-                    <form:select path="parentId" id="parentId" cssClass="wideLargeInput" items="${collectionCardWrapperWhat.collectionCards}" />
+                    <form:select path="parentId" id="parentId" cssClass="form-control" items="${collectionCardWrapperWhat.collectionCards}" />
                     <br/>
                     <strong class="inputTitleLeft">Description Ontologyterm</strong>
-                    <form:select path="smallOntologyTerm" id="smallOntologyTerm" cssClass="wideLargeInput"  items="${collectionCardWrapperWhat.ontologyTerms}" />
+                    <form:select path="smallOntologyTerm" id="smallOntologyTerm" cssClass="form-control"  items="${collectionCardWrapperWhat.ontologyTerms}" />
                     <button onclick="openOntologyPicker('smallOntologyTerm');" type="button">Change</button>
                     <br/>
                     <strong class="inputTitleLeft">Weight</strong>
-                    <input name="order" id="order" class="wideLargeInput" type="number" value="0" />
+                    <input name="order" id="order" class="form-control" type="number" value="0" />
                     <br/>
                     <strong class="inputTitleLeft">Show "onlyFeatured"</strong>
-                    <form:checkbox path="onlyFeatured" id="onlyFeatured" cssClass="wideLargeInput"/>
+                    <form:checkbox path="onlyFeatured" id="onlyFeatured" cssClass="form-control"/>
                     <br/>
                     <strong class="inputTitleLeft">Visible</strong>
-                    <form:checkbox path="visible" id="visible" cssClass="wideLargeInput"/>
+                    <form:checkbox path="visible" id="visible" cssClass="form-control"/>
                 </div>
             </div>
         </form:form>

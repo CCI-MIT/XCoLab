@@ -7,15 +7,15 @@
       vertical-align: middle;
     }
 
-    &.bs-form-control--small {
+    &.bs-form-control--sm {
       width: 200px;
     }
 
-    &.bs-form-control--medium {
+    &.bs-form-control--md {
       width: 300px;
     }
 
-    &.bs-form-control--large {
+    &.bs-form-control--lg {
       width: 400px;
     }
   }
@@ -23,4 +23,28 @@
 
 .bs-form-label-inline {
 
+}
+
+@media (min-width: 768px) {
+  .bs-form--alignLeft.form-horizontal .control-label {
+    text-align: left;
+  }
+}
+
+.form-control[disabled],
+.form-control[readonly],
+fieldset[disabled] .form-control {
+  background-color: #f8f8f8;
+}
+
+@media (min-width: 768px) {
+  .bs-form--lg {
+    .form-group {
+      margin-bottom: 25px;
+    }
+  }
+
+  .bs-form-group--lg.form-group {
+    margin-bottom: 25px;
+  }
 }

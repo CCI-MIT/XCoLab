@@ -48,7 +48,7 @@
                 <strong class="inputTitleLeft">Email template:</strong>
 
                 <div class="addpropInputContainer">
-                    <form:select path="type" id="changeEmailTemplateSelect" cssClass="wideLargeInput">
+                    <form:select path="type" id="changeEmailTemplateSelect" cssClass="form-control">
                         <form:options items="${templateSelectionItems}"
                                       itemValue="value" itemLabel="lable" />
                     </form:select>
@@ -64,7 +64,7 @@
 
             <div class="addpropbox">
                 <strong class="inputTitleLeft">Template type:</strong>
-                <form:input path="type" cssClass="wideLargeInput" disabled="disabled"/>
+                <form:input path="type" cssClass="form-control" disabled="disabled"/>
 
                 <div class="reg_errors"><!--  -->
                     <form:errors cssClass="c-Alert c-Alert__error" path="type"/>
@@ -73,7 +73,7 @@
 
             <div class="addpropbox">
                 <strong class="inputTitleLeft">Subject:</strong>
-                <form:input path="subject" cssClass="wideLargeInput"/>
+                <form:input path="subject" cssClass="form-control"/>
 
                 <div class="reg_errors"><!--  -->
                     <form:errors cssClass="c-Alert c-Alert__error" path="subject"/>
@@ -82,7 +82,7 @@
 
             <div class="addpropbox">
                 <strong class="inputTitleLeft">Content:</strong>
-                <form:textarea path="content" cssClass="wideLargeInput"/>
+                <form:textarea path="content" cssClass="form-control"/>
 
                 <div class="reg_errors"><!--  -->
                     <form:errors cssClass="c-Alert c-Alert__error" path="content"/>
@@ -91,7 +91,7 @@
 
             <div class="addpropbox">
                 <strong class="inputTitleLeft">Footer:</strong>
-                <form:input path="footer" cssClass="wideLargeInput"/>
+                <form:input path="footer" cssClass="form-control"/>
 
                 <div class="reg_errors"><!--  -->
                     <form:errors cssClass="c-Alert c-Alert__error" path="footer"/>

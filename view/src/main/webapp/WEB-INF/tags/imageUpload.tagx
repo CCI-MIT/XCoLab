@@ -59,7 +59,7 @@
         <div class="c-Upload__button">
             <span class="c-Button__primary fileinput-button">
                 ${buttonText}
-                <input id="${uploadImageInputId}" type="file" name="file" />
+                <input id="${uploadImageInputId}" type="file" name="file" tabindex="-1" />
             </span>
         </div>
 

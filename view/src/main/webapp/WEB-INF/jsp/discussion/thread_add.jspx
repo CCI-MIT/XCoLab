@@ -24,7 +24,7 @@
                 <form id="addThreadForm" action="${addThreadUrl }" method="post">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div>
-                        <label class="portlet-form-label"><spring:message code="discussion.threadadd.table.category" /><br />
+                        <label><spring:message code="discussion.threadadd.table.category" /><br />
                             <select class="portlet-form-field" name="categoryId">
                                 <c:forEach var="category" items="${categories}">
                                     <option value="${category.categoryId}">${category.name}</option>
@@ -33,13 +33,13 @@
                         </label>
                     </div>
                     <div>
-                        <label class="portlet-form-label"><spring:message code="discussion.threadadd.table.title" /> <br />
-                            <input class="portlet-form-input-field input_long" name="title" maxlength="255" style="width:660px;" type="text" value="" />
+                        <label><spring:message code="discussion.threadadd.table.title" /> <br />
+                            <input class="form-control" name="title" maxlength="255" style="width:660px;" type="text" value="" />
                         </label>
                     </div>
                     <div>
-                        <label class="portlet-form-label"><spring:message code="discussion.threadadd.table.message"/> <br />
-                            <textarea class="portlet-form-input-field profile_about" name="body" cols="20" rows="2" style="width: 660px; height: 100px;"><!-- --></textarea>
+                        <label><spring:message code="discussion.threadadd.table.message"/> <br />
+                            <textarea class="form-control" name="body" cols="20" rows="2" style="width: 660px; height: 100px;"><!-- --></textarea>
                         </label>
                     </div>
                     <div>
