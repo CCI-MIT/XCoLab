@@ -9,7 +9,7 @@
     <!--@elvariable id="displayPhoto" type="java.lang.Boolean"-->
     <!--@elvariable id="displayUrl" type="java.lang.Boolean"-->
     <!--@elvariable id="columnAmount" type="java.lang.Integer"-->
-    <!--@elvariable id="staffMembers" type="java.util.List<org.xcolab.view.pages.staffmemberswidget.StaffMemberWrapper>"-->
+    <!--@elvariable id="staffMembers" type="java.util.List<org.xcolab.view.widgets.staffmembers.StaffMemberWrapper>"-->
 
     <c:if test="${_isAdmin}">
         <a href="/staffmemberswidget/editPreferences?preferenceId=${preferences.preferenceId}" class="c-Button__admin">Edit preferences</a><br/>

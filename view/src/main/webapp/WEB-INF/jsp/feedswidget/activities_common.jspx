@@ -4,7 +4,7 @@
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
-    <!--@elvariable id="activities" type="java.util.List<org.xcolab.view.pages.feedswidget.wrappers.SocialActivityWrapper>"-->
+    <!--@elvariable id="activities" type="java.util.List<org.xcolab.view.widgets.feeds.wrappers.SocialActivityWrapper>"-->
 
         <div class="alignright" style="display:none;">
             <a href="/feedswidget/generateDump">activities in CSV format</a>

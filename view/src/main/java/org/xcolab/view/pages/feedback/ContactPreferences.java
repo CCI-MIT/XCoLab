@@ -3,7 +3,7 @@ package org.xcolab.view.pages.feedback;
 import org.json.JSONObject;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.entity.utils.WidgetPreference;
+import org.xcolab.view.widgets.WidgetPreference;
 import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
 

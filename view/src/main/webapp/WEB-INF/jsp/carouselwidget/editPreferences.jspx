@@ -5,7 +5,7 @@
         xmlns:c="http://java.sun.com/jsp/jstl/core"
        >
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-    <!--@elvariable id="carouselPreferences" type="org.xcolab.view.pages.carouselwidget.CarouselPreferences"-->
+    <!--@elvariable id="carouselPreferences" type="org.xcolab.view.widgets.logos.CarouselPreferences"-->
     <xcolab:layout>
         <form:form action="/carouselwidget/savePreferences" commandName="carouselPreferences">
             <form:hidden path="logosCount" id="logosCount" value="${carouselPreferences.logos.size()}" />
