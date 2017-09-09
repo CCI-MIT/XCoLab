@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class ContestPreferencesController {
-	
+
     @GetMapping("contestswidget/editPreferences")
     public String showPreferences(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member, @RequestParam(required = false) String preferenceId,
@@ -33,18 +33,19 @@ public class ContestPreferencesController {
             language = I18nUtils.DEFAULT_LANGUAGE;
         }
 
-    	model.addAttribute("contestPreferences", new ContestPreferences(preferenceId, language));
+        model.addAttribute("contestPreferences", new ContestPreferences(preferenceId, language));
         return "contestswidget/editPreferences";
     }
-	
+
 
     @PostMapping("contestswidget/savePreferences")
-    public void savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, ContestPreferences contestPreferences)
-            throws  IOException {
+    public void savePreferences(HttpServletRequest request, HttpServletResponse response,
+            Model model, ContestPreferences contestPreferences) throws IOException {
         contestPreferences.submit();
 
         AlertMessage.success("Contest widget preferences has been saved.").flash(request);
-        response.sendRedirect("/contestswidget/editPreferences?preferenceId="+contestPreferences.getPreferenceId());
+        response.sendRedirect("/contestswidget/editPreferences?preferenceId=" + contestPreferences
+                .getPreferenceId());
 
     }
 

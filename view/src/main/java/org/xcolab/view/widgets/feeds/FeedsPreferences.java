@@ -5,9 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.view.widgets.WidgetPreference;
 import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
+import org.xcolab.view.widgets.WidgetPreference;
 
 import java.io.IOException;
 import java.io.Serializable;

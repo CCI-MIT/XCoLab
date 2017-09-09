@@ -46,11 +46,11 @@ public class LogoElement {
         this.altText = altText;
     }
 
-    public JSONObject toJson(){
+    public JSONObject toJson() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("imageUrl", imageUrl);
         jsonObject.put("linkUrl", linkUrl);
         jsonObject.put("altText", altText);
-        return  jsonObject;
+        return jsonObject;
     }
 }

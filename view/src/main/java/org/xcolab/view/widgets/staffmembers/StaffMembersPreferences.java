@@ -4,9 +4,9 @@ import org.json.JSONObject;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.members.legacy.enums.CategoryRole;
-import org.xcolab.view.widgets.WidgetPreference;
 import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
+import org.xcolab.view.widgets.WidgetPreference;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -54,6 +54,7 @@ public class StaffMembersPreferences extends WidgetPreference implements Seriali
     private boolean displayPhoto;
     private boolean displayUrl;
     private int categoryId;
+
     public StaffMembersPreferences() {
         this(null, I18nUtils.DEFAULT_LANGUAGE);
     }

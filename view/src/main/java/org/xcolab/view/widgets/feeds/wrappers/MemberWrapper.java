@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class MemberWrapper implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     private Member user;
 
     private int activitiesCount;
@@ -23,8 +23,8 @@ public class MemberWrapper implements Serializable {
         this.user = user;
         this.activitiesCount = activitiesCount;
     }
-    
-    
+
+
     public MemberWrapper(Member user, ActivityEntry activity) {
         this.user = user;
         this.activity = activity;
@@ -32,7 +32,7 @@ public class MemberWrapper implements Serializable {
             lastActivityDate = new Date(activity.getCreateDate().getTime());
         }
     }
-    
+
     public MemberWrapper(ActivityEntry activity) {
         this.activity = activity;
         if (activity != null) {
@@ -48,15 +48,15 @@ public class MemberWrapper implements Serializable {
     public int getActivitiesCount() {
         return activitiesCount;
     }
-    
+
     public String getScreenName() {
         return user.getScreenName();
     }
-    
+
     public String getLastActivity() {
         return "aaa";
     }
-    
+
     public Long getUserId() {
         return user.getUserId();
     }

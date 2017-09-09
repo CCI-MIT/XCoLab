@@ -11,11 +11,11 @@ import org.xcolab.client.members.legacy.enums.MemberRole;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
+import org.xcolab.view.util.entity.ActivityUtil;
+import org.xcolab.view.util.pagination.SortFilterPage;
 import org.xcolab.view.widgets.feeds.FeedTypeDataProvider;
 import org.xcolab.view.widgets.feeds.FeedsPreferences;
 import org.xcolab.view.widgets.feeds.wrappers.SocialActivityWrapper;
-import org.xcolab.view.util.entity.ActivityUtil;
-import org.xcolab.view.util.pagination.SortFilterPage;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,14 +33,7 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
     private ActivityEntryHelper activityEntryHelper;
 
     @Override
-    public String getFeedTypeName() {
-        return "Activities";
-    }
-
-
-
-	@Override
-	public String populateModel(HttpServletRequest request, HttpServletResponse response,
+    public String populateModel(HttpServletRequest request, HttpServletResponse response,
             SortFilterPage sortFilterPage, FeedsPreferences feedsPreferences, Model model) {
 
         Map<String, String[]> parameters = request.getParameterMap();
@@ -63,26 +56,28 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
         }
         HashMap<Long, Long> idsToExclude = new HashMap<>();
         if (feedsPreferences.getRemoveAdmin()) {//STAFF
-            final MemberCategory memberCategory = MembersClient.getMemberCategory(MemberRole.ADMINISTRATOR.getRoleId());
+            final MemberCategory memberCategory =
+                    MembersClient.getMemberCategory(MemberRole.ADMINISTRATOR.getRoleId());
 
             List<Member> adminList = MembersClient
                     .listMembers(memberCategory.getCategoryName(), null, null, null, true, 0,
                             Integer.MAX_VALUE);
-            if (adminList!= null &&! adminList.isEmpty()) {
-                for (Member m : adminList){
-                    idsToExclude.put(m.getId_(),m.getUserId());
+            if (adminList != null && !adminList.isEmpty()) {
+                for (Member m : adminList) {
+                    idsToExclude.put(m.getId_(), m.getUserId());
                 }
             }
         }
 
-        final MemberCategory memberCategory = MembersClient.getMemberCategory(MemberRole.STAFF.getRoleId());
+        final MemberCategory memberCategory =
+                MembersClient.getMemberCategory(MemberRole.STAFF.getRoleId());
 
         List<Member> staffList = MembersClient
                 .listMembers(memberCategory.getCategoryName(), null, null, null, true, 0,
                         Integer.MAX_VALUE);
-        if (staffList!= null &&! staffList.isEmpty()) {
-            for (Member m : staffList){
-                idsToExclude.put(m.getId_(),m.getUserId());
+        if (staffList != null && !staffList.isEmpty()) {
+            for (Member m : staffList) {
+                idsToExclude.put(m.getId_(), m.getUserId());
             }
         }
 
@@ -91,11 +86,13 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
         int endRetrievalAt = (sortFilterPage.getPage() + 1) * pageSize;
         if (filterUserId == 0) {
             windowedActivities = ActivitiesClientUtil
-                    .getActivityEntries(startRetrievalAt, endRetrievalAt, null, new ArrayList<>(idsToExclude.keySet()));
+                    .getActivityEntries(startRetrievalAt, endRetrievalAt, null,
+                            new ArrayList<>(idsToExclude.keySet()));
 
         } else {
             windowedActivities = ActivitiesClientUtil
-                    .getActivityEntries(startRetrievalAt, endRetrievalAt, filterUserId, new ArrayList<>(idsToExclude.keySet()));
+                    .getActivityEntries(startRetrievalAt, endRetrievalAt, filterUserId,
+                            new ArrayList<>(idsToExclude.keySet()));
         }
 
         int lastDaysBetween = -1;
@@ -112,11 +109,10 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
                 break;
             }
 
-            int curDaysBetween =
-                        getDaysBetween(new Date(activity.getCreateDate().getTime()), now);
+            int curDaysBetween = getDaysBetween(new Date(activity.getCreateDate().getTime()), now);
             activities.add(new SocialActivityWrapper(activity, curDaysBetween,
                     lastDaysBetween < curDaysBetween, i % 2 == 1,
-                    feedsPreferences.getFeedMaxLength(),activityBody));
+                    feedsPreferences.getFeedMaxLength(), activityBody));
             lastDaysBetween = curDaysBetween;
             i++;
         }
@@ -136,7 +132,12 @@ public class ActivitiesFeedDataProvider implements FeedTypeDataProvider {
         return "feedswidget/activities";
     }
 
-    private static int getDaysBetween(Date d1, Date d2){
-        return (int)( (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+    @Override
+    public String getFeedTypeName() {
+        return "Activities";
+    }
+
+    private static int getDaysBetween(Date d1, Date d2) {
+        return (int) ((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
     }
 }

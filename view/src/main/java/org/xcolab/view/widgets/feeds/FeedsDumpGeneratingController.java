@@ -24,70 +24,68 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class FeedsDumpGeneratingController {
 
-	private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private final DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
-	private byte[] generatedActivities = {};
-	private int activitiesInGeneratedDump;
+    private byte[] generatedActivities = {};
+    private int activitiesInGeneratedDump;
 
-	private ActivityEntryHelper activityEntryHelper;
+    private ActivityEntryHelper activityEntryHelper;
 
-	@GetMapping("/feedswidget/generateDump")
-	public void showFeed(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
-		generateActivitiesDump(request);
-		response.setContentType("application/zip");
-		response.getOutputStream().write(generatedActivities);
-		response.addHeader("Content-Disposition", "inline");
-		response.addHeader("filename", "myfile.txt");
-		
-		// 
-	}
+    @GetMapping("/feedswidget/generateDump")
+    public void showFeed(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        generateActivitiesDump(request);
+        response.setContentType("application/zip");
+        response.getOutputStream().write(generatedActivities);
+        response.addHeader("Content-Disposition", "inline");
+        response.addHeader("filename", "myfile.txt");
 
-	private synchronized void generateActivitiesDump(HttpServletRequest request)
-			throws IOException {
+        //
+    }
 
-			int currentCount = ActivitiesClientUtil.countActivities(null,null);
-			if (currentCount > activitiesInGeneratedDump) {
-				// regenerate
+    private synchronized void generateActivitiesDump(HttpServletRequest request)
+            throws IOException {
 
-				ByteArrayOutputStream bos = new ByteArrayOutputStream();
-				ZipOutputStream zos = new ZipOutputStream(bos);
+        int currentCount = ActivitiesClientUtil.countActivities(null, null);
+        if (currentCount > activitiesInGeneratedDump) {
+            // regenerate
 
-				zos.putNextEntry(new ZipEntry("activities.csv"));
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ZipOutputStream zos = new ZipOutputStream(bos);
 
-				Writer fw = new OutputStreamWriter(zos);
-				CSVWriter csvWriter = new CSVWriter(fw);
+            zos.putNextEntry(new ZipEntry("activities.csv"));
 
-				for (ActivityEntry activity : ActivitiesClientUtil.getActivityEntries(0,Integer.MAX_VALUE,null,null)) {
-					try {
+            Writer fw = new OutputStreamWriter(zos);
+            CSVWriter csvWriter = new CSVWriter(fw);
 
-						String body = activityEntryHelper.getActivityBody(activity);
+            for (ActivityEntry activity : ActivitiesClientUtil
+                    .getActivityEntries(0, Integer.MAX_VALUE, null, null)) {
+                try {
+
+                    String body = activityEntryHelper.getActivityBody(activity);
 
 
+                    if (body != null && !body.trim().isEmpty()) {
+                        //TODO: this doesn't work post-liferay
+                        body = body.replace("/web/guest", "http://climatecolab.org/web/guest");
+                        csvWriter.writeNext(new String[]{body,
+                                df.format(new Date(activity.getCreateDate().getTime())),
+                                activity.getActivityEntryId() + ""});
 
-						if (body != null && !body.trim().isEmpty()) {
-						    //TODO: this doesn't work post-liferay
-							body = body.replace("/web/guest",
-									"http://climatecolab.org/web/guest");
-						csvWriter.writeNext(new String[] {
-								body,
-								df.format(new Date(activity.getCreateDate().getTime())),
-								activity.getActivityEntryId() + ""});
+                    }
+                } catch (Throwable t) {
+                    // ignore
+                }
+            }
+            fw.flush();
+            zos.closeEntry();
+            csvWriter.close();
+            fw.close();
 
-						}
-					} catch (Throwable t) {
-						// ignore
-					}
-				}
-				fw.flush();
-				zos.closeEntry();
-				csvWriter.close();
-				fw.close();
+            generatedActivities = bos.toByteArray();
+            activitiesInGeneratedDump = currentCount;
+        }
 
-				generatedActivities = bos.toByteArray();
-				activitiesInGeneratedDump = currentCount;
-			}
-
-	}
+    }
 
 }

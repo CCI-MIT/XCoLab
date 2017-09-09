@@ -29,11 +29,11 @@ public abstract class WidgetPreference {
     public WidgetPreference(String id, String language) {
 
         boolean idWasNull = false;
-        if(id==null){
+        if (id == null) {
             id = DEFAULT_ID;
             idWasNull = true;
         }
-        if (!idWasNull && language != null&&!id.contains("_")) {
+        if (!idWasNull && language != null && !id.contains("_")) {
             id += UNDERSCOREDIVIDER + language;
         }
 
