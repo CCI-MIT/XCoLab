@@ -46,23 +46,12 @@ public class ContestPreferences extends WidgetPreference {
         super(preferenceId, locale);
 
         selectedContests = IdListUtil.getIdsFromString(
-                (prefs.has(SELECTED_CONTESTS_PREFERENCE)) ? (prefs
-                        .getString(SELECTED_CONTESTS_PREFERENCE)) : (""));
-        title = (prefs.has(TITLE_PREFERENCE)) ? (prefs.getString(TITLE_PREFERENCE))
-                : ("Featured contests");
-        allContestsTitle = (prefs.has(ALL_CONTESTS_TITLE)) ? (prefs.getString(ALL_CONTESTS_TITLE))
-                : ("see all contests");
-        showCounts = Boolean.parseBoolean(
-                (prefs.has(SHOW_COUNTS)) ? (prefs.getString(SHOW_COUNTS)) : ("true"));
-        allContestsUrl =
-                (prefs.has(ALL_CONTESTS_URL)) ? (prefs.getString(ALL_CONTESTS_URL)) : ("/contests");
-        try {
-            feedSize = Integer.parseInt(
-                    (prefs.has(FEED_SIZE_PREFERENCE)) ? (prefs.getString(FEED_SIZE_PREFERENCE))
-                            : ("4"));
-        } catch (NumberFormatException e) {
-            feedSize = 4;
-        }
+                jsonPreferences.optString(SELECTED_CONTESTS_PREFERENCE, ""));
+        title = jsonPreferences.optString(TITLE_PREFERENCE, "Featured contests");
+        allContestsTitle = jsonPreferences.optString(ALL_CONTESTS_TITLE, "see all contests");
+        showCounts = jsonPreferences.optBoolean(SHOW_COUNTS, true);
+        allContestsUrl = jsonPreferences.optString(ALL_CONTESTS_URL, "/contests");
+        feedSize = jsonPreferences.optInt(FEED_SIZE_PREFERENCE, 4);
     }
 
     public String getTitle() {

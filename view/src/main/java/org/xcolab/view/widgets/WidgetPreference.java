@@ -14,13 +14,14 @@ public abstract class WidgetPreference {
 
     private final static String DEFAULT_ID = "default";
     private final static String PREFERENCES_JSON_OBJECT = "preferences";
-    private final static String UNDERSCOREDIVIDER = "_";
+    private final static String DIVIDER = "_";
+
     private final List<String> allPreferenceIds = new ArrayList<>();
+
     protected String preferenceId;
     protected String language;
 
-
-    protected JSONObject prefs;
+    protected JSONObject jsonPreferences;
 
     public WidgetPreference() {
         this(DEFAULT_ID, I18nUtils.DEFAULT_LANGUAGE);
@@ -28,36 +29,27 @@ public abstract class WidgetPreference {
 
     public WidgetPreference(String id, String language) {
 
-        boolean idWasNull = false;
         if (id == null) {
             id = DEFAULT_ID;
-            idWasNull = true;
-        }
-        if (!idWasNull && language != null && !id.contains("_")) {
-            id += UNDERSCOREDIVIDER + language;
+        } else if (language != null && !id.contains("_")) {
+            id += DIVIDER + language;
         }
 
-        prefs = new JSONObject(getConfigurationAttribute().get());
+        jsonPreferences = new JSONObject(getConfigurationAttribute().get());
 
-        if (prefs.has(PREFERENCES_JSON_OBJECT)) {
+        if (jsonPreferences.has(PREFERENCES_JSON_OBJECT)) {
 
-            JSONObject preferencesArray = prefs.getJSONObject(PREFERENCES_JSON_OBJECT);
-            //preferencesArray.keySet().stream().forEach(s -> allPreferenceIds.add(s));
+            JSONObject preferencesArray = jsonPreferences.getJSONObject(PREFERENCES_JSON_OBJECT);
             for (int i = 0; i < preferencesArray.names().length(); i++) {
                 allPreferenceIds.add(preferencesArray.names().get(i).toString());
             }
 
-            if (id != null) {
-                preferenceId = id;
-            } else {
-                preferenceId = UNDERSCOREDIVIDER + language;
-                //allPreferenceIds.add(DEFAULT_ID);
-            }
+            preferenceId = id;
             if (preferencesArray.has(preferenceId)) {
-                prefs = preferencesArray.getJSONObject(preferenceId);
+                jsonPreferences = preferencesArray.getJSONObject(preferenceId);
             } else {
-                prefs = preferencesArray.getJSONObject(DEFAULT_ID);
-                preferenceId = DEFAULT_ID + UNDERSCOREDIVIDER + language;
+                jsonPreferences = preferencesArray.getJSONObject(DEFAULT_ID);
+                preferenceId = DEFAULT_ID + DIVIDER + language;
             }
 
         } else {
@@ -70,15 +62,16 @@ public abstract class WidgetPreference {
     public abstract AttributeGetter<String> getConfigurationAttribute();
 
     protected void savePreferences(JSONObject prefsToSave, String id) {
-        id = (id == null ? (DEFAULT_ID) : (id));
+        final String preferenceId = (id != null ? id : DEFAULT_ID);
+
         JSONObject currentPreferences = new JSONObject(getConfigurationAttribute().get());
         if (!currentPreferences.has(PREFERENCES_JSON_OBJECT)) {
             JSONObject defaultPrefs = currentPreferences;
 
             currentPreferences = new JSONObject();
             JSONObject preferences = new JSONObject();
-            preferences.put(id, prefsToSave);
-            if (!id.equals(DEFAULT_ID)) {
+            preferences.put(preferenceId, prefsToSave);
+            if (!preferenceId.equals(DEFAULT_ID)) {
                 preferences.put(DEFAULT_ID, defaultPrefs);
             }
 
@@ -88,7 +81,7 @@ public abstract class WidgetPreference {
 
             JSONObject preferences = currentPreferences.getJSONObject(PREFERENCES_JSON_OBJECT);
 
-            preferences.put(id, prefsToSave);
+            preferences.put(preferenceId, prefsToSave);
             currentPreferences.put(PREFERENCES_JSON_OBJECT, preferences);
         }
         ConfigurationAttribute configurationAttribute = new ConfigurationAttribute();
@@ -105,12 +98,12 @@ public abstract class WidgetPreference {
         this.preferenceId = preferenceId;
     }
 
-    public JSONObject getPrefs() {
-        return prefs;
+    public JSONObject getJsonPreferences() {
+        return jsonPreferences;
     }
 
-    public void setPrefs(JSONObject prefs) {
-        this.prefs = prefs;
+    public void setJsonPreferences(JSONObject jsonPreferences) {
+        this.jsonPreferences = jsonPreferences;
     }
 
     public List<String> getAllPreferenceIds() {

@@ -42,30 +42,17 @@ public class RandomProposalsPreferences extends WidgetPreference {
     public RandomProposalsPreferences(String preferenceId, String language) {
         super(preferenceId, language);
 
-        selectedPhases = convertStringsToLongs(((prefs.has(SELECTED_PHASES_PREFERENCE)) ? (prefs
-                .getString(SELECTED_PHASES_PREFERENCE)) : ("")).split("-"));
-        flagFiltersStr =
-                (prefs.has(FLAG_FILTER_PREFERENCE)) ? (prefs.getString(FLAG_FILTER_PREFERENCE))
-                        : ("");
-        title = (prefs.has(TITLE_PREFERENCE)) ? (prefs.getString(TITLE_PREFERENCE))
-                : ("Interesting Proposals");
-        allProposalsTitle =
-                (prefs.has(ALL_PROPOSALS_TITLE)) ? (prefs.getString(ALL_PROPOSALS_TITLE))
-                        : ("see all finalists");
-        allProposalsUrl = (prefs.has(ALL_PROPOSALS_URL)) ? (prefs.getString(ALL_PROPOSALS_URL))
-                : ("/community/-/blogs/finalists-selected-vote-to-select-popular-choice-winner-2"
-                        + "#Vote");
-        isCompact = Boolean.parseBoolean(
-                (prefs.has(IS_COMPACT)) ? (prefs.getString(IS_COMPACT)) : ("false"));
-        try {
-            feedSize = Integer.parseInt(
-                    (prefs.has(FEED_SIZE_PREFERENCE)) ? (prefs.getString(FEED_SIZE_PREFERENCE))
-                            : ("4"));
-        } catch (NumberFormatException e) {
-            feedSize = 4;
-        }
+        selectedPhases = convertStringsToLongs(jsonPreferences
+                .optString(SELECTED_PHASES_PREFERENCE, "").split("-"));
+        flagFiltersStr = jsonPreferences.optString(FLAG_FILTER_PREFERENCE, "");
         flagFilters = convertStringsToLongs(flagFiltersStr.split(","));
-
+        //TODO: find better default values
+        title = jsonPreferences.optString(TITLE_PREFERENCE, "Interesting Proposals");
+        allProposalsTitle = jsonPreferences.optString(ALL_PROPOSALS_TITLE, "see all finalists");
+        allProposalsUrl = jsonPreferences.optString(ALL_PROPOSALS_URL,
+                "/community/-/blogs/finalists-selected-vote-to-select-popular-choice-winner-2#Vote");
+        isCompact = jsonPreferences.optBoolean(IS_COMPACT, false);
+        feedSize = jsonPreferences.optInt(FEED_SIZE_PREFERENCE, 4));
     }
 
     private static Long[] convertStringsToLongs(String[] arrayStr) {

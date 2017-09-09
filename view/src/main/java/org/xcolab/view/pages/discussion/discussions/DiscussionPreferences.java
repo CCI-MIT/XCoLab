@@ -3,9 +3,9 @@ package org.xcolab.view.pages.discussion.discussions;
 import org.json.JSONObject;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.view.widgets.WidgetPreference;
 import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
+import org.xcolab.view.widgets.WidgetPreference;
 
 import java.io.IOException;
 
@@ -29,7 +29,8 @@ public class DiscussionPreferences extends WidgetPreference {
         super(preferenceId, language);
 
         try {
-            categoryGroupId = Integer.parseInt((prefs.has(CATEGORY_GROUP_ID_PREFERENCE)) ? (prefs
+            categoryGroupId = Integer.parseInt((jsonPreferences
+                    .has(CATEGORY_GROUP_ID_PREFERENCE)) ? (jsonPreferences
                     .getString(CATEGORY_GROUP_ID_PREFERENCE))
                     : (DEFAULT_CATEGORY_GROUP_ID.toString()));
         } catch (NumberFormatException e) {

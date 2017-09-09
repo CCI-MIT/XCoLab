@@ -64,35 +64,11 @@ public class StaffMembersPreferences extends WidgetPreference implements Seriali
         super(preferenceId, language);
 
 
-        columnAmount = defaultColumnAmount;
-        try {
-            columnAmount = Integer.parseInt(
-                    (prefs.has(COLUMN_AMOUNT)) ? (prefs.getString(COLUMN_AMOUNT))
-                            : (String.valueOf(defaultColumnAmount)));
-        } catch (NumberFormatException e) {
-            // ignore
-        }
-
-        categoryId = defaultCategoryId;
-        try {
-            categoryId = Integer.parseInt((prefs.has(CATEGORY_ID)) ? (prefs.getString(CATEGORY_ID))
-                    : (String.valueOf(defaultCategoryId)));
-        } catch (Exception e) {
-            // ignore
-        }
-
-        try {
-            portletTitle = (prefs.has(PORTLET_TITLE)) ? (prefs.getString(PORTLET_TITLE))
-                    : (defaultPortletTitle);
-        } catch (Exception e) {
-            // ignore
-        }
-
-        displayPhoto = Boolean.parseBoolean(
-                (prefs.has(DISPLAY_PHOTO)) ? (prefs.getString(DISPLAY_PHOTO))
-                        : (String.valueOf(defaultDisplayPhoto)));
-        displayUrl = Boolean.parseBoolean((prefs.has(DISPLAY_URL)) ? (prefs.getString(DISPLAY_URL))
-                : (String.valueOf(defaultDisplayUrl)));
+        columnAmount = jsonPreferences.optInt(COLUMN_AMOUNT, defaultColumnAmount);
+        categoryId = jsonPreferences.optInt(CATEGORY_ID, defaultCategoryId);
+        portletTitle = jsonPreferences.optString(PORTLET_TITLE, defaultPortletTitle);
+        displayPhoto = jsonPreferences.optBoolean(DISPLAY_PHOTO, defaultDisplayPhoto);
+        displayUrl = jsonPreferences.optBoolean(DISPLAY_URL, defaultDisplayUrl);
     }
 
     public static Map<Long, String> getCategories() {

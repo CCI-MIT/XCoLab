@@ -1,8 +1,6 @@
 package org.xcolab.view.widgets.feeds;
 
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.util.attributes.AttributeGetter;
@@ -13,8 +11,6 @@ import java.io.IOException;
 import java.io.Serializable;
 
 public class FeedsPreferences extends WidgetPreference implements Serializable {
-
-    private static final Logger _log = LoggerFactory.getLogger(FeedsPreferences.class);
 
     private static final long serialVersionUID = 1L;
 
@@ -54,52 +50,22 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
         super(preferenceId, language);
 
 
-        feedSize = DEFAULT_FEED_SIZE;
-        try {
-            feedSize = Integer.parseInt(
-                    (prefs.has(FEED_SIZE_PREF)) ? (prefs.getString(FEED_SIZE_PREF))
-                            : (String.valueOf(DEFAULT_FEED_SIZE)));
-        } catch (NumberFormatException e) {
-            _log.warn("Could not parse feedSize: {}",
-                    (prefs.has(FEED_SIZE_PREF)) ? (prefs.getString(FEED_SIZE_PREF))
-                            : (String.valueOf(DEFAULT_FEED_SIZE)));
-        }
+        feedSize = jsonPreferences.optInt(FEED_SIZE_PREF, DEFAULT_FEED_SIZE);
+        feedType = jsonPreferences.optEnum(FeedType.class, FEED_TYPE_PREF, DEFAULT_FEED_TYPE);
 
-        feedType = DEFAULT_FEED_TYPE;
-        try {
-            feedType = FeedType.valueOf(
-                    ((prefs.has(FEED_TYPE_PREF)) ? (prefs.getString(FEED_TYPE_PREF))
-                            : (DEFAULT_FEED_TYPE.name())));
-        } catch (IllegalArgumentException e) {
-            _log.warn("Could not parse feedType: {}",
-                    (prefs.has(FEED_TYPE_PREF)) ? (prefs.getString(FEED_TYPE_PREF))
-                            : (DEFAULT_FEED_TYPE.name()));
-        }
-
-        feedTitle = (prefs.has(FEED_TITLE_PREF)) ? (prefs.getString(FEED_TITLE_PREF))
-                : (DEFAULT_FEED_TITLE);
+        feedTitle = jsonPreferences.optString(FEED_TITLE_PREF, DEFAULT_FEED_TITLE);
+        //TODO: this condition should be unreachable - verify
         if (feedTitle == null) {
             feedTitle = feedType.getDescription();
         }
 
-        feedStyle = (prefs.has(FEED_DISPLAY_STYLE)) ? (prefs.getString(FEED_DISPLAY_STYLE))
-                : (DEFAULT_STYLE);
-        if (feedStyle == null) {
-            feedStyle = DEFAULT_STYLE;
-        }
+        feedStyle = jsonPreferences.optString(FEED_DISPLAY_STYLE, DEFAULT_STYLE);
 
-        portletTitle = (prefs.has(PORTLET_TITLE)) ? (prefs.getString(PORTLET_TITLE))
-                : (DEFAULT_PORTLET_TITLE);
+        portletTitle = jsonPreferences.optString(PORTLET_TITLE, DEFAULT_PORTLET_TITLE);
 
-        removeAdmin = Boolean.parseBoolean(
-                (prefs.has(FEED_REMOVE_ADMIN)) ? (prefs.getString(FEED_REMOVE_ADMIN))
-                        : (String.valueOf(DEFAULT_REMOVE_ADMIN)));
-        seeMoreLinkShown = Boolean.parseBoolean(
-                (prefs.has(FEED_REMOVE_ADMIN)) ? (prefs.getString(FEED_SEE_MORE_LINK_SHOWN))
-                        : (String.valueOf(DEFAULT_SEE_MORE_SHOWN)));
-        feedMaxLength = Integer.parseInt(
-                (prefs.has(FEED_REMOVE_ADMIN)) ? (prefs.getString(FEED_MAX_LENGTH))
-                        : (String.valueOf(DEFAULT_FEED_MAX_LENGTH)));
+        removeAdmin = jsonPreferences.optBoolean(FEED_REMOVE_ADMIN, DEFAULT_REMOVE_ADMIN);
+        seeMoreLinkShown = jsonPreferences.optBoolean(FEED_SEE_MORE_LINK_SHOWN, DEFAULT_SEE_MORE_SHOWN);
+        feedMaxLength = jsonPreferences.optInt(FEED_MAX_LENGTH, DEFAULT_FEED_MAX_LENGTH);
     }
 
     @Override

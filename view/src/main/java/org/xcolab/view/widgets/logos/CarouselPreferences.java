@@ -36,14 +36,10 @@ public class CarouselPreferences extends WidgetPreference {
     public CarouselPreferences(String preferenceId, String locale) {
         super(preferenceId, locale);
 
-        if (prefs.has(TITLE_PREFERENCE)) {
-            title = prefs.getString(TITLE_PREFERENCE);
-        } else {
-            title = DEFAULT_TITLE;
-        }
+        title = jsonPreferences.optString(TITLE_PREFERENCE, DEFAULT_TITLE);
 
-        if (prefs.has(LOGOS_PREFERENCE)) {
-            JSONArray logosArray = prefs.getJSONArray(LOGOS_PREFERENCE);
+        if (jsonPreferences.has(LOGOS_PREFERENCE)) {
+            JSONArray logosArray = jsonPreferences.getJSONArray(LOGOS_PREFERENCE);
             try {
                 logos = logoListReader.readValue(logosArray.toString());
             } catch (IOException exception) {

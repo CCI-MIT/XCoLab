@@ -3,9 +3,9 @@ package org.xcolab.view.pages.feedback;
 import org.json.JSONObject;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
-import org.xcolab.view.widgets.WidgetPreference;
 import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
+import org.xcolab.view.widgets.WidgetPreference;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -39,26 +39,26 @@ public class ContactPreferences extends WidgetPreference implements Serializable
     }
     public ContactPreferences(String preferenceId, String language) {
         super(preferenceId, language);
-        if (prefs.has(MESSAGE_FORMAT_PREF)) {
-            messageFormat = prefs.getString(MESSAGE_FORMAT_PREF);
+        if (jsonPreferences.has(MESSAGE_FORMAT_PREF)) {
+            messageFormat = jsonPreferences.getString(MESSAGE_FORMAT_PREF);
         } else {
             messageFormat = defaultMessageFormat;
         }
 
-        if (prefs.has(MESSAGE_SUBJECT_PREF)) {
-            messageSubject = prefs.getString(MESSAGE_SUBJECT_PREF);
+        if (jsonPreferences.has(MESSAGE_SUBJECT_PREF)) {
+            messageSubject = jsonPreferences.getString(MESSAGE_SUBJECT_PREF);
         } else {
             messageSubject = defaultMessageSubject;
         }
 
-        if (prefs.has(EXPAND_LINK_TEXT_PREF)) {
-            expandLinkText = prefs.getString(EXPAND_LINK_TEXT_PREF);
+        if (jsonPreferences.has(EXPAND_LINK_TEXT_PREF)) {
+            expandLinkText = jsonPreferences.getString(EXPAND_LINK_TEXT_PREF);
         } else {
             expandLinkText = defaultExpandLinkText;
         }
 
-        if (prefs.has(RECIPIENTS_PREF)) {
-            recipients = prefs.getString(RECIPIENTS_PREF);
+        if (jsonPreferences.has(RECIPIENTS_PREF)) {
+            recipients = jsonPreferences.getString(RECIPIENTS_PREF);
         } else {
             recipients = defaultRecipients;
         }
