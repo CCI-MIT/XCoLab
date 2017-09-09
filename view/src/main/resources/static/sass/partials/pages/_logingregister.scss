@@ -6,28 +6,6 @@
   margin-top: 35px;
 }
 
-.is-required {
-  font-style: italic;
-  color: $t-Color__grey--dark;
-  margin-bottom: 20px;
-}
-
-.popupreg_head {
-  float: left;
-  width: 50%;
-}
-
-.popupreg_head h1 {
-  color: black;
-  font-size: 36px;
-}
-
-.sso-register {
-  float: right;
-  width: 50%;
-  margin-bottom: 20px;
-}
-
 .popupreg_txt.req {
   background: url(/images/reg-star.png) no-repeat 225px 4px;
 }
@@ -42,66 +20,6 @@
   color: $t-Color__grey--darkest;
 }
 
-.popupreg_input_container {
-  margin-bottom: 15px;
-}
-
-.popupreg_input {
-  float: left;
-  width: 300px;
-  height: 33px;
-  padding: 2px 0 0 8px;
-  font-size: 13px;
-}
-
-.popupreg_form {
-  background: white;
-  width: 100%;
-  padding-bottom: 25px;
-  position: relative;
-  top: -5px;
-  left: -5px;
-}
-
-.popupreg_recap #recaptcha_area, .popupreg_recap #recaptcha_table, .popupreg_recap #recaptcha_widget_div {
-  display: inline;
-}
-
-.popupreg_txt.recap {
-  margin-top: 45px;
-}
-
-.popupreg_recap {
-  margin-top: 40px;
-}
-
-.popupreg_terms {
-  margin-top: 30px;
-  color: #444;
-}
-
-.popupreg_submit_wrap {
-  margin-top: 30px;
-  text-align: center;
-}
-
-/** User signed in header **/
-.userpop ul li {
-  list-style: none;
-}
-
-#userPopupContainer {
-  display: none;
-}
-
-#c-Header__menu__right li.c {
-  background: white;
-  border-left: 1px solid $t-Color__grey--medium;
-}
-
-/*** POPUPS ****/
-//TODO: this might patrially go to the popups partial.
-
 .inputLimitContainer {
   margin-top: 5px;
   font-size: 12px;
@@ -111,20 +29,6 @@
 .inputLimitContainer.overflow {
   color: #b00;
   font-weight: $b-Typography__fontWeight--bold;
-}
-
-.login-box-table {
-  float: left;
-}
-
-table.login-box-table td {
-  padding: 0 3px 0 0;
-  vertical-align: middle;
-}
-
-table.login-box-table th {
-  padding: 0 3px 10px 0;
-  vertical-align: middle;
 }
 
 .required-field:after {
@@ -159,16 +63,8 @@ th.second {
   width: 60px;
 }
 
-.shortBioContent {
-  width: 100%;
-}
-
 .cke_editor_shortBio {
   width: 100%;
-}
-
-.is-required {
-  margin: 0 !important;
 }
 
 #fileUploadForm {

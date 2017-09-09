@@ -233,21 +233,6 @@ $p-community__c-Message__column__width: 204px !default;
 }
 
 /* community - members */
-.comm_search {
-  float: left;
-  width: 222px;
-  height: 25px;
-  padding: 2px 0 0 8px;
-  background: $t-Color__grey--lightest;
-  border: 1px solid $t-Color__grey--light;
-  color: $t-Color__grey--dark;
-  font-size: 13px;
-  font-weight: $b-Typography__fontWeight;
-}
-
-.wf-active .comm_search {
-  font-size: 15px;
-}
 
 .comm_submit {
   width: 66px;
@@ -399,19 +384,6 @@ $p-community__c-Message__column__width: 204px !default;
 
 .othermembers .comm_info-left {
   width: 210px;
-}
-
-input.comm_search {
-  float: left;
-  width: 222px;
-  height: 25px;
-  padding: 2px 0 0 8px;
-  background: #F9F9F7;
-  border: 1px solid #BCB6B1;
-  color: $t-Color__grey--dark;
-  font-size: 13px;
-  font-weight: $b-Typography__fontWeight;
-  margin-top: 5px;
 }
 
 .pager {

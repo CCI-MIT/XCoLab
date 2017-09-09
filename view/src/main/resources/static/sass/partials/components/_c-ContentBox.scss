@@ -29,27 +29,7 @@
 }
 
 //TODO: proposals/cms-related
-.c-ContentBox .addpropbox input {
-  float: left;
-  height: 30px;
-}
-.c-ContentBox .addpropbox select {
-  width: 445px;
-}
-.c-ContentBox .addpropbox select.multi {
-  height: initial;
-  min-height: 150px;
-}
-.c-ContentBox .addpropbox select.autoWidth {
-  width: auto;
-}
-.c-ContentBox .addpropbox .wideLargeInput {
-  height: 30px;
-  width: 445px;
-  font-size: 16px;
-  padding-left: 5px;
-  text-align: left;
-}
+
 .c-ContentBox .addpropbox.dragState {
   background-color: #CCC;
   border: 1px solid blue;
