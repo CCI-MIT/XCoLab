@@ -16,7 +16,6 @@ import org.xcolab.util.http.client.RestService;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.widgets.WidgetPreference;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -75,7 +74,8 @@ public class ContestPreferences extends WidgetPreference {
         return ConfigurationAttributeKey.PORTLET_CONTESTS_PREFERENCES;
     }
 
-    public void savePreferences() throws IOException {
+    @Override
+    public void savePreferences() {
         JSONObject prefsToSave = new JSONObject();
 
         prefsToSave

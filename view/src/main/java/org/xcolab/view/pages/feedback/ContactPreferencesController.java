@@ -45,7 +45,7 @@ public class ContactPreferencesController {
         if(language==null){
 
         }
-        preferences.save();
+        preferences.savePreferences();
         AlertMessage.success("Feedback preferences has been saved.").flash(request);
         return "feedback/editPreferences";
 	}

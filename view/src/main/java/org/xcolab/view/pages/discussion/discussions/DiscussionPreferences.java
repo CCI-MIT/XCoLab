@@ -7,8 +7,6 @@ import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.widgets.WidgetPreference;
 
-import java.io.IOException;
-
 public class DiscussionPreferences extends WidgetPreference {
 
     private final static String CATEGORY_GROUP_ID_PREFERENCE = "CATEGORY_GROUP_ID";
@@ -38,14 +36,13 @@ public class DiscussionPreferences extends WidgetPreference {
         }
     }
 
-    public String submit() throws IOException {
+    @Override
+    public void savePreferences() {
         JSONObject prefs = new JSONObject();
 
         prefs.put(CATEGORY_GROUP_ID_PREFERENCE, categoryGroupId + "");
 
         savePreferencesInternal(prefs,null);
-
-        return null;
     }
 
     public long getCategoryGroupId() {

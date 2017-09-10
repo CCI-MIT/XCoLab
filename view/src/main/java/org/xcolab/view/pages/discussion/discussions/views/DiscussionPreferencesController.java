@@ -26,6 +26,6 @@ public class DiscussionPreferencesController {
     @PostMapping("/discussion/savePreferences")
     public void savePreferences(HttpServletRequest request, HttpServletResponse response, Model model, DiscussionPreferences preferences)
             throws  IOException {
-        preferences.submit();
+        preferences.savePreferences();
     }
 }

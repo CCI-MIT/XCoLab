@@ -118,7 +118,7 @@ public class ProposalsPreferencesController {
             Model model, ProposalContext proposalContext, ProposalsPreferencesWrapper preferences)
             throws IOException {
         //save terms
-        preferences.store();
+        preferences.savePreferences();
 
         //care about moving proposals
         Long moveToContestPhaseId = preferences.getMoveToContestId();

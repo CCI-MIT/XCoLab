@@ -10,8 +10,6 @@ import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
 import org.xcolab.view.widgets.WidgetPreference;
 
-import java.io.IOException;
-
 public class ProposalsPreferencesWrapper extends WidgetPreference {
 
     private final static String TERMS_OF_SERVICE_PREF = "TERMS_OF_SERVICE";
@@ -70,9 +68,11 @@ public class ProposalsPreferencesWrapper extends WidgetPreference {
         return termsOfServiceTemplateWrapper;
     }
 
-    public void store() throws  IOException {
+    @Override
+    public void savePreferences() {
 
-        ContestEmailTemplate template = EmailTemplateClientUtil.getContestEmailTemplateByType(TERMS_OF_SERVICE_PREF);
+        ContestEmailTemplate template = EmailTemplateClientUtil
+                .getContestEmailTemplateByType(TERMS_OF_SERVICE_PREF);
         template.setHeader(termsOfService);
         EmailTemplateClientUtil.updateContestEmailTemplate(template);
 

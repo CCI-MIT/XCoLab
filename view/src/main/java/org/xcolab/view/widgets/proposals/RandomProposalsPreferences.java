@@ -51,7 +51,7 @@ public class RandomProposalsPreferences extends WidgetPreference {
         allProposalsUrl = jsonPreferences.optString(ALL_PROPOSALS_URL,
                 "/community/-/blogs/finalists-selected-vote-to-select-popular-choice-winner-2#Vote");
         isCompact = jsonPreferences.optBoolean(IS_COMPACT, false);
-        feedSize = jsonPreferences.optInt(FEED_SIZE_PREFERENCE, 4));
+        feedSize = jsonPreferences.optInt(FEED_SIZE_PREFERENCE, 4);
     }
 
     private static Long[] convertStringsToLongs(String[] arrayStr) {
