@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(CarouselController.BASE_URL)
 public class CarouselController extends AbstractWidgetController<CarouselPreferences> {
 
+    private static final String VIEW_BASE_PATH = "/widgets/logos";
+
     public static final String BASE_URL = "/widgets/logos";
 
     protected CarouselController() {
@@ -32,7 +34,7 @@ public class CarouselController extends AbstractWidgetController<CarouselPrefere
             @RequestParam(required = false) String preferenceId,
             @RequestParam(defaultValue = "en") String language) {
         return showPreferencesInternal(response, model,  member, preferenceId, language,
-                "/carouselwidget/editPreferences");
+                VIEW_BASE_PATH + "/editPreferences");
     }
 
 
@@ -55,7 +57,7 @@ public class CarouselController extends AbstractWidgetController<CarouselPrefere
     @GetMapping
     public String showCarousel(Model model, @RequestParam(required = false) String preferenceId) {
         model.addAttribute("preferences", getPreferences(preferenceId));
-        return "carouselwidget/showCarousel";
+        return VIEW_BASE_PATH + "/showCarousel";
     }
 
 }

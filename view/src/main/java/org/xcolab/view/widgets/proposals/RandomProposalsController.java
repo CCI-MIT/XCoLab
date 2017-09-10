@@ -28,6 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(RandomProposalsController.BASE_URL)
 public class RandomProposalsController extends AbstractWidgetController<RandomProposalsPreferences> {
 
+    private static final String VIEW_BASE_PATH = "/widgets/proposals";
+
     public static final String BASE_URL = "/widgets/proposals";
 
     protected RandomProposalsController() {
@@ -39,7 +41,7 @@ public class RandomProposalsController extends AbstractWidgetController<RandomPr
             @RequestParam(required = false) String preferenceId,
             @RequestParam(required = false) String language) {
         return showPreferencesInternal(response, model,  member, preferenceId, language,
-                "/randomproposalswidget/editPreferences");
+                VIEW_BASE_PATH + "/editPreferences");
     }
 
 
@@ -63,7 +65,7 @@ public class RandomProposalsController extends AbstractWidgetController<RandomPr
 
         model.addAttribute("proposalsModel", proposalsModel);
 
-        return "/randomproposalswidget/showProposals";
+        return VIEW_BASE_PATH + "/showProposals";
     }
 
     private List<Proposal> getProposals(RandomProposalsPreferences preferences) {

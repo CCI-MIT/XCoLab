@@ -37,7 +37,9 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
 
     private static final Logger _log = LoggerFactory.getLogger(ContestsController.class);
 
-    public static final String BASE_URL = "/widgets/contests    ";
+    private static final String VIEW_BASE_PATH = "/widgets/contests";
+
+    public static final String BASE_URL = "/widgets/contests";
 
     protected ContestsController() {
         super(BASE_URL, ContestPreferences::new);
@@ -48,7 +50,7 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
             @RequestParam(required = false) String preferenceId,
             @RequestParam(required = false) String language) {
         return showPreferencesInternal(response, model,  member, preferenceId, language,
-                "contestswidget/editPreferences");
+                VIEW_BASE_PATH + "/editPreferences");
     }
 
 
@@ -119,6 +121,6 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
         //TODO: allow setting on a per-contest/per portlet basis
         model.addAttribute("contestType", ContestTypeClient
                 .getContestType(ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get()));
-        return "contestswidget/showContests";
+        return VIEW_BASE_PATH + "/showContests";
     }
 }

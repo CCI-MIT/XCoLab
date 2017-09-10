@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class FeedsController extends AbstractWidgetController<FeedsPreferences> {
 
-    public static final String BASE_URL = "/widgets/feeds";
+    private static final String BASE_URL = "/widgets/feeds";
 
     private final List<FeedTypeDataProvider> dataProviderList;
 

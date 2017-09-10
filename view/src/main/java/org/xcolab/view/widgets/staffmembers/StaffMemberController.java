@@ -35,6 +35,8 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(StaffMemberController.BASE_URL)
 public class StaffMemberController extends AbstractWidgetController<StaffMembersPreferences> {
 
+    private static final String VIEW_BASE_PATH = "/widgets/staffmembers";
+
     public static final String BASE_URL = "/widgets/staffmembers";
 
     protected StaffMemberController() {
@@ -47,7 +49,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
             @RequestParam(required = false) String language) {
         model.addAttribute("categories", StaffMembersPreferences.getCategories());
         return showPreferencesInternal(response, model,  member, preferenceId, language,
-                "/staffmemberswidget/editPreferences");
+                VIEW_BASE_PATH + "/editPreferences");
     }
 
 
@@ -96,7 +98,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
                 staffMembersOverrides.sort(Comparator.comparing(StaffMemberWrapper::getSort));
             }
             model.addAttribute("staffMembers", staffMembersOverrides);
-            return "staffmemberswidget/staffmembers";
+            return VIEW_BASE_PATH + "/staffmembers";
         } else {
             if (categoryRole.getGroupByYear()) {
                 Map<String, List<StaffMemberWrapper>> membersPerYearInCategory =
@@ -140,7 +142,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
                     membersPerYearInCategory.put(year.toString(), membersWithRolesInYear);
                 }
                 model.addAttribute("staffMembersMap", membersPerYearInCategory);
-                return "staffmemberswidget/staffmembersGroupedByYear";
+                return VIEW_BASE_PATH + "/staffmembersGroupedByYear";
             } else {
 
                 List<Member> allMembersWithRole = MembersClient
@@ -164,7 +166,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
                 }
                 staffMembersOverrides.sort(Comparator.comparing(StaffMemberWrapper::getLastName));
                 model.addAttribute("staffMembers", staffMembersOverrides);
-                return "staffmemberswidget/staffmembers";
+                return VIEW_BASE_PATH + "/staffmembers";
             }
 
         }
