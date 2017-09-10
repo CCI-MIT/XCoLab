@@ -74,7 +74,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
         categoryId = (categoryId != null) ? (categoryId) : (preferences.getCategoryId());
 
         model.addAttribute("widgetTitle",
-                ((title != null) ? (title) : (preferences.getPortletTitle())));
+                ((title != null) ? (title) : (preferences.getTitle())));
         model.addAttribute("columnAmount",
                 ((columnAmount != null) ? (columnAmount) : (preferences.getColumnAmount())));
         model.addAttribute("displayPhoto",

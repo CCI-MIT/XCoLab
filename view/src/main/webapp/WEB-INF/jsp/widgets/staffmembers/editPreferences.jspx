@@ -1,88 +1,41 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:c="http://java.sun.com/jsp/jstl/core"
 		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:form="http://www.springframework.org/tags/form">
 
+    <!--@elvariable id="preferences" type="org.xcolab.view.widgets.staffmembers.StaffMembersPreferences"-->
+
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 	<xcolab:layout>
-		<h1>Edit</h1>
 
+        <xcolab:editPreferences preferences="${preferences}">
 
-		<form:form action="/staffmemberswidget/savePreferences" commandName="staffMembersPreferences">
-			<table>
+            <table>
                 <tr>
+                    <td>Category:</td>
                     <td>
-                        Preference ID:
-                    </td>
-                    <td>
-                        <select id="prefID" >
-                            <option value="${staffMembersPreferences.preferenceId}" selected="selected" >${staffMembersPreferences.preferenceId}</option>
-                            <c:forEach var="preferenceSaved" items="${staffMembersPreferences.allPreferenceIds}">
-                                <c:if test="${preferenceSaved != staffMembersPreferences.preferenceId}">
-                                    <option value="${preferenceSaved}" >${preferenceSaved}</option>
-                                </c:if>
-
-                            </c:forEach>
-                            <option value="-1">CREATE NEW PREFERENCE</option>
-                        </select>
-
-                        <form:hidden path="preferenceId" id="newPref"  cssStyle="margin-left:20px;"/>
-
-                        <script>
-                            jQuery(function () {
-                                var initialSelection = '${staffMembersPreferences.preferenceId}';
-                                $("#prefID").change(function(){
-                                    var currentValue = $( this ).val();
-                                    if(currentValue == -1){
-                                        $("#newPref").attr("type","text");
-                                        $("#newPref").attr("placeholder","preference identification");
-                                    }else{
-                                        if(currentValue != initialSelection){
-                                            window.location = window.location.pathname + "?preferenceId="+currentValue;
-                                        }else {
-                                            $("#newPref").hide();
-                                        }
-                                    }
-                                });
-
-                            });
-                        </script>
+                        <form:select path="categoryId" items="${categories}" />
                     </td>
                 </tr>
-				<tr>
-					<td>Widget title:</td>
-					<td>
-						<form:input path="portletTitle" />
-					</td>
-				</tr>
-				<tr>
-					<td>Category:</td>
-					<td>
-						<form:select path="categoryId" items="${categories}" />
-					</td>
-				</tr>
-				<tr>
-					<td>Display photos:</td>
-					<td>
-						<form:checkbox path="displayPhoto" />
-					</td>
-				</tr>
-				<tr>
-					<td>Display URLs:</td>
-					<td>
-						<form:checkbox path="displayUrl" />
-					</td>
-				</tr>
-				<tr>
-					<td>Amount of columns (only applies if photos are displayed):</td>
-					<td>
-						<form:input path="columnAmount" />
-					</td>
-				</tr>
-			</table>
-			<a href="/" >Return to home </a>
-			<br/>
-			<input type="submit" value="Save" />
-		</form:form>
+                <tr>
+                    <td>Display photos:</td>
+                    <td>
+                        <form:checkbox path="displayPhoto" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Display URLs:</td>
+                    <td>
+                        <form:checkbox path="displayUrl" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Amount of columns (only applies if photos are displayed):</td>
+                    <td>
+                        <form:input path="columnAmount" />
+                    </td>
+                </tr>
+            </table>
+        </xcolab:editPreferences>
+
 	</xcolab:layout>
 </jsp:root>

@@ -2,24 +2,18 @@
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
+    <!--@elvariable id="preferences" type="org.xcolab.view.pages.feedback.ContactPreferences"-->
+
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout>
-        <h1>Edit Preferences</h1>
-        <style>
-            .contactform-preferences input, .contactform-preferences textarea {
-                width: 600px;
-                font-size: 1.1em;
-            }
-            .contactform-preferences textarea {
-                height: 200px;
-            }
-        </style>
-        <form:form action="/feedback/savePreferences" class="contactform-preferences" commandName="contactPreferences">
+
+        <xcolab:editPreferences preferences="${preferences}">
             <p>
-                <strong>In messages you can use patterns like USER_NAME, USER_EMAIL, USER_MESSAGE as a placeholders for
-                    values entered by user.</strong>
+                <strong>
+                    In messages you can use patterns like USER_NAME, USER_EMAIL, USER_MESSAGE
+                    as placeholders for values entered by user.
+                </strong>
             </p>
-            <input type="hidden" name="action" value="savePreferences" />
             <fieldset>
                 <p>
                     Recipients, comma-separated:<br />
@@ -37,11 +31,9 @@
                     Expand Link Text:<br />
                     <form:input path="expandLinkText" />
                 </p>
-                <p><a href="/" >Return to home </a></p>
-                <p>
-                    <input type="submit" value="Save" />
-                </p>
+
             </fieldset>
-        </form:form>
+        </xcolab:editPreferences>
+
     </xcolab:layout>
 </jsp:root>

@@ -87,7 +87,7 @@ public class FeedsController extends AbstractWidgetController<FeedsPreferences> 
 
         model.addAttribute("feedType", preferences.getFeedType());
         model.addAttribute("feedStyle", preferences.getFeedStyle());
-        model.addAttribute("portletTitle", preferences.getPortletTitle());
+        model.addAttribute("title", preferences.getTitle());
         model.addAttribute("seeMoreLinkShown", preferences.getSeeMoreLinkShown());
         for (FeedTypeDataProvider ftpdp : dataProviderList) {
             if (ftpdp.getFeedTypeName().equals(preferences.getFeedType().getDescription())) {

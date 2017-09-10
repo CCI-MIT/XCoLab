@@ -32,7 +32,7 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
     private static final Boolean DEFAULT_SEE_MORE_SHOWN = false;
     private static final Integer DEFAULT_FEED_MAX_LENGTH = 0;
 
-    private String portletTitle;
+    private String title;
     private int feedSize;
     private FeedType feedType;
     private String feedTitle;
@@ -60,7 +60,7 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
 
         feedStyle = jsonPreferences.optString(FEED_DISPLAY_STYLE, DEFAULT_STYLE);
 
-        portletTitle = jsonPreferences.optString(PORTLET_TITLE, DEFAULT_PORTLET_TITLE);
+        title = jsonPreferences.optString(PORTLET_TITLE, DEFAULT_PORTLET_TITLE);
 
         removeAdmin = jsonPreferences.optBoolean(FEED_REMOVE_ADMIN, DEFAULT_REMOVE_ADMIN);
         seeMoreLinkShown = jsonPreferences.optBoolean(FEED_SEE_MORE_LINK_SHOWN, DEFAULT_SEE_MORE_SHOWN);
@@ -81,7 +81,7 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
         prefs.put(FEED_TYPE_PREF, feedType.name());
         prefs.put(FEED_REMOVE_ADMIN, String.valueOf(removeAdmin));
         prefs.put(FEED_DISPLAY_STYLE, feedStyle);
-        prefs.put(PORTLET_TITLE, String.valueOf(portletTitle));
+        prefs.put(PORTLET_TITLE, String.valueOf(title));
         prefs.put(FEED_SEE_MORE_LINK_SHOWN, String.valueOf(seeMoreLinkShown));
         prefs.put(FEED_MAX_LENGTH, String.valueOf(feedMaxLength));
 
@@ -129,12 +129,12 @@ public class FeedsPreferences extends WidgetPreference implements Serializable {
         this.feedStyle = feedStyle;
     }
 
-    public String getPortletTitle() {
-        return portletTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setPortletTitle(String portletTitle) {
-        this.portletTitle = portletTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Boolean getSeeMoreLinkShown() {

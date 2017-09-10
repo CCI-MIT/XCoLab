@@ -48,7 +48,7 @@ public class StaffMembersPreferences extends WidgetPreference implements Seriali
         categories.put(CategoryRole.RESEARCH_COLAB.getCategoryId(), "Research Collaborator");
     }
 
-    private String portletTitle;
+    private String title;
     private int columnAmount;
     private boolean displayPhoto;
     private boolean displayUrl;
@@ -62,10 +62,9 @@ public class StaffMembersPreferences extends WidgetPreference implements Seriali
     public StaffMembersPreferences(String preferenceId, String language) {
         super(preferenceId, language);
 
-
         columnAmount = jsonPreferences.optInt(COLUMN_AMOUNT, defaultColumnAmount);
         categoryId = jsonPreferences.optInt(CATEGORY_ID, defaultCategoryId);
-        portletTitle = jsonPreferences.optString(PORTLET_TITLE, defaultPortletTitle);
+        title = jsonPreferences.optString(PORTLET_TITLE, defaultPortletTitle);
         displayPhoto = jsonPreferences.optBoolean(DISPLAY_PHOTO, defaultDisplayPhoto);
         displayUrl = jsonPreferences.optBoolean(DISPLAY_URL, defaultDisplayUrl);
     }
@@ -87,17 +86,17 @@ public class StaffMembersPreferences extends WidgetPreference implements Seriali
         prefs.put(CATEGORY_ID, String.valueOf(categoryId));
         prefs.put(DISPLAY_PHOTO, String.valueOf(displayPhoto));
         prefs.put(DISPLAY_URL, String.valueOf(displayUrl));
-        prefs.put(PORTLET_TITLE, String.valueOf(portletTitle));
+        prefs.put(PORTLET_TITLE, String.valueOf(title));
 
         savePreferencesInternal(prefs, preferenceId);
     }
 
-    public String getPortletTitle() {
-        return portletTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setPortletTitle(String portletTitle) {
-        this.portletTitle = portletTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getColumnAmount() {

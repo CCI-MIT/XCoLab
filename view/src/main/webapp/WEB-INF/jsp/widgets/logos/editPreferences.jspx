@@ -1,48 +1,18 @@
-<jsp:root version="2.1"
-        xmlns:jsp="http://java.sun.com/JSP/Page"
-        xmlns:form="http://www.springframework.org/tags/form"
-        xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-        xmlns:c="http://java.sun.com/jsp/jstl/core"
-       >
-    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-    <!--@elvariable id="carouselPreferences" type="org.xcolab.view.widgets.logos.CarouselPreferences"-->
-    <xcolab:layout>
-        <form:form action="/carouselwidget/savePreferences" commandName="carouselPreferences">
-            <form:hidden path="logosCount" id="logosCount" value="${carouselPreferences.logos.size()}" />
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
-            <c:forEach var="logo" items="${carouselPreferences.logos}" varStatus="status">
+    <!--@elvariable id="preferences" type="org.xcolab.view.widgets.logos.CarouselPreferences"-->
+
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <xcolab:layout>
+        <xcolab:editPreferences preferences="${preferences}">
+            <form:hidden path="logosCount" id="logosCount" value="${preferences.logos.size()}" />
+
+            <c:forEach var="logo" items="${preferences.logos}" varStatus="status">
                 <form:hidden id="remove${status.index}" path="logos[${status.index}].remove" />
             </c:forEach>
-
-            <table>
-                <tr>
-                    <td>
-                        <label for="prefID">Preference ID:</label>
-                    </td>
-                    <td>
-                        <select id="prefID" class="form-control">
-                            <option value="${carouselPreferences.preferenceId}" selected="selected" >${carouselPreferences.preferenceId}</option>
-                            <c:forEach var="preferenceSaved" items="${carouselPreferences.allPreferenceIds}">
-                                <c:if test="${preferenceSaved != carouselPreferences.preferenceId}">
-                                    <option value="${preferenceSaved}" >${preferenceSaved}</option>
-                                </c:if>
-
-                            </c:forEach>
-                            <option value="-1">CREATE NEW PREFERENCE</option>
-                        </select>
-
-                        <form:hidden path="preferenceId" id="newPref" class="form-control" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label for="title">Title:</label>
-                    </td>
-                    <td>
-                        <form:input path="title" class="form-control"/>
-                    </td>
-                </tr>
-            </table>
 
             <table class="table">
                 <tr>
@@ -51,7 +21,7 @@
                     <th>Alt Text</th>
                     <th />
                 </tr>
-                <c:forEach var="logo" items="${carouselPreferences.logos}" varStatus="status">
+                <c:forEach var="logo" items="${preferences.logos}" varStatus="status">
                     <tr class="${status.index}">
                         <td><form:input path="logos[${status.index}].imageUrl" name="imageUrl" id="imageUrl" class="form-control" /></td>
                         <td><form:input path="logos[${status.index}].linkUrl" name="linkUrl" id="linkUrl" class="form-control" /></td>
@@ -80,32 +50,10 @@
                     </td>
                 </tr>
             </table>
-            <a href="/" >Return to home </a>
-            <br/>
-            <input type="submit" value="Save" />
 
-        </form:form>
-    </xcolab:layout>
+        </xcolab:editPreferences>
 
-    <script>
-        jQuery(function () {
-            var initialSelection = '${carouselPreferences.preferenceId}';
-            $("#prefID").change(function () {
-                var currentValue = $(this).val();
-                if (currentValue == -1) {
-                    var $newPref = $("#newPref");
-                    $newPref.attr("type", "text");
-                    $newPref.attr("placeholder", "preference identification");
-                } else {
-                    if (currentValue != initialSelection) {
-                        window.location = window.location.pathname + "?preferenceId="
-                                + currentValue;
-                    } else {
-                        $("#newPref").hide();
-                    }
-                }
-            });
-
+        <script>
             var $prototype_row = $('#js-Table__prototypeRow');
             var $logosCount = $('#logosCount');
             var logosCount = parseInt($logosCount.val());
@@ -130,6 +78,6 @@
                 logosCount--;
                 $logosCount.val(logosCount);
             });
-        });
-    </script>
+        </script>
+    </xcolab:layout>
 </jsp:root>

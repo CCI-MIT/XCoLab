@@ -1,0 +1,68 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:form="http://www.springframework.org/tags/form">
+
+    <jsp:directive.attribute name="preferences" type="org.xcolab.view.widgets.WidgetPreference" required="true" rtexprvalue="true" description="The preferences being edited" />
+
+    <h1>Edit preferences</h1>
+
+    <form:form method="post" commandName="preferences">
+
+        <div class="form-group">
+            <label for="js-Preferences__idSelect">
+                Preference ID:
+            </label>
+            <select id="js-Preferences__idSelect" class="form-control">
+                <option value="${preferences.preferenceId}" selected="selected" >${preferences.preferenceId}</option>
+                <c:forEach var="preferenceSaved" items="${preferences.allPreferenceIds}">
+                    <c:if test="${preferenceSaved != preferences.preferenceId}">
+                        <option value="${preferenceSaved}" >${preferenceSaved}</option>
+                    </c:if>
+
+                </c:forEach>
+                <option value="-1">CREATE NEW PREFERENCE</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <form:input path="preferenceId" id="js-Preferences__newId"
+                        placeholder="Preference ID" cssClass="form-control hidden" />
+        </div>
+
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <form:input path="title" class="form-control"/>
+        </div>
+
+        <div>
+            <jsp:doBody/>
+        </div>
+
+        <div class="form-group">
+            <button type="button" class="c-Button__secondary" href="/" >Return to home</button>
+            <button type="submit" class="c-Button__primary">Save</button>
+        </div>
+
+    </form:form>
+
+    <script>
+        jQuery(function () {
+            var initialSelection = '${preferences.preferenceId}';
+
+            $("#js-Preferences__idSelect").change(function () {
+                var currentValue = $(this).val();
+                if (currentValue == -1) {
+                    $('#js-Preferences__newId').removeClass('hidden');
+                } else {
+                    if (currentValue != initialSelection) {
+                        window.location = window.location.pathname + '?preferenceId=' + currentValue;
+                    } else {
+                        $('#js-Preferences__newId').addClass('hidden');
+                    }
+                }
+            });
+        });
+
+    </script>
+
+</jsp:root>
