@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-//@GetMapping("/randomproposalswidget")
 @RequestMapping(RandomProposalsController.BASE_URL)
 public class RandomProposalsController extends AbstractWidgetController<RandomProposalsPreferences> {
 

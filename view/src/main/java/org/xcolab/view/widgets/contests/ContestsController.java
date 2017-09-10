@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-//@GetMapping("/contestswidget")
 @RequestMapping(ContestsController.BASE_URL)
 public class ContestsController extends AbstractWidgetController<ContestPreferences> {
 

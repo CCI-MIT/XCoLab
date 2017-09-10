@@ -7,6 +7,7 @@ import org.ocpsoft.rewrite.servlet.config.HttpConfigurationProvider;
 import org.xcolab.view.config.rewrite.rules.ContentRewriteRules;
 import org.xcolab.view.config.rewrite.rules.ProposalRewriteRules;
 import org.xcolab.view.config.rewrite.rules.RewriteRuleProvider;
+import org.xcolab.view.config.rewrite.rules.DeprecatedMappingRewriteRules;
 import org.xcolab.view.config.rewrite.rules.legacy.LegacyContentRewriteRules;
 import org.xcolab.view.config.rewrite.rules.legacy.LegacyDiscussionRewriteRules;
 import org.xcolab.view.config.rewrite.rules.legacy.LegacyMembersRewriteRules;
@@ -29,6 +30,8 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
     public RewriteConfigProvider() {
         ruleProviders.add(new ProposalRewriteRules());
         ruleProviders.add(new ContentRewriteRules());
+
+        ruleProviders.add(new DeprecatedMappingRewriteRules());
 
         ruleProviders.add(new LegacyPlatformRewriteRules());
         ruleProviders.add(new LegacyContentRewriteRules());

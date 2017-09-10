@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-//@RequestMapping("/staffmemberswidget")
 @RequestMapping(StaffMemberController.BASE_URL)
 public class StaffMemberController extends AbstractWidgetController<StaffMembersPreferences> {
 

@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-//@GetMapping("/carouselwidget")
 @RequestMapping(CarouselController.BASE_URL)
 public class CarouselController extends AbstractWidgetController<CarouselPreferences> {
 
