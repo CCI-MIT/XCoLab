@@ -180,7 +180,7 @@ $p-community__c-Message__column__width: 204px !default;
   list-style: none;
 }
 
-#content .comm_list li {
+.comm_list li {
   font-size: 15px;
   margin-top: 10px;
 }
@@ -488,7 +488,7 @@ input.comm_search {
   line-height: 21px;
 }
 
-#content .membersCategories, #content .membersCategories li {
+.membersCategories, .membersCategories li {
   list-style: none;
   background: none;
   padding-left: 0;

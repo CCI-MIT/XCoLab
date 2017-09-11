@@ -247,7 +247,7 @@
 
     <!-- ============ Content ============ -->
 
-    <div id="content">
+    <div class="bs-container-fixed clearfix" id="content">
         <!-- Include page body -->
         <jsp:doBody/>
     </div>

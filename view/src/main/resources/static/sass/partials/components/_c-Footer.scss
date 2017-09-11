@@ -50,36 +50,14 @@ $c-Footer__link__textColor--hover: $t-Color__accent !default;
   }
 }
 
-.c-Footer__language__pop{
-  position: absolute;
-  display: block;
-  width: 175px;
-  padding-bottom: 10px;
-  padding-top: 10px;
-
-}
-.c-Footer__language__box{
-  @if $c-Footer__menu__background__isSimple {
-    background: $c-Footer__menu__backgroundColor;
-  } @else {
-    @include background(url(/images/bg-noise.png), $c-Footer__menu__backgroundColor);
-  }
-  color: white;
-  list-style: none;
-  ul {
-    list-style: none;
-    margin-left: 5px;
-    cursor:pointer;
-  }
-}
-//TODO: unused in source code - verify if used elsewhere
+//TODO: used in content article for footer - replace with bootstrap classes
 #footleft {
   float: left;
   width: 420px;
   padding-top: 21px;
 }
 
-//TODO: unused in source code - verify if used elsewhere
+//TODO: used in content article for footer - replace with bootstrap classes
 #footright {
   float: right;
   width: 510px;
@@ -110,20 +88,4 @@ $c-Footer__link__textColor--hover: $t-Color__accent !default;
       }
     }
   }
-}
-
-//TODO: unused in source code - verify if used elsewhere
-//TODO: experimentally removed, breaks tab bar on community page
-.portlet-journal-content ul, .portlet-journal-content ol, .portlet-wiki ul, .portlet-wiki ol {
-  //margin-bottom: 15px;
-}
-
-//TODO: unused in source code - verify if used elsewhere
-.whatWhoWhere {
-  display: inline;
-}
-
-//TODO: unused in source code - verify if used elsewhere
-.delta-selector {
-  display: none;
 }

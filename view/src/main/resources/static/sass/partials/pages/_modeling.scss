@@ -67,7 +67,7 @@
   padding-top: 20px;
 }
 
-#content .act_left-list li, .act_left-list li {
+.act_left-list li {
   list-style: none;
   font: bold 11px Verdana, sans-serif;
   background: none;
@@ -395,7 +395,7 @@
   color: white;
 }
 
-.chart_sub-menu li.c a, #content .chart_sub-menu li.c a {
+.chart_sub-menu li.c a {
   padding: 11px 0 11px 20px;
   margin: 0;
   background: $t-Color__grey--light;
@@ -669,14 +669,6 @@
   color: black;
   border: 4px solid $t-Color__grey--lightest;
   position: relative;
-}
-
-#content_home .teamGrid .left {
-  float: none;
-}
-
-#content_home .teamGrid .right {
-  float: none;
 }
 
 .chartContainer .jqplot-base-canvas {
