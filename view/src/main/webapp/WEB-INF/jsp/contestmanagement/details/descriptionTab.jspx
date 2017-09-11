@@ -40,7 +40,7 @@
                 </div>
                 <div class="clearfix"><!--  --></div>
                 <div class="addpropInputContainer">
-                    <form:input path="contestShortName" id="contestShortName" cssClass="form-control" cssErrorClass="has-error"/>
+                    <form:input path="contestShortName" id="contestShortName" cssClass="form-control" cssErrorClass="form-control bs-form-has-error"/>
 
                     <div class="reg_errors"><!--  -->
                         <form:errors cssClass="c-Alert c-Alert__error" path="contestShortName"/>
@@ -81,7 +81,7 @@
                 </div>
                 <div class="clearfix"><!-- --></div>
                 <div class="addpropInputContainer">
-                    <form:textarea path="contestName" id="contestName" cssClass="form-control" cssErrorClass="has-error"/>
+                    <form:textarea path="contestName" id="contestName" cssClass="form-control" cssErrorClass="form-control bs-form-has-error"/>
 
                     <div class="reg_errors"><!--  -->
                         <form:errors cssClass="c-Alert c-Alert__error" path="contestName"/>
@@ -132,7 +132,7 @@
                     An optional link that it opened when a user clicks on the sponsor logo.
                 </div>
 
-                <form:input path="sponsorLink" id="sponsorLink" cssClass="form-control" cssErrorClass="has-error"/>
+                <form:input path="sponsorLink" id="sponsorLink" cssClass="form-control" cssErrorClass="form-control bs-form-has-error"/>
             </div>
 
             <div class="addpropbox blue">
@@ -166,7 +166,7 @@
                 
                 <div class="addpropInputContainer" style="min-width:700px;">
                     <form:textarea path="contestDescription" id="contestDescription"
-                                   cssClass="rte-editorPlaceholder form-control" cssErrorClass="has-error"/>
+                                   cssClass="rte-editorPlaceholder form-control" cssErrorClass="form-control bs-form-has-error"/>
 
                     <div class="reg_errors"><!--  -->
                         <form:errors cssClass="c-Alert c-Alert__error" path="contestDescription"/>
@@ -193,7 +193,7 @@
                 </div>
                 <div class="clearfix"><!-- --></div>
                 <div class="addpropInputContainer">
-                    <form:select path="planTemplateId" cssClass="form-control" cssErrorClass="has-error">
+                    <form:select path="planTemplateId" cssClass="form-control" cssErrorClass="form-control bs-form-has-error">
                         <form:options items="${proposalTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
                     </form:select>
 
@@ -216,7 +216,7 @@
                 </div>
                 <div class="clearfix"><!-- --></div>
                 <div class="addpropInputContainer">
-                    <form:select path="scheduleTemplateId" cssClass="form-control" cssErrorClass="has-error">
+                    <form:select path="scheduleTemplateId" cssClass="form-control" cssErrorClass="form-control bs-form-has-error">
                         <form:option value="0" label="None"/>
 
                         <form:options items="${scheduleTemplateSelectionItems}" itemValue="value" itemLabel="lable"/>
