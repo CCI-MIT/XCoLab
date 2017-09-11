@@ -7,15 +7,15 @@ import java.util.List;
 
 public class ActiveMassAction extends ContestMassActionAdapter {
 
-    private final boolean setActive;
+    private final boolean isSetActive;
 
     public ActiveMassAction() {
         this(false);
     }
 
-    public ActiveMassAction(boolean setActive) {
-        super(setActive ? "Active" : "Prior");
-        this.setActive = setActive;
+    public ActiveMassAction(boolean isSetActive) {
+        super(isSetActive ? "Active" : "Prior");
+        this.isSetActive = isSetActive;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class ActiveMassAction extends ContestMassActionAdapter {
             if (contest.getIsSharedContestInForeignColab()) {
                 contest = ContestClientUtil.getContest(contest.getContestPK());
             }
-            contest.setContestActive(setActive);
+            contest.setContestActive(isSetActive);
             contest.persist();
         }
     }
