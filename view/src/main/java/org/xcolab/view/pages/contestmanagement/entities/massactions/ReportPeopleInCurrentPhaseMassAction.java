@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ReportPeopleInCurrentPhaseMassAction extends ContestMassActionAdapter {
 
-    private CsvExportHelper csvExportHelper;
     private static final List<String> CSV_EXPORT_HEADER =
             Arrays.asList("Contest", "Proposal Title", "Proposal Link", "Username", "First Name",
                     "Last Name", "Email Address", "Role", "Last phase");
@@ -27,8 +26,9 @@ public class ReportPeopleInCurrentPhaseMassAction extends ContestMassActionAdapt
     }
 
     @Override
-    public void execute(List<Contest> contests, boolean actionConfirmed) {
-        csvExportHelper = new CsvExportHelper();
+    public void execute(List<Contest> contests, boolean actionConfirmed,
+            MassActionDataWrapper dataWrapper, HttpServletResponse response) throws IOException {
+        CsvExportHelper csvExportHelper = new CsvExportHelper();
         csvExportHelper.addRowToExportData(CSV_EXPORT_HEADER);
 
         // TODO: Fix intermediate solution.
@@ -43,14 +43,7 @@ public class ReportPeopleInCurrentPhaseMassAction extends ContestMassActionAdapt
                                 activeContestPhase);
             }
         }
-    }
 
-    @Override
-    public void generateResponse(HttpServletResponse response)
-            throws IOException, IllegalStateException {
-        if (csvExportHelper == null) {
-            throw new IllegalStateException("Mass action has not been executed yet");
-        }
         String exportFileName = "reportOfPeopleInCurrentPhase";
         csvExportHelper.initiateDownload(exportFileName, response);
     }

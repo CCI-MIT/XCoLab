@@ -5,11 +5,14 @@ import org.xcolab.client.contest.pojo.Contest;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 public abstract class SetContestPropertyMassAction extends ContestMassActionAdapter {
 
     private final boolean setValue;
 
-    public SetContestPropertyMassAction(boolean setValue, String trueDisplayName, String falseDisplayName) {
+    public SetContestPropertyMassAction(boolean setValue, String trueDisplayName,
+            String falseDisplayName) {
         super(setValue ? trueDisplayName : falseDisplayName);
         this.setValue = setValue;
     }
@@ -17,7 +20,8 @@ public abstract class SetContestPropertyMassAction extends ContestMassActionAdap
     abstract void setProperty(Contest contest, boolean setTrue);
 
     @Override
-    public void execute(List<Contest> contests, boolean actionConfirmed) {
+    public void execute(List<Contest> contests, boolean actionConfirmed,
+            MassActionDataWrapper dataWrapper, HttpServletResponse response) {
         for (Contest contest : contests) {
             if (contest.getIsSharedContestInForeignColab()) {
                 contest = ContestClientUtil.getContest(contest.getContestPK());

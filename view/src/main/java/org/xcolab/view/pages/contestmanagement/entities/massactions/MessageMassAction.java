@@ -13,35 +13,22 @@ import javax.servlet.http.HttpServletResponse;
 
 public class MessageMassAction extends ContestMassActionAdapter {
 
-    private MassMessageBean massMessageBean;
-
-    protected MassMessageBean getMassMessageBean() {
-        return massMessageBean;
-    }
-
     public MessageMassAction() {
         super("Message contributors in active phase");
     }
 
-    public MessageMassAction(String customDisplayName) {
-        super(customDisplayName);
-    }
-
     @Override
-    public void setup(MassActionDataWrapper dataWrapper) {
-        massMessageBean = dataWrapper.getMassMessageBean();
-    }
-
-    @Override
-    public void execute(List<Contest> contests, boolean actionConfirmed)
+    public void execute(List<Contest> contests, boolean actionConfirmed,
+            MassActionDataWrapper dataWrapper, HttpServletResponse response)
             throws IllegalStateException {
-        if (getMassMessageBean() == null) {
+        MassMessageBean massMessageBean = dataWrapper.getMassMessageBean();
+        if (massMessageBean == null) {
             throw new IllegalStateException("The mass action has not been setup yet.");
         }
         // TODO: Remove intermediate solution.
         List<Long> contestIds =
                 contests.stream().map(Contest::getContestPK).collect(Collectors.toList());
 
-        ContestMassActionMethods.sendMassMessage(contestIds, getMassMessageBean(), null);
+        ContestMassActionMethods.sendMassMessage(contestIds, massMessageBean, null);
     }
 }

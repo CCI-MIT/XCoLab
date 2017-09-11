@@ -19,7 +19,8 @@ public class DeleteWithPhasesMassAction extends ContestMassActionAdapter {
     }
 
     @Override
-    public void execute(List<Contest> contests, boolean actionConfirmed)
+    public void execute(List<Contest> contests, boolean actionConfirmed,
+            MassActionDataWrapper dataWrapper, HttpServletResponse response)
             throws MassActionRequiresConfirmationException {
         // TODO: Fix intermediate solution.
         List<Long> contestIds =

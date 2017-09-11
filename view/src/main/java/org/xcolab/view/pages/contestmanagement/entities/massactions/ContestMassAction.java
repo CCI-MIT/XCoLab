@@ -9,13 +9,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 public interface ContestMassAction {
-
-    void setup(MassActionDataWrapper dataWrapper);
-
-    void execute(List<Contest> contests, boolean actionConfirmed)
-            throws MassActionRequiresConfirmationException, IllegalStateException;
-
-    void generateResponse(HttpServletResponse response) throws IOException, IllegalStateException;
+    
+    void execute(List<Contest> contests, boolean actionConfirmed, MassActionDataWrapper dataWrapper,
+            HttpServletResponse response)
+            throws MassActionRequiresConfirmationException, IllegalStateException, IOException;
 
     String getDisplayName();
 }

@@ -16,7 +16,8 @@ public class OrderMassAction extends ContestMassActionAdapter {
     }
 
     @Override
-    public void execute(List<Contest> contests, boolean actionConfirmed) {
+    public void execute(List<Contest> contests, boolean actionConfirmed,
+            MassActionDataWrapper dataWrapper, HttpServletResponse response) {
         for (Contest contestWrapper : contests) {
             Contest contest = contestWrapper.getWrapped();
             if (contest.getIsSharedContestInForeignColab()) {

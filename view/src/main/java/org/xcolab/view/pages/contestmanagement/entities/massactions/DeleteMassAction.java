@@ -7,6 +7,8 @@ import org.xcolab.view.pages.contestmanagement.utils.ContestMassActionMethods;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletResponse;
+
 public class DeleteMassAction extends ContestMassActionAdapter {
 
     public DeleteMassAction() {
@@ -14,7 +16,8 @@ public class DeleteMassAction extends ContestMassActionAdapter {
     }
 
     @Override
-    public void execute(List<Contest> contests, boolean actionConfirmed)
+    public void execute(List<Contest> contests, boolean actionConfirmed,
+            MassActionDataWrapper dataWrapper, HttpServletResponse response)
             throws MassActionRequiresConfirmationException {
         // TODO: Fix intermediate solution.
         List<Long> contestIds =

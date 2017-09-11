@@ -7,6 +7,8 @@ import org.xcolab.view.pages.contestmanagement.utils.ContestMassActionMethods;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletResponse;
+
 public class FlagMassAction extends ContestMassActionAdapter {
 
     private ContestFlagTextToolTipBean contestFlagTextToolTipBean;
@@ -16,17 +18,15 @@ public class FlagMassAction extends ContestMassActionAdapter {
     }
 
     @Override
-    public void setup(MassActionDataWrapper dataWrapper) {
-        contestFlagTextToolTipBean = dataWrapper.getContestFlagTextToolTipBean();
-    }
-
-    @Override
-    public void execute(List<Contest> contests, boolean actionConfirmed)
+    public void execute(List<Contest> contests, boolean actionConfirmed,
+            MassActionDataWrapper dataWrapper, HttpServletResponse response)
             throws IllegalStateException {
+        ContestFlagTextToolTipBean contestFlagTextToolTipBean =
+                dataWrapper.getContestFlagTextToolTipBean();
         if (contestFlagTextToolTipBean == null) {
             throw new IllegalStateException("The mass action has not been setup yet.");
         }
-        // TODO: Fix intermediate solution.
+        // TODO: Fix intermediate solution. (Use IllegalArgumentException maybe?)
         List<Long> contestIds =
                 contests.stream().map(Contest::getContestPK).collect(Collectors.toList());
         ContestMassActionMethods.setFlag(contestIds, contestFlagTextToolTipBean, null);

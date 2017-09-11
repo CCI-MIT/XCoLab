@@ -7,6 +7,8 @@ import org.xcolab.view.pages.contestmanagement.utils.ContestMassActionMethods;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 public class SubscribeMassAction extends ContestMassActionAdapter {
 
     private Long memberId;
@@ -18,12 +20,8 @@ public class SubscribeMassAction extends ContestMassActionAdapter {
     }
 
     @Override
-    public void setup(MassActionDataWrapper dataWrapper) {
-        memberId = dataWrapper.getMemberId();
-    }
-
-    @Override
-    public void execute(List<Contest> contests, boolean actionConfirmed)
+    public void execute(List<Contest> contests, boolean actionConfirmed,
+            MassActionDataWrapper dataWrapper, HttpServletResponse response)
             throws IllegalStateException {
         if (memberId == null) {
             throw new IllegalStateException("The mass action has not been setup yet.");
@@ -33,7 +31,8 @@ public class SubscribeMassAction extends ContestMassActionAdapter {
                 if (isSubscribe) {
                     ContestClientUtil.subscribeMemberToContest(contest.getContestPK(), memberId);
                 } else {
-                    ContestClientUtil.unsubscribeMemberFromContest(contest.getContestPK(), memberId);
+                    ContestClientUtil
+                            .unsubscribeMemberFromContest(contest.getContestPK(), memberId);
                 }
             }
         }

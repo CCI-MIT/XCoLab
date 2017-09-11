@@ -6,8 +6,11 @@ import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;
 
 public interface MassActionDataWrapper {
 
-    public MassMessageBean getMassMessageBean();
-    public ContestModelSettingsBean getContestModelSettingsBean();
-    public ContestFlagTextToolTipBean getContestFlagTextToolTipBean();
-    public Long getMemberId();
+    MassMessageBean getMassMessageBean();
+
+    ContestModelSettingsBean getContestModelSettingsBean();
+
+    ContestFlagTextToolTipBean getContestFlagTextToolTipBean();
+
+    Long getMemberId();
 }
