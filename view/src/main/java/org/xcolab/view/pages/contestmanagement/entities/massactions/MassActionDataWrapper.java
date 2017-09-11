@@ -9,4 +9,5 @@ public interface MassActionDataWrapper {
     public MassMessageBean getMassMessageBean();
     public ContestModelSettingsBean getContestModelSettingsBean();
     public ContestFlagTextToolTipBean getContestFlagTextToolTipBean();
+    public Long getMemberId();
 }

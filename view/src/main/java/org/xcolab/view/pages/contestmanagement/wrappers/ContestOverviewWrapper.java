@@ -35,6 +35,7 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
     private MassMessageBean massMessageBean;
     private ContestFlagTextToolTipBean contestFlagTextToolTipBean;
     private ContestModelSettingsBean contestModelSettingsBean;
+    private Long memberId;
 
     public ContestOverviewWrapper() {
         initLists();
@@ -135,6 +136,14 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
     public void setContestFlagTextToolTipBean(
             ContestFlagTextToolTipBean contestFlagTextToolTipBean) {
         this.contestFlagTextToolTipBean = contestFlagTextToolTipBean;
+    }
+
+    public Long getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
     }
 
     public List<Boolean> getSubscribedToContest() {
