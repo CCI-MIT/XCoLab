@@ -1,24 +1,31 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
-import org.xcolab.view.pages.contestmanagement.wrappers.ContestOverviewWrapper;
 
-import java.io.IOException;
+import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+public class ActiveMassAction extends ContestMassActionAdapter {
 
-public class ActiveMassAction extends ContestMassAction {
+    private final boolean setActive;
 
     public ActiveMassAction() {
-        super("Active", "Prior");
+        this(false);
+    }
+
+    public ActiveMassAction(boolean setActive) {
+        super(setActive ? "Active" : "Prior");
+        this.setActive = setActive;
     }
 
     @Override
-    void execute(HttpServletRequest request, HttpServletResponse response,
-            ContestOverviewWrapper contestOverviewWrapper)
-            throws IOException, MassActionRequiresConfirmationException {
-        Contest.setContestActive(true);
+    public void execute(List<Contest> contests, boolean actionConfirmed) {
+        for (Contest contest : contests) {
+            if (contest.getIsSharedContestInForeignColab()) {
+                contest = ContestClientUtil.getContest(contest.getContestPK());
+            }
+            contest.setContestActive(setActive);
+            contest.persist();
+        }
     }
 }
