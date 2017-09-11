@@ -9,50 +9,45 @@
 		
         <xcolab:editPreferences preferences="${preferences}">
 
-            <table>
-                <tr>
-                    <td>feed type:</td>
-                    <td>
-                        <form:select path="feedType" items="${feedTypes }" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>feed size:</td>
-                    <td>
-                        <form:input path="feedSize" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>feed title:</td>
-                    <td>
-                        <form:input path="feedTitle" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>feed display style:</td>
-                    <td>
-                        <form:select path="feedStyle" items="${feedDisplayStyles }" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>feed max length:</td>
-                    <td>
-                        <form:input path="feedMaxLength" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>remove admin:</td>
-                    <td>
-                        <form:checkbox path="removeAdmin"  />
-                    </td>
-                </tr>
-                <tr>
-                    <td>show see more link:</td>
-                    <td>
-                        <form:checkbox path="seeMoreLinkShown"  />
-                    </td>
-                </tr>
-            </table>
+            <div class="form-group">
+                <label>Feed type</label>
+                <form:select path="feedType" items="${feedTypes }" cssClass="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Feed size</label>
+                <form:input path="feedSize" cssClass="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Feed title</label>
+                <form:input path="feedTitle" cssClass="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Feed display style</label>
+                <form:select path="feedStyle" items="${feedDisplayStyles }" cssClass="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Feed max length</label>
+                <form:input path="feedMaxLength" cssClass="form-control" />
+            </div>
+
+            <div class="checkbox">
+                <label>
+                    <form:checkbox path="removeAdmin" />
+                    remove admin
+                </label>
+            </div>
+
+            <div class="checkbox">
+                <label>
+                    <form:checkbox path="seeMoreLinkShown" />
+                    show see more link
+                </label>
+            </div>
+
         </xcolab:editPreferences>
 
 	</xcolab:layout>

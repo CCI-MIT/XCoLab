@@ -9,32 +9,30 @@
 
         <xcolab:editPreferences preferences="${preferences}">
 
-            <table>
-                <tr>
-                    <td>Category:</td>
-                    <td>
-                        <form:select path="categoryId" items="${categories}" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>Display photos:</td>
-                    <td>
-                        <form:checkbox path="displayPhoto" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>Display URLs:</td>
-                    <td>
-                        <form:checkbox path="displayUrl" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>Amount of columns (only applies if photos are displayed):</td>
-                    <td>
-                        <form:input path="columnAmount" />
-                    </td>
-                </tr>
-            </table>
+            <div class="form-group">
+                <label>Category</label>
+                <form:select path="categoryId" items="${categories}" cssClass="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Amount of columns (only applies if photos are displayed)</label>
+                <form:input path="columnAmount" cssClass="form-control" />
+            </div>
+
+            <div class="checkbox">
+                <label>
+                    <form:checkbox path="displayPhoto" />
+                    display photos
+                </label>
+            </div>
+
+            <div class="checkbox">
+                <label>
+                    <form:checkbox path="displayUrl" />
+                    display URLs
+                </label>
+            </div>
+
         </xcolab:editPreferences>
 
 	</xcolab:layout>

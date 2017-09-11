@@ -8,61 +8,40 @@
 	<xcolab:layout>
 
         <xcolab:editPreferences preferences="${preferences}">
-            <table>
-                <tr>
-                    <td>
-                        Enter comma separated list of flag filters (empty if none)
-                    </td>
-                    <td>
-                        <form:input path="flagFiltersStr" />
-                    </td>
-                </tr>
+            <div class="form-group">
+                <label>Enter comma separated list of flag filters (empty if none)</label>
+                <form:input path="flagFiltersStr" cssClass="form-control" />
+            </div>
 
-                <tr>
-                    <td>
-                        Enter feed size
-                    </td>
-                    <td>
-                        <form:input path="feedSize" />
-                    </td>
-                </tr>
+            <div class="form-group">
+                <label>Enter feed size</label>
+                <form:input path="feedSize" cssClass="form-control" />
 
-                <tr>
-                    <td>
-                        Enter proposal link title
-                    </td>
-                    <td>
-                        <form:input path="allProposalsTitle" />
-                    </td>
-                </tr>
+            </div>
 
-                <tr>
-                    <td>
-                        Enter proposal link url
-                    </td>
-                    <td>
-                        <form:input path="allProposalsUrl" />
-                    </td>
-                </tr>
+            <div class="form-group">
+                <label>Enter proposal link title</label>
+                <form:input path="allProposalsTitle" cssClass="form-control" />
+            </div>
 
-                <tr>
-                    <td>
-                        Compact display (text only)
-                    </td>
-                    <td>
-                        <form:checkbox path="compact" />
-                    </td>
-                </tr>
+            <div class="form-group">
+                <label>Enter proposal link url</label>
+                <form:input path="allProposalsUrl" cssClass="form-control" />
+            </div>
 
-                <tr>
-                    <td>
-                        Choose contest phases from which to pick proposals.
-                    </td>
-                    <td style="padding-right:10px;">
-                        <form:select path="selectedPhases" items="${preferences.contestPhases}" style="width:100%; height: 600px;"/>
-                    </td>
-                </tr>
-            </table>
+            <div class="checkbox">
+                <label>
+                    <form:checkbox path="compact" />
+                    Compact display (text only)
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label>Choose contest phases from which to pick proposals.</label>
+                <form:select path="selectedPhases" items="${preferences.contestPhases}"
+                                 multiple="multiple" cssClass="form-control" size="25" />
+            </div>
+
         </xcolab:editPreferences>
 
 	</xcolab:layout>
