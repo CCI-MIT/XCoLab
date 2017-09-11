@@ -85,33 +85,29 @@ public class MassActionConfirmationWrapper {
         this.massActionId = massActionId;
     }
 
-    public String getSelectedMassActionTitle() {
-        return MassActionUtil.getSelectedMassActionTitle(massActionId);
-    }
-
     public void invokeMassActionForSelectedContests()
             throws InvocationTargetException, IllegalAccessException {
-        List<Long> contestToBeDeleted = new ArrayList<>();
-        for (long contestId : contestIds) {
-            int index = contestIds.indexOf(contestId);
-            if (index < selectedContest.size() && selectedContest.get(index) != null
-                    && selectedContest
-                    .get(index)) {
-                contestToBeDeleted.add(contestId);
-            }
-        }
-        if (massActionId == ContestMassActions.DELETE.ordinal()) {
-            final boolean actionConfirmed = true;
-            ContestMassActions.values()[massActionId].getMethod()
-                    .invoke(null, contestToBeDeleted, actionConfirmed, null);
-        } else if (massActionId == ContestMassActions.DELETE_WITH_PHASES.ordinal()) {
-            final boolean actionConfirmed = true;
-            ContestMassActions.values()[massActionId].getMethod()
-                    .invoke(null, contestToBeDeleted, actionConfirmed, null);
-        } else {
-            throw new IllegalArgumentException(
-                    "No action defined for mass action id: " + massActionId);
-        }
+//        List<Long> contestToBeDeleted = new ArrayList<>();
+//        for (long contestId : contestIds) {
+//            int index = contestIds.indexOf(contestId);
+//            if (index < selectedContest.size() && selectedContest.get(index) != null
+//                    && selectedContest
+//                    .get(index)) {
+//                contestToBeDeleted.add(contestId);
+//            }
+//        }
+//        if (massActionId == ContestMassActions.DELETE.ordinal()) {
+//            final boolean actionConfirmed = true;
+//            ContestMassActions.values()[massActionId].getMethod()
+//                    .invoke(null, contestToBeDeleted, actionConfirmed, null);
+//        } else if (massActionId == ContestMassActions.DELETE_WITH_PHASES.ordinal()) {
+//            final boolean actionConfirmed = true;
+//            ContestMassActions.values()[massActionId].getMethod()
+//                    .invoke(null, contestToBeDeleted, actionConfirmed, null);
+//        } else {
+//            throw new IllegalArgumentException(
+//                    "No action defined for mass action id: " + massActionId);
+//        }
     }
 
 }
