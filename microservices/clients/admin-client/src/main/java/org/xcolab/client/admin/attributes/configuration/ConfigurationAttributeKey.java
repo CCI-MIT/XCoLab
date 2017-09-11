@@ -87,6 +87,23 @@ public final class ConfigurationAttributeKey {
                     .defaultValue(TimeZone.getDefault().getDisplayName())
                     .build();
 
+    public static final AttributeGetter<String> TYPEKIT_KIT_ID =
+            ConfigurationAttributes.newStringAttribute("TYPEKIT_KIT_ID")
+                    .withCache()
+                    .defaultValue("")
+                    .build();
+
+    public static final AttributeGetter<String> TYPEKIT_KIT_ID_LOCALHOST =
+            ConfigurationAttributes.newStringAttribute("TYPEKIT_KIT_ID_LOCALHOST")
+                    .defaultValue(TYPEKIT_KIT_ID)
+                    .build();
+
+    public static final AttributeGetter<String> PINGDOM_RUM_ID =
+            ConfigurationAttributes.newStringAttribute("PINGDOM_RUM_ID")
+                    .withCache()
+                    .defaultValue("")
+                    .build();
+
     public static final AttributeGetter<String> GOOGLE_ANALYTICS_KEY =
             ConfigurationAttributes.newStringAttribute("GOOGLE_ANALYTICS_KEY")
                     .withCache()
@@ -482,4 +499,9 @@ public final class ConfigurationAttributeKey {
     public static final LocalizableAttributeGetter<String> SNP_EXAMPLE_TEXT =
             ConfigurationAttributes.newLocalizedStringAttribute("SNP_EXAMPLE_TEXT")
                     .buildLocalizable();
+
+    public static final AttributeGetter<Boolean> NAVBAR_SHOW_ICONS =
+            ConfigurationAttributes.newBooleanAttribute("NAVBAR_SHOW_ICONS")
+                    .defaultValue(true)
+                    .build();
 }

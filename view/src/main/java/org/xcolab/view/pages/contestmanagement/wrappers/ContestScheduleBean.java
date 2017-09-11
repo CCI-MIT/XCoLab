@@ -10,6 +10,7 @@ import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.pages.contestmanagement.beans.ContestPhaseBean;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -115,6 +116,20 @@ public class ContestScheduleBean {
 
     public boolean isUsedInNonEmptyContest() {
         return contestSchedule.isUsedInNonEmptyContest();
+    }
+
+    public boolean isValidSchedule() {
+        boolean isValid = true;
+        Date prevEndDate = null;
+        for (ContestPhaseBean contestPhase : schedulePhases) {
+            Date curStartDate = contestPhase.getPhaseStartDate();
+            if (prevEndDate != null && !curStartDate.equals(prevEndDate)) {
+                isValid = false;
+                break;
+            }
+            prevEndDate = contestPhase.getPhaseEndDate();
+        }
+        return isValid;
     }
 
     public boolean areContestsCompatibleWithSchedule() {

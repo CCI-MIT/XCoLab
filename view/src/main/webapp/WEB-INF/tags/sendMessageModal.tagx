@@ -1,6 +1,5 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
-          version="2.0" xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
@@ -31,7 +30,7 @@
                     </c:when>
                     <c:otherwise>
                         <div>
-                            <collab:teamBox title="Recipients"/>
+                            <xcolab:teamBox title="Recipients"/>
                             <div class="clearfix"><!-- --></div>
                         </div>
                     </c:otherwise>
@@ -113,6 +112,6 @@
         ]]>
     </script>
 
-    <xcolab:loadCkEditor />
+    <xcolab:requireLibrary name="CKEditor" />
 
 </jsp:root>

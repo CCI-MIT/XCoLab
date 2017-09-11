@@ -1,11 +1,9 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-	xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-    xmlns:spring="http://www.springframework.org/tags"
-    xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-	 version="2.0">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <!--@elvariable id="linkedProposalContestTypeProposalWrappersByContestTypeId" type="java.util.Map<java.lang.Long, org.xcolab.wrappers.ContestTypeProposalWrapper>"-->
 
@@ -21,7 +19,7 @@
                             <c:if test="${proposalsPermissions.votingEnabled}">
                                 <c:set var="voteOnProposalURL" value="${proposal.proposalUrl}/voteOnProposalAction?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
 
-                                <a class="c-Button__primary" href="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }"
+                                <a class="c-Button__primary js-PostLink" data-url="${proposalsPermissions.canVote ? voteOnProposalURL : '#' }"
                                         rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;">
                                     <collab:message var="voteForText" code="contests.voting.vote" contestType="${contestType}" />
                                     <spring:message var="retractVoteText" code="contests.voting.retract" />
@@ -47,7 +45,6 @@
                         <script>
                             function handleOnClickAtSupportBtn(event){
                                 return showSharedContestAutoRegPopUp(function(ref){
-                                    window.location = "${supportProposalActionURL}";
                                 },${contest.contestPK });
                             }
                         </script>
@@ -67,7 +64,7 @@
                     ${proposal.supportersCount}
                 </span> <spring:message code="contests.supports" />
                     <c:if test="${(proposalsDisplayPermissions.canSeeSupportButton or proposalsDisplayPermissions.canSeeUnsupportButton) and not proposalsPermissions.votingEnabled }">
-                        <a class="c-Box__button boxColor--dark" href="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
+                        <a class="c-Box__button boxColor--dark js-PostLink" data-url="${proposalsPermissions.canSupportProposal ? supportProposalActionURL : '#' }"
                            rel="nofollow" onclick="if(!handleOnClickAtSupportBtn(this)) return false;">
                             <collab:message var="supportText" code="contests.supports.support" contestType="${contestType}" />
                             <spring:message var="retractText" code="contests.supports.retract" />
@@ -88,8 +85,8 @@
 
                     <c:set var="subscribeProposalURL" value="${proposal.proposalUrl}/subscribeProposal?contestId=${contest.contestPK }&amp;contestUrlName=${contest.contestUrlName }&amp;proposalId=${proposal.proposalId }" />
                     <div class="p-Proposal__subscribe" style="float: right;">
-                        <a href="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }"
-                                rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;" >
+                        <a data-url="${proposalsPermissions.canSubscribeProposal ? subscribeProposalURL : '#' }"
+                                rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;" class="js-PostLink">
                             <c:choose>
                                 <c:when test="${proposalsDisplayPermissions.canSeeSubscribeProposalButton }">
                                     <img height="20" src="${_themeImageFolder}/subscribe.png" /> <spring:message code="contests.details.subscribe" />
@@ -156,11 +153,13 @@
             </c:if>
 
             <div class="prop-avatar">
-                <proposalsPortlet:userPortrait height="42" screenName="${empty proposal.authorName }" portraitId="${proposal.author.portraitId }" userId="${proposal.author.userId}" width="42" />
+                <xcolab:userPortrait portraitId="${proposal.author.portraitId }"
+                                     memberId="${proposal.author.userId}"
+                                     width="42" height="42" />
                 By:&#160;
                 <c:choose>
                     <c:when test="${empty proposal.team }">
-                        <proposalsPortlet:userLinkSimple userId="${proposal.authorId }" text="${proposal.authorName }" />
+                        <xcolab:userLinkSimple memberId="${proposal.authorId }" text="${proposal.authorName }" />
                     </c:when>
                     <c:otherwise>
                         ${proposal.authorName }
@@ -170,7 +169,7 @@
 
             <div class="prop-contest">
                 <strong>${contestType.contestName}: </strong>
-                <proposalsPortlet:contestLink contest="${contest }" /><br />
+                <xcolab:contestLink contest="${contest }" /><br />
                 ${contest.contestName}
             </div>
             <c:if test="${not empty linkedProposalContestTypeProposalWrappersByContestTypeId}">
@@ -180,7 +179,7 @@
                             <strong>Related ${contestTypeProposalWrapper.value.contestType.proposalNamePlural}</strong> <br />
                             <c:forEach var="linkedProposal" items="${contestTypeProposalWrapper.value.proposals}">
                                 <li>
-                                    <collab:proposalLink proposal="${linkedProposal}" /> <br />
+                                    <xcolab:proposalLink proposal="${linkedProposal}" /> <br />
                                 </li>
                             </c:forEach>
                         </div>
@@ -204,7 +203,7 @@
                 <div class="prop-avatar" style="font-size: 13px">
                     <strong>Base ${contestType.proposalName}: </strong>
                     This ${contestType.proposalName} was created as a copy of
-                    <collab:proposalLink proposal="${proposal.baseProposal }" />
+                    <xcolab:proposalLink proposal="${proposal.baseProposal }" />
                 </div>
             </c:if>
 

@@ -1,0 +1,234 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
+    <jsp:directive.attribute name="title" type="java.lang.String" required="true" rtexprvalue="true"
+                             description="Link text"/>
+    <jsp:directive.attribute name="list" type="java.util.List" required="false" rtexprvalue="true"
+                             description="List of members"/>
+
+    <c:set var="inputBox" value="userSelectorInput${title}"/>
+    <c:set var="pleaseChooseFromList" value="pleaseChooseFromList${title}"/>
+    <c:set var="unknownUsersContainer" value="unknownUsersContainer${title}"/>
+    <c:set var="userList" value="userList${title}"/>
+    <c:set var="memberList" value="userIds${title}"/>
+    <c:set var="unsavedStar" value="unsavedStar${title}"/>
+
+    <div class="addpropbox  teamBox">
+        <div class="teamMemberHeader">
+            <h2 id="${unsavedStar}">${title}</h2>
+        </div>
+        <div class="teamMemberAdd">
+            <input id="${inputBox}" type="text" class="profile_input teamMembers"/>
+            <div class="clear"><!-- --></div>
+            <div id="${pleaseChooseFromList}" style="display: none;"
+                 class="c-Alert c-Alert__error">Please choose a user from list.
+            </div>
+            <div class="clear"><!-- --></div>
+            <div id="${unknownUsersContainer}" style="display: none;"
+                 class="c-Alert c-Alert__error">Unknown users:
+                <ul></ul>
+            </div>
+        </div>
+        <div class="teamMemberListing">
+            <input type="hidden" name="${memberList}" id="${memberList}"/>
+            <ul id="${userList}">
+                <c:if test="${not empty list}">
+                    <c:forEach var="member" items="${list}">
+                        <li id="${member.userId}">
+                            <span class="portrait">
+                                <xcolab:userPortrait portraitId="${member.portraitId}"
+                                                     memberId="${member.userId}"
+                                                     height="40" width="40"/>
+                            </span>
+                            <span class="name">${member.firstName} ${member.lastName}</span>
+                        </li>
+                    </c:forEach>
+                </c:if>
+            </ul>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        (function () {
+            var userSelectorInput = "#" + "${inputBox}";
+            var userListId = "${userList}";
+            var unsavedStarTitle = "${unsavedStar}";
+            var membersTitle = "${title}";
+            var members = [];
+            var memberIds = [];
+            var initialMembers = [];
+            var memberList = "${memberList}";
+            var currentUserMap = {};
+
+        <c:forEach var="member" items = "${list}">
+            memberIds.push("" + ${member.id_});
+            members.push(${member.id_});
+            initialMembers.push(${member.id_});
+        </c:forEach>
+
+            function updateMemberList() {
+                jQuery("#" + memberList).val(memberIds);
+            }
+
+            function removeMemberFromList(userId, userName, userListId) {
+                var inpField = document.getElementById("${inputBox}");
+                inpField.className += " editorDirty";
+                console.log("userId: " + userId);
+                var elementIndex = members.indexOf(userId);
+                members.splice(elementIndex, 1);
+                var IdElementIndex = memberIds.indexOf(userId);
+                console.log("array index: " + IdElementIndex);
+                memberIds.splice(IdElementIndex, 1);
+                console.log("memberIds: " + memberIds);
+                jQuery("#" + userListId + " #" + userId).remove();
+                noty({text: userName + ' was removed from ' + membersTitle, type: 'success'});
+                if ($(members).not(initialMembers).length === 0 &amp;&amp; $(initialMembers).not(
+                                members).length === 0) {
+                    jQuery("#" + unsavedStarTitle).removeClass("boxChanged");
+                } else {
+                    jQuery("#" + unsavedStarTitle).addClass("boxChanged");
+                }
+
+                updateMemberList();
+            }
+
+            function addUserToList(userId, screenName, userListId) {
+                var inpField = document.getElementById("${inputBox}");
+                inpField.className += " editorDirty";
+
+                var newLiElement = document.createElement("li");
+                newLiElement.setAttribute("id", userId);
+
+                var spanPortrait = document.createElement("span");
+                spanPortrait.className = "portrait";
+                var imgPortrait = document.createElement("img");
+                imgPortrait.height = "40";
+                imgPortrait.width = "40";
+                var imageSrc = "${_uploadedImageFolder}/user_male_portrait?screenName="
+                        + screenName;
+                imgPortrait.setAttribute("src", imageSrc);
+                spanPortrait.appendChild(imgPortrait);
+
+                var spanName = document.createElement("span");
+                spanName.className = "name";
+                spanName.className += " boxChanged";
+
+                var userName = document.createTextNode(screenName);
+                spanName.appendChild(userName);
+
+                newLiElement.appendChild(spanPortrait);
+                newLiElement.appendChild(spanName);
+
+                document.getElementById(userListId).appendChild(newLiElement);
+
+                jQuery("#" + unsavedStarTitle).addClass("boxChanged");
+
+                // Make the element fully transparent.
+                newLiElement.style.opacity = 0;
+                // Make sure the initial state is applied.
+                window.getComputedStyle(newLiElement).opacity;
+                // Fade it in.
+                newLiElement.style.opacity = 1;
+
+                updateMemberList();
+            }
+
+            function initSearchMemberForm() {
+
+                jQuery("#" + memberList).val(memberIds);
+
+                jQuery(userSelectorInput).focus(function () {
+                    jQuery(${pleaseChooseFromList}).hide();
+                });
+
+                try {
+
+                    // locate your element and add the Click Event Listener
+                    document.getElementById(userListId).addEventListener("click", function (e) {
+                        // e.target is our targeted element.
+                        if (e.target &amp;&amp; e.target.nodeName == "LI") {
+                            if (confirm("Do want to remove " + e.target.children[1].innerHTML
+                                            + " from " + membersTitle + " ?")) {
+                                removeMemberFromList(e.target.id, e.target.children[1].innerHTML,
+                                        userListId);
+                            }
+                        }
+                    });
+
+                    $(userSelectorInput)
+                    // don't navigate away from the field on tab when selecting an item
+                            .bind("keydown", function (event) {
+                                if (event.keyCode === $.ui.keyCode.TAB &amp;&amp;
+                                        $(this).data("ui-autocomplete").menu.active) {
+                                    event.preventDefault();
+                                }
+                            })
+                            .autocomplete({
+                                minLength: 3,
+                                source: "/api/members/getUserByScreenName",
+                                /*function (request, response) {
+                          $.ajax({
+                            type: "GET",
+                            url: "/api/members/getUserByScreenName/" + $(userSelectorInput).val(),
+                            dataType: 'json',
+                            async: true,
+                            success: function (data, textStatus, jqXHR) {
+                              var screenNames = [];
+                              currentUserMap = {};
+                              $.each(data, function(index, value) {
+                                screenNames.push(value["screenName"]);
+                                currentUserMap[value["screenName"]] = value["userId"];
+                                console.log(">>" + value["screenName"])
+                                console.log(">>" + value["userId"])
+                              });
+                              response(screenNames);
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                              response([]);
+                            }
+                          });
+                        },*/
+                                focus: function () {
+                                    // prevent value inserted on focus
+                                    return false;
+                                },
+                                select: function (event, ui) {
+
+                                    var userId = ui.item.id; //currentUserMap[jQuery.trim(ui.item.value)]; //userMap
+                                    if (members.indexOf(userId) == -1) {
+                                        members.push(userId);
+                                        memberIds.push("" + userId);
+                                        addUserToList(userId, ui.item.value, userListId);
+                                    }
+                                    this.value = "";
+                                    return false;
+                                }
+                            });
+                }
+                catch (e) {
+                    alert(e);
+                }
+
+                jQuery('.teamMembers').keypress(function (e) {
+                    var code = (e.keyCode ? e.keyCode : e.which);
+                    if (code == 13) {
+                        // enter pressed ignore
+                        return false;
+                    }
+
+                });
+
+            }
+
+            jQuery(function () {
+
+                initSearchMemberForm();
+            });
+
+        }());
+
+    </script>
+
+
+</jsp:root>

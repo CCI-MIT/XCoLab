@@ -1,8 +1,8 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:form="http://www.springframework.org/tags/form"
-          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
 
@@ -70,7 +70,7 @@
                 </div>
 
                 <form:hidden path="contestLogoId" id="contestImageId"/>
-                <collab:imageUpload uniqueName="contestImage" imageIdInput="contestImageId" compactView="true"
+                <xcolab:imageUpload uniqueName="contestImage" imageIdInput="contestImageId" compactView="true"
                                     defaultImage="CONTEST" defaultImageId="${contestWrapper.contestLogoId}" />
             </div>
             <div class="addpropbox">
@@ -83,7 +83,7 @@
                 </div>
 
                 <form:hidden path="sponsorLogoId" id="logoImageId"/>
-                <collab:imageUpload uniqueName="logoImage" imageIdInput="logoImageId" compactView="true"
+                <xcolab:imageUpload uniqueName="logoImage" imageIdInput="logoImageId" compactView="true"
                                     defaultImage="CONTEST" defaultImageId="${contestWrapper.sponsorLogoId}" />
             </div>
             <div class="addpropbox">
@@ -380,7 +380,7 @@
             <div class="outerVerticalCenter"><a  class="c-Button__primary  innerVerticalCenter" href="#" id="createAllContestsAbove">Create all contests above</a></div>
         </form:form>
     </div>
-    <xcolab:loadCkEditor />
+    <xcolab:requireLibrary name="CKEditor" />
     <xcolab:script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.min.js" />
 </xcolab:layout>
 </jsp:root>

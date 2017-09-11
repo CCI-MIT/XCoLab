@@ -32,6 +32,10 @@ public class ProposalAttributeHelper extends AttributeHelper<ProposalAttribute> 
     @Override
     protected boolean isNewRankedHigher(ProposalAttribute oldAttribute,
             ProposalAttribute newAttribute) {
+        if (oldAttribute == null || newAttribute == null) {
+            throw new IllegalArgumentException("Attributes cannot be null (old, new): "
+                    + oldAttribute + ", " + newAttribute);
+        }
         return oldAttribute.getVersion() < newAttribute.getVersion();
     }
 }

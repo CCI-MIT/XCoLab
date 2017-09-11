@@ -1,5 +1,5 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
-          version="2.0" xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <xcolab:modal modalId="snpConsentFormModal" size="lg"
                   title="CONSENT TO PARTICIPATE IN CLIMATE COLAB SOCIAL NETWORK PRIZE STUDY">

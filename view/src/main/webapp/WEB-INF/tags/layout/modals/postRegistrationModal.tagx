@@ -1,9 +1,9 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:spring="http://www.springframework.org/tags"
-          version="2.0">
+         >
 
     <jsp:directive.attribute name="redirect" type="java.lang.String" required="true" rtexprvalue="true" description="URL to redirect to" />
     <jsp:directive.attribute name="member" type="org.xcolab.client.members.pojo.Member" required="false" rtexprvalue="true" description="Regigstered member" />
@@ -58,5 +58,5 @@
         </div>
     </xcolab:modal>
 
-    <xcolab:loadCkEditor />
+    <xcolab:requireLibrary name="CKEditor" />
 </jsp:root>

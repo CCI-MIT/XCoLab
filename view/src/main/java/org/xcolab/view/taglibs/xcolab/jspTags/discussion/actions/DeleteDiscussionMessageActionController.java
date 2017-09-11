@@ -1,7 +1,7 @@
 package org.xcolab.view.taglibs.xcolab.jspTags.discussion.actions;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.comment.CommentClient;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class DeleteDiscussionMessageActionController extends BaseDiscussionsActionController {
 
-    @GetMapping("/discussions/deleteDiscussionMessageFlag")
+    @PostMapping("/discussions/deleteDiscussionMessageFlag")
     public void deleteMessage(
             HttpServletRequest request, HttpServletResponse response,
             @RequestParam long commentId,

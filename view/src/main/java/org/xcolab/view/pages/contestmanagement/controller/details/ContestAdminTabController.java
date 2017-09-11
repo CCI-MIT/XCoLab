@@ -148,7 +148,7 @@ public class ContestAdminTabController extends AbstractTabController {
         subject = TemplateReplacementUtil.replaceContestTypeStrings(subject, contestType);
         body = TemplateReplacementUtil.replaceContestTypeStrings(body, contestType);
 
-        EmailClient.sendEmail(fromEmail.getAddress(), addressTo, subject, body, true, null,contestId);
+        EmailClient.sendEmail(fromEmail.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(), addressTo, subject, body, true, null,null,contestId);
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json");
         response.getWriter().write(mapper.writeValueAsString(true));

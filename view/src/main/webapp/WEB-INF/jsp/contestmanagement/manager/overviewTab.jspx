@@ -1,9 +1,9 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:jsp="http://java.sun.com/JSP/Page"
     xmlns:fn="http://java.sun.com/jsp/jstl/functions"
 	xmlns:form="http://www.springframework.org/tags/form"
-	xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-    xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags" version="2.0">
+    xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
     <!--@elvariable id="massActionsItems" type="java.util.List<org.xcolab.util.html.LabelValue>"-->
@@ -15,7 +15,7 @@
 	<div class="c-ContentBox">
 		<div style="margin-bottom: 40px;display:inline">
 			<div class="floatRight outerVerticalCenter">
-				<a class="c-Button__primary innerVerticalCenter" href="/admin/contest/manager/createContest" target="_blank">Create new Contest</a>
+				<a class="c-Button__primary innerVerticalCenter js-PostLink" data-url="/admin/contest/manager/createContest" target="_blank">Create new Contest</a>
 			</div>
 		</div>
 
@@ -51,13 +51,6 @@
 				<a class="c-Button__primary innerVerticalCenter" href="#" id="submitButton">SUBMIT</a>
 			</div>
 			<div id="massMessage" style="display: none;">
-                <div class="clearLeft"><!-- --></div>
-                <h3 class="floatLeft">Sender</h3>
-                <select name="sender">
-                    <c:forEach var="sender" items="${senderListItems}" >
-                        <option value="${sender.id_}" label="${sender.firstName} ${sender.lastName} &lt;${sender.emailAddress}&gt; - ${sender.screenName}"/>
-                    </c:forEach>
-                </select>
                 <div class="clearLeft"><!-- --></div>
 				<h3 class="floatLeft">Subject</h3>
 				<form:input path="massMessageBean.subject" />
@@ -183,7 +176,7 @@
 									</c:choose>
 
 
-									<!--<collab:contestLink contest="${contestWrapper}" />-->
+									<!--<xcolab:contestLink contest="${contestWrapper}" />-->
 								</td>
 								<td >${contestWrapper.activePhase.name}</td>
 								<td><form:checkbox path="contestWrappers[${x.index}].contestActive" disabled="false" onclick="processCheckBox()"/></td>
@@ -382,6 +375,7 @@
 			reCalculateWeights();
 			event.stopPropagation(); // Stops some browsers from redirecting.
 			event.preventDefault();
+			updateOrder();
 			return false;
 		}
 
@@ -399,6 +393,23 @@
 				}
 			} while (nextElementInList = nextElementInList.nextSibling)
 		}
+
+		function updateOrder() {
+            var editForm = $('#editForm');
+            $.ajax("/admin/contest/manager/updateOrder", {
+                method: 'POST',
+                data: editForm.serialize(),
+                beforeSend: function (jqXHR, textStatus) {
+                    noty({text: "Updating order...", type: 'information', timeout: false});
+                },
+                success: function (data, textStatus, jqXHR) {
+                    noty({text: "Order updated.", type: 'success', killer: true});
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    noty({text: "Order update failed.", type: 'error', killer: true});
+                }
+            });
+        }
 
 		//}());
 		]]>

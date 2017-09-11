@@ -26,6 +26,18 @@ public final class PermissionsClient {
     private PermissionsClient() {
     }
 
+    public static boolean isGuest(Member member) {
+        return member != null && isGuest(member.getId_());
+    }
+
+    public static boolean isGuest(long memberId) {
+        return memberHasRole(memberId, MemberRole.GUEST.getRoleId());
+    }
+
+    public static boolean isMember(long memberId) {
+        return memberHasRole(memberId, MemberRole.MEMBER.getRoleId());
+    }
+
     public static boolean canAdminAll(Long memberId) {
         return memberHasRole(memberId, MemberRole.ADMINISTRATOR.getRoleId());
     }

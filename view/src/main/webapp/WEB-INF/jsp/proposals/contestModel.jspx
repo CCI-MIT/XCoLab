@@ -1,9 +1,9 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          version="2.0" >
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
 	<!--@elvariable id="availableModels" type="java.util.Map<java.lang.Long, java.lang.String>"-->
 	<!--@elvariable id="modelId" type="java.lang.Long"-->
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -18,7 +18,7 @@
 					<img src="${contest.logoPath}" width="52" height="52" alt="Contest Image" />
 				</div>
 				<div class='proposal-title'>
-					<h1>Model <proposalsPortlet:contestLink contest="${contest}" text="${contest.contestShortNameWithEndYear} " /></h1>
+					<h1>Model <xcolab:contestLink contest="${contest}" text="${contest.contestShortNameWithEndYear} " /></h1>
 				</div>
 			</div>
 		</div>

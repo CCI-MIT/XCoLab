@@ -53,15 +53,14 @@ public class ContestTeamWrapper {
     }
 
     private void assignMemberRoleToUser(MemberRole memberRole, List<Long> userIds) {
+        Long roleId = memberRole.getRoleId();
         for (Long userId : userIds) {
-            Long roleId = memberRole.getRoleId();
             MembersClient.assignMemberRole(userId, roleId);
         }
     }
 
     private void assignMembersToContestWithRole(List<Long> userIds, MemberRole memberRole) {
         for (Long userId : userIds) {
-
             ContestTeamMember contestTeamMember = new ContestTeamMember();
             contestTeamMember.setContestId(contestId);
             contestTeamMember.setUserId(userId);
@@ -76,15 +75,25 @@ public class ContestTeamWrapper {
         }
     }
 
+    private void removeTeamMember(ContestTeamMember contestTeamMember) {
+        try {
+            ContestTeamMemberClientUtil.deleteContestTeamMember(contestTeamMember.getId_());
+        } catch (UncheckedEntityNotFoundException e) {
+            log.warn("ContestTeamMember {} already deleted", contestTeamMember.getId_());
+        }
+        Long userId = contestTeamMember.getUserId();
+        Long roleId = contestTeamMember.getRoleId();
+        if (ContestTeamMemberClientUtil.getTeamMembers(userId, null, roleId).isEmpty()) {
+            MembersClient.removeMemberRole(userId, roleId);
+        }
+
+    }
+
     private void removeAllContestTeamMembersForContest() {
         List<ContestTeamMember> contestTeamMembers =
-                ContestTeamMemberClientUtil.getTeamMembers(contestId);
+                ContestTeamMemberClientUtil.getTeamMembers(null, contestId, null);
         for (ContestTeamMember contestTeamMember : contestTeamMembers) {
-            try {
-                ContestTeamMemberClientUtil.deleteContestTeamMember(contestTeamMember.getId_());
-            } catch (UncheckedEntityNotFoundException e) {
-                log.warn("ContestTeamMember {} already deleted", contestTeamMember.getId_());
-            }
+            removeTeamMember(contestTeamMember);
         }
     }
 }

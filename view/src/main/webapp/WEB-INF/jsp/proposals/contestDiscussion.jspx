@@ -1,9 +1,6 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-	xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/evaluations"
-		  xmlns:c="http://java.sun.com/jsp/jstl/core"
-		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-	version="2.0">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
 	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 	<xcolab:layout title="${contest.contestShortNameWithEndYear} - Discussion">
@@ -19,7 +16,7 @@
                              alt="${contestType.contestName} image" title="${contest.contestShortNameWithEndYear}"/>
 					</div>
 					<div class='proposal-title'>
-						<h1>Discussion <proposalsPortlet:contestLink contest="${contest}" text="${contest.contestShortNameWithEndYear} " /></h1>
+						<h1>Discussion <xcolab:contestLink contest="${contest}" text="${contest.contestShortNameWithEndYear} " /></h1>
 					</div>
 				</div>
 			</div>
@@ -29,10 +26,10 @@
 		<div id="content">
 			<c:choose>
 				<c:when test="${contest.isSharedContestInForeignColab}">
-					<discussionsTagFiles:evaluationComments threadId="${discussionId }" sharedColabId="${contest.contestPK}" />
+					<xcolab:discussionComments threadId="${discussionId }" sharedColabId="${contest.contestPK}" />
 				</c:when>
 				<c:otherwise>
-					<discussionsTagFiles:evaluationComments threadId="${discussionId }"  />
+                    <xcolab:discussionComments threadId="${discussionId }"  />
 				</c:otherwise>
 			</c:choose>
 		</div>

@@ -1,11 +1,10 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
-          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:modeling="urn:jsptagdir:/WEB-INF/tags/modeling"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-           version="2.0">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
     <!--@elvariable id="_themeImageFolder" type="java.lang.String"-->
     <jsp:directive.include file="./init_proposal_tab.jspx"/>
 
@@ -156,13 +155,13 @@
                                     changes</a>
                                 <c:choose>
                                     <c:when test="${proposal.currentVersion > 0 }">
-                                        <collab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
+                                        <xcolab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
                                                              linkId="discardChangesButton"
                                                              text="DISCARD changes"/>
                                     </c:when>
                                     <c:otherwise>
                                         <!--  proposal creation, return to contest proposals page on discard -->
-                                        <collab:contestLink contest="${contest }" cssClass="c-Button__secondary"
+                                        <xcolab:contestLink contest="${contest }" cssClass="c-Button__secondary"
                                                             linkId="discardChangesButton"
                                                             text="DISCARD changes"/>
                                     </c:otherwise>

@@ -3,7 +3,7 @@ package org.xcolab.view.pages.proposals.view.action;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClient;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class SubscribeProposalActionController {
 
-    @GetMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/subscribeProposal")
+    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/subscribeProposal")
     public void handleAction(HttpServletRequest request, HttpServletResponse response, Model model,
             ProposalContext proposalContext, Member currentMember)
             throws ProposalsAuthorizationException, IOException {

@@ -76,7 +76,7 @@ public class ProposalDiscussionPermissions extends DiscussionPermissions {
                 }
             }
         } else {
-            canSeeAddCommentButton = true;
+            canSeeAddCommentButton = super.getCanSeeAddCommentButton();
         }
         return canSeeAddCommentButton;
     }

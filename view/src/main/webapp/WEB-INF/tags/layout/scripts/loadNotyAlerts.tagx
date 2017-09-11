@@ -1,0 +1,14 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page">
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.0/packaged/jquery.noty.packaged.min.js"><!-- empty --></script>
+
+    <!-- Noty configuration -->
+    <script type="text/javascript">
+        jQuery.noty.defaults.theme = 'relax';
+        jQuery.noty.defaults.type = 'information';
+        jQuery.noty.defaults.timeout = 3000;
+        jQuery.noty.defaults.animation.open = {opacity: 1.0, height: 'toggle'};
+        jQuery.noty.defaults.animation.close = {opacity: 0.0, height: 'toggle'};
+        jQuery.noty.defaults.animation.speed = 700;
+    </script>
+</jsp:root>

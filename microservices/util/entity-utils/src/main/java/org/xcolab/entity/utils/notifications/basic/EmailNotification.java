@@ -240,7 +240,10 @@ public abstract class EmailNotification {
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
             InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
 
-            EmailClient.sendEmail(fromEmail.getAddress(), toEmail.getAddress(), subject,body, true, fromEmail.getAddress(),getReferenceId());
+            EmailClient.sendEmail(fromEmail.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),
+                    toEmail.getAddress(), subject,body, true, fromEmail.getAddress(),
+                    ConfigurationAttributeKey.COLAB_NAME.get(),getReferenceId());
+
         } catch (UnsupportedEncodingException e) {
             throw new InternalException(e);
         }

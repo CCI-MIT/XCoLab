@@ -1,8 +1,7 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:form="http://www.springframework.org/tags/form"
-          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-          version="2.0" >
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
 	<jsp:directive.attribute name="section" type="org.xcolab.client.contest.pojo.templates.PlanSectionDefinition"
 		required="true" rtexprvalue="true" description="Section which content should be displayed" />
@@ -85,7 +84,7 @@
                         <input name='sectionsContent[${section.sectionDefinitionId }]' type="hidden" value="${p.proposalId }" />
                         <table>
                             <tr>
-                                <td class="proposalLink"><collab:proposalLink proposal="${p}" /></td>
+                                <td class="proposalLink"><xcolab:proposalLink proposal="${p}" /></td>
                                 <td>(<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), false);">remove</a>)</td>
                             </tr>
                         </table>
@@ -103,7 +102,7 @@
                 <ul>
                     <c:forEach var="p" items="${pl}">
                         <li>
-                			<collab:proposalLink proposal="${p}" />
+                			<xcolab:proposalLink proposal="${p}" />
                 			(<a href="javascript:;" onclick="removePickedProposal(${section.sectionDefinitionId },${p.proposalId}, $(this), true);">remove</a>)
                         </li>
                 	</c:forEach>
@@ -116,7 +115,10 @@
             </c:when>
 
 			<c:otherwise>
-				<form:textarea cssClass="rte-editorPlaceholder" data-section-type="${section.type }" data-section-id="${section.sectionDefinitionId }" cols="54" rows="7" path="sectionsContent[${section.sectionDefinitionId}]" />
+				<form:textarea cssClass="rte-editorPlaceholder" data-section-type="${section.type }" data-section-id="${section.sectionDefinitionId }" cols="54" rows="7" path="sectionsContent[${section.sectionDefinitionId}]"
+                               data-section-placeholder="${section.defaultText}"/>
+
+
 				<c:if test="${section.type == 'PROPOSAL_LIST_TEXT_REFERENCE'}">
 					<script type="text/javascript">
 						if (!sectionContestTypeNames) { var sectionContestTypeNames = {}; }

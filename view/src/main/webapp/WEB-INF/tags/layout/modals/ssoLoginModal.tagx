@@ -1,9 +1,9 @@
-<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:collab="http://climatecolab.org/tags/xcolab_1.0"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:spring="http://www.springframework.org/tags"
-          version="2.0">
+         >
 
     <jsp:directive.attribute name="redirect" type="java.lang.String" required="true" rtexprvalue="true" description="Redirect URL for registration link" />
     <jsp:directive.attribute name="partnerLogoPath" type="java.lang.String" required="true" rtexprvalue="true" description="Path to the partner CoLab's logo" />

@@ -48,23 +48,7 @@ public class OverviewTabController extends AbstractTabController {
         return tabWrapper;
     }
 
-    @ModelAttribute("senderListItems")
-    public List<Member> populateSenderListItems(HttpServletRequest request) {
-        final MemberCategory memberCategory = MembersClient.getMemberCategory(MemberRole.STAFF.getRoleId());
 
-        List<Member> staffList = MembersClient
-                .listMembers(memberCategory.getCategoryName(), null, null, null, true, 0,
-                        Integer.MAX_VALUE);
-
-        ArrayList<String> matchList = new ArrayList<>(Arrays.asList("gary-olson","eduhaime","yiftach-nagar","YueHan","nvtaub"));
-
-        for (int i = 0; i < staffList.size(); i++) {
-            if (matchList.contains(staffList.get(i).getScreenName())) {
-                staffList.remove(i);
-            }
-        }
-        return staffList;
-    }
 
     @ModelAttribute("massActionsItems")
     public List<LabelValue> populateMassActionsItems(HttpServletRequest request) {
@@ -124,6 +108,18 @@ public class OverviewTabController extends AbstractTabController {
                 throw e;
             }
         }
+    }
+
+    @PostMapping("manager/updateOrder")
+    public void updateContestOrder(HttpServletRequest request,
+            HttpServletResponse response, Model model, Member member,
+            @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper)
+            throws IOException, InvocationTargetException, IllegalAccessException {
+        if (!tabWrapper.getCanEdit()) {
+            response.sendError(403);
+        }
+        updateContestOverviewWrapper.setSelectedMassAction((long) ContestMassActions.ORDER.ordinal());
+        updateContestOverviewWrapper.executeMassAction(request, response);
     }
 
     @PostMapping("api/massAction")

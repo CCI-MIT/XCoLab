@@ -66,8 +66,9 @@ public class BalloonService {
                 .replaceAll(URL_PLACEHOLDER, LinkUtils.getAbsoluteUrl(link.getTargetUrl()));
 
         final String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
-        EmailClient.sendEmail(fromEmail, email, messageSubject, messageBody, true, fromEmail,
-                but.getBalloonTextId());
+        final String fromName = ConfigurationAttributeKey.COLAB_NAME.get();
+        EmailClient.sendEmail(fromEmail,fromName, email, messageSubject, messageBody, true, fromEmail,
+                fromName,but.getBalloonTextId());
         return link;
     }
 

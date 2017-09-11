@@ -1,11 +1,9 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-	xmlns:jsp="http://java.sun.com/JSP/Page"
-	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-	xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-	xmlns:form="http://www.springframework.org/tags/form"
-	xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-    xmlns:spring="http://www.springframework.org/tags"
-          version="2.0">
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:form="http://www.springframework.org/tags/form"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:spring="http://www.springframework.org/tags">
+
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 
 <!--@elvariable id="permissions" type="org.xcolab.view.pages.profile.utils.UserProfilePermissions"-->
@@ -194,7 +192,7 @@
 				<table class="colab">
 					<c:forEach var="userProposal" items="${contestTypeProposalWrapper.proposals}">
 						<tr class="colabRow">
-							<td> <collab:proposalLink proposal="${userProposal}" /> </td>
+							<td> <xcolab:proposalLink proposal="${userProposal}" /> </td>
 							<td style="text-align: right;">
                                 <xcolab:formatDateTime millis="${userProposal.createDate.time}" type="date"/>
                             </td>
@@ -212,7 +210,7 @@
 				<c:forEach var="linkingProposal" items="${currentUserProfile.linkingProposals}">
 					<c:if test="${linkingProposal.visible}">
 						<tr class="colabRow">
-							<td> <collab:proposalLink proposal="${linkingProposal}" /> </td>
+							<td> <xcolab:proposalLink proposal="${linkingProposal}" /> </td>
 							<td style="text-align: right;">
                                 <xcolab:formatDateTime millis="${linkingProposal.lastModifiedDate.time}" type="date"/>
                             </td>
@@ -229,7 +227,7 @@
 			<table class="colab">
 				<c:forEach var="supportedProposal" items="${currentUserProfile.supportedProposals}">
 					<tr class="colabRow">
-						<td> <collab:proposalLink proposal="${supportedProposal.proposalWrapper}" /> </td>
+						<td> <xcolab:proposalLink proposal="${supportedProposal.proposalWrapper}" /> </td>
 						<td style="text-align: right;">
                             <xcolab:formatDateTime millis="${supportedProposal.supportedSinceDate.time}" type="date"/>
                         </td>
@@ -348,7 +346,7 @@
 					</div>
 
 					<div class="activityBody">
-                        <collab:userLinkSimple text="${message.from.displayName}" userId="${message.from.userId}" />
+                        <xcolab:userLinkSimple text="${message.from.displayName}" memberId="${message.from.userId}" />
                         <spring:message code="profile.show.sentyouamessage"/>
                         <a href="/messaging/message/${message.messageId}">${message.subject}</a>
 					</div>
@@ -429,7 +427,7 @@
         <jsp:include page="../redballoon/consentForm.jspx" />
     </c:if>
 
-	<xcolab:loadCkEditor />
+	<xcolab:requireLibrary name="CKEditor" />
 
 </xcolab:layout>
 </jsp:root>

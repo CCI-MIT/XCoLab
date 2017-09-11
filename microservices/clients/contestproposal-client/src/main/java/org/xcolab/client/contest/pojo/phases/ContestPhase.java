@@ -194,6 +194,15 @@ public class ContestPhase extends AbstractContestPhase {
         return contestClient.getContestPhaseType(this.getContestPhaseType()).getName();
     }
 
+    public String getFlagText() {
+        ContestPhaseType phaseType = getContestPhaseTypeObject();
+        String flagText = phaseType.getDefaultFlagText();
+        if (StringUtils.isEmpty(flagText)) {
+            flagText = phaseType.getName();
+        }
+        return flagText;
+    }
+
     public boolean isEnded() {
         Date now = new Date();
         return (this.getPhaseEndDate() != null) && this.getPhaseEndDate().before(now);

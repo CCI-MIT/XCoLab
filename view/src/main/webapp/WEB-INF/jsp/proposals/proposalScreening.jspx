@@ -1,11 +1,10 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:form="http://www.springframework.org/tags/form"
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:judging="urn:jsptld:/WEB-INF/tlds/xcolab-judging.tld"
-          xmlns:discussionsTagFiles="urn:jsptagdir:/WEB-INF/tags/evaluations"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          version="2.0">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout title="${proposal.name} - Screening">
         <jsp:directive.include file="./init_proposal_tab.jspx" />
@@ -43,10 +42,9 @@
                                         <div class="judge-review-status js-Tooltip tooltipstered" data-tooltip-content="#js-Tooltip__content__judgedata_${judge.userId}">
 
                                             <div class="review-status-container">
-                                                <proposalsPortlet:userPortrait screenName="${judge.screenName}"
-                                                                               portraitId="${judge.portraitId}"
-                                                                               userId="${judge.userId}" width="30"
-                                                                               height="30"/>
+                                                <xcolab:userPortrait portraitId="${judge.portraitId}"
+                                                                     memberId="${judge.userId}"
+                                                                     width="30" height="30"/>
                                                 <judging:judgeReviewStatus userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}"
                                                                            proposalId="${proposal.proposalId}" contestId="${contest.contestPK}">
                                                     <c:choose>
@@ -60,18 +58,17 @@
                                                 </judging:judgeReviewStatus>
                                             </div>
                                             <br/>
-                                                <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}">
-
-
-                                                        <proposalsPortlet:userLinkSimple userId="${judge.userId}"
-                                                                                     text="${judge.fullName} (${proposalCount})"/>
-                                                        <div class="hidden">
+                                            <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}">
+                                                <xcolab:userLinkSimple memberId="${judge.userId}"
+                                                                       text="${judge.fullName} (${proposalCount})"/>
+														<div class="hidden">
                                                             <span id="js-Tooltip__content__judgedata_${judge.userId}">
                                                                     Proposals assigned to judge: ${proposalCount}<br/>
                                                                     Proposals already completed : ${proposalAlreadyJudgedCount}
                                                             </span>
                                                         </div>
-                                                </judging:judgeAssignedProposalCount>
+
+                                            </judging:judgeAssignedProposalCount>
                                             <br/>
                                             <form:checkbox path="selectedJudges" value="${judge.userId}"/>
                                         </div>

@@ -30,11 +30,11 @@ public class EmailService {
         final Email email = new Email();
 
         try {
-            email.setFromAddress(null, emailPojo.getFrom());
+            email.setFromAddress(emailPojo.getFromName(), emailPojo.getFrom());
             email.setSubject(emailPojo.getSubject());
 
             if (emailPojo.getReplyTo() != null && !emailPojo.getReplyTo().isEmpty()) {
-                email.setReplyToAddress(null, emailPojo.getReplyTo());
+                email.setReplyToAddress(emailPojo.getReplyToName(), emailPojo.getReplyTo());
             }
 
             for (String emailTo : emailPojo.getTo()) {

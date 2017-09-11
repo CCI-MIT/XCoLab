@@ -1,8 +1,7 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-          version="2.0" xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
-          xmlns:spring="http://www.springframework.org/tags">
+          xmlns:spring="http://www.springframework.org/tags"
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
 	<!--@elvariable id="users" type="java.util.List<org.xcolab.view.pages.members.users.utils.MemberItem>"-->
 	<!--@elvariable id="sortFilterPage" type="org.xcolab.view.util.pagination.SortFilterPage"-->
@@ -18,7 +17,7 @@
 					<c:set var="sortURL" value="/members?sortColumn=USER_NAME&amp;sortAscending=${sortFilterPage.sortColumn == 'USER_NAME' ? not sortFilterPage.sortAscending : true }&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
 
 					<a class="js-Tooltip" title="click to sort by user name" href="${sortURL }"><spring:message code="community.page.members.table.order.user"/></a>
-					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="USER_NAME" />
+					<xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="USER_NAME" />
 				</th>
 				<c:if test="${pointsActive}">
 					<th class="c-Table__cell--title points">
@@ -33,27 +32,27 @@
                         </div>
 
 						<a class="js-Tooltip" title="click to sort by points" href="${sortURLPoints }"><spring:message code="community.page.members.table.order.points"/></a>
-						<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="POINTS" />
+						<xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="POINTS" />
 					</th>
 				</c:if>
 				<th class="c-Table__cell--title activity">
 					<c:set var="sortURLActivity" value="/members?sortColumn=ACTIVITY&amp;sortAscending=${sortFilterPage.sortColumn == 'ACTIVITY' ? not sortFilterPage.sortAscending : false }&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
 
 					<a class="js-Tooltip" title="click to sort by activity" href="${sortURLActivity }"><spring:message code="community.page.members.table.order.activity"/></a>
-					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="ACTIVITY" />
+					<xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="ACTIVITY" />
 				</th>
 				<th class="c-Table__cell--title category">
 					<c:set var="sortURLCategory" value="/members?sortColumn=CATEGORY&amp;sortAscending=${sortFilterPage.sortColumn == 'CATEGORY' ? not sortFilterPage.sortAscending : false }&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
 
 					<a class="js-Tooltip" title="click to sort by category" href="${sortURLCategory }"><spring:message code="community.page.members.table.order.category"/></a>
-					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CATEGORY" />
+					<xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="CATEGORY" />
 				</th>
 				<th class="c-Table__cell--title member-since">
 					<c:set var="sortAscending" value="${sortFilterPage.sortColumn == 'MEMBER_SINCE' ? not sortFilterPage.sortAscending : false }" />
 					<c:set var="sortURLSeniority" value="/members?sortColumn=MEMBER_SINCE&amp;sortAscending=${sortAscending}&amp;filter=${sortFilterPage.filter}&amp;memberCategory=${memberCategoryParam}&amp;page=1" />
 
 					<a class="js-Tooltip" title="click to sort by seniority" href="${sortURLSeniority }"><spring:message code="community.page.members.table.order.membersince"/></a>
-					<collab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MEMBER_SINCE" />
+					<xcolab:sortArrow sortAscending="${sortFilterPage.sortAscending }" sortColumn="${sortFilterPage.sortColumn }" currentColumn="MEMBER_SINCE" />
 				</th>
 			</tr>
 			</thead>

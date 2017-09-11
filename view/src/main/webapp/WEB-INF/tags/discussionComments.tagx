@@ -1,11 +1,9 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
-          xmlns:jsp="http://java.sun.com/JSP/Page"
-          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:addthis="http://www.addthis.com/help/api-spec"
           xmlns:discussions="urn:jsptld:/WEB-INF/tlds/xcolab-discussions.tld"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          version="2.0" xmlns:spring="http://www.springframework.org/tags">
-
+          xmlns:spring="http://www.springframework.org/tags">
 
     <jsp:directive.attribute name="threadId" type="java.lang.Long" required="true" rtexprvalue="true" description="Thread id" />
     <jsp:directive.attribute name="categoryGroupId" type="java.lang.Long" required="false" rtexprvalue="true" description="CategoryGroup id" />
@@ -26,7 +24,7 @@
         <!--@elvariable id="ontologySpaces" type="java.util.List<org.xcolab.client.contest.pojo.ontology.OntologySpace>"-->
         <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
-		<xcolab:loadCkEditor />
+		<xcolab:requireLibrary name="CKEditor" />
 
 		<c:if test="${discussionPermissions.mustFilterContent}">
 		<script>
@@ -118,12 +116,11 @@
 							<tr class="${status.index mod 2 == 0 ? 'odd' : 'even'}">
 								<td class="c-Comment__commentor">
 									<a id="_message_${message.commentId}"><!-- empty --></a>
-									<collab:userPortrait screenName="${message.author.displayName}"
-														 portraitId="${message.author.portraitId}"
-														 userId="${message.author.userId}"
-														 width="59" height="59" />
+									<xcolab:userPortrait portraitId="${message.author.portraitId}"
+                                                         memberId="${message.author.userId}"
+                                                         width="59" height="59" />
 									<br />
-									<collab:userLinkSimple text="${message.author.displayName}" userId="${message.author.userId}" /> <br />
+									<xcolab:userLinkSimple text="${message.author.displayName}" memberId="${message.author.userId}" /> <br />
 									<br />
 									<xcolab:formatDateTime millis="${message.createDate.time}" type="date" zoneDisplay="none" /><br />
 									<xcolab:formatDateTime millis="${message.createDate.time}" type="time" /><br />
@@ -195,10 +192,9 @@
 
                                             <spring:message code="discussion.commmentstag.candeletemsg" var="canDeleteMsg"/>
                                             <spring:message code="discussion.commmentstag.confirmdelete" var="confirmDelete"/>
-											<a style="margin-left: 10px;" href="javascript:;" data-url="${deleteMessageURL }"
-											   class="js-Tooltip" title="${canDeleteMsg}"
-											   onclick="if (confirm('${confirmDelete}')) {window.location = $(this).attr('data-url');
-}">
+											<a style="margin-left: 10px;" data-url="${deleteMessageURL }"
+											   class="js-Tooltip js-PostLink" title="${canDeleteMsg}"
+                                               data-confirm="${confirmDelete}">
 												<spring:message code="discussion.commmentstag.delete.button"/>
 											</a>
 										</c:if>

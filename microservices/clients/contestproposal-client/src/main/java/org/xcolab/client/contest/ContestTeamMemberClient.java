@@ -93,7 +93,7 @@ public class ContestTeamMemberClient {
 
     public Map<Long, List<Long>> getContestTeamMembersByRole(Long contestId) {
         Map<Long, List<Long>> teamRoleToUsersMap = new TreeMap<>();
-        for (ContestTeamMember ctm : getTeamMembers(contestId)) {
+        for (ContestTeamMember ctm : getTeamMembers(null, contestId, null)) {
             List<Long> roleUsers =
                     teamRoleToUsersMap.computeIfAbsent(ctm.getRoleId(), k -> new ArrayList<>());
 
@@ -102,9 +102,11 @@ public class ContestTeamMemberClient {
         return teamRoleToUsersMap;
     }
 
-    public List<ContestTeamMember> getTeamMembers(Long contestId) {
+    public List<ContestTeamMember> getTeamMembers(Long memberId, Long contestId, Long roleId) {
         return DtoUtil.toPojos(contestTeamMemberResource.list()
+                .optionalQueryParam("memberId", memberId)
                 .optionalQueryParam("contestId", contestId)
+                .optionalQueryParam("roleId", roleId)
                 .withCache(CacheName.CONTEST_DETAILS)
                 .execute(), contestService);
     }

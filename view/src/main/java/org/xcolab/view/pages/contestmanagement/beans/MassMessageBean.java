@@ -9,8 +9,8 @@ public class MassMessageBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
 
-    @NotBlank
-    private String sender;
+
+
 
     @NotBlank
     private String subject;
@@ -37,7 +37,4 @@ public class MassMessageBean implements Serializable {
         this.body = body;
     }
 
-    public String getSender() { return sender; }
-
-    public void setSender(String sender) { this.sender = sender; }
 }

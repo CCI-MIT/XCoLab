@@ -1,15 +1,12 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-          xmlns:spring="http://www.springframework.org/tags"
-          xmlns:fn="http://java.sun.com/jsp/jstl/functions"
           xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
           xmlns:xcolab-modals="urn:jsptagdir:/WEB-INF/tags/layout/modals"
-          xmlns:xcolabfunctions="urn:jsptld:/WEB-INF/tlds/xcolab-escaping.tld"
           xmlns:xcolab-layout="urn:jsptagdir:/WEB-INF/tags/layout"
-          xmlns:xcolab-dropdowns="urn:jsptagdir:/WEB-INF/tags/layout/dropdowns"
-          version="2.0">
+          xmlns:xcolab-scripts="urn:jsptagdir:/WEB-INF/tags/layout/scripts"
+          xmlns:spring="http://www.springframework.org/tags">
+
     <jsp:directive.attribute name="title" type="java.lang.String" required="false" rtexprvalue="true" description="Page title" />
     <jsp:directive.attribute name="description" type="java.lang.String" required="false" rtexprvalue="true" description="Page description for meta tag" />
 
@@ -34,6 +31,7 @@
     <!--@elvariable id="_isLoggedIn" type="java.lang.Boolean"-->
     <!--@elvariable id="_isAdmin" type="java.lang.Boolean"-->
 
+    <!--@elvariable id="_serverEnvironment" type="org.xcolab.client.admin.enums.ServerEnvironment"-->
     <!--@elvariable id="_isProduction" type="java.lang.Boolean"-->
 
     <!--@elvariable id="_showImpersonationBar" type="java.lang.Boolean"-->
@@ -64,7 +62,12 @@
     <!--@elvariable id="_blogAdminUrl" type="java.lang.String"-->
     <!--@elvariable id="_colabLongName" type="java.lang.String"-->
     <!--@elvariable id="_colabShortName" type="java.lang.String"-->
+
     <!--@elvariable id="_googleAnalyticsKey" type="java.lang.String"-->
+    <!--@elvariable id="_pingdomRumId" type="java.lang.String"-->
+    <!--@elvariable id="_typekitId" type="java.lang.String"-->
+    <!--@elvariable id="_typekitIdLocal" type="java.lang.String"-->
+
     <!--@elvariable id="_betaRibbonShow" type="java.lang.Boolean"-->
     <!--@elvariable id="_showSearchMenuItem" type="java.lang.Boolean"-->
     <!--@elvariable id="_openGraphShareTitle" type="java.lang.String"-->
@@ -106,105 +109,53 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <meta content="${not empty description ? description : _metaPageDescription}"
-          lang="en-US" name="description" />
-
-    <meta content="${_metaPageKeywords}" lang="en-US" name="keywords" />
-
-    <meta name="_csrf" content="${_csrf.token}"/>
-    <meta name="_csrf_header" content="${_csrf.headerName}"/>
-
-    <c:if test="${not empty canonicalUrlRelative}">
-        <link rel="canonical" href="${colabUrl}${canonicalUrlRelative}" />
-    </c:if>
 
     <title>${title}${(not empty title) ? ' - ' : ''}${_colabName}</title>
 
-    <!-- Pingdom RUM -->
-    <script>
-        var _prum = [['id', '581356d2a2291ebc638212ff'],
-            ['mark', 'firstbyte', (new Date()).getTime()]];
-        (function() {
-            var s = document.getElementsByTagName('script')[0]
-                    , p = document.createElement('script');
-            p.async = 'async';
-            p.src = 'https://rum-static.pingdom.net/prum.min.js';
-            s.parentNode.insertBefore(p, s);
-        })();
-    </script>
+    <!-- ============ Globals ============ -->
 
     <script type="text/javascript">
+        var _firstByteDate = new Date();
         var _isLoggedIn = '${_isLoggedIn}' == 'true';
         var _isAdmin = '${_isAdmin}' == 'true';
         var _themeImageFolder = '${_themeImageFolder}';
     </script>
 
-    <!-- ============ STYLES ============ -->
 
-    <!-- Required font -->
+    <!-- ============ Fonts ============ -->
+
+    <!-- TODO COLAB-2218: move to typekit? -->
     <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet" type="text/css" />
+
+    <!-- Typekit (fonts) -->
+    <c:if test="${not empty _typekitId}">
+        <c:set var="typekitId" value="${_serverEnvironment eq 'LOCAL' ? _typekitIdLocal :_typekitId}" />
+        <xcolab-scripts:loadTypekit kitId="${typekitId}" />
+    </c:if>
+
+
+    <!-- ============ Stylesheets ============ -->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
     <xcolab:stylesheet href="${_themeCssFolder}/main.css" />
 
-    <!-- ============ PRIORITY SCRIPTS ============ -->
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"><!-- empty --></script>
-
-    <!-- noty (alerts) -->
-    <!-- TODO: we can probably move this to the bottom as well -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.0/packaged/jquery.noty.packaged.min.js"><!-- empty --></script>
-    <script type="text/javascript">
-        // noty configuration
-        jQuery.noty.defaults.theme = 'relax';
-        jQuery.noty.defaults.type = 'information';
-        jQuery.noty.defaults.timeout = 3000;
-        jQuery.noty.defaults.animation.open = {opacity: 1.0, height: 'toggle'};
-        jQuery.noty.defaults.animation.close = {opacity: 0.0, height: 'toggle'};
-        jQuery.noty.defaults.animation.speed = 700;
-    </script>
-
-    <!-- Include CSRF tokens in AJAX calls. -->
-    <script type="text/javascript">
-        $.ajaxSetup({
-            beforeSend: function(xhr) {
-                var token = $("meta[name='_csrf']").attr("content");
-                var header = $("meta[name='_csrf_header']").attr("content");
-                xhr.setRequestHeader(header, token);
-            }
-        })
-    </script>
-
-    <!-- Typekit (fonts) -->
-    <c:choose>
-        <c:when test='${request.serverName == "localhost"}'>
-            <!-- local typekit -->
-            <script type="text/javascript" src="https://use.typekit.com/uvv6okq.js"><!-- empty --></script>
-        </c:when>
-        <c:otherwise>
-            <!-- production typekit -->
-            <script type="text/javascript" src="https://use.typekit.com/bmu2xym.js?akisc"><!-- empty --></script>
-        </c:otherwise>
-    </c:choose>
-
-    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
-
-    <!-- TODO: move to bottom -->
-    <!-- Common init script -->
-    <xcolab:script src="${_themeJsFolder}/moth_init_script.js" />
 
     <!-- ============ META CONTENT ============ -->
+
+    <meta content="${not empty description ? description : _metaPageDescription}" lang="en-US" name="description" />
+    <meta content="${_metaPageKeywords}" lang="en-US" name="keywords" />
+
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 
     <c:if test="${!_isProduction}">
         <!-- Prevent indexing of non-production sites -->
         <meta name="robots" content="noindex, nofollow" />
         <script>
-            console.warn("Running non-Production system... Search engine indexing disabled!");
+            console.warn("Running on non-Production system... Search engine indexing disabled!");
         </script>
     </c:if>
-
-    <meta name="p:domain_verify" content="70e4477f0ab70225da1533151386c16f"/>
 
     <meta property="og:type" content="website" />
     <meta property="og:url" content="${_colabUrl}${requestScope['javax.servlet.forward.request_uri']}"/>
@@ -219,9 +170,16 @@
         <meta property="fb:app_id" content="${_facebookId}"/>
     </c:if>
 
+    <!-- TODO: make this configurable -->
+    <meta name="p:domain_verify" content="70e4477f0ab70225da1533151386c16f"/>
+
     <link href="${_themeImageFolder}/favicon.ico" rel="Shortcut Icon" />
     <link rel="image_src" type="image/png" href="${_logoPathBig}" />
+    <c:if test="${not empty canonicalUrlRelative}">
+        <link rel="canonical" href="${_colabUrl}${canonicalUrlRelative}" />
+    </c:if>
 </head>
+
 <body class="${_isHomePage ? 'home' : ''}">
     <c:if test="${_betaRibbonShow}">
         <div class="c-Ribbon">
@@ -233,11 +191,11 @@
         <div class="c-TitleBar">
             <div class="c-TitleBar__pageMargins">
                 <div class="c-TitleBar__element" style="padding-left: 0;">
-                    <span style="display: inline-block">Impersonating user ${_member.screenName} (Logged in as ${_realMember.screenName})</span>
+                    <span style="display: inline-block">Impersonating member ${_member.screenName} (Logged in as ${_realMember.screenName})</span>
                 </div>
 
                 <div class="c-TitleBar__element c-TitleBar__actionButton right">
-                    <a href="/impersonate/logout">Stop impersonating</a>
+                    <a data-url="/impersonate/logout" class="js-PostLink">Stop impersonating</a>
                 </div>
             </div>
         </div>
@@ -258,103 +216,53 @@
         </div>
     </c:if>
 
+
+    <!-- ============ Navbar ============ -->
+
     <xcolab-layout:navbar colabName="${_colabName}" logoPath="${_logoPath}" redirect="${_requestUri}"
                           activePageLink="${_activePageLink}" contestPages="${_contestPages}"
                           member="${_isLoggedIn ? _member : null}" isWhiteBackgound="${_isHomePage}"
-                          uploadedImageFolder="${_uploadedImageFolder}"
+                          isShowIcons="${_navbarShowIcons}" uploadedImageFolder="${_uploadedImageFolder}"
                           unreadMessages="${_unreadMessages}" blogAdminUrl="${_blogAdminUrl}"
                           showLanguage="${_isI18NActive}" showSearch="${_showSearchMenuItem}"
                           languageSelectItems="${_languageSelectItems}" currentLocale="${_currentLocale}"
                           showGoogleSso="${_isGoogleSsoActive}" showFacebookSso="${_isFacebookSsoActive}" />
 
-    <!-- Content -->
+
+    <!-- ============ Load jQuery ============ -->
+
+    <!-- Load jQuery early as it's used in content  -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"><!-- empty --></script>
+    <!-- Include CSRF tokens in AJAX calls. -->
+    <script type="text/javascript">
+        $.ajaxSetup({
+            beforeSend: function(xhr) {
+                var token = $("meta[name='_csrf']").attr("content");
+                var header = $("meta[name='_csrf_header']").attr("content");
+                xhr.setRequestHeader(header, token);
+            }
+        })
+    </script>
+
+
+    <!-- ============ Content ============ -->
+
     <div id="content">
         <!-- Include page body -->
         <jsp:doBody/>
     </div>
 
-    <!-- Footer -->
-    <div id="c-Footer">
-        <div id="c-Footer__menu">
-            <ul id="c-Footer__menu__left">
-                <li><a href="/feedback"><spring:message code="homepage.bottom.menu.contact" /></a></li>
-                <li><a href="/wiki/Help"><spring:message code="homepage.bottom.menu.help"/></a></li>
-                <c:choose>
-                    <c:when test="${_isLoggedIn}">
-                        <li><a href="/logout"><spring:message code="homepage.bottom.menu.signout" /></a></li>
-                        <li><a href="/members/profile/${_member.id_}"><spring:message code="homepage.bottom.menu.myprofile"/></a></li>
-                    </c:when>
-                    <c:otherwise>
-                        <li><a href="/register" class="openreg"><spring:message code="homepage.bottom.menu.register"/></a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#loginModal"><spring:message code="homepage.bottom.menu.signin"/></a></li>
-                    </c:otherwise>
-                </c:choose>
-                <c:if test="${_isI18NActive}">
-                    <li class="dropup bs-dropdown--dark">
-                        <a data-toggle="dropdown" class="dropdown-trigger">
-                            <img src="${_themeImageFolder}/footer-language-button.png"/>&#160;
-                            <spring:message code="homepage.menu.visitor.language" />
-                            <span class="caret"><!-- --></span>
-                        </a>
-                        <xcolab-dropdowns:languageDropdown currentLanguage="${_lang}"
-                                                           languageSelectItems="${_languageSelectItems}"/>
-                    </li>
-                </c:if>
-            </ul>
-            <ul id="c-Footer__menu__right" class="">
-                <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                <li style="margin-top: -6px;">
-                    <div class="addthis_inline_follow_toolbox"><!-- --></div>
-                </li>
-            </ul>
-        </div> <!-- #c-Footer__menu -->
 
-        <div class="inner">
-            <!-- footer content -->
-            <collab:content articleId="${_footerArticleId}"/>
-        </div> <!-- .inner -->
-    </div> <!-- #c-Footer -->
+    <!-- ============ Footer ============ -->
 
-    <c:if test="${_isProduction and not empty _googleAnalyticsKey}">
-        <script>
-            /* <![CDATA[ */
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function()
-                    { (i[r].q=i[r].q||[]).push(arguments)}
-                    ,i[r].l=1*new Date();a=s.createElement(o),
-                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-            ga('create', '${_googleAnalyticsKey}', 'auto');
-            ga('send', 'pageview');
-            /* ]]> */
-        </script>
-    </c:if>
-
-    <c:if test="${request.session.getAttribute('collab_user_has_registered')}">
-        <script type="text/javascript">
-            // disabled in test env
-            try {
-                pageTracker._trackPageview('/colab/${_member.screenName}/registered');
-                pageTracker._trackEvent('Users', 'registered', '', 1);
-            }
-            catch(err) {
-            }
-        </script>
-        ${request.session.removeAttribute("collab_user_has_registered")}
-    </c:if>
-
-    <c:if test='${request.session.getAttribute("user_from_landing_page")}'>
-        <script type="text/javascript">
-            try {
-                pageTracker._trackPageview("${request.session.getAttribute('user_from_landing_page')");
-            }
-            catch(err) {
-            }
-        </script>
-        ${request.session.removeAttribute("user_from_landing_page")}
-    </c:if>
+    <xcolab-layout:footer showProfileLink="${_isLoggedIn}" currentLanguage="${_lang}"
+                          languageSelectItems="${_languageSelectItems}"
+                          themeImageFolder="${_themeImageFolder}"
+                          showLanguageDropdown="${_isI18NActive}"
+                          footerArticleId="${_footerArticleId}" />
 
 
-    <!-- Modals -->
+    <!-- ============ Modals ============ -->
 
     <c:if test="${!_isLoggedIn}">
         <xcolab-modals:loginModal show="${_showLoginPopup}" redirect="${_requestUri}" authError="${_authError}"
@@ -389,84 +297,33 @@
     </c:if>
 
 
-    <!-- ============ BOTTOM SCRIPTS ============ -->
+    <!-- ============ Scripts ============ -->
 
-    <!-- Display messages -->
+    <xcolab-scripts:loadWidgets />
+
+    <xcolab-scripts:loadNotyAlerts />
     <c:if test="${not empty __alertMessage}">
+        <spring:message var="notyMessage" text="${__alertMessage.message}" javaScriptEscape="true" />
         <script type="text/javascript">
-            noty({text: '${xcolabfunctions:escapeStringForJavascript(__alertMessage.message)}', type: '${__alertMessage.type.notyType}'});
+            noty({text: '${notyMessage}', type: '${__alertMessage.type.notyType}'});
         </script>
     </c:if>
 
-    <!-- Analytics -->
-    <c:if test='${not empty __analyticsAttribute}'>
-        <c:forEach var="event" items='${__analyticsAttribute.events}'>
-            <script type="text/javascript">
-            /* <![CDATA[ */
-                pageTracker._trackEvent('${event.category}', '$event.action', '$event.label', $event.value);
-            /* ]]> */
-            </script>
-        </c:forEach>
-    </c:if>
+    <xcolab:script src="${_themeJsFolder}/postLinkHandler.js"/>
+    <xcolab-scripts:loadMoment locale="${_locale}"/>
+    <xcolab-scripts:loadTooltips />
 
-    <c:if test="${_isLoggedIn}">
-        <script>
-            var usertracking_userId = ${_member.userId};
-            var usertracking_hash = '${_member.uuid}';
-        </script>
-    </c:if>
-
-    <script type="text/javascript">
-        function enableDirtyCheck() {
-            window.oldOnBeforeUnload = window.onbeforeunload;
-            window.onbeforeunload = function() {
-                if (jQuery(".editorDirty").length > 0) {
-                    return 'You have modified this page but have not saved your changes.';
-                }
-                return null;
-            };
-        }
-
-        function disableDirtyCheck() {
-            if ('oldOnBeforeUnload' in window) {
-                window.onbeforeunload = window.oldOnBeforeUnload;
-            }
-            delete window.onbeforeunload;
-        }
-    </script>
-
+    <!-- Bootstrap -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"
             integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"><!-- --></script>
-
-    <!-- CKEditor incompatibility with jquery and bootstrap -->
-    <script>
-        /* <![CDATA[ */
-        $.fn.modal.Constructor.prototype.enforceFocus = function() {
-            modal_this = this
-            $(document).on('focusin.modal', function (e) {
-                if (modal_this.$element[0] !== e.target && !modal_this.$element.has(e.target).length
-                        && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_select')
-                        && $(e.target.parentNode).hasClass('cke_contents cke_reset')
-                        && !$(e.target.parentNode).hasClass('cke_dialog_ui_input_text')) {
-                    modal_this.$element.focus()
-                }
-            })
-        };
-
-        /* ]]> */
-    </script>
-    <!-- Resolve widgets -->
-    <xcolab:script src="${_themeJsFolder}/widgetLoader.js" />
-
-    <!-- Tooltips-->
-    <xcolab:stylesheet href="${_libCssFolder}/tooltipster-4.1.8.bundle.min.css" />
-    <xcolab:script src="${_libJsFolder}/tooltipster-4.1.8.bundle.min.js" />
 
     <!-- Cookies -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.min.js"
             integrity="sha256-NjbogQqosWgor0UBdCURR5dzcvAgHnfUZMcZ8RCwkk8=" crossorigin="anonymous"><!-- --></script>
 
-    <!-- ============ ON DEMAND SCRIPTS ============ -->
+
+    <!-- ============ On demand libraries ============ -->
+
     <!-- TODO: what are we using this for? Do we really need it on all pages? -->
     <xcolab:requireLibrary name="jQuery UI" />
 
@@ -476,16 +333,10 @@
     <xcolab:loadStylesheet shouldLoad="${_librariesToLoad['jQuery UI']}" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css"
                            integrity="sha256-vpKTO4Ob1M4bZ8RAvZvYMtinMz1XjH0QYdAO2861V9M="/>
 
-    <!-- moment js library and initialization (date and time formatting) -->
-    <xcolab:moment locale="${_locale}"/>
-
     <!-- File upload -->
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['fileupload']}" src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-load-image/2.10.0/load-image.all.min.js"/>
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['fileupload']}" src="https://cdnjs.cloudflare.com/ajax/libs/javascript-canvas-to-blob/3.6.0/js/canvas-to-blob.min.js"/>
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['fileupload']}" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.iframe-transport/1.0.1/jquery.iframe-transport.min.js"/>
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['fileupload']}" src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/js/jquery.fileupload.min.js"/>
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['fileupload']}" src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/js/jquery.fileupload-process.min.js"/>
-    <xcolab:loadScript shouldLoad="${_librariesToLoad['fileupload']}" src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.14.2/js/jquery.fileupload-image.min.js"/>
+    <c:if test="${_librariesToLoad['fileupload']}">
+        <xcolab-scripts:fileUploadScripts />
+    </c:if>
 
     <!-- Spin.js -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['spin.js']}" src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js" />
@@ -503,6 +354,17 @@
 
     <!-- CkEditor -->
     <xcolab:loadScript shouldLoad="${_librariesToLoad['CKEditor']}" src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.6.1/ckeditor.js" />
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['CKEditor']}" src="${_themeJsFolder}/configureCkEditor.js" />
+
+    <!-- i18n scripts -->
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['i18n']}" src="${_themeJsFolder}/i18n.js" />
+
+    <!-- shared colab scripts -->
+    <c:if test="${_isSharedColab}">
+        <!-- TODO: can we only require this on certain pages? -->
+        <xcolab:requireLibrary name="sharedColab" />
+    </c:if>
+    <xcolab:loadScript shouldLoad="${_librariesToLoad['sharedColab']}" src="${_themeJsFolder}/sharedColab.js" />
 
     <!-- Dynatree -->
     <!-- TODO: might be unused? -->
@@ -520,11 +382,29 @@
     <!-- Add this -->
     <script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-597f702bfab33060"><!-- --></script>
 
-    <!-- ============ DEFERRED SCRIPTS ============ -->
-    <xcolab:script src="${_themeJsFolder}/messageNotification.js" defer="true" />
+    <xcolab:script src="${_themeJsFolder}/initScript.js" />
+
+    <!-- ============ Analytics and tracking ============ -->
+
+    <c:if test="${_isProduction}">
+        <xcolab-scripts:analyticsScripts googleAnalyticsKey="${_googleAnalyticsKey}"
+                                         pingdomRumId="${_pingdomRumId}"
+                                         analyticsAttribute="${__analyticsAttribute}"
+                                         httpSession="${request.session}" member="${_member}" />
+    </c:if>
+
+    <!-- Custom user tracking -->
+    <c:if test="${_isLoggedIn}">
+        <script>
+            var usertracking_userId = ${_member.userId};
+            var usertracking_hash = '${_member.uuid}';
+        </script>
+    </c:if>
     <xcolab:script src="${_themeJsFolder}/usertracking.js" defer="true"/>
 
-    <!-- Structured data for search engines -->
+
+    <!-- ============ Structured data (schema.org) ============ -->
+
     <script type="application/ld+json">
         {
           "@context": "http://schema.org",
@@ -535,7 +415,7 @@
         }
     </script>
 
-    <c:set var="socialMediaSamAs">
+    <c:set var="socialMediaSameAs">
         <c:forEach var="socialMediaUrl" items="${_socialMediaUrls}" varStatus="status">
             "${socialMediaUrl}"${status.last ? '' : ','}
         </c:forEach>
@@ -549,7 +429,7 @@
           "name": "${_colabName}",
           "url": "${_colabUrl}",
           "logo": "${_colabUrl}${_logoPathSquare}",
-          "sameAs": [${socialMediaSamAs}]
+          "sameAs": [${socialMediaSameAs}]
         }
     </script>
 </body>

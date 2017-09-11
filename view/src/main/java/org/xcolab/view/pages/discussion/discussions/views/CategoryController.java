@@ -62,6 +62,9 @@ public class CategoryController extends BaseDiscussionController {
                 memberId, ActivityEntryType.DISCUSSION.getPrimaryTypeId(),
                 categoryGroup.getGroupId(),0, ""));
 
+        DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
+        model.addAttribute("discussionPermissions", discussionPermissions);
+
         model.addAttribute("_activePageLink", "community");
         return "/discussion/category";
     }
@@ -97,6 +100,9 @@ public class CategoryController extends BaseDiscussionController {
         model.addAttribute("isSubscribed", ActivitiesClientUtil.isSubscribedToActivity(memberId,
                 ActivityEntryType.DISCUSSION.getPrimaryTypeId(), currentCategory.getCategoryId(),0,null ));
 
+
+        DiscussionPermissions discussionPermissions = new DiscussionPermissions(request);
+        model.addAttribute("discussionPermissions", discussionPermissions);
 
         model.addAttribute("_activePageLink", "community");
         return "/discussion/category";

@@ -33,25 +33,21 @@ $p-homepage__join__imageUrl: none !default;
 
 .p-Homepage__homespot__background { //.earth
   background: $p-Homepage__homespot__background__background;
-  @include background-size($p-Homepage__homespot__background__backgroundSize);
+  background-size: $p-Homepage__homespot__background__backgroundSize;
   width: 100%;
 }
 
+//TODO: deprecated; remove from homespot on climatecolab.org and then remove here
 .topshade {
-  height: 9px;
-  background: url(/images/topshade.png) repeat-x;
-  position: relative;
-  z-index: 5;
+  display: none;
 }
 
 //TODO: legacy for climate colab
 .earth {
   background: url(/images/homespot/earth.png) no-repeat 500px top;
-  @include background-size(contain);
+  background-size: contain;
   width: 100%;
   min-height: 336px;
-  position: relative;
-  top: -9px;
 }
 
 .homespot-left {
@@ -220,12 +216,12 @@ a.join {
 }
 
 .facebook-sketchy {
-  background: url(/images/facebook_material.png) no-repeat;
+  background: url(/images/facebook-logo.svg) no-repeat;
   background-size: 32px;
 }
 
 .google-sketchy {
-  background: url(/images/google_material.png) no-repeat;
+  background: url(/images/google-logo.svg) no-repeat;
   background-size: 32px;
 }
 .SolveCoLab-sketchy{

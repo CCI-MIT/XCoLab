@@ -1,8 +1,7 @@
-<jsp:root xmlns:c="http://java.sun.com/jsp/jstl/core"
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
-          xmlns:spring="http://www.springframework.org/tags"
-          version="2.0">
+          xmlns:spring="http://www.springframework.org/tags">
 
 	<!--@elvariable id="showCountdown" type="java.lang.Boolean"-->
 
@@ -31,8 +30,8 @@
 
                 <collab:message code="contests.details.subscribe.tooltip" var="tooltipSubscribe" contestType="${contestType}" />
 				<span class="js-Tooltip" title="${tooltipSubscribe}">
-					<a href="${proposalsPermissions.canSubscribeContest ? subscribeContestURL : '#' }"
-                            rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;" >
+					<a data-url="${proposalsPermissions.canSubscribeContest ? subscribeContestURL : '#' }"
+                            rel="nofollow" onclick="if(!deferUntilLogin(this)) return false;" class="js-PostLink">
 						<c:choose>
 							<c:when test="${proposalsDisplayPermissions.canSeeSubscribeContestButton }">
 								<img src="${_themeImageFolder}/subscribe-light.png" />

@@ -378,7 +378,7 @@ public class Contest extends AbstractContest implements Serializable {
         if (contestTeamMembersByRole == null) {
             contestTeamMembersByRole = new TreeMap<>();
             final List<ContestTeamMember> teamMembers =
-                    contestTeamMemberClient.getTeamMembers(this.getContestPK());
+                    contestTeamMemberClient.getTeamMembers(null, this.getContestPK(), null);
             for (ContestTeamMember teamMember : teamMembers) {
                 try {
                     ContestTeamMemberRole role = contestTeamMemberClient

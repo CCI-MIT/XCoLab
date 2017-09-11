@@ -33,8 +33,9 @@ public class EmailToAdminDispatcher {
     }
 
     public void sendMessage() {
-        String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
-        EmailClient.sendEmail(fromEmail, getRecipientAddresses(), subject, body, true, fromEmail,null);
+        final String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
+        final String fromName = ConfigurationAttributeKey.COLAB_NAME.get();
+        EmailClient.sendEmail(fromEmail, fromName,getRecipientAddresses(), subject, body, true, fromEmail,fromName,null);
     }
 
     private List<String> getRecipientAddresses() {
