@@ -28,14 +28,18 @@
                     return jQuery.trim(editor.document['$'].body.innerText).length;
                 }
             }
-            return jQuery.trim(input.val().replace(/&lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
+            var numberOfLines = input.val().split(/\r\n|\r|\n/).length - 1 ;//java will count \n as \r\n
+            input.val().replace(/&lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length
+            return jQuery.trim(input.val().length + numberOfLines);
         }
 
         function updateCharacterCounter(input, editor) {
 
             var max = input.attr('data-characterLimit');
+
             if (input && input.limitCharacterCounter) {
                 var count = countCharacters(input, editor);
+
                 if (count > 1 * max) {
                     input.limitCharacterCounter.parent().addClass('overflow');
                     input.addClass('invalid');
