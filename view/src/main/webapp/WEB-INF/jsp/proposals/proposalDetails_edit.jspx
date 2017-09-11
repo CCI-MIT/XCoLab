@@ -275,31 +275,18 @@
     </xcolab:modal>
 
     <div class="c-ControlsOverlay">
-        <div class="inner">
-            <div class="c-ControlsOverlay__text">
-                <p>
-                    <c:choose>
-                        <c:when test="${proposal.currentVersion le 1}">
-                            You are currently editing a new ${contestType.proposalNameLowercase}
-                        </c:when>
-                        <c:otherwise>
-                            You are editing a ${contestType.proposalNameLowercase}
-                        </c:otherwise>
-                    </c:choose>
-                </p>
-                <c:if test="${not empty proposal.name }">
-                    <p>
-                        "${proposal.name}"
-                    </p>
-                </c:if>
+        <div class="bs-container-fixed">
+            <div class="pull-left hidden-xs hidden-sm">
+                Don't forget to save your work!
                 <c:if test="${not empty saveHelpText}">
-                    <p>
-                        ${saveHelpText}
-                    </p>
+                    ${saveHelpText}
                 </c:if>
             </div>
-            <div class="c-ControlsOverlay__buttons">
-                <a class="c-Button__primary" href="javascript:void(0)" id="saveChangesButton">${saveButtonText}</a>
+
+            <div class="pull-right-md pull-right-lg">
+                <button class="c-Button__primary" type="button" id="saveChangesButton">
+                    ${saveButtonText}
+                </button>
                 <c:choose>
                     <c:when test="${proposal.currentVersion > 0 }">
                         <xcolab:proposalLink proposal="${proposal}" cssClass="c-Button__secondary"
