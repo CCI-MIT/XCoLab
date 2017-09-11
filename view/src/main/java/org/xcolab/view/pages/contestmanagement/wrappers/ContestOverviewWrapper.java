@@ -15,6 +15,7 @@ import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
+import org.xcolab.view.pages.contestmanagement.entities.massactions.MassActionDataWrapper;
 import org.xcolab.view.pages.contestmanagement.utils.MassActionUtil;
 
 import java.lang.reflect.InvocationTargetException;
@@ -24,7 +25,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class ContestOverviewWrapper {
+public class ContestOverviewWrapper implements MassActionDataWrapper {
 
     private List<Contest> contestWrappers;
     private Long selectedMassAction;

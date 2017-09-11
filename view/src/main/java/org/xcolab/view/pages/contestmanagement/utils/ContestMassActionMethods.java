@@ -83,7 +83,7 @@ public class ContestMassActionMethods {
         return ret;
     }
 
-    private static List<Proposal> getProposalsInActiveContestPhase(Long contestPK) {
+    public static List<Proposal> getProposalsInActiveContestPhase(Long contestPK) {
         ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contestPK);
         return ProposalClientUtil
                 .getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK());

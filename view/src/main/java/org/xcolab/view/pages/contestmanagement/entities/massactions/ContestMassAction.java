@@ -1,40 +1,21 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
-import org.xcolab.view.pages.contestmanagement.wrappers.ContestOverviewWrapper;
 
 import java.io.IOException;
+import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public abstract class ContestMassAction {
+public interface ContestMassAction {
 
-    private final String displayName;
-    private final String reverseDisplayName;
+    void setup(MassActionDataWrapper dataWrapper);
 
-    public ContestMassAction(String displayName, String reverseDisplayName) {
-        this.displayName = displayName;
-        this.reverseDisplayName = reverseDisplayName;
-    }
+    void execute(List<Contest> contests, boolean actionConfirmed)
+            throws MassActionRequiresConfirmationException, IllegalStateException;
 
-    public ContestMassAction(String displayName) {
-        this(displayName, null);
-    }
+    void generateResponse(HttpServletResponse response) throws IOException, IllegalStateException;
 
-    abstract void execute(HttpServletRequest request, HttpServletResponse response,
-            ContestOverviewWrapper contestOverviewWrapper)
-            throws IOException, MassActionRequiresConfirmationException;
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public String getReverseDisplayName() {
-        return reverseDisplayName;
-    }
-
-    public boolean hasReverseAction() {
-        return reverseDisplayName != null;
-    }
+    String getDisplayName();
 }

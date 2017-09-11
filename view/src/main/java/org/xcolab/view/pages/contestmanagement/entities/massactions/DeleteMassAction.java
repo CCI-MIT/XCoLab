@@ -1,25 +1,25 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
 import org.xcolab.view.pages.contestmanagement.utils.ContestMassActionMethods;
-import org.xcolab.view.pages.contestmanagement.wrappers.ContestOverviewWrapper;
 
-import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class DeleteMassAction extends ContestMassAction {
+public class DeleteMassAction extends ContestMassActionAdapter {
 
     public DeleteMassAction() {
-        super("DELETE");
+        super("Delete contests");
     }
 
     @Override
-    void execute(HttpServletRequest request, HttpServletResponse response,
-            ContestOverviewWrapper contestOverviewWrapper)
-            throws IOException, MassActionRequiresConfirmationException {
-        ContestMassActionMethods
-                .deleteContest(contestOverviewWrapper.getSelectedContestIds(), true, request);
+    public void execute(List<Contest> contests, boolean actionConfirmed)
+            throws MassActionRequiresConfirmationException {
+        // TODO: Fix intermediate solution.
+        List<Long> contestIds =
+                contests.stream().map(Contest::getContestPK).collect(Collectors.toList());
+
+        ContestMassActionMethods.deleteContest(contestIds, true, null);
     }
 }
