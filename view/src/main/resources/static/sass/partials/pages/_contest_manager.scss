@@ -1,12 +1,3 @@
-$p-cms__uploadWidget__fontWeight: $b-Typography__fontWeight--bold !default;
-
-
-
-.uploadWidget {
-  color: $t-Color__primary;
-  font-weight: $p-cms__uploadWidget__fontWeight;
-}
-
 .collectionCard-outline-left{
   width:50%;
   float: left;
@@ -308,13 +299,6 @@ $p-cms__uploadWidget__fontWeight: $b-Typography__fontWeight--bold !default;
   filter: alpha(opacity=0);
   cursor: pointer;
   z-index: 100000;
-}
-
-.uploadWidget {
-  width: 219px;
-  margin-top: 16px;
-  cursor: pointer;
-  float: left;
 }
 
 .rotate {

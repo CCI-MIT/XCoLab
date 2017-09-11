@@ -440,17 +440,6 @@
 
 	<script type="text/javascript">
 
-		function updateUploadBtnOffset() {
-			var container = jQuery("#uploadImageContainer");
-			var containerOffset = container.offset();
-			jQuery("#portraitUploadInput").offset(containerOffset);
-		}
-
-		jQuery(function() {
-			updateUploadBtnOffset();
-			$(window).resize(updateUploadBtnOffset);
-		});
-
 		jQuery("#email").keyup(function(){
 			var $emailElement = jQuery("#email");
             if ($emailElement.val() !== "" &amp;&amp; $emailElement.val() !== jQuery("#emailStored").val()) {

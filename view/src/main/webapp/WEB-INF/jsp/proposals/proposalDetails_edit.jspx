@@ -343,14 +343,6 @@
     <script type="text/javascript">
         var submitTimer;
 
-        function updateUploadBtnOffset() {
-            var container = jQuery("#uploadWidget");
-            var containerOffset = container.offset();
-
-            jQuery("#fileUploadInput").offset(containerOffset);
-
-        }
-
         function showAcceptTosPopup() {
             jQuery('#acceptTosModal').modal('show');
         }
@@ -415,9 +407,6 @@
         }
 
         jQuery(function() {
-            updateUploadBtnOffset();
-            $(window).resize(updateUploadBtnOffset);
-
             jQuery("#saveChangesButton").click(function() {
                 if (currentProposal.proposalId > 0) {
                     disableButtons(true);
