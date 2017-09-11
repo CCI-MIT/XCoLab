@@ -1,7 +1,6 @@
 <jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
           xmlns:form="http://www.springframework.org/tags/form"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
-          xmlns:c="http://java.sun.com/jsp/jstl/core">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
 
     <!--@elvariable id="preferences" type="org.xcolab.view.widgets.contests.ContestPreferences"-->
 
@@ -31,7 +30,7 @@
             <div class="form-group">
                 <label>Choose the contests to randomly display</label>
                 <form:select path="selectedContests" items="${preferences.contestMap}"
-                                 multiple="multiple" cssClass="form-control" size="25"/>
+                             multiple="multiple" cssClass="form-control" size="25"/>
             </div>
 
         </xcolab:editPreferences>

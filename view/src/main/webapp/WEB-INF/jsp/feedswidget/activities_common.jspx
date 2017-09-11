@@ -6,15 +6,15 @@
 
     <!--@elvariable id="activities" type="java.util.List<org.xcolab.view.widgets.feeds.wrappers.SocialActivityWrapper>"-->
 
-        <div class="alignright" style="display:none;">
-            <a href="/feedswidget/generateDump">activities in CSV format</a>
-        </div>
-        <div class="clearfix"><!--  --></div>
-        <h2>${title}</h2>
-        <c:if test="${_isAdmin}">
-            <a href="/widgets/feeds/preferences" class="c-Button__admin">Edit preferences</a><br/>
-        </c:if>
-        <c:choose>
+    <div class="alignright" style="display:none;">
+        <a href="/feedswidget/generateDump">activities in CSV format</a>
+    </div>
+    <div class="clearfix"><!--  --></div>
+    <h2>${title}</h2>
+    <c:if test="${_isAdmin}">
+        <a href="/widgets/feeds/preferences" class="c-Button__admin">Edit preferences</a><br/>
+    </c:if>
+    <c:choose>
         <c:when test="${empty activities  }">
             <spring:message code="activities.page.nothing.found"/>
         </c:when>
@@ -23,11 +23,12 @@
                 <c:forEach items="${activities}" var="activity">
                     <div id="activitiesTable">
                         <div class="c-TableList__row ${activity.odd ? 'odd' : '' }">
-                            <div class="c-TableList__item p-Homepage__activitybox__${activity.type.displayName}" ><!--  --></div>
+                            <div class="c-TableList__item p-Homepage__activitybox__${activity.type.displayName}"><!--  --></div>
                             <div class="c-TableList__item" style="width: 750px; margin-top: 20px;">
-                                <c:out value="${activity.body}" escapeXml="false" />
+                                <c:out value="${activity.body}" escapeXml="false"/>
                             </div>
-                            <h5 class="c-TableList__item right" style="margin-top: 20px; margin-right:10px;">
+                            <h5 class="c-TableList__item right"
+                                style="margin-top: 20px; margin-right:10px;">
                                 ${activity.activityDateAgo}
                             </h5>
                         </div>
@@ -43,28 +44,33 @@
                     </c:when>
                     <c:otherwise>
 
-                        <c:set var="prevURL" value="/activities?page=${sortFilterPage.page - 1}&amp;userId=${filterUserId}"/>
+                        <c:set var="prevURL"
+                               value="/activities?page=${sortFilterPage.page - 1}&amp;userId=${filterUserId}"/>
 
                     </c:otherwise>
                 </c:choose>
                 <div class="alignleft">
                     <c:if test="${sortFilterPage.page > 0 }">
-                        <a href="${prevURL }">&amp;laquo; <spring:message code="activities.page.pagination.newer"/></a>
+                        <a href="${prevURL }">&amp;laquo; <spring:message
+                                code="activities.page.pagination.newer"/></a>
                     </c:if>
                 </div>
 
                 <div class="alignright">
                     <c:choose>
                         <c:when test="${empty filterUserId }">
-                            <c:set var="nextURL" value="/activities?page=${sortFilterPage.page + 1}"/>
+                            <c:set var="nextURL"
+                                   value="/activities?page=${sortFilterPage.page + 1}"/>
                         </c:when>
                         <c:otherwise>
-                            <c:set var="nextURL" value="/activities?page=${sortFilterPage.page + 1}&amp;userId=${filterUserId}"/>
+                            <c:set var="nextURL"
+                                   value="/activities?page=${sortFilterPage.page + 1}&amp;userId=${filterUserId}"/>
 
                         </c:otherwise>
                     </c:choose>
                     <c:if test="${ not isLastPage }">
-                        <a href="${nextURL }"><spring:message code="activities.page.pagination.older"/> &amp;raquo;</a>
+                        <a href="${nextURL }"><spring:message
+                                code="activities.page.pagination.older"/> &amp;raquo;</a>
                     </c:if>
                 </div>
             </div>
@@ -78,26 +84,26 @@
                         <div class="c-TableList__item">
                             <h5>${activity.activityDateAgo}</h5>
                             <div style="width: 410px;">
-                                <c:out value="${activity.body}" escapeXml="false" />
+                                <c:out value="${activity.body}" escapeXml="false"/>
                             </div>
                         </div>
                     </div>
                 </c:forEach>
             </div>
         </c:otherwise>
-        </c:choose>
+    </c:choose>
 
-        <c:if test="${seeMoreLinkShown}">
+    <c:if test="${seeMoreLinkShown}">
         <div class="alignright" style="margin-top:10px;">
-            <a href="/activities"><spring:message code="activities.page.pagination.showall" /> </a>
+            <a href="/activities"><spring:message code="activities.page.pagination.showall"/> </a>
         </div>
-        </c:if>
-        <c:if test="${not empty filterUserId}">
+    </c:if>
+    <c:if test="${not empty filterUserId}">
         <script type="text/javascript">
             var filterSettings = {
                 filterUserId: ${filterUserId},
                 filterUserName: '${filterUser.screenName}'
             };
         </script>
-        </c:if>
+    </c:if>
 </jsp:root>
