@@ -3,6 +3,9 @@
           xmlns:form="http://www.springframework.org/tags/form">
 
     <jsp:directive.attribute name="preferences" type="org.xcolab.view.widgets.WidgetPreference" required="true" rtexprvalue="true" description="The preferences being edited" />
+    <jsp:directive.attribute name="hasTitle" type="java.lang.Boolean" required="false" rtexprvalue="true" description="If true, a title field will be added. Default is false." />
+
+    <c:set var="hasTitle" value="${empty hasTitle ? true : hasTitle}" />
 
     <h1>Edit preferences</h1>
 
@@ -29,17 +32,20 @@
                         placeholder="Preference ID" cssClass="form-control hidden" />
         </div>
 
-        <div class="form-group">
-            <label for="title">Title:</label>
-            <form:input path="title" class="form-control"/>
-        </div>
+        <c:if test="${hasTitle}">
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <form:input path="title" class="form-control"/>
+            </div>
+
+        </c:if>
 
         <div>
             <jsp:doBody/>
         </div>
 
         <div class="form-group">
-            <button type="button" class="c-Button__secondary" href="/" >Return to home</button>
+            <a class="c-Button__secondary" href="/" >Return to home</a>
             <button type="submit" class="c-Button__primary">Save</button>
         </div>
 

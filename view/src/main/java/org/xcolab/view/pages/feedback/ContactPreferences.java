@@ -36,7 +36,7 @@ public class ContactPreferences extends WidgetPreference implements Serializable
     public ContactPreferences() {
         this(null, I18nUtils.DEFAULT_LANGUAGE);
     }
-    
+
     public ContactPreferences(String preferenceId, String language) {
         super(preferenceId, language);
         if (jsonPreferences.has(MESSAGE_FORMAT_PREF)) {
@@ -114,11 +114,4 @@ public class ContactPreferences extends WidgetPreference implements Serializable
         this.messageSubject = messageSubject;
     }
 
-    public String getExpandLinkText() {
-        return expandLinkText;
-    }
-
-    public void setExpandLinkText(String expandLinkText) {
-        this.expandLinkText = expandLinkText;
-    }
 }

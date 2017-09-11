@@ -20,7 +20,7 @@
 
 			<script src='https://www.google.com/recaptcha/api.js'><!-- --></script>
 			<c:if test="${_isAdmin}">
-				<a href="/feedback/editPreferences" class="c-Button__admin">Edit preferences</a><br/>
+				<a href="/feedback/preferences" class="c-Button__admin">Edit preferences</a><br/>
 			</c:if>
 			<div id="contactForm" style="${not hasError ? 'display:none;' : ''};">
 

@@ -7,32 +7,27 @@
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
     <xcolab:layout>
 
-        <xcolab:editPreferences preferences="${preferences}">
-            <p>
-                <strong>
-                    In messages you can use patterns like USER_NAME, USER_EMAIL, USER_MESSAGE
-                    as placeholders for values entered by user.
-                </strong>
-            </p>
-            <fieldset>
-                <p>
-                    Recipients, comma-separated:<br />
-                    <form:input path="recipients" />
-                </p>
-                <p>
-                    Message Format:<br />
-                    <form:textarea path="messageFormat" cols="30" rows="10" />
-                </p>
-                <p>
-                    Message Subject:<br />
-                    <form:input path="messageSubject" />
-                </p>
-                <p>
-                    Expand Link Text:<br />
-                    <form:input path="expandLinkText" />
-                </p>
+        <xcolab:editPreferences preferences="${preferences}" hasTitle="false">
+            <div class="c-Alert c-Alert__info__message">
+                In messages you can use patterns like USER_NAME, USER_EMAIL, USER_MESSAGE
+                as placeholders for values entered by user.
+            </div>
 
-            </fieldset>
+            <div class="form-group">
+                <label>Recipients (comma-separated)</label>
+                <form:input path="recipients" cssClass="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Message Format</label>
+                <form:textarea path="messageFormat" cssClass="form-control" cols="30" rows="10" />
+            </div>
+
+            <div class="form-group">
+                <label>Message Subject</label>
+                <form:input path="messageSubject" cssClass="form-control" />
+            </div>
+
         </xcolab:editPreferences>
 
     </xcolab:layout>
