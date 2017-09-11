@@ -48,23 +48,7 @@ public class OverviewTabController extends AbstractTabController {
         return tabWrapper;
     }
 
-    @ModelAttribute("senderListItems")
-    public List<Member> populateSenderListItems(HttpServletRequest request) {
-        final MemberCategory memberCategory = MembersClient.getMemberCategory(MemberRole.STAFF.getRoleId());
 
-        List<Member> staffList = MembersClient
-                .listMembers(memberCategory.getCategoryName(), null, null, null, true, 0,
-                        Integer.MAX_VALUE);
-
-        ArrayList<String> matchList = new ArrayList<>(Arrays.asList("gary-olson","eduhaime","yiftach-nagar","YueHan","nvtaub"));
-
-        for (int i = 0; i < staffList.size(); i++) {
-            if (matchList.contains(staffList.get(i).getScreenName())) {
-                staffList.remove(i);
-            }
-        }
-        return staffList;
-    }
 
     @ModelAttribute("massActionsItems")
     public List<LabelValue> populateMassActionsItems(HttpServletRequest request) {

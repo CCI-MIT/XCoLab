@@ -89,10 +89,10 @@ public class ContactController {
 
         Collections.addAll(addressTo, recipients);
 
-        String fromAddress = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
-
-        EmailClient.sendEmail(fromAddress, addressTo , messageSubject,
-                messageBody, false, contactBean.getEmail(), null);
+        final String fromAddress = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
+        final String fromName = ConfigurationAttributeKey.COLAB_NAME.get();
+        EmailClient.sendEmail(fromAddress,fromName, addressTo , messageSubject,
+                messageBody, false, contactBean.getEmail(),null, null);
 
         AlertMessage.success("Message sent!").flash(request);
         return showContact(request, model);

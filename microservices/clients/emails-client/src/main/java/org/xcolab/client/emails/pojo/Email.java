@@ -3,79 +3,99 @@ package org.xcolab.client.emails.pojo;
 import java.io.Serializable;
 import java.util.List;
 
-public class Email implements Serializable {
+
+public class Email  implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-        private String from;
+    private String from;
+    private String fromName;
 
-        private List<String> to;
+    private List<String> to;
 
-        private String subject;
+    private String subject;
 
-        private String emailBody;
+    private String emailBody;
 
-        private boolean isHtml;
+    private boolean isHtml;
 
-        private String replyTo;
-
-        private Long referenceId;
+    private String replyTo;
 
 
-        public String getReplyTo() {
-            return replyTo;
-        }
+    private String replyToName;
 
-        public void setReplyTo(String replyTo) {
-            this.replyTo = replyTo;
-        }
+    private Long referenceId;
 
-        public String getFrom() {
-            return from;
-        }
 
-        public void setFrom(String from) {
-            this.from = from;
-        }
+    public String getReplyTo() {
+        return replyTo;
+    }
 
-        public List<String> getTo() {
-            return to;
-        }
+    public void setReplyTo(String replyTo) {
+        this.replyTo = replyTo;
+    }
 
-        public void setTo(List<String> to) {
-            this.to = to;
-        }
+    public String getFrom() {
+        return from;
+    }
 
-        public String getSubject() {
-            return subject;
-        }
+    public void setFrom(String from) {
+        this.from = from;
+    }
 
-        public void setSubject(String subject) {
-            this.subject = subject;
-        }
+    public List<String> getTo() {
+        return to;
+    }
 
-        public String getEmailBody() {
-            return emailBody;
-        }
+    public void setTo(List<String> to) {
+        this.to = to;
+    }
 
-        public void setEmailBody(String emailBody) {
-            this.emailBody = emailBody;
-        }
+    public String getSubject() {
+        return subject;
+    }
 
-        public boolean isHtml() {
-            return isHtml;
-        }
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 
-        public void setHtml(boolean html) {
-            isHtml = html;
-        }
+    public String getEmailBody() {
+        return emailBody;
+    }
 
-        public Long getReferenceId() {
-            return referenceId;
-        }
+    public void setEmailBody(String emailBody) {
+        this.emailBody = emailBody;
+    }
 
-        public void setReferenceId(Long referenceId) {
-            this.referenceId = referenceId;
-        }
+    public boolean isHtml() {
+        return isHtml;
+    }
+
+    public void setHtml(boolean html) {
+        isHtml = html;
+    }
+
+    public Long getReferenceId() {
+        return referenceId;
+    }
+
+    public void setReferenceId(Long referenceId) {
+        this.referenceId = referenceId;
+    }
+
+    public String getFromName() {
+        return fromName;
+    }
+
+    public void setFromName(String fromName) {
+        this.fromName = fromName;
+    }
+
+    public String getReplyToName() {
+        return replyToName;
+    }
+
+    public void setReplyToName(String replyToName) {
+        this.replyToName = replyToName;
+    }
 }
-

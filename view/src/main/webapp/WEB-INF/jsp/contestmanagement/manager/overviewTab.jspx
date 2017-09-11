@@ -52,13 +52,6 @@
 			</div>
 			<div id="massMessage" style="display: none;">
                 <div class="clearLeft"><!-- --></div>
-                <h3 class="floatLeft">Sender</h3>
-                <select name="sender">
-                    <c:forEach var="sender" items="${senderListItems}" >
-                        <option value="${sender.id_}" label="${sender.firstName} ${sender.lastName} &lt;${sender.emailAddress}&gt; - ${sender.screenName}"/>
-                    </c:forEach>
-                </select>
-                <div class="clearLeft"><!-- --></div>
 				<h3 class="floatLeft">Subject</h3>
 				<form:input path="massMessageBean.subject" />
 				<div class="clearLeft"><!-- --></div>

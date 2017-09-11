@@ -326,8 +326,8 @@ public class ActivitySubscriptionEmailHelper {
             message += "<br /><br />" + unregisterFooter;
 
 
-            EmailClient.sendEmail(fromEmail.getAddress(),toEmail.getAddress(), TemplateReplacementUtil.replacePlatformConstants(subject),
-                    TemplateReplacementUtil.replacePlatformConstants(message), true, fromEmail.getAddress(),referenceId);
+            EmailClient.sendEmail(fromEmail.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),toEmail.getAddress(), TemplateReplacementUtil.replacePlatformConstants(subject),
+                    TemplateReplacementUtil.replacePlatformConstants(message), true, fromEmail.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),referenceId);
 
         } catch ( UnsupportedEncodingException e) {
             _log.error("Can't send email notifications to users");
