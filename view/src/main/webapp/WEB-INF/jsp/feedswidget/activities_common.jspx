@@ -12,7 +12,7 @@
         <div class="clearfix"><!--  --></div>
         <h2>${title}</h2>
         <c:if test="${_isAdmin}">
-            <a href="/feedswidget/editPreferences" class="c-Button__admin">Edit preferences</a><br/>
+            <a href="/widgets/feeds/preferences" class="c-Button__admin">Edit preferences</a><br/>
         </c:if>
         <c:choose>
         <c:when test="${empty activities  }">

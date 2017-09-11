@@ -7,7 +7,7 @@
     <!--@elvariable id="_isAdmin" type="boolean"-->
     <div class="c-CarouselWrapper">
         <c:if test="${_isAdmin}">
-            <a href="/carouselwidget/editPreferences?preferenceId=${carouselPreferences.preferenceId}" class="c-Button__admin">Edit carouselPreferences</a><br/>
+            <a href="/widgets/logos/preferences?preferenceId=${carouselPreferences.preferenceId}" class="c-Button__admin">Edit carouselPreferences</a><br/>
         </c:if>
         <h2>${carouselPreferences.title}</h2>
         <div class="c-CarouselBox">

@@ -12,7 +12,7 @@
     <!--@elvariable id="staffMembers" type="java.util.List<org.xcolab.view.widgets.staffmembers.StaffMemberWrapper>"-->
 
     <c:if test="${_isAdmin}">
-        <a href="/staffmemberswidget/editPreferences?preferenceId=${preferences.preferenceId}" class="c-Button__admin">Edit preferences</a><br/>
+        <a href="/widgets/staffmembers/preferences?preferenceId=${preferences.preferenceId}" class="c-Button__admin">Edit preferences</a><br/>
     </c:if>
 
     <c:if test="${not empty widgetTitle}">
