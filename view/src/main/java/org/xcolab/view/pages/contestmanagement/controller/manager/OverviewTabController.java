@@ -107,32 +107,13 @@ public class OverviewTabController extends AbstractTabController {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
-        updateContestOverviewWrapper.setMemberId(MemberAuthUtil.getMemberId(request));
-
-        int massActionIndex = updateContestOverviewWrapper.getSelectedMassAction().intValue();
-        ContestMassActions actionWrapper = ContestMassActions.values()[massActionIndex];
-        ContestMassAction action = actionWrapper.getAction();
-        List<Long> contestIds = updateContestOverviewWrapper.getSelectedContestIds();
-        List<Contest> contests = getContests(contestIds);
 
         try {
-            action.execute(contests, false, updateContestOverviewWrapper, response);
+            executeMassAction(request, response, updateContestOverviewWrapper);
             AlertMessage.CHANGES_SAVED.flash(request);
             return "redirect:/admin/contest/manager";
         } catch (MassActionRequiresConfirmationException e) {
-            String confirmView;
-            if (actionWrapper == ContestMassActions.DELETE) {
-                confirmView = "deleteContest";
-            } else if (actionWrapper == ContestMassActions.DELETE_WITH_PHASES) {
-                confirmView = "deleteContestWithPhases";
-            } else {
-                throw new IllegalStateException(
-                        "Confirmations are only required for the mass actions Delete and DeleteWithPhases.");
-            }
-            model.addAttribute("massActionConfirmationWrapper",
-                    new MassActionConfirmationWrapper(contestIds, massActionIndex));
-            model.addAttribute("massActionId", massActionIndex);
-            return CONFIRM_VIEW_PATH + confirmView;
+            return handleConfirmationException(model, updateContestOverviewWrapper);
         }
     }
 
@@ -145,18 +126,67 @@ public class OverviewTabController extends AbstractTabController {
             response.sendError(403);
         }
         List<Contest> contests = updateContestOverviewWrapper.getContestWrappers();
-        OrderMassAction orderMassAction = new OrderMassAction();
+        OrderMassAction orderMassAction = (OrderMassAction) ContestMassActions.ORDER.getAction();
         orderMassAction.execute(contests, true, null, null);
     }
 
-//    @PostMapping("api/massAction")
-//    public void getExportController(HttpServletRequest request, Model model,
-//            @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper,
-//            HttpServletResponse response) throws InvocationTargetException, IllegalAccessException {
-//        if (!tabWrapper.getCanEdit()) {
-//            return;
-//        }
-//        updateContestOverviewWrapper.executeMassAction(request, response);
-//    }
+    @PostMapping("api/massAction")
+    public void getExportController(HttpServletRequest request, Model model,
+            @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper,
+            HttpServletResponse response) throws InvocationTargetException, IllegalAccessException {
+        if (!tabWrapper.getCanEdit()) {
+            return;
+        }
+        try {
+            executeMassAction(request, response, updateContestOverviewWrapper);
+        } catch (MassActionRequiresConfirmationException | IOException ignored) {
+        }
+    }
+
+    private String handleConfirmationException(Model model,
+            ContestOverviewWrapper contestOverviewWrapper) throws IllegalStateException {
+        String confirmView;
+
+        ContestMassActions actionWrapper = getMassActionWrapper(contestOverviewWrapper);
+        if (actionWrapper == ContestMassActions.DELETE) {
+            confirmView = "deleteContest";
+        } else if (actionWrapper == ContestMassActions.DELETE_WITH_PHASES) {
+            confirmView = "deleteContestWithPhases";
+        } else {
+            throw new IllegalStateException(
+                    "Confirmations are only required for the mass actions Delete and "
+                            + "DeleteWithPhases.");
+        }
+
+        List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();
+        int massActionIndex = contestOverviewWrapper.getSelectedMassAction().intValue();
+        model.addAttribute("massActionConfirmationWrapper",
+                new MassActionConfirmationWrapper(contestIds, massActionIndex));
+        model.addAttribute("massActionId", massActionIndex);
+
+        return CONFIRM_VIEW_PATH + confirmView;
+    }
+
+    private ContestMassActions getMassActionWrapper(ContestOverviewWrapper contestOverviewWrapper)
+            throws IllegalArgumentException {
+        int massActionIndex = contestOverviewWrapper.getSelectedMassAction().intValue();
+        if (massActionIndex > ContestMassActions.values().length) {
+            throw new IllegalArgumentException("Illegal mass action index");
+        }
+        return ContestMassActions.values()[massActionIndex];
+    }
+
+    private void executeMassAction(HttpServletRequest request, HttpServletResponse response,
+            ContestOverviewWrapper contestOverviewWrapper)
+            throws MassActionRequiresConfirmationException, IOException {
+        contestOverviewWrapper.setMemberId(MemberAuthUtil.getMemberId(request));
+
+        ContestMassActions actionWrapper = getMassActionWrapper(contestOverviewWrapper);
+        ContestMassAction action = actionWrapper.getAction();
+        List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();
+        List<Contest> contests = getContests(contestIds);
+
+        action.execute(contests, false, contestOverviewWrapper, response);
+    }
 
 }
