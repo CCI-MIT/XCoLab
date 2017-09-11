@@ -6,6 +6,28 @@
   margin-top: 35px;
 }
 
+.is-required {
+  font-style: italic;
+  color: $t-Color__grey--dark;
+  margin-bottom: 20px;
+}
+
+.popupreg_head {
+  float: left;
+  width: 50%;
+}
+
+.popupreg_head h1 {
+  color: black;
+  font-size: 36px;
+}
+
+.sso-register {
+  float: right;
+  width: 50%;
+  margin-bottom: 20px;
+}
+
 .popupreg_txt.req {
   background: url(/images/reg-star.png) no-repeat 225px 4px;
 }
@@ -18,6 +40,29 @@
   height: 27px;
   padding: 6px 20px 0 0;
   color: $t-Color__grey--darkest;
+}
+
+.popupreg_input {
+  float: left;
+  width: 300px;
+  height: 33px;
+  padding: 2px 0 0 8px;
+  font-size: 13px;
+}
+
+.popupreg_form {
+  background: white;
+  width: 100%;
+  padding-bottom: 25px;
+  position: relative;
+  top: -5px;
+  left: -5px;
+}
+
+
+.popupreg_terms {
+  margin-top: 30px;
+  color: #444;
 }
 
 .inputLimitContainer {
@@ -63,8 +108,16 @@ th.second {
   width: 60px;
 }
 
+.shortBioContent {
+  width: 100%;
+}
+
 .cke_editor_shortBio {
   width: 100%;
+}
+
+.is-required {
+  margin: 0 !important;
 }
 
 #fileUploadForm {
