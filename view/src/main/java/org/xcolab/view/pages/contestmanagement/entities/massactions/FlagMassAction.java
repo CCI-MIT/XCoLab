@@ -11,8 +11,8 @@ public class FlagMassAction extends ContestMassActionAdapter {
 
     private ContestFlagTextToolTipBean contestFlagTextToolTipBean;
 
-    public FlagMassAction(String displayName) {
-        super(displayName);
+    public FlagMassAction() {
+        super("Set contest flag");
     }
 
     @Override
