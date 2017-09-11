@@ -14,7 +14,6 @@ public class DiscussionPreferences extends WidgetPreference {
     private final static Long DEFAULT_CATEGORY_GROUP_ID = 701L;
     private long categoryGroupId;
 
-
     @Override
     public AttributeGetter<String> getConfigurationAttribute() {
         return ConfigurationAttributeKey.PORTLET_DISCUSSION_PREFERENCES;
@@ -23,24 +22,19 @@ public class DiscussionPreferences extends WidgetPreference {
     public DiscussionPreferences() {
         this(null, I18nUtils.DEFAULT_LANGUAGE);
     }
+
     public DiscussionPreferences(String preferenceId, String language) {
         super(preferenceId, language);
 
-        try {
-            categoryGroupId = Integer.parseInt((jsonPreferences
-                    .has(CATEGORY_GROUP_ID_PREFERENCE)) ? (jsonPreferences
-                    .getString(CATEGORY_GROUP_ID_PREFERENCE))
-                    : (DEFAULT_CATEGORY_GROUP_ID.toString()));
-        } catch (NumberFormatException e) {
-            categoryGroupId = DEFAULT_CATEGORY_GROUP_ID;
-        }
+        categoryGroupId = jsonPreferences
+                .optLong(CATEGORY_GROUP_ID_PREFERENCE, DEFAULT_CATEGORY_GROUP_ID);
     }
 
     @Override
     public void savePreferences() {
         JSONObject prefs = new JSONObject();
 
-        prefs.put(CATEGORY_GROUP_ID_PREFERENCE, categoryGroupId + "");
+        prefs.put(CATEGORY_GROUP_ID_PREFERENCE, String.valueOf(categoryGroupId));
 
         savePreferencesInternal(prefs,null);
     }
