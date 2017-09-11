@@ -36,6 +36,8 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import static org.xcolab.view.pages.contestmanagement.utils.MassActionUtil.getContests;
+
 @Controller
 @RequestMapping("/admin/contest")
 public class OverviewTabController extends AbstractTabController {
@@ -110,29 +112,26 @@ public class OverviewTabController extends AbstractTabController {
         int massActionIndex = updateContestOverviewWrapper.getSelectedMassAction().intValue();
         ContestMassActions actionWrapper = ContestMassActions.values()[massActionIndex];
         ContestMassAction action = actionWrapper.getAction();
-        List<Contest> contests = getSelectedContests();
+        List<Long> contestIds = updateContestOverviewWrapper.getSelectedContestIds();
+        List<Contest> contests = getContests(contestIds);
 
         try {
             action.execute(contests, false, updateContestOverviewWrapper, response);
             AlertMessage.CHANGES_SAVED.flash(request);
             return "redirect:/admin/contest/manager";
         } catch (MassActionRequiresConfirmationException e) {
-            final int selectedMassActionId =
-                    updateContestOverviewWrapper.getSelectedMassAction().intValue();
-            ContestMassActions contestMassAction =
-                    ContestMassActions.values()[selectedMassActionId];
             String confirmView;
             if (actionWrapper == ContestMassActions.DELETE) {
                 confirmView = "deleteContest";
             } else if (actionWrapper == ContestMassActions.DELETE_WITH_PHASES) {
                 confirmView = "deleteContestWithPhases";
             } else {
-                throw new IOException();
+                throw new IllegalStateException(
+                        "Confirmations are only required for the mass actions Delete and DeleteWithPhases.");
             }
-            List<Long> contestIds = updateContestOverviewWrapper.getSelectedContestIds();
             model.addAttribute("massActionConfirmationWrapper",
-                    new MassActionConfirmationWrapper(contestIds, selectedMassActionId));
-            model.addAttribute("massActionId", selectedMassActionId);
+                    new MassActionConfirmationWrapper(contestIds, massActionIndex));
+            model.addAttribute("massActionId", massActionIndex);
             return CONFIRM_VIEW_PATH + confirmView;
         }
     }
@@ -160,11 +159,4 @@ public class OverviewTabController extends AbstractTabController {
 //        updateContestOverviewWrapper.executeMassAction(request, response);
 //    }
 
-    private List<Contest> getSelectedContests() {
-        List<Long> selectedContestIds = updateContestOverviewWrapper.getSelectedContestIds();
-        return selectedContestIds
-                .stream()
-                .map(contestId -> ContestClientUtil.getContest(contestId))
-                .collect(Collectors.toList());
-    }
 }

@@ -23,6 +23,6 @@ public class DeleteMassAction extends ContestMassActionAdapter {
         List<Long> contestIds =
                 contests.stream().map(Contest::getContestPK).collect(Collectors.toList());
 
-        ContestMassActionMethods.deleteContest(contestIds, true, null);
+        ContestMassActionMethods.deleteContest(contestIds, actionConfirmed, null);
     }
 }

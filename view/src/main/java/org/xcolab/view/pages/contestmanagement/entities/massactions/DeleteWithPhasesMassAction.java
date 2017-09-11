@@ -26,6 +26,6 @@ public class DeleteWithPhasesMassAction extends ContestMassActionAdapter {
         List<Long> contestIds =
                 contests.stream().map(Contest::getContestPK).collect(Collectors.toList());
 
-        ContestMassActionMethods.deleteContestwithPhases(contestIds, true, null);
+        ContestMassActionMethods.deleteContestwithPhases(contestIds, actionConfirmed, null);
     }
 }
