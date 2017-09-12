@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public class SubscribeMassAction extends ContestMassActionAdapter {
 
-    private Long memberId;
     private final boolean isSubscribe;
 
     public SubscribeMassAction(boolean isSubscribe) {
@@ -21,6 +20,7 @@ public class SubscribeMassAction extends ContestMassActionAdapter {
     public void execute(List<Contest> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response)
             throws IllegalStateException {
+        Long memberId = dataWrapper.getMemberId();
         if (memberId == null) {
             throw new IllegalStateException("The mass action has not been setup yet.");
         }
