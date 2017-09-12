@@ -29,7 +29,8 @@ public abstract class MessageMassAction extends ContestMassActionAdapter {
 
     @Override
     public void execute(List<Contest> contests, boolean actionConfirmed,
-            MassActionDataWrapper dataWrapper, HttpServletResponse response) {
+            MassActionDataWrapper dataWrapper, HttpServletResponse response)
+            throws IllegalArgumentException {
         MassMessageBean massMessageBean = dataWrapper.getMassMessageBean();
         if (massMessageBean == null) {
             throw new IllegalArgumentException("No mass message bean provided.");
