@@ -27,6 +27,7 @@
             <div class="judging_left">
                 <form:form id="fellowRatingForm" action="${saveScreeningURL}" method="post"
                            commandName="fellowProposalScreeningBean">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="addpropbox">
                         <h3>Advance ${contestType.proposalName} to Judges for Review?</h3>
 
@@ -39,7 +40,7 @@
                             <div class="judgingForm">
                                 <div>
                                     <c:forEach var="judge" items="${contest.contestJudges}">
-                                        <div class="judge-review-status">
+                                        <div class="judge-review-status js-Tooltip tooltipstered" data-tooltip-content="#js-Tooltip__content__judgedata_${judge.userId}">
 
                                             <div class="review-status-container">
                                                 <xcolab:userPortrait portraitId="${judge.portraitId}"
@@ -61,6 +62,11 @@
                                             <judging:judgeAssignedProposalCount userId="${judge.userId}" contestPhaseId="${contestPhase.contestPhasePK}">
                                                 <xcolab:userLinkSimple memberId="${judge.userId}"
                                                                        text="${judge.fullName} (${proposalCount})"/>
+														<div class="hidden">
+                                                            <span id="js-Tooltip__content__judgedata_${judge.userId}">
+                                                                This Judge has evaluated ${proposalAlreadyJudgedCount} out of the ${proposalCount} proposals assigned to them.
+                                                            </span>
+                                                        </div>
 
                                             </judging:judgeAssignedProposalCount>
                                             <br/>

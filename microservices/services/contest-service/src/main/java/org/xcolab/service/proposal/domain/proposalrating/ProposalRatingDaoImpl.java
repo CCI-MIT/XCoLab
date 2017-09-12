@@ -84,7 +84,10 @@ public class ProposalRatingDaoImpl implements ProposalRatingDao {
         query.addConditions(PROPOSAL_RATING.PROPOSAL_ID.eq(proposalId));
         query.addConditions(PROPOSAL_RATING.RATING_VALUE_ID.eq(PROPOSAL_RATING_VALUE.ID_));
         query.addConditions(PROPOSAL_RATING_VALUE.RATING_TYPE_ID.eq(PROPOSAL_RATING_TYPE.ID_));
-        query.addConditions(PROPOSAL_RATING_TYPE.JUDGE_TYPE.eq(judgeType));
+
+        if(judgeType!=null) {
+            query.addConditions(PROPOSAL_RATING_TYPE.JUDGE_TYPE.eq(judgeType));
+        }
         query.addConditions(PROPOSAL_RATING.CONTEST_PHASE_ID.eq(contestPhaseId));
         if (userId != null) {
             query.addConditions(PROPOSAL_RATING.USER_ID.eq(userId));

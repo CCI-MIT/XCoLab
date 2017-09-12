@@ -147,6 +147,9 @@ public final class ProposalClientUtil {
         return client.getProposalMaterializedPoints(proposalId);
     }
 
+    public static Integer getNumberOfProposalsAlreadyJudgedForJudge(Long userId, Long contestPhaseId) {
+        return client.getNumberOfProposalsAlreadyJudgedForJudge(userId, contestPhaseId);
+    }
     public static Integer getNumberOfProposalsForJudge(Long userId, Long contestPhaseId) {
         return client.getNumberOfProposalsForJudge(userId, contestPhaseId);
     }
