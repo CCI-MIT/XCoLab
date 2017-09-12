@@ -83,20 +83,4 @@ public class ContestMassActionMethods {
             }
         }
     }
-
-    public static void setModelSettings(List<Long> contestList, Object modelSettings,
-            HttpServletRequest request) {
-        for (Long contestId : contestList) {
-            try {
-                Contest contest = ContestClientUtil.getContest(contestId);
-                if (!contest.getIsSharedContestInForeignColab()) {
-                    ContestModelSettingsBean contestModelSettingsBean =
-                            (ContestModelSettingsBean) modelSettings;
-                    contestModelSettingsBean.persist(contest);
-                }
-            } catch (ContestNotFoundException ignored) {
-
-            }
-        }
-    }
 }

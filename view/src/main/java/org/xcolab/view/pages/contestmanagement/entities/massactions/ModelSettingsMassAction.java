@@ -20,15 +20,17 @@ public class ModelSettingsMassAction extends ContestMassActionAdapter {
     @Override
     public void execute(List<Contest> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response)
-            throws IllegalStateException {
+            throws IllegalArgumentException {
         ContestModelSettingsBean contestModelSettingsBean =
                 dataWrapper.getContestModelSettingsBean();
         if (contestModelSettingsBean == null) {
-            throw new IllegalStateException("The mass action has not been setup yet");
+            throw new IllegalArgumentException("No model settings bean provided");
         }
-        // TODO: Fix intermediate solution.
-        List<Long> contestIds =
-                contests.stream().map(Contest::getContestPK).collect(Collectors.toList());
-        ContestMassActionMethods.setModelSettings(contestIds, contestModelSettingsBean, null);
+
+        for (Contest contest : contests) {
+            if (!contest.getIsSharedContestInForeignColab()) {
+                contestModelSettingsBean.persist(contest);
+            }
+        }
     }
 }
