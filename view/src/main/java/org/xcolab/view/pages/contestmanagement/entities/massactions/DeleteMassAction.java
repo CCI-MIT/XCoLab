@@ -1,5 +1,6 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
 import org.xcolab.view.pages.contestmanagement.utils.ContestMassActionMethods;
@@ -19,10 +20,14 @@ public class DeleteMassAction extends ContestMassActionAdapter {
     public void execute(List<Contest> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response)
             throws MassActionRequiresConfirmationException {
-        // TODO: Fix intermediate solution.
-        List<Long> contestIds =
-                contests.stream().map(Contest::getContestPK).collect(Collectors.toList());
+        if (!actionConfirmed) {
+            throw new MassActionRequiresConfirmationException();
+        }
 
-        ContestMassActionMethods.deleteContest(contestIds, actionConfirmed, null);
+        for (Contest contest : contests) {
+            if (!contest.getIsSharedContestInForeignColab()) {
+                ContestClientUtil.deleteContest(contest.getContestPK());
+            }
+        }
     }
 }

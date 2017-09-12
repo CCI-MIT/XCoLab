@@ -185,21 +185,6 @@ public class ContestMassActionMethods {
         }
     }
 
-    public static void deleteContest(List<Long> contestList, Object actionConfirmed,
-            HttpServletRequest request)
-            throws MassActionRequiresConfirmationException {
-        if ((Boolean) actionConfirmed) {
-            for (Long contestId : contestList) {
-                Contest c = ContestClientUtil.getContest(contestId);
-                if (!c.getIsSharedContestInForeignColab()) {
-                    ContestClientUtil.deleteContest(contestId);
-                }
-            }
-        } else {
-            throw new MassActionRequiresConfirmationException();
-        }
-    }
-
     public static void deleteContestwithPhases(List<Long> contestList, Object actionConfirmed,
             HttpServletRequest request)
             throws MassActionRequiresConfirmationException {
