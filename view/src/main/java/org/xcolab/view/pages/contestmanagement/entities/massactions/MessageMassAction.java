@@ -1,34 +1,78 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
+import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.emails.EmailClient;
+import org.xcolab.client.members.MessagingClient;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.pojo.Proposal;
+import org.xcolab.util.html.HtmlUtil;
 import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;
-import org.xcolab.view.pages.contestmanagement.utils.ContestMassActionMethods;
-import org.xcolab.view.pages.contestmanagement.wrappers.ContestOverviewWrapper;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class MessageMassAction extends ContestMassActionAdapter {
+public abstract class MessageMassAction extends ContestMassActionAdapter {
 
-    public MessageMassAction() {
-        super("Message contributors in active phase");
+    private static final Long CLIMATE_COLAB_TEAM_USER_ID = 1431053L;
+
+    public MessageMassAction(String displayName) {
+        super(displayName);
     }
+
+    abstract List<Proposal> getProposalsToBeMessaged(Contest contest);
 
     @Override
     public void execute(List<Contest> contests, boolean actionConfirmed,
-            MassActionDataWrapper dataWrapper, HttpServletResponse response)
-            throws IllegalStateException {
+            MassActionDataWrapper dataWrapper, HttpServletResponse response) {
         MassMessageBean massMessageBean = dataWrapper.getMassMessageBean();
         if (massMessageBean == null) {
-            throw new IllegalStateException("The mass action has not been setup yet.");
+            throw new IllegalArgumentException("No mass message bean provided.");
         }
-        // TODO: Remove intermediate solution.
-        List<Long> contestIds =
-                contests.stream().map(Contest::getContestPK).collect(Collectors.toList());
 
-        ContestMassActionMethods.sendMassMessage(contestIds, massMessageBean, null);
+        Set<Long> recipientIds = new HashSet<>();
+        final StringBuilder contestNames = new StringBuilder();
+
+        for (Contest contest : contests) {
+            if (!contest.getIsSharedContestInForeignColab()) {
+                continue;
+            }
+
+            contestNames.append(contest.getContestShortName()).append("; ");
+            List<Proposal> proposals = getProposalsToBeMessaged(contest);
+
+            for (Proposal proposal : proposals) {
+                List<Member> proposalMember =
+                        ProposalClientUtil.getProposalMembers(proposal.getProposalId());
+                for (Member member : proposalMember) {
+                    recipientIds.add(member.getUserId());
+                }
+            }
+        }
+
+        sendEmail(massMessageBean, recipientIds, contests, contestNames);
+    }
+
+    private static void sendEmail(MassMessageBean massMessageBean, Set<Long> recipientIds,
+            List<Contest> contestList, StringBuilder contestNames) {
+        final String messageSubject = massMessageBean.getSubject();
+        final String messageBody = massMessageBean.getBody();
+        MessagingClient.sendMessage(messageSubject, messageBody, CLIMATE_COLAB_TEAM_USER_ID,
+                CLIMATE_COLAB_TEAM_USER_ID, new ArrayList<>(recipientIds));
+
+        final String emailSubject = "Mass message: " + messageSubject;
+        final String emailBody = String.format(
+                "The following message was sent to %d users in %d contests (%s): <br /><br /><br />",
+                recipientIds.size(), contestList.size(), contestNames) + HtmlUtil
+                .addHtmlLineBreaks(messageBody);
+
+        final String adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.get();
+
+        EmailClient.sendEmail(adminEmail, adminEmail, emailSubject, emailBody, true, null, null);
     }
 }

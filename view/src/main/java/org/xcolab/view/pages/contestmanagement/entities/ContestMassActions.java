@@ -8,7 +8,7 @@ import org.xcolab.view.pages.contestmanagement.entities.massactions.FeaturedMass
 import org.xcolab.view.pages.contestmanagement.entities.massactions.FlagMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.HideRibbonsMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.MessageAllAuthorsMassAction;
-import org.xcolab.view.pages.contestmanagement.entities.massactions.MessageMassAction;
+import org.xcolab.view.pages.contestmanagement.entities.massactions.MessageActivePhaseAuthorsMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.ModelSettingsMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.OrderMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.PrivateMassAction;
@@ -21,7 +21,7 @@ import org.xcolab.view.pages.contestmanagement.entities.massactions.SubscribeMas
 
 public enum ContestMassActions {
     ORDER(new OrderMassAction()),
-    MESSAGE(new MessageMassAction()),
+    MESSAGE(new MessageActivePhaseAuthorsMassAction()),
     MESSAGE_ALL_AUTHORS(new MessageAllAuthorsMassAction()),
     REPORT_PEOPLE_IN_CURRENT_PHASE(new ReportPeopleInCurrentPhaseMassAction()),
     DELETE(new DeleteMassAction()),
