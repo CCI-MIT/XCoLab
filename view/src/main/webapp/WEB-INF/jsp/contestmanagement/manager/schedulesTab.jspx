@@ -181,7 +181,8 @@
                                                 data-index-attribute="${dateTimePickerIndex + 1}"
                                                 data-select-attribute="datetimepicker"
                                                 data-form-name="phaseEndDateFormatted"
-                                                readonly="true"
+                                                readonly="${contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.ended}"
+                                                disabled="true"
                                             />
 
                                 </td>
