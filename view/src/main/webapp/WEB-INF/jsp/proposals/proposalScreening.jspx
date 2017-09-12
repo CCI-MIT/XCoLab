@@ -27,6 +27,7 @@
             <div class="judging_left">
                 <form:form id="fellowRatingForm" action="${saveScreeningURL}" method="post"
                            commandName="fellowProposalScreeningBean">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div class="addpropbox">
                         <h3>Advance ${contestType.proposalName} to Judges for Review?</h3>
 
@@ -63,8 +64,7 @@
                                                                        text="${judge.fullName} (${proposalCount})"/>
 														<div class="hidden">
                                                             <span id="js-Tooltip__content__judgedata_${judge.userId}">
-                                                                    Proposals assigned to judge: ${proposalCount}<br/>
-                                                                    Proposals already completed : ${proposalAlreadyJudgedCount}
+                                                                This Judge has evaluated ${proposalAlreadyJudgedCount} out of the ${proposalCount} proposals assigned to them.
                                                             </span>
                                                         </div>
 
