@@ -5,15 +5,12 @@ import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
-import org.xcolab.view.pages.contestmanagement.utils.ContestMassActionMethods;
 import org.xcolab.view.pages.contestmanagement.utils.CsvExportHelper;
-import org.xcolab.view.pages.contestmanagement.wrappers.ContestOverviewWrapper;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ReportPeopleInCurrentPhaseMassAction extends ContestMassActionAdapter {

@@ -3,10 +3,8 @@ package org.xcolab.view.pages.contestmanagement.entities.massactions;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
-import org.xcolab.view.pages.contestmanagement.utils.ContestMassActionMethods;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
