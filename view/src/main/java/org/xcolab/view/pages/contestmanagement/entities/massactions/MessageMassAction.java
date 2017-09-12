@@ -40,7 +40,7 @@ public abstract class MessageMassAction extends ContestMassActionAdapter {
         final StringBuilder contestNames = new StringBuilder();
 
         for (Contest contest : contests) {
-            if (!contest.getIsSharedContestInForeignColab()) {
+            if (contest.getIsSharedContestInForeignColab()) {
                 continue;
             }
 
