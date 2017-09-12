@@ -12,7 +12,7 @@ public interface ContestMassAction {
     
     void execute(List<Contest> contests, boolean actionConfirmed, MassActionDataWrapper dataWrapper,
             HttpServletResponse response)
-            throws MassActionRequiresConfirmationException, IllegalStateException, IOException;
+            throws MassActionRequiresConfirmationException, IllegalArgumentException, IOException;
 
     String getDisplayName();
 }

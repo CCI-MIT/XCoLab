@@ -185,23 +185,6 @@ public class ContestMassActionMethods {
         }
     }
 
-    public static void setFlag(List<Long> contestList, Object flagTexToolTipValue,
-            HttpServletRequest request) {
-        for (Long contestId : contestList) {
-            try {
-                //Contest contest = ContestClientUtil.getContest(contestId);
-                //if(!contest.getIsSharedContestInForeignColab()) {
-                ContestFlagTextToolTipBean contestFlagTextToolTipBean =
-                        (ContestFlagTextToolTipBean) flagTexToolTipValue;
-                contestFlagTextToolTipBean.persist(ContestClientUtil.getContest(contestId));
-                //}
-            } catch (ContestNotFoundException ignored) {
-
-            }
-
-        }
-    }
-
     public static void setModelSettings(List<Long> contestList, Object modelSettings,
             HttpServletRequest request) {
         for (Long contestId : contestList) {

@@ -20,15 +20,15 @@ public class FlagMassAction extends ContestMassActionAdapter {
     @Override
     public void execute(List<Contest> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response)
-            throws IllegalStateException {
+            throws IllegalArgumentException {
         ContestFlagTextToolTipBean contestFlagTextToolTipBean =
                 dataWrapper.getContestFlagTextToolTipBean();
         if (contestFlagTextToolTipBean == null) {
-            throw new IllegalStateException("The mass action has not been setup yet.");
+            throw new IllegalArgumentException("No contest flag text tool tip bean provided.");
         }
-        // TODO: Fix intermediate solution. (Use IllegalArgumentException maybe?)
-        List<Long> contestIds =
-                contests.stream().map(Contest::getContestPK).collect(Collectors.toList());
-        ContestMassActionMethods.setFlag(contestIds, contestFlagTextToolTipBean, null);
+
+        for (Contest contest : contests) {
+            contestFlagTextToolTipBean.persist(contest);
+        }
     }
 }
