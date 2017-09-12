@@ -6,6 +6,7 @@ import org.xcolab.view.pages.contestmanagement.entities.massactions.DeleteWithPh
 import org.xcolab.view.pages.contestmanagement.entities.massactions.FeaturedMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.FlagMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.HideRibbonsMassAction;
+import org.xcolab.view.pages.contestmanagement.entities.massactions.LaunchContestMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.MessageAllAuthorsMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.MessageActivePhaseAuthorsMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.ModelSettingsMassAction;
@@ -25,6 +26,7 @@ public enum ContestMassActions {
     REPORT_PEOPLE_IN_CURRENT_PHASE(new ReportPeopleInCurrentPhaseMassAction()),
     DELETE(new DeleteMassAction()),
     DELETE_WITH_PHASES(new DeleteWithPhasesMassAction()),
+    LAUNCH(new LaunchContestMassAction()),
     ACTIVE(new ActiveMassAction(true)),
     PRIOR(new ActiveMassAction(false)),
     PRIVATE(new PrivateMassAction(true)),
