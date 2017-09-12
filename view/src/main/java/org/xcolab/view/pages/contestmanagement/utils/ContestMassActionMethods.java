@@ -185,39 +185,6 @@ public class ContestMassActionMethods {
         }
     }
 
-    public static void deleteContestwithPhases(List<Long> contestList, Object actionConfirmed,
-            HttpServletRequest request)
-            throws MassActionRequiresConfirmationException {
-        if ((Boolean) actionConfirmed) {
-            for (Long contestId : contestList) {
-                Contest c = ContestClientUtil.getContest(contestId);
-                if (!c.getIsSharedContestInForeignColab()) {
-                    List<ContestPhase> contestPhases =
-                            ContestClientUtil.getAllContestPhases(contestId);
-                    if (!contestPhases.isEmpty()) {
-                        deleteContestAndPhases(contestId);
-                    } else {
-                        ContestClientUtil.deleteContest(contestId);
-                    }
-                }
-            }
-        } else {
-            throw new MassActionRequiresConfirmationException();
-        }
-    }
-
-    private static void deleteContestAndPhases(Long contestId) {
-        deleteContestPhases(contestId);
-        ContestClientUtil.deleteContest(contestId);
-    }
-
-    private static void deleteContestPhases(Long contestId) {
-        List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(contestId);
-        for (ContestPhase contestPhase : contestPhases) {
-            ContestClientUtil.deleteContestPhase(contestPhase.getContestPhasePK());
-        }
-    }
-
     public static void setFlag(List<Long> contestList, Object flagTexToolTipValue,
             HttpServletRequest request) {
         for (Long contestId : contestList) {

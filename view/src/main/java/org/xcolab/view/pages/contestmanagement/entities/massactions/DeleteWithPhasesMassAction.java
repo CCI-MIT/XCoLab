@@ -1,6 +1,8 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
+import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
 import org.xcolab.view.pages.contestmanagement.utils.ContestMassActionMethods;
 import org.xcolab.view.pages.contestmanagement.wrappers.ContestOverviewWrapper;
@@ -22,10 +24,19 @@ public class DeleteWithPhasesMassAction extends ContestMassActionAdapter {
     public void execute(List<Contest> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response)
             throws MassActionRequiresConfirmationException {
-        // TODO: Fix intermediate solution.
-        List<Long> contestIds =
-                contests.stream().map(Contest::getContestPK).collect(Collectors.toList());
+        if (!actionConfirmed) {
+            throw new MassActionRequiresConfirmationException();
+        }
 
-        ContestMassActionMethods.deleteContestwithPhases(contestIds, actionConfirmed, null);
+        for (Contest contest : contests) {
+            if (!contest.getIsSharedContestInForeignColab()) {
+                Long contestId = contest.getContestPK();
+                List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(contestId);
+                for (ContestPhase contestPhase : contestPhases) {
+                    ContestClientUtil.deleteContestPhase(contestPhase.getContestPhasePK());
+                }
+                ContestClientUtil.deleteContest(contestId);
+            }
+        }
     }
 }
