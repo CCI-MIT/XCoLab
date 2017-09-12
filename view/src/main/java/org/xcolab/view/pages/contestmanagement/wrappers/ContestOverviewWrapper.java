@@ -164,9 +164,9 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
 
     public List<Long> getSelectedContestIds() {
         List<Long> contestIds = new ArrayList<>();
-        for (Contest contestWrapper : contestWrappers) {
-            int index = contestWrappers.indexOf(contestWrapper);
-            if (selectedContest.get(index)) {
+        for (int i = 0; i < contestWrappers.size() ; i++) {
+        Contest contestWrapper = contestWrappers.get(i);
+            if (selectedContest.get(i)) {
                 contestIds.add(contestWrapper.getContestPK());
             }
         }
