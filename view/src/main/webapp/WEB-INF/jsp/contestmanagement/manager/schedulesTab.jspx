@@ -309,21 +309,21 @@
                 format: 'm/d/Y H:i',
                 onChangeDateTime: function (dateTimePickerDateString, inst) {
                     var dateTimePickerIndex = parseInt(inst[0].getAttribute("data-index-attribute"));
-                    var nextDateTimePicker = $('[data-index-attribute="' + (dateTimePickerIndex + 1) + '"]');
-                    if (nextDateTimePicker.val() != undefined) {
+                    var nextDateTimePicker = document.querySelector('[data-index-attribute="' + (dateTimePickerIndex + 1) + '"]');
+                    if (nextDateTimePicker.value != undefined) {
                         try {
-                            var nextDateTimePickerDate = new Date(nextDateTimePicker.val());
+                            var nextDateTimePickerDate = new Date(nextDateTimePicker.value);
                             var dateTimePickerDate = new Date(dateTimePickerDateString);
                             if (dateTimePickerDate > nextDateTimePickerDate) {
-                                nextDateTimePicker.attr("value", inst.val());
+                                nextDateTimePicker.value = inst.val();
                             }
                         } catch (e) {
                             console.log("Couldn't parse nextDateTimePickerDate", e);
                         }
                     }
                     if (dateTimePickerIndex > 0 && dateTimePickerIndex % 2 === 0) {
-                        var prevDateTimePicker = $('[data-index-attribute="' + (dateTimePickerIndex - 1) + '"]');
-                        prevDateTimePicker.attr("value", inst.val());
+                        var prevDateTimePicker = document.querySelector('[data-index-attribute="' + (dateTimePickerIndex - 1) + '"]');
+                        prevDateTimePicker.value = inst.val();
                     }
                 }
             });
