@@ -182,7 +182,6 @@
                                                 data-select-attribute="datetimepicker"
                                                 data-form-name="phaseEndDateFormatted"
                                                 readonly="${contestScheduleBean.usedInNonEmptyContest and schedulePhase.contestPhase.ended}"
-                                                disabled="true"
                                             />
 
                                 </td>
@@ -308,8 +307,10 @@
                 weeks: true,
                 format: 'm/d/Y H:i',
                 onChangeDateTime: function (dateTimePickerDateString, inst) {
-                    var dateTimePickerIndex = parseInt(inst[0].getAttribute("data-index-attribute"));
-                    var nextDateTimePicker = document.querySelector('[data-index-attribute="' + (dateTimePickerIndex + 1) + '"]');
+                    var dateTimePickerIndex = inst[0].getAttribute("data-index-attribute");
+                    var nexDateTimePickerIndex = parseInt(dateTimePickerIndex) + 1;
+                    var nextDateTimePicker = document.querySelectorAll('[data-index-attribute="' + nexDateTimePickerIndex + '"]');
+                    nextDateTimePicker = nextDateTimePicker[0];
                     if (nextDateTimePicker.value != undefined) {
                         try {
                             var nextDateTimePickerDate = new Date(nextDateTimePicker.value);
@@ -320,10 +321,6 @@
                         } catch (e) {
                             console.log("Couldn't parse nextDateTimePickerDate", e);
                         }
-                    }
-                    if (dateTimePickerIndex > 0 && dateTimePickerIndex % 2 === 0) {
-                        var prevDateTimePicker = document.querySelector('[data-index-attribute="' + (dateTimePickerIndex - 1) + '"]');
-                        prevDateTimePicker.value = inst.val();
                     }
                 }
             });
