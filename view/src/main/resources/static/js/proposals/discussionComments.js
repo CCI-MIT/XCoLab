@@ -18,12 +18,55 @@ function isAddCommentFormValid() {
     return isValid;
 }
 
-function editComment(messageId, url){
+
+function getTimeRemaining(endtime) {
+    var t = Date.parse(endtime) - Date.parse(new Date());
+    var seconds = Math.floor((t / 1000) % 60);
+    var minutes = Math.floor((t / 1000 / 60) % 60);
+    var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+    var days = Math.floor(t / (1000 * 60 * 60 * 24));
+    return {
+        'total': t,
+        'days': days,
+        'hours': hours,
+        'minutes': minutes,
+        'seconds': seconds
+    };
+}
+
+function initializeClock(id, endtime) {
+    var clock = document.getElementById(id);
+    //var daysSpan = clock.querySelector('.days');
+    //var hoursSpan = clock.querySelector('.hours');
+    var minutesSpan = clock.querySelector('.minutes');
+    var secondsSpan = clock.querySelector('.seconds');
+
+    function updateClock() {
+        var t = getTimeRemaining(endtime);
+
+        //daysSpan.innerHTML = t.days;
+        //hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+        minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+        secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+        if (t.total <= 0) {
+            clearInterval(timeinterval);
+        }
+    }
+
+    updateClock();
+    var timeinterval = setInterval(updateClock, 1000);
+}
+
+
+
+
+function editComment(commentCreationTimestamp,messageId, url){
     var comment = jQuery('#' + 'message_' + messageId).html(); //extractText('message_' + messageId);
     var $message = $('#message_' + messageId);
     $message.empty();
     if (!_isAdmin) {
-        $message.append('<div class="c-Alert__info__message">Please make sure you save your edit within 15 minutes of creating this comment.</div>');
+        $message.append('<div class="c-Alert__info__message">Please make sure you save your edit within <span id="clockdiv"> <span class="minutes"></span> minutes <span class="seconds"></span> seconds</span> of creating this comment.</div>');
     }
     var formContent = '<form method="post" action="' + url + '">';
     formContent += '<textarea class="rte-editorPlaceholder" id="text_' + messageId + '" name="comment" style="width: 100%; height: 150px;"></textarea>';
@@ -33,6 +76,9 @@ function editComment(messageId, url){
     formContent += '</form>';
     $message.append(formContent);
     $message.next().remove();
+
+    var deadline = new Date((commentCreationTimestamp) +  15 * 60 * 1000);
+    initializeClock('clockdiv', deadline);
 
     $('#text_'+messageId).html(comment);
     initializeTextEditors();
