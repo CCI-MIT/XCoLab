@@ -3,6 +3,7 @@ package org.xcolab.view.pages.contestmanagement.entities.massactions;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
+import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.view.pages.contestmanagement.utils.ContestMassActionMethods;
 import org.xcolab.view.pages.contestmanagement.utils.CsvExportHelper;
@@ -35,9 +36,9 @@ public class ReportPeopleInCurrentPhaseMassAction extends ContestMassActionAdapt
         for (Contest contest : contests) {
             Long contestId = contest.getContestPK();
             if (!contest.getIsSharedContestInForeignColab()) {
-                List<Proposal> proposalsInActiveContestPhase =
-                        ContestMassActionMethods.getProposalsInActiveContestPhase(contestId);
                 ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contestId);
+                List<Proposal> proposalsInActiveContestPhase = ProposalClientUtil
+                        .getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK());
                 csvExportHelper
                         .addProposalAndAuthorDetailsToExportData(proposalsInActiveContestPhase,
                                 activeContestPhase);
