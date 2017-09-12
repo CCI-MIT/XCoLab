@@ -1,6 +1,7 @@
 package org.xcolab.view.pages.contestmanagement.entities.massactions;
 
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.view.pages.contestmanagement.entities.ContestMassAction;
 
 import java.util.List;
 import java.util.stream.Collectors;
