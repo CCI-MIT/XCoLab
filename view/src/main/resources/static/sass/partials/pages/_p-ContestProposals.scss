@@ -18,6 +18,7 @@ $p-ContestProposals__header__ontology__term__marginTop: 0 !default;
 $p-ContestProposals__header__ontology__term__useIcons: true !default;
 $p-ContestProposals__header__ontology__display: inline-block !default;
 $p-ContestProposals__header__ontology__link__display: inline-block !default;
+$p-ContestProposals__header__team__display: inline-block !default;
 
 $p-ContestProposals__header__team__member__display: inline-block !default;
 $p-ContestProposals__header__team__roleName__paddingTop: 15px !default;
@@ -110,7 +111,7 @@ $p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.pn
 }
 
 .p-ContestProposals__header__team { //.contest-detail .moreinfo
-  //display: $p-ContestProposals__header__team__display;
+  display: $p-ContestProposals__header__team__display;
   padding: 10px 16px;
   position: relative;
 }
@@ -134,7 +135,7 @@ $p-Contests__contestDetail__heading__background: url(/images/pattern-6x6-lite.pn
 }
 
 .p-ContestProposals__header__buttons {
-  //display: inline-block;
+  display: inline-block;
   padding-right: 20px;
   float: right;
 }
