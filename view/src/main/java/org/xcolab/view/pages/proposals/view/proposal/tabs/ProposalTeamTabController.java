@@ -17,7 +17,6 @@ import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
 import org.xcolab.view.pages.proposals.requests.RequestMembershipBean;
 import org.xcolab.view.pages.proposals.requests.RequestMembershipInviteBean;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
-import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
@@ -37,41 +36,30 @@ public class ProposalTeamTabController extends BaseProposalTabController {
 
     @GetMapping(value = "c/{proposalUrlString}/{proposalId}", params = "tab=TEAM")
     public String show(HttpServletRequest request, Model model, ProposalContext proposalContext) {
-
-        final Proposal proposal = proposalContext.getProposal();
+        final ProposalClient proposalClient = getProposalClient(proposalContext);
+        final long proposalId = getProposalId(proposalContext);
 
         setCommonModelAndPageAttributes(request, model, proposalContext, ProposalTab.TEAM);
-
-        final ClientHelper clients = proposalContext.getClients();
-        final ProposalClient proposalClient = clients.getProposalClient();
 
         model.addAttribute("requestMembershipBean", new RequestMembershipBean());
         model.addAttribute("requestMembershipInviteBean", new RequestMembershipInviteBean());
 
-
-        List<Proposal> listOfLinkedProposals= proposalClient.getLinkingProposalsForProposalID(proposal.getProposalId());
-
+        List<Proposal> listOfLinkedProposals = proposalClient.getProposalLinks(proposalId);
         model.addAttribute("listOfLinkedProposals", listOfLinkedProposals);
 
         Map<Proposal, List<Member>> mapOfContributingProposals = new HashMap<>();
-
         for (Proposal temp : listOfLinkedProposals) {
-
             List<Member> contributors = proposalClient.getProposalMembers(temp.getProposalId());
-
             mapOfContributingProposals.put(temp, contributors);
         }
-
         model.addAttribute("mapOfContributingProposals", mapOfContributingProposals);
-
 
         return "/proposals/proposalTeam";
     }
 
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/TEAM/removeUserFromTeam")
-    public void handleAction(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, Member actingMember,
-            @RequestParam long memberId)
+    public void handleAction(HttpServletRequest request, HttpServletResponse response, Model model,
+            ProposalContext proposalContext, Member actingMember, @RequestParam long memberId)
             throws ProposalsAuthorizationException, IOException {
         checkHasManagePermissions(proposalContext, actingMember);
         checkIsOwnerRemoved(proposalContext.getProposal(), memberId);
@@ -88,8 +76,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
     @PostMapping("c/{proposalUrlString}/{proposalId}/tab/TEAM/promoteUserToOwner")
     public void promoteUserToOwner(HttpServletRequest request, HttpServletResponse response,
             Model model, ProposalContext proposalContext, Member actingMember,
-            @RequestParam long memberId)
-            throws ProposalsAuthorizationException, IOException {
+            @RequestParam long memberId) throws ProposalsAuthorizationException, IOException {
         checkHasManagePermissions(proposalContext, actingMember);
 
         final ProposalClient proposalClient = getProposalClient(proposalContext);
@@ -112,7 +99,8 @@ public class ProposalTeamTabController extends BaseProposalTabController {
     private void sendRedirect(ProposalContext proposalContext, HttpServletResponse response)
             throws IOException {
         final Proposal proposal = proposalContext.getProposal();
-        response.sendRedirect(proposal.getProposalLinkUrl(proposalContext.getContest()) + "/tab/TEAM");
+        response.sendRedirect(
+                proposal.getProposalLinkUrl(proposalContext.getContest()) + "/tab/TEAM");
     }
 
     private void checkHasManagePermissions(ProposalContext proposalContext, Member actingMember)
@@ -125,8 +113,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
         if (!permissions.getCanManageUsers()) {
             generateAuthorizationError(String.format(
                     "User %d does not have the necessary permissions to manage the team of "
-                            + "proposal %d",
-                    actingUserId, proposalId));
+                            + "proposal %d", actingUserId, proposalId));
         }
     }
 
