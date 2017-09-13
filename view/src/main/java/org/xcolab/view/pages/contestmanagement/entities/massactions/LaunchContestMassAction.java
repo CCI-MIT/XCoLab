@@ -9,9 +9,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 public class LaunchContestMassAction extends ContestMassActionAdapter {
-    static final ActiveMassAction activeMassAction = new ActiveMassAction(true);
-    static final PrivateMassAction privateMassAction = new PrivateMassAction(false);
-    static final FeaturedMassAction featuredMassAction= new FeaturedMassAction(true);
+    private static final ActiveMassAction activeMassAction = new ActiveMassAction(true);
+    private static final PrivateMassAction privateMassAction = new PrivateMassAction(false);
+    private static final FeaturedMassAction featuredMassAction= new FeaturedMassAction(true);
 
     public LaunchContestMassAction() {
         super("Launch contests");
