@@ -73,32 +73,75 @@ public class ProposalTeamTabController extends BaseProposalTabController {
             Model model, ProposalContext proposalContext, Member actingMember,
             @RequestParam long memberId)
             throws ProposalsAuthorizationException, IOException {
+        checkHasManagePermissions(proposalContext, actingMember);
+        checkIsOwnerRemoved(proposalContext.getProposal(), memberId);
 
+        final ProposalClient proposalClient = getProposalClient(proposalContext);
+        final long proposalId = getProposalId(proposalContext);
+
+        proposalClient.removeUserFromProposalTeam(proposalId, memberId);
+
+        AlertMessage.success("The member was removed from the proposal's team!").flash(request);
+        sendRedirect(proposalContext, response);
+    }
+
+    @PostMapping("c/{proposalUrlString}/{proposalId}/tab/TEAM/promoteUserToOwner")
+    public void promoteUserToOwner(HttpServletRequest request, HttpServletResponse response,
+            Model model, ProposalContext proposalContext, Member actingMember,
+            @RequestParam long memberId)
+            throws ProposalsAuthorizationException, IOException {
+        checkHasManagePermissions(proposalContext, actingMember);
+
+        final ProposalClient proposalClient = getProposalClient(proposalContext);
+        final long proposalId = getProposalId(proposalContext);
+
+        proposalClient.promoteUserToProposalOwner(proposalId, memberId);
+
+        AlertMessage.success("The member was promoted to the new team owner.").flash(request);
+        sendRedirect(proposalContext, response);
+    }
+
+    private ProposalClient getProposalClient(ProposalContext proposalContext) {
+        return proposalContext.getClients().getProposalClient();
+    }
+
+    private long getProposalId(ProposalContext proposalContext) {
+        return proposalContext.getProposal().getProposalId();
+    }
+
+    private void sendRedirect(ProposalContext proposalContext, HttpServletResponse response)
+            throws IOException {
+        final Proposal proposal = proposalContext.getProposal();
+        response.sendRedirect(proposal.getProposalLinkUrl(proposalContext.getContest()) + "/tab/TEAM");
+    }
+
+    private void checkHasManagePermissions(ProposalContext proposalContext, Member actingMember)
+            throws ProposalsAuthorizationException {
         final Proposal proposal = proposalContext.getProposal();
         final long proposalId = proposal.getProposalId();
         final long actingUserId = actingMember.getUserId();
 
         final ProposalsPermissions permissions = proposalContext.getPermissions();
         if (!permissions.getCanManageUsers()) {
-            final String errorMessage = String.format(
-                    "User %d does not have the necessary permissions to remove a user from the team of proposal %d",
-                    actingUserId, proposalId);
-            _log.error(errorMessage);
-            throw new ProposalsAuthorizationException(errorMessage);
+            generateAuthorizationError(String.format(
+                    "User %d does not have the necessary permissions to manage the team of "
+                            + "proposal %d",
+                    actingUserId, proposalId));
         }
-        if (memberId == proposal.getAuthorId()) {
-            final String errorMessage = String.format("User %d is trying to remove the owner %d of proposal %d",
-                    actingUserId, memberId, proposalId);
-            _log.error(errorMessage);
-            throw new ProposalsAuthorizationException(errorMessage);
+    }
+
+    private void checkIsOwnerRemoved(Proposal proposal, long removedMemberId)
+            throws ProposalsAuthorizationException {
+        if (removedMemberId == proposal.getAuthorId()) {
+            generateAuthorizationError(
+                    String.format("The owner %d of proposal %d can not be removed from the team.",
+                            removedMemberId, proposal.getProposalId()));
         }
+    }
 
-        final ClientHelper clients = proposalContext.getClients();
-        final ProposalClient proposalClient = clients.getProposalClient();
-
-        proposalClient.removeUserFromProposalTeam(proposalId, memberId);
-
-        AlertMessage.success("The member was removed from the proposal's team!").flash(request);
-        response.sendRedirect(proposal.getProposalLinkUrl(proposalContext.getContest()) + "/tab/TEAM");
+    private void generateAuthorizationError(String errorMessage)
+            throws ProposalsAuthorizationException {
+        _log.error(errorMessage);
+        throw new ProposalsAuthorizationException(errorMessage);
     }
 }
