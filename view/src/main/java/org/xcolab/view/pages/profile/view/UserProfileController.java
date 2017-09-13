@@ -420,8 +420,8 @@ public class UserProfileController {
 
         InternetAddress addressFrom = TemplateReplacementUtil.getAdminFromEmailAddress();
 
-        EmailClient.sendEmail(addressFrom.getAddress(), user.getEmailAddress(), messageSubject,
-                messageBody, false, addressFrom.getAddress(),user.getId_());
+        EmailClient.sendEmail(addressFrom.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(), user.getEmailAddress(), messageSubject,
+                messageBody, false, addressFrom.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),user.getId_());
     }
 
     @PostMapping("{memberId}/delete")

@@ -74,6 +74,7 @@ public abstract class MessageMassAction extends ContestMassActionAdapter {
 
         final String adminEmail = ConfigurationAttributeKey.ADMIN_EMAIL.get();
 
-        EmailClient.sendEmail(adminEmail, adminEmail, emailSubject, emailBody, true, null, null);
+        EmailClient.sendEmail(adminEmail,ConfigurationAttributeKey.COLAB_NAME.get(), adminEmail, emailSubject,
+                emailBody, true, null,null,null);
     }
 }

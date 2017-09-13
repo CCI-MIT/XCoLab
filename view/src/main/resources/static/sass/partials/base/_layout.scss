@@ -3,68 +3,20 @@ body {
   font-size: 15px;
 }
 
-.inner, #content, #c-Footer__menu__left {
-  width: 984px;
-  margin: 0 auto;
+#content {
+  padding: 25px 0;
+  position: relative;
 }
 
-#c-Footer__menu__right { //#menu-right
+#c-Footer__menu__right {
   float: right;
   min-width: 500px;
   height: 44px;
   position: relative;
 }
+
 #c-Footer__menu__right p {
   margin: 0 0 0 0;
-}
-.inner:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-
-.inner {
-  display: inline-block;
-  position: relative;
-}
-
-* html .inner {
-  height: 1%;
-}
-
-.inner {
-  display: block;
-}
-
-#content {
-  padding: 30px 0 80px;
-}
-
-#content:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-
-#content {
-  display: inline-block;
-}
-
-* html #content {
-  height: 1%;
-}
-
-#content {
-  display: block;
-}
-
-// reduce padding below edit proposal button block
-#content.ep {
-  padding-top: 16px;
 }
 
 ol, ul {

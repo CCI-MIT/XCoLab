@@ -85,7 +85,7 @@ function initializeTextEditors() {
 
         if ($element.hasClass("rte-editorPlaceholder")) {
 
-            var editor = CKEDITOR.replace($element.attr("id"), { customConfig: '${_libJsFolder}/newckeditorplugins/configProposal.js'});
+            var editor = CKEDITOR.replace($element.attr("id"), { customConfig: '/js/lib/newckeditorplugins/configProposal.js'});
 
             $element.get(0)["ckeditor"] = editor;
             editor.updatedCharCount = false;
@@ -143,6 +143,6 @@ function initializeTextEditors() {
 
 jQuery(function() {
     CKEDITOR.plugins.addExternal( 'proposalLink',
-            '${_libJsFolder}/newckeditorplugins/proposalLink/plugin.js' );
+            '/js/lib/newckeditorplugins/proposalLink/plugin.js' );
     initializeTextEditors();
 });

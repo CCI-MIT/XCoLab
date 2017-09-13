@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Email {
     private String from;
+    private String fromName;
 
     private List<String> to;
 
@@ -14,6 +15,9 @@ public class Email {
     private boolean isHtml;
 
     private String replyTo;
+
+
+    private String replyToName;
 
     private Long referenceId;
 
@@ -72,6 +76,22 @@ public class Email {
 
     public void setReferenceId(Long referenceId) {
         this.referenceId = referenceId;
+    }
+
+    public String getFromName() {
+        return fromName;
+    }
+
+    public void setFromName(String fromName) {
+        this.fromName = fromName;
+    }
+
+    public String getReplyToName() {
+        return replyToName;
+    }
+
+    public void setReplyToName(String replyToName) {
+        this.replyToName = replyToName;
     }
 }
 

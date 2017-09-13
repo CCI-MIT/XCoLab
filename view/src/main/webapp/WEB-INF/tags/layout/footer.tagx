@@ -13,42 +13,47 @@
 
     <div id="c-Footer">
         <div id="c-Footer__menu">
-            <ul id="c-Footer__menu__left">
-                <li><a href="/feedback"><spring:message code="homepage.bottom.menu.contact" /></a></li>
-                <li><a href="/wiki/Help"><spring:message code="homepage.bottom.menu.help"/></a></li>
-                <c:choose>
-                    <c:when test="${showProfileLink}">
-                        <li><a href="/logout"><spring:message code="homepage.bottom.menu.signout" /></a></li>
-                        <li><a href="/members/profile"><spring:message code="homepage.bottom.menu.myprofile"/></a></li>
-                    </c:when>
-                    <c:otherwise>
-                        <li><a href="/register" class="openreg"><spring:message code="homepage.bottom.menu.register"/></a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#loginModal"><spring:message code="homepage.bottom.menu.signin"/></a></li>
-                    </c:otherwise>
-                </c:choose>
-                <c:if test="${showLanguageDropdown}">
-                    <li class="dropup bs-dropdown--dark">
-                        <a data-toggle="dropdown" class="dropdown-trigger">
-                            <img src="${themeImageFolder}/footer-language-button.png"/>&#160;
-                            <spring:message code="homepage.menu.visitor.language" />
-                            <span class="caret"><!-- --></span>
-                        </a>
-                        <xcolab-dropdowns:languageDropdown currentLanguage="${currentLanguage}"
-                                                           languageSelectItems="${languageSelectItems}"/>
-                    </li>
-                </c:if>
-            </ul>
-            <ul id="c-Footer__menu__right" class="">
-                <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                <li style="margin-top: -6px;">
+            <div class="bs-container-fixed">
+                <nav>
+                    <ul>
+                        <li><a href="/feedback"><spring:message code="homepage.bottom.menu.contact" /></a></li>
+                        <li><a href="/wiki/Help"><spring:message code="homepage.bottom.menu.help"/></a></li>
+                        <c:choose>
+                            <c:when test="${showProfileLink}">
+                                <li><a href="/logout"><spring:message code="homepage.bottom.menu.signout" /></a></li>
+                                <li><a href="/members/profile"><spring:message code="homepage.bottom.menu.myprofile"/></a></li>
+                            </c:when>
+                            <c:otherwise>
+                                <li><a href="/register" class="openreg"><spring:message code="homepage.bottom.menu.register"/></a></li>
+                                <li><a href="#" data-toggle="modal" data-target="#loginModal"><spring:message code="homepage.bottom.menu.signin"/></a></li>
+                            </c:otherwise>
+                        </c:choose>
+                        <c:if test="${showLanguageDropdown}">
+                            <li class="dropup bs-dropdown--dark">
+                                <a data-toggle="dropdown" class="dropdown-trigger">
+                                    <img src="${themeImageFolder}/footer-language-button.png"/>&#160;
+                                    <spring:message code="homepage.menu.visitor.language" />
+                                    <span class="caret"><!-- --></span>
+                                </a>
+                                <xcolab-dropdowns:languageDropdown currentLanguage="${currentLanguage}"
+                                                                   languageSelectItems="${languageSelectItems}"/>
+                            </li>
+                        </c:if>
+                    </ul>
+                </nav>
+
+                <!-- TODO : better styling; get rid of style attribute -->
+                <div class="pull-right" style="margin-top: -12px;">
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
                     <div class="addthis_inline_follow_toolbox"><!-- --></div>
-                </li>
-            </ul>
+                </div>
+            </div>
+
         </div> <!-- #c-Footer__menu -->
 
-        <div class="inner">
+        <div class="bs-container-fixed">
             <!-- footer content -->
             <xcolab:content articleId="${footerArticleId}"/>
-        </div> <!-- .inner -->
-    </div> <!-- #c-Footer -->
+        </div>
+    </div>
 </jsp:root>

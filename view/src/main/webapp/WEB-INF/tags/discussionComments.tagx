@@ -185,7 +185,7 @@
 											<c:set var="editCommentURL" value="/discussions/editComment?commentId=${message.commentId}&amp;proposalId=${proposalId}&amp;contestId=${sharedColabId}" />
 
                                             <spring:message code="discussion.commmentstag.caneditmsg" var="canEditMsg"/>
-											<a style="margin-left: 10px;" href="javascript:;" onclick="editComment(${message.commentId},'${editCommentURL}');"
+											<a style="margin-left: 10px;" href="javascript:;" onclick="editComment(${message.createDate.time}, ${message.commentId},'${editCommentURL}');"
 												class="js-Tooltip" title="${canEditMsg}"><spring:message code="discussion.commmentstag.edit" /></a>
 
 											<c:set var="deleteMessageURL" value="/discussions/deleteDiscussionMessageFlag?commentId=${message.commentId }&amp;proposalId=${proposalId}&amp;contestId=${sharedColabId}" />

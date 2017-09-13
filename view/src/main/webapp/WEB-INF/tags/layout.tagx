@@ -247,7 +247,7 @@
 
     <!-- ============ Content ============ -->
 
-    <div id="content">
+    <div class="bs-container-fixed clearfix" id="content">
         <!-- Include page body -->
         <jsp:doBody/>
     </div>
@@ -310,8 +310,8 @@
     </c:if>
 
     <xcolab:script src="${_themeJsFolder}/postLinkHandler.js"/>
-    <xcolab-scripts:loadMoment locale="${_locale}"/>
     <xcolab-scripts:loadTooltips />
+    <xcolab-scripts:loadMoment locale="${_locale}"/>
 
     <!-- Bootstrap -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"

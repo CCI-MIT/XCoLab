@@ -14,10 +14,13 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
 import org.xcolab.model.tables.pojos.Proposal;
 import org.xcolab.model.tables.pojos.ProposalContestPhaseAttribute;
+import org.xcolab.model.tables.pojos.ProposalRating;
 import org.xcolab.model.tables.pojos.ProposalVersion;
 import org.xcolab.model.tables.pojos.ProposalVote;
 import org.xcolab.service.proposal.domain.proposal.ProposalDao;
 import org.xcolab.service.proposal.domain.proposalcontestphaseattribute.ProposalContestPhaseAttributeDao;
+
+import org.xcolab.service.proposal.domain.proposalrating.ProposalRatingDao;
 import org.xcolab.service.proposal.domain.proposalversion.ProposalVersionDao;
 import org.xcolab.service.proposal.domain.proposalvote.ProposalVoteDao;
 import org.xcolab.service.contest.exceptions.NotFoundException;
@@ -38,6 +41,9 @@ public class ProposalsController {
     private final ProposalVoteDao proposalVoteDao;
     private final Proposal2PhaseService proposal2PhaseService;
 
+    private final ProposalRatingDao proposalRatingDao;
+
+
     private final ProposalVersionDao proposalVersionDao;
     private final ProposalVersionService proposalVersionService;
     private final ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao;
@@ -46,8 +52,7 @@ public class ProposalsController {
     public ProposalsController(ProposalContestPhaseAttributeDao proposalContestPhaseAttributeDao,
             ProposalVersionDao proposalVersionDao, ProposalDao proposalDao,
             ProposalVoteDao proposalVoteDao, Proposal2PhaseService proposal2PhaseService,
-            ProposalVersionService proposalVersionService,
-            ProposalService proposalService) {
+            ProposalVersionService proposalVersionService, ProposalService proposalService, ProposalRatingDao proposalRatingDao) {
         this.proposalContestPhaseAttributeDao = proposalContestPhaseAttributeDao;
         this.proposalVersionDao = proposalVersionDao;
         this.proposalDao = proposalDao;
@@ -55,12 +60,13 @@ public class ProposalsController {
         this.proposal2PhaseService = proposal2PhaseService;
         this.proposalService = proposalService;
         this.proposalVersionService = proposalVersionService;
+        this.proposalRatingDao = proposalRatingDao;
 
     }
 
-    @RequestMapping(value = "/proposals/{proposalId}/listProposalLinks", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<Proposal> listProposalLinks(
-            @PathVariable(required = false) Long proposalId) {
+    @RequestMapping(value = "/proposals/{proposalId}/listProposalLinks",
+            method = {RequestMethod.GET, RequestMethod.HEAD})
+    public List<Proposal> listProposalLinks(@PathVariable(required = false) Long proposalId) {
         return proposalDao.findLinkedProposalIdsByGivenProposalId(proposalId);
     }
 
@@ -70,8 +76,7 @@ public class ProposalsController {
     }
 
     @RequestMapping(value = "/proposals", method = {RequestMethod.GET, RequestMethod.HEAD})
-    public List<Proposal> listProposals(
-            @RequestParam(required = false) Integer startRecord,
+    public List<Proposal> listProposals(@RequestParam(required = false) Integer startRecord,
             @RequestParam(required = false) Integer limitRecord,
             @RequestParam(required = false) String filterText,
             @RequestParam(required = false) List<Long> contestIds,
@@ -86,14 +91,15 @@ public class ProposalsController {
             @RequestParam(required = false) String sort) {
         PaginationHelper paginationHelper = new PaginationHelper(startRecord, limitRecord, sort);
 
-        return proposalDao.findByGiven(paginationHelper, filterText, contestIds, visible,
-                    contestPhaseId, ribbon, contestTypeIds, contestTierIds, contestActive,
-                contestPrivate, threadId);
+        return proposalDao
+                .findByGiven(paginationHelper, filterText, contestIds, visible, contestPhaseId,
+                        ribbon, contestTypeIds, contestTierIds, contestActive, contestPrivate,
+                        threadId);
     }
 
     @RequestMapping(value = "/proposals/{proposalId}", method = RequestMethod.GET)
     public Proposal getProposal(@PathVariable long proposalId,
-                                @RequestParam(required = false, defaultValue = "false") boolean includeDeleted)
+            @RequestParam(required = false, defaultValue = "false") boolean includeDeleted)
             throws NotFoundException {
         final Proposal proposal = proposalDao.get(proposalId);
         if (proposal.getVisible() || includeDeleted) {
@@ -136,7 +142,8 @@ public class ProposalsController {
     }
 
     @RequestMapping(value = "/proposals/createProposal", method = RequestMethod.POST)
-    public Proposal createProposal(@RequestParam long authorId, @RequestParam long contestPhaseId,  @RequestParam boolean publishActivity) {
+    public Proposal createProposal(@RequestParam long authorId, @RequestParam long contestPhaseId,
+            @RequestParam boolean publishActivity) {
         return proposalService.create(authorId, contestPhaseId, publishActivity);
     }
 
@@ -148,13 +155,29 @@ public class ProposalsController {
     }
 
     @RequestMapping(value = "/proposals/{proposalId}", method = RequestMethod.DELETE)
-    public boolean deleteProposal(@PathVariable long proposalId)
-            throws NotFoundException {
+    public boolean deleteProposal(@PathVariable long proposalId) throws NotFoundException {
         final Proposal proposal = proposalDao.get(proposalId);
         proposal.setVisible(false);
         return proposalDao.update(proposal);
     }
 
+    @RequestMapping(value = "/proposals/numberOfProposalsAlreadyJudgedForJudge", method = RequestMethod.GET)
+    public Integer numberOfProposalsJudgedForJudge(@RequestParam long contestPhaseId, @RequestParam long userId){
+        PaginationHelper paginationHelper = new PaginationHelper(0, Integer.MAX_VALUE, null);
+
+        List<Proposal> proposals = proposalDao.findByGiven(paginationHelper, null,
+                null, null, contestPhaseId, null, null, null,
+                null, null, null);
+        int counter = 0;
+        for (Proposal p : proposals) {
+            List<ProposalRating> ret = proposalRatingDao.findByProposalIdJudgeTypeJudgeIdContestPhaseId(p.getProposalId(), null, contestPhaseId,userId);
+            if(ret!=null && !ret.isEmpty() ){
+                counter++;
+            }
+        }
+
+        return counter;
+    }
     @RequestMapping(value = "/proposals/numberOfProposalsForJudge", method = RequestMethod.GET)
     public Integer numberOfProposalsForJudge(@RequestParam long contestPhaseId, @RequestParam long userId)
             throws NotFoundException {

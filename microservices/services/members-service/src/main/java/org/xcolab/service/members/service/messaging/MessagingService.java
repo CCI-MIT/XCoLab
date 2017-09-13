@@ -68,8 +68,8 @@ public class MessagingService {
                                     messageLimitManager.getMessageLimit(fromId));
 
                             final String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
-                            EmailClient.sendEmail(fromEmail, reportRecipients,
-                                    subject, content, false, fromEmail,message.getFromId());
+                            EmailClient.sendEmail(fromEmail,ConfigurationAttributeKey.COLAB_NAME.get(), reportRecipients,
+                                    subject, content, false, fromEmail,ConfigurationAttributeKey.COLAB_NAME.get(),message.getFromId());
                         }
                     }
                     throw new MessageLimitExceededException(fromId);
@@ -138,8 +138,8 @@ public class MessagingService {
                                 m.getContent()));
 
         String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
-        EmailClient.sendEmail(fromEmail, recipient.getEmailAddress(), subject, message, true,
-                fromEmail,m.getMessageId());
+        EmailClient.sendEmail(fromEmail,ConfigurationAttributeKey.COLAB_NAME.get(), recipient.getEmailAddress(), subject, message, true,
+                fromEmail,ConfigurationAttributeKey.COLAB_NAME.get(),m.getMessageId());
     }
 
     private static String createMessageURL(Message m) {

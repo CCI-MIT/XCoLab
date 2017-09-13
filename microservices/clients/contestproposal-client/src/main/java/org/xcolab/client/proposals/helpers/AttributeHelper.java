@@ -88,7 +88,7 @@ public abstract class AttributeHelper<AttributeT extends Attribute> {
         final Collection<AttributeT> values = attributesByAdditionalId.values();
         AttributeT newestAttributeSeen = null;
         for (AttributeT attribute : values) {
-            if (isNewRankedHigher(newestAttributeSeen, attribute)) {
+            if (newestAttributeSeen == null || isNewRankedHigher(newestAttributeSeen, attribute)) {
                 newestAttributeSeen = attribute;
             }
         }

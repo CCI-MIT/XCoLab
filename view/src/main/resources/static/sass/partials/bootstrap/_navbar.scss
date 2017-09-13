@@ -46,14 +46,14 @@ $_navbar__boxShadow: 0 5px 5px $t-Color__grey--light;
 
     .navbar-right {
       float: right !important;
-      margin-right: -15px;
+      margin-right: 0;
     }
   }
 
   .navbar-brand {
     line-height: $_navbar__height;
     height: initial;
-    padding: 0 15px;
+    padding: 0 15px 0 0;
 
     > img {
       display: inline-block;
