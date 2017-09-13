@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class LaunchContestMassAction extends ContestMassActionAdapter {
     static final ActiveMassAction activeMassAction = new ActiveMassAction(true);
-    static final PrivateMassAction privateMassAction = new PrivateMassAction(true);
+    static final PrivateMassAction privateMassAction = new PrivateMassAction(false);
     static final FeaturedMassAction featuredMassAction= new FeaturedMassAction(true);
 
     public LaunchContestMassAction() {
