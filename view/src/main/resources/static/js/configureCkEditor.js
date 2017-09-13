@@ -26,7 +26,9 @@ function countCharacters(input, editor) {
             return jQuery.trim(editor.document['$'].body.innerText).length;
         }
     }
-    return jQuery.trim(input.val().replace(/&lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length);
+    var numberOfLines = input.val().split(/\r\n|\r|\n/).length - 1 ;//java will count \n as \r\n
+    input.val().replace(/&lt;[^&gt;]*&gt;/g, "").replace(/\s+/g, " ").length
+    return jQuery.trim(input.val().length + numberOfLines);
 }
 
 function updateCharacterCounter(input, editor) {
