@@ -103,7 +103,7 @@ public class OverviewTabController extends AbstractTabController {
         }
         List<Contest> contests = updateContestOverviewWrapper.getContestWrappers();
         OrderMassAction orderMassAction = (OrderMassAction) ContestMassActions.ORDER.getAction();
-        orderMassAction.execute(contests, true, null, null);
+        orderMassAction.execute(contests);
     }
 
     @PostMapping("api/massAction")

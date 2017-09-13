@@ -25,4 +25,8 @@ public class OrderMassAction extends ContestMassActionAdapter {
             ContestClientUtil.updateContest(contest);
         }
     }
+
+    public void execute(List<Contest> contests) {
+        execute(contests, false, null, null);
+    }
 }
