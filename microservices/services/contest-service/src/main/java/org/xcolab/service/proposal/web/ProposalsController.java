@@ -226,6 +226,18 @@ public class ProposalsController {
         throw new NotFoundException();
     }
 
+    @RequestMapping(value = "/proposals/{proposalId}/promoteUserToProposalOwner", method = RequestMethod.POST)
+    public Boolean promoteUserToProposalOwner(@PathVariable Long proposalId, @RequestParam Long memberUserId)
+            throws NotFoundException {
+
+        try {
+            proposalService.promoteUserToProposalOwner(proposalId, memberUserId);
+            return true;
+        } catch (ProposalNotFoundException ignored) {
+        }
+        throw new NotFoundException();
+    }
+
     @RequestMapping(value = "/proposals/{proposalId}/allMembers", method = RequestMethod.GET)
     public List<Member> getProposalMembers(@PathVariable Long proposalId)
             throws NotFoundException {

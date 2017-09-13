@@ -204,6 +204,12 @@ public final class ProposalClient {
                 .delete();
     }
 
+    public void promoteUserToProposalOwner(Long proposalId, Long memberUserId) {
+        proposalResource.service(proposalId, "promoteUserToProposalOwner", Boolean.class)
+                .queryParam("memberUserId", memberUserId)
+                .post();
+    }
+
     public Boolean isUserInProposalTeam(Long proposalId, Long memberUserId) {
         return proposalResource.service(proposalId, "isUserInProposalTeam", Boolean.class)
                 .queryParam("memberUserId", memberUserId)

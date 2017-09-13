@@ -321,6 +321,16 @@ public class ProposalService {
         }
     }
 
+    public void promoteUserToProposalOwner(Long proposalId, Long userId) throws ProposalNotFoundException {
+        try {
+            Proposal proposal = proposalDao.get(proposalId);
+            proposal.setAuthorId(userId);
+            proposalDao.update(proposal);
+        } catch (NotFoundException ignored) {
+            throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found.");
+        }
+    }
+
     public List<Proposal> getMemberProposals(Long memberId) {
         List<UsersGroups> ug = UsersGroupsClientUtil.getUserGroupsByMemberId(memberId);
         List<Proposal> proposals = new ArrayList<>();
