@@ -26,7 +26,6 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
     private List<Contest> contestWrappers;
     private Long selectedMassAction;
     private List<Boolean> selectedContest;
-    private List<Long> selectedContestIds;
     private List<Boolean> subscribedToContest;
     private MassMessageBean massMessageBean;
     private ContestFlagTextToolTipBean contestFlagTextToolTipBean;
@@ -53,8 +52,7 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
             if (contest.getIsSharedContestInForeignColab()) {
                 try {
                     RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
-                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
-                    );
+                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
 
                     Contest foreignContest = ContestClient.fromService(contestService)
                             .getContest(contest.getContestPK());
@@ -164,8 +162,8 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
 
     public List<Long> getSelectedContestIds() {
         List<Long> contestIds = new ArrayList<>();
-        for (int i = 0; i < contestWrappers.size() ; i++) {
-        Contest contestWrapper = contestWrappers.get(i);
+        for (int i = 0; i < contestWrappers.size(); i++) {
+            Contest contestWrapper = contestWrappers.get(i);
             if (selectedContest.get(i)) {
                 contestIds.add(contestWrapper.getContestPK());
             }

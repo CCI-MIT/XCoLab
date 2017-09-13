@@ -9,9 +9,7 @@ import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.MassActionDataWrapper;
-import org.xcolab.view.pages.contestmanagement.utils.MassActionUtil;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
