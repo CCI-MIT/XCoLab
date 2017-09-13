@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassAction;
@@ -31,6 +32,8 @@ public class ConfirmMassActionController {
             @ModelAttribute MassActionConfirmationWrapper massActionConfirmationWrapper,
             HttpServletResponse response)
             throws IOException, InvocationTargetException, IllegalAccessException {
+        massActionConfirmationWrapper.setMemberId(MemberAuthUtil.getMemberId(request));
+
         List<Long> contestIds = massActionConfirmationWrapper.getSelectedContestIds();
         List<Contest> contests = getContests(contestIds);
 
@@ -38,14 +41,8 @@ public class ConfirmMassActionController {
         ContestMassActions actionWrapper = ContestMassActions.values()[massActionIndex];
         ContestMassAction action = actionWrapper.getAction();
 
-        if (actionWrapper != ContestMassActions.DELETE
-                && actionWrapper != ContestMassActions.DELETE_WITH_PHASES) {
-            throw new IllegalArgumentException(
-                    "No action defined for mass action id: " + massActionIndex);
-        }
-
         try {
-            action.execute(contests, true, null, null);
+            action.execute(contests, true, massActionConfirmationWrapper, response);
         } catch (MassActionRequiresConfirmationException e) {
             throw new IllegalStateException(
                     "An unexpected MassActionRequiresConfirmationException was encountered: \n" + e

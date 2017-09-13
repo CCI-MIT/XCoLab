@@ -44,7 +44,7 @@ public class OverviewTabController extends AbstractTabController {
     static final private String TAB_VIEW = "contestmanagement/manager/overviewTab";
 
     static final private String CONFIRM_VIEW_PATH =
-            "contestmanagement/manager/massActionConfirmation/";
+            "contestmanagement/manager/massActionConfirmation/confirmMassAction";
 
     @ModelAttribute("currentTabWrapped")
     @Override
@@ -93,7 +93,7 @@ public class OverviewTabController extends AbstractTabController {
             AlertMessage.CHANGES_SAVED.flash(request);
             return "redirect:/admin/contest/manager";
         } catch (MassActionRequiresConfirmationException e) {
-            return handleConfirmationException(model, updateContestOverviewWrapper);
+            return showConfirmationView(model, updateContestOverviewWrapper);
         }
     }
 
@@ -123,28 +123,14 @@ public class OverviewTabController extends AbstractTabController {
         }
     }
 
-    private String handleConfirmationException(Model model,
+    private String showConfirmationView(Model model,
             ContestOverviewWrapper contestOverviewWrapper) throws IllegalStateException {
-        String confirmView;
-
-        ContestMassActions actionWrapper = getMassActionWrapper(contestOverviewWrapper);
-        if (actionWrapper == ContestMassActions.DELETE) {
-            confirmView = "deleteContest";
-        } else if (actionWrapper == ContestMassActions.DELETE_WITH_PHASES) {
-            confirmView = "deleteContestWithPhases";
-        } else {
-            throw new IllegalStateException(
-                    "Confirmations are only required for the mass actions Delete and "
-                            + "DeleteWithPhases.");
-        }
-
         List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();
         int massActionIndex = contestOverviewWrapper.getSelectedMassAction().intValue();
         model.addAttribute("massActionConfirmationWrapper",
                 new MassActionConfirmationWrapper(contestIds, massActionIndex));
-        model.addAttribute("massActionId", massActionIndex);
 
-        return CONFIRM_VIEW_PATH + confirmView;
+        return CONFIRM_VIEW_PATH;
     }
 
     private ContestMassActions getMassActionWrapper(ContestOverviewWrapper contestOverviewWrapper)

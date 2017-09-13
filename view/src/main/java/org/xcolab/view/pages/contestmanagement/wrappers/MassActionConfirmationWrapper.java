@@ -3,20 +3,27 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
+import org.xcolab.view.pages.contestmanagement.beans.ContestModelSettingsBean;
+import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;
+import org.xcolab.view.pages.contestmanagement.entities.ContestMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
+import org.xcolab.view.pages.contestmanagement.entities.massactions.MassActionDataWrapper;
 import org.xcolab.view.pages.contestmanagement.utils.MassActionUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MassActionConfirmationWrapper {
+public class MassActionConfirmationWrapper implements MassActionDataWrapper {
 
     private List<Contest> contestWrappers;
     private List<Long> contestIds;
     private List<Boolean> selectedContest;
     private int massActionId;
+    private ContestMassAction selectedMassAction;
     private Integer itemCount;
+    private Long memberId;
 
     public MassActionConfirmationWrapper() {
         this.selectedContest = new ArrayList<>();
@@ -27,7 +34,7 @@ public class MassActionConfirmationWrapper {
     public MassActionConfirmationWrapper(List<Long> contestIds, int massActionId) {
         this.selectedContest = new ArrayList<>();
         this.contestWrappers = new ArrayList<>();
-        this.massActionId = massActionId;
+        this.setMassActionId(massActionId);
         this.itemCount = contestIds.size();
         this.contestIds = contestIds;
         populateValidContestWrapper(contestIds);
@@ -83,6 +90,20 @@ public class MassActionConfirmationWrapper {
 
     public void setMassActionId(Integer massActionId) {
         this.massActionId = massActionId;
+        this.selectedMassAction = ContestMassActions.values()[massActionId].getAction();
+    }
+
+    @Override
+    public Long getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
+    }
+
+    public ContestMassAction getSelectedMassAction() {
+        return selectedMassAction;
     }
 
     public List<Long> getSelectedContestIds() {
@@ -93,5 +114,20 @@ public class MassActionConfirmationWrapper {
             }
         }
         return selectedContestIds;
+    }
+
+    @Override
+    public MassMessageBean getMassMessageBean() {
+        return null;
+    }
+
+    @Override
+    public ContestModelSettingsBean getContestModelSettingsBean() {
+        return null;
+    }
+
+    @Override
+    public ContestFlagTextToolTipBean getContestFlagTextToolTipBean() {
+        return null;
     }
 }
