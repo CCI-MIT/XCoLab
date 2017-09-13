@@ -80,6 +80,7 @@
 
                     <spring:message var="ownerText" code="contests.proposal.team.role.owner"/>
                     <spring:message var="memberText" code="contests.proposal.team.role.member"/>
+                    <spring:message var="confirmPromoteText" code="contests.proposal.team.confirmPromote" arguments="${member.screenName}"/>
                     <tr class="${status.index mod 2 > 0 ? 'even' : 'odd'}">
                         <td><proposalsPortlet:proposalTeamMember member="${member }" /></td>
                         <td>${member.memberType == 'OWNER' ? ownerText : memberText}</td>
@@ -90,6 +91,15 @@
 
                                     <a data-url="${removeUserFromTeam }" class="js-PostLink">
                                         <spring:message code="contests.proposal.team.remove" />
+                                    </a>
+                                </c:if>
+                            </td>
+                            <td>
+                                <c:if test="${member.memberType != 'OWNER'}">
+                                    <c:set var="promoteUserToOwner" value="${proposal.proposalUrl}/tab/TEAM/promoteUserToOwner?memberId=${member.userId}" />
+
+                                    <a data-url="${promoteUserToOwner }" data-confirm="${confirmPromoteText}" class="js-PostLink">
+                                        <spring:message code="contests.proposal.team.promote" />
                                     </a>
                                 </c:if>
                             </td>
