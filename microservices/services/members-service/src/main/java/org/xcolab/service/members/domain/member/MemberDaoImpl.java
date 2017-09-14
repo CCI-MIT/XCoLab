@@ -10,7 +10,10 @@ import org.jooq.impl.DSL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import org.xcolab.model.tables.MemberCategoryTable;
+import org.xcolab.model.tables.Users_RolesTable;
 import org.xcolab.model.tables.pojos.Member;
+import org.xcolab.model.tables.pojos.Users_Roles;
 import org.xcolab.service.utils.PaginationHelper;
 import org.xcolab.service.utils.PaginationHelper.SortColumn;
 
@@ -75,6 +78,19 @@ public class MemberDaoImpl implements MemberDao {
         }
         if (googleId != null) {
             query.addConditions(MEMBER.GOOGLE_ID.eq(googleId));
+        }
+        if (roleName != null) {
+            Users_RolesTable uc = USERS_ROLES.as("ur");
+            MemberCategoryTable mc = MEMBER_CATEGORY.as("mc");
+
+            query.addConditions(USERS_ROLES.ROLE_ID.eq(
+                    dslContext.select(USERS_ROLES.ROLE_ID)
+                    .from(uc)
+                    .innerJoin(mc).on(uc.ROLE_ID.eq(mc.ROLE_ID))
+                    .where(uc.USER_ID.eq(MEMBER.ID_))
+                    .orderBy(mc.SORT_ORDER.desc())
+                    .limit(0,1)
+            ));
         }
 
         for (SortColumn sortColumn : paginationHelper.getSortColumns()) {
