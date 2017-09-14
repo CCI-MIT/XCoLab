@@ -325,7 +325,7 @@ public final class ProposalClient {
     }
 
 
-    public List<Proposal> getProposalLinks(Long proposalId) {
+    public List<Proposal> getLinkingProposalsForProposalID(Long proposalId) {
         return DtoUtil.toPojos(proposalResource.service(proposalId, "listProposalLinks", ProposalDto.TYPES.getTypeReference())
                 .getList(),proposalService);
     }

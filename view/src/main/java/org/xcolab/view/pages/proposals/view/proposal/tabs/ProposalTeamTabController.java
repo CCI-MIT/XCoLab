@@ -44,7 +44,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
         model.addAttribute("requestMembershipBean", new RequestMembershipBean());
         model.addAttribute("requestMembershipInviteBean", new RequestMembershipInviteBean());
 
-        List<Proposal> listOfLinkedProposals = proposalClient.getProposalLinks(proposalId);
+        List<Proposal> listOfLinkedProposals = proposalClient.getLinkingProposalsForProposalID(proposalId);
         model.addAttribute("listOfLinkedProposals", listOfLinkedProposals);
 
         Map<Proposal, List<Member>> mapOfContributingProposals = new HashMap<>();
