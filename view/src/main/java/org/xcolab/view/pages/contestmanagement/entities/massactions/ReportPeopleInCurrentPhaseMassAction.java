@@ -29,7 +29,6 @@ public class ReportPeopleInCurrentPhaseMassAction extends AbstractContestMassAct
         CsvExportHelper csvExportHelper = new CsvExportHelper();
         csvExportHelper.addRowToExportData(CSV_EXPORT_HEADER);
 
-        // TODO: Fix intermediate solution.
         for (Contest contest : contests) {
             Long contestId = contest.getContestPK();
             if (!contest.getIsSharedContestInForeignColab()) {
