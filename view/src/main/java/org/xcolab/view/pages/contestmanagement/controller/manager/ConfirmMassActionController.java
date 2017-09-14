@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.view.auth.MemberAuthUtil;
+import org.xcolab.view.pages.contestmanagement.entities.ContestMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
-import org.xcolab.view.pages.contestmanagement.entities.ContestMassAction;
 import org.xcolab.view.pages.contestmanagement.wrappers.MassActionConfirmationWrapper;
+import org.xcolab.view.util.entity.EntityIdListUtil;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
@@ -21,8 +21,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static org.xcolab.view.pages.contestmanagement.utils.MassActionUtil.getContests;
 
 @Controller
 @RequestMapping("/admin/contest/manager")
@@ -36,7 +34,7 @@ public class ConfirmMassActionController {
         massActionConfirmationWrapper.setMemberId(member.getId_());
 
         List<Long> contestIds = massActionConfirmationWrapper.getSelectedContestIds();
-        List<Contest> contests = getContests(contestIds);
+        List<Contest> contests = EntityIdListUtil.CONTESTS.fromIdList(contestIds);
 
         int massActionIndex = massActionConfirmationWrapper.getMassActionId();
         ContestMassActions actionWrapper = ContestMassActions.values()[massActionIndex];

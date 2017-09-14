@@ -20,6 +20,7 @@ import org.xcolab.view.pages.contestmanagement.entities.massactions.OrderMassAct
 import org.xcolab.view.pages.contestmanagement.wrappers.ContestOverviewWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.MassActionConfirmationWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
+import org.xcolab.view.util.entity.EntityIdListUtil;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
@@ -29,8 +30,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static org.xcolab.view.pages.contestmanagement.utils.MassActionUtil.getContests;
 
 @Controller
 @RequestMapping("/admin/contest")
@@ -144,7 +143,7 @@ public class OverviewTabController extends AbstractTabController {
         ContestMassActions actionWrapper = getMassActionWrapper(contestOverviewWrapper);
         ContestMassAction action = actionWrapper.getAction();
         List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();
-        List<Contest> contests = getContests(contestIds);
+        List<Contest> contests = EntityIdListUtil.CONTESTS.fromIdList(contestIds);
 
         action.execute(contests, false, contestOverviewWrapper, response);
     }
