@@ -15,7 +15,7 @@ public class MessageActivePhaseAuthorsMassAction extends MessageMassAction {
     }
 
     @Override
-    List<Proposal> getProposalsToBeMessaged(Contest contest) {
+    protected List<Proposal> getProposalsToBeMessaged(Contest contest) {
         ContestPhase activeContestPhase = ContestClientUtil.getActivePhase(contest.getContestPK());
         return ProposalClientUtil
                 .getActiveProposalsInContestPhase(activeContestPhase.getContestPhasePK());

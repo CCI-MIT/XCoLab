@@ -20,7 +20,7 @@ public class MessageAllAuthorsMassAction extends MessageMassAction {
     }
 
     @Override
-    List<Proposal> getProposalsToBeMessaged(Contest contest) {
+    protected List<Proposal> getProposalsToBeMessaged(Contest contest) {
         Long contestPK = contest.getContestPK();
         List<ContestPhase> allPhases = ContestClientUtil.getAllContestPhases(contestPK);
         Map<Long, Proposal> proposalsMap = new HashMap<>();
