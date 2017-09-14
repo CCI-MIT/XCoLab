@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -222,11 +223,11 @@ public class ProposalsController {
             proposalService.removeProposalTeamMember(proposalId, memberId);
             return true;
         } catch (ProposalNotFoundException ignored) {
+            throw new NotFoundException();
         }
-        throw new NotFoundException();
     }
 
-    @RequestMapping(value = "/proposals/{proposalId}/promoteMemberToProposalOwner", method = RequestMethod.POST)
+    @PostMapping("/proposals/{proposalId}/promoteMemberToProposalOwner")
     public Boolean promoteMemberToProposalOwner(@PathVariable Long proposalId, @RequestParam Long memberId)
             throws NotFoundException {
 
@@ -234,8 +235,8 @@ public class ProposalsController {
             proposalService.promoteMemberToProposalOwner(proposalId, memberId);
             return true;
         } catch (ProposalNotFoundException ignored) {
+            throw new NotFoundException();
         }
-        throw new NotFoundException();
     }
 
     @RequestMapping(value = "/proposals/{proposalId}/allMembers", method = RequestMethod.GET)
