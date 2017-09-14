@@ -25,7 +25,7 @@ public abstract class MessageMassAction extends AbstractContestMassAction {
         super(displayName);
     }
 
-    abstract List<Proposal> getProposalsToBeMessaged(Contest contest);
+    protected abstract List<Proposal> getProposalsToBeMessaged(Contest contest);
 
     @Override
     public void execute(List<Contest> contests, boolean actionConfirmed,
