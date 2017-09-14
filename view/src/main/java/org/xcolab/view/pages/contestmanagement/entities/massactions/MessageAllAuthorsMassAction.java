@@ -23,13 +23,13 @@ public class MessageAllAuthorsMassAction extends MessageMassAction {
     List<Proposal> getProposalsToBeMessaged(Contest contest) {
         Long contestPK = contest.getContestPK();
         List<ContestPhase> allPhases = ContestClientUtil.getAllContestPhases(contestPK);
-        Map<Long,Proposal> proposalsMap = new HashMap<>();
-        for(ContestPhase cp : allPhases){
+        Map<Long, Proposal> proposalsMap = new HashMap<>();
+        for (ContestPhase cp : allPhases) {
             ContestPhaseType cpt = ContestClientUtil.getContestPhaseType(cp.getContestPhaseType());
-            if(cpt.getStatus().equals(ContestStatus.OPEN_FOR_SUBMISSION.name())){
-                List<Proposal> proposals = ProposalClientUtil
-                        .getActiveProposalsInContestPhase(cp.getContestPhasePK());
-                for (Proposal p: proposals) {
+            if (cpt.getStatus().equals(ContestStatus.OPEN_FOR_SUBMISSION.name())) {
+                List<Proposal> proposals =
+                        ProposalClientUtil.getActiveProposalsInContestPhase(cp.getContestPhasePK());
+                for (Proposal p : proposals) {
                     proposalsMap.putIfAbsent(p.getProposalId(), p);
                 }
             }
