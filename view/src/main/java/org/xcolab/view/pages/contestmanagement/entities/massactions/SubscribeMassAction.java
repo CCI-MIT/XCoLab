@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-public class SubscribeMassAction extends ContestMassActionAdapter {
+public class SubscribeMassAction extends AbstractContestMassAction {
 
     private final boolean isSubscribe;
 

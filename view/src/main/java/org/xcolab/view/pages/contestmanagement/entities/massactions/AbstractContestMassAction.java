@@ -6,11 +6,11 @@ import org.xcolab.view.pages.contestmanagement.entities.ContestMassAction;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class ContestMassActionAdapter implements ContestMassAction {
+public abstract class AbstractContestMassAction implements ContestMassAction {
 
     private final String displayName;
 
-    public ContestMassActionAdapter(String displayName) {
+    public AbstractContestMassAction(String displayName) {
         this.displayName = displayName;
     }
 

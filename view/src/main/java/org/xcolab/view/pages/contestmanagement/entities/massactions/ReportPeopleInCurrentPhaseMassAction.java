@@ -13,7 +13,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-public class ReportPeopleInCurrentPhaseMassAction extends ContestMassActionAdapter {
+public class ReportPeopleInCurrentPhaseMassAction extends AbstractContestMassAction {
 
     private static final List<String> CSV_EXPORT_HEADER =
             Arrays.asList("Contest", "Proposal Title", "Proposal Link", "Username", "First Name",

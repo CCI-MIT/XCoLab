@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-public class DeleteWithPhasesMassAction extends ContestMassActionAdapter {
+public class DeleteWithPhasesMassAction extends AbstractContestMassAction {
 
     public DeleteWithPhasesMassAction() {
         super("Delete contests including phases");

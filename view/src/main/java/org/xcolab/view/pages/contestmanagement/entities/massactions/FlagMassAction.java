@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-public class FlagMassAction extends ContestMassActionAdapter {
+public class FlagMassAction extends AbstractContestMassAction {
 
     public FlagMassAction() {
         super("Set contest flag");

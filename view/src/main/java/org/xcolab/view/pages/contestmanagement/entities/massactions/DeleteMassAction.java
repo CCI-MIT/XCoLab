@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-public class DeleteMassAction extends ContestMassActionAdapter {
+public class DeleteMassAction extends AbstractContestMassAction {
 
     public DeleteMassAction() {
         super("Delete contests");

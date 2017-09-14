@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-public abstract class SetContestPropertyMassAction extends ContestMassActionAdapter {
+public abstract class SetContestPropertyMassAction extends AbstractContestMassAction {
 
     private final boolean setValue;
 

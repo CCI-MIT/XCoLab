@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-public class ModelSettingsMassAction extends ContestMassActionAdapter {
+public class ModelSettingsMassAction extends AbstractContestMassAction {
 
     public ModelSettingsMassAction() {
         super("Set model settings");

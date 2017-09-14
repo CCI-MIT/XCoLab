@@ -17,7 +17,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
-public abstract class MessageMassAction extends ContestMassActionAdapter {
+public abstract class MessageMassAction extends AbstractContestMassAction {
 
     private static final Long CLIMATE_COLAB_TEAM_USER_ID = 1431053L;
 

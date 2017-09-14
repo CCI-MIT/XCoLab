@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-public class OrderMassAction extends ContestMassActionAdapter {
+public class OrderMassAction extends AbstractContestMassAction {
 
     public OrderMassAction() {
         super("Order only");
