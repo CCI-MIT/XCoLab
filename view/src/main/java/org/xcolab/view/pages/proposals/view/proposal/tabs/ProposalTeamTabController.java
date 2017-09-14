@@ -62,7 +62,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
             ProposalContext proposalContext, Member actingMember, @RequestParam long memberId)
             throws ProposalsAuthorizationException, IOException {
         checkHasManagePermissions(proposalContext, actingMember);
-        checkIsOwnerRemoved(proposalContext.getProposal(), memberId);
+        checkIsRemovingOwner(proposalContext.getProposal(), memberId);
 
         final ProposalClient proposalClient = getProposalClient(proposalContext);
         final long proposalId = getProposalId(proposalContext);
@@ -117,7 +117,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
         }
     }
 
-    private void checkIsOwnerRemoved(Proposal proposal, long removedMemberId)
+    private void checkIsRemovingOwner(Proposal proposal, long removedMemberId)
             throws ProposalsAuthorizationException {
         if (removedMemberId == proposal.getAuthorId()) {
             generateAuthorizationError(
