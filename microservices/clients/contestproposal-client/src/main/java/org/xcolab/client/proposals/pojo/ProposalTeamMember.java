@@ -5,30 +5,34 @@ import org.xcolab.client.members.pojo.Member;
 
 public class ProposalTeamMember {
     private final Proposal proposal;
-    private final Member user;
+    private final Member member;
     private ProposalMemberType memberType;
 
-    public ProposalTeamMember(Proposal proposal, Member user) {
+    public ProposalTeamMember(Proposal proposal, Member member) {
         super();
         this.proposal = proposal;
-        this.user = user;
+        this.member = member;
     }
     
     public String getFullName() {
-        return user.getFullName();
+        return member.getFullName();
     }
     
     public String getScreenName() {
-        return user.getDisplayName();
+        return member.getDisplayName();
     }
     
     public long getUserId() {
-        return user.getUserId();
+        return member.getUserId();
+    }
+
+    public long getPortraitId() {
+        return member.getPortraitId();
     }
     
     public ProposalMemberType getMemberType() {
         if (memberType == null) {
-            if (proposal.getAuthorId() == user.getUserId()) {
+            if (proposal.getAuthorId() == member.getUserId()) {
                 memberType = ProposalMemberType.OWNER;
             } else {
                 memberType = ProposalMemberType.MEMBER;
