@@ -51,7 +51,6 @@ public class OverviewTabController extends AbstractTabController {
     }
 
 
-
     @ModelAttribute("massActionsItems")
     public List<LabelValue> populateMassActionsItems(HttpServletRequest request) {
         List<LabelValue> contestMassActionItems = new ArrayList<>();
@@ -120,7 +119,7 @@ public class OverviewTabController extends AbstractTabController {
     }
 
     private String showConfirmationView(Model model,
-            ContestOverviewWrapper contestOverviewWrapper) throws IllegalStateException {
+            ContestOverviewWrapper contestOverviewWrapper) {
         List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();
         int massActionIndex = contestOverviewWrapper.getSelectedMassAction().intValue();
         model.addAttribute("massActionConfirmationWrapper",
@@ -129,8 +128,7 @@ public class OverviewTabController extends AbstractTabController {
         return CONFIRM_VIEW_PATH;
     }
 
-    private ContestMassActions getMassActionWrapper(ContestOverviewWrapper contestOverviewWrapper)
-            throws IllegalArgumentException {
+    private ContestMassActions getMassActionWrapper(ContestOverviewWrapper contestOverviewWrapper) {
         int massActionIndex = contestOverviewWrapper.getSelectedMassAction().intValue();
         if (massActionIndex > ContestMassActions.values().length) {
             throw new IllegalArgumentException("Illegal mass action index");
