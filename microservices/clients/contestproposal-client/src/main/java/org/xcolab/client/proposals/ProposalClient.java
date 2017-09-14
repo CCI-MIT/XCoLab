@@ -198,15 +198,15 @@ public final class ProposalClient {
                 .getList();
     }
 
-    public void removeUserFromProposalTeam(Long proposalId, Long memberUserId) {
-        proposalResource.service(proposalId, "removeUserFromProposalTeam", Boolean.class)
-                .queryParam("memberUserId", memberUserId)
+    public void removeMemberFromProposalTeam(Long proposalId, Long memberId) {
+        proposalResource.service(proposalId, "removeMemberFromProposalTeam", Boolean.class)
+                .queryParam("memberId", memberId)
                 .delete();
     }
 
-    public void promoteUserToProposalOwner(Long proposalId, Long memberUserId) {
-        proposalResource.service(proposalId, "promoteUserToProposalOwner", Boolean.class)
-                .queryParam("memberUserId", memberUserId)
+    public void promoteMemberToProposalOwner(Long proposalId, Long memberId) {
+        proposalResource.service(proposalId, "promoteMemberToProposalOwner", Boolean.class)
+                .queryParam("memberId", memberId)
                 .post();
     }
 

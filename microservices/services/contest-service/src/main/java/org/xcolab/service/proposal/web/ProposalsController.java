@@ -214,24 +214,24 @@ public class ProposalsController {
             return proposalService.isUserAMember(proposalId, memberUserId);
     }
 
-    @RequestMapping(value = "/proposals/{proposalId}/removeUserFromProposalTeam", method = RequestMethod.DELETE)
-    public Boolean removeUserFromProposalTeam(@PathVariable Long proposalId, @RequestParam Long memberUserId)
+    @RequestMapping(value = "/proposals/{proposalId}/removeMemberFromProposalTeam", method = RequestMethod.DELETE)
+    public Boolean removeMemberFromProposalTeam(@PathVariable Long proposalId, @RequestParam Long memberId)
             throws NotFoundException {
 
         try {
-            proposalService.removeProposalTeamMember(proposalId, memberUserId);
+            proposalService.removeProposalTeamMember(proposalId, memberId);
             return true;
         } catch (ProposalNotFoundException ignored) {
         }
         throw new NotFoundException();
     }
 
-    @RequestMapping(value = "/proposals/{proposalId}/promoteUserToProposalOwner", method = RequestMethod.POST)
-    public Boolean promoteUserToProposalOwner(@PathVariable Long proposalId, @RequestParam Long memberUserId)
+    @RequestMapping(value = "/proposals/{proposalId}/promoteMemberToProposalOwner", method = RequestMethod.POST)
+    public Boolean promoteMemberToProposalOwner(@PathVariable Long proposalId, @RequestParam Long memberId)
             throws NotFoundException {
 
         try {
-            proposalService.promoteUserToProposalOwner(proposalId, memberUserId);
+            proposalService.promoteMemberToProposalOwner(proposalId, memberId);
             return true;
         } catch (ProposalNotFoundException ignored) {
         }

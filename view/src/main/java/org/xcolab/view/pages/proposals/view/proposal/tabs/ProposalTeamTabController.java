@@ -57,7 +57,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
         return "/proposals/proposalTeam";
     }
 
-    @PostMapping("c/{proposalUrlString}/{proposalId}/tab/TEAM/removeUserFromTeam")
+    @PostMapping("c/{proposalUrlString}/{proposalId}/tab/TEAM/removeMemberFromTeam")
     public void handleAction(HttpServletRequest request, HttpServletResponse response, Model model,
             ProposalContext proposalContext, Member actingMember, @RequestParam long memberId)
             throws ProposalsAuthorizationException, IOException {
@@ -67,14 +67,14 @@ public class ProposalTeamTabController extends BaseProposalTabController {
         final ProposalClient proposalClient = getProposalClient(proposalContext);
         final long proposalId = getProposalId(proposalContext);
 
-        proposalClient.removeUserFromProposalTeam(proposalId, memberId);
+        proposalClient.removeMemberFromProposalTeam(proposalId, memberId);
 
         AlertMessage.success("The member was removed from the proposal's team!").flash(request);
         sendRedirect(proposalContext, response);
     }
 
-    @PostMapping("c/{proposalUrlString}/{proposalId}/tab/TEAM/promoteUserToOwner")
-    public void promoteUserToOwner(HttpServletRequest request, HttpServletResponse response,
+    @PostMapping("c/{proposalUrlString}/{proposalId}/tab/TEAM/promoteMemberToOwner")
+    public void promoteMemberToOwner(HttpServletRequest request, HttpServletResponse response,
             Model model, ProposalContext proposalContext, Member actingMember,
             @RequestParam long memberId) throws ProposalsAuthorizationException, IOException {
         checkHasManagePermissions(proposalContext, actingMember);
@@ -82,7 +82,7 @@ public class ProposalTeamTabController extends BaseProposalTabController {
         final ProposalClient proposalClient = getProposalClient(proposalContext);
         final long proposalId = getProposalId(proposalContext);
 
-        proposalClient.promoteUserToProposalOwner(proposalId, memberId);
+        proposalClient.promoteMemberToProposalOwner(proposalId, memberId);
 
         AlertMessage.success("The member was promoted to the new team owner.").flash(request);
         sendRedirect(proposalContext, response);

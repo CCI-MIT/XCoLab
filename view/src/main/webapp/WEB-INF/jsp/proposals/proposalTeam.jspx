@@ -87,18 +87,18 @@
                         <c:if test="${proposalsPermissions.canManageUsers}">
                             <td>
                                 <c:if test="${member.memberType != 'OWNER'}">
-                                    <c:set var="removeUserFromTeam" value="${proposal.proposalUrl}/tab/TEAM/removeUserFromTeam?memberId=${member.userId}" />
+                                    <c:set var="removeMemberFromTeam" value="${proposal.proposalUrl}/tab/TEAM/removeMemberFromTeam?memberId=${member.userId}" />
 
-                                    <a data-url="${removeUserFromTeam }" class="js-PostLink">
+                                    <a data-url="${removeMemberFromTeam }" class="js-PostLink">
                                         <spring:message code="contests.proposal.team.remove" />
                                     </a>
                                 </c:if>
                             </td>
                             <td>
                                 <c:if test="${member.memberType != 'OWNER'}">
-                                    <c:set var="promoteUserToOwner" value="${proposal.proposalUrl}/tab/TEAM/promoteUserToOwner?memberId=${member.userId}" />
+                                    <c:set var="promoteMemberToOwner" value="${proposal.proposalUrl}/tab/TEAM/promoteMemberToOwner?memberId=${member.userId}" />
 
-                                    <a data-url="${promoteUserToOwner }" data-confirm="${confirmPromoteText}" class="js-PostLink">
+                                    <a data-url="${promoteMemberToOwner }" data-confirm="${confirmPromoteText}" class="js-PostLink">
                                         <spring:message code="contests.proposal.team.promote" />
                                     </a>
                                 </c:if>
