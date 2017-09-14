@@ -9,7 +9,7 @@ public class ActiveMassAction extends SetContestPropertyMassAction {
     }
 
     @Override
-    void setProperty(Contest contest, boolean setValue) {
+    protected void setProperty(Contest contest, boolean setValue) {
         contest.setContestActive(setValue);
     }
 }

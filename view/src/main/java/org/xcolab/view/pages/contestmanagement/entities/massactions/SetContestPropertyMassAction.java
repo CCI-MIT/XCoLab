@@ -17,7 +17,7 @@ public abstract class SetContestPropertyMassAction extends AbstractContestMassAc
         this.setValue = setValue;
     }
 
-    abstract void setProperty(Contest contest, boolean setTrue);
+    protected abstract void setProperty(Contest contest, boolean setTrue);
 
     @Override
     public void execute(List<Contest> contests, boolean actionConfirmed,

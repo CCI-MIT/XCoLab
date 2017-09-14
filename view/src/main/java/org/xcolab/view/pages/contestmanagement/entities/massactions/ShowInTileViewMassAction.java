@@ -9,7 +9,7 @@ public class ShowInTileViewMassAction extends SetContestPropertyMassAction {
     }
 
     @Override
-    void setProperty(Contest contest, boolean setTrue) {
+    protected void setProperty(Contest contest, boolean setTrue) {
         contest.setShow_in_tile_view(setTrue);
     }
 }

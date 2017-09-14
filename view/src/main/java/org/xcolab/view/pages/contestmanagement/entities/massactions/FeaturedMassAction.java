@@ -9,7 +9,7 @@ public class FeaturedMassAction extends SetContestPropertyMassAction {
     }
 
     @Override
-    void setProperty(Contest contest, boolean setTrue) {
+    protected void setProperty(Contest contest, boolean setTrue) {
         contest.setFeatured_(setTrue);
     }
 }

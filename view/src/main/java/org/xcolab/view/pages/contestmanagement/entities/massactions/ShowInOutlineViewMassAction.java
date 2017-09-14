@@ -9,7 +9,7 @@ public class ShowInOutlineViewMassAction extends SetContestPropertyMassAction {
     }
 
     @Override
-    void setProperty(Contest contest, boolean setTrue) {
+    protected void setProperty(Contest contest, boolean setTrue) {
         contest.setShow_in_outline_view(setTrue);
     }
 }

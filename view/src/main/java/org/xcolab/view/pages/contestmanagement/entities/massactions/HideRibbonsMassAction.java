@@ -9,7 +9,7 @@ public class HideRibbonsMassAction extends SetContestPropertyMassAction {
     }
 
     @Override
-    void setProperty(Contest contest, boolean setTrue) {
+    protected void setProperty(Contest contest, boolean setTrue) {
         contest.setHideRibbons(setTrue);
     }
 }
