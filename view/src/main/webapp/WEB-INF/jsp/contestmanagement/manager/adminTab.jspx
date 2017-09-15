@@ -35,7 +35,7 @@
                 <label for="votingPhaseIds">Please select the voting phase(s)
                     you wish to include in the voting report:</label> <br/>
                 <form:select path="votingPhaseIds" id="votingPhaseIds"
-                             class="multi" multiple="multiple" cssStyle="width: 100%;">
+                             class="multi form-control" multiple="multiple" cssStyle="width: 100%;">
                     <form:option value="" label="--- Please select ---"/>
                     <form:options items="${votingPhaseSelectionItems}" itemValue="value"
                                   itemLabel="lable"/>
@@ -63,7 +63,7 @@
                     <br/><br/>
                     <p>
                         <strong class="inputTitleLeft">Notification Text:</strong>
-                        <input type="text"  class="wideLargeInput" name="notificationText"/><br/>
+                        <input type="text" class="form-control" name="notificationText"/><br/>
                     </p>
 
                     <!--<p>
@@ -168,7 +168,7 @@
                     <code>emailAddress;firstName;lastName</code>
                 </div>
                 <div>
-                <textarea id="batchRegisterMembersList" name="members"
+                <textarea id="batchRegisterMembersList" name="members" class="form-control"
                           placeholder="Enter members..." style="width: 100%;"><!-- --></textarea>
                 </div>
                 <div class="checkbox">

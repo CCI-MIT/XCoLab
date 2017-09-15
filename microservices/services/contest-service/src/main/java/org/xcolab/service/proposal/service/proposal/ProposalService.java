@@ -312,10 +312,20 @@ public class ProposalService {
         }
     }
 
-    public void removeProposalTeamMember(Long proposalId, Long userId) throws ProposalNotFoundException {
+    public void removeProposalTeamMember(Long proposalId, Long memberId) throws ProposalNotFoundException {
         try {
             Proposal proposal = proposalDao.get(proposalId);
-            UsersGroupsClientUtil.deleteUsersGroups(userId, proposal.getGroupId());
+            UsersGroupsClientUtil.deleteUsersGroups(memberId, proposal.getGroupId());
+        } catch (NotFoundException ignored) {
+            throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found.");
+        }
+    }
+
+    public void promoteMemberToProposalOwner(Long proposalId, Long memberId) throws ProposalNotFoundException {
+        try {
+            Proposal proposal = proposalDao.get(proposalId);
+            proposal.setAuthorId(memberId);
+            proposalDao.update(proposal);
         } catch (NotFoundException ignored) {
             throw new ProposalNotFoundException("Proposal with id : " + proposalId + " not found.");
         }
