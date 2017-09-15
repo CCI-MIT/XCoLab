@@ -1,3 +1,5 @@
+$bs-form-control__borderRadius: 5px !default;
+
 .bs-form-control-inline {
 
   @media (min-width: 768px) {
@@ -19,10 +21,6 @@
       width: 400px;
     }
   }
-}
-
-.bs-form-label-inline {
-
 }
 
 @media (min-width: 768px) {
@@ -51,10 +49,16 @@ fieldset[disabled] .form-control {
 
 .form-control.bs-form-has-error {
   border-color: #a94442;
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
 
   &:focus {
     border-color: #843534;
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 6px #ce8483;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #ce8483;
   }
+}
+
+.form-control {
+  color: $t-Color__grey--darkest;
+  border: 1px solid $t-Color__grey--light;
+  border-radius: $bs-form-control__borderRadius;
 }
