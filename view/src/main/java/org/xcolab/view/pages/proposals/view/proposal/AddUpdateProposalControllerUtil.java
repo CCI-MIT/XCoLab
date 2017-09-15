@@ -7,14 +7,18 @@ import org.xcolab.client.activities.pojo.ActivitySubscription;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.filtering.FilteringClient;
 import org.xcolab.client.filtering.exceptions.FilteredEntryNotFoundException;
 import org.xcolab.client.filtering.pojo.FilteredEntry;
+import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.phases.Proposal2Phase;
 import org.xcolab.util.enums.activity.ActivityEntryType;
+import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.loginregister.SharedColabUtil;
 import org.xcolab.view.pages.proposals.requests.UpdateProposalDetailsBean;
@@ -31,6 +35,13 @@ import javax.servlet.http.HttpServletRequest;
 public final class AddUpdateProposalControllerUtil {
 
     private AddUpdateProposalControllerUtil() {
+    }
+
+    private static boolean isProposalListClosed(ContestPhase contestPhase) {
+        String currentPhase = contestPhase.getStatus().toString();
+        String closed = ContestStatus.CLOSED.toString();
+        String completed = ContestStatus.COMPLETED.toString();
+        return currentPhase.equals(closed) || currentPhase.equals(completed);
     }
 
     public static String createOrUpdateProposal(HttpServletRequest request,
@@ -62,10 +73,11 @@ public final class AddUpdateProposalControllerUtil {
 
         final ActivitiesClient activitiesClient = clients.getActivitiesClient();
         if (createNew) {
-            ProposalCreationUtil.sendAuthorNotification(proposalContext, PlatformAttributeKey.COLAB_URL
-
-                            .get(),
-                    proposal, contestPhase);
+            boolean isAdmin = PermissionsClient.canAdminAll(memberId);
+            boolean isClosed = isProposalListClosed(contestPhase);
+            if (isAdmin && isClosed) {
+                ServiceRequestUtils.clearCache(CacheName.PROPOSAL_LIST_CLOSED);
+            }
 
             final List<ActivitySubscription> activitySubscriptions = activitiesClient
                     .getActivitySubscriptions(ActivityEntryType.CONTEST.getPrimaryTypeId(),
