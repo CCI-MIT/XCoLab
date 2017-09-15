@@ -24,7 +24,7 @@
 
 			<c:when test="${section.type == 'ONTOLOGY_REFERENCE' }">
 				<c:set var="term" value="${section.numericValueAsOntologyTerm }" />
-				<select name='sectionsContent[${section.sectionDefinitionId }]'>
+				<select name='sectionsContent[${section.sectionDefinitionId }]' class="form-control">
 					<c:forEach var="term" items="${section.focusAreaTerms }">	
 						<c:choose>
 							<c:when test="${section.numericValueAsOntologyTerm.id == term.id }">
@@ -38,7 +38,7 @@
 				</select>
 			</c:when>
 			<c:when test="${section.type == 'DROPDOWN_MENU'}">
-				<select name='sectionsContent[${section.sectionDefinitionId }]'>
+				<select name='sectionsContent[${section.sectionDefinitionId }]' class="form-control">
 					<c:forEach var="value" items="${section.optionsForDropdownMenu}">
                         <c:choose>
                             <c:when test="${section.stringValue == value}">

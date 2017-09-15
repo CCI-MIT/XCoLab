@@ -243,21 +243,6 @@
             <!-- comment -->
         </iframe>
 
-        <script type="text/javascript">
-            function updateUploadBtnOffset() {
-                var container = jQuery("#uploadImageContainer");
-                var containerOffset = container.offset();
-
-
-                jQuery("#portraitUploadInput").offset(containerOffset);
-
-            }
-            jQuery(function() {
-                updateUploadBtnOffset();
-                $(window).resize(updateUploadBtnOffset);
-            });
-
-        </script>
         <c:if test="${generateScreenName}">
             <script type="text/javascript">
                 function generateScreenName() {

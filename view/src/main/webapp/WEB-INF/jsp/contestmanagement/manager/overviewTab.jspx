@@ -33,7 +33,7 @@
 				<h3>Filter: </h3>
 			</div>
 			<div class="innerVerticalCenter">
-				<select id="contestsFilterSelect">
+				<select id="contestsFilterSelect" class="form-control">
 					<option value="all" label="All contests"/>
 					<option value="active" label="Active contests"/>
 					<option value="prior" label="Prior contests"/>
@@ -44,7 +44,7 @@
 		<form:form action="/admin/contest/manager/update" modelAttribute="contestOverviewWrapper" id="editForm" method="post">
 			<div class="outerVerticalCenter">
 				<div class="innerVerticalCenter">
-					<form:select path="selectedMassAction" id="selectedMassAction">
+					<form:select path="selectedMassAction" id="selectedMassAction" cssClass="form-control">
 						<form:options items="${massActionsItems}" itemValue="value" itemLabel="lable"/>
 					</form:select>
 				</div>

@@ -25,13 +25,13 @@
                 <form id="addThreadForm" action="${addCategoryUrl }" method="post">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <div>
-                        <label class="portlet-form-label"><spring:message code="discussion.categoryadd.form.title"/><br />
-                            <input class="portlet-form-input-field input_long" name="title" maxlength="255" style="width:660px;" type="text" value="" />
+                        <label><spring:message code="discussion.categoryadd.form.title"/><br />
+                            <input class="form-control" name="title" maxlength="255" style="width:660px;" type="text" value="" />
                         </label>
                     </div>
                     <div>
-                        <label class="portlet-form-label"><spring:message code="discussion.categoryadd.form.description"/><br />
-                            <textarea class="portlet-form-input-field profile_about" name="description" cols="20" rows="2" style="width: 660px; height: 100px;"><!-- --></textarea>
+                        <label><spring:message code="discussion.categoryadd.form.description"/><br />
+                            <textarea class="form-control" name="description" cols="20" rows="2" style="width: 660px; height: 100px;"><!-- --></textarea>
                         </label>
                     </div>
                     <div>

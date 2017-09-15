@@ -531,31 +531,18 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   top: 3px;
 }
 
-.addpropform input, .addpropform textarea {
-  float: right;
-  border: 1px solid $t-Color__grey--medium;
-  font-size: 16px;
-}
 
 .addpropform {
-  input {
-    height: 42px;
-    width: 445px;
-    padding: 0 5px;
-  }
 
+  // TODO: needed?
   &.full-width textarea {
     width: 830px;
   }
 }
 
 .addpropform {
-  textarea {
-    width: 440px;
-    padding: 5px;
-    resize: vertical;
-  }
 
+  // TODO: needed?
   &.full-width textarea {
     width: 830px;
   }
@@ -565,26 +552,6 @@ $p-Proposal__propbox--green: $t-Color__secondary--light !default;
   font-size: 15px;
   color: $t-Color__grey--dark;
   margin: 1px 0 25px 12px;
-}
-
-.addpropform .upload {
-  float: right;
-  width: 455px;
-}
-
-.addpropform .upload a {
-  padding-top: 20px;
-  font-size: 17px;
-  font-weight: $b-Typography__fontWeight--bold;
-  display: inline-block;
-}
-
-.uploadbox {
-  float: left;
-  width: 50px;
-  height: 50px;
-  border: 1px dashed black;
-  margin-right: 20px;
 }
 
 .addprophelp {
