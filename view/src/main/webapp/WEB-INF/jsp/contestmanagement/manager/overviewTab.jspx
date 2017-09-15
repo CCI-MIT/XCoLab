@@ -375,7 +375,7 @@
 			reCalculateWeights();
 			event.stopPropagation(); // Stops some browsers from redirecting.
 			event.preventDefault();
-			updateOrder();
+			// updateOrder();
 			return false;
 		}
 
