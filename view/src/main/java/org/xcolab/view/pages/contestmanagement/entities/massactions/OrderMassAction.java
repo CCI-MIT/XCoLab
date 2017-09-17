@@ -16,12 +16,10 @@ public class OrderMassAction extends AbstractContestMassAction {
     @Override
     public void execute(List<Contest> contests, boolean actionConfirmed,
             MassActionDataWrapper dataWrapper, HttpServletResponse response) {
-        for (Contest contestWrapper : contests) {
-            Contest contest = contestWrapper.getWrapped();
+        for (Contest contest : contests) {
             if (contest.getIsSharedContestInForeignColab()) {
                 contest = ContestClientUtil.getContest(contest.getContestPK());
             }
-            contest.setWeight(contestWrapper.getWeight());
             ContestClientUtil.updateContest(contest);
         }
     }
