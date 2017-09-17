@@ -3,7 +3,6 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
-import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.html.LabelValue;
@@ -23,56 +22,44 @@ import javax.servlet.http.HttpServletRequest;
 
 public class ContestOverviewWrapper implements MassActionDataWrapper {
 
-    private List<Contest> contestWrappers;
+    private final List<Contest> contestWrappers = new ArrayList<>();
+    private final List<Boolean> selectedContest = new ArrayList<>();
+    private final List<Boolean> subscribedToContest = new ArrayList<>();
+    private final MassMessageBean massMessageBean = new MassMessageBean();
+    private final ContestFlagTextToolTipBean contestFlagTextToolTipBean =
+            new ContestFlagTextToolTipBean();
+    private final ContestModelSettingsBean contestModelSettingsBean = new ContestModelSettingsBean();
+
     private Long selectedMassAction;
-    private List<Boolean> selectedContest;
-    private List<Boolean> subscribedToContest;
-    private MassMessageBean massMessageBean;
-    private ContestFlagTextToolTipBean contestFlagTextToolTipBean;
-    private ContestModelSettingsBean contestModelSettingsBean;
     private Long memberId;
 
+    @SuppressWarnings("unused")
     public ContestOverviewWrapper() {
-        initLists();
         populateContestWrappersAndSelectedContestList();
     }
 
-    private void initLists() {
-        contestWrappers = new ArrayList<>();
-        selectedContest = new ArrayList<>();
-        subscribedToContest = new ArrayList<>();
-        contestFlagTextToolTipBean = new ContestFlagTextToolTipBean();
-        contestModelSettingsBean = new ContestModelSettingsBean();
-        massMessageBean = new MassMessageBean();
+    public ContestOverviewWrapper(HttpServletRequest request) {
+        populateContestWrappersAndSelectedContestList();
+        populateSubscribedToContestList(MemberAuthUtil.getMemberId(request));
     }
 
     private void populateContestWrappersAndSelectedContestList() {
         List<Contest> contests = ContestClientUtil.getAllContests();
         for (Contest contest : contests) {
             if (contest.getIsSharedContestInForeignColab()) {
-                try {
-                    RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
-                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
+                RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
+                        ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
 
-                    Contest foreignContest = ContestClient.fromService(contestService)
-                            .getContest(contest.getContestPK());
-                    foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
+                Contest foreignContest = ContestClient.fromService(contestService)
+                        .getContest(contest.getContestPK());
+                foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
 
-                    contestWrappers.add(foreignContest);
-
-                } catch (ContestNotFoundException notFound) {
-                }
+                contestWrappers.add(foreignContest);
             } else {
                 contestWrappers.add((contest));
             }
             selectedContest.add(false);
         }
-    }
-
-    public ContestOverviewWrapper(HttpServletRequest request) {
-        initLists();
-        populateContestWrappersAndSelectedContestList();
-        populateSubscribedToContestList(MemberAuthUtil.getMemberId(request));
     }
 
     private void populateSubscribedToContestList(long memberId) {
@@ -87,24 +74,8 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
         return contestWrappers;
     }
 
-    public void setContestWrappers(List<Contest> contestWrappers) {
-        this.contestWrappers = contestWrappers;
-    }
-
-    public Long getSelectedMassAction() {
-        return selectedMassAction;
-    }
-
-    public void setSelectedMassAction(Long selectedMassAction) {
-        this.selectedMassAction = selectedMassAction;
-    }
-
     public List<Boolean> getSelectedContest() {
         return selectedContest;
-    }
-
-    public void setSelectedContest(List<Boolean> selectedContest) {
-        this.selectedContest = selectedContest;
     }
 
     @Override
@@ -112,27 +83,14 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
         return massMessageBean;
     }
 
-    public void setMassMessageBean(MassMessageBean massMessageBean) {
-        this.massMessageBean = massMessageBean;
-    }
-
     @Override
     public ContestModelSettingsBean getContestModelSettingsBean() {
         return contestModelSettingsBean;
     }
 
-    public void setContestModelSettingsBean(ContestModelSettingsBean contestModelSettingsBean) {
-        this.contestModelSettingsBean = contestModelSettingsBean;
-    }
-
     @Override
     public ContestFlagTextToolTipBean getContestFlagTextToolTipBean() {
         return contestFlagTextToolTipBean;
-    }
-
-    public void setContestFlagTextToolTipBean(
-            ContestFlagTextToolTipBean contestFlagTextToolTipBean) {
-        this.contestFlagTextToolTipBean = contestFlagTextToolTipBean;
     }
 
     @Override
@@ -142,6 +100,14 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
 
     public void setMemberId(Long memberId) {
         this.memberId = memberId;
+    }
+
+    public Long getSelectedMassAction() {
+        return selectedMassAction;
+    }
+
+    public void setSelectedMassAction(Long selectedMassAction) {
+        this.selectedMassAction = selectedMassAction;
     }
 
     public List<Boolean> getSubscribedToContest() {
