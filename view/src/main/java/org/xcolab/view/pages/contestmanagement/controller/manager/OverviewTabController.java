@@ -40,8 +40,6 @@ public class OverviewTabController extends AbstractTabController {
     static final private String CONFIRM_VIEW_PATH =
             "contestmanagement/manager/massActionConfirmation/";
 
-    static final private Object updateOrderLock = new Object();
-
     @ModelAttribute("currentTabWrapped")
     @Override
     public TabWrapper populateCurrentTabWrapped(HttpServletRequest request) {
@@ -121,9 +119,7 @@ public class OverviewTabController extends AbstractTabController {
             response.sendError(403);
         }
         updateContestOverviewWrapper.setSelectedMassAction((long) ContestMassActions.ORDER.ordinal());
-        synchronized (updateOrderLock) {
-            updateContestOverviewWrapper.executeMassAction(request, response);
-        }
+        updateContestOverviewWrapper.executeMassAction(request, response);
     }
 
     @PostMapping("api/massAction")
