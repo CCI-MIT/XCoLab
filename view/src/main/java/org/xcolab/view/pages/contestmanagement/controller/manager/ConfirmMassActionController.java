@@ -6,11 +6,18 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.members.pojo.Member;
+import org.xcolab.view.pages.contestmanagement.entities.ContestMassAction;
+import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
+import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
 import org.xcolab.view.pages.contestmanagement.wrappers.MassActionConfirmationWrapper;
+import org.xcolab.view.util.entity.EntityIdListUtil;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,11 +27,27 @@ import javax.servlet.http.HttpServletResponse;
 public class ConfirmMassActionController {
 
     @PostMapping("confirmMassAction")
-    public String confirmMassActionExecution(HttpServletRequest request, Model model,
+    public String confirmMassActionExecution(HttpServletRequest request, Model model, Member member,
             @ModelAttribute MassActionConfirmationWrapper massActionConfirmationWrapper,
             HttpServletResponse response)
             throws IOException, InvocationTargetException, IllegalAccessException {
-        massActionConfirmationWrapper.invokeMassActionForSelectedContests();
+        massActionConfirmationWrapper.setMemberId(member.getId_());
+
+        List<Long> contestIds = massActionConfirmationWrapper.getSelectedContestIds();
+        List<Contest> contests = EntityIdListUtil.CONTESTS.fromIdList(contestIds);
+
+        int massActionIndex = massActionConfirmationWrapper.getMassActionId();
+        ContestMassActions actionWrapper = ContestMassActions.values()[massActionIndex];
+        ContestMassAction action = actionWrapper.getAction();
+
+        try {
+            action.execute(contests, true, massActionConfirmationWrapper, response);
+        } catch (MassActionRequiresConfirmationException e) {
+            throw new IllegalStateException(
+                    "An unexpected MassActionRequiresConfirmationException was encountered: \n" + e
+                            .toString());
+        }
+
         AlertMessage.success("Mass action successful").flash(request);
         return "redirect:/admin/contest";
     }
