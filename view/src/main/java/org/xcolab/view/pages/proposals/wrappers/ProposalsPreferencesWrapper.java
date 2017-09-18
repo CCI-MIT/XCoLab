@@ -5,12 +5,10 @@ import org.xcolab.client.admin.EmailTemplateClientUtil;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.pojo.ContestEmailTemplate;
 import org.xcolab.client.admin.pojo.ContestType;
-import org.xcolab.entity.utils.WidgetPreference;
 import org.xcolab.entity.utils.notifications.EmailTemplateWrapper;
 import org.xcolab.util.attributes.AttributeGetter;
 import org.xcolab.util.i18n.I18nUtils;
-
-import java.io.IOException;
+import org.xcolab.view.widgets.WidgetPreference;
 
 public class ProposalsPreferencesWrapper extends WidgetPreference {
 
@@ -50,8 +48,8 @@ public class ProposalsPreferencesWrapper extends WidgetPreference {
         super(preferenceId,language);
 
         termsOfService = getTermsOfServiceTemplateWrapper().getHeader();
-        callToAction = (prefs.has(CALL_TO_ACTION))?(prefs.getString(CALL_TO_ACTION)):(CALL_TO_ACTION_DEFAULT);
-        contestTypeId = (prefs.has(CONTEST_TYPE_ID))?(prefs.getString(CONTEST_TYPE_ID)):("0");
+        callToAction = (jsonPreferences.has(CALL_TO_ACTION))?(jsonPreferences.getString(CALL_TO_ACTION)):(CALL_TO_ACTION_DEFAULT);
+        contestTypeId = (jsonPreferences.has(CONTEST_TYPE_ID))?(jsonPreferences.getString(CONTEST_TYPE_ID)):("0");
 
         contestType = ContestTypeClient.getContestType(Long.parseLong(contestTypeId));
 
@@ -70,17 +68,19 @@ public class ProposalsPreferencesWrapper extends WidgetPreference {
         return termsOfServiceTemplateWrapper;
     }
 
-    public void store() throws  IOException {
+    @Override
+    public void savePreferences() {
 
-        ContestEmailTemplate template = EmailTemplateClientUtil.getContestEmailTemplateByType(TERMS_OF_SERVICE_PREF);
+        ContestEmailTemplate template = EmailTemplateClientUtil
+                .getContestEmailTemplateByType(TERMS_OF_SERVICE_PREF);
         template.setHeader(termsOfService);
         EmailTemplateClientUtil.updateContestEmailTemplate(template);
 
-        prefs.put(CALL_TO_ACTION, callToAction);
-        prefs.put(CONTEST_TYPE_ID, contestTypeId);
+        jsonPreferences.put(CALL_TO_ACTION, callToAction);
+        jsonPreferences.put(CONTEST_TYPE_ID, contestTypeId);
 
 
-        savePreferences(prefs,preferenceId);
+        savePreferencesInternal(jsonPreferences,preferenceId);
     }
 
     public String getTitle(){

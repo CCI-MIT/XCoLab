@@ -1,8 +1,5 @@
 
 function setupProposalMove(){
-    if ($("#portlet-preferences").length == 0) {
-        return;
-    }
 
     var clearOptions = function() {
         if ($(this).val() != '-1') {
