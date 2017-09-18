@@ -3,28 +3,32 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.contest.ContestClient;
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.AbstractContest;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.html.LabelValue;
 import org.xcolab.util.http.client.RefreshingRestService;
 import org.xcolab.util.http.client.RestService;
-import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.MassActionDataWrapper;
 
-import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 public class ContestOverviewWrapper implements MassActionDataWrapper {
 
-    private final List<Contest> contestWrappers = new ArrayList<>();
-    private final List<Boolean> selectedContest = new ArrayList<>();
-    private final List<Boolean> subscribedToContest = new ArrayList<>();
+    private final Map<Long, Contest> contests = new LinkedHashMap<>();
+    private final Map<Long, Boolean> selectedContests = new HashMap<>();
+    private final Map<Long, Boolean> subscribedToContest = new HashMap<>();
     private final MassMessageBean massMessageBean = new MassMessageBean();
     private final ContestFlagTextToolTipBean contestFlagTextToolTipBean =
             new ContestFlagTextToolTipBean();
@@ -35,17 +39,19 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
 
     @SuppressWarnings("unused")
     public ContestOverviewWrapper() {
-        populateContestWrappersAndSelectedContestList();
+        populateContestsAndSelectedList();
     }
 
-    public ContestOverviewWrapper(HttpServletRequest request) {
-        populateContestWrappersAndSelectedContestList();
-        populateSubscribedToContestList(MemberAuthUtil.getMemberId(request));
+    public ContestOverviewWrapper(Member member) {
+        populateContestsAndSelectedList();
+        populateSubscribedToContestList(member);
     }
 
-    private void populateContestWrappersAndSelectedContestList() {
-        List<Contest> contests = ContestClientUtil.getAllContests();
-        for (Contest contest : contests) {
+    private void populateContestsAndSelectedList() {
+        List<Contest> allContests = ContestClientUtil.getAllContests();
+        // LinkedHashMap will maintain insertion order
+        allContests.sort(Comparator.comparing(AbstractContest::getWeight));
+        for (Contest contest : allContests) {
             if (contest.getIsSharedContestInForeignColab()) {
                 RestService contestService = new RefreshingRestService(CoLabService.CONTEST,
                         ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
@@ -54,28 +60,33 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
                         .getContest(contest.getContestPK());
                 foreignContest.setUpForeignContestVisualConfigsFromLocal(contest);
 
-                contestWrappers.add(foreignContest);
+                addContestToMaps(foreignContest);
             } else {
-                contestWrappers.add((contest));
+                addContestToMaps(contest);
             }
-            selectedContest.add(false);
         }
     }
 
-    private void populateSubscribedToContestList(long memberId) {
-        for (Contest contestWrapper : contestWrappers) {
+    private void addContestToMaps(Contest contest) {
+        contests.put(contest.getContestPK(), contest);
+        selectedContests.put(contest.getContestPK(), false);
+    }
+
+    private void populateSubscribedToContestList(Member member) {
+        for (Entry<Long, Contest> contestEntry : contests.entrySet()) {
+            final Long contestId = contestEntry.getKey();
             Boolean isUserSubscribedToContest = ContestClientUtil
-                    .isMemberSubscribedToContest(contestWrapper.getContestPK(), memberId);
-            subscribedToContest.add(isUserSubscribedToContest);
+                    .isMemberSubscribedToContest(contestId, member.getId_());
+            subscribedToContest.put(contestId, isUserSubscribedToContest);
         }
     }
 
-    public List<Contest> getContestWrappers() {
-        return contestWrappers;
+    public Map<Long, Contest> getContests() {
+        return contests;
     }
 
-    public List<Boolean> getSelectedContest() {
-        return selectedContest;
+    public Map<Long, Boolean> getSelectedContests() {
+        return selectedContests;
     }
 
     @Override
@@ -110,7 +121,7 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
         this.selectedMassAction = selectedMassAction;
     }
 
-    public List<Boolean> getSubscribedToContest() {
+    public Map<Long, Boolean> getSubscribedToContest() {
         return subscribedToContest;
     }
 
@@ -127,13 +138,9 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
     }
 
     public List<Long> getSelectedContestIds() {
-        List<Long> contestIds = new ArrayList<>();
-        for (int i = 0; i < contestWrappers.size(); i++) {
-            Contest contestWrapper = contestWrappers.get(i);
-            if (selectedContest.get(i)) {
-                contestIds.add(contestWrapper.getContestPK());
-            }
-        }
-        return contestIds;
+        return selectedContests.entrySet().stream()
+                .filter(Entry::getValue)
+                .map(Entry::getKey)
+                .collect(Collectors.toList());
     }
 }

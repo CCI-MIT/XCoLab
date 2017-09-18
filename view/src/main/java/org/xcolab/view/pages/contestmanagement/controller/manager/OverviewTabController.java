@@ -69,7 +69,7 @@ public class OverviewTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
         setPageAttributes(request, model, tab);
-        model.addAttribute("contestOverviewWrapper", new ContestOverviewWrapper(request));
+        model.addAttribute("contestOverviewWrapper", new ContestOverviewWrapper(member));
         return TAB_VIEW;
     }
 
@@ -99,7 +99,7 @@ public class OverviewTabController extends AbstractTabController {
         if (!tabWrapper.getCanEdit()) {
             response.sendError(403);
         }
-        List<Contest> contests = updateContestOverviewWrapper.getContestWrappers();
+        List<Contest> contests = new ArrayList<>(updateContestOverviewWrapper.getContests().values());
         OrderMassAction orderMassAction = (OrderMassAction) ContestMassActions.ORDER.getAction();
         orderMassAction.execute(contests);
     }
