@@ -7,6 +7,7 @@ import org.jooq.Record;
 import org.jooq.Record1;
 import org.jooq.SelectQuery;
 import org.jooq.impl.DSL;
+import org.jooq.impl.TableImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -47,9 +48,9 @@ public class MemberDaoImpl implements MemberDao {
     public List<Member> findByGiven(PaginationHelper paginationHelper, String partialName,
             String partialEmail, String roleName, String email, String screenName, Long facebookId,
             String googleId, List<Long> roleIds) {
-        MemberTable member = MEMBER.as("member");
-        Users_RolesTable usersRoles = USERS_ROLES.as("usersRoles");
-        MemberCategoryTable memberCategory = MEMBER_CATEGORY.as("memberCategory");
+        final MemberTable member = MEMBER.as("member");
+        final Users_RolesTable usersRoles = USERS_ROLES.as("usersRoles");
+        final MemberCategoryTable memberCategory = MEMBER_CATEGORY.as("memberCategory");
 
         final SelectQuery<Record> query = dslContext.selectDistinct(member.fields())
                 .from(member)
@@ -64,7 +65,7 @@ public class MemberDaoImpl implements MemberDao {
         }
 
         if (partialName != null || partialEmail != null) {
-            addSearchCondition(partialName, partialEmail, query);
+            addSearchCondition(partialName, partialEmail, query,member);
         }
         if (roleName != null) {
             query.addConditions(memberCategory.DISPLAY_NAME.eq(roleName));
@@ -149,15 +150,15 @@ public class MemberDaoImpl implements MemberDao {
     }
 
     private void addSearchCondition(String partialName, String partialEmail,
-            SelectQuery<?> query) {
+            SelectQuery<?> query, MemberTable memberTable) {
         Condition searchCondition = DSL.falseCondition();
         if (partialName != null) {
             String[] searchTerms = partialName.split("\\s");
             for (String searchTerm : searchTerms) {
                 searchCondition = searchCondition
-                        .or(MEMBER.SCREEN_NAME.contains(searchTerm))
-                        .or(MEMBER.FIRST_NAME.contains(searchTerm))
-                        .or(MEMBER.LAST_NAME.contains(searchTerm));
+                        .or(memberTable.SCREEN_NAME.contains(searchTerm))
+                        .or(memberTable.FIRST_NAME.contains(searchTerm))
+                        .or(memberTable.LAST_NAME.contains(searchTerm));
             }
         }
         if (partialEmail != null) {
@@ -189,18 +190,22 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public int countByGiven(String partialName, String partialEmail, String roleName) {
-        final SelectQuery<Record1<Integer>> query = dslContext.select(countDistinct(MEMBER.ID_))
-                .from(MEMBER)
-                .join(USERS_ROLES).on(MEMBER.ID_.equal(USERS_ROLES.USER_ID))
-                .join(MEMBER_CATEGORY).on(MEMBER_CATEGORY.ROLE_ID.equal(USERS_ROLES.ROLE_ID))
-                .where(MEMBER.STATUS.eq(0))
+
+        final MemberTable memberTable = MEMBER.as("member");
+        final Users_RolesTable usersRoles = USERS_ROLES.as("usersRoles");
+        final MemberCategoryTable memberCategory = MEMBER_CATEGORY.as("memberCategory");
+        final SelectQuery<Record1<Integer>> query = dslContext.select(countDistinct(memberTable.ID_))
+                .from(memberTable)
+                .join(usersRoles).on(memberTable.ID_.equal(usersRoles.USER_ID))
+                .join(memberCategory).on(memberCategory.ROLE_ID.equal(usersRoles.ROLE_ID))
+                .where(memberTable.STATUS.eq(0))
                 .getQuery();
 
         if (partialName != null || partialEmail != null) {
-            addSearchCondition(partialName, partialEmail, query);
+            addSearchCondition(partialName, partialEmail, query,memberTable);
         }
         if (roleName != null) {
-            query.addConditions(MEMBER_CATEGORY.DISPLAY_NAME.eq(roleName));
+            query.addConditions(memberCategory.DISPLAY_NAME.eq(roleName));
         }
         return query.fetchOne().into(Integer.class);
     }
