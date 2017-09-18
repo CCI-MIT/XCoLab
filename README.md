@@ -15,5 +15,4 @@ You can read more about our architecture [here](https://github.com/CCI-MIT/XCoLa
 ## Contributing
 
 If you notice any issues with the XCoLab, please open an issue in this repository.
-If you're interested in contributing to this project, feel free to start a pull request or contact xcolab@mit.edu. 
-For small fixes, we welcome unsolicited pull requests, but for larger changes it's a good idea to talk to us first.
+If you're interested in contributing to this project, check out [CONTRIBUTING.md](https://github.com/CCI-MIT/XCoLab/blob/master/CONTRIBUTING.md).
