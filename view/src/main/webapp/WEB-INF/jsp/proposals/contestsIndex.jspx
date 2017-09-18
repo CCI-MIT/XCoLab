@@ -9,7 +9,7 @@
 		<!--@elvariable id="showCollectionCards" type="java.lang.Boolean"-->
 		<jsp:directive.include file="./init.jspx" />
 		<c:if test="${_isAdmin}">
-			<a href="/proposals/editPreferences" class="c-Button__admin">Edit contests preferences</a><br/>
+			<a href="/proposals/preferences" class="c-Button__admin">Edit contests preferences</a><br/>
 		</c:if>
 		<c:choose>
 			<c:when test="${showCollectionCards}">

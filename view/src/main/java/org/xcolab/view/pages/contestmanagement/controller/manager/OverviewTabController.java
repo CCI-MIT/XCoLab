@@ -7,24 +7,25 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.legacy.enums.MemberRole;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.client.members.pojo.MemberCategory;
 import org.xcolab.util.html.LabelValue;
+import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
+import org.xcolab.view.pages.contestmanagement.entities.ContestMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
 import org.xcolab.view.pages.contestmanagement.entities.MassActionRequiresConfirmationException;
+import org.xcolab.view.pages.contestmanagement.entities.massactions.OrderMassAction;
 import org.xcolab.view.pages.contestmanagement.wrappers.ContestOverviewWrapper;
 import org.xcolab.view.pages.contestmanagement.wrappers.MassActionConfirmationWrapper;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
+import org.xcolab.view.util.entity.EntityIdListUtil;
 import org.xcolab.view.util.entity.flash.AlertMessage;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,7 +39,7 @@ public class OverviewTabController extends AbstractTabController {
     static final private String TAB_VIEW = "contestmanagement/manager/overviewTab";
 
     static final private String CONFIRM_VIEW_PATH =
-            "contestmanagement/manager/massActionConfirmation/";
+            "contestmanagement/manager/massActionConfirmation/confirmMassAction";
 
     @ModelAttribute("currentTabWrapped")
     @Override
@@ -49,19 +50,13 @@ public class OverviewTabController extends AbstractTabController {
     }
 
 
-
     @ModelAttribute("massActionsItems")
     public List<LabelValue> populateMassActionsItems(HttpServletRequest request) {
         List<LabelValue> contestMassActionItems = new ArrayList<>();
 
         for (ContestMassActions contestMassAction : ContestMassActions.values()) {
-            contestMassActionItems
-                    .add(new LabelValue((long) contestMassAction.ordinal(),
-                            contestMassAction.getActionDisplayName()));
-            if (contestMassAction.getHasReverseAction()) {
-                contestMassActionItems.add(new LabelValue((long) -contestMassAction.ordinal(),
-                        contestMassAction.getReverseActionDisplayName()));
-            }
+            contestMassActionItems.add(new LabelValue((long) contestMassAction.ordinal(),
+                    contestMassAction.getAction().getDisplayName()));
         }
 
         return contestMassActionItems;
@@ -74,7 +69,7 @@ public class OverviewTabController extends AbstractTabController {
             return new AccessDeniedPage(member).toViewName(response);
         }
         setPageAttributes(request, model, tab);
-        model.addAttribute("contestOverviewWrapper", new ContestOverviewWrapper(request));
+        model.addAttribute("contestOverviewWrapper", new ContestOverviewWrapper(member));
         return TAB_VIEW;
     }
 
@@ -86,40 +81,27 @@ public class OverviewTabController extends AbstractTabController {
         if (!tabWrapper.getCanEdit()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
+
         try {
-            updateContestOverviewWrapper.executeMassAction(request, response);
-            String massActionTitle = updateContestOverviewWrapper.getSelectedMassActionTitle();
+            executeMassAction(request, response, updateContestOverviewWrapper);
             AlertMessage.CHANGES_SAVED.flash(request);
             return "redirect:/admin/contest/manager";
-        } catch (InvocationTargetException e) {
-            Boolean massActionRequiresConfirmation =
-                    e.getTargetException() instanceof MassActionRequiresConfirmationException;
-            if (massActionRequiresConfirmation) {
-                final int selectedMassActionId =
-                        updateContestOverviewWrapper.getSelectedMassAction().intValue();
-                ContestMassActions contestMassAction = ContestMassActions.values()[selectedMassActionId];
-                String confirmView = contestMassAction.getMethod().getName();
-                List<Long> contestIds = updateContestOverviewWrapper.getSelectedContestIds();
-                model.addAttribute("massActionConfirmationWrapper",
-                        new MassActionConfirmationWrapper(contestIds, selectedMassActionId));
-                model.addAttribute("massActionId", selectedMassActionId);
-                return CONFIRM_VIEW_PATH + confirmView;
-            } else {
-                throw e;
-            }
+        } catch (MassActionRequiresConfirmationException e) {
+            return showConfirmationView(model, updateContestOverviewWrapper);
         }
     }
 
     @PostMapping("manager/updateOrder")
-    public void updateContestOrder(HttpServletRequest request,
-            HttpServletResponse response, Model model, Member member,
+    public void updateContestOrder(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member,
             @ModelAttribute ContestOverviewWrapper updateContestOverviewWrapper)
             throws IOException, InvocationTargetException, IllegalAccessException {
         if (!tabWrapper.getCanEdit()) {
             response.sendError(403);
         }
-        updateContestOverviewWrapper.setSelectedMassAction((long) ContestMassActions.ORDER.ordinal());
-        updateContestOverviewWrapper.executeMassAction(request, response);
+        List<Contest> contests = new ArrayList<>(updateContestOverviewWrapper.getContests().values());
+        OrderMassAction orderMassAction = (OrderMassAction) ContestMassActions.ORDER.getAction();
+        orderMassAction.execute(contests);
     }
 
     @PostMapping("api/massAction")
@@ -129,6 +111,41 @@ public class OverviewTabController extends AbstractTabController {
         if (!tabWrapper.getCanEdit()) {
             return;
         }
-        updateContestOverviewWrapper.executeMassAction(request, response);
+        try {
+            executeMassAction(request, response, updateContestOverviewWrapper);
+        } catch (MassActionRequiresConfirmationException | IOException ignored) {
+        }
     }
+
+    private String showConfirmationView(Model model,
+            ContestOverviewWrapper contestOverviewWrapper) {
+        List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();
+        int massActionIndex = contestOverviewWrapper.getSelectedMassAction().intValue();
+        model.addAttribute("massActionConfirmationWrapper",
+                new MassActionConfirmationWrapper(contestIds, massActionIndex));
+
+        return CONFIRM_VIEW_PATH;
+    }
+
+    private ContestMassActions getMassActionWrapper(ContestOverviewWrapper contestOverviewWrapper) {
+        int massActionIndex = contestOverviewWrapper.getSelectedMassAction().intValue();
+        if (massActionIndex > ContestMassActions.values().length) {
+            throw new IllegalArgumentException("Illegal mass action index");
+        }
+        return ContestMassActions.values()[massActionIndex];
+    }
+
+    private void executeMassAction(HttpServletRequest request, HttpServletResponse response,
+            ContestOverviewWrapper contestOverviewWrapper)
+            throws MassActionRequiresConfirmationException, IOException {
+        contestOverviewWrapper.setMemberId(MemberAuthUtil.getMemberId(request));
+
+        ContestMassActions actionWrapper = getMassActionWrapper(contestOverviewWrapper);
+        ContestMassAction action = actionWrapper.getAction();
+        List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();
+        List<Contest> contests = EntityIdListUtil.CONTESTS.fromIdList(contestIds);
+
+        action.execute(contests, false, contestOverviewWrapper, response);
+    }
+
 }

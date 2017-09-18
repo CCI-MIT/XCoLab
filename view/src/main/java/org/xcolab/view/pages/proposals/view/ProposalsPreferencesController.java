@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.ContestTypeClient;
@@ -14,7 +15,6 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
-import org.xcolab.client.members.PermissionsClient;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.exceptions.Proposal2PhaseNotFoundException;
@@ -25,11 +25,11 @@ import org.xcolab.client.proposals.pojo.phases.ProposalContestPhaseAttribute;
 import org.xcolab.util.IdListUtil;
 import org.xcolab.util.enums.contest.ContestPhaseTypeValue;
 import org.xcolab.util.enums.contest.ProposalContestPhaseAttributeKeys;
-import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.wrappers.ProposalsPreferencesWrapper;
 import org.xcolab.view.util.entity.EntityIdListUtil;
 import org.xcolab.view.util.entity.flash.AlertMessage;
+import org.xcolab.view.widgets.AbstractWidgetController;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,9 +41,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-public class ProposalsPreferencesController {
+@RequestMapping(ProposalsPreferencesController.BASE_URL)
+public class ProposalsPreferencesController extends AbstractWidgetController<ProposalsPreferencesWrapper> {
 
     private static final Logger _log = LoggerFactory.getLogger(ProposalsPreferencesController.class);
+
+    public static final String BASE_URL = "/proposals";
+
+    protected ProposalsPreferencesController() {
+        super(BASE_URL, ProposalsPreferencesWrapper::new);
+    }
 
     private static List<ContestPhase> getPhasesByContest(Contest c, final int sortModifier) {
         List<ContestPhase> contestPhases = ContestClientUtil.getAllContestPhases(c.getContestPK());
@@ -55,16 +62,12 @@ public class ProposalsPreferencesController {
         return contestPhases;
     }
 
-    @GetMapping("/proposals/editPreferences")
+    @GetMapping(PREFERENCES_URL_PATH)
     public String showPreferences(HttpServletRequest request, HttpServletResponse response,
             Model model, Member member, ProposalContext proposalContext,
             @RequestParam(required = false) String preferenceId,
             @RequestParam(required = false) String language) {
-        model.addAttribute("preferences", new ProposalsPreferencesWrapper(preferenceId,language));
 
-        if (!PermissionsClient.canAdminAll(member)) {
-            return new AccessDeniedPage(member).toViewName(response);
-        }
         //get all contests
         List<Contest> contests = ContestClientUtil.getContestsByActivePrivate(true,true);
 
@@ -96,7 +99,8 @@ public class ProposalsPreferencesController {
         model.addAttribute("proposals", proposalsMap);
         model.addAttribute("contestTypes", ContestTypeClient.getAllContestTypes());
 
-        return "proposals/editPreferences";
+        return showPreferencesInternal(response, model, member, preferenceId, language,
+                "proposals/editPreferences");
     }
 
 
@@ -113,12 +117,9 @@ public class ProposalsPreferencesController {
 //    }
 
 
-    @PostMapping("/proposals/savePreferences")
-    public void savePreferences(HttpServletRequest request, HttpServletResponse response,
-            Model model, ProposalContext proposalContext, ProposalsPreferencesWrapper preferences)
-            throws IOException {
-        //save terms
-        preferences.store();
+    @PostMapping(PREFERENCES_URL_PATH)
+    public String savePreferences(HttpServletRequest request, HttpServletResponse response,
+            Model model, Member member, ProposalContext proposalContext, ProposalsPreferencesWrapper preferences) {
 
         //care about moving proposals
         Long moveToContestPhaseId = preferences.getMoveToContestId();
@@ -127,20 +128,15 @@ public class ProposalsPreferencesController {
         Long ribbonId = preferences.getRibbonId();
 
         //moving parameters are set
-        String message = moveProposals(proposalContext,
+        moveProposals(proposalContext,
                 EntityIdListUtil.PROPOSALS.fromIdList(proposalIdsToBeMoved), moveFromContestId,
                 moveToContestPhaseId, ribbonId, false);
-        if(message.isEmpty()){
-            message = "Preferences saved successfully!";
-        }
 
-        AlertMessage.success(message).flash(request);
-
-        response.sendRedirect("/proposals/editPreferences?preferenceId="+preferences.getPreferenceId());
+        return savePreferencesInternal(request, response, member, preferences);
     }
 
     //-- @RequestMapping(params = "action=checkForMissingTeamMembers")
-    @PostMapping("/proposals/checkForMissingTeamMembers")
+    @PostMapping("checkForMissingTeamMembers")
     public void checkForMissingTeamMembers(HttpServletRequest request, HttpServletResponse response,
             Model model, ProposalContext proposalContext)
             throws  IOException {
@@ -196,11 +192,11 @@ public class ProposalsPreferencesController {
         }
 
 
-        response.sendRedirect("/proposals/editPreferences");
+        response.sendRedirect("/proposals/preferences");
     }
 
 
-    @PostMapping("/proposals/runRibbonDistribution")
+    @PostMapping("runRibbonDistribution")
     public void runRibbonDistribution(HttpServletRequest request, HttpServletResponse response,
             Model model, ProposalContext proposalContext)
             throws  IOException {
@@ -263,7 +259,7 @@ public class ProposalsPreferencesController {
         //moving parameters are set
         //model.addAttribute("message", message.toString());
         AlertMessage.success(message.toString()).flash(request);
-        response.sendRedirect("/proposals/editPreferences");
+        response.sendRedirect("/proposals/preferences");
     }
 
     private String moveProposals(ProposalContext proposalContext, List<Proposal> proposalsToBeMoved,

@@ -59,6 +59,10 @@ body, .homespot-left h1, .proposal-head h1 {
   color: $b-Typography__textColor;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+}
+
 h1 {
   font-family: $b-Typography__fontFamily__h1;
   font-weight: $b-Typography__fontWeight__h1;

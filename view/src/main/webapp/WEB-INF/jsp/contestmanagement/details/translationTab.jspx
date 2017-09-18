@@ -45,7 +45,8 @@
                             <div>
                                 <strong><spring:message code="${lang['lable']}"/> title:</strong>
                             </div>
-                            <form:input path="translations[${x.index}].contestShortName"/>
+                            <form:input path="translations[${x.index}].contestShortName"
+                                        cssClass="form-control" cssErrorClass="form-control bs-form-has-error"/>
                         </div>
 
                         <div class="addpropbox">
@@ -55,7 +56,8 @@
                             <div>
                                 <strong><spring:message code="${lang['lable']}"/> question:</strong>
                             </div>
-                            <form:input path="translations[${x.index}].contestName"/>
+                            <form:input path="translations[${x.index}].contestName"
+                                        cssClass="form-control" cssErrorClass="form-control bs-form-has-error"/>
                         </div>
 
                         <div class="addpropbox">
@@ -66,7 +68,7 @@
                                 <strong><spring:message code="${lang['lable']}"/> description:</strong>
                             </div>
                             <form:textarea path="translations[${x.index}].contestDescription"
-                                           cssClass="rte-editorPlaceholder contestDescription" />
+                                           cssClass="rte-editorPlaceholder form-control" cssErrorClass="form-control bs-form-has-error"/>
                         </div>
                     </div>
                 </c:forEach>

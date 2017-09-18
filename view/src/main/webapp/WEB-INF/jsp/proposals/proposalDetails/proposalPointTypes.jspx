@@ -217,7 +217,7 @@
                             <c:if test="${currentTabWrapped.canEdit}">
                                 <label class="username-picker">
                                     Username:<br />
-                                    <input id="userSelectorInput${pointType.id}" type="text" class="popupreg_input messageRecipients${pointType.id}" />
+                                    <input id="userSelectorInput${pointType.id}" type="text" class="form-control messageRecipients${pointType.id}" />
                                     <input type="hidden" class="messageRecipientsInput${pointType.id}" />
                                 </label>
 
@@ -251,7 +251,7 @@
                                             <c:when test="${currentTabWrapped.canEdit}">
                                                 <form:input data-changed-by-user="true"
                                                         path="assignmentsByUserIdByPointTypeId[${pointType.id}][${member.id_}]"
-                                                        class="popupreg_input"
+                                                        class="form-control"
                                                         value="${assignPointsBean.assignmentsByUserIdByPointTypeId[pointType.id][member.id_]}"
                                                     />
                                             </c:when>

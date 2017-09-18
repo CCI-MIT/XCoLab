@@ -3,20 +3,25 @@ package org.xcolab.view.pages.contestmanagement.wrappers;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
+import org.xcolab.view.pages.contestmanagement.beans.ContestModelSettingsBean;
+import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;
+import org.xcolab.view.pages.contestmanagement.entities.ContestMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
-import org.xcolab.view.pages.contestmanagement.utils.MassActionUtil;
+import org.xcolab.view.pages.contestmanagement.entities.massactions.MassActionDataWrapper;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MassActionConfirmationWrapper {
+public class MassActionConfirmationWrapper implements MassActionDataWrapper {
 
     private List<Contest> contestWrappers;
     private List<Long> contestIds;
     private List<Boolean> selectedContest;
     private int massActionId;
+    private ContestMassAction selectedMassAction;
     private Integer itemCount;
+    private Long memberId;
 
     public MassActionConfirmationWrapper() {
         this.selectedContest = new ArrayList<>();
@@ -27,7 +32,7 @@ public class MassActionConfirmationWrapper {
     public MassActionConfirmationWrapper(List<Long> contestIds, int massActionId) {
         this.selectedContest = new ArrayList<>();
         this.contestWrappers = new ArrayList<>();
-        this.massActionId = massActionId;
+        this.setMassActionId(massActionId);
         this.itemCount = contestIds.size();
         this.contestIds = contestIds;
         populateValidContestWrapper(contestIds);
@@ -83,35 +88,44 @@ public class MassActionConfirmationWrapper {
 
     public void setMassActionId(Integer massActionId) {
         this.massActionId = massActionId;
+        this.selectedMassAction = ContestMassActions.values()[massActionId].getAction();
     }
 
-    public String getSelectedMassActionTitle() {
-        return MassActionUtil.getSelectedMassActionTitle(massActionId);
+    @Override
+    public Long getMemberId() {
+        return memberId;
     }
 
-    public void invokeMassActionForSelectedContests()
-            throws InvocationTargetException, IllegalAccessException {
-        List<Long> contestToBeDeleted = new ArrayList<>();
-        for (long contestId : contestIds) {
-            int index = contestIds.indexOf(contestId);
-            if (index < selectedContest.size() && selectedContest.get(index) != null
-                    && selectedContest
-                    .get(index)) {
-                contestToBeDeleted.add(contestId);
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
+    }
+
+    public ContestMassAction getSelectedMassAction() {
+        return selectedMassAction;
+    }
+
+    public List<Long> getSelectedContestIds() {
+        List<Long> selectedContestIds = new ArrayList<>();
+        for (int i = 0; i < selectedContest.size(); i++) {
+            if (selectedContest.get(i) != null && selectedContest.get(i)) {
+                selectedContestIds.add(contestIds.get(i));
             }
         }
-        if (massActionId == ContestMassActions.DELETE.ordinal()) {
-            final boolean actionConfirmed = true;
-            ContestMassActions.values()[massActionId].getMethod()
-                    .invoke(null, contestToBeDeleted, actionConfirmed, null);
-        } else if (massActionId == ContestMassActions.DELETE_WITH_PHASES.ordinal()) {
-            final boolean actionConfirmed = true;
-            ContestMassActions.values()[massActionId].getMethod()
-                    .invoke(null, contestToBeDeleted, actionConfirmed, null);
-        } else {
-            throw new IllegalArgumentException(
-                    "No action defined for mass action id: " + massActionId);
-        }
+        return selectedContestIds;
     }
 
+    @Override
+    public MassMessageBean getMassMessageBean() {
+        return null;
+    }
+
+    @Override
+    public ContestModelSettingsBean getContestModelSettingsBean() {
+        return null;
+    }
+
+    @Override
+    public ContestFlagTextToolTipBean getContestFlagTextToolTipBean() {
+        return null;
+    }
 }

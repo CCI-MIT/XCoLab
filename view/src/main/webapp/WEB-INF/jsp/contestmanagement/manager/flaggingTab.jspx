@@ -52,7 +52,7 @@
                 <strong class="inputTitleLeft">Report target:</strong>
 
                 <div class="addpropInputContainer">
-                    <form:select path="reportTargetId" id="changeReportTargetSelect" cssClass="wideLargeInput">
+                    <form:select path="reportTargetId" id="changeReportTargetSelect" cssClass="form-control">
                         <form:options items="${selectionItems}"
                                       itemValue="value" itemLabel="lable" />
                     </form:select>
@@ -69,7 +69,7 @@
 
             <div class="addpropbox">
                 <strong class="inputTitleLeft">Target type:</strong>
-                <form:input path="type" cssClass="wideLargeInput" disabled="disabled"/>
+                <form:input path="type" cssClass="form-control" disabled="disabled"/>
 
                 <div class="reg_errors"><!--  -->
                     <form:errors cssClass="c-Alert c-Alert__error" path="type"/>
@@ -78,7 +78,7 @@
 
             <div class="addpropbox">
                 <strong class="inputTitleLeft">Reason:</strong>
-                <form:input path="reason" cssClass="wideLargeInput"/>
+                <form:input path="reason" cssClass="form-control"/>
 
                 <div class="reg_errors"><!--  -->
                     <form:errors cssClass="c-Alert c-Alert__error" path="reason"/>
@@ -87,7 +87,7 @@
 
             <div class="addpropbox">
                 <strong class="inputTitleLeft">Notification Threshold:</strong>
-                <form:input path="notificationThreshold" cssClass="wideLargeInput"/>
+                <form:input path="notificationThreshold" cssClass="form-control"/>
 
                 <div class="reg_errors"><!--  -->
                     <form:errors cssClass="c-Alert c-Alert__error" path="notificationThreshold"/>
@@ -96,7 +96,7 @@
 
             <div class="addpropbox">
                 <strong class="inputTitleLeft">Screening Threshold:</strong>
-                <form:input path="screeningThreshold" cssClass="wideLargeInput"/>
+                <form:input path="screeningThreshold" cssClass="form-control"/>
 
                 <div class="reg_errors"><!--  -->
                     <form:errors cssClass="c-Alert c-Alert__error" path="screeningThreshold"/>
