@@ -147,53 +147,49 @@
 					</tr>
 				</thead>
 				<tbody id="contestOverviewBody">
-					<c:forEach var="contestWrapper" items="${contestOverviewWrapper.contestWrappers}" varStatus="x" >
-							<tr draggable="true"
-								id = "${contestWrapper.contestPK}"
-								data-filter-attribute="${contestWrapper.contestActive ? 'active' : 'prior'}"
-								class = "${x.index %2==0 ? 'blue' : ''} draggable"
-								data-filter-visible="true"
-									>
-								<form:hidden path="contestWrappers[${x.index}].contestPK"
-											 data-form-name="contestPK" />
-								<td>
-									<form:checkbox path="selectedContest[${x.index}]" />
-								</td>
-								<td>
-									<form:hidden path="contestWrappers[${x.index}].weight"
-												cssClass="weightInput" data-form-name="weight" />
-												 <span>${contestWrapper.weight}</span>
-								</td>
-								<td >
-
-									<c:choose>
-										<c:when test="${not contestWrapper.isSharedContestInForeignColab}">
-											<a href="/admin/contest/details/contestId/${contestWrapper.contestPK}"> ${contestWrapper.contestShortNameWithEndYear}</a>
-										</c:when>
-										<c:otherwise>
-											<a>${contestWrapper.contestShortNameWithEndYear}</a>
-										</c:otherwise>
-									</c:choose>
-
-
-									<!--<xcolab:contestLink contest="${contestWrapper}" />-->
-								</td>
-								<td >${contestWrapper.activePhase.name}</td>
-								<td><form:checkbox path="contestWrappers[${x.index}].contestActive" disabled="false" onclick="processCheckBox()"/></td>
-								<td><form:checkbox path="contestWrappers[${x.index}].contestPrivate" disabled="false"  onclick="processCheckBox()"/></td>
-								<td><form:checkbox path="contestWrappers[${x.index}].featured" disabled="false"  onclick="processCheckBox()"/></td>
-								<td><form:checkbox path="subscribedToContest[${x.index}]" disabled="false"  onclick="processCheckBox()"/></td>
-								<td>${fn:length(contestWrapper.contestJudges)} </td>
-								<td>${fn:length(contestWrapper.contestAdvisors)} </td>
-								<td>${fn:length(contestWrapper.contestFellows)} </td>
-								<td>${contestWrapper.proposalsCount} </td>
-								<td>${contestWrapper.commentsCount} </td>
-								<td>
-									<a class="c-Button__primary innerVerticalCenter" href="${contestWrapper.contestUrl}" target="_blank">VIEW</a>
-
-								</td>
-							</tr>
-					</c:forEach>
+                    <c:forEach var="contestEntry" items="${contestOverviewWrapper.contests}" varStatus="x" >
+                        <c:set var="contestId" value="${contestEntry.key}"/>
+                        <c:set var="contest" value="${contestEntry.value}"/>
+                        <tr draggable="true"
+                            id = "${contestId}"
+                            data-filter-attribute="${contest.contestActive ? 'active' : 'prior'}"
+                            class = "${x.index %2==0 ? 'blue' : ''} draggable"
+                            data-filter-visible="true">
+                            <form:hidden path="contests[${contestId}].contestPK"
+                                         data-form-name="contestPK" />
+                            <td>
+                                <form:checkbox path="selectedContests[${contestId}]" />
+                            </td>
+                            <td>
+                                <form:hidden path="contests[${contestId}].weight"
+                                            cssClass="weightInput" data-form-name="weight" />
+                                             <span>${contest.weight}</span>
+                            </td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${not contest.isSharedContestInForeignColab}">
+                                        <a href="/admin/contest/details/contestId/${contestId}"> ${contest.contestShortNameWithEndYear}</a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a>${contest.contestShortNameWithEndYear}</a>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td>${contest.activePhase.name}</td>
+                            <td><form:checkbox path="contests[${contestId}].contestActive" disabled="false" onclick="processCheckBox()"/></td>
+                            <td><form:checkbox path="contests[${contestId}].contestPrivate" disabled="false"  onclick="processCheckBox()"/></td>
+                            <td><form:checkbox path="contests[${contestId}].featured" disabled="false"  onclick="processCheckBox()"/></td>
+                            <td><form:checkbox path="subscribedToContest[${contestId}]" disabled="false"  onclick="processCheckBox()"/></td>
+                            <td>${fn:length(contest.contestJudges)} </td>
+                            <td>${fn:length(contest.contestAdvisors)} </td>
+                            <td>${fn:length(contest.contestFellows)} </td>
+                            <td>${contest.proposalsCount} </td>
+                            <td>${contest.commentsCount} </td>
+                            <td>
+                                <a class="c-Button__primary innerVerticalCenter" href="${contest.contestUrl}" target="_blank">VIEW</a>
+                            </td>
+                        </tr>
+                    </c:forEach>
 				</tbody>
 			</table>
 
