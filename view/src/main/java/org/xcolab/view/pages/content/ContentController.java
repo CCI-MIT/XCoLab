@@ -53,7 +53,7 @@ public class ContentController {
         return "content/contentPage";
     }
 
-    @GetMapping("/contentwidget")
+    @GetMapping("/widgets/content")
     public String contentDisplay(HttpServletRequest request, Model model, @RequestParam Long contentArticleId) {
         model.addAttribute("articleId", contentArticleId);
         return "content/widget";

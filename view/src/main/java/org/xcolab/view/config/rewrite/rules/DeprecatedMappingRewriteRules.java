@@ -15,11 +15,10 @@ public class DeprecatedMappingRewriteRules implements RewriteRuleProvider {
     }
 
     /**
-     * Add rewrited for deprecated widget mappings.
+     * Add rewrites for deprecated widget mappings.
      *
      * These rewrites can be removed once the mappings on productions were updated.
      */
-    @Deprecated
     private void addWidgetRewrites(ConfigurationBuilder configurationBuilder) {
         SimpleRewriteBuilder.of(configurationBuilder)
                 .redirectFrom("/staffmemberswidget")
@@ -29,6 +28,8 @@ public class DeprecatedMappingRewriteRules implements RewriteRuleProvider {
                 .redirectFrom("/randomproposalswidget")
                     .to("/widgets/proposals")
                 .redirectFrom("/feedswidget")
-                    .to("/widgets/feeds");
+                    .to("/widgets/feeds")
+                .redirectFrom("/contentwidget")
+                    .to("/widgets/content");
     }
 }
