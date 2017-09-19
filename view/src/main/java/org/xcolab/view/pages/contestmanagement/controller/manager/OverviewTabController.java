@@ -25,7 +25,7 @@ import org.xcolab.view.util.entity.flash.AlertMessage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +53,7 @@ public class OverviewTabController extends AbstractTabController {
 
     @ModelAttribute("massActionsItems")
     public Map<String, String> populateMassActionsItems(HttpServletRequest request) {
-        Map<String, String> contestMassActionItems = new HashMap<>();
+        Map<String, String> contestMassActionItems = new LinkedHashMap<>();
 
         for (ContestMassActions contestMassAction : ContestMassActions.values()) {
             contestMassActionItems.put(contestMassAction.name(), contestMassAction.getAction().getDisplayName());
