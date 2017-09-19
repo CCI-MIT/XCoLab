@@ -13,6 +13,7 @@ import org.xcolab.util.http.client.RestService;
 import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;
+import org.xcolab.view.pages.contestmanagement.entities.ContestMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.MassActionDataWrapper;
 
@@ -115,6 +116,10 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
 
     public String getSelectedMassActionName() {
         return selectedMassActionName;
+    }
+
+    public ContestMassAction getSelectedMassAction() {
+        return ContestMassActions.valueOf(selectedMassActionName).getAction();
     }
 
     public void setSelectedMassActionName(String selectedMassActionName) {

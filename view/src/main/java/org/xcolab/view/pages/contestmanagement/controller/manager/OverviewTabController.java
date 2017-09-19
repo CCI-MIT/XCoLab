@@ -56,7 +56,8 @@ public class OverviewTabController extends AbstractTabController {
         Map<String, String> contestMassActionItems = new LinkedHashMap<>();
 
         for (ContestMassActions contestMassAction : ContestMassActions.values()) {
-            contestMassActionItems.put(contestMassAction.name(), contestMassAction.getAction().getDisplayName());
+            contestMassActionItems
+                    .put(contestMassAction.name(), contestMassAction.getAction().getDisplayName());
         }
 
         return contestMassActionItems;
@@ -99,7 +100,8 @@ public class OverviewTabController extends AbstractTabController {
         if (!tabWrapper.getCanEdit()) {
             response.sendError(403);
         }
-        List<Contest> contests = new ArrayList<>(updateContestOverviewWrapper.getContests().values());
+        List<Contest> contests =
+                new ArrayList<>(updateContestOverviewWrapper.getContests().values());
         OrderMassAction orderMassAction = (OrderMassAction) ContestMassActions.ORDER.getAction();
         orderMassAction.execute(contests);
     }
@@ -120,16 +122,12 @@ public class OverviewTabController extends AbstractTabController {
     private String showConfirmationView(Model model,
             ContestOverviewWrapper contestOverviewWrapper) {
         List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();
-        String selectedMassActionName = contestOverviewWrapper.getSelectedMassActionName();
+        ContestMassActions selectedMassActionWrapper =
+                ContestMassActions.valueOf(contestOverviewWrapper.getSelectedMassActionName());
         model.addAttribute("massActionConfirmationWrapper",
-                new MassActionConfirmationWrapper(contestIds, selectedMassActionName));
+                new MassActionConfirmationWrapper(contestIds, selectedMassActionWrapper));
 
         return CONFIRM_VIEW_PATH;
-    }
-
-    private ContestMassActions getMassActionWrapper(ContestOverviewWrapper contestOverviewWrapper) {
-        String selectedMassActionName = contestOverviewWrapper.getSelectedMassActionName();
-        return ContestMassActions.valueOf(selectedMassActionName);
     }
 
     private void executeMassAction(HttpServletRequest request, HttpServletResponse response,
@@ -137,8 +135,7 @@ public class OverviewTabController extends AbstractTabController {
             throws MassActionRequiresConfirmationException, IOException {
         contestOverviewWrapper.setMemberId(MemberAuthUtil.getMemberId(request));
 
-        ContestMassActions actionWrapper = getMassActionWrapper(contestOverviewWrapper);
-        ContestMassAction action = actionWrapper.getAction();
+        ContestMassAction action = contestOverviewWrapper.getSelectedMassAction();
         List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();
         List<Contest> contests = EntityIdListUtil.CONTESTS.fromIdList(contestIds);
 
