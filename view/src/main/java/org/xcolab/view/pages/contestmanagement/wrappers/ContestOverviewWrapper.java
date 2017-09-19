@@ -34,7 +34,7 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
             new ContestFlagTextToolTipBean();
     private final ContestModelSettingsBean contestModelSettingsBean = new ContestModelSettingsBean();
 
-    private Long selectedMassAction;
+    private String selectedMassActionName;
     private Long memberId;
 
     @SuppressWarnings("unused")
@@ -113,12 +113,12 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
         this.memberId = memberId;
     }
 
-    public Long getSelectedMassAction() {
-        return selectedMassAction;
+    public String getSelectedMassAction() {
+        return selectedMassActionName;
     }
 
-    public void setSelectedMassAction(Long selectedMassAction) {
-        this.selectedMassAction = selectedMassAction;
+    public void setSelectedMassAction(String selectedMassAction) {
+        this.selectedMassActionName = selectedMassAction;
     }
 
     public Map<Long, Boolean> getSubscribedToContest() {

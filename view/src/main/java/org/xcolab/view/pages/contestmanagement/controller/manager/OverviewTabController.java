@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
@@ -26,7 +25,9 @@ import org.xcolab.view.util.entity.flash.AlertMessage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,12 +52,11 @@ public class OverviewTabController extends AbstractTabController {
 
 
     @ModelAttribute("massActionsItems")
-    public List<LabelValue> populateMassActionsItems(HttpServletRequest request) {
-        List<LabelValue> contestMassActionItems = new ArrayList<>();
+    public Map<String, String> populateMassActionsItems(HttpServletRequest request) {
+        Map<String, String> contestMassActionItems = new HashMap<>();
 
         for (ContestMassActions contestMassAction : ContestMassActions.values()) {
-            contestMassActionItems.add(new LabelValue((long) contestMassAction.ordinal(),
-                    contestMassAction.getAction().getDisplayName()));
+            contestMassActionItems.put(contestMassAction.name(), contestMassAction.getAction().getDisplayName());
         }
 
         return contestMassActionItems;
@@ -120,19 +120,16 @@ public class OverviewTabController extends AbstractTabController {
     private String showConfirmationView(Model model,
             ContestOverviewWrapper contestOverviewWrapper) {
         List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();
-        int massActionIndex = contestOverviewWrapper.getSelectedMassAction().intValue();
+        String massActionName = contestOverviewWrapper.getSelectedMassAction();
         model.addAttribute("massActionConfirmationWrapper",
-                new MassActionConfirmationWrapper(contestIds, massActionIndex));
+                new MassActionConfirmationWrapper(contestIds, massActionName));
 
         return CONFIRM_VIEW_PATH;
     }
 
     private ContestMassActions getMassActionWrapper(ContestOverviewWrapper contestOverviewWrapper) {
-        int massActionIndex = contestOverviewWrapper.getSelectedMassAction().intValue();
-        if (massActionIndex > ContestMassActions.values().length) {
-            throw new IllegalArgumentException("Illegal mass action index");
-        }
-        return ContestMassActions.values()[massActionIndex];
+        String massActionName = contestOverviewWrapper.getSelectedMassAction();
+        return ContestMassActions.valueOf(massActionName);
     }
 
     private void executeMassAction(HttpServletRequest request, HttpServletResponse response,
