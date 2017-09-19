@@ -36,8 +36,8 @@ public class ConfirmMassActionController {
         List<Long> contestIds = massActionConfirmationWrapper.getSelectedContestIds();
         List<Contest> contests = EntityIdListUtil.CONTESTS.fromIdList(contestIds);
 
-        String massActionName = massActionConfirmationWrapper.getMassActionName();
-        ContestMassActions actionWrapper = ContestMassActions.valueOf(massActionName);
+        String selectedMassActionName = massActionConfirmationWrapper.getSelectedMassActionName();
+        ContestMassActions actionWrapper = ContestMassActions.valueOf(selectedMassActionName);
         ContestMassAction action = actionWrapper.getAction();
 
         try {

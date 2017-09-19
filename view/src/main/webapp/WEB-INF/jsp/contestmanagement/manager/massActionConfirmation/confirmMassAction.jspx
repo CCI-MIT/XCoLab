@@ -47,7 +47,7 @@
                     </tr>
                     </thead>
                     <tbody id="contestOverviewBody">
-                    <form:hidden path="massActionName"/>
+                    <form:hidden path="selectedMassActionName"/>
                     <form:hidden path="itemCount"/>
                     <c:forEach var="contestWrapper" items="${massActionConfirmationWrapper.contestWrappers}"
                                varStatus="x">

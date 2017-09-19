@@ -120,16 +120,16 @@ public class OverviewTabController extends AbstractTabController {
     private String showConfirmationView(Model model,
             ContestOverviewWrapper contestOverviewWrapper) {
         List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();
-        String massActionName = contestOverviewWrapper.getSelectedMassAction();
+        String selectedMassActionName = contestOverviewWrapper.getSelectedMassActionName();
         model.addAttribute("massActionConfirmationWrapper",
-                new MassActionConfirmationWrapper(contestIds, massActionName));
+                new MassActionConfirmationWrapper(contestIds, selectedMassActionName));
 
         return CONFIRM_VIEW_PATH;
     }
 
     private ContestMassActions getMassActionWrapper(ContestOverviewWrapper contestOverviewWrapper) {
-        String massActionName = contestOverviewWrapper.getSelectedMassAction();
-        return ContestMassActions.valueOf(massActionName);
+        String selectedMassActionName = contestOverviewWrapper.getSelectedMassActionName();
+        return ContestMassActions.valueOf(selectedMassActionName);
     }
 
     private void executeMassAction(HttpServletRequest request, HttpServletResponse response,

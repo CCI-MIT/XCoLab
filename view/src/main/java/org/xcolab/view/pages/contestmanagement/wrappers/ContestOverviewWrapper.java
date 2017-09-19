@@ -113,12 +113,12 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
         this.memberId = memberId;
     }
 
-    public String getSelectedMassAction() {
+    public String getSelectedMassActionName() {
         return selectedMassActionName;
     }
 
-    public void setSelectedMassAction(String selectedMassAction) {
-        this.selectedMassActionName = selectedMassAction;
+    public void setSelectedMassActionName(String selectedMassActionName) {
+        this.selectedMassActionName = selectedMassActionName;
     }
 
     public Map<Long, Boolean> getSubscribedToContest() {
