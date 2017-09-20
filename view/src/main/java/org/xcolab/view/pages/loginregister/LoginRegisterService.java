@@ -31,6 +31,8 @@ import org.xcolab.view.auth.handlers.AuthenticationSuccessHandler;
 import org.xcolab.view.pages.loginregister.singlesignon.SSOKeys;
 import org.xcolab.view.pages.redballon.utils.BalloonCookie;
 import org.xcolab.view.util.entity.HttpUtils;
+import org.xcolab.view.util.googleanalytics.GoogleAnalyticsEventType;
+import org.xcolab.view.util.googleanalytics.GoogleAnalyticsUtils;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -116,6 +118,20 @@ public class LoginRegisterService {
         ActivityEntryHelper.createActivityEntry(ActivitiesClientUtil.getClient(), member.getUserId(),
                 member.getUserId(), null, ActivityProvidersType.MemberJoinedActivityEntry.getType());
 
+        if(PlatformAttributeKey.ANALYTICS_PRIVATE_KEY_PATH.isPresent()){
+            if(fbIdString==null && googleId==null){
+                GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.REGISTRATION_FORM);
+            }else {
+                if (fbIdString != null) {
+                    GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.REGISTRATION_SSO_FACEBOOK);
+                }
+                else
+                if (googleId != null) {
+                    GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.REGISTRATION_SSO_GOOGLE);
+                }
+            }
+
+        }
         if (redirect == null) {
             redirect = "/";
         }

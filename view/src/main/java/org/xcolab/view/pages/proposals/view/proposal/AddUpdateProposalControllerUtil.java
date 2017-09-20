@@ -23,6 +23,8 @@ import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.utils.edit.ProposalCreationUtil;
 import org.xcolab.view.pages.proposals.utils.edit.ProposalMoveUtil;
 import org.xcolab.view.pages.proposals.utils.edit.ProposalUpdateHelper;
+import org.xcolab.view.util.googleanalytics.GoogleAnalyticsEventType;
+import org.xcolab.view.util.googleanalytics.GoogleAnalyticsUtils;
 
 import java.util.List;
 
@@ -74,11 +76,16 @@ public final class AddUpdateProposalControllerUtil {
                 final Long receiverId = activitySubscription.getReceiverId();
                 activitiesClient.addSubscription(receiverId, ActivityEntryType.PROPOSAL,
                         proposal.getProposalId(), "");
+
             }
 
 		 	ActivityEntryHelper.createActivityEntry(activitiesClient, memberId,
                     contest.getContestPK(), proposal.getProposalId().toString(),
                     ActivityProvidersType.ProposalCreatedActivityEntry.getType());
+
+            if(PlatformAttributeKey.ANALYTICS_PRIVATE_KEY_PATH.isPresent()) {
+                GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_CREATION);
+            }
         } else {
             ActivityEntryHelper.createActivityEntry(activitiesClient, memberId, proposal.getProposalId(), null,
                     ActivityProvidersType.ProposalAttributeUpdateActivityEntry.getType());

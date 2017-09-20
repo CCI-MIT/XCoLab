@@ -40,6 +40,8 @@ import org.xcolab.view.taglibs.xcolab.jspTags.discussion.exceptions
         .DiscussionAuthorizationException;
 import org.xcolab.view.taglibs.xcolab.jspTags.discussion.wrappers.NewMessageWrapper;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
+import org.xcolab.view.util.googleanalytics.GoogleAnalyticsEventType;
+import org.xcolab.view.util.googleanalytics.GoogleAnalyticsUtils;
 
 import java.io.IOException;
 
@@ -154,6 +156,10 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                                 comment.getCommentId() + "",
                                 ActivityProvidersType.DiscussionAddContestCommentActivityEntry
                                         .getType());
+
+                        if(PlatformAttributeKey.ANALYTICS_PRIVATE_KEY_PATH.isPresent()) {
+                            GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.COMMENT_CONTEST);
+                        }
 
                     }
                 } else {

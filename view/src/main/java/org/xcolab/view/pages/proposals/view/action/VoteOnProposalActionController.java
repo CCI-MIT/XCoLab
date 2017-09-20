@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.MembersClient;
@@ -23,6 +24,8 @@ import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.utils.voting.VoteValidator;
 import org.xcolab.view.pages.proposals.utils.voting.VoteValidator.ValidationResult;
 import org.xcolab.view.util.entity.analytics.AnalyticsUtil;
+import org.xcolab.view.util.googleanalytics.GoogleAnalyticsEventType;
+import org.xcolab.view.util.googleanalytics.GoogleAnalyticsUtils;
 
 import java.io.IOException;
 
@@ -88,6 +91,10 @@ public class VoteOnProposalActionController {
                         VOTE_ANALYTICS_ACTION,
                         VOTE_ANALYTICS_LABEL,
                         1);
+
+                if(PlatformAttributeKey.ANALYTICS_PRIVATE_KEY_PATH.isPresent()) {
+                    GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_VOTE);
+                }
             }
         } else {
             if (member == null) {
