@@ -219,6 +219,36 @@
 				</c:forEach>
 			</table>
 
+            <c:if test="${pointsActive}">
+                <h2 style="margin-top: 20px;">${currentUserProfile.proposalString} <spring:message code="profile.show.proposalpoints"/></h2>
+                <table class="colab">
+                    <c:forEach var="points" items="${currentUserProfile.usersPoints}">
+                        <c:if test="${points.baseProposal.visible and points.directProposal.visible }">
+                            <tr>
+                                <td> <xcolab:proposalLink proposal="${points.baseProposal}" /> </td>
+                                <td style="text-align: right;">
+                                    <xcolab:formatDateTime millis="${points.baseProposal.lastModifiedDate.time}" type="date"/>
+                                </td>
+                            </tr>
+                            <tr >
+                                <td>&#9;&#9;&#8811;<xcolab:proposalLink proposal="${points.directProposal}" /> </td>
+                                <td style="text-align: right;">
+                                    <xcolab:formatDateTime millis="${points.directProposal.lastModifiedDate.time}" type="date"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="colabRow">
+                                    <spring:message code="profile.show.pointsactual" arguments="${_colabShortName}"/> : ${points.materializedPoints}<br/>
+                                    <spring:message code="profile.show.pointsactualMax" arguments="${_colabShortName}"/> : ${points.hypotheticalPoints}
+
+                                </td>
+                            </tr>
+                        </c:if>
+                    </c:forEach>
+                </table>
+                <br/>
+            </c:if>
+
 			<h2><spring:message code="profile.show.supporting"/></h2>
 			<c:if test="${empty currentUserProfile.supportedProposals}">
                 <spring:message code="profile.show.supported.disclaimer" arguments="${userBean.displayNameShort},${currentUserProfile.proposalsString}" argumentSeparator=","/>

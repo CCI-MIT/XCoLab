@@ -1,6 +1,7 @@
 package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.pojo.points.PointType;
+import org.xcolab.client.proposals.pojo.points.Points;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
 import org.xcolab.util.clients.CoLabService;
 import org.xcolab.util.http.ServiceRequestUtils;
@@ -36,6 +37,9 @@ public final class PointsClientUtil {
         return client.updatePointsDistributionConfiguration(pointsDistributionConfiguration);
     }
 
+    public static List<Points> getPointsByUserId(Long userId){
+        return client.getPointsByUserId(userId);
+    }
     public static List<PointsDistributionConfiguration>
     getPointsDistributionByProposalIdPointTypeId(
             Long proposalId, Long pointTypeId) {

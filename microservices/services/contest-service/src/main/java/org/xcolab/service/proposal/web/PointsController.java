@@ -2,6 +2,7 @@ package org.xcolab.service.proposal.web;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.model.tables.pojos.PointType;
+import org.xcolab.model.tables.pojos.Points;
 import org.xcolab.model.tables.pojos.PointsDistributionConfiguration;
+import org.xcolab.service.proposal.domain.points.PointsDao;
 import org.xcolab.service.proposal.domain.pointsdistributionconfiguration
         .PointsDistributionConfigurationDao;
 import org.xcolab.service.proposal.domain.pointtype.PointTypeDao;
@@ -30,6 +33,9 @@ public class PointsController {
 
     @Autowired
     private PointTypeDao pointTypeDao;
+
+    @Autowired
+    private PointsDao pointsDao;
 
     @Autowired
     private PointsDistributionConfigurationService pointsDistributionConfigurationService;
@@ -105,7 +111,10 @@ public class PointsController {
         }
     }
 
-
+    @RequestMapping(value = "/points", method = RequestMethod.GET)
+    public List<Points> getPoints(@RequestParam(required = false) Long userId){
+        return pointsDao.findByGiven(userId);
+    }
 
     @RequestMapping(value = "/pointTypes/{pointTypeId}", method = RequestMethod.GET)
     public PointType getPointType(@PathVariable("pointTypeId") Long pointTypeId) throws NotFoundException {

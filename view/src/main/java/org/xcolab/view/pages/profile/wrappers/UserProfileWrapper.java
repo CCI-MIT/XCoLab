@@ -16,11 +16,14 @@ import org.xcolab.client.members.legacy.utils.SendMessagePermissionChecker;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.members.pojo.Message;
 import org.xcolab.client.members.pojo.Role_;
+import org.xcolab.client.proposals.PointsClient;
+import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.ProposalMemberRatingClientUtil;
 import org.xcolab.client.proposals.pojo.ContestTypeProposal;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.members.ProposalSupporter;
+import org.xcolab.client.proposals.pojo.points.Points;
 import org.xcolab.view.activityentry.ActivityEntryHelper;
 import org.xcolab.view.pages.profile.beans.BadgeBean;
 import org.xcolab.view.pages.profile.beans.MessageBean;
@@ -65,6 +68,8 @@ public class UserProfileWrapper implements Serializable {
     private UserSubscriptionsWrapper userSubscriptions;
     private BadgeBean badges;
 
+    private List<Points> usersPoints;
+
     private final ActivityEntryHelper activityEntryHelper;
 
     private boolean viewingOwnProfile;
@@ -86,6 +91,10 @@ public class UserProfileWrapper implements Serializable {
             }
             init();
         }
+    }
+
+    public List<Points> getUsersPoints() {
+        return usersPoints;
     }
 
     private void init() {
@@ -135,6 +144,8 @@ public class UserProfileWrapper implements Serializable {
                         .add(p);
             }
         }
+
+        usersPoints = PointsClientUtil.getPointsByUserId(member.getId_());
     }
 
     public boolean isStaffMemberProfile() {

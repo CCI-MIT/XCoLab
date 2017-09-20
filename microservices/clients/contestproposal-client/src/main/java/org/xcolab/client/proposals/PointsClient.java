@@ -2,8 +2,10 @@ package org.xcolab.client.proposals;
 
 import org.xcolab.client.proposals.pojo.points.PointType;
 import org.xcolab.client.proposals.pojo.points.PointTypeDto;
+import org.xcolab.client.proposals.pojo.points.Points;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfiguration;
 import org.xcolab.client.proposals.pojo.points.PointsDistributionConfigurationDto;
+import org.xcolab.client.proposals.pojo.points.PointsDto;
 import org.xcolab.util.http.caching.CacheKeys;
 import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.util.http.client.RestResource1;
@@ -25,12 +27,20 @@ public final class PointsClient {
             pointsDistributionConfigurationResource;
     private final RestResource1<PointTypeDto, Long> pointTypeResource;
 
+    private final RestResource1<PointsDto,Long> pointsResource;
+
     private PointsClient(RestService proposalService) {
+
+
+
         pointsDistributionConfigurationResource = new RestResource1<>(proposalService,
         "pointsDistributionConfigurations", PointsDistributionConfigurationDto.TYPES);
         pointTypeResource = new RestResource1<>(proposalService,
                 "pointTypes", PointTypeDto.TYPES);
+
         this.proposalService = proposalService;
+        pointsResource = new RestResource1<>(proposalService,"points", PointsDto.TYPES);
+
     }
 
     public static PointsClient fromService(RestService proposalService) {
@@ -67,6 +77,12 @@ public final class PointsClient {
                 .execute();
     }
 
+    public List<Points> getPointsByUserId(Long userId){
+
+        return DtoUtil.toPojos(pointsResource.list()
+                .optionalQueryParam("userId", userId)
+                .execute(), proposalService);
+    }
     public List<PointsDistributionConfiguration> getPointsDistributionByProposalIdPointTypeId(
             Long proposalId, Long pointTypeId) {
         return DtoUtil.toPojos(pointsDistributionConfigurationResource.list()
