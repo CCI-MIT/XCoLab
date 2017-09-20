@@ -92,9 +92,9 @@ public class VoteOnProposalActionController {
                         VOTE_ANALYTICS_LABEL,
                         1);
 
-                if(PlatformAttributeKey.ANALYTICS_PRIVATE_KEY_PATH.isPresent()) {
-                    GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_VOTE);
-                }
+
+                GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_VOTE);
+
             }
         } else {
             if (member == null) {

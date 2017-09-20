@@ -83,9 +83,8 @@ public final class AddUpdateProposalControllerUtil {
                     contest.getContestPK(), proposal.getProposalId().toString(),
                     ActivityProvidersType.ProposalCreatedActivityEntry.getType());
 
-            if(PlatformAttributeKey.ANALYTICS_PRIVATE_KEY_PATH.isPresent()) {
-                GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_CREATION);
-            }
+            GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_CREATION);
+
         } else {
             ActivityEntryHelper.createActivityEntry(activitiesClient, memberId, proposal.getProposalId(), null,
                     ActivityProvidersType.ProposalAttributeUpdateActivityEntry.getType());

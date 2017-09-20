@@ -157,9 +157,8 @@ public class AddDiscussionMessageActionController extends BaseDiscussionsActionC
                                 ActivityProvidersType.DiscussionAddContestCommentActivityEntry
                                         .getType());
 
-                        if(PlatformAttributeKey.ANALYTICS_PRIVATE_KEY_PATH.isPresent()) {
-                            GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.COMMENT_CONTEST);
-                        }
+
+                        GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.COMMENT_CONTEST);
 
                     }
                 } else {

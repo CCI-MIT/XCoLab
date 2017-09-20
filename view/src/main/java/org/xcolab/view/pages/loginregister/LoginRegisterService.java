@@ -53,7 +53,7 @@ public class LoginRegisterService {
     private final AuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Autowired
-    public  LoginRegisterService(AuthenticationService authenticationService,
+    public LoginRegisterService(AuthenticationService authenticationService,
             AuthenticationSuccessHandler authenticationSuccessHandler) {
         this.authenticationService = authenticationService;
         this.authenticationSuccessHandler = authenticationSuccessHandler;
@@ -62,23 +62,23 @@ public class LoginRegisterService {
     /**
      * Completes the user registration with the parameters set in the CreateUserBean
      *
-     * @param request        The HttpServletRequest object
-     * @param response       The HttpServletResponse object
+     * @param request The HttpServletRequest object
+     * @param response The HttpServletResponse object
      * @param newAccountBean The new user bean object
-     * @param redirect       Redirect URL for this request (may be null)
+     * @param redirect Redirect URL for this request (may be null)
      */
     public void completeRegistration(HttpServletRequest request, HttpServletResponse response,
             CreateUserBean newAccountBean, String redirect, boolean postRegistration)
             throws IOException {
         HttpSession session = request.getSession();
-        String fbIdString =
-                (String) session.getAttribute(SSOKeys.FACEBOOK_USER_ID);
+        String fbIdString = (String) session.getAttribute(SSOKeys.FACEBOOK_USER_ID);
         String googleId = (String) session.getAttribute(SSOKeys.SSO_GOOGLE_ID);
 
         final Member member = register(newAccountBean.getScreenName(), newAccountBean.getPassword(),
-                        newAccountBean.getEmail(), newAccountBean.getFirstName(), newAccountBean.getLastName(),
-                        newAccountBean.getShortBio(), newAccountBean.getCountry(), fbIdString, googleId,
-                        newAccountBean.getImageId(), false, newAccountBean.getLanguage());
+                newAccountBean.getEmail(), newAccountBean.getFirstName(),
+                newAccountBean.getLastName(), newAccountBean.getShortBio(),
+                newAccountBean.getCountry(), fbIdString, googleId, newAccountBean.getImageId(),
+                false, newAccountBean.getLanguage());
 
         // SSO
         if (StringUtils.isNotBlank(fbIdString)) {
@@ -104,34 +104,37 @@ public class LoginRegisterService {
             }
         }
         //update user association for all BUTs under this email address
-        BalloonsClient.getBalloonUserTrackingByEmail(member.getEmailAddress())
-                .forEach(b -> b.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress()));
+        BalloonsClient.getBalloonUserTrackingByEmail(member.getEmailAddress()).forEach(
+                b -> b.updateUserIdAndEmailIfEmpty(member.getId_(), member.getEmailAddress()));
 
         try {
-            checkLogin(request, response, newAccountBean.getScreenName(), newAccountBean.getPassword(), redirect);
+            checkLogin(request, response, newAccountBean.getScreenName(),
+                    newAccountBean.getPassword(), redirect);
         } catch (MemberNotFoundException | PasswordLoginException | LockoutLoginException e) {
             throw new InternalException(e);
         }
 
         session.setAttribute("collab_user_has_registered", true);
 
-        ActivityEntryHelper.createActivityEntry(ActivitiesClientUtil.getClient(), member.getUserId(),
-                member.getUserId(), null, ActivityProvidersType.MemberJoinedActivityEntry.getType());
+        ActivityEntryHelper
+                .createActivityEntry(ActivitiesClientUtil.getClient(), member.getUserId(),
+                        member.getUserId(), null,
+                        ActivityProvidersType.MemberJoinedActivityEntry.getType());
 
-        if(PlatformAttributeKey.ANALYTICS_PRIVATE_KEY_PATH.isPresent()){
-            if(fbIdString==null && googleId==null){
-                GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.REGISTRATION_FORM);
-            }else {
-                if (fbIdString != null) {
-                    GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.REGISTRATION_SSO_FACEBOOK);
-                }
-                else
-                if (googleId != null) {
-                    GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.REGISTRATION_SSO_GOOGLE);
-                }
+
+        if (fbIdString == null && googleId == null) {
+            GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.REGISTRATION_FORM);
+        } else {
+            if (fbIdString != null) {
+                GoogleAnalyticsUtils
+                        .pushEventAsync(GoogleAnalyticsEventType.REGISTRATION_SSO_FACEBOOK);
+            } else if (googleId != null) {
+                GoogleAnalyticsUtils
+                        .pushEventAsync(GoogleAnalyticsEventType.REGISTRATION_SSO_GOOGLE);
             }
-
         }
+
+
         if (redirect == null) {
             redirect = "/";
         }
@@ -148,23 +151,22 @@ public class LoginRegisterService {
             throws MemberNotFoundException {
         Long memberId = MembersClient.updateUserPassword(forgotPasswordToken, newPassword);
         if (memberId == null) {
-            throw new MemberNotFoundException("Member with forgotPasswordToken: "
-                    + forgotPasswordToken + " was not found");
+            throw new MemberNotFoundException(
+                    "Member with forgotPasswordToken: " + forgotPasswordToken + " was not found");
         }
     }
 
     public Member autoRegister(String emailAddress, String firstName, String lastName) {
-        return register(MembersClient.generateScreenName(lastName, firstName), null,
-                emailAddress, firstName, lastName, "", null, null,
-                null, null, true, "en");
+        return register(MembersClient.generateScreenName(lastName, firstName), null, emailAddress,
+                firstName, lastName, "", null, null, null, null, true, "en");
     }
 
-    public Member register(String screenName, String password, String email,
-            String firstName, String lastName, String shortBio, String country, String fbIdString,
-            String googleId, String imageId, boolean generateLoginUrl, String language) {
+    public Member register(String screenName, String password, String email, String firstName,
+            String lastName, String shortBio, String country, String fbIdString, String googleId,
+            String imageId, boolean generateLoginUrl, String language) {
 
-        Long memberId = SharedColabClient.retrieveSharedId(email, screenName,
-                ConfigurationAttributeKey.COLAB_NAME.get());
+        Long memberId = SharedColabClient
+                .retrieveSharedId(email, screenName, ConfigurationAttributeKey.COLAB_NAME.get());
 
         Member member = new Member();
         member.setId_(memberId);
@@ -204,21 +206,23 @@ public class LoginRegisterService {
         return member;
     }
 
-    public Member checkLogin(HttpServletRequest request, HttpServletResponse response, String login, String password)
+    public Member checkLogin(HttpServletRequest request, HttpServletResponse response, String login,
+            String password)
             throws MemberNotFoundException, PasswordLoginException, LockoutLoginException {
         return checkLogin(request, response, login, password, "");
     }
 
     //TODO: rethink name and semantics
-    public Member checkLogin(HttpServletRequest request, HttpServletResponse response, String login, String password, String referer)
+    public Member checkLogin(HttpServletRequest request, HttpServletResponse response, String login,
+            String password, String referer)
             throws MemberNotFoundException, PasswordLoginException, LockoutLoginException {
         if (StringUtils.isBlank(login)) {
             return null;
         }
         final String screenName = getScreenNameFromLogin(login);
         Member member = MembersClient.findMemberByScreenNameNoRole(screenName);
-        boolean loggedIn = MembersClient
-                .login(member.getId_(), password, request.getRemoteAddr(), referer);
+        boolean loggedIn =
+                MembersClient.login(member.getId_(), password, request.getRemoteAddr(), referer);
         if (loggedIn) {
             authenticationService.authenticate(request, response, member);
         }
@@ -227,8 +231,8 @@ public class LoginRegisterService {
 
     public void logIn(HttpServletRequest request, HttpServletResponse response, Member member) {
         try {
-            Authentication authentication = authenticationService
-                    .authenticate(request, response, member);
+            Authentication authentication =
+                    authenticationService.authenticate(request, response, member);
             authenticationSuccessHandler.onAuthenticationSuccess(request, response, authentication);
         } catch (ServletException | IOException e) {
             authenticationService.logout(request, response);

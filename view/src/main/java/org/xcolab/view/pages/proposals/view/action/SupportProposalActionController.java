@@ -58,9 +58,9 @@ public class SupportProposalActionController {
                     SUPPORT_ANALYTICS_ACTION,
                     SUPPORT_ANALYTICS_LABEL,
                     analyticsValue);
-                if(PlatformAttributeKey.ANALYTICS_PRIVATE_KEY_PATH.isPresent()) {
-                    GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_SUPPORT);
-                }
+
+                GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.CONTEST_ENTRY_SUPPORT);
+
             }
             try {
                 Contest contest = proposalContext.getClients().getProposalClient().getLatestContestInProposal(proposalId);
