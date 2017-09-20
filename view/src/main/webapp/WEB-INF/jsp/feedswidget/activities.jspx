@@ -3,24 +3,25 @@
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
           xmlns:spring="http://www.springframework.org/tags">
 
-	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
-<c:if test="${not empty communityTopContentArticleId}">
-	<xcolab:layout>
-		<xcolab:content articleId="${communityTopContentArticleId}" />
-		<div id="content">
-			<div class="pro" id="bread">
-				<div class="memberActivitiesContainer" style="display: inline;">
-                    <img alt="" height="8" src="images/arrow.gif" width="8" />
-                    <a href="/members"><spring:message code="colab.breadcrums.community"/> </a>
-                    <img alt="" height="8" src="/images/arrow.gif" width="8" />
-                    <a href="/activities"><spring:message code="colab.breadcrums.activities"/> </a></div>
-			</div>
+    <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+    <c:if test="${not empty communityTopContentArticleId}">
+        <xcolab:layout>
+            <xcolab:content articleId="${communityTopContentArticleId}"/>
+            <div id="content">
+                <div class="pro" id="bread">
+                    <div class="memberActivitiesContainer" style="display: inline;">
+                        <img alt="" height="8" src="images/arrow.gif" width="8"/>
+                        <a href="/members"><spring:message code="colab.breadcrums.community"/> </a>
+                        <img alt="" height="8" src="/images/arrow.gif" width="8"/>
+                        <a href="/activities"><spring:message code="colab.breadcrums.activities"/>
+                        </a></div>
+                </div>
 
-			<jsp:directive.include file="activities_common.jspx" />
-		</div>
-	</xcolab:layout>
-</c:if>
-<c:if test="${empty communityTopContentArticleId}">
-	<jsp:directive.include file="activities_common.jspx" />
-</c:if>
+                <jsp:directive.include file="activities_common.jspx"/>
+            </div>
+        </xcolab:layout>
+    </c:if>
+    <c:if test="${empty communityTopContentArticleId}">
+        <jsp:directive.include file="activities_common.jspx"/>
+    </c:if>
 </jsp:root>

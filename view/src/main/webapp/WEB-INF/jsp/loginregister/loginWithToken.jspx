@@ -20,21 +20,22 @@
                 <form action="/login/token/${tokenId}" method="post">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                     <input type="hidden" name="tokenKey" value="${tokenKey}" />
-                    <div>
-                        <label for="remember-me">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="remember-me" name="remember-me" checked="checked" />
                             Remember me
-                            <img src="/images/icon-addprop-question-bar.png" class="js-Tooltip" style="vertical-align: middle;"
-                                 title="If this box is checked, you will stay logged into the site automatically for one month." />:
                         </label> &#160;
-                        <input type="checkbox" id="remember-me" name="remember-me" checked="checked" />
+                        <img src="/images/icon-addprop-question-bar.png" class="js-Tooltip" style="vertical-align: middle;"
+                             title="If this box is checked, you will stay logged into the site automatically for one month." />
                     </div>
-                    <div>
+                    <div class="checkbox">
                         <label for="invalidate-link">
+                            <input type="checkbox" id="invalidate-link" name="invalidateLink" />
                             Invalidate link after login
-                            <img src="/images/icon-addprop-question-bar.png" class="js-Tooltip" style="vertical-align: middle;"
-                                 title="If you are using a public computer, check this box to prevent others from being able to use your login." />:
                         </label> &#160;
-                        <input type="checkbox" id="invalidate-link" name="invalidateLink" />
+                        <img src="/images/icon-addprop-question-bar.png" class="js-Tooltip" style="vertical-align: middle;"
+                             title="If you are using a public computer, check this box to prevent others from being able to use your login." />
+
                     </div>
                     <button type="submit" class="c-Button__primary">Log in</button>
                 </form>

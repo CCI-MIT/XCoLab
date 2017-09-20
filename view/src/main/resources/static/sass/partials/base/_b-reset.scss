@@ -8,7 +8,6 @@ small, strike, strong, b, i, sub, sup, tt, var, caption,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend, input,
 table, tbody, tfoot, thead, tr, th, td {
-  margin: 0;
   padding: 0;
   word-wrap: normal !important;
   word-break: normal !important;
@@ -31,11 +30,6 @@ td {
 td, th {
   text-align: left;
   line-height: normal;
-}
-
-select {
-  height: 30px;
-  font-size: 16px;
 }
 
 a:active {

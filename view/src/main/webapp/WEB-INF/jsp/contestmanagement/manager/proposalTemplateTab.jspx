@@ -45,7 +45,7 @@
 			<div class="addpropbox">
 				<strong class="inputTitleLeft">Selected template:</strong>
 				<div class="addpropInputContainer">
-					<form:select path="elementId" id="changeElementSelect" cssClass="wideLargeInput">
+					<form:select path="elementId" id="changeElementSelect" cssClass="form-control">
 						<form:options items="${elementSelectIdWrapper.selectionItems}" itemValue="value" itemLabel="lable"/>
 					</form:select>
 					<div class="reg_errors">
@@ -70,7 +70,7 @@
 
 					<div class="addpropbox">
 						<strong class="inputTitleLeft">Template name:</strong>
-						<form:input path="templateName"/>
+						<form:input path="templateName" cssClass="form-control"/>
 						<div class="reg_errors"><!--  -->
 							<form:errors cssClass="c-Alert c-Alert__error" path="templateName" />
 						</div>
@@ -102,7 +102,7 @@
 
 							<div>
 								<strong>Section type:</strong><br/>
-								<form:select path="sections[${x.index}].type" data-form-name="type" class="type-select">
+								<form:select path="sections[${x.index}].type" data-form-name="type" cssClass="form-control">
 									<form:option value="NONE" label="--- Select ---" />
 									<form:options items="${sectionTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
 								</form:select>
@@ -115,14 +115,14 @@
                                         <strong>Contest Types allowed:</strong>
                                         <span class="ontology-term-label"><!-- --></span> <br/>
                                         <form:select multiple="true" path="sections[${x.index}].allowedContestTypeIds" data-form-name="allowedContestTypeIds"
-                                                     cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+                                                     cssClass="ontology-terms" cssStyle="form-control" size="5">
                                             <form:options items="${contestTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
                                         </form:select>
                                     </div>
 
                                     <div>
                                         <strong>Point override - PointType: </strong><br/>
-                                        <form:select path="sections[${x.index}].pointType" data-form-name="pointType">
+                                        <form:select path="sections[${x.index}].pointType" data-form-name="pointType" cssClass="form-control">
                                             <form:options items="${pointTypeSelectionItems}" itemValue="value" itemLabel="lable"/>
                                         </form:select>
                                         <br/>
@@ -133,17 +133,19 @@
 
                                     <div>
                                         <strong>Level:</strong><br/>
-                                        <form:select path="sections[${x.index}].level" data-form-name="level">
+                                        <form:select path="sections[${x.index}].level" data-form-name="level" cssClass="form-control">
                                             <form:options items="${levelSelectionItems}" itemValue="value" itemLabel="lable"/>
                                         </form:select>
                                     </div>
 
-                                    <div>
-                                        <strong>Is this proposal reference field used for contest integration?</strong><br/>
-                                        <form:checkbox path="sections[${x.index}].contestIntegrationRelevance"
-                                                       id="sections${x.index}.contestIntegrationRelevance"
-                                                       data-form-name="contestIntegrationRelevance">
-                                        </form:checkbox>
+                                    <div class="checkbox">
+                                        <label>
+                                            <strong>Is this proposal reference field used for contest integration?</strong><br/>
+                                            <form:checkbox path="sections[${x.index}].contestIntegrationRelevance"
+                                                           id="sections${x.index}.contestIntegrationRelevance"
+                                                           data-form-name="contestIntegrationRelevance">
+                                            </form:checkbox>
+                                        </label>
                                     </div>
                                 </div>
 
@@ -156,7 +158,7 @@
                                         <span class="ontology-term-label"><!-- --></span>
                                         <br/>
                                         <form:select multiple="true" path="sections[${x.index}].whatTermIds" data-form-name="whatTermId"
-                                                     cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+                                                     cssClass="ontology-terms form-control" size="5">
                                             <form:options items="${whatTerms}" itemValue="value" itemLabel="lable"/>
                                         </form:select>
                                     </div>
@@ -164,7 +166,7 @@
                                         <strong>WHERE Ontology term:</strong>
                                         <span class="ontology-term-label"><!-- --></span><br/>
                                         <form:select multiple="true" path="sections[${x.index}].whereTermIds" data-form-name="whereTermId"
-                                                     cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+                                                     cssClass="ontology-terms form-control" size="5">
                                             <form:options items="${whereTerms}" itemValue="value" itemLabel="lable"/>
                                         </form:select>
                                     </div>
@@ -172,7 +174,7 @@
                                         <strong>WHO Ontology term:</strong>
                                         <span class="ontology-term-label"><!-- --></span><br/>
                                         <form:select multiple="true" path="sections[${x.index}].whoTermIds" data-form-name="whoTermId"
-                                                     cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+                                                     cssClass="ontology-terms form-control" size="5">
                                             <form:options items="${whoTerms}" itemValue="value" itemLabel="lable"/>
                                         </form:select>
                                     </div>
@@ -180,7 +182,7 @@
                                         <strong>HOW Ontology term:</strong>
                                         <span class="ontology-term-label"><!-- --></span><br/>
                                         <form:select multiple="true" path="sections[${x.index}].howTermIds" data-form-name="howTermId"
-                                                     cssClass="ontology-terms" cssStyle="width: auto; height: auto; max-width: 920px" size="5">
+                                                     cssClass="ontology-terms form-control" size="5">
                                             <form:options items="${howTerms}" itemValue="value" itemLabel="lable"/>
                                         </form:select>
                                     </div>
@@ -192,36 +194,33 @@
 							<div class="clearfix"><!-- --></div>
 							<div>
 								<div>
-									<strong>Title:</strong><br/><form:input path="sections[${x.index}].title" data-form-name="title"/>
+									<strong>Title:</strong><br/>
+                                    <form:input path="sections[${x.index}].title" data-form-name="title" cssClass="form-control"/>
 								</div>
 								<div class="clearfix"><!-- --></div>
 								<div>
 									<span class="floatLeft"><strong>Character limit:</strong></span><br/>
-									<form:input path="sections[${x.index}].characterLimit" data-form-name="characterLimit"/>
+									<form:input path="sections[${x.index}].characterLimit" data-form-name="characterLimit" cssClass="form-control"/>
 								</div>
 							</div>
 
 							<div class="clearfix"><!--  --></div>
 							<strong>Help text:</strong><br/>
-							<div class="addpropInputContainer">
-								<form:textarea path="sections[${x.index}].helpText"  data-form-name="helpText"  />   <!-- cssClass="rte-editorPlaceholder" -->
-								<div class="reg_errors">
-									<form:errors cssClass="c-Alert c-Alert__error" path="sections[${x.index}].helpText" />
-								</div>
-							</div>
+                            <form:textarea path="sections[${x.index}].helpText"  data-form-name="helpText" cssClass="form-control" />   <!-- cssClass="rte-editorPlaceholder" -->
+                            <div class="reg_errors">
+                                <form:errors cssClass="c-Alert c-Alert__error" path="sections[${x.index}].helpText" />
+                            </div>
 							<div class="clearfix"><!--  --></div>
 							<strong>Default text:</strong><br/>
-							<div class="addpropInputContainer">
-								<form:textarea path="sections[${x.index}].defaultText"  data-form-name="defaultText"  />   <!-- cssClass="rte-editorPlaceholder" -->
-								<div class="reg_errors">
-									<form:errors cssClass="c-Alert c-Alert__error" path="sections[${x.index}].defaultText" />
-								</div>
-							</div>
+                            <form:textarea path="sections[${x.index}].defaultText"  data-form-name="defaultText" cssClass="form-control" />   <!-- cssClass="rte-editorPlaceholder" -->
+                            <div class="reg_errors">
+                                <form:errors cssClass="c-Alert c-Alert__error" path="sections[${x.index}].defaultText" />
+                            </div>
 
                             <div class="js-sectionTypeDependent" data-section-type="DROPDOWN_MENU"
                                     style="display: none">
                                 <strong >Options :</strong><small>(use ';' to separate the options)</small><br/>
-                                <form:input  path="sections[${x.index}].allowedValues" data-form-name="allowedValues"/>
+                                <form:input  path="sections[${x.index}].allowedValues" data-form-name="allowedValues" cssClass="form-control"/>
                             </div>
 
 						</div>

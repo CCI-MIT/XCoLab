@@ -188,7 +188,7 @@ function initUserAutocomplete(idPostfix, canEdit) {
                             htmlTemplate +=
                                 '<input type="text" name="assignmentsByUserIdByPointTypeId[' + idPostfix + ']['
                                 + ui.item.id +
-                                ']" class="popupreg_input" value="0.0" /> ';
+                                ']" class="form-control" value="0.0" /> ';
                         } else {
                             htmlTemplate += '<span class="input">0.0</span>';
                         }

@@ -1,5 +1,7 @@
 package org.xcolab.view.pages.content;
 
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.errors.ErrorText;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -53,8 +56,13 @@ public class ContentController {
         return "content/contentPage";
     }
 
-    @GetMapping("/contentwidget")
-    public String contentDisplay(HttpServletRequest request, Model model, @RequestParam Long contentArticleId) {
+    @GetMapping("/widgets/content")
+    public String contentDisplay(HttpServletRequest request, HttpServletResponse response,
+            Model model, @RequestParam Long contentArticleId) {
+        response.setHeader(HttpHeaders.CACHE_CONTROL,
+                CacheControl.maxAge(30, TimeUnit.SECONDS)
+                        .staleWhileRevalidate(36, TimeUnit.HOURS)
+                        .getHeaderValue());
         model.addAttribute("articleId", contentArticleId);
         return "content/widget";
     }

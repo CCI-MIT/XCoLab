@@ -19,7 +19,7 @@
             <h2 id="${unsavedStar}">${title}</h2>
         </div>
         <div class="teamMemberAdd">
-            <input id="${inputBox}" type="text" class="profile_input teamMembers"/>
+            <input id="${inputBox}" type="text" class="form-control teamMembers"/>
             <div class="clear"><!-- --></div>
             <div id="${pleaseChooseFromList}" style="display: none;"
                  class="c-Alert c-Alert__error">Please choose a user from list.

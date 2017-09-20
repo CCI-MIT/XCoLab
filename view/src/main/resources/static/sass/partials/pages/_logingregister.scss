@@ -38,10 +38,6 @@
   color: $t-Color__grey--darkest;
 }
 
-.popupreg_input_container {
-  margin-bottom: 15px;
-}
-
 .popupreg_input {
   float: left;
   width: 300px;
@@ -59,44 +55,11 @@
   left: -5px;
 }
 
-.popupreg_recap #recaptcha_area, .popupreg_recap #recaptcha_table, .popupreg_recap #recaptcha_widget_div {
-  display: inline;
-}
-
-.popupreg_txt.recap {
-  margin-top: 45px;
-}
-
-.popupreg_recap {
-  margin-top: 40px;
-}
 
 .popupreg_terms {
   margin-top: 30px;
   color: #444;
 }
-
-.popupreg_submit_wrap {
-  margin-top: 30px;
-  text-align: center;
-}
-
-/** User signed in header **/
-.userpop ul li {
-  list-style: none;
-}
-
-#userPopupContainer {
-  display: none;
-}
-
-#c-Header__menu__right li.c {
-  background: white;
-  border-left: 1px solid $t-Color__grey--medium;
-}
-
-/*** POPUPS ****/
-//TODO: this might patrially go to the popups partial.
 
 .inputLimitContainer {
   margin-top: 5px;
@@ -107,20 +70,6 @@
 .inputLimitContainer.overflow {
   color: #b00;
   font-weight: $b-Typography__fontWeight--bold;
-}
-
-.login-box-table {
-  float: left;
-}
-
-table.login-box-table td {
-  padding: 0 3px 0 0;
-  vertical-align: middle;
-}
-
-table.login-box-table th {
-  padding: 0 3px 10px 0;
-  vertical-align: middle;
 }
 
 .required-field:after {
@@ -159,14 +108,6 @@ th.second {
   width: 100%;
 }
 
-.cke_editor_shortBio {
-  width: 100%;
-}
-
 .is-required {
   margin: 0 !important;
-}
-
-#fileUploadForm {
-  height: 0;
 }

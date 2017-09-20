@@ -1,0 +1,39 @@
+<jsp:root version="2.1" xmlns:jsp="http://java.sun.com/JSP/Page"
+		  xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:form="http://www.springframework.org/tags/form">
+
+    <!--@elvariable id="preferences" type="org.xcolab.view.widgets.staffmembers.StaffMembersPreferences"-->
+
+	<jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
+	<xcolab:layout>
+
+        <xcolab:editPreferences preferences="${preferences}">
+
+            <div class="form-group">
+                <label>Category</label>
+                <form:select path="categoryId" items="${categories}" cssClass="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Amount of columns (only applies if photos are displayed)</label>
+                <form:input path="columnAmount" cssClass="form-control" />
+            </div>
+
+            <div class="checkbox">
+                <label>
+                    <form:checkbox path="displayPhoto" />
+                    display photos
+                </label>
+            </div>
+
+            <div class="checkbox">
+                <label>
+                    <form:checkbox path="displayUrl" />
+                    display URLs
+                </label>
+            </div>
+
+        </xcolab:editPreferences>
+
+	</xcolab:layout>
+</jsp:root>

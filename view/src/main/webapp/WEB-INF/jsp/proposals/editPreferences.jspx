@@ -19,75 +19,24 @@
             <c:set var="checkForMissingTeamMembersURL" value="/proposals/checkForMissingTeamMembers" />
 
             <form:form commandName="preferences" action="${checkForMissingTeamMembersURL}">
-
-                <p>
-                    <input type="submit"
-                           style="
-                        background: #ddd;
-                        color: white;
-                        font-size: 1em;
-                        border: 1px solid gray;
-                        border-radius: 6px;
-                        padding: 0.5em;
-                        cursor: pointer;
-                        margin-top: 2em;
-                       " value="Check for missing team members"/>
-                </p>
+                <div class="form-group">
+                    <button type="submit" class="c-Button__secondary small">
+                        Check for missing team members
+                    </button>
+                </div>
             </form:form>
+
             <c:set var="runRibbonDistributionURL" value="/proposals/runRibbonDistribution"/>
             <form:form commandName="preferences" action="${runRibbonDistributionURL}">
-                <p>
-                    <input type="submit"
-                      style="
-                        background: #a30;
-                        color: white;
-                        font-size: 1em;
-                        border: 1px solid gray;
-                        border-radius: 6px;
-                        padding: 0.5em;
-                        cursor: pointer;
-                        margin-top: 2em;
-                       "
-                       value="Run (Semi)-Finalist Ribbon Distribution and Copy All Proposals to Winners Awarded for All Active Contests"
-                       onclick="return confirm('Are you sure? This action cannot be undone.');" />
-                </p>
+                <div class="form-group">
+                    <button type="submit" class="c-Button__secondary small"
+                            onclick="return confirm('Are you sure? This action cannot be undone.');">
+                        Run (Semi)-Finalist Ribbon Distribution and Copy All Proposals to Winners Awarded for All Active Contests
+                    </button>
+                </div>
             </form:form>
-            <c:set var="saveURL" value="/proposals/savePreferences"/>
-            <form:form commandName="preferences" action="${saveURL}">
-            <h2>Preference ID: </h2>
-                <select id="prefID" >
-                    <option value="${preferences.preferenceId}" selected="selected" >${preferences.preferenceId}</option>
-                    <c:forEach var="preferenceSaved" items="${preferences.allPreferenceIds}">
-                        <c:if test="${preferenceSaved != preferences.preferenceId}">
-                            <option value="${preferenceSaved}" >${preferenceSaved}</option>
-                        </c:if>
 
-                    </c:forEach>
-                    <option value="-1">CREATE NEW PREFERENCE</option>
-                </select>
-
-                <form:hidden path="preferenceId" id="newPref"  cssStyle="margin-left:20px;"/>
-
-                <script>
-                    jQuery(function () {
-                        var initialSelection = '${preferences.preferenceId}';
-                        $("#prefID").change(function(){
-                            var currentValue = $( this ).val();
-                            if(currentValue == -1){
-                                $("#newPref").attr("type","text");
-                                $("#newPref").attr("placeholder","preference identification");
-                            }else{
-                                if(currentValue != initialSelection){
-                                    window.location = window.location.pathname + "?preferenceId="+currentValue;
-                                }else {
-                                    $("#newPref").hide();
-                                }
-                            }
-                        });
-
-                    });
-                </script>
-
+            <xcolab:editPreferences preferences="${preferences}" hasTitle="false">
                 <h2>Copy Proposals to Phases</h2>
 
                 <p>
@@ -107,7 +56,7 @@
                 <p id="contestPhaseContainer">
                     <label>
                         Contest Phase:<br />
-                        <select id="selectContestPhase">
+                        <select id="selectContestPhase" class="form-control">
                             <option value="-1">Choose a contest phase</option>
                         </select>
                     </label>
@@ -115,7 +64,7 @@
                 <p id="proposalContainer">
                     <label>
                         Proposals:<br />
-                        <select id="selectProposal" multiple="multiple" style="height:120px">
+                        <select id="selectProposal" multiple="multiple" class="form-control" size="10">
                             <option/>
                         </select>
                     </label>
@@ -149,42 +98,31 @@
                     </p>
                 </div>
 
-                <p>
-                    <form:hidden id="proposalIdsToBeMoved" path="proposalIdsToBeMoved" />
-                </p>
-
-                <p>
-                <input type="submit" value="Save" />
-                </p>
-
+                <form:hidden id="proposalIdsToBeMoved" path="proposalIdsToBeMoved" />
 
                 <h2>General</h2>
-                <p>
-                    <label for="contestTypeId">Contest type:</label>
-                    <form:select path="contestTypeId" id="contestTypeId">
+                <div class="form-group">
+                    <label for="contestTypeId">Contest type</label>
+                    <form:select path="contestTypeId" id="contestTypeId" cssClass="form-control">
                         <c:forEach var="option" items="${contestTypes}">
                             <form:option value="${option.id}" label="${option.id} - ${option.contestName} with ${option.proposalNamePlural}"/>
                         </c:forEach>
                     </form:select>
                     <form:errors path="contestType"/>
-                    <input type="submit" value="Save" />
-                </p>
+                </div>
 
-                <p>
-                    <label for="callToAction">Call to action:</label>
-                    <form:textarea path="callToAction" id="callToAction" cssStyle="width: 100%; height: 100px;"/>
+                <div class="form-group">
+                    <label for="callToAction">Call to action</label>
+                    <form:textarea path="callToAction" id="callToAction" cssClass="form-control" rows="4"/>
                     <form:errors path="callToAction"/>
-                    <input type="submit" value="Save" />
-                </p>
+                </div>
 
-                <p>
-                    <label for="termsOfService">Terms of service:</label>
-                    <form:textarea path="termsOfService" id="termsOfService" cssStyle="width: 100%; height: 300px;"/>
+                <div class="form-group">
+                    <label for="termsOfService">Terms of service</label>
+                    <form:textarea path="termsOfService" id="termsOfService" cssClass="form-control" rows="20"/>
                     <form:errors path="termsOfService"/>
-                    <input type="submit" value="Save" />
-                </p>
-
-            </form:form>
+                </div>
+            </xcolab:editPreferences>
         </div>
     </div>
     <script>

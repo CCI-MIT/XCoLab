@@ -5,6 +5,7 @@
 <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
 <xcolab:layout>
     <jsp:directive.include file="init.jspx"/>
+
     <!--@elvariable id="categories" type="java.util.List<org.xcolab.client.comment.pojo.Category>"-->
     <!--@elvariable id="_csrf" type="org.springframework.security.web.csrf.CsrfToken>"-->
 
@@ -23,28 +24,28 @@
                 <c:set var="addThreadUrl" value="/discussion/thread/create" />
                 <form id="addThreadForm" action="${addThreadUrl }" method="post">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <div>
-                        <label class="portlet-form-label"><spring:message code="discussion.threadadd.table.category" /><br />
-                            <select class="portlet-form-field" name="categoryId">
-                                <c:forEach var="category" items="${categories}">
-                                    <option value="${category.categoryId}">${category.name}</option>
-                                </c:forEach>
-                            </select>
-                        </label>
+                    <div class="form-group">
+                        <label for="threadCategoryId"><spring:message code="discussion.threadadd.table.category" /></label>
+                        <select id="threadCategoryId" name="categoryId" class="form-control">
+                            <c:forEach var="category" items="${categories}">
+                                <option value="${category.categoryId}">${category.name}</option>
+                            </c:forEach>
+                        </select>
                     </div>
-                    <div>
-                        <label class="portlet-form-label"><spring:message code="discussion.threadadd.table.title" /> <br />
-                            <input class="portlet-form-input-field input_long" name="title" maxlength="255" style="width:660px;" type="text" value="" />
-                        </label>
+
+                    <div class="form-group">
+                        <label for="threadTitle"><spring:message code="discussion.threadadd.table.title" /></label>
+                        <input id="threadTitle" class="form-control" name="title" maxlength="255" type="text" value="" />
                     </div>
-                    <div>
-                        <label class="portlet-form-label"><spring:message code="discussion.threadadd.table.message"/> <br />
-                            <textarea class="portlet-form-input-field profile_about" name="body" cols="20" rows="2" style="width: 660px; height: 100px;"><!-- --></textarea>
-                        </label>
+
+                    <div class="form-group">
+                        <label for="threadBody"><spring:message code="discussion.threadadd.table.message"/></label>
+                        <textarea id="threadBody" class="rte-editorPlaceholder form-control" name="body" rows="10"><!-- --></textarea>
                     </div>
-                    <div>
-                        <a class="c-Button__primary" id="addThreadButton" href="#"><spring:message code="discussion.threadadd.buttons.add"/></a>
-                        <a class="c-Button__secondary" id="canelAddThreadButton" href="/discussion"><spring:message code="discussion.threadadd.buttons.cancel" /></a>
+
+                    <div class="form-group">
+                        <a class="c-Button__primary c-Button--noMargins" id="addThreadButton" href="#"><spring:message code="discussion.threadadd.buttons.add"/></a>
+                        <a class="c-Button__secondary" id="cancelAddThreadButton" href="/discussion"><spring:message code="discussion.threadadd.buttons.cancel" /></a>
                     </div>
                 </form>
             </div>
@@ -60,12 +61,13 @@
                 jQuery("#addThreadForm").submit();
             });
 
-            jQuery("#canelAddThreadButton").click(function () {
+            jQuery("#cancelAddThreadButton").click(function () {
                 disableDirtyCheck();
                 window.location.replace("/discussion");
             });
         });
     </script>
 
+    <xcolab:requireLibrary name="CKEditor" />
 </xcolab:layout>
 </jsp:root>
