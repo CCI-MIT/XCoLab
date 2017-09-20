@@ -18,7 +18,7 @@ public class MassActionConfirmationWrapper implements MassActionDataWrapper {
     private List<Contest> contestWrappers;
     private List<Long> contestIds;
     private List<Boolean> selectedContest;
-    private String selectedMassActionName;
+    private ContestMassActions selectedMassAction;
     private Integer itemCount;
     private Long memberId;
 
@@ -29,10 +29,10 @@ public class MassActionConfirmationWrapper implements MassActionDataWrapper {
     }
 
     public MassActionConfirmationWrapper(List<Long> contestIds,
-            ContestMassActions selectedMassActionWrapper) {
+            ContestMassActions selectedMassAction) {
         this.selectedContest = new ArrayList<>();
         this.contestWrappers = new ArrayList<>();
-        this.selectedMassActionName = selectedMassActionWrapper.name();
+        this.selectedMassAction= selectedMassAction;
         this.itemCount = contestIds.size();
         this.contestIds = contestIds;
         populateValidContestWrapper(contestIds);
@@ -82,12 +82,12 @@ public class MassActionConfirmationWrapper implements MassActionDataWrapper {
         this.itemCount = itemCount;
     }
 
-    public String getSelectedMassActionName() {
-        return selectedMassActionName;
+    public ContestMassActions getSelectedMassAction() {
+        return selectedMassAction;
     }
 
-    public void setSelectedMassActionName(String selectedMassActionName) {
-        this.selectedMassActionName = selectedMassActionName;
+    public void setSelectedMassAction(ContestMassActions selectedMassAction) {
+        this.selectedMassAction = selectedMassAction;
     }
 
     @Override
@@ -97,10 +97,6 @@ public class MassActionConfirmationWrapper implements MassActionDataWrapper {
 
     public void setMemberId(Long memberId) {
         this.memberId = memberId;
-    }
-
-    public ContestMassAction getSelectedMassAction() {
-        return ContestMassActions.valueOf(selectedMassActionName).getAction();
     }
 
     public List<Long> getSelectedContestIds() {
