@@ -13,7 +13,6 @@ import org.xcolab.util.http.client.RestService;
 import org.xcolab.view.pages.contestmanagement.beans.ContestFlagTextToolTipBean;
 import org.xcolab.view.pages.contestmanagement.beans.ContestModelSettingsBean;
 import org.xcolab.view.pages.contestmanagement.beans.MassMessageBean;
-import org.xcolab.view.pages.contestmanagement.entities.ContestMassAction;
 import org.xcolab.view.pages.contestmanagement.entities.ContestMassActions;
 import org.xcolab.view.pages.contestmanagement.entities.massactions.MassActionDataWrapper;
 
@@ -35,7 +34,7 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
             new ContestFlagTextToolTipBean();
     private final ContestModelSettingsBean contestModelSettingsBean = new ContestModelSettingsBean();
 
-    private String selectedMassActionName;
+    private ContestMassActions selectedMassAction;
     private Long memberId;
 
     @SuppressWarnings("unused")
@@ -114,16 +113,12 @@ public class ContestOverviewWrapper implements MassActionDataWrapper {
         this.memberId = memberId;
     }
 
-    public String getSelectedMassActionName() {
-        return selectedMassActionName;
+    public void setSelectedMassAction(ContestMassActions selectedMassAction) {
+        this.selectedMassAction = selectedMassAction;
     }
 
-    public ContestMassAction getSelectedMassAction() {
-        return ContestMassActions.valueOf(selectedMassActionName).getAction();
-    }
-
-    public void setSelectedMassActionName(String selectedMassActionName) {
-        this.selectedMassActionName = selectedMassActionName;
+    public ContestMassActions getSelectedMassAction() {
+        return selectedMassAction;
     }
 
     public Map<Long, Boolean> getSubscribedToContest() {

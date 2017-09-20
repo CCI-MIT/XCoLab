@@ -44,7 +44,7 @@
 		<form:form action="/admin/contest/manager/update" modelAttribute="contestOverviewWrapper" id="editForm" method="post">
 			<div class="outerVerticalCenter">
 				<div class="innerVerticalCenter">
-					<form:select path="selectedMassActionName" id="selectedMassAction" cssClass="form-control">
+					<form:select path="selectedMassAction" id="selectedMassAction" cssClass="form-control">
 						<form:options items="${massActionsItems}" />
 					</form:select>
 				</div>

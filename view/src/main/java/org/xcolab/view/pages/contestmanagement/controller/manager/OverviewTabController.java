@@ -122,8 +122,7 @@ public class OverviewTabController extends AbstractTabController {
     private String showConfirmationView(Model model,
             ContestOverviewWrapper contestOverviewWrapper) {
         List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();
-        ContestMassActions selectedMassActionWrapper =
-                ContestMassActions.valueOf(contestOverviewWrapper.getSelectedMassActionName());
+        ContestMassActions selectedMassActionWrapper = contestOverviewWrapper.getSelectedMassAction();
         model.addAttribute("massActionConfirmationWrapper",
                 new MassActionConfirmationWrapper(contestIds, selectedMassActionWrapper));
 
@@ -135,7 +134,7 @@ public class OverviewTabController extends AbstractTabController {
             throws MassActionRequiresConfirmationException, IOException {
         contestOverviewWrapper.setMemberId(MemberAuthUtil.getMemberId(request));
 
-        ContestMassAction action = contestOverviewWrapper.getSelectedMassAction();
+        ContestMassAction action = contestOverviewWrapper.getSelectedMassAction().getAction();
         List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();
         List<Contest> contests = EntityIdListUtil.CONTESTS.fromIdList(contestIds);
 
