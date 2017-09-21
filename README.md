@@ -5,15 +5,21 @@
 
 The XCoLab is a generic version of the [Climate CoLab](https://climatecolab.org), a platform to crowdsource solutions to climate change.  The XCoLab is intended to be domain independent and appropriate for solving a wide range of complex social problems. 
 
-## Setup
+## Getting Started
+
 To get started, please follow our [setup guide](https://github.com/CCI-MIT/XCoLab/wiki/Development-Environment-Setup).
+
+### Prerequesites
+
+* Java 8
+* MySQL 5.7 or higher
 
 ## Architecture
 
+The XCoLab is built with [Spring Boot](https://github.com/spring-projects/spring-boot).
 You can read more about our architecture [here](https://github.com/CCI-MIT/XCoLab/wiki/XCoLab-Architecture).
 
 ## Contributing
 
 If you notice any issues with the XCoLab, please open an issue in this repository.
-If you're interested in contributing to this project, feel free to start a pull request or contact xcolab@mit.edu. 
-For small fixes, we welcome unsolicited pull requests, but for larger changes it's a good idea to talk to us first.
+If you're interested in contributing to this project, check out [CONTRIBUTING.md](https://github.com/CCI-MIT/XCoLab/blob/master/CONTRIBUTING.md).
