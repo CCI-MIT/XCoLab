@@ -8,8 +8,8 @@
                     var $this = jQuery(this);
 
                     var articleId = $this.data("article-id");
-                    var url = articleId ? "/contentwidget?contentArticleId=" + articleId
-                            : $this.data("url");
+
+                    var url = ((articleId === undefined) ? ($this.data("url")):("/widgets/content?contentArticleId=" + articleId));
 
                     $this.load(url, function () {
                         var $children = $this.children();
