@@ -6,23 +6,22 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.enums.ServerEnvironment;
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.pojo.FileEntry;
+import org.xcolab.util.exceptions.InternalException;
+import org.xcolab.view.util.io.ServletFileUtil;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -31,46 +30,83 @@ public class ImageDisplayService {
 
     private static final Logger log = LoggerFactory.getLogger(ImageDisplayService.class);
 
+    private static final int IMAGE_CACHE_MAX_AGE_DAYS = 7;
+    private static final int IMAGE_CACHE_STALE_DAYS = 90;
+    private static final String BASE_PATH = PlatformAttributeKey.FILES_UPLOAD_DIR.get();
+
     private final boolean isProduction;
-    private final String basePath = PlatformAttributeKey.FILES_UPLOAD_DIR.get();
 
     public ImageDisplayService() {
-        final ServerEnvironment serverEnvironment =
-                PlatformAttributeKey.SERVER_ENVIRONMENT.get();
+        final ServerEnvironment serverEnvironment = PlatformAttributeKey.SERVER_ENVIRONMENT.get();
         isProduction = serverEnvironment == ServerEnvironment.PRODUCTION;
     }
 
     public void serveImage(HttpServletRequest request, HttpServletResponse response,
-            @PathVariable long imageId,
-            @RequestParam(defaultValue = "NONE") DefaultImage defaultImage) throws IOException {
+            long imageId, DefaultImage defaultImage) throws IOException {
 
         final Optional<FileEntry> fileEntryOpt = FilesClient.getFileEntry(imageId);
         if (fileEntryOpt.isPresent()) {
             FileEntry fileEntry = fileEntryOpt.get();
-            File imageFile = fileEntry.getImageFile(basePath);
+            File imageFile = fileEntry.getImageFile(BASE_PATH);
             final boolean success = sendImageToResponse(request, response, imageFile);
-            if (!success) {
-                if (isProduction) {
-                    if (!defaultImage.equals(DefaultImage.NONE)) {
-                        response.sendRedirect(defaultImage.getImagePath());
-                    } else {
-                        response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
-                    }
-                } else {
-                    forwardToImageOnProduction(request, response);
-                }
+            if (success) {
+                response.setHeader(HttpHeaders.CACHE_CONTROL,
+                        CacheControl.maxAge(IMAGE_CACHE_MAX_AGE_DAYS, TimeUnit.DAYS)
+                                .staleWhileRevalidate(IMAGE_CACHE_STALE_DAYS, TimeUnit.DAYS)
+                                .getHeaderValue());
+            } else {
+                handleImageNotFoundError(request, response, defaultImage);
             }
-        } else if (!defaultImage.equals(DefaultImage.NONE)) {
-            response.sendRedirect(defaultImage.getImagePath());
+        } else {
+            handleFileEntryNotFoundError(request, response, imageId, defaultImage);
+        }
+    }
+
+    private void handleImageNotFoundError(HttpServletRequest request, HttpServletResponse response,
+            DefaultImage defaultImage) throws IOException {
+        if (isProduction) {
+            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            if (!defaultImage.equals(DefaultImage.NONE)) {
+                forwardToDefaultImage(request, response, defaultImage);
+            }
+        } else {
+            redirectToImageOnProduction(request, response);
+        }
+    }
+
+    private void handleFileEntryNotFoundError(HttpServletRequest request,
+            HttpServletResponse response, long imageId, DefaultImage defaultImage)
+            throws IOException {
+        if (!defaultImage.equals(DefaultImage.NONE)) {
+            if (imageId > 0) {
+                response.setStatus(HttpStatus.NOT_FOUND.value());
+            }
+            forwardToDefaultImage(request, response, defaultImage);
         } else {
             response.sendError(HttpStatus.NOT_FOUND.value(), "Image not found.");
         }
     }
 
-    private void forwardToImageOnProduction(HttpServletRequest request,
+    private void forwardToDefaultImage(HttpServletRequest request, HttpServletResponse response,
+            DefaultImage defaultImage) {
+        try {
+            final ServletContext servletContext = request.getServletContext();
+            servletContext.getRequestDispatcher(defaultImage.getImagePath())
+                    .forward(request, response);
+        } catch (ServletException | IOException e) {
+            throw new InternalException("Forwarded request threw exception", e);
+        }
+    }
+
+    private void redirectToImageOnProduction(HttpServletRequest request,
             HttpServletResponse response) throws IOException {
-        String newURL = ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get()
-                + request.getRequestURI() + "?" + request.getQueryString();
+
+        final String productionUrl = ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get();
+        String newURL = productionUrl + request.getRequestURI();
+
+        if (request.getQueryString() != null) {
+            newURL += "?" + request.getQueryString();
+        }
 
         response.sendRedirect(newURL);
     }
@@ -83,31 +119,8 @@ public class ImageDisplayService {
         }
 
         try {
-            ServletContext servletContext = request.getSession().getServletContext();
-            String mime = servletContext.getMimeType(imageFile.getAbsolutePath());
-            if (mime == null) {
-                log.error("Could not retrieve mime typ for image {}", imageFile.getAbsolutePath());
-                return false;
-            }
-
-            response.setContentType(mime);
-            response.setContentLength((int) imageFile.length());
-
-            FileInputStream in = new FileInputStream(imageFile);
-            OutputStream out = response.getOutputStream();
-
-            // Copy the contents of the file to the output stream
-            byte[] buf = new byte[1024];
-            int count;
-            while ((count = in.read(buf)) >= 0) {
-                out.write(buf, 0, count);
-            }
-            out.close();
-            in.close();
-            response.setHeader(HttpHeaders.CACHE_CONTROL,
-                    CacheControl.maxAge(7, TimeUnit.DAYS)
-                            .staleWhileRevalidate(90, TimeUnit.DAYS)
-                            .getHeaderValue());
+            final String mimeType = ServletFileUtil.resolveMimeType(request, imageFile);
+            ServletFileUtil.sendFileToResponse(response, imageFile, mimeType);
             return true;
         } catch (IOException e) {
             log.error("Error while sending image {} to response: {}",
@@ -115,5 +128,4 @@ public class ImageDisplayService {
             return false;
         }
     }
-
 }
