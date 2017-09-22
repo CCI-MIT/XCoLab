@@ -13,11 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.enums.ServerEnvironment;
+import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.files.FilesClient;
 import org.xcolab.client.files.pojo.FileEntry;
 import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
+import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.pojo.Proposal;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,50 +47,33 @@ public class ImageDisplayController {
         isProduction = serverEnvironment == ServerEnvironment.PRODUCTION;
     }
 
-    @GetMapping("/image/contest/{imageId}")
+    @GetMapping("/image/contests/{contestId}")
     public void serveContestImage(HttpServletRequest request, HttpServletResponse response,
-            @PathVariable long imageId) throws IOException {
-        serveImage(request, response, imageId, null, null, DefaultImage.CONTEST);
+            @PathVariable long contestId) throws IOException {
+        Contest contest = ContestClientUtil.getContest(contestId);
+        serveImage(request, response, contest.getContestLogoId(), DefaultImage.CONTEST);
     }
 
-    @GetMapping("/image/proposal/{imageId}")
+    @GetMapping("/image/proposals/{proposalId}")
     public void serveProposalImage(HttpServletRequest request, HttpServletResponse response,
-            @PathVariable long imageId) throws IOException {
-        serveImage(request, response, imageId, null, null, DefaultImage.PROPOSAL);
+            @PathVariable long proposalId) throws IOException {
+        Proposal proposal = ProposalClientUtil.getProposal(proposalId);
+        serveImage(request, response, proposal.getImageId(), DefaultImage.PROPOSAL);
     }
 
-    @GetMapping("/image/member/{imageId}")
+    @GetMapping("/image/members/{memberId}")
     public void serveMemberImage(HttpServletRequest request, HttpServletResponse response,
-            @PathVariable long imageId) throws IOException {
-        serveImage(request, response, imageId, null, null, DefaultImage.MEMBER);
+            @PathVariable long memberId) throws IOException {
+        Member member = MembersClient.getMemberUnchecked(memberId);
+        serveImage(request, response, member.getPortraitId(), DefaultImage.PROPOSAL);
     }
 
-    @GetMapping({"/image/{whatever}", "/image"})
-    public void serveImage(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(value = "img_id", required = false) Long imgId,
-            @RequestParam(required = false) Long portraitId,
-            @RequestParam(required = false) Long userId,
-            @RequestParam(required = false, defaultValue = "NONE") DefaultImage defaultImage)
-            throws IOException {
-        Long imageId = null;
+    @GetMapping("/image/uploaded/{imageId}")
+    public void serveImage(HttpServletRequest request,
+            HttpServletResponse response, @PathVariable long imageId,
+            @RequestParam(defaultValue = "NONE") DefaultImage defaultImage) throws IOException {
 
-        if (imgId != null) {
-            imageId = imgId;
-        } else if (userId != null) {
-            try {
-                Member member = MembersClient.getMember(userId);
-                if (member.getPortraitFileEntryId() != null) {
-                    imageId = member.getPortraitFileEntryId();
-                }
-            } catch (MemberNotFoundException ignored) {
-            }
-        }
-
-        if (imageId == null && portraitId != null) {
-            imageId = portraitId;
-        }
-
-        if (imageId != null && imageId > 0) {
+        if (imageId > 0) {
             final Optional<FileEntry> fileEntryOpt = FilesClient.getFileEntry(imageId);
             if (fileEntryOpt.isPresent()) {
                 FileEntry fileEntry = fileEntryOpt.get();
@@ -107,15 +93,65 @@ public class ImageDisplayController {
             }
         }
 
-        if (request.getRequestURI().contains("user_male_portrait")) {
-            defaultImage = DefaultImage.MEMBER;
-        }
-
         if (!defaultImage.equals(DefaultImage.NONE)) {
             response.sendRedirect(defaultImage.getImagePath());
             return;
         }
         response.sendError(HttpStatus.INTERNAL_SERVER_ERROR.value());
+    }
+
+    @GetMapping("/image/contest/{imageId}")
+    @Deprecated
+    public void serveContestImageLegacy(HttpServletRequest request, HttpServletResponse response,
+            @PathVariable long imageId) throws IOException {
+        serveImage(request, response, imageId, DefaultImage.CONTEST);
+    }
+
+    @GetMapping("/image/proposal/{imageId}")
+    @Deprecated
+    public void serveProposalImageLegacy(HttpServletRequest request, HttpServletResponse response,
+            @PathVariable long imageId) throws IOException {
+        serveImage(request, response, imageId, DefaultImage.PROPOSAL);
+    }
+
+    @GetMapping("/image/member/{imageId}")
+    @Deprecated
+    public void serveMemberImageLegacy(HttpServletRequest request, HttpServletResponse response,
+            @PathVariable long imageId) throws IOException {
+        serveImage(request, response, imageId, DefaultImage.MEMBER);
+    }
+
+    @GetMapping({"/image/{whatever}", "/image"})
+    public void serveImageLegacy(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam(value = "img_id", required = false) Long imgId,
+            @RequestParam(required = false) Long portraitId,
+            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false, defaultValue = "NONE") DefaultImage defaultImage)
+            throws IOException {
+
+        if (userId != null) {
+            serveMemberImage(request, response, userId);
+            return;
+        }
+
+        Long imageId = null;
+        if (imgId != null) {
+            imageId = imgId;
+        }
+
+        if (imageId == null) {
+            if (portraitId != null) {
+                imageId = portraitId;
+            } else {
+                imageId = 0L;
+            }
+        }
+
+        if (request.getRequestURI().contains("user_male_portrait")) {
+            defaultImage = DefaultImage.MEMBER;
+        }
+
+        serveImage(request, response, imageId, defaultImage);
     }
 
     private boolean sendImageToResponse(HttpServletRequest request, HttpServletResponse response,
