@@ -50,16 +50,20 @@ public class ImageDisplayService {
             File imageFile = fileEntry.getImageFile(BASE_PATH);
             final boolean success = sendImageToResponse(request, response, imageFile);
             if (success) {
-                response.setHeader(HttpHeaders.CACHE_CONTROL,
-                        CacheControl.maxAge(IMAGE_CACHE_MAX_AGE_DAYS, TimeUnit.DAYS)
-                                .staleWhileRevalidate(IMAGE_CACHE_STALE_DAYS, TimeUnit.DAYS)
-                                .getHeaderValue());
+                setCacheControlHeader(response);
             } else {
                 handleImageNotFoundError(request, response, imageType);
             }
         } else {
             handleFileEntryNotFoundError(request, response, imageId, imageType);
         }
+    }
+
+    private void setCacheControlHeader(HttpServletResponse response) {
+        response.setHeader(HttpHeaders.CACHE_CONTROL,
+                CacheControl.maxAge(IMAGE_CACHE_MAX_AGE_DAYS, TimeUnit.DAYS)
+                        .staleWhileRevalidate(IMAGE_CACHE_STALE_DAYS, TimeUnit.DAYS)
+                        .getHeaderValue());
     }
 
     private void handleImageNotFoundError(HttpServletRequest request, HttpServletResponse response,
