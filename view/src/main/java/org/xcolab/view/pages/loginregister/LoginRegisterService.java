@@ -122,17 +122,7 @@ public class LoginRegisterService {
                         ActivityProvidersType.MemberJoinedActivityEntry.getType());
 
 
-        if (fbIdString == null && googleId == null) {
-            GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.REGISTRATION_FORM);
-        } else {
-            if (fbIdString != null) {
-                GoogleAnalyticsUtils
-                        .pushEventAsync(GoogleAnalyticsEventType.REGISTRATION_SSO_FACEBOOK);
-            } else if (googleId != null) {
-                GoogleAnalyticsUtils
-                        .pushEventAsync(GoogleAnalyticsEventType.REGISTRATION_SSO_GOOGLE);
-            }
-        }
+        sendGoogleAnalytics(fbIdString, googleId, session.getAttribute("isSsoLogin"));
 
 
         if (redirect == null) {
@@ -145,6 +135,24 @@ public class LoginRegisterService {
         }
 
         response.sendRedirect(redirect);
+    }
+
+    private void sendGoogleAnalytics(String fbIdString, String googleId, Object isSsoLogin) {
+        if (fbIdString == null && googleId == null) {
+            GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.REGISTRATION_FORM);
+            return;
+        }
+        if (isSsoLogin != null) {
+            GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.REGISTRATION_COMPLETE_PROFILE);
+            return;
+        }
+        if (fbIdString != null) {
+            GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.REGISTRATION_SSO_FACEBOOK);
+            return;
+        }
+        if (googleId != null) {
+            GoogleAnalyticsUtils.pushEventAsync(GoogleAnalyticsEventType.REGISTRATION_SSO_GOOGLE);
+        }
     }
 
     public void updatePassword(String forgotPasswordToken, String newPassword)
