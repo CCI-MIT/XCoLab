@@ -52,7 +52,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 public class Contest extends AbstractContest implements Serializable {
 
@@ -190,26 +189,20 @@ public class Contest extends AbstractContest implements Serializable {
             return "";
         }
     }
+
     public String getCleanContestDescription() {
         return HtmlUtil.cleanAll(this.getContestDescription());
     }
-    public String getLogoPath() {
-        if (this.getIsSharedContestInForeignColab()) {
 
-            Long imgId = this.getContestLogoId();
-            if (imgId != null) {
-                return ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get()
-                        + "/image/contest/" + imgId;
-            }
-            return "";
+    public String getLogoPath() {
+        long imgId = this.getContestLogoId() != null ? this.getContestLogoId() : 0;
+        String imageDomain;
+        if (this.getIsSharedContestInForeignColab()) {
+            imageDomain = ConfigurationAttributeKey.PARTNER_COLAB_ADDRESS.get();
         } else {
-            Long imgId = this.getContestLogoId();
-            if (imgId != null) {
-                final String imageDomain = PlatformAttributeKey.IMAGES_UPLOADED_DOMAIN.get();
-                return imageDomain + "/image/contest/" + imgId;
-            }
-            return "";
+            imageDomain = PlatformAttributeKey.IMAGES_UPLOADED_DOMAIN.get();
         }
+        return imageDomain + "/image/contest/" + imgId;
     }
 
     public boolean getShowInTileView(){
