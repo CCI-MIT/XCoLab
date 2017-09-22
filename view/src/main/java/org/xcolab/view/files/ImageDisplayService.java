@@ -42,7 +42,7 @@ public class ImageDisplayService {
     }
 
     public void serveImage(HttpServletRequest request, HttpServletResponse response,
-            long imageId, DefaultImage defaultImage) throws IOException {
+            long imageId, ImageType imageType) throws IOException {
 
         final Optional<FileEntry> fileEntryOpt = FilesClient.getFileEntry(imageId);
         if (fileEntryOpt.isPresent()) {
@@ -55,19 +55,19 @@ public class ImageDisplayService {
                                 .staleWhileRevalidate(IMAGE_CACHE_STALE_DAYS, TimeUnit.DAYS)
                                 .getHeaderValue());
             } else {
-                handleImageNotFoundError(request, response, defaultImage);
+                handleImageNotFoundError(request, response, imageType);
             }
         } else {
-            handleFileEntryNotFoundError(request, response, imageId, defaultImage);
+            handleFileEntryNotFoundError(request, response, imageId, imageType);
         }
     }
 
     private void handleImageNotFoundError(HttpServletRequest request, HttpServletResponse response,
-            DefaultImage defaultImage) throws IOException {
+            ImageType imageType) throws IOException {
         if (isProduction) {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            if (!defaultImage.equals(DefaultImage.NONE)) {
-                forwardToDefaultImage(request, response, defaultImage);
+            if (!imageType.equals(ImageType.UNKNOWN)) {
+                forwardToDefaultImage(request, response, imageType);
             }
         } else {
             redirectToImageOnProduction(request, response);
@@ -75,23 +75,23 @@ public class ImageDisplayService {
     }
 
     private void handleFileEntryNotFoundError(HttpServletRequest request,
-            HttpServletResponse response, long imageId, DefaultImage defaultImage)
+            HttpServletResponse response, long imageId, ImageType imageType)
             throws IOException {
-        if (!defaultImage.equals(DefaultImage.NONE)) {
+        if (!imageType.equals(ImageType.UNKNOWN)) {
             if (imageId > 0) {
                 response.setStatus(HttpStatus.NOT_FOUND.value());
             }
-            forwardToDefaultImage(request, response, defaultImage);
+            forwardToDefaultImage(request, response, imageType);
         } else {
             response.sendError(HttpStatus.NOT_FOUND.value(), "Image not found.");
         }
     }
 
     private void forwardToDefaultImage(HttpServletRequest request, HttpServletResponse response,
-            DefaultImage defaultImage) {
+            ImageType imageType) {
         try {
             final ServletContext servletContext = request.getServletContext();
-            servletContext.getRequestDispatcher(defaultImage.getImagePath())
+            servletContext.getRequestDispatcher(imageType.getImagePath())
                     .forward(request, response);
         } catch (ServletException | IOException e) {
             throw new InternalException("Forwarded request threw exception", e);
