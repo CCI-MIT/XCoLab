@@ -11,6 +11,11 @@
         <option name="name" value="eureka.instance.hostname" />
         <option name="value" value="localhost" />
       </param>
+      <param>
+        <option name="enabled" value="true" />
+        <option name="name" value="server.port" />
+        <option name="value" value="18089" />
+      </param>
     </additionalParameters>
     <module name="emails-service" />
     <envs />
