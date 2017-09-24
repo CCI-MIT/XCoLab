@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
@@ -35,20 +36,23 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
+@RequestMapping("/contests/{contestYear}/{contestUrlName}")
 public class ProposalRequestMembershipActionController {
 
     private static final String MEMBERSHIP_REQUEST_TEMPLATE = "PROPOSAL_MEMBERSHIP_REQUEST_DEFAULT";
 
-    private static final String MSG_MEMBERSHIP_RESPONSE_SUBJECT = "Response to your membership request";
-    private static final String MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED = "Your request has been accepted <br />Comments: ";
-    private static final String MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED = "Your request has been rejected <br />Comments: ";
+    private static final String MSG_MEMBERSHIP_RESPONSE_SUBJECT =
+            "Response to your membership request";
+    private static final String MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED =
+            "Your request has been accepted <br />Comments: ";
+    private static final String MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED =
+            "Your request has been rejected <br />Comments: ";
 
-    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/TEAM/requestMembership")
+    @PostMapping("c/{proposalUrlString}/{proposalId}/tab/TEAM/requestMembership")
     public void requestMembership(HttpServletRequest request, HttpServletResponse response,
             Model model, ProposalContext proposalContext, Member sender,
-            @Valid RequestMembershipBean requestMembershipBean,
-            BindingResult result, @RequestParam("requestComment") String comment)
-            throws IOException {
+            @Valid RequestMembershipBean requestMembershipBean, BindingResult result,
+            @RequestParam("requestComment") String comment) throws IOException {
 
         if (result.hasErrors()) {
             //-- response.setRenderParameter("error", "true");
@@ -62,7 +66,8 @@ public class ProposalRequestMembershipActionController {
         final String tabUrl = proposal.getProposalLinkUrl(contest) + "/tab/TEAM";
 
         if (sender == null) {
-            AlertMessage.danger("You must be logged in to send a membership request").flash(request);
+            AlertMessage.danger("You must be logged in to send a membership request")
+                    .flash(request);
             response.sendRedirect(tabUrl);
             return;
         }
@@ -71,8 +76,8 @@ public class ProposalRequestMembershipActionController {
 
         final ClientHelper clients = proposalContext.getClients();
         final MembershipClient membershipClient = clients.getMembershipClient();
-        membershipClient.addRequestedMembershipRequest(proposal.getProposalId(),
-                sender.getUserId(), comment);
+        membershipClient.addRequestedMembershipRequest(proposal.getProposalId(), sender.getUserId(),
+                comment);
 
         new ProposalUserActionNotification(proposal, contest, sender, proposalAuthor,
                 MEMBERSHIP_REQUEST_TEMPLATE, PlatformAttributeKey.COLAB_URL.get()).sendMessage();
@@ -83,7 +88,7 @@ public class ProposalRequestMembershipActionController {
     }
 
 
-    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/TEAM/inviteMember")
+    @PostMapping("c/{proposalUrlString}/{proposalId}/tab/TEAM/inviteMember")
     public void invite(HttpServletRequest request, HttpServletResponse response, Model model,
             ProposalContext proposalContext, Member sender,
             @Valid RequestMembershipInviteBean requestMembershipInviteBean, BindingResult result)
@@ -95,8 +100,7 @@ public class ProposalRequestMembershipActionController {
 
         String input = requestMembershipInviteBean.getInviteRecipient();
         if (StringUtils.isBlank(input)) {
-            AlertMessage.danger("Please specify a member to invite.")
-                    .flash(request);
+            AlertMessage.danger("Please specify a member to invite.").flash(request);
             response.sendRedirect(tabUrl);
             return;
         }
@@ -108,20 +112,19 @@ public class ProposalRequestMembershipActionController {
         String screenName = inputParts[0];
         try {
             Member recipient = MembersClient.findMemberByScreenName(screenName);
-            String comment = HtmlUtil
-                    .cleanAll(requestMembershipInviteBean.getInviteComment());
+            String comment = HtmlUtil.cleanAll(requestMembershipInviteBean.getInviteComment());
 
             if (StringUtils.isBlank(comment)) {
                 comment = "No message specified";
             }
-            MembershipRequest memberRequest = membershipClient.addInvitedMembershipRequest(
-                    proposal.getProposalId(), recipient.getUserId(), comment);
+            MembershipRequest memberRequest = membershipClient
+                    .addInvitedMembershipRequest(proposal.getProposalId(), recipient.getUserId(),
+                            comment);
 
             new ProposalMembershipInviteNotification(proposal, contest, sender, recipient,
                     memberRequest, comment).sendMessage();
         } catch (MemberNotFoundException e) {
-            AlertMessage.danger("Member " + screenName + " could not be found.")
-                    .flash(request);
+            AlertMessage.danger("Member " + screenName + " could not be found.").flash(request);
             response.sendRedirect(tabUrl);
             return;
         }
@@ -131,11 +134,10 @@ public class ProposalRequestMembershipActionController {
         response.sendRedirect(tabUrl);
     }
 
-    @PostMapping("/contests/{contestYear}/{contestUrlName}/c/{proposalUrlString}/{proposalId}/tab/ADMIN/replyToMembershipRequest")
+    @PostMapping("c/{proposalUrlString}/{proposalId}/tab/ADMIN/replyToMembershipRequest")
     public void respond(HttpServletRequest request, HttpServletResponse response, Model model,
             ProposalContext proposalContext, Member loggedInMember, @RequestParam String approve,
-            @RequestParam String comment, @RequestParam long requestId)
-            throws IOException {
+            @RequestParam String comment, @RequestParam long requestId) throws IOException {
 
         final Proposal proposal = proposalContext.getProposal();
         final Contest contest = proposalContext.getContest();
@@ -172,15 +174,16 @@ public class ProposalRequestMembershipActionController {
         final long senderId = loggedInMember.getId_();
         final long recipientId = membershipRequest.getUserId();
         if (approve.equalsIgnoreCase("APPROVE")) {
-            membershipClient.approveMembershipRequest(proposalId, recipientId,
-                    membershipRequest, comment, senderId);
+            membershipClient
+                    .approveMembershipRequest(proposalId, recipientId, membershipRequest, comment,
+                            senderId);
             sendMessage(senderId, recipientId, MSG_MEMBERSHIP_RESPONSE_SUBJECT,
                     MSG_MEMBERSHIP_RESPONSE_CONTENT_ACCEPTED + comment);
             AlertMessage.success("The membership request has been APPROVED!").flash(request);
 
         } else if (approve.equalsIgnoreCase("DENY")) {
-            membershipClient.denyMembershipRequest(proposalId, recipientId,
-                            requestId, comment, senderId);
+            membershipClient
+                    .denyMembershipRequest(proposalId, recipientId, requestId, comment, senderId);
             sendMessage(senderId, recipientId, MSG_MEMBERSHIP_RESPONSE_SUBJECT,
                     MSG_MEMBERSHIP_RESPONSE_CONTENT_REJECTED + comment);
             AlertMessage.warning("The membership request has been DENIED!").flash(request);
