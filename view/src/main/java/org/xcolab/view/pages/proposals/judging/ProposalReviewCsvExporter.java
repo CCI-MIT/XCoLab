@@ -121,7 +121,12 @@ public class ProposalReviewCsvExporter {
                 .getContestPhaseType(proposalReview.getContestPhase().getContestPhaseType())
                 .getName();
 
-        return String.format("%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s", TQF, escapeQuote(proposalName), delimiter, escapeQuote(proposalReview.getProposalTeamAuthor()), delimiter, proposalReview.getProposalUrl(), delimiter, escapeQuote(contestPhaseName), delimiter);
+        return String.format("%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s",
+                TQF, escapeQuote(proposalName),
+                delimiter, escapeQuote(proposalReview.getProposalTeamAuthor()),
+                delimiter, proposalReview.getProposalUrl(),
+                delimiter, proposalReview.getProposal().getCleanPitch(),
+                delimiter, escapeQuote(contestPhaseName), delimiter);
     }
 
     private String getTableHeader() {
@@ -134,6 +139,7 @@ public class ProposalReviewCsvExporter {
         return TQF + "\"Proposal title\"" + delimiter +
                 "\"Author/Team name\"" + delimiter +
                 "\"Proposal URL\"" + delimiter +
+                "\"Proposal Pitch\"" + delimiter +
                 "\"Contest Phase\"" + delimiter +
                 "\"Judge\"" + delimiter +
                 "\"Average\"" + delimiter +
