@@ -43,14 +43,27 @@
                 </nav>
 
                 <!-- TODO : better styling; get rid of style attribute -->
-                <div class="pull-right" style="margin-top: -12px;">
-                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                    <div class="addthis_inline_follow_toolbox"><!-- --></div>
+                <div class="pull-right" style="margin-top: 4px;">
+                    <c:forEach var="followSocialMedia" items="${_followableSocialMediaUrls}">
+                        <xcolab:socialMedia type="follow" socialEngine="${followSocialMedia.name()}" followMeUrl="${followSocialMedia.followMeUrl}"/>
+                    </c:forEach>
                 </div>
+
+
             </div>
 
         </div> <!-- #c-Footer__menu -->
 
+        <script>
+            function shareFacebook(event) {
+
+                var engineUrl = $(event).data("engine-url");
+                var shareUrl = $(event).data("share-url");
+                window.open(engineUrl+ encodeURIComponent(shareUrl),'_blank');
+            }
+
+        </script>
+        
         <div class="bs-container-fixed">
             <!-- footer content -->
             <xcolab:content articleId="${footerArticleId}"/>

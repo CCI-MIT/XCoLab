@@ -1,0 +1,53 @@
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page">
+
+    <jsp:directive.attribute name="socialEngine" type="java.lang.String" required="true"
+                             rtexprvalue="true" description="Available engines : facebook, twitter, gplus, linkedin, youtube"/>
+    <jsp:directive.attribute name="type" type="java.lang.String" required="true"
+                             rtexprvalue="true" description="Types available: share, follow"/>
+    <jsp:directive.attribute name="size" type="java.lang.String" description="Available sizes: lg,sm, xm for regular leave blank" />
+    <jsp:directive.attribute name="followMeUrl" type="java.lang.String" description="The social link for the follow me function" />
+
+    <jsp:directive.attribute name="title" type="java.lang.String" description="Title " />
+
+    <c:choose>
+        <c:when test="${not empty size}"><c:set var="sizeClass" value="btn-${size}"/></c:when>
+        <c:otherwise><c:set var="sizeClass" value=""/></c:otherwise>
+    </c:choose>
+    <c:choose>
+        <c:when test="${type.equals('follow')}">
+            <c:if test="${not empty followMeUrl}">
+                <a class="btn btn-social-icon ${sizeClass} btn-${socialEngine}" href="${followMeUrl}" target="_blank">
+                    <span class="fa fa-${socialEngine}"></span>
+                </a>
+            </c:if>
+        </c:when>
+        <c:set var="utmParams" value="utm_source=${socialEngine}&#38;utm_medium=Social&#38;utm_campaign=Share"/>
+        <c:when test="${type.equals('share')}">
+            <c:choose>
+                <c:when test="${socialEngine.equals('facebook')}">encodeURI
+                    <a class="btn btn-social-icon ${sizeClass} btn-${socialEngine}" data-engine-url="https://www.facebook.com/dialog/share?app_id=${_facebookId}&#38;display=popup&#38;href=" data-share-url="" onclick="shareFacebook(this)">
+                        <span class="fa fa-${socialEngine}"></span>
+                    </a>
+                </c:when>
+                <c:when test="${socialEngine.equals('twitter')}">
+                    <a class="btn btn-social-icon ${sizeClass} btn-${socialEngine}" href="https://twitter.com/intent/tweet?text=&#38;display=popup&#38;href=${SocialMediaEngine.replacePlaceholder(_shareRequestUri ,'facebook')}" target="_blank">
+                        <span class="fa fa-${socialEngine}"></span>
+                    </a>
+                </c:when>
+                <c:when test="${socialEngine.equals('google')}">
+                </c:when>
+                <c:when test="${socialEngine.equals('linkedin')}">
+                </c:when>
+                <c:when test="${socialEngine.equals('email')}">
+                    <a class="btn btn-social-icon ${sizeClass} btn-${socialEngine}" href="${followMeUrl}">
+                        <span class="fa fa-envelope"></span>
+                    </a>
+                </c:when>
+            </c:choose>
+        </c:when>
+    </c:choose>
+
+
+
+</jsp:root>

@@ -1,0 +1,25 @@
+
+
+.btn {
+  border: 0px solid transparent;
+  border-radius: 0;
+  margin: 2px;
+  transition: all .2s ease-in-out;
+  animation-fill-mode: both;
+}
+.btn:hover {
+  -webkit-transform: translateY(-4px);
+  transform: translateY(-4px);
+  transition: all .2s ease-in-out;
+}
+/* Youtube class */
+.btn-youtube{color:#fff;background-color:#DC2725;border-color:rgba(0,0,0,0.2)}.btn-youtube:hover,.btn-youtube:focus,.btn-youtube:active,.btn-youtube.active,.open>.dropdown-toggle.btn-youtube{color:#fff;background-color:#B21E1C;border-color:rgba(0,0,0,0.2)}
+.btn-youtube:active,.btn-youtube.active,.open>.dropdown-toggle.btn-youtube{background-image:none}
+.btn-youtube.disabled,.btn-youtube[disabled],fieldset[disabled] .btn-youtube,.btn-youtube.disabled:hover,.btn-youtube[disabled]:hover,fieldset[disabled] .btn-youtube:hover,.btn-youtube.disabled:focus,.btn-youtube[disabled]:focus,fieldset[disabled] .btn-youtube:focus,.btn-youtube.disabled:active,.btn-youtube[disabled]:active,fieldset[disabled] .btn-youtube:active,.btn-youtube.disabled.active,.btn-youtube[disabled].active,fieldset[disabled] .btn-youtube.active{background-color:#DC2725;border-color:rgba(0,0,0,0.2)}
+.btn-youtube .badge{color:#DC2725;background-color:#fff}
+
+/* Mail class */
+.btn-mail{color:#fff;background-color:#A7A7A7;border-color:rgba(0,0,0,0.2)}.btn-mail:hover,.btn-mail:focus,.btn-mail:active,.btn-mail.active,.open>.dropdown-toggle.btn-mail{color:#fff;background-color:#B21E1C;border-color:rgba(0,0,0,0.2)}
+.btn-mail:active,.btn-mail.active,.open>.dropdown-toggle.btn-mail{background-image:none}
+.btn-mail.disabled,.btn-mail[disabled],fieldset[disabled] .btn-mail,.btn-mail.disabled:hover,.btn-mail[disabled]:hover,fieldset[disabled] .btn-mail:hover,.btn-mail.disabled:focus,.btn-mail[disabled]:focus,fieldset[disabled] .btn-mail:focus,.btn-mail.disabled:active,.btn-mail[disabled]:active,fieldset[disabled] .btn-mail:active,.btn-mail.disabled.active,.btn-mail[disabled].active,fieldset[disabled] .btn-mail.active{background-color: #8d8d8d;border-color:rgba(0,0,0,0.2)}
+.btn-mail .badge{color:#A7A7A7;background-color:#fff}
