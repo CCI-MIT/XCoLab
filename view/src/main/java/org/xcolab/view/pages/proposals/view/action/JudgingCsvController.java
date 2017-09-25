@@ -169,7 +169,7 @@ public class JudgingCsvController {
         }
 
         ProposalReviewCsvExporter csvExporter =
-                new ProposalReviewCsvExporter(proposalToProposalReviewsMap,
+                new ProposalReviewCsvExporter(contest, proposalToProposalReviewsMap,
                         new ArrayList<>(occurringRatingTypes));
 
         return csvExporter.getCsvString();

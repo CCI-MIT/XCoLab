@@ -17,6 +17,8 @@ import org.xcolab.client.contest.ContestTeamMemberClient;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.OntologyClient;
 import org.xcolab.client.contest.OntologyClientUtil;
+import org.xcolab.client.contest.PlanTemplateClient;
+import org.xcolab.client.contest.PlanTemplateClientUtil;
 import org.xcolab.client.contest.enums.ContestRole;
 import org.xcolab.client.contest.enums.ContestStatus;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
@@ -25,6 +27,7 @@ import org.xcolab.client.contest.pojo.phases.ContestPhase;
 import org.xcolab.client.contest.pojo.phases.ContestPhaseType;
 import org.xcolab.client.contest.pojo.team.ContestTeamMember;
 import org.xcolab.client.contest.pojo.team.ContestTeamMemberRole;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.contest.util.ContestScheduleChangeHelper;
 import org.xcolab.client.members.MembersClient;
 import org.xcolab.client.members.exceptions.MemberNotFoundException;
@@ -62,6 +65,7 @@ public class Contest extends AbstractContest implements Serializable {
     private final OntologyClient ontologyClient;
     private final CommentClient commentClient;
     private final ThreadClient threadClient;
+    private final PlanTemplateClient planTemplateClient;
 
 
     private final static Map<Long, FocusArea> faCache = new HashMap<>();
@@ -94,6 +98,7 @@ public class Contest extends AbstractContest implements Serializable {
         contestClient = ContestClientUtil.getClient();
         contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
         ontologyClient = OntologyClientUtil.getClient();
+        planTemplateClient = PlanTemplateClientUtil.getClient();
         commentClient = CommentClientUtil.getClient();
         threadClient = ThreadClientUtil.getClient();
     }
@@ -102,6 +107,7 @@ public class Contest extends AbstractContest implements Serializable {
         contestClient = ContestClientUtil.getClient();
         contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
         ontologyClient = OntologyClientUtil.getClient();
+        planTemplateClient = PlanTemplateClientUtil.getClient();
         commentClient = CommentClientUtil.getClient();
         threadClient = ThreadClientUtil.getClient();
     }
@@ -112,6 +118,7 @@ public class Contest extends AbstractContest implements Serializable {
             contestClient = ContestClient.fromService(restService);
             contestTeamMemberClient = ContestTeamMemberClient.fromService(restService);
             ontologyClient = OntologyClient.fromService(restService);
+            planTemplateClient = PlanTemplateClient.fromService(restService);
             RestService commentService = restService.withServiceName(CoLabService.COMMENT.getServiceName());
             commentClient = CommentClient.fromService(commentService);
             threadClient = ThreadClient.fromService(commentService);
@@ -119,6 +126,7 @@ public class Contest extends AbstractContest implements Serializable {
             contestClient = ContestClientUtil.getClient();
             contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
             ontologyClient = OntologyClientUtil.getClient();
+            planTemplateClient = PlanTemplateClientUtil.getClient();
             commentClient = CommentClientUtil.getClient();
             threadClient = ThreadClientUtil.getClient();
         }
@@ -130,6 +138,7 @@ public class Contest extends AbstractContest implements Serializable {
         contestClient = ContestClient.fromService(this.restService);
         contestTeamMemberClient = ContestTeamMemberClient.fromService(this.restService);
         ontologyClient = OntologyClient.fromService(this.restService);
+        planTemplateClient = PlanTemplateClient.fromService(this.restService);
         RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
         commentClient = CommentClient.fromService(commentService);
         threadClient = ThreadClient.fromService(commentService);
@@ -773,4 +782,8 @@ public class Contest extends AbstractContest implements Serializable {
         }
     }
 
+    public List<PlanSectionDefinition> getSections() {
+        return planTemplateClient.getPlanSectionDefinitionByPlanTemplateId(getPlanTemplateId(),
+                        true);
+    }
 }

@@ -3,11 +3,14 @@ package org.xcolab.view.pages.proposals.judging;
 import org.apache.commons.lang3.StringUtils;
 
 import org.xcolab.client.contest.ContestClientUtil;
+import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.contest.pojo.templates.PlanSectionDefinition;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalAttributeClientUtil;
 import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRatingType;
+import org.xcolab.util.html.HtmlUtil;
 
 import java.text.DecimalFormat;
 import java.text.Normalizer;
@@ -21,14 +24,18 @@ public class ProposalReviewCsvExporter {
     private static final String delimiter = TQF + DEL + TQF;
 
     private static final DecimalFormat df = new DecimalFormat("#.##");
+    private final Contest contest;
     /*
-    * Cluster all proposal reviews (from multiple Contest phases) by proposal since we
-    * have multiple reviews for each proposal (multiple judging phases)
-    */
+        * Cluster all proposal reviews (from multiple Contest phases) by proposal since we
+        * have multiple reviews for each proposal (multiple judging phases)
+        */
     private final Map<Proposal, List<ProposalReview>> proposalToProposalReviewsMap;
     private final List<ProposalRatingType> ratingTypes;
 
-    public ProposalReviewCsvExporter(Map<Proposal, List<ProposalReview>> proposalToProposalReviewsMap, List<ProposalRatingType> ratingTypes) {
+    public ProposalReviewCsvExporter(Contest contest,
+            Map<Proposal, List<ProposalReview>> proposalToProposalReviewsMap,
+            List<ProposalRatingType> ratingTypes) {
+        this.contest = contest;
         this.proposalToProposalReviewsMap = proposalToProposalReviewsMap;
         this.ratingTypes = ratingTypes;
     }
@@ -121,11 +128,24 @@ public class ProposalReviewCsvExporter {
                 .getContestPhaseType(proposalReview.getContestPhase().getContestPhaseType())
                 .getName();
 
+        StringBuilder dataFields = new StringBuilder(TQF);
+        for (PlanSectionDefinition sectionDefinition : contest.getSections()) {
+            Proposal proposal = proposalReview.getProposal();
+
+            if (sectionDefinition.getIncludeInJudgingReport()) {
+                PlanSectionDefinition proposalSection =
+                        new PlanSectionDefinition(sectionDefinition, proposal);
+                dataFields.append(String.format("\"%s\"%s",
+                        escapeQuote(HtmlUtil.cleanAll(proposalSection.getContent())), delimiter));
+            }
+        }
+
         return String.format("%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s",
                 TQF, escapeQuote(proposalName),
                 delimiter, escapeQuote(proposalReview.getProposalTeamAuthor()),
                 delimiter, proposalReview.getProposalUrl(),
                 delimiter, proposalReview.getProposal().getCleanPitch(),
+                dataFields.toString() +
                 delimiter, escapeQuote(contestPhaseName), delimiter);
     }
 
@@ -136,10 +156,19 @@ public class ProposalReviewCsvExporter {
             ratingSubHeader.append(String.format("\"%s\"%s", ratingTitle, delimiter));
         }
 
+        StringBuilder dataFieldHeaders = new StringBuilder(TQF);
+        for (PlanSectionDefinition sectionDefinition : contest.getSections()) {
+            if (sectionDefinition.getIncludeInJudgingReport()) {
+                dataFieldHeaders.append(
+                        String.format("\"%s\"%s", sectionDefinition.getTitle(), delimiter));
+            }
+        }
+
         return TQF + "\"Proposal title\"" + delimiter +
                 "\"Author/Team name\"" + delimiter +
                 "\"Proposal URL\"" + delimiter +
                 "\"Proposal Pitch\"" + delimiter +
+                dataFieldHeaders.toString() +
                 "\"Contest Phase\"" + delimiter +
                 "\"Judge\"" + delimiter +
                 "\"Average\"" + delimiter +
