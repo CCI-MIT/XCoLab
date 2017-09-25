@@ -40,17 +40,19 @@ public class GoogleAnalyticsUtils {
 
     public static void pushEventAsync(GoogleAnalyticsEventType googleAnalyticsEventType,
             String value) {
-        if(PlatformAttributeKey.ANALYTICS_PRIVATE_KEY_PATH.isPresent()) {
+        if (PlatformAttributeKey.ANALYTICS_PRIVATE_KEY_PATH.isPresent()) {
             try {
                 HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
                 GoogleCredential credential =
-                        GoogleCredential.fromStream(new FileInputStream(KEY_FILE_LOCATION)).createScoped(AnalyticsScopes.all());
+                        GoogleCredential.fromStream(new FileInputStream(KEY_FILE_LOCATION))
+                                .createScoped(AnalyticsScopes.all());
 
                 // Construct the Analytics service object.
                 Analytics analytics = new Analytics.Builder(httpTransport, JSON_FACTORY, credential)
                         .setApplicationName(APPLICATION_NAME).build();
 
-                HttpRequest httpRequest = analytics.management().accounts().list().buildHttpRequestUsingHead();
+                HttpRequest httpRequest =
+                        analytics.management().accounts().list().buildHttpRequestUsingHead();
                 httpRequest.setRequestMethod("POST");
                 GenericUrl url = new GenericUrl(GOOGLE_ANALYTICS_URL);
                 httpRequest.setUrl(url);
@@ -68,7 +70,8 @@ public class GoogleAnalyticsUtils {
                 httpRequest.executeAsync();
 
             } catch (IOException | GeneralSecurityException e) {
-                _log.error("Not able to send Google Analytics event " + googleAnalyticsEventType.getEventCategory() + " " + googleAnalyticsEventType.getEventAction() + " "
+                _log.error("Not able to send Google Analytics event " + googleAnalyticsEventType
+                        .getEventCategory() + " " + googleAnalyticsEventType.getEventAction() + " "
                         + googleAnalyticsEventType.getEventLabel());
             }
         }
