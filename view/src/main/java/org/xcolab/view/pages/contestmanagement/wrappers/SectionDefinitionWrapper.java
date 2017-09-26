@@ -1,6 +1,5 @@
 package org.xcolab.view.pages.contestmanagement.wrappers;
 
-
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -23,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class SectionDefinitionWrapper implements Serializable,Comparable{
+public class SectionDefinitionWrapper implements Serializable, Comparable {
 
     private Long id;
     private String type = "";
@@ -43,6 +42,7 @@ public class SectionDefinitionWrapper implements Serializable,Comparable{
     private boolean isSectionNew;
     private boolean templateSection;
     private boolean contestIntegrationRelevance;
+    private boolean includeInJudgingReport;
     private int weight;
 
     private List<Long> allowedContestTypeIds = new ArrayList<>();
@@ -257,19 +257,7 @@ public class SectionDefinitionWrapper implements Serializable,Comparable{
         if (id == null || createNew) {
             psd = new PlanSectionDefinition();
 
-            psd.setType_(this.getType());
-            psd.setTitle(this.getTitle());
-            psd.setDefaultText(this.getDefaultText());
-            psd.setCharacterLimit(this.getCharacterLimit());
-            psd.setHelpText(this.getHelpText());
-            psd.setTier(this.getLevel());
-            psd.setFocusAreaId(this.getFocusAreaId());
-            psd.setAdditionalIds(this.getAdditionalIds());
-            psd.setAllowedValues(this.getAllowedValues());
-            psd.setAllowedContestTypeIds(
-                    IdListUtil.getStringFromIds(this.getAllowedContestTypeIds()));
-            psd.setContestIntegrationRelevance(this.isContestIntegrationRelevance());
-            psd.setLocked(false);
+            populatePlanSectionDefinition(psd);
 
             psd = PlanTemplateClientUtil.createPlanSectionDefinition(psd);
             id = psd.getId_();
@@ -279,21 +267,7 @@ public class SectionDefinitionWrapper implements Serializable,Comparable{
             pdc = PointsClientUtil
                     .getPointsDistributionConfigurationByTargetPlanSectionDefinitionId(id);
 
-
-            psd.setType_(this.getType());
-            psd.setTitle(this.getTitle());
-            psd.setDefaultText(this.getDefaultText());
-            psd.setCharacterLimit(this.getCharacterLimit());
-            psd.setHelpText(this.getHelpText());
-            psd.setTier(this.getLevel());
-            psd.setFocusAreaId(this.getFocusAreaId());
-            psd.setAdditionalIds(this.getAdditionalIds());
-            psd.setAllowedValues(this.getAllowedValues());
-            psd.setAllowedContestTypeIds(
-                    IdListUtil.getStringFromIds(this.getAllowedContestTypeIds()));
-            psd.setContestIntegrationRelevance(this.isContestIntegrationRelevance());
-            psd.setLocked(false);
-
+            populatePlanSectionDefinition(psd);
 
             if (pdc != null) {
                 if (pointType == 0L) {
@@ -335,6 +309,23 @@ public class SectionDefinitionWrapper implements Serializable,Comparable{
 
         PlanTemplateClientUtil.updatePlanSectionDefinition(psd);
 
+    }
+
+    private void populatePlanSectionDefinition(PlanSectionDefinition psd) {
+        psd.setType_(this.getType());
+        psd.setTitle(this.getTitle());
+        psd.setDefaultText(this.getDefaultText());
+        psd.setCharacterLimit(this.getCharacterLimit());
+        psd.setHelpText(this.getHelpText());
+        psd.setTier(this.getLevel());
+        psd.setFocusAreaId(this.getFocusAreaId());
+        psd.setAdditionalIds(this.getAdditionalIds());
+        psd.setAllowedValues(this.getAllowedValues());
+        psd.setAllowedContestTypeIds(
+                IdListUtil.getStringFromIds(this.getAllowedContestTypeIds()));
+        psd.setContestIntegrationRelevance(this.isContestIntegrationRelevance());
+        psd.setIncludeInJudgingReport(this.isIncludeInJudgingReport());
+        psd.setLocked(false);
     }
 
     public String getTitle() {
@@ -391,6 +382,14 @@ public class SectionDefinitionWrapper implements Serializable,Comparable{
 
     public void setContestIntegrationRelevance(boolean contestIntegrationRelevance) {
         this.contestIntegrationRelevance = contestIntegrationRelevance;
+    }
+
+    public boolean isIncludeInJudgingReport() {
+        return includeInJudgingReport;
+    }
+
+    public void setIncludeInJudgingReport(boolean includeInJudgingReport) {
+        this.includeInJudgingReport = includeInJudgingReport;
     }
 
     public Long getFocusAreaId() {
@@ -535,6 +534,7 @@ public class SectionDefinitionWrapper implements Serializable,Comparable{
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(contestIntegrationRelevance)
+                .append(includeInJudgingReport)
                 .append(level)
                 .append(pointType)
                 .append(id)
@@ -570,6 +570,7 @@ public class SectionDefinitionWrapper implements Serializable,Comparable{
                 .append(other.getAdditionalIds(), this.getAdditionalIds())
                 .append(other.getCharacterLimit(), this.getCharacterLimit())
                 .append(other.isContestIntegrationRelevance(), this.isContestIntegrationRelevance())
+                .append(other.isIncludeInJudgingReport(), this.isIncludeInJudgingReport())
                 .append(other.getFocusAreaId(), this.getFocusAreaId())
                 .append(other.getLevel(), this.getLevel())
                 .append(other.getPointType(), this.getPointType())

@@ -934,6 +934,7 @@ CREATE TABLE `xcolab_PlanSectionDefinition` (
   `additionalIds` varchar(75) DEFAULT NULL,
   `locked` tinyint(4) DEFAULT NULL,
   `contestIntegrationRelevance` tinyint(4) DEFAULT NULL,
+  includeInJudgingReport TINYINT(4) DEFAULT 0,
   PRIMARY KEY (`id_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
