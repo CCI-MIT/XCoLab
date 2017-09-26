@@ -56,8 +56,7 @@ public class MembershipInvitationResponseController {
     @GetMapping("/membershipRequests/reply")
     private void execute(HttpServletRequest request, HttpServletResponse response,
             @RequestParam long requestId, @RequestParam long proposalId,
-            @RequestParam long contestId, @RequestParam("do") String action)
-            throws IOException {
+            @RequestParam long contestId, @RequestParam("do") String action) throws IOException {
 
         Contest contest = ContestClientUtil.getContest(contestId);
         MembershipClient membershipClient;
@@ -65,8 +64,7 @@ public class MembershipInvitationResponseController {
         ProposalAttributeClient proposalAttributeClient;
         if (contest.getIsSharedContestInForeignColab()) {
             RestService proposalService = new RefreshingRestService(CoLabService.CONTEST,
-                    ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
-            );
+                    ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
 
             proposalClient = ProposalClient.fromService(proposalService);
             membershipClient = MembershipClient.fromService(proposalService);
@@ -98,10 +96,8 @@ public class MembershipInvitationResponseController {
             Member invitee = MembersClient.getMemberUnchecked(membershipRequest.getUserId());
 
             if (action.equalsIgnoreCase("ACCEPT")) {
-                membershipClient
-                        .approveMembershipRequest(proposalId, membershipRequest.getUserId(),
-                                membershipRequest, "The invitation was accepted.",
-                                invitee.getUserId());
+                membershipClient.approveMembershipRequest(proposalId, membershipRequest.getUserId(),
+                        membershipRequest, "The invitation was accepted.", invitee.getUserId());
                 final String membershipAcceptedMessage = TemplateReplacementUtil
                         .replaceContestTypeStrings(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_ACCEPTED,
                                 contestType);
@@ -113,13 +109,14 @@ public class MembershipInvitationResponseController {
                 if (contest.getIsSharedContest()) {
                     SharedColabUtil.registerMemberInSharedColab(invitee.getId_());
                 }
-                AlertMessage.success("You are now a contributor of this " + contestType.getProposalName()
-                        + "!").flash(request);
+                AlertMessage.success(
+                        "You are now a contributor of this " + contestType.getProposalName() + "!")
+                        .flash(request);
 
             } else if (action.equalsIgnoreCase("DECLINE")) {
                 membershipClient
-                        .denyMembershipRequest(proposalId, membershipRequest.getUserId(),
-                                requestId, "The invitation was rejected.", invitee.getUserId());
+                        .denyMembershipRequest(proposalId, membershipRequest.getUserId(), requestId,
+                                "The invitation was rejected.", invitee.getUserId());
                 final String membershipRejectedMessage = TemplateReplacementUtil
                         .replaceContestTypeStrings(MSG_MEMBERSHIP_INVITE_RESPONSE_CONTENT_REJECTED,
                                 contestType);
