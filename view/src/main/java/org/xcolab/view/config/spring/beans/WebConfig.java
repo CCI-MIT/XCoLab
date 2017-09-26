@@ -13,6 +13,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.http.CacheControl;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.Assert;
@@ -29,6 +30,7 @@ import org.springframework.web.servlet.resource.VersionResourceResolver;
 
 import org.xcolab.view.auth.AuthenticationContext;
 import org.xcolab.view.config.rewrite.RewriteInitializer;
+import org.xcolab.view.config.spring.converters.CaseInsensitiveStringToEnumConverterFactory;
 import org.xcolab.view.config.spring.properties.ServerProperties;
 import org.xcolab.view.config.spring.properties.TomcatProperties;
 import org.xcolab.view.config.spring.properties.WebProperties;
@@ -98,6 +100,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(populateContextInterceptor).addPathPatterns("/contests/**");
         registry.addInterceptor(validateTabPermissionsInterceptor).addPathPatterns("/contests/**");
         registry.addInterceptor(localeChangeInterceptor());
+    }
+
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverterFactory(new CaseInsensitiveStringToEnumConverterFactory());
     }
 
     private LocaleChangeInterceptor localeChangeInterceptor() {
