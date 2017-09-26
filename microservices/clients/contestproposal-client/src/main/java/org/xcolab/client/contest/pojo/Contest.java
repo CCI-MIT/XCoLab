@@ -94,15 +94,6 @@ public class Contest extends AbstractContest implements Serializable {
 
     private RestService restService;
 
-    public Contest(Long contestId) {
-        contestClient = ContestClientUtil.getClient();
-        contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
-        ontologyClient = OntologyClientUtil.getClient();
-        planTemplateClient = PlanTemplateClientUtil.getClient();
-        commentClient = CommentClientUtil.getClient();
-        threadClient = ThreadClientUtil.getClient();
-    }
-
     public Contest() {
         contestClient = ContestClientUtil.getClient();
         contestTeamMemberClient = ContestTeamMemberClientUtil.getClient();
@@ -113,8 +104,12 @@ public class Contest extends AbstractContest implements Serializable {
     }
 
     public Contest(Contest value) {
+        this(value, value.getRestService());
+    }
+
+    public Contest(AbstractContest value, RestService restService) {
         super(value);
-        if (value.getRestService() != null) {
+        if (restService != null) {
             contestClient = ContestClient.fromService(restService);
             contestTeamMemberClient = ContestTeamMemberClient.fromService(restService);
             ontologyClient = OntologyClient.fromService(restService);
@@ -130,18 +125,7 @@ public class Contest extends AbstractContest implements Serializable {
             commentClient = CommentClientUtil.getClient();
             threadClient = ThreadClientUtil.getClient();
         }
-    }
-
-    public Contest(AbstractContest abstractContest, RestService restService) {
-        super(abstractContest);
         this.restService = restService;
-        contestClient = ContestClient.fromService(this.restService);
-        contestTeamMemberClient = ContestTeamMemberClient.fromService(this.restService);
-        ontologyClient = OntologyClient.fromService(this.restService);
-        planTemplateClient = PlanTemplateClient.fromService(this.restService);
-        RestService commentService =  restService.withServiceName(CoLabService.COMMENT.getServiceName());
-        commentClient = CommentClient.fromService(commentService);
-        threadClient = ThreadClient.fromService(commentService);
     }
 
     public String getContestDiscussionLinkUrl() {
