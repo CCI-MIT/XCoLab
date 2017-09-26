@@ -26,10 +26,10 @@
 		<div id="content">
 			<c:choose>
 				<c:when test="${contest.isSharedContestInForeignColab}">
-					<xcolab:discussionComments threadId="${discussionId }" sharedColabId="${contest.contestPK}" />
+					<xcolab:discussionComments threadId="${discussionId }" sharedColabId="${contest.contestPK}" shareTitle="Discussion ${contest.contestShortName}" />
 				</c:when>
 				<c:otherwise>
-                    <xcolab:discussionComments threadId="${discussionId }"  />
+                    <xcolab:discussionComments threadId="${discussionId }" shareTitle="Discussion ${contest.contestShortName}"  />
 				</c:otherwise>
 			</c:choose>
 		</div>

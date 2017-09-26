@@ -30,7 +30,6 @@ import org.xcolab.view.util.entity.flash.InfoMessage;
 
 import java.util.Locale;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -222,8 +221,9 @@ public class ThemeVariableInterceptor extends HandlerInterceptorAdapter {
             modelAndView.addObject("__errorMessage", ErrorMessage.extract(request));
             modelAndView.addObject("__infoMessage", InfoMessage.extract(request));
 
-            modelAndView.addObject("_shareRequestUri", SocialMediaEngine.getUtmParameters(request.getRequestURI()));
+            modelAndView.addObject("_shareRequestUri", SocialMediaEngine.getUtmParameters(ConfigurationAttributeKey.COLAB_URL_PRODUCTION.get() + request.getRequestURI()));
             modelAndView.addObject("_facebookId", ConfigurationAttributeKey.FACEBOOK_APPLICATION_ID.get());
+
             modelAndView.addObject("_shearableSocialMediaUrls", SocialMediaEngine.getShearableSocialMediaEngines());
             modelAndView.addObject("_followableSocialMediaUrls", SocialMediaEngine.getFollowableSocialMediaEngines());
         }

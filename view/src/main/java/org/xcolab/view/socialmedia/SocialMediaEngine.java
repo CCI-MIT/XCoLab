@@ -16,10 +16,10 @@ public enum SocialMediaEngine {
     email(null, true, true);
 
     public static String SOCIAL_MEDIA_SPACE_HOLDER = "socialMediaEngine";
-    private String followMeUrl;
+    private final String followMeUrl;
 
-    private boolean isShearable;
-    private boolean isActive;
+    private final boolean isShearable;
+    private final boolean isActive;
 
     SocialMediaEngine(String followMeUrl, boolean isShearable, boolean isActive) {
         this.followMeUrl = followMeUrl;
@@ -41,9 +41,7 @@ public enum SocialMediaEngine {
         return Arrays.stream(getAllAvailableSocialMediaEngines())
                 .filter(p -> p.isFollowable() && p.isActive()).collect(Collectors.toList());
     }
-    public static String replacePlaceholder(String url, String engine){
-        return url.replace(SocialMediaEngine.SOCIAL_MEDIA_SPACE_HOLDER,engine);
-    }
+
 
     public static String getUtmParameters(String url) {
         String urlToReturn = url;
@@ -52,7 +50,8 @@ public enum SocialMediaEngine {
         } else {
             urlToReturn += "&";
         }
-        return urlToReturn+"utm_source="+SOCIAL_MEDIA_SPACE_HOLDER+"&utm_medium=Social&utm_campaign=Share";
+        return urlToReturn + "utm_source=" + SOCIAL_MEDIA_SPACE_HOLDER
+                + "&utm_medium=Social&utm_campaign=Share";
     }
 
     public String getFollowMeUrl() {

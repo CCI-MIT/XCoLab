@@ -2,7 +2,9 @@
           xmlns:c="http://java.sun.com/jsp/jstl/core"
           xmlns:spring="http://www.springframework.org/tags"
           xmlns:xcolab-dropdowns="urn:jsptagdir:/WEB-INF/tags/layout/dropdowns"
-          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags">
+          xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social"
+>
 
     <jsp:directive.attribute name="currentLanguage" type="java.lang.String" required="true" rtexprvalue="true" description="The currently active locale" />
     <jsp:directive.attribute name="languageSelectItems" type="java.util.List" required="true" rtexprvalue="true" description="Language selection items" />
@@ -44,9 +46,9 @@
 
                 <!-- TODO : better styling; get rid of style attribute -->
                 <div class="pull-right" style="margin-top: 4px;">
-                    <c:forEach var="followSocialMedia" items="${_followableSocialMediaUrls}">
-                        <xcolab:socialMedia type="follow" socialEngine="${followSocialMedia.name()}" followMeUrl="${followSocialMedia.followMeUrl}"/>
-                    </c:forEach>
+
+                        <xcolab-social:socialFollow />
+
                 </div>
 
 
@@ -54,15 +56,6 @@
 
         </div> <!-- #c-Footer__menu -->
 
-        <script>
-            function shareFacebook(event) {
-
-                var engineUrl = $(event).data("engine-url");
-                var shareUrl = $(event).data("share-url");
-                window.open(engineUrl+ encodeURIComponent(shareUrl),'_blank');
-            }
-
-        </script>
         
         <div class="bs-container-fixed">
             <!-- footer content -->

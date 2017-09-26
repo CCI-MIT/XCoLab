@@ -1,0 +1,14 @@
+<jsp:root version="2.1" xmlns:c="http://java.sun.com/jsp/jstl/core"
+          xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:xcolabSocial="urn:jsptagdir:/WEB-INF/tags/social">
+
+    <jsp:directive.attribute name="title" type="java.lang.String" description="Title " />
+    <jsp:directive.attribute name="dataReference" type="java.lang.String" description="Extra reference to compose URL" />
+    <jsp:directive.attribute name="url" type="java.lang.String" description="The url to be shared if passed, if not use the default one from variable interceptor" />
+    <jsp:directive.attribute name="size" type="java.lang.String" description="Available sizes: lg,sm, xm for regular leave blank" />
+
+    <c:forEach var="followSocialMedia" items="${_shearableSocialMediaUrls}">
+        <xcolabSocial:socialMedia type="share" socialEngine="${followSocialMedia.name()}"  title="${title}" size="${size}" shareUrl="${url}"/>
+    </c:forEach>
+
+</jsp:root>

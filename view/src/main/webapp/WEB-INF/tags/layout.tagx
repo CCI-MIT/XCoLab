@@ -381,10 +381,7 @@
     <xcolab:loadScript shouldLoad="${_librariesToLoad['ddslick']}" src="${_libJsFolder}/jquery.ddslick.min.js" />
 
     <xcolab:loadScript shouldLoad="${_librariesToLoad['clipboard.js']}" src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js" />
-
-    <!-- Add this -->
-    <script type="text/javascript" src="https://s7.addthis.com/js/300/addthis_widget.js#pubid=ra-597f702bfab33060"><!-- --></script>
-
+    
     <xcolab:script src="${_themeJsFolder}/initScript.js" />
 
     <!-- ============ Analytics and tracking ============ -->
@@ -405,6 +402,23 @@
     </c:if>
     <xcolab:script src="${_themeJsFolder}/usertracking.js" defer="true"/>
 
+    <!-- Social Share Script -->
+    <script>
+        function shareThis(event) {
+
+            var engineUrl = $(event).data("engine-url");
+            var shareUrl = $(event).data("share-url");
+            var engine = $(event).data("engine");
+            var dataReference = $(event).data("reference");
+            console.log('engineUrl> ' + engineUrl);
+            console.log('shareUrl> ' + shareUrl);
+            console.log('engine> ' + engine);
+            console.log('dataReference> ' + dataReference);
+
+            window.open(engineUrl+ encodeURIComponent(shareUrl.replace("socialMediaEngine",engine)+((dataReference!="")?(dataReference):(""))),'_blank');
+        }
+
+    </script>
 
     <!-- ============ Structured data (schema.org) ============ -->
 

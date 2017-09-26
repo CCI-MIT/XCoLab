@@ -4,6 +4,7 @@
           xmlns:proposalsPortlet="urn:jsptagdir:/WEB-INF/tags/proposalsPortlet"
           xmlns:collab="urn:jsptld:/WEB-INF/tlds/xcolab.tld"
           xmlns:xcolab="urn:jsptagdir:/WEB-INF/tags"
+          xmlns:xcolab-social="urn:jsptagdir:/WEB-INF/tags/social"
           xmlns:spring="http://www.springframework.org/tags">
 
     <jsp:directive.page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"/>
@@ -208,10 +209,9 @@
                     <h4 style="color: #30a3fb;">
                         <spring:message code="contests.proposal.voting.share" />
                     </h4>
-                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
-                    <div class="addthis_inline_share_toolbox" data-url="${proposal.absoluteProposalUrl}"
-                         data-title="${proposal.name}" data-description="${proposal.pitch}">
-                        <!-- --></div>
+                    <div>
+                        <xcolab-social:socialShare  title="${_colabName.concat(' - ').concat(contest.contestShortName).concat(' - ').concat(proposal.name)}"/>
+                    </div>
                 </div>
             </xcolab:modal>
             <script>
