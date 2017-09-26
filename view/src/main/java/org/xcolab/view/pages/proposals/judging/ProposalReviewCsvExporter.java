@@ -128,10 +128,22 @@ public class ProposalReviewCsvExporter {
                 .getContestPhaseType(proposalReview.getContestPhase().getContestPhaseType())
                 .getName();
 
+        Proposal proposal = proposalReview.getProposal();
+
+        final String dataFields = getDataFields(proposal);
+
+        return String.format("%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s",
+                TQF, escapeQuote(proposalName),
+                delimiter, escapeQuote(proposalReview.getProposalTeamAuthor()),
+                delimiter, proposalReview.getProposalUrl(),
+                delimiter, proposalReview.getProposal().getCleanPitch(),
+                dataFields +
+                delimiter, escapeQuote(contestPhaseName), delimiter);
+    }
+
+    private String getDataFields(Proposal proposal) {
         StringBuilder dataFields = new StringBuilder(TQF);
         for (PlanSectionDefinition sectionDefinition : contest.getSections()) {
-            Proposal proposal = proposalReview.getProposal();
-
             if (sectionDefinition.getIncludeInJudgingReport()) {
                 PlanSectionDefinition proposalSection =
                         new PlanSectionDefinition(sectionDefinition, proposal);
@@ -139,23 +151,37 @@ public class ProposalReviewCsvExporter {
                         escapeQuote(HtmlUtil.cleanAll(proposalSection.getContent())), delimiter));
             }
         }
-
-        return String.format("%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s",
-                TQF, escapeQuote(proposalName),
-                delimiter, escapeQuote(proposalReview.getProposalTeamAuthor()),
-                delimiter, proposalReview.getProposalUrl(),
-                delimiter, proposalReview.getProposal().getCleanPitch(),
-                dataFields.toString() +
-                delimiter, escapeQuote(contestPhaseName), delimiter);
+        return dataFields.toString();
     }
 
     private String getTableHeader() {
+        final String ratingSubHeader = getRatingSubHeader();
+        final String dataFieldHeaders = getDataFieldHeaders();
+
+        return TQF + "\"Proposal title\"" + delimiter +
+                "\"Author/Team name\"" + delimiter +
+                "\"Proposal URL\"" + delimiter +
+                "\"Proposal Pitch\"" + delimiter +
+                dataFieldHeaders +
+                "\"Contest Phase\"" + delimiter +
+                "\"Judge\"" + delimiter +
+                "\"Average\"" + delimiter +
+                ratingSubHeader +
+                "\"ShouldAdvance\"" + delimiter +
+                "\"Comment\"" + delimiter +
+                "\"Presented by\"" + "\n";
+    }
+
+    private String getRatingSubHeader() {
         StringBuilder ratingSubHeader = new StringBuilder(TQF);
         for (ProposalRatingType ratingType : ratingTypes) {
             String ratingTitle = ratingType.getLabel();
             ratingSubHeader.append(String.format("\"%s\"%s", ratingTitle, delimiter));
         }
+        return ratingSubHeader.toString();
+    }
 
+    private String getDataFieldHeaders() {
         StringBuilder dataFieldHeaders = new StringBuilder(TQF);
         for (PlanSectionDefinition sectionDefinition : contest.getSections()) {
             if (sectionDefinition.getIncludeInJudgingReport()) {
@@ -163,19 +189,7 @@ public class ProposalReviewCsvExporter {
                         String.format("\"%s\"%s", sectionDefinition.getTitle(), delimiter));
             }
         }
-
-        return TQF + "\"Proposal title\"" + delimiter +
-                "\"Author/Team name\"" + delimiter +
-                "\"Proposal URL\"" + delimiter +
-                "\"Proposal Pitch\"" + delimiter +
-                dataFieldHeaders.toString() +
-                "\"Contest Phase\"" + delimiter +
-                "\"Judge\"" + delimiter +
-                "\"Average\"" + delimiter +
-                ratingSubHeader.toString() +
-                "\"ShouldAdvance\"" + delimiter +
-                "\"Comment\"" + delimiter +
-                "\"Presented by\"" + "\n";
+        return dataFieldHeaders.toString();
     }
 
     private String deAccent(String str) {
