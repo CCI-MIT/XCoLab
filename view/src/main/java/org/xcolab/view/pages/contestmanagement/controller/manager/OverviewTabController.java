@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
-import org.xcolab.util.html.LabelValue;
 import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
@@ -26,7 +25,9 @@ import org.xcolab.view.util.entity.flash.AlertMessage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,12 +52,12 @@ public class OverviewTabController extends AbstractTabController {
 
 
     @ModelAttribute("massActionsItems")
-    public List<LabelValue> populateMassActionsItems(HttpServletRequest request) {
-        List<LabelValue> contestMassActionItems = new ArrayList<>();
+    public Map<String, String> populateMassActionsItems(HttpServletRequest request) {
+        Map<String, String> contestMassActionItems = new LinkedHashMap<>();
 
         for (ContestMassActions contestMassAction : ContestMassActions.values()) {
-            contestMassActionItems.add(new LabelValue((long) contestMassAction.ordinal(),
-                    contestMassAction.getAction().getDisplayName()));
+            contestMassActionItems
+                    .put(contestMassAction.name(), contestMassAction.getAction().getDisplayName());
         }
 
         return contestMassActionItems;
@@ -99,7 +100,8 @@ public class OverviewTabController extends AbstractTabController {
         if (!tabWrapper.getCanEdit()) {
             response.sendError(403);
         }
-        List<Contest> contests = new ArrayList<>(updateContestOverviewWrapper.getContests().values());
+        List<Contest> contests =
+                new ArrayList<>(updateContestOverviewWrapper.getContests().values());
         OrderMassAction orderMassAction = (OrderMassAction) ContestMassActions.ORDER.getAction();
         orderMassAction.execute(contests);
     }
@@ -120,19 +122,11 @@ public class OverviewTabController extends AbstractTabController {
     private String showConfirmationView(Model model,
             ContestOverviewWrapper contestOverviewWrapper) {
         List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();
-        int massActionIndex = contestOverviewWrapper.getSelectedMassAction().intValue();
+        ContestMassActions selectedMassActionWrapper = contestOverviewWrapper.getSelectedMassAction();
         model.addAttribute("massActionConfirmationWrapper",
-                new MassActionConfirmationWrapper(contestIds, massActionIndex));
+                new MassActionConfirmationWrapper(contestIds, selectedMassActionWrapper));
 
         return CONFIRM_VIEW_PATH;
-    }
-
-    private ContestMassActions getMassActionWrapper(ContestOverviewWrapper contestOverviewWrapper) {
-        int massActionIndex = contestOverviewWrapper.getSelectedMassAction().intValue();
-        if (massActionIndex > ContestMassActions.values().length) {
-            throw new IllegalArgumentException("Illegal mass action index");
-        }
-        return ContestMassActions.values()[massActionIndex];
     }
 
     private void executeMassAction(HttpServletRequest request, HttpServletResponse response,
@@ -140,8 +134,7 @@ public class OverviewTabController extends AbstractTabController {
             throws MassActionRequiresConfirmationException, IOException {
         contestOverviewWrapper.setMemberId(MemberAuthUtil.getMemberId(request));
 
-        ContestMassActions actionWrapper = getMassActionWrapper(contestOverviewWrapper);
-        ContestMassAction action = actionWrapper.getAction();
+        ContestMassAction action = contestOverviewWrapper.getSelectedMassAction().getAction();
         List<Long> contestIds = contestOverviewWrapper.getSelectedContestIds();
         List<Contest> contests = EntityIdListUtil.CONTESTS.fromIdList(contestIds);
 

@@ -15,14 +15,7 @@
             <div class="c-ContestBox backgroundLight">
                 <div class="c-ContestBox__image">
                     <a href="${contest.contestUrl}">
-                        <c:choose>
-                            <c:when test="${contest.contestLogoId > 0}">
-                                <img src="${contest.logoPath}" width="151" height="151" alt="${contest.contestShortName}" />
-                            </c:when>
-                            <c:otherwise>
-                                <img src="${_themeImageFolder}/blank.gif" width="151" height="151" alt="${contest.contestShortName}" style="border: 1px solid #bbb;"/>
-                            </c:otherwise>
-                        </c:choose>
+                        <img src="${contest.logoPath}" width="151" height="151" alt="${contest.contestShortName}" />
                     </a>
                 </div>
                 <div class="c-ContestBox__text">
