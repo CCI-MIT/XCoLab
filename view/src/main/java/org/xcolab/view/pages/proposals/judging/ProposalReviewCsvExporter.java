@@ -143,12 +143,10 @@ public class ProposalReviewCsvExporter {
 
     private String getDataFields(Proposal proposal) {
         StringBuilder dataFields = new StringBuilder(TQF);
-        for (PlanSectionDefinition sectionDefinition : contest.getSections()) {
+        for (PlanSectionDefinition sectionDefinition : proposal.getSections()) {
             if (sectionDefinition.getIncludeInJudgingReport()) {
-                PlanSectionDefinition proposalSection =
-                        new PlanSectionDefinition(sectionDefinition, proposal);
                 dataFields.append(String.format("\"%s\"%s",
-                        escapeQuote(HtmlUtil.cleanAll(proposalSection.getContent())), delimiter));
+                        escapeQuote(HtmlUtil.cleanAll(sectionDefinition.getContent())), delimiter));
             }
         }
         return dataFields.toString();
