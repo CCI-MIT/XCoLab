@@ -4,6 +4,8 @@ import org.xcolab.client.admin.ContestTypeClient;
 import org.xcolab.client.admin.pojo.ContestType;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.members.MembersClient;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.IdListUtil;
@@ -39,6 +41,9 @@ public final class EntityIdListUtil {
      */
     public final static IdListObjectConverter<ContestType> CONTEST_TYPES =
             new IdListObjectConverter<>(ContestTypeClient::getContestType, ContestType::getId);
+
+    public final static IdListObjectConverter<Member> MEMBERS =
+            new IdListObjectConverter<>(MembersClient::getMemberUnchecked, Member::getUserId);
 
 
     public static class IdListObjectConverter<T> {

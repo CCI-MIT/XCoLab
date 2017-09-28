@@ -62,3 +62,17 @@ fieldset[disabled] .form-control {
   border: 1px solid $t-Color__grey--light;
   border-radius: $bs-form-control__borderRadius;
 }
+
+//workaround to override legacy input and label rules
+.checkbox {
+  label {
+    float: none !important;
+    width: initial !important;
+  }
+
+  input[type=checkbox] {
+    float: none !important;
+    height: initial !important;
+    width: initial !important;
+  }
+}

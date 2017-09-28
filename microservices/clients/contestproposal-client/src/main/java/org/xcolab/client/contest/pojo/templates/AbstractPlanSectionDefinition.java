@@ -1,6 +1,7 @@
 package org.xcolab.client.contest.pojo.templates;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 abstract class AbstractPlanSectionDefinition implements Serializable {
 
@@ -20,6 +21,7 @@ abstract class AbstractPlanSectionDefinition implements Serializable {
     private String  additionalids;
     private Boolean locked;
     private Boolean contestintegrationrelevance;
+    private Boolean includeInJudgingReport;
 
     public AbstractPlanSectionDefinition() {}
 
@@ -38,38 +40,7 @@ abstract class AbstractPlanSectionDefinition implements Serializable {
         this.additionalids = value.additionalids;
         this.locked = value.locked;
         this.contestintegrationrelevance = value.contestintegrationrelevance;
-    }
-
-    public AbstractPlanSectionDefinition(
-        Long    id_,
-        String  type_,
-        String  admintitle,
-        String  title,
-        String  defaulttext,
-        String  helptext,
-        Integer characterlimit,
-        Long    focusareaid,
-        Long    tier,
-        String  allowedcontesttypeids,
-        String  allowedvalues,
-        String  additionalids,
-        Boolean locked,
-        Boolean contestintegrationrelevance
-    ) {
-        this.id_ = id_;
-        this.type_ = type_;
-        this.admintitle = admintitle;
-        this.title = title;
-        this.defaulttext = defaulttext;
-        this.helptext = helptext;
-        this.characterlimit = characterlimit;
-        this.focusareaid = focusareaid;
-        this.tier = tier;
-        this.allowedcontesttypeids = allowedcontesttypeids;
-        this.allowedvalues = allowedvalues;
-        this.additionalids = additionalids;
-        this.locked = locked;
-        this.contestintegrationrelevance = contestintegrationrelevance;
+        this.includeInJudgingReport = value.includeInJudgingReport;
     }
 
     public Long getId_() {
@@ -184,152 +155,46 @@ abstract class AbstractPlanSectionDefinition implements Serializable {
         this.contestintegrationrelevance = contestintegrationrelevance;
     }
 
+    public Boolean getIncludeInJudgingReport() {
+        return this.includeInJudgingReport;
+    }
+
+    public void setIncludeInJudgingReport(Boolean includeInJudgingReport) {
+        this.includeInJudgingReport = includeInJudgingReport;
+    }
+
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (obj == null) {
+        if (!(o instanceof AbstractPlanSectionDefinition)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final AbstractPlanSectionDefinition other = (AbstractPlanSectionDefinition) obj;
-        if (id_ == null) {
-            if (other.id_ != null) {
-                return false;
-            }
-        }
-        else if (!id_.equals(other.id_)) {
-            return false;
-        }
-        if (type_ == null) {
-            if (other.type_ != null) {
-                return false;
-            }
-        }
-        else if (!type_.equals(other.type_)) {
-            return false;
-        }
-        if (admintitle == null) {
-            if (other.admintitle != null) {
-                return false;
-            }
-        }
-        else if (!admintitle.equals(other.admintitle)) {
-            return false;
-        }
-        if (title == null) {
-            if (other.title != null) {
-                return false;
-            }
-        }
-        else if (!title.equals(other.title)) {
-            return false;
-        }
-        if (defaulttext == null) {
-            if (other.defaulttext != null) {
-                return false;
-            }
-        }
-        else if (!defaulttext.equals(other.defaulttext)) {
-            return false;
-        }
-        if (helptext == null) {
-            if (other.helptext != null) {
-                return false;
-            }
-        }
-        else if (!helptext.equals(other.helptext)) {
-            return false;
-        }
-        if (characterlimit == null) {
-            if (other.characterlimit != null) {
-                return false;
-            }
-        }
-        else if (!characterlimit.equals(other.characterlimit)) {
-            return false;
-        }
-        if (focusareaid == null) {
-            if (other.focusareaid != null) {
-                return false;
-            }
-        }
-        else if (!focusareaid.equals(other.focusareaid)) {
-            return false;
-        }
-        if (tier == null) {
-            if (other.tier != null) {
-                return false;
-            }
-        }
-        else if (!tier.equals(other.tier)) {
-            return false;
-        }
-        if (allowedcontesttypeids == null) {
-            if (other.allowedcontesttypeids != null) {
-                return false;
-            }
-        }
-        else if (!allowedcontesttypeids.equals(other.allowedcontesttypeids)) {
-            return false;
-        }
-        if (allowedvalues == null) {
-            if (other.allowedvalues != null) {
-                return false;
-            }
-        }
-        else if (!allowedvalues.equals(other.allowedvalues)) {
-            return false;
-        }
-        if (additionalids == null) {
-            if (other.additionalids != null) {
-                return false;
-            }
-        }
-        else if (!additionalids.equals(other.additionalids)) {
-            return false;
-        }
-        if (locked == null) {
-            if (other.locked != null) {
-                return false;
-            }
-        }
-        else if (!locked.equals(other.locked)) {
-            return false;
-        }
-        if (contestintegrationrelevance == null) {
-            if (other.contestintegrationrelevance != null) {
-                return false;
-            }
-        }
-        else if (!contestintegrationrelevance.equals(other.contestintegrationrelevance)) {
-            return false;
-        }
-        return true;
+        AbstractPlanSectionDefinition that = (AbstractPlanSectionDefinition) o;
+        return Objects.equals(getId_(), that.getId_())
+                && Objects.equals(getType_(), that.getType_())
+                && Objects.equals(admintitle, that.admintitle)
+                && Objects.equals(getTitle(), that.getTitle())
+                && Objects.equals(defaulttext, that.defaulttext)
+                && Objects.equals(helptext, that.helptext)
+                && Objects.equals(characterlimit, that.characterlimit)
+                && Objects.equals(focusareaid, that.focusareaid)
+                && Objects.equals(getTier(), that.getTier())
+                && Objects.equals(allowedcontesttypeids, that.allowedcontesttypeids)
+                && Objects.equals(allowedvalues, that.allowedvalues)
+                && Objects.equals(additionalids, that.additionalids)
+                && Objects.equals(getLocked(), that.getLocked())
+                && Objects.equals(contestintegrationrelevance, that.contestintegrationrelevance)
+                && Objects.equals(getIncludeInJudgingReport(), that.getIncludeInJudgingReport());
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id_ == null) ? 0 : id_.hashCode());
-        result = prime * result + ((type_ == null) ? 0 : type_.hashCode());
-        result = prime * result + ((admintitle == null) ? 0 : admintitle.hashCode());
-        result = prime * result + ((title == null) ? 0 : title.hashCode());
-        result = prime * result + ((defaulttext == null) ? 0 : defaulttext.hashCode());
-        result = prime * result + ((helptext == null) ? 0 : helptext.hashCode());
-        result = prime * result + ((characterlimit == null) ? 0 : characterlimit.hashCode());
-        result = prime * result + ((focusareaid == null) ? 0 : focusareaid.hashCode());
-        result = prime * result + ((tier == null) ? 0 : tier.hashCode());
-        result = prime * result + ((allowedcontesttypeids == null) ? 0 : allowedcontesttypeids.hashCode());
-        result = prime * result + ((allowedvalues == null) ? 0 : allowedvalues.hashCode());
-        result = prime * result + ((additionalids == null) ? 0 : additionalids.hashCode());
-        result = prime * result + ((locked == null) ? 0 : locked.hashCode());
-        result = prime * result + ((contestintegrationrelevance == null) ? 0 : contestintegrationrelevance.hashCode());
-        return result;
+        return Objects.hash(getId_(), getType_(), admintitle, getTitle(), defaulttext, helptext,
+                characterlimit, focusareaid, getTier(), allowedcontesttypeids, allowedvalues,
+                additionalids, getLocked(), contestintegrationrelevance,
+                getIncludeInJudgingReport());
     }
 
     @Override

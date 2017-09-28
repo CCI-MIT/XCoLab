@@ -9,14 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
-import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.ContestTeamMemberClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.contest.pojo.phases.ContestPhase;
-import org.xcolab.client.members.MembersClient;
-import org.xcolab.client.members.exceptions.MemberNotFoundException;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalJudgeRatingClientUtil;
+import org.xcolab.client.proposals.ProposalPhaseClient;
 import org.xcolab.client.proposals.ProposalPhaseClientUtil;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.evaluation.judges.ProposalRating;
@@ -29,6 +27,7 @@ import org.xcolab.view.pages.proposals.judging.ProposalRatingWrapper;
 import org.xcolab.view.pages.proposals.judging.ProposalReview;
 import org.xcolab.view.pages.proposals.judging.ProposalReviewCsvExporter;
 import org.xcolab.view.pages.proposals.permissions.ProposalsPermissions;
+import org.xcolab.view.pages.proposals.utils.context.ClientHelper;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 
 import java.io.ByteArrayOutputStream;
@@ -43,6 +42,8 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static org.xcolab.view.util.entity.EntityIdListUtil.MEMBERS;
 
 @Controller
 @RequestMapping("/contests/{contestYear}/{contestUrlName}")
@@ -93,13 +94,12 @@ public class JudgingCsvController {
         List<Proposal> stillActiveProposals = proposalContext.getClients().getProposalClient()
                 .getActiveProposalsInContestPhase(currentPhase.getContestPhasePK());
         Set<ProposalRatingType> occurringRatingTypes = new HashSet<>();
-        Set<Member> occurringJudges = new HashSet<>();
 
-        for (ContestPhase judgingPhase : ContestClientUtil
-                .getAllContestPhases(contest.getContestPK())) {
+        for (ContestPhase judgingPhase : contest.getPhases()) {
             if (!judgingPhase.getFellowScreeningActive()) {
                 continue;
             }
+
             for (Proposal proposal : stillActiveProposals) {
                 ProposalContestPhaseAttribute fellowActionAttribute = ProposalPhaseClientUtil
                         .getProposalContestPhaseAttribute(proposal.getProposalId(),
@@ -115,7 +115,6 @@ public class JudgingCsvController {
                             && judgingPhase.getFellowScreeningActive()) {
                         continue;
                     }
-
 
                     final String proposalUrl = PlatformAttributeKey.COLAB_URL.get() + proposal
                             .getProposalLinkUrl(contest, judgingPhase.getContestPhasePK());
@@ -143,7 +142,6 @@ public class JudgingCsvController {
                         occurringRatingTypes.add(ratingWrapper.getRatingType());
                         if (rating.getCommentEnabled()) {
                             proposalReview.addReview(ratingWrapper.getUser(), rating.getComment_());
-                            occurringJudges.add(ratingWrapper.getUser());
                         }
                         if (StringUtils.isNotBlank(rating.getOtherDataString())) {
                             proposalReview.addShouldAdvanceDecision(ratingWrapper.getUser(),
@@ -171,7 +169,7 @@ public class JudgingCsvController {
         }
 
         ProposalReviewCsvExporter csvExporter =
-                new ProposalReviewCsvExporter(proposalToProposalReviewsMap,
+                new ProposalReviewCsvExporter(contest, proposalToProposalReviewsMap,
                         new ArrayList<>(occurringRatingTypes));
 
         return csvExporter.getCsvString();
@@ -179,42 +177,29 @@ public class JudgingCsvController {
 
     private List<Member> getProposalReviewingJudges(Proposal proposal, ContestPhase judgingPhase,
             ProposalContext proposalContext) {
-        List<Member> selectedJudges = null;
+
+        final ClientHelper clients = proposalContext.getClients();
+        final ProposalPhaseClient proposalPhaseClient = clients.getProposalPhaseClient();
+
 
         if (judgingPhase.getFellowScreeningActive()) {
-            final String judgeIdString = proposalContext.getClients().getProposalPhaseClient().
-                    getProposalContestPhaseAttribute(proposal.getProposalId(),
+            final ProposalContestPhaseAttribute selectedJudgesAttribute = proposalPhaseClient
+                    .getProposalContestPhaseAttribute(proposal.getProposalId(),
                             judgingPhase.getContestPhasePK(),
-                            ProposalContestPhaseAttributeKeys.SELECTED_JUDGES).getStringValue();
-
-            selectedJudges = new ArrayList<>();
-
-            for (String element : judgeIdString.split(";")) {
-
-                try {
-                    long userId = Long.parseLong(element);
-                    Member judge = MembersClient.getMember(userId);
-                    selectedJudges.add(judge);
-                } catch (MemberNotFoundException | NumberFormatException ignore) {
-
-                }
+                            ProposalContestPhaseAttributeKeys.SELECTED_JUDGES);
+            if (selectedJudgesAttribute == null) {
+                throw new IllegalStateException("Fellow screening active,"
+                        + " but no judges were selected for this contest.");
             }
+
+            final String judgeIdString = selectedJudgesAttribute.getStringValue();
+            return MEMBERS.fromIdString(judgeIdString);
+
         } else {
             // Choose all judges
-            try {
-                List<Long> members = ContestTeamMemberClientUtil
+            List<Long> judgeIds = ContestTeamMemberClientUtil
                         .getJudgesForContest(judgingPhase.getContestPK());
-                selectedJudges = new ArrayList<>();
-                for (Long memberId : members) {
-                    selectedJudges.add(MembersClient.getMember(memberId));
-                }
-            } catch (MemberNotFoundException ignored) {
-
-            }
+            return MEMBERS.fromIdList(judgeIds);
         }
-
-        return selectedJudges;
     }
-
 }
-
