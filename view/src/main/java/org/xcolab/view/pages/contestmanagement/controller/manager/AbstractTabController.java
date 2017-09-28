@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import org.xcolab.view.pages.contestmanagement.entities.ContestManagerTabs;
 import org.xcolab.view.taglibs.xcolab.controller.BaseTabController;
-import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
 import org.xcolab.view.taglibs.xcolab.wrapper.TabWrapper;
 
 import java.util.List;
@@ -26,16 +25,7 @@ public abstract class AbstractTabController extends BaseTabController {
 
     @ModelAttribute("currentTabWrapped")
     @Override
-    public abstract TabWrapper populateCurrentTabWrapped(HttpServletRequest request)
-            ;
-
-    @Override
-    public void setPageAttributes(HttpServletRequest request, Model model, TabEnum tab) {
-        String pageTitle = "Contest Management Tool";
-        String pageSubTitle = tab.getDisplayName() + " - " + pageTitle;
-        String pageDescription = "Contest details for " + pageTitle;
-        setSeoTexts();
-    }
+    public abstract TabWrapper populateCurrentTabWrapped(HttpServletRequest request);
 
     public TabWrapper getTabWrapper() {
         return tabWrapper;

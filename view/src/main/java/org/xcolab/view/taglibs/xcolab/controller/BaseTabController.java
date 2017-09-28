@@ -32,8 +32,6 @@ public abstract class BaseTabController {
     @ModelAttribute("currentTabWrapped")
     public abstract TabWrapper populateCurrentTabWrapped(HttpServletRequest request);
 
-    public abstract void setPageAttributes(HttpServletRequest request, Model model, TabEnum tab);
-
     protected List<TabWrapper> getAllVisibleTabsWrapped(HttpServletRequest request,
             TabEnum[] Tabs) {
 

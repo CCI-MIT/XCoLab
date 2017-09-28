@@ -69,7 +69,6 @@ public class OverviewTabController extends AbstractTabController {
         if (!tabWrapper.getCanView()) {
             return new AccessDeniedPage(member).toViewName(response);
         }
-        setPageAttributes(request, model, tab);
         model.addAttribute("contestOverviewWrapper", new ContestOverviewWrapper(member));
         return TAB_VIEW;
     }
