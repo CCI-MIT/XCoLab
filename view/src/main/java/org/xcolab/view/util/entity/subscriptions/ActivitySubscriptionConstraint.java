@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Util class defining rules for certain types of SocialActivities where notifications to subscribed users should be restricted
- * (i.e. ProposalSupports are only shared with Proposal contributors)
+ * Util class defining rules for certain types of SocialActivities where notifications to subscribed
+ * users should be restricted (i.e. ProposalSupports are only shared with Proposal contributors)
  */
 public class ActivitySubscriptionConstraint {
 
@@ -18,15 +18,20 @@ public class ActivitySubscriptionConstraint {
             new HashMap<>();
 
     static {
-        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalActivitySubType.PROPOSAL_SUPPORTER_ADDED.getSecondaryTypeId(),
+        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_"
+                        + ProposalActivitySubType.PROPOSAL_SUPPORTER_ADDED.getSecondaryTypeId(),
                 new ActivitySubscriptionWhitelistProposalContributorHandler());
-        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalActivitySubType.PROPOSAL_SUPPORTER_REMOVED.getSecondaryTypeId(),
+        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_"
+                        + ProposalActivitySubType.PROPOSAL_SUPPORTER_REMOVED.getSecondaryTypeId(),
                 new ActivitySubscriptionWhitelistProposalContributorHandler());
-        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalActivitySubType.PROPOSAL_VOTE.getSecondaryTypeId(),
+        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_"
+                        + ProposalActivitySubType.PROPOSAL_VOTE.getSecondaryTypeId(),
                 new ActivitySubscriptionWhitelistProposalContributorHandler());
-        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId()+ "_" + ProposalActivitySubType.PROPOSAL_VOTE_SWITCH.getSecondaryTypeId(),
+        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_"
+                        + ProposalActivitySubType.PROPOSAL_VOTE_SWITCH.getSecondaryTypeId(),
                 new ActivitySubscriptionWhitelistProposalContributorHandler());
-        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_" + ProposalActivitySubType.PROPOSAL_VOTE_RETRACT.getSecondaryTypeId(),
+        whitelistHandlers.put(ActivityEntryType.PROPOSAL.getPrimaryTypeId() + "_"
+                        + ProposalActivitySubType.PROPOSAL_VOTE_RETRACT.getSecondaryTypeId(),
                 new ActivitySubscriptionWhitelistProposalContributorHandler());
     }
 
@@ -37,15 +42,18 @@ public class ActivitySubscriptionConstraint {
         this.classNameId = classNameId;
         this.activityType = activityType;
     }
+
     public boolean areSubscribersConstrained() {
-        ActivitySubscriptionWhitelistHandler handler = whitelistHandlers.get(getClassNameId() + "_" + getActivityType());
+        ActivitySubscriptionWhitelistHandler handler =
+                whitelistHandlers.get(getClassNameId() + "_" + getActivityType());
 
         return handler != null;
     }
 
     public List<Long> getWhitelist(long classPk) {
         if (areSubscribersConstrained()) {
-            return whitelistHandlers.get(getClassNameId() + "_" + getActivityType()).getWhitelistedUsers(classPk);
+            return whitelistHandlers.get(getClassNameId() + "_" + getActivityType())
+                    .getWhitelistedUsers(classPk);
         }
 
         return new ArrayList<>();

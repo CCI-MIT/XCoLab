@@ -34,6 +34,7 @@ import org.xcolab.view.config.spring.converters.CaseInsensitiveStringToEnumConve
 import org.xcolab.view.config.spring.properties.ServerProperties;
 import org.xcolab.view.config.spring.properties.TomcatProperties;
 import org.xcolab.view.config.spring.properties.WebProperties;
+import org.xcolab.view.config.spring.properties.WebProperties.CacheSettings;
 import org.xcolab.view.config.spring.resolvers.MemberArgumentResolver;
 import org.xcolab.view.config.spring.resolvers.ProposalContextArgumentResolver;
 import org.xcolab.view.config.tomcat.AjpConnector;
@@ -84,7 +85,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
         Assert.notNull(themeVariableInterceptor, "ThemeVariableInterceptor bean is required");
         Assert.notNull(populateContextInterceptor, "PopulateContextInterceptor bean is required");
-        Assert.notNull(validateTabPermissionsInterceptor, "ValidateTabPermissionsInterceptor bean is required");
+        Assert.notNull(validateTabPermissionsInterceptor,
+                "ValidateTabPermissionsInterceptor bean is required");
         this.themeVariableInterceptor = themeVariableInterceptor;
         this.populateContextInterceptor = populateContextInterceptor;
         this.validateTabPermissionsInterceptor = validateTabPermissionsInterceptor;
@@ -176,8 +178,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
             }
         };
         if (tomcatProperties.getAjp().isEnabled()) {
-            final AjpConnector ajpConnector =
-                    new AjpConnector(tomcatProperties.getAjp().getPort());
+            final AjpConnector ajpConnector = new AjpConnector(tomcatProperties.getAjp().getPort());
             tomcat.addAdditionalTomcatConnectors(ajpConnector);
             log.info("Configured AJP connector on port {}", tomcatProperties.getAjp().getPort());
         }
@@ -194,25 +195,31 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        addScriptResourceHandlers(registry);
+        addThemeImageResourceResolvers(registry);
+    }
 
+    private void addScriptResourceHandlers(ResourceHandlerRegistry registry) {
+        final CacheSettings cacheSettings = webProperties.getCache().getScripts();
+        final CacheControl cacheControl = cacheSettings.isActive()
+                ? CacheControl.maxAge(cacheSettings.getMaxAgeDays(), TimeUnit.DAYS)
+                : CacheControl.noCache();
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/", "classpath:/dist/")
-                .setCacheControl(
-                        webProperties.getCache().getScripts().isActive()
-                                ? CacheControl.maxAge(webProperties.getCache().getScripts().getMaxAgeDays(),
-                                TimeUnit.DAYS)
-                                : CacheControl.noCache())
+                .setCacheControl(cacheControl)
                 .resourceChain(true)
                 .addResolver(new VersionResourceResolver()
                         .addContentVersionStrategy("/js/**", "/css/**"));
+    }
 
+    private void addThemeImageResourceResolvers(ResourceHandlerRegistry registry) {
+        final CacheSettings cacheSettings = webProperties.getCache().getImages();
+        final CacheControl cacheControl = cacheSettings.isActive()
+                ? CacheControl.maxAge(cacheSettings.getMaxAgeDays(), TimeUnit.DAYS)
+                : CacheControl.noCache();
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("classpath:/static/images/")
-                .setCacheControl(
-                        webProperties.getCache().getImages().isActive()
-                                ? CacheControl.maxAge(webProperties.getCache().getImages().getMaxAgeDays(),
-                                TimeUnit.DAYS)
-                                : CacheControl.noCache())
+                .setCacheControl(cacheControl)
                 .resourceChain(true)
                 .addResolver(new ThemeResourceResolver());
     }

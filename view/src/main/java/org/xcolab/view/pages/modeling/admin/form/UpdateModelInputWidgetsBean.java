@@ -26,8 +26,8 @@ public class UpdateModelInputWidgetsBean {
             groups.put(item.getMetaData().getId(),
                     ((ModelInputIndividualDisplayItem) item).getGroupId());
         }
-        customInputWidgets = ModelingClientUtil.getModelPreference(modelId)
-                .getCustomInputsDefinition();
+        customInputWidgets =
+                ModelingClientUtil.getModelPreference(modelId).getCustomInputsDefinition();
     }
 
     public Map<Long, ModelInputWidgetType> getWidgets() {

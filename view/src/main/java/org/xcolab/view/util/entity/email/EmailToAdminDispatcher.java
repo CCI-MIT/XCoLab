@@ -35,7 +35,8 @@ public class EmailToAdminDispatcher {
     public void sendMessage() {
         final String fromEmail = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
         final String fromName = ConfigurationAttributeKey.COLAB_NAME.get();
-        EmailClient.sendEmail(fromEmail, fromName,getRecipientAddresses(), subject, body, true, fromEmail,fromName,null);
+        EmailClient.sendEmail(fromEmail, fromName, getRecipientAddresses(), subject, body, true,
+                fromEmail, fromName, null);
     }
 
     private List<String> getRecipientAddresses() {
@@ -49,6 +50,7 @@ public class EmailToAdminDispatcher {
     }
 
     private static class Recipient {
+
         private final String email;
         private final int verbosity;
 

@@ -25,11 +25,10 @@ public class XmlUrl {
     private String priority;
 
     public XmlUrl() {
-
     }
 
-    public XmlUrl(String location, LocalDateTime lastModified,
-            ChangeFrequency changeFrequency, Priority priority) {
+    public XmlUrl(String location, LocalDateTime lastModified, ChangeFrequency changeFrequency,
+            Priority priority) {
         this.loc = location;
         if (lastModified != null) {
             this.lastmod = lastModified.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -66,14 +65,7 @@ public class XmlUrl {
     }
 
     public enum ChangeFrequency {
-        ALWAYS,
-        HOURLY,
-        DAILY,
-        WEEKLY,
-        MONTHLY,
-        YEARLY,
-        NEVER
-        ;
+        ALWAYS, HOURLY, DAILY, WEEKLY, MONTHLY, YEARLY, NEVER;
 
         public String getValue() {
             return name().toLowerCase();
@@ -81,10 +73,7 @@ public class XmlUrl {
     }
 
     public enum Priority {
-        HIGHEST("1.0"),
-        HIGH("0.75"),
-        MEDIUM("0.5"),
-        LOW("0.25");
+        HIGHEST("1.0"), HIGH("0.75"), MEDIUM("0.5"), LOW("0.25");
 
         private final String value;
 

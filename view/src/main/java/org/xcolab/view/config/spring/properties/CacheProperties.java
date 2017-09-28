@@ -45,8 +45,7 @@ public class CacheProperties {
         return provider;
     }
 
-    public void setProvider(
-            Class<? extends CacheProvider> provider) {
+    public void setProvider(Class<? extends CacheProvider> provider) {
         this.provider = provider;
     }
 

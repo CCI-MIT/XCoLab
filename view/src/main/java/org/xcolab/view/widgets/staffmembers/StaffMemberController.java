@@ -47,7 +47,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
             @RequestParam(required = false) String preferenceId,
             @RequestParam(required = false) String language) {
         model.addAttribute("categories", StaffMembersPreferences.getCategories());
-        return showPreferencesInternal(response, model,  member, preferenceId, language,
+        return showPreferencesInternal(response, model, member, preferenceId, language,
                 VIEW_BASE_PATH + "/editPreferences");
     }
 
@@ -59,8 +59,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
     }
 
     @GetMapping
-    public String show(Model model,
-            @RequestParam(required = false) String preferenceId,
+    public String show(Model model, @RequestParam(required = false) String preferenceId,
             @RequestParam(required = false) Long categoryId,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) Integer columnAmount,
@@ -72,8 +71,7 @@ public class StaffMemberController extends AbstractWidgetController<StaffMembers
 
         categoryId = (categoryId != null) ? (categoryId) : (preferences.getCategoryId());
 
-        model.addAttribute("widgetTitle",
-                ((title != null) ? (title) : (preferences.getTitle())));
+        model.addAttribute("widgetTitle", ((title != null) ? (title) : (preferences.getTitle())));
         model.addAttribute("columnAmount",
                 ((columnAmount != null) ? (columnAmount) : (preferences.getColumnAmount())));
         model.addAttribute("displayPhoto",

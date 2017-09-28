@@ -8,8 +8,8 @@ import org.xcolab.view.i18n.ResourceMessageResolver;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class ValidBioLengthValidator implements
-        ConstraintValidator<ValidBioLength, Object> {
+public class ValidBioLengthValidator implements ConstraintValidator<ValidBioLength, Object> {
+
     private static final int BIO_MAX_LENGTH = 2000;
     private String bioProperty;
 
@@ -27,8 +27,7 @@ public class ValidBioLengthValidator implements
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
-        String bio = ConstraintValidatorHelper.getPropertyValue(
-                String.class, bioProperty, value);
+        String bio = ConstraintValidatorHelper.getPropertyValue(String.class, bioProperty, value);
         if (bio == null) {
             // ignore in case of null. Another validator will care about this
             return true;
@@ -37,18 +36,18 @@ public class ValidBioLengthValidator implements
         if (validateBio(bio)) {
             return true;
         } else {
-            boolean isDefaultMessage = "".equals(context
-                    .getDefaultConstraintMessageTemplate());
+            boolean isDefaultMessage = "".equals(context.getDefaultConstraintMessageTemplate());
             /*
-			 * if custom message was provided, don't touch it, otherwise build
+             * if custom message was provided, don't touch it, otherwise build
 			 * the default message
 			 */
             if (isDefaultMessage) {
                 context.disableDefaultConstraintViolation();
-                String message = resourceMessageResolver.getLocalizedMessage(
-                        "register.form.validation.biography.message", new String[]{BIO_MAX_LENGTH+""});
-                ConstraintValidatorContext.ConstraintViolationBuilder violationBuilder = context
-                        .buildConstraintViolationWithTemplate(message);
+                String message = resourceMessageResolver
+                        .getLocalizedMessage("register.form.validation.biography.message",
+                                new String[]{BIO_MAX_LENGTH + ""});
+                ConstraintValidatorContext.ConstraintViolationBuilder violationBuilder =
+                        context.buildConstraintViolationWithTemplate(message);
                 violationBuilder.addConstraintViolation();
             }
 

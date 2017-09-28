@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OntologyTermWrapper {
+
     private final OntologyTerm wrapped;
     private final List<OntologyTermWrapper> children = new ArrayList<>();
     private OntologyTermWrapper parent;
@@ -52,5 +53,4 @@ public class OntologyTermWrapper {
     public int getOrder() {
         return wrapped.getOrder_();
     }
-
 }

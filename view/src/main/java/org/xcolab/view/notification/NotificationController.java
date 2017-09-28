@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.xcolab.client.admin.AdminClient;
 import org.xcolab.client.admin.pojo.Notification;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,8 +14,7 @@ public class NotificationController {
 
     @GetMapping("/notificationMessage")
     public NotificationResponse showNotification(HttpServletRequest request,
-            HttpServletResponse response)
-            throws IOException {
+            HttpServletResponse response) {
 
         Notification firstNotification = AdminClient.getFirstNotification();
 

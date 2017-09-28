@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "Action not allowed")
 public class DiscussionAuthorizationException extends DiscussionException {
+
     public DiscussionAuthorizationException(String message) {
         super(message);
     }

@@ -1,9 +1,20 @@
 package org.xcolab.view.activityentry.discussion;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import org.xcolab.view.i18n.ResourceMessageResolver;
 
 @Component
 public class DiscussionAddCommentActivityEntry extends DiscussionBaseActivityEntry {
+
+    private static final String MESSAGE_CODE =
+            "activities.discussion.discussionaddcomment.message";
+
+    @Autowired
+    public DiscussionAddCommentActivityEntry(ResourceMessageResolver resourceMessageResolver) {
+        super(resourceMessageResolver);
+    }
 
     @Override
     public Long getSecondaryType() {
@@ -12,12 +23,8 @@ public class DiscussionAddCommentActivityEntry extends DiscussionBaseActivityEnt
 
     @Override
     public String getBody() {
-
-
-        String[] params = { getUserLink(), getThreadLink()};
-        return resourceMessageResolver.getLocalizedMessage("activities.discussion.discussionaddcomment.message",params);
-
-
+        String[] params = {getUserLink(), getThreadLink()};
+        return resourceMessageResolver.getLocalizedMessage(MESSAGE_CODE, params);
     }
 
     @Override

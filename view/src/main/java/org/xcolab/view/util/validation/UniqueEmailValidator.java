@@ -27,7 +27,8 @@ public class UniqueEmailValidator extends CustomValidator<UniqueEmail> {
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
 
-        String email = ConstraintValidatorHelper.getPropertyValue(String.class, emailProperty, value);
+        String email =
+                ConstraintValidatorHelper.getPropertyValue(String.class, emailProperty, value);
 
         if (email == null) {
             return true;
@@ -35,19 +36,19 @@ public class UniqueEmailValidator extends CustomValidator<UniqueEmail> {
 
         boolean isValid = !SharedColabClient.isEmailUsed(email);
 
-        if(!isValid) {
+        if (!isValid) {
             boolean isDefaultMessage = "".equals(context.getDefaultConstraintMessageTemplate());
 
             if (isDefaultMessage) {
                 StringBuilder message = new StringBuilder();
-                message.append(resourceMessageResolver.getLocalizedMessage(
-                        "register.form.validation.uniqueEmail.message"));
+                message.append(resourceMessageResolver
+                        .getLocalizedMessage("register.form.validation.uniqueEmail.message"));
 
                 if (ConfigurationAttributeKey.IS_SHARED_COLAB.get()) {
-                    message.append("<br />")
-                            .append(resourceMessageResolver.getLocalizedMessage(
-                            "register.form.validation.uniqueX.sharedColab",
-                            new String[]{ConfigurationAttributeKey.PARTNER_COLAB_NAME.get()}));
+                    message.append("<br />").append(resourceMessageResolver
+                            .getLocalizedMessage("register.form.validation.uniqueX.sharedColab",
+                                    new String[]{
+                                            ConfigurationAttributeKey.PARTNER_COLAB_NAME.get()}));
                 }
                 context.disableDefaultConstraintViolation();
                 processDefaultErrorMessage(message.toString(), false, context);

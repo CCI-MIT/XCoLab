@@ -36,8 +36,8 @@ public abstract class AbstractWidgetController<WidgetPreferenceT extends WidgetP
         return preferenceSupplier.get(id, language);
     }
 
-    protected String showPreferencesInternal(HttpServletResponse response, Model model, Member member,
-            String preferenceId, String language, String viewName) {
+    protected String showPreferencesInternal(HttpServletResponse response, Model model,
+            Member member, String preferenceId, String language, String viewName) {
 
         if (!PermissionsClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -48,8 +48,8 @@ public abstract class AbstractWidgetController<WidgetPreferenceT extends WidgetP
     }
 
 
-    protected String savePreferencesInternal(HttpServletRequest request, HttpServletResponse response,
-            Member member, WidgetPreferenceT preferences) {
+    protected String savePreferencesInternal(HttpServletRequest request,
+            HttpServletResponse response, Member member, WidgetPreferenceT preferences) {
 
         if (!PermissionsClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
@@ -58,7 +58,8 @@ public abstract class AbstractWidgetController<WidgetPreferenceT extends WidgetP
         preferences.savePreferences();
 
         AlertMessage.success("Preferences have been saved.").flash(request);
-        return "redirect:" + baseUrl + PREFERENCES_URL_PATH + "?preferenceId=" + preferences.getPreferenceId();
+        return "redirect:" + baseUrl + PREFERENCES_URL_PATH + "?preferenceId=" + preferences
+                .getPreferenceId();
     }
 
 }

@@ -48,7 +48,7 @@ public class ContestsController extends AbstractWidgetController<ContestPreferen
     public String showPreferences(HttpServletResponse response, Model model, Member member,
             @RequestParam(required = false) String preferenceId,
             @RequestParam(required = false) String language) {
-        return showPreferencesInternal(response, model,  member, preferenceId, language,
+        return showPreferencesInternal(response, model, member, preferenceId, language,
                 VIEW_BASE_PATH + "/editPreferences");
     }
 

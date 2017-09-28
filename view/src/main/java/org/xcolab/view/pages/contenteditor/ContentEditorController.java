@@ -28,14 +28,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
-public class ContentEditorController extends BaseContentEditor{
-
+public class ContentEditorController extends BaseContentEditor {
 
     @GetMapping("/content-editor")
     public String handleRenderRequest(HttpServletRequest request, HttpServletResponse response,
             Model model, Member loggedInMember) {
         if (PermissionsClient.canAdminAll(loggedInMember)) {
-            if(ConfigurationAttributeKey.IS_I18N_ACTIVE.get()) {
+            if (ConfigurationAttributeKey.IS_I18N_ACTIVE.get()) {
                 model.addAttribute("i18nOptions", I18nUtils.getSelectList());
             }
             model.addAttribute("i18nActive", ConfigurationAttributeKey.IS_I18N_ACTIVE.get());
@@ -47,8 +46,7 @@ public class ContentEditorController extends BaseContentEditor{
 
     @GetMapping("/content-editor/contentEditorListFolder")
     public void contentEditorListFolder(HttpServletRequest request, HttpServletResponse response,
-                                        @RequestParam(required = false) String node)
-            throws IOException {
+            @RequestParam(required = false) String node) throws IOException {
 
         JSONArray responseArray = new JSONArray();
         Long folderId = 1L;
@@ -59,17 +57,19 @@ public class ContentEditorController extends BaseContentEditor{
 
         if (contentFolders != null) {
             for (ContentFolder cf : contentFolders) {
-                if(cf.getContentFolderId() != ContentFolder.RESOURCE_FOLDER_ID) {
+                if (cf.getContentFolderId() != ContentFolder.RESOURCE_FOLDER_ID) {
                     responseArray.put(folderNode(cf.getContentFolderName(),
                             cf.getContentFolderId().toString()));
                 }
             }
         }
-        List<ContentArticleVersion> contentArticles = ContentsClient.getChildArticleVersions(folderId);
+        List<ContentArticleVersion> contentArticles =
+                ContentsClient.getChildArticleVersions(folderId);
         if (contentArticles != null) {
             for (ContentArticleVersion ca : contentArticles) {
-                ContentArticle contentArticle = ContentsClient.getContentArticle(ca.getContentArticleId());
-                if(contentArticle.getVisible()) {
+                ContentArticle contentArticle =
+                        ContentsClient.getContentArticle(ca.getContentArticleId());
+                if (contentArticle.getVisible()) {
                     responseArray.put(articleNode(ca.getTitle(), ca.getContentArticleId()));
                 }
             }
@@ -81,18 +81,20 @@ public class ContentEditorController extends BaseContentEditor{
 
 
     @GetMapping("/content-editor/contentEditorGetLatestArticleVersion")
-    public void contentEditorGetLatestArticleVersion(HttpServletRequest request, HttpServletResponse response,
-                                                     @RequestParam(required = false) Long articleId,
-                                                        @RequestParam(required = false) String encoding)
+    public void contentEditorGetLatestArticleVersion(HttpServletRequest request,
+            HttpServletResponse response, @RequestParam(required = false) Long articleId,
+            @RequestParam(required = false) String encoding)
             throws IOException, ContentNotFoundException {
-        String defaultEncoding =I18nUtils.DEFAULT_LOCALE.getLanguage();
-        if(encoding==null||encoding.isEmpty()){
+        String defaultEncoding = I18nUtils.DEFAULT_LOCALE.getLanguage();
+        if (encoding == null || encoding.isEmpty()) {
             encoding = defaultEncoding;
         }
-        ContentArticleVersion contentArticleVersion = ContentsClient.getLatestVersionByArticleIdAndLanguage(articleId,encoding);
-        if(contentArticleVersion == null){
+        ContentArticleVersion contentArticleVersion =
+                ContentsClient.getLatestVersionByArticleIdAndLanguage(articleId, encoding);
+        if (contentArticleVersion == null) {
             //if there is no content for the encoding passed, get the default from the database
-            contentArticleVersion = ContentsClient.getLatestVersionByArticleIdAndLanguage(articleId,defaultEncoding);
+            contentArticleVersion = ContentsClient
+                    .getLatestVersionByArticleIdAndLanguage(articleId, defaultEncoding);
             contentArticleVersion.setContentArticleVersionId(0L);
             contentArticleVersion.setLang(encoding);
         }
@@ -103,13 +105,16 @@ public class ContentEditorController extends BaseContentEditor{
     }
 
     @GetMapping("/content-editor/contentEditorGetArticleVersion")
-    public void contentEditorGetArticleVersion(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(required = false) Long articleVersionId)
+    public void contentEditorGetArticleVersion(HttpServletRequest request,
+            HttpServletResponse response, @RequestParam(required = false) Long articleVersionId)
             throws IOException, ContentNotFoundException {
 
-        ContentArticleVersion contentArticleVersion = ContentsClient.getContentArticleVersion(articleVersionId);
+        ContentArticleVersion contentArticleVersion =
+                ContentsClient.getContentArticleVersion(articleVersionId);
 
-        JSONObject articleVersion = getContentArticleVersion(contentArticleVersion.getContentArticleId(), contentArticleVersion);
+        JSONObject articleVersion =
+                getContentArticleVersion(contentArticleVersion.getContentArticleId(),
+                        contentArticleVersion);
 
         response.getOutputStream().write(articleVersion.toString().getBytes());
     }
@@ -119,65 +124,65 @@ public class ContentEditorController extends BaseContentEditor{
 
         JSONArray versions = new JSONArray();
         List<ContentArticleVersion> cavs = ContentsClient
-                .getContentArticleVersions(0,Integer.MAX_VALUE,null,articleId,null,null, contentArticleVersion.getLang());
+                .getContentArticleVersions(0, Integer.MAX_VALUE, null, articleId, null, null,
+                        contentArticleVersion.getLang());
 
         JSONObject articleVersion;
-        for(ContentArticleVersion cav: cavs){
+        for (ContentArticleVersion cav : cavs) {
             articleVersion = new JSONObject();
-            articleVersion.put("createdDate",cav.getCreateDate());
+            articleVersion.put("createdDate", cav.getCreateDate());
             articleVersion.put("contentArticleVersionId", cav.getContentArticleVersionId());
             versions.put(articleVersion);
         }
         articleVersion = new JSONObject();
-        ContentPage cp = ContentsClient.getContentPageByContentArticleId(contentArticleVersion.getContentArticleId());
+        ContentPage cp = ContentsClient
+                .getContentPageByContentArticleId(contentArticleVersion.getContentArticleId());
 
-        if (cp!=null) {
-            articleVersion.put("contentUrl",cp.getTitle());
+        if (cp != null) {
+            articleVersion.put("contentUrl", cp.getTitle());
         }
-        if (contentArticleVersion != null) {
-            articleVersion.put("title", contentArticleVersion.getTitle());
-            articleVersion.put("folderId", contentArticleVersion.getFolderId());
-            articleVersion.put("articleId", contentArticleVersion.getContentArticleId());
-            articleVersion.put("content", contentArticleVersion.getContent());
-            articleVersion.put("lang", contentArticleVersion.getLang());
-            articleVersion.put("createdDate",contentArticleVersion.getCreateDate());
-            articleVersion.put("versions",versions);
+        articleVersion.put("title", contentArticleVersion.getTitle());
+        articleVersion.put("folderId", contentArticleVersion.getFolderId());
+        articleVersion.put("articleId", contentArticleVersion.getContentArticleId());
+        articleVersion.put("content", contentArticleVersion.getContent());
+        articleVersion.put("lang", contentArticleVersion.getLang());
+        articleVersion.put("createdDate", contentArticleVersion.getCreateDate());
+        articleVersion.put("versions", versions);
 
-
-        }
         return articleVersion;
     }
 
     @PostMapping("/content-editor/archiveContentArticle")
     public void archiveContentArticle(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(required = false) Long articleId) throws IOException{
+            @RequestParam(required = false) Long articleId) throws IOException {
         ContentArticle ca = ContentsClient.getContentArticle(articleId);
         ca.setVisible(false);
         ContentsClient.updateContentArticle(ca);
-        defaultOperationReturnMessage(true, "Article archived successfully","", response);
+        defaultOperationReturnMessage(true, "Article archived successfully", "", response);
     }
 
     @PostMapping("/content-editor/createArticleFolder")
     public void createArticleFolder(HttpServletRequest request, HttpServletResponse response,
-                                   @RequestParam(required = false) String folderName,
-                                   @RequestParam(required = false) Long parentFolderId) throws IOException{
+            @RequestParam(required = false) String folderName,
+            @RequestParam(required = false) Long parentFolderId) throws IOException {
         ContentFolder contentFolder = new ContentFolder();
         contentFolder.setContentFolderName(folderName);
         contentFolder.setParentFolderId(parentFolderId);
 
         ContentsClient.createContentFolder(contentFolder);
 
-        defaultOperationReturnMessage(true, "Folder created successfully","", response);
+        defaultOperationReturnMessage(true, "Folder created successfully", "", response);
     }
 
     @PostMapping("/content-editor/moveArticleVersion")
     public void moveArticleVersion(HttpServletRequest request, HttpServletResponse response,
-                                   @RequestParam(required = false) Long articleId,
-                                   @RequestParam(required = false) Long folderId)
+            @RequestParam(required = false) Long articleId,
+            @RequestParam(required = false) Long folderId)
             throws IOException, ContentNotFoundException {
         long userId = MemberAuthUtil.getMemberId(request);
 
-        ContentArticleVersion contentArticleVersion = ContentsClient.getLatestContentArticleVersion(articleId);
+        ContentArticleVersion contentArticleVersion =
+                ContentsClient.getLatestContentArticleVersion(articleId);
         ContentArticleVersion newContentArticleVersion = new ContentArticleVersion();
         newContentArticleVersion.setTitle(contentArticleVersion.getTitle());
         newContentArticleVersion.setContent(contentArticleVersion.getContent());
@@ -187,13 +192,12 @@ public class ContentEditorController extends BaseContentEditor{
         newContentArticleVersion.setFolderId(folderId);
         ContentsClient.createContentArticleVersion(newContentArticleVersion);
 
-        defaultOperationReturnMessage(true, "Article moved successfully","", response);
+        defaultOperationReturnMessage(true, "Article moved successfully", "", response);
     }
 
     @PostMapping("/content-editor/previewArticle")
     public String previewArticle(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(required = false) String content, Model model, Member member
-    ) throws IOException {
+            @RequestParam(required = false) String content, Model model, Member member) {
         if (!PermissionsClient.canAdminAll(member)) {
             return new AccessDeniedPage(member).toViewName(response);
         }
@@ -203,13 +207,11 @@ public class ContentEditorController extends BaseContentEditor{
 
     @PostMapping("/content-editor/saveContentArticleVersion")
     public void saveContentArticleVersion(HttpServletRequest request, HttpServletResponse response,
-            Member member,
-            @RequestParam(required = false) Long articleId,
+            Member member, @RequestParam(required = false) Long articleId,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) Long folderId,
             @RequestParam(required = false) String content,
-            @RequestParam(required = false) String lang
-    ) throws IOException {
+            @RequestParam(required = false) String lang) throws IOException {
 
         if (!PermissionsClient.canAdminAll(member)) {
             defaultOperationReturnMessage(false, "Not allowed to save article", "", response);
@@ -228,11 +230,10 @@ public class ContentEditorController extends BaseContentEditor{
         contentArticleVersion.setFolderId((folderId));
         contentArticleVersion.setTitle(title);
         contentArticleVersion.setContent(content);
-        contentArticleVersion =ContentsClient.createContentArticleVersion(contentArticleVersion);
+        contentArticleVersion = ContentsClient.createContentArticleVersion(contentArticleVersion);
 
 
-        defaultOperationReturnMessage(true, "Article version created successfully", contentArticleVersion.getContentArticleId().toString(), response);
+        defaultOperationReturnMessage(true, "Article version created successfully",
+                contentArticleVersion.getContentArticleId().toString(), response);
     }
-
-
 }

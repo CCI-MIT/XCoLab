@@ -47,12 +47,11 @@ public class LoadThreadStartTag extends BodyTagSupport {
             ThreadClient threadClient;
             CategoryClient categoryClient;
             if (sharedColabId != null && sharedColabId > 0) {
-                    RestService contestService = new RefreshingRestService(CoLabService.COMMENT,
-                            ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE
-                    );
+                RestService contestService = new RefreshingRestService(CoLabService.COMMENT,
+                        ConfigurationAttributeKey.PARTNER_COLAB_NAMESPACE);
 
-                    threadClient = ThreadClient.fromService(contestService);
-                    categoryClient = CategoryClient.fromService(contestService);
+                threadClient = ThreadClient.fromService(contestService);
+                categoryClient = CategoryClient.fromService(contestService);
             } else {
                 threadClient = ThreadClientUtil.getClient();
                 categoryClient = CategoryClientUtil.getClient();
@@ -84,20 +83,21 @@ public class LoadThreadStartTag extends BodyTagSupport {
                         shareUrl = "";
                     }
                 } catch (CategoryGroupNotFoundException e) {
-                    throw ReferenceResolutionException.toObject(CategoryGroup.class, categoryGroupId)
+                    throw ReferenceResolutionException
+                            .toObject(CategoryGroup.class, categoryGroupId)
                             .fromObject(LoadThreadStartTag.class, "for thread " + threadId);
                 }
             }
 
             CommentThread thread = threadClient.getThread(threadId);
 
-            DiscussionPermissions discussionPermissions = (DiscussionPermissions)
-                    portletRequest.getAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME);
+            DiscussionPermissions discussionPermissions = (DiscussionPermissions) portletRequest
+                    .getAttribute(DiscussionPermissions.REQUEST_ATTRIBUTE_NAME);
             if (discussionPermissions == null) {
                 discussionPermissions = new DiscussionPermissions(portletRequest);
             } else {
-                _log.info("Found custom DiscussionPermissions of type {}", discussionPermissions
-                        .getClass().getName());
+                _log.info("Found custom DiscussionPermissions of type {}",
+                        discussionPermissions.getClass().getName());
             }
 
             pageContext.setAttribute("thread", thread);
@@ -115,7 +115,6 @@ public class LoadThreadStartTag extends BodyTagSupport {
         }
         return EVAL_BODY_INCLUDE;
     }
-
 
 
     public long getCategoryGroupId() {

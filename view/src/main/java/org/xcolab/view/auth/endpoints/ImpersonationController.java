@@ -22,12 +22,10 @@ public class ImpersonationController {
 
     @PostMapping
     public void impersonate(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam long memberId)
-            throws IOException {
+            @RequestParam long memberId) throws IOException {
         try {
             MembersClient.getMember(memberId);
-            Cookie cookie = new Cookie(IMPERSONATE_MEMBER_ID_COOKIE_NAME,
-                    Long.toString(memberId));
+            Cookie cookie = new Cookie(IMPERSONATE_MEMBER_ID_COOKIE_NAME, Long.toString(memberId));
             cookie.setPath("/");
             response.addCookie(cookie);
             response.sendRedirect("/");

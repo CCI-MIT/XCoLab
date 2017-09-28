@@ -1,5 +1,6 @@
 package org.xcolab.view.taglibs.xcolab.jspTags.discussion.actions;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,8 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DeleteDiscussionMessageActionController extends BaseDiscussionsActionController {
 
     @PostMapping("/discussions/deleteDiscussionMessageFlag")
-    public void deleteMessage(
-            HttpServletRequest request, HttpServletResponse response,
+    public void deleteMessage(HttpServletRequest request, HttpServletResponse response,
             @RequestParam long commentId,
             @RequestParam(value = "contestId", required = false) Long contestId)
             throws IOException, DiscussionAuthorizationException {
@@ -32,7 +32,8 @@ public class DeleteDiscussionMessageActionController extends BaseDiscussionsActi
             checkPermissions(request, "User isn't allowed to delete message", commentId);
         } catch (DiscussionAuthorizationException e) {
             AlertMessage.danger("You are not allowed to delete this message.").flash(request);
-            redirectToReferrer(request, response);
+            String redirectUrl = request.getHeader(HttpHeaders.REFERER);
+            response.sendRedirect(redirectUrl);
             return;
         }
 
@@ -44,7 +45,8 @@ public class DeleteDiscussionMessageActionController extends BaseDiscussionsActi
         }
 
         commentClient.deleteComment(commentId);
-        redirectToReferrer(request, response);
+        String redirectUrl = request.getHeader(HttpHeaders.REFERER);
+        response.sendRedirect(redirectUrl);
     }
 
     @Override

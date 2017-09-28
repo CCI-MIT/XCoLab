@@ -17,7 +17,6 @@ public enum EventType {
 
     @JsonCreator
     public static EventType fromString(String key) {
-        return key == null ? null
-                : EventType.valueOf(key.toUpperCase());
+        return key == null ? null : EventType.valueOf(key.toUpperCase());
     }
 }

@@ -41,8 +41,8 @@ public class ImageDisplayService {
         isProduction = serverEnvironment == ServerEnvironment.PRODUCTION;
     }
 
-    public void serveImage(HttpServletRequest request, HttpServletResponse response,
-            long imageId, ImageType imageType) throws IOException {
+    public void serveImage(HttpServletRequest request, HttpServletResponse response, long imageId,
+            ImageType imageType) throws IOException {
 
         final Optional<FileEntry> fileEntryOpt = FilesClient.getFileEntry(imageId);
         if (fileEntryOpt.isPresent()) {
@@ -127,8 +127,8 @@ public class ImageDisplayService {
             ServletFileUtil.sendFileToResponse(response, imageFile, mimeType);
             return true;
         } catch (IOException e) {
-            log.error("Error while sending image {} to response: {}",
-                    imageFile.getAbsolutePath(), e.getMessage());
+            log.error("Error while sending image {} to response: {}", imageFile.getAbsolutePath(),
+                    e.getMessage());
             return false;
         }
     }

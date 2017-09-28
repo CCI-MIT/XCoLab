@@ -5,9 +5,9 @@ import org.ocpsoft.rewrite.config.ConfigurationBuilder;
 import org.ocpsoft.rewrite.servlet.config.HttpConfigurationProvider;
 
 import org.xcolab.view.config.rewrite.rules.ContentRewriteRules;
+import org.xcolab.view.config.rewrite.rules.DeprecatedMappingRewriteRules;
 import org.xcolab.view.config.rewrite.rules.ProposalRewriteRules;
 import org.xcolab.view.config.rewrite.rules.RewriteRuleProvider;
-import org.xcolab.view.config.rewrite.rules.DeprecatedMappingRewriteRules;
 import org.xcolab.view.config.rewrite.rules.legacy.LegacyContentRewriteRules;
 import org.xcolab.view.config.rewrite.rules.legacy.LegacyDiscussionRewriteRules;
 import org.xcolab.view.config.rewrite.rules.legacy.LegacyMembersRewriteRules;
@@ -53,8 +53,8 @@ public class RewriteConfigProvider extends HttpConfigurationProvider {
     public Configuration getConfiguration(ServletContext servletContext) {
         final ConfigurationBuilder configurationBuilder = ConfigurationBuilder.begin();
 
-        ruleProviders.forEach(rewriteRuleProvider
-                -> rewriteRuleProvider.configure(configurationBuilder));
+        ruleProviders.forEach(
+                rewriteRuleProvider -> rewriteRuleProvider.configure(configurationBuilder));
         return configurationBuilder;
     }
 

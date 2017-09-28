@@ -10,7 +10,8 @@ public class BaseContentEditor {
 
     protected static final Integer THRESHOLD_TO_AVOID_NODE_COLLISION = 1000;
 
-    protected void defaultOperationReturnMessage(boolean success, String message, String articleVersionId, HttpServletResponse response) throws IOException {
+    protected void defaultOperationReturnMessage(boolean success, String message,
+            String articleVersionId, HttpServletResponse response) throws IOException {
         JSONObject folderNode = new JSONObject();
         folderNode.put("success", success);
         folderNode.put("articleVersionId", articleVersionId);
@@ -31,7 +32,7 @@ public class BaseContentEditor {
     }
 
     protected JSONObject articleNode(String label, Long id) {
-        return treeNode(label, (THRESHOLD_TO_AVOID_NODE_COLLISION +id) + "", "article", false);
+        return treeNode(label, (THRESHOLD_TO_AVOID_NODE_COLLISION + id) + "", "article", false);
     }
 
     protected JSONObject folderNode(String label, String id) {

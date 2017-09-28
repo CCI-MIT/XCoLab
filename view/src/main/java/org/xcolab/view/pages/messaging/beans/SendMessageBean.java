@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 public class SendMessageBean implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     private final List<Member> recipientList;
@@ -46,8 +47,7 @@ public class SendMessageBean implements Serializable {
         this.recipientList = new ArrayList<>();
     }
 
-    public void send(Member sender, String baseUri)
-            throws MessageLimitExceededException {
+    public void send(Member sender, String baseUri) throws MessageLimitExceededException {
         //TODO: do we need this?
 //        if (messageHoneypot != null && !messageHoneypot.isEmpty()) {
 //            _log.info("Message was not sent because honeypot was filled - text: " + messageContent + " honeypot: "
@@ -121,8 +121,8 @@ public class SendMessageBean implements Serializable {
     }
 
     public List<Long> getRecipientIdList() {
-        List<Long> recipientIds= new ArrayList<>();
-        for(Member recipient : recipientList) {
+        List<Long> recipientIds = new ArrayList<>();
+        for (Member recipient : recipientList) {
             recipientIds.add(recipient.getId_());
         }
         return recipientIds;

@@ -58,11 +58,9 @@ public class FocusAreaEditorController {
 
     @PostMapping("/ontology-editor/saveFocusArea")
     public void saveFocusArea(HttpServletRequest request, HttpServletResponse response,
-            @RequestParam(required = false) Long id,
-            @RequestParam(required = false) Integer order,
+            @RequestParam(required = false) Long id, @RequestParam(required = false) Integer order,
             @RequestParam(required = false) String name,
-            @RequestParam(value = "ontologySpaces[]")String[] ontologySpaces
-    ) throws IOException {
+            @RequestParam(value = "ontologySpaces[]") String[] ontologySpaces) throws IOException {
 
         FocusArea focusArea;
         if (id != null && id != 0L) {
@@ -87,7 +85,8 @@ public class FocusAreaEditorController {
 
         if (ontologyTerms != null) {
             for (String ontId : ontologyTerms) {
-                OntologyClientUtil.addOntologyTermsToFocusAreaByOntologyTermId(focusArea.getId_(),getOntologyTermId(ontId));
+                OntologyClientUtil.addOntologyTermsToFocusAreaByOntologyTermId(focusArea.getId_(),
+                        getOntologyTermId(ontId));
             }
         }
 
@@ -105,10 +104,8 @@ public class FocusAreaEditorController {
     }
 
     @GetMapping("/ontology-editor/focusAreaEditorGetFocusArea")
-    public void getFocusArea(HttpServletRequest request,
-            HttpServletResponse response,
-            @RequestParam(required = false) Long focusAreaId)
-            throws IOException {
+    public void getFocusArea(HttpServletRequest request, HttpServletResponse response,
+            @RequestParam(required = false) Long focusAreaId) throws IOException {
         JSONObject articleVersion = new JSONObject();
 
         FocusArea focusArea = OntologyClientUtil.getFocusArea(focusAreaId);

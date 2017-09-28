@@ -34,7 +34,8 @@ public class MemberArgumentResolver implements HandlerMethodArgumentResolver {
 
         if (this.supportsParameter(methodParameter)) {
             final HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
-            RealMember realMemberAnnotation = methodParameter.getParameterAnnotation(RealMember.class);
+            RealMember realMemberAnnotation =
+                    methodParameter.getParameterAnnotation(RealMember.class);
             if (realMemberAnnotation != null) {
                 return authenticationContext.getRealMemberOrNull();
             }

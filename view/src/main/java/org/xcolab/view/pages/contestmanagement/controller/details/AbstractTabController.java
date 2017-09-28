@@ -37,7 +37,7 @@ public abstract class AbstractTabController extends BaseTabController {
         String pageTitle = contest.getContestShortName();
         String pageSubTitle = tab.getDisplayName() + " - " + pageTitle;
         String pageDescription = "Contest details for " + pageTitle;
-        setSeoTexts(request, pageTitle, pageSubTitle, pageDescription);
+        setSeoTexts();
     }
 
     @ModelAttribute("contestWrapper")

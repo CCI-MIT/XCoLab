@@ -23,21 +23,19 @@ public class ContestSearchItem extends AbstractSearchItem {
 
     @Override
     public String getPrintName() {
-        final long contestTypeId =
-                ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
-        final ContestType contestType = ContestTypeClient
-                .getContestType(contestTypeId);
+        final long contestTypeId = ConfigurationAttributeKey.DEFAULT_CONTEST_TYPE_ID.get();
+        final ContestType contestType = ContestTypeClient.getContestType(contestTypeId);
         return contestType.getContestNamePlural();
     }
 
     @Override
-    public String getTitle(){
+    public String getTitle() {
         return highlight(contest.getContestShortNameWithEndYear(), searchQuery);
     }
 
     @Override
     public String getLinkUrl() {
-            return contest.getContestLinkUrl();
+        return contest.getContestLinkUrl();
     }
 
 

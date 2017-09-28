@@ -31,30 +31,30 @@ public class MainSitemapGenerator {
     }
 
     private void addLandingPageUrl(XmlUrlSet xmlUrlSet) {
-        xmlUrlSet.addUrl(
-                XmlUrl.Builder.forLocation(siteUrl)
-                        .changeFrequency(ChangeFrequency.DAILY)
-                        .priority(Priority.HIGHEST)
-                        .build());
+        xmlUrlSet.addUrl(XmlUrl.Builder
+                .forLocation(siteUrl)
+                .changeFrequency(ChangeFrequency.DAILY)
+                .priority(Priority.HIGHEST)
+                .build());
     }
 
     private void addContestType(XmlUrlSet xmlUrlSet, long contestTypeId) {
         ContestType contestType = new ContestType(contestTypeId);
-        xmlUrlSet.addUrl(
-                XmlUrl.Builder.forLocation(siteUrl + contestType.getContestBaseUrl())
-                        .priority(Priority.HIGHEST)
-                        .changeFrequency(ChangeFrequency.DAILY)
-                        .build());
+        xmlUrlSet.addUrl(XmlUrl.Builder
+                .forLocation(siteUrl + contestType.getContestBaseUrl())
+                .priority(Priority.HIGHEST)
+                .changeFrequency(ChangeFrequency.DAILY)
+                .build());
     }
 
     private void addContentPages(XmlUrlSet xmlUrlSet) {
         final List<ContentPage> contentPages = ContentsClient.getContentPages(null);
         for (ContentPage contentPage : contentPages) {
-            xmlUrlSet.addUrl(
-                    XmlUrl.Builder.forLocation(siteUrl + "/page/" + contentPage.getTitle())
-                            .changeFrequency(ChangeFrequency.DAILY)
-                            .priority(Priority.HIGH)
-                            .build());
+            xmlUrlSet.addUrl(XmlUrl.Builder
+                    .forLocation(siteUrl + "/page/" + contentPage.getTitle())
+                    .changeFrequency(ChangeFrequency.DAILY)
+                    .priority(Priority.HIGH)
+                    .build());
         }
     }
 }

@@ -80,8 +80,7 @@ public class MemberDetails implements UserDetails {
     private static SortedSet<GrantedAuthority> getAuthoritiesForMember(long memberId) {
         // Ensure array iteration order is predictable (as per
         // UserDetails.getAuthorities() contract and SEC-717)
-        SortedSet<GrantedAuthority> sortedAuthorities = new TreeSet<>(
-                new AuthorityComparator());
+        SortedSet<GrantedAuthority> sortedAuthorities = new TreeSet<>(new AuthorityComparator());
 
         if (PermissionsClient.isMember(memberId)) {
             sortedAuthorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
@@ -96,8 +95,8 @@ public class MemberDetails implements UserDetails {
         return sortedAuthorities;
     }
 
-    private static class AuthorityComparator implements Comparator<GrantedAuthority>,
-            Serializable {
+    private static class AuthorityComparator implements Comparator<GrantedAuthority>, Serializable {
+
         private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
         @Override

@@ -7,14 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 public class FlashMessageStore {
+
     private static final String FLASH_ATTRIBUTE_NAME = "xcolab_flash_messages";
 
     private Map<Class<?>, Object> getFlashMap(HttpServletRequest request) {
         final HttpSession session = request.getSession(true);
 
         @SuppressWarnings("unchecked")
-        Map<Class<?>, Object> attribute
-                = (Map<Class<?>, Object>) session.getAttribute(FLASH_ATTRIBUTE_NAME);
+        Map<Class<?>, Object> attribute =
+                (Map<Class<?>, Object>) session.getAttribute(FLASH_ATTRIBUTE_NAME);
         if (attribute != null) {
             return attribute;
         }

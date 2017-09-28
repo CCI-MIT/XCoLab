@@ -36,8 +36,8 @@ public class RequestParamUtil {
     public static String getString(HttpServletRequest request, String paramName,
             String defaultValue) {
         //noinspection unchecked
-        Map<String, String> pathVariables = (Map) request
-                .getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
+        Map<String, String> pathVariables =
+                (Map) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 
         if (pathVariables != null && pathVariables.get(paramName) != null) {
             return pathVariables.get(paramName);
