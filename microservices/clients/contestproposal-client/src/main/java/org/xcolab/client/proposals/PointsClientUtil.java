@@ -37,6 +37,9 @@ public final class PointsClientUtil {
         return client.updatePointsDistributionConfiguration(pointsDistributionConfiguration);
     }
 
+    public static List<Points>  getPointsByProposalId(Long proposalId){
+        return client.getPointsByProposalId(proposalId);
+    }
     public static List<Points> getPointsByUserId(Long userId){
         return client.getPointsByUserId(userId);
     }

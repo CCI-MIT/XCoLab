@@ -336,15 +336,7 @@ public class UserProfileWrapper implements Serializable {
         return MembersClient.getMemberHypotheticalPoints(getUserId());
     }
 
-    public List<Proposal> getLinkingProposals() {
-        if (linkingProposals == null) {
-            linkingProposals = new ArrayList<>();
-            List<Proposal> proposals = ProposalClientUtil.getLinkingProposalsForUser(getUserId());
 
-            linkingProposals.addAll(proposals);
-        }
-        return linkingProposals;
-    }
 
     public String getProposalsString() {
         if (proposalsString == null) {

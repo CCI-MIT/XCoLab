@@ -77,6 +77,12 @@ public final class PointsClient {
                 .execute();
     }
 
+    public List<Points> getPointsByProposalId(Long proposalId){
+
+        return DtoUtil.toPojos(pointsResource.list()
+                .optionalQueryParam("proposalId", proposalId)
+                .execute(), proposalService);
+    }
     public List<Points> getPointsByUserId(Long userId){
 
         return DtoUtil.toPojos(pointsResource.list()

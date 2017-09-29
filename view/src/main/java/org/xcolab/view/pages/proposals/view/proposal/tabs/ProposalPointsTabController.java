@@ -11,6 +11,7 @@ import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKe
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.PointsClient;
+import org.xcolab.client.proposals.PointsClientUtil;
 import org.xcolab.client.proposals.ProposalClient;
 import org.xcolab.client.proposals.ProposalClientUtil;
 import org.xcolab.client.proposals.enums.points.DistributionStrategy;
@@ -18,6 +19,7 @@ import org.xcolab.client.proposals.enums.points.PointsTarget;
 import org.xcolab.client.proposals.enums.points.ReceiverLimitationStrategy;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.points.PointType;
+import org.xcolab.client.proposals.pojo.points.Points;
 import org.xcolab.view.errors.ErrorText;
 import org.xcolab.view.pages.proposals.requests.AssignPointsBean;
 import org.xcolab.view.pages.proposals.tabs.ProposalTab;
@@ -83,6 +85,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         }
 
         final List<Proposal> linkingProposalsWrapped = proposalClient.getLinkingProposals(proposal.getProposalId());
+        final List<Points> usersPoints = PointsClientUtil.getPointsByProposalId(proposal.getProposalId());
 
         List<Member> members = proposalClient.getProposalMembers(proposal.getProposalId());
 
@@ -104,6 +107,7 @@ public class ProposalPointsTabController extends BaseProposalTabController {
         model.addAttribute("proposal", proposal);
         model.addAttribute("contest", contest);
         model.addAttribute("linkingProposals", linkingProposalsWrapped);
+        model.addAttribute("usersPoints", usersPoints);
 
         return "/proposals/proposalPoints";
     }

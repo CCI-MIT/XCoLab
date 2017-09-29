@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface PointsDao {
 
-    List<Points> findByGiven(Long userId);
+    List<Points> findByGiven(Long userId, Long proposalId);
 }

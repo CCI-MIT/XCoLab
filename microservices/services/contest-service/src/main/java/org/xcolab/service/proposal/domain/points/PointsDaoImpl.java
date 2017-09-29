@@ -23,11 +23,14 @@ public class PointsDaoImpl implements PointsDao {
     }
 
     @Override
-    public List<Points> findByGiven(Long userId) {
+    public List<Points> findByGiven(Long userId, Long proposalId) {
         final SelectQuery<Record> query = dslContext.select().from(POINTS).getQuery();
 
         if (userId != null) {
             query.addConditions(POINTS.USER_ID.eq(userId));
+        }
+        if (proposalId != null) {
+            query.addConditions(POINTS.PROPOSAL_ID.eq(proposalId));
         }
 
         return query.fetchInto(Points.class);

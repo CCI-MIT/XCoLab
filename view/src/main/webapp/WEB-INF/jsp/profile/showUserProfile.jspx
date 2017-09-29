@@ -201,26 +201,14 @@
 				</table>
 			</c:forEach>
 
-			<h2 style="margin-top: 20px;">${currentUserProfile.proposalString} <spring:message code="profile.show.proposallinks"/></h2>
-			<c:if test="${empty currentUserProfile.linkingProposals}">
-                <spring:message code="profile.show.proposallinks.disclaimer" arguments="${currentUserProfile.proposalsString}" argumentSeparator=","/>
-			</c:if>
 
-			<table class="colab">
-				<c:forEach var="linkingProposal" items="${currentUserProfile.linkingProposals}">
-					<c:if test="${linkingProposal.visible}">
-						<tr class="colabRow">
-							<td> <xcolab:proposalLink proposal="${linkingProposal}" /> </td>
-							<td style="text-align: right;">
-                                <xcolab:formatDateTime millis="${linkingProposal.lastModifiedDate.time}" type="date"/>
-                            </td>
-						</tr>
-					</c:if>
-				</c:forEach>
-			</table>
+
 
             <c:if test="${pointsActive}">
                 <h2 style="margin-top: 20px;">${currentUserProfile.proposalString} <spring:message code="profile.show.proposalpoints"/></h2>
+                <c:if test="${empty currentUserProfile.usersPoints}">
+                    <spring:message code="profile.show.proposallinks.disclaimer" arguments="${currentUserProfile.proposalsString}" argumentSeparator=","/>
+                </c:if>
                 <table class="colab">
                     <c:forEach var="points" items="${currentUserProfile.usersPoints}">
                         <c:if test="${points.baseProposal.visible and points.directProposal.visible }">
@@ -247,6 +235,7 @@
                     </c:forEach>
                 </table>
                 <br/>
+
             </c:if>
 
 			<h2><spring:message code="profile.show.supporting"/></h2>
