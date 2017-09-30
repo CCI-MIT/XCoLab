@@ -245,13 +245,15 @@ public class Contest extends AbstractContest implements Serializable {
 
     public String getContestShortNameWithEndYear() {
         final String contestShortName = getContestShortName();
-        final char lastCharOfName = contestShortName.charAt(contestShortName.length() - 1);
-        final boolean nameEndsInNumber = Character.isDigit(lastCharOfName);
-        if (isContestCompleted() && !nameEndsInNumber) {
-            ContestPhase activePhase = getActivePhase();
-            if (activePhase != null) {
-                int phaseEndYear = DateUtil.getYearFromDate(activePhase.getPhaseStartDate());
-                return contestShortName + " " + phaseEndYear;
+        if (ConfigurationAttributeKey.CONTESTS_SHOW_YEAR_WHEN_COMPLETED.get()) {
+            final char lastCharOfName = contestShortName.charAt(contestShortName.length() - 1);
+            final boolean nameEndsInNumber = Character.isDigit(lastCharOfName);
+            if (isContestCompleted() && !nameEndsInNumber) {
+                ContestPhase activePhase = getActivePhase();
+                if (activePhase != null) {
+                    int phaseEndYear = DateUtil.getYearFromDate(activePhase.getPhaseStartDate());
+                    return contestShortName + " " + phaseEndYear;
+                }
             }
         }
         return contestShortName;
