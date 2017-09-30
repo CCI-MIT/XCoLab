@@ -26,7 +26,7 @@
     <c:choose>
         <c:when test="${type.equals('follow')}">
             <c:if test="${not empty followMeUrl}">
-                <a class="btn btn-social-icon ${sizeClass} btn-${socialEngine}" href="${followMeUrl}" target="_blank">
+                <a class="c-SocialButton c-SocialButton-icon ${sizeClass} c-SocialButton-${socialEngine}" href="${followMeUrl}" target="_blank">
                     <span class="fa fa-${socialEngine}"></span>
                 </a>
             </c:if>
@@ -34,27 +34,27 @@
         <c:when test="${type.equals('share')}">
             <c:choose>
                 <c:when test="${socialEngine.equals('facebook')}">
-                    <a class="btn btn-social-icon ${sizeClass} btn-${socialEngine}" data-reference="${dataReference}" data-engine-url="https://www.facebook.com/dialog/share?app_id=${_facebookId}&#38;display=popup&#38;href=" data-engine="facebook" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
+                    <a class="c-SocialButton c-SocialButton-icon ${sizeClass} c-SocialButton-${socialEngine}" data-reference="${dataReference}" data-engine-url="https://www.facebook.com/dialog/share?app_id=${_facebookId}&#38;display=popup&#38;href=" data-engine="facebook" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
                         <span class="fa fa-${socialEngine}" style="font-weight: normal;"></span>
                     </a>
                 </c:when>
                 <c:when test="${socialEngine.equals('twitter')}">
-                    <a class="btn btn-social-icon ${sizeClass} btn-${socialEngine}" data-reference="${dataReference}" data-engine-url="https://twitter.com/intent/tweet?text=${title}&#38;display=popup&#38;url=" data-engine="twitter" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
+                    <a class="c-SocialButton c-SocialButton-icon ${sizeClass} c-SocialButton-${socialEngine}" data-reference="${dataReference}" data-engine-url="https://twitter.com/intent/tweet?text=${title}&#38;display=popup&#38;url=" data-engine="twitter" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
                         <span class="fa fa-${socialEngine}" style="font-weight: normal;"></span>
                     </a>
                 </c:when>
                 <c:when test="${socialEngine.equals('google')}">
-                        <a class="btn btn-social-icon ${sizeClass} btn-${socialEngine}" data-reference="${dataReference}" data-engine-url="https://plus.google.com/share?url=" data-engine="google+"  data-share-url="${finalShareUrl}" onclick="shareThis(this)">
+                        <a class="c-SocialButton c-SocialButton-icon ${sizeClass} c-SocialButton-${socialEngine}" data-reference="${dataReference}" data-engine-url="https://plus.google.com/share?url=" data-engine="google+"  data-share-url="${finalShareUrl}" onclick="shareThis(this)">
                             <span class="fa fa-${socialEngine}" style="font-weight: normal;"></span>
                         </a>
                 </c:when>
                 <c:when test="${socialEngine.equals('linkedin')}">
-                    <a class="btn btn-social-icon ${sizeClass} btn-${socialEngine}" data-reference="${dataReference}" data-engine-url="https://www.linkedin.com/shareArticle?mini=true&#38;title=${title}&#38;url=" data-engine="linkedin" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
+                    <a class="c-SocialButton c-SocialButton-icon ${sizeClass} c-SocialButton-${socialEngine}" data-reference="${dataReference}" data-engine-url="https://www.linkedin.com/shareArticle?mini=true&#38;title=${title}&#38;url=" data-engine="linkedin" data-share-url="${finalShareUrl}" onclick="shareThis(this)">
                         <span class="fa fa-${socialEngine}" style="font-weight: normal;"></span>
                     </a>
                 </c:when>
                 <c:when test="${socialEngine.equals('email')}">
-                    <a class="btn btn-social-icon ${sizeClass} btn-${socialEngine}" data-reference="${dataReference}" data-engine-url="mailto:info@example.com?subject=${title}&#38;body=" data-share-url="${finalShareUrl}" data-engine="email" onclick="shareThis(this)">
+                    <a class="c-SocialButton c-SocialButton-icon ${sizeClass} c-SocialButton-${socialEngine}" data-reference="${dataReference}" data-engine-url="mailto:info@example.com?subject=${title}&#38;body=" data-share-url="${finalShareUrl}" data-engine="email" onclick="shareThis(this)">
                         <span class="fa fa-envelope" style="font-weight: normal;"></span>
                     </a>
                 </c:when>

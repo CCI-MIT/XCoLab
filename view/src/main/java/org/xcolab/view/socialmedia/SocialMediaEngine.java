@@ -1,5 +1,7 @@
 package org.xcolab.view.socialmedia;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.xcolab.client.admin.attributes.configuration.ConfigurationAttributeKey;
 
 import java.util.Arrays;
@@ -7,23 +9,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum SocialMediaEngine {
-    facebook(ConfigurationAttributeKey.FACEBOOK_URL.get(), true, true),
-    twitter(ConfigurationAttributeKey.TWITTER_URL.get(), true, true),
-    linkedin(ConfigurationAttributeKey.LINKEDIN_URL.get(), true, true),
-    google(ConfigurationAttributeKey.GOOGLE_URL.get(), true, true),
-    storify(ConfigurationAttributeKey.STORIFY_URL.get(), false, false),
-    youtube(ConfigurationAttributeKey.YOUTUBE_URL.get(), true, true),
-    email(null, true, true);
+    FACEBOOK(ConfigurationAttributeKey.FACEBOOK_URL.get(), true, true),
+    TWITTER(ConfigurationAttributeKey.TWITTER_URL.get(), true, true),
+    LINKEDIN(ConfigurationAttributeKey.LINKEDIN_URL.get(), true, true),
+    GOOGLE(ConfigurationAttributeKey.GOOGLE_URL.get(), true, true),
+    STORIFY(ConfigurationAttributeKey.STORIFY_URL.get(), false, false),
+    YOUTUBE(ConfigurationAttributeKey.YOUTUBE_URL.get(), true, true),
+    EMAIL(null, true, true);
 
     public static String SOCIAL_MEDIA_SPACE_HOLDER = "socialMediaEngine";
     private final String followMeUrl;
 
-    private final boolean isShearable;
+    private final boolean isShareable;
     private final boolean isActive;
 
-    SocialMediaEngine(String followMeUrl, boolean isShearable, boolean isActive) {
+    SocialMediaEngine(String followMeUrl, boolean isShareable, boolean isActive) {
         this.followMeUrl = followMeUrl;
-        this.isShearable = isShearable;
+        this.isShareable = isShareable;
         this.isActive = isActive;
 
     }
@@ -33,7 +35,7 @@ public enum SocialMediaEngine {
     }
 
     public static List<SocialMediaEngine> getShearableSocialMediaEngines() {
-        return Arrays.stream(getAllAvailableSocialMediaEngines()).filter(p -> p.isShearable())
+        return Arrays.stream(getAllAvailableSocialMediaEngines()).filter(p -> p.isShareable())
                 .collect(Collectors.toList());
     }
 
@@ -58,16 +60,16 @@ public enum SocialMediaEngine {
         return followMeUrl;
     }
 
-    public boolean isFollowable() {
-        if (this.followMeUrl == null || this.followMeUrl.isEmpty()) {
-            return false;
-        } else {
-            return true;
-        }
+    public String getName() {
+        return this.name().toLowerCase();
     }
 
-    public boolean isShearable() {
-        return isShearable;
+    public boolean isFollowable() {
+        return !StringUtils.isEmpty(this.followMeUrl);
+    }
+
+    public boolean isShareable() {
+        return isShareable;
     }
 
     public boolean isActive() {

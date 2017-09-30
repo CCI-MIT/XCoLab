@@ -6,7 +6,7 @@
     <jsp:directive.attribute name="dataReference" type="java.lang.String" description="Extra reference to compose URL" />
 
     <c:forEach var="followSocialMedia" items="${_followableSocialMediaUrls}">
-        <xcolabSocial:socialMedia type="follow" socialEngine="${followSocialMedia.name()}" followMeUrl="${followSocialMedia.followMeUrl}"/>
+        <xcolabSocial:socialMedia type="follow" socialEngine="${followSocialMedia.name}" followMeUrl="${followSocialMedia.followMeUrl}"/>
     </c:forEach>
 
 </jsp:root>
