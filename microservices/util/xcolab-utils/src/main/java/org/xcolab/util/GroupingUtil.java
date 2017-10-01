@@ -1,7 +1,7 @@
 package org.xcolab.util;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -11,8 +11,9 @@ public final class GroupingUtil {
     private GroupingUtil() {
     }
 
-    public static <K, V> Map<K, List<V>> groupByWithDuplicates(List<V> list, Function<V, K> keyExtractor) {
-        Map<K, List<V>> groupedEntities = new LinkedHashMap<>();
+    public static <K, V> Map<K, List<V>> groupByWithDuplicates(List<V> list,
+            Function<V, K> keyExtractor) {
+        Map<K, List<V>> groupedEntities = new HashMap<>();
         for (V value : list) {
             final K key = keyExtractor.apply(value);
             List<V> valuesForKey = groupedEntities.computeIfAbsent(key, k -> new ArrayList<>());
@@ -21,17 +22,8 @@ public final class GroupingUtil {
         return groupedEntities;
     }
 
-    public static <K, V> Map<K, V> groupBy(List<V> list, Function<V, K> keyExtractor) {
-        Map<K, V> groupedEntities = new LinkedHashMap<>();
-        for (V value : list) {
-            groupedEntities.put(keyExtractor.apply(value), value);
-        }
-        return groupedEntities;
-    }
-
-    public static <K, V> Map<K, V> groupByUnique(List<V> list, Function<V, K> keyExtractor)
-            throws DuplicateElementException {
-        Map<K, V> groupedEntities = new LinkedHashMap<>();
+    public static <K, V> Map<K, V> groupByUnique(List<V> list, Function<V, K> keyExtractor) {
+        Map<K, V> groupedEntities = new HashMap<>();
         for (V value : list) {
             final K key = keyExtractor.apply(value);
             if (groupedEntities.get(key) != null) {
@@ -42,10 +34,10 @@ public final class GroupingUtil {
         return groupedEntities;
     }
 
-    public static class DuplicateElementException extends Exception {
+    public static class DuplicateElementException extends RuntimeException {
+
         DuplicateElementException(Object key, List<?> elements) {
             super("Duplicate element  for key " + key + ": " + elements);
         }
     }
-
 }
