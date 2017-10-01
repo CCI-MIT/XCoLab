@@ -144,17 +144,17 @@ public final class ProposalClient {
                 .execute(), proposalService);
     }
 
-    public  List<Proposal> getProposalsByCurrentContests(List<Long> contestTypeIds, List<Long> contestTierIds,
-        String filterText) {
+    public List<Proposal> getProposalsByTypesAndTiers(List<Long> contestTypeIds,
+            List<Long> contestTierIds, String filterText) {
 
         return DtoUtil.toPojos(proposalResource.list()
-            .addRange(0, Integer.MAX_VALUE)
-            .optionalQueryParam("filterText", filterText)
-            .optionalQueryParam("contestTypeIds", contestTypeIds)
-            .optionalQueryParam("contestTierIds", contestTierIds)
-            .optionalQueryParam("visible", true)
-            .withCache(CacheName.MISC_SHORT)
-            .execute(), proposalService);
+                .addRange(0, Integer.MAX_VALUE)
+                .optionalQueryParam("filterText", filterText)
+                .optionalQueryParam("contestTypeIds", contestTypeIds)
+                .optionalQueryParam("contestTierIds", contestTierIds)
+                .optionalQueryParam("visible", true)
+                .withCache(CacheName.MISC_SHORT)
+                .execute(), proposalService);
     }
 
     public List<Long> listProposalIds(int start, int limit, Long contestId,

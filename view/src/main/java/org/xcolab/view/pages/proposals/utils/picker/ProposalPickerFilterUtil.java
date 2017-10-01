@@ -142,7 +142,7 @@ public class ProposalPickerFilterUtil {
             proposals = proposalClient.getProposalsInContest(contestPK);
         } else {
             final List<Long> allowedTiers = getAllowedTiers(planSectionDefinition.getTier());
-            proposals = proposalClient.getProposalsByCurrentContests(contestTypes, allowedTiers,
+            proposals = proposalClient.getProposalsByTypesAndTiers(contestTypes, allowedTiers,
                     filterText.isEmpty() ? null : filterText);
         }
 

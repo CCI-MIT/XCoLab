@@ -247,7 +247,7 @@ public final class ProposalClientUtil {
     }
     public static  List<Proposal> getProposalsByCurrentContests(List<Long> contestTypeIds, List<Long> contestTierIds,
             String filterText) {
-        return client.getProposalsByCurrentContests(contestTypeIds, contestTierIds, filterText);
+        return client.getProposalsByTypesAndTiers(contestTypeIds, contestTierIds, filterText);
     }
 
     public static Group_ createGroup(Group_ group) {
