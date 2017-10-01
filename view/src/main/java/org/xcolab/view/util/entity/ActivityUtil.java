@@ -4,7 +4,6 @@ import org.xcolab.client.activities.ActivitiesClientUtil;
 import org.xcolab.client.activities.pojo.ActivityEntry;
 
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,7 +15,7 @@ import java.util.Map;
 
 public class ActivityUtil {
 
-    private static final long AGGREGATION_TIME_WINDOW = Duration.ofHours(1).get(ChronoUnit.MILLIS);
+    private static final long AGGREGATION_TIME_WINDOW = Duration.ofHours(1).getSeconds() * 1000;
 
     public static List<ActivityEntry> retrieveAllActivities(int pagestart, int next) {
         return ActivitiesClientUtil.getActivityEntries(pagestart, next, null, null);
