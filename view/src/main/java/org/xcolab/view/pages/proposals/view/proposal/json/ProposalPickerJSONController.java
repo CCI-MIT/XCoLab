@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.xcolab.client.contest.pojo.Contest;
+import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.util.exceptions.InternalException;
-import org.xcolab.view.auth.MemberAuthUtil;
 import org.xcolab.view.pages.proposals.utils.context.ProposalContext;
 import org.xcolab.view.pages.proposals.utils.picker.ProposalPickerFilterUtil;
 import org.xcolab.view.pages.proposals.utils.picker.ProposalPickerSortingUtil;
@@ -28,39 +28,40 @@ public class ProposalPickerJSONController {
 
     @GetMapping("proposals/proposalPicker")
     public ProposalsResult proposalPicker(HttpServletRequest request, HttpServletResponse response,
-        ProposalContext proposalContext,
-        @PathVariable String contestYear, @PathVariable String contestUrlName,
-        @RequestParam(required = false) Tab tab,
-        @RequestParam(value = "filterKey", required = false) String filterType,
-        @RequestParam(required = false) String filterText,
-        @RequestParam(required = false) int start,
-        @RequestParam(required = false) int end,
-        @RequestParam(required = false) String sortOrder,
-        @RequestParam(required = false) String sortColumn,
-        @RequestParam(required = false) Long sectionId,
-        @RequestParam(required = false) long contestPK) throws IOException {
+            Member user, ProposalContext proposalContext, @PathVariable String contestYear,
+            @PathVariable String contestUrlName, @RequestParam(required = false) Tab tab,
+            @RequestParam(value = "filterKey", required = false) String filterType,
+            @RequestParam(required = false) String filterText,
+            @RequestParam(required = false) int start, @RequestParam(required = false) int end,
+            @RequestParam(required = false) String sortOrder,
+            @RequestParam(required = false) String sortColumn,
+            @RequestParam(required = false) Long sectionId,
+            @RequestParam(required = false) long contestPK) throws IOException {
 
         List<Proposal> proposals;
-        final long memberId = MemberAuthUtil.getMemberId(request);
+        final long userId = user.getUserId();
 
         switch (tab) {
             case SUBSCRIBED_SUPPORTED_PROPOSALS:
                 proposals = ProposalPickerFilterUtil
-                    .getFilteredSubscribedSupportingProposalsForUser(proposalContext, memberId, filterType,
-                            sectionId);
+                        .getFilteredSubscribedSupportingProposalsForUser(proposalContext, userId,
+                                filterType, sectionId);
                 break;
             case SUBSCRIBED_PROPOSALS:
                 proposals = ProposalPickerFilterUtil
-                    .getFilteredSubscribedProposalsForUser(proposalContext, memberId, filterType, sectionId);
+                        .getFilteredSubscribedProposalsForUser(proposalContext, userId, filterType,
+                                sectionId);
                 break;
             case SUPPORTED_PROPOSALS:
                 proposals = ProposalPickerFilterUtil
-                    .getFilteredSupportingProposalsForUser(proposalContext, memberId, filterType, sectionId);
+                        .getFilteredSupportingProposalsForUser(proposalContext, userId, filterType,
+                                sectionId);
                 break;
             case ALL_PROPOSALS:
             case ALL_CONTESTS:
                 proposals = ProposalPickerFilterUtil
-                    .getFilteredAllProposals(proposalContext, filterText, filterType, sectionId, contestPK);
+                        .getFilteredAllProposals(proposalContext, filterText, filterType, sectionId,
+                                contestPK);
                 break;
             default:
                 throw new InternalException("Unknown tab " + tab);
@@ -81,19 +82,17 @@ public class ProposalPickerJSONController {
 
     @GetMapping("proposals/proposalPickerContests")
     public ContestsResult proposalPickerContests(HttpServletRequest request,
-        HttpServletResponse response, @PathVariable String contestYear,
-        @PathVariable String contestUrlName,
-        @RequestParam(required = false) Tab tab,
-        @RequestParam(value = "filterKey", required = false) String filterType,
-        @RequestParam(required = false) String filterText,
-        @RequestParam(required = false) int start,
-        @RequestParam(required = false) int end,
-        @RequestParam(required = false) String sortOrder,
-        @RequestParam(required = false, value = "contestSortColumn") String sortColumn,
-        @RequestParam(required = false) Long sectionId) throws IOException {
+            HttpServletResponse response, @PathVariable String contestYear,
+            @PathVariable String contestUrlName, @RequestParam(required = false) Tab tab,
+            @RequestParam(value = "filterKey", required = false) String filterType,
+            @RequestParam(required = false) String filterText,
+            @RequestParam(required = false) int start, @RequestParam(required = false) int end,
+            @RequestParam(required = false) String sortOrder,
+            @RequestParam(required = false, value = "contestSortColumn") String sortColumn,
+            @RequestParam(required = false) Long sectionId) throws IOException {
 
         List<Contest> contests =
-            ProposalPickerFilterUtil.getTextFilteredContests(sectionId, filterText);
+                ProposalPickerFilterUtil.getTextFilteredContests(sectionId, filterText);
 
         int totalCount = contests.size();
 
@@ -112,34 +111,31 @@ public class ProposalPickerJSONController {
      * This method is used to fill the counting bubbles for each tab
      */
     @GetMapping("proposals/proposalPickerCounter")
-    public int proposalPickerCounter(HttpServletRequest request,
-            HttpServletResponse response, ProposalContext proposalContext,
-            @PathVariable String contestYear,
+    public int proposalPickerCounter(HttpServletRequest request, HttpServletResponse response,
+            Member user, ProposalContext proposalContext, @PathVariable String contestYear,
             @PathVariable String contestUrlName, @RequestParam String filterKey,
-            @RequestParam long sectionId, @RequestParam Tab tab)
-            throws IOException {
-        long memberId = MemberAuthUtil.getMemberId(request);
+            @RequestParam long sectionId, @RequestParam Tab tab) throws IOException {
+        long memberId = user.getUserId();
 
         switch (tab) {
             case ALL_CONTESTS:
-                return ProposalPickerFilterUtil.getTextFilteredContests(sectionId, "")
-                        .size();
+                return ProposalPickerFilterUtil.getTextFilteredContests(sectionId, "").size();
             case ALL_PROPOSALS:
-                return ProposalPickerFilterUtil.getFilteredAllProposals(proposalContext, "", filterKey, sectionId,
-                        0L)
+                return ProposalPickerFilterUtil
+                        .getFilteredAllProposals(proposalContext, "", filterKey, sectionId, 0L)
                         .size();
             case SUBSCRIBED_PROPOSALS:
-                return ProposalPickerFilterUtil.getFilteredSubscribedProposalsForUser(proposalContext, memberId,
-                        filterKey, sectionId)
-                        .size();
+                return ProposalPickerFilterUtil
+                        .getFilteredSubscribedProposalsForUser(proposalContext, memberId, filterKey,
+                                sectionId).size();
             case SUPPORTED_PROPOSALS:
-                return ProposalPickerFilterUtil.getFilteredSupportingProposalsForUser(proposalContext, memberId,
-                        filterKey, sectionId)
-                        .size();
+                return ProposalPickerFilterUtil
+                        .getFilteredSupportingProposalsForUser(proposalContext, memberId, filterKey,
+                                sectionId).size();
             case SUBSCRIBED_SUPPORTED_PROPOSALS:
-                return ProposalPickerFilterUtil.getFilteredSubscribedSupportingProposalsForUser(proposalContext,
-                        memberId, filterKey, sectionId)
-                        .size();
+                return ProposalPickerFilterUtil
+                        .getFilteredSubscribedSupportingProposalsForUser(proposalContext, memberId,
+                                filterKey, sectionId).size();
             default:
                 throw new IllegalArgumentException("Unknown tab: " + tab);
         }
