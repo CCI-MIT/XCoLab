@@ -124,10 +124,6 @@
 
     <!-- ============ Fonts ============ -->
 
-    <!-- TODO COLAB-2218: move to typekit? -->
-    <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet" type="text/css" />
-
-    <!-- Typekit (fonts) -->
     <c:if test="${not empty _typekitId}">
         <c:set var="typekitId" value="${_serverEnvironment eq 'LOCAL' ? _typekitIdLocal :_typekitId}" />
         <xcolab-scripts:loadTypekit kitId="${typekitId}" />

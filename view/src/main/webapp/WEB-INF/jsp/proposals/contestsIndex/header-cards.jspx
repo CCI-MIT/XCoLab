@@ -16,10 +16,9 @@
 				<a href="/admin/contest" target="_blank">Go to Contest Management Tool</a>
 			</c:if>
 		</div>
-		<div class="c-contest-title">
+		<h1>
 			${contestType.contestNamePlural}
-		</div>
-		<br/>
+        </h1>
 		<c:set var="changeToOutlineViewTypeURL" value="/contests?viewType=OUTLINE&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=${showActiveContests }&amp;showAllContests=${showAllContests }&amp;currentCollectionCardId=${currentCollectionCardId}" />
 
 		<c:set var="changeToGridViewTypeURL" value="/contests?viewType=GRID&amp;filter=${sortFilterPage.filter }&amp;showActiveContests=${showActiveContests }&amp;showAllContests=${showAllContests}&amp;currentCollectionCardId=${currentCollectionCardId}" />
