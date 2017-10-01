@@ -144,7 +144,7 @@ public final class ProposalClient {
                 .execute(), proposalService);
     }
 
-    public List<Proposal> getProposalsByTypesAndTiers(List<Long> contestTypeIds,
+    public List<Proposal> getProposalsInPublicContests(List<Long> contestTypeIds,
             List<Long> contestTierIds, String filterText) {
 
         return DtoUtil.toPojos(proposalResource.list()
@@ -152,7 +152,8 @@ public final class ProposalClient {
                 .optionalQueryParam("filterText", filterText)
                 .optionalQueryParam("contestTypeIds", contestTypeIds)
                 .optionalQueryParam("contestTierIds", contestTierIds)
-                .optionalQueryParam("visible", true)
+                .queryParam("visible", true)
+                .queryParam("contestPrivate", false)
                 .withCache(CacheName.MISC_SHORT)
                 .execute(), proposalService);
     }
