@@ -19,11 +19,13 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class ProposalReviewCsvExporter {
+
     private static final String DEL = ","; // delimiter
     private static final String TQF = ""; // text qualifier
     private static final String delimiter = TQF + DEL + TQF;
 
-    private static final DecimalFormat df = new DecimalFormat("#.##");
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
+
     private final Contest contest;
     /*
         * Cluster all proposal reviews (from multiple Contest phases) by proposal since we
@@ -65,7 +67,7 @@ public class ProposalReviewCsvExporter {
                     if (ratingAverage == null) {
                         commentString.append(delimiter + "\"-\"" + TQF);
                     } else {
-                        commentString.append(String.format("%s\"%s%s\"", delimiter, df.format(ratingAverage), TQF));
+                        commentString.append(String.format("%s\"%s%s\"", delimiter, DECIMAL_FORMAT.format(ratingAverage), TQF));
                     }
 
                     for (ProposalRatingType ratingType : ratingTypes) {
@@ -77,7 +79,8 @@ public class ProposalReviewCsvExporter {
                                 commentString.append(delimiter + "\"\"");
                             }
                         } else {
-                            commentString.append(String.format("%s\"%s%s\"", delimiter, df.format(rating), TQF));
+                            commentString.append(String.format("%s\"%s%s\"", delimiter,
+                                    DECIMAL_FORMAT.format(rating), TQF));
                         }
                     }
 
@@ -109,14 +112,14 @@ public class ProposalReviewCsvExporter {
 
     private String getAverageRatings(ProposalReview proposalReview) {
         StringBuilder averageRating = new StringBuilder();
-        averageRating.append(String.format("\"Average\"%s\"%s%s\"", delimiter, df.format(proposalReview.getRatingAverage()), TQF));
+        averageRating.append(String.format("\"Average\"%s\"%s%s\"", delimiter, DECIMAL_FORMAT.format(proposalReview.getRatingAverage()), TQF));
 
         for (ProposalRatingType ratingType : ratingTypes) {
             Double average = proposalReview.getRatingAverage(ratingType);
             if (average == null) {
                 averageRating.append(delimiter + "\"\"");
             } else {
-                averageRating.append(String.format("%s\"%s%s\"", delimiter, df.format(average), TQF));
+                averageRating.append(String.format("%s\"%s%s\"", delimiter, DECIMAL_FORMAT.format(average), TQF));
             }
         }
 
@@ -136,16 +139,18 @@ public class ProposalReviewCsvExporter {
                 + delimiter + "\"" + escapeQuote(proposalReview.getProposalTeamAuthor()) + "\""
                 + delimiter + "\"" + proposalReview.getProposalUrl() + "\""
                 + delimiter + "\"" + escapeQuote(proposalReview.getProposal().getCleanPitch()) + "\""
-                + delimiter + dataFields + "\""
-                + delimiter + "\"" + escapeQuote(contestPhaseName) + "\"";
+                + delimiter + dataFields
+                + "\"" + escapeQuote(contestPhaseName) + "\"" + delimiter;
     }
 
     private String getDataFields(Proposal proposal) {
         StringBuilder dataFields = new StringBuilder(TQF);
         for (PlanSectionDefinition sectionDefinition : proposal.getSections()) {
             if (sectionDefinition.getIncludeInJudgingReport()) {
-                dataFields.append(String.format("\"%s\"%s",
-                        escapeQuote(HtmlUtil.cleanAll(sectionDefinition.getContent())), delimiter));
+                dataFields.append("\"")
+                        .append(escapeQuote(HtmlUtil.cleanAll(sectionDefinition.getContent())))
+                        .append("\"")
+                        .append(delimiter);
             }
         }
         return dataFields.toString();
