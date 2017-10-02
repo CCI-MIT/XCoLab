@@ -145,7 +145,7 @@ public class ProposalReviewCsvExporter {
 
     private String getDataFields(Proposal proposal) {
         StringBuilder dataFields = new StringBuilder(TQF);
-        for (PlanSectionDefinition sectionDefinition : contest.getSections()) {
+        for (PlanSectionDefinition sectionDefinition : proposal.getSections()) {
             if (sectionDefinition.getIncludeInJudgingReport()) {
                 dataFields.append("\"")
                         .append(escapeQuote(HtmlUtil.cleanAll(sectionDefinition.getContent())))
