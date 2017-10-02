@@ -118,7 +118,7 @@ public class SearchDaoImpl implements SearchDao {
                                 getProposalQueryForSearch(unlimitedPagination, query)
                                 .unionAll(getQueryForSearch(unlimitedPagination, query, SearchType.MEMBER.getId(), MEMBER, MEMBER.ID_, MemberTable.MEMBER.SHORT_BIO, MEMBER.FIRST_NAME, MEMBER.LAST_NAME, MEMBER.SCREEN_NAME))
                                 .union(getQueryForSearch(unlimitedPagination, query, SearchType.DISCUSSION.getId(), COMMENT, COMMENT.COMMENT_ID, COMMENT.CONTENT))
-                                .union(getQueryForSearch(unlimitedPagination, query, SearchType.CONTEST.getId(), CONTEST, CONTEST.CONTEST_PK, CONTEST.CONTEST_DESCRIPTION))
+                                .union(blabla(unlimitedPagination, query))
                 ).limit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord())
                         .fetchInto(SearchPojo.class);
     }
@@ -144,6 +144,20 @@ public class SearchDaoImpl implements SearchDao {
                 .orderBy(relevance.desc())
                 .limit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord())
                 .getQuery();
+    }
+
+
+    private SelectQuery<Record3<Long, Double, Long>> blabla(PaginationHelper paginationHelper, String query) {
+        final Field<Double> relevance = match(CONTEST.CONTEST_DESCRIPTION).against(query)
+                .as("relevance");
+        Field<Long> searchTypeId = DSL.val(SearchType.CONTENT.getId()).as("searchTypeId");
+        return dslContext.select((CONTEST.CONTEST_PK.as("classPrimaryKey")), relevance, searchTypeId)
+                .from(CONTEST)
+                .where(match(CONTEST.CONTEST_DESCRIPTION).against(query))
+                .andNot(CONTEST.CONTEST_PRIVATE)
+                .orderBy(relevance.desc())
+                .limit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord())
+                .getQuery().;
     }
 
 
