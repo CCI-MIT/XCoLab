@@ -14,7 +14,9 @@ import org.xcolab.client.contest.OntologyClientUtil;
 import org.xcolab.client.contest.pojo.ontology.FocusArea;
 import org.xcolab.client.contest.pojo.ontology.OntologyTerm;
 import org.xcolab.client.proposals.ProposalClientUtil;
+import org.xcolab.client.proposals.enums.ProposalAttributeKeys;
 import org.xcolab.client.proposals.exceptions.ProposalNotFoundException;
+import org.xcolab.client.proposals.helpers.ProposalAttributeHelper;
 import org.xcolab.client.proposals.pojo.Proposal;
 import org.xcolab.client.proposals.pojo.attributes.ProposalAttribute;
 import org.xcolab.util.IdListUtil;
@@ -36,12 +38,12 @@ import java.util.stream.Stream;
 
 public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
 
-    private final Proposal wrappedProposal;
+    private final Proposal proposal;
 
     private final RestService restService;
 
     public PlanSectionDefinition() {
-        wrappedProposal = null;
+        proposal = null;
         restService = null;
     }
 
@@ -52,7 +54,7 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
         }else{
             restService = null;
         }
-        wrappedProposal = null;
+        proposal = null;
     }
 
     public PlanSectionDefinition(PlanSectionDefinition value, Proposal proposal) {
@@ -66,12 +68,12 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
                 restService = null;
             }
         }
-        this.wrappedProposal = proposal;
+        this.proposal = proposal;
     }
     public PlanSectionDefinition(AbstractPlanSectionDefinition abstractPlanSectionDefinition,
             RestService restService) {
         super(abstractPlanSectionDefinition);
-        wrappedProposal = null;
+        proposal = null;
         this.restService = restService;
     }
 
@@ -358,8 +360,19 @@ public class PlanSectionDefinition extends AbstractPlanSectionDefinition {
         return restService;
     }
 
-
     private ProposalAttribute getSectionAttribute() {
-        return this.wrappedProposal.getProposalAttributeHelper().getAttributeOrNull("SECTION", this.getId_());
+        if (proposal == null) {
+            throw new ProposalFieldNotInitializedException();
+        }
+        ProposalAttributeHelper proposalAttributeHelper = proposal.getProposalAttributeHelper();
+        return proposalAttributeHelper
+                .getAttributeOrNull(ProposalAttributeKeys.SECTION, this.getId_());
+    }
+
+    public static class ProposalFieldNotInitializedException extends RuntimeException {
+
+        public ProposalFieldNotInitializedException() {
+            super("A value in the proposal field is required to perform this action.");
+        }
     }
 }
