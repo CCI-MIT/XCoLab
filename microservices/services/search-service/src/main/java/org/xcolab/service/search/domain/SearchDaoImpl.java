@@ -1,5 +1,6 @@
 package org.xcolab.service.search.domain;
 
+import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
 import org.jooq.Record1;
@@ -15,6 +16,8 @@ import org.xcolab.service.search.enums.SearchType;
 import org.xcolab.service.search.pojo.SearchPojo;
 import org.xcolab.service.utils.PaginationHelper;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static org.xcolab.model.Tables.COMMENT;
@@ -99,7 +102,7 @@ public class SearchDaoImpl implements SearchDao {
     public List<SearchPojo> findContest(PaginationHelper paginationHelper,
                                         String query) {
 
-        return getQueryForSearch(paginationHelper, query, SearchType.CONTEST.getId(), CONTEST, CONTEST.CONTEST_PK, CONTEST.CONTEST_DESCRIPTION)
+        return getQueryForSearch(paginationHelper, query, SearchType.CONTEST.getId(), CONTEST, CONTEST.CONTEST_PK, Collections.singletonList(CONTEST.CONTEST_PRIVATE.eq(false)),CONTEST.CONTEST_DESCRIPTION)
                 .fetchInto(SearchPojo.class);
 
     }
@@ -118,7 +121,7 @@ public class SearchDaoImpl implements SearchDao {
                                 getProposalQueryForSearch(unlimitedPagination, query)
                                 .unionAll(getQueryForSearch(unlimitedPagination, query, SearchType.MEMBER.getId(), MEMBER, MEMBER.ID_, MemberTable.MEMBER.SHORT_BIO, MEMBER.FIRST_NAME, MEMBER.LAST_NAME, MEMBER.SCREEN_NAME))
                                 .union(getQueryForSearch(unlimitedPagination, query, SearchType.DISCUSSION.getId(), COMMENT, COMMENT.COMMENT_ID, COMMENT.CONTENT))
-                                .union(blabla(unlimitedPagination, query))
+                                .union(getQueryForSearch(unlimitedPagination, query, SearchType.CONTEST.getId(), CONTEST, CONTEST.CONTEST_PK, Collections.singletonList(CONTEST.CONTEST_PRIVATE.eq(false)),CONTEST.CONTEST_DESCRIPTION))
                 ).limit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord())
                         .fetchInto(SearchPojo.class);
     }
@@ -134,6 +137,13 @@ public class SearchDaoImpl implements SearchDao {
     }
 
 
+    private SelectQuery<Record3<Long, Double, Long>> getQueryForSearch(PaginationHelper paginationHelper, String query, Long searchType, TableImpl table, Field primaryKey, Collection<? extends Condition> conditions, Field... fields) {
+        SelectQuery<Record3<Long, Double, Long>> selectQuery = getQueryForSearch(paginationHelper, query, searchType, table, primaryKey, fields);
+        selectQuery.addConditions(conditions);
+        return selectQuery;
+    }
+
+
     private SelectQuery<Record3<Long, Double, Long>> getQueryForSearch(PaginationHelper paginationHelper, String query, Long searchType, TableImpl table, Field primaryKey, Field... fields) {
         final Field<Double> relevance = match(fields).against(query)
                 .as("relevance");
@@ -144,20 +154,6 @@ public class SearchDaoImpl implements SearchDao {
                 .orderBy(relevance.desc())
                 .limit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord())
                 .getQuery();
-    }
-
-
-    private SelectQuery<Record3<Long, Double, Long>> blabla(PaginationHelper paginationHelper, String query) {
-        final Field<Double> relevance = match(CONTEST.CONTEST_DESCRIPTION).against(query)
-                .as("relevance");
-        Field<Long> searchTypeId = DSL.val(SearchType.CONTENT.getId()).as("searchTypeId");
-        return dslContext.select((CONTEST.CONTEST_PK.as("classPrimaryKey")), relevance, searchTypeId)
-                .from(CONTEST)
-                .where(match(CONTEST.CONTEST_DESCRIPTION).against(query))
-                .andNot(CONTEST.CONTEST_PRIVATE)
-                .orderBy(relevance.desc())
-                .limit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord())
-                .getQuery().;
     }
 
 
