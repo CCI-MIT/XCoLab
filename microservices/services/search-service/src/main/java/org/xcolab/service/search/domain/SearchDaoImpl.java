@@ -138,22 +138,21 @@ public class SearchDaoImpl implements SearchDao {
 
 
     private SelectQuery<Record3<Long, Double, Long>> getQueryForSearch(PaginationHelper paginationHelper, String query, Long searchType, TableImpl table, Field primaryKey, Collection<? extends Condition> conditions, Field... fields) {
-        SelectQuery<Record3<Long, Double, Long>> selectQuery = getQueryForSearch(paginationHelper, query, searchType, table, primaryKey, fields);
-        selectQuery.addConditions(conditions);
-        return selectQuery;
-    }
-
-
-    private SelectQuery<Record3<Long, Double, Long>> getQueryForSearch(PaginationHelper paginationHelper, String query, Long searchType, TableImpl table, Field primaryKey, Field... fields) {
         final Field<Double> relevance = match(fields).against(query)
                 .as("relevance");
         Field<Long> searchTypeId = DSL.val(searchType).as("searchTypeId");
         return dslContext.select((primaryKey.as("classPrimaryKey")), relevance, searchTypeId)
                 .from(table)
-                .where(match(fields).against(query))
+                .where(conditions)
+                .and(match(fields).against(query))
                 .orderBy(relevance.desc())
                 .limit(paginationHelper.getStartRecord(), paginationHelper.getLimitRecord())
                 .getQuery();
+    }
+
+
+    private SelectQuery<Record3<Long, Double, Long>> getQueryForSearch(PaginationHelper paginationHelper, String query, Long searchType, TableImpl table, Field primaryKey, Field... fields) {
+        return getQueryForSearch(paginationHelper, query, searchType, table, primaryKey, Collections.emptyList(), fields);
     }
 
 
