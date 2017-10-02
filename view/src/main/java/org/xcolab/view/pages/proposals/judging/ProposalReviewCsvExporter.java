@@ -132,13 +132,12 @@ public class ProposalReviewCsvExporter {
 
         final String dataFields = getDataFields(proposal);
 
-        return String.format("%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s\"%s",
-                TQF, escapeQuote(proposalName),
-                delimiter, escapeQuote(proposalReview.getProposalTeamAuthor()),
-                delimiter, proposalReview.getProposalUrl(),
-                delimiter, proposalReview.getProposal().getCleanPitch(),
-                dataFields +
-                delimiter, escapeQuote(contestPhaseName), delimiter);
+        return TQF + "\"" + escapeQuote(proposalName) + "\""
+                + delimiter + "\"" + escapeQuote(proposalReview.getProposalTeamAuthor()) + "\""
+                + delimiter + "\"" + proposalReview.getProposalUrl() + "\""
+                + delimiter + "\"" + escapeQuote(proposalReview.getProposal().getCleanPitch()) + "\""
+                + delimiter + dataFields + "\""
+                + delimiter + "\"" + escapeQuote(contestPhaseName) + "\"";
     }
 
     private String getDataFields(Proposal proposal) {
