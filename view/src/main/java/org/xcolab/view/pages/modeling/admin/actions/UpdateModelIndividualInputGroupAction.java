@@ -44,7 +44,8 @@ public class UpdateModelIndividualInputGroupAction {
             return;
         }
 
-        ModelInputItem inputItem = ModelingClientUtil.getItemForMetaData(modelId, displayItem.getMetaData());
+        ModelInputItem inputItem =
+                ModelingClientUtil.getItemForMetaData(modelId, displayItem.getMetaData());
         inputItem.setDisplayItemOrder(updateModelInputGroup.getOrder());
         inputItem.setModelGroupId(updateModelInputGroup.getGroupId());
 

@@ -9,10 +9,8 @@ import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.tracking.TrackingClient;
 import org.xcolab.view.config.spring.resolvers.RealMember;
 
-import java.io.IOException;
 import java.util.Enumeration;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,11 +19,9 @@ public class UserTrackingController {
 
     @PostMapping("/trackVisitor")
     protected ResponseJson trackVisitor(HttpServletRequest request, HttpServletResponse response,
-            @RealMember Member loggedInMember)
-            throws ServletException, IOException {
-        //get ip
+            @RealMember Member loggedInMember) {
+
         String ip = getClientIpAddress(request);
-        //city, country
         String url = request.getParameter("url");
         String referer = request.getParameter(HttpHeaders.REFERER);
         String browser = request.getHeader(HttpHeaders.USER_AGENT);
@@ -33,7 +29,7 @@ public class UserTrackingController {
         //get headers
         String headers = getHeadersAsString(request);
 
-        //find out uuid. if it is not sent as request parameter, try to retrieve existing token if user is logged in.
+        // If UUID is not sent as parameter, try to retrieve existing token if user is logged in.
         String uuid = request.getParameter("uuid");
         String isTrackedVisitor = request.getParameter("isTrackedVisitor");
         if (StringUtils.isBlank(uuid)) {
@@ -86,6 +82,7 @@ public class UserTrackingController {
     }
 
     private static class ResponseJson {
+
         private final String uuid;
         private final boolean isTrackedVisitor;
 

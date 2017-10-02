@@ -27,7 +27,8 @@ public class UniqueScreenNameValidator extends CustomValidator<UniqueScreenName>
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
 
-        String screenName = ConstraintValidatorHelper.getPropertyValue(String.class, screenNameProperty, value);
+        String screenName =
+                ConstraintValidatorHelper.getPropertyValue(String.class, screenNameProperty, value);
 
         if (screenName == null) {
             return true;
@@ -35,19 +36,19 @@ public class UniqueScreenNameValidator extends CustomValidator<UniqueScreenName>
 
         boolean isValid = !SharedColabClient.isScreenNameUsed(screenName);
 
-        if(!isValid) {
+        if (!isValid) {
             boolean isDefaultMessage = "".equals(context.getDefaultConstraintMessageTemplate());
 
             if (isDefaultMessage) {
                 StringBuilder message = new StringBuilder();
-                message.append(resourceMessageResolver.getLocalizedMessage(
-                        "register.form.validation.uniqueScreenName.message"));
+                message.append(resourceMessageResolver
+                        .getLocalizedMessage("register.form.validation.uniqueScreenName.message"));
 
                 if (ConfigurationAttributeKey.IS_SHARED_COLAB.get()) {
-                    message.append("<br />")
-                            .append(resourceMessageResolver.getLocalizedMessage(
-                            "register.form.validation.uniqueX.sharedColab",
-                            new String[]{ConfigurationAttributeKey.PARTNER_COLAB_NAME.get()}));
+                    message.append("<br />").append(resourceMessageResolver
+                            .getLocalizedMessage("register.form.validation.uniqueX.sharedColab",
+                                    new String[]{
+                                            ConfigurationAttributeKey.PARTNER_COLAB_NAME.get()}));
                 }
                 context.disableDefaultConstraintViolation();
                 processDefaultErrorMessage(message.toString(), false, context);

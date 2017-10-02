@@ -1,7 +1,6 @@
 package org.xcolab.view.activityentry.discussion;
 
 import org.apache.commons.text.StringEscapeUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.xcolab.client.activities.pojo.ActivityEntry;
 import org.xcolab.client.comment.exceptions.CategoryNotFoundException;
@@ -31,45 +30,47 @@ import org.xcolab.view.i18n.ResourceMessageResolver;
 
 public abstract class DiscussionBaseActivityEntry implements ActivityEntryContentProvider {
 
+    private static final String HYPERLINK_FORMAT = "<a href=\"%s\">%s</a>";
+
     protected ActivityEntry activityEntry;
 
     protected Comment comment;
-
     protected CommentThread thread;
-
     protected Category category;
-
     protected CategoryGroup categoryGroup;
 
     protected Proposal proposal;
-
     protected Contest contest;
-
     protected String proposalName;
 
-    public static final String HYPERLINK_FORMAT = "<a href=\"%s\">%s</a>";
+    protected final ResourceMessageResolver resourceMessageResolver;
 
-    @Autowired
-    protected ResourceMessageResolver resourceMessageResolver;
+    public DiscussionBaseActivityEntry(ResourceMessageResolver resourceMessageResolver) {
+        this.resourceMessageResolver = resourceMessageResolver;
+    }
 
     @Override
     public void setActivityEntry(ActivityEntry activityEntry) {
         this.activityEntry = activityEntry;
-        if (this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_ADDED_COMMENT.getSecondaryTypeId())||
-                this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_ADDED.getSecondaryTypeId())) {
+        if (this.getSecondaryType()
+                .equals(DiscussionActivitySubType.DISCUSSION_ADDED_COMMENT.getSecondaryTypeId())
+                || this.getSecondaryType()
+                .equals(DiscussionActivitySubType.DISCUSSION_ADDED.getSecondaryTypeId())) {
 
             try {//DISCUSSION_ADDED_COMMENT
                 category = CategoryClientUtil.getCategory(activityEntry.getClassPrimaryKey());
                 comment = CommentClientUtil
-                        .getComment(Long.parseLong(activityEntry.getExtraData()),true);
+                        .getComment(Long.parseLong(activityEntry.getExtraData()), true);
                 thread = ThreadClientUtil.getThread(comment.getThreadId());
                 category = CategoryClientUtil.getCategory(thread.getCategoryId());
-            } catch (CategoryNotFoundException | ThreadNotFoundException | CommentNotFoundException e) {
+            } catch (CategoryNotFoundException | ThreadNotFoundException |
+                    CommentNotFoundException e) {
                 //_log.warn("Could not initialize discussion from " + activityEntry);
             }
             return;
         }
-        if(this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_CONTEST_COMMENT.getSecondaryTypeId())){
+        if (this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_CONTEST_COMMENT
+                .getSecondaryTypeId())) {
             try {
                 thread = ThreadClientUtil.getThread(activityEntry.getClassPrimaryKey());
                 contest = ContestClientUtil.getContestByThreadId(thread.getThreadId());
@@ -79,19 +80,20 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
             }
             return;
         }
-        if(this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_PROPOSAL_COMMENT.getSecondaryTypeId())){
+        if (this.getSecondaryType().equals(DiscussionActivitySubType.DISCUSSION_PROPOSAL_COMMENT
+                .getSecondaryTypeId())) {
             try {//proposal comment
                 thread = ThreadClientUtil.getThread(activityEntry.getClassPrimaryKey());
 
                 proposal = ProposalClientUtil.getProposalByThreadId(thread.getThreadId());
-                contest = ProposalClientUtil
-                        .getCurrentContestForProposal(proposal.getProposalId());
+                contest = ProposalClientUtil.getCurrentContestForProposal(proposal.getProposalId());
 
 
                 proposalName = ProposalAttributeClientUtil
-                        .getProposalAttribute(proposal.getProposalId(),
-                                ProposalAttributeKeys.NAME, null).getStringValue();
-            } catch (ProposalNotFoundException | ContestNotFoundException | ThreadNotFoundException ignored) {
+                        .getProposalAttribute(proposal.getProposalId(), ProposalAttributeKeys.NAME,
+                                null).getStringValue();
+            } catch (ProposalNotFoundException | ContestNotFoundException |
+                    ThreadNotFoundException ignored) {
 
 
             }
@@ -100,24 +102,27 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
 
     protected String getContestLink() {
         String url = "&#160;";
-        if (contest!= null) {
-            url = "<a href='" +contest.getContestUrl()+ "/discussion" + "'>" +  contest.getContestShortNameWithEndYear()+ "</a>";
+        if (contest != null) {
+            url = "<a href='" + contest.getContestUrl() + "/discussion" + "'>" + contest
+                    .getContestShortNameWithEndYear() + "</a>";
         }
         return url;
     }
 
     protected String getProposalLink() {
         String url = "&#160;";
-        if (proposal!= null) {
-            url = "<a href='" + proposal.getProposalLinkUrl(contest)+ "/tab/COMMENTS" + "'>" + proposalName + "</a>";
+        if (proposal != null) {
+            url = "<a href='" + proposal.getProposalLinkUrl(contest) + "/tab/COMMENTS" + "'>"
+                    + proposalName + "</a>";
         }
         return url;
     }
 
     protected String getThreadLink() {
         if (thread != null) {
-            return String.format(HYPERLINK_FORMAT, StringEscapeUtils.escapeHtml4(thread.getLinkUrl()),
-                    thread.getTitle());
+            return String
+                    .format(HYPERLINK_FORMAT, StringEscapeUtils.escapeHtml4(thread.getLinkUrl()),
+                            thread.getTitle());
         } else {
             return "&#160;";
         }
@@ -125,8 +130,9 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
 
     protected String getCategoryLink() {
         if (category != null) {
-            return String.format(HYPERLINK_FORMAT, StringEscapeUtils.escapeHtml4(category.getLinkUrl()),
-                    category.getName());
+            return String
+                    .format(HYPERLINK_FORMAT, StringEscapeUtils.escapeHtml4(category.getLinkUrl()),
+                            category.getName());
         } else {
             return "&#160;";
         }
@@ -136,13 +142,13 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
 
         try {
             Member member = MembersClient.getMember(this.activityEntry.getMemberId());
-            if(member!=null) {
+            if (member != null) {
                 return member.generateUserURL();
-            }else{
+            } else {
                 return "&#160;";
             }
 
-        }catch (MemberNotFoundException ignored){
+        } catch (MemberNotFoundException ignored) {
             return "<user removed>";
         }
     }
@@ -162,11 +168,12 @@ public abstract class DiscussionBaseActivityEntry implements ActivityEntryConten
         DISCUSSION_CONTEST_COMMENT(6L);
 
         private final Long secondaryTypeId;
+
         DiscussionActivitySubType(Long type) {
             this.secondaryTypeId = type;
         }
 
-        public Long getSecondaryTypeId(){
+        public Long getSecondaryTypeId() {
             return this.secondaryTypeId;
         }
     }

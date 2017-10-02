@@ -40,8 +40,8 @@ public class CompareStringsValidator implements ConstraintValidator<CompareStrin
             List<String> propertyValues = new ArrayList<>(propertyNames.length);
             String[] valueIdentifiers = propertyNames[i].split(",");
             for (String valueIdentifier : valueIdentifiers) {
-                String propertyValue =
-                        ConstraintValidatorHelper.getPropertyValue(String.class, valueIdentifier, target);
+                String propertyValue = ConstraintValidatorHelper
+                        .getPropertyValue(String.class, valueIdentifier, target);
                 if (propertyValue == null) {
                     if (!allowNull) {
                         isValid = false;
@@ -65,7 +65,8 @@ public class CompareStringsValidator implements ConstraintValidator<CompareStrin
 
         if (!isValid) {
             boolean isDefaultMessage = "".equals(context.getDefaultConstraintMessageTemplate());
-            /* if custom message was provided, don't touch it, otherwise build the default message */
+            /* if custom message was provided, don't touch it, otherwise build the default
+            message */
             if (isDefaultMessage) {
                 String resolvedMessage = ConstraintValidatorHelper
                         .resolveMessage(propertyNames[validationFailedAtIndex].split(","),

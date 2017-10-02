@@ -12,14 +12,15 @@ import javax.servlet.http.HttpSession;
 
 public class SessionHelper {
 
-    public static void add(HttpServletRequest servletRequest, String key, String className){
+    public static void add(HttpServletRequest servletRequest, String key, String className) {
         Map map = _getMap(servletRequest.getSession(false), true, className);
-        if(map != null) {
+        if (map != null) {
             map.put(key, key);
         }
     }
 
-    private static Map<String, Object> _getMap(HttpSession session, boolean createIfAbsent,String className) {
+    private static Map<String, Object> _getMap(HttpSession session, boolean createIfAbsent,
+            String className) {
         if (session == null) {
             return null;
         } else {
@@ -27,7 +28,7 @@ public class SessionHelper {
 
             try {
                 map = session.getAttribute(className);
-                if(map == null && createIfAbsent) {
+                if (map == null && createIfAbsent) {
                     map = new LinkedHashMap();
                     session.setAttribute(className, map);
                 }
@@ -37,24 +38,27 @@ public class SessionHelper {
             return (Map<String, Object>) map;
         }
     }
+
     public static void clear(HttpSession session, String className) {
         Map map = _getMap(session, false, className);
-        if(map != null) {
+        if (map != null) {
             map.clear();
         }
 
     }
-    public static boolean isEmpty(HttpSession session, String className){
-         Map map = _getMap(session,false,className);
-        if(map!=null ){
+
+    public static boolean isEmpty(HttpSession session, String className) {
+        Map map = _getMap(session, false, className);
+        if (map != null) {
             return map.isEmpty();
-        }else{
+        } else {
             return false;
         }
     }
-    public static Iterator<String> iterator(HttpSession session,String className) {
+
+    public static Iterator<String> iterator(HttpSession session, String className) {
         Map map = _getMap(session, false, className);
-        if(map == null) {
+        if (map == null) {
             List set1 = Collections.emptyList();
             return set1.iterator();
         } else {

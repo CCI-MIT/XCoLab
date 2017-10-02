@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This is a utility class to group entities by certain other criteria.
- * It's in a separate class, because the liferay service layer does not support returning maps!
+ * This is a utility class to group entities by certain other criteria. It's in a separate class,
+ * because the liferay service layer does not support returning maps!
  */
 
 public final class EntityGroupingUtil {
@@ -25,19 +25,22 @@ public final class EntityGroupingUtil {
 
         Map<ContestType, List<Proposal>> proposalsByContestType = new HashMap<>();
         final List<ContestType> contestTypes = ContestTypeClient.getActiveContestTypes();
-        if (contestTypes.size()  == 1) {
+        if (contestTypes.size() == 1) {
             proposalsByContestType.put(contestTypes.get(0), proposals);
         } else {
             Map<Long, ContestType> contestIdToContestTypeMap = new HashMap<>();
             for (ContestType contestType : contestTypes) {
-                final List<Contest> contests = ContestClientUtil.getContestsByContestType(contestType.getId());
+                final List<Contest> contests =
+                        ContestClientUtil.getContestsByContestType(contestType.getId());
                 proposalsByContestType.put(contestType, new ArrayList<>());
                 for (Contest contest : contests) {
                     contestIdToContestTypeMap.put(contest.getContestPK(), contestType);
                 }
             }
             for (Proposal p : proposals) {
-                final long contestPK = ProposalClientUtil.getLatestContestInProposal(p.getProposalId()).getContestPK();
+                final long contestPK =
+                        ProposalClientUtil.getLatestContestInProposal(p.getProposalId())
+                                .getContestPK();
                 ContestType contestType = contestIdToContestTypeMap.get(contestPK);
                 proposalsByContestType.get(contestType).add(p);
             }

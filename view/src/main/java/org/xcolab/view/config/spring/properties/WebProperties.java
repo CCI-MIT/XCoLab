@@ -36,8 +36,8 @@ public class WebProperties {
         private boolean alwaysAllowHomepage = true;
 
         /**
-         * If false, the platform does not allow registering new members.
-         * Existing members will still be able to log in.
+         * If false, the platform does not allow registering new members. Existing members will
+         * still be able to log in.
          */
         private boolean allowRegistration = true;
 
@@ -51,7 +51,7 @@ public class WebProperties {
          */
         private boolean allowSso = true;
 
-        public boolean isAllowAll() {   
+        public boolean isAllowAll() {
             return allowAll;
         }
 
@@ -93,6 +93,7 @@ public class WebProperties {
     }
 
     public static class Cache {
+
         /**
          * Browser caching for scripts (JS/CSS)
          */

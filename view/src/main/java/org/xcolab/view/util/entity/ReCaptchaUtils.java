@@ -29,15 +29,13 @@ public class ReCaptchaUtils {
             // Send post request
             con.setDoOutput(true);
             DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-            String postParams = "secret=" + secret + "&response="
-                    + gRecaptchaResponse;
+            String postParams = "secret=" + secret + "&response=" + gRecaptchaResponse;
             wr.writeBytes(postParams);
             wr.flush();
             wr.close();
 
             int responseCode = con.getResponseCode();
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    con.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
             StringBuilder response = new StringBuilder();
 
@@ -48,7 +46,7 @@ public class ReCaptchaUtils {
             JSONObject jsonObject = new JSONObject(response.toString());
 
             return jsonObject.getBoolean("success");
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }

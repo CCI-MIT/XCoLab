@@ -11,8 +11,8 @@ import java.util.List;
  */
 public class ProposalPickerSortingUtil {
 
-    public static void sortContestsList(String sortOrder,
-            String sortColumn, List<Contest> contests) {
+    public static void sortContestsList(String sortOrder, String sortColumn,
+            List<Contest> contests) {
         if (sortColumn != null) {
 
             Comparator<Contest> comparator;
@@ -46,7 +46,7 @@ public class ProposalPickerSortingUtil {
     }
 
     public static void sortProposalsList(String sortOrder, String sortColumn,
-        List<Proposal> proposals) {
+            List<Proposal> proposals) {
 
         if (sortColumn != null) {
 

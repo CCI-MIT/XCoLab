@@ -47,8 +47,10 @@ public class WebSecurityBeansConfig {
     public RememberMeServices rememberMeServices() {
         generateSecretIfNecessary();
         final TokenBasedRememberMeServices rememberMeServices =
-                new TokenBasedRememberMeServices(xCoLabProperties.getSecret(), memberDetailsService());
-        rememberMeServices.setTokenValiditySeconds(xCoLabProperties.getRememberMe().getTokenValiditySeconds());
+                new TokenBasedRememberMeServices(xCoLabProperties.getSecret(),
+                        memberDetailsService());
+        rememberMeServices.setTokenValiditySeconds(
+                xCoLabProperties.getRememberMe().getTokenValiditySeconds());
         return rememberMeServices;
     }
 

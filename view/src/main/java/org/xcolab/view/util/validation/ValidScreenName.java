@@ -14,6 +14,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = ValidScreenNameValidator.class)
 @Documented
 public @interface ValidScreenName {
+
     String screenNameProperty();
 
     String message() default "";

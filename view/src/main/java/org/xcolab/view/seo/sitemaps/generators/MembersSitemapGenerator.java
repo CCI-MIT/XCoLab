@@ -22,8 +22,7 @@ public class MembersSitemapGenerator {
 
     public XmlUrlSet generateForTeamMembers() {
         XmlUrlSet xmlUrlSet = new XmlUrlSet();
-        final List<Long> roleIds = MembersClient.listMemberCategories()
-                .stream()
+        final List<Long> roleIds = MembersClient.listMemberCategories().stream()
                 // Remove members
                 .filter(category -> category.getRoleId() != 10122)
                 // Remove admins
@@ -32,7 +31,8 @@ public class MembersSitemapGenerator {
                 .collect(Collectors.toList());
         List<Member> members = MembersClient.listMembersWithRoles(roleIds);
         for (Member member : members) {
-            xmlUrlSet.addUrl(XmlUrl.Builder.forLocation(siteUrl + member.getProfileLinkUrl())
+            xmlUrlSet.addUrl(XmlUrl.Builder
+                    .forLocation(siteUrl + member.getProfileLinkUrl())
                     .lastModified(DateUtil.toLocalDateTime(member.getModifiedDate()))
                     .changeFrequency(ChangeFrequency.MONTHLY)
                     .priority(Priority.MEDIUM)

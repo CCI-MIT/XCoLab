@@ -48,7 +48,8 @@ import javax.mail.internet.InternetAddress;
 @Component
 public class ActivitySubscriptionEmailHelper {
 
-    private final static Logger _log = LoggerFactory.getLogger(ActivitySubscriptionEmailHelper.class);
+    private final static Logger _log =
+            LoggerFactory.getLogger(ActivitySubscriptionEmailHelper.class);
 
     private static final Object mutex = new Object();
 
@@ -57,47 +58,65 @@ public class ActivitySubscriptionEmailHelper {
 
     private static final String FAQ_DIGEST_URL_PATH = "/faqs#digest";
 
-    private static final String UNSUBSCRIBE_INSTANT_NOTIFICATION_TEXT = "You are receiving this message because you subscribed to a <contest/>, <proposal/> or discussion post on the <colab-name/>.  " +
-            "To receive all notifications in a daily digest, please click <a href='FAQ_DIGEST_LINK_PLACEHOLDER'>here</a> for instructions.  " +
-            "To stop receiving notifications from this <contest/>, <proposal/> or discussion post, please click <a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
+    private static final String UNSUBSCRIBE_INSTANT_NOTIFICATION_TEXT =
+            "You are receiving this message because you subscribed to a <contest/>, <proposal/> "
+                    + "or discussion post on the <colab-name/>.  "
+                    + "To receive all notifications in a daily digest, please click "
+                    + "<a href='FAQ_DIGEST_LINK_PLACEHOLDER'>here</a> for instructions.  "
+                    + "To stop receiving notifications from this <contest/>, <proposal/> or "
+                    + "discussion post, please click "
+                    + "<a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
 
     private static final String FAQ_DIGEST_LINK_PLACEHOLDER = "FAQ_DIGEST_LINK_PLACEHOLDER";
 
-    private static final String UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER = "UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER";
+    private static final String UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER =
+            "UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER";
 
 
     private final static String MESSAGE_FOOTER_TEMPLATE = "<br /><br />\n<hr /><br />\n"
-            + "To configure your notification preferences, visit your <a href=\"USER_PROFILE_LINK\">profile</a> page";
+            + "To configure your notification preferences, visit your "
+            + "<a href=\"USER_PROFILE_LINK\">profile</a> page";
 
     private final static String USER_PROFILE_LINK_PLACEHOLDER = "USER_PROFILE_LINK";
 
-    private final static String USER_PROFILE_LINK_TEMPLATE = "DOMAIN_PLACEHOLDER/members/profile/USER_ID";
+    private final static String USER_PROFILE_LINK_TEMPLATE =
+            "DOMAIN_PLACEHOLDER/members/profile/USER_ID";
 
     private final static String USER_ID_PLACEHOLDER = "USER_ID";
 
     private final static String DOMAIN_PLACEHOLDER = "DOMAIN_PLACEHOLDER";
 
-    private static final String DAILY_DIGEST_NOTIFICATION_SUBJECT_TEMPLATE = "<colab-name/> Activities – Daily Digest DATE";
+    private static final String DAILY_DIGEST_NOTIFICATION_SUBJECT_TEMPLATE =
+            "<colab-name/> Activities – Daily Digest DATE";
 
     private static final String DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER = "DATE";
 
     private static final String DAILY_DIGEST_ENTRY_TEXT = "<colab-name/> Digest for DATE";
 
-    private static final String UNSUBSCRIBE_DAILY_DIGEST_NOTIFICATION_TEXT = "You are receiving this message because you subscribed to receiving a daily digest of activities on the <colab-name/>.  " +
-            "To stop receiving these notifications, please click <a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
+    private static final String UNSUBSCRIBE_DAILY_DIGEST_NOTIFICATION_TEXT =
+            "You are receiving this message because you subscribed to receiving a daily digest of"
+                    + " activities on the <colab-name/>.  "
+                    + "To stop receiving these notifications, please click "
+                    + "<a href='UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER'>here</a>.";
+
+    private final ActivityEntryHelper activityEntryHelper;
 
     @Autowired
-    private ActivityEntryHelper activityEntryHelper;
+    public ActivitySubscriptionEmailHelper(ActivityEntryHelper activityEntryHelper) {
+        this.activityEntryHelper = activityEntryHelper;
+    }
 
     public void sendEmailNotifications() {
 
         // INSERT INTO `xcolab_ConfigurationAttribute` (`name`, `additionalId`, `numericValue`, `stringValue`, `realValue`) VALUES ('DAILY_DIGEST_LAST_EMAIL_NOTIFICATION', '0', '0', '2017-01-03 00:00:00', '0');
-        String DAILY_DIGEST_LAST_EMAIL_NOTIFICATION = ConfigurationAttributeKey.DAILY_DIGEST_LAST_EMAIL_NOTIFICATION.get();
-        if(!DAILY_DIGEST_LAST_EMAIL_NOTIFICATION.isEmpty()) {
+        String DAILY_DIGEST_LAST_EMAIL_NOTIFICATION =
+                ConfigurationAttributeKey.DAILY_DIGEST_LAST_EMAIL_NOTIFICATION.get();
+        if (!DAILY_DIGEST_LAST_EMAIL_NOTIFICATION.isEmpty()) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             try {
                 lastEmailNotification = sdf.parse(DAILY_DIGEST_LAST_EMAIL_NOTIFICATION).toInstant();
-                lastDailyEmailNotification = sdf.parse(DAILY_DIGEST_LAST_EMAIL_NOTIFICATION).toInstant();
+                lastDailyEmailNotification =
+                        sdf.parse(DAILY_DIGEST_LAST_EMAIL_NOTIFICATION).toInstant();
             } catch (ParseException e) {
                 lastEmailNotification = Instant.now();
             }
@@ -117,9 +136,9 @@ public class ActivitySubscriptionEmailHelper {
         for (ActivityEntry activity : res) {
             try {
                 sendInstantNotifications(activity);
-            }
-            catch (Throwable e) {
-                _log.error(String.format("Can't process activity when sending notifications ( %s )", activity), e);
+            } catch (Throwable e) {
+                _log.error("Can't process activity when sending notifications ( {} )",
+                        activity, e);
             }
         }
         lastEmailNotification = Instant.now();
@@ -140,20 +159,25 @@ public class ActivitySubscriptionEmailHelper {
     }
 
     private void sendDailyDigestNotifications(List<ActivityEntry> activities) {
-        Map<Long, List<ActivityEntry>> userActivitiesDigestMap = getUserToActivityDigestMap(activities);
+        Map<Long, List<ActivityEntry>> userActivitiesDigestMap =
+                getUserToActivityDigestMap(activities);
 
-        String subject = StringUtils.replace(DAILY_DIGEST_NOTIFICATION_SUBJECT_TEMPLATE, DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER, instantToFormattedString(lastDailyEmailNotification));
+        String subject = StringUtils.replace(DAILY_DIGEST_NOTIFICATION_SUBJECT_TEMPLATE,
+                DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER,
+                instantToFormattedString(lastDailyEmailNotification));
         // Send the digest to each user which is included in the set of subscriptions
         for (Map.Entry<Long, List<ActivityEntry>> entry : userActivitiesDigestMap.entrySet()) {
             try {
                 final Member recipient = MembersClient.getMember(entry.getKey());
                 final List<ActivityEntry> userDigestActivities = entry.getValue();
                 String body = getDigestMessageBody(userDigestActivities);
-                String unsubscribeFooter = getUnsubscribeDailyDigestFooter(NotificationUnregisterUtils.getActivityUnregisterLink(recipient));
+                String unsubscribeFooter = getUnsubscribeDailyDigestFooter(
+                        NotificationUnregisterUtils.getActivityUnregisterLink(recipient));
 
-                sendEmailMessage(recipient, subject, body, unsubscribeFooter, PlatformAttributeKey.COLAB_URL
+                sendEmailMessage(recipient, subject, body, unsubscribeFooter,
+                        PlatformAttributeKey.COLAB_URL
 
-                        .get(),recipient.getId_());
+                                .get(), recipient.getId_());
             } catch (MemberNotFoundException ignored) {
                 _log.error("sendDailyDigestNotifications: MemberNotFound : {}",
                         ignored.getMessage());
@@ -168,9 +192,9 @@ public class ActivitySubscriptionEmailHelper {
 
     private String getDigestMessageBody(List<ActivityEntry> userDigestActivities) {
         Comparator<ActivityEntry> socialActivityClassIdComparator =
-                (o1, o2) -> (int)(o1.getPrimaryType() - o2.getPrimaryType());
+                (o1, o2) -> (int) (o1.getPrimaryType() - o2.getPrimaryType());
         Comparator<ActivityEntry> socialActivityCreateDateComparator =
-                (o1, o2) -> (int)(o1.getCreateDate().getTime() - o2.getCreateDate().getTime());
+                (o1, o2) -> (int) (o1.getCreateDate().getTime() - o2.getCreateDate().getTime());
 
         ComparatorChain comparatorChain = new ComparatorChain();
         comparatorChain.addComparator(socialActivityClassIdComparator);
@@ -179,7 +203,9 @@ public class ActivitySubscriptionEmailHelper {
         try {
             userDigestActivities.sort(comparatorChain);
 
-            body.append(StringUtils.replace(DAILY_DIGEST_ENTRY_TEXT, DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER, instantToFormattedString(lastDailyEmailNotification)));
+            body.append(StringUtils.replace(DAILY_DIGEST_ENTRY_TEXT,
+                    DAILY_DIGEST_NOTIFICATION_SUBJECT_DATE_PLACEHOLDER,
+                    instantToFormattedString(lastDailyEmailNotification)));
             body.append("<br/><br/>");
 
             for (ActivityEntry socialActivity : userDigestActivities) {
@@ -187,38 +213,42 @@ public class ActivitySubscriptionEmailHelper {
                 if (socialActivity == null) {
                     continue;
                 }
-                if (socialActivity.getPrimaryType().equals(ActivityEntryType.DISCUSSION.getPrimaryTypeId())) {
+                if (socialActivity.getPrimaryType()
+                        .equals(ActivityEntryType.DISCUSSION.getPrimaryTypeId())) {
                     try {
                         StringBuilder bodyWithComment = new StringBuilder();
-                        bodyWithComment.append(
-                                activityEntryHelper.getActivityBody(socialActivity)
-                        );
+                        bodyWithComment.append(activityEntryHelper.getActivityBody(socialActivity));
                         bodyWithComment.append("<br><br><div style='margin-left:20px;>");
                         bodyWithComment.append("<div style='margin-top:14pt;margin-bottom:14pt;'>");
                         Long commentId = new Long(socialActivity.getExtraData());
                         Comment comment = CommentClientUtil.getComment(commentId, true);
-                        if(comment.getDeletedDate()!=null){
+                        if (comment.getDeletedDate() != null) {
                             bodyWithComment.append("<b>COMMENT ALREADY DELETED</b>");
                         }
                         bodyWithComment.append(comment.getContent());
                         bodyWithComment.append("</div></div>");
-                        body.append("<div style='margin-left: 10px'>").append(bodyWithComment.toString()).append("</div><br/><br/>");
+                        body.append("<div style='margin-left: 10px'>")
+                                .append(bodyWithComment.toString()).append("</div><br/><br/>");
                     } catch (CommentNotFoundException ex) {
-                        body.append("<div style='margin-left: 10px'>").append(socialActivity).append("</div><br/><br/>");
+                        body.append("<div style='margin-left: 10px'>").append(socialActivity)
+                                .append("</div><br/><br/>");
                     }
 
                 } else {
-                    body.append("<div style='margin-left: 10px'>").append(activityEntryHelper.getActivityBody(socialActivity)).append("</div><br/><br/>");
+                    body.append("<div style='margin-left: 10px'>")
+                            .append(activityEntryHelper.getActivityBody(socialActivity))
+                            .append("</div><br/><br/>");
                 }
 
             }
-        } catch(IllegalArgumentException comparatorFailed) {
+        } catch (IllegalArgumentException comparatorFailed) {
             _log.debug("Comparator failed {}", comparatorFailed.getLocalizedMessage());
         }
         return body.toString();
     }
 
-    private Map<Long, List<ActivityEntry>> getUserToActivityDigestMap(List<ActivityEntry> activities) {
+    private Map<Long, List<ActivityEntry>> getUserToActivityDigestMap(
+            List<ActivityEntry> activities) {
         Map<Long, List<ActivityEntry>> userDigestActivitiesMap = new HashMap<>();
 
 
@@ -232,10 +262,10 @@ public class ActivitySubscriptionEmailHelper {
                     continue;
                 }
 
-                final MessagingUserPreferences messagingPreferences = MessagingClient
-                        .getMessagingPreferencesForMember(recipientId);
-                if (messagingPreferences.getEmailOnActivity()
-                        && messagingPreferences.getEmailActivityDailyDigest()) {
+                final MessagingUserPreferences messagingPreferences =
+                        MessagingClient.getMessagingPreferencesForMember(recipientId);
+                if (messagingPreferences.getEmailOnActivity() && messagingPreferences
+                        .getEmailActivityDailyDigest()) {
 
                     List<ActivityEntry> userDigestActivities = userDigestActivitiesMap
                             .computeIfAbsent(recipientId, k -> new ArrayList<>());
@@ -249,20 +279,21 @@ public class ActivitySubscriptionEmailHelper {
 
     private List<ActivityEntry> getActivitiesAfter(Instant minDate) {
 
-        List<ActivityEntry> activityObjects = ActivitiesClientUtil
-                .getActivityEntriesAfter(Date.from(minDate));
+        List<ActivityEntry> activityObjects =
+                ActivitiesClientUtil.getActivityEntriesAfter(Date.from(minDate));
 
-        //clean list of activities first in order not to send out activities concerning the same proposal multiple times
+        // clean list of activities first in order not to send out activities concerning the same
+        // proposal multiple times
         ActivityEntryMessageLimitationHelper h = new ActivityEntryMessageLimitationHelper(
-                ActivityEntryType.PROPOSAL
-                .getPrimaryTypeId());
+                ActivityEntryType.PROPOSAL.getPrimaryTypeId());
 
         return h.process(activityObjects);
     }
 
     private void sendInstantNotifications(ActivityEntry activity) {
 
-        String subject = clearLinksInSubject(activity.getActivityEntryTitle()) + " ";//get old implementation for subject
+        String subject = clearLinksInSubject(activity.getActivityEntryTitle())
+                + " ";//get old implementation for subject
         String messageTemplate = activityEntryHelper.getActivityBody(activity);
 
         Set<Member> recipients = new HashSet<>();
@@ -286,39 +317,43 @@ public class ActivitySubscriptionEmailHelper {
 
         }
         for (Member recipient : recipients) {
-            final MessagingUserPreferences messagingPreferences = MessagingClient
-                    .getMessagingPreferencesForMember(recipient.getUserId());
-            if (messagingPreferences.getEmailOnActivity()
-                    && !messagingPreferences.getEmailActivityDailyDigest()) {
+            final MessagingUserPreferences messagingPreferences =
+                    MessagingClient.getMessagingPreferencesForMember(recipient.getUserId());
+            if (messagingPreferences.getEmailOnActivity() && !messagingPreferences
+                    .getEmailActivityDailyDigest()) {
                 _log.info("Sending activity notification to member {}.", recipient.getId_());
 
                 //TODO: fix this because this was only done so the code would compile
                 String unsubscribeFooter = getUnsubscribeIndividualSubscriptionFooter(
-                        PlatformAttributeKey.COLAB_URL.get(),
-                        NotificationUnregisterUtils.getUnregisterLink(subscriptionsPerUser.get(recipient.getUserId())));
-                sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter, PlatformAttributeKey.COLAB_URL
-                        .get(),activity.getActivityEntryId());
+                        PlatformAttributeKey.COLAB_URL.get(), NotificationUnregisterUtils
+                                .getUnregisterLink(
+                                        subscriptionsPerUser.get(recipient.getUserId())));
+                sendEmailMessage(recipient, subject, messageTemplate, unsubscribeFooter,
+                        PlatformAttributeKey.COLAB_URL.get(), activity.getActivityEntryId());
             }
         }
     }
 
     private String clearLinksInSubject(String activityEntryTitle) {
-        if(activityEntryTitle!=null) {
+        if (activityEntryTitle != null) {
             return activityEntryTitle.replaceAll("\\<[^>]*>", "");
         }
         return "";
     }
 
-    private void sendEmailMessage(Member recipient, String subject, String body, String unregisterFooter, String portalBaseUrl, Long referenceId) {
+    private void sendEmailMessage(Member recipient, String subject, String body,
+            String unregisterFooter, String portalBaseUrl, Long referenceId) {
         try {
             InternetAddress fromEmail = TemplateReplacementUtil.getAdminFromEmailAddress();
-            InternetAddress toEmail = new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
+            InternetAddress toEmail =
+                    new InternetAddress(recipient.getEmailAddress(), recipient.getFullName());
 
-            body +=  MESSAGE_FOOTER_TEMPLATE;
+            body += MESSAGE_FOOTER_TEMPLATE;
 
-            body  = HtmlUtil.makeRelativeLinksAbsolute(body, portalBaseUrl);
+            body = HtmlUtil.makeRelativeLinksAbsolute(body, portalBaseUrl);
             body = body.replaceAll("\n", "\n<br />");
-            String message = body.replace(USER_PROFILE_LINK_PLACEHOLDER, getUserLink(recipient, portalBaseUrl));
+            String message = body.replace(USER_PROFILE_LINK_PLACEHOLDER,
+                    getUserLink(recipient, portalBaseUrl));
 
             message = HtmlUtil.decodeHTMLEntitiesForEmail(message);
 
@@ -326,10 +361,15 @@ public class ActivitySubscriptionEmailHelper {
             message += "<br /><br />" + unregisterFooter;
 
 
-            EmailClient.sendEmail(fromEmail.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),toEmail.getAddress(), TemplateReplacementUtil.replacePlatformConstants(subject),
-                    TemplateReplacementUtil.replacePlatformConstants(message), true, fromEmail.getAddress(),ConfigurationAttributeKey.COLAB_NAME.get(),referenceId);
+            EmailClient
+                    .sendEmail(fromEmail.getAddress(), ConfigurationAttributeKey.COLAB_NAME.get(),
+                            toEmail.getAddress(),
+                            TemplateReplacementUtil.replacePlatformConstants(subject),
+                            TemplateReplacementUtil.replacePlatformConstants(message), true,
+                            fromEmail.getAddress(), ConfigurationAttributeKey.COLAB_NAME.get(),
+                            referenceId);
 
-        } catch ( UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             _log.error("Can't send email notifications to users");
             _log.debug("Can't send email message", e);
         }
@@ -340,14 +380,17 @@ public class ActivitySubscriptionEmailHelper {
 
         List<ActivitySubscription> filteredResults = new ArrayList<>();
 
-        List<ActivitySubscription> ret = ActivitiesClientUtil.getActivitySubscriptions(activity.getPrimaryType(),
-                activity.getClassPrimaryKey(), null);
+        List<ActivitySubscription> ret = ActivitiesClientUtil
+                .getActivitySubscriptions(activity.getPrimaryType(), activity.getClassPrimaryKey(),
+                        null);
 
         // Check for constraints which users should receive notifications
-        ActivitySubscriptionConstraint subscriptionConstraint = new ActivitySubscriptionConstraint(activity.getPrimaryType(), activity.getSecondaryType());
+        ActivitySubscriptionConstraint subscriptionConstraint =
+                new ActivitySubscriptionConstraint(activity.getPrimaryType(),
+                        activity.getSecondaryType());
         if (subscriptionConstraint.areSubscribersConstrained()) {
-            for(Long userId : subscriptionConstraint.getWhitelist(activity.getClassPrimaryKey())){
-                for(ActivitySubscription as : ret) {
+            for (Long userId : subscriptionConstraint.getWhitelist(activity.getClassPrimaryKey())) {
+                for (ActivitySubscription as : ret) {
                     if (as.getReceiverId() == userId.longValue()) {
                         filteredResults.add(as);
                     }
@@ -366,16 +409,21 @@ public class ActivitySubscriptionEmailHelper {
     }
 
 
-    private String getUnsubscribeIndividualSubscriptionFooter(String portalBaseUrl, String unsubscribeUrl) {
+    private String getUnsubscribeIndividualSubscriptionFooter(String portalBaseUrl,
+            String unsubscribeUrl) {
         String faqUrl = portalBaseUrl + FAQ_DIGEST_URL_PATH;
-        String footer =  TemplateReplacementUtil.replaceContestTypeStrings(
-                StringUtils.replace(UNSUBSCRIBE_INSTANT_NOTIFICATION_TEXT, FAQ_DIGEST_LINK_PLACEHOLDER, faqUrl), null);
+        String footer = TemplateReplacementUtil.replaceContestTypeStrings(StringUtils
+                .replace(UNSUBSCRIBE_INSTANT_NOTIFICATION_TEXT, FAQ_DIGEST_LINK_PLACEHOLDER,
+                        faqUrl), null);
         //TODO: select contest type above? -> uses generic word!
-        footer = StringUtils.replace(footer, UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER, unsubscribeUrl);
-        return  footer;
+        footer = StringUtils
+                .replace(footer, UNSUBSCRIBE_SUBSCRIPTION_LINK_PLACEHOLDER, unsubscribeUrl);
+        return footer;
     }
 
     private String getUserLink(Member user, String portalBaseUrl) {
-        return USER_PROFILE_LINK_TEMPLATE.replaceAll(USER_ID_PLACEHOLDER, String.valueOf(user.getUserId())).replaceAll(DOMAIN_PLACEHOLDER, portalBaseUrl);
+        return USER_PROFILE_LINK_TEMPLATE
+                .replaceAll(USER_ID_PLACEHOLDER, String.valueOf(user.getUserId()))
+                .replaceAll(DOMAIN_PLACEHOLDER, portalBaseUrl);
     }
 }

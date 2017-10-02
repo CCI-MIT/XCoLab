@@ -4,10 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
 
 import org.xcolab.client.admin.attributes.platform.PlatformAttributeKey;
 import org.xcolab.client.admin.enums.ServerEnvironment;
 
+@Component
 public class StartupVerifier implements ApplicationRunner {
 
     private static final Logger log = LoggerFactory.getLogger(StartupVerifier.class);
@@ -19,7 +21,8 @@ public class StartupVerifier implements ApplicationRunner {
 
         log.info("Running in environment: {}", serverEnvironment);
         if (serverEnvironment != ServerEnvironment.PRODUCTION) {
-            log.warn("Running in NON PRODUCTION environment. For production use, please configure the server environment." );
+            log.warn("Running in NON PRODUCTION environment. For production use, please set the"
+                            + " server environment to {}.", ServerEnvironment.PRODUCTION);
         }
     }
 }

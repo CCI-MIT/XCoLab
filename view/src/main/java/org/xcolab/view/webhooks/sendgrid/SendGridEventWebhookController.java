@@ -34,7 +34,7 @@ public class SendGridEventWebhookController {
 
     @PostMapping("events")
     public void receiveEvents(HttpServletRequest request, HttpServletResponse response,
-             @RequestBody List<SendGridEvent> events) {
+            @RequestBody List<SendGridEvent> events) {
         log.debug("Received {} events from SendGrid.", events.size());
         for (SendGridEvent event : events) {
             eventProcessors.stream()

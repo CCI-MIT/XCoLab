@@ -1,6 +1,6 @@
 package org.xcolab.view.util.entity.activityEntry;
 
-public enum ProposalActivitySubType{
+public enum ProposalActivitySubType {
     PROPOSAL_ATTRIBUTE_REMOVED(2L),
     PROPOSAL_ATTRIBUTE_UPDATE(1L),
     PROPOSAL_CREATED(0L),
@@ -13,11 +13,12 @@ public enum ProposalActivitySubType{
     PROPOSAL_VOTE_SWITCH(5L);
 
     private final Long secondaryTypeId;
+
     ProposalActivitySubType(Long type) {
         this.secondaryTypeId = type;
     }
 
-    public Long getSecondaryTypeId(){
+    public Long getSecondaryTypeId() {
         return this.secondaryTypeId;
     }
 }

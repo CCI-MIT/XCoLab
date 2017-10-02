@@ -36,11 +36,11 @@ public class ContestSitemapGenerator {
     private void addContest(XmlUrlSet xmlUrlSet, List<Contest> contests,
             ChangeFrequency changeFrequency, Priority priority) {
         for (Contest contest : contests) {
-            xmlUrlSet.addUrl(
-                    XmlUrl.Builder.forLocation(siteUrl + contest.getContestLinkUrl())
-                            .changeFrequency(changeFrequency)
-                            .priority(priority)
-                            .build()
+            xmlUrlSet.addUrl(XmlUrl.Builder
+                    .forLocation(siteUrl + contest.getContestLinkUrl())
+                    .changeFrequency(changeFrequency)
+                    .priority(priority)
+                    .build()
             );
         }
     }

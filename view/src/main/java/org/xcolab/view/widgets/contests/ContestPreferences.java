@@ -44,8 +44,8 @@ public class ContestPreferences extends WidgetPreference {
     public ContestPreferences(String preferenceId, String locale) {
         super(preferenceId, locale);
 
-        selectedContests = IdListUtil.getIdsFromString(
-                jsonPreferences.optString(SELECTED_CONTESTS_PREFERENCE, ""));
+        selectedContests = IdListUtil
+                .getIdsFromString(jsonPreferences.optString(SELECTED_CONTESTS_PREFERENCE, ""));
         title = jsonPreferences.optString(TITLE_PREFERENCE, "Featured contests");
         allContestsTitle = jsonPreferences.optString(ALL_CONTESTS_TITLE, "see all contests");
         showCounts = jsonPreferences.optBoolean(SHOW_COUNTS, true);

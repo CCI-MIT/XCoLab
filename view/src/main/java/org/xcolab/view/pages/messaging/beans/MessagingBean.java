@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MessagingBean implements Serializable {
+
     private static final long serialVersionUID = 1L;
 
     private static final int PAGE_SIZE = 10;
@@ -84,7 +85,7 @@ public class MessagingBean implements Serializable {
             pageLinks.add(new PageLinkWrapper("< Previous", pageNumber - 1, messageType));
         }
         for (int i = Math.max(1, pageNumber - PAGER_RANGE), stop =
-             Math.min(getNumberOfPages(), pageNumber + PAGER_RANGE); i <= stop; i++) {
+                Math.min(getNumberOfPages(), pageNumber + PAGER_RANGE); i <= stop; i++) {
             pageLinks.add(new PageLinkWrapper("", i, messageType));
         }
         if (pageNumber < getNumberOfPages()) {

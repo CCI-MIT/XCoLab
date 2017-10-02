@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.xcolab.view.i18n.ResourceMessageResolver;
 
 @Component
-public class ProposalVoteActivityEntry  extends ProposalBaseActivityEntry {
+public class ProposalVoteActivityEntry extends ProposalBaseActivityEntry {
 
     @Autowired
     public ProposalVoteActivityEntry(ResourceMessageResolver resourceMessageResolver) {

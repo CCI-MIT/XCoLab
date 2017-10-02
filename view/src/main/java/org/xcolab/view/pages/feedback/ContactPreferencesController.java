@@ -26,7 +26,7 @@ public class ContactPreferencesController extends AbstractWidgetController<Conta
     @GetMapping(PREFERENCES_URL_PATH)
     public String showFeed(HttpServletRequest request, HttpServletResponse response, Model model,
             Member member, @RequestParam(required = false) String language) {
-    	return showPreferencesInternal(response, model, member,"default", language,
+        return showPreferencesInternal(response, model, member, "default", language,
                 "/feedback/editPreferences");
     }
 
@@ -35,6 +35,5 @@ public class ContactPreferencesController extends AbstractWidgetController<Conta
             Model model, Member member, @RequestParam(required = false) String language,
             ContactPreferences preferences) {
         return savePreferencesInternal(request, response, member, preferences);
-	}
-
+    }
 }

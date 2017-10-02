@@ -17,7 +17,7 @@ public class PageNavigation {
         this(UriComponentsBuilder.fromPath(basePath), currentPage, numPages);
     }
 
-    public PageNavigation(UriComponentsBuilder baseUrl, int currentPage,  int numPages) {
+    public PageNavigation(UriComponentsBuilder baseUrl, int currentPage, int numPages) {
         this.baseUrl = baseUrl;
         this.currentPage = currentPage;
         this.numPages = numPages;

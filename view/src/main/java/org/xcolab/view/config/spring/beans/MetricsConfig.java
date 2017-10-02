@@ -51,8 +51,8 @@ public class MetricsConfig {
         datadogConfig = reportingConfig.getDatadog();
 
         if (datadogConfig.isEnabled() && !isDatadogConfigValid()) {
-            throw new IllegalStateException("Datadog metric reporting is enabled but "
-                    + "the configuration is invalid.");
+            throw new IllegalStateException(
+                    "Datadog metric reporting is enabled but the configuration is invalid.");
         }
     }
 

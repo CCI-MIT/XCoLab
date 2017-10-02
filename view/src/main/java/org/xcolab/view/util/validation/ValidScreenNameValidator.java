@@ -26,8 +26,8 @@ public class ValidScreenNameValidator implements ConstraintValidator<ValidScreen
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
-        String screenName = ConstraintValidatorHelper.getPropertyValue(
-                String.class, screenNameProperty, value);
+        String screenName =
+                ConstraintValidatorHelper.getPropertyValue(String.class, screenNameProperty, value);
         if (screenName == null) {
             // ignore in case of null. Another validator will care about this
             return true;
@@ -36,17 +36,17 @@ public class ValidScreenNameValidator implements ConstraintValidator<ValidScreen
         if (validateScreenName(screenName)) {
             return true;
         } else {
-            boolean isDefaultMessage = "".equals(context
-                    .getDefaultConstraintMessageTemplate());
+            boolean isDefaultMessage = "".equals(context.getDefaultConstraintMessageTemplate());
             /*
              * if custom message was provided, don't touch it, otherwise build
 			 * the default message
 			 */
             if (isDefaultMessage) {
-                String message = resourceMessageResolver.getLocalizedMessage("register.form.validation.screenNameContent.screenNameInvalid");
+                String message = resourceMessageResolver.getLocalizedMessage(
+                        "register.form.validation.screenNameContent.screenNameInvalid");
                 context.disableDefaultConstraintViolation();
-                ConstraintViolationBuilder violationBuilder = context
-                        .buildConstraintViolationWithTemplate(message);
+                ConstraintViolationBuilder violationBuilder =
+                        context.buildConstraintViolationWithTemplate(message);
                 violationBuilder.addConstraintViolation();
             }
 

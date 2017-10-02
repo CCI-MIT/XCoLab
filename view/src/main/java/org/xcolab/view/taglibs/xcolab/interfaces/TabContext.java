@@ -9,5 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 public interface TabContext extends Serializable {
 
     Contest getContest(HttpServletRequest request);
+
     TabPermissions getPermissions(HttpServletRequest request);
 }

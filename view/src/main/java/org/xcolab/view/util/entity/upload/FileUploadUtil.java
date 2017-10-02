@@ -8,9 +8,8 @@ import javax.imageio.ImageIO;
 
 public class FileUploadUtil {
 
-    public static byte[] resizeAndCropImage(BufferedImage img,
-            int imageCropWidthPixels, int imageCropHeightPixels)
-            throws IOException {
+    public static byte[] resizeAndCropImage(BufferedImage img, int imageCropWidthPixels,
+            int imageCropHeightPixels) throws IOException {
         FileUploadUtilHelper helper = new FileUploadUtilHelper(img);
         BufferedImage resImg = helper.resizeImage(imageCropWidthPixels, imageCropHeightPixels);
 

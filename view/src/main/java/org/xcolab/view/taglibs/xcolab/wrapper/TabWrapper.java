@@ -2,11 +2,8 @@ package org.xcolab.view.taglibs.xcolab.wrapper;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import org.xcolab.client.comment.pojo.CommentThread;
-import org.xcolab.client.comment.util.ThreadClientUtil;
 import org.xcolab.client.contest.ContestClientUtil;
 import org.xcolab.client.contest.pojo.Contest;
-import org.xcolab.client.contest.pojo.ContestDiscussion;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabContext;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabEnum;
 import org.xcolab.view.taglibs.xcolab.interfaces.TabPermissions;
@@ -16,6 +13,7 @@ import java.io.Serializable;
 import javax.servlet.http.HttpServletRequest;
 
 public class TabWrapper implements Serializable {
+
     private TabEnum tab;
     private final TabContext context;
 
@@ -46,11 +44,11 @@ public class TabWrapper implements Serializable {
         return tab.getDisplayName();
     }
 
-    public String getTabUrl()  {
+    public String getTabUrl() {
         return ServletUriComponentsBuilder.fromRequest(request).build().toUriString();
     }
 
-    public String getElementType()  {
+    public String getElementType() {
         return tab.getElementType();
     }
 
@@ -77,21 +75,6 @@ public class TabWrapper implements Serializable {
     public long getDiscussionId() {
         Contest contest = context.getContest(request);
         return ContestClientUtil.getContestDiscussion(contest.getContestPK(), getName())
-                        .getDiscussionId();
+                .getDiscussionId();
     }
-
-    private Long createNewDiscussionIdByContestIdAndTabName(Contest contest, String tabName) {
-        long contestId = contest.getContestPK();
-
-        CommentThread thread = new CommentThread();
-        thread.setAuthorId(contest.getAuthorId());
-        thread.setTitle(contest.getContestType().getContestName()
-                        + " " + contestId + " " + tabName + " discussion");
-        long discussionId = ThreadClientUtil.createThread(thread).getThreadId();
-
-        ContestDiscussion newContestDiscussion = ContestClientUtil.createContestDiscussion(discussionId, contestId, tabName);
-
-        return newContestDiscussion.getDiscussionId();
-    }
-
 }

@@ -8,11 +8,12 @@ public enum DiscussionActivitySubType {
     DISCUSSION_ADDED_COMMENT(5L);
 
     private final Long secondaryTypeId;
+
     DiscussionActivitySubType(Long type) {
         this.secondaryTypeId = type;
     }
 
-    public Long getSecondaryTypeId(){
+    public Long getSecondaryTypeId() {
         return this.secondaryTypeId;
     }
 }

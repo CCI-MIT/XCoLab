@@ -11,6 +11,8 @@ import org.xcolab.client.contest.exceptions.ContestNotFoundException;
 import org.xcolab.client.contest.pojo.Contest;
 import org.xcolab.client.members.pojo.Member;
 import org.xcolab.client.proposals.ProposalMemberRatingClient;
+import org.xcolab.util.http.ServiceRequestUtils;
+import org.xcolab.util.http.caching.CacheName;
 import org.xcolab.view.errors.AccessDeniedPage;
 import org.xcolab.view.pages.loginregister.SharedColabUtil;
 import org.xcolab.view.pages.proposals.exceptions.ProposalsAuthorizationException;
@@ -65,6 +67,7 @@ public class SupportProposalActionController {
 
             }
         }
+        ServiceRequestUtils.clearCache(CacheName.MISC_REQUEST);
         String proposalLinkUrl =
                 proposalContext.getProposal().getProposalLinkUrl(proposalContext.getContest());
         if (!StringUtils.isBlank(forwardToTab)) {

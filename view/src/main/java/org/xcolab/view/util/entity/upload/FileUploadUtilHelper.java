@@ -35,8 +35,7 @@ public class FileUploadUtilHelper {
             cropY = (h - w) / 2;
         }
 
-        BufferedImage croppedImage = img.getSubimage(cropX, cropY, cropSize,
-                cropSize);
+        BufferedImage croppedImage = img.getSubimage(cropX, cropY, cropSize, cropSize);
 
         int type = BufferedImage.TYPE_INT_RGB;
         if (containsAlphaPixels()) {
@@ -45,8 +44,8 @@ public class FileUploadUtilHelper {
 
         BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, type);
         Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(croppedImage, 0, 0, IMG_WIDTH, IMG_HEIGHT, 0, 0, cropSize, cropSize,
-                null);
+        g.drawImage(croppedImage, 0, 0, IMG_WIDTH, IMG_HEIGHT,
+                0, 0, cropSize, cropSize, null);
         g.dispose();
 
         return resizedImage;

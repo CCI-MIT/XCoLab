@@ -372,11 +372,15 @@ public final class ConfigurationAttributeKey {
                     .build();
 
     public static final AttributeGetter<Boolean> CONTESTS_ALLOW_OPEN_PROPOSALS =
-        ConfigurationAttributes.newBooleanAttribute("CONTESTS_ALLOW_OPEN_PROPOSALS")
+            ConfigurationAttributes.newBooleanAttribute("CONTESTS_ALLOW_OPEN_PROPOSALS")
                     .defaultValue(true)
                     .build();
     public static final AttributeGetter<Boolean> CONTESTS_SHOW_PROPOSAL_EDIT_HELP_TEXT =
             ConfigurationAttributes.newBooleanAttribute("CONTESTS_SHOW_PROPOSAL_EDIT_HELP_TEXT")
+                    .defaultValue(true)
+                    .build();
+    public static final AttributeGetter<Boolean> CONTESTS_SHOW_YEAR_WHEN_COMPLETED =
+            ConfigurationAttributes.newBooleanAttribute("CONTESTS_SHOW_YEAR_WHEN_COMPLETED")
                     .defaultValue(true)
                     .build();
     public static final AttributeGetter<Boolean> FLAGGING_ALLOW_MEMBERS =

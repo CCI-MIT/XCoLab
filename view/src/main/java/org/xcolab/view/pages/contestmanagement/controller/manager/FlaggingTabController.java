@@ -84,7 +84,6 @@ public class FlaggingTabController extends AbstractTabController {
         }
         model.addAttribute("reports", reportWrappers);
 
-        setPageAttributes(request, model, tab);
         return TAB_VIEW;
     }
 

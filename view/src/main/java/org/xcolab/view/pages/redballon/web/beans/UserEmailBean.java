@@ -6,28 +6,28 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.validation.constraints.AssertTrue;
 
 public class UserEmailBean {
-	
-	@AssertTrue(message = "Please read and accept the consent form.")
-	private boolean acceptTos;
 
-	@NotBlank(message = "Please enter your email address.")
-	@Email(message = "Must be a valid email address.")
-	private String email;
+    @AssertTrue(message = "Please read and accept the consent form.")
+    private boolean acceptTos;
 
-	public String getEmail() {
-		return email;
-	}
+    @NotBlank(message = "Please enter your email address.")
+    @Email(message = "Must be a valid email address.")
+    private String email;
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public boolean isAcceptTos() {
-		return acceptTos;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public void setAcceptTos(boolean acceptTos) {
-		this.acceptTos = acceptTos;
-	}
+    public boolean isAcceptTos() {
+        return acceptTos;
+    }
+
+    public void setAcceptTos(boolean acceptTos) {
+        this.acceptTos = acceptTos;
+    }
 
 }

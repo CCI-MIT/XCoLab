@@ -55,7 +55,7 @@ public class ContactController {
     }
 
     @ModelAttribute("recaptchaDataSiteKey")
-    public String getRecaptchaDataSiteKey(){
+    public String getRecaptchaDataSiteKey() {
         return ConfigurationAttributeKey.GOOGLE_RECAPTCHA_SITE_KEY.get();
     }
 
@@ -65,7 +65,7 @@ public class ContactController {
             @RequestParam(required = false) String redirect) throws IOException {
 
         Locale locale = LocaleContextHolder.getLocale();
-        ContactPreferences contactPreferences = new ContactPreferences(null,locale.getLanguage());
+        ContactPreferences contactPreferences = new ContactPreferences(null, locale.getLanguage());
 
         String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
         boolean captchaValid = ReCaptchaUtils.verify(gRecaptchaResponse,
@@ -79,10 +79,8 @@ public class ContactController {
             return showContact(request, model);
         }
 
-        String messageSubject = applyFilters(contactPreferences
-                .getMessageSubject(), contactBean);
+        String messageSubject = applyFilters(contactPreferences.getMessageSubject(), contactBean);
         String messageBody = applyFilters(contactPreferences.getMessageFormat(), contactBean);
-
 
         String[] recipients = contactPreferences.getRecipientsArray();
         List<String> addressTo = new ArrayList<>();
@@ -91,8 +89,8 @@ public class ContactController {
 
         final String fromAddress = ConfigurationAttributeKey.ADMIN_FROM_EMAIL.get();
         final String fromName = ConfigurationAttributeKey.COLAB_NAME.get();
-        EmailClient.sendEmail(fromAddress,fromName, addressTo , messageSubject,
-                messageBody, false, contactBean.getEmail(),null, null);
+        EmailClient.sendEmail(fromAddress, fromName, addressTo, messageSubject, messageBody, false,
+                contactBean.getEmail(), null, null);
 
         AlertMessage.success("Message sent!").flash(request);
         return showContact(request, model);
@@ -105,5 +103,4 @@ public class ContactController {
         msg = msg.replaceAll("USER_MESSAGE", contactBean.getMessage());
         return msg;
     }
-
 }

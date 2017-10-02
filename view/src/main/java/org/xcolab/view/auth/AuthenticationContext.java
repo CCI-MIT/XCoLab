@@ -55,7 +55,8 @@ public class AuthenticationContext {
     }
 
     public Member getRealMemberOrNull() {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
         return getRealMemberOrNull(authentication);
     }
 
